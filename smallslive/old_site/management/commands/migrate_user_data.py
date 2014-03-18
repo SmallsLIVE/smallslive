@@ -22,16 +22,18 @@ class Command(BaseCommand):
         for user in json_file['QUERY']['DATA']:
             # Import or create users
             user_data = dict(zip(columns, user))
+            if not user_data['NAME']:
+                continue
             try:
-                user = User.objects.get(username=str(user_data['NAME'])[:30])
+                user = User.objects.get(username=unicode(user_data['NAME'])[:30])
             except User.DoesNotExist:
-                user = User.objects.create(
+                user = User.objects.create_user(
+                    unicode(user_data['NAME'])[:30],
+                    email=unicode(user_data['EMAIL'])[:75],
+                    password=unicode(user_data['PASS']),
                     id=user_data['USERID'],
-                    username=str(user_data['NAME'])[:30],
-                    email=str(user_data['EMAIL']),
-                    password=str(user_data['PASS']),
-                    first_name=str(user_data['FIRSTNAME']),
-                    last_name=str(user_data['LASTNAME']),
+                    first_name=unicode(user_data['FIRSTNAME'])[:30] if user_data['FIRSTNAME'] else "",
+                    last_name=unicode(user_data['LASTNAME'])[:30] if user_data['LASTNAME'] else "",
                 )
                 count += 1
 
