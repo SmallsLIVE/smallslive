@@ -7,7 +7,7 @@ admin.autodiscover()
 
 class StaticPageView(TemplateView):
     def get_template_names(self):
-        return [self.kwargs['template_name']]
+        return ["{0}.html".format(self.kwargs['template_name'])]
 
 
 urlpatterns = patterns('',
