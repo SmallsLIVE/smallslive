@@ -31,6 +31,9 @@ class Event(models.Model):
     presenterfreeform = models.TextField(blank=True)
     extraeventtype = models.IntegerField(blank=True, null=True)
     artists_playing = models.ManyToManyField('artists.Artist', through='GigPlayed')
+
+    class Meta:
+        ordering = ['-startday']
     
     def __unicode__(self):
         return self.title
