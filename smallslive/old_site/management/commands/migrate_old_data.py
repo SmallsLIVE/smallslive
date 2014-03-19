@@ -1,13 +1,29 @@
+import bleach
+from bs4 import BeautifulSoup
+from django.core.management.base import NoArgsCommand
+
 from artists.models import Artist, ArtistType
 from events.models import Event, EventType, GigPlayed
 from multimedia.models import MediaType, Media
 from old_site.models import Joinpersonevent, OldEvent, OldEventTypes, OldPerson, OldPersonType, OldMedia, OldMediaType
 
-from django.core.management.base import NoArgsCommand
-
 
 class Command(NoArgsCommand):
     help = 'Migrates the data from the old site to new models'
+
+    def clean_up_html(self, text):
+        allowed_tags = ['a', 'p']
+
+        # remove all tags except allowed tags
+        cleaned_up_html = bleach.clean(text, tags=allowed_tags, strip=True)
+
+        # remove empty paragraph tags
+        soup = BeautifulSoup(cleaned_up_html, 'html.parser')
+        for p in soup.find_all('p'):
+            if not p.text.strip():
+                p.decompose()
+
+        return unicode(soup)
 
     def migrate_artists(self):
         # Artist types
@@ -27,7 +43,7 @@ class Command(NoArgsCommand):
             new_artist, artist_created = Artist.objects.get_or_create(id=old_artist.personid)
 
             # Regular fields
-            new_artist.biography = old_artist.biography
+            new_artist.biography = self.clean_up_html(old_artist.biography)
             new_artist.firstname = old_artist.firstname
             new_artist.lastname = old_artist.lastname
             new_artist.salutation = old_artist.salutation
