@@ -7,7 +7,8 @@ from models import Event
 class EventAdmin(admin.ModelAdmin):
     date_hierarchy = 'startday'
     list_display = ('startday', 'title', 'subtitle', 'link', 'datefreeform', 'description')
-    list_filter = ('title',)
+    list_display_links = ('title', 'subtitle')
+    # list_filter = ('title',)
     search_fields = ('title', 'subtitle')
     # radio_fields = {'active': admin.HORIZONTAL}
     # filter_horizontal = ('tags', 'speakers',)

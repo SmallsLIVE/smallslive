@@ -9,7 +9,10 @@ class Artist(models.Model):
     biography = models.TextField(blank=True)
     templateid = models.IntegerField(blank=True, null=True)
     website = models.CharField(max_length=255, blank=True)
-    
+
+    class Meta:
+        ordering = ['lastname']
+
     def __unicode__(self):
         return "{0} {1}".format(self.firstname, self.lastname)
 
