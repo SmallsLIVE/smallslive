@@ -55,3 +55,5 @@ docs/_build/
 # PyCharm files
 .idea
 
+# local settings
+settings_local.py
