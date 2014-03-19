@@ -39,6 +39,7 @@ INSTALLED_APPS = (
 
     # third party apps
     'django_extensions',
+    'south',
 
     # project apps
     'artists',
