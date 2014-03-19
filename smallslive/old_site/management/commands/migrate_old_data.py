@@ -1,6 +1,7 @@
 from artists.models import Artist, ArtistType
 from events.models import Event, EventType, GigPlayed
-from old_site.models import Joinpersonevent, OldEvent, OldEventTypes, OldPerson, OldPersonType
+from multimedia.models import MediaType, Media
+from old_site.models import Joinpersonevent, OldEvent, OldEventTypes, OldPerson, OldPersonType, OldMedia, OldMediaType
 
 from django.core.management.base import NoArgsCommand
 
@@ -107,6 +108,37 @@ class Command(NoArgsCommand):
             new_event.save()
         self.stdout.write('Successfully imported {0} events'.format(count))
 
+    def migrate_media(self):
+        # Media types
+        count = 0
+        for old_media_type in OldMediaType.objects.using('old').all():
+            new_media_type, created = MediaType.objects.get_or_create(
+                id=old_media_type.mediatypeid,
+                type=old_media_type.mediatype,
+            )
+            if created:
+                count += 1
+        self.stdout.write('Successfully imported {0} media types'.format(count))
+
+        # Media
+        count = 0
+        for old_media in OldMedia.objects.using('old').all():
+            new_media, media_created = Media.objects.get_or_create(id=old_media.mediaid)
+            if media_created:
+                count += 1
+
+            # Regular fields
+            new_media.description = old_media.description or ""
+            new_media.filename = old_media.filename or ""
+            new_media.name = old_media.medianame or ""
+            new_media.path = old_media.mediapath or ""
+
+            # Foreign keys
+            new_media.media_type_id = old_media.mediatypeid
+
+            new_media.save()
+        self.stdout.write('Successfully imported {0} media files'.format(count))
+
     def connect_artist_to_events(self):
         # Artist - Event connection
         count = 0
@@ -130,3 +162,4 @@ class Command(NoArgsCommand):
         self.migrate_artists()
         self.migrate_events()
         self.connect_artist_to_events()
+        self.migrate_media()

@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     # project apps
     'artists',
     'events',
+    'multimedia',
     'old_site',
     'users',
 )
