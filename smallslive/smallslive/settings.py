@@ -112,3 +112,8 @@ STATICFILES_DIRS = [
 TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, 'templates'),
 ]
+
+try:
+    from settings_local import *
+except ImportError:
+    pass
