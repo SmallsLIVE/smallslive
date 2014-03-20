@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname((__file__))))
 
 
 # Quick-start development settings - unsuitable for production
@@ -70,7 +70,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'smallslive',
-        'USER': 'bezidejni',
+        'USER': '',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '5432',
@@ -78,7 +78,7 @@ DATABASES = {
     'old': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'smallslive_old',
-        'USER': 'bezidejni',
+        'USER': '',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '5432',
@@ -112,8 +112,3 @@ STATICFILES_DIRS = [
 TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, 'templates'),
 ]
-
-try:
-    from settings_local import *
-except ImportError:
-    pass
