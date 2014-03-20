@@ -1,9 +1,11 @@
 from django.db import models
 from model_utils import Choices
+from model_utils.fields import StatusField
 
 
 class Event(models.Model):
     SETS = Choices('10-11pm', '11-12pm', '12-1am')
+    STATUS = Choices('Draft', 'Published', 'Cancelled', 'Hidden')
 
     title = models.CharField(max_length=255)
     start_day = models.DateField(blank=True, null=True)
@@ -16,6 +18,7 @@ class Event(models.Model):
     active = models.BooleanField(default=False)
     date_freeform = models.TextField(blank=True)
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed')
+    state = StatusField()
 
     class Meta:
         ordering = ['-start_day']
