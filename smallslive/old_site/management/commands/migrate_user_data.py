@@ -25,15 +25,15 @@ class Command(BaseCommand):
             if not user_data['NAME']:
                 continue
             try:
-                user = User.objects.get(username=unicode(user_data['NAME'])[:30])
+                user = User.objects.get(username=unicode(user_data['NAME']).strip()[:30])
             except User.DoesNotExist:
                 user = User.objects.create_user(
-                    unicode(user_data['NAME'])[:30],
-                    email=unicode(user_data['EMAIL'])[:75],
-                    password=unicode(user_data['PASS']),
+                    unicode(user_data['NAME']).strip()[:30],
+                    email=unicode(user_data['EMAIL']).strip()[:75],
+                    password=unicode(user_data['PASS']).strip(),
                     id=user_data['USERID'],
-                    first_name=unicode(user_data['FIRSTNAME'])[:30] if user_data['FIRSTNAME'] else "",
-                    last_name=unicode(user_data['LASTNAME'])[:30] if user_data['LASTNAME'] else "",
+                    first_name=unicode(user_data['FIRSTNAME']).strip()[:30] if user_data['FIRSTNAME'] else "",
+                    last_name=unicode(user_data['LASTNAME']).strip()[:30] if user_data['LASTNAME'] else "",
                 )
                 count += 1
 
