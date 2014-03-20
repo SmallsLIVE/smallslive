@@ -44,10 +44,9 @@ class Command(NoArgsCommand):
 
             # Regular fields
             new_artist.biography = self.clean_up_html(old_artist.biography)
-            new_artist.firstname = old_artist.firstname
-            new_artist.lastname = old_artist.lastname
+            new_artist.first_name = old_artist.firstname
+            new_artist.last_name = old_artist.lastname
             new_artist.salutation = old_artist.salutation
-            new_artist.templateid = old_artist.templateid
             new_artist.website = old_artist.website or ""
 
             # Foreign keys
