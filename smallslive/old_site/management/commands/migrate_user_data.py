@@ -8,7 +8,7 @@ from users.models import UserProfile
 
 
 class Command(BaseCommand):
-    args = '<user_data.json>'
+    args = '<user_data.json> <hash_passwords>'
     help = 'Imports user data from the JSON file'
 
     def handle(self, *args, **options):
@@ -16,6 +16,11 @@ class Command(BaseCommand):
             json_file = json.load(open(args[0], 'r'))
         else:
             raise CommandError('Provide the path to JSON file as an argument to this command')
+
+        if args[1] == 'false' or args[1] == 'no':
+            hash_pass = False
+        else:
+            hash_pass = True
 
         columns = json_file['QUERY']['COLUMNS']
         count = 0
@@ -27,14 +32,24 @@ class Command(BaseCommand):
             try:
                 user = User.objects.get(username=unicode(user_data['NAME']).strip()[:30])
             except User.DoesNotExist:
-                user = User.objects.create_user(
-                    unicode(user_data['NAME']).strip()[:30],
-                    email=unicode(user_data['EMAIL']).strip()[:75],
-                    password=unicode(user_data['PASS']).strip(),
-                    id=user_data['USERID'],
-                    first_name=unicode(user_data['FIRSTNAME']).strip()[:30] if user_data['FIRSTNAME'] else "",
-                    last_name=unicode(user_data['LASTNAME']).strip()[:30] if user_data['LASTNAME'] else "",
-                )
+                if hash_pass:
+                    user = User.objects.create_user(
+                        unicode(user_data['NAME']).strip()[:30],
+                        email=unicode(user_data['EMAIL']).strip()[:75],
+                        password=unicode(user_data['PASS']).strip(),
+                        id=user_data['USERID'],
+                        first_name=unicode(user_data['FIRSTNAME']).strip()[:30] if user_data['FIRSTNAME'] else "",
+                        last_name=unicode(user_data['LASTNAME']).strip()[:30] if user_data['LASTNAME'] else "",
+                    )
+                else:
+                    user = User.objects.create(
+                        username=unicode(user_data['NAME']).strip()[:30],
+                        email=unicode(user_data['EMAIL']).strip()[:75],
+                        password=unicode(user_data['PASS']).strip(),
+                        id=user_data['USERID'],
+                        first_name=unicode(user_data['FIRSTNAME']).strip()[:30] if user_data['FIRSTNAME'] else "",
+                        last_name=unicode(user_data['LASTNAME']).strip()[:30] if user_data['LASTNAME'] else "",
+                    )
                 count += 1
 
             # Import user profile data
