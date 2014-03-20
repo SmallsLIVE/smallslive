@@ -1,9 +1,10 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 
 
 class Artist(models.Model):
     first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255, blank=True)
+    last_name = models.CharField(max_length=255)
     salutation = models.CharField(max_length=255, blank=True)
     artist_type = models.ForeignKey('ArtistType', blank=True, null=True)
     biography = models.TextField(blank=True)
@@ -15,6 +16,9 @@ class Artist(models.Model):
 
     def __unicode__(self):
         return "{0} {1}".format(self.first_name, self.last_name)
+
+    def get_absolute_url(self):
+        return reverse('artist_detail', kwargs={'pk': self.pk})
 
 
 class ArtistType(models.Model):

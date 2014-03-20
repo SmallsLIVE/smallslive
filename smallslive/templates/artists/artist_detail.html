@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>{{ artist.first_name }} {{ artist.last_name }}</h1>
+    <img src="{{ artist.photo.url }}" />
+{% endblock content %}

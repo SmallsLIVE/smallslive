@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     # third party apps
+    'crispy_forms',
     'django_extensions',
     'south',
 
@@ -114,3 +115,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, 'templates'),
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
