@@ -7,8 +7,8 @@ class Artist(models.Model):
     salutation = models.CharField(max_length=255, blank=True)
     artist_type = models.ForeignKey('ArtistType', blank=True, null=True)
     biography = models.TextField(blank=True)
-    templateid = models.IntegerField(blank=True, null=True)
     website = models.CharField(max_length=255, blank=True)
+    photo = models.ImageField(upload_to='artist_images', blank=True)
 
     class Meta:
         ordering = ['last_name']
