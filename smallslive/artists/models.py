@@ -2,8 +2,8 @@ from django.db import models
 
 
 class Artist(models.Model):
-    firstname = models.CharField(max_length=255, blank=True)
-    lastname = models.CharField(max_length=255, blank=True)
+    first_name = models.CharField(max_length=255, blank=True)
+    last_name = models.CharField(max_length=255, blank=True)
     salutation = models.CharField(max_length=255, blank=True)
     artist_type = models.ForeignKey('ArtistType', blank=True, null=True)
     biography = models.TextField(blank=True)
@@ -11,7 +11,7 @@ class Artist(models.Model):
     website = models.CharField(max_length=255, blank=True)
 
     class Meta:
-        ordering = ['lastname']
+        ordering = ['last_name']
 
     def __unicode__(self):
         return "{0} {1}".format(self.firstname, self.lastname)
