@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname((__file__))))
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,11 +38,14 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     # third party apps
+    'crispy_forms',
     'django_extensions',
+    'south',
 
     # project apps
     'artists',
     'events',
+    'multimedia',
     'old_site',
     'users',
 )
@@ -68,7 +71,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'smallslive',
-        'USER': 'bezidejni',
+        'USER': '',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '5432',
@@ -76,7 +79,7 @@ DATABASES = {
     'old': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'smallslive_old',
-        'USER': 'bezidejni',
+        'USER': '',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '5432',
@@ -105,8 +108,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Templates
 TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, 'templates'),
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

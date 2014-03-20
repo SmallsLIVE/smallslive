@@ -55,3 +55,6 @@ docs/_build/
 # PyCharm files
 .idea
 
+# Collected static and media
+collected_static/
+media/

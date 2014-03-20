@@ -1,39 +1,28 @@
 from django.db import models
+from model_utils import Choices
+from model_utils.fields import StatusField
 
 
 class Event(models.Model):
+    SETS = Choices('10-11pm', '11-12pm', '12-1am')
+    STATUS = Choices('Draft', 'Published', 'Cancelled', 'Hidden')
+
     title = models.CharField(max_length=255)
-    startday = models.DateField(blank=True, null=True)
-    endday = models.DateField(blank=True, null=True)
+    start_day = models.DateField(blank=True, null=True)
+    end_day = models.DateField(blank=True, null=True)
+    set = models.CharField(choices=SETS, blank=True, max_length=10)
     description = models.TextField(blank=True)
-    location = models.CharField(max_length=255, blank=True)
-    stime = models.DateField(blank=True, null=True)
     subtitle = models.CharField(max_length=255, blank=True)
-    address = models.CharField(max_length=255, blank=True)
-    address2 = models.CharField(max_length=255, blank=True)
-    city = models.CharField(max_length=255, blank=True)
-    state = models.CharField(max_length=255, blank=True)
-    zip = models.CharField(max_length=255, blank=True)
-    phone = models.CharField(max_length=255, blank=True)
-    email = models.CharField(max_length=255, blank=True)
     event_type = models.ForeignKey('EventType', blank=True, null=True)
-    country = models.CharField(max_length=255, blank=True)
     link = models.CharField(max_length=255, blank=True)
-    displaytitle = models.TextField(blank=True)
-    displaydescription = models.TextField(blank=True)
-    extrainformation = models.TextField(blank=True)
     active = models.BooleanField(default=False)
-    donotshowartist = models.BooleanField(default=False)
-    locationlink = models.TextField(blank=True)
-    tickets = models.CharField(max_length=255, blank=True)
-    hours = models.CharField(max_length=255, blank=True)
-    datefreeform = models.TextField(blank=True)
-    presenterfreeform = models.TextField(blank=True)
-    extraeventtype = models.IntegerField(blank=True, null=True)
-    artists_playing = models.ManyToManyField('artists.Artist', through='GigPlayed')
+    date_freeform = models.TextField(blank=True)
+    photo = models.ImageField(upload_to='event_images', blank=True)
+    performers = models.ManyToManyField('artists.Artist', through='GigPlayed')
+    state = StatusField()
 
     class Meta:
-        ordering = ['-startday']
+        ordering = ['-start_day']
     
     def __unicode__(self):
         return self.title
