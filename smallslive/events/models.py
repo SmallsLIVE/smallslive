@@ -17,6 +17,7 @@ class Event(models.Model):
     link = models.CharField(max_length=255, blank=True)
     active = models.BooleanField(default=False)
     date_freeform = models.TextField(blank=True)
+    photo = models.ImageField(upload_to='event_images', blank=True)
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed')
     state = StatusField()
 
