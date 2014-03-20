@@ -3,18 +3,18 @@ from django.db import models
 
 class Event(models.Model):
     title = models.CharField(max_length=255)
-    startday = models.DateField(blank=True, null=True)
-    endday = models.DateField(blank=True, null=True)
+    start_day = models.DateField(blank=True, null=True)
+    end_day = models.DateField(blank=True, null=True)
     description = models.TextField(blank=True)
     subtitle = models.CharField(max_length=255, blank=True)
     event_type = models.ForeignKey('EventType', blank=True, null=True)
     link = models.CharField(max_length=255, blank=True)
     active = models.BooleanField(default=False)
-    datefreeform = models.TextField(blank=True)
-    artists_playing = models.ManyToManyField('artists.Artist', through='GigPlayed')
+    date_freeform = models.TextField(blank=True)
+    performers = models.ManyToManyField('artists.Artist', through='GigPlayed')
 
     class Meta:
-        ordering = ['-startday']
+        ordering = ['-start_day']
     
     def __unicode__(self):
         return self.title

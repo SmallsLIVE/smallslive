@@ -83,32 +83,14 @@ class Command(NoArgsCommand):
 
             # Regular fields
             new_event.active = old_event.active
-            new_event.address = old_event.address
-            new_event.address2 = old_event.address2
-            new_event.city = old_event.city
-            new_event.country = old_event.country
-            new_event.datefreeform = old_event.datefreeform
+            new_event.date_freeform = old_event.datefreeform
             new_event.description = old_event.description
-            new_event.displaydescription = old_event.displaydescription
-            new_event.displaytitle = old_event.displaytitle
-            new_event.donotshowartist = old_event.donotshowartist
             new_event.email = old_event.email
-            new_event.endday = old_event.endday
-            new_event.extraeventtype = old_event.extraeventtype
-            new_event.extrainformation = old_event.extrainformation or ""
-            new_event.hours = old_event.hours
+            new_event.end_day = old_event.endday
             new_event.link = old_event.link
-            new_event.location = old_event.location
-            new_event.locationlink = old_event.locationlink
-            new_event.phone = old_event.phone
-            new_event.presenterfreeform = old_event.presenterfreeform
-            new_event.startday = old_event.startday
-            new_event.state = old_event.state
-            new_event.stime = old_event.stime
+            new_event.start_day = old_event.startday
             new_event.subtitle = old_event.subtitle
-            new_event.tickets = old_event.tickets
             new_event.title = old_event.title
-            new_event.zip = old_event.zip
 
             # Foreign keys
             event_type, event_type_created = EventType.objects.get_or_create(
