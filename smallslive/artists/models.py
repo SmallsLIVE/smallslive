@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Artist(models.Model):
-    first_name = models.CharField(max_length=255, blank=True)
+    first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255, blank=True)
     salutation = models.CharField(max_length=255, blank=True)
     artist_type = models.ForeignKey('ArtistType', blank=True, null=True)
@@ -14,7 +14,7 @@ class Artist(models.Model):
         ordering = ['last_name']
 
     def __unicode__(self):
-        return "{0} {1}".format(self.firstname, self.lastname)
+        return "{0} {1}".format(self.first_name, self.last_name)
 
 
 class ArtistType(models.Model):
