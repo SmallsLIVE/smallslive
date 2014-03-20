@@ -1,10 +1,14 @@
 from django.db import models
+from model_utils import Choices
 
 
 class Event(models.Model):
+    SETS = Choices('10-11pm', '11-12pm', '12-1am')
+
     title = models.CharField(max_length=255)
     start_day = models.DateField(blank=True, null=True)
     end_day = models.DateField(blank=True, null=True)
+    set = models.CharField(choices=SETS, blank=True, max_length=10)
     description = models.TextField(blank=True)
     subtitle = models.CharField(max_length=255, blank=True)
     event_type = models.ForeignKey('EventType', blank=True, null=True)
