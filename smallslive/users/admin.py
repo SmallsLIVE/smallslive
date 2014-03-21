@@ -1,18 +1,13 @@
 from django.contrib import admin
+from .models import SmallsUser
 
-from models import UserProfile
 
-# Register your models here.
-class UserProfileAdmin(admin.ModelAdmin):
+class SmallsUserAdmin(admin.ModelAdmin):
     date_hierarchy = 'last_login'
-    list_display = ('user', 'access_level', 'login_count', 'subscription_price', 'start_date', 'renewal_date', 'active')
-    list_filter = ('access_level', 'active')
-    search_fields = ('user',)
-    # radio_fields = {'active': admin.HORIZONTAL}
-    # filter_horizontal = ('tags', 'speakers',)
+    list_display = ('email', 'access_level', 'login_count', 'subscription_price',
+                    'date_joined', 'renewal_date', 'is_active')
+    list_filter = ('access_level', 'is_active')
+    search_fields = ('email',)
     save_on_top = True
-    # prepopulated_fields = {'slug': ('title',)}
-    # inlines = [RelatedUrlInline]
-    # actions = [make_live, make_draft]
 
-admin.site.register(UserProfile, UserProfileAdmin)
+admin.site.register(SmallsUser, SmallsUserAdmin)
