@@ -40,4 +40,5 @@ class GigPlayed(models.Model):
     artist = models.ForeignKey('artists.Artist', related_name='gigs_played')
     event = models.ForeignKey('events.Event', related_name='artists_gig_info')
     role = models.ForeignKey('artists.ArtistType')
+    is_leader = models.BooleanField(default=False)
     sort_order = models.CharField(max_length=30, blank=True)

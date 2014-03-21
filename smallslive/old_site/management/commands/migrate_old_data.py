@@ -138,21 +138,45 @@ class Command(NoArgsCommand):
 
     def connect_artist_to_events(self):
         # Artist - Event connection
+        leaders = {}
         count = 0
         for old_gig in Joinpersonevent.objects.using('old').all():
-            try:
-                event = Event.objects.get(id=old_gig.event_id)
-                artist = Artist.objects.get(id=old_gig.person_id)
-            except (Artist.DoesNotExist, Event.DoesNotExist):
-                continue
-            gig, created = GigPlayed.objects.get_or_create(
-                artist=artist,
-                event=event,
-                role_id=old_gig.persontype_id,
-                sort_order=old_gig.sortorder or ""
-            )
-            if created:
-                count += 1
+            # If the artist type is leader, save the id to assign the leader status later
+            if old_gig.persontype_id == 69:
+                leaders.setdefault(old_gig.event_id, []).append(old_gig.person_id)
+            else:
+                try:
+                    event = Event.objects.get(id=old_gig.event_id)
+                    artist = Artist.objects.get(id=old_gig.person_id)
+                except (Artist.DoesNotExist, Event.DoesNotExist):
+                    continue
+                gig, created = GigPlayed.objects.get_or_create(
+                    artist=artist,
+                    event=event,
+                    role_id=old_gig.persontype_id,
+                    sort_order=old_gig.sortorder or ""
+                )
+                if created:
+                    count += 1
+
+        # Assign leader status
+        for event_id, artists in leaders.iteritems():
+            for artist_id in artists:
+                # In some rare cases, artist is only listed as leader, without an instrument
+                # so we create a new GigPlayed object with that role
+                try:
+                    gig = GigPlayed.objects.get(event_id=event_id, artist_id=artist_id)
+                    gig.is_leader = True
+                    gig.save()
+                except GigPlayed.DoesNotExist:
+                    gig = GigPlayed.objects.create(
+                        artist_id=artist_id,
+                        event_id=event_id,
+                        role_id=69,
+                        is_leader=True,
+                        sort_order=-1
+                    )
+
         self.stdout.write('Successfully connected {0} events to artists'.format(count))
 
     def handle_noargs(self, *args, **options):
