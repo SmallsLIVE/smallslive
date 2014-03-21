@@ -63,6 +63,7 @@ ROOT_URLCONF = 'smallslive.urls'
 
 WSGI_APPLICATION = 'smallslive.wsgi.application'
 
+AUTH_USER_MODEL = 'users.SmallsUser'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -116,4 +117,5 @@ TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, 'templates'),
 ]
 
+# Crispy forms settings
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

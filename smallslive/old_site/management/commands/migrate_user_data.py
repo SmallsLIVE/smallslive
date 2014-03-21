@@ -2,9 +2,10 @@ import json
 import pytz
 from datetime import datetime
 from django.core.management.base import BaseCommand, CommandError
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.utils import timezone
-from users.models import UserProfile
+
+User = get_user_model()
 
 
 class Command(BaseCommand):
@@ -17,96 +18,67 @@ class Command(BaseCommand):
         else:
             raise CommandError('Provide the path to JSON file as an argument to this command')
 
-        if args[1] == 'false' or args[1] == 'no':
+        hash_pass = True
+        if len(args) == 2 and args[1] == 'false':
             hash_pass = False
-        else:
-            hash_pass = True
 
         columns = json_file['QUERY']['COLUMNS']
         count = 0
         for user in json_file['QUERY']['DATA']:
-            # Import or create users
+            # Convert to unicode and strip whitespace only on string values
+            user = [unicode(v).strip() if isinstance(v, str) else v for v in user]
             user_data = dict(zip(columns, user))
             if not user_data['NAME']:
                 continue
             try:
-                user = User.objects.get(username=unicode(user_data['NAME']).strip()[:30])
+                user = User.objects.get(email=user_data['NAME'])
             except User.DoesNotExist:
                 if hash_pass:
                     user = User.objects.create_user(
-                        unicode(user_data['NAME']).strip()[:30],
-                        email=unicode(user_data['EMAIL']).strip()[:75],
-                        password=unicode(user_data['PASS']).strip(),
+                        user_data['NAME'],
+                        password=user_data['PASS'],
                         id=user_data['USERID'],
-                        first_name=unicode(user_data['FIRSTNAME']).strip()[:30] if user_data['FIRSTNAME'] else "",
-                        last_name=unicode(user_data['LASTNAME']).strip()[:30] if user_data['LASTNAME'] else "",
+                        first_name=user_data['FIRSTNAME'] if user_data['FIRSTNAME'] else "",
+                        last_name=user_data['LASTNAME'] if user_data['LASTNAME'] else "",
                     )
                 else:
                     user = User.objects.create(
-                        username=unicode(user_data['NAME']).strip()[:30],
-                        email=unicode(user_data['EMAIL']).strip()[:75],
-                        password=unicode(user_data['PASS']).strip(),
+                        email=user_data['NAME'],
+                        password=user_data['PASS'],
                         id=user_data['USERID'],
-                        first_name=unicode(user_data['FIRSTNAME']).strip()[:30] if user_data['FIRSTNAME'] else "",
-                        last_name=unicode(user_data['LASTNAME']).strip()[:30] if user_data['LASTNAME'] else "",
+                        first_name=user_data['FIRSTNAME'] if user_data['FIRSTNAME'] else "",
+                        last_name=user_data['LASTNAME'] if user_data['LASTNAME'] else "",
                     )
                 count += 1
 
-            # Import user profile data
-            profile, created = UserProfile.objects.get_or_create(user=user)
-
-            profile.accept_agreement = user_data['ACCEPTAGREEMENT']
-            profile.access_level = user_data['ACCESSLEVEL']
-            profile.active = user_data['ACTIVE']
-            profile.address_1 = user_data['ADDRESS1'] or ""
-            profile.address_2 = user_data['ADDRESS2'] or ""
-            profile.certification = user_data['CERTIFICATION'] or ""
-            profile.city = user_data['CITY'] or ""
-            profile.company_id = user_data['COMPANYID']
-            profile.company_name = user_data['COMPANYNAME']
-            profile.country = user_data['COUNTRY'] or ""
-            profile.dba = user_data['DBA'] or ""
-            profile.degree = user_data['DEGREE'] or ""
-            profile.digest = user_data['DIGEST'] or ""
-            profile.download_limit = user_data['DOWNLOADLIMIT']
-            profile.ein = user_data['EIN'] or ""
-            profile.fax = user_data['FAX'] or ""
-            profile.graduated = user_data['GRADUATED'] or ""
-            profile.last_login = self.parse_date(user_data['LASTLOGIN'])
-            profile.license = user_data['LICENSE'] or ""
-            profile.location = user_data['LOCATION'] or ""
-            profile.login_count = user_data['LOGINCOUNT']
-            profile.membership_type = user_data['MEMBERSHIPTYPE'] or ""
-            profile.meta1int = user_data['META1INT']
-            profile.phone_1 = user_data['PHONE1'] or ""
-            profile.phone_2 = user_data['PHONE2'] or ""
-            profile.postback_date = user_data['POSTBACKDATE']
-            profile.president = user_data['PRESIDENT'] or ""
-            profile.profile_photo_id = user_data['PROFILEPHOTOID']
-            profile.referral = user_data['REFERRAL'] or ""
-            profile.registration = user_data['REGISTRATION'] or ""
-            profile.renewal_date = self.parse_date(user_data['RENEWALDATE'])
-            profile.reseller_id = user_data['RESELLERID']
-            profile.site_id = user_data['SITEID']
-            profile.start_date = self.parse_date(user_data['STARTDATE'])
-            profile.state = user_data['STATE'] or ""
-            profile.subscription_price = user_data['SUBSCRIPTIONPRICE'] or 0
-            profile.tax_id = user_data['TAXID'] or ""
-            profile.title = user_data['TITLE'] or ""
-            profile.type = user_data['TYPE'] or ""
-            profile.user_company = user_data['USERCOMPANY'] or ""
-            profile.user_company_description = user_data['USERCOMPANYDESCRIPTION'] or ""
-            profile.website = user_data['WEBSITE'] or ""
-            profile.workplace = user_data['WORKPLACE'] or ""
-            profile.years_in_business = user_data['YEARSINBUSINESS']
-            profile.zip = user_data['ZIP'] or ""
-            profile.save()
+            user.accept_agreement = user_data['ACCEPTAGREEMENT']
+            user.access_level = user_data['ACCESSLEVEL']
+            user.is_active = user_data['ACTIVE']
+            user.address_1 = user_data['ADDRESS1'] or ""
+            user.address_2 = user_data['ADDRESS2'] or ""
+            user.city = user_data['CITY'] or ""
+            user.company_name = user_data['COMPANYNAME']
+            user.country = user_data['COUNTRY'] or ""
+            user.date_joined = self.parse_date(user_data['STARTDATE'])
+            user.last_login = self.parse_date(user_data['LASTLOGIN'], null=False)
+            user.login_count = user_data['LOGINCOUNT']
+            user.phone_1 = user_data['PHONE1'] or ""
+            user.renewal_date = self.parse_date(user_data['RENEWALDATE'])
+            user.state = user_data['STATE'] or ""
+            user.subscription_price = user_data['SUBSCRIPTIONPRICE'] or 0
+            user.website = user_data['WEBSITE'] or ""
+            user.zip = user_data['ZIP'] or ""
+            user.save()
 
         self.stdout.write('Successfully imported {0} users'.format(count))
 
-    def parse_date(self, date_string):
+    def parse_date(self, date_string, null=True):
         if date_string:
             date = datetime.strptime(date_string, "%B, %d %Y %H:%M:%S")
+            date = pytz.timezone(timezone.get_default_timezone_name()).localize(date, is_dst=False)
+        elif null is False:
+            # For fields that don't allow null values, set to epoch
+            date = datetime.utcfromtimestamp(0)
             date = pytz.timezone(timezone.get_default_timezone_name()).localize(date, is_dst=False)
         else:
             date = None
