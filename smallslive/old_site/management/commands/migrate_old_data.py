@@ -5,7 +5,8 @@ from django.core.management.base import NoArgsCommand
 from artists.models import Artist, ArtistType
 from events.models import Event, EventType, GigPlayed
 from multimedia.models import MediaType, Media
-from old_site.models import Joinpersonevent, OldEvent, OldEventTypes, OldPerson, OldPersonType, OldMedia, OldMediaType
+from old_site.models import Joinmediaevent, Joinmediaperson,Joinpersonevent, OldEvent,\
+    OldEventTypes, OldPerson, OldPersonType, OldMedia, OldMediaType
 
 
 class Command(NoArgsCommand):
@@ -136,6 +137,29 @@ class Command(NoArgsCommand):
             new_media.save()
         self.stdout.write('Successfully imported {0} media files'.format(count))
 
+    def connect_media_with_s3(self):
+        """
+        Goes through the media files and old artist/event join tables and connects the correct
+        media file for each artist/event with the files already uploaded to S3.
+        """
+        for event_join in Joinmediaevent.objects.using('old').all():
+            try:
+                event = Event.objects.get(id=event_join.event_id)
+                media = Media.objects.get(id=event_join.media_id)
+            except (Event.DoesNotExist, Media.DoesNotExist):
+                continue
+            event.photo = u"images/{0}".format(media.filename)
+            event.save()
+
+        for artist_join in Joinmediaperson.objects.using('old').all():
+            try:
+                artist = Artist.objects.get(id=artist_join.person_id)
+                media = Media.objects.get(id=artist_join.media_id)
+            except (Artist.DoesNotExist, Media.DoesNotExist):
+                continue
+            artist.photo = u"images/{0}".format(media.filename)
+            artist.save()
+
     def connect_artist_to_events(self):
         # Artist - Event connection
         leaders = {}
@@ -184,3 +208,4 @@ class Command(NoArgsCommand):
         self.migrate_events()
         self.connect_artist_to_events()
         self.migrate_media()
+        self.connect_media_with_s3()

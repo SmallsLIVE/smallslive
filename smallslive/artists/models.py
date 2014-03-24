@@ -9,7 +9,7 @@ class Artist(models.Model):
     artist_type = models.ForeignKey('ArtistType', blank=True, null=True)
     biography = models.TextField(blank=True)
     website = models.CharField(max_length=255, blank=True)
-    photo = models.ImageField(upload_to='artist_images', blank=True)
+    photo = models.ImageField(upload_to='artist_images', max_length=150, blank=True)
 
     class Meta:
         ordering = ['last_name']

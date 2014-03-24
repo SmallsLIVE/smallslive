@@ -20,8 +20,8 @@ class Joineventeventtype(models.Model):
         db_table = 'joinEventEventType'
 
 class Joinmediaevent(models.Model):
-    mediaid = models.ForeignKey('OldMedia', db_column='mediaId') # Field name made lowercase.
-    eventid = models.ForeignKey('OldEvent', db_column='eventId') # Field name made lowercase.
+    media = models.ForeignKey('OldMedia', primary_key=True,  db_column='mediaId') # Field name made lowercase.
+    event = models.ForeignKey('OldEvent', db_column='eventId') # Field name made lowercase.
     sortorder = models.CharField(db_column='sortOrder', max_length=255, blank=True) # Field name made lowercase.
     class Meta:
         managed = False
@@ -35,8 +35,8 @@ class Joinmediamediatype(models.Model):
         db_table = 'joinMediaMediaType'
 
 class Joinmediaperson(models.Model):
-    mediaid = models.ForeignKey('OldMedia', db_column='mediaId') # Field name made lowercase.
-    personid = models.IntegerField(db_column='personId') # Field name made lowercase.
+    media = models.ForeignKey('OldMedia', primary_key=True, db_column='mediaId') # Field name made lowercase.
+    person_id = models.IntegerField(db_column='personId') # Field name made lowercase.
     sortorder = models.CharField(db_column='sortOrder', max_length=255, blank=True) # Field name made lowercase.
     class Meta:
         managed = False
