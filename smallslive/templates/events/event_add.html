@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Add event</h1>
+    <form method="post" role="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- fields go here -->
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+{% endblock content %}

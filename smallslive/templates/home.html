@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block content %}
+    <h1>Home page</h1>
+    <ul>
+        <li><a href="{% url "event_add" %}">Add event</a></li>
+        <li><a href="{% url "event_detail" pk=222 %}">View event</a></li>
+        <li><a href="{% url "artist_add" %}">Add artist</a></li>
+        <li><a href="{% url "artist_detail" pk=14 %}">View artist</a></li>
+        <li><a href="{% url "admin:index" %}">Admin</a></li>
+    </ul>
+{% endblock content %}

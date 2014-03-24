@@ -28,14 +28,16 @@ class Command(BaseCommand):
             # Convert to unicode and strip whitespace only on string values
             user = [unicode(v).strip() if isinstance(v, str) else v for v in user]
             user_data = dict(zip(columns, user))
-            if not user_data['NAME']:
+            # Convert email to lowercase and convert to unicode in case it's not string data
+            email = User.objects.normalize_email(unicode(user_data['NAME']))
+            if not email:
                 continue
             try:
-                user = User.objects.get(email=user_data['NAME'])
+                user = User.objects.get(email=email)
             except User.DoesNotExist:
                 if hash_pass:
                     user = User.objects.create_user(
-                        user_data['NAME'],
+                        email,
                         password=user_data['PASS'],
                         id=user_data['USERID'],
                         first_name=user_data['FIRSTNAME'] if user_data['FIRSTNAME'] else "",
@@ -43,7 +45,7 @@ class Command(BaseCommand):
                     )
                 else:
                     user = User.objects.create(
-                        email=user_data['NAME'],
+                        email=email,
                         password=user_data['PASS'],
                         id=user_data['USERID'],
                         first_name=user_data['FIRSTNAME'] if user_data['FIRSTNAME'] else "",
