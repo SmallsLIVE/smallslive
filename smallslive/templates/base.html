@@ -15,9 +15,36 @@
     <![endif]-->
   </head>
   <body>
+    <div class="navbar navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Smalls</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/static_page/calendar">Calendar</a></li>
+            <li><a href="/static_page/smallslive-jazz-videos">Watch Concerts (SmallsLIVE)</a></li>
+            <li><a href="/static_page/about">The Club</a></li>
+            <li><a href="">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
     <div class="container">
-        {% block content %}
-        {% endblock content %}
+      {% block content %}
+      {% endblock content %}
+    </div>
+    <div class="container">
+      <footer>
+        <p>&copy;2014 SmallsLIVE (<code>This text = TO-DO</code>).</p>
+      </footer>
     </div>
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>

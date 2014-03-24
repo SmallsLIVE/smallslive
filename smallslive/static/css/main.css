@@ -3,6 +3,15 @@
   border: 1px solid #ddd;
   margin-bottom: 1em;
 }
+/*Footer*/
+footer {
+  background: #fafafa;
+  color: #333;
+  padding: 1em;
+  margin-top:2em;
+  border-top:1px solid #ccc;
+}
+/*=Development*/
 .container .dev ul {
   margin: 0;
   padding: 0;
