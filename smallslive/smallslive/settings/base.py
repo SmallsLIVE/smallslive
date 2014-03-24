@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'django_extensions',
     'south',
+    'storages',
 
     # project apps
     'artists',
