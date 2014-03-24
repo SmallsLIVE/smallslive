@@ -1,10 +1,11 @@
 from django.views.generic.detail import DetailView
-from django.views.generic.base import TemplateView
+from django.views.generic.edit import CreateView
 from .models import Event
 
 
-class EventAddView(TemplateView):
+class EventAddView(CreateView):
     template_name = 'events/event_add.html'
+    model = Event
 
 event_add = EventAddView.as_view()
 

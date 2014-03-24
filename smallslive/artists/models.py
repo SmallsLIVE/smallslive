@@ -15,7 +15,7 @@ class Artist(models.Model):
         ordering = ['last_name']
 
     def __unicode__(self):
-        return "{0} {1}".format(self.first_name, self.last_name)
+        return u"{0} {1}".format(self.first_name, self.last_name)
 
     def get_absolute_url(self):
         return reverse('artist_detail', kwargs={'pk': self.pk})
