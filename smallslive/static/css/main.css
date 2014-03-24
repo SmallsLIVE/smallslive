@@ -1,10 +1,29 @@
-.container .development {
-  font:"Courier", monospace;
+.lookup-item {
+  padding: 1em;
+  border: 1px solid #ddd;
+  margin-bottom: 1em;
+}
+.container .dev ul {
+  margin: 0;
+  padding: 0;
+}
+.container .dev li {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 .5em 0; 
+}
+.container .dev * {
+  font-size: 12px;
+}
+.container .dev {
+  font-family:"Courier", monospace;
+  margin-top:2em;
   background: #f3f3f3;
   padding: 1em;
-  border:1px solid dotted;
+  border:1px solid #aaa;
 }
 .container code {
   color: #fafafa;
   background: #c00;
+  font-size: 12px;
 }
