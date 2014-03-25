@@ -1,3 +1,18 @@
+/*=Admin*/
+/*=Gigs*/
+.selectize-mega-option h1 {
+  font-size: 1em;
+}
+.slots input[type=text] {
+  width: auto;
+}
+.add_set_times {
+  padding: 1em;
+  border: 1px dotted #ccc;
+  margin-left: 1em;
+  margin-bottom: 1em;
+  
+}
 .lookup-item {
   padding: 1em;
   border: 1px solid #ddd;
