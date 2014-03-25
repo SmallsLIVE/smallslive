@@ -34,7 +34,7 @@
             <span class="input-group-addon">
               <input type="checkbox">
             </span>
-            <input type="text" class="form-control" value="%prefillSlot1Default%">
+            <input type="text" class="form-control" value="%prefillSlot2Default%">
           </div>
         </div>
         <!-- slots -->
@@ -43,7 +43,7 @@
             <span class="input-group-addon">
               <input type="checkbox">
             </span>
-            <input type="text" class="form-control" value="%prefillSlot1Default%">
+            <input type="text" class="form-control" value="%prefillSlot3Default%">
           </div>
         </div>
         <!-- checkbox for set times -->
@@ -156,12 +156,12 @@
         <!-- status -->
         <div class="radio bg-success">
           <label>
-            <input type="radio" name="status" id="" value="option1" checked> Publish now
+            <input type="radio" name="status" id="" value="option1" checked> Publish now (public)
           </label>
         </div>
         <div class="radio bg-warning">
           <label>
-            <input type="radio" name="status" id="" value="option2"> Hold date (private)
+            <input type="radio" name="status" id="" value="option2"> Hold date and slot (private)
           </label>
         </div>      
         <div class="radio">
@@ -182,7 +182,7 @@
     <h1>Dev notes</h1>
     <Ul>
       <li><code>1</code> selectize: single item, allow new, but note the autocomplete returns a special html format  and onSelect, we should prepopulate this form as the act of cloning the event (sidemen , their instruments, show description, title, subtitle, link)</li>
-      <li><code>2</code> number of fields to expose here should be dependent on the number of slots chosen above</li>
+      <li><code>2</code> number of fields to expose here should be dependent on the number of slots chosen above. we should also prefill these if possible with some logical set of time (1hr + 15min break + allocate rest of time in slot to 2nd set?</li>
       <li><code>3</code>  selectize: multi select, allow new
       <li><code>4</code> selectize: single item, allow new
       <li><code>5</code> plugin? recommendations?
