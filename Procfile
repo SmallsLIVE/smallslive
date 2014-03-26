@@ -1,1 +1,1 @@
-web: gunicorn smallslive.wsgi
+web: gunicorn --pythonpath smallslive smallslive.wsgi
