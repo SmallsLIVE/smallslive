@@ -1,4 +1,20 @@
 $(document).ready(function(){
+  //Public website
+  //  Signup process
+  function countSelectedVideos() {
+    var cnt='';
+    cnt=$('tr td.videos input:not(.select-all):checked').length;
+    if ($('tr td.videos input:not(.select-all):checked').length > 0) {
+      $('.count-videos-to-be-cleared').html(cnt);
+    }
+  }
+  $('table.videos-to-clear').delegate('tr td.videos input[type=checkbox]','change',function(i){
+    countSelectedVideos();
+  });
+  //Init
+  countSelectedVideos();
+  
+  //  End signup
   //Admin
   //Selectize:
   //Leader - also allow clone of previous gigs:

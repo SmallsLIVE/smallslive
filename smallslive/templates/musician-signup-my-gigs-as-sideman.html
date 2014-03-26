@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}stepnamehere{% endblock title %}
+{% block nav %}{% endblock nav %}
+{% block content %}
+<h1>SmallsLIVE Performer Registration</h1>
+<div class="row">
+  <div class="col-sm-3">
+    {% include "blocks/musician-signup-steps.html" %}
+  </div>
+  <div class="col-sm-9">
+    <form action="#">
+      <div class="alert alert-info">
+        <h2>(2) Bandleaders Want You To Clear Their Videos</h2>
+        <p class="">The following 2 musicians have already signed up for SmallsLIVE and have hired you for gigs at Smalls in the past. They would like you to "clear" their videos (aka Master Recordings). This means you give them permission to publish and start monetizing those gig videos (you'll get an equal share of the revenue). By clearing your performance in these musicians' videos, you are also giving the bandleader copyright ownership of your performance in those videos.*  </p>
+        <p><span class="label label-info">Note:</span> On the next page, you will be asking your sidemen to reciprocate and do the same thing for the gigs on which you were the leader.</p>      
+      </div>
+      <table class="videos-to-clear table table-condensed table-hover table-bordered">
+        <thead>
+          <tr>
+            <th>Bandleader</th>
+            <th># Videos I'm on
+            </th> 
+            <th>Videos needing your clearance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Carlos Abadie (trumpet)</td>
+            <td>2</td>
+            <td class="videos">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" class="select-all" checked=""> Select all (2) videos to clear:  
+
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" checked=""> 12/1/09 w/ J. Hartman, M. Davis, J. Coltrane, you <button type="button" class="btn btn-primary btn-xs">Play</button>
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" checked=""> 2/11/08 w/ C. Davis, T. Clarke, B. O'Neill, you <button type="button" class="btn btn-primary btn-xs">Play
+                  </label>
+                </div>
+              </div>              
+            </td>
+          </tr>
+          <tr>
+            <td>Eric Biondo (trumpet)</td>
+            <td>3</td>
+            <td class="videos">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" class="select-all" checked=""> Select all (2) videos clear:  
+
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" checked=""> 4/19/13 w/ J. Hartman, M. Davis, J. Coltrane, you <button type="button" class="btn btn-primary btn-xs">Play</button>
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" checked=""> 3/4/12 w/ C. Davis, T. Clarke, B. O'Neill, you <button type="button" class="btn btn-primary btn-xs">Play
+                  </label>
+                </div>
+              </div>  
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="well">
+        <p>Press continue to clear the (<span class="count-videos-to-be-cleared">4</span>) selected videos.</p>
+      </div>
+      <p><button type="submit" class="btn btn-primary">Continue</button></p>
+    </form> 
+    
+    <p class="text-warning">* This means the bandleader will own those master recordings, although they will not own any songs they didn't write. If you wrote originals songs that were performed on one of the videos listed on this page, you will still own the copyrights to those songs. No copyright in any songs is ever transferred on SmallsLIVE anywhere.</p>
+   
+  </div>
+</div>
+<div class="dev">
+  <h1>Dev notes</h1>
+  <Ul>
+    <li><code>1</code> This is CMS Content</li>
+  </Ul>
+</div>
+{% endblock content %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}stepnamehere{% endblock title %}
+{% block nav %}{% endblock nav %}
+{% block content %}
+<h1>SmallsLIVE Performer Registration</h1>
+<div class="row">
+  <div class="col-sm-3">
+    {% include "blocks/musician-signup-steps.html" %}
+  </div>
+  <div class="col-sm-9">
+    <h2>Did you receive a password from SmallsLIVE?</h2>
+    <p>Some musicians who have performed at Smalls in NYC have already been emailed a password. Log in now if you have a password. </p>
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="well">
+          <h2>Log In Now</h2>
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+              <div class="col-sm-10">
+                <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox"> Remember me
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">Log In</button> <a href="#">Forgot password/login</a>
+              </div>
+            </div>
+          </form>  
+        </div> 
+      </div>
+      <div class="col-sm-4">
+        <div class="well">
+        <h4>I don't have a password!</h4>
+        <p>No problem: you can continue registration below without logging in. You can create your password later.</p>
+        <a href="../musician-signup-terms" class="btn btn-default">Continue</a>
+        </div>
+      </div> 
+    </div>
+  </div>
+</div>
+<div class="dev">
+  <h1>Dev notes</h1>
+  <Ul>
+    <li><code>1</code> This is CMS Content</li>
+    <li><code>2</code> Change active state on each page. let users go back once they have completed a step.</li>
+    <li><code>3</code> Don't show login item if they are logged in already somehow.</li>
+  </Ul>
+</div>
+{% endblock content %}

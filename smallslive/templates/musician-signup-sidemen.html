@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}stepnamehere{% endblock title %}
+{% block nav %}{% endblock nav %}
+{% block content %}
+<h1>SmallsLIVE Performer Registration</h1>
+<div class="row">
+  <div class="col-sm-3">
+    {% include "blocks/musician-signup-steps.html" %}
+  </div>
+  <div class="col-sm-9">
+    <form action="">
+      <div class="alert alert-info">
+        <h2>(2) of Your Sidemen Need To Clear Your Videos</h2>
+        <p class="">The following 2 musicians played with you on gigs for which you were the leader. </p>
+        <p><span class="label label-info">Note:</span> On the next page, you will be asking your sidemen to reciprocate and do the same thing for the gigs on which you were the leader.</p>      
+      </div>
+      <table class="table table-condensed table-hover table-bordered videos-to-clear">
+        <thead>
+          <tr>
+            <th>Sidemen I've Hired @ Smalls</th>
+            <th># My Videos They Play On</th> 
+            <th>Ask Sideman To Clear My Videos:</th>
+            <th>SmallsLive Member?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Carlos Abadie (trumpet)</td>
+            <td>3</td>
+            <td class="videos">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" class="select-all" checked=""> Select all:  
+
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" checked=""> 12/1/09 + J. Hartman, M. Davis, J. Coltrane, you <button type="button" class="btn btn-primary btn-xs">Play</button>
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" checked=""> 2/11/08 + C. Davis, T. Clarke, B. O'Neill, you <button type="button" class="btn btn-primary btn-xs">Play
+                  </label>
+                </div>
+              </div>              
+            </td>
+            <td>Yes (last login: 2 days ago)</td>
+          </tr>
+          <tr>
+            <td>Eric Biondo (trumpet)</td>
+            <td>1</td>
+            <td class="videos">
+              <div class="form-group">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" class="select-all" checked=""> Select all (2) videos to clear:  
+
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" checked=""> 12/1/09 + J. Hartman, M. Davis, J. Coltrane, you <button type="button" class="btn btn-primary btn-xs">Play</button>
+                  </label>
+                </div>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" checked=""> 2/11/08 + C. Davis, T. Clarke, B. O'Neill, you <button type="button" class="btn btn-primary btn-xs">Play
+                  </label>
+                </div>
+              </div>              
+            </td>
+            <td>No</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>When you press Continue, SmallsLIVE will contact the sidemen listed above with videos you want cleared explain to them how to proceed. You will be emailed when any videos have been cleared by one of your sidemen.</p>
+      <button type="submit" class="btn btn-primary">Continue</button>
+    </form>
+  </div>
+</div>
+<div class="dev">
+  <h1>Dev notes</h1>
+  <Ul>
+    <li><code>1</code> This is CMS Content</li>
+  </Ul>
+</div>
+{% endblock content %}
