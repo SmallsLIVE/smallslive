@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath smallslive smallslive.wsgi
+web: python smallslive/manage.py syncdb --noinput; python smallslive/manage.py migrate --noinput; python smallslive/manage.py collectstatic --noinput; gunicorn --pythonpath smallslive smallslive.wsgi
