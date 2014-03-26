@@ -1,9 +1,18 @@
 {% extends "base.html" %}
-
+{% block title_suffix %}Watch Jazz Videos from Smalls Jazz Club (NYC){% endblock title_suffix%}
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
-    <h1>Home page</h1>
+    <h1>Screens SO Far:</h1>
+    <h2>Public Screens (Main NAV)</h2>
+    <ul>
+      <li>This homepage</li>
+      <li><a href="/static_page/about.html">About the club</a></li>
+      <li><a href="/static_page/about-smallslive-for-musicians">SL For Performers</a></li>
+      <li><a href="/static_page/smallslive-jazz-videos">SmallsLIVE Home</a></li>
+      <li><a href="/static_page/musician-signup-login">Performer Reg (Login) </a> (this link starts process)</li>
+    </ul>
+    <h2>Admin Screens</h2>
     <ul>
         <li><a href="{% url "event_add" %}">Add event</a></li>
         <li><a href="{% url "event_detail" pk=222 %}">View event</a></li>
