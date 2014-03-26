@@ -8,6 +8,17 @@ $(document).ready(function(){
       $('.count-videos-to-be-cleared').html(cnt);
     }
   }
+  $('table.videos-to-clear').delegate('tr td.videos input.select-all','change',function(i){
+    if ($(this).is(':checked')) {
+      $(this).closest('td').find('input[type=checkbox]').each(function(i) {
+        $(this).prop('checked',true);
+      });
+    } else {
+      $(this).closest('td').find('input[type=checkbox]').each(function(i) {
+        $(this).prop('checked',false);
+      });
+    }
+  });
   $('table.videos-to-clear').delegate('tr td.videos input[type=checkbox]','change',function(i){
     countSelectedVideos();
   });
