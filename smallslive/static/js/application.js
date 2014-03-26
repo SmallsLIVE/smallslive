@@ -8,15 +8,24 @@ $(document).ready(function(){
       $('.count-videos-to-be-cleared').html(cnt);
     }
   }
-  $('table.videos-to-clear').delegate('tr td.videos input.select-all','change',function(i){
+  $('table.videos-to-clear').delegate('tr td.videos input','change',function(i){
+    var numOfVideosInGroup=$(this).closest('td').find('input[type=checkbox]:not(.select-all)').length;
+    var numOfVideosInGroupCheckedNow=$(this).closest('td').find('input[type=checkbox]:not(.select-all):checked').length;
     if ($(this).is(':checked')) {
-      $(this).closest('td').find('input[type=checkbox]').each(function(i) {
-        $(this).prop('checked',true);
-      });
+      //if it is a select-all checkbox, then toggle the others
+      if ($(this).hasClass('select-all') || numOfVideosInGroup==numOfVideosInGroupCheckedNow ) {
+        $(this).closest('td').find('input[type=checkbox]').each(function(i) {
+          $(this).prop('checked',true);
+        });
+      }
     } else {
-      $(this).closest('td').find('input[type=checkbox]').each(function(i) {
-        $(this).prop('checked',false);
-      });
+      $(this).closest('td').find('input[type=checkbox].select-all').prop('checked',false);
+      //if it is a select-all checkbox, then toggle the others
+      if ($(this).hasClass('select-all') || numOfVideosInGroupCheckedNow==0 ) {
+        $(this).closest('td').find('input[type=checkbox]').each(function(i) {
+          $(this).prop('checked',false);
+        });
+      }
     }
   });
   $('table.videos-to-clear').delegate('tr td.videos input[type=checkbox]','change',function(i){
