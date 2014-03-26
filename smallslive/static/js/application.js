@@ -1,43 +1,56 @@
 $(document).ready(function(){
-  //Public website
-  //  Signup process
+  //Signup process
+  //  Count selected videos. If none, show a warning.
   function countSelectedVideos() {
-    var cnt='';
+    var cnt, div;
+    div=$('.count-videos-to-be-cleared').closest('div.alert-info');
     cnt=$('tr td.videos input:not(.select-all):checked').length;
-    if ($('tr td.videos input:not(.select-all):checked').length > 0) {
+    $('.alert-danger').remove();
+    //BROKEN - this UI doesnt work right if select-all is clicked. Select-all clicks may report "0" checked
+    // because the function that handles selecting-all
+    // has not fired yet. As a result, the checkboxes in the group are not checked at the time the CNT
+    // is evaluated below:
+    if (cnt > 0) {
       $('.count-videos-to-be-cleared').html(cnt);
+      div.show();
+    } else { 
+      div.hide();
+      $('<div class="alert alert-danger">(0) videos were selected. This means none of the videos here can earn revenue on SmallsLIVE for anyone including you. While you can change your mind later, for now, the videos will not appear on SmallsLIVE.</div>').insertAfter(div);
     }
   }
-  $('table.videos-to-clear').delegate('tr td.videos input','change',function(i){
-    var numOfVideosInGroup=$(this).closest('td').find('input[type=checkbox]:not(.select-all)').length;
-    var numOfVideosInGroupCheckedNow=$(this).closest('td').find('input[type=checkbox]:not(.select-all):checked').length;
-    if ($(this).is(':checked')) {
+  //Select-all-videos to clear
+  function selectAllVideosInGroup(checkbox) {
+    var numOfVideosInGroup=$(checkbox).closest('td').find('input[type=checkbox]:not(.select-all)').length;
+    var numOfVideosInGroupCheckedNow=$(checkbox).closest('td').find('input[type=checkbox]:not(.select-all):checked').length;
+    if ($(checkbox).is(':checked')) {
       //if it is a select-all checkbox, then toggle the others
-      if ($(this).hasClass('select-all') || numOfVideosInGroup==numOfVideosInGroupCheckedNow ) {
-        $(this).closest('td').find('input[type=checkbox]').each(function(i) {
+      if ($(checkbox).hasClass('select-all') || numOfVideosInGroup==numOfVideosInGroupCheckedNow ) {
+        $(checkbox).closest('td').find('input[type=checkbox]').each(function(i) {
           $(this).prop('checked',true);
         });
       }
     } else {
-      $(this).closest('td').find('input[type=checkbox].select-all').prop('checked',false);
+      $(checkbox).closest('td').find('input[type=checkbox].select-all').prop('checked',false);
       //if it is a select-all checkbox, then toggle the others
-      if ($(this).hasClass('select-all') || numOfVideosInGroupCheckedNow==0 ) {
-        $(this).closest('td').find('input[type=checkbox]').each(function(i) {
+      if ($(checkbox).hasClass('select-all') || numOfVideosInGroupCheckedNow==0 ) {
+        $(checkbox).closest('td').find('input[type=checkbox]').each(function(i) {
           $(this).prop('checked',false);
         });
       }
-    }
-  });
+    } 
+    //Now that we're done, count the selected videos and decide if we need to show a message:
+    countSelectedVideos();   
+  }
+  //When a checkbox video in a group of videos is clicked, run this:
   $('table.videos-to-clear').delegate('tr td.videos input[type=checkbox]','change',function(i){
-    countSelectedVideos();
+    selectAllVideosInGroup(this);
   });
-  //Init
+  //  Init
   countSelectedVideos();
+  //End signup
   
-  //  End signup
-  //Admin
   //Selectize:
-  //Leader - also allow clone of previous gigs:
+  //  Leader - also allow clone of previous gigs:
   //  This was copied from the selectize documentation:
   
   $('#id_performers').selectize({
