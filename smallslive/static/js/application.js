@@ -49,48 +49,13 @@ $(document).ready(function(){
   countSelectedVideos();
   //End signup
   
-  //Selectize:
-  //  Leader - also allow clone of previous gigs:
-  //  This was copied from the selectize documentation:
-  
-  $('#id_performers').selectize({
-    valueField: 'url',
-    labelField: 'name',
-    searchField: 'name',
-    create: false,
-    render: {
-        option: function(item, escape) {
-            //TODO
-            //Return up to 4 recent shows per leader
-            return '<div class="selectize-mega-option">' +
-                '<h1 class="title">' +
-                    '<span class="name">' + escape(item.leadername) + ': </span>' +
-                    '<span class="date">clone ' + escape(item.last_performance_date) + ' gig w/</span>' +
-                '</h1>' +
-                '<span class="description">' + escape(item.sidemen_list_for_date) + '</span>' +
-            '</div>';
-        }
-    },
-    score: function(search) {
-        var score = this.getScoreFunction(search);
-        return function(item) {
-            return score(item) * (1 + Math.min(item.watchers / 100, 1));
-        };
-    },
-    load: function(query, callback) {
-        if (!query.length) return callback();
-        $.ajax({
-            //Replace with query to previous concerts
-            url: 'https://api.github.com/legacy/repos/search/' + encodeURIComponent(query),
-            type: 'GET',
-            error: function() {
-                callback();
-            },
-            success: function(res) {
-                callback(res.repositories.slice(0, 10));
-            }
-        });
-    } 
+  //Draggable musician ordering
+  $('.f-gig div.sortable-list').sortable({
+    //AJAX in here
+    //For accessibility, we probably should use a method where we pass a value 
+    //  to a hidden text input (not hidden) input field such that there is a keyboard
+    //  accessible method to enter the position.
+    
   });
   
   //Sidemen:

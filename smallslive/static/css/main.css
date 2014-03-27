@@ -12,8 +12,14 @@ table.videos-to-clear .form-group .checkbox:not(:first-child) {
 }
 /*=Admin*/
 /*=Gigs*/
-.selectize-mega-option h1 {
-  font-size: 1em;
+.sortable-list > div {
+  border-bottom: 1px dotted #ddd;
+  margin-bottom: 20px;
+}
+.sortable-list .glyphicon-move {
+  position: relative;
+  top:34px;
+  cursor: pointer;
 }
 .slots input[type=text] {
   width: auto;
