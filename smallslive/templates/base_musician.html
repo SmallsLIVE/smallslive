@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block nav %}
+  <div class="collapse navbar-collapse" id="main-nav">
+    <ul class="nav navbar-nav">
+      <li><a href="../dashboard-musician">Dashboard (5!)</a></li> 
+      <li><a href="../video-manager">Video Manager</a></li> 
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Artist Bio <b class="caret"></b></a>
+        <ul class="dropdown-menu"> 
+          <li><a href="{% url "artist_add"   %}">Edit my profile</a></li>
+          <li><a href="{% url "artist_detail" pk=122 %}">View as public sees it</a></li>        
+        </ul>
+      </li> 
+      <li class="divider"></li>
+      <li><a href="/">Community Earnings Report</a></li>    
+    </ul>   
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">My Account</a></li>
+      <li><a href="#">Log Out Ari</a></li>
+    </ul>
+  </div>
+{% endblock nav %}

@@ -1,0 +1,51 @@
+{% extends "base_musician.html" %}
+{% block title %}Video Manager {% endblock title%}
+{% block content %}
+  <h1>Video Manager</h1>
+  <div class="row">
+    <div class="col-sm-12">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#need-attention" data-toggle="tab">(4) Needing Attention</a></li>
+      <li><a href="#pending-licenses" data-toggle="tab">(3) Awaiting Licenses</a></li>
+      <li><a href="#published" data-toggle="tab">(2) Published ($ Top Earners)</a></li>
+    </ul>
+    <div class="tab-content">
+    
+      <div class="tab-pane active" id="need-attention">
+      list of videos needing permissions
+      </div>
+      
+      <div class="tab-pane" id="pending-licenses">
+      </div>
+      
+      <div class="tab-pane" id="published">
+      </div>
+       
+      
+    </div>
+
+    <table class="table table-condensed table-bordered">
+      <thead>
+        <tr>
+          <th>Video</th>
+          <th>Date/Title</th>
+          <th>Sidemen</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>%event_photo_thumbnail%</td>
+          <td>Fri, 3/24/12 - %event_title% w/</td>
+          <td>%event_title%</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <div class="dev">
+    <h1>Dev notes</h1>
+    <Ul> 
+    </Ul>
+  </div>
+{% endblock content %}

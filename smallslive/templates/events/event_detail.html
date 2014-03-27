@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-
+{% extends "base_venue.html" %}
+{% block title %}Add/Edit Gig: %dateAndArtistandTitleHere%{% endblock title %}
 {% block content %}
     <h1>{{ event.title }}</h1>
     <img src="{{ event.photo.url }}" />

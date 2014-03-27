@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base_venue.html" %}
 {% block title_prefix %}{% endblock title_prefix %}
 {% block title_suffix %}Watch Jazz Videos from Smalls Jazz Club (NYC){% endblock title_suffix%}
 {% block title %}Homepage{% endblock %}
@@ -15,10 +15,9 @@
     </ul>
     <h2>Admin Screens</h2>
     <ul>
-        <li><a href="{% url "event_add" %}">Add event</a></li>
-        <li><a href="{% url "event_detail" pk=222 %}">View event</a></li>
-        <li><a href="{% url "artist_add" %}">Add artist</a></li>
-        <li><a href="{% url "artist_detail" pk=14 %}">View artist</a></li>
-        <li><a href="{% url "admin:index" %}">Admin</a></li>
+        <li><a href="/static_page/dashboard-venue">Dashboard: Venue</a></li>
+        <li><a href="/static_page/dashboard-musician">Dashboard: Musicians</a></li>
+ 
+        <li><a href="{% url "admin:index" %}">Django Admin</a></li>
     </ul>
 {% endblock content %}
