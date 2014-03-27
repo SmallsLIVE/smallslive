@@ -51,7 +51,17 @@ $(document).ready(function(){
   
   //ADMIN forms begin
   //Date fields need a picker
-  $('input[type=date]').datepicker();
+  $('#id_start_day').datepicker().on('changeDate', function(ev){
+    $('#id_start_day').datepicker('hide');
+    //loading state during query - probably show spinner
+    $('.f-gig .slot input').prop('disabled',true);
+    $('.f-gig .slot input[type=text]').val('Checking availability..');
+    
+    //TODO: AJAX
+    //callback function: populate the slots properly:
+    //unhide the checkboxes, undisable fields, fill in labels and input slots appropriately:
+    
+  });;
   
   //Draggable musician ordering
   $('.f-gig div.sortable-list').sortable({
