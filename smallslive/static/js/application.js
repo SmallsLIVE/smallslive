@@ -49,6 +49,10 @@ $(document).ready(function(){
   countSelectedVideos();
   //End signup
   
+  //ADMIN forms begin
+  //Date fields need a picker
+  $('input[type=date]').datepicker();
+  
   //Draggable musician ordering
   $('.f-gig div.sortable-list').sortable({
     //AJAX in here
@@ -58,7 +62,18 @@ $(document).ready(function(){
     
   });
   
-  //Sidemen:
+  //Make rarely used fields become unmuted on focus or blur w/ content
+  $('form').delegate('#id_title, #id_subtitle','focus',function() {
+    var label=$(this).closest('.form-group').find('label');
+    label.removeClass('text-muted');
+    $(this).on('blur',function() {
+      if ($(this).val()=='') {
+        label.addClass('text-muted');
+      } 
+    });
+  });
+  
+  //Make autocompleters for name , genre, instruments
   $('.sideman_name').each(function(i){
     $(this).selectize({
       create: true,
@@ -78,49 +93,6 @@ $(document).ready(function(){
       }
     })
   });
-    
-$('#select-to').selectize({
-    persist: false,
-    maxItems: null,
-    valueField: 'email',
-    labelField: 'name',
-    searchField: ['name', 'email'],
-    options: [
-        {email: 'brian@thirdroute.com', name: 'Brian Reavis'},
-        {email: 'nikola@tesla.com', name: 'Nikola Tesla'},
-        {email: 'someone@gmail.com'}
-    ],
-    render: {
-        item: function(item, escape) {
-            return '<div>' +
-                (item.name ? '<span class="name">' + escape(item.name) + '</span>' : '') +
-                (item.email ? '<span class="email">' + escape(item.email) + '</span>' : '') +
-            '</div>';
-        },
-        option: function(item, escape) {
-            var label = item.name || item.email;
-            var caption = item.name ? item.email : null;
-            return '<div>' +
-                '<span class="label">' + escape(label) + '</span>' +
-                (caption ? '<span class="caption">' + escape(caption) + '</span>' : '') +
-            '</div>';
-        }
-    },
-    create: function(input) {
-        if ((new RegExp('^' + REGEX_EMAIL + '$', 'i')).test(input)) {
-            return {email: input};
-        }
-        var match = input.match(new RegExp('^([^<]*)\<' + REGEX_EMAIL + '\>$', 'i'));
-        if (match) {
-            return {
-                email : match[2],
-                name  : $.trim(match[1])
-            };
-        }
-        alert('Invalid email address.');
-        return false;
-    }
-});
   //Allow set times to be entered
   function toggle_add_set_times() {
     if ($('.trigger_add_set_times').is(':checked')==true) {

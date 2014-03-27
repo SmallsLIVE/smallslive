@@ -49,7 +49,7 @@
         <!-- checkbox for set times -->
         <div class="checkbox">
           <label>
-            <input type="checkbox" class="trigger_add_set_times"> <code>2</code> Add set times&hellip;
+            <input type="checkbox" class="trigger_add_set_times"> <code>2</code> Change set times&hellip;
           </label>
         </div>      
         <div class="add_set_times"> 
@@ -160,17 +160,27 @@
         </div>
         <!-- custom title -->
         <div class="form-group" id="div_id_title">
-          <label class="control-label " for="id_title">Event Title (for special events, e.g. record release):</label>
+          <label class="control-label text-muted" for="id_title">Event Title (for special events, e.g. record release):</label>
           <div class="controls ">
             <input type="text" name="title" id="id_title" class="form-control">
           </div>
         </div>    
         <div class="form-group" id="div_id_subtitle">
-          <label class="control-label " for="id_subtitle">Event Subtitle</label>
+          <label class="control-label text-muted" for="id_subtitle">Event Subtitle</label>
           <div class="controls ">
             <input type="text" name="subtitle" maxlength="255" id="id_subtitle" class="  form-control">
           </div>
-        </div>            
+        </div>                
+        <!-- photo -->
+        <div class="well">
+          <div class="form-group" id="div_id_photo">
+            <label class="control-label " for="id_photo"><code>5</code>Flyer or Band Photo (JPG, PNG)</label>         
+            <div class="controls ">
+              <input type="file" name="photo" id="id_photo" class="clearablefileinput">
+            </div>
+            <p class="help-block">Don't upload artist headshots here; those will be displayed automatically.</p>
+          </div>   
+        </div>
         <div class="form-group" id="div_id_description">
           <label class="control-label " for="id_description">Description</label>
           <div class="controls ">
@@ -184,19 +194,17 @@
           </div>
         </div>    
         <div class="form-group" id="div_id_external_link">
-          <label class="control-label " for="id_external_link">Link for more event info:</label>
+          <label class="control-label " for="id_external_link">Link to more <span class="text-primary">event info</span>:</label>
           <div class="controls ">
             <input type="text" name="external_link" maxlength="255" placeholder="http://" id="id_external_link" class="  form-control">
           </div>
-        </div>          
-        <!-- photo -->
-        <div class="form-group" id="div_id_photo">
-          <label class="control-label " for="id_photo"><code>5</code>Flyer or Event-Specific Photo (JPG, PNG)</label>
+        </div>  
+        <div class="form-group" id="div_id_external_tix_link">
+          <label class="control-label " for="id_external_tix_link">Link to  <span class="text-primary">buy tickets</span>:</label>
           <div class="controls ">
-            <input type="file" name="photo" id="id_photo" class="clearablefileinput">
+            <input type="text" name="external_link" maxlength="255" placeholder="http://" id="id_external_tix_link" class="  form-control">
           </div>
-          <p class="help-block">Don't upload regular artist headshots or band photos here; those will be pulled in automatically from the artists' pages.</p>
-        </div>    
+        </div>       
         <!-- status -->
         <div class="radio bg-success">
           <label>
