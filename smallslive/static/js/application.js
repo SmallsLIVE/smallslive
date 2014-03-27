@@ -62,6 +62,23 @@ $(document).ready(function(){
     
   });
   
+  //Muting
+  //Make checkbox+textinput fields appear selected or muted. By default, we assume
+  // .text-muted was assigned to the text input
+  $('.input-group-addon input').on('change',function(){
+    setupInputGroupAddOns($(this));
+  });
+  function setupInputGroupAddOns(o) {
+    var textinput=o.closest('.form-group').find('input[type=text]');
+    textinput.removeClass('text-muted');
+    if (o.is(':checked')==false) {
+      textinput.addClass('text-muted');
+    }
+  }
+  //init
+  $('.input-group-addon input').each(function(i){
+    setupInputGroupAddOns($(this));
+  });
   //Make rarely used fields become unmuted on focus or blur w/ content
   $('form').delegate('#id_title, #id_subtitle','focus',function() {
     var label=$(this).closest('.form-group').find('label');

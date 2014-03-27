@@ -12,9 +12,9 @@
         <div class="row">
           <div class="col-sm-4">
             <div class="form-group" id="div_id_start_day">
-              <label class="control-label " for="id_start_day">Date of show:<abbr class="asteriskField" title="(required)">*</abbr></label>
+              <label class="control-label " for="id_start_day"><code>7</code>Date of show:<abbr class="asteriskField" title="(required)">*</abbr></label>
               <div class="controls ">
-                <input type="date" name="start_day" id="id_start_day" class="form-control">
+                <input type="date" name="start_day" value="4/13/14" id="id_start_day" class="form-control">
               </div>
             </div>
           </div>
@@ -25,8 +25,19 @@
             <span class="input-group-addon">
               <input type="checkbox">
             </span>
-            <input type="text" class="form-control" value="%prefillSlot1Default%">
+            <input type="text" class="form-control text-muted" value="%prefillSlot1Default%">
           </div>
+        </div>
+        <p><code>8</code></p>
+        <!-- slots -->
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon">
+              <input type="checkbox" disabled="">
+            </span>
+            <input type="text" class="form-control text-muted" value="Ari Hoenig booked here (9-10p,1015-1115p)" disabled>
+          </div>
+          
         </div>
         <!-- slots -->
         <div class="form-group">
@@ -34,16 +45,7 @@
             <span class="input-group-addon">
               <input type="checkbox">
             </span>
-            <input type="text" class="form-control" value="%prefillSlot2Default%">
-          </div>
-        </div>
-        <!-- slots -->
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon">
-              <input type="checkbox">
-            </span>
-            <input type="text" class="form-control" value="%prefillSlot3Default%">
+            <input type="text" class="form-control text-muted" value="%prefillSlot3Default%">
           </div>
         </div>
         <!-- checkbox for set times -->
@@ -239,6 +241,7 @@
       <li><code>4</code> selectize: single item, allow new</li>
       <li><code>5</code> plugin? recommendations?</li>
       <li><code>6</code> onKeyUp, if text exists in any field of musician 4, we print a new 5th slot for musician 5 and so forth - a new blank set of musicians fields is always available below the last row that has anything in it.</li>
+      <li><code>8</code> validation: disable show slots that are already booked up. Default: prefill with first available date in the cal that isn't blocked or held</li>
     </Ul>
   </div>
 {% endblock content %}

@@ -1,4 +1,13 @@
-/*=Public*/
+/*TEmplate setup - body, footer, etc */
+/*Footer*/
+footer {
+  background: #fafafa;
+  color: #333;
+  padding: 1em;
+  margin-top:2em;
+  border-top:1px solid #ccc;
+}
+/*=Public screens*/
 #agreement-musicians-legal {
   font-style: "Courier", monospace;
 }
@@ -10,8 +19,14 @@
 table.videos-to-clear .form-group .checkbox:not(:first-child) {
   margin-left: 20px;
 }
-/*=Admin*/
-/*=Gigs*/
+/*=Admin screens*/
+input.form-control.text-muted[type=text] {
+  color: #999;
+}
+/*=Gigs*/ 
+div.datepicker {
+  margin-left:40px;/*This is mainly for the f-gig form to make sure time slots arent hidden by picker*/  
+}
 .sortable-list > div {
   border-bottom: 1px dotted #ddd;
   margin-bottom: 20px;
@@ -36,15 +51,8 @@ table.videos-to-clear .form-group .checkbox:not(:first-child) {
   border: 1px solid #ddd;
   margin-bottom: 1em;
 }
-/*Footer*/
-footer {
-  background: #fafafa;
-  color: #333;
-  padding: 1em;
-  margin-top:2em;
-  border-top:1px solid #ccc;
-}
 /*=Development*/
+/*=Trash this after design done */
 .container .dev ul {
   margin: 0;
   padding: 0;
