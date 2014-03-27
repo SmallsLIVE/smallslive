@@ -24,13 +24,12 @@ input.form-control.text-muted[type=text] {
   color: #999;
 }
 /*=Gigs*/ 
+div.trigger_add_set_times {
+  margin-top:20px;
+}
 div.datepicker {
   margin-left:40px;/*This is mainly for the f-gig form to make sure time slots arent hidden by picker*/  
-}
-.sortable-list > div {
-  border-bottom: 1px dotted #ddd;
-  margin-bottom: 20px;
-}
+} 
 .sortable-list .glyphicon-move {
   position: relative;
   top:34px;

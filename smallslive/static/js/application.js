@@ -119,12 +119,12 @@ $(document).ready(function(){
       fields.slideUp();
     }
   }
-  $('.trigger_add_set_times').change(function() {
+  $('.trigger_add_set_times input').change(function() {
     toggle_add_set_times(this);
   }); 
   
   //init
-  $('.trigger_add_set_times').each(function(i) {
+  $('.trigger_add_set_times input').each(function(i) {
     toggle_add_set_times(this);
   }); 
 
