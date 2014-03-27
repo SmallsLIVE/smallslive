@@ -111,18 +111,21 @@ $(document).ready(function(){
     })
   });
   //Allow set times to be entered
-  function toggle_add_set_times() {
-    if ($('.trigger_add_set_times').is(':checked')==true) {
-      $('.add_set_times').slideDown();
+  function toggle_add_set_times(checkbox,fields) {
+    var fields=$(checkbox).closest('.row').next('.add_set_times');
+    if ($(checkbox).is(':checked')==true) {
+      fields.slideDown();
     } else {
-      $('.add_set_times').slideUp();
+      fields.slideUp();
     }
   }
   $('.trigger_add_set_times').change(function() {
-    toggle_add_set_times();
+    toggle_add_set_times(this);
   }); 
   
   //init
-  toggle_add_set_times();  
+  $('.trigger_add_set_times').each(function(i) {
+    toggle_add_set_times(this);
+  }); 
 
 });

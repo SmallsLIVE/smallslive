@@ -18,10 +18,11 @@
     <![endif]-->
   </head>
   <body>
-    <div class="navbar navbar-inverse" role="navigation">
-      <div class="container">
+    <nav class="navbar navbar-default" role="navigation">   
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -29,27 +30,56 @@
           </button>
           <a class="navbar-brand" href="/">Smalls</a>
         </div>
-        {% block nav %}
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
-            <li><a href="/static_page/calendar">Calendar</a></li>
-            <li><a href="/static_page/smallslive-jazz-videos">Watch Concerts (SmallsLIVE)</a></li>
-            <li><a href="/static_page/about">The Club</a></li>
-            <li><a href="">Contact</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
+        {% block nav %}   
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="main-nav">
+            <ul class="nav navbar-nav"> 
+              <li class="active"><a href="/">Home</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Calendar <b class="caret"></b></a>
+                <ul class="dropdown-menu"> 
+                  <li><a href="#">Tonight (Fri)</a></li>
+                  <li><a href="#">Tomorrow (Sat)</a></li>  
+                  <li><a href="#">Coming Soon</a></li>         
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a href="/static_page/smallslive-jazz-videos" class="dropdown-toggle" data-toggle="dropdown">SmallsLive (Watch Concerts) <b class="caret"></b></a>
+                <ul class="dropdown-menu"> 
+                  <li><a href="#">Tonight <span class="text-primary">(Live Now!)<code>G1</code></span></a></li>
+                  <li><a href="#">Most Recent Videos</a></li>  
+                  <li><a href="#">Most Popular Videos</a></li>         
+                </ul>
+              </li>              
+              <li><a href="/static_page/about">The Club</a></li>
+              <li><a href="">Contact</a></li>
+            </ul>
+            <form class="navbar-form navbar-left" role="search">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Artist or Date">
+              </div>
+              <button type="submit" class="btn btn-default">Search Concerts</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#">Log In</a></li>
+            </ul>
+          </div><!-- /.navbar-collapse -->
         {% endblock nav %}
-      </div>
-    </div>
-    <div class="container">
+      </div><!-- /.container-fluid -->
+    </nav>  
+    <div class="container-fluid">  
       {% block content %}
       {% endblock content %}
+    </div>  
+    <footer>
+      <p>&copy;2014 SmallsLIVE (<code>This text = TO-DO</code>).</p>
+    </footer>
+    <div class="dev">
+    <h1>Global Dev Notes:</h1>
+    <ul>
+      <li><code>G1</code> print "live now" in SL dropdown nav item if a concert is live</li>
+    </ul>
     </div>
-    <div class="container">
-      <footer>
-        <p>&copy;2014 SmallsLIVE (<code>This text = TO-DO</code>).</p>
-      </footer>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="{% static 'js/bootstrap.js' %}"></script>

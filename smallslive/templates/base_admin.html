@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block nav %}
+  <div class="collapse navbar-collapse" id="main-nav">
+    <ul class="nav navbar-nav">
+      <li><a href="/">Dashboard</a></li>
+      <li class="dropdown active">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Calendar <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Add new event</a></li>
+        </ul>
+      </li>  
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Artists <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="#">Add new artist</a></li>
+        </ul>
+      </li>    
+      <li class="divider"></li>
+      <li><a href="/">Public site</a></li>    
+    </ul>    
+    <form class="navbar-form navbar-left" role="search">
+      <div class="form-group">
+        <input type="text" class="form-control" placeholder="Artist or Date">
+      </div>
+      <button type="submit" class="btn btn-default">Search</button>
+    </form>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="#">My Account</a></li>
+      <li><a href="#">Log Out Spike</a></li>
+    </ul>
+  </div>
+{% endblock nav %}

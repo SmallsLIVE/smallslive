@@ -1,10 +1,9 @@
-{% extends "base.html" %}
+{% extends "base_admin.html" %}
 {% load crispy_forms_tags %}
-
 {% block content %}
   <h1>Add/Edit gig:</h1>
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-7">
       <form method="post" class="f-gig" role="form" enctype="multipart/form-data">
         {% csrf_token %}
         
@@ -19,57 +18,106 @@
             </div>
           </div>
         </div>
-        <!-- slots -->
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon">
-              <input type="checkbox">
-            </span>
-            <input type="text" class="form-control text-muted" value="%prefillSlot1Default%">
-          </div>
-        </div>
-        <p><code>8</code></p>
-        <!-- slots -->
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon">
-              <input type="checkbox" disabled="">
-            </span>
-            <input type="text" class="form-control text-muted" value="Ari Hoenig booked here (9-10p,1015-1115p)" disabled>
-          </div>
-          
-        </div>
-        <!-- slots -->
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon">
-              <input type="checkbox">
-            </span>
-            <input type="text" class="form-control text-muted" value="%prefillSlot3Default%">
-          </div>
-        </div>
-        <!-- checkbox for set times -->
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" class="trigger_add_set_times"> <code>2</code> Change set times&hellip;
-          </label>
-        </div>      
-        <div class="add_set_times"> 
-          <!-- set time -->
-          <div class="form-group" id="div_set_time_1">
-            <label class="control-label " for="set_time_1">Slot 1, Set 1:</label>
-            <div class="controls ">
-              <input type="text" placeholder="6-7pm" name="set_time_1" id="set_time_1" class="form-control">
+        <!-- slot -->
+        <div class="row">
+          <div class="col-sm-8">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox">
+                </span>
+                <input type="text" class="form-control text-muted" value="%prefillSlot1Default%">
+              </div>
             </div>
-          </div>  
-          <!-- set time -->
-          <div class="form-group" id="div_set_time_1">
-            <label class="control-label " for="set_time_1">Slot 1, Set 2:</label>
-            <div class="controls ">
-              <input type="text" placeholder="715-815pm" name="set_time_1" id="set_time_1" class="form-control">
-            </div>
-          </div>  
+          </div>
+          <div class="col-sm-4">          
+            <!-- checkbox for set times -->
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" class="trigger_add_set_times"> <code>2</code> Edit set times&hellip;
+              </label>
+            </div> 
+          </div> 
         </div>
+        <div class="row add_set_times"> 
+          <div class="col-sm-3">
+            <!-- set time -->
+            <div class="form-group" id="div_set_time_1">
+              <label class="control-label " for="set_time_1">Set 1:</label>
+              <div class="controls ">
+                <input type="time" placeholder="6-7pm" name="set_time_1" id="set_time_1" class="form-control input-sm">
+              </div>
+            </div>  
+          </div>
+          <div class="col-sm-3">
+            <!-- set time -->
+            <div class="form-group" id="div_set_time_1">
+              <label class="control-label " for="set_time_1">Set 2:</label>
+              <div class="controls ">
+                <input type="time" placeholder="715-815pm" name="set_time_1" id="set_time_1" class="form-control input-sm">
+              </div>
+            </div>  
+          </div>
+        </div>
+        
+        
+        <!-- slot 2 -->
+        <div class="row">
+          <div class="col-sm-8">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" disabled="">
+                </span>
+                <input type="text" class="form-control text-muted" value="[8] Ari Hoenig  (9-10p,1015-1115p)" disabled>
+              </div>
+            </div>
+          </div>
+        </div>
+ 
+        <!-- slot 3 -->
+        <div class="row">
+          <div class="col-sm-8">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox">
+                </span>
+                <input type="text" class="form-control text-muted" value="%prefillSlot1Default%">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">          
+            <!-- checkbox for set times -->
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" class="trigger_add_set_times"> <code>2</code> Edit set times&hellip;
+              </label>
+            </div> 
+          </div> 
+        </div>
+        <div class="row add_set_times"> 
+          <div class="col-sm-3">
+            <!-- set time -->
+            <div class="form-group" id="div_set_time_1">
+              <label class="control-label " for="set_time_1">Set 1:</label>
+              <div class="controls ">
+                <input type="time" placeholder="6-7pm" name="set_time_1" id="set_time_1" class="form-control input-sm">
+              </div>
+            </div>  
+          </div>
+          <div class="col-sm-3">
+            <!-- set time -->
+            <div class="form-group" id="div_set_time_1">
+              <label class="control-label " for="set_time_1">Set 2:</label>
+              <div class="controls ">
+                <input type="time" placeholder="715-815pm" name="set_time_1" id="set_time_1" class="form-control input-sm">
+              </div>
+            </div>  
+          </div>
+        </div> 
+             
+         
         <div class="sortable-list">  
           <!-- side musician -->   
           <div class="row musician">
@@ -231,6 +279,47 @@
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
+    <div class="col-sm-5">    
+      <div class="well">
+        <h2>Recently Added</h2>
+        <table class="table table-striped table-condensed">
+          <thead>
+            <tr>
+              <th>Gig Date (Edit)</th>
+              <th>Group</th>
+              <th>Added by</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td scope="row"><a href="">Tue, 4/1/14 (slot 1)</a></td>
+              <td>A. Hoenig +3</td>
+              <td>Mike Bond 2hrs ago</td>
+            </tr>
+            <tr>
+              <td scope="row"><a href="">Wed, 4/2/14 (slot 2)</a></td>
+              <td>P. Bernstein +1</td>
+              <td>Mike Bond 2hrs ago</td>
+            </tr>
+            <tr>
+              <td scope="row"><a href="">Tue, 5/2/14 (slot 1)</a></td>
+              <td>A. Hoenig +3</td>
+              <td>Mike Bond 2hrs ago</td>
+            </tr>
+            <tr>
+              <td scope="row"><a href="">Thu, 4/3/14 (slot 2)</a></td>
+              <td>L. O'Neal +1</td>
+              <td>Mike Bond 2hrs ago</td>
+            </tr>
+            <tr>
+              <td scope="row"><a href="">Fri, 4/4/14 (slot 3)</a></td>
+              <td>U. Caine +3</td>
+              <td>Mike Bond 2hrs ago</td>
+            </tr> 
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
   <div class="dev">
     <h1>Dev notes</h1>
@@ -241,7 +330,8 @@
       <li><code>4</code> selectize: single item, allow new</li>
       <li><code>5</code> plugin? recommendations?</li>
       <li><code>6</code> onKeyUp, if text exists in any field of musician 4, we print a new 5th slot for musician 5 and so forth - a new blank set of musicians fields is always available below the last row that has anything in it.</li>
-      <li><code>8</code> validation: disable show slots that are already booked up. Default: prefill with first available date in the cal that isn't blocked or held</li>
+      <li><code>7</code> Disable date that are full. Default: prefill with first available date in the cal that isn't blocked or held. I would suggest that you run an ajax query here and fill the form after a date is entered. Also, this page should be built so that they can land here from anotehr screen with a date param passed like gig/add?date=4/14/14 . </li>
+      <li><code>8</code> validation: disable show slots that are already booked up.</li>
     </Ul>
   </div>
 {% endblock content %}

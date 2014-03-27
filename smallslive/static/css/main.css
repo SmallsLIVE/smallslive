@@ -39,12 +39,9 @@ div.datepicker {
 .slots input[type=text] {
   width: auto;
 }
-.add_set_times {
-  padding: 1em;
-  border: 1px dotted #ccc;
-  margin-left: 1em;
-  margin-bottom: 1em;
-  
+.add_set_times {;
+  margin-left: 32px;
+  margin-bottom: 2em;
 }
 .lookup-item {
   padding: 1em;
@@ -53,26 +50,26 @@ div.datepicker {
 }
 /*=Development*/
 /*=Trash this after design done */
-.container .dev ul {
+.dev ul {
   margin: 0;
   padding: 0;
 }
-.container .dev li {
+.dev li {
   list-style: none;
   padding: 0;
   margin: 0 0 .5em 0; 
 }
-.container .dev * {
+.dev * {
   font-size: 12px;
 }
-.container .dev {
+.dev {
   font-family:"Courier", monospace;
   margin-top:2em;
   background: #f3f3f3;
   padding: 1em;
   border:1px solid #aaa;
 }
-.container code {
+code {
   color: #fafafa;
   background: #c00;
   font-size: 12px;
