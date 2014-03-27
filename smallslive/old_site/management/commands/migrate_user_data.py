@@ -4,6 +4,7 @@ from datetime import datetime
 from django.core.management.base import BaseCommand, CommandError
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+from artists.models import Artist
 
 User = get_user_model()
 
@@ -23,7 +24,8 @@ class Command(BaseCommand):
             hash_pass = False
 
         columns = json_file['QUERY']['COLUMNS']
-        count = 0
+        created_count = 0
+        total_count = 0
         for user in json_file['QUERY']['DATA']:
             # Convert to unicode and strip whitespace only on string values
             user = [unicode(v).strip() if isinstance(v, str) else v for v in user]
@@ -51,7 +53,7 @@ class Command(BaseCommand):
                         first_name=user_data['FIRSTNAME'] if user_data['FIRSTNAME'] else "",
                         last_name=user_data['LASTNAME'] if user_data['LASTNAME'] else "",
                     )
-                count += 1
+                created_count += 1
 
             user.accept_agreement = user_data['ACCEPTAGREEMENT']
             user.access_level = user_data['ACCESSLEVEL']
@@ -72,7 +74,22 @@ class Command(BaseCommand):
             user.zip = user_data['ZIP'] or ""
             user.save()
 
-        self.stdout.write('Successfully imported {0} users'.format(count))
+            # Connect artist to user
+            artist_id = user_data['META1INT']
+            if artist_id:
+                try:
+                    artist = Artist.objects.get(id=artist_id)
+                    artist.user = user
+                    artist.save()
+                except Artist.DoesNotExist:
+                    pass
+
+            # Output to console so that the user can see something's happening
+            total_count += 1
+            if total_count % 500 == 0:
+                self.stdout.write('Successfully checked {0} users'.format(total_count))
+
+        self.stdout.write('Successfully imported {0} users'.format(created_count))
 
     def parse_date(self, date_string, null=True):
         if date_string:
