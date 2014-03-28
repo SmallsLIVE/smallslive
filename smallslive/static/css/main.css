@@ -44,6 +44,15 @@ footer {
   border-top:1px solid #ccc;
 }
 /*=Public screens*/
+/*Home*/
+.homepage-spotlight > div {
+  padding-top:20px;
+}
+.homepage-spotlight {
+  margin-top: -20px;
+  margin-bottom: 20px;
+  background: #343434;
+} 
 .num,
 .earnings-summary table tr td:not(:first-child):not(.txt) {
   text-align: right;

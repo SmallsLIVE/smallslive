@@ -5,24 +5,20 @@
 
 {% block content %}
 
-  <div class="row">
-    <div class="col-sm-9">
+  <div class="row homepage-spotlight">
+    <div class="col-sm-10  col-sm-offset-1"> 
       <div class="jumbotron">
-        <h1>Tonight: Ari Hoenig (dr) (8pm) w/ name, name, name</h1>
-        <p>Peter Bernstein (gtr)  (10pm) /w name, name name</p>
-        <p>John Smith (bs) (12am) w/ name, name</p>
-      </div>
-    </div>
-    <div class="col-sm-3">
-      <div class="well">
-        <span class="text-success">SmallsLIVE</span>
-        <h3>8,000+ Hours of Jazz Concert Videos</h3>
-        <p>Get 30 days of unlimited access to our archive of over 350 jazz concerts filmed at Smalls since 2007. After your trial, it's just $20/month  to unlock permanent access to the archive. <a href="#">Learn more</a></p>
-        <a class="btn btn-primary" href="/static_page/trial-signup">Start Free Trial</a>
-        <p class="text-muted"><br /><a href="#">I have an account already</a></p>
+        <h1>Tonight: The Joe Martin Quartet  @ <span class="text-primary">9:30pm</span></h1>
+        <p>w/ name, name, name</p>
+        <p><em>plus</em>:</p>
+        <h3>Peter Bernstein (gtr) @ <span class="text-primary">11:30pm</span></h3>
+        <p> w/ name, name name</p>
+        <h3>Ari Hoenig (dr) @    <span class="text-primary">1am</span></h3>
+        <p> w/ name, name</p>
       </div>
     </div>
   </div>
+ 
   <div class="row">
     <div class="col-sm-6">
       <h2>Next 7 days @ Smalls:</h2>
@@ -37,9 +33,33 @@
       <div class="well">Event here</div>
       <h2>About Smalls and SmallsLIVE</h2>
       <p>Smalls is a historic jazz club in NYC presenting the best in live jazz music 7 days a week. SmallsLIVE is our digital video service where jazz fans can watch 3000+ hours of concert videos recorded at the club since 2007. We live-stream and record every concert at Smalls, so check out <a href="">tonight's show online for free</a>. To access the archive of videos, you'll need a <a href="">subscription</a>.</p>
+    
+ 
+      <form method="post" class="f-trial-signup" role="form" enctype="multipart/form-data">
+        <div class="form-group" id="div_id_subscriber_email">
+          <label class="control-label " for="div_id_subscriber_email">Join Mailing List:</label>
+          <div class="controls ">
+            <input type="text" placeholder="Your email address" name="subscriber_email" value="" id="id_subscriber_email" class="form-control">
+          </div>
+        </div>  
+        <div class="form-group"> 
+          <button type="submit" class="btn btn-primary">Subscribe</button>   
+        </div>
+      </form>  
+      <h5>Stay In Touch:</h5>
+      <p><a href="http://facebook.com/smallsjazzclub" class="">Smalls on Facebook</a></p>
+      <p><a href="http://twitter.com/smallsjazzclub" class="">Follow  @smallsjazzclub</a> on Twitter</p>
     </div>
+
     <div class="col-sm-6">
-      <h2>Latest Videos:</h2>
+      <div class="well">
+        <span class="text-success">SmallsLIVE</span>
+        <h2>8,000+ Hours of Jazz Concert Videos</h2>
+        <p>Get 30 days of unlimited access to our archive of over 350 jazz concerts filmed at Smalls since 2007. After your trial, it's just $20/month  to unlock permanent access to the archive. <a href="#">Learn more</a></p>
+        <a class="btn btn-primary" href="/static_page/trial-signup">Start Free Trial</a>
+        <p class="text-muted"><br /><a href="#">I have an account already</a></p>
+      </div>
+      <h3>Latest Videos:</h3>
       <p>We try to get concert videos posted within 3 days of being taped. Here are the latest:</p>
       <div class="well">video here</div>
       <div class="well">video here</div>
@@ -47,7 +67,7 @@
       <div class="well">video here</div>
       <div class="well">video here</div>
       <p><a href="">More</a></p>
-      <h2>Most Popular Videos:</h2>
+      <h3>Most Popular Videos:</h3>
       <p>We try to get concert videos posted within 3 days of being taped. Here are the latest:</p>
       <div class="well">video here</div>
       <div class="well">video here</div>
