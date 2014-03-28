@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     # third party apps
     'crispy_forms',
     'django_extensions',
+    'django_thumbor',
     'south',
     'storages',
 
@@ -126,3 +127,11 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_SECURE_URLS = False
+AWS_QUERYSTRING_AUTH = False
+
+# Thumbor server settings
+THUMBOR_MEDIA_URL = ""
+THUMBOR_SECURITY_KEY = ""
+THUMBOR_SERVER = ""
+AWS_S3_CUSTOM_DOMAIN = ""

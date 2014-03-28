@@ -1,4 +1,5 @@
 from .local import *
+import os
 
 DATABASES = {
     'default': {
@@ -18,3 +19,13 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+
+THUMBOR_MEDIA_URL = os.environ['THUMBOR_MEDIA_URL']
+THUMBOR_SECURITY_KEY = os.environ['THUMBOR_SECURITY_KEY']
+THUMBOR_SERVER = os.environ['THUMBOR_SERVER']
+AWS_S3_CUSTOM_DOMAIN = os.environ['AWS_S3_CUSTOM_DOMAIN']
+
+INSTALLED_APPS += (
+    'debug_toolbar',
+)
