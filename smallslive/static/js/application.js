@@ -6,7 +6,11 @@ $(document).ready(function(){
     e.preventDefault();
     var email=$(this).find('input[name=subscriber_email]').val();
     //validate email address
-    if (email!=='') {
+    if (email=='') { 
+      var emailContainer=$(this).find('input[name=subscriber_email]').closest('.form-group');
+      emailContainer.addClass('has-error has-feedback').append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
+    } else {
+      $('.has-error').removeClass('has-error has-feedback').find('.form-control-feedback').remove();
       $(this).html('<div class="alert alert-success"><p><strong>'+email+'</strong> has emailed a special link. Click that link to begin your trial. </p><p><a href="#" class="send-verification-link">Resend the link</a> if you haven\'t received your email. </p></div>');
       $('.f-trial-signup').delegate('a.send-verification-link','click',function(e){
         e.preventDefault();
