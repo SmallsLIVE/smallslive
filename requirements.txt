@@ -10,6 +10,7 @@ django-crispy-forms==1.4.0
 django-extensions==1.3.3
 django-model-utils==2.0.3
 django-storages==1.1.8
+django-thumbor==0.4
 html5lib==0.999
 gunicorn
 ipython==1.2.1
