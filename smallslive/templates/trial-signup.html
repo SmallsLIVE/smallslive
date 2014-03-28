@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Free Trial - Access 350 Jazz Concerts for 30 days{% endblock title %}
+{% block nav %}{% endblock nav %}
+{% block content %}
+<h1>SmallsLIVE Free-Trial Signup</h1>
+<p>30 days of unlimited access to our 8,000+ hours of concert footage recorded at Smalls.</p>
+<div class="row">
+  <div class="col-sm-8">
+    <form method="post" class="f-trial-signup" role="form" enctype="multipart/form-data">
+      <div class="form-group" id="div_id_subscriber_email">
+        <label class="control-label " for="div_id_subscriber_email">Your email address:</label>
+        <div class="controls ">
+          <input type="text" placeholder="" name="subscriber_email" value="" id="id_subscriber_email" class="form-control">
+        </div>
+      </div>  
+      <div class="form-group"> 
+        <button type="submit" class="btn btn-primary">Start Trial</button>   
+      </div>
+    </form>  
+  </div>
+</div>
+<div class="dev">
+  <h1>Dev notes</h1>
+  <Ul> 
+  </Ul>
+</div>
+{% endblock content %}

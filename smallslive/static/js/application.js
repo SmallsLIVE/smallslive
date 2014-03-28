@@ -1,5 +1,21 @@
 $(document).ready(function(){
-  //Signup process
+  //Customer Signup process
+  //Trial signup
+  $('.f-trial-signup').submit(function(e){
+    //validate email address
+    //AJAX 
+    e.preventDefault();
+    $(this).html('<div class="alert alert-success">You have been emailed a special link. Click that link to begin your trial. <p><a href="#" class="send-verification-link">Resend the link</a> if you haven\'t received your email. </p></div>');
+    $('.f-trial-signup').delegate('a.send-verification-link','click',function(e){
+      e.preventDefault();
+      //do ajax
+      //Give a link to resend verification:
+      $(this).closest('p').html('(Sending...)').fadeOut(100).fadeIn(500,function() {
+        $(this).html('Link sent again. <a class="send-verification-link" href="#">Resend the link</a>');
+      });
+    });
+  });
+  //Performer Signup process
   //  Count selected videos. If none, show a warning.
   function countSelectedVideos() {
     var cnt, div;
