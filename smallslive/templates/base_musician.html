@@ -17,8 +17,8 @@
       <li><a href="../community-stats">Community Stats</a></li> 
     </ul>   
     <ul class="nav navbar-nav navbar-right">
-      <li><a href="#">My Account</a></li>
-      <li><a href="#">Log Out Ari</a></li>
+      <li><a href="#">Account</a></li>
+      <li>{% if user.is_authenticated %}<a href="#">Log In</a>{% else %}<a href="#">Log Out<span class="longname">{{ user.name }}</a>{% endif %}</li>
     </ul>
   </div>
 {% endblock nav %}

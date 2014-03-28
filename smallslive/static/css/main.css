@@ -1,4 +1,36 @@
 /*TEmplate setup - body, footer, etc */
+/*Masthead*/
+.longname,
+body nav .longname  {
+  display: none;
+}
+.navbar-brand img { 
+    width: 44px;
+    position: relative; 
+    top: -.6em;
+    padding: 2px;
+    background: #fff;
+}
+@media all and 
+ (min-width : 800px) {
+  ul.nav span.longname {
+    display: inline;
+  } 
+  ul.nav a.longname {
+    display: block;
+  }
+}
+@media all and 
+ (min-width : 950px) {
+  .navbar-brand img { 
+    top:-.5em;
+    width: 80px;
+    padding: 8px;
+  }
+}
+form.search input:first-child {
+  width: 95px;
+}
 /*Footer*/
 footer {
   background: #fafafa;
