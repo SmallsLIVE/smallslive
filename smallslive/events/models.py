@@ -27,6 +27,25 @@ class Event(models.Model):
     def __unicode__(self):
         return self.title
 
+    def display_title(self):
+        if self.title:
+            display_title = self.title
+        else:
+            performers = self.artists_gig_info.order_by('sort_order').select_related('artist', 'role').values_list(
+                'artist__first_name', 'artist__last_name', 'role__name')
+            # Make full names
+            performers = [("{0} {1}".format(first, last), instrument) for first, last, instrument in performers]
+            first = performers.pop(0)
+            display_title = first[0]
+            # If only one member, show his name, otherwise list all the remaining artists and their instruments
+            if performers:
+                display_title += " w/ "
+                for performer in performers:
+                    display_title += "{0} ({1}), ".format(performer[0], performer[1])
+            display_title = display_title[:-2]
+        return display_title
+
+
 
 class EventType(models.Model):
     name = models.CharField(max_length=50)

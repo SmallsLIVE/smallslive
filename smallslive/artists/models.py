@@ -22,6 +22,9 @@ class Artist(models.Model):
     def get_absolute_url(self):
         return reverse('artist_detail', kwargs={'pk': self.pk})
 
+    def full_name(self):
+        return "{0} {1}".format(self.first_name, self.last_name)
+
 
 class ArtistType(models.Model):
     name = models.CharField(max_length=255)
