@@ -1,7 +1,7 @@
 {% extends "base_musician.html" %}
 {% block title %}Dashboard: %username% {% endblock title%}
 {% block content %}
-  <h1>%musician-name% Dashboard</h1>
+  <h1>Dashboard for {{ user.first_name }} </h1>
   <div class=" alert-warning alert ">
   <h2>To-Do Items:</h2>
     <ul class="alert">

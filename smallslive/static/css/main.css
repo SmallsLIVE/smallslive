@@ -10,6 +10,7 @@ body nav .longname  {
     top: -.6em;
     padding: 2px;
     background: #fff;
+    z-index: 50;
 }
 @media all and 
  (min-width : 800px) {
