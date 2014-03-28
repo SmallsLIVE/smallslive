@@ -46,7 +46,6 @@ class Event(models.Model):
         return display_title
 
 
-
 class EventType(models.Model):
     name = models.CharField(max_length=50)
     parent = models.IntegerField()
