@@ -58,3 +58,4 @@ docs/_build/
 # Collected static and media
 collected_static/
 media/
+koala-config.json
