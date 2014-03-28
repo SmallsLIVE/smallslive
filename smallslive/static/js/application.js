@@ -12,6 +12,7 @@ $(document).ready(function(){
     } else {
       $('.has-error').removeClass('has-error has-feedback').find('.form-control-feedback').remove();
       $(this).html('<div class="alert alert-success"><p><strong>'+email+'</strong> has emailed a special link. Click that link to begin your trial. </p><p><a href="#" class="send-verification-link">Resend the link</a> if you haven\'t received your email. </p></div>');
+      //Now create a way to resend the verification link or take further action
       $('.f-trial-signup').delegate('a.send-verification-link','click',function(e){
         e.preventDefault();
         //do ajax
