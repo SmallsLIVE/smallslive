@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}See {{ event.artists.first_name }} {{ event.artists.last_name }} {{ event.start_day }} in NYC w/ {{ event.sidemen }}{% endblock title %}
+{% block content %}
+<div class="row">
+  <div class="col-sm-8">
+    <div class="video_player">
+    <h4>Recorded on 12/13/08 @ Smalls:</h4>
+    <div class="well" style="text-align:center;padding:8em">[media player]</div>
+    </div>
+    <h1>{{ event.start_day }} : {{ event.display_title }}</h1>
+    <h2>{{ event.date_freeform }}</h2>
+    <h2>{{ event.subtitle }}</h2>
+    <h3>featuring:</h3>
+    <ul>
+      <li><a href="{% url "artist_detail" pk=182 %}">artist.photo, artist.full_name, artist.instruments</a></li>
+      <li><a href="{% url "artist_detail" pk=192 %}">artist.photo, artist.full_name, artist.instruments</a></li>
+      <li><a href="{% url "artist_detail" pk=162 %}">artist.photo, artist.full_name, artist.instruments</a></li>
+      <li><a href="{% url "artist_detail" pk=152 %}">artist.photo, artist.full_name, artist.instruments</a></li>
+  
+    </ul>
+    <div class="description">
+    <img src="{{ event.photo.url }}" />
+    {{ event.description }}
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <h1>Related Videos:</h1>
+    <ul>
+      <Li>%leader1_name% <a href="{% url "artist_detail" pk=412%}">(6 videos)</a></li>
+      <Li>%leader2_name% <a href="{% url "artist_detail" pk=214%}">(6 videos)</a></li>
+      <Li>%sideman1% <a href="{% url "artist_detail" pk=554%}">(6 videos)</a></li>
+    </ul> 
+     
+    
+  </div>
+</div>    
+{% endblock content %}
