@@ -1,5 +1,8 @@
 /*TEmplate setup - body, footer, etc */
 /*Masthead*/
+.navbar {
+  border-radius: 0;
+}
 .longname,
 body nav .longname  {
   display: none;
