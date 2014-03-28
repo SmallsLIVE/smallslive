@@ -8,10 +8,11 @@
     <h2>{{ event.subtitle }}</h2>
     <h3>featuring:</h3>
     <ul>
-      <li>artist.photo, artist.full_name, artist.instruments</li>
-      <li>artist.photo, artist.full_name, artist.instruments</li>
-      <li>artist.photo, artist.full_name, artist.instruments</li>
-      <li>artist.photo, artist.full_name, artist.instruments</li>
+      <li><a href="{% url "artist_detail" pk=182 %}">artist.photo, artist.full_name, artist.instruments</a></li>
+      <li><a href="{% url "artist_detail" pk=192 %}">artist.photo, artist.full_name, artist.instruments</a></li>
+      <li><a href="{% url "artist_detail" pk=162 %}">artist.photo, artist.full_name, artist.instruments</a></li>
+      <li><a href="{% url "artist_detail" pk=152 %}">artist.photo, artist.full_name, artist.instruments</a></li>
+  
     </ul>
     <div class="description">
     <img src="{{ event.photo.url }}" />
