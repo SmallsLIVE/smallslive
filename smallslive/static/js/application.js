@@ -3,9 +3,9 @@ $(document).ready(function(){
   //  Count selected videos. If none, show a warning.
   function countSelectedVideos() {
     var cnt, div;
-    div=$('.count-videos-to-be-cleared').closest('div.alert-info');
-    cnt=$('tr td.videos input:not(.select-all):checked').length;
-    $('.alert-danger').remove();
+    div=$('.musician-registration .count-videos-to-be-cleared').closest('div.alert-info');
+    cnt=$('.musician-registration tr td.videos input:not(.select-all):checked').length;
+    $('.musician-registration .alert-danger').remove();
     //BROKEN - this UI doesnt work right if select-all is clicked. Select-all clicks may report "0" checked
     // because the function that handles selecting-all
     // has not fired yet. As a result, the checkboxes in the group are not checked at the time the CNT

@@ -8,6 +8,10 @@ footer {
   border-top:1px solid #ccc;
 }
 /*=Public screens*/
+.num,
+.earnings-summary table tr td:not(:first-child):not(.txt) {
+  text-align: right;
+} 
 #agreement-musicians-legal {
   font-style: "Courier", monospace;
 }

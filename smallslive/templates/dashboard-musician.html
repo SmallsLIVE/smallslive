@@ -1,13 +1,212 @@
 {% extends "base_musician.html" %}
-{% block title %}Dashboard: Musicians {% endblock title%}
+{% block title %}Dashboard: %username% {% endblock title%}
 {% block content %}
-  <h1>Musician Dashboard</h1>
-  <div class="row">
-    <div class="col-sm-7">
-   
-    </div>
-    <div class="col-sm-5">    
+  <h1>%musician-name% Dashboard</h1>
+  <div class=" alert-warning alert ">
+  <h2>To-Do Items:</h2>
+    <ul class="alert">
+      <li>(2) musicians you have played under would like your permission to publish their videos featuring you. <a href="/static_page/video-manager" class="alert-link">Give or Revoke Permission</a></li>
+      <li>(6) of your videos as a leader can't be published yet <a href="/static_page/video-manager" class="alert-link">until you get your sidemen to clear them</a></li>
+      <li>We can't pay you until you <a href="#" class="alert-link">add your bank information</a></li>
+    </ul>
+  </div>
  
+  <div class="panel panel-default earnings-summary">
+    <div class="panel-body"> 
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th colspan="5">Earnings Summary</th>
+            <th colspan="2">New Fans Added</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th>You</th>
+            <th>Average Musician</th>
+            <th>SmallsLIVE Community</th>
+            <th>Your Rank/Position</th>
+            <th>You</th>
+            <th>Average Musician</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>This month</td>
+            <td>$0.12</td>
+            <td>$0.44</td>
+            <td>$4.33</td>
+            <td> #326  </td>
+            <td>4</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>Last month</td>
+            <td>$0.45</td>
+            <td>$0.12</td>
+            <td>$12.33</td>
+            <td> #4 <span class="text-success">(Top 24%!)</span></td>
+            <td>3</td>
+            <td>0.5</td>
+          </tr>
+          <tr>
+            <td>Your Average Monthly</td>
+            <td>$0.45  </td>
+            <td>$0.98</td>
+            <td>$0.41</td>
+            <td> #14   <span class="text-success">(Top 4%!)</span></td>
+            <td>15</td>
+            <td>2</td>
+          </tr> 
+          <tr>
+            <td>YTD</td>
+            <td>$2.45</td>
+            <td>$1.11</td>
+            <td>$112.62</td>
+            <td> #24    <span class="text-success">(Top 14%!)</span></td>
+            <td>29</td>
+            <td>14</td>
+          </tr> 
+          <tr>
+            <td>Lifetime</td>
+            <td>$104.23</td>
+            <td>$41.15</td>
+            <td>$5,121.21</td>
+            <td> #91  </td>
+            <td>4</td>
+            <td>4</td>
+          </tr>  
+          <tr>
+            <td colspan="5">
+              <p class="text-primary"><span class="label label-primary">Next pay date</span>  is 4/1/2015 (for last month's earnings). $5.43 will be deposited into your <a href="bank account">bank account</a></p>
+            </td>
+            <td colspan="2" class="txt">
+              <p><a href="#">Download (4) new email addresses</a> since your last download.</p>
+              <p><a href="#">Download all email addresses</a></p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel-footer">    
+      * Average Musician means any musician with earnings in the last 12 months. For fans,  Average Musician means any musician with at least 1 fan signup in the last year.  SmallsLIVE has been live for 1,301 days and currently has 512 videos published. <a href="">More Community stats</a>
+    </div> 
+  </div>         
+  <div class="row">
+    <div class="col-sm-8">    
+      <div class="well">    
+        <h2>Your Top Videos</h2>
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#videos-as-leader" data-toggle="tab">As Leader</a></li>
+          <li><a href="#videos-as-sideman" data-toggle="tab">As Sideperson</a></li> 
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="videos-as-leader">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Title</th>
+                  <th>$ Earned To Date</th>
+                  <th>Site Rank (of 512 videos)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Thumb</td>
+                  <td>%event.title%</td>
+                  <td class="num">$31.12</td>
+                  <td>#41</td>
+                </tr>
+                <tr>
+                  <td>Thumb</td>
+                  <td>%event.title%</td>
+                  <td class="num">$31.12</td>
+                  <td>#41</td>
+                </tr>
+                <tr>
+                  <td>Thumb</td>
+                  <td>%event.title%</td>
+                  <td class="num">$31.12</td>
+                  <td>#41</td>
+                </tr>
+                <tr>
+                  <td>Thumb</td>
+                  <td>%event.title%</td>
+                  <td class="num">$31.12</td>
+                  <td>#41</td>
+                </tr>
+                <tr>
+                  <td>Thumb</td>
+                  <td>%event.title%</td>
+                  <td class="num">$31.12</td>
+                  <td>#41</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tab-pane" id="videos-as-sideman">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Title</th>
+                  <th class="num">$ Earned To Date</th>
+                  <th>Site Rank (of 512 videos)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Thumb</td>
+                  <td>%event.title%</td>
+                  <td class="num">$31.12</td>
+                  <td>#41</td>
+                </tr>
+                <tr>
+                  <td>Thumb</td>
+                  <td>%event.title%</td>
+                  <td class="num">$31.12</td>
+                  <td>#41</td>
+                </tr>
+                <tr>
+                  <td>Thumb</td>
+                  <td>%event.title%</td>
+                  <td class="num">$31.12</td>
+                  <td>#41</td>
+                </tr>
+                <tr>
+                  <td>Thumb</td>
+                  <td>%event.title%</td>
+                  <td class="num">$31.12</td>
+                  <td>#41</td>
+                </tr>
+                <tr>
+                  <td>Thumb</td>
+                  <td>%event.title%</td>
+                  <td class="num">$31.12</td>
+                  <td>#41</td>
+                </tr>
+              </tbody>
+            </table>          
+          </div> 
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">   
+      <div class="well"> 
+        <h2>Your Video Summary</h2>
+        <ul>
+          <li>Of the 32 videos you've ever played on at Smalls: 
+            <ul>
+              <li><a href="{% url "artist_detail" pk=321 %}">10 are publicly available</a></li>
+              <li><a href="">6 are pending your sidemens' approval</a> before they can be published.</li>
+              <li>4 have been hidden by you. <a href="">View</a></li> 
+              <li>6 are pending approval of the bandleaders.  <a href="">View</a></li> 
+            </ul>
+          </li>
+          <li>Your most-watched video as a leader is   <a href="">3/24/09 "Now Is The Time" CD Release</a> which has earned you $2.45.</li>
+          <li>Your most-watched video as a sideman is   <a href="">4/1/11 Peter Bernstein CD Release</a> which has earned you $12.12.</li> 10 videos as a leader</a> publicly available</li>
+        </ul> 
+      </div>
     </div>
   </div>
   <div class="dev">

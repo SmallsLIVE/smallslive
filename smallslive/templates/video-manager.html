@@ -4,43 +4,75 @@
   <h1>Video Manager</h1>
   <div class="row">
     <div class="col-sm-12">
-    <ul class="nav nav-tabs">
-      <li class="active"><a href="#need-attention" data-toggle="tab">(4) Needing Attention</a></li>
-      <li><a href="#pending-licenses" data-toggle="tab">(3) Awaiting Licenses</a></li>
-      <li><a href="#published" data-toggle="tab">(2) Published ($ Top Earners)</a></li>
-    </ul>
-    <div class="tab-content">
-    
-      <div class="tab-pane active" id="need-attention">
-      list of videos needing permissions
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#need-attention" data-toggle="tab">(32) Need Your Attention</a></li>
+        <li><a href="#pending-licenses" data-toggle="tab">(3) Awaiting Licenses</a></li>
+        <li><a href="#published" data-toggle="tab">(2) Published ($ Top Earners)</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="need-attention">
+          <h2>You need (2) side musicians to clear your videos:</h2>
+          <table class="table table-condensed table-bordered">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Leader</th>
+                <th># videos together</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>%leaderPhoto%</td>
+                <td>Ari Hoenig</td>
+                <td><a href="6 videos">5 videos</a></td>
+                <td>You asked him to approve your videos 14 days ago. Ari does not have a SmallsLIVE account yet and may need a reminder email.</td>
+                <td><a href="">Contact Ari</a></td>
+              </tr>
+              <tr>
+                <td>%leaderPhoto%</td>
+                <td>Peter Bernstein</td>
+                <td><a href="6 videos">5 videos</a></td>
+                <td>You haven't contacted Peter via SmallsLIVE yet.</td>
+                <td><a href="">Contact Peter</a></td>
+              </tr>
+            </tbody>
+          </table>
+          <h2>(2) Leaders Want To Publish Videos Featuring You:</h2>
+          <table class="table table-condensed table-bordered">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Leader</th>
+                <th>Date/Title</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>%leaderPhoto%</td>
+                <td>Ari Hoenig</td>
+                <td><a href="6 videos">6 videos</a></td>
+                <th>Status</th>
+                <td><button class="btn btn-primary">Approve All 6</button></td>
+              </tr>
+              <tr>
+                <td>%leaderPhoto%</td>
+                <td>Peter Bernstein</td>
+                <td><a href="6 videos">16 videos</a></td>
+                <th>Status</th>
+                <td><button class="btn btn-primary">Approve All 16</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tab-pane" id="pending-licenses">
+        </div>
+        <div class="tab-pane" id="published">
+        </div>
       </div>
-      
-      <div class="tab-pane" id="pending-licenses">
-      </div>
-      
-      <div class="tab-pane" id="published">
-      </div>
-       
-      
-    </div>
-
-    <table class="table table-condensed table-bordered">
-      <thead>
-        <tr>
-          <th>Video</th>
-          <th>Date/Title</th>
-          <th>Sidemen</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>%event_photo_thumbnail%</td>
-          <td>Fri, 3/24/12 - %event_title% w/</td>
-          <td>%event_title%</td>
-        </tr>
-      </tbody>
-    </table>
     </div>
   </div>
   <div class="dev">
