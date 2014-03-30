@@ -6269,3 +6269,9 @@ button.close {
 /* line 3, ../sass/application.scss */
 .marko {
   color: red; }
+
+/* line 7, ../sass/application.scss */
+.artist-photo {
+  height: 150px;
+  width: 150px;
+  margin-right: 10px; }
