@@ -1,9 +1,11 @@
 {% extends "base_venue.html" %}
+{% load thumbor_tags %}
 {% block title %}{{ artist.first_name }} {{ artist.last_name }} - {{ artist.artist_type }} ({{artist.videos.count}} concert videos)  {% endblock title %}
 {% block content %}
 <div class="row">
   <div class="col-sm-8">
     <div class="jumbotron">
+      <img src="{% thumbor_url artist.photo.url|urlencode width=150 height=150 smart=True %}" class="img-rounded img-responsive pull-left" style="height:150px; width:150px; margin-right: 10px;" />
       <h1>{{ artist.first_name }} {{ artist.last_name }}</h1>
       <p>{{ artist.artist_type }} - 6 videos - LIKE - <a href="{{ artist.website }}">@twittername</a></p>
       <p><span class="glyphicon glyphicon-ok"></span> #2 Most Watched (of 612 artists)</p>
@@ -11,7 +13,7 @@
     </div>
   </div>
   <div class="col-sm-4">
-    <img src="{{ artist.photo.url }}" alt="{{ artist.first_name }} {{ artist.last_name }}" />
+
     <h2>Upcoming Shows @ Smalls:</h2>
     <ul>
       <li>Tue, 3/4/14 title w/ sidemen-here</li>
