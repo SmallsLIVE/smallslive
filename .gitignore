@@ -59,6 +59,7 @@ docs/_build/
 collected_static/
 media/
 koala-config.json
+.sass-cache/
 
 # data files
 smallsliveusers.txt

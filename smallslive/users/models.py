@@ -80,6 +80,10 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         full_name = '%s %s' % (self.first_name, self.last_name)
         return full_name.strip()
 
+    def full_name(self):
+        # Here for site-wide consistency - model.full_name, get_full_name is here for user model requirements
+        return self.get_full_name()
+
     def get_short_name(self):
         "Returns the short name for the user."
         return self.first_name
