@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import datetime
 from model_utils import Choices
 from model_utils.fields import StatusField
 
@@ -28,6 +29,10 @@ class Event(models.Model):
         return self.title
 
     def display_title(self):
+        """
+        Returns the event display title. If the title is defined, returns the title, otherwise it generates
+        one from the performer names and their roles.
+        """
         if self.title:
             display_title = self.title
         else:
@@ -44,6 +49,12 @@ class Event(models.Model):
                     display_title += "{0} ({1}), ".format(performer[0], performer[1])
             display_title = display_title[:-2]
         return display_title
+
+    def is_past(self):
+        """
+        Checks if the event happened in the past.
+        """
+        return self.end_day < datetime.now().date()
 
 
 class EventType(models.Model):
