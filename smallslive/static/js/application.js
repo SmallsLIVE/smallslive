@@ -93,6 +93,22 @@ $(document).ready(function(){
   //End signup
   
   //ADMIN forms begin
+  function checkRadio(radio) {
+    if ($(radio).hasClass('extra-message')==true) {
+      $('.trigger-add-extra-message').next('div').slideDown();
+    } else {
+      
+      $('.trigger-add-extra-message').next('div').slideUp();
+    }
+  }
+  //Let me add a welcome message when inviting artists
+  $('.f-add-artist').delegate('input[name=invitation]','change',function(){
+    checkRadio(this);
+  });
+  //Init
+  if ($('.f-add-artist').length > 0) {
+    checkRadio('input[name=invitation]');
+  }
   //Date fields need a picker
   $('#id_start_day').datepicker().on('changeDate', function(ev){
     $('#id_start_day').datepicker('hide');

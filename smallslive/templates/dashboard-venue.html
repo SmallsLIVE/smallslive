@@ -1,29 +1,107 @@
 {% extends "base_venue.html" %}
-{% block title %}Venue Dashboard{% endblock title%}
+{% block title %}Dashboard{% endblock title%}
 {% block content %}
-  <h1>Venue Dashboard</h1>
+  <h1>Dashboard &amp; Calendar</h1>
   <div class="row">
-    <div class="col-sm-7">
-    
-      <h2>Tonight:</h2>
-      <p>who is playing ?</p>
+    <div class="col-sm-12">
       
-      <h2>Next Available Slots To Book</h2>
-      <p>list some dates here</p>
       
-      <h2>Awaiting Licenses</h2>
-      <p>list of songs and videos here</p>
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#recent" data-toggle="tab">Recently Updated</a></li>
+        <li><a href="#avail" data-toggle="tab">Open Dates</a></li>
+        <li><a href="#upcoming" data-toggle="tab">Upcoming Calendar</a></li>
+        <li><a href="#video-summary" data-toggle="tab">Video Summary</a></li>
+        <li><a href="#artists" data-toggle="tab">Top Artists</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="recent">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Gig Date</th>
+                <th>Edit Event</th>
+                <th>Artists Registered?</th>
+                <th>Last Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a href=""><span class="text-muted">View</span> event.date(ddd, d/m)</a></td>
+                <td><a href="">event.display_title</a></td>
+                <td><span class="text-danger">3/4</span> <a href="#">Send invitation(s)&hellip;</a></td>
+                <th>event.last_updated_date_in_words_ago</th>
+              </tr>
+              <tr>
+                <td>event.date(ddd, d/m)</td>
+                <td><a href="">event.display_title</a></td>
+                <td><span class="text-success">Yes (4/4)</span></td>
+                <th>event.last_updated_date_in_words_ago</th>
+              </tr>
+              <tr>
+                <td>event.date(ddd, d/m)</td>
+                <td><a href="">event.display_title</a></td>
+                <td><span class="text-danger">0/4</span> <a href="#">Send invitation(s)&hellip;</a></td>
+                <th>event.last_updated_date_in_words_ago</th>
+              </tr>
+              <tr><td colspan="4">Show 50 rows + paginate</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tab-pane" id="avail">
+          <p>Table showing unbooked slots in next 60 days ordered by soonest first.</p>
+        </div>
+        <div class="tab-pane" id="upcoming">
+          <p>This may be where we use a calendar UI plugin to show a typical calendar look and feel.</p>
+        </div>
+        <div class="tab-pane" id="artist">        
+          <div class="well">
+            <h2>Top Earning Artists:</h2>
+            <p>Leaderboard</p>
+          </div>
+        </div>
+        <div class="tab-pane" id="video-summary">
+          <div class="well">
+            <h2>Top Earning Videos:</h2>
+            <p>Leaderboard</p> 
+          </div>
+          
+          <div class="well">
+          <h2>Recently Published Videos:</h2>
+     
+            <div class="thumbnail">
+              <a href="">thumbnail</a>
+              <div class="caption">length
+                <p>Gig date</p>   
+              </div>
+            </div>
+       
+            <div class="thumbnail">
+              <a href="">thumbnail</a>
+              <div class="caption">length
+                <p>Gig date</p>   
+              </div>
+            </div>
+       
+            <div class="thumbnail">
+              <a href="">thumbnail</a>
+              <div class="caption">length
+                <p>Gig date</p>   
+              </div>
+            </div>
+       
+            <div class="thumbnail">
+              <a href="">thumbnail</a>
+              <div class="caption">length
+                <p>Gig date</p>   
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div> 
      
     </div>
-    <div class="col-sm-5">    
-    
-      <h2>Top Earning Artists:</h2>
-      <p>Leaderboard</p>
-      
-      <h2>Top Earning Videos:</h2>
-      <p>Leaderboard</p> 
-      
-    </div>
+ 
   </div>
   <div class="dev">
     <h1>Dev notes</h1>

@@ -5,12 +5,41 @@
     <h1>Add artist</h1>
     <section class="lookup-item">
         <h2>Wait, does this artist exist?</h2>
-        <p><code>1</code>  Before adding a new artist, search for their name here:</p>
-        <input type="text" placeholder="Artist name" size="32">
+        <p><code>1</code> To avoid duplicates, search for an artist first:</p>
+        <input type="text" placeholder="artist name or email" size="32">
     </section>
-    <form method="post" role="form" enctype="multipart/form-data">
-        {% csrf_token %}
+    <form method="post" class="f-add-artist" role="form" enctype="multipart/form-data">
+        {% csrf_token %}      
         {{ form|crispy }}
+        <div class="alert alert-warning">
+          <p><strong>This artist has not registered yet for SmallsLIVE.</strong></p>                    
+          <div class="radio">
+            <label>
+              <input type="radio" name="invitation" id="optionsRadios1" value="yes" checked>
+              Send invitation email <code>3</code>
+            </label>
+          </div>
+          <div class="radio">
+            <label class="trigger-add-extra-message">
+              <input type="radio" name="invitation" class="extra-message" id="optionsRadios2" value="yes">
+              Send invitation email &amp; add message...
+            </label>
+            <div class="no-display extra-message row">
+              <div class="col-sm-6">
+              Dear [first-name],
+              <textarea class="form-control" rows="4"></textarea>
+              <p>[The rest of the templated welcome email will appear here...]</p>
+              <p>[Sincerely, Spike]</p>
+              </div>
+            </div>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="invitation" id="optionsRadios2" value="no">
+              Do not invite them yet
+            </label>
+          </div>
+        </div>  
         <button type="submit" class="btn btn-default">Submit</button>
     </form>
     
@@ -19,6 +48,7 @@
       <ul>
           <li><code>1</code> I may suggest we have a search/autocomplete here to avoid duplicates being entered.</li>
           <li><code>2</code> I would use a type-head chozen for the Artist Type field and change display label to "Instrument(s)"
+          <li><code>3</code> The flash message should have text like "Profile saved &amp; invitation sent."</li>
       </ul>
     </div>
 {% endblock content %}

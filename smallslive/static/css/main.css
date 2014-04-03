@@ -103,6 +103,9 @@ div.datepicker {
   border: 1px solid #ddd;
   margin-bottom: 1em;
 }
+.no-display {
+  display: none;
+}
 /*=Development*/
 /*=Trash this after design done */
 .dev ul {
