@@ -7,7 +7,7 @@ class Artist(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     salutation = models.CharField(max_length=255, blank=True)
-    artist_type = models.ForeignKey('ArtistType', blank=True, null=True)
+    artist_type = models.ManyToManyField('ArtistType', related_name='artists', blank=True)
     biography = models.TextField(blank=True)
     website = models.CharField(max_length=255, blank=True)
     photo = models.ImageField(upload_to='artist_images', max_length=150, blank=True)

@@ -55,7 +55,7 @@ class Command(NoArgsCommand):
                 id=old_artist.persontypeid_id,
                 name=old_artist.persontypeid.persontype,
             )
-            new_artist.artist_type = artist_type
+            new_artist.artist_type.add(artist_type)
 
             if artist_created:
                 count += 1
