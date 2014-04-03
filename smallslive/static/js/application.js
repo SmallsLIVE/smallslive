@@ -58,63 +58,38 @@ $(document).ready(function(){
       $(songsInVideoToPublish).closest('tr').find('.set-list').slideUp();
     }
   }
-  //Init
-  $('table.videos-to-publish tr .set-list').hide(); 
   $('table.videos-to-publish tr .toggle-all-or-some input').click(function() {
-     
-      toggleSetList(this);
-  
+    toggleSetList(this);
+    countSelectedVideos();
   });  
   $('table.videos-to-publish tr .toggle-all-or-some input').each(function(i) {
-     
-      toggleSetList(this);
-  
+    toggleSetList(this);
+    countSelectedVideos();
   });  
-  //  Count selected videos. If none, show a warning.
+  //Init
+  $('table.videos-to-publish tr .set-list').hide(); 
+  //  Count selected videos. If none selected for publishing, show a warning.
   function countSelectedVideos() {
     var cnt, div;
-    div=$('.musician-registration .count-videos-to-be-cleared').closest('div.alert-info');
-    cnt=$('.musician-registration table input:not(.select-all):checked').length;
+    div=$('div.alert-info');
+    div.show();
+    cnt=$('table.videos-to-publish tbody tr').length;
+    cntTotallyUnpublished=$('table.videos-to-publish input.none:checked').length;
     $('.musician-registration .alert-danger').remove();
     //BROKEN - this UI doesnt work right if select-all is clicked. Select-all clicks may report "0" checked
     // because the function that handles selecting-all
     // has not fired yet. As a result, the checkboxes in the group are not checked at the time the CNT
     // is evaluated below:
-    if (cnt > 0) {
-      $('.count-videos-to-be-cleared').html(cnt);
-      div.show();
-    } else { 
+    if (cntTotallyUnpublished == cnt) { 
       div.hide();
       $('<div class="alert alert-danger">(0) videos were selected. This means none of the videos here can earn revenue on SmallsLIVE for anyone including you. While you can change your mind later, for now, the videos will not appear on SmallsLIVE.</div>').insertAfter(div);
     }
   }
   //Select-all-videos to clear
-  function selectAllVideosInGroup(checkbox) {
-    var checkboxGroup=$(checkbox).closest('table');
-    var numOfVideosInGroup=checkboxGroup.find('input[type=checkbox]:not(.trigger-select-all)').length;
-    var numOfVideosInGroupCheckedNow=checkboxGroup.find('input[type=checkbox]:not(.select-all):checked').length;
-    if ($(checkbox).is(':checked')) {
-      //if it is a select-all checkbox, then toggle the others
- 
-        checkboxGroup.find('input[type=checkbox]').each(function(i) {
-          $(this).prop('checked',true);
-        });
-   
-    } else {
-        checkboxGroup.find('input[type=checkbox]').each(function(i) {
-          $(this).prop('checked',false);
-        });
-   
-    } 
-    //Now that we're done, count the selected videos and decide if we need to show a message:
-    countSelectedVideos();   
-  }
-  //When a checkbox video in a group of videos is clicked, run this:
-  $('table.videos-to-publish').delegate('.trigger-select-all input[type=checkbox]','change',function(i){
-    selectAllVideosInGroup(this);
-  });
   //  Init
-  countSelectedVideos();
+  if ($('table.videos-to-publish').length > 0) {
+    countSelectedVideos();
+  }
   //End signup
   
   //ADMIN forms begin
