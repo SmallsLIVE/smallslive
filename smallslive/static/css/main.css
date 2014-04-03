@@ -69,6 +69,13 @@ table.videos-to-clear .form-group .checkbox:not(:first-child) {
   margin-left: 20px;
 }
 /*=Admin screens*/
+/*=Signup screens*/
+table.videos-to-publish tr .checkbox label input {
+  display: inline;
+}
+table.videos-to-publish tr .checkbox label   {
+  white-space: nowrap;
+}
 input.form-control.text-muted[type=text] {
   color: #999;
 }

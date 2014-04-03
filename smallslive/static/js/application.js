@@ -46,13 +46,35 @@ $(document).ready(function(){
         });
       });
     }
-  });  
+  }); 
+  //
+  // 
   //Performer Signup process
+  function toggleSetList(songsInVideoToPublish) {
+    if ($(songsInVideoToPublish).hasClass('some')==true) {
+      $(songsInVideoToPublish).closest('tr').find('.set-list').slideDown();
+    } else {
+      
+      $(songsInVideoToPublish).closest('tr').find('.set-list').slideUp();
+    }
+  }
+  //Init
+  $('table.videos-to-publish tr .set-list').hide(); 
+  $('table.videos-to-publish tr .toggle-all-or-some input').click(function() {
+     
+      toggleSetList(this);
+  
+  });  
+  $('table.videos-to-publish tr .toggle-all-or-some input').each(function(i) {
+     
+      toggleSetList(this);
+  
+  });  
   //  Count selected videos. If none, show a warning.
   function countSelectedVideos() {
     var cnt, div;
     div=$('.musician-registration .count-videos-to-be-cleared').closest('div.alert-info');
-    cnt=$('.musician-registration tr td.videos input:not(.select-all):checked').length;
+    cnt=$('.musician-registration table input:not(.select-all):checked').length;
     $('.musician-registration .alert-danger').remove();
     //BROKEN - this UI doesnt work right if select-all is clicked. Select-all clicks may report "0" checked
     // because the function that handles selecting-all
@@ -68,29 +90,27 @@ $(document).ready(function(){
   }
   //Select-all-videos to clear
   function selectAllVideosInGroup(checkbox) {
-    var numOfVideosInGroup=$(checkbox).closest('td').find('input[type=checkbox]:not(.select-all)').length;
-    var numOfVideosInGroupCheckedNow=$(checkbox).closest('td').find('input[type=checkbox]:not(.select-all):checked').length;
+    var checkboxGroup=$(checkbox).closest('table');
+    var numOfVideosInGroup=checkboxGroup.find('input[type=checkbox]:not(.trigger-select-all)').length;
+    var numOfVideosInGroupCheckedNow=checkboxGroup.find('input[type=checkbox]:not(.select-all):checked').length;
     if ($(checkbox).is(':checked')) {
       //if it is a select-all checkbox, then toggle the others
-      if ($(checkbox).hasClass('select-all') || numOfVideosInGroup==numOfVideosInGroupCheckedNow ) {
-        $(checkbox).closest('td').find('input[type=checkbox]').each(function(i) {
+ 
+        checkboxGroup.find('input[type=checkbox]').each(function(i) {
           $(this).prop('checked',true);
         });
-      }
+   
     } else {
-      $(checkbox).closest('td').find('input[type=checkbox].select-all').prop('checked',false);
-      //if it is a select-all checkbox, then toggle the others
-      if ($(checkbox).hasClass('select-all') || numOfVideosInGroupCheckedNow==0 ) {
-        $(checkbox).closest('td').find('input[type=checkbox]').each(function(i) {
+        checkboxGroup.find('input[type=checkbox]').each(function(i) {
           $(this).prop('checked',false);
         });
-      }
+   
     } 
     //Now that we're done, count the selected videos and decide if we need to show a message:
     countSelectedVideos();   
   }
   //When a checkbox video in a group of videos is clicked, run this:
-  $('table.videos-to-clear').delegate('tr td.videos input[type=checkbox]','change',function(i){
+  $('table.videos-to-publish').delegate('.trigger-select-all input[type=checkbox]','change',function(i){
     selectAllVideosInGroup(this);
   });
   //  Init

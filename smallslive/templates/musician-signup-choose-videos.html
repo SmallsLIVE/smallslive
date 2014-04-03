@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}stepnamehere{% endblock title %}
+{% block bodyclass %}musician-registration{% endblock bodyclass %}
+{% block nav %}{% endblock nav %}
+{% block content %}
+<h1>SmallsLIVE Performer Registration</h1>
+<div class="row">
+  <div class="col-sm-3">
+    {% include "blocks/musician-signup-steps.html" %}
+  </div>
+  <div class="col-sm-9">
+    <form action="">  
+      <p class="">You have (2) videos as a bandleader. Choose which videos you want to publish and begin making money. You can also select individual songs in each video if you don't want an entire set going live. You can change these settings later.</p>         
+      <table class="table   table-bordered videos-to-publish">
+        <thead>
+          <tr> 
+            <th>Check to Publish</th>            
+            <th>Video</th>          
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="3"><label  class="trigger-select-all"><input type="checkbox"   /> Select all (2)</label></td>
+          </tr>
+          <tr> 
+            <td class="toggle-all-or-some">
+              <div class="checkbox">
+                <label><input type="radio" class="radio" name="row1-video" value="all" checked /> Publish entire video</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="radio" class="radio some" name="row1-video" value="some" />  Publish checked songs only </label>
+              </div>
+              <div class="checkbox">
+                <label><input type="radio" class="radio" name="row1-video" value="none" /> Do not publish video</label>
+              </div>
+            </td>
+ 
+            <td>
+              <div class="thumbnail">
+                <div class="well" style="height:80px;"></div>
+                <div class="caption"> 
+                  <p>12/01/09 w/ side person, side person, side person</p>
+                  <p class="text-muted">The whole video will be published as this video has not been edited into separate songs yet.</p> 
+                  <p><a href="">Edit/select songs&hellip;</a></p>
+                  <div class="set-list well">set list form appears here</div>
+                </div>
+              </div> 
+            </td>
+          </tr>
+          <tr> 
+            <td class="toggle-all-or-some">
+              <div class="checkbox">
+                <label><input type="radio" class="radio" name="row2-video" value="all" checked /> Publish entire video</label>
+              </div>
+              <div class="checkbox">
+                <label><input type="radio" class="radio some" name="row2-video" value="some" />  Publish checked songs only </label>
+              </div>
+              
+              <div class="checkbox">
+                <label><input type="radio" class="radio" name="row1-video" value="none" /> Do not publish video</label>
+              </div>
+            </td>
+ 
+            <td>
+              <div class="thumbnail">
+                <div class="well" style="height:80px;"></div>
+                <div class="caption"> 
+                  <p>12/01/09 w/ side person, side person, side person</p>
+                  <p>5/5 songs will be published. <a href="">Edit/select songs&hellip;</a> </p> 
+                  <div class="set-list well">set list form appears here</div>
+                </div>
+              </div> 
+            </td>
+          </tr>
+        </tbody>
+      </table>  
+      <div class="alert alert-info">Once you publish a video, the side musicians on each video will receive a courtesy email that the video will go live soon.* </div>
+      <p><button type="submit" class="btn btn-primary">Continue</button>  <button type="submit" class="btn btn-default">Skip for now</button></p>
+    </form>
+    <small class="text-muted text-sm">* Because you do not own the entire video recording (aka the "Master"), you cannot decide alone which videos go live. For each video, you and the side musicians each own a portion of the copyright in the Master recording and so all musicians on each video must agree for a video to go live on the website. By default, your side musicians are "opted in" to your videos and only have 7 days to opt out before the video goes live.</small>
+
+  </div>
+</div>
+<div class="dev">
+  <h1>Dev notes</h1>
+  <Ul> 
+  </Ul>
+</div>
+{% endblock content %}
