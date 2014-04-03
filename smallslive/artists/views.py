@@ -6,6 +6,7 @@ from .models import Artist
 class ArtistAddView(CreateView):
     model = Artist
     template_name = 'artists/artist_add.html'
+    fields = ('first_name', 'last_name', 'salutation', 'artist_type', 'biography', 'website', 'photo')
 
 artist_add = ArtistAddView.as_view()
 
