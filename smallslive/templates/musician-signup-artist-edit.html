@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}stepnamehere{% endblock title %}
+{% block bodyclass %}musician-registration{% endblock bodyclass %}
+{% block nav %}{% endblock nav %}
+{% block content %}
+<h1>SmallsLIVE Performer Registration</h1>
+<div class="row">
+  <div class="col-sm-3">
+    {% include "blocks/musician-signup-steps.html" %}
+  </div>
+  <div class="col-sm-9">
+    <form action="">  
+     <h2>Update Your Profile:</h2>
+     <p>show artist form here</p>
+        <button type="submit" class="btn btn-primary">Save &amp; Finish Registration</button>
+    </form>  
+  </div>
+</div>
+<div class="dev">
+  <h1>Dev notes</h1>
+  <Ul> 
+  </Ul>
+</div>
+{% endblock content %}
