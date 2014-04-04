@@ -8,7 +8,8 @@
       
       <ul class="nav nav-tabs">
         <li class="active"><a href="#recent" data-toggle="tab">Recently Updated</a></li>
-        <li><a href="#avail" data-toggle="tab">Open Dates</a></li>
+        <li><a href="#holds" data-toggle="tab">All Holds</a></li>
+        <li><a href="#avail" data-toggle="tab">Open Slots</a></li>
         <li><a href="#upcoming" data-toggle="tab">Upcoming Calendar</a></li>
         <li><a href="#video-summary" data-toggle="tab">Video Summary</a></li>
         <li><a href="#artists" data-toggle="tab">Top Artists</a></li>
@@ -51,26 +52,31 @@
                 <th>event.last_updated_date_in_words_ago</th>
               </tr>
               {% endfor %}
-              <tr><td colspan="4">Show 50 rows + paginate</td></tr>
+              <tr><td colspan="4">Show 50 rows + use datatables to allow sorting and maybe filtering</td></tr>
             </tbody>
           </table>
         </div>
         <div class="tab-pane" id="avail">
-          <p>Table showing unbooked slots in next 60 days ordered by soonest first.</p>
+          <p>Table showing unbooked open slots in next 60 days ordered by nearest gig date first. This essentially could replace the need for Google Calendar usage by spike.</p>
+        </div>
+        <div class="tab-pane" id="holds">
+          <p>Table showing held (unconfirmed) gigs in next 60 days ordered by soonest first.</p>
         </div>
         <div class="tab-pane" id="upcoming">
-          <p>This may be where we use a calendar UI plugin to show a typical calendar look and feel.</p>
+          <p>This could either be a display of Spike's calendar using RSS from Google Cal, or we could render something similar to a calendar UI w/ all upcoming dates, holds, and open slots.</p>
         </div>
-        <div class="tab-pane" id="artist">        
+        <div class="tab-pane" id="artists">        
           <div class="well">
             <h2>Top Earning Artists:</h2>
-            <p>Leaderboard</p>
+            <p>Lifetime | YTD | This month | Last month</p>
+            <p>Leaderboard table here.</p>
           </div>
         </div>
         <div class="tab-pane" id="video-summary">
           <div class="well">
             <h2>Top Earning Videos:</h2>
-            <p>Leaderboard</p> 
+            <p>Lifetime | YTD | This month | Last month</p>
+            <p>Leaderboard table here</p> 
           </div>
           
           <div class="well">
@@ -80,6 +86,7 @@
               <a href="">thumbnail</a>
               <div class="caption">length
                 <p>Gig date</p>   
+                <p>viewing stats</p>
               </div>
             </div>
        
@@ -87,6 +94,15 @@
               <a href="">thumbnail</a>
               <div class="caption">length
                 <p>Gig date</p>   
+                <p>viewing stats</p>
+              </div>
+            </div>
+       
+            <div class="thumbnail">
+              <a href="">thumbnail</a>
+              <div class="caption">length
+                <p>Gig date</p>  
+                <p>viewing stats</p> 
               </div>
             </div>
        
@@ -94,13 +110,7 @@
               <a href="">thumbnail</a>
               <div class="caption">length
                 <p>Gig date</p>   
-              </div>
-            </div>
-       
-            <div class="thumbnail">
-              <a href="">thumbnail</a>
-              <div class="caption">length
-                <p>Gig date</p>   
+                <p>viewing stats</p>
               </div>
             </div>
           </div>
