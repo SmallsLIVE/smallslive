@@ -1,4 +1,4 @@
-{% extends "base_venue.html" %}
+{% extends "base.html" %}
 {% load thumbor_tags %}
 {% block title %}{{ artist.first_name }} {{ artist.last_name }} - {{ artist.artist_type }} ({{artist.videos.count}} concert videos)  {% endblock title %}
 {% block content %}
@@ -10,49 +10,50 @@
       <p>{{ artist.artist_type }} - 6 videos - LIKE - <a href="{{ artist.website }}">@twittername</a></p>
       <p><span class="glyphicon glyphicon-ok"></span> #2 Most Watched (of 612 artists)</p>
       <p><a class="btn btn-primary btn-lg" role="button">Subscribe to my videos</a></p>
+      <p> [<a href="">EDIT PROFILE IF ALLOWED</a>]</p>
     </div>
   </div>
   <div class="col-sm-4">
 
     <h2>Upcoming Shows @ Smalls:</h2>
     <ul>
-      <li>Tue, 3/4/14 title w/ sidemen-here</li>
-      <li>Tue, 4/4/14 title  w/ sidemen-here</li>
-      <li>Tue, 5/4/14 title  w/ sidemen-here</li>
+      <li>Tue, 3/4/14 title w/ sidemen-here [<a href="">EDIT LINK IF ALLOWED</a>]</li>
+      <li>Tue, 4/4/14 title  w/ sidemen-here [<a href="">EDIT LINK IF ALLOWED</a>]</li>
+      <li>Tue, 5/4/14 title  w/ sidemen-here [<a href="">EDIT LINK IF ALLOWED</a>]</li>
     </ul>
   </div>
 </div>
 <div class="row">
   <div class="col-sm-3">
     <div class="well">
-      video
+      gigDate, video, clone link (if allowed)
     </div>
     <div class="well">
-      video
-    </div>
-  </div>
-  <div class="col-sm-3">
-    <div class="well">
-      video
-    </div>
-    <div class="well">
-      video
+      gigDate, video, clone link (if allowed)
     </div>
   </div>
   <div class="col-sm-3">
     <div class="well">
-      video
+      gigDate, video, clone link (if allowed)
     </div>
     <div class="well">
-      video
+      gigDate, video, clone link (if allowed)
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="well">
+      gigDate, video, clone link (if allowed)
+    </div>
+    <div class="well">
+      gigDate, video, clone link (if allowed)
     </div>  
   </div>
   <div class="col-sm-3">
     <div class="well">
-      video
+      gigDate, video, clone link (if allowed)
     </div>
     <div class="well">
-      video
+      gigDate, video, clone link (if allowed)
     </div>  
   </div>
 </div>
