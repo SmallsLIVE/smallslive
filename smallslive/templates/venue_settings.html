@@ -1,25 +1,68 @@
 {% extends "base_venue.html" %}
 {% block title %}Dashboard{% endblock title%}
 {% block content %}
-  <h1>Venue Settings</h1>
+  <h1>Venue Settings &amp; Preferences</h1>
   <div class="row">
     <div class="col-sm-12">
       
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Preference</th>
+            <th>Current Setting</th>
+            <th>Edit</th>
+          </tr>
+        </thead>
+        <tbody>
+           <tr>
+             <td>Allow holds to be double booked?</td>
+             <td>Yes</td>
+             <td><a href="Edit">Edit</a> <code>1</code></td>
+           </tr>
+           <tr>
+             <td>Time zone for events display &amp; venue address</td>
+             <td><p>(GMT -5:00) Eastern Time (US &amp; Canada)</p><address>1 Main St.<br />Boston, MA 11102 USA</address></td>
+             <td><a href="Edit">Edit</a></td>
+           </tr>
+           <tr>
+             <td>Artists can directly edit the following Event information</td>
+             <td>Description, title, subtitle, more-info-link</td>
+             <td><a href="Edit">Edit</a></td>
+           </tr>
+        </tbody>
+      </table>
       <div class="well">
-      <h2>Change Default Set/Slot Times:</h2>
-      <p>[form here]
+      <h2>Allow Holds to be double booked?</h2>
+      <p>The system will never allow you to double-book (publish) two events at exactly the same time. But you can choose to allow double (or triple...) booking for Holds:</p>
+      <form method="post" class="f-prefs-events" role="form" enctype="multipart/form-data">      
+        <p><strong>Allow holds to be double-booked?</strong></p>                    
+        <div class="radio">
+          <label>
+            <input type="radio" name="invitation" id="optionsRadios1" value="yes" checked>
+            Yes (current setting) (Default)
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="invitation" id="optionsRadios2" value="no">
+            No
+          </label>
+        </div>
+        <button type="submit" class="btn btn-default">Save</button>
+      </form>
+      
       </div>  
       
       <div class="well">
-      <h2>Venue Address/Time Zone:</h2>
+      <h2>Time zone for events display & venue address:</h2>
       <p>Enter your venue's street address and select the time zone used to display events to the public:</p>
-      <p>[form here]</p>
+      <p>[form here - simple address form and time-zone picker - put the US zones at the top and consider using a selectize]</p>
       </div>  
       
       <div class="well">
-      <h2>Artist Powers:</h2>
+      <h2>Artist control over event listing:</h2>
       <p>Use this form to determine how much editing control artists will have over gig/event listings:</p>
-      <p>[form here]</p>
+      <p>[form here - use checkboxes for each field they can control or not control - do not use a type-ahead field (selectize) for this]</p>
       </div>  
  
     </div>
@@ -27,6 +70,7 @@
   <div class="dev">
     <h1>Dev notes</h1>
     <Ul> 
+      <li><code>1</code> each form brick should open in a dialog box. submitting the form in the dialog will reload the underlying settings page.</li>
     </Ul>
   </div>
 {% endblock content %}
