@@ -167,7 +167,7 @@ $(document).ready(function(){
       maxItems:1
     })
   });
-  $('.sideman_instruments, input[name=genres]').each(function(i){
+  $('.sideman_instruments, input[name=genres], input[name=artist_type]').each(function(i){
     $(this).selectize({
       delimiter: ',',
       persist: false,
