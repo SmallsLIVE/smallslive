@@ -35,6 +35,9 @@ body nav .longname  {
 form.search input:first-child {
   width: 95px;
 }
+#f-artist-date-lookup input {
+  min-width: 160px;
+}
 /*Footer*/
 footer {
   background: #fafafa;
