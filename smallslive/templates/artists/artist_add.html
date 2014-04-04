@@ -1,13 +1,9 @@
 {% extends "base_venue.html" %}
-{% block title %}Add/Edit Gig: %dateAndArtistandTitleHere%{% endblock title %}
+{% block title %}Add new artist{% endblock title %}
 {% load crispy_forms_tags %}
 {% block content %}
     <h1>Add artist</h1>
-    <section class="lookup-item">
-        <h2>Wait, does this artist exist?</h2>
-        <p><code>1</code> To avoid duplicates, search for an artist first:</p>
-        <input type="text" placeholder="artist name or email" size="32">
-    </section>
+    {% include "blocks/form_lookup_artist.html" %}
     <form method="post" class="f-add-artist" role="form" enctype="multipart/form-data">
         {% csrf_token %}      
         {{ form|crispy }}
