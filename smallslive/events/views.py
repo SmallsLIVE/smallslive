@@ -1,3 +1,4 @@
+from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
 from .models import Event
@@ -22,3 +23,11 @@ class EventDetailView(DetailView):
         return [template_name]
 
 event_detail = EventDetailView.as_view()
+
+
+class VenueDashboardView(ListView):
+    queryset = Event.objects.order_by('-end_day')[:50]
+    template_name = 'dashboard-venue.html'
+    context_object_name = 'events'
+
+venue_dashboard = VenueDashboardView.as_view()
