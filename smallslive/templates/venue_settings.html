@@ -1,5 +1,5 @@
 {% extends "base_venue.html" %}
-{% block title %}Dashboard{% endblock title%}
+{% block title %}Venue Settings & Preferences{% endblock title%}
 {% block content %}
   <h1>Venue Settings &amp; Preferences</h1>
   <div class="row">
@@ -14,6 +14,11 @@
           </tr>
         </thead>
         <tbody>
+           <tr>
+             <td>Default time slots for each evening</td>
+             <td>Sun (3), Mon (2); Tue (3), Wed (3), Thur (4), Fri (3), Sat (3)</td>
+             <td><a href="Edit">Edit/view details</a> <code>1</code></td>
+           </tr>
            <tr>
              <td>Allow holds to be double booked?</td>
              <td>Yes</td>
@@ -32,39 +37,70 @@
         </tbody>
       </table>
       <div class="well">
-      <h2>Allow Holds to be double booked?</h2>
-      <p>The system will never allow you to double-book (publish) two events at exactly the same time. But you can choose to allow double (or triple...) booking for Holds:</p>
-      <form method="post" class="f-prefs-events" role="form" enctype="multipart/form-data">      
-        <p><strong>Allow holds to be double-booked?</strong></p>                    
-        <div class="radio">
-          <label>
-            <input type="radio" name="invitation" id="optionsRadios1" value="yes" checked>
-            Yes (current setting) (Default)
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input type="radio" name="invitation" id="optionsRadios2" value="no">
-            No
-          </label>
-        </div>
-        <button type="submit" class="btn btn-default">Save</button>
-      </form>
-      
+        <h2>Allow Holds to be double booked?</h2>
+        <p>The system will never allow you to double-book (publish) two events at exactly the same time. But you can choose to allow double (or triple...) booking for Holds:</p>
+        <form method="post" class="f-prefs-events" role="form" enctype="multipart/form-data">      
+          <p><strong>Allow holds to be double-booked?</strong></p>                    
+          <div class="radio">
+            <label>
+              <input type="radio" name="invitation" id="optionsRadios1" value="yes" checked>
+              Yes (current setting) (Default)
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="invitation" id="optionsRadios2" value="no">
+              No
+            </label>
+          </div>
+          <button type="submit" class="btn btn-default">Save</button>
+        </form>
       </div>  
-      
       <div class="well">
-      <h2>Time zone for events display & venue address:</h2>
-      <p>Enter your venue's street address and select the time zone used to display events to the public:</p>
-      <p>[form here - simple address form and time-zone picker - put the US zones at the top and consider using a selectize]</p>
+        <h2>Default start/end times for shows:</h2>
+        <p>Choose up to 5 default starting and ending times for shows per day (aka "slots"):</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Sun</th>
+              <th>Mon</th>
+              <th>Tues</th>
+              <th>Wed</th>
+              <th>Thu</th>
+              <th>Fri</th>
+              <th>Sat</th>
+            </tr>
+          </thead>
+          <tbody>
+            <form class="" role="form">
+              <tr>
+                <td>{% include 'blocks/form_default_slot_times.html' %}</td>
+                <td>{% include 'blocks/form_default_slot_times.html' %}</td>
+                <td>{% include 'blocks/form_default_slot_times.html' %}</td>
+                <td>{% include 'blocks/form_default_slot_times.html' %}</td>
+                <td>{% include 'blocks/form_default_slot_times.html' %}</td>
+                <td>{% include 'blocks/form_default_slot_times.html' %}</td>
+                <td>{% include 'blocks/form_default_slot_times.html' %}</td>
+              </tr>
+              <tr>
+                <td>
+                  <button type="submit" class="btn btn-default">Save</button>
+                </td>
+              </tr>
+            </form>
+          </tbody>
+        </table>
+      </div>
+      <div class="well">
+        <h2>Time zone for events display & venue address:</h2>
+        <p>Enter your venue's street address and select the time zone used to display events to the public:</p>
+        <p>[form here - simple address form and time-zone picker - put the US zones at the top and consider using a selectize]</p>
       </div>  
-      
       <div class="well">
       <h2>Artist control over event listing:</h2>
       <p>Use this form to determine how much editing control artists will have over gig/event listings:</p>
       <p>[form here - use checkboxes for each field they can control or not control - do not use a type-ahead field (selectize) for this]</p>
       </div>  
- 
     </div>
   </div>
   <div class="dev">
