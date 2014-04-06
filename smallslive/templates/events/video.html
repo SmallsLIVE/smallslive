@@ -1,3 +1,6 @@
+{# comment #}
+This page is loaded instead of event_detail if the event is in the past or taping is going on.
+{# endcomment #}
 {% extends "base.html" %}
 {% load thumbor_tags %}
 {% block title %}Video: {{ event.artists.first_name }} {{ event.artists.last_name }} {{ event.start_day }} in NYC w/ {{ event.sidemen }}{% endblock title %}
@@ -5,12 +8,10 @@
 <div class="row">
   <div class="col-sm-8">
     <div class="video_player">
-    <h1>Video: {{ event.start_day }} : {{ event.display_title }}</h1>
- 
-    <p>{{ event.subtitle }}</p>
-    <div class="well" style="text-align:center;padding:8em">[media player]</div>
-    </div>
-    
+      <h1>Video: {{ event.start_day }} : {{ event.display_title }}</h1>
+      <p>{{ event.subtitle }}</p>
+      <div class="well" style="text-align:center;padding:8em">[media player]</div>
+    </div>  
     <div class="description"> 
       <p>Recorded {{ event.date_freeform }}</p>
       {{ event.description }}
@@ -27,7 +28,6 @@
           <div class="caption">
             <h3>{{ artist.full_name }}</h3>
             <p>{{ artist.artist_type.all|join:", " }} </p>
-     
           </div>
         </div>
       </div>
@@ -41,8 +41,6 @@
       <Li>%leader2_name% <a href="{% url "artist_detail" pk=214%}">(6 videos)</a></li>
       <Li>%sideman1% <a href="{% url "artist_detail" pk=554%}">(6 videos)</a></li>
     </ul> 
-     
-    
   </div>
 </div>    
 {% endblock content %}
