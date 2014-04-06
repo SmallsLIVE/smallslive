@@ -7,7 +7,9 @@
     <div class="jumbotron">
       <img src="{% thumbor_url artist.photo.url|urlencode width=150 height=150 smart=True %}" class="img-rounded img-responsive pull-left artist-photo" />
       <h1>{{ artist.first_name }} {{ artist.last_name }}</h1>
-      <p>{{ artist.artist_type }} - 6 videos - LIKE - <a href="{{ artist.website }}">@twittername</a></p>
+      <p>{% for instrument in artist.artist_type.all %}
+      {{ instrument }}
+      {% endfor %} - 6 videos - LIKE - <a href="{{ artist.website }}">@twittername</a></p>
       <p><span class="glyphicon glyphicon-ok"></span> #2 Most Watched (of 612 artists)</p>
       <p><a class="btn btn-primary btn-lg" role="button">Subscribe to my videos</a></p>
       <p> [<a href="">EDIT PROFILE IF ALLOWED</a>]</p>
