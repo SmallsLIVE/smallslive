@@ -17,7 +17,8 @@
     </div>
     <h3>featuring:</h3>
     {% for artist in event.performers.all %}
-      <a href="{% url "artist_detail" pk=182 %}"><img src="{{ artist.photo.url }}" style="width:100px;height:100px;" /> {{ artist.full_name }}, {{ artist.artist_type }}</a>
+      <a href="{% url "artist_detail" pk=182 %}"><img src="{{ artist.photo.url }}" style="width:100px;height:100px;" /> {{ artist.full_name }}: 
+      {{ artist.artist_type.all|join:", " }}</a>
     {% endfor %} 
     <div class="video_player">
       <h4>Watch Live (starting in 14 mins.):</h4>

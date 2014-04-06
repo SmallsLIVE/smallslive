@@ -26,7 +26,7 @@
           {% endif %} , </a>
           <div class="caption">
             <h3>{{ artist.full_name }}</h3>
-            <p>{% for artist_type in artist.artist_types %}{{ artist.artist_type }}{% endfor %}</p>
+            <p>{{ artist.artist_type.all|join:", " }} </p>
      
           </div>
         </div>
