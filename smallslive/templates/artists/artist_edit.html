@@ -1,21 +1,27 @@
 {% extends "base_venue.html" %}
+{% load thumbor_tags %}
 {% block title %}Edit profile {{ artist.full_name }}{% endblock title %}
 {% load crispy_forms_tags %}
 {% block content %}
     <h1>Edit profile: {{ artist.full_name }}</h1>
+<div class="row">
+  <div class="col-sm-9">    
     <div class="alert alert-info">
-    <p><a href="">Clone this artist's last show (4/12/14)</a> or see their gig history below.</p>
+      <p><a href="">Clone this artist's last show (4/12/14)</a> or see their gig history below.</p>
     </div>
     <form method="post" role="form" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
         <button type="submit" class="btn btn-default">Submit</button>
     </form>
+  </div>
+  <div class="col-sm-3">    
     <div class="well">
-      <h2>Upcoming Gigs: (0)</h2>
-      <p>This artist hasn't played since 4/11/09.
-      <h2>Past Gigs (13):</h2>
-      <table>
+      <img src="{% thumbor_url artist.photo.url|urlencode width=200   %}" class="img-rounded img-responsive" />
+      <h2>Upcoming: (0)</h2>
+      <p>This artist hasn't played a show since 4/11/09.</p>
+      <h2>Past (13):</h2>
+      <table class="table">
         <tbody>
           <tr>
             <td><a href="">4/11/09</a></td>
@@ -48,6 +54,8 @@
         </tbody>
       </table>
     </div>
+  </div>
+</div>
     <div class="dev">
     <h1>Dev. notes:</h1>
       <ul>
