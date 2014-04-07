@@ -5,26 +5,31 @@
 /* TEmplate setup - body, footer, etc */
 
 /* Masthead */
-
-body nav.navbar {
+body { 
+  > div.alert {
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+  nav.navbar {
   border-radius: 0;
-  .longname  {
-    display: none;
+    .longname  {
+      display: none;
+    }
+    .navbar-brand img { 
+        width: 44px;
+        position: relative; 
+        top: -.6em;
+        padding: 2px;
+        background: #fff;
+        z-index: 50;
+    }
+    form.search input:first-child {
+      width: 95px;
+    }  
+    form.f-artist-date-lookup input {
+      min-width: 160px;
+    }  
   }
-  .navbar-brand img { 
-      width: 44px;
-      position: relative; 
-      top: -.6em;
-      padding: 2px;
-      background: #fff;
-      z-index: 50;
-  }
-  form.search input:first-child {
-    width: 95px;
-  }  
-  form.f-artist-date-lookup input {
-    min-width: 160px;
-  }  
 }
 @media all and 
  (min-width : 800px) {
