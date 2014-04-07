@@ -1,0 +1,120 @@
+{% extends "base_musician.html" %}
+{% block title %}My Gigs{% endblock title%}
+{% block content %}
+  <h1>My Gigs</h1> 
+  <ul class="nav nav-tabs">  
+    <li class="active"><a href="#upcoming" data-toggle="tab">Upcoming</a></li>
+    <li><a href="#past" data-toggle="tab">Past</a></li> 
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="upcoming">
+      <table class="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+            <th>Gig Date</th>
+            <th>Edit Event</th>
+            <th>Last Updated by</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="">View</a></td>
+            <td><a href="">Edit</a></td>
+            <td>event.date(ddd, d/m)</a></td>
+            <td>event.title<br />sideArtist, sideArtist, sideArtist</td>
+            <th>usernameOrMe event.last_updated_date_in_words_ago</th>
+          </tr>
+          <tr>
+            <td><a href="">View</a></td>
+            <td><a href="">Edit</a></td>
+            <td>event.date(ddd, d/m)</a></td>
+            <td>event.title<br />sideArtist, sideArtist, sideArtist</td>
+            <th>usernameOrMe event.last_updated_date_in_words_ago</th>
+          </tr>
+          <tr>
+            <td><a href="">View</a></td>
+            <td><a href="">Edit</a></td>
+            <td>event.date(ddd, d/m)</a></td>
+            <td>event.title<br />sideArtist, sideArtist, sideArtist</td>
+            <th>usernameOrMe event.last_updated_date_in_words_ago</th>
+          </tr>
+          {% for event in events %}
+          <tr>
+            <td>{{ event.end_day }}</td>
+            <td><a href="">{{ event.display_title }}</a></td>
+            <th>event.last_updated_date_in_words_ago</th>
+          </tr>
+          {% endfor %} 
+        </tbody>
+      </table>
+    </div>
+    <div class="tab-pane" id="past">
+      <h2>My Past Shows (3)</h2>
+      <div class="checkbox">
+        <lable><input type="checkbox"> Just my videos as a leader (1)</lable>
+      </div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+            <th>Gig Date</th>
+            <th>Edit Event</th>
+            <th>Video Status</th>
+            <th>Clearance notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="">View video</a></td>
+            <td><a href="">Edit</a></td>
+            <td>event.date(ddd, d/m)</a></td>
+            <td>event.title<br />sideArtist, sideArtist, sideArtist</td>
+            <td class="text-success">Live - 12/13/13</td>
+            <th>All licenses and artists are cleared </th>
+          </tr>
+          <tr>
+            <td><a href="">View</a></td>
+            <td><a href="">Edit</a></td>
+            <td>event.date(ddd, d/m)</a></td>
+            <td>event.title<br />sideArtist, sideArtist, sideArtist</td>
+            <td class="text-warning">Audio only</td>
+            <th>Jon Grimes (dr) opted out of this video on 5/1/13 (<a href="">see note</a><code>1</code>). As such, only audio will be available. 5/6 songs have been cleared. Until all artists and songs are cleared, this video cannot go live.</th>
+          </tr>
+          <tr>
+            <td><a href="">View</a></td>
+            <td><a href="">Edit</a></td>
+            <td>event.date(ddd, d/m)</a></td>
+            <td>event.title<br />sideArtist, sideArtist, sideArtist</td>
+            <td class="text-warning">Audio only.</td>
+            <th>All artists have cleared video. 5/6 songs have been cleared. Until all artists and songs are cleared, this video cannot go live.</th>
+          </tr>
+          <tr>
+            <td><a href="">View</a></td>
+            <td><a href="">Edit</a></td>
+            <td>event.date(ddd, d/m)</a></td>
+            <td>event.title<br />sideArtist, sideArtist, sideArtist</td>
+            <td class="text-danger">No media available.</td>
+            <th>This concert was not recorded or videotaped.</th>
+          </tr>
+          {% for event in events %}
+          <tr>
+            <td>{{ event.end_day }}</td>
+            <td><a href="">{{ event.display_title }}</a></td>
+            <th>event.last_updated_date_in_words_ago</th>
+          </tr>
+          {% endfor %} 
+        </tbody>
+      </table>
+    </div>
+  </div> 
+ 
+  <div class="dev">
+    <h1>Dev notes</h1>
+    <Ul> 
+      <li><code>1</code> - popup shows reasoning left by jon grimes when he opted out</li>
+    </Ul>
+  </div>
+{% endblock content %}
