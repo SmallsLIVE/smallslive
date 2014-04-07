@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block title %}Search: {query}{% endblock title%}
+{% block bodyclass %}search{% endblock bodyclass%}
+{% block content %}
+  <div class="row">
+    <div class="col-sm-3 facets">
+      <form role="form"> 
+        <div class="well">
+          <h2>Search:</h2>
+          <div class="input-group">
+            <span class="input-group-addon">
+              <input type="radio" name="qType" value="artist">
+            </span>
+            <input type="text" class="form-control" id="f1" placeholder="By bandleader name">
+          </div>  
+          <div class="input-group">
+            <span class="input-group-addon">
+              <input type="radio" name="qType" value="instrument">
+            </span>
+            <input type="text" class="form-control" id="f2" placeholder="By instrument">
+          </div>  
+          <p>...featuring these side musicians:<code>1, 2</code></p>
+          <div class="row">
+            <div class="col-sm-offset-1 col-sm-10">    
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> Ari Hoenig (dr)
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> Peter Bernstein (gtr)
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> Montez Coleman (dr)
+                </label>
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> Montez Coleman (dr)
+                </label>
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">
+                  <input type="checkbox" name="custom_sideman" value="">
+                </span>
+                <input type="text" class="form-control" id="f2" placeholder="Other musician name">
+              </div> 
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-sm-9">
+      <h1>(21) videos:</h1>
+      <p>Sort: best match | <a href="">newest releases</a> | <a href="">earliest show date first</a>  | <a href="">most recent show date first</a> | <a href="">most popular</a> </p>
+      <table class="table">
+        <tbody>           
+          <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p><p class="text-muted">You  watched it 4 days ago.</p> </td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p><p class="text-muted">You  watched it 14 days ago.</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ <tr>
+            <td colspan="">thumb</td>
+            <td><a href="/artists/102/edit">video title</a><p>about the video, instruments, date</p></td>
+          </tr>  
+ 
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="dev">
+    <h1>Dev notes</h1>
+    <Ul> 
+      <li><code>1</code> Ajax selection of artist controls which sidemen appear</li> 
+      <li><code>2</code> Return 20 sidemen order by most-videos-played-on. The sidemen checkboxes are "or" searches not "and" searches, however, if you have a match for leader and a match for 2/2 checked sidemen, then that video should surface at the top.</li> 
+
+    </Ul>
+  </div>
+{% endblock content %}

@@ -14,8 +14,15 @@
     <![endif]-->
   </head>
   <body class="{% block bodyclass%}{% endblock bodyclass %}">
-    {% block alert %}{% endblock alert %}
-    <nav class="navbar navbar-default navbar-inverse " role="navigation">   
+    {% block alert %}
+      {% for message in messages %}
+        <div class="alert {% if message.tags %}{{ message.tags }}{% endif %} alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endblock alert %}
+    <nav class="navbar navbar-default navbar-inverse " role="navigation">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -51,7 +58,7 @@
               <li><a href="#">Store</a></li>
               <li><a href="/static_page/about">About</a></li>
             </ul>
-            <form class="navbar-form navbar-left search" role="search">
+            <form class="navbar-form navbar-left search" role="search" action="/static_page/search">
               <div class="form-group">
                 <input type="text" class="form-control input-sm" placeholder="Artist or Date">
               </div>
@@ -68,6 +75,10 @@
     </div>  
     <footer> 
       <p>&copy;2014 Smalls  •  183 W. 10th St, New York, NY 10014 <a href="#">(Directions)</a><br /><a href="mailto:info@smallsjazzclub.com">info@smallsjazzclub.com</a> • 212-252-5091</p>
+      <ul>
+        <li><a href="">Staff/Team</a></li>
+        <li><a href="">Mission Statement</a></li>
+      </ul>
     </footer>
     <div class="dev">
     <h1>Global Dev Notes:</h1>

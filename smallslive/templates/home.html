@@ -1,24 +1,52 @@
 {% extends "base.html" %}
+{% load thumbor_tags %}
 {% block title_prefix %}{% endblock title_prefix %}
 {% block title_suffix %} - Watch Jazz Videos from Smalls Jazz Club (NYC){% endblock title_suffix%}
- 
-
 {% block content %}
-
   <div class="row homepage-spotlight">
     <div class="col-sm-10  col-sm-offset-1"> 
-      <div class="jumbotron">
-        <h1><a href="{% url "event_detail" pk=8402 %}">Tonight: The Joe Martin Quartet CD Release  @ <span class="text-primary">9:30pm</span></a></h1>
-        <p>w/ name, name, name</p>
-        <p><em>plus</em>:</p>
-        <h3><a href="{% url "event_detail" pk=7802 %}">The Hayes Greenfield Roger Rosenberg Quartet  @ <span class="text-primary">11:30pm</span></a></h3>
-        <p> w/ name, name name</p>
-        <h3><a href="{% url "event_detail" pk=7602 %}">Bucky Pizzarelli and Ed Laub @    <span class="text-primary">1am</span></a></h3>
-        <p>Sunday Evening Duets</p>
-      </div>
+      <div id="carousel-example-generic" class="carousel slide" >
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+          <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+          <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+        </ol>
+      
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+          <div class="item active">
+            <div class="carousel-caption">
+                <h1><a href="{% url "event_detail" pk=8402 %}">Tonight: The Joe Martin Quartet CD Release  @ <span class="text-primary">9:30pm</span></a></h1>
+              <p><img src="http://d3dombqstlgdhj.cloudfront.net/images/smallssextet3.jpg" alt="..."></p>
+              <p><em>plus</em>:</p>
+            </div>
+          </div>
+          <div class="item">
+            <div class="carousel-caption">
+             <h1><a href="{% url "event_detail" pk=7802 %}">The Hayes Greenfield Roger Rosenberg Quartet  @ <span class="text-primary">11:30pm</span></a></h1>
+              <p><img src="http://d3dombqstlgdhj.cloudfront.net/images/smallssextet3.jpg" alt="..."></p>
+              <p> w/ name, name name</p>
+            </div>
+          </div>
+          <div class="item">
+            <div class="carousel-caption">
+             <h1><a href="{% url "event_detail" pk=7602 %}">Bucky Pizzarelli and Ed Laub @    <span class="text-primary">1am</span></a></h1>
+              <p><img src="http://d3dombqstlgdhj.cloudfront.net/images/smallssextet3.jpg" alt="..."></p>
+              <p>Sunday Evening Duets</p>
+            </div>
+          </div>
+        </div>
+        <!-- Controls -->
+        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+      </div>    
     </div>
-  </div>
- 
+  </div> 
   <div class="row">
     <div class="col-sm-6">
       <h2>Next 7 days @ Smalls:</h2>

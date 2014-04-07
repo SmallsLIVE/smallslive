@@ -5,26 +5,31 @@
 /* TEmplate setup - body, footer, etc */
 
 /* Masthead */
-
-body nav.navbar {
+body { 
+  > div.alert {
+    margin-bottom: 0;
+    border-radius: 0;
+  }
+  nav.navbar {
   border-radius: 0;
-  .longname  {
-    display: none;
+    .longname  {
+      display: none;
+    }
+    .navbar-brand img { 
+        width: 44px;
+        position: relative; 
+        top: -.6em;
+        padding: 2px;
+        background: #fff;
+        z-index: 50;
+    }
+    form.search input:first-child {
+      width: 95px;
+    }  
+    form.f-artist-date-lookup input {
+      min-width: 160px;
+    }  
   }
-  .navbar-brand img { 
-      width: 44px;
-      position: relative; 
-      top: -.6em;
-      padding: 2px;
-      background: #fff;
-      z-index: 50;
-  }
-  form.search input:first-child {
-    width: 95px;
-  }  
-  form.f-artist-date-lookup input {
-    min-width: 160px;
-  }  
 }
 @media all and 
  (min-width : 800px) {
@@ -52,18 +57,50 @@ footer {
   padding: 1em;
   margin-top:2em;
   border-top:1px solid #ccc;
+  text-align: center;
+  position: relative;
+  ul {
+    padding-left: 0; 
+    li {
+      text-align: center;
+      list-style: none;
+    }
+  }
+}
+@media all and 
+ (min-width : 950px) {
+  footer {
+    text-align: left;
+    ul { 
+      position: absolute;
+      right: 20px;
+      top: 0;
+      text-align: left;
+      display: inline;
+      li {
+        display: inline;
+        margin-right: 1em;
+      }
+    }
+  }
 }
 /*=Public screens*/
 /*Home*/
 .homepage-spotlight {
   margin-top: -20px;
   margin-bottom: 20px;
-  background: #343434;
+  padding-bottom: 20px;
+  background: #000;
   > div {
   padding-top:20px;
   }
+  a,a:visited {
+    color: #fff;  
+  }
+  .carousel-inner > .item {
+    min-height: 400px;
+  }
 }
- 
 .num {
   text-align: right;
 } 
@@ -71,6 +108,34 @@ table {
   .num {
     @extend .num;
   }
+}
+/*=SEarch*/
+body.search .facets {
+  div.input-group {
+    margin-bottom: 10px;  
+  }
+  .row div.checkbox {
+    padding-left: 33px;
+  }
+  h2 {
+    margin-top: 0;
+    font-size: 20px;
+  }
+  p {
+    margin: 1em 0 1em 0;
+    padding: 0;
+  }
+}
+/*=Admin screens*/
+/*=Signup screens*/
+table.videos-to-publish tr .checkbox label   {
+  white-space: nowrap;
+  input {
+    display: inline;
+  }
+}
+input.form-control.text-muted[type=text] {
+  color: #999;
 }
 .earnings-summary table tr td:not(:first-child):not(.txt) {
   @extend .num;
@@ -85,17 +150,6 @@ table {
 }
 table.videos-to-clear .form-group .checkbox:not(:first-child) {
   margin-left: 20px;
-}
-/*=Admin screens*/
-/*=Signup screens*/
-table.videos-to-publish tr .checkbox label   {
-  white-space: nowrap;
-  input {
-    display: inline;
-  }
-}
-input.form-control.text-muted[type=text] {
-  color: #999;
 }
 /*=Gigs*/ 
 div.trigger_add_set_times {
