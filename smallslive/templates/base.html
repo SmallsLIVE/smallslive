@@ -16,7 +16,10 @@
   <body class="{% block bodyclass%}{% endblock bodyclass %}">
     {% block alert %}
       {% for message in messages %}
-        <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
+        <div class="alert {% if message.tags %}{{ message.tags }}{% endif %} alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          {{ message }}
+        </div>
       {% endfor %}
     {% endblock alert %}
     <nav class="navbar navbar-default navbar-inverse " role="navigation">
