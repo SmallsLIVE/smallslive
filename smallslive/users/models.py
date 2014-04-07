@@ -93,3 +93,9 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         Sends an email to this User.
         """
         send_mail(subject, message, from_email, [self.email])
+
+    def is_artist(self):
+        """
+        Checks if a user has an artist model assigned
+        """
+        return self.artist != None
