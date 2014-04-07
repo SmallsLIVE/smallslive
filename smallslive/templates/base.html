@@ -14,8 +14,12 @@
     <![endif]-->
   </head>
   <body class="{% block bodyclass%}{% endblock bodyclass %}">
-    {% block alert %}{% endblock alert %}
-    <nav class="navbar navbar-default navbar-inverse " role="navigation">   
+    {% block alert %}
+      {% for message in messages %}
+        <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">{{ message }}</div>
+      {% endfor %}
+    {% endblock alert %}
+    <nav class="navbar navbar-default navbar-inverse " role="navigation">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
