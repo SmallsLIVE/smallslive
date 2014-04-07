@@ -1,20 +1,21 @@
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
+from .forms import ArtistAddForm
 from .models import Artist
 
 
 class ArtistAddView(CreateView):
     model = Artist
+    form_class = ArtistAddForm
     template_name = 'artists/artist_add.html'
-    fields = ('first_name', 'last_name', 'salutation', 'artist_type', 'biography', 'website', 'photo')
 
 artist_add = ArtistAddView.as_view()
 
 
 class ArtistEditView(UpdateView):
     model = Artist
+    form_class = ArtistAddForm
     template_name = 'artists/artist_edit.html'
-    fields = ('first_name', 'last_name', 'salutation', 'artist_type', 'biography', 'website', 'photo')
 
 artist_edit = ArtistEditView.as_view()
 
