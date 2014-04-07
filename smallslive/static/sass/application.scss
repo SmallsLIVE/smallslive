@@ -136,6 +136,11 @@ div.datepicker {
   padding: 0;
   margin: 0 0 .5em 0; 
 }
+
+.dev li li {
+  list-style: circle;
+  margin-left: 3em;
+}
 .dev * {
   font-size: 12px;
 }

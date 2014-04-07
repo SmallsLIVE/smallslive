@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Edit My Account{% endblock title%}
+{% block content %}
+  <h1>Edit My Account</h1>
+  <div class="row">
+    <div class="col-sm-12">
+      <!-- if user==artist -->
+      <div class="alert alert-info">
+        <code>1</code>Artists: This page shows your mostly-private profile information. <a href="/artists/102/edit">Edit your public artist bio, photo etc. here</a>
+      </div> 
+      <!-- end if -->
+      <p><code>2</code>[Output user model form in this order: <br />image,<br /> email, <br />password, <br />username,<br /> name,<br /> address, <br />phone  ]</p>
+    </div>
+  </div>
+  <div class="dev">
+    <h1>Dev notes</h1>
+    <Ul> 
+      <li><code>1</code> note pseudo code in comments</li>
+      <li><code>2</code> For image field, if user==artist, then say "if you do not upload a photo, your artist profile photo will be used". Take user to Dashboard w/ Flash message </li>
+    </Ul>
+  </div>
+{% endblock content %}
