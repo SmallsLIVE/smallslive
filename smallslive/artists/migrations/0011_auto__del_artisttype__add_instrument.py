@@ -6,6 +6,10 @@ from django.db import models
 
 
 class Migration(SchemaMigration):
+    depends_on = (
+        ('events', '0008_auto__chg_field_event_photo'),
+    )
+
 
     def forwards(self, orm):
         if not db.dry_run:
