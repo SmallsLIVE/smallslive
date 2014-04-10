@@ -9,8 +9,11 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         if not db.dry_run:
-            old_content_type = orm['contenttypes.ContentType'].objects.get(app_label='artists', model='artisttype')
-            old_content_type.delete()
+            try:
+                old_content_type = orm['contenttypes.ContentType'].objects.get(app_label='artists', model='artisttype')
+                old_content_type.delete()
+            except orm['contenttypes.ContentType'].DoesNotExist:
+                pass
 
         # Renaming ArtistType to Instrument
         db.rename_table(u'artists_artisttype', u'artists_instrument')
