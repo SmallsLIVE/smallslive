@@ -65,3 +65,16 @@
       </ul>
     </div>
 {% endblock content %}
+
+{% block extra_js %}
+  <script>
+    $("#id_artist_type").selectize({
+      create: function(input) {
+          return {
+              value: input,
+              text: input
+          }
+      }
+    });
+  </script>
+{% endblock extra_js %}

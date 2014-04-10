@@ -53,4 +53,18 @@
           <li><code>3</code> The flash message should have text like "Profile saved &amp; invitation sent."</li>
       </ul>
     </div>
+
 {% endblock content %}
+
+{% block extra_js %}
+  <script>
+    $("#id_artist_type").selectize({
+      create: function(input) {
+          return {
+              value: input,
+              text: input
+          }
+      }
+    });
+  </script>
+{% endblock extra_js %}

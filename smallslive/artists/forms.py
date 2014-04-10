@@ -1,6 +1,5 @@
 from crispy_forms.helper import FormHelper
 from django.forms import ModelForm
-from django.forms.widgets import TextInput
 from .models import Artist
 
 
@@ -8,9 +7,6 @@ class ArtistAddForm(ModelForm):
     class Meta:
         model = Artist
         fields = ('first_name', 'last_name', 'salutation', 'artist_type', 'biography', 'website', 'photo')
-        widgets = {
-            'artist_type': TextInput()
-        }
 
     def __init__(self, *args, **kwargs):
         super(ArtistAddForm, self).__init__(*args, **kwargs)
