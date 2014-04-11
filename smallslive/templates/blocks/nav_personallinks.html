@@ -1,14 +1,16 @@
 <ul class="nav navbar-nav navbar-right">
+  {% if user.is_authenticated %}
   <li class="dropdown">
     <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="longname">My</span> Account <b class="caret"></b></a>
     <ul class="dropdown-menu"> 
-      <!-- IF USER IS ARTIST-->
+      {% if user.is_artist %}
       <li><a href="/artists/9/edit">Edit artist profile</a></li>
-      <!-- END IF -->
-      <li><a href="">Subscription info</a></li>         
+      {% endif %}
+      <li><a href="/static_page/my_subscription">Subscription info</a></li>         
       <li><a href="/static_page/my_account">Profile, email, password</a>
     </ul>
-  </li>   
+  </li>  
+  {% endif %} 
   <li>
     {% if not user.is_authenticated %}
       <a href="{% url "account_login" %}">Log In</a>

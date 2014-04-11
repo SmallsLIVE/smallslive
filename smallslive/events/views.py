@@ -27,7 +27,7 @@ event_detail = EventDetailView.as_view()
 
 class VenueDashboardView(ListView):
     queryset = Event.objects.order_by('-end_day')[:50]
-    template_name = 'dashboard-venue.html'
+    template_name = 'dashboard-admin.html'
     context_object_name = 'events'
 
 venue_dashboard = VenueDashboardView.as_view()

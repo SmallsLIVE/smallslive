@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}My Subscription<{% endblock title%}
+{% block content %}
+  <h1>My Subscription</h1>
+  <div class="row">
+    <div class="col-sm-12">
+      <table class="table table-striped">
+        <tbody>
+          {% if user.is_artist %}
+          <tr>
+            <td colspan="">Account Type</td>
+            <td>You have a free artist subscription. Music you listen to does not count towards play counts or royalties.</td>
+          </tr> 
+          {% else %}
+          <tr>
+            <td>Account Type</td>
+            <td>Free Trial <span class="text-danger">(Expires in 2 days on April 16, 2015)</span></td>
+            <td><a href="">Upgrade Now</a></td>
+          </tr>
+          {% endif %}
+          <tr>
+            <td>Billing</td>          
+            <td>We're charging your VISA card ending in 1234. <span class="text-warning">Warning: this card will expire on 6/1/2014.</span></td>
+            <td><a href="">Change credit card</a></td>
+          </tr>
+          <tr>
+            <td># Downloads Bought</td><td>16 (sets)</td><td><a href="">View purchase history</a></td>
+          </tr>
+          <tr>
+            <td>Subscriber since</td><td>March 1, 2015</td><td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="dev">
+    <h1>Dev notes</h1>
+    <Ul> 
+      <li><code>1</code> note pseudo code in comments</li>     
+    </Ul>
+  </div>
+{% endblock content %}

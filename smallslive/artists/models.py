@@ -1,13 +1,14 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
+from sortedm2m.fields import SortedManyToManyField
 
 
 class Artist(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     salutation = models.CharField(max_length=255, blank=True)
-    artist_type = models.ManyToManyField('ArtistType', related_name='artists', blank=True)
+    instruments = SortedManyToManyField('Instrument', blank=True)
     biography = models.TextField(blank=True)
     website = models.CharField(max_length=255, blank=True)
     photo = models.ImageField(upload_to='artist_images', max_length=150, blank=True)
@@ -26,8 +27,11 @@ class Artist(models.Model):
         return "{0} {1}".format(self.first_name, self.last_name)
 
 
-class ArtistType(models.Model):
+class Instrument(models.Model):
     name = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ['name']
 
     def __unicode__(self):
         return self.name

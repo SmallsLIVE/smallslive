@@ -1,4 +1,4 @@
-{% extends "base_venue.html" %}
+{% extends "base_admin.html" %}
 {% load thumbor_tags %}
 {% block title %}Edit profile {{ artist.full_name }}{% endblock title %}
 {% load crispy_forms_tags %}
@@ -17,7 +17,9 @@
   </div>
   <div class="col-sm-3">    
     <div class="well">
-      <img src="{% thumbor_url artist.photo.url|urlencode width=200   %}" class="img-rounded img-responsive" />
+      {% if artist.photo %}
+        <img src="{% thumbor_url artist.photo.url|urlencode width=200   %}" class="img-rounded img-responsive" />
+      {% endif %}
       <h2>Upcoming: (0)</h2>
       <p>This artist hasn't played a show since 4/11/09.</p>
       <h2>Past (13):</h2>
@@ -65,3 +67,16 @@
       </ul>
     </div>
 {% endblock content %}
+
+{% block extra_js %}
+  <script>
+    $("#id_instruments").selectize({
+      create: function(input) {
+          return {
+              value: input,
+              text: input
+          }
+      }
+    });
+  </script>
+{% endblock extra_js %}

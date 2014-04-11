@@ -6,73 +6,68 @@ from django.db import models
 
 
 class Migration(SchemaMigration):
-
-    needed_by = (
-        ("socialaccount", "0001_initial"),
+    depends_on = (
+        ('events', '0008_auto__chg_field_event_photo'),
     )
 
+
     def forwards(self, orm):
-        # Adding model 'SmallsUser'
-        db.create_table(u'users_smallsuser', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('password', self.gf('django.db.models.fields.CharField')(max_length=128)),
-            ('last_login', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
-            ('is_superuser', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('email', self.gf('django.db.models.fields.EmailField')(unique=True, max_length=75)),
-            ('first_name', self.gf('django.db.models.fields.CharField')(max_length=50, blank=True)),
-            ('last_name', self.gf('django.db.models.fields.CharField')(max_length=50, blank=True)),
-            ('is_staff', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('is_active', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('date_joined', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
-            ('photo', self.gf('django.db.models.fields.files.ImageField')(max_length=100, blank=True)),
-            ('access_level', self.gf('django.db.models.fields.CharField')(default='', max_length=30, blank=True)),
-            ('login_count', self.gf('django.db.models.fields.IntegerField')(default=0)),
-            ('accept_agreement', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('renewal_date', self.gf('django.db.models.fields.DateField')(null=True)),
-            ('subscription_price', self.gf('django.db.models.fields.IntegerField')(null=True)),
-            ('company_name', self.gf('django.db.models.fields.CharField')(max_length=150, blank=True)),
-            ('address_1', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
-            ('address_2', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
-            ('city', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
-            ('state', self.gf('django.db.models.fields.CharField')(max_length=50, blank=True)),
-            ('zip', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
-            ('country', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
-            ('phone_1', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
-            ('website', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
-        ))
-        db.send_create_signal(u'users', ['SmallsUser'])
+        if not db.dry_run:
+            try:
+                old_content_type = orm['contenttypes.ContentType'].objects.get(app_label='artists', model='artisttype')
+                old_content_type.delete()
+            except orm['contenttypes.ContentType'].DoesNotExist:
+                pass
 
-        # Adding M2M table for field groups on 'SmallsUser'
-        m2m_table_name = db.shorten_name(u'users_smallsuser_groups')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('smallsuser', models.ForeignKey(orm[u'users.smallsuser'], null=False)),
-            ('group', models.ForeignKey(orm[u'auth.group'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['smallsuser_id', 'group_id'])
+        # Renaming ArtistType to Instrument
+        db.rename_table(u'artists_artisttype', u'artists_instrument')
+        db.send_create_signal(u'artists', ['Instrument'])
 
-        # Adding M2M table for field user_permissions on 'SmallsUser'
-        m2m_table_name = db.shorten_name(u'users_smallsuser_user_permissions')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('smallsuser', models.ForeignKey(orm[u'users.smallsuser'], null=False)),
-            ('permission', models.ForeignKey(orm[u'auth.permission'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['smallsuser_id', 'permission_id'])
+        db.rename_column(u'artists_artist_instruments', u'artisttype_id', u'instrument_id')
+
+        # Removing the old m2m to ArtistType
+        db.delete_table(db.shorten_name(u'artists_artist_artist_type'))
 
 
     def backwards(self, orm):
-        # Deleting model 'SmallsUser'
-        db.delete_table(u'users_smallsuser')
+        # Adding M2M table for field artist_type on 'Artist'
+        m2m_table_name = db.shorten_name(u'artists_artist_artist_type')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('artist', models.ForeignKey(orm[u'artists.artist'], null=False)),
+            ('artisttype', models.ForeignKey(orm[u'artists.artisttype'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['artist_id', 'artisttype_id'])
 
-        # Removing M2M table for field groups on 'SmallsUser'
-        db.delete_table(db.shorten_name(u'users_smallsuser_groups'))
+        db.rename_column(u'artists_artist_instruments', u'instrument_id', u'artisttype_id')
 
-        # Removing M2M table for field user_permissions on 'SmallsUser'
-        db.delete_table(db.shorten_name(u'users_smallsuser_user_permissions'))
+        # Renaming ArtistType to Instrument
+        db.rename_table(u'artists_instrument', u'artists_artisttype')
+        db.send_create_signal(u'artists', ['ArtistType'])
+
+        if not db.dry_run:
+            orm['contenttypes.ContentType'].objects.create(app_label='artists', model='artisttype')
+
 
 
     models = {
+        u'artists.artist': {
+            'Meta': {'ordering': "['last_name']", 'object_name': 'Artist'},
+            'biography': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'instruments': ('sortedm2m.fields.SortedManyToManyField', [], {'to': u"orm['artists.Instrument']", 'symmetrical': 'False', 'blank': 'True'}),
+            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'photo': ('django.db.models.fields.files.ImageField', [], {'max_length': '150', 'blank': 'True'}),
+            'salutation': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.OneToOneField', [], {'blank': 'True', 'related_name': "'artist'", 'unique': 'True', 'null': 'True', 'to': u"orm['users.SmallsUser']"}),
+            'website': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'})
+        },
+        u'artists.instrument': {
+            'Meta': {'object_name': 'Instrument'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '255'})
+        },
         u'auth.group': {
             'Meta': {'object_name': 'Group'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -116,13 +111,13 @@ class Migration(SchemaMigration):
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
             'phone_1': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'photo': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'blank': 'True'}),
-            'renewal_date': ('django.db.models.fields.DateField', [], {'null': 'True'}),
+            'renewal_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'state': ('django.db.models.fields.CharField', [], {'max_length': '50', 'blank': 'True'}),
-            'subscription_price': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
+            'subscription_price': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "u'user_set'", 'blank': 'True', 'to': u"orm['auth.Permission']"}),
             'website': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'zip': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'})
         }
     }
 
-    complete_apps = ['users']
+    complete_apps = ['artists']

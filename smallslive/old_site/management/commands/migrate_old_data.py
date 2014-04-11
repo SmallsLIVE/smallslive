@@ -2,7 +2,7 @@ import bleach
 from bs4 import BeautifulSoup
 from django.core.management.base import NoArgsCommand
 
-from artists.models import Artist, ArtistType
+from artists.models import Artist, Instrument
 from events.models import Event, EventType, GigPlayed
 from multimedia.models import MediaType, Media
 from old_site.models import Joinmediaevent, Joinmediaperson,Joinpersonevent, OldEvent,\
@@ -30,13 +30,13 @@ class Command(NoArgsCommand):
         # Artist types
         count = 0
         for old_person_type in OldPersonType.objects.using('old').all():
-            artist_type, created = ArtistType.objects.get_or_create(
+            instrument, created = Instrument.objects.get_or_create(
                 id=old_person_type.persontypeid,
                 name=old_person_type.persontype
             )
             if created:
                 count += 1
-        self.stdout.write('Successfully imported {0} artist types'.format(count))
+        self.stdout.write('Successfully imported {0} instruments'.format(count))
 
         # Artists
         count = 0
@@ -51,11 +51,11 @@ class Command(NoArgsCommand):
             new_artist.website = old_artist.website or ""
 
             # Foreign keys
-            artist_type, artist_type_created = ArtistType.objects.get_or_create(
+            instrument, instrument_created = Instrument.objects.get_or_create(
                 id=old_artist.persontypeid_id,
                 name=old_artist.persontypeid.persontype,
             )
-            new_artist.artist_type.add(artist_type)
+            new_artist.instruments.add(instrument)
 
             if artist_created:
                 count += 1
@@ -207,5 +207,5 @@ class Command(NoArgsCommand):
         self.migrate_artists()
         self.migrate_events()
         self.connect_artist_to_events()
-        self.migrate_media()
-        self.connect_media_with_s3()
+        #self.migrate_media()
+        #self.connect_media_with_s3()

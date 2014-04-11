@@ -1,6 +1,5 @@
-{% extends "base_venue.html" %}
+{% extends "base_admin.html" %}
 {% load crispy_forms_tags %}
-
 {% block title %}Add new artist{% endblock title %}
 {% block content %}
     <h1>Add artist</h1>
@@ -54,4 +53,18 @@
           <li><code>3</code> The flash message should have text like "Profile saved &amp; invitation sent."</li>
       </ul>
     </div>
+
 {% endblock content %}
+
+{% block extra_js %}
+  <script>
+    $("#id_instruments").selectize({
+      create: function(input) {
+          return {
+              value: input,
+              text: input
+          }
+      }
+    });
+  </script>
+{% endblock extra_js %}

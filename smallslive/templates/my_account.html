@@ -1,22 +1,22 @@
 {% extends "base.html" %}
-{% block title %}Profile: user.full_name{% endblock title%}
+{% block title %}Profile: {{ user.full_name }}<{% endblock title%}
 {% block content %}
-  <h1>Profile: user.full_name</h1>
+  <h1>Profile: {{ user.full_name }}</h1>
   <div class="row">
     <div class="col-sm-7">
       <table class="table">
         <tbody>
-          <!-- if user==artist -->
+          {% if user.is_artist %}
           <tr>
             <td colspan="">Public Artist Info</td>
             <td><a href="/artists/102/edit">Edit your public artist bio, photo etc. here</a></td>
           </tr> 
-          <!-- end if -->
+          {% endif %}
           <tr>
             <td>Profile Photo (square recommended)</td><td><code>3</code>[show thumb here] [change button] [remove]</td>
           </tr>
           <tr>
-            <td>Email (your login)</td><td>user.email <code>6</code>(unverified)</td><td><a href="/static_page/my_account_edit">edit email address</a><code>4</code></td>
+            <td>Email (your login)</td><td>{{ user.email }} <code>6</code>(unverified)</td><td><a href="/static_page/my_account_edit">edit email address</a><code>4</code></td>
           </tr>
           <tr>
             <td>Password</td><td>****</td><td><a href="/static_page/my_account_edit">change password</a></td>
@@ -25,10 +25,10 @@
             <td><code>2</code> Username</td><td>user.username</td><td><a href="/static_page/my_account_edit">change username</a></td>
           </tr>
           <tr>
-            <td>Phone</td><td>user.phone</td><td><a href="/static_page/my_account_edit">edit phone</a></td>
+            <td>Phone</td><td>{{ user.phone1 }}</td><td><a href="/static_page/my_account_edit">edit phone</a></td>
           </tr>
           <tr>
-            <td>Address</td><td><address>user.address<br />user.city, user.state user.postal_code<br />user.country</address></td><td><a href="">edit address</a></td>
+            <td>Address</td><td><address>{{ user.address1 }}<br />{{ user.address2 }}<br />{{ user.city }}, {{ user.state }} {{ user.zip }}<br />user.country</address></td><td><a href="">edit address</a></td>
           </tr>
         </tbody>
       </table>
