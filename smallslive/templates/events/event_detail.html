@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load thumbor_tags %}
-{% block alert %}<div class="alert alert-success">Event saved. <a href="{% url "artist_detail" pk=182 %}">Edit again</a></div>{% endblock %}
 {% block title %}Hear {{ event.artists.first_name }} {{ event.artists.last_name }} {{ event.start_day }} in NYC w/ {{ event.sidemen }}{% endblock title %}
 {% block content %}
 <div class="row">
