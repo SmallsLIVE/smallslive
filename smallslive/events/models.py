@@ -1,11 +1,13 @@
+from django.conf import settings
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.timezone import datetime
 from model_utils import Choices
 from model_utils.fields import StatusField
+from model_utils.models import TimeStampedModel
 
 
-class Event(models.Model):
+class Event(TimeStampedModel):
     SETS = Choices('10-11pm', '11-12pm', '12-1am')
     STATUS = Choices('Draft', 'Published', 'Cancelled', 'Hidden')
 
@@ -21,6 +23,7 @@ class Event(models.Model):
     date_freeform = models.TextField(blank=True)
     photo = models.ImageField(upload_to='event_images', max_length=150, blank=True)
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed')
+    last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField()
 
     class Meta:

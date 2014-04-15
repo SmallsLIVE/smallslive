@@ -31,7 +31,7 @@
                 <td>{{ event.end_day }}</td>
                 <td><a href="{{ event.get_absolute_url }}">{{ event.display_title }}</a></td>
                 <td><span class="text-danger">0/4</span> <a href="#">Send invitation(s)&hellip;</a></td>
-                <th>event.last_updated_date_in_words_ago</th>
+                <th>{{ event.modified }}</th>
               </tr>
               {% endfor %}
               <tr><td colspan="4">Show 50 rows + use datatables to allow sorting and maybe filtering</td></tr>

@@ -10,4 +10,8 @@ class EventAdmin(admin.ModelAdmin):
     search_fields = ('title', 'subtitle')
     save_on_top = True
 
+    def save_model(self, request, obj, form, change):
+        obj.last_modified_by = request.user
+        obj.save()
+
 admin.site.register(Event, EventAdmin)
