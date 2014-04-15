@@ -19,7 +19,7 @@ urlpatterns = patterns('',
     url(r'^static_page/(?P<template_name>[A-Za-z_-]*)/$', StaticPageView.as_view(), name="static_page"),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('allauth.urls')),
-    url(r'^$', TemplateView.as_view(template_name='home.html'), name="home"),
+    url(r'^$', 'events.views.homepage', name="home"),
 )
 
 if settings.DEBUG:

@@ -8,11 +8,13 @@
     <h2>{{ event.date_freeform }}</h2>
     <h2>{{ event.subtitle }}</h2>
     <div class="description">
-      <img src="{{ event.photo.url }}" />
+      {% if event.photo %}
+        <img src="{{ event.photo.url }}" />
+      {% endif %}
     </div>
     <h3>featuring:</h3>
     {% for artist in event.performers.all %}
-      <a href="{% url "artist_detail" pk=182 %}"><img src="{{ artist.photo.url }}" style="width:100px;height:100px;" /> {{ artist.full_name }}: 
+      <a href="{% url "artist_detail" pk=182 %}">{% if artist.photo %}<img src="{{ artist.photo.url }}" style="width:100px;height:100px;" />{% endif %} {{ artist.full_name }}:
       {{ artist.instruments.all|join:", " }}</a>
     {% endfor %} 
     <div class="video_player">

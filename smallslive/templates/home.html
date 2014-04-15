@@ -50,15 +50,9 @@
   <div class="row">
     <div class="col-sm-6">
       <h2>Next 7 days @ Smalls:</h2>
-      <div class="well">Event here</div>
-      <div class="well">Event here</div>
-      <div class="well">Event here</div>
-      <div class="well">Event here</div>
-      <div class="well">Event here</div>
-      <div class="well">Event here</div>
-      <div class="well">Event here</div>
-      <div class="well">Event here</div>
-      <div class="well">Event here</div>
+      {% for event in events %}
+        <div class="well"><a href="{{ event.get_absolute_url }}">{{ event.display_title }} @ {{ event.start_day }}</a></div>
+      {% endfor %}
       <h2>About Smalls and SmallsLIVE</h2>
       <p>Smalls is a historic jazz club in NYC presenting the best in live jazz music 7 days a week. SmallsLIVE is our digital video service where jazz fans can watch 3000+ hours of concert videos recorded at the club since 2007. We live-stream and record every concert at Smalls, so check out <a href="">tonight's show online for free</a>. To access the archive of videos, you'll need a <a href="">subscription</a>.</p>
     
@@ -117,12 +111,10 @@
       <p><a href="">More</a></p>
       <h3>Most Popular Videos:</h3>
       <p>We try to get concert videos posted within 3 days of being taped. Here are the latest:</p>
-      <div class="well">video here</div>
-      <div class="well">video here</div>
-      <div class="well">video here</div>
-      <div class="well">video here</div>
-      <div class="well">video here</div>
-      <p><a href="">More</a></p>    
+      {% for video in videos %}
+        <div class="well">{{ video.name }}</div>
+      {% endfor %}
+      <p><a href="">More</a></p>
 
     </div>
   </div>

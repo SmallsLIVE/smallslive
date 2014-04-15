@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 from django.utils.timezone import datetime
 from model_utils import Choices
 from model_utils.fields import StatusField
@@ -27,6 +28,9 @@ class Event(models.Model):
     
     def __unicode__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('event_detail', kwargs={'pk': self.id})
 
     def display_title(self):
         """
