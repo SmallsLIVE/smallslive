@@ -5,7 +5,9 @@
 <div class="row">
   <div class="col-sm-8">
     <div class="jumbotron">
-      <img src="{% thumbor_url artist.photo.url|urlencode width=150 height=150 smart=True %}" class="img-rounded img-responsive pull-left artist-photo" />
+      {% if artist.photo %}
+        <img src="{% thumbor_url artist.photo.url|urlencode width=150 height=150 smart=True %}" class="img-rounded img-responsive pull-left artist-photo" />
+      {% endif %}
       <h1>{{ artist.first_name }} {{ artist.last_name }}</h1>
       <p>{{ artist.instruments.all|join:", " }} - 6 videos - LIKE - <a href="{{ artist.website }}">@twittername</a></p>
       <p><span class="glyphicon glyphicon-ok"></span> #2 Most Watched (of 612 artists)</p>
