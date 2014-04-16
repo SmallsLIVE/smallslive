@@ -29,6 +29,7 @@ class Artist(models.Model):
 
 class Instrument(models.Model):
     name = models.CharField(max_length=255)
+    abbreviation = models.CharField(max_length=10, blank=True)
 
     class Meta:
         ordering = ['name']
