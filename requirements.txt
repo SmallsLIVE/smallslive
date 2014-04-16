@@ -32,3 +32,4 @@ six==1.6.1
 sqlparse==0.1.11
 static==1.0.2
 wsgiref==0.1.2
+pycurl==7.19.3.1
