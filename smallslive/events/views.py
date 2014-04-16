@@ -1,7 +1,25 @@
+from django.utils.timezone import datetime, timedelta
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
+from django.views.generic import TemplateView
 from .models import Event
+from multimedia.models import Media
+
+
+class HomepageView(TemplateView):
+    template_name = 'home.html'
+    context_object_name = 'events'
+
+    def get_context_data(self, **kwargs):
+        context = super(HomepageView, self).get_context_data(**kwargs)
+        today = datetime.now().date()
+        week_from_today = today + timedelta(weeks=1)
+        context['events'] = Event.objects.filter(start_day__range=(today, week_from_today)).reverse()
+        context['videos'] = Media.objects.order_by('-id')[:5]
+        return context
+
+homepage = HomepageView.as_view()
 
 
 class EventAddView(CreateView):
@@ -26,7 +44,7 @@ event_detail = EventDetailView.as_view()
 
 
 class VenueDashboardView(ListView):
-    queryset = Event.objects.order_by('-end_day')[:50]
+    queryset = Event.objects.order_by('-modified', '-start_day')[:50]
     template_name = 'dashboard-admin.html'
     context_object_name = 'events'
 

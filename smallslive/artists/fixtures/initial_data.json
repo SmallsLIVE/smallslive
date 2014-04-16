@@ -1,0 +1,330 @@
+[
+{
+  "pk": 28, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "", 
+    "name": "Composer"
+  }
+},
+{
+  "pk": 29, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "tpt", 
+    "name": "Trumpet"
+  }
+},
+{
+  "pk": 30, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "as", 
+    "name": "Alto Sax"
+  }
+},
+{
+  "pk": 31, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "ts", 
+    "name": "Tenor Sax"
+  }
+},
+{
+  "pk": 32, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "ss", 
+    "name": "Soprano Sax"
+  }
+},
+{
+  "pk": 33, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "cl", 
+    "name": "Clarinet"
+  }
+},
+{
+  "pk": 34, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "ob", 
+    "name": "Oboe"
+  }
+},
+{
+  "pk": 35, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "b", 
+    "name": "Bass"
+  }
+},
+{
+  "pk": 36, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "p", 
+    "name": "Piano"
+  }
+},
+{
+  "pk": 37, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "bsn", 
+    "name": "Bassoon"
+  }
+},
+{
+  "pk": 38, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "org", 
+    "name": "Organ"
+  }
+},
+{
+  "pk": 39, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "g", 
+    "name": "Guitar"
+  }
+},
+{
+  "pk": 40, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "fl", 
+    "name": "Flute"
+  }
+},
+{
+  "pk": 41, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "clo", 
+    "name": "Cello"
+  }
+},
+{
+  "pk": 42, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "vib", 
+    "name": "Vibraphone"
+  }
+},
+{
+  "pk": 43, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "d", 
+    "name": "Drums"
+  }
+},
+{
+  "pk": 44, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "perc", 
+    "name": "Percussion"
+  }
+},
+{
+  "pk": 45, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "voc", 
+    "name": "Vocalist"
+  }
+},
+{
+  "pk": 46, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "", 
+    "name": "Male Vocalist"
+  }
+},
+{
+  "pk": 47, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "", 
+    "name": "Female Vocalist"
+  }
+},
+{
+  "pk": 48, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "", 
+    "name": "Jazz Orchestra"
+  }
+},
+{
+  "pk": 49, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "orch", 
+    "name": "Orchestra"
+  }
+},
+{
+  "pk": 50, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "str", 
+    "name": "String Quartet"
+  }
+},
+{
+  "pk": 51, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "", 
+    "name": "Tap Dancer"
+  }
+},
+{
+  "pk": 52, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "tb", 
+    "name": "Trombone"
+  }
+},
+{
+  "pk": 53, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "frhn", 
+    "name": "French Horn"
+  }
+},
+{
+  "pk": 54, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "vln", 
+    "name": "Violin"
+  }
+},
+{
+  "pk": 55, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "vla", 
+    "name": "Viola"
+  }
+},
+{
+  "pk": 56, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "lute", 
+    "name": "Lute"
+  }
+},
+{
+  "pk": 57, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "hp", 
+    "name": "Harp"
+  }
+},
+{
+  "pk": 59, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "acc", 
+    "name": "Accordion"
+  }
+},
+{
+  "pk": 60, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "whs", 
+    "name": "Whistle"
+  }
+},
+{
+  "pk": 61, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "", 
+    "name": "Conductor"
+  }
+},
+{
+  "pk": 62, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "", 
+    "name": "Writer"
+  }
+},
+{
+  "pk": 63, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "", 
+    "name": "Poet"
+  }
+},
+{
+  "pk": 64, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "", 
+    "name": "Dancer"
+  }
+},
+{
+  "pk": 65, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": " mc", 
+    "name": "MC"
+  }
+},
+{
+  "pk": 66, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "dj", 
+    "name": "DJ"
+  }
+},
+{
+  "pk": 67, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "bar", 
+    "name": "Baritone Sax"
+  }
+},
+{
+  "pk": 68, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "bjo", 
+    "name": "Banjo"
+  }
+},
+{
+  "pk": 69, 
+  "model": "artists.instrument", 
+  "fields": {
+    "abbreviation": "", 
+    "name": "Leader"
+  }
+}
+]

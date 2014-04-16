@@ -1,4 +1,5 @@
 {% extends "base_admin.html" %}
+{% load humanize %}
 {% block title %}Dashboard{% endblock title%}
 {% block content %}
   <h1>Dashboard &amp; Calendar</h1>
@@ -26,30 +27,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td><a href=""><span class="text-muted">View</span> event.date(ddd, d/m)</a></td>
-                <td><a href="">event.display_title</a></td>
-                <td><span class="text-danger">3/4</span> <a href="#">Send invitation(s)&hellip;</a></td>
-                <th>usernameOrMe event.last_updated_date_in_words_ago</th>
-              </tr>
-              <tr>
-                <td>event.date(ddd, d/m)</td>
-                <td><a href="">event.display_title</a></td>
-                <td><span class="text-success">Yes (4/4)</span></td>
-                <th>usernameOrMe event.last_updated_date_in_words_ago</th>
-              </tr>
-              <tr>
-                <td>event.date(ddd, d/m)</td>
-                <td><a href="">event.display_title</a></td>
-                <td><span class="text-danger">0/4</span> <a href="#">Send invitation(s)&hellip;</a></td>
-                <th>usernameOrMe event.last_updated_date_in_words_ago</th>
-              </tr>
               {% for event in events %}
               <tr>
                 <td>{{ event.end_day }}</td>
-                <td><a href="">{{ event.display_title }}</a></td>
+                <td><a href="{{ event.get_absolute_url }}">{{ event.display_title }}</a></td>
                 <td><span class="text-danger">0/4</span> <a href="#">Send invitation(s)&hellip;</a></td>
-                <th>event.last_updated_date_in_words_ago</th>
+                <th>{{ event.last_modified_by.get_full_name }} {{ event.modified|naturaltime }}</th>
               </tr>
               {% endfor %}
               <tr><td colspan="4">Show 50 rows + use datatables to allow sorting and maybe filtering</td></tr>

@@ -207,5 +207,5 @@ class Command(NoArgsCommand):
         self.migrate_artists()
         self.migrate_events()
         self.connect_artist_to_events()
-        #self.migrate_media()
-        #self.connect_media_with_s3()
+        self.migrate_media()
+        self.connect_media_with_s3()

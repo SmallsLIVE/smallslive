@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Artist
+from models import Artist, Instrument
 
 
 class ArtistAdmin(admin.ModelAdmin):
@@ -9,4 +9,10 @@ class ArtistAdmin(admin.ModelAdmin):
     search_fields = ('first_name', 'last_name')
     save_on_top = True
 
+
+class InstrumentAdmin(admin.ModelAdmin):
+    list_display = ('name', 'abbreviation')
+    list_editable = ('abbreviation',)
+
 admin.site.register(Artist, ArtistAdmin)
+admin.site.register(Instrument, InstrumentAdmin)
