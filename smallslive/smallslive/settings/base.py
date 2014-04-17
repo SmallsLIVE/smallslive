@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'django_extensions',
     'django_thumbor',
+    'sortedm2m',
     'south',
     'storages',
 
