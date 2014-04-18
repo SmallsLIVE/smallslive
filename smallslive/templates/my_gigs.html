@@ -105,7 +105,7 @@
           {% for past_event in past_events %}
           <tr>
           <td><a href="{{ past_event.get_absolute_url }}">View</a></td>
-            <td><a href="">Edit</a></td>
+            <td><a href="{% url "event_edit" past_event.id %}">Edit</a></td>
             <td>{{ past_event.start_day }}</td>
             <td>{{ past_event.display_title }}</td>
             <td class="text-danger">No media available.</td>
