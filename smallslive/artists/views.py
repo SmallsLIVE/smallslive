@@ -1,5 +1,6 @@
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
+from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from .forms import ArtistAddForm
 from .models import Artist
 
@@ -12,10 +13,18 @@ class ArtistAddView(CreateView):
 artist_add = ArtistAddView.as_view()
 
 
-class ArtistEditView(UpdateView):
+class ArtistEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Artist
     form_class = ArtistAddForm
     template_name = 'artists/artist_edit.html'
+
+    def test_func(self, user):
+        """
+        Show 403 forbidden page only when the logged in user doesn't have required
+        permissions, redirect anonymous users to the login screen.
+        """
+        self.raise_exception = True
+        return (self.model.user == user or user.is_superuser)
 
 artist_edit = ArtistEditView.as_view()
 
