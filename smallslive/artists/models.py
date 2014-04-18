@@ -2,6 +2,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from sortedm2m.fields import SortedManyToManyField
+from events.models import Event
 
 
 class Artist(models.Model):
@@ -25,6 +26,12 @@ class Artist(models.Model):
 
     def full_name(self):
         return "{0} {1}".format(self.first_name, self.last_name)
+
+    def upcoming_events(self):
+        return Event.upcoming.filter(performers=self)
+
+    def past_events(self):
+        return Event.past.filter(performers=self)
 
 
 class Instrument(models.Model):

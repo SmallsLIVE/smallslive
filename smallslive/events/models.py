@@ -28,7 +28,7 @@ class Event(TimeStampedModel):
 
     objects = models.Manager()
     past = QueryManager(start_day__lt=datetime.now().date()).order_by('-start_day')
-    future = QueryManager(start_day__gte=datetime.now().date()).order_by('start_day')
+    upcoming = QueryManager(start_day__gte=datetime.now().date()).order_by('start_day')
 
     class Meta:
         ordering = ['-start_day']

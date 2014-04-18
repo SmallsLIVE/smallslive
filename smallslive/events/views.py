@@ -57,7 +57,7 @@ class MyGigsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(MyGigsView, self).get_context_data(**kwargs)
         context['past_events'] = Event.past.all()[:50]
-        context['future_events'] = Event.future.all()[:50]
+        context['future_events'] = Event.upcoming.all()[:50]
         return context
 
 my_gigs = MyGigsView.as_view()
