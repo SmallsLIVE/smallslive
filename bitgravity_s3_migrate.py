@@ -13,10 +13,10 @@ conn = S3Connection(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)
 bucket = conn.get_bucket('smallsliveaudio')
 
 with open('ids.txt', 'r') as f:
-    for id in f.readlines():
-        id = id.strip()
+    for event_id in f.readlines():
+        event_id = event_id.strip()
         for slot in range(1, 7):  # possible slots <event_id>-[1-6].mp3
-            filename = "{}-{}.mp3".format(id, slot)
+            filename = "{}-{}.mp3".format(event_id, slot)
             m = hashlib.md5()
             m.update(BITGRAVITY_SECRET + '/smallslive/secure/' + filename + "?e=0")
             hash = m.hexdigest()
@@ -28,7 +28,11 @@ with open('ids.txt', 'r') as f:
             curl.setopt(pycurl.WRITEDATA, fp)
             curl.perform()
             if curl.getinfo(pycurl.HTTP_CODE) == 200:
+                print "{} found on bitgravity".format(filename)
                 k = Key(bucket)
                 k.key = filename
                 k.set_contents_from_filename('temp.mp3')
                 print "{} uploaded to S3".format(filename)
+            else:
+                print "{} NOT found".format(filename)
+            os.remove('temp.mp3')
