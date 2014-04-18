@@ -49,3 +49,15 @@ class VenueDashboardView(ListView):
     context_object_name = 'events'
 
 venue_dashboard = VenueDashboardView.as_view()
+
+
+class MyGigsView(TemplateView):
+    template_name = 'my_gigs.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MyGigsView, self).get_context_data(**kwargs)
+        context['past_events'] = Event.past.all()[:50]
+        context['future_events'] = Event.future.all()[:50]
+        return context
+
+my_gigs = MyGigsView.as_view()

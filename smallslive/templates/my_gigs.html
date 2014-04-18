@@ -1,4 +1,5 @@
 {% extends "base_admin.html" %}
+{% load humanize %}
 {% block title %}My Gigs{% endblock title%}
 {% block content %}
   <h1>My Gigs</h1> 
@@ -40,18 +41,20 @@
             <td>event.title<br />sideArtist, sideArtist, sideArtist</td>
             <th>usernameOrMe event.last_updated_date_in_words_ago</th>
           </tr>
-          {% for event in events %}
+          {% for future_event in future_events %}
           <tr>
-            <td>{{ event.end_day }}</td>
-            <td><a href="">{{ event.display_title }}</a></td>
-            <th>event.last_updated_date_in_words_ago</th>
+            <td><a href="{{ future_event.get_absolute_url }}">View</a></td>
+            <td><a href="">Edit</a></td>
+            <td>{{ future_event.start_day }}</td>
+            <td>{{ future_event.display_title }}</td>
+            <th>{{ future_event.last_modified_by.get_full_name }} @ {{ future_event.modified|naturaltime }}</th>
           </tr>
           {% endfor %} 
         </tbody>
       </table>
     </div>
     <div class="tab-pane" id="past">
-      <h2>My Past Shows (3)</h2>
+      <h2>My Past Shows ({{ past_events|length }})</h2>
       <div class="checkbox">
         <lable><input type="checkbox"> Just my videos as a leader (1)</lable>
       </div>
@@ -99,11 +102,14 @@
             <td class="text-danger">No media available.</td>
             <th>This concert was not recorded or videotaped.</th>
           </tr>
-          {% for event in events %}
+          {% for past_event in past_events %}
           <tr>
-            <td>{{ event.end_day }}</td>
-            <td><a href="">{{ event.display_title }}</a></td>
-            <th>event.last_updated_date_in_words_ago</th>
+          <td><a href="{{ past_event.get_absolute_url }}">View</a></td>
+            <td><a href="">Edit</a></td>
+            <td>{{ past_event.start_day }}</td>
+            <td>{{ past_event.display_title }}</td>
+            <td class="text-danger">No media available.</td>
+            <td>This concert was not recorded or videotaped.</td>
           </tr>
           {% endfor %} 
         </tbody>
