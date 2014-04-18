@@ -4,7 +4,7 @@
     <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="longname">My</span> Account <b class="caret"></b></a>
     <ul class="dropdown-menu"> 
       {% if user.is_artist %}
-      <li><a href="/artists/9/edit">Edit artist profile</a></li>
+      <li><a href="{% url "artist_edit" pk=user.artist.id %}">Edit artist profile</a></li>
       {% endif %}
       <li><a href="/static_page/my_subscription">Subscription info</a></li>         
       <li><a href="/static_page/my_account">Profile, email, password</a>

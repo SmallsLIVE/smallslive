@@ -98,4 +98,4 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         """
         Checks if a user has an artist model assigned
         """
-        return self.artist != None
+        return self.artist is not None
