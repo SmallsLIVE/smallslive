@@ -44,7 +44,7 @@
           {% for future_event in future_events %}
           <tr>
             <td><a href="{{ future_event.get_absolute_url }}">View</a></td>
-            <td><a href="">Edit</a></td>
+            <td><a href="{% url "event_edit" future_event.id %}">Edit</a></td>
             <td>{{ future_event.start_day }}</td>
             <td>{{ future_event.display_title }}</td>
             <th>{{ future_event.last_modified_by.get_full_name }} @ {{ future_event.modified|naturaltime }}</th>

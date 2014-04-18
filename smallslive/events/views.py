@@ -1,8 +1,12 @@
 from django.utils.timezone import datetime, timedelta
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic import TemplateView
+
+from braces.views import LoginRequiredMixin, UserPassesTestMixin
+
+from .forms import EventAddForm
 from .models import Event
 from multimedia.models import Media
 
@@ -42,6 +46,24 @@ class EventDetailView(DetailView):
 
 event_detail = EventDetailView.as_view()
 
+class EventEditView(LoginRequiredMixin, UpdateView):
+    model = Event
+    form_class = EventAddForm
+    template_name = 'events/event_edit.html'
+
+    # def test_func(self, user):
+    #     """
+    #     Show 403 forbidden page only when the logged in user doesn't have required
+    #     permissions, redirect anonymous users to the login screen.
+    #     """
+    #     self.raise_exception = True
+    #     try:
+    #         artist_id_match = self.kwargs.get('pk') == str(user.artist.id)
+    #     except Artist.DoesNotExist:
+    #         artist_id_match = False
+    #     return (artist_id_match or user.is_superuser)
+
+event_edit = EventEditView.as_view()
 
 class VenueDashboardView(ListView):
     queryset = Event.objects.order_by('-modified', '-start_day')[:50]

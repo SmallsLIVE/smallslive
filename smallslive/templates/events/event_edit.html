@@ -1,8 +1,9 @@
 {% extends "base_admin.html" %}
-{% block title %}Edit Gig: %dateAndArtistandTitleHere%{% endblock title %}
+{% load thumbor_tags %}
+{% block title %}Edit gig {{ event.title }} : {{ event.subtitle }} {% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
-  <h1>Edit gig:</h1>
+  <h1>Edit gig: {{ event.title }} </h1>
   <div class="row">
     <div class="col-sm-7">
       <div class="alert alert-success">
@@ -11,15 +12,24 @@
       <div class="alert alert-warning">
         <p>This event happened in the past. Be careful editing details.</p>
       </div>
-      <form method="post" class="f-gig" role="form" enctype="multipart/form-data">
-       
+      <form method="post" role="form" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% crispy form %}
+          <button type="submit" class="btn btn-primary">Save profile</button>
       </form>
     </div>
+    <div class="col-sm-3">    
+      <div class="well">
+        {% if event.photo %}
+          <img src="{% thumbor_url event.photo.url|urlencode width=300 %}" class="img-rounded img-responsive" />
+        {% endif %}
       </div>
+    </div>
+  </div>
   <div class="dev">
     <h1>Dev notes</h1>
-    <Ul>
+    <ul>
       <li><code>1</code> draggable</li> 
-    </Ul>
+    </ul>
   </div>
 {% endblock content %}
