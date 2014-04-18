@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.utils.timezone import datetime
 from model_utils import Choices
 from model_utils.fields import StatusField
-from model_utils.models import TimeStampedModel
+from model_utils.models import QueryManager, TimeStampedModel
 
 
 class Event(TimeStampedModel):
@@ -25,6 +25,10 @@ class Event(TimeStampedModel):
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed')
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField()
+
+    objects = models.Manager()
+    past = QueryManager(start_day__lt=datetime.now().date()).order_by('-start_day')
+    future = QueryManager(start_day__gte=datetime.now().date()).order_by('start_day')
 
     class Meta:
         ordering = ['-start_day']
