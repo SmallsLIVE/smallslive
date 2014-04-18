@@ -46,7 +46,9 @@
             <td><a href="{{ future_event.get_absolute_url }}">View</a></td>
             <td><a href="{% url "event_edit" future_event.id %}">Edit</a></td>
             <td>{{ future_event.start_day }}</td>
-            <td>{{ future_event.display_title }}</td>
+            <td>{{ future_event.display_title }}<br />
+                {{ future_event.subtitle }}
+            </td>
             <th>{{ future_event.last_modified_by.get_full_name }} @ {{ future_event.modified|naturaltime }}</th>
           </tr>
           {% endfor %} 
@@ -107,7 +109,9 @@
           <td><a href="{{ past_event.get_absolute_url }}">View</a></td>
             <td><a href="{% url "event_edit" past_event.id %}">Edit</a></td>
             <td>{{ past_event.start_day }}</td>
-            <td>{{ past_event.display_title }}</td>
+            <td>{{ past_event.display_title }}<br />
+                {{ past_event.subtitle }}
+            </td>
             <td class="text-danger">No media available.</td>
             <td>This concert was not recorded or videotaped.</td>
           </tr>
