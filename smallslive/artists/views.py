@@ -24,7 +24,11 @@ class ArtistEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         permissions, redirect anonymous users to the login screen.
         """
         self.raise_exception = True
-        return (self.model.user == user or user.is_superuser)
+        try:
+            artist_id_match = self.kwargs.get('pk') == str(user.artist.id)
+        except Artist.DoesNotExist:
+            artist_id_match = False
+        return (artist_id_match or user.is_superuser)
 
 artist_edit = ArtistEditView.as_view()
 
