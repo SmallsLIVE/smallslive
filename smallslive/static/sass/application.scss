@@ -97,7 +97,7 @@ footer {
   a,a:visited {
     color: #fff;  
   }
-  .carousel-inner > .item {
+  .carousel .item {
     min-height: 400px;
   }
 }
@@ -124,6 +124,66 @@ body.search .facets {
   p {
     margin: 1em 0 1em 0;
     padding: 0;
+  }
+}
+/*=Calendar*/
+.calendar {
+  .calendar-month {
+    font-size: 11px;
+    .day {
+      padding: 4px;
+      border-bottom: 1px solid #eee;
+      time {
+        display: block;
+        font-size: 14px;
+        margin-top: 8px; 
+      }
+      ul {
+        padding: 4px;
+        margin: 0;
+        li {
+          padding: 0;
+          margin: 0 0 4px 0;
+          list-style-type: none;
+        }
+      }
+    }
+    .days-of-week {
+      display: none;
+    }
+    .past {
+      a {
+        color: #666; 
+      }
+      background: #f5f5f5;
+      color: #666 !important;
+    }
+  }
+}
+@media all and (min-width : 1100px) {
+  .calendar .calendar-month {
+    .days-of-week {
+      display: block;
+      text-align: right;
+    }
+    .day {
+      float: left;
+      width: 13%;
+      border: 1px solid #f1f1f1;  
+      time {
+        text-align: right;
+        font-size: inherit;
+      }
+      .month {
+        display: none;
+      }
+    }  
+    .day.weekend {
+      width: 16%;
+    }
+    .row:not(.days-of-week) .day {
+      height: 15em; 
+    }  
   }
 }
 /*=Admin screens*/

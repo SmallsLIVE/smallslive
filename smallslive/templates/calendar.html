@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load thumbor_tags %}
+{% block title_prefix %}{% endblock title_prefix %}
+{% block title_suffix %} - Upcoming Calendar of Live Jazz Shows @ Smalls Jazz Club (NYC){% endblock title_suffix%}
+{% block bodyclass %}calendar{% endblock bodyclass %} 
+{% block content %} 
+<h1>Calendar of Events</h1>
+<p>Live Jazz in NYC, 7 Nights a Week. Watch tonight's shows online for free:  (leaderName1 @ 7pm EST, leaderName2 @ 7pm EST, leaderName3).</p>
+<div class="row">
+  <div class="col-sm-12">
+    <div class="jumbotron">
+      <img src="" alt="[big artist photo]" style="" class="img-rounded img-responsive pull-right artist-photo" />
+      <p>Featured Event:</p>
+      <h1>eventDisplayTitle</h1> 
+      <p>featuring artist,artist, artist</p>
+      <p>date, time</p>
+      <p><a href="#">Spike</a> says: "I'm really excited to have so-and-so at Smalls for the very first time as a bandleader. So-and-so has performed hear for years as a sideman and we're happy to see him bring in his unique lineup of harmonica, squeezebox, and xylophone."</p>
+      <p><a class="btn btn-primary btn-lg" role="button">Buy Tickets ($12)</a></p>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-4">
+    <h2>Tonight (24)</h2>
+      <div class="well"><img src="" alt="main show photo">
+        <ul>
+        <li>slot1time: display_title w/ sidemenList</li>
+        <li>slot2time: display_title w/ sidemenList</li>
+        <li>slot3time: display_title w/ sidemenList</li>
+        </ul>
+      </div>
+  </div>
+  <div class="col-sm-4">
+    <h2>Tomorrow (25)</h2>
+      <div class="well"><img src="" alt="main show photo">
+        <ul>
+        <li>slot1time: display_title w/ sidemenList</li>
+        <li>slot2time: display_title w/ sidemenList</li>
+        <li>slot3time: display_title w/ sidemenList</li>
+        </ul>
+      </div>
+  </div>
+  <div class="col-sm-4">
+    <h2>26</h2>
+      <div class="well"><img src="" alt="main show photo">
+        <ul>
+        <li>slot1time: display_title w/ sidemenList</li>
+        <li>slot2time: display_title w/ sidemenList</li>
+        <li>slot3time: display_title w/ sidemenList</li>
+        </ul>
+      </div>
+  </div>
+</div>
+ 
+<div class="calendar-month"> 
+  <h2>April, May, and June @ Smalls</h2>
+  <div class="row days-of-week">
+    <div class="col-sm-12">
+      <div class="day">Sun</div>
+      <div class="day">Mon</div>
+      <div class="day">Tue</div>
+      <div class="day ">Wed</div>
+      <div class="day weekend">Thu</div>
+      <div class="day weekend">Fri</div>
+      <div class="day weekend">Sat</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="day past"> 
+        <time><span class="month">Sun, April</span> <code>2</code>20</time>
+        <ul>
+            <li><a href=""><span class="glyphicon glyphicon-music"></span> </span> display_title</a></li>          <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 10pm </a></li>
+</ul></div>
+      <div class="day past">
+        <time><span class="month">Mon, April</span> 21</time>
+        <ul>
+            <li><a href="">leader.full_name, 7pm</a></li>          <li><a href=""><span class="glyphicon glyphicon-music"></span> display_title, 7pm</a></li>          <li><a href=""><span class="glyphicon glyphicon-music"></span> display_title, 10pm </a></li>
+</ul></div>
+      <div class="day past">
+        <time><span class="month">Tue, April</span> 22</time>
+        <ul>
+            <li><a href="">leader.full_name, 7pm</a></li>          <li><a href=""><span class="glyphicon glyphicon-music"></span> display_title, 7pm</a></li>          <li><a href="">leader.full_name, 10pm </a></li>
+</ul></div>
+      <div class="day past">
+        <time><span class="month">Wed, April</span> 23</time>
+        <ul>
+            <li><a href="">leader.full_name, 7pm</a></li>          <li><a href=""><span class="glyphicon glyphicon-music"></span> display_title, 7pm</a></li>          <li><a href="">leader.full_name, 10pm </a></li>
+</ul></div>
+      <div class="day weekend">
+        <time><span class="month">Thu, April</span> 24</time>
+        <ul>
+            <li><a href="">leader.full_name, 7pm</a></li>          <li><a href=""> display_title, 7pm</a></li>          <li><a href="">leader.full_name, 10pm </a></li>
+</ul></div>
+      <div class="day weekend">
+        <time><span class="month">Fri, April</span> 25</time>
+        <ul>
+            <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 10pm </a></li>
+</ul></div>
+      <div class="day weekend">
+        <time><span class="month">Sat, April</span> 26</time>
+        <ul>
+            <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 10pm </a></li>
+</ul></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="day">
+        <time><span class="month">Sun, April</span> 27</time>
+        <ul>
+            <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 10pm </a></li>
+</ul></div>
+      <div class="day">
+        <time><span class="month">Mon, April</span> 28</time>
+        <ul>
+            <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 10pm </a></li>
+</ul></div>
+      <div class="day">
+        <time><span class="month">Tue, April</span> 29</time>
+        <ul>
+            <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 10pm </a></li>
+</ul></div>
+      <div class="day">
+        <time><span class="month">Wed, April</span> 30</time>
+        <ul>
+            <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 10pm </a></li>
+</ul></div>
+      <div class="day weekend">
+         <time><span class="month">Thu, April</span> 31</time>
+        <ul>
+            <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 10pm </a></li>
+</ul></div>
+      <div class="day weekend">
+        <time><strong>Fri, May 1</strong></time>
+        <ul>
+            <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 10pm </a></li>
+</ul></div>
+      <div class="day weekend">
+        <time><span class="month">Sat, May</span> 2</time>
+        <ul>
+            <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 7pm</a></li>          <li><a href="">leader.full_name, 10pm </a></li>
+</ul></div>
+    </div>
+  </div>
+  <p class="text-muted"><span class="glyphicon glyphicon-music"></span> = audio from the set is available for streaming.</p>
+</div> 
+  
+<div class="dev">
+  <h1>Dev notes</h1>
+  <Ul> 
+  <li><code>1</code> - any artist with audio appearing on this event should be listed here starting with leaders</li>
+  <li><code>2</code> - i would show up to 4-6 weeks of concerts but this is Spike's decision. We will probably use left() to trim the display_title, or maybe even use the leader name.</li>
+  </Ul>
+</div>
+{% endblock content %}
