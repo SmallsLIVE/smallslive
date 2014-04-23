@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load thumbor_tags %}
 {% block title_prefix %}{% endblock title_prefix %}
-{% block title_suffix %} - Watch Jazz Videos from Smalls Jazz Club (NYC){% endblock title_suffix%}
+{% block title_suffix %} - Smalls Jazz Club: live jazz shows &amp; audio recording archive (NYC){% endblock title_suffix%}
 {% block content %}
   <div class="row homepage-spotlight">
     <div class="col-sm-10  col-sm-offset-1"> 
@@ -15,27 +15,19 @@
       
         <!-- Wrapper for slides -->
         <div class="carousel-inner">
-          <div class="item active">
-            <div class="carousel-caption">
-                <h1><a href="{% url "event_detail" pk=8402 %}">Tonight: The Joe Martin Quartet CD Release  @ <span class="text-primary">9:30pm</span></a></h1>
-              <p><img src="http://d3dombqstlgdhj.cloudfront.net/images/smallssextet3.jpg" alt="..."></p>
-              <p><em>plus</em>:</p>
+          {% for event in events %}
+            {% if forloop.counter < 4 %}
+            <div class="item{% if forloop.counter == 1 %} active{% endif %}">
+              <div class="carousel-caption">
+                <h1><a href="{{ event.get_absolute_url }}">{{ event.display_title }}</a></h1>
+                <p>Tonight (Sat), {{ event.date_freeform }}</p>
+                <p>
+                </p>
+                <p><a href="{{ event.get_absolute_url }}">Details...</a></p>
+              </div>
             </div>
-          </div>
-          <div class="item">
-            <div class="carousel-caption">
-             <h1><a href="{% url "event_detail" pk=7802 %}">The Hayes Greenfield Roger Rosenberg Quartet  @ <span class="text-primary">11:30pm</span></a></h1>
-              <p><img src="http://d3dombqstlgdhj.cloudfront.net/images/smallssextet3.jpg" alt="..."></p>
-              <p> w/ name, name name</p>
-            </div>
-          </div>
-          <div class="item">
-            <div class="carousel-caption">
-             <h1><a href="{% url "event_detail" pk=7602 %}">Bucky Pizzarelli and Ed Laub @    <span class="text-primary">1am</span></a></h1>
-              <p><img src="http://d3dombqstlgdhj.cloudfront.net/images/smallssextet3.jpg" alt="..."></p>
-              <p>Sunday Evening Duets</p>
-            </div>
-          </div>
+            {% endif %}
+          {% endfor %}
         </div>
         <!-- Controls -->
         <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
@@ -49,12 +41,37 @@
   </div> 
   <div class="row">
     <div class="col-sm-6">
-      <h2>Next 7 days @ Smalls:</h2>
+      <h2>Featured Events:<code>1</code></h2>
+      
       {% for event in events %}
-        <div class="well"><a href="{{ event.get_absolute_url }}">{{ event.display_title }} @ {{ event.start_day }}</a></div>
+        {% if forloop.counter < 4 %}
+        <a href="{{ event.get_absolute_url }}">
+          <div class="well">
+            {% if event.photo %}
+              <img src="{% thumbor_url event.photo.url|urlencode height=100 width=140 %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}" class="img-rounded img-responsive pull-left" />
+            {% endif %}
+            {{ event.display_title }} - {{ event.start_day }}, {{ event.date_freeform }}
+            <div>{{ event.performers.all|join:", " }}</div>
+            
+          </div>
+        </a>
+        {% endif %}
+      {% endfor %}
+      <h2>Coming up next @ Smalls:</h2>
+      {% for event in events %}
+      <a href="{{ event.get_absolute_url }}">
+        <div class="well">
+          {% if event.photo %}
+            <img src="{% thumbor_url event.photo.url|urlencode height=100 width=140 %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}" class="img-rounded img-responsive pull-left" />
+          {% endif %}
+          {{ event.start_day }}: {{ event.display_title }}, {{ event.date_freeform }} ($10)
+          <div>{{ event.performers.all|join:", " }}</div>
+          
+        </div>
+      </a>
       {% endfor %}
       <h2>About Smalls and SmallsLIVE</h2>
-      <p>Smalls is a historic jazz club in NYC presenting the best in live jazz music 7 days a week. SmallsLIVE is our digital video service where jazz fans can watch 3000+ hours of concert videos recorded at the club since 2007. We live-stream and record every concert at Smalls, so check out <a href="">tonight's show online for free</a>. To access the archive of videos, you'll need a <a href="">subscription</a>.</p>
+      <p>Smalls is a historic jazz club in NYC presenting the best in live jazz music 7 days a week. SmallsLIVE is our digital audio service where jazz fans can watch 3000+ hours of concert audio recorded at the club since 2007. We live-stream and record every concert at Smalls, so check out <a href="">tonight's show online for free</a>. To access the archive of recordings, you'll need a <a href="">subscription</a>.</p>
     
  
       <form method="post" class="f-trial-signup" role="form" enctype="multipart/form-data">
@@ -76,49 +93,57 @@
     <div class="col-sm-6">
       <div class="well">
         <span class="text-success">SmallsLIVE</span>
-        <h2>8,000+ Hours of Jazz Concert Videos</h2>
-        <p>Get 30 days of unlimited access to our archive of over 350 jazz concerts filmed at Smalls since 2007. After your trial, it's just $20/month  to unlock permanent access to the archive. <a href="#">Learn more</a></p>
+        <h2><code>3</code>Enjoy 8,000+ Hours of Live Jazz from Smalls</h2>
+        <p>Get 30 days of unlimited access to our archive of over 350 jazz concerts recorded at Smalls since 2007. After your trial, it's just $20/month  to unlock permanent access to the archive. <a href="#">Learn more</a></p>
         <a class="btn btn-primary" href="/static_page/trial-signup">Start Free Trial</a>
-        <p class="text-muted"><br /><a href="#">I have an account already</a></p>
+        <p class="text-muted"><br /><a href="#">Log In (I have an account)</a></p>
       </div>
-      <h3>Latest Videos:</h3>
-      <p>We try to get concert videos posted within 3 days of being taped. Here are the latest:</p>
+      <h3>New Recordings Available:</h3>
+      <p>We try to get the audio recordings of our shows posted within 24 hours of being taped. Here are the latest sets available for streamed listening:</p>
       <div class="thumbnail">
-        <div class="well" style="height:180px;"></div>
-        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button">Play</a> <a href="#" class="btn btn-default" role="button">+ Watchlist</a></p>
+        <div class="well" style="height:80px;">thumbnail | eventtitle | artists (66min)</div>
+        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button" title="Play"><span class="glyphicon glyphicon-play"></span></a> <a href="#" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> Favorite</a></p>
         </div>
       </div> 
       <div class="thumbnail">
-        <div class="well" style="height:80px;"></div>
-        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button">Play</a> <a href="#" class="btn btn-default" role="button">+ Watchlist</a></p>
+        <div class="well" style="height:80px;">thumbnail | eventtitle | artists (66min)</div>
+        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button" title="Play"><span class="glyphicon glyphicon-play"></span></a> <a href="#" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> Favorite</a></p>
         </div>
       </div> 
       <div class="thumbnail">
-        <div class="well" style="height:80px;"></div>
-        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button">Play</a> <a href="#" class="btn btn-default" role="button">+ Watchlist</a></p>
+        <div class="well" style="height:80px;">thumbnail | eventtitle | artists (66min)</div>
+        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button" title="Play"><span class="glyphicon glyphicon-play"></span></a> <a href="#" class="btn btn-default" role="button">! Favorite</a></p>
         </div>
       </div> 
       <div class="thumbnail">
-        <div class="well" style="height:80px;"></div>
-        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button">Play</a> <a href="#" class="btn btn-default" role="button">+ Watchlist</a></p>
+        <div class="well" style="height:80px;">thumbnail | eventtitle | artists (66min)</div>
+        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button" title="Play"><span class="glyphicon glyphicon-play"></span></a> <a href="#" class="btn btn-default" role="button">+ Watchlist</a></p>
         </div>
       </div> 
       <div class="thumbnail">
-        <div class="well" style="height:80px;"></div>
-        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button">Play</a> <a href="#" class="btn btn-default" role="button">+ Watchlist</a></p>
+        <div class="well" style="height:80px;">thumbnail | eventtitle | artists (66min)</div>
+        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button" title="Play"><span class="glyphicon glyphicon-play"></span></a> <a href="#" class="btn btn-default" role="button">+ Watchlist</a></p>
         </div>
       </div> 
       <p><a href="">More</a></p>
-      <h3>Most Popular Videos:</h3>
+      <h3>Most Popular Recordings:</h3>
       <p>We try to get concert videos posted within 3 days of being taped. Here are the latest:</p>
       {% for video in videos %}
         <div class="well">{{ video.name }}</div>
       {% endfor %}
-      <p><a href="">More</a></p>
+      <p><a href="">More audio recordings</a></p>
 
     </div>
   </div>
-  <div class="dev">
+  <div class="dev">  
+ 
+    <div class="dev">
+      <h1>Dev notes</h1>
+      <Ul> 
+        <li><code>1</code> - spike can pick three events to feature on the homepage. order by upcoming date asc, then past date desc</li>
+        <li><code>3</code> - how many hours do we have?
+      </Ul>
+    </div>
     <h1>Screens SO Far:</h1>
     <h2>Public Screens (Main NAV)</h2>
     <ul>
