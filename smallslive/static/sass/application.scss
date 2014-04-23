@@ -83,7 +83,7 @@ footer {
       }
     }
   }
-}
+} 
 /*=Public screens*/
 /*Home*/
 .homepage-spotlight {
@@ -98,8 +98,17 @@ footer {
     color: #fff;  
   }
   .carousel .item {
-    min-height: 400px;
+    min-height: 400px; 
   }
+  .carousel-caption img {
+    width: 100%; 
+  }
+}
+@media all and 
+ (min-width : 640px) {
+   .homepage-spotlight .carousel-caption img {
+     width: auto;
+   }
 }
 .num {
   text-align: right;

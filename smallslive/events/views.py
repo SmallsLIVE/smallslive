@@ -18,8 +18,8 @@ class HomepageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
         today = datetime.now().date()
-        week_from_today = today + timedelta(weeks=1)
-        context['events'] = Event.objects.filter(start_day__range=(today, week_from_today)).reverse()
+        few_days_out = today + timedelta(days=3)
+        context['events'] = Event.objects.filter(start_day__range=(today, few_days_out)).reverse()
         context['videos'] = Media.objects.order_by('-id')[:5]
         return context
 

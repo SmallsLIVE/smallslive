@@ -19,8 +19,11 @@
             {% if forloop.counter < 4 %}
             <div class="item{% if forloop.counter == 1 %} active{% endif %}">
               <div class="carousel-caption">
+              {% if event.photo %}
+                <img src="{% thumbor_url event.photo.url|urlencode height=250 fit_in=true %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}"  /></a>
+              {% endif %}
                 <h1><a href="{{ event.get_absolute_url }}">{{ event.display_title }}</a></h1>
-                <p>Tonight (Sat), {{ event.date_freeform }}</p>
+                <p>Tonight ({{ event.start_day|date:"D" }}) - {{ event.date_freeform }}</p>
                 <p>
                 </p>
                 <p><a href="{{ event.get_absolute_url }}">Details...</a></p>
@@ -45,31 +48,38 @@
       
       {% for event in events %}
         {% if forloop.counter < 4 %}
-        <a href="{{ event.get_absolute_url }}">
-          <div class="well">
-            {% if event.photo %}
-              <img src="{% thumbor_url event.photo.url|urlencode height=100 width=140 %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}" class="img-rounded img-responsive pull-left" />
-            {% endif %}
-            {{ event.display_title }} - {{ event.start_day }}, {{ event.date_freeform }}
-            <div>{{ event.performers.all|join:", " }}</div>
-            
-          </div>
-        </a>
+         <div class="media">
+          {% if event.photo %}
+            <a href="{{ event.get_absolute_url }}" class="pull-left">{{ event.start_day|date:"D" }}<br /><small>{{ event.start_day|date:"M j" }}</small> </a>
+            <a href="{{ event.get_absolute_url }}" class="pull-right"><img src="{% thumbor_url event.photo.url|urlencode height=90 width=126 %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}" class="media-object img-responsive pull-left" /></a>
+          {% endif %}
+          <a href="{{ event.get_absolute_url }}">
+            <div class="media-body">
+              <h4 class="media-heading">{{ event.display_title }}</h4>
+              <p><small>{{ event.date_freeform }}</small></p>
+              <p>{{ event.performers.all|join:", " }}</p>
+            </div>
+          </a>
+         </div>
         {% endif %}
       {% endfor %}
       <h2>Coming up next @ Smalls:</h2>
       {% for event in events %}
-      <a href="{{ event.get_absolute_url }}">
-        <div class="well">
+         <div class="media">
           {% if event.photo %}
-            <img src="{% thumbor_url event.photo.url|urlencode height=100 width=140 %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}" class="img-rounded img-responsive pull-left" />
+            <a href="{{ event.get_absolute_url }}" class="pull-left">{{ event.start_day|date:"D" }}<br /><small>{{ event.start_day|date:"M j" }}</small> </a>
+            <a href="{{ event.get_absolute_url }}" class="pull-right"><img src="{% thumbor_url event.photo.url|urlencode height=90 width=126 %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}" class="media-object img-responsive pull-left" /></a>
           {% endif %}
-          {{ event.start_day }}: {{ event.display_title }}, {{ event.date_freeform }} ($10)
-          <div>{{ event.performers.all|join:", " }}</div>
-          
-        </div>
-      </a>
+          <a href="{{ event.get_absolute_url }}">
+            <div class="media-body">
+              <h4 class="media-heading">{{ event.display_title }}</h4>
+              <p><small>{{ event.date_freeform }}</small></p>
+              <p>{{ event.performers.all|join:", " }}</p>
+            </div>
+          </a>
+         </div>
       {% endfor %}
+      <p><a href="/static_page/calendar">Full calendar</a></p>
       <h2>About Smalls and SmallsLIVE</h2>
       <p>Smalls is a historic jazz club in NYC presenting the best in live jazz music 7 days a week. SmallsLIVE is our digital audio service where jazz fans can watch 3000+ hours of concert audio recorded at the club since 2007. We live-stream and record every concert at Smalls, so check out <a href="">tonight's show online for free</a>. To access the archive of recordings, you'll need a <a href="">subscription</a>.</p>
     
