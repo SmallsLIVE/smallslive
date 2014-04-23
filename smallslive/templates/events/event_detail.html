@@ -1,3 +1,17 @@
+{# comment #}
+Not using this template for now due to the lack of video on the site. The video.html template will be used for past, live, and upcoming events.
+{# endcomment #}
+
+
+
+
+
+
+
+
+
+
+
 {% extends "base.html" %}
 {% load thumbor_tags %}
 {% block alert %}<div class="alert alert-success">Event saved. <a href="{% url "artist_detail" pk=182 %}">Edit again</a></div>{% endblock %}
@@ -24,12 +38,19 @@
     </div>
   </div>
   <div class="col-sm-4">
-    <h1>Related Videos:</h1>
+    <h1>Related Audio:<code>1</code></h1>
     <ul>
-      <Li>%leader1_name% <a href="{% url "artist_detail" pk=412%}">(6 videos)</a></li>
-      <Li>%leader2_name% <a href="{% url "artist_detail" pk=214%}">(6 videos)</a></li>
-      <Li>%sideman1% <a href="{% url "artist_detail" pk=554%}">(6 videos)</a></li>
+      <Li>%leader1_name% <a href="{% url "artist_detail" pk=412%}">(6 sets of audio available)</a></li>
+      <Li>%leader2_name% <a href="{% url "artist_detail" pk=214%}">(6 sets of audio available)</a></li>
+      <Li>%sideman1% <a href="{% url "artist_detail" pk=554%}">(6 sets of audio available)</a></li>
     </ul> 
   </div>
 </div>    
+ 
+<div class="dev">
+  <h1>Dev notes</h1>
+  <Ul> 
+    <li><code>1</code> - any artist with audio appearing on this event should be listed here starting with leaders</li>
+  </Ul>
+</div>
 {% endblock content %}
