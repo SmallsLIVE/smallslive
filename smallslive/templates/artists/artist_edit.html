@@ -18,7 +18,7 @@
   <div class="col-sm-3">    
     <div class="well">
       {% if artist.photo %}
-        <img src="{% thumbor_url artist.photo.url|urlencode width=200   %}" class="img-rounded img-responsive" />
+        <img src="{% thumbor_url artist.photo.url|urlencode width=200   %}" class="img-responsive" />
       {% endif %}
       <h2>Upcoming: ({{ artist.upcoming_events|length }})</h2>
         {% if artist.upcoming_events %}

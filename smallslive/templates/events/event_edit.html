@@ -21,7 +21,7 @@
     <div class="col-sm-3">    
       <div class="well">
         {% if event.photo %}
-          <img src="{% thumbor_url event.photo.url|urlencode width=300 %}" class="img-rounded img-responsive" />
+          <img src="{% thumbor_url event.photo.url|urlencode width=300 %}" class="img-responsive" />
         {% endif %}
       </div>
     </div>

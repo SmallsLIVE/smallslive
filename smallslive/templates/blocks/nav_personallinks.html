@@ -1,7 +1,7 @@
 <ul class="nav navbar-nav navbar-right">
   {% if user.is_authenticated %}
   <li class="dropdown">
-    <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="longname">{% if user.full_name %} {{ user.full_name }} {% else %} {{ user.email }} {% endif %}<b class="caret"></b></a>
+    <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="longname">{% if user.first_name %} {{ user.first_name }} {% else %} Account {% endif %}<b class="caret"></b></a>
     <ul class="dropdown-menu"> 
       {% if user.is_artist %}
       <li><a href="{% url "artist_edit" pk=user.artist.id %}">Edit artist profile</a></li>

@@ -6,7 +6,7 @@
   <div class="col-sm-8">
     <div class="jumbotron">
       {% if artist.photo %}
-        <img src="{% thumbor_url artist.photo.url|urlencode width=150 height=150 smart=True %}" class="img-rounded img-responsive pull-left artist-photo" />
+        <img src="{% thumbor_url artist.photo.url|urlencode width=150 height=150 smart=True %}" class="img-responsive pull-left artist-photo" />
       {% endif %}
       <h1>{{ artist.first_name }} {{ artist.last_name }}</h1>
       <p>{{ artist.instruments.all|join:", " }} - 6 live recordings - LIKE - <a href="{{ artist.website }}">@twittername</a></p>
