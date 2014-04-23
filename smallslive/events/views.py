@@ -36,13 +36,13 @@ event_add = EventAddView.as_view()
 class EventDetailView(DetailView):
     model = Event
     context_object_name = 'event'
-
-    def get_template_names(self):
-        if self.object.is_past():
-            template_name = 'events/video.html'
-        else:
-            template_name = 'events/event_detail.html'
-        return [template_name]
+    template_name = 'events/video.html'
+    # def get_template_names(self):
+    #     if self.object.is_past():
+    #        template_name = 'events/video.html'
+    #    else:
+    #        template_name = 'events/event_detail.html'
+    #    return [template_name]
 
 event_detail = EventDetailView.as_view()
 
