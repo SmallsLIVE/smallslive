@@ -48,36 +48,12 @@
       
       {% for event in events %}
         {% if forloop.counter < 4 %}
-         <div class="media">
-          {% if event.photo %}
-            <a href="{{ event.get_absolute_url }}" class="pull-left">{{ event.start_day|date:"D" }}<br /><small>{{ event.start_day|date:"M j" }}</small> </a>
-            <a href="{{ event.get_absolute_url }}" class="pull-right"><img src="{% thumbor_url event.photo.url|urlencode height=90 width=126 %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}" class="media-object img-responsive pull-left" /></a>
-          {% endif %}
-          <a href="{{ event.get_absolute_url }}">
-            <div class="media-body">
-              <h4 class="media-heading">{{ event.display_title }}</h4>
-              <p><small>{{ event.date_freeform }}</small></p>
-              <p>{{ event.performers.all|join:", " }}</p>
-            </div>
-          </a>
-         </div>
+         {% include 'blocks/event-snippet.html' %}
         {% endif %}
       {% endfor %}
       <h2>Coming up next @ Smalls:</h2>
       {% for event in events %}
-         <div class="media">
-          {% if event.photo %}
-            <a href="{{ event.get_absolute_url }}" class="pull-left">{{ event.start_day|date:"D" }}<br /><small>{{ event.start_day|date:"M j" }}</small> </a>
-            <a href="{{ event.get_absolute_url }}" class="pull-right"><img src="{% thumbor_url event.photo.url|urlencode height=90 width=126 %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}" class="media-object img-responsive pull-left" /></a>
-          {% endif %}
-          <a href="{{ event.get_absolute_url }}">
-            <div class="media-body">
-              <h4 class="media-heading">{{ event.display_title }}</h4>
-              <p><small>{{ event.date_freeform }}</small></p>
-              <p>{{ event.performers.all|join:", " }}</p>
-            </div>
-          </a>
-         </div>
+         {% include 'blocks/event-snippet.html' %}
       {% endfor %}
       <p><a href="/static_page/calendar">Full calendar</a></p>
       <h2>About Smalls and SmallsLIVE</h2>
@@ -110,31 +86,15 @@
       </div>
       <h3>New Recordings Available:</h3>
       <p>We try to get the audio recordings of our shows posted within 24 hours of being taped. Here are the latest sets available for streamed listening:</p>
-      <div class="thumbnail">
-        <div class="well" style="height:80px;">thumbnail | eventtitle | artists (66min)</div>
-        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button" title="Play"><span class="glyphicon glyphicon-play"></span></a> <a href="#" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> Favorite</a></p>
-        </div>
-      </div> 
-      <div class="thumbnail">
-        <div class="well" style="height:80px;">thumbnail | eventtitle | artists (66min)</div>
-        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button" title="Play"><span class="glyphicon glyphicon-play"></span></a> <a href="#" class="btn btn-default" role="button"><span class="glyphicon glyphicon-thumbs-up"></span> Favorite</a></p>
-        </div>
-      </div> 
-      <div class="thumbnail">
-        <div class="well" style="height:80px;">thumbnail | eventtitle | artists (66min)</div>
-        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button" title="Play"><span class="glyphicon glyphicon-play"></span></a> <a href="#" class="btn btn-default" role="button">! Favorite</a></p>
-        </div>
-      </div> 
-      <div class="thumbnail">
-        <div class="well" style="height:80px;">thumbnail | eventtitle | artists (66min)</div>
-        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button" title="Play"><span class="glyphicon glyphicon-play"></span></a> <a href="#" class="btn btn-default" role="button">+ Watchlist</a></p>
-        </div>
-      </div> 
-      <div class="thumbnail">
-        <div class="well" style="height:80px;">thumbnail | eventtitle | artists (66min)</div>
-        <div class="caption">          <p><a href="#" class="btn btn-primary" role="button" title="Play"><span class="glyphicon glyphicon-play"></span></a> <a href="#" class="btn btn-default" role="button">+ Watchlist</a></p>
-        </div>
-      </div> 
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
       <p><a href="">More</a></p>
       <h3>Most Popular Recordings:</h3>
       <p>We try to get concert videos posted within 3 days of being taped. Here are the latest:</p>

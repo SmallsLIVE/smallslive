@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Search: {query}{% endblock title%}
+{% block title %}Browse audio archive: {query}{% endblock title%}
 {% block bodyclass %}search{% endblock bodyclass%}
 {% block content %}
+  <h1>SmallsLIVE Audio Archive:</h1>
   <div class="row">
     <div class="col-sm-3 facets">
       <form role="form"> 
         <div class="well">
-          <h2>Search:</h2>
           <div class="input-group">
             <span class="input-group-addon">
               <input type="radio" name="qType" value="artist">
@@ -24,29 +24,29 @@
             <div class="col-sm-offset-1 col-sm-10">    
               <div class="checkbox">
                 <label>
-                  <input type="checkbox"> Ari Hoenig (dr)
+                  <input type="checkbox"> Ari Hoenig (dr) (2)
                 </label>
               </div>
               <div class="checkbox">
                 <label>
-                  <input type="checkbox"> Peter Bernstein (gtr)
+                  <input type="checkbox"> Peter Bernstein (gtr) (12)
                 </label>
               </div>
               <div class="checkbox">
                 <label>
-                  <input type="checkbox"> Montez Coleman (dr)
+                  <input type="checkbox"> Montez Coleman (dr) (41)
                 </label>
               </div>
               <div class="checkbox">
                 <label>
-                  <input type="checkbox"> Montez Coleman (dr)
+                  <input type="checkbox"> Bryant Coleman (dr) (1)
                 </label>
               </div>
               <div class="input-group">
                 <span class="input-group-addon">
                   <input type="checkbox" name="custom_sideman" value="">
                 </span>
-                <input type="text" class="form-control" id="f2" placeholder="Other musician name">
+                <input type="text" class="form-control" id="f2" placeholder="Musician name">
               </div> 
             </div>
           </div>
@@ -56,79 +56,47 @@
     <div class="col-sm-9">
       <h1>(21) sets of audio:</h1>
       <p>Sort: best match | <a href="">newest releases</a> | <a href="">earliest show date first</a>  | <a href="">most recent show date first</a> | <a href="">most popular</a> </p>
-      <table class="table">
-        <tbody>           
-          <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p><p class="text-muted">You  watched it 4 days ago.</p> </td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p><p class="text-muted">You  watched it 14 days ago.</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- <tr>
-            <td colspan="">thumb</td>
-            <td><a href="/artists/102/edit">audio title</a><p>description, instruments, date</p></td>
-          </tr>  
- 
-        </tbody>
-      </table>
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
     </div>
   </div>
   <div class="dev">
