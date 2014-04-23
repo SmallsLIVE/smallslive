@@ -8,20 +8,24 @@ This page is loaded instead of event_detail if the event is in the past or tapin
       {{ event.description }}
 {% endcomment %}
 {% load thumbor_tags %}
-{% block title %}Video: {{ event.artists.first_name }} {{ event.artists.last_name }} {{ event.start_day }} in NYC w/ {{ event.sidemen }}{% endblock title %}
+{% block title %}{{ event.display_title }} {{ event.start_day }} in NYC w/ {{ event.sidemen }}{% endblock title %}
 {% block content %}
+<h1><code>2</code>Live Now: {{ event.display_title }}</h1>
 <div class="row">
   <div class="col-sm-8">
     <div class="video_player">
-      <h1>Video: {{ event.start_day }} : {{ event.display_title }}</h1>
-      <p>{{ event.subtitle }}</p>
-      <div class="well" style="text-align:center;padding:8em">[media player]</div>
-    </div>  
-    <div class="description"> 
-      <p>Recorded {{ event.date_freeform }}</p>
-      {{ event.description }}
-    </div>
-    <h3>featuring:</h3>
+      <p>{{ event.start_day }}, {{ event.date_freeform }}</p>
+      {% if event.subtitle %}
+        <p>{{ event.subtitle }}</p>
+      {% endif %}
+      <div class="well" style="text-align:center;padding:8em">[video player if live now]<code>3</code></div>
+      <div class="well" style="text-align:center;padding:4em 8em">[audio player if past event]</div>
+      {% if event.photo %}
+        <div class="well" style="text-align:center;padding:8em 8em">    
+          <img src="{{ event.photo.url }}" class="img-rounded" />
+        </div>
+      {% endif %}
+    </div> 
     <div class="row">
     {% for artist in event.performers.all %}     
       <div class="col-sm-6 col-md-4">
@@ -38,14 +42,51 @@ This page is loaded instead of event_detail if the event is in the past or tapin
       </div>
     {% endfor %} 
     </div>
+    {% if event.description %}  
+      <div class="description well"> 
+        {{ event.description }}
+      </div>
+    {% endif %}
   </div>
   <div class="col-sm-4">
-    <h1>Related Videos:</h1>
-    <ul>
-      <Li>%leader1_name% <a href="{% url "artist_detail" pk=412%}">(6 videos)</a></li>
-      <Li>%leader2_name% <a href="{% url "artist_detail" pk=214%}">(6 videos)</a></li>
-      <Li>%sideman1% <a href="{% url "artist_detail" pk=554%}">(6 videos)</a></li>
-    </ul> 
+    <h2><code>1</code>Listen to Recent Sets from { leader.fullname }</h2>
+    <table class="table">
+      <tbody>
+        <tr>
+          <td>[playButton]</td>
+          <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
+        </tr>
+        <tr>
+          <td>[playButton]</td>
+          <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
+        </tr>
+        <tr>
+          <td>[playButton]</td>
+          <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
+        </tr> 
+      </tbody>
+    </table> 
+    <p><a href="{% url "artist_detail" pk=412%}">Browse all (6) audio sets from { leader.fullname }</a></p>
+    <h2><code>1</code>Audio from Sidemen:</h2>
+    <table class="table">
+      <tbody>
+      {% for artist in event.performers.all %}
+        <tr>
+          <td><a href="{% url "artist_detail" pk=artist.id %}">{{ artist.full_name }} - {{ artist.instruments.all|join:", " }} </a></td>
+          <td><a href="{% url "artist_detail" pk=artist.id %}">X sets available</a></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table> 
   </div>
 </div>    
+<div class="dev">
+  <h1>Dev notes</h1>
+  <Ul> 
+    <li><code>1</code> - display audio lnks to sidemen and leader. hide any artist including leader if there is no audio for him/her.</li>
+    <li><code>2</code> - only print this if the show is live now</li>
+    <li><code>3</code> - based on event date, or live-now status, show either video player, or or event photo + audio player if avail (for past events)
+  </Ul>
+</div>
+
 {% endblock content %}
