@@ -1,11 +1,26 @@
+{% load static %}
 <div class="thumbnail media">
  
-    <a  href="/events/8323/" class="pull-left btn btn-primary" role="button" title="Play audio {event.displaytitle}"><span class="glyphicon glyphicon-play"></span></a>
+<script>
+soundManager.setup({
+  useFlashBlock: true, // optional - if used, required flashblock.css
+  url: '{% static "swf" %}' // required: path to directory containing SM2 SWF files
+});
+</script>
+
+<div id="sm2-container">
+  <!-- flash movie ends up here -->
+ </div>
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/mp3-player-button.css' %}" />
+<!-- soundManager.useFlashBlock: related CSS -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/flashblock.css' %}" />
+    
     <a href="/events/8323/" class="pull-right"><img src="http://d3dombqstlgdhj.cloudfront.net/h1ELL_gHTvZay4EmGogrjHkl07U=/126x90/http%3A//d3dombqstlgdhj.cloudfront.net/images/SL0031_daveschnitter_FINAL2.jpg" alt=" " class="media-object img-responsive pull-left"></a>
   
   <a href="/events/8323/">
     <div class="media-body">
-      <h4 class="media-heading">The David Schnitter Quartet</h4>
+      <h4 class="media-heading"><a href="{% static 'mp3/going_outside.mp3' %}" title="Play MP3 file" class="sm2_button"></a>The David Schnitter Quartet</h4>
       <p><small>66 mins. Recorded Jun 26, 2014, Published: Jun 29, 2014</small></p>
       <p>Ugonna Okegwo, Anthony Pinciotti, David Schnitter, Spike Wilner</p>
     </div>

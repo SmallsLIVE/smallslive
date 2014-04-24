@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load thumbor_tags %}
+{% load thumbor_tags static %}
 {% block title_prefix %}{% endblock title_prefix %}
 {% block title_suffix %} - Smalls Jazz Club: live jazz shows &amp; audio recording archive (NYC){% endblock title_suffix%}
 {% block content %}
@@ -134,3 +135,7 @@
     </ul>
   </div>
 {% endblock content %}
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/soundmanager2.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/mp3-player-button.js' %}"></script>
+{% endblock extra_js %}
