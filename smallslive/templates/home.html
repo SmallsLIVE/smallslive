@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load thumbor_tags %}
 {% load thumbor_tags static %}
 {% block title_prefix %}{% endblock title_prefix %}
 {% block title_suffix %} - Smalls Jazz Club: live jazz shows &amp; audio recording archive (NYC){% endblock title_suffix%}
@@ -20,14 +19,17 @@
             {% if forloop.counter < 4 %}
             <div class="item{% if forloop.counter == 1 %} active{% endif %}">
               <div class="carousel-caption">
+              <a href="{{ event.get_absolute_url }}">
               {% if event.photo %}
-                <img src="{% thumbor_url event.photo.url|urlencode height=250 fit_in=true %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}"  /></a>
+                <img src="{% thumbor_url event.photo.url|urlencode height=250 fit_in=true %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}"  />
               {% endif %}
-                <h1><a href="{{ event.get_absolute_url }}">{{ event.display_title }}</a></h1>
+                <h1>{{ event.display_title }}</h1>
+                <h2>{{ event.subtitle }}</h2>
                 <p>Tonight ({{ event.start_day|date:"D" }}) - {{ event.date_freeform }}</p>
                 <p>
                 </p>
-                <p><a href="{{ event.get_absolute_url }}">Details...</a></p>
+                <p>Details...</p>
+              </a>
               </div>
             </div>
             {% endif %}
