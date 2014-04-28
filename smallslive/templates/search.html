@@ -11,14 +11,8 @@
             <span class="input-group-addon">
               <input type="radio" name="qType" value="artist">
             </span>
-            <input type="text" class="form-control" id="f1" placeholder="By bandleader name">
-          </div>  
-          <div class="input-group">
-            <span class="input-group-addon">
-              <input type="radio" name="qType" value="instrument">
-            </span>
-            <input type="text" class="form-control" id="f2" placeholder="By instrument">
-          </div>  
+            <input type="text" class="form-control" id="f1" placeholder="Artist, instrument, show date">
+          </div>    
           <p>...featuring these side musicians:<code>1, 2</code></p>
           <div class="row">
             <div class="col-sm-offset-1 col-sm-10">    
@@ -54,9 +48,13 @@
       </form>
     </div>
     <div class="col-sm-9">
+      <code>Default search result = newest recordings in archive:</code>
       <h1>(21) sets of audio:</h1>
-      <p>Sort: best match | <a href="">newest releases</a> | <a href="">earliest show date first</a>  | <a href="">most recent show date first</a> | <a href="">most popular</a> </p>
-
+      <p>Sort:  just added  | <a href="">most recent show date first</a> | <a href="">most popular</a> </p>
+      <code>if search query/facet choices exists: </code>
+      <h1>(21) sets of audio:</h1>
+      <p>Sort: best match |  <a href="">just added</a>  | <a href="">most recent show date first</a> | <a href="">most popular</a> </p>
+ 
       {% include 'blocks/search-result-media.html' %}
 
       {% include 'blocks/search-result-media.html' %}
