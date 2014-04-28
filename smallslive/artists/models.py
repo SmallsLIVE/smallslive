@@ -33,6 +33,8 @@ class Artist(models.Model):
     def past_events(self):
         return Event.past.filter(performers=self)
 
+    def get_instruments(self):
+        return "\n".join([i.instruments for i in self.instruments.all()])
 
 class Instrument(models.Model):
     name = models.CharField(max_length=255)
