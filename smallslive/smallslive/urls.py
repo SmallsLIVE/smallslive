@@ -4,6 +4,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.views.generic.base import TemplateView
 
+import djstripe
 
 admin.autodiscover()
 
@@ -20,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^$', 'events.views.homepage', name="home"),
+    url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
 )
 
 if settings.DEBUG:

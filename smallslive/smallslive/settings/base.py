@@ -49,6 +49,8 @@ INSTALLED_APPS = (
     'sortedm2m',
     'south',
     'storages',
+    'djstripe',
+    'floppyforms',
 
     # project apps
     'artists',
@@ -78,6 +80,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'allauth.account.context_processors.account',
     'allauth.socialaccount.context_processors.socialaccount',
+    'djstripe.context_processors.djstripe_settings',
 )
 
 ROOT_URLCONF = 'smallslive.urls'
@@ -184,3 +187,35 @@ ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_SIGNUP_FORM_CLASS = "djstripe.forms.StripeSubscriptionSignupForm"
+
+# Stripe settings
+STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "<your publishable test key>")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "<your secret test key>")
+
+DJSTRIPE_PLANS = {
+    "monthly": {
+        "stripe_plan_id": "basic-monthly",
+        "name": "Basic Plan Monthly ($10.00/month)",
+        "description": "The monthly subscription plan to SmallsLIVE",
+        "price": 1000,  # $10.00
+        "currency": "usd",
+        "interval": "month"
+    },
+    "yearly": {
+        "stripe_plan_id": "pro-yearly",
+        "name": "Basic Plan Annual ($100/year)",
+        "description": "The annual subscription plan to the Basic Plan",
+        "price": 10000,  # $199.00
+        "currency": "usd",
+        "interval": "year"
+    }
+}
+
+DJSTRIPE_INVOICE_FROM_EMAIL = ("billing@smallslive.com")
+
+DJSTRIPE_SUBSCRIPTION_REQUIRED_EXCEPTION_URLS = (
+    'home',
+    'about',
+    "(allauth)",  # anything in the django-allauth URLConf
+)
