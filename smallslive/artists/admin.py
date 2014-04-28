@@ -3,7 +3,7 @@ from models import Artist, Instrument
 
 
 class ArtistAdmin(admin.ModelAdmin):
-    list_display = ('salutation', 'first_name', 'last_name', 'website', 'photo', 'get_instruments')
+    list_display = ('salutation', 'first_name', 'last_name', 'get_instruments', 'user', 'photo', 'website')
     list_display_links = ('first_name', 'last_name')
     list_filter = ('instruments', 'last_name')
     search_fields = ('first_name', 'last_name')
