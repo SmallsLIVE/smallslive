@@ -1,6 +1,14 @@
 $(document).ready(function(){
   //Customer Signup process
   //Trial signup
+  $('.f-trial-signup').hide();
+  //Expose the trial signup form
+  $('.trigger-f-trial-signup').on('click',function(e){
+    e.preventDefault();
+    $(this).parent().hide();
+    $('.f-trial-signup').slideDown();
+    $('#id_subscriber_email').focus();
+  });
   $('.f-trial-signup').submit(function(e){
     //AJAX 
     e.preventDefault();

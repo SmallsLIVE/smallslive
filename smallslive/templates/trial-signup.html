@@ -1,41 +1,161 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Free Trial - Access 350 Jazz Concerts for 30 days{% endblock title %}
 {% block nav %}{% endblock nav %}
 {% block content %}
 <div class="row">
-  <div class="col-sm-7 col-med-6">
-    <div class="jumbotron">
-      <h1>SmallsLIVE Free-Trial Signup</h1>
-      <p>30 days of unlimited access to our 8,000+ hours of concert footage recorded at Smalls.</p>
-      <form method="post" class="f-trial-signup" role="form" enctype="multipart/form-data">
-        <div class="form-group" id="div_id_subscriber_email">
-          <label class="control-label " for="div_id_subscriber_email">Your email address:</label>
-          <div class="controls ">
-            <input type="text" placeholder="" name="subscriber_email" value="" id="id_subscriber_email" class="form-control">
-          </div>
-        </div>  
-        <div class="form-group"> 
-          <button type="submit" class="btn btn-primary">Start Trial</button>   
+  <div class="col-sm-7 col-md-6 col-lg-6">
+    <div class="alert alert-warning">
+      <h1>Looking for {context}?</h1>
+      <p><code>1</code> You'll need to sign up for SmallsLIVE to access this {recording}{live stream}:</p>
+    </div>
+ 
+      <h2>Sign Up for SmallsLIVE</h2>
+      <h3>Get 30 days free:</h3>
+      <ul>
+        <li>Stream 8,000 hours of recorded concerts from Smalls</li>
+        <li>Watch tonight's concert live (note: pre-recorded videos are not yet available due to licensing restrictions)</li>
+        <li>Access to purchase downloads of selected sets</li>
+        <li>Send a message to artists directly</li>
+        <li><strong class="text-primary">After 30 days, it's just $10/month.</strong></li>
+      </ul>
+   
+    <a href="/static_page/trial-signup-account-info.html"><button class="btn btn-primary  trigger-f-trial-signup">Start My Trial</button></a>  
+    <form method="post" class="f-trial-signup" role="form" enctype="multipart/form-data">  
+      <div class="form-group" id="div_id_subscriber_email">
+        <label class="control-label " for="div_id_subscriber_email">Your email address:</label>
+        <div class="controls ">
+          <input type="text" placeholder="" name="subscriber_email" value="" id="id_subscriber_email" class="form-control">
         </div>
-      </form>  
-    </div>
-  </div>
-  <div class="col-sm-5 col-med-4">
-    <div class="well">
-    <h2>Subscriber Benefits:</h2>
-    <ul>
-      <li>text</li>
-      <li>text</li>
-      <li>text</li>
-      <li>text</li>
-      <li>text</li>
-    </ul>
-    </div>
+      </div> 
+      <div class="form-group" id="div_id_password">
+        <label class="control-label " for="div_id_password">Choose a password:</label>
+        <div class="controls ">
+          <input type="password" placeholder="" name="password" value="" id="id_password" class="form-control">
+        </div>
+        <p class="help-block">8 characters minimum. Include at least 1 number and 1 special character.
+      </div> 
+      <h4>Credit Card Info</h4>
+      <div class="form-group" id="div_id_name">
+        <label class="control-label" for="id_name">Name on Credit Card (be exact!):</label>
+        <div class="controls ">
+          <input type="text" placeholder="" name="name" value="" id="id_name" class="form-control">
+        </div>
+        <p class="help-block "><span class="text-success">Your card won't be charged until May 28, 2014.</span></p>
+      </div>
+      <div class="form-group" id="div_id_CC">
+        <label class="control-label" for="id_CC">Credit Card Number:</label>
+        <div class="controls ">
+          <input type="text" placeholder="" name="name" value="" id="id_CC" class="form-control">
+        </div>
+        <p class="help-block accepted-payments"><img src="{% static 'image/credit_card_sprite_small34x22.png' %}" alt="ACcepted payment methods are: {list}"></p>
+      </div>
+      <div class="row CC-expiration-info">
+        <div class="col-sm-4">
+          <div class="form-group" id="div_id_l_name">
+            <label class="control-label " for="id_exp_month">Expiration Date:</label>
+            <div class="controls ">
+              <select class="form-control" name="exp_month" id="id_exp_month">
+                <option>Jan 01</option>
+                <option>Feb 02</option>
+              </select>
+            </div>
+          </div> 
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group" id="div_id_exp_year">
+            <label class="control-label sr-only" for="id_exp_year">Year:</label>
+            <div class="controls ">
+              <select class="form-control" name="exp_year" id="id_exp_year">
+                <option>2015</option>
+                <option>2014</option>
+              </select>
+            </div>
+          </div> 
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group" id="div_id_CVV">
+            <label class="control-label " for="id_CVV">Security Code/CVV:</label>
+            <div class="controls ">
+              <input type="text" placeholder="" name="CVV" value="" id="id_CVV" class="form-control">
+            </div>
+          </div> 
+        </div>
+      </div>
+      
+      <h4>Billing Address</h4>
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group" id="div_id_street1">
+            <label class="control-label " for="id_street1">Street (line 1):</label>
+            <div class="controls ">
+              <input type="text" placeholder="" name="street1" value="" id="id_street1" class="form-control">
+            </div>
+          </div> 
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group" id="div_id_street1">
+            <label class="control-label " for="id_street1">Street (line 2 - optional)</label>
+            <div class="controls ">
+              <input type="text" placeholder="" name="street1" value="" id="id_street1" class="form-control">
+            </div>
+          </div> 
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group" id="div_id_country">
+            <label class="control-label" for="id_country">Country:</label>
+            <div class="controls ">
+              <select class="form-control" name="country" id="id_country">
+                <option>United States</option>
+                <option>United Kingdom</option>
+              </select>
+            </div>
+          </div> 
+        </div>
+      </div>
+      
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group" id="div_id_city">
+            <label class="control-label " for="id_city">City:</label>
+            <div class="controls ">
+              <input type="text" placeholder="" name="city" value="" id="id_city" class="form-control">
+            </div>
+          </div> 
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group" id="div_id_state">
+            <label class="control-label " for="id_state">State/Region:</label>
+            <div class="controls ">
+              <select class="form-control" name="state" id="id_state">
+                <option>[None]</option>
+              </select>
+            </div>
+          </div> 
+        </div>
+        <div class="col-sm-3">
+          <div class="form-group" id="div_id_postal_code">
+            <label class="control-label" for="id_postal_code">Year:</label>
+            <div class="controls ">
+              <input type="text" placeholder="" name="postal_code" value="" id="id_postal_code" class="form-control">
+            </div>
+          </div> 
+        </div>
+      </div>
+      <div class="form-group"> 
+        <button type="submit" class="btn btn-primary">Start Trial <code>2</code></button>   
+      </div>
+    </form>   
   </div>
 </div>
 <div class="dev">
   <h1>Dev notes</h1>
   <Ul> 
+    <li><code>1</code> - context means "the page they came from." Its possible a user came from a specific audio recording or live stream; if that happens, its helpful to have this context recorded and to carry the return-URL into this screen so that after signup, we take them right to what they wanted.</li>
+    <li><code>2</code> - the signup form should take them to one of two places: if they came from a restricted piece of content, then  redirect them to the carry-through URL that they originally tried to access. If they came from the plain signup page, then I would redirect them to the search-results page. For either case, show the flash success message:  "Your free trial is now active until { mmm dd }. Enjoy the music!"  </li>
   </Ul>
 </div>
 {% endblock content %}

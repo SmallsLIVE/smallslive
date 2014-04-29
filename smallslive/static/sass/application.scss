@@ -2,6 +2,12 @@
 @import "../css/selectize.bootstrap3.css";
 @import "../js/datepicker.css";
 @import "../js/jqui/jquery-ui-1.10.4.custom.min.css";
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
 /* TEmplate setup - body, footer, etc */
 
 /* Masthead */
@@ -169,7 +175,7 @@ body.search .facets {
     }
   }
 }
-@media all and (min-width : 1100px) {
+@media all and (min-width : $screen-md-min) {
   .calendar .calendar-month {
     .days-of-week {
       display: block;
@@ -202,6 +208,45 @@ body.search .facets {
 }
 /*=Admin screens*/
 /*=Signup screens*/
+form.f-trial-signup {
+  margin-top: 24px;
+  h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #aaaaaa; 
+    margin-bottom: 8px;
+    margin-top:24px;
+  }
+  
+  @media all and (min-width : $screen-sm-min) {  
+    div.form-group {
+      margin-bottom: 22px; 
+    }
+    #id_exp_year {
+      position: relative;
+      top:26px;
+    }
+  }
+  @media all and (min-width : $screen-md-min) {  
+    div.CC-expiration-info .col-sm-3:first-child {
+      padding-right: 2px;
+    }
+    div.CC-expiration-info .col-sm-3:nth-child(2) {
+      padding-right: 2px !important;
+      padding-left: 2px !important;
+    }
+  }
+  p.accepted-payments {
+  height: 29px;
+  overflow: hidden;
+    img {
+      position: relative;
+      top:-38px; 
+      width: auto;
+      height: auto;
+    }
+  }
+}
 table.videos-to-publish tr .checkbox label   {
   white-space: nowrap;
   input {
@@ -252,6 +297,20 @@ div.datepicker {
 .no-display,
 .longname {
   display: none;
+}
+/*=Components - Bootstrap Overrides*/
+form {  
+  .form-control {
+    border-color: #dddddd;
+    box-shadow: none;
+    @include border-radius(0);
+  }
+  .form-control:focus {    
+    box-shadow: none;
+  }
+  .form-group label {
+    color: #666666;
+  }
 }
 /*=Development*/
 /*=Trash this after design done */

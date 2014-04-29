@@ -5103,7 +5103,7 @@ body.search .facets p {
     .calendar .calendar-month .past a {
       color: #666; }
 
-@media all and (min-width: 1100px) {
+@media all and (min-width: 992px) {
   .calendar .calendar-month .days-of-week {
     display: block;
     text-align: right; }
@@ -5120,8 +5120,42 @@ body.search .facets p {
     width: 16%; }
   .calendar .calendar-month .row:not(.days-of-week) .day {
     height: 15em; } }
+/*=Event/Media Page*/
+.sideman-block .thumbnail {
+  text-align: center;
+  min-height: 210px; }
+
 /*=Admin screens*/
 /*=Signup screens*/
+form.f-trial-signup {
+  margin-top: 24px; }
+  form.f-trial-signup h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #aaaaaa;
+    margin-bottom: 8px;
+    margin-top: 24px; }
+  @media all and (min-width: 768px) {
+    form.f-trial-signup div.form-group {
+      margin-bottom: 22px; }
+    form.f-trial-signup #id_exp_year {
+      position: relative;
+      top: 26px; } }
+  @media all and (min-width: 992px) {
+    form.f-trial-signup div.CC-expiration-info .col-sm-3:first-child {
+      padding-right: 2px; }
+    form.f-trial-signup div.CC-expiration-info .col-sm-3:nth-child(2) {
+      padding-right: 2px !important;
+      padding-left: 2px !important; } }
+  form.f-trial-signup p.accepted-payments {
+    height: 29px;
+    overflow: hidden; }
+    form.f-trial-signup p.accepted-payments img {
+      position: relative;
+      top: -38px;
+      width: auto;
+      height: auto; }
+
 table.videos-to-publish tr .checkbox label {
   white-space: nowrap; }
   table.videos-to-publish tr .checkbox label input {
@@ -5169,6 +5203,19 @@ div.datepicker {
 .no-display,
 .longname {
   display: none; }
+
+/*=Components - Bootstrap Overrides*/
+form .form-control {
+  border-color: #dddddd;
+  box-shadow: none;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  border-radius: 0; }
+form .form-control:focus {
+  box-shadow: none; }
+form .form-group label {
+  color: #666666; }
 
 /*=Development*/
 /*=Trash this after design done */
