@@ -1,41 +1,115 @@
 {% extends "base.html" %}
 {% block title %}My Subscription<{% endblock title%}
 {% block content %}
-  <h1>My Subscription</h1>
-  <div class="row">
-    <div class="col-sm-12">
-      <table class="table table-striped">
-        <tbody>
-          {% if user.is_artist %}
+<h1>My Subscription</h1>
+<div class="row">
+  <div class="col-sm-12 col-md-10 col-lg-8">
+    <table class="table nv">
+      <tbody>
+        {% if user.is_artist %}
           <tr>
-            <td colspan="">Account Type</td>
+            <td colspan="">Subscription Type</td>
             <td>You have a free artist subscription. Music you listen to does not count towards play counts or royalties.</td>
           </tr> 
-          {% else %}
-          <tr>
-            <td>Account Type</td>
-            <td>Free Trial <span class="text-danger">(Expires in 2 days on April 16, 2015)</span></td>
-            <td><a href="">Upgrade Now</a></td>
-          </tr>
+        {% else %}
+          {% if request.GET.inTrial %}
+            <tr>
+              <td>Subscription Type</td>
+              <td><p><strong>Free Trial</strong> (Ends in 2 days on April 16, 2015. After that, you'll be charged $10/month.)  </p><a href="">Cancel my trial</a></td>
+            </tr>
           {% endif %}
+          {% if request.GET.cancelled %}
+            <tr>
+              <td>Subscription Type</td>
+              <td>You are not currently a subscriber. For $10/month get:<br />
+              <ul>
+                <li>Access all audio streams</li>
+                <li>Watch tonight's live concert(s)</li>
+                <li>Access to purchase downloads (when avail.)</li>
+              </ul>
+              <a href="" class="btn btn-primary" role="button">Subscribe Now</a></td>
+            </tr>
+          {% endif %}
+          {% if request.GET.cancelled or request.GET.inTrial %}
+          {% else %} 
+            <tr>
+              <td>Subscription Type</td>
+              <td>$10/month is getting you:<br />
+                <ul>
+                  <li>Access all audio streams</li>
+                  <li>Watch tonight's live concert(s)</li>
+                  <li>Access to purchase downloads (when avail.)</li>
+                </ul>
+                <a href="?cancel=1">Cancel my subscription</a>
+              </td>
+            </tr>
+          {% endif %}
+        {% endif %}
+        {% if request.GET.cancelled %}
+          <tr>
+            <td>Subscription history</td>
+            <td>You cancelled your subscription on May 1, 2014.</td>
+          </tr>
+        {% else %}
           <tr>
             <td>Billing</td>          
-            <td>We're charging your VISA card ending in 1234. <span class="text-warning">Warning: this card will expire on 6/1/2014.</span></td>
-            <td><a href="">Change credit card</a></td>
+            <td>{% if request.GET.inTrial %}We will charge{% else %}We are charging{% endif %} your VISA card ending in 1234. <div class="text-warning">This card will expire on 6/1/2014.</div>
+              <p><a href="">Change credit card</a></p>
+            </td>
           </tr>
           <tr>
-            <td># Downloads Bought</td><td>16 (sets)</td><td><a href="">View purchase history</a></td>
+            <td>Subscriber since</td>
+            <td>March 1, 2015</td> 
           </tr>
           <tr>
-            <td>Subscriber since</td><td>March 1, 2015</td><td></td>
+            <td>Artist Revenue Generated</td>
+            <td><span class="text-success">~$100.00 from your subscription fees has gone directly into our artist revenue pool. Thanks!</span></td> 
           </tr>
-        </tbody>
-      </table>
-    </div>
+        {% endif %}
+        <tr>
+          <td># Downloads Bought</td>
+          <td>16 (sets) - see purchase history below</td>
+        </tr>
+      </tbody>
+    </table>
+      
+      
+    <h1>History of Purchases</h1>
+    <p>Download previous purchases. You can also <a href="">Download a ZIP of all of your purchased songs</a>.</p>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Song/Product Purchased</th>
+          <th class="num">Amount paid</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><time datetime="">1 Apr 2014</time></td>
+          <td><span class="glyphicon glyphicon-music"></span> "Take the A Train"<br />From: <a href="">event.displaytitle</a><br />w/ artistName, artistName,  artistName,  artistName<br />Recorded <time datetime="">June 13, 2011</time></td>
+          <td class="num">$5.00</td>
+          <td class="nowrap"><span class="glyphicon glyphicon-download"></span> <a href="">Download again</a></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+</div>
+    
+  
+ 
   <div class="dev">
+    <h1>Alternate states</h1>
+    <Ul> 
+      <li><a href="?inTrial=1">User is inside trial period</a></li>
+      <li><a href="?">User is paying us</a></li>     
+      <li><a href="?cancelled=1">User has cancelled</a></li>     
+    </Ul>
     <h1>Dev notes</h1>
     <Ul> 
+      <li><code>1</code> note pseudo code in comments</li>
+      <li><code>1</code> note pseudo code in comments</li>
       <li><code>1</code> note pseudo code in comments</li>     
     </Ul>
   </div>
