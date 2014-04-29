@@ -34,7 +34,7 @@
           {% else %} 
             <tr>
               <td>Subscription Type</td>
-              <td>$10/month is getting you:<br />
+              <td><p>You have a regular subscription. $10/month is getting you:</p>
                 <ul>
                   <li>Access all audio streams</li>
                   <li>Watch tonight's live concert(s)</li>
@@ -53,7 +53,9 @@
         {% else %}
           <tr>
             <td>Billing</td>          
-            <td>{% if request.GET.inTrial %}We will charge{% else %}We are charging{% endif %} your VISA card ending in 1234. <div class="text-warning">This card will expire on 6/1/2014.</div>
+            <td>
+              <p>{% if request.GET.inTrial %}We will charge{% else %}We are charging{% endif %} your VISA card ending in 1234. </p>
+              <p class="text-warning">This card will expire on 6/1/2014.</p>
               <p><a href="">Change credit card</a></p>
             </td>
           </tr>
@@ -68,14 +70,14 @@
         {% endif %}
         <tr>
           <td># Downloads Bought</td>
-          <td>16 (sets) - see purchase history below</td>
+          <td>1 song</td>
         </tr>
       </tbody>
     </table>
       
       
     <h1>History of Purchases</h1>
-    <p>Download previous purchases. You can also <a href="">Download a ZIP of all of your purchased songs</a>.</p>
+    <p>Download previous purchases. <span class="glyphicon glyphicon-download"></span> <a href="">Download a ZIP of all of your purchased songs</a>.</p>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -90,7 +92,7 @@
           <td><time datetime="">1 Apr 2014</time></td>
           <td><span class="glyphicon glyphicon-music"></span> "Take the A Train"<br />From: <a href="">event.displaytitle</a><br />w/ artistName, artistName,  artistName,  artistName<br />Recorded <time datetime="">June 13, 2011</time></td>
           <td class="num">$5.00</td>
-          <td class="nowrap"><span class="glyphicon glyphicon-download"></span> <a href="">Download again</a></td>
+          <td class="nowrap"><span class="glyphicon glyphicon-download"></span> <a href="">Download</a></td>
         </tr>
       </tbody>
     </table>
