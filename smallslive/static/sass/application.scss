@@ -8,6 +8,10 @@
       -ms-border-radius: $radius;
           border-radius: $radius;
 }
+/* Bootstrap var overrides */
+//** Border color for table and cell borders.
+$table-border-color:            #eee;
+
 /* TEmplate setup - body, footer, etc */
 
 /* Masthead */
@@ -146,8 +150,7 @@ body.search .facets {
   .calendar-month {
     font-size: 11px;
     .day {
-      padding: 4px;
-      border-bottom: 1px solid #eee;
+      padding: 4px; 
       time {
         display: block;
         font-size: 14px;
@@ -311,6 +314,15 @@ form {
   .form-group label {
     color: #666666;
   }
+}
+/* Name/value pair tables */
+table.nv tbody tr > td:first-child {
+  font-weight: bold;
+  color: #666666;
+  text-align: right;
+}
+.nowrap {
+  white-space: nowrap;
 }
 /*=Development*/
 /*=Trash this after design done */
