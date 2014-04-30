@@ -1,23 +1,73 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<div class="jumbotron">
-  <h1>SmallsLIVE For Musicians</h1>
-  <h2>Make $ On Your Recorded Gigs at Smalls in NYC</h2>
-  <p>If you have performed at the club, we probably have audio or video of your shows. SmallsLIVE is our program that lets you earn money when people watch your concerts.</p>
+<div class="row">
+  <div class="col-sm-8 col-xs-12">
+    <div class="jumbotron">
+      <h1>SmallsLIVE For Musicians</h1>
+      <h3>Earn $ on your live recordings from gigs @ Smalls:</h3>
+      <ul>
+        <li>Subscribers pay $10/month to access our archive of live recordings</li>
+        <li>Each month, we split the revenue 50/50* with artists after our expenses</li>
+        <li>We pay you based on how much your music was listened to by subscribers</li>
+        <li>If you have already performed at Smalls, sign up now or learn more:</li>
+            </ul>
+    <p><a href="../musician-signup-login" role="button" class="btn btn-primary btn-lg">Sign Up / Learn More</a></p>
+    </div>
+  </div>
+  <div class="col-sm-4">
+ 
+    <h2>Participating Artists</h2>
+    <p>Some of the artists participating in the SmallsLIVE Artist Revenue Sharing program:<code>2</code></p>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Artist</th>
+          <th>Instr.</th>
+          <th># of <span class="glyphicon glyphicon-music"></span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><A href="/artists/664/">Ari Hoenig</a></td><td>dr</td><td>156</td>
+        </tr>
+        <tr>
+          <td><A href="/artists/664/">Johnny O'Neal</a></td><td>dr</td><td>156</td>
+        </tr>
+        <tr>        
+          <td><A href="/artists/664/">Frank Lacy</a></td><td>dr</td><td>156</td>
+        </tr>
+        <tr>
+          <td><A href="/artists/664/">Rodney Green</a></td><td>dr</td><td>156</td>
+        </tr>
+        <tr>
+          <td><A href="/artists/664/">Joe Magnarelli</a></td><td>dr</td><td>156</td>
+        </tr>
+        <tr>        
+          <td><A href="/artists/664/">Will Vinson</a></td><td>dr</td><td>156</td>
+        </tr>
+        <tr>        
+          <td><A href="/artists/664/">Grant Stewart</a></td><td>dr</td><td>156</td>
+        </tr>
+        <tr>        
+          <td><A href="/artists/664/">Rick Germanson</a></td><td>dr</td><td>156</td>
+        </tr>
+        <tr>        
+          <td><A href="/artists/664/">Spike Wilner</a></td><td>dr</td><td>156</td>
+        </tr>
+        <tr>        
+          <td><A href="/artists/664/">Ben Wolfe</a></td><td>dr</td><td>156</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
-<h2>Have you played at Smalls in NYC?</h2>
-<p>Here is text about what we do.</p>
-<p>Here is text about what we do.</p>
-<p>Here is text about what we do.</p>
-<p>Here is text about what we do.</p>
-<p>If you have already performed at Smalls, sign up now:*</p>
-<p><a href="../musician-signup-login" role="button" class="btn btn-primary btn-lg">Sign Up Now</a></p>
-<p>*You'll need to <a href="#">book a gig</a> at Smalls in NYC before you can participate.</p>
+<p class="text-muted">* The 50/50 split happens after our website, legal, and other expenses. For comparison, Spotify pays artists ~ $0.017 per stream. </p>
 <div class="dev">
   <h1>Dev notes</h1>
   <Ul>
-    <li><code>1</code> This page is CMS Content</li>
+    <li><code>1</code> This page is CMS Content?</li>
+    <li><code>2</code> Probably want spike to Hand pick these (not the latest artists since the big names are likely to drive signups)</li>
   </Ul>
 </div>
 {% endblock content %}
