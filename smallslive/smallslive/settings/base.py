@@ -218,5 +218,9 @@ DJSTRIPE_INVOICE_FROM_EMAIL = ("billing@smallslive.com")
 DJSTRIPE_SUBSCRIPTION_REQUIRED_EXCEPTION_URLS = (
     'home',
     'about',
-    "(allauth)",  # anything in the django-allauth URLConf
+    '(payments)',
+    '(static_page)',
+    '(events)',
+    '(artists)',
+    '(allauth)',  # anything in the django-allauth URLConf
 )
