@@ -215,12 +215,14 @@ DJSTRIPE_PLANS = {
 
 DJSTRIPE_INVOICE_FROM_EMAIL = ("billing@smallslive.com")
 
+# see http://dj-stripe.readthedocs.org/en/latest/settings.html#djstripe-subscription-required-exception-urls
 DJSTRIPE_SUBSCRIPTION_REQUIRED_EXCEPTION_URLS = (
     'home',
     'about',
-    '(payments)',
-    '(static_page)',
-    '(events)',
-    '(artists)',
+    '[accounts]',
+    '[payments]',
+    '[static_page]',
+    '[events]',
+    '[artists]',
     '(allauth)',  # anything in the django-allauth URLConf
 )
