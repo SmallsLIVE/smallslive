@@ -1,11 +1,16 @@
 {% extends "base.html" %}
-{% load account crispy_forms_tags %}
+{% load account crispy_forms_tags socialaccount %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
   <div class="col-sm-4">
     <h1>Login</h1>
+
+<a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-primary btn-lg">Facebook</a>
+<a href="{% provider_login_url "linkedin_oauth2" method="oauth2" %}" class="btn btn-primary btn-lg">LinkedIn</a>
+<a href="{% provider_login_url "google" method="oauth2" %}" class="btn btn-danger btn-lg">Google</a>
+<a href="{% provider_login_url "twitter" method="oauth2" %}" class="btn btn-info btn-lg">Twitter</a>
 
     <p>If you have not created an account yet, then please <a href="{{ signup_url }}">sign up</a> first.</p>
 
