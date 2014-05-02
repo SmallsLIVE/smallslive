@@ -77,7 +77,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-#    'djstripe.middleware.SubscriptionPaymentMiddleware',
+    'djstripe.middleware.SubscriptionPaymentMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -229,10 +229,8 @@ DJSTRIPE_INVOICE_FROM_EMAIL = ("billing@smallslive.com")
 DJSTRIPE_SUBSCRIPTION_REQUIRED_EXCEPTION_URLS = (
     'home',
     'about',
-    '[accounts]',
-    '[payments]',
-    '[static_page]',
-    '[events]',
-    '[artists]',
+    'static_page',
+    '(events)',
+    '(artists)',
     '(allauth)',  # anything in the django-allauth URLConf
 )
