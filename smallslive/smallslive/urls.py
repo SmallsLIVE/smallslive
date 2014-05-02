@@ -15,11 +15,11 @@ class StaticPageView(TemplateView):
 
 
 urlpatterns = patterns('',
-    url(r'^artists/', include('artists.urls')),
-    url(r'^events/', include('events.urls')),
+    url(r'^artists/', include('artists.urls', app_name="artists")),
+    url(r'^events/', include('events.urls', app_name="events")),
     url(r'^static_page/(?P<template_name>[A-Za-z_-]*)/$', StaticPageView.as_view(), name="static_page"),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^accounts/', include('allauth.urls')),
+    url(r'^accounts/', include('allauth.urls', app_name="allauth")),
     url(r'^$', 'events.views.homepage', name="home"),
     url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
 )
