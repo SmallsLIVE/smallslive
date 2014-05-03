@@ -22,3 +22,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+INSTALLED_APPS += (
+    'djrill',
+)
+
+# Email settings
+EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
+MANDRILL_API_KEY = get_env_variable('MANDRILL_API_KEY')

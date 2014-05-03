@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname((__file__))))
 
+def get_env_variable(var_name):
+    """ Get the environment variable or return exception """
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        error_msg = "Set the %s environment variable" % var_name
+        raise ImproperlyConfigured(error_msg)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -234,3 +241,14 @@ DJSTRIPE_SUBSCRIPTION_REQUIRED_EXCEPTION_URLS = (
     '(artists)',
     '(allauth)',  # anything in the django-allauth URLConf
 )
+
+ADMINS = (
+    ('Nate Aune', 'nate@appsembler.com'),
+    ('Filip Jukic', 'filip@appsembler.com'),
+)
+
+MANAGERS = ADMINS
+
+DEFAULT_FROM_EMAIL = 'smallslive@appsembler.com'
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
