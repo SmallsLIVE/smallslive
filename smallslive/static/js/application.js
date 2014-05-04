@@ -19,14 +19,14 @@ $(document).ready(function(){
       emailContainer.addClass('has-error has-feedback').append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
     } else {
       $('.has-error').removeClass('has-error has-feedback').find('.form-control-feedback').remove();
-      $(this).html('<div class="alert alert-success"><p><strong>'+email+'</strong> has been emailed a special link. Click that link to begin your trial. </p><p><a href="#" class="send-verification-link">Resend the link</a> if you haven\'t received your email. </p></div>');
+      $(this).html('<div class="alert alert-success"><p><strong>'+email+'</strong> has been emailed a special link. Click that link to begin your trial. </p><p><a href="#" class="send-verification-link">Resend the link</a> if you haven\'t received your email. </p><p>Remembered your password? <a href="/static_page/musician-signup-login/">Log in to continue artist registration</a></p></div>');
       //Now create a way to resend the verification link or take further action
       $('.f-trial-signup').delegate('a.send-verification-link','click',function(e){
         e.preventDefault();
         //do ajax
         //Give a link to resend verification:
         $(this).closest('p').html('(Sending...)').fadeOut(100).fadeIn(500,function() {
-          $(this).replaceWith('<p>Link sent again. If you still haven\'t received the verification link, you can <a href="/static_page/trial-signup">try a new email</a>,  <a href="#">contact us</a>, or <a href="/">return to the homepage.</a>');
+          $(this).replaceWith('<p>Link sent again. If you still haven\'t received the verification link, you can <a href="/static_page/trial-signup">try a new email</a>,  <a href="#">contact us</a>, or <a href="/">return to the homepage.</a></p><p>Remembered your password? <a href="/static_page/musician-signup-login/">Log in to continue artist registration</a></p>');
         });
       });
     }
@@ -43,7 +43,7 @@ $(document).ready(function(){
       emailContainer.addClass('has-error has-feedback').append('<span class="glyphicon glyphicon-remove form-control-feedback"></span>');
     } else {
       $('.has-error').removeClass('has-error has-feedback').find('.form-control-feedback').remove();
-      $(this).html('<div class="alert alert-success"><p><strong>'+email+'</strong> has emailed password reset instructions.</p><p><a href="#" class="send-verification-link">Resend the link</a> if you haven\'t received your email. </p></div>');
+      $(this).html('<div class="alert alert-success"><p><strong>'+email+'</strong> has been emailed password reset instructions.</p><p><a href="#" class="send-verification-link">Resend the link</a> if you haven\'t received your email. </p><p>Remembered your password? <a href="/static_page/musician-signup-login/">Log in to continue artist registration</a></p></div>');
       //Now create a way to resend the verification link or take further action
       $('.f-reset-password').delegate('a.send-verification-link','click',function(e){
         e.preventDefault();
