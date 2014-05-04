@@ -1,7 +1,8 @@
-{% extends "base.html" %}
+{% extends "base_musician-signup.html" %}
+{% block title %}stepnamehere{% endblock title %}
 {% block nav %}{% endblock nav %}
 {% block content %}
-<h1>Ari's SmallsLIVE Performer Registration</h1>
+<h1>SmallsLIVE ARtist Registration <small class="text-muted">for { user.first_name } { user.last_name }</h1>
 <div class="row">
   <div class="col-sm-3">
     {% include "blocks/musician-signup-steps.html" %}

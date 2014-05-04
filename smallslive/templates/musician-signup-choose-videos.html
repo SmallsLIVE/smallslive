@@ -1,9 +1,8 @@
-{% extends "base.html" %}
+{% extends "base_musician-signup.html" %}
 {% block title %}stepnamehere{% endblock title %}
 {% block bodyclass %}musician-registration{% endblock bodyclass %}
 {% block nav %}{% endblock nav %}
 {% block content %}
-<h1>Ari's SmallsLIVE Performer Registration</h1>
 <div class="row">
   <div class="col-sm-3">
     {% include "blocks/musician-signup-steps.html" %}
@@ -15,7 +14,7 @@
         <thead>
           <tr> 
             <th>Check to Publish</th>            
-            <th>Video</th>          
+            <th>Audio Recording</th>          
           </tr>
         </thead>
         <tbody> 
@@ -28,15 +27,8 @@
                 <label><input type="radio" class="radio none" name="row1-video" value="none" /> Do not publish for now</label>
               </div>
             </td>
- 
             <td>
-              <div class="thumbnail">
-                <div class="well" style="height:80px;"></div>
-                <div class="caption"> 
-                  <p>12/01/09 w/ side person, side person, side person</p>
-                  <p class="text-warning">This recording  has not been edited into separate songs yet. Until a set list has been entered (you can add one on the next page), you can only publish the whole video, or none of it.  </p>  
-                </div>
-              </div> 
+              {% include 'blocks/search-result-media.html' %}
             </td>
           </tr>
           <tr> 
@@ -44,21 +36,12 @@
               <div class="checkbox">
                 <label><input type="radio" class="radio" name="row2-video" value="all" checked /> Publish entire recording</label>
               </div> 
-              
               <div class="checkbox">
                 <label><input type="radio" class="radio none" name="row2-video" value="none" /> Do not publish for now</label>
               </div>
             </td>
- 
             <td>
-              <div class="thumbnail">
-                <div class="well" style="height:80px;"></div>
-                <div class="caption"> 
-                  <p>12/01/09 w/ side person, side person, side person</p>
-                  <p>5/5 songs will be published. <a href="">Edit/select songs&hellip;</a> </p> 
-                  <div class="set-list well">set list form appears here</div>
-                </div>
-              </div> 
+              {% include 'blocks/search-result-media.html' %}
             </td>
           </tr>
         </tbody>

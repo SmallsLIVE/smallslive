@@ -57,8 +57,8 @@
       </div><!-- /.container-fluid -->
     </nav>  
     <div class="container-fluid">  
-      {% block content %}
-      {% endblock content %}
+      {% block custom-page-heading %}{% endblock custom-page-heading %}
+      {% block content %}{% endblock content %}
     </div>  
     <footer> 
       <p>&copy;2014 Smalls  •  183 W. 10th St, New York, NY 10014 <a href="#">(Directions)</a><br /><a href="mailto:info@smallsjazzclub.com">info@smallsjazzclub.com</a> • 212-252-5091</p>
@@ -71,6 +71,7 @@
     <h1>Global Dev Notes:</h1>
     <ul>
       <li><code>G1</code> if a show is going on, we display this in the nav bar. else, hide the link. this goes right to the event that has a show going on.</li>
+      <li><code>g2</code> - cancel musician reg. link - when clicked, cancel the reg in backend as needed, redirect them to about-smallslive-for-musicians and show a green success flash message: "You cancelled the artist sign-up process. Bookmark this page if you want to sign up at a later date."  </li>
     </ul>
     </div>
     </div>

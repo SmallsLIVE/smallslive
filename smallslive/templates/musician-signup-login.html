@@ -1,8 +1,7 @@
-{% extends "base.html" %}
+{% extends "base_musician-signup.html" %}
 {% block title %}stepnamehere{% endblock title %}
 {% block nav %}{% endblock nav %}
 {% block content %}
-<h1>SmallsLIVE Performer Registration</h1>
 <div class="row">
   <div class="col-sm-3">
     {% include "blocks/musician-signup-steps.html" %}
@@ -44,9 +43,9 @@
         </div> 
         
         <div class="well">
-        <h4 class="text-primary">Don't have a password yet?</h4>
-        <p>No problem: you can continue registration below without logging in. You can create your password later.</p>
-        <a href="../musician-signup-terms" class="btn btn-default">Continue</a>
+        <h4 class="text-primary">Don't have a password yet? <code>4</code></h4>
+        <p>No problem: you can continue registration as an artist below without logging in. Later, we'll ask you to create a password. </p>
+        <a href="../musician-signup-password" class="btn btn-default">Continue</a>
         </div>
         
       </div>
@@ -62,6 +61,7 @@
     <li><code>1</code> This is CMS Content</li>
     <li><code>2</code> Change active state on each page. let users go back once they have completed a step.</li>
     <li><code>3</code> Don't show login item if they are logged in already somehow.</li>
+    <li><code>4</code> UNless the business wants to hide this URL from the public website, you do need a way for artists who do NOT come from a custom signup link (that has been parameterized to identify itself as a link associated with an invitation), then you do need a way for artists to come in blind off the website and register. The majority of people probably will not need to see this box and will just see the login box above if for example, the URL contained a ?email=arist@artistname.com parameter.</li>
   </Ul>
 </div>
 {% endblock content %}
