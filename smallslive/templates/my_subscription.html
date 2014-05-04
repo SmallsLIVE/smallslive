@@ -56,7 +56,7 @@
             <td>
               <p>{% if request.GET.inTrial %}We will charge{% else %}We are charging{% endif %} your VISA card ending in 1234. </p>
               <p class="text-warning">This card will expire on 6/1/2014.</p>
-              <p><a href="">Change credit card</a></p>
+              <p><a href="{% url 'djstripe:change_card' %}">Change credit card</a></a></p>
             </td>
           </tr>
           <tr>
