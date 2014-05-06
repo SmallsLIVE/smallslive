@@ -1,0 +1,15 @@
+<tr> 
+  <td class="toggle-master-approve">
+     I <select name="approval"><option value="1" class="approved">approve</option><option value="0" class="not-approved">do not approve (for now)</option></select> this recording  
+     
+    <div class="add-private-note">
+      <label for="notes-{trackID}">Add note for myself</label>
+      <div class="form-group">
+        <textarea class="form-control" id="notes-{trackID}" rows="4"></textarea>
+      </div>
+    </div>
+  </td>
+  <td>
+    {% include 'blocks/search-result-media-for-artist.html' %}
+  </td>
+</tr>

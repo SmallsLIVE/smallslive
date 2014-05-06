@@ -4986,6 +4986,7 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
+/* Bootstrap var overrides */
 /* TEmplate setup - body, footer, etc */
 /* Masthead */
 body > div.alert {
@@ -5082,8 +5083,7 @@ body.search .facets p {
 .calendar .calendar-month {
   font-size: 11px; }
   .calendar .calendar-month .day {
-    padding: 4px;
-    border-bottom: 1px solid #eee; }
+    padding: 4px; }
     .calendar .calendar-month .day time {
       display: block;
       font-size: 14px;
@@ -5099,9 +5099,9 @@ body.search .facets p {
     display: none; }
   .calendar .calendar-month .past {
     background: #f5f5f5;
-    color: #666 !important; }
+    color: #555555 !important; }
     .calendar .calendar-month .past a {
-      color: #666; }
+      color: #555555; }
 
 @media all and (min-width: 992px) {
   .calendar .calendar-month .days-of-week {
@@ -5156,13 +5156,48 @@ form.f-trial-signup {
       width: auto;
       height: auto; }
 
-table.videos-to-publish tr .checkbox label {
+table.recordings-to-publish tr th {
+  vertical-align: top; }
+  table.recordings-to-publish tr th span {
+    white-space: nowrap; }
+  table.recordings-to-publish tr th label {
+    margin: 8px 0;
+    display: block;
+    font-weight: normal; }
+  @media all and (min-width: 992px) {
+    table.recordings-to-publish tr th label {
+      margin: 0 0 0 16px;
+      display: inline-block; } }
+table.recordings-to-publish tr .thumbnail {
+  margin-bottom: 0;
+  border: none;
+  padding-bottom: 0; }
+  table.recordings-to-publish tr .thumbnail img {
+    display: none; }
+  table.recordings-to-publish tr .thumbnail a.pull-left {
+    float: none !important;
+    margin-bottom: 24px; }
+  @media all and (min-width: 768px) {
+    table.recordings-to-publish tr .thumbnail img {
+      display: block; }
+    table.recordings-to-publish tr .thumbnail a.pull-left {
+      float: left !important; } }
+table.recordings-to-publish tr abbr {
+  margin-left: 16px; }
+table.recordings-to-publish tr .copyright-owners .owner {
   white-space: nowrap; }
-  table.videos-to-publish tr .checkbox label input {
-    display: inline; }
+table.recordings-to-publish tr .add-private-note {
+  border-top: 1px dotted #eeeeee;
+  padding-top: 4px; }
+  table.recordings-to-publish tr .add-private-note label {
+    font-weight: normal;
+    text-decoration: underline;
+    color: #999999; }
+  table.recordings-to-publish tr .add-private-note label:after {
+    content: "..."; }
 
 input.form-control.text-muted[type=text] {
-  color: #999; }
+  color: #999999; }
 
 #agreement-musicians-legal {
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace; }
@@ -5172,10 +5207,7 @@ input.form-control.text-muted[type=text] {
   overflow: auto;
   margin-bottom: 20px; }
 
-table.videos-to-clear .form-group .checkbox:not(:first-child) {
-  margin-left: 20px; }
-
-/*=Gigs*/
+/*=FOrm to add events*/
 div.trigger_add_set_times {
   margin-top: 20px; }
 
@@ -5215,8 +5247,29 @@ form .form-control {
 form .form-control:focus {
   box-shadow: none; }
 form .form-group label {
-  color: #666666; }
+  color: #555555; }
 
+/* Name/value pair tables */
+table.nv tbody tr > td:first-child {
+  font-weight: bold;
+  color: #555555;
+  text-align: right; }
+
+.nowrap {
+  white-space: nowrap; }
+
+body abbr.explained {
+  border: none; }
+
+/*=Color*/
+/*=Green*/
+.approved {
+  color: #5cb85c; }
+
+.not-approved {
+  color: #d9534f; }
+
+/*=Red*/
 /*=Development*/
 /*=Trash this after design done */
 .dev ul {

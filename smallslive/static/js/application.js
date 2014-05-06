@@ -56,48 +56,27 @@ $(document).ready(function(){
     }
   }); 
   //
-  // 
-  //Performer Signup process
-  function toggleSetList(songsInVideoToPublish) {
-    if ($(songsInVideoToPublish).hasClass('some')==true) {
-      $(songsInVideoToPublish).closest('tr').find('.set-list').slideDown();
+  //Artist signup
+  //When i approve or disapprove a master, make my name green or red
+  $('.toggle-master-approve select[name=approval]').on('change',function(){
+    var recording=$(this).closest('tr');
+    var myName=recording.find('span.you');
+    if ($(this).val()=='1') {
+      myName.removeClass('not-approved');
+      myName.addClass('approved');
+      myName.find('span').html('&check;');
     } else {
-      
-      $(songsInVideoToPublish).closest('tr').find('.set-list').slideUp();
+      myName.removeClass('approved');
+      myName.addClass('not-approved');
+      myName.find('span').html('&cross;');
     }
-  }
-  $('table.videos-to-publish tr .toggle-all-or-some input').click(function() {
-    toggleSetList(this);
-    countSelectedVideos();
-  });  
-  $('table.videos-to-publish tr .toggle-all-or-some input').each(function(i) {
-    toggleSetList(this);
-    countSelectedVideos();
-  });  
-  //Init
-  $('table.videos-to-publish tr .set-list').hide(); 
-  //  Count selected videos. If none selected for publishing, show a warning.
-  function countSelectedVideos() {
-    var cnt, div;
-    div=$('div.alert-info');
-    div.show();
-    cnt=$('table.videos-to-publish tbody tr').length;
-    cntTotallyUnpublished=$('table.videos-to-publish input.none:checked').length;
-    $('.musician-registration .alert-danger').remove();
-    //BROKEN - this UI doesnt work right if select-all is clicked. Select-all clicks may report "0" checked
-    // because the function that handles selecting-all
-    // has not fired yet. As a result, the checkboxes in the group are not checked at the time the CNT
-    // is evaluated below:
-    if (cntTotallyUnpublished == cnt) { 
-      div.hide();
-      $('<div class="alert alert-danger">(0) videos were selected. This means none of the videos here can earn revenue on SmallsLIVE for anyone including you. While you can change your mind later, for now, the videos will not appear on SmallsLIVE.</div>').insertAfter(div);
-    }
-  }
-  //Select-all-videos to clear
-  //  Init
-  if ($('table.videos-to-publish').length > 0) {
-    countSelectedVideos();
-  }
+  }); 
+  // Let artist leave a comment about  master recording  
+  $('.add-private-note .form-group').hide();
+  $('.add-private-note label').on('click',function(){
+    $(this).closest('div').find('.form-group').toggle();
+  });   
+
   //End signup
   
   //ADMIN forms begin

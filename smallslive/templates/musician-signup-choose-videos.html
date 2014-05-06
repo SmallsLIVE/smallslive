@@ -9,44 +9,45 @@
   </div>
   <div class="col-sm-9">
     <form action="">  
-      <p class="">You have (2) audio recordings as a bandleader. Choose which videos you want to publish and begin making money. You can also select individual songs in each recording if you don't want an entire set going live. You can change these settings later.</p>         
-      <table class="table   table-bordered videos-to-publish">
+      <p class="">You have performed on (20) audio recordings ("Masters") at Smalls starting in 2011. Because you own a share of the copyright in each of these Masters, we need your permission to make them available for listening. Please note that:</p>
+      <ul>
+        <li>Until all performers on a given recording have granted us permission to publish it, it will not appear in our audio archive.</li>
+        <li>Recordings cannot begin earning revenue until they are available to listeners in the archive.</li>
+        <li>If you want to approve just a portion of a recording, please select "Do not publish for now" and contact us via email below with details.</li>
+        <li>You can change the publishing status of a recording  later<code>true?</code>.</li>
+      </ul> 
+      <p>Questions? Email <a href="mailto:info@smallsjazzclub.com?subject=Question about approving my masters during artist sign-up">info@smallsjazzclub.com</a>.</p>        
+      <table class="table   table-bordered recordings-to-publish">
         <thead>
           <tr> 
-            <th>Check to Publish</th>            
-            <th>Audio Recording</th>          
+            <th>Allow in archive? <label><input type="checkbox" value="all"> Approve all 20</label></th>            
+            <th>Audio Recording <span class="approved"><abbr title="Approved" class="explained">&check;</abbr> = owner approved</span>  <span class="not-approved"><abbr title="Declined" class="explained">&Cross;</abbr> = owner did not approve</span></th>          
           </tr>
         </thead>
-        <tbody> 
-          <tr> 
-            <td class="toggle-all-or-some">
-              <div class="checkbox">
-                <label><input type="radio" class="radio" name="row1-video" value="all" checked /> Publish entire recording</label>
-              </div> 
-              <div class="checkbox">
-                <label><input type="radio" class="radio none" name="row1-video" value="none" /> Do not publish for now</label>
-              </div>
-            </td>
-            <td>
-              {% include 'blocks/search-result-media-for-artist.html' %}
-            </td>
-          </tr>
-          <tr> 
-            <td class="toggle-all-or-some">
-              <div class="checkbox">
-                <label><input type="radio" class="radio" name="row2-video" value="all" checked /> Publish entire recording</label>
-              </div> 
-              <div class="checkbox">
-                <label><input type="radio" class="radio none" name="row2-video" value="none" /> Do not publish for now</label>
-              </div>
-            </td>
-            <td>
-              {% include 'blocks/search-result-media-for-artist.html' %}
-            </td>
-          </tr>
+        <tbody>  
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        {% include 'blocks/artist-select-master-publishing-status.html' %}
         </tbody>
       </table>  
-      <div class="alert alert-info">Once you publish a recording, the side musicians on each recording will receive a courtesy email that the chosen recording will go live soon.* </div>
+      <div class="alert alert-info">Congratulations! Due to your choices, (2) recordings above now have 100% approval from all artists and are eligible to make money when fans listen. Your peers on these recordings will receive a courtesy email notifying them about this and these recordings may appear in our "Just Added" lists for fans. <code>1</code></div>
       <p><button type="submit" class="btn btn-primary">Continue</button>  <button type="submit" class="btn btn-default">Skip for now</button></p>
     </form>
     <small class="text-muted text-sm">* Because you do not own the entire video recording (aka the "Master"), you cannot decide alone which videos go live. For each video, you and the side musicians each own a portion of the copyright in the Master recording and so all musicians on each video must agree for a video to go live on the website. By default, your side musicians are "opted in" to your videos and only have 7 days to opt out before the video goes live.</small>
@@ -56,6 +57,8 @@
 <div class="dev">
   <h1>Dev notes</h1>
   <Ul> 
+    <li><code>1</code> - this doesnt work but obviously this needs to have a counter. hide this if no recordings are being published.</li>
+    <li><code>2</code> - is it true that they can un-publish a recording later?</li>
   </Ul>
 </div>
 {% endblock content %}

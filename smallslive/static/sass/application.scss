@@ -11,6 +11,7 @@
 /* Bootstrap var overrides */
 //** Border color for table and cell borders.
 $table-border-color:            #eee;
+$margin-bottom:                 24px;
 
 /* TEmplate setup - body, footer, etc */
 
@@ -171,10 +172,10 @@ body.search .facets {
     }
     .past {
       a {
-        color: #666; 
+        color: $gray; 
       }
       background: #f5f5f5;
-      color: #666 !important;
+      color: $gray !important;
     }
   }
 }
@@ -250,14 +251,67 @@ form.f-trial-signup {
     }
   }
 }
-table.videos-to-publish tr .checkbox label   {
-  white-space: nowrap;
-  input {
-    display: inline;
+table.recordings-to-publish tr {
+  th {
+    vertical-align: top;
+    span {
+      white-space: nowrap;
+    }
+    label {
+      margin: 8px 0;
+      display: block;
+      font-weight: normal;    
+    }
+    @media all and (min-width : $screen-md-min) {  
+      label {
+        margin: 0 0 0 16px;
+        display: inline-block; 
+      }
+    }
+  }
+  .thumbnail {
+    margin-bottom: 0;
+    img {
+      display: none;
+    }
+    a.pull-left {
+      float: none !important;
+      margin-bottom: $margin-bottom;
+    }
+    @media all and (min-width : $screen-sm-min) {  
+      img {
+        display: block;
+      }
+      a.pull-left {
+        float: left !important;
+      }
+    }
+    border: none;
+    padding-bottom: 0;
+  }
+  abbr {
+    margin-left: 16px; 
+  }
+  .copyright-owners { 
+    .owner {
+      white-space: nowrap;
+    }
+  }
+  .add-private-note {
+    border-top: 1px dotted $gray-lighter;
+    padding-top: 4px;
+    label {
+      font-weight: normal;
+      text-decoration: underline;
+      color: $gray-light;
+    }
+    label:after {
+      content:"..."
+    }
   }
 }
 input.form-control.text-muted[type=text] {
-  color: #999;
+  color: $gray-light;
 }
 .earnings-summary table tr td:not(:first-child):not(.txt) {
   @extend .num;
@@ -270,10 +324,7 @@ input.form-control.text-muted[type=text] {
   overflow: auto;
   margin-bottom: 20px;
 }
-table.videos-to-clear .form-group .checkbox:not(:first-child) {
-  margin-left: 20px;
-}
-/*=Gigs*/ 
+/*=FOrm to add events*/ 
 div.trigger_add_set_times {
   margin-top:20px;
 }
@@ -312,18 +363,30 @@ form {
     box-shadow: none;
   }
   .form-group label {
-    color: #666666;
+    color: $gray;
   }
 }
 /* Name/value pair tables */
 table.nv tbody tr > td:first-child {
   font-weight: bold;
-  color: #666666;
+  color: $gray;
   text-align: right;
 }
 .nowrap {
   white-space: nowrap;
 }
+body abbr.explained {
+  border: none;
+}
+/*=Color*/
+/*=Green*/
+.approved {
+  color: $brand-success;
+}
+.not-approved {
+  color: $brand-danger;
+}
+/*=Red*/
 /*=Development*/
 /*=Trash this after design done */
 .dev ul {
