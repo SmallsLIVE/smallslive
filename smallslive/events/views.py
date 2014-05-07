@@ -19,7 +19,12 @@ class HomepageView(TemplateView):
         context = super(HomepageView, self).get_context_data(**kwargs)
         today = datetime.now().date()
         few_days_out = today + timedelta(days=3)
-        context['events'] = Event.objects.filter(start_day__range=(today, few_days_out)).reverse()
+        # temporarily removing this so we don't have to generate future events for testing all the time,
+        # just show the 5 future events for now
+        #context['events'] = Event.objects.filter(start_day__range=(today, few_days_out)).reverse()
+        events = list(Event.objects.all().order_by("-start_day")[:8])
+        events.reverse()
+        context['events'] = events
         context['videos'] = Media.objects.order_by('-id')[:5]
         return context
 
@@ -46,6 +51,7 @@ class EventDetailView(DetailView):
 
 event_detail = EventDetailView.as_view()
 
+
 class EventEditView(LoginRequiredMixin, UpdateView):
     model = Event
     form_class = EventAddForm
@@ -64,6 +70,7 @@ class EventEditView(LoginRequiredMixin, UpdateView):
     #     return (artist_id_match or user.is_superuser)
 
 event_edit = EventEditView.as_view()
+
 
 class VenueDashboardView(ListView):
     queryset = Event.objects.order_by('-modified', '-start_day')[:50]
