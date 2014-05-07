@@ -5,6 +5,7 @@ from django.utils.timezone import datetime
 from model_utils import Choices
 from model_utils.fields import StatusField
 from model_utils.models import QueryManager, TimeStampedModel
+from tinymce import models as tinymce_models
 
 
 class Event(TimeStampedModel):
@@ -15,7 +16,7 @@ class Event(TimeStampedModel):
     start_day = models.DateField(blank=True, null=True)
     end_day = models.DateField(blank=True, null=True)
     set = models.CharField(choices=SETS, blank=True, max_length=10)
-    description = models.TextField(blank=True)
+    description = tinymce_models.HTMLField(blank=True)
     subtitle = models.CharField(max_length=255, blank=True)
     event_type = models.ForeignKey('EventType', blank=True, null=True)
     link = models.CharField(max_length=255, blank=True)

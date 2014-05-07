@@ -1,6 +1,12 @@
 {% extends "base_admin.html" %}
-{% block title %}Add/Edit Gig: %dateAndArtistandTitleHere%{% endblock title %}
 {% load crispy_forms_tags %}
+
+{% block title %}Add/Edit Gig: %dateAndArtistandTitleHere%{% endblock title %}
+
+{% block extra_head %}
+  {{ form.media }}
+{% endblock extra_head %}
+
 {% block content %}
   <h1>Add/Edit gig:</h1>
   <div class="row">
