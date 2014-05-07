@@ -6,6 +6,10 @@ from django.views.generic.base import TemplateView
 
 import djstripe
 
+# uncomment these lines to enable the Djrill admin interface 
+#from djrill import DjrillAdminSite
+#admin.site = DjrillAdminSite()
+
 admin.autodiscover()
 
 

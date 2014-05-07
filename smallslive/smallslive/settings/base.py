@@ -247,6 +247,7 @@ DJSTRIPE_SUBSCRIPTION_REQUIRED_EXCEPTION_URLS = (
     '(events)',
     '(artists)',
     '(allauth)',  # anything in the django-allauth URLConf
+    '[admin]',
 )
 
 ADMINS = (
