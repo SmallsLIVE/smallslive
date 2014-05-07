@@ -80,12 +80,20 @@ class VenueDashboardView(ListView):
 venue_dashboard = VenueDashboardView.as_view()
 
 
-class MyGigsView(TemplateView):
+class MyGigsView(ListView):
+    """
+    Use ListView for easy pagination of past events but also add future events
+    to the page context.
+    """
     template_name = 'my_gigs.html'
+    paginate_by = 20
+    context_object_name = 'past_events'
+
+    def get_queryset(self):
+        return Event.past.filter(performers=self.request.user.artist)
 
     def get_context_data(self, **kwargs):
         context = super(MyGigsView, self).get_context_data(**kwargs)
-        context['past_events'] = Event.past.filter(performers=self.request.user.artist)
         context['future_events'] = Event.upcoming.filter(performers=self.request.user.artist)
         return context
 

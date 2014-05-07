@@ -5,7 +5,7 @@
   <h1>My Gigs</h1> 
   <ul class="nav nav-tabs">  
     <li class="active"><a href="#upcoming" data-toggle="tab">Upcoming</a></li>
-    <li><a href="#past" data-toggle="tab">Past</a></li> 
+    <li><a href="#past" data-toggle="tab">Past</a></li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="upcoming">
@@ -60,6 +60,23 @@
       <div class="checkbox">
         <lable><input type="checkbox"> Just my videos as a leader (1)</lable>
       </div>
+      {% if paginator.num_pages > 1 %}
+         <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li><a href="?page={{ page_obj.previous_page_number }}#past">&laquo;</a></li>
+          {% endif %}
+          {% for num in paginator.page_range %}
+            {% ifequal num page_obj.number %}
+              <li class="active"><a href="#">{{ num }}</a></li>
+            {% else %}
+              <li><a href="?page={{ num }}#past"> {{ num }}</a></li>
+            {% endifequal %}
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}#past">&raquo;</a></li>
+          {% endif %}
+        </ul>
+      {% endif %} 
       <table class="table">
         <thead>
           <tr>
@@ -118,6 +135,24 @@
           {% endfor %} 
         </tbody>
       </table>
+      {% if paginator.num_pages > 1 %}
+         <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li><a href="?page={{ page_obj.previous_page_number }}#past">&laquo;</a></li>
+          {% endif %}
+          {% for num in paginator.page_range %}
+            {% ifequal num page_obj.number %}
+              <li class="active"><a href="#">{{ num }}</a></li>
+            {% else %}
+              <li><a href="?page={{ num }}#past"> {{ num }}</a></li>
+            {% endifequal %}
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}#past">&raquo;</a></li>
+          {% endif %}
+        </ul>
+      {% endif %}
+
     </div>
   </div> 
  
@@ -128,3 +163,22 @@
     </Ul>
   </div>
 {% endblock content %}
+
+{% block extra_js %}
+<script>
+    $('.nav-tabs a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+
+    // store the currently selected tab in the hash value
+    $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
+        var id = $(e.target).attr("href").substr(1);
+        window.location.hash = id;
+    });
+
+    // on load of the page: switch to the currently selected tab
+    var hash = window.location.hash;
+    $('.nav-tabs a[href="' + hash + '"]').tab('show');
+</script>
+{% endblock extra_js %}
