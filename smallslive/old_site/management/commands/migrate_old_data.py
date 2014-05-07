@@ -18,6 +18,10 @@ class Command(NoArgsCommand):
         # remove all tags except allowed tags
         cleaned_up_html = bleach.clean(text, tags=allowed_tags, strip=True)
 
+        # convert newlines to paragraph tags
+        cleaned_up_html = cleaned_up_html.replace("\r\n", "</p><p>")
+        cleaned_up_html = cleaned_up_html.replace("\n", "</p><p>")
+
         # remove empty paragraph tags
         soup = BeautifulSoup(cleaned_up_html, 'html.parser')
         for p in soup.find_all('p'):
