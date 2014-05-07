@@ -8,9 +8,9 @@
   </div>
   <div class="col-sm-7 col-md-6 col-lg-4">      
     <div class="well">
-      <h2>Have a Smalls or SmallsLIVE account already?</h2>
+      <h2><code>1</code>Have a Smalls or SmallsLIVE account already?</h2>
       <p>Log in now to speed up your registration. If we had a current email account on file, we emailed you information on how to log in. </p> 
-      <form  role="form" action="/static_page/musician-signup-terms/">
+      <form  role="form" action="/static_page/musician-signup-choose-videos">
         <div class="form-group">
           <label for="inputEmail3" class=" control-label">Email</label>
             <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
@@ -39,7 +39,7 @@
 <div class="dev">
   <h1>Dev notes</h1>
   <Ul>
-    <li><code>1</code> This is CMS Content</li>
+    <li><code>1</code> This page is skipped if the user had a legacy account and clicked on an invitation link that is authorized. we essentially log in that person and recognize them.</li>
     <li><code>2</code> Change active state on each page. let users go back once they have completed a step.</li>
     <li><code>3</code> Don't show login item if they are logged in already somehow.</li>
     <li><code>4</code> UNless the business wants to hide this URL from the public website, you do need a way for artists who do NOT come from a custom signup link (that has been parameterized to identify itself as a link associated with an invitation), then you do need a way for artists to come in blind off the website and register. The majority of people probably will not need to see this box and will just see the login box above if for example, the URL contained a ?email=arist@artistname.com parameter.</li>
