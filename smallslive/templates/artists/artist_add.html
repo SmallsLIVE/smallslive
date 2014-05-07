@@ -1,6 +1,12 @@
 {% extends "base_admin.html" %}
 {% load crispy_forms_tags %}
+
+{% block extra_head %}
+  {{ form.media }}
+{% endblock extra_head %}
+
 {% block title %}Add new artist{% endblock title %}
+
 {% block content %}
     <h1>Add artist</h1>
     {% include "blocks/form_lookup_artist.html" %}

@@ -20,8 +20,10 @@ urlpatterns = patterns('',
     url(r'^static_page/(?P<template_name>[A-Za-z_-]*)/$', StaticPageView.as_view(), name="static_page"),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('allauth.urls', app_name="allauth")),
-    url(r'^$', 'events.views.homepage', name="home"),
     url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
+    url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^$', 'events.views.homepage', name="home"),
+
 )
 
 if settings.DEBUG:

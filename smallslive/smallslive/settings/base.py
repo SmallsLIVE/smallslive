@@ -52,22 +52,17 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
-#    'allauth.socialaccount.providers.linkedin',
     'allauth.socialaccount.providers.linkedin_oauth2',
-#    'allauth.socialaccount.providers.openid',
-#    'allauth.socialaccount.providers.persona',
-#    'allauth.socialaccount.providers.soundcloud',
-#    'allauth.socialaccount.providers.tumblr',
     'allauth.socialaccount.providers.twitter',
-#    'allauth.socialaccount.providers.vimeo',
     'crispy_forms',
     'django_extensions',
     'django_thumbor',
+    'djstripe',
+    'floppyforms',
     'sortedm2m',
     'south',
     'storages',
-    'djstripe',
-    'floppyforms',
+    'tinymce',
 
     # project apps
     'artists',
@@ -207,6 +202,18 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_LOGOUT_ON_GET = True
 #ACCOUNT_SIGNUP_FORM_CLASS = "djstripe.forms.StripeSubscriptionSignupForm"
 
+# TinyMCE
+TINYMCE_JS_URL = os.path.join(STATIC_URL, "js/tinymce/tinymce.min.js")
+TINYMCE_JS_ROOT = os.path.join(STATIC_ROOT, "js/tinymce")
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': "modern",
+    'skin': 'light',
+    'toolbar': "bold italic | link",
+    'menubar': False,
+    'statusbar': False,
+    'plugins': 'link'
+}
+
 # Stripe settings
 STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "<your publishable test key>")
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "<your secret test key>")
@@ -251,4 +258,3 @@ MANAGERS = ADMINS
 
 DEFAULT_FROM_EMAIL = 'smallslive@appsembler.com'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
-
