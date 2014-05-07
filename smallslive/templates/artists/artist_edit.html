@@ -3,9 +3,13 @@
 {% block title %}Edit profile {{ artist.full_name }}{% endblock title %}
 {% load crispy_forms_tags %}
 {% block content %}
-<h1>Edit profile: {{ artist.full_name }}</h1>
 <div class="row">
-  <div class="col-sm-9">    
+  <div class="col-sm-12 col-md-offset-1 col-md-11">   
+    <h1>Edit profile: {{ artist.full_name }}</h1> 
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-7 col-md-offset-1 col-md-5"> 
     <div class="alert alert-info">
       <p><a href="">Clone this artist's last show (4/12/14)</a></p>
     </div>
@@ -15,12 +19,12 @@
         <button type="submit" class="btn btn-primary">Save profile</button>
     </form>
   </div>
-  <div class="col-sm-3">    
+  <div class="col-sm-5 col-md-5">    
     <div class="well">
       {% if artist.photo %}
         <img src="{% thumbor_url artist.photo.url|urlencode width=200   %}" class="img-responsive" />
       {% endif %}
-      <h2>Upcoming: ({{ artist.upcoming_events|length }})</h2>
+      <h2>Upcoming gigs ({{ artist.upcoming_events|length }}):</h2>
         {% if artist.upcoming_events %}
         <table class="table">
         <tbody>
@@ -37,45 +41,25 @@
         </tbody>
       </table>
       {% elif artist.past_events %}
-        <p>This artist hasn't played a show since {{ artist.past_events.0.start_day|date:"n/j/y" }}</p>
+        <p>No gigs scheduled right now.</p>
       {% else %}
         <p>This artist hasn't yet played a show at Smalls.</p>
       {% endif %}
-      <h2>Past ({{ artist.past_events|length }}):</h2>
+      <h2>Past Gigs ({{ artist.past_events|length }}):</h2>
       <table class="table">
         <tbody>
-          {% for past_event in artist.past_events|slice:"5" %}
+          {% for past_event in artist.past_events|slice:"10" %}
           <tr>
-            <td><a href="{{ past_event.get_absolute_url }}">{{ past_event.start_day|date:"n/j/y" }}</a></td>
-            <td>{{ past_event.performers.all|join:", " }}</td>
+            <td>
+              <a href="{{ past_event.get_absolute_url }}">{{ past_event.start_day|date:"n/j/y" }}</a></td>
+            <td>
+              {% if past_event.displaytitle %}
+                <a href="{{ past_event.get_absolute_url }}"><h3>{{ past_event.displaytitle }}</h3></a>
+              {% endif %}
+              {{ past_event.performers.all|join:", " }}</td>
             <td><a href="">clone</a></td>
           </tr>
           {% endfor %}
-          <tr>
-            <td><a href="">4/11/09</a></td>
-            <td>list sidemen</td>
-            <td><a href="">clone</a></td>
-          </tr>
-          <tr>
-            <td><a href="">3/11/09</a></td>
-            <td>list sidemen</td>
-            <td><a href="">clone</a></td>
-          </tr>
-          <tr>
-            <td><a href="">2/11/09</a></td>
-            <td>list sidemen</td>
-            <td><a href="">clone</a></td>
-          </tr>
-          <tr>
-            <td><a href="">1/11/09</a></td>
-            <td>list sidemen</td>
-            <td><a href="">clone</a></td>
-          </tr>
-          <tr>
-            <td><a href="">12/11/08</a></td>
-            <td>list sidemen</td>
-            <td><a href="">clone</a></td>
-          </tr>
           <tr>
             <td colspan="3"><code>3</code><a href="">&laquo; Earlier</a> | Later &raquo;</td>
           </tr>
