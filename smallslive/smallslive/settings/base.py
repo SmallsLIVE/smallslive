@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname((__file__))))
+from django.core.exceptions import ImproperlyConfigured
 
 def get_env_variable(var_name):
     """ Get the environment variable or return exception """
@@ -19,6 +19,9 @@ def get_env_variable(var_name):
     except KeyError:
         error_msg = "Set the %s environment variable" % var_name
         raise ImproperlyConfigured(error_msg)
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname((__file__))))
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
