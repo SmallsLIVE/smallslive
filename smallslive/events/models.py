@@ -13,8 +13,8 @@ class Event(TimeStampedModel):
     STATUS = Choices('Draft', 'Published', 'Cancelled', 'Hidden')
 
     title = models.CharField(max_length=255)
-    start_day = models.DateField(blank=True, null=True)
-    end_day = models.DateField(blank=True, null=True)
+    start_day = models.DateTimeField(blank=True, null=True)
+    end_day = models.DateTimeField(blank=True, null=True)
     set = models.CharField(choices=SETS, blank=True, max_length=10)
     description = tinymce_models.HTMLField(blank=True)
     subtitle = models.CharField(max_length=255, blank=True)
