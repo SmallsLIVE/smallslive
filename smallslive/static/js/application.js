@@ -97,8 +97,8 @@ $(document).ready(function(){
     checkRadio('input[name=invitation]');
   }
   //Date fields need a picker
-  $('#id_start_day').datepicker().on('changeDate', function(ev){
-    $('#id_start_day').datepicker('hide');
+  $('#id_date').datepicker().on('changeDate', function(ev){
+    $('#id_date').datepicker('hide');
     //loading state during query - probably show spinner
     $('.f-gig .slot input').prop('disabled',true);
     $('.f-gig .slot input[type=text]').val('Checking availability..');

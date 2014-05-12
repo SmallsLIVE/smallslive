@@ -9,7 +9,7 @@ from tinymce import models as tinymce_models
 
 
 class Event(TimeStampedModel):
-    SETS = Choices('10-11pm', '11-12pm', '12-1am')
+    SETS = Choices(('22:00-23:00', '10-11pm'), ('23:00-0:00', '11-12pm'), ('0:00-1:00', '12-1am'))
     STATUS = Choices('Published', 'Draft', 'Cancelled', 'Hidden')
 
     title = models.CharField(max_length=255)

@@ -11,6 +11,12 @@
   <h1>Add/Edit gig:</h1>
   <div class="row">
     <div class="col-sm-7">
+    <form method="post" enctype="multipart/form-data">
+      {% crispy form %}
+    </form>
+    <hr/>
+    <hr/>
+    {% comment %}
       <form method="post" class="f-gig" role="form" enctype="multipart/form-data">
         {% csrf_token %}
         
@@ -320,6 +326,7 @@
         </div>            
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
+      {% endcomment %}
     </div>
   </div>
   <div class="dev">
