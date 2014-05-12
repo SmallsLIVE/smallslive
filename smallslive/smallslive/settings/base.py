@@ -70,6 +70,7 @@ INSTALLED_APPS = (
     'multimedia',
     'old_site',
     'users',
+    'subscription',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -79,7 +80,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'djstripe.middleware.SubscriptionPaymentMiddleware',
+#    'djstripe.middleware.SubscriptionPaymentMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -249,6 +250,24 @@ DJSTRIPE_SUBSCRIPTION_REQUIRED_EXCEPTION_URLS = (
     '(allauth)',  # anything in the django-allauth URLConf
     '[admin]',
 )
+
+# Taken from PayPal's documentation - these should always work in the sandbox
+PAYPAL_SANDBOX_MODE = True
+PAYPAL_CALLBACK_HTTPS = False
+PAYPAL_API_VERSION = '88.0'
+
+# These are the standard PayPal sandbox details from the docs - but I don't
+# think you can get access to the merchant dashboard.
+PAYPAL_API_USERNAME = os.environ.get("PAYPAL_API_USERNAME", "")
+PAYPAL_API_PASSWORD = os.environ.get("PAYPAL_API_PASSWORD", "")
+PAYPAL_API_SIGNATURE = os.environ.get("PAYPAL_API_SIGNATURE", "")
+
+SITE_CURRENCY = 'USD'
+
+# Standard currency is GBP
+PAYPAL_CURRENCY = PAYPAL_PAYFLOW_CURRENCY = 'USD'
+
+PAYPAL_PAYFLOW_DASHBOARD_FORMS = True
 
 ADMINS = (
     ('Nate Aune', 'nate@appsembler.com'),

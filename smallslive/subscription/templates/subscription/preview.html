@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+         xmlns="http://www.w3.org/1999/html">
+    <div class="row-fluid">
+    <div class="span6">
+        <div class="sub-header">
+            <h2>Payment</h2>
+        </div>
+        <div class="well well-success">
+            <p>PayPal Express Checkout</p>
+
+            <p>PayPal user: {{ paypal_user_email }}</p>
+
+            <p>Amount: {{ paypal_amount }}</p>
+        </div>
+    </div>
+    </div>
+    </div>
+<div class="container" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"
+         xmlns="http://www.w3.org/1999/html">
+    <div class="row-fluid">
+        <div class="span12">
+        <h3>Please review the information above, then click "Place Order"</h3>
+    <form method="post" action="{% url 'subscription:paypal-place-order' object.id %}">
+        {% csrf_token %}
+        <input type="hidden" name="payer_id" value="{{ payer_id }}"/>
+        <input type="hidden" name="token" value="{{ token }}"/>
+
+        <div class="form-actions">
+            <input id='place-order' type="submit" value="Place order"
+                   class="pull-right btn btn-primary btn-large js-disable-on-click"/>
+        </div>
+    </form>
+            </div>
+        </div>
+</div>
+{% endblock %}

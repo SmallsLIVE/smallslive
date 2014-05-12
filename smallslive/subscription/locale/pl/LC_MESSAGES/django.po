@@ -1,0 +1,320 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-10-13 18:47+0200\n"
+"PO-Revision-Date: 2013-10-21 20:54+0124\n"
+"Last-Translator:   <bespider@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
+"X-Translated-Using: django-rosetta 0.7.2\n"
+
+#: admin.py:64
+msgid "pricing"
+msgstr "cena"
+
+#: admin.py:65
+msgid "trial"
+msgstr "test"
+
+#: base.py:8
+msgid "raw_request"
+msgstr ""
+
+#: base.py:9
+msgid "raw_response"
+msgstr ""
+
+#: base.py:11
+msgid "Response time in milliseconds"
+msgstr ""
+
+#: base.py:11
+msgid "response_time"
+msgstr ""
+
+#: base.py:13
+msgid "date created"
+msgstr ""
+
+#: models.py:24
+msgid "Day"
+msgstr "Dzień"
+
+#: models.py:25
+msgid "Week"
+msgstr "Tydzień"
+
+#: models.py:26
+msgid "Month"
+msgstr "Miesiąc"
+
+#: models.py:27
+msgid "Year"
+msgstr "Rok"
+
+#: models.py:37 models.py:69
+msgid "site"
+msgstr "strona"
+
+#: models.py:38 models.py:70
+msgid "name"
+msgstr "nazwa"
+
+#: models.py:43 models.py:51
+msgid "feature"
+msgstr "zaleta"
+
+#: models.py:44
+msgid "features"
+msgstr "zalety"
+
+#: models.py:52 models.py:97 models.py:183
+msgid "subscription"
+msgstr "abonament"
+
+#: models.py:53
+msgid "value"
+msgstr "wartość"
+
+#: models.py:56
+msgid "subscription feature"
+msgstr "zaleta abonamentu"
+
+#: models.py:57
+msgid "subscription features"
+msgstr "zalety abonamentu"
+
+#: models.py:71
+msgid "description"
+msgstr "opis"
+
+#: models.py:73
+msgid "price"
+msgstr "cena"
+
+#: models.py:74
+msgid "trial period"
+msgstr "okres testowy"
+
+#: models.py:76 models.py:159
+msgid "no trial"
+msgstr "brak okresu testowego"
+
+#: models.py:77
+msgid "trial unit"
+msgstr "jednostka okresu testowego"
+
+#: models.py:78
+msgid "trial price"
+msgstr "cena okresu testowego"
+
+#: models.py:79
+msgid "recurrence period"
+msgstr "okres powtarzania"
+
+#: models.py:81
+msgid "no recurrence"
+msgstr "brak powtarzania"
+
+#: models.py:82
+msgid "recurrence unit"
+msgstr "jednostka powtarzania"
+
+#: models.py:83
+msgid "group"
+msgstr "grupa"
+
+#: models.py:84
+msgid "best choice"
+msgstr "najlepszy wybór"
+
+#: models.py:98
+msgid "subscriptions"
+msgstr "abonamenty"
+
+#: models.py:125
+#, python-format
+msgid "%(price).02f / %(unit)s"
+msgid_plural "%(price).02f / %(period)d %(unit_plural)s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: models.py:134
+#, python-format
+msgid "%(price).02f one-time fee"
+msgstr "%(price).02f jednorazowo"
+
+#: models.py:142
+msgid "free"
+msgstr "darmowy"
+
+#: models.py:144
+#, python-format
+msgid "per %s"
+msgstr "na %s"
+
+#: models.py:147
+msgid "one-time fee"
+msgstr "jednorazowa opłata"
+
+#: models.py:151
+#, python-format
+msgid "one %(unit)s"
+msgid_plural "%(period)d %(unit_plural)s"
+msgstr[0] ""
+msgstr[1] "jeden %(unit)s"
+
+#: models.py:182
+msgid "user"
+msgstr "użytkownik"
+
+#: models.py:184
+msgid "start"
+msgstr "start"
+
+#: models.py:185
+msgid "expires"
+msgstr "wygaśnięcie"
+
+#: models.py:186
+msgid "active"
+msgstr "aktywny"
+
+#: models.py:187
+msgid "cancelled"
+msgstr "anulowany"
+
+#: models.py:196
+msgid "user subscription"
+msgstr "abonament użytkownika"
+
+#: models.py:197
+msgid "user subscriptions"
+msgstr "abonamenty użytkownika"
+
+#: models.py:280
+msgid "This is your current subscription."
+msgstr "To jest Twój aktualny abonament."
+
+#: models.py:313
+msgid "method"
+msgstr "metoda"
+
+#: models.py:314
+msgid "version"
+msgstr "versja"
+
+#: models.py:318
+msgid "amount"
+msgstr "kwota"
+
+#: models.py:319
+msgid "currency"
+msgstr "waluta"
+
+#: models.py:323
+msgid "ack"
+msgstr "ack"
+
+#: models.py:325
+msgid "correlation id"
+msgstr ""
+
+#: models.py:326
+msgid "token"
+msgstr ""
+
+#: models.py:328
+msgid "profile id"
+msgstr ""
+
+#: models.py:329
+msgid "profile status"
+msgstr ""
+
+#: models.py:331
+msgid "error code"
+msgstr ""
+
+#: models.py:332
+msgid "error message"
+msgstr ""
+
+#: models.py:336
+msgid "express transaction"
+msgstr ""
+
+#: models.py:337
+msgid "express transactions"
+msgstr ""
+
+#: views.py:33
+msgid "An error occurred communicating with PayPal"
+msgstr ""
+
+#: views.py:40
+msgid "Your subscription is empty"
+msgstr "Twój abonament jest pusty"
+
+#: views.py:62
+msgid "PayPal transaction cancelled"
+msgstr "Transakcja PayPal została anulowana"
+
+#: views.py:81 views.py:147
+msgid "Unable to determine PayPal transaction details"
+msgstr ""
+
+#: views.py:87 views.py:103 views.py:109
+msgid "A problem occurred communicating with PayPal - please try again later"
+msgstr ""
+
+#: views.py:153 views.py:157
+msgid "Unable to take payment"
+msgstr ""
+
+#: views.py:169
+msgid "Your subscription has been updated!"
+msgstr "Twój abonament został zaaktualizowany!"
+
+#: templates/admin/subscription/subscription_list.html:5
+#: templates/admin/subscription/subscription_list.html:9
+msgid "Subscription plans"
+msgstr "Plany abonamentowe"
+
+#: templates/admin/subscription/subscription_list.html:16
+msgid "My Account"
+msgstr "Moje Konto"
+
+#: templates/admin/subscription/subscription_list.html:17
+msgid "Plans"
+msgstr "Plany"
+
+#: templates/admin/subscription/subscription_list.html:56
+msgid "Never expires"
+msgstr "Nigdy nie wygasa"
+
+#: templates/admin/subscription/subscription_list.html:61
+msgid "Upgrade"
+msgstr "Ulepsz"
+
+#: templates/admin/subscription/subscription_list.html:64
+msgid "This is your current subscription!"
+msgstr "To jest Twój aktualny abonament!"
+
+#: templates/admin/subscription/subscription_list.html:72
+msgid ""
+"A monthly subscription lasts 30 days and does not vary depending on the "
+"current month/year."
+msgstr ""
+"Abonament miesięczny trwa 30 dni i nie zmienia się w zależności od bieżącego"
+" miesiąca / roku."

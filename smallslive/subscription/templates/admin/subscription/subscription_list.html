@@ -1,0 +1,84 @@
+{% extends "admin/base_site.html" %}{% load admin_list i18n admin_static admin_urls %}
+
+{% block bodyclass %}subscription-list{% endblock %}
+
+{% block inner-title %}{% trans "Subscription plans" %}{% endblock %}
+
+{% block content_title %}
+			<header class="page-header">
+				<h1><i class="icon-barcode title-icon"></i>{% trans "Subscription plans" %}</h1>
+			</header>
+{% endblock %}
+
+{% block breadcrumbs %}
+			<ul class="breadcrumb">
+				<li><a href="{% url 'admin:index' %}"><i class="glyphicon glyphicon-home"></i></a> <span class="divider">/</span></li>
+                {% if ADMIN_DISABLE_APP_INDEX %}
+				<li><a href="{% url 'admin:my-account' %}">{% trans "My Account" %}</a> <span class="divider">/</span></li>
+                {% endif %}
+				<li class="active">{% trans "Plans" %}</li>
+			</ul>
+{% endblock %}
+
+{% block object-tools %}
+{% endblock %}
+
+{% block content %}
+			<div class="row show-grid">
+				<div class="col-md-12">
+					<div id="content-main">
+                        <div id="plans-body" class="row">
+                                <div class="col-md-4">
+                                    <ul class="plan-list">
+                                        <li class="pricing-header1"></li>
+                                        <li class="pricing-header2"></li>
+                                        {% for feature in features %}
+                                        <li class="{% cycle 'row1' 'row2' %}"><span class="field">{% trans feature.name %}</span></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% for plan in plans %}
+                                <div class="col-md-2">
+                                    <ul class="plan-list plan-free {% if plan.best_choice %}plan-selected{% endif %}" data-pk="{{ plan.pk }}">
+                                        <li class="pricing-header1">{{ plan.name }}</li>
+                                        <li class="pricing-header2"><span class="plan-price">{{ plan.price }}</span>{{ SITE_CURRENCY }}<div class="small">{{ plan.simple_display }}</div></li>
+                                        {% for feature in features %}
+                                            {% for subfeature in plan.subscriptionfeature_set.all %}
+                                                {% if feature == subfeature.feature %}
+                                                    {% if subfeature.value == 'No' %}
+                                                    <li class="{% cycle 'row1' 'row2' %}"><span class="field"><i class="glyphicon glyphicon-remove"></i> </span></li>
+                                                    {% else %}
+                                                    <li class="{% cycle 'row1' 'row2' %}"><span class="field">{{ subfeature.value }}</span></li>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endfor %}
+                                        <li class="pricing-footer">
+                                            {% if plan.price == 0 %}
+                                            <span class="small">{% trans "Never expires" %}</span>
+                                            {% else %}
+                                            <span class="small">{{ plan.description }}</span>
+                                                {% if request.user.get_subscription.subscription == plan %}
+                                                    {% if request.user.get_subscription.valid %}
+                                                        {% trans "This is your current subscription!" %}
+                                                    {% else %}
+                                                        <a href="{% url 'subscription:buy' plan.pk %}" class="btn btn-primary select-plan-button">
+                                                            <i class="icon-check icon-white"></i> {% trans "Upgrade" %}
+                                                        </a>
+                                                    {% endif %}
+                                                {% else %}
+                                                        <a href="{% url 'subscription:buy' plan.pk %}" class="btn btn-primary select-plan-button">
+                                                            <i class="icon-check icon-white"></i> {% trans "Upgrade" %}
+                                                        </a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <p>{% blocktrans %}A monthly subscription lasts 30 days and does not vary depending on the current month/year.{% endblocktrans %}</p>
+                    </div>
+				</div>
+			</div>
+{% endblock %}
