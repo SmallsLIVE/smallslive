@@ -8,13 +8,13 @@ This page is loaded instead of event_detail if the event is in the past or tapin
       {{ event.description }}
 {% endcomment %}
 {% load thumbor_tags %}
-{% block title %}{{ event.display_title }} {{ event.start_day }} in NYC w/ {{ event.sidemen }}{% endblock title %}
+{% block title %}{{ event.display_title }} {{ event.start }} in NYC w/ {{ event.sidemen }}{% endblock title %}
 {% block content %}
 <h1><code>2</code>Live Now: {{ event.display_title }}</h1>
 <div class="row">
   <div class="col-sm-8">
     <div class="video_player">
-      <p>{{ event.start_day }}, {{ event.date_freeform }}</p>
+      <p>{{ event.start }}, {{ event.date_freeform }}</p>
       {% if event.subtitle %}
         <p>{{ event.subtitle }}</p>
       {% endif %}

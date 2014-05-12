@@ -10,11 +10,11 @@ from tinymce import models as tinymce_models
 
 class Event(TimeStampedModel):
     SETS = Choices('10-11pm', '11-12pm', '12-1am')
-    STATUS = Choices('Draft', 'Published', 'Cancelled', 'Hidden')
+    STATUS = Choices('Published', 'Draft', 'Cancelled', 'Hidden')
 
     title = models.CharField(max_length=255)
-    start_day = models.DateTimeField(blank=True, null=True)
-    end_day = models.DateTimeField(blank=True, null=True)
+    start = models.DateTimeField(blank=True, null=True)
+    end = models.DateTimeField(blank=True, null=True)
     set = models.CharField(choices=SETS, blank=True, max_length=10)
     description = tinymce_models.HTMLField(blank=True)
     subtitle = models.CharField(max_length=255, blank=True)
@@ -22,17 +22,18 @@ class Event(TimeStampedModel):
     link = models.CharField(max_length=255, blank=True)
     active = models.BooleanField(default=False)
     date_freeform = models.TextField(blank=True)
-    photo = models.ImageField(upload_to='event_images', max_length=150, blank=True)
+    photo = models.ImageField(upload_to='event_images', help_text="Flyer or Band Photo (JPG, PNG)",
+                              max_length=150, blank=True)
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed')
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField()
 
     objects = models.Manager()
-    past = QueryManager(start_day__lt=datetime.now().date()).order_by('-start_day')
-    upcoming = QueryManager(start_day__gte=datetime.now().date()).order_by('start_day')
+    past = QueryManager(start__lt=datetime.now()).order_by('-start')
+    upcoming = QueryManager(start__gte=datetime.now()).order_by('start')
 
     class Meta:
-        ordering = ['-start_day']
+        ordering = ['-start']
     
     def __unicode__(self):
         return self.title
@@ -66,7 +67,7 @@ class Event(TimeStampedModel):
         """
         Checks if the event happened in the past.
         """
-        return self.end_day < datetime.now().date()
+        return self.end < datetime.now().date()
 
 
 class EventType(models.Model):

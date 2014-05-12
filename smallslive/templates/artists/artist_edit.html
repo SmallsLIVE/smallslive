@@ -35,7 +35,7 @@
         <tbody>
           {% for upcoming_event in artist.upcoming_events|slice:"5" %}
           <tr>
-            <td><a href="{{ upcoming_event.get_absolute_url }}">{{ upcoming_event.start_day|date:"m/j/y" }}</a></td>
+            <td><a href="{{ upcoming_event.get_absolute_url }}">{{ upcoming_event.start|date:"m/j/y" }}</a></td>
             <td>{{ upcoming_event.performers.all|join:", " }}</td>
             <td><a href="">clone</a></td>
           </tr>
@@ -56,7 +56,7 @@
           {% for past_event in artist.past_events|slice:"10" %}
           <tr>
             <td>
-              <a href="{{ past_event.get_absolute_url }}">{{ past_event.start_day|date:"n/j/y" }}</a></td>
+              <a href="{{ past_event.get_absolute_url }}">{{ past_event.start|date:"n/j/y" }}</a></td>
             <td>
               {% if past_event.displaytitle %}
                 <a href="{{ past_event.get_absolute_url }}"><h3>{{ past_event.displaytitle }}</h3></a>

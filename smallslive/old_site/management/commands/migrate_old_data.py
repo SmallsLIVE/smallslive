@@ -90,9 +90,9 @@ class Command(NoArgsCommand):
             new_event.date_freeform = old_event.datefreeform
             new_event.description = old_event.description
             new_event.email = old_event.email
-            new_event.end_day = old_event.endday
+            new_event.end = old_event.endday
             new_event.link = old_event.link
-            new_event.start_day = old_event.startday
+            new_event.start = old_event.startday
             new_event.subtitle = old_event.subtitle
             new_event.title = old_event.title
 

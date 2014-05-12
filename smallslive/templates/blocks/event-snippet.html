@@ -1,7 +1,7 @@
 {% load thumbor_tags %}
 <div class="media">
-    <span class="pull-left">{{ event.start_day|date:"D" }}<br />
-    <small>{{ event.start_day|date:"M j" }}</small> 
+    <span class="pull-left">{{ event.start|date:"D" }}<br />
+    <small>{{ event.start|date:"M j" }}</small>
     </span>
   {% if event.photo %}
     <a href="{{ event.get_absolute_url }}" class="pull-right"><img src="{% thumbor_url event.photo.url|urlencode height=94 width=130 smart=True %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}" class="media-object img-responsive pull-left" /></a>

@@ -15,11 +15,11 @@ Not using this template for now due to the lack of video on the site. The video.
 {% extends "base.html" %}
 {% load thumbor_tags %}
 {% block alert %}<div class="alert alert-success">Event saved. <a href="{% url "event_edit" pk=event.id %}">Edit again</a></div>{% endblock %}
-{% block title %}Hear {{ event.artists.first_name }} {{ event.artists.last_name }} {{ event.start_day }} in NYC w/ {{ event.sidemen }}{% endblock title %}
+{% block title %}Hear {{ event.artists.first_name }} {{ event.artists.last_name }} {{ event.start }} in NYC w/ {{ event.sidemen }}{% endblock title %}
 {% block content %}
 <div class="row">
   <div class="col-sm-8">
-    <h1>{{ event.start_day }} : {{ event.display_title }}</h1>
+    <h1>{{ event.start }} : {{ event.display_title }}</h1>
     <h2>{{ event.date_freeform }}</h2>
     <h2>{{ event.subtitle }}</h2>
     <div class="description">

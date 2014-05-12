@@ -22,7 +22,7 @@
     <h2>Upcoming Shows @ Smalls:</h2>
     <ul>
       {% for upcoming_event in artist.upcoming_events %}
-        <li>{{ upcoming_event.start_day }} {{ upcoming_event.display_title }}</li>
+        <li>{{ upcoming_event.start }} {{ upcoming_event.display_title }}</li>
       {% endfor %}
 
       <li>Tue, 3/4/14 title w/ sidemen-here [<a href="">EDIT LINK IF ALLOWED</a>]</li>

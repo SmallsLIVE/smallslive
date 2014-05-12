@@ -21,8 +21,8 @@ class HomepageView(TemplateView):
         few_days_out = today + timedelta(days=3)
         # temporarily removing this so we don't have to generate future events for testing all the time,
         # just show the 5 future events for now
-        #context['events'] = Event.objects.filter(start_day__range=(today, few_days_out)).reverse()
-        events = list(Event.objects.all().order_by("-start_day")[:8])
+        #context['events'] = Event.objects.filter(start__range=(today, few_days_out)).reverse()
+        events = list(Event.objects.all().order_by("-start")[:8])
         events.reverse()
         context['events'] = events
         context['videos'] = Media.objects.order_by('-id')[:5]
@@ -34,6 +34,7 @@ homepage = HomepageView.as_view()
 class EventAddView(CreateView):
     template_name = 'events/event_add.html'
     model = Event
+    form_class = EventAddForm
 
 event_add = EventAddView.as_view()
 
@@ -73,7 +74,7 @@ event_edit = EventEditView.as_view()
 
 
 class VenueDashboardView(ListView):
-    queryset = Event.objects.order_by('-modified', '-start_day')[:50]
+    queryset = Event.objects.order_by('-modified', '-start')[:50]
     template_name = 'dashboard-admin.html'
     context_object_name = 'events'
 

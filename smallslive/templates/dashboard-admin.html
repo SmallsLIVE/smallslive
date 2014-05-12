@@ -29,7 +29,7 @@
             <tbody>
               {% for event in events %}
               <tr>
-                <td>{{ event.end_day }}</td>
+                <td>{{ event.start }}</td>
                 <td><a href="{{ event.get_absolute_url }}">{{ event.display_title }}</a></td>
                 <td><span class="text-danger">0/4</span> <a href="#">Send invitation(s)&hellip;</a></td>
                 <th>{{ event.last_modified_by.get_full_name }} {{ event.modified|naturaltime }}</th>
