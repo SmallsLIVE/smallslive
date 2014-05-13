@@ -12,6 +12,7 @@
   <div class="row">
     <div class="col-sm-7">
     <form method="post" enctype="multipart/form-data">
+      {% crispy artists inline_helper %}
       {% crispy form %}
     </form>
     <hr/>
@@ -343,3 +344,11 @@
     </Ul>
   </div>
 {% endblock content %}
+
+{% block extra_js %}
+  <script>
+    $(".selectize").selectize({
+      create: false
+    });
+  </script>
+{% endblock %}

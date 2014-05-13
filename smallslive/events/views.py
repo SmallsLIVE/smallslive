@@ -1,12 +1,13 @@
 from django.utils.timezone import datetime, timedelta
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import UpdateView
 from django.views.generic import TemplateView
 
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
+from extra_views import CreateWithInlinesView, NamedFormsetsMixin
 
-from .forms import EventAddForm
+from .forms import EventAddForm, GigPlayedInlineFormSet, GigPlayedInlineFormSetHelper
 from .models import Event
 from multimedia.models import Media
 
@@ -31,10 +32,17 @@ class HomepageView(TemplateView):
 homepage = HomepageView.as_view()
 
 
-class EventAddView(CreateView):
+class EventAddView(NamedFormsetsMixin, CreateWithInlinesView):
     template_name = 'events/event_add.html'
     model = Event
     form_class = EventAddForm
+    inlines = [GigPlayedInlineFormSet]
+    inlines_names = ['artists']
+
+    def get_context_data(self, **kwargs):
+        context = super(EventAddView, self).get_context_data(**kwargs)
+        context['inline_helper'] = GigPlayedInlineFormSetHelper()
+        return context
 
 event_add = EventAddView.as_view()
 

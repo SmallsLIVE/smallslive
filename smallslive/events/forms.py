@@ -1,11 +1,11 @@
 from datetime import timedelta
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, Div
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field
 from django import forms
-from django.core.exceptions import ValidationError
 from django.utils.timezone import datetime
+from extra_views import InlineFormSet
 import floppyforms
-from .models import Event
+from .models import Event, GigPlayed
 
 
 class EventStatusWidget(floppyforms.RadioSelect):
@@ -16,15 +16,33 @@ class SlotsTimeWidget(floppyforms.RadioSelect):
     template_name = 'form_widgets/slots_time.html'
 
 
+class GigPlayedInlineFormSet(InlineFormSet):
+    model = GigPlayed
+    fields = ('artist', 'role', 'is_leader')
+
+
+class GigPlayedInlineFormSetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(GigPlayedInlineFormSetHelper, self).__init__(*args, **kwargs)
+        self.form_tag = False
+        self.form_class = 'form-inline'
+        #self.field_template = 'bootstrap3/layout/inline_field.html'
+        self.layout = Layout(
+            Field('artist', css_class="selectize", placeholder="ASDBV"),
+            'role',
+            'is_leader'
+        )
+
+
 class EventAddForm(forms.ModelForm):
     date = forms.DateField(required=True)
-    time = floppyforms.ChoiceField(required=False, widget=SlotsTimeWidget, choices=Event.SETS)
+    time = floppyforms.ChoiceField(required=True, widget=SlotsTimeWidget, choices=Event.SETS)
 
     class Meta:
         model = Event
         fields = ('date', 'time', 'title', 'subtitle', 'photo', 'description', 'link', 'state')
         widgets = {
-            'performers': forms.SelectMultiple,
+            #'performers': forms.SelectMultiple,
             'state': EventStatusWidget,
             'link': floppyforms.URLInput
         }
@@ -56,11 +74,11 @@ class EventAddForm(forms.ModelForm):
         cleaned_data = super(EventAddForm, self).clean()
         date = cleaned_data.get('date')
         time = cleaned_data.get('time')
-        start_time, end_time = time.split('-')
-        start_time = datetime.strptime(start_time, '%H:%M').time()
-        end_time = datetime.strptime(end_time, '%H:%M').time()
 
         if date and time:
+            start_time, end_time = time.split('-')
+            start_time = datetime.strptime(start_time, '%H:%M').time()
+            end_time = datetime.strptime(end_time, '%H:%M').time()
             cleaned_data['start'] = datetime.combine(date, start_time)
             if end_time < start_time:  # if events ends on another day
                 date += timedelta(days=1)
