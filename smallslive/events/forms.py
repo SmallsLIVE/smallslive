@@ -35,8 +35,8 @@ class GigPlayedInlineFormSetHelper(FormHelper):
 
 
 class EventAddForm(forms.ModelForm):
-    start = floppyforms.SplitDateTimeField(label="Start time", required=True)
-    end = floppyforms.SplitDateTimeField(label="End time", required=True)
+    start = floppyforms.DateTimeField(label="Start time", required=True)
+    end = floppyforms.DateTimeField(label="End time", required=True)
 
     class Meta:
         model = Event

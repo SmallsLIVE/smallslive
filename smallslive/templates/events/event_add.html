@@ -351,11 +351,44 @@
       create: false
     });
 
-    //Date fields need a picker
-  $('input[type=date]').datetimepicker({pickTime: false}).on('dp.change', function(ev){
-    $('input[type=date]').data("DateTimePicker").hide();
-  });
+    var $start = $('#id_start');
+    var $end = $('#id_end');
 
-  $('input[type=time]').datetimepicker({pickDate: false});
+    $('input[type=datetime]').datetimepicker({sideBySide: true, minuteStepping: 5, useCurrent: false});
+    $start.on('dp.hide', function(ev) {
+      if ($end.val() === "") {
+        // auto set event end to 2 hours later
+        var end = moment($start.val()).add(2, 'hours').format("MM/DD/YYYY H:mm A");
+        console.log(end);
+        $end.data("DateTimePicker").setDate(end);
+      }
+    });
+
+    // Variant with split date and time pickers
+    /*var $startDate = $('#id_start_0');
+    var $endDate = $('#id_end_0');
+    var $startTime = $('#id_start_1');
+    var $endTime = $('#id_end_1');*/
+
+    //Date fields need a picker
+    /*$('input[type=date]').datetimepicker({pickTime: false}).on('dp.change', function(ev){
+      $('input[type=date]').data("DateTimePicker").hide();
+    });
+
+    $startDate.on('dp.change', function(ev) {
+      if ($endDate.val() === "") {
+        $endDate.val($startDate.val());
+      }
+    });
+
+    $('input[type=time]').datetimepicker({pickDate: false, minuteStepping:5});
+    $endTime.on('dp.hide', function(ev) {
+      var start = moment($startDate.val() + " " + $startTime.val());
+      var end = moment($endDate.val() + " " + $endTime.val());
+      if (start.isAfter(end)) {
+        $endDate.val(end.add('days', 1).format("MM/DD/YYYY"));
+      }
+    });*/
+
   </script>
 {% endblock %}
