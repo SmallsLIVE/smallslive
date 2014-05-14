@@ -1,5 +1,6 @@
 {% extends "base_admin.html" %}
 {% load humanize %}
+{% load thumbor_tags %}
 {% block title %}Dashboard{% endblock title%}
 {% block content %}
   <h1>Dashboard &amp; Calendar</h1>
@@ -17,22 +18,25 @@
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="recent">
-          <table class="table">
+          <table class="table table-condensed">
             <thead>
               <tr>
                 <th>Gig Date</th>
-                <th>Edit Event</th>
+                <th colspan="2">Edit Event</th>
                 <th>Artists Registered?</th>
-                <th>Last Updated by</th>
+                <th>Last Updated</th>
               </tr>
             </thead>
             <tbody>
               {% for event in events %}
               <tr>
                 <td>{{ event.start }}</td>
+                <td>{% if event.photo.url != "" %}
+            <img src="{% thumbor_url event.photo.url|urlencode height=40 smart=True brightness=80 %}" class="img-responsive artist-photo" />
+          {% endif %}</td>
                 <td><a href="{{ event.get_absolute_url }}">{{ event.display_title }}</a></td>
                 <td><span class="text-danger">0/4</span> <a href="#">Send invitation(s)&hellip;</a></td>
-                <th>{{ event.last_modified_by.get_full_name }} {{ event.modified|naturaltime }}</th>
+                <td class="text-muted">{{ event.last_modified_by.get_full_name }} {{ event.modified|naturaltime }}</td>
               </tr>
               {% endfor %}
               <tr><td colspan="4">Show 50 rows + use datatables to allow sorting and maybe filtering</td></tr>
