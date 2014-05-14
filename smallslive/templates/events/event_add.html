@@ -1,10 +1,11 @@
 {% extends "base_admin.html" %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags static %}
 
 {% block title %}Add/Edit Gig: %dateAndArtistandTitleHere%{% endblock title %}
 
 {% block extra_head %}
   {{ form.media }}
+  <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
 {% endblock extra_head %}
 
 {% block content %}
@@ -12,7 +13,6 @@
   <div class="row">
     <div class="col-sm-7">
     <form method="post" enctype="multipart/form-data">
-      {% crispy artists inline_helper %}
       {% crispy form %}
     </form>
     <hr/>
@@ -350,5 +350,12 @@
     $(".selectize").selectize({
       create: false
     });
+
+    //Date fields need a picker
+  $('input[type=date]').datetimepicker({pickTime: false}).on('dp.change', function(ev){
+    $('input[type=date]').data("DateTimePicker").hide();
+  });
+
+  $('input[type=time]').datetimepicker({pickDate: false});
   </script>
 {% endblock %}

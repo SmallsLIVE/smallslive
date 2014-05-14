@@ -35,12 +35,12 @@ class GigPlayedInlineFormSetHelper(FormHelper):
 
 
 class EventAddForm(forms.ModelForm):
-    date = forms.DateField(required=True)
-    time = floppyforms.ChoiceField(required=True, widget=SlotsTimeWidget, choices=Event.SETS)
+    start = floppyforms.SplitDateTimeField(label="Start time", required=True)
+    end = floppyforms.SplitDateTimeField(label="End time", required=True)
 
     class Meta:
         model = Event
-        fields = ('date', 'time', 'title', 'subtitle', 'photo', 'description', 'link', 'state')
+        fields = ('start', 'end', 'title', 'subtitle', 'photo', 'description', 'link', 'state')
         widgets = {
             #'performers': forms.SelectMultiple,
             'state': EventStatusWidget,
@@ -54,8 +54,8 @@ class EventAddForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            'date',
-            'time',
+            Field('start', css_class='datepicker'),
+            Field('end', css_class='datepicker'),
             'title',
             'subtitle',
             Div('photo', css_class='well'),
@@ -66,29 +66,3 @@ class EventAddForm(forms.ModelForm):
                 Submit('submit', 'Submit', css_class='btn btn-primary')
             )
         )
-
-    def clean(self):
-        """
-        Combine date and time fields to set start and end.
-        """
-        cleaned_data = super(EventAddForm, self).clean()
-        date = cleaned_data.get('date')
-        time = cleaned_data.get('time')
-
-        if date and time:
-            start_time, end_time = time.split('-')
-            start_time = datetime.strptime(start_time, '%H:%M').time()
-            end_time = datetime.strptime(end_time, '%H:%M').time()
-            cleaned_data['start'] = datetime.combine(date, start_time)
-            if end_time < start_time:  # if events ends on another day
-                date += timedelta(days=1)
-            cleaned_data['end'] = datetime.combine(date, end_time)
-
-        return cleaned_data
-
-    def save(self, commit=True):
-        object = super(EventAddForm, self).save(commit=False)
-        object.start = self.cleaned_data['start']
-        object.end = self.cleaned_data['end']
-        object.save()
-        return object
