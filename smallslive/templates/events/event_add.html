@@ -13,6 +13,9 @@
   <div class="row">
     <div class="col-sm-7">
     <form method="post" enctype="multipart/form-data">
+      <div class="sortable">
+      {% crispy artists inline_helper %}
+        </div>
       {% crispy form %}
     </form>
     <hr/>
@@ -354,7 +357,7 @@
     var $start = $('#id_start');
     var $end = $('#id_end');
 
-    $('input[type=datetime]').datetimepicker({sideBySide: true, minuteStepping: 5, useCurrent: false});
+    $('input.datepicker').datetimepicker({sideBySide: true, minuteStepping: 5, useCurrent: false});
     $start.on('dp.hide', function(ev) {
       if ($end.val() === "") {
         // auto set event end to 2 hours later
@@ -363,6 +366,19 @@
         $end.data("DateTimePicker").setDate(end);
       }
     });
+
+   $('.sortable').sortable({
+     update: function( event, ui ) {
+        $(".artist_inline input[type=hidden]").each(function(index) {
+          $(this).val(index);
+        })
+     }
+    //AJAX in here
+    //For accessibility, we probably should use a method where we pass a value
+    //  to a hidden text input (not hidden) input field such that there is a keyboard
+    //  accessible method to enter the position.
+
+   });
 
     // Variant with split date and time pickers
     /*var $startDate = $('#id_start_0');

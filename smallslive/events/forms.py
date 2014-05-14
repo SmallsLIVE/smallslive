@@ -1,6 +1,6 @@
 from datetime import timedelta
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML
 from django import forms
 from django.utils.timezone import datetime
 from extra_views import InlineFormSet
@@ -18,7 +18,14 @@ class SlotsTimeWidget(floppyforms.RadioSelect):
 
 class GigPlayedInlineFormSet(InlineFormSet):
     model = GigPlayed
-    fields = ('artist', 'role', 'is_leader')
+    fields = ('artist', 'role', 'is_leader', 'sort_order')
+    extra = 3
+
+    def construct_formset(self):
+        formset = super(GigPlayedInlineFormSet, self).construct_formset()
+        for num, form in enumerate(formset):
+            form.fields['sort_order'].initial = num
+        return formset
 
 
 class GigPlayedInlineFormSetHelper(FormHelper):
@@ -28,15 +35,20 @@ class GigPlayedInlineFormSetHelper(FormHelper):
         self.form_class = 'form-inline'
         #self.field_template = 'bootstrap3/layout/inline_field.html'
         self.layout = Layout(
-            Field('artist', css_class="selectize", placeholder="ASDBV"),
-            'role',
-            'is_leader'
+            Div(
+                Field('artist', css_class="selectize", placeholder="ASDBV"),
+                'role',
+                'is_leader',
+                Field('sort_order', type='hidden'),
+                HTML('<span class="glyphicon glyphicon-move"></span>'),
+                css_class='artist_inline'
+            )
         )
 
 
 class EventAddForm(forms.ModelForm):
-    start = floppyforms.DateTimeField(label="Start time", required=True)
-    end = floppyforms.DateTimeField(label="End time", required=True)
+    start = forms.DateTimeField(label="Start time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
+    end = forms.DateTimeField(label="End time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
 
     class Meta:
         model = Event
