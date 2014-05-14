@@ -22,7 +22,9 @@
             <thead>
               <tr>
                 <th>Gig Date</th>
-                <th colspan="2">Edit Event</th>
+                <th>Pic</th>
+                <th>View Event</th>
+                <th>Edit</th>
                 <th>Artists Registered?</th>
                 <th>Last Updated</th>
               </tr>
@@ -35,6 +37,7 @@
             <img src="{% thumbor_url event.photo.url|urlencode height=40 smart=True brightness=80 %}" class="img-responsive artist-photo" />
           {% endif %}</td>
                 <td><a href="{{ event.get_absolute_url }}">{{ event.display_title }}</a></td>
+                <td><a href="{% url "event_edit" pk=event.id %}">edit</a></td>
                 <td><span class="text-danger">0/4</span> <a href="#">Send invitation(s)&hellip;</a></td>
                 <td class="text-muted">{{ event.last_modified_by.get_full_name }} {{ event.modified|naturaltime }}</td>
               </tr>

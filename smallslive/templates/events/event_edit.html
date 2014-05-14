@@ -19,8 +19,7 @@
       </div>
       <form method="post" role="form" enctype="multipart/form-data">
           {% csrf_token %}
-          {% crispy form %}
-          <button type="submit" class="btn btn-primary">Save profile</button>
+          {% crispy form %} 
       </form>
     </div>
     <div class="col-sm-3">    

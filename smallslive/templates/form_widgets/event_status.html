@@ -1,7 +1,13 @@
-<ul>{% for group_name, choices in optgroups %}{% for choice in choices %}
-	<li {% if forloop.counter == 1 %}
-	class="bg-success"
+ {% for group_name, choices in optgroups %}{% for choice in choices %}
+	<div class="checkbox">
+	  <label for="{{ attrs.id }}_{{ forloop.counter }}"
+	  class="
+	  
+	{% if forloop.counter == 1 %}
+	  txt-success 
   {% elif forloop.counter == 2 %}
-  class="bg-warning"
-	{% endif %} ><label for="{{ attrs.id }}_{{ forloop.counter }}"><input type="radio" id="{{ attrs.id }}_{{ forloop.counter }}" value="{{ choice.0 }}" name="{{ name }}"{% if required %} required{% endif %}{% if choice.0 in value %} checked{% endif %}> {{ choice.1 }}</label></li>
-{% endfor %}{% endfor %}</ul>
+    txt-warning 
+	{% endif %} 
+	
+	  "><input type="radio" id="{{ attrs.id }}_{{ forloop.counter }}" value="{{ choice.0 }}" name="{{ name }}"{% if required %} required{% endif %}{% if choice.0 in value %} checked{% endif %}> {{ choice.1 }} {% if forloop.counter == 1 %}<span class="glyphicon glyphicon-ok"></span>{% endif %}</label></div>
+{% endfor %}{% endfor %} 

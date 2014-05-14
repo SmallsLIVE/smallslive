@@ -365,6 +365,12 @@ form {
   .form-group label {
     color: $gray;
   }
+  .form-group label.txt-success {
+    color: $brand-success;
+  }
+  .form-group label.txt-warning {
+    color: $brand-warning;
+  }
 }
 /* Name/value pair tables */
 table.nv tbody tr > td:first-child {
