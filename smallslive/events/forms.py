@@ -1,6 +1,7 @@
 from datetime import timedelta
+from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML, Button
 from django import forms
 from django.utils.timezone import datetime
 from extra_views import InlineFormSet
@@ -68,6 +69,12 @@ class EventAddForm(forms.ModelForm):
         self.helper.layout = Layout(
             Field('start', css_class='datepicker'),
             Field('end', css_class='datepicker'),
+            FormActions(
+                Button('9slot', '9:00-11:00 PM', css_class='btn-success slot', data_time='21:00-23:00'),
+                Button('11slot', '11:00-1:00 PM', css_class='btn-success slot', data_time='23:00-1:00'),
+                Button('1slot', '1:00-3:00 AM', css_class='btn-success slot', data_time='1:00-3:00'),
+                css_class='form-group'
+            ),
             'title',
             'subtitle',
             Div('photo', css_class='well'),

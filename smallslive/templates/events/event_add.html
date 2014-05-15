@@ -356,29 +356,57 @@
 
     var $start = $('#id_start');
     var $end = $('#id_end');
+    var date_format = "MM/DD/YYYY H:mm A";
 
     $('input.datepicker').datetimepicker({sideBySide: true, minuteStepping: 5, useCurrent: false});
-    $start.on('dp.hide', function(ev) {
+    $start.on('dp.hide', function (ev) {
       if ($end.val() === "") {
         // auto set event end to 2 hours later
-        var end = moment($start.val()).add(1, 'hours').format("MM/DD/YYYY H:mm A");
+        var end = moment($start.val()).add(1, 'hours').format(date_format);
         console.log(end);
         $end.data("DateTimePicker").setDate(end);
       }
     });
 
-   $('.sortable').sortable({
-     update: function( event, ui ) {
-        $(".artist_inline input[type=hidden]").each(function(index) {
+    $('.sortable').sortable({
+      // update the sort_order field based on the order in the DOM
+      update: function (event, ui) {
+        $(".artist_inline input[type=hidden]").each(function (index) {
           $(this).val(index);
         })
-     }
-    //AJAX in here
-    //For accessibility, we probably should use a method where we pass a value
-    //  to a hidden text input (not hidden) input field such that there is a keyboard
-    //  accessible method to enter the position.
+      }
+    });
 
-   });
+    $('.slot').click(function() {
+      var times = $(this).data('time').split('-');
+      var start, end;
+      if (!$start.val()) {
+        start = moment(times[0], "H:mm");
+      }
+      else {
+        var split_start_time = times[0].split(':')
+        start = moment($start.val(), date_format);
+        start.hour(parseInt(split_start_time[0]));
+        start.minutes(parseInt(split_start_time[1]));
+      }
+      $start.data("DateTimePicker").setDate(start.format(date_format));
+
+      if (!$end.val()) {
+        end= moment(times[1], "H:mm");
+      }
+      else {
+        var split_end_time = times[1].split(':');
+        end = moment($start.val(), date_format);
+        end.hour(parseInt(split_end_time[0]));
+        end.minutes(parseInt(split_end_time[1]));
+      }
+      if (start.isAfter(end)) {
+        end.add('days', 1);
+      }
+
+      $end.data("DateTimePicker").setDate(end.format(date_format));
+    });
+
 
     // Variant with split date and time pickers
     /*var $startDate = $('#id_start_0');
