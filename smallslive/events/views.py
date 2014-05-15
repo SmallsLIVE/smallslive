@@ -95,7 +95,7 @@ class MyGigsView(ListView):
     to the page context.
     """
     template_name = 'my_gigs.html'
-    paginate_by = 20
+    paginate_by = 50
     context_object_name = 'past_events'
 
     def get_queryset(self):

@@ -1,19 +1,26 @@
 {% extends "base_admin.html" %}
 {% load humanize %}
-{% block title %}My Gigs{% endblock title%}
+{% load thumbor_tags %}
+{% block title %}My Gigs &amp; Recordings{% endblock title%}
 {% block content %}
-  <h1>My Gigs</h1> 
+  <div class="alert alert-success">
+    <h4><code>5</code> Artist registration complete. Welcome {{ user.first_name }}!</h4>
+    <p>Next, we suggest you do the following:</p>
+    <ol>
+      <li>Review your videos and audio on this page for additional money-making possibilities (see instructions below)</li>
+      <li>Consider contacting any peers with whom you played on recordings and ask them to approve the recording for release into the archive.</li>
+    </ol>
+  </div>
+  <h1>My Gigs &amp; Recordings</h1> 
   <ul class="nav nav-tabs">  
-    <li class="active"><a href="#upcoming" data-toggle="tab">Upcoming</a></li>
-    <li><a href="#past" data-toggle="tab">Past</a></li>
+    <li class="active"><a href="#past" data-toggle="tab">({{ past_events|length }}) Past Videos, Audio, and Gigs </a></li>
+    <li><a href="#upcoming" data-toggle="tab">({{ future_events|length }}) Upcoming Gigs </a></li>
   </ul>
   <div class="tab-content">
-    <div class="tab-pane active" id="upcoming">
+    <div class="tab-pane" id="upcoming">
       <table class="table">
         <thead>
           <tr>
-            <th></th>
-            <th></th>
             <th>Gig Date</th>
             <th>Edit Event</th>
             <th>Last Updated by</th>
@@ -55,103 +62,143 @@
         </tbody>
       </table>
     </div>
-    <div class="tab-pane" id="past">
-      <h2>My Past Shows ({{ past_events|length }})</h2>
-      <div class="checkbox">
-        <lable><input type="checkbox"> Just my videos as a leader (1)</lable>
+    <div class="tab-pane active" id="past">
+      <div class="row">
+        <div class="col-sm-9">
+          <div class="alert alert-danger">
+            <p><strong>14/{{ past_events|length }}</strong> recordings you play on are not available to listeners yet as you haven't approved the recordings for release.</p>
+            <p><a href="" class="btn btn-primary">Approve all 213 recordings now</a> or approve them 1 by 1 below:</p>
+          </div>  
+          <p><span class="glyphicon glyphicon-flag"></span> Looking $ and play-count stats on your recordings? Visit <a href="/static_page/dashboard-musician/">My $ Dashboard</a></p>
+          <table class="table artist-past-gigs-media">
+            <thead>
+              <tr>
+                <th  >Gig Date</th>
+                <th  >Video</th>
+                <th>Play</th>
+                <th>Description</th>
+                <th>Recording Approved/In Archive?<code>2</code></th>
+    
+                <th class="downloads">Downloads</th>
+              </tr>
+            </thead>
+            <tbody> 
+              <tr>  
+                <td>[date here]</td>
+                <td>[photo]</td>
+                <td> 
+                    <a  href="/events/8323/" class=" btn btn-primary" role="button" title="Play audio { past_event.displaytitle }"><span class="glyphicon glyphicon-play"></span></a>
+                </td>
+                <td> 
+                   <a href="{ past_event.get_absolute_url }">title</a><br />
+                    subtitle <span class="text-muted">(66 mins.)</span>         
+                   <div><a href="#">Edit description</a></div>
+                </td>               
+                <td class="artist-clearance-breakdown"><code>1</code> 
+                  <p class="text-danger clearance-summary">2/3 artists (including you) haven't approved this recording yet. <a href="">Details</a></p>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Artist</th>
+                        <th>Approved?</th> 
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                          <td><strong>Me</strong></td>
+                        {% if request.GET.approved %}
+                          <td>
+                            <span class="text-success"> <span class="glyphicon glyphicon-ok"></span> Yes</span>
+                          </td>
+                        {% else %}
+                          <form action="#" method="get">
+                          <td><code>4</code>  
+                            <select name="approved"><option value="1" class="approved">I approve</option><option value="0" class="not-approved">I do not approve</option></select>
+                            <button class="btn-primary btn-xs">Save</button>
+                          </td>
+                          </form>
+                        {% endif %}
+                      </tr>
+                      <tr>
+                        <td><a href="mailto:jon@grimes.com?subject=Clearing our Smalls recording from Jan 14, 2011&body=Hi Jon,%2C%0D%0A%0D%0AI would love to get this recording of us cleared for use on Smalls so we can all make money on it when users listen to it: %2C%0D%0A%0D%0A[[insert link]]%2C%0D%0A%0D%0AWe share a copyright on the recording and all of us on the gig have to approve the recording before it can go into the SmallsLIVE archive for listeners. %2C%0D%0A%0D%0AThanks, {{ user.first_name }}">Alan Smith (gtr)</a></td>
+                       <td class="text-warning">no response</td>
+                      </tr>
+                      <tr>
+                        <td><a href="mailto:jen@olans.com?subject=Clearing our Smalls recording from Jan 14, 2011&body=Hi Jen,%2C%0D%0A%0D%0AI would love to get this recording cleared for use on Smalls so we can all make money on it when users listen to it:%2C%0D%0A%0D%0A[[insert link]]%2C%0D%0A%0D%0AAny particular reason you rejected it? We can edit the recording down if there are specific parts you don't want public. Let me know. %2C%0D%0A%0D%0AThanks, {{ user.first_name }}">Jen Olans (bs)</a></td>
+                       <td class="text-danger"><span class="glyphicon glyphicon-remove"></span> No </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td class="downloads">
+                  <a href=""><span class="glyphicon glyphicon-download"></span> Video</a> 452MB MP4<br />
+                  <a href=""><span class="glyphicon glyphicon-download"></span> Audio</a> 12MB AIFF
+                </td>
+              </tr>
+              {% for past_event in past_events %}
+              <tr> 
+                <td><code>6</code>{{ past_event.start }}</td>
+                <td>{% if past_event.photo.url != "" %}
+            <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" class="img-responsive" />
+          {% endif %}</td>
+                <td> 
+                    <a  href="/events/8323/" class=" btn btn-primary" role="button" title="Play audio {{ past_event.displaytitle }}"><span class="glyphicon glyphicon-play"></span></a></td>
+                <td> 
+              
+                   <a href="{{ past_event.get_absolute_url }}">{{ past_event.display_title }}</a><br />
+                      {{ past_event.subtitle }}
+                      <span class="text-muted">(66 mins.)</span>
+                 
+         
+                  <div><a href="{% url "event_edit" past_event.id %}">Edit description</a></div>
+                </td>
+                <td class="text-danger">[see footer for possible statuses]</td>
+             
+                <td class="downloads">
+                  <a href=""><span class="glyphicon glyphicon-download"></span> Video</a> 452MB MP4<br />
+                  <a href=""><span class="glyphicon glyphicon-download"></span> Audio</a> 12MB AIFF
+                </td>
+              </tr>
+              {% endfor %} 
+            </tbody>
+          </table>
+          {% if paginator.num_pages > 1 %}
+             <ul class="pagination">
+              {% if page_obj.has_previous %}
+                <li><a href="?page={{ page_obj.previous_page_number }}#past">&laquo;</a></li>
+              {% endif %}
+              {% for num in paginator.page_range %}
+                {% ifequal num page_obj.number %}
+                  <li class="active"><a href="#">{{ num }}</a></li>
+                {% else %}
+                  <li><a href="?page={{ num }}#past"> {{ num }}</a></li>
+                {% endifequal %}
+              {% endfor %}
+              {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}#past">&raquo;</a></li>
+              {% endif %}
+            </ul>
+          {% endif %}
+        </div>
+        <div class="col-sm-3">
+          <div class="well">
+            <h2>Your Downloads:</h2>
+            <p>Download all your recordings in bulk:</p>
+            <ul>
+              <li><a href="#">Download all audio</a> ({{ past_events|length }} sets, 644 MB, AIFF)</li>
+              <li><a href="#">Download all video</a> ({{ past_events|length }} sets, 1.2 GB, MP4)</li>
+            </ul>
+          </div>  
+          <div class="well">
+            <h2>Earn more $ from your recordings:</h2>
+            <p>You already earn money when customers stream audio of your (4) published recordings. However, there are more money-making opportunities for artists:</p>
+            <ul>
+              <li>Review your video (why?) and take notes on any edits you want to make (videos aren't legally availably to publish in our public archive yet but we hope they will be soon) [write this where] [send what to smalls?]</li>
+              <li>Sell individual tracks (singles): Write down the song titles and track start times and we can make singles for sale from any recording you played on. You keep $0.50 per single (all songs are priced at $1). [instruct artist to send email to alert Smalls? when? set by set?]</li> 
+            </ul>
+          </div>
+        </div>
       </div>
-      {% if paginator.num_pages > 1 %}
-         <ul class="pagination">
-          {% if page_obj.has_previous %}
-            <li><a href="?page={{ page_obj.previous_page_number }}#past">&laquo;</a></li>
-          {% endif %}
-          {% for num in paginator.page_range %}
-            {% ifequal num page_obj.number %}
-              <li class="active"><a href="#">{{ num }}</a></li>
-            {% else %}
-              <li><a href="?page={{ num }}#past"> {{ num }}</a></li>
-            {% endifequal %}
-          {% endfor %}
-          {% if page_obj.has_next %}
-            <li><a href="?page={{ page_obj.next_page_number }}#past">&raquo;</a></li>
-          {% endif %}
-        </ul>
-      {% endif %} 
-      <table class="table">
-        <thead>
-          <tr>
-            <th></th>
-            <th></th>
-            <th>Gig Date</th>
-            <th>Edit Event</th>
-            <th>Video Status</th>
-            <th>Clearance notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><a href="">View video</a></td>
-            <td><a href="">Edit</a></td>
-            <td>event.date(ddd, d/m)</a></td>
-            <td>event.title<br />sideArtist, sideArtist, sideArtist</td>
-            <td class="text-success">Live - 12/13/13</td>
-            <th>All licenses and artists are cleared </th>
-          </tr>
-          <tr>
-            <td><a href="">View</a></td>
-            <td><a href="">Edit</a></td>
-            <td>event.date(ddd, d/m)</a></td>
-            <td>event.title<br />sideArtist, sideArtist, sideArtist</td>
-            <td class="text-warning">Audio only</td>
-            <th>Jon Grimes (dr) opted out of this video on 5/1/13 (<a href="">see note</a><code>1</code>). As such, only audio will be available. 5/6 songs have been cleared. Until all artists and songs are cleared, this video cannot go live.</th>
-          </tr>
-          <tr>
-            <td><a href="">View</a></td>
-            <td><a href="">Edit</a></td>
-            <td>event.date(ddd, d/m)</a></td>
-            <td>event.title<br />sideArtist, sideArtist, sideArtist</td>
-            <td class="text-warning">Audio only.</td>
-            <th>All artists have cleared video. 5/6 songs have been cleared. Until all artists and songs are cleared, this video cannot go live.</th>
-          </tr>
-          <tr>
-            <td><a href="">View</a></td>
-            <td><a href="">Edit</a></td>
-            <td>event.date(ddd, d/m)</a></td>
-            <td>event.title<br />sideArtist, sideArtist, sideArtist</td>
-            <td class="text-danger">No media available.</td>
-            <th>This concert was not recorded or videotaped.</th>
-          </tr>
-          {% for past_event in past_events %}
-          <tr>
-          <td><a href="{{ past_event.get_absolute_url }}">View</a></td>
-            <td><a href="{% url "event_edit" past_event.id %}">Edit</a></td>
-            <td>{{ past_event.start }}</td>
-            <td>{{ past_event.display_title }}<br />
-                {{ past_event.subtitle }}
-            </td>
-            <td class="text-danger">No media available.</td>
-            <td>This concert was not recorded or videotaped.</td>
-          </tr>
-          {% endfor %} 
-        </tbody>
-      </table>
-      {% if paginator.num_pages > 1 %}
-         <ul class="pagination">
-          {% if page_obj.has_previous %}
-            <li><a href="?page={{ page_obj.previous_page_number }}#past">&laquo;</a></li>
-          {% endif %}
-          {% for num in paginator.page_range %}
-            {% ifequal num page_obj.number %}
-              <li class="active"><a href="#">{{ num }}</a></li>
-            {% else %}
-              <li><a href="?page={{ num }}#past"> {{ num }}</a></li>
-            {% endifequal %}
-          {% endfor %}
-          {% if page_obj.has_next %}
-            <li><a href="?page={{ page_obj.next_page_number }}#past">&raquo;</a></li>
-          {% endif %}
-        </ul>
-      {% endif %}
 
     </div>
   </div> 
@@ -159,7 +206,11 @@
   <div class="dev">
     <h1>Dev notes</h1>
     <Ul> 
-      <li><code>1</code> - popup shows reasoning left by jon grimes when he opted out</li>
+      <li><code>1</code> - if the audio is not approved yet, there is a red summary sentence and a link to show a table of artists involved and their status. Artist logged in can email peers (note  there are 2 flavors of email for No and No-response use cases for peer artists). If the audio is live, write <code>td class="text-success">Live - 12/13/13 </code> . Another status might be <Code>td class="text-muted" Removed - 12/13/14</Code> </li>
+      <li><code>3</code> - ajax filter out the sideman gigs i played. make sure paginator respects this.</li>
+      <li><code>4</code> - this should be ajax, not postback.</li>
+      <li><code>5</code> - this green mesg only appears at the end of artist signup</li>
+      <li><code>6</code> - this is the wrong date format. see trello ToDo.</li>
     </Ul>
   </div>
 {% endblock content %}

@@ -80,6 +80,11 @@ $(document).ready(function(){
   //End signup
   
   //ADMIN forms begin
+  $('.artist-clearance-breakdown table').hide();
+  $('.clearance-summary a').on('click',function(e){
+    e.preventDefault();
+    $(this).closest('td').find('table').toggle();
+  });
   function checkRadio(radio) {
     if ($(radio).hasClass('extra-message')==true) {
       $('.trigger-add-extra-message').next('div').slideDown();

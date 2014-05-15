@@ -5,7 +5,6 @@
     <ul class="dropdown-menu"> 
       {% if user.is_artist %}
       <li><a href="{% url "artist_edit" pk=user.artist.id %}">Edit artist profile</a></li>
-      <li><a href="{% url "my_gigs" %}">My gigs</a></li>
       {% endif %}
       <li><a href="/static_page/my_subscription">Subscription info</a></li>         
       <li><a href="/static_page/my_account">Profile, email, password</a></li>

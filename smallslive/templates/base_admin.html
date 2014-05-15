@@ -8,15 +8,11 @@
         <li class="divider" role="presentation"></li>
       {% endif %}
       {% if user.is_artist %}  
-        <li><a href="/static_page/dashboard-musician"><span class="badge pull-right">5</span> Artist Dashboard </a></li>      
-        <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">My Gigs<b class="caret"></b></a>
-        <ul class="dropdown-menu"> 
-          <li><a href="#">Edit next gig (6/24/14)</a></li>
-          <li><a href="{% url "my_gigs" %}">View all gigs</a></li> 
-        </ul>
+        <li><a href="/static_page/dashboard-musician"><span class="badge pull-right">5</span> My $ Dashboard </a></li>      
+        <li >
+          <a href="{% url "my_gigs" %}" >My Gigs &amp; Recordings</a> 
       </li>    
-      <li><a href="#">Platform Stats</a></li>  
+      <li><a href="#">Community $ Dashboard</a></li>  
       {% endif %}           
     </ul>  
     {% if user.is_superuser %}  

@@ -5126,6 +5126,12 @@ body.search .facets p {
   min-height: 210px; }
 
 /*=Admin screens*/
+table.artist-past-gigs-media .artist-clearance-breakdown table tr td:first-child {
+  white-space: nowrap; }
+table.artist-past-gigs-media td.downloads {
+  white-space: nowrap;
+  color: #999999; }
+
 /*=Signup screens*/
 form.f-trial-signup {
   margin-top: 24px; }
@@ -5237,6 +5243,9 @@ div.datepicker {
   display: none; }
 
 /*=Components - Bootstrap Overrides*/
+.nav-tabs {
+  margin-bottom: 24px; }
+
 form .form-control {
   border-color: #dddddd;
   box-shadow: none;
@@ -5248,6 +5257,10 @@ form .form-control:focus {
   box-shadow: none; }
 form .form-group label {
   color: #555555; }
+form .form-group label.txt-success {
+  color: #5cb85c; }
+form .form-group label.txt-warning {
+  color: #f0ad4e; }
 
 /* Name/value pair tables */
 table.nv tbody tr > td:first-child {

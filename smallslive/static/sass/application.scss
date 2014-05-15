@@ -211,6 +211,16 @@ body.search .facets {
   min-height: 210px;
 }
 /*=Admin screens*/
+table.artist-past-gigs-media {
+  .artist-clearance-breakdown table tr td:first-child {
+    white-space: nowrap;
+  }
+  td.downloads {
+    white-space: nowrap;
+    color: $gray-light;
+  }
+  
+}
 /*=Signup screens*/
 form.f-trial-signup {
   margin-top: 24px;
@@ -353,6 +363,9 @@ div.datepicker {
   display: none;
 }
 /*=Components - Bootstrap Overrides*/
+.nav-tabs {
+  margin-bottom: $margin-bottom;
+}
 form {  
   .form-control {
     border-color: #dddddd;

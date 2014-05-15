@@ -10,14 +10,14 @@
   </div>
   <div class="col-sm-6">
      
-      <form method="get" action="/artists/1806" role="form" enctype="multipart/form-data">
-        <p>This profile information is visible to the public.</p>
+      <form method="get" action="{% url "my_gigs" %}" role="form" enctype="multipart/form-data">
+        <p>This profile information is visible to the public. </p>
         <input type='hidden' name='csrfmiddlewaretoken' value='D4ExtZfjupecOam5GLMfTgv533oGK3BA' /> <div id="div_id_first_name" class="form-group"><label for="id_first_name" class="control-label  requiredField">
 				First name<span class="asteriskField">*</span></label><div class="controls "><input class="textinput textInput form-control" id="id_first_name" maxlength="255" name="first_name" type="text" value="Ugonna" /> </div></div><div id="div_id_last_name" class="form-group"><label for="id_last_name" class="control-label  requiredField">
 				Last name<span class="asteriskField">*</span></label><div class="controls "><input class="textinput textInput form-control" id="id_last_name" maxlength="255" name="last_name" type="text" value="Okegwo" /> </div></div><div id="div_id_salutation" class="form-group"><label for="id_salutation" class="control-label ">
 				Salutation
 			</label><div class="controls "><input class="textinput textInput form-control" id="id_salutation" maxlength="255" name="salutation" type="text" value="Mr." /> </div></div><div id="div_id_instruments" class="form-group"><label for="id_instruments" class="control-label ">
-				Instruments
+				Instruments <code>3</code>
 			</label><div class="controls "><select multiple="multiple" class="selectmultiple form-control" id="id_instruments" name="instruments"><option value="59">Accordion</option><option value="30">Alto Sax</option><option value="68">Banjo</option><option value="67">Baritone Sax</option><option value="35" selected="selected">Bass</option><option value="37">Bassoon</option><option value="41">Cello</option><option value="33">Clarinet</option><option value="28">Composer</option><option value="61">Conductor</option><option value="66">DJ</option><option value="64">Dancer</option><option value="43">Drums</option><option value="47">Female Vocalist</option><option value="40">Flute</option><option value="53">French Horn</option><option value="39">Guitar</option><option value="57">Harp</option><option value="48">Jazz Orchestra</option><option value="69">Leader</option><option value="56">Lute</option><option value="65">MC</option><option value="46">Male Vocalist</option><option value="34">Oboe</option><option value="49">Orchestra</option><option value="38">Organ</option><option value="44">Percussion</option><option value="36">Piano</option><option value="63">Poet</option><option value="32">Soprano Sax</option><option value="50">String Quartet</option><option value="51">Tap Dancer</option><option value="31">Tenor Sax</option><option value="52">Trombone</option><option value="29">Trumpet</option><option value="42">Vibraphone</option><option value="55">Viola</option><option value="54">Violin</option><option value="45">Vocalist</option><option value="60">Whistle</option><option value="62">Writer</option></select><p id="hint_id_instruments" class="help-block">None Hold down "Control", or "Command" on a Mac, to select more than one.</p></div></div><div id="div_id_biography" class="form-group"><label for="id_biography" class="control-label ">
 				Biography
 			</label><div class="controls "><textarea class="textarea form-control" cols="40" id="id_biography" name="biography" rows="10">
@@ -28,7 +28,7 @@
 			</label><div class="controls ">
                     Currently: <a href="http://d3dombqstlgdhj.cloudfront.net/images/Okegwo_Ugonna.jpg">images/Okegwo_Ugonna.jpg</a><input id="photo-clear_id" name="photo-clear" type="checkbox" /> <label for="photo-clear_id">Clear</label><br />Change: <input class="clearablefileinput" id="id_photo" name="photo" type="file" /> </div></div>
 
-         <button type="submit" class="btn btn-primary">Continue<code>1</code></button>
+         <button type="submit" class="btn btn-primary">Finish<code>1</code></button>
     </form>
   
      
@@ -39,6 +39,8 @@
   <h1>Dev notes</h1>
   <Ul> 
     <li><code>1</code> - note this button label is different than the one on artist/edit template.</li>
+    <li><code>2</code> - this form should take them to (My Gigs, Past tab)</li>
+    <li><code>3</code> - this should be a selectize input</li>
   </Ul>
 </div>
 {% endblock content %}
