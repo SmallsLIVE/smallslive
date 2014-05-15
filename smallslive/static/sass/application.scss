@@ -384,6 +384,9 @@ form {
   .form-group label.txt-warning {
     color: $brand-warning;
   }
+  .formset_table {
+    margin-bottom: 0;
+  }
 }
 /* Name/value pair tables */
 table.nv tbody tr > td:first-child {
