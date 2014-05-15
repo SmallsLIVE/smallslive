@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
@@ -38,3 +39,9 @@ class ArtistDetailView(DetailView):
     context_object_name = 'artist'
 
 artist_detail = ArtistDetailView.as_view()
+
+
+def artist_instrument_ajax(request, pk):
+    instrument = Artist.objects.get(pk=pk).instruments.first()
+    instrument_id = getattr(instrument, 'id', "")
+    return HttpResponse(instrument_id)

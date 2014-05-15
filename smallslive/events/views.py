@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.utils.timezone import datetime, timedelta
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -7,6 +8,7 @@ from django.views.generic import TemplateView
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
 
+from artists.models import Artist
 from .forms import EventAddForm, GigPlayedInlineFormSet, GigPlayedInlineFormSetHelper
 from .models import Event
 from multimedia.models import Media

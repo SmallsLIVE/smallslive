@@ -347,12 +347,23 @@
 
 {% block extra_js %}
   <script>
+
+    var SITE_URL = "{{ request.META.HTTP_HOST }}";
     $(document).ready(function () {
 
       $artist_row = $(".formset_table tbody tr:last").clone(true);
 
       $(".formset_table select").selectize({
         create: false
+      });
+
+      // Dynamically sets the default instrument for an artist
+      $(document).on('change', '.artist_field', function(e) {
+        var $role_field = $(e.currentTarget).parent().next().find("select");
+        var value = $(e.currentTarget).val();
+        $.get("//" + SITE_URL + "/artists/" + value + "/instrument_ajax/", function(data) {
+          $role_field[0].selectize.setValue(data);
+        });
       });
 
       var $start = $('#id_start');
