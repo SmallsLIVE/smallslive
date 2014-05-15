@@ -87,8 +87,6 @@ class EventAddForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            'title',
-            'subtitle',
             Field('start', css_class='datepicker'),
             Field('end', css_class='datepicker'),
             FormActions(
@@ -98,6 +96,8 @@ class EventAddForm(forms.ModelForm):
                 css_class='form-group'
             ),
             Formset('artists', template='form_widgets/formset_layout.html'),
+            'title',
+            'subtitle',
             Div('photo', css_class='well'),
             'description',
             'link',
