@@ -20,15 +20,14 @@
       <form method="post" role="form" enctype="multipart/form-data">
           {% csrf_token %}
           {% crispy form %}
-          <button type="submit" class="btn btn-primary">Save profile</button>
       </form>
     </div>
-    <div class="col-sm-3">    
+    <div class="col-sm-3">
+      {% if event.photo %}
       <div class="well">
-        {% if event.photo %}
           <img src="{% thumbor_url event.photo.url|urlencode width=300 %}" class="img-responsive" />
-        {% endif %}
       </div>
+      {% endif %}
     </div>
   </div>
   <div class="dev">
