@@ -53,6 +53,7 @@ class GigPlayedInlineFormSet(InlineFormSet):
             form.fields['artist'].widget.attrs['class'] = "artist_field"
             form.fields['role'].empty_label = "Role"
             form.fields['role'].widget.attrs['class'] = "role_field"
+            form.fields['is_leader'].initial = True
             form.fields['sort_order'].initial = num
             form.fields['sort_order'].widget = forms.HiddenInput()
             form.fields['sort_order'].widget.attrs['class'] = "sort_order_field"
