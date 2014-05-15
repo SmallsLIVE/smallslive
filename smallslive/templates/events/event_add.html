@@ -361,7 +361,7 @@
     $start.on('dp.hide', function(ev) {
       if ($end.val() === "") {
         // auto set event end to 2 hours later
-        var end = moment($start.val()).add(2, 'hours').format("MM/DD/YYYY H:mm A");
+        var end = moment($start.val()).add(1, 'hours').format("MM/DD/YYYY H:mm A");
         console.log(end);
         $end.data("DateTimePicker").setDate(end);
       }
