@@ -1,18 +1,43 @@
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML, Button
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML, Button, LayoutObject, TEMPLATE_PACK, MultiField
 from django import forms
+from django.template import Context
+from django.template.loader import render_to_string
 from extra_views import InlineFormSet
 import floppyforms
 from .models import Event, GigPlayed
 
 
+class Formset(LayoutObject):
+    """
+    Layout object. It renders an entire formset, as though it were a Field.
+
+    Example::
+
+    Formset("attached_files_formset")
+    """
+
+    template = "%s/formset.html" % TEMPLATE_PACK
+
+    def __init__(self, formset_name_in_context, template=None):
+        self.formset_name_in_context = formset_name_in_context
+
+        # crispy_forms/layout.py:302 requires us to have a fields property
+        self.fields = []
+
+        # Overrides class variable with an instance level variable
+        if template:
+            self.template = template
+
+    def render(self, form, form_style, context, template_pack=TEMPLATE_PACK):
+        formset = context[self.formset_name_in_context]
+        return render_to_string(self.template, Context({'wrapper': self,
+            'formset': formset}))
+
+
 class EventStatusWidget(floppyforms.RadioSelect):
     template_name = 'form_widgets/event_status.html'
-
-
-class SlotsTimeWidget(floppyforms.RadioSelect):
-    template_name = 'form_widgets/slots_time.html'
 
 
 class GigPlayedInlineFormSet(InlineFormSet):
@@ -24,6 +49,8 @@ class GigPlayedInlineFormSet(InlineFormSet):
     def construct_formset(self):
         formset = super(GigPlayedInlineFormSet, self).construct_formset()
         for num, form in enumerate(formset):
+            form.fields['artist'].empty_label = "Artist"
+            form.fields['role'].empty_label = "Role"
             form.fields['sort_order'].initial = num
             form.fields['sort_order'].widget = forms.HiddenInput()
             form.fields['sort_order'].widget.attrs['class'] = "sort_order_field"
@@ -58,6 +85,8 @@ class EventAddForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_tag = False
         self.helper.layout = Layout(
+            'title',
+            'subtitle',
             Field('start', css_class='datepicker'),
             Field('end', css_class='datepicker'),
             FormActions(
@@ -66,8 +95,7 @@ class EventAddForm(forms.ModelForm):
                 Button('1slot', '1:00-3:00 AM', css_class='btn-success slot', data_time='1:00-3:00'),
                 css_class='form-group'
             ),
-            'title',
-            'subtitle',
+            Formset('artists', template='form_widgets/formset_layout.html'),
             Div('photo', css_class='well'),
             'description',
             'link',

@@ -365,6 +365,10 @@ form {
   .form-group label {
     color: $gray;
   }
+
+  .formset_table {
+    margin-bottom: 0;
+  }
 }
 /* Name/value pair tables */
 table.nv tbody tr > td:first-child {

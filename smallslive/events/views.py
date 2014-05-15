@@ -41,7 +41,7 @@ class EventAddView(NamedFormsetsMixin, CreateWithInlinesView):
 
     def get_context_data(self, **kwargs):
         context = super(EventAddView, self).get_context_data(**kwargs)
-        context['inline_helper'] = GigPlayedInlineFormSetHelper()
+        context['artists'].helper = GigPlayedInlineFormSetHelper()
         return context
 
 event_add = EventAddView.as_view()

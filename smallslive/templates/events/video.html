@@ -27,7 +27,7 @@ This page is loaded instead of event_detail if the event is in the past or tapin
       {% endif %}
     </div> 
     <div class="row">
-    {% for artist in event.performers.all %}     
+    {% for artist in event.performers.all %}
       <div class="col-sm-6 col-md-4 sideman-block">
         <div class="thumbnail">
           <a href="{% url "artist_detail" pk=artist.id %}">
