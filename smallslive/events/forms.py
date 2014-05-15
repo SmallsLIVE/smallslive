@@ -1,9 +1,7 @@
-from datetime import timedelta
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML, Button
 from django import forms
-from django.utils.timezone import datetime
 from extra_views import InlineFormSet
 import floppyforms
 from .models import Event, GigPlayed
@@ -20,12 +18,15 @@ class SlotsTimeWidget(floppyforms.RadioSelect):
 class GigPlayedInlineFormSet(InlineFormSet):
     model = GigPlayed
     fields = ('artist', 'role', 'is_leader', 'sort_order')
-    extra = 3
+    extra = 1
+    can_delete = False
 
     def construct_formset(self):
         formset = super(GigPlayedInlineFormSet, self).construct_formset()
         for num, form in enumerate(formset):
             form.fields['sort_order'].initial = num
+            form.fields['sort_order'].widget = forms.HiddenInput()
+            form.fields['sort_order'].widget.attrs['class'] = "sort_order_field"
         return formset
 
 
@@ -33,18 +34,9 @@ class GigPlayedInlineFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super(GigPlayedInlineFormSetHelper, self).__init__(*args, **kwargs)
         self.form_tag = False
-        self.form_class = 'form-inline'
-        #self.field_template = 'bootstrap3/layout/inline_field.html'
-        self.layout = Layout(
-            Div(
-                Field('artist', css_class="selectize", placeholder="ASDBV"),
-                'role',
-                'is_leader',
-                Field('sort_order', type='hidden'),
-                HTML('<span class="glyphicon glyphicon-move"></span>'),
-                css_class='artist_inline'
-            )
-        )
+        self.field_template = 'bootstrap3/layout/inline_field.html'
+        self.template = 'form_widgets/table_inline_formset.html'
+        self.form_show_labels = False
 
 
 class EventAddForm(forms.ModelForm):
@@ -55,7 +47,6 @@ class EventAddForm(forms.ModelForm):
         model = Event
         fields = ('start', 'end', 'title', 'subtitle', 'photo', 'description', 'link', 'state')
         widgets = {
-            #'performers': forms.SelectMultiple,
             'state': EventStatusWidget,
             'link': floppyforms.URLInput
         }

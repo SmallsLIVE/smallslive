@@ -14,8 +14,8 @@
     <div class="col-sm-7">
     <form method="post" enctype="multipart/form-data">
       <div class="sortable">
-      {% crispy artists inline_helper %}
-        </div>
+        {% crispy artists inline_helper %}
+      </div>
       {% crispy form %}
     </form>
     <hr/>
@@ -368,10 +368,16 @@
       }
     });
 
-    $('.sortable').sortable({
+    $(document).ready(function(){
+    $('td').each(function(){
+        $(this).css('width', $(this).width() +'px');
+    });
+});
+
+    $('.sortable table tbody').sortable({
       // update the sort_order field based on the order in the DOM
       update: function (event, ui) {
-        $(".artist_inline input[type=hidden]").each(function (index) {
+        $(".sort_order_field").each(function (index) {
           $(this).val(index);
         })
       }
