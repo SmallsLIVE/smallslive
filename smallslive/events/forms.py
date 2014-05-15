@@ -1,30 +1,59 @@
-from datetime import timedelta
+from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML, Button, LayoutObject, TEMPLATE_PACK, MultiField
 from django import forms
-from django.utils.timezone import datetime
+from django.template import Context
+from django.template.loader import render_to_string
 from extra_views import InlineFormSet
 import floppyforms
 from .models import Event, GigPlayed
+
+
+class Formset(LayoutObject):
+    """
+    Layout object. It renders an entire formset, as though it were a Field.
+
+    Example::
+
+    Formset("attached_files_formset")
+    """
+
+    template = "%s/formset.html" % TEMPLATE_PACK
+
+    def __init__(self, formset_name_in_context, template=None):
+        self.formset_name_in_context = formset_name_in_context
+
+        # crispy_forms/layout.py:302 requires us to have a fields property
+        self.fields = []
+
+        # Overrides class variable with an instance level variable
+        if template:
+            self.template = template
+
+    def render(self, form, form_style, context, template_pack=TEMPLATE_PACK):
+        formset = context[self.formset_name_in_context]
+        return render_to_string(self.template, Context({'wrapper': self,
+            'formset': formset}))
 
 
 class EventStatusWidget(floppyforms.RadioSelect):
     template_name = 'form_widgets/event_status.html'
 
 
-class SlotsTimeWidget(floppyforms.RadioSelect):
-    template_name = 'form_widgets/slots_time.html'
-
-
 class GigPlayedInlineFormSet(InlineFormSet):
     model = GigPlayed
     fields = ('artist', 'role', 'is_leader', 'sort_order')
-    extra = 3
+    extra = 1
+    can_delete = False
 
     def construct_formset(self):
         formset = super(GigPlayedInlineFormSet, self).construct_formset()
         for num, form in enumerate(formset):
+            form.fields['artist'].empty_label = "Artist"
+            form.fields['role'].empty_label = "Role"
             form.fields['sort_order'].initial = num
+            form.fields['sort_order'].widget = forms.HiddenInput()
+            form.fields['sort_order'].widget.attrs['class'] = "sort_order_field"
         return formset
 
 
@@ -32,18 +61,9 @@ class GigPlayedInlineFormSetHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super(GigPlayedInlineFormSetHelper, self).__init__(*args, **kwargs)
         self.form_tag = False
-        self.form_class = 'form-inline'
-        #self.field_template = 'bootstrap3/layout/inline_field.html'
-        self.layout = Layout(
-            Div(
-                Field('artist', css_class="selectize", placeholder="ASDBV"),
-                'role',
-                'is_leader',
-                Field('sort_order', type='hidden'),
-                HTML('<span class="glyphicon glyphicon-move"></span>'),
-                css_class='artist_inline'
-            )
-        )
+        self.field_template = 'bootstrap3/layout/inline_field.html'
+        self.template = 'form_widgets/table_inline_formset.html'
+        self.form_show_labels = False
 
 
 class EventAddForm(forms.ModelForm):
@@ -54,7 +74,6 @@ class EventAddForm(forms.ModelForm):
         model = Event
         fields = ('start', 'end', 'title', 'subtitle', 'photo', 'description', 'link', 'state')
         widgets = {
-            #'performers': forms.SelectMultiple,
             'state': EventStatusWidget,
             'link': floppyforms.URLInput
         }
@@ -66,10 +85,17 @@ class EventAddForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Field('start', css_class='datepicker'),
-            Field('end', css_class='datepicker'),
             'title',
             'subtitle',
+            Field('start', css_class='datepicker'),
+            Field('end', css_class='datepicker'),
+            FormActions(
+                Button('9slot', '9:00-11:00 PM', css_class='btn-success slot', data_time='21:00-23:00'),
+                Button('11slot', '11:00-1:00 PM', css_class='btn-success slot', data_time='23:00-1:00'),
+                Button('1slot', '1:00-3:00 AM', css_class='btn-success slot', data_time='1:00-3:00'),
+                css_class='form-group'
+            ),
+            Formset('artists', template='form_widgets/formset_layout.html'),
             Div('photo', css_class='well'),
             'description',
             'link',

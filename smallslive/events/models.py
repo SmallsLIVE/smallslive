@@ -86,4 +86,4 @@ class GigPlayed(models.Model):
     sort_order = models.CharField(max_length=30, blank=True)
 
     class Meta:
-        ordering = ['artist', 'event', 'is_leader']
+        ordering = ['event', 'sort_order', 'is_leader']

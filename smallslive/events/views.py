@@ -5,7 +5,7 @@ from django.views.generic.edit import UpdateView
 from django.views.generic import TemplateView
 
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
-from extra_views import CreateWithInlinesView, NamedFormsetsMixin
+from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
 
 from .forms import EventAddForm, GigPlayedInlineFormSet, GigPlayedInlineFormSetHelper
 from .models import Event
@@ -41,7 +41,7 @@ class EventAddView(NamedFormsetsMixin, CreateWithInlinesView):
 
     def get_context_data(self, **kwargs):
         context = super(EventAddView, self).get_context_data(**kwargs)
-        context['inline_helper'] = GigPlayedInlineFormSetHelper()
+        context['artists'].helper = GigPlayedInlineFormSetHelper()
         return context
 
 event_add = EventAddView.as_view()
@@ -61,10 +61,17 @@ class EventDetailView(DetailView):
 event_detail = EventDetailView.as_view()
 
 
-class EventEditView(LoginRequiredMixin, UpdateView):
+class EventEditView(LoginRequiredMixin, NamedFormsetsMixin, UpdateWithInlinesView):
     model = Event
     form_class = EventAddForm
     template_name = 'events/event_edit.html'
+    inlines = [GigPlayedInlineFormSet]
+    inlines_names = ['artists']
+
+    def get_context_data(self, **kwargs):
+        context = super(EventEditView, self).get_context_data(**kwargs)
+        context['artists'].helper = GigPlayedInlineFormSetHelper()
+        return context
 
     # def test_func(self, user):
     #     """
