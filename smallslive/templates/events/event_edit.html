@@ -1,5 +1,5 @@
 {% extends "base_admin.html" %}
-{% load crispy_forms_tags thumbor_tags %}
+{% load crispy_forms_tags static thumbor_tags %}
 
 {% block title %}Edit gig {{ event.title }} : {{ event.subtitle }} {% endblock %}
 
@@ -37,3 +37,13 @@
     </ul>
   </div>
 {% endblock content %}
+
+{% block extra_js %}
+  <script src="{% static "js/event_form.js" %}"></script>
+  <script>
+    $(document).ready(function() {
+      EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
+      EventForm.init();
+    });
+  </script>
+{% endblock extra_js %}

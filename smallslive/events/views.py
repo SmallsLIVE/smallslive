@@ -9,7 +9,7 @@ from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
 
 from artists.models import Artist
-from .forms import EventAddForm, GigPlayedInlineFormSet, GigPlayedInlineFormSetHelper
+from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset
 from .models import Event
 from multimedia.models import Media
 
@@ -38,7 +38,7 @@ class EventAddView(NamedFormsetsMixin, CreateWithInlinesView):
     template_name = 'events/event_add.html'
     model = Event
     form_class = EventAddForm
-    inlines = [GigPlayedInlineFormSet]
+    inlines = [GigPlayedAddInlineFormSet]
     inlines_names = ['artists']
 
     def get_context_data(self, **kwargs):
@@ -67,13 +67,14 @@ class EventEditView(LoginRequiredMixin, NamedFormsetsMixin, UpdateWithInlinesVie
     model = Event
     form_class = EventAddForm
     template_name = 'events/event_edit.html'
-    inlines = [GigPlayedInlineFormSet]
+    inlines = [GigPlayedEditInlineFormset]
     inlines_names = ['artists']
 
     def get_context_data(self, **kwargs):
         context = super(EventEditView, self).get_context_data(**kwargs)
         context['artists'].helper = GigPlayedInlineFormSetHelper()
         return context
+
 
     # def test_func(self, user):
     #     """

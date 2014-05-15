@@ -40,14 +40,14 @@ class EventStatusWidget(floppyforms.RadioSelect):
     template_name = 'form_widgets/event_status.html'
 
 
-class GigPlayedInlineFormSet(InlineFormSet):
+class GigPlayedAddInlineFormSet(InlineFormSet):
     model = GigPlayed
     fields = ('artist', 'role', 'is_leader', 'sort_order')
     extra = 1
     can_delete = False
 
     def construct_formset(self):
-        formset = super(GigPlayedInlineFormSet, self).construct_formset()
+        formset = super(GigPlayedAddInlineFormSet, self).construct_formset()
         for num, form in enumerate(formset):
             form.fields['artist'].empty_label = "Artist"
             form.fields['artist'].widget.attrs['class'] = "artist_field"
@@ -58,6 +58,10 @@ class GigPlayedInlineFormSet(InlineFormSet):
             form.fields['sort_order'].widget = forms.HiddenInput()
             form.fields['sort_order'].widget.attrs['class'] = "sort_order_field"
         return formset
+
+
+class GigPlayedEditInlineFormset(GigPlayedAddInlineFormSet):
+    extra = 0
 
 
 class GigPlayedInlineFormSetHelper(FormHelper):
