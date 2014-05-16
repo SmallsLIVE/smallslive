@@ -82,7 +82,7 @@ EventForm = {
                 start = moment(times[0], "H:mm");
             }
             else {
-                var split_start_time = times[0].split(':')
+                var split_start_time = times[0].split(':');
                 start = moment($start.val(), date_format);
                 start.hour(parseInt(split_start_time[0]));
                 start.minutes(parseInt(split_start_time[1]));
@@ -103,6 +103,21 @@ EventForm = {
             }
 
             $end.data("DateTimePicker").setDate(end.format(date_format));
+        });
+
+        $("#id_title").focus(function() {
+            if(! $(this).val()) {
+                var title = $(".artist_field div.item").first().text();
+                var remaining_artists = $(".artist_field div.item").not(":first");
+                if (remaining_artists.length > 0) {
+                    title += " w/ ";
+                    remaining_artists.not(':last').each(function() {
+                        title += $(this).text() + ", ";
+                    });
+                    title += remaining_artists.last().text();
+                }
+                $(this).val(title);
+            }
         });
     }
 
