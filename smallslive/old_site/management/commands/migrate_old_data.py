@@ -5,7 +5,7 @@ from django.core.management.base import NoArgsCommand
 from artists.models import Artist, Instrument
 from events.models import Event, EventType, GigPlayed
 from multimedia.models import MediaType, Media
-from old_site.models import Joinmediaevent, Joinmediaperson,Joinpersonevent, OldEvent,\
+from old_site.models import Joinmediaevent, Joinmediaperson, Joinpersonevent, OldEvent,\
     OldEventTypes, OldPerson, OldPersonType, OldMedia, OldMediaType
 
 
@@ -49,9 +49,9 @@ class Command(NoArgsCommand):
 
             # Regular fields
             new_artist.biography = self.clean_up_html(old_artist.biography)
-            new_artist.first_name = old_artist.firstname
-            new_artist.last_name = old_artist.lastname
-            new_artist.salutation = old_artist.salutation
+            new_artist.first_name = old_artist.firstname.strip()
+            new_artist.last_name = old_artist.lastname.strip()
+            new_artist.salutation = old_artist.salutation.strip()
             new_artist.website = old_artist.website or ""
 
             # Foreign keys
@@ -87,14 +87,14 @@ class Command(NoArgsCommand):
 
             # Regular fields
             new_event.active = old_event.active
-            new_event.date_freeform = old_event.datefreeform
+            new_event.date_freeform = old_event.datefreeform.strip()
             new_event.description = old_event.description
-            new_event.email = old_event.email
+            new_event.email = old_event.email.strip()
             new_event.end = old_event.endday
-            new_event.link = old_event.link
+            new_event.link = old_event.link.strip()
             new_event.start = old_event.startday
-            new_event.subtitle = old_event.subtitle
-            new_event.title = old_event.title
+            new_event.subtitle = old_event.subtitle.strip()
+            new_event.title = old_event.title.strip()
 
             # Foreign keys
             event_type, event_type_created = EventType.objects.get_or_create(
