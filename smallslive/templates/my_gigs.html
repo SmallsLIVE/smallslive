@@ -69,22 +69,76 @@
             <p><strong>14/{{ past_events|length }}</strong> recordings you play on are not available to listeners yet as you haven't approved the recordings for release.</p>
             <p><a href="" class="btn btn-primary">Approve all 213 recordings now</a> or approve them 1 by 1 below:</p>
           </div>  
-          <p><span class="glyphicon glyphicon-flag"></span> Looking for your earnings and play-count stats on your recordings? Visit <a href="/static_page/dashboard-musician/">My $ Dashboard</a></p>
+          <p class="pull-right"><span class="glyphicon glyphicon-flag"></span> Looking for stats? Visit <a href="/static_page/dashboard-musician/">My $ Dashboard</a></p>
+          <div class="btn-group btn-group-sm">
+  <button type="button" class="btn btn-default active">Most Requested</button>
+  <button type="button" class="btn btn-default">By date, newest first</button>
+</div>
+ 
           <table class="table artist-past-gigs-media">
             <thead>
               <tr>
-                <th  >Gig Date</th>
+                <th  class="event_date" >Gig Date</th>
                 <th  >Video</th>
                 <th>Audio</th>
                 <th>Description</th>
                 <th>Recording Approved/In Archive?<code>2</code></th>
-    
+                <th>Fan requests</th>
                 <th class="downloads">Downloads</th>
               </tr>
             </thead>
             <tbody> 
+              <!-- erase these once dev is complete: -->
               <tr>  
-                <td>[date here]</td>
+                <td class="event_date">May 12, 2014</td>
+                <td class="text-muted">Coming soon</td>
+                <td class="text-muted">Coming soon</td>
+                <td> 
+                   <a href="{ past_event.get_absolute_url }">title</a><br />
+                    subtitle <span class="text-muted">(66 mins.)</span>         
+                   <div><a href="#">Edit description</a></div>
+                </td>               
+                <td class="artist-clearance-breakdown"><code>1</code> 
+                  <p class="text-danger clearance-summary">2/3 artists (including you) haven't approved this recording yet. <a href="">Details</a></p>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Artist</th>
+                        <th>Approved?</th> 
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                          <td><strong>Me</strong></td>
+                        {% if request.GET.approved %}
+                          <td>
+                            <span class="text-success"> <span class="glyphicon glyphicon-ok"></span> Yes</span>
+                          </td>
+                        {% else %}
+                          <form action="#" method="get">
+                          <td><code>4</code>  
+                            <select name="approved"><option value="1" class="approved">I approve</option><option value="0" class="not-approved">I do not approve</option></select>
+                            <button class="btn-primary btn-xs">Save</button>
+                          </td>
+                          </form>
+                        {% endif %}
+                      </tr>
+                      <tr>
+                        <td><a href="mailto:jon@grimes.com?subject=Clearing our Smalls recording from Jan 14, 2011&body=Hi Jon,%2C%0D%0A%0D%0AI would love to get this recording of us cleared for use on Smalls so we can all make money on it when users listen to it: %2C%0D%0A%0D%0A[[insert link]]%2C%0D%0A%0D%0AWe share a copyright on the recording and all of us on the gig have to approve the recording before it can go into the SmallsLIVE archive for listeners. %2C%0D%0A%0D%0AThanks, {{ user.first_name }}">Alan Smith (gtr)</a></td>
+                       <td class="text-warning">no response</td>
+                      </tr>
+                      <tr>
+                        <td><a href="mailto:jen@olans.com?subject=Clearing our Smalls recording from Jan 14, 2011&body=Hi Jen,%2C%0D%0A%0D%0AI would love to get this recording cleared for use on Smalls so we can all make money on it when users listen to it:%2C%0D%0A%0D%0A[[insert link]]%2C%0D%0A%0D%0AAny particular reason you rejected it? We can edit the recording down if there are specific parts you don't want public. Let me know. %2C%0D%0A%0D%0AThanks, {{ user.first_name }}">Jen Olans (bs)</a></td>
+                       <td class="text-danger"><span class="glyphicon glyphicon-remove"></span> No </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+                <td class="num">1</td>
+                <td class="downloads text-muted">Coming soon</td>
+              </tr>
+              <tr>  
+                <td class="event_date">May 12, 2014</td>
                 <td>[photo]</td>
                 <td> 
                     <a  href="/events/8323/" class=" btn btn-primary" role="button" title="Play audio { past_event.displaytitle }"><span class="glyphicon glyphicon-play"></span></a>
@@ -130,14 +184,17 @@
                     </tbody>
                   </table>
                 </td>
+                <td class="num">2</td>
                 <td class="downloads">
                   <a href=""><span class="glyphicon glyphicon-download"></span> Video</a> 452MB MP4<br />
                   <a href=""><span class="glyphicon glyphicon-download"></span> Audio</a> 12MB AIFF
                 </td>
               </tr>
+              <!-- end erase section -->
+              
               {% for past_event in past_events %}
               <tr> 
-                <td><code>6</code>{{ past_event.start }}</td>
+                <td class="event_date"><code>6</code>May 12, 2014</td>
                 <td>{% if past_event.photo.url != "" %}
             <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" class="img-responsive" />
           {% endif %}</td>
@@ -153,7 +210,7 @@
                   <div><a href="{% url "event_edit" past_event.id %}">Edit description</a></div>
                 </td>
                 <td class="text-danger">[see footer for possible statuses]</td>
-             
+                <td class="num">3</td>
                 <td class="downloads">
                   <a href=""><span class="glyphicon glyphicon-download"></span> Video</a> 452MB MP4<br />
                   <a href=""><span class="glyphicon glyphicon-download"></span> Audio</a> 12MB AIFF

@@ -4,15 +4,12 @@
     <ul class="nav navbar-nav">
       {% if user.is_superuser %}  
         <li><a href="/static_page/dashboard-admin">Calendar</a></li> 
-        <li><a class="longname" href="/">Licensing</a></li>
         <li class="divider" role="presentation"></li>
       {% endif %}
       {% if user.is_artist %}  
-        <li><a href="/static_page/dashboard-musician"><span class="badge pull-right">5</span> My $ Dashboard </a></li>      
-        <li >
-          <a href="{% url "my_gigs" %}" >My Gigs &amp; Recordings</a> 
-      </li>    
-      <li><a href="#">Community $ Dashboard</a></li>  
+        <li><a href="/static_page/dashboard-musician"> <span class="badge pull-right">5</span> $ Dashboard </a></li>      
+        <li><a href="{% url "my_gigs" %}" >Gigs &amp; Recordings</a> </li>    
+        <li><a href="#">Community $ Dashboard</a></li> 
       {% endif %}           
     </ul>  
     {% if user.is_superuser %}  

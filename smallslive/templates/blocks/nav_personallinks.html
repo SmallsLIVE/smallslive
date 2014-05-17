@@ -1,13 +1,14 @@
 <ul class="nav navbar-nav navbar-right">
   {% if user.is_authenticated %}
   <li class="dropdown">
-    <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="longname">{% if user.first_name %} {{ user.first_name }} {% else %} Account {% endif %}<b class="caret"></b></a>
+    <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="longname">{% if user.first_name %} {{ user.first_name }} {% else %}My Account {% endif %}<b class="caret"></b></a>
     <ul class="dropdown-menu"> 
       {% if user.is_artist %}
-      <li><a href="{% url "artist_edit" pk=user.artist.id %}">Edit artist profile</a></li>
+      <li><a href="/static_page/dashboard-musician">Artist Website </a></li>      
+      <li class="divider"></li>
       {% endif %}
-      <li><a href="/static_page/my_subscription">Subscription info</a></li>         
-      <li><a href="/static_page/my_account">Profile, email, password</a></li>
+      <li><a href="/static_page/my_subscription">Change subscription</a></li>         
+      <li><a href="/static_page/my_account">Change email, password</a></li>
       <li><a href="{% url "account_logout" %}">Log Out</a></li>
     </ul>
   </li>  
