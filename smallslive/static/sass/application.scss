@@ -203,7 +203,7 @@ body.search .facets {
     .row:not(.days-of-week) .day {
       height: 15em; 
     }  
-  }
+  } 
 }
 /*=Event/Media Page*/
 .sideman-block .thumbnail {
@@ -212,7 +212,7 @@ body.search .facets {
 }
 /*=Admin screens*/
 table.artist-past-gigs-media {
-  .artist-clearance-breakdown table tr td:first-child {
+  .event_page, .artist-clearance-breakdown table tr td:first-child {
     white-space: nowrap;
   }
   td.downloads {
