@@ -1,8 +1,8 @@
-from django.http import HttpResponse
+import json
+from django.conf import settings
 from django.utils.timezone import datetime, timedelta
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import UpdateView
 from django.views.generic import TemplateView
 
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
@@ -44,6 +44,7 @@ class EventAddView(NamedFormsetsMixin, CreateWithInlinesView):
     def get_context_data(self, **kwargs):
         context = super(EventAddView, self).get_context_data(**kwargs)
         context['artists'].helper = GigPlayedInlineFormSetHelper()
+        context['show_times'] = json.dumps(settings.SHOW_TIMES)
         return context
 
 event_add = EventAddView.as_view()
@@ -73,6 +74,7 @@ class EventEditView(LoginRequiredMixin, NamedFormsetsMixin, UpdateWithInlinesVie
     def get_context_data(self, **kwargs):
         context = super(EventEditView, self).get_context_data(**kwargs)
         context['artists'].helper = GigPlayedInlineFormSetHelper()
+        context['show_times'] = json.dumps(settings.SHOW_TIMES)
         return context
 
 

@@ -24,6 +24,22 @@ EventForm = {
             create: false
         });
     },
+    addSlotButtons: function(){
+        var buttons = [];
+        var dayOfTheWeekToday = moment().isoWeekday();
+        var todaysSchedule = show_times[dayOfTheWeekToday];
+        $.each(todaysSchedule, function(idx, val) {
+            var button = $("<input>", {
+                type: "button",
+                class: "btn btn-success slot",
+                "data-time": val[0],
+                title: val[1],
+                value: val[2]
+            });
+            buttons.push(button, " ");
+        });
+        $('.slot-buttons').append(buttons);
+    },
     init: function () {
         $artist_row = $(".formset_table tbody tr:last").clone(true);
 
@@ -69,6 +85,8 @@ EventForm = {
                 })
             }
         });
+
+        this.addSlotButtons();
 
         $('#add_more').click(function () {
             EventForm.cloneMore('.formset_table tbody tr:last', 'artists_gig_info');

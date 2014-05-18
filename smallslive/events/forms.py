@@ -95,10 +95,7 @@ class EventAddForm(forms.ModelForm):
             Field('start', css_class='datepicker'),
             Field('end', css_class='datepicker'),
             FormActions(
-                Button('9slot', '9:00-11:00 PM', css_class='btn-success slot', data_time='21:00-23:00'),
-                Button('11slot', '11:00-1:00 PM', css_class='btn-success slot', data_time='23:00-1:00'),
-                Button('1slot', '1:00-3:00 AM', css_class='btn-success slot', data_time='1:00-3:00'),
-                css_class='form-group'
+                css_class='form-group slot-buttons'
             ),
             Formset('artists', template='form_widgets/formset_layout.html'),
             'title',
