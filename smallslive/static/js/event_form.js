@@ -75,6 +75,16 @@ EventForm = {
             EventForm.fixTableWidths('.formset_table');
         });
 
+        $(document).on("click", ".artist_remove", function (e) {
+            var $total = $('#id_artists_gig_info-TOTAL_FORMS');
+            var total = $total.val();
+            $(this).parents('tr').remove();
+            total--;
+            $total.val(total);
+            EventForm.fixTableWidths('.formset_table');
+            return false;
+        });
+
         $('.slot').click(function () {
             var times = $(this).data('time').split('-');
             var start, end;

@@ -20,13 +20,18 @@
           {% else %}
               <tr class="table_row">
                   {% for field in formset.forms.0 %}
-                      {% if field.label and not field.is_hidden %}
-                          <th for="{{ field.auto_id }}" class="control-label {% if field.field.required %}requiredField{% endif %}">
+                      {% if field.label and field|is_checkbox %}
+                          <th for="{{ field.auto_id }}" class="col-md-2 control-label {% if field.field.required %}requiredField{% endif %}">
+                              {{ field.label|safe }}{% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
+                          </th>
+                      {% elif field.label and not field.is_hidden %}
+                          <th for="{{ field.auto_id }}" class="col-md-4 control-label {% if field.field.required %}requiredField{% endif %}">
                               {{ field.label|safe }}{% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
                           </th>
                       {% endif %}
                   {% endfor %}
-                  <th>Order</th>
+                  <th class="col-md-1">Order</th>
+                  <th class="col-md-1">Remove</th>
               </tr>
           {% endif %}
         </thead>
@@ -42,6 +47,7 @@
                         {% include 'form_widgets/table_simple_field.html' with tag="td" form_show_labels=False %}
                     {% endfor %}
                     <td><span class="glyphicon glyphicon-move"></span></td>
+                    <td><a href="" class="artist_remove"><span class="glyphicon glyphicon-remove"></span></a></td>
                 </tr>
             {% endfor %}
         </tbody>
