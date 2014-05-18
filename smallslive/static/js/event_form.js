@@ -97,7 +97,6 @@ EventForm = {
                 start.hour(parseInt(split_start_time[0]));
                 start.minutes(parseInt(split_start_time[1]));
             }
-            $start.data("DateTimePicker").setDate(start.format(date_format));
 
             if (!$end.val()) {
                 end = moment(times[1], "H:mm");
@@ -108,10 +107,17 @@ EventForm = {
                 end.hour(parseInt(split_end_time[0]));
                 end.minutes(parseInt(split_end_time[1]));
             }
-            if (start.isAfter(end)) {
+
+            // if both start and end are early in the morning, add 1 day to the start and end date,
+            // otherwise, if only the end is after midnight, add 1 day to the end
+            if (start.hour() < 6 && end.hour() < 6) {
+                start.add('days', 1);
                 end.add('days', 1);
             }
-
+            else if (start.isAfter(end)) {
+                end.add('days', 1);
+            }
+            $start.data("DateTimePicker").setDate(start.format(date_format));
             $end.data("DateTimePicker").setDate(end.format(date_format));
         });
 
