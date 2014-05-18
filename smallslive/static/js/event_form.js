@@ -24,10 +24,11 @@ EventForm = {
             create: false
         });
     },
-    addSlotButtons: function(){
+    addSlotButtons: function(dayOfTheWeek){
+        $slotButtons = $('.slot-buttons');
+        $slotButtons.html("");
         var buttons = [];
-        var dayOfTheWeekToday = moment().isoWeekday();
-        var todaysSchedule = show_times[dayOfTheWeekToday];
+        var todaysSchedule = show_times[dayOfTheWeek];
         $.each(todaysSchedule, function(idx, val) {
             var button = $("<input>", {
                 type: "button",
@@ -38,7 +39,7 @@ EventForm = {
             });
             buttons.push(button, " ");
         });
-        $('.slot-buttons').append(buttons);
+        $slotButtons.append(buttons);
     },
     init: function () {
         $artist_row = $(".formset_table tbody tr:last").clone(true);
@@ -73,6 +74,7 @@ EventForm = {
             // auto set event end to 1 hour later
             var end = moment($start.val()).add(1, 'hours').format(date_format);
             $end.data("DateTimePicker").setDate(end);
+            EventForm.addSlotButtons(moment($start.val()).isoWeekday());
         });
         this.fixTableWidths('.formset_table');
 
@@ -86,7 +88,7 @@ EventForm = {
             }
         });
 
-        this.addSlotButtons();
+        this.addSlotButtons(moment().isoWeekday());
 
         $('#add_more').click(function () {
             EventForm.cloneMore('.formset_table tbody tr:last', 'artists_gig_info');
@@ -103,7 +105,7 @@ EventForm = {
             return false;
         });
 
-        $('.slot').click(function () {
+        $('.slot-buttons').on("click", ".slot", function () {
             var times = $(this).data('time').split('-');
             var start, end;
             if (!$start.val()) {
