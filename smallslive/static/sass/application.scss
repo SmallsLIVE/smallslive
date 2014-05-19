@@ -223,15 +223,7 @@ table.artist-past-gigs-media {
 }
 /*=Signup screens*/
 form.f-trial-signup {
-  margin-top: 24px;
-  h4 {
-    font-size: 12px;
-    text-transform: uppercase;
-    color: #aaaaaa; 
-    margin-bottom: 8px;
-    margin-top:24px;
-  }
-  
+  margin-top: 24px; 
   @media all and (min-width : $screen-sm-min) {  
     div.form-group {
       margin-bottom: 22px; 
@@ -239,6 +231,10 @@ form.f-trial-signup {
     #id_exp_year {
       position: relative;
       top:26px;
+    }
+    #div_id_subscribe {
+      margin-top: -10px;
+      margin-bottom: 10px;
     }
   }
   @media all and (min-width : $screen-md-min) {  
@@ -249,6 +245,10 @@ form.f-trial-signup {
       padding-right: 2px !important;
       padding-left: 2px !important;
     }
+    #div_id_subscribe {
+      margin-top: -20px;
+      margin-bottom: 20px;
+    }    
   }
   p.accepted-payments {
   height: 29px;
@@ -375,7 +375,7 @@ form {
   .form-control:focus {    
     box-shadow: none;
   }
-  .form-group label {
+  .form-group label[class=''] {
     color: $gray;
   }
   .form-group label.txt-success {

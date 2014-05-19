@@ -28,6 +28,9 @@
         <div class="controls ">
           <input type="text" placeholder="" name="subscriber_email" value="" id="id_subscriber_email" class="form-control">
         </div>
+      </div>  
+      <div class="checkbox" id="div_id_subscribe">
+        <label class="text-muted"><input type="checkbox" value="1" checked> Join SmallsLIVE Mailing List</label>      
       </div> 
       <div class="form-group" id="div_id_password">
         <label class="control-label " for="div_id_password">Choose a password:</label>
@@ -36,7 +39,6 @@
         </div>
         <p class="help-block">8 characters minimum. Include at least 1 number and 1 special character.
       </div> 
-      <h4>Credit Card Info</h4>
       <div class="form-group" id="div_id_name">
         <label class="control-label" for="id_name">Name on Credit Card (be exact!):</label>
         <div class="controls ">
@@ -47,30 +49,24 @@
       <div class="form-group" id="div_id_CC">
         <label class="control-label" for="id_CC">Credit Card Number:</label>
         <div class="controls ">
-          <input type="text" placeholder="" name="name" value="" id="id_CC" class="form-control">
+          <input type="number" placeholder="" name="name" value="" id="id_CC" class="form-control">
         </div>
         <p class="help-block accepted-payments"><img src="{% static 'image/credit_card_sprite_small34x22.png' %}" alt="ACcepted payment methods are: {list}"></p>
       </div>
       <div class="row CC-expiration-info">
         <div class="col-sm-4">
           <div class="form-group" id="div_id_l_name">
-            <label class="control-label " for="id_exp_month">Expiration Date:</label>
+            <label class="control-label " for="id_exp_month">Expiration Month:</label>
             <div class="controls ">
-              <select class="form-control" name="exp_month" id="id_exp_month">
-                <option>Jan 01</option>
-                <option>Feb 02</option>
-              </select>
+              <input type="number" placeholder="mm" class="form-control" name="exp_month" id="id_exp_month">
             </div>
           </div> 
         </div>
         <div class="col-sm-4">
           <div class="form-group" id="div_id_exp_year">
-            <label class="control-label sr-only" for="id_exp_year">Year:</label>
+            <label class="control-label sr-only" for="id_exp_year">Expiration Year:</label>
             <div class="controls ">
-              <select class="form-control" name="exp_year" id="id_exp_year">
-                <option>2015</option>
-                <option>2014</option>
-              </select>
+              <input type="number" placeholder="yy" class="form-control" name="exp_year" id="id_exp_year" size="2">
             </div>
           </div> 
         </div>
@@ -78,7 +74,7 @@
           <div class="form-group" id="div_id_CVV">
             <label class="control-label " for="id_CVV">Security Code/CVV:</label>
             <div class="controls ">
-              <input type="text" placeholder="" name="CVV" value="" id="id_CVV" class="form-control">
+              <input type="number" placeholder="" name="CVV" value="" id="id_CVV" class="form-control">
             </div>
           </div> 
         </div>
@@ -139,7 +135,7 @@
         </div>
         <div class="col-sm-3">
           <div class="form-group" id="div_id_postal_code">
-            <label class="control-label" for="id_postal_code">Year:</label>
+            <label class="control-label" for="id_postal_code">ZIP/Postal Code:</label>
             <div class="controls ">
               <input type="text" placeholder="" name="postal_code" value="" id="id_postal_code" class="form-control">
             </div>
