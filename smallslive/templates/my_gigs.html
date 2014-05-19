@@ -82,16 +82,16 @@
                 <th  >Video</th>
                 <th>Audio</th>
                 <th>Description</th>
-                <th>Recording Approved/In Archive?<code>2</code></th>
-                <th>Fan requests</th>
+                <th>Status<code>2</code></th>
+                <th>Fans*</th>
                 <th class="downloads">Downloads</th>
               </tr>
             </thead>
             <tbody> 
               <!-- erase these once dev is complete: -->
               <tr>  
-                <td class="event_date">May 12, 2014</td>
-                <td class="text-muted">Coming soon</td>
+                <td class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
+                <td class="text-muted">Coming soon<code>2</code> </td>
                 <td class="text-muted">Coming soon</td>
                 <td> 
                    <a href="{ past_event.get_absolute_url }">title</a><br />
@@ -99,7 +99,7 @@
                    <div><a href="#">Edit description</a></div>
                 </td>               
                 <td class="artist-clearance-breakdown"><code>1</code> 
-                  <p class="text-danger clearance-summary">2/3 artists (including you) haven't approved this recording yet. <a href="">Details</a></p>
+                  <p class="text-danger clearance-summary">2/3 artists haven't approved this recording yet. <a href="">Details</a><code>6</code></p>
                   <table class="table">
                     <thead>
                       <tr>
@@ -110,18 +110,9 @@
                     <tbody>
                       <tr>
                           <td><strong>Me</strong></td>
-                        {% if request.GET.approved %}
                           <td>
                             <span class="text-success"> <span class="glyphicon glyphicon-ok"></span> Yes</span>
                           </td>
-                        {% else %}
-                          <form action="#" method="get">
-                          <td><code>4</code>  
-                            <select name="approved"><option value="1" class="approved">I approve</option><option value="0" class="not-approved">I do not approve</option></select>
-                            <button class="btn-primary btn-xs">Save</button>
-                          </td>
-                          </form>
-                        {% endif %}
                       </tr>
                       <tr>
                         <td><a href="mailto:jon@grimes.com?subject=Clearing our Smalls recording from Jan 14, 2011&body=Hi Jon,%2C%0D%0A%0D%0AI would love to get this recording of us cleared for use on Smalls so we can all make money on it when users listen to it: %2C%0D%0A%0D%0A[[insert link]]%2C%0D%0A%0D%0AWe share a copyright on the recording and all of us on the gig have to approve the recording before it can go into the SmallsLIVE archive for listeners. %2C%0D%0A%0D%0AThanks, {{ user.first_name }}">Alan Smith (gtr)</a></td>
@@ -138,7 +129,7 @@
                 <td class="downloads text-muted">Coming soon</td>
               </tr>
               <tr>  
-                <td class="event_date">May 12, 2014</td>
+                <td class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
                 <td>[photo]</td>
                 <td> 
                     <a  href="/events/8323/" class=" btn btn-primary" role="button" title="Play audio { past_event.displaytitle }"><span class="glyphicon glyphicon-play"></span></a>
@@ -148,8 +139,12 @@
                     subtitle <span class="text-muted">(66 mins.)</span>         
                    <div><a href="#">Edit description</a></div>
                 </td>               
-                <td class="artist-clearance-breakdown"><code>1</code> 
-                  <p class="text-danger clearance-summary">2/3 artists (including you) haven't approved this recording yet. <a href="">Details</a></p>
+                <td class="artist-clearance-breakdown">
+                  {% if request.GET.approved %}
+                  <p class="text-warning clearance-summary"><code>7</code> You have cleared this recording, but (2) artists still need to approve it before it goes live.  <a href="">View Artists (3)</a></p>
+                  {% else %}
+                  <p class="text-danger clearance-summary">You need to approve this recording: <a href="" class="btn-xs btn btn-primary">Approve/View Details</a></p>
+                  {% endif %}
                   <table class="table">
                     <thead>
                       <tr>
@@ -194,7 +189,7 @@
               
               {% for past_event in past_events %}
               <tr> 
-                <td class="event_date"><code>6</code>May 12, 2014</td>
+                <td class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
                 <td>{% if past_event.photo.url != "" %}
             <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" class="img-responsive" />
           {% endif %}</td>
@@ -236,6 +231,7 @@
               {% endif %}
             </ul>
           {% endif %}
+          <p class="text-muted">* Fan count represents number of fans who have requested this recording be made available.</p>
         </div>
         <div class="col-sm-3">
           <div class="well">
@@ -263,11 +259,13 @@
   <div class="dev">
     <h1>Dev notes</h1>
     <Ul> 
-      <li><code>1</code> - if the audio is not approved yet, there is a red summary sentence and a link to show a table of artists involved and their status. Artist logged in can email peers (note  there are 2 flavors of email for No and No-response use cases for peer artists). If the audio is live, write <code>td class="text-success">Live - 12/13/13 </code> . Another status might be <Code>td class="text-muted" Removed - 12/13/14</Code> </li>
+      <li><code>1</code> - if the audio is not approved yet, there is a red summary sentence and a link to show a table of artists involved and their status. Artist logged in can email peers (note  there are 2 flavors of email for No and No-response use cases for peer artists). If the audio is live, write <code>td class="text-success"><a  href="Live">Live</a> as of 12/13/13 </code> . Another status might be <Code>td class="text-muted" Removed - 12/13/14</Code> </li>
+      <li><code>2</code> - this row shows a video that hasn't been  added to archive/edited yet but will be soon.</li>
       <li><code>3</code> - ajax filter out the sideman gigs i played. make sure paginator respects this.</li>
       <li><code>4</code> - this should be ajax, not postback.</li>
-      <li><code>5</code> - this green mesg only appears at the end of artist signup</li>
-      <li><code>6</code> - this is the wrong date format. see trello ToDo.</li>
+      <li><code>5</code> - this green mesg only appears at the end of artist signup</li> 
+      <li><code>6</code> - note that if logged in user has approved recording, they just get a "Details" link. If they havent approved it, we show a button as in the second row's example.</li>  
+      <li><code>7</code> - status that appears after i approve my recording if that video is still not 100% cleared. see <code>1</code> if I was the last one to clear the video.</li> 
     </Ul>
   </div>
 {% endblock content %}

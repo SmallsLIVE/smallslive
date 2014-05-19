@@ -3,9 +3,13 @@
   <li class="dropdown">
     <a href="" class="dropdown-toggle" data-toggle="dropdown"><span class="longname">{% if user.first_name %} {{ user.first_name }} {% else %}My Account {% endif %}<b class="caret"></b></a>
     <ul class="dropdown-menu"> 
+      {% if user.is_superuser %}
+        <li><a href="/static_page/dashboard-musician">Admin Website </a></li>      
+        <li class="divider"></li>
+      {% endif %}
       {% if user.is_artist %}
-      <li><a href="/static_page/dashboard-musician">Artist Website </a></li>      
-      <li class="divider"></li>
+        <li><a href="{% url 'my_gigs' %}">Artist Website </a></li>      
+        <li class="divider"></li>
       {% endif %}
       <li><a href="/static_page/my_subscription">Change subscription</a></li>         
       <li><a href="/static_page/my_account">Change email, password</a></li>
