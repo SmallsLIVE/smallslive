@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>My Account</h1>
+<div class="row">
+  <div class="col-sm-3">
+    <ul class="nav nav-pills nav-stacked">
+      <li class="active"><a href="/static_page/my-account-summary">Summary</a></li>
+      {% include 'blocks/nav_account_links.html' %}
+    </ul>
+    <div class="development">
+      <ul>
+        <li><code>1</code> - hide this if i am not on a paid subscription yet.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-sm-7">
+    {% block content_for_account_mgmt %}
+    {% endblock content_for_account_mgmt %}
+  </div>
+</div>
+{% endblock content %}

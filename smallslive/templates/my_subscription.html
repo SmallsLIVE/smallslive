@@ -1,105 +1,80 @@
-{% extends "base.html" %}
-{% block title %}My Subscription<{% endblock title%}
-{% block content %}
-<h1>My Subscription</h1>
-<div class="row">
-  <div class="col-sm-12 col-md-10 col-lg-8">
-    <table class="table nv">
-      <tbody>
-        {% if user.is_artist %}
+{% extends "base_my_account.html" %}
+{% block title %}My Subscription{% endblock title%}
+{% block content_for_account_mgmt %} 
+  <table class="table nv">
+    <tbody>
+      {% if user.is_artist %}
+        <tr>
+          <td colspan="">Subscription Type</td>
+          <td>You have a free artist subscription. Music you listen to does not count towards play counts or royalties.</td>
+        </tr> 
+      {% else %}
+        {% if request.GET.inTrial %}
           <tr>
-            <td colspan="">Subscription Type</td>
-            <td>You have a free artist subscription. Music you listen to does not count towards play counts or royalties.</td>
-          </tr> 
-        {% else %}
-          {% if request.GET.inTrial %}
-            <tr>
-              <td>Subscription Type</td>
-              <td><p><strong>Free Trial</strong> (Ends in 2 days on April 16, 2015. After that, you'll be charged $10/month.)  </p><a href="">Cancel my trial</a></td>
-            </tr>
-          {% endif %}
-          {% if request.GET.cancelled %}
-            <tr>
-              <td>Subscription Type</td>
-              <td>You are not currently a subscriber. For $10/month get:<br />
+            <td>Subscription Type</td>
+            <td><p><strong>Free Trial</strong> (Ends in 2 days on April 16, 2015. After that, you'll be charged $10/month.)  </p><a href="">Cancel my trial</a></td>
+          </tr>
+        {% endif %}
+        {% if request.GET.cancelled %}
+          <tr>
+            <td>Subscription Type</td>
+            <td>You are not currently a subscriber. For $10/month get:<br />
+            <ul>
+              <li>Access all audio streams</li>
+              <li>Watch tonight's live concert(s)</li>
+              <li>Access to purchase downloads (when avail.)</li>
+            </ul>
+            <a href="" class="btn btn-primary" role="button">Subscribe Now</a></td>
+          </tr>
+        {% endif %}
+        {% if request.GET.cancelled or request.GET.inTrial %}
+        {% else %} 
+          <tr>
+            <td>Subscription Type</td>
+            <td><p>You have a regular subscription. $10/month is getting you:</p>
               <ul>
                 <li>Access all audio streams</li>
                 <li>Watch tonight's live concert(s)</li>
                 <li>Access to purchase downloads (when avail.)</li>
               </ul>
-              <a href="" class="btn btn-primary" role="button">Subscribe Now</a></td>
-            </tr>
-          {% endif %}
-          {% if request.GET.cancelled or request.GET.inTrial %}
-          {% else %} 
-            <tr>
-              <td>Subscription Type</td>
-              <td><p>You have a regular subscription. $10/month is getting you:</p>
-                <ul>
-                  <li>Access all audio streams</li>
-                  <li>Watch tonight's live concert(s)</li>
-                  <li>Access to purchase downloads (when avail.)</li>
-                </ul>
-                <a href="?cancel=1">Cancel my subscription</a>
-              </td>
-            </tr>
-          {% endif %}
-        {% endif %}
-        {% if request.GET.cancelled %}
-          <tr>
-            <td>Subscription history</td>
-            <td>You cancelled your subscription on May 1, 2014.</td>
-          </tr>
-        {% else %}
-          <tr>
-            <td>Billing</td>          
-            <td>
-              <p>{% if request.GET.inTrial %}We will charge{% else %}We are charging{% endif %} your VISA card ending in 1234. </p>
-              <p class="text-warning">This card will expire on 6/1/2014.</p>
-              <p><a href="{% url 'djstripe:change_card' %}">Change credit card</a></a></p>
+              <a href="?cancel=1">Cancel my subscription</a>
             </td>
           </tr>
-          <tr>
-            <td>Subscriber since</td>
-            <td>March 1, 2015</td> 
-          </tr>
-          <tr>
-            <td>Artist Revenue Generated</td>
-            <td><span class="text-success">~$100.00 from your subscription fees has gone directly into our artist revenue pool. Thanks!</span></td> 
-          </tr>
         {% endif %}
+      {% endif %}
+      {% if request.GET.cancelled %}
         <tr>
-          <td># Downloads Bought</td>
-          <td>1 song</td>
+          <td>Subscription history</td>
+          <td>You cancelled your last subscription on May 1, 2014.</td>
         </tr>
-      </tbody>
-    </table>
-      
-      
-    <h1>History of Purchases<code>1</code></h1>
-    <p>Download previous purchases. <span class="glyphicon glyphicon-download"></span> <a href="">Download a ZIP of all of your purchased songs</a>.</p>
-    <table class="table table-striped">
-      <thead>
+      {% else %}
         <tr>
-          <th>Date</th>
-          <th>Song/Product Purchased</th>
-          <th class="num">Amount paid</th>
-          <th>Action</th>
+          <td>Billing</td>          
+          <td>
+            <p>{% if request.GET.inTrial %}We will charge{% else %}We are charging{% endif %} your VISA card ending in 1234. </p>
+            <p class="text-warning">This card will expire on 6/1/2014.</p>
+            <p><a href="{% url 'djstripe:change_card' %}">Change credit card</a><code>2</code></p>
+          </td>
         </tr>
-      </thead>
-      <tbody>
         <tr>
-          <td><time datetime="">1 Apr 2014</time></td>
-          <td><span class="glyphicon glyphicon-music"></span> "Take the A Train"<br />From: <a href="">event.displaytitle</a><br />w/ artistName, artistName,  artistName,  artistName<br />Recorded <time datetime="">June 13, 2011</time></td>
-          <td class="num">$5.00</td>
-          <td class="nowrap"><span class="glyphicon glyphicon-download"></span> <a href="">Download</a></td>
+          <td>Subscriber since</td>
+          <td>March 1, 2015</td> 
         </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-    
-  
+        <tr>
+          <td>Artist Revenue Generated</td>
+          <td><span class="text-success">~$100.00 from your subscription fees has gone directly into our artist revenue pool. Thanks!</span></td> 
+        </tr>
+        <tr>
+          <td>Cancel subscription</td>
+          <td><a href="/static_page/change_subscription">Change/cancel subscription</a></td> 
+        </tr>
+      {% endif %}
+      <tr>
+        <td>Orders/Transactions</td>
+        <td>You've placed <a href="">5 additional music orders</a> to date. <a href="/static_pages/my_account_purchase_history">View entire transaction history</a></td>
+      </tr>
+    </tbody>
+  </table>
  
   <div class="dev">
     <h1>Alternate states</h1>
@@ -111,7 +86,7 @@
     </Ul>
     <h1>Dev notes</h1>
     <Ul> 
-      <li><code>1</code> items/rows can and should include all subscription fees and all oscar commerce purchases. 50 rows per page w/ pagination. Later on, we may want to offer pagination or filtering on the table but i think we're a ways from needing that.</li>      
+      <li><code>2</code> - put the form in a popup window</li>   
     </Ul>
   </div>
-{% endblock content %}
+{% endblock content_for_account_mgmt %}

@@ -8,11 +8,11 @@
         <li class="divider"></li>
       {% endif %}
       {% if user.is_artist %}
-        <li><a href="{% url 'my_gigs' %}">Artist Website </a></li>      
+        <li><a href="{% url 'my_gigs' %}">Artist Website </a></li>  
+        <li><a href="/artists/102/edit">Edit artist profile</a></li>      
         <li class="divider"></li>
       {% endif %}
-      <li><a href="/static_page/my_subscription">Change subscription</a></li>         
-      <li><a href="/static_page/my_account">Change email, password</a></li>
+      {% include 'blocks/nav_account_links.html' %}
       <li><a href="{% url "account_logout" %}">Log Out</a></li>
     </ul>
   </li>  
