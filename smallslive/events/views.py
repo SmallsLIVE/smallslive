@@ -54,6 +54,12 @@ class EventDetailView(DetailView):
     model = Event
     context_object_name = 'event'
     template_name = 'events/video.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(EventDetailView, self).get_context_data(**kwargs)
+        context['performers'] = self.object.get_performers()
+        return context
+
     # def get_template_names(self):
     #     if self.object.is_past():
     #        template_name = 'events/video.html'
