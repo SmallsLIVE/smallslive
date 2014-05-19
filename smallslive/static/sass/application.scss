@@ -224,6 +224,11 @@ table.artist-past-gigs-media {
 /*=Signup screens*/
 form.f-trial-signup {
   margin-top: 24px; 
+  #div_id_TOS .well {
+    min-height: 200px;
+    max-height: 200px;
+    overflow: auto; 
+  }
   @media all and (min-width : $screen-sm-min) {  
     div.form-group {
       margin-bottom: 22px; 
