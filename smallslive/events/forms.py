@@ -105,6 +105,7 @@ class EventAddForm(forms.ModelForm):
             'link',
             'state',
             ButtonHolder(
-                Submit('submit', 'Submit', css_class='btn btn-primary')
+                Submit('submit', 'Save event', css_class='btn btn-primary')
             )
         )
+        self.fields['state'].label = "Event status"
