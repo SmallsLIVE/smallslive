@@ -42,22 +42,7 @@ EventForm = {
         });
         $slotButtons.append(buttons);
     },
-    init: function () {
-        $artist_row = $(".formset_table tbody tr:last").clone(true);
-
-        $(".formset_table select").selectize({
-            create: false
-        });
-
-        // Dynamically sets the default instrument for an artist
-        $(document).on('change', '.artist_field', function (e) {
-            var $role_field = $(e.currentTarget).parent().next().find("select");
-            var value = $(e.currentTarget).val();
-            $.get("//" + EventForm.SITE_URL + "/artists/" + value + "/instrument_ajax/", function (data) {
-                $role_field[0].selectize.setValue(data);
-            });
-        });
-
+    initDateTimeFunctionality: function() {
         var $start = $('#id_start');
         var $end = $('#id_end');
         var date_format = "MM/DD/YYYY H:mm A";
@@ -97,35 +82,6 @@ EventForm = {
             return false;
         });
 
-        this.addSlotButtons(moment().isoWeekday());
-
-        $('.formset_table tbody').sortable({
-            // update the sort_order field based on the order in the DOM
-            update: function (event, ui) {
-                $(".sort_order_field").each(function (index) {
-                    $(this).val(index);
-                })
-            }
-        });
-        this.fixTableWidths('.formset_table');
-
-
-
-        $('#add_more').click(function () {
-            EventForm.cloneMore('.formset_table tbody tr:last', 'artists_gig_info');
-            EventForm.fixTableWidths('.formset_table');
-        });
-
-        $(document).on("click", ".artist_remove", function (e) {
-            var $total = $('#id_artists_gig_info-TOTAL_FORMS');
-            var total = $total.val();
-            $(this).parents('tr').remove();
-            total--;
-            $total.val(total);
-            EventForm.fixTableWidths('.formset_table');
-            return false;
-        });
-
         $('.slot-buttons').on("click", ".slot", function () {
             var times = $(this).data('time').split('-');
             var start, end;
@@ -162,6 +118,49 @@ EventForm = {
             $end.data("DateTimePicker").setDate(end.format(date_format));
         });
 
+        this.addSlotButtons(moment().isoWeekday());
+    },
+    initInlineArtistsFunctionality: function() {
+        $artist_row = $(".formset_table tbody tr:last").clone(true);
+
+        $(".formset_table select").selectize({
+            create: false
+        });
+
+        // Dynamically sets the default instrument for an artist
+        $(document).on('change', '.artist_field', function (e) {
+            var $role_field = $(e.currentTarget).parent().next().find("select");
+            var value = $(e.currentTarget).val();
+            $.get("//" + EventForm.SITE_URL + "/artists/" + value + "/instrument_ajax/", function (data) {
+                $role_field[0].selectize.setValue(data);
+            });
+        });
+
+        $('.formset_table tbody').sortable({
+            // update the sort_order field based on the order in the DOM
+            update: function (event, ui) {
+                $(".sort_order_field").each(function (index) {
+                    $(this).val(index);
+                })
+            }
+        });
+        this.fixTableWidths('.formset_table');
+
+        $('#add_more').click(function () {
+            EventForm.cloneMore('.formset_table tbody tr:last', 'artists_gig_info');
+            EventForm.fixTableWidths('.formset_table');
+        });
+
+        $(document).on("click", ".artist_remove", function (e) {
+            var $total = $('#id_artists_gig_info-TOTAL_FORMS');
+            var total = $total.val();
+            $(this).parents('tr').remove();
+            total--;
+            $total.val(total);
+            EventForm.fixTableWidths('.formset_table');
+            return false;
+        });
+
         $("#id_title").focus(function() {
             if(! $(this).val()) {
                 var title = $(".artist_field div.item").first().text();
@@ -176,6 +175,9 @@ EventForm = {
                 $(this).val(title);
             }
         });
+    },
+    init: function () {
+        this.initDateTimeFunctionality();
+        this.initInlineArtistsFunctionality();
     }
-
 };
