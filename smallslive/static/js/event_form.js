@@ -76,15 +76,28 @@ EventForm = {
 
         $start.on('dp.hide', function (ev) {
             // save the selected date so that slot buttons work correctly
-            EventForm.selectedDate = $(this).data("DateTimePicker").getDate();
+            var start = $(this).data("DateTimePicker").getDate();
+            var redrawSlotButtons = (EventForm.selectedDate.isoWeekday() !== start.isoWeekday());
+            EventForm.selectedDate = start;
 
             // auto set event end to 1 hour later
-            var end = moment($start.val()).add(1, 'hours').format(date_format);
+            var end = start.add(1, 'hours').format(date_format);
             $end.data("DateTimePicker").setDate(end);
-            EventForm.addSlotButtons(moment($start.val()).isoWeekday());
-        });
-        this.fixTableWidths('.formset_table');
 
+            // if the day of the week changes, add appropriate slot buttons
+            if (redrawSlotButtons) {
+                EventForm.addSlotButtons(start.isoWeekday());
+            }
+            $(this).data("DateTimePicker").show();
+            return false;
+        });
+        // fix for not showing the widget on every click on input
+        $end.on('dp.hide', function (ev) {
+            $(this).data("DateTimePicker").show();
+            return false;
+        });
+
+        this.addSlotButtons(moment().isoWeekday());
 
         $('.formset_table tbody').sortable({
             // update the sort_order field based on the order in the DOM
@@ -94,8 +107,9 @@ EventForm = {
                 })
             }
         });
+        this.fixTableWidths('.formset_table');
 
-        this.addSlotButtons(moment().isoWeekday());
+
 
         $('#add_more').click(function () {
             EventForm.cloneMore('.formset_table tbody tr:last', 'artists_gig_info');
