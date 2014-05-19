@@ -44,7 +44,7 @@ This page is loaded instead of event_detail if the event is in the past or tapin
     </div>
     {% if event.description %}  
       <div class="description well"> 
-        {{ event.description }}
+        {{ event.description|safe }}
       </div>
     {% endif %}
   </div>
