@@ -1,5 +1,6 @@
 EventForm = {
     SITE_URL: "",
+    selectedDate: "",
     fixTableWidths: function (selector) {
         $(selector).find('td').each(function () {
             $(this).css('width', $(this).width() + 'px');
@@ -70,7 +71,13 @@ EventForm = {
             minuteStepping: 5,
             defaultDate: moment("20:00", "H:mm")
         });
+
+        EventForm.selectedDate = $start.data("DateTimePicker").getDate();
+
         $start.on('dp.hide', function (ev) {
+            // save the selected date so that slot buttons work correctly
+            EventForm.selectedDate = $(this).data("DateTimePicker").getDate();
+
             // auto set event end to 1 hour later
             var end = moment($start.val()).add(1, 'hours').format(date_format);
             $end.data("DateTimePicker").setDate(end);
@@ -113,7 +120,7 @@ EventForm = {
             }
             else {
                 var split_start_time = times[0].split(':');
-                start = moment($start.val(), date_format);
+                start = EventForm.selectedDate.clone();
                 start.hour(parseInt(split_start_time[0]));
                 start.minutes(parseInt(split_start_time[1]));
             }
@@ -123,7 +130,7 @@ EventForm = {
             }
             else {
                 var split_end_time = times[1].split(':');
-                end = moment($start.val(), date_format);
+                end = EventForm.selectedDate.clone();
                 end.hour(parseInt(split_end_time[0]));
                 end.minutes(parseInt(split_end_time[1]));
             }
