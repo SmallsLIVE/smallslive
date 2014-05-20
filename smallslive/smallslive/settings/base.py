@@ -82,7 +82,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'djstripe.middleware.SubscriptionPaymentMiddleware',
+    #'djstripe.middleware.SubscriptionPaymentMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
