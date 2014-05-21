@@ -96,11 +96,12 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         """
         send_mail(subject, message, from_email, [self.email])
 
+    @property
     def is_artist(self):
         """
         Checks if a user has an artist model assigned
         """
-        return self.artist is not None
+        return hasattr(self, "artist")
 
     @cached_property
     def has_active_subscription(self):

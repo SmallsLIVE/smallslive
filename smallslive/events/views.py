@@ -107,7 +107,7 @@ class VenueDashboardView(ListView):
 venue_dashboard = VenueDashboardView.as_view()
 
 
-class MyGigsView(ListView):
+class MyGigsView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     """
     Use ListView for easy pagination of past events but also add future events
     to the page context.
@@ -123,5 +123,12 @@ class MyGigsView(ListView):
         context = super(MyGigsView, self).get_context_data(**kwargs)
         context['future_events'] = Event.upcoming.filter(performers=self.request.user.artist)
         return context
+
+    def test_func(self, user):
+        """
+        Checks if the logged in user is also an artist.
+        """
+        self.raise_exception = True
+        return user.is_artist
 
 my_gigs = MyGigsView.as_view()

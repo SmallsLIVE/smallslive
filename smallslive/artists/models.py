@@ -37,6 +37,7 @@ class Artist(models.Model):
     def get_instruments(self):
         return "\n".join([i.name for i in self.instruments.all()])
 
+
 class Instrument(models.Model):
     name = models.CharField(max_length=255)
     abbreviation = models.CharField(max_length=10, blank=True)
