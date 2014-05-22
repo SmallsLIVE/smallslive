@@ -1,6 +1,11 @@
 {% extends "base_my_account.html" %}
 {% block title %}Payment History{% endblock title%}
 {% block content_for_account_mgmt %}    
+  <div class="row">
+    <div class="col-sm-12 search-orders-by-date"> 
+      {% include 'blocks/search-orders-by-date.html' %}
+    </div>
+  </div>
   <table class="table table-striped payment-history">
     <thead>
       <tr>

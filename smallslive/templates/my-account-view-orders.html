@@ -3,7 +3,7 @@
 {% block title %}Downloads and Orders{% endblock title%}
 {% block content_for_account_mgmt %}  
   <p class="download-all"><a href="" class="btn-xs btn-default btn"><span class="glyphicon glyphicon-download"></span> Download All Songs (650MB)</a></p> 
-  <h2>(2) Orders</h2>
+  <h2 class="orders">(2) Orders</h2>
   <div class="row search-orders-by-number">
     <div class="col-sm-5"> 
       <div class="input-group">
@@ -18,25 +18,13 @@
     </div>
   </div><!-- /.row -->
   <div class="row none search-orders-by-date ">
-    <div class="col-sm-9"> 
-      <form class="form-inline" role="form">
-        <div class="form-group">
-          <label for="from">Between:</label>
-          <input type="email" class="form-control input-sm" id="from" placeholder="mm/dd/yy">
-        </div>
-        <div class="form-group">
-          <label for="to">And:</label>
-          <input type="password" class="form-control input-sm" id="to" placeholder="mm/dd/yy">
-        </div> 
-        <button type="submit" class="btn btn-primary btn-sm">Display</button>
-      </form>
+    <div class="col-sm-7"> 
+      {% include 'blocks/search-orders-by-date.html' %}
     </div>
     <div class="col-sm-3">
       <a href="#" class="trigger-search-orders-by-number">Find by order #...</a>
     </div>
   </div>
-  
-  
   <table class="table table-striped payment-history">
     <thead>
       <tr>

@@ -388,7 +388,7 @@ div.datepicker {
 }
 @media all and (min-width : $screen-md-min) { 
   .my-account {
-    h2 {  
+    h2.orders {  
       margin-top: 0;
       border-bottom: 1px dotted #DDDDDD;
       padding-bottom: 12px;
