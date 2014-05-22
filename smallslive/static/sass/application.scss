@@ -121,12 +121,18 @@ footer {
      width: auto;
    }
 }
+.txt {
+  text-align: left;
+}
 .num {
   text-align: right;
 } 
 table {
   .num {
     @extend .num;
+  }
+  .txt {
+    @extend .txt;
   }
 }
 /*=SEarch*/
@@ -368,7 +374,8 @@ div.datepicker {
   display: none;
 }
 /*=Components - Bootstrap Overrides*/
-.nav-tabs {
+.nav-tabs,
+.nav-pills {
   margin-bottom: $margin-bottom;
 }
 form {  
@@ -397,10 +404,25 @@ form {
   }
 }
 /* Name/value pair tables */
-table.nv tbody tr > td:first-child {
-  font-weight: bold;
-  color: $gray;
-  text-align: right;
+table.nv tbody { 
+  tr:first-child td {
+    border-top: none;
+  }
+  tr > td:first-child:not(.txt) {
+    font-weight: bold;
+    color: $gray;
+    text-align: right;
+  }
+}
+table.payment-history {
+  tr td:first-child,
+  tr th:first-child {
+    text-align: right;
+  }
+}
+/* =table and other misc styles */
+.media, .credit {
+  font-style: italic;
 }
 .nowrap {
   white-space: nowrap;

@@ -1,43 +1,40 @@
 {% extends "base_my_account.html" %}
 {% block title %}View Orders / Transaction History{% endblock title%}
-{% block content_for_account_mgmt %}    
-  <h1>My Orders<code>1</code></h1>
-  <p>Trying to re-download past orders? You can download all of your purchased media in one click: <span class="glyphicon glyphicon-download"></span> <a href="">Download a ZIP</a> (650MB).</p> 
-  
-  <ul class="nav-tabs nav">
-    <li class="active"><a href="#orders">Orders</a></li>
-    <li class=""><a href="#transactions">Transaction History <code>1</code></a></li>
-  </ul>
-  <div class="tab-content">
-    <div class="tab-pane" id="orders">
-      [show table from https://slstore.herokuapp.com/en-us/accounts/login/?next=/en-us/accounts/orders/]
-    </div>
-    <!-- tab -->
-    <div class="tab-pane" id="transactions">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Song/Product Purchased</th>
-            <th class="num">Amount paid</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><time datetime="">1 Apr 2014</time></td>
-            <td><span class="glyphicon glyphicon-music"></span> "Take the A Train"<br />From: <a href="">event.displaytitle</a><br />w/ artistName, artistName,  artistName,  artistName<br />Recorded <time datetime="">June 13, 2011</time></td>
-            <td class="num">$5.00</td>
-            <td class="nowrap"><span class="glyphicon glyphicon-download"></span> <a href="">Download</a></td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="development">
-        <ul>
-          <li><code>1</code> items/rows can and should include all subscription fees and all oscar commerce purchases. 50 rows per page w/ pagination. Later on, we may want to offer pagination or filtering on the table but i think we're a ways from needing that.</li>   
-        </ul>
-      </div>
-    </div>
-  </div>
- 
+{% block content_for_account_mgmt %}  
+  <a href="" class="btn-sm btn-primary"><span class="glyphicon glyphicon-download"></span> Download Everything (650MB)</a> - all purchased music downloads bundled together.</p> 
+  <table class="table table-striped payment-history">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Order</th>
+        <th><span class="glyphicon glyphicon-music"></span> Purchased</th>
+        <th>More Info</th>
+        <th class="num">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><time datetime="">11 Apr 2014</time></td>
+        <td><a href="#">41452</a></td>
+        <td><span class="text-muted">CD: </span><span class="media">Frank Lacy: Live at Smalls</span><br />&#8471;2011</td>
+        <td class="nowrap"><a href="#">Shipped 12 Apr 2014</a><code>3</code></td>
+        <td class="num">$15.89</td>
+      </tr>
+      <tr>
+        <td><time datetime="">1 Apr 2014</time></td>
+        <td><a href="#">98298</a></td>        
+        <td>"Take the A Train" <span class="text-muted">(Live: 8:32)</span><br /><a href="">event.displaytitle</a></td>
+        <td class="nowrap"><span class="glyphicon glyphicon-download"></span> <a href="">Download</a></td>
+        <td class="num">$5.00</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="dev">
+    <ul>
+      <li><code>1</code> - 50 rows per page, then paginate</li>   
+      <li><code>2</code> - links go to receipt page</li>     
+      <li><code>3</code> - tracking number link (launch USPS, UPS, or whatever if possible)</li>   
+    </ul>
+  </div> 
 {% endblock content_for_account_mgmt %}

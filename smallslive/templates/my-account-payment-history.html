@@ -1,0 +1,47 @@
+{% extends "base_my_account.html" %}
+{% block title %}Payment History{% endblock title%}
+{% block content_for_account_mgmt %}    
+  <table class="table table-striped payment-history">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Description</th>
+        <th class="num">Receipt/Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="credit">
+        <td><time datetime="">2 May 2014</time></td>
+        <td>Courtesy Credit Adjustment</td>
+        <td class="num">$-5.00</td>
+      </tr>
+      <tr>
+        <td><time datetime="">1 May 2014</time></td>
+        <td><a href="">Monthly Premium Subscription Fee </a></td>
+        <td class="num"><a href="#receipt">$10.00</a></td>
+      </tr>
+      <tr>
+        <td><time datetime="">3 Apr 2014</time></td>
+        <td><a href="">Purchased Download (1 songs)</a></td>
+        <td class="num"><a href="#receipt">$1.00</a></td>
+      </tr>
+      <tr>
+        <td><time datetime="">2 Apr 2014</time></td>
+        <td><a href="">Purchased Download (3 songs)</a></td>
+        <td class="num"><a href="#receipt">$3.00</a></td>
+      </tr>
+      <tr>
+        <td><time datetime="">1 Apr 2014</time></td>
+        <td>Monthly Premium Subscription Fee (First Month Free)</td>
+        
+        <td class="num">$0.00</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="dev">
+    <ul>
+      <li><code>1</code> - 50 rows per page, then paginate</li>   
+      <li><code>2</code> - links go to receipt page</li>   
+    </ul>
+  </div> 
+{% endblock content_for_account_mgmt %}
