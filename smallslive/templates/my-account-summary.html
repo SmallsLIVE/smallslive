@@ -10,9 +10,13 @@
       {% if user.is_artist %}
       <tr>
         <td colspan="">Musician/Artist Profile</td>
-        <td colspan=""><a href="/artists/102/edit">Edit your artist bio, photo etc. here</a><br />To cancel your artist account, <a href="#">email Spike</a></td>
+        <td colspan=""><a href="/artists/102/edit">Edit your name, artist bio, photo etc. here</a><br />To cancel your artist account, <a href="#">email Spike</a></td>
       </tr> 
-      {% endif %} 
+      {% endif %}
+      <tr>
+        <td colspan="">Name</td>
+        <td colspan=""><p>Firstname Lastname</p><a href="/artists/102/edit">Change name on account</a></td>
+      </tr>  
       <tr>
         <td>Email (your login)</td><td><p>{{ user.email }} <code>6</code>(unverified) </p><a href="/static_page/my-account-edit">Edit email address</a><code>4</code></td>
       </tr>
