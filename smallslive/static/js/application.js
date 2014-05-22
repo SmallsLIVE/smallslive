@@ -1,6 +1,5 @@
 $(document).ready(function(){
-  //Customer Signup process
-  //Trial signup
+  //Customer Subscription Signup form:
   $('.f-trial-signup').hide();
   //Expose the trial signup form
   $('.trigger-f-trial-signup').on('click',function(e){
@@ -53,8 +52,9 @@ $(document).ready(function(){
       });
     }
   }); 
-  //
-  //Artist signup
+  //END CUSTOMER SIGN UP FORMS
+
+  //Artist signup forms:
   //When i approve or disapprove a master, make my name green or red
   $('.toggle-master-approve select[name=approval]').on('change',function(){
     var recording=$(this).closest('tr');
@@ -74,10 +74,10 @@ $(document).ready(function(){
   $('.add-private-note label').on('click',function(){
     $(this).closest('div').find('.form-group').toggle();
   });   
-
-  //End signup
+  //END ARTIST SIGNUP FORMS
   
-  //ADMIN forms begin
+  
+  //SUPER ADMIN forms:
   $('.artist-clearance-breakdown table').hide();
   $('.clearance-summary a').on('click',function(e){
     e.preventDefault();
@@ -111,7 +111,6 @@ $(document).ready(function(){
     //unhide the checkboxes, undisable fields, fill in labels and input slots appropriately:
     
   });;
-  
   //Draggable musician ordering
   $('.f-gig div.sortable-list').sortable({
     //AJAX in here
@@ -120,7 +119,6 @@ $(document).ready(function(){
     //  accessible method to enter the position.
     
   });
-  
   //Muting
   //Make checkbox+textinput fields appear selected or muted. By default, we assume
   // .text-muted was assigned to the text input
@@ -148,7 +146,6 @@ $(document).ready(function(){
       } 
     });
   });
-  
   //Make autocompleters for name , genre, instruments
   $('.sideman_name').each(function(i){
     $(this).selectize({
@@ -181,10 +178,33 @@ $(document).ready(function(){
   $('.trigger_add_set_times input').change(function() {
     toggle_add_set_times(this);
   }); 
-  
   //init
   $('.trigger_add_set_times input').each(function(i) {
     toggle_add_set_times(this);
   }); 
+  //END ADMIN FORMS
+  
+  //MY ACCOUNT STUFF
+  //Mailing list signup from my-account page
+  $('a.trigger-subscribe').on('click',function(e) {
+    e.preventDefault();
+    var container=$(this).closest('td');
+    $(this).closest('div').fadeOut(500,function() {
+      container.find('.alert').remove();
+      container.prepend('<p class="alert alert-success">You are now on the SmallsLIVE mailing list.</p>');
+      $('div.mailinglist-joined').fadeIn();
+    });
+  });
+  $('a.trigger-unsubscribe').on('click',function(e) {
+    e.preventDefault();
+    var container=$(this).closest('td');
+    $(this).closest('div').fadeOut(500,function() {
+      container.find('.alert').remove();
+      container.prepend('<p class="alert alert-success">You have been unsubscribed from our list.</p>');
+    });
+    $('div.mailinglist-not-joined').fadeIn();
+  });
+  //END MY ACCOUNT 
+  
 
 });

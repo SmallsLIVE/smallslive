@@ -17,6 +17,28 @@
         <td>Email (your login)</td><td><p>{{ user.email }} <code>6</code>(unverified) </p><a href="/static_page/my-account-edit">Edit email address</a><code>4</code></td>
       </tr>
       <tr>
+        <td>Mailing List</td>
+        <td>
+          {% if request.GET.onMailingList %}
+          <div class="mailinglist-joined">
+            <p>Joined 1 April 2014. </p>
+            <a href="">Change email</a> or <a href="" class="trigger-unsubscribe">Unsubscribe email@email.com</a>
+          </div>
+          <div class="mailinglist-not-joined none">
+            <p><a href="" class="trigger-subscribe">Join mailing list</a></p>
+          </div>
+          {% else %}
+          <div class="mailinglist-joined none">
+            <p>Joined 1 April 2014. </p>
+            <a href="">Change email</a> or <a href="" class="trigger-unsubscribe">Unsubscribe email@email.com</a>
+          </div>
+          <div class="mailinglist-not-joined">
+            <p><a href="" class="trigger-subscribe">Join mailing list</a></p>
+          </div>
+          {% endif %}
+        </td>
+      </tr>
+      <tr>
         <td>Password</td><td><p>****</p><a href="/static_page/my-account-edit">Change password<code>4</code></a></td>
       </tr> 
       {% if user.phone1  %}
@@ -102,6 +124,7 @@
   <div class="dev">
     <h1>Alternate states</h1>
     <Ul> 
+      <li><a href="?onMailingList=1">Already on mailing list</a></li>
       <li><a href="?inTrial=1">User is inside trial period</a></li>
       <li><a href="?free=1">User is free-service subscriber</a></li> 
       <li><a href="?">User is a paid subscriber</a></li>         
