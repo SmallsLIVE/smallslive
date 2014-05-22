@@ -1,4 +1,4 @@
-{% load static %}
+{% load compressed static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock title %}{% block title_prefix %} @ {% endblock title_prefix %}SmallsLIVE{% block title_suffix %}{% endblock title_suffix%}</title>
-    <link href="{% static 'css/application.css' %}" rel="stylesheet">
+    {% compressed_css 'css' %}
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>

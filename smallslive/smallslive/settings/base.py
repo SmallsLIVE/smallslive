@@ -62,6 +62,7 @@ INSTALLED_APPS = (
     'django_thumbor',
     'djstripe',
     'floppyforms',
+    'pipeline',
     'sortedm2m',
     'south',
     'storages',
@@ -218,8 +219,21 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+PIPELINE_COMPILERS = (
+    'pipeline.compilers.sass.SASSCompiler',
+)
+
+PIPELINE_CSS = {
+    'css': {
+        'source_filenames': (
+            'sass/application.scss',
+        ),
+        'output_filename': 'css/application.css',
+    },
+}
 
 # Templates
 TEMPLATE_DIRS = [
