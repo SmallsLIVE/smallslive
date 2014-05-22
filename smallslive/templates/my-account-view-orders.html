@@ -1,13 +1,28 @@
 {% extends "base_my_account.html" %}
-{% block title %}View Orders / Transaction History{% endblock title%}
+{% block title %}Downloads and Orders{% endblock title%}
 {% block content_for_account_mgmt %}  
-  <a href="" class="btn-sm btn-primary"><span class="glyphicon glyphicon-download"></span> Download Everything (650MB)</a> - all purchased music downloads bundled together.</p> 
+  
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="input-group">
+        <input type="text" class="form-control input-sm" placeholder="Order number">
+        <span class="input-group-btn">
+          <button class="btn btn-primary btn-sm" type="button">Find Order</button>
+        </span>
+      </div><!-- /input-group -->
+    </div><!-- /.col-lg-6 -->
+    <div class="col-sm-6">
+      <p class="pull-right"><a href="" class="btn-sm btn-default btn"><span class="glyphicon glyphicon-download"></span> Download All Songs (650MB)</a> </p>
+    </div>
+  </div><!-- /.row -->
+
   <table class="table table-striped payment-history">
     <thead>
       <tr>
         <th>Date</th>
         <th>Order</th>
-        <th><span class="glyphicon glyphicon-music"></span> Purchased</th>
+        <th class="num">Items</th>
+        <th>Item Details</th>
         <th>More Info</th>
         <th class="num">Amount</th>
       </tr>
@@ -16,13 +31,15 @@
       <tr>
         <td><time datetime="">11 Apr 2014</time></td>
         <td><a href="#">41452</a></td>
+        <td class="num">1</td>
         <td><span class="text-muted">CD: </span><span class="media">Frank Lacy: Live at Smalls</span><br />&#8471;2011</td>
         <td class="nowrap"><a href="#">Shipped 12 Apr 2014</a><code>3</code></td>
         <td class="num">$15.89</td>
       </tr>
       <tr>
         <td><time datetime="">1 Apr 2014</time></td>
-        <td><a href="#">98298</a></td>        
+        <td><a href="#">98298</a></td>    
+        <td class="num">1</td>    
         <td>"Take the A Train" <span class="text-muted">(Live: 8:32)</span><br /><a href="">event.displaytitle</a></td>
         <td class="nowrap"><span class="glyphicon glyphicon-download"></span> <a href="">Download</a></td>
         <td class="num">$5.00</td>
