@@ -5,6 +5,8 @@
 
 {% block extra_head %}
   {{ form.media }}
+  <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/image-picker.css' %}" rel="stylesheet">
 {% endblock extra_head %}
 
 {% block content %}
@@ -40,11 +42,13 @@
 
 {% block extra_js %}
   <script src="{% static "js/event_form.js" %}"></script>
+  <script src="{% static "js/image-picker.js" %}"></script>
   <script>
     var show_times = {{ show_times|safe }};
     $(document).ready(function() {
       EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
       EventForm.init();
+      $('.imagepicker').imagepicker();
     });
   </script>
 {% endblock extra_js %}
