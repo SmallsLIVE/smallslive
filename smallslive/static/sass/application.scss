@@ -373,6 +373,35 @@ div.datepicker {
 .longname {
   display: none;
 }
+//My Account Area
+.search-orders-by-number, 
+.search-orders-by-date {
+  padding-top: 16px;
+  padding-bottom: 16px;
+  label {
+    font-weight: normal
+  }
+  a {
+    position: relative;
+    top:.25em;
+  }
+}
+@media all and (min-width : $screen-md-min) { 
+  .my-account {
+    h2 {  
+      margin-top: 0;
+      border-bottom: 1px dotted #DDDDDD;
+      padding-bottom: 12px;
+    } 
+    p.download-all {
+      float: right;
+      margin: 0 !important;
+      padding: 0;
+      position: relative;
+      top: 12px;
+    }
+  }
+}
 /*=Components - Bootstrap Overrides*/
 .nav-tabs,
 .nav-pills {
@@ -426,7 +455,7 @@ table.payment-history {
     text-align: right;
   }
 }
-/* =table and other misc styles */
+/* =general table and other misc styles */
 .media, .credit {
   font-style: italic;
 }
@@ -436,7 +465,7 @@ table.payment-history {
 body abbr.explained {
   border: none;
 }
-.none {
+.row.none, .none {
   display: none;
 }
 /*=Color*/

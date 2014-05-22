@@ -1,21 +1,42 @@
 {% extends "base_my_account.html" %}
+{% block bodyclass %}my-account{% endblock bodyclass %}
 {% block title %}Downloads and Orders{% endblock title%}
 {% block content_for_account_mgmt %}  
-  
-  <div class="row">
-    <div class="col-sm-6">
+  <p class="download-all"><a href="" class="btn-xs btn-default btn"><span class="glyphicon glyphicon-download"></span> Download All Songs (650MB)</a></p> 
+  <h2>(2) Orders</h2>
+  <div class="row search-orders-by-number">
+    <div class="col-sm-5"> 
       <div class="input-group">
         <input type="text" class="form-control input-sm" placeholder="Order number">
         <span class="input-group-btn">
-          <button class="btn btn-primary btn-sm" type="button">Find Order</button>
+          <button class="btn btn-primary btn-sm" type="button">Find Order<code>4</code></button> 
         </span>
       </div><!-- /input-group -->
-    </div><!-- /.col-lg-6 -->
-    <div class="col-sm-6">
-      <p class="pull-right"><a href="" class="btn-sm btn-default btn"><span class="glyphicon glyphicon-download"></span> Download All Songs (650MB)</a> </p>
+    </div>
+    <div class="col-sm-3">
+      <a  href="#" class="trigger-search-orders-by-date">Find by date...</a>
     </div>
   </div><!-- /.row -->
-
+  <div class="row none search-orders-by-date ">
+    <div class="col-sm-9"> 
+      <form class="form-inline" role="form">
+        <div class="form-group">
+          <label for="from">Between:</label>
+          <input type="email" class="form-control input-sm" id="from" placeholder="mm/dd/yy">
+        </div>
+        <div class="form-group">
+          <label for="to">And:</label>
+          <input type="password" class="form-control input-sm" id="to" placeholder="mm/dd/yy">
+        </div> 
+        <button type="submit" class="btn btn-primary btn-sm">Display</button>
+      </form>
+    </div>
+    <div class="col-sm-3">
+      <a href="#" class="trigger-search-orders-by-number">Find by order #...</a>
+    </div>
+  </div>
+  
+  
   <table class="table table-striped payment-history">
     <thead>
       <tr>
@@ -51,7 +72,8 @@
     <ul>
       <li><code>1</code> - 50 rows per page, then paginate</li>   
       <li><code>2</code> - links go to receipt page</li>     
-      <li><code>3</code> - tracking number link (launch USPS, UPS, or whatever if possible)</li>   
+      <li><code>3</code> - tracking number link (launch USPS, UPS, or whatever if possible)</li> 
+      <li><code>4</code> - go right to order/receipt page</li>  
     </ul>
   </div> 
 {% endblock content_for_account_mgmt %}

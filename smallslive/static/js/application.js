@@ -185,6 +185,17 @@ $(document).ready(function(){
   //END ADMIN FORMS
   
   //MY ACCOUNT STUFF
+  //View orders -toggle order search form UIs
+  $('a.trigger-search-orders-by-date').on('click',function(e) {
+    e.preventDefault();
+    $(this).closest('.row').hide();
+    $('.row.search-orders-by-date').show();
+  });
+  $('a.trigger-search-orders-by-number').on('click',function(e) {
+    e.preventDefault();
+    $(this).closest('.row').hide();
+    $('.row.search-orders-by-number').show();
+  });
   //Mailing list signup from my-account page
   $('a.trigger-subscribe').on('click',function(e) {
     e.preventDefault();
