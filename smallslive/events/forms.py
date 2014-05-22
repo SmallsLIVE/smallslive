@@ -102,7 +102,8 @@ class GigPlayedInlineFormSetHelper(FormHelper):
 class EventAddForm(forms.ModelForm):
     start = forms.DateTimeField(label="Start time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
     end = forms.DateTimeField(label="End time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
-    suggested_images = ImageSelectField(queryset=Event.objects.order_by('-modified').values_list('id', 'photo')[:5])
+    suggested_images = ImageSelectField(queryset=Event.objects.exclude(photo="").order_by(
+        '-modified').values_list('id', 'photo')[:5])
 
     class Meta:
         model = Event
