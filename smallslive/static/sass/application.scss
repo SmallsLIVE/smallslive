@@ -414,6 +414,12 @@ table.nv tbody {
     text-align: right;
   }
 }
+table.my-account {
+  tr:first-child h2 {
+    margin-top:0;
+    padding-top: 0;
+  }
+}
 table.payment-history {
   tr td:first-child,
   tr th:first-child {

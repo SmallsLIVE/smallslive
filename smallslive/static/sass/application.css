@@ -5282,6 +5282,10 @@ table.nv tbody tr > td:first-child:not(.txt) {
   color: #555555;
   text-align: right; }
 
+table.my-account tr:first-child h2 {
+  margin-top: 0;
+  padding-top: 0; }
+
 table.payment-history tr td:first-child,
 table.payment-history tr th:first-child {
   text-align: right; }

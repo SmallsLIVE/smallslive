@@ -2,7 +2,7 @@
 {% block title %}My Account &amp; Subscription{% endblock title%}
 {% block content_for_account_mgmt %} 
  
-  <table class="table nv  ">
+  <table class="table nv my-account ">
     <tbody>
       <tr>
         <td colspan="3" class="txt"><h2>{ user.full_name }</h2></td>
@@ -14,10 +14,10 @@
       </tr> 
       {% endif %} 
       <tr>
-        <td>Email (your login)</td><td><p>{{ user.email }} <code>6</code>(unverified) </p><a href="/static_page/my-account-edit">edit email address</a><code>4</code></td>
+        <td>Email (your login)</td><td><p>{{ user.email }} <code>6</code>(unverified) </p><a href="/static_page/my-account-edit">Edit email address</a><code>4</code></td>
       </tr>
       <tr>
-        <td>Password</td><td><p>****</p><a href="/static_page/my-account-edit">change password<code>4</code></a></td>
+        <td>Password</td><td><p>****</p><a href="/static_page/my-account-edit">Change password<code>4</code></a></td>
       </tr> 
       {% if user.phone1  %}
       <tr>
