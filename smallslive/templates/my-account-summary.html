@@ -9,8 +9,8 @@
       </tr>
       {% if user.is_artist %}
       <tr>
-        <td colspan="">Musician Profile</td>
-        <td colspan=""><a href="/artists/102/edit">Edit your artist bio, photo etc. here</a></td>
+        <td colspan="">Musician/Artist Profile</td>
+        <td colspan=""><a href="/artists/102/edit">Edit your artist bio, photo etc. here</a><br />To cancel your artist account, <a href="#">email Spike</a></td>
       </tr> 
       {% endif %} 
       <tr>
@@ -64,7 +64,7 @@
                 <li>Watch tonight's live concert(s)</li>
                 <li>Access to purchase downloads (when avail.)</li>
               </ul>
-              <a href="?cancel=1">Cancel my subscription</a>
+              <a href="?cancel=1">Change or cancel my subscription</a>
             </td>
           </tr>
         {% endif %}
@@ -89,16 +89,12 @@
         </tr>
         <tr>
           <td>Artist Revenue Generated</td>
-          <td><span class="text-success">~$100.00 from your subscription fees has gone directly into our artist revenue pool. Thanks!</span></td> 
-        </tr>
-        <tr>
-          <td>Cancel subscription</td>
-          <td><a href="/static_page/change_subscription">Change/cancel subscription</a></td> 
-        </tr>
+          <td><span class="text-success">~$100.00 from your subscription fees and purchases have gone directly into our artist revenue pool. Thanks!</span></td> 
+        </tr> 
       {% endif %}
       <tr>
         <td>Orders/Transactions</td>
-        <td>You've placed <a href="">5 additional music orders</a> to date. <a href="/static_pages/my_account_purchase_history">View entire transaction history</a></td>
+        <td>You've placed <a href="">5 additional music orders</a> to date. <a href="/static_pages/my_account_purchase_history">View all payments</a> (including subscription fees).</td>
       </tr>
     </tbody>
   </table>
