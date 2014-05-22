@@ -1,12 +1,19 @@
+from urlparse import urlparse
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML, Button, LayoutObject, TEMPLATE_PACK, MultiField
 from django import forms
+from django.conf import settings
 from django.template import Context
 from django.template.loader import render_to_string
 from extra_views import InlineFormSet
 import floppyforms
+from model_utils import Choices
 from .models import Event, GigPlayed
+
+from django.core.files import File
+from django.core.files.temp import NamedTemporaryFile
+from urllib2 import urlopen
 
 
 class Formset(LayoutObject):
@@ -38,6 +45,25 @@ class Formset(LayoutObject):
 
 class EventStatusWidget(floppyforms.RadioSelect):
     template_name = 'form_widgets/event_status.html'
+
+
+class ImageSelectWidget(floppyforms.Select):
+    template_name = 'form_widgets/select_images.html'
+
+
+class ImageSelectField(floppyforms.ChoiceField):
+    widget = ImageSelectWidget
+
+    def __init__(self, choices=(), required=True, widget=None, label=None,
+                 initial=None, help_text='', *args, **kwargs):
+        queryset = kwargs.pop('queryset')
+        super(ImageSelectField, self).__init__(required=required, widget=widget, label=label,
+                                               initial=initial, help_text=help_text, *args, **kwargs)
+        # Set the images dynamically for the imagepicker widget
+        objects = list(queryset)
+        objects = [(id, "https://{0}/{1}".format(settings.AWS_S3_CUSTOM_DOMAIN, photo)) for (id, photo) in objects]
+        self.choices = Choices(("", ""))
+        self.choices += Choices(*objects)
 
 
 class GigPlayedAddInlineFormSet(InlineFormSet):
@@ -76,10 +102,12 @@ class GigPlayedInlineFormSetHelper(FormHelper):
 class EventAddForm(forms.ModelForm):
     start = forms.DateTimeField(label="Start time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
     end = forms.DateTimeField(label="End time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
+    suggested_images = ImageSelectField(queryset=Event.objects.exclude(photo="").order_by(
+        '-modified').values_list('id', 'photo')[:5])
 
     class Meta:
         model = Event
-        fields = ('start', 'end', 'title', 'subtitle', 'photo', 'description', 'link', 'state')
+        fields = ('start', 'end', 'title', 'subtitle', 'photo', 'suggested_images', 'description', 'link', 'state')
         widgets = {
             'state': EventStatusWidget,
             'link': floppyforms.URLInput
@@ -101,6 +129,7 @@ class EventAddForm(forms.ModelForm):
             'title',
             'subtitle',
             Div('photo', css_class='well'),
+            Field('suggested_images', css_class='imagepicker'),
             'description',
             'link',
             'state',
@@ -109,3 +138,11 @@ class EventAddForm(forms.ModelForm):
             )
         )
         self.fields['state'].label = "Event status"
+
+    def save(self, commit=True):
+        object = super(EventAddForm, self).save()
+        if not object.photo and self.cleaned_data['suggested_images']:
+            # get relative path to the image, the part after the domain name
+            object.photo = urlparse(self.cleaned_data['suggested_images']).path[1:]
+        object.save()
+        return object
