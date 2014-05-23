@@ -2,8 +2,9 @@
 <div class="well">
 {% if value.url %}Currently: <a target="_blank" href="{{ value.url }}" class="img-thumbnail"><img src="{% thumbor_url value.url|urlencode width=100 %}" alt="{{ value }}" /></a>
 {% if not required %}
-<p><input type="checkbox" name="{{ checkbox_name }}" id="{{ checkbox_id }}">
-<label for="{{ checkbox_id }}">Clear</label></p>
+<div class="checkbox"><label for="{{ checkbox_id }}">
+  <input type="checkbox" name="{{ checkbox_name }}" id="{{ checkbox_id }}">Delete this photo</label>
+</div>
     {% else %}<br/>
 {% endif %}
 Change:

@@ -22,8 +22,7 @@ class Event(TimeStampedModel):
     link = models.CharField(max_length=255, blank=True)
     active = models.BooleanField(default=False)
     date_freeform = models.TextField(blank=True)
-    photo = models.ImageField(upload_to='event_images', help_text="Flyer or Band Photo (JPG, PNG)",
-                              max_length=150, blank=True)
+    photo = models.ImageField(upload_to='event_images', max_length=150, blank=True)
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed')
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField()

@@ -143,6 +143,7 @@ class EventAddForm(forms.ModelForm):
             )
         )
         self.fields['state'].label = "Event status"
+        self.fields['photo'].label = "Flyer or Band Photo (JPG, PNG)"
 
     def save(self, commit=True):
         object = super(EventAddForm, self).save()

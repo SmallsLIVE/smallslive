@@ -19,3 +19,4 @@ class ArtistAddForm(ModelForm):
         self.helper.form_action = 'artist_add'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
+        self.fields['photo'].label = "Photo (portrait-style JPG w/ instrument preferred)"
