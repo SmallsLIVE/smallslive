@@ -1,0 +1,12 @@
+{% load thumbor_tags %}
+<div class="well">
+{% if value.url %}Currently: <a target="_blank" href="{{ value.url }}" class="img-thumbnail"><img src="{% thumbor_url value.url|urlencode width=100 %}" alt="{{ value }}" /></a>
+{% if not required %}
+<p><input type="checkbox" name="{{ checkbox_name }}" id="{{ checkbox_id }}">
+<label for="{{ checkbox_id }}">Clear</label></p>
+    {% else %}<br/>
+{% endif %}
+Change:
+{% endif %}
+<input type="{{ type }}" name="{{ name }}"{% if required %} required{% endif %}>
+</div>

@@ -43,6 +43,10 @@ class Formset(LayoutObject):
             'formset': formset}))
 
 
+class ImageThumbnailWidget(floppyforms.ClearableFileInput):
+    template_name = 'form_widgets/image_widget.html'
+
+
 class EventStatusWidget(floppyforms.RadioSelect):
     template_name = 'form_widgets/event_status.html'
 
@@ -110,7 +114,8 @@ class EventAddForm(forms.ModelForm):
         fields = ('start', 'end', 'title', 'subtitle', 'photo', 'suggested_images', 'description', 'link', 'state')
         widgets = {
             'state': EventStatusWidget,
-            'link': floppyforms.URLInput
+            'link': floppyforms.URLInput,
+            'photo': ImageThumbnailWidget
         }
 
     def __init__(self, *args, **kwargs):
@@ -128,7 +133,7 @@ class EventAddForm(forms.ModelForm):
             Formset('artists', template='form_widgets/formset_layout.html'),
             'title',
             'subtitle',
-            Div('photo', css_class='well'),
+            'photo',
             Field('suggested_images', css_class='imagepicker'),
             'description',
             'link',
