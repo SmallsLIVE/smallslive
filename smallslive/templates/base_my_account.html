@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
+  {% if request.GET.cancelled %}
+  <div class="alert alert-success">
+    <p><span class="glyphicon glyphicon-ok"></span> <strong>Subscription cancelled. </strong></p>  
+    Your final subscription fee charge will be pro-rated to $x.xx for just the days you used SmallsLive (date1-date2).<code>2</code>
+  </div>
+  {% endif %}
 <div class="page-header">
   <h1>My Account</h1>
 </div>
@@ -8,7 +14,10 @@
     <ul class="nav nav-pills nav-stacked">       
       <li class="active"><a href="/static_page/my-account-summary">Subscription/Account</a></li>  
       <li><a href="/static_page/my-account-view-orders">Downloads &amp; Orders</a></li>     
-      <li><a href="/static_page/my-account-payment-history">Payment History</a></li>      
+      <li><a href="/static_page/my-account-payment-history">Payment History</a></li>   
+      <li><a href="#">Product-in-Stock Alerts</a> <code>2</code> </li>   
+      <li><a href="#">Store Wishlists</a> <code>2</code></li>   
+      <li><a href="#">Manage Shipping Addresses</a> <code>1, 2</code></li>
     </ul>
     {% if user.is_artist %}
     <div class="well">
@@ -18,6 +27,12 @@
       </ul>
     </div>
     {% endif %}
+    <div class="dev">
+      <ul>
+        <li><code>1</code> - only show if they have bought something requiring shipping in the past</li>
+          <li><code>2</code> - use oscar pages</li>
+      </ul>
+    </div>
   </div>
   <div class="col-sm-9">
     {% block content_for_account_mgmt %}
