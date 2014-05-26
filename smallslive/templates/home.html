@@ -109,34 +109,14 @@
     <p>You can earn $ on the recordings you have made at Smalls when you participate in <a href="/static_page/about-smallslive-for-musicians/">SmallsLIVE for Musicians</a>.</p>
     </div>
   </div>
-  <div class="dev">  
  
-    <div class="dev">
-      <h1>Dev notes</h1>
-      <Ul> 
-        <li><code>1</code> - spike can pick three events to feature on the homepage. order by upcoming date asc, then past date desc</li>
-        <li><code>3</code> - how many hours do we have?</li>
-        <li><code>4</code> - this should be hidden once a cookie is dropped showing a signup, or the user is logged in and known to be on the list</li>
-      </Ul>
-    </div>
-    <h1>Screens SO Far:</h1>
-    <h2>Public Screens (Main NAV)</h2>
-    <ul>
-      <li>This homepage</li>
-          <li><a href="{% url "artist_detail" pk=122 %}">Artist page</a></li>   
-          <li><a href="{% url "event_detail" pk=8402 %}">Event page</a></li>   
-      <li><a href="/static_page/about">About the club</a></li>
-      <li><a href="/static_page/about-smallslive-for-musicians">SL For Performers</a></li>
-      <li><a href="/static_page/smallslive-jazz-videos">SmallsLIVE Home</a></li>
-      <li><a href="/static_page/musician-signup-login">Performer Reg (Login) </a> (this link starts process)</li>
-      <li><a href="/static_page/musician-signup-password">Performer Reg (Pwd Change) </a> (this link starts process from an email invite)</li>
-    </ul>
-    <h2>Admin Screens</h2>
-    <ul> 
-        <li><a href="{% url 'venue_dashboard' %}">Dashboard</a></li>
- 
-        <li><a href="{% url "admin:index" %}">Django Admin</a></li>
-    </ul>
+  <div class="dev">
+    <h1>Dev notes</h1>
+    <Ul> 
+      <li><code>1</code> - spike can pick three events to feature on the homepage. order by upcoming date asc, then past date desc</li>
+      <li><code>3</code> - how many hours do we have?</li>
+      <li><code>4</code> - this should be hidden once a cookie is dropped showing a signup, or the user is logged in and known to be on the list</li>
+    </Ul>
   </div>
 {% endblock content %}
 {% block extra_js %}

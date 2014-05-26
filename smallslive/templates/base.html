@@ -69,13 +69,31 @@
       </ul>
     </footer>
     <div class="dev">
-    <h1>Global Dev Notes:</h1>
-    <ul>
-      <li><code>G1</code> if a show is going on, we display this in the nav bar. else, hide the link. this goes right to the event that has a show going on.</li>
-      <li><code>g2</code> - cancel musician reg. link - when clicked, cancel the reg in backend as needed, redirect them to about-smallslive-for-musicians and show a green success flash message: "You cancelled the artist sign-up process. Bookmark this page if you want to sign up at a later date."  </li>
-      <li><code>g3</code> - see base_musician-signup.html - we show the artist's name when they are signing up, as soon as the system is capable of displaying it via URL or logged in status.</li>
-    </ul>
+      <h1>Global Dev Notes:</h1>
+      <ul>
+        <li><code>G1</code> if a show is going on, we display this in the nav bar. else, hide the link. this goes right to the event that has a show going on.</li>
+        <li><code>g2</code> - cancel musician reg. link - when clicked, cancel the reg in backend as needed, redirect them to about-smallslive-for-musicians and show a green success flash message: "You cancelled the artist sign-up process. Bookmark this page if you want to sign up at a later date."  </li>
+        <li><code>g3</code> - see base_musician-signup.html - we show the artist's name when they are signing up, as soon as the system is capable of displaying it via URL or logged in status.</li>
+      </ul>
     </div>
+    <div class="well">  
+      <h2>Screen Listing</h3>
+      <h3>Public Screens </h3>
+      <ul>
+        <li><a href="/">SmallsLIVE Home</a></li>
+        <li><a href="{% url "artist_detail" pk=122 %}">Artist page</a></li>   
+        <li><a href="{% url "event_detail" pk=8402 %}">Event page</a></li>   
+        <li><a href="/static_page/about">About the club</a></li>
+        <li><a href="/static_page/about-smallslive-for-musicians">Artist Sign Up Starting Point</a> &rarr; <a href="/static_page/musician-signup-login">Artist Reg (1 of 4)</a> (this link starts process)</li> 
+      </ul>
+      <h3>Admin Screens</h3>
+      <ul> 
+          <li><a href="/static_page/my-account-summary">My Account Section</a> - subscription, downloads, payment history (has many versions, see footer)</li>
+          <li><a href="{% url 'venue_dashboard' %}">Dashboard for Venue</a></li>
+          <li><a href="/static_page/dashboard-musician">Dashboard for Artists</a></li>
+          <li><a href="{% url "admin:index" %}">Django Admin</a></li>
+      </ul>
+    </div>    
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="{% static 'js/bootstrap.js' %}"></script>
