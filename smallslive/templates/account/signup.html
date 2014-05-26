@@ -51,7 +51,7 @@
           <div class="controls ">
             <input type="password" placeholder="" name="password" value="" id="id_password" class="form-control">
           </div>
-          <p class="help-block">6 characters minimum.[requirements?]
+          <p class="help-block">6 characters minimum.[requirements?<code>3</code>]
         </div> 
              {% endif %}
         <div class="form-group" id="div_id_TOS">
@@ -72,6 +72,7 @@
       <li><a href="./?facebook=1">View if auth'd with facebook</a> - we hide the SL account sign up fields and still show Terms sign up.</li>
       <li><code>1</code> - this page has context for which plan is being accessed
       <li><code>2</code> - after they start the trial, take them back to the context_url that they were attempting to access when they started this flow (e.g. if they were trying to watch a video or hear a specific recording, take them to that)
+      <li><code>3</code> - fill in requirements here for password</li>
     </ul>
   </div>
 {% endblock %}
