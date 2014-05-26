@@ -1,27 +1,56 @@
 {% extends "base.html" %}
 {% load account crispy_forms_tags socialaccount %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Log In or Sign Up{% endblock %}
 
 {% block content %}
-  <div class="col-sm-4">
-    <h1>Login</h1>
-
-<a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-primary btn-lg">Facebook</a>
-<a href="{% provider_login_url "linkedin_oauth2" method="oauth2" %}" class="btn btn-primary btn-lg">LinkedIn</a>
-<a href="{% provider_login_url "google" method="oauth2" %}" class="btn btn-danger btn-lg">Google</a>
-<a href="{% provider_login_url "twitter" method="oauth2" %}" class="btn btn-info btn-lg">Twitter</a>
-
-    <p>If you have not created an account yet, then please <a href="{{ signup_url }}">sign up</a> first.</p>
-
-    <form class="login" method="POST" action="{% url 'account_login' %}">
-      {% csrf_token %}
-      {{ form|crispy }}
-      {% if redirect_field_value %}
-        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-      {% endif %}
-      <button class="btn btn-success" type="submit">Sign In</button>
-      <a class="button secondaryAction" href="{% url 'account_reset_password' %}">Forgot Password?</a>
-    </form>
+<div class="row">
+  <div class="col-sm-9 col-sm-offset-1">
+    <div class="alert alert-warning">
+      <h1>Looking for {context}?</h1>
+      <p><code>1</code> You'll need to sign up for SmallsLIVE to access this {recording}{live stream}:</p>
+    </div>
   </div>
+</div>
+<div class="row">
+  <div class="col-sm-4 col-sm-offset-1">
+    <div class="well login">
+      <h1>Log In</h1>
+      <p>If you  have a SmallsLIVE password, log in:</p>
+      <form class="login" method="POST" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+        <button class="btn btn-primary" type="submit">Log In</button>
+        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">Forgot Password?</a>
+      </form>
+    </div>
+  </div>
+  <div class="col-sm-5">
+    <h2>Create an Account</h2>
+    <p>If you have not created a SmallsLIVE account yet, create one below. You can optionally use one of your social media accounts if you don't want to remember another password:   </p>  
+    <div class="row">
+      <div class="col-sm-4">
+        <h5>Use SmallsLIVE:</h5>
+        <p><a href="{{ signup_url }}" class="btn-sm btn-default btn">Create account</a></p>
+      </div>
+      <div class="col-sm-8 social-logins">
+        <div>
+          <h5>Use a social media account:</h5>
+          <p><a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-default btn-sm">Facebook</a> <a href="{% provider_login_url "linkedin_oauth2" method="oauth2" %}" class="btn btn-default btn-sm">LinkedIn</a></p>
+          <p>
+          <a href="{% provider_login_url "google" method="oauth2" %}" class="btn btn-default btn-sm">Google</a> 
+          <a href="{% provider_login_url "twitter" method="oauth2" %}" class="btn btn-default btn-sm">Twitter</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="dev">
+  <ul>
+    <li><code>1</code> - context means "the page they came from." Its possible a user came from a specific audio recording or live stream; if that happens, its helpful to have this context recorded and to carry the return-URL into this screen so that after signup, we take them right to what they wanted. This yellow box only appears when a context has been carried into this screen.</li>
+  </ul>
+</div>
 {% endblock %}

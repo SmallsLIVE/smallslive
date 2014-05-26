@@ -228,6 +228,19 @@ table.artist-past-gigs-media {
   
 }
 /*=Signup screens*/
+.social-logins {
+  > div {
+    border-left: 1px solid #eee;
+    padding-left: 24px;
+  }
+  .btn-sm {
+    width: 40%;
+    min-width: 70px;
+  }
+}
+.login button.btn {
+  width: 50%;
+}
 form.f-trial-signup {
   margin-top: 24px; 
   #div_id_TOS .well {

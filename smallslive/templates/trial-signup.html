@@ -5,11 +5,9 @@
 {% block content %}
 <div class="row">
   <div class="col-sm-8 col-md-6 col-lg-6 col-sm-offset-2 col-md-offset-3">
-    <div class="alert alert-warning">
-      <h1>Looking for {context}?</h1>
-      <p><code>1</code> You'll need to sign up for SmallsLIVE to access this {recording}{live stream}:</p>
-    </div>
- 
+
+    <div class="row">
+      <div class="col-sm-6">
       <h2>Sign Up for SmallsLIVE</h2>
       <h3>Get 30 days free:</h3>
       <ul>
@@ -21,6 +19,11 @@
         <li>If you are a jazz musician who has played at Smalls in the past, <a href="/static_page/about-smallslive-for-musicians">continue here with our Artist registration form.</a></li>
       </ul>
       <p><a href="/static_page/trial-signup-account-info.html"><button class="btn btn-primary  trigger-f-trial-signup">Start My Trial</button></a> </p> 
+      </div>
+      <div class="col-sm-6">
+      PAid version content here
+      </div>
+    </div>
       
     <form method="post" class="f-trial-signup" role="form" enctype="multipart/form-data">  
       <div class="form-group" id="div_id_subscriber_email">
@@ -158,7 +161,6 @@
 <div class="dev">
   <h1>Dev notes</h1>
   <Ul> 
-    <li><code>1</code> - context means "the page they came from." Its possible a user came from a specific audio recording or live stream; if that happens, its helpful to have this context recorded and to carry the return-URL into this screen so that after signup, we take them right to what they wanted. This yellow box only appears when a context has been carried into this screen.</li>
     <li><code>2</code> - the signup form should take them to one of two places: if they came from a restricted piece of content, then  redirect them to the carry-through URL that they originally tried to access. If they came from the plain signup page, then I would redirect them to the search-results page. For either case, show the flash success message:  "Your free trial is now active until { mmm dd }. Enjoy the music!"  </li>
     <li><code>3</code> - for users logged in with third parties like google or FB, please hide any fields we don't need to collect (Again).</li>
   </Ul>
