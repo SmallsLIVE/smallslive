@@ -1,7 +1,6 @@
 {% extends "base_my_account.html" %}
 {% block title %}My Account &amp; Subscription{% endblock title%}
 {% block content_for_account_mgmt %} 
- 
   <table class="table nv my-account ">
     <tbody>
       <tr>
@@ -90,7 +89,7 @@
                 <li>Watch tonight's live concert(s)</li>
                 <li>Access to purchase downloads (when avail.)</li>
               </ul>
-              <a href="?cancel=1">Change or cancel my subscription</a>
+              <a href="/static_pages/change_subscription">Change or cancel my subscription</a>
             </td>
           </tr>
         {% endif %}
@@ -129,15 +128,15 @@
     <h1>Alternate states</h1>
     <Ul> 
       <li><a href="?onMailingList=1">Already on mailing list</a></li>
-      <li><a href="?inTrial=1">User is inside trial period</a></li>
       <li><a href="?free=1">User is free-service subscriber</a></li> 
-      <li><a href="?">User is a paid subscriber</a></li>         
-      <li><a href="?cancelled=1">User has cancelled</a></li>     
+      <li><a href="?inTrial=1">User is inside trial period of paid sub. service</a></li>
+      <li><a href="?">User is paid subscriber</a></li>         
+      <li><a href="?cancelled=1">User just cancelled / is cancelled</a></li>     
     </Ul> 
     <h1>Dev notes</h1>
     <Ul>  
       <li><code>1</code> note pseudo code in comments</li>  
-       
+      <li><code>2</code> - this placement of the cancel-success message is not in the right place. it should be in the masthead per normal site messages.  
       <li><code>3</code> if there is an artist photo uploaded but no user photo, display that here. Else, show user profile image.</li>
       <li><code>4</code>  these edit links  open a dialog to change the requested field using a unique form. Display form fields, and on submit,  emit  flash/feedback message in the dialog and provide a button to close dialog (closing dialog should also reload the my-account summary page). See #<code>5</code> for UI requirements for forms</li>
       <li><code>5</code> Forms + Flash messages for each row:
