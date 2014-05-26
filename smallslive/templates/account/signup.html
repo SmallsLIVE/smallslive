@@ -15,9 +15,8 @@
     <div class=" col-sm-offset-2 col-sm-6">
       <form id="signup_form" method="post" action="{% url 'account_signup' %}">
       
-      <div class="social-signup {% if request.GET.facebook %}authenticated-by-social{% endif %} ">
-        <h5 class="text-muted">Optional:</h5>
-        <h4 class="text-success">Sign Up With A Social Media Account</h4>
+      <div class="social-signup {% if request.GET.facebook %}authenticated-by-social{% endif %} "> 
+        <h4 class="text-success">Optional: Sign Up With A Social Media Account</h4>
         
         {% if request.GET.facebook %}
         <div class="alert alert-success">
