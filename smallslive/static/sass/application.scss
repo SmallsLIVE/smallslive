@@ -228,20 +228,23 @@ table.artist-past-gigs-media {
   
 }
 /*=Signup screens*/
+.social-signup:not(.authenticated-by-social) {
+  margin-bottom: $margin-bottom;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: $margin-bottom;
+}
 .social-logins {
-  > div {
-    border-left: 1px solid #eee;
-    padding-left: 24px;
-  }
+  margin-bottom: $margin-bottom;
   .btn-sm {
     width: 40%;
     min-width: 70px;
+    margin-bottom: 12px;
   }
 }
 .login button.btn {
   width: 50%;
 }
-form.f-trial-signup {
+form#signup_form {
   margin-top: 24px; 
   #div_id_TOS .well {
     min-height: 200px;

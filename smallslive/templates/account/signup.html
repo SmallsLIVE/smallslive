@@ -1,20 +1,79 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
-{% block title %}Create account{% endblock %}
-{% block content %}
+{% load account crispy_forms_tags socialaccount %}
+{% block title %}Sign up for SmallsLIVE{% endblock %}
+{% block content %} 
   <div class="row">
-    <div class="col-sm-6">
-      <h1>Create account</h1>
-      <p>Think you've registered here already?  <a href="{{ login_url }}">Log in now</a> or <a class="button secondaryAction" href="{% url 'account_reset_password' %}">reset your password</a> if you forgot it.</p>
-      <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+    <div class=" col-sm-offset-2 col-sm-6">
+      <div class="page-title">
+        <h1>Sign up for SmallsLIVE [Premium][Free]<code>1</code></h1>
+      </div>  
+      <p>Think you've registered here already?  <a href="{{ login_url }}">Log in now</a>.</p>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class=" col-sm-offset-2 col-sm-6">
+      <form id="signup_form" method="post" action="{% url 'account_signup' %}">
+      
+      <div class="social-signup {% if request.GET.facebook %}authenticated-by-social{% endif %} ">
+        <h5 class="text-muted">Optional:</h5>
+        <h4 class="text-success">Sign Up With A Social Media Account</h4>
+        
+        {% if request.GET.facebook %}
+        <div class="alert alert-success">
+          <p><span class="glyphicon glyphicon-ok"></span> You are signed in to SmallsLIVE with Facebook</p>
+          <a href="./?" class="text-muted">Disconnect</a>
+        </div>
+        {% else %}<p>If you don't want to create a password just for SmallsLIVE, you can use one of these sites to log in to SmallsLIVE going forward. </p> 
+        <p><a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-default btn-sm">Facebook</a> <a href="{% provider_login_url "linkedin_oauth2" method="oauth2" %}" class="btn btn-default btn-sm">LinkedIn</a> <a href="{% provider_login_url "google" method="oauth2" %}" class="btn btn-default btn-sm">Google</a> <a href="{% provider_login_url "twitter" method="oauth2" %}" class="btn btn-default btn-sm">Twitter</a></p>
+        {% endif %}
+        
+      </div>
         {% csrf_token %}
-        {{ form|crispy }}
+        <!-- {{ form|crispy }} -->
         {% if redirect_field_value %}
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
-        <button type="submit" class="btn btn-primary">Create SmallsLIVE Account</button>
-      </form>
-    </div>
+        
+        {% if request.GET.facebook %}
+        {% else %}
+        <h4 class="text-success">Or, sign up the old-fashioned way:</h4>
+        <div class="form-group" id="div_id_subscriber_email">
+          <label class="control-label " for="div_id_subscriber_email">Your email address:</label>
+          <div class="controls ">
+            <input type="text" placeholder="" name="subscriber_email" value="" id="id_subscriber_email" class="form-control">
+          </div>
+        </div>  
+        <div class="checkbox" id="div_id_subscribe">
+          <label class="text-muted"><input type="checkbox" value="1" checked> Join SmallsLIVE Mailing List</label>      
+        </div> 
+        <div class="form-group" id="div_id_password">
+          <label class="control-label " for="div_id_password">Choose a password:</label>
+          <div class="controls ">
+            <input type="password" placeholder="" name="password" value="" id="id_password" class="form-control">
+          </div>
+          <p class="help-block">6 characters minimum.[requirements?]
+        </div> 
+             {% endif %}
+        <div class="form-group" id="div_id_TOS">
+          <label class="control-label" for="id_TOS">Terms of Service:</label>
+          <div class="controls ">
+            <div class="well">terms of service here</div>
+            <p>By pressing "Start my Trial," you are agreeing to the Terms of Service.</p>
+          </div>
+        </div> 
+        <div class="form-group"> 
+          <button type="submit" class="btn btn-primary">Start My Trial <code>2</code></button>   
+        </div>
+      </form>  
+    </div> 
+  </div>
+  <div class="dev">
+    <ul>
+      <li><a href="./?facebook=1">View if auth'd with facebook</a> - we hide the SL account sign up fields and still show Terms sign up.</li>
+      <li><code>1</code> - this page has context for which plan is being accessed
+      <li><code>2</code> - after they start the trial, take them back to the context_url that they were attempting to access when they started this flow (e.g. if they were trying to watch a video or hear a specific recording, take them to that)
+    </ul>
   </div>
 {% endblock %}
 

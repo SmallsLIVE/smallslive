@@ -13,10 +13,13 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-sm-4 col-sm-offset-1">
+  <div class="col-sm-5 col-sm-offset-1">
     <div class="well login">
       <h1>Log In</h1>
-      <p>If you  have a SmallsLIVE password, log in:</p>
+      <p>If you used one of these social media sites to sign up in the past, log in with that option now:</p>
+      <div class="social-logins"><a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-default btn-sm">Facebook</a> <a href="{% provider_login_url "linkedin_oauth2" method="oauth2" %}" class="btn btn-default btn-sm">LinkedIn</a> <a href="{% provider_login_url "google" method="oauth2" %}" class="btn btn-default btn-sm">Google</a> <a href="{% provider_login_url "twitter" method="oauth2" %}" class="btn btn-default btn-sm">Twitter</a></div>
+      <p>Otherwise, log in with your SmallsLIVE password:</p>
+ 
       <form class="login" method="POST" action="{% url 'account_login' %}">
         {% csrf_token %}
         {{ form|crispy }}
@@ -28,24 +31,10 @@
       </form>
     </div>
   </div>
-  <div class="col-sm-5">
+  <div class="col-sm-4">
     <h2>Create an Account</h2>
-    <p>If you have not created a SmallsLIVE account yet, create one below. You can optionally use one of your social media accounts if you don't want to remember another password:   </p>  
-    <div class="row">
-      <div class="col-sm-4">
-        <h5>Use SmallsLIVE:</h5>
-        <p><a href="{{ signup_url }}" class="btn-sm btn-default btn">Create account</a></p>
-      </div>
-      <div class="col-sm-8 social-logins">
-        <div>
-          <h5>Use a social media account:</h5>
-          <p><a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-default btn-sm">Facebook</a> <a href="{% provider_login_url "linkedin_oauth2" method="oauth2" %}" class="btn btn-default btn-sm">LinkedIn</a></p>
-          <p>
-          <a href="{% provider_login_url "google" method="oauth2" %}" class="btn btn-default btn-sm">Google</a> 
-          <a href="{% provider_login_url "twitter" method="oauth2" %}" class="btn btn-default btn-sm">Twitter</a></p>
-        </div>
-      </div>
-    </div>
+    <p>You'll need a account to hear archived audio or watch videos. Learn about our free and paid subscriptions:</p>  
+    <p><a href="/static_page/trial-signup" class="btn-sm btn-default btn">View subscriptions</a></p>
   </div>
 </div>
 <div class="dev">

@@ -1,13 +1,5 @@
 $(document).ready(function(){
-  //Customer Subscription Signup form:
-  $('.f-trial-signup').hide();
-  //Expose the trial signup form
-  $('.trigger-f-trial-signup').on('click',function(e){
-    e.preventDefault();
-    $(this).parent().hide();
-    $('.f-trial-signup').slideDown();
-    $('#id_subscriber_email').focus();
-  });
+
   //When user clicks on sign-up-to-mailing-list checkbox during trial sign-up
   // we want to unmute the text
   function toggleEmailSignupCheckboxLabel(checkbox) {
@@ -19,11 +11,11 @@ $(document).ready(function(){
   }
   //Set proper visual status of mailing-list checkbox on init and change:
   toggleEmailSignupCheckboxLabel($('#div_id_subscribe input'));
-  $('.f-trial-signup').on('change','#div_id_subscribe input',function() {
+  $('#signup_form').on('change','#div_id_subscribe input',function() {
     toggleEmailSignupCheckboxLabel($(this));
   });
   //Process trial sign up form
-  $('.f-trial-signup').submit(function(e){
+  $('#signup_form').submit(function(e){
     //AJAX 
     e.preventDefault();
     //FILL IN ERROR HANDLING
