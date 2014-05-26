@@ -228,6 +228,12 @@ table.artist-past-gigs-media {
   
 } 
 /*=Signup screens*/
+.trigger-credit-card-fields {
+  margin-bottom: $margin-bottom;
+  label {
+    font-weight: bold;
+  }
+}
 .social-signup:not(.authenticated-by-social) {
   margin-bottom: $margin-bottom;
   border-bottom: 1px solid #ccc;

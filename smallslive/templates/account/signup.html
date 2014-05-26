@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load account crispy_forms_tags socialaccount %}
+{% load account crispy_forms_tags socialaccount static %}
 {% block title %}Sign up for SmallsLIVE{% endblock %}
 {% block content %} 
   <div class="row">
@@ -36,31 +36,39 @@
         
         {% if request.GET.facebook %}
         {% else %}
-        <h4 class="text-success">Or, sign up the old-fashioned way:</h4>
-        <div class="form-group" id="div_id_subscriber_email">
-          <label class="control-label " for="div_id_subscriber_email">Your email address:</label>
-          <div class="controls ">
-            <input type="text" placeholder="" name="subscriber_email" value="" id="id_subscriber_email" class="form-control">
-          </div>
-        </div>  
-        <div class="checkbox" id="div_id_subscribe">
-          <label class="text-muted"><input type="checkbox" value="1" checked> Join SmallsLIVE Mailing List</label>      
-        </div> 
-        <div class="form-group" id="div_id_password">
-          <label class="control-label " for="div_id_password">Choose a password:</label>
-          <div class="controls ">
-            <input type="password" placeholder="" name="password" value="" id="id_password" class="form-control">
-          </div>
-          <p class="help-block">6 characters minimum.[requirements?<code>3</code>]
-        </div> 
-             {% endif %}
+          <h4 class="text-success">Or, sign up the old-fashioned way:</h4>
+          <div class="form-group" id="div_id_subscriber_email">
+            <label class="control-label " for="div_id_subscriber_email">Your email address:</label>
+            <div class="controls ">
+              <input type="text" placeholder="" name="subscriber_email" value="" id="id_subscriber_email" class="form-control">
+            </div>
+          </div>  
+          <div class="checkbox" id="div_id_subscribe">
+            <label class="text-muted"><input type="checkbox" value="1" checked> Join SmallsLIVE Mailing List</label>      
+          </div> 
+          <div class="form-group" id="div_id_password">
+            <label class="control-label " for="div_id_password">Choose a password:</label>
+            <div class="controls ">
+              <input type="password" placeholder="" name="password" value="" id="id_password" class="form-control">
+            </div>
+            <p class="help-block">6 characters minimum.[requirements?<code>3</code>]
+          </div> 
+        {% endif %}
+        <h4>Want uninterrupted service?</h4>
+        <p>Your Premium subscription trial will end on June 26th, 2014 automatically unless you enter your payment/credit card info before that. You can do this now or later. 
+        <div class="checkbox trigger-credit-card-fields ">
+          <label class="text-success"><input type="checkbox" value="">Add your credit card/payment info now</label> 
+        </div>
+        <div class="credit-card-fields none">
+          {% include 'blocks/credit-card-fields.html' %}
+        </div>
         <div class="form-group" id="div_id_TOS">
           <label class="control-label" for="id_TOS">Terms of Service:</label>
           <div class="controls ">
             <div class="well">terms of service here</div>
             <p>By pressing "Start my Trial," you are agreeing to the Terms of Service.</p>
           </div>
-        </div> 
+        </div>
         <div class="form-group"> 
           <button type="submit" class="btn btn-primary">Start My Trial <code>2</code></button>   
         </div>
