@@ -16,7 +16,7 @@
       <form id="signup_form" method="post" action="{% url 'account_signup' %}">
       
       <div class="social-signup {% if request.GET.facebook %}authenticated-by-social{% endif %} "> 
-        <h4 class="text-success">Optional: Sign Up With A Social Media Account</h4>
+        <h4 class="text-success">Optional: Sign up with a social media account</h4>
         
         {% if request.GET.facebook %}
         <div class="alert alert-success">
@@ -54,21 +54,17 @@
             <p class="help-block">6 characters minimum.[requirements?<code>3</code>]
           </div> 
         {% endif %}
-        <h4>Want uninterrupted service?</h4>
+        <h5>Want uninterrupted service?</h5>
         <p>Your Premium subscription trial will end on June 26th, 2014 automatically unless you enter your payment/credit card info before that. You can do this now or later. 
         <div class="checkbox trigger-credit-card-fields ">
-          <label class="text-success"><input type="checkbox" value="">Add your credit card/payment info now</label> 
+          <label ><input type="checkbox" value="">Add your credit card/payment info now (optional)</label> 
         </div>
         <div class="credit-card-fields none">
           {% include 'blocks/credit-card-fields.html' %}
         </div>
-        <div class="form-group" id="div_id_TOS">
-          <label class="control-label" for="id_TOS">Terms of Service:</label>
-          <div class="controls ">
-            <div class="well">terms of service here</div>
-            <p>By pressing "Start my Trial," you are agreeing to the Terms of Service.</p>
-          </div>
-        </div>
+ 
+            <p>By pressing "Start my Trial," you are agreeing to the <a href="">SmallsLIVE Terms of Service<code>4</code></a>.</p>
+     
         <div class="form-group"> 
           <button type="submit" class="btn btn-primary">Start My Trial <code>2</code></button>   
         </div>
@@ -81,6 +77,7 @@
       <li><code>1</code> - this page has context for which plan is being accessed
       <li><code>2</code> - after they start the trial, take them back to the context_url that they were attempting to access when they started this flow (e.g. if they were trying to watch a video or hear a specific recording, take them to that)
       <li><code>3</code> - fill in requirements here for password</li>
+      <li><code>4</code> - this should open in a jQuery style dialog box (dont leave the page, dont open a new browser window). Width should be ~50em and height can = 80% of window height.</li>
     </ul>
   </div>
 {% endblock %}

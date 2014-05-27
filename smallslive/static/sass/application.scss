@@ -208,7 +208,7 @@ body.search .facets {
     }
     .row:not(.days-of-week) .day {
       height: 15em; 
-    }  
+    }
   } 
 }
 /*=Event/Media Page*/
@@ -229,9 +229,7 @@ table.artist-past-gigs-media {
 /*=Signup screens*/
 .trigger-credit-card-fields {
   margin-bottom: $margin-bottom;
-  label {
-    font-weight: bold;
-  }
+ 
 }
 .social-signup:not(.authenticated-by-social) {
   margin-bottom: $margin-bottom;
@@ -504,12 +502,16 @@ body abbr.explained {
   margin: 0;
   padding: 0;
 }
-.dev li {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 .5em 0; 
+.dev {
+  li {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 .5em 0; 
+  }
+  li.completed {
+    text-decoration: line-through;
+  }
 }
-
 .dev li li {
   list-style: circle;
   margin-left: 3em;
