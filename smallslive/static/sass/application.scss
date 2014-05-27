@@ -308,7 +308,7 @@ table.recordings-to-publish tr {
         display: inline-block; 
       }
     }
-  } 
+  }
   .thumbnail {
     margin-bottom: 0;
     img {
@@ -502,12 +502,16 @@ body abbr.explained {
   margin: 0;
   padding: 0;
 }
-.dev li {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 .5em 0; 
+.dev {
+  li {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 .5em 0; 
+  }
+  li.completed {
+    text-decoration: line-through;
+  }
 }
-
 .dev li li {
   list-style: circle;
   margin-left: 3em;
