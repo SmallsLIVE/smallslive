@@ -64,3 +64,5 @@ koala-config.json
 # data files
 smallsliveusers.txt
 /smallslive/static/css/application.css
+
+smallslive/static/sass/application.css
