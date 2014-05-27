@@ -7,7 +7,7 @@ from .models import Artist
 class ArtistAddForm(ModelForm):
     class Meta:
         model = Artist
-        fields = ('first_name', 'last_name', 'salutation', 'instruments', 'biography', 'website', 'photo')
+        fields = ('salutation', 'first_name', 'last_name',  'instruments', 'biography', 'website', 'photo')
         widgets = {
             'instruments': SelectMultiple,
             'photo': ImageThumbnailWidget
