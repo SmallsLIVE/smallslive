@@ -1,5 +1,6 @@
+import floppyforms
 from crispy_forms.helper import FormHelper
-from django.forms import ModelForm, SelectMultiple
+from django.forms import ModelForm
 from events.forms import ImageThumbnailWidget
 from .models import Artist
 
@@ -9,7 +10,7 @@ class ArtistAddForm(ModelForm):
         model = Artist
         fields = ('salutation', 'first_name', 'last_name',  'instruments', 'biography', 'website', 'photo')
         widgets = {
-            'instruments': SelectMultiple,
+            'instruments': floppyforms.SelectMultiple,
             'photo': ImageThumbnailWidget
         }
 
