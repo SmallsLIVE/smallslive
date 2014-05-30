@@ -132,3 +132,13 @@ class MyGigsView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         return user.is_artist
 
 my_gigs = MyGigsView.as_view()
+
+
+class CalendarView(ListView):
+    template_name = 'calendar.html'
+    context_object_name = 'events'
+
+    def get_queryset(self):
+        return Event.objects.all().order_by("-start")[:30]
+
+calendar = CalendarView.as_view()

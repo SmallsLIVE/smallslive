@@ -19,6 +19,15 @@
     </div>
   </div>
 </div>
+{% regroup events by start as events_calendar %}
+{% for date in events_calendar %}
+  <h3>Date: {{ date.grouper }}</h3>
+  <ul>
+    {% for event in date.list %}
+      <li>{{ event.title }}</li>
+    {% endfor %}
+  </ul>
+{% endfor %}
 <div class="row">
   <div class="col-sm-4">
     <h2>Tonight (24)</h2>
