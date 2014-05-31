@@ -212,9 +212,39 @@ body.search .facets {
   } 
 }
 /*=Event/Media Page*/
-.sideman-block .thumbnail {
-  text-align: center;
-  min-height: 210px;
+.event {  
+ .sideman {
+    float:left;
+    margin: 0 16px 16px 0;
+    width: 180px;
+    a {
+      color: #333;
+    }
+    .media-count {
+      color: #666;
+    }
+  }
+  @media all and (min-width : $screen-md-min) {
+    .sideman {
+      width: 220px;
+    }
+  }
+  img {
+    margin-right: 8px
+  }
+  h3 {
+    margin-top: 0;
+  } 
+}
+.video-player {
+  .video-player-controls {
+    background: #333;
+    font-size: 32px;
+    text-align: center;
+    a {
+      color: #aaa;
+    }
+  }
 }
 /*=Admin screens*/
 table.artist-past-gigs-media {

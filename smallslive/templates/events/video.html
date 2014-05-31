@@ -1,4 +1,35 @@
 {% extends "base.html" %}
+{% load static %}
+{% block bodyclass %}event{% endblock bodyclass %}
+{% block extra_css %}
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+{% endblock extra_css %}
+{% block extra_js %}
+  <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+  <script type="text/javascript" src="/static/js/jQuery.jPlayer.2.6.0/jquery.jplayer.min.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $("#jquery_jplayer_1").jPlayer({
+      ready: function () {
+        $(this).jPlayer("setMedia", {
+          m4v: "http://orchestrotica.com/media/kit2009/index_files/Andalucia_HD.mp4",
+          poster: "http://orchestrotica.com/media/kit2009/index_files/poster_andalucia.jpg"
+        });
+      },
+      size: {
+  			width: "100%", 
+  			cssClass: "video-player-controls"
+  		},
+      swfPath: "/static/js/jQuery.jPlayer.2.6.0/",
+      supplied: "m4v",      
+  		smoothPlayBar: true,
+  		keyEnabled: true,
+  		remainingDuration: true,
+  		toggleDuration: true
+    });
+  });
+  </script>
+{% endblock extra_js %}
 {% comment %}
 This page is loaded instead of event_detail if the event is in the past or taping is going on.
       <img src="{% thumbor_url event.photo.url|urlencode width=100 height=100 smart=True %}" class="headshot" /> <!-- 100x100 with smart crop (should detect faces) -->
@@ -10,38 +41,56 @@ This page is loaded instead of event_detail if the event is in the past or tapin
 {% load thumbor_tags %}
 {% block title %}{{ event.display_title }} {{ event.start }} in NYC w/ {{ event.sidemen }}{% endblock title %}
 {% block content %}
-<h1><code>2</code>Live Now: {{ event.display_title }}</h1>
+{% if user.is_superuser %}<a href="{% url "event_edit" pk=event.id %}">Edit this event</a>{% endif %}
+<h1>{% if request.GET.islive %}Live Now: {% endif %}{{ event.display_title }}</h1>
 <div class="row">
   <div class="col-sm-8">
-    <div class="video_player">
+    {% if request.GET.isfuture %}
       <p>{{ event.start }}, {{ event.date_freeform }}</p>
-      {% if event.subtitle %}
-        <p>{{ event.subtitle }}</p>
-      {% endif %}
-      <div class="well" style="text-align:center;padding:8em">[video player if live now]<code>3</code></div>
-      <div class="well" style="text-align:center;padding:4em 8em">[audio player if past event]</div>
-      {% if event.photo %}
-        <div class="well" style="text-align:center;padding:8em 8em">    
-          <img src="{{ event.photo.url }}"  />
-        </div>
-      {% endif %}
-    </div> 
-    <div class="row">
-    {% for artist_info in performers %}
-      <div class="col-sm-6 col-md-4 sideman-block">
-        <div class="thumbnail">
-          <a href="{% url "artist_detail" pk=artist_info.artist.id %}">
-          {% if artist_info.artist.photo.url != "" %}
-            <img src="{% thumbor_url artist_info.artist.photo.url|urlencode width=100 height=100 smart=True %}" class="img-responsive artist-photo" />
-          {% endif %}</a>
-          <div class="caption">
-            <h3>{{ artist_info.artist.full_name }}</h3>
-            <p>{{ artist_info.artist.instruments.all|join:", " }} </p>
+    {% endif %}
+    {% if event.subtitle %}
+      <p>{{ event.subtitle }}</p>
+    {% endif %}
+    {% if request.GET.isfuture %}
+        {% if event.photo %}
+          <div class="well" style="text-align:center;padding:8em 8em">    
+            <img src="{{ event.photo.url }}" class="img-responsive"  />
           </div>
-        </div>
+        {% endif %}
+    {% else %}
+      {% if request.GET.mediaUnavailable %}
+        <div class="alert alert-info">Video for this show is being processed and will be available here soon.</div>
+        {% if event.photo %}
+          <div class="well" style="text-align:center;padding:8em 8em">    
+            <img src="{{ event.photo.url }}"  />
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="video-player">
+          <div id="jquery_jplayer_1"></div>
+          <div id="jp_container_1">
+            <a href="#" class="jp-play"><span class="glyphicon glyphicon-play"></span></a>
+            <a href="#" class="jp-pause"><span class="glyphicon glyphicon-pause"></span></a>
+          </div>
+        </div> 
+        <p>Recorded {{ event.start }}, {{ event.date_freeform }}</p>
+      {% endif %}
+    {% endif %}
+    <h2>featuring:</h2> 
+    {% for artist_info in performers %}
+      <div class="sideman">
+        <a href="{% url "artist_detail" pk=artist_info.artist.id %}">
+        {% if artist_info.artist.photo.url != "" %}
+          <img src="{% thumbor_url artist_info.artist.photo.url|urlencode width=80 height=80 smart=True %}" class="img-responsive artist-photo pull-left" />
+        {% else %} 
+          <img src="{% static 'image/photo-unavailable-square.svg' %}" width="80" height="80" class="img-responsive artist-photo pull-left" />
+        {% endif %}
+        <h3>{{ artist_info.artist.full_name }}</h3>
+        {{ artist_info.artist.instruments.all|join:", " }} 
+        <span class="media-count">(<span class="glyphicon glyphicon-music"></span> 6)</span>
+        </a>
       </div>
     {% endfor %} 
-    </div>
     {% if event.description %}  
       <div class="description well"> 
         {{ event.description|safe }}
@@ -49,6 +98,15 @@ This page is loaded instead of event_detail if the event is in the past or tapin
     {% endif %}
   </div>
   <div class="col-sm-4">
+  {% if request.GET.hascd %}
+  <div class="well">
+    <img src="http://beta.asoundstrategy.com/sitemaster/userUploads/site372/SL0039_PETERBERNSTEIN1.jpg" alt="{album title}" style="" class="img-responsive pull-right artist-photo" />
+    <p>This event was released on CD in 2007.</p> 
+    <p>CD: $15, Download: $10</p>
+    <p><a class="btn btn-primary btn-lg" role="button">Buy CD or Download</a></p>
+     
+  </div>
+  {% endif %}
     <h2><code>1</code>Listen to Recent Sets from { leader.fullname }</h2>
     <table class="table">
       <tbody>
@@ -67,25 +125,21 @@ This page is loaded instead of event_detail if the event is in the past or tapin
       </tbody>
     </table> 
     <p><a href="{% url "artist_detail" pk=412%}">Browse all (6) audio sets from { leader.fullname }</a></p>
-    <h2><code>1</code>Audio from Sidemen:</h2>
-    <table class="table">
-      <tbody>
-      {% for artist_info in performers %}
-        <tr>
-          <td><a href="{% url "artist_detail" pk=artist_info.artist.id %}">{{ artist_info.artist.full_name }} - {{ artist_info.artist.instruments.all|join:", " }} </a></td>
-          <td><a href="{% url "artist_detail" pk=artist_info.artist.id %}">X sets available</a></td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table> 
+
   </div>
 </div>    
 <div class="dev">
+  <h1>Alternate States:</h1>
+  <ul>
+    <li><a href="./?isfuture=1">Future/upcoming event</a> {isfuture}</li>
+    <li><a href="./?islive=1">Live now event</a> {islive}</li>
+    <li><a href="./?">Past event</a> (Default view)</li>
+    <li><a href="./?hascd=1">Past event, w/ CD</a> {hascd} </li>
+    <li><a href="./?mediaUnavailable=1">Past event, no video</a> {mediaUnavailable}</li>
+  </ul>
   <h1>Dev notes</h1>
   <Ul> 
-    <li><code>1</code> - display audio lnks to sidemen and leader. hide any artist including leader if there is no audio for him/her.</li>
-    <li><code>2</code> - only print this if the show is live now</li>
-    <li><code>3</code> - based on event date, or live-now status, show either video player, or or event photo + audio player if avail (for past events)
+    <li><code>1</code> - display audio lnks to sidemen and leader. hide any artist including leader if there is no audio for him/her.</li> 
   </Ul>
 </div>
 
