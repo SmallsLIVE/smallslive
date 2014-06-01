@@ -148,7 +148,8 @@ class EventAddForm(forms.ModelForm):
     def save(self, commit=True):
         object = super(EventAddForm, self).save()
         if not object.photo and self.cleaned_data['suggested_images']:
-            # get relative path to the image, the part after the domain name
-            object.photo = urlparse(self.cleaned_data['suggested_images']).path[1:]
+            # get the photo from an existing event
+            event_photo = Event.objects.get(id=self.cleaned_data['suggested_images']).photoq
+            object.photo = event_photo
         object.save()
         return object
