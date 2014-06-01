@@ -49,12 +49,12 @@ EventForm = {
         $start.datetimepicker({
             sideBySide: true,
             minuteStepping: 5,
-            defaultDate: moment("19:00", "H:mm")
+            defaultDate: moment("19:00", "H:mm").add('days', 30)
         });
         $end.datetimepicker({
             sideBySide: true,
             minuteStepping: 5,
-            defaultDate: moment("20:00", "H:mm")
+            defaultDate: moment("20:00", "H:mm").add('days', 30)
         });
 
         EventForm.selectedDate = $start.data("DateTimePicker").getDate();
