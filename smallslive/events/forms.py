@@ -149,7 +149,7 @@ class EventAddForm(forms.ModelForm):
         object = super(EventAddForm, self).save()
         if not object.photo and self.cleaned_data['suggested_images']:
             # get the photo from an existing event
-            event_photo = Event.objects.get(id=self.cleaned_data['suggested_images']).photoq
+            event_photo = Event.objects.get(id=self.cleaned_data['suggested_images']).photo
             object.photo = event_photo
         object.save()
         return object
