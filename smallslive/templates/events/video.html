@@ -39,7 +39,7 @@ This page is loaded instead of event_detail if the event is in the past or tapin
       {{ event.description }}
 {% endcomment %}
 {% load thumbor_tags %}
-{% block title %}{{ event.display_title }} {{ event.start }} in NYC w/ {{ event.sidemen }}{% endblock title %}
+{% block title %}{{ event.title }} - {{ event.start }} in NYC w/ {{ event.performers.all|join:", " }}{% endblock title %}
 {% block content %}
 {% if user.is_superuser %}<a href="{% url "event_edit" pk=event.id %}">Edit this event</a>{% endif %}
 <h1>{% if request.GET.islive %}Live Now: {% endif %}{{ event.display_title }}</h1>
