@@ -39,14 +39,10 @@ sample thumbors:
       {{ event.description }}
 {% endcomment %}
 {% load thumbor_tags %}
-{% block title %}{{ event.display_title }} - {{ event.start }} in NYC w/   
- 
-    {{ performers.artist_info.artist.first_name.all|join:", " }}
- 
-{% endblock title %}
+{% block title %}{{ event.title }} - {{ event.start }} in NYC w/ {{ event.performers.all|join:", " }}{% endblock title %}
 {% block content %}
 {% if user.is_superuser %}<a href="{% url "event_edit" pk=event.id %}">Edit this event</a>{% endif %}
-<h1>{% if request.GET.islive %}<span class="label label-primary">Live Now</span> {% endif %}{{ event.display_title }}</h1>
+<h1>{% if request.GET.islive %}<span class="label label-primary">Live Now</span> {% endif %}{{ event.title }}</h1>
 <div class="row">
   <div class="col-sm-8">
     {% if request.GET.isfuture %}
