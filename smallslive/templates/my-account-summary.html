@@ -1,4 +1,5 @@
 {% extends "base_my_account.html" %}
+{% load socialaccount %}
 {% block title %}My Account &amp; Subscription{% endblock title%}
 {% block content_for_account_mgmt %} 
   <table class="table nv my-account ">
@@ -16,9 +17,27 @@
         <td colspan="">Name</td>
         <td colspan=""><p>Firstname Lastname</p><a href="/artists/102/edit">Change name on account</a></td>
       </tr>  
-      <tr>
-        <td>Email (your login)</td><td><p>{{ user.email }} <code>6</code>(unverified) </p><a href="/static_page/my-account-edit">Edit email address</a><code>4</code></td>
-      </tr>
+      {% if request.GET.social %}
+        <tr>
+          <td>Your Login / Social Media Connections</td>
+          <td>
+            <p>You use {sitename} to log in to SmallsLIVE. <a href="">change how I log in</a></p>
+            <p>
+            <div class="social-logins"><a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-default btn-sm">Facebook</a> <a href="{% provider_login_url "linkedin_oauth2" method="oauth2" %}" class="btn btn-default btn-sm">LinkedIn</a> <a href="{% provider_login_url "google" method="oauth2" %}" class="btn btn-default btn-sm">Google</a> <a href="{% provider_login_url "twitter" method="oauth2" %}" class="btn btn-default btn-sm">Twitter</a></div>
+          </td>
+        </tr>      
+      {% else %}
+        <tr>
+          <td>Email (your login)</td><td><p>{{ user.email }} <span class="text-warning">(unverified - check your email for a message we sent you with a link to click on to verify this account)<code>6</code></p><a href="/static_page/my-account-edit">Edit email address / resend verification</a><code>4</code></td>
+        </tr>
+        <tr>
+          <td>Social Media Accounts</td>
+          <td>
+            <p>Connect your social media profiles for easier sharing of SmallsLIVE content with your friends.</p>
+            <div class="social-logins"><a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-default btn-sm">Facebook</a> <a href="{% provider_login_url "linkedin_oauth2" method="oauth2" %}" class="btn btn-default btn-sm">LinkedIn</a> <a href="{% provider_login_url "google" method="oauth2" %}" class="btn btn-default btn-sm">Google</a> <a href="{% provider_login_url "twitter" method="oauth2" %}" class="btn btn-default btn-sm">Twitter</a></div>
+          </td>
+        </tr>
+      {% endif %}
       <tr>
         <td>Mailing List</td>
         <td>
@@ -131,6 +150,7 @@
     <Ul> 
       <li><a href="?onMailingList=1">Already on mailing list</a></li>
       <li><a href="?free=1">User is free-service subscriber</a></li> 
+      <li><a href="?free=1&social=1">User is free-service subscriber w/ social auth used</a></li> 
       <li><a href="?inTrial=1">User is inside trial period of paid sub. service</a></li>
       <li><a href="?">User is paid subscriber</a></li>         
       <li><a href="?cancelled=1">User just cancelled / is cancelled</a></li>     
@@ -148,8 +168,7 @@
  
           <li>Phone: same as password; replace "password" with "phone" in the flash message. Use 1 input field; talk to brian if we need to handle international number entry. See <code>7</code></li>
           <li>Address: use text inputs for all fields; do not use dropdown for state (use .selectize). talk to brian if we're handling international addresses. See <code>7</code></li>
-        </ul>
-       <li><code>6</code> This email address hasn't been click-verified; this could only happen for a registered user who changes their email after signing up.</li> 
+        </ul> 
        <li><code>7</code> - only show phone and address fields if they have ordered something that required these fields at checkout time</li>
     </Ul>
   </div>
