@@ -45,21 +45,43 @@ class Event(TimeStampedModel):
         Returns the event display title. If the title is defined, returns the title, otherwise it generates
         one from the performer names and their roles.
         """
+        performers = self.artists_gig_info.order_by('sort_order').select_related('artist').values_list(
+                'artist__first_name', 'artist__last_name')
+        # Make full names
+        performers = ["{0} {1}".format(first, last) for first, last in performers]
         if self.title:
             display_title = self.title
         else:
-            performers = self.artists_gig_info.order_by('sort_order').select_related('artist', 'role').values_list(
-                'artist__first_name', 'artist__last_name', 'role__name')
-            # Make full names
-            performers = [("{0} {1}".format(first, last), instrument) for first, last, instrument in performers]
             first = performers.pop(0)
             display_title = first[0]
-            # If only one member, show his name, otherwise list all the remaining artists and their instruments
-            if performers:
-                display_title += " w/ "
-                for performer in performers:
-                    display_title += "{0} ({1}), ".format(performer[0], performer[1])
-            display_title = display_title[:-2]
+        # If only one member, show his name, otherwise list all the remaining artists and their instruments
+        if performers:
+            display_title += " w/ "
+            for performer in performers:
+                display_title += "{0}, ".format(performer)
+        display_title = display_title[:-2]
+        return display_title
+
+    def display_title_with_instruments(self):
+        """
+        Returns the event display title. If the title is defined, returns the title, otherwise it generates
+        one from the performer names and their roles.
+        """
+        performers = self.artists_gig_info.order_by('sort_order').select_related('artist', 'role').values_list(
+                'artist__first_name', 'artist__last_name', 'role__abbreviation')
+        # Make full names
+        performers = [("{0} {1}".format(first, last), instrument) for first, last, instrument in performers]
+        if self.title:
+            display_title = self.title
+        else:
+            first = performers.pop(0)
+            display_title = first[0]
+        # If only one member, show his name, otherwise list all the remaining artists and their instruments
+        if performers:
+            display_title += " w/ "
+            for performer in performers:
+                display_title += "{0} ({1}), ".format(performer[0], performer[1])
+        display_title = display_title[:-2]
         return display_title
 
     def is_past(self):
