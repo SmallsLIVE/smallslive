@@ -39,10 +39,14 @@ sample thumbors:
       {{ event.description }}
 {% endcomment %}
 {% load thumbor_tags %}
-{% block title %}{{ event.display_title }} {{ event.start }} in NYC w/ {{ event.sidemen }}{% endblock title %}
+{% block title %}{{ event.display_title }} - {{ event.start }} in NYC w/   
+ 
+    {{ performers.artist_info.artist.first_name.all|join:", " }}
+ 
+{% endblock title %}
 {% block content %}
 {% if user.is_superuser %}<a href="{% url "event_edit" pk=event.id %}">Edit this event</a>{% endif %}
-<h1>{% if request.GET.islive %}Live Now: {% endif %}{{ event.display_title }}</h1>
+<h1>{% if request.GET.islive %}<span class="label label-primary">Live Now</span> {% endif %}{{ event.display_title }}</h1>
 <div class="row">
   <div class="col-sm-8">
     {% if request.GET.isfuture %}
@@ -73,9 +77,34 @@ sample thumbors:
             <a href="#" class="jp-pause"><span class="glyphicon glyphicon-pause"></span></a>
           </div>
         </div> 
-        <p>Recorded {{ event.start }}, {{ event.date_freeform }}</p>
+        <p class="event_date">Recorded {{ event.start }}, {{ event.date_freeform }}</p>
       {% endif %}
     {% endif %}
+    {# start track list #}
+    <h4>(7) tracks available for sale from this concert:</h4>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Song</th>
+          <th>Composer</th>
+          <th>Length</th>
+          <th>Price</th>
+          <th>Video cue</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% include 'blocks/track-name.html' %}
+        {% include 'blocks/track-name.html' %}
+        {% include 'blocks/track-name.html' %}
+        {% include 'blocks/track-name.html' %}
+        {% include 'blocks/track-name.html' %}
+        {% include 'blocks/track-name.html' %}
+        {% include 'blocks/track-name.html' %}
+      </tbody>
+    </table>
+    {# end track list #}
+    {# start musician list #}
     <h2>featuring:</h2> 
     {% for artist_info in performers %}
       <div class="sideman">
@@ -91,6 +120,7 @@ sample thumbors:
         </a>
       </div>
     {% endfor %} 
+    {# end musician list #}
     {% if event.description %}  
       <div class="description well"> 
         {{ event.description|safe }}
@@ -141,6 +171,7 @@ sample thumbors:
     <li><a href="./?">Past event</a> (Default view)</li>
     <li><a href="./?hascd=1">Past event, w/ CD</a> {hascd} </li>
     <li><a href="./?mediaUnavailable=1">Past event, no video</a> {mediaUnavailable}</li>
+    <li><a href="./?noTracks=1">No track listing</a> {noTracks}</li>
   </ul>
   <h1>Dev notes</h1>
   <Ul> 
