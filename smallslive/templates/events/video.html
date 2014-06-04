@@ -31,7 +31,7 @@
   </script>
 {% endblock extra_js %}
 {% comment %}
-This page is loaded instead of event_detail if the event is in the past or taping is going on.
+sample thumbors:
       <img src="{% thumbor_url event.photo.url|urlencode width=100 height=100 smart=True %}" class="headshot" /> <!-- 100x100 with smart crop (should detect faces) -->
       <img src="{% thumbor_url event.photo.url|urlencode width=200 %}" class="200w" width="200w_proportional"/> <!-- width=200 height=proportional -->
       <img src="{% thumbor_url event.photo.url|urlencode width=200 height="orig" %}" class="200w_original" width="200"/> <!-- width=200 height=original-->
@@ -107,24 +107,29 @@ This page is loaded instead of event_detail if the event is in the past or tapin
      
   </div>
   {% endif %}
-    <h2><code>1</code>Listen to Recent Sets from { leader.fullname }</h2>
-    <table class="table">
-      <tbody>
-        <tr>
-          <td>[playButton]</td>
-          <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
-        </tr>
-        <tr>
-          <td>[playButton]</td>
-          <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
-        </tr>
-        <tr>
-          <td>[playButton]</td>
-          <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
-        </tr> 
-      </tbody>
-    </table> 
-    <p><a href="{% url "artist_detail" pk=412%}">Browse all (6) audio sets from { leader.fullname }</a></p>
+  
+    {% for artist_info in performers %}
+      {% if artist_info.is_leader %}
+      <h4>Recent Videos by {{ artist_info.artist.full_name }}</h4>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>[playButton]</td>
+            <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
+          </tr>
+          <tr>
+            <td>[playButton]</td>
+            <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
+          </tr>
+          <tr>
+            <td>[playButton]</td>
+            <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
+          </tr> 
+        </tbody>
+      </table> 
+      <p><a href="{% url "artist_detail" pk=412%}">Browse all (6) videos from {{ artist_info.artist.full_name }}</a></p>
+      {% endif %}
+    {% endfor %}
 
   </div>
 </div>    
@@ -139,7 +144,7 @@ This page is loaded instead of event_detail if the event is in the past or tapin
   </ul>
   <h1>Dev notes</h1>
   <Ul> 
-    <li><code>1</code> - display audio lnks to sidemen and leader. hide any artist including leader if there is no audio for him/her.</li> 
+    <li><code>1</code> -  </li> 
   </Ul>
 </div>
 
