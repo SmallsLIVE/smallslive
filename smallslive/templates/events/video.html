@@ -77,7 +77,23 @@ sample thumbors:
       {% endif %}
     {% endif %}
     {# start track list #}
-    <h4>(7) tracks available for sale from this concert:</h4>
+    {% if request.GET.hascd %}  
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="well">
+           <img src="{% thumbor_url 'http://beta.asoundstrategy.com/sitemaster/userUploads/site372/SL0039_PETERBERNSTEIN1.jpg'|urlencode width=150 height=150 smart=True %}" class="pull-right img-responsive" /> 
+        
+            <h4>{ CD.title }</h4>
+            <p>Released in Jan, 2007.</p> 
+            <p>Available formats: CD, FLAC/WAV download</p>
+            <p><a class="btn btn-primary btn-lg" role="button">View Album</a>
+            <p>&hellip;or download singles below:</p>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <h4>(7) Downloads available from this video:</h4>
+    {% endif %}
     <table class="table table-striped">
       <thead>
         <tr>
@@ -124,15 +140,6 @@ sample thumbors:
     {% endif %}
   </div>
   <div class="col-sm-4">
-  {% if request.GET.hascd %}
-  <div class="well">
-    <img src="http://beta.asoundstrategy.com/sitemaster/userUploads/site372/SL0039_PETERBERNSTEIN1.jpg" alt="{album title}" style="" class="img-responsive pull-right artist-photo" />
-    <p>This event was released on CD in 2007.</p> 
-    <p>CD: $15, Download: $10</p>
-    <p><a class="btn btn-primary btn-lg" role="button">Buy CD or Download</a></p>
-     
-  </div>
-  {% endif %}
   
     {% for artist_info in performers %}
       {% if artist_info.is_leader %}
