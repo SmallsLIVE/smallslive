@@ -12,7 +12,7 @@ class Command(NoArgsCommand):
         conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
         bucket = conn.get_bucket("smallsliveaudio")
         files_imported = 0
-        for event in Event.objects.filter(id__in=(6341, 6331, 6116)):
+        for event in Event.objects.all():
             for set_num in range(1, 7):
                 filename = '{0}-{1}.mp3'.format(event.id, set_num)
                 if bucket.get_key(filename):
