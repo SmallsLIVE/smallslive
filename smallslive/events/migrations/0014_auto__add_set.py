@@ -7,6 +7,10 @@ from django.db import models
 
 class Migration(SchemaMigration):
 
+    depends_on = (
+        ('multimedia', '0002_auto__add_mediafile'),
+    )
+
     def forwards(self, orm):
         # Adding model 'Set'
         db.create_table(u'events_set', (
