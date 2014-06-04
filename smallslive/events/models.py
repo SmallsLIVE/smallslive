@@ -72,6 +72,15 @@ class Event(TimeStampedModel):
         return self.artists_gig_info.prefetch_related('artist__instruments')
 
 
+class Set(models.Model):
+    media_file = models.OneToOneField('multimedia.MediaFile', primary_key=True, related_name='set')
+    event = models.ForeignKey(Event, related_name='sets')
+    set_number = models.IntegerField(default=1)
+
+    class Meta:
+        ordering = ['set_number']
+
+
 class EventType(models.Model):
     name = models.CharField(max_length=50)
     parent = models.IntegerField()
