@@ -71,15 +71,20 @@
                <a href="" class="btn btn-primary" role="button">Add Payment Info</a>
 
             {% else %}
-              <!-- not in premium trial; has free sub -->
-              <p><strong>Free Subscription</strong></p>
-              <p>With a Premium Subscription you could get:</p>
-              <ul>
-                <li>Access all audio streams</li>
-                <li>Watch tonight's live concert(s)</li>
-                <li>Access to purchase downloads (when avail.)</li>
-              </ul>
-              <a href="" class="btn btn-primary" role="button">Upgrade Now ($10/month)</a>
+              {% if request.GET.free %}
+                <!-- not in premium trial; has free sub -->
+                <p><strong>Free Subscription</strong></p>
+                <p>With a Premium Subscription you could get:</p>
+                <ul>
+                  <li>Access all audio streams</li>
+                  <li>Watch tonight's live concert(s)</li>
+                  <li>Access to purchase downloads (when avail.)</li>
+                </ul>
+                <a href="" class="btn btn-primary" role="button">Upgrade Now ($10/month)</a>
+              {% else %}
+                <p><strong>Premium Subscription ($10/mo)</strong></p>
+                <a href="">Change/Cancel Subscription</a>
+              {% endif %}
             {% endif %}
           {% endif %}
         </td>
@@ -90,6 +95,9 @@
           <td>You cancelled your last subscription on May 1, 2014.</td>
         </tr>
       {% else %}
+      
+        {% if request.GET.inTrial or request.GET.free %}
+        {% else %}
         <tr>
           <td>Billing</td>          
           <td>
@@ -98,14 +106,18 @@
             <a href="{% url 'djstripe:change_card' %}">Change credit card</a><code>2</code>
           </td>
         </tr>
+        {% endif %}
         <tr>
           <td>Subscriber since</td>
           <td>March 1, 2015</td> 
         </tr>
-        <tr>
-          <td>Artist Revenue Generated</td>
-          <td><span class="text-success">~$100.00 from your subscription fees and purchases have gone directly into our artist revenue pool. Thanks!</span></td> 
-        </tr> 
+        {% if request.GET.inTrial or request.GET.free %}
+        {% else %}
+          <tr>
+            <td>Artist Revenue Generated</td>
+            <td><span class="text-success">~$100.00 from your subscription fees and purchases have gone directly into our artist revenue pool. Thanks!</span></td> 
+          </tr> 
+        {% endif %}
       {% endif %}
       <tr>
         <td>Orders/Transactions</td>
