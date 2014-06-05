@@ -187,27 +187,21 @@ sample thumbors:
   <div class="col-sm-4">
     {% if event.leader %}
       <div class="leader-videos"> 
-      <h4>Recent Videos by {{ event.leader.full_name }}</h4>
+      <h4>Recent Videos led by {{ event.leader.full_name }}</h4>
       <table class="table">
         <tbody>
-          <tr>
-            <td>[playButton]</td>
-            <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
-          </tr>
-          <tr>
-            <td>[playButton]</td>
-            <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
-          </tr>
-          <tr>
-            <td>[playButton]</td>
-            <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
-          </tr> 
+ 
+          {% include 'blocks/related-video.html' %}
+          {% include 'blocks/related-video.html' %}
+          {% include 'blocks/related-video.html' %}
+          {% include 'blocks/related-video.html' %}
+
         </tbody>
       </table> 
       <p><a href="{% url "artist_detail" pk=412%}">Browse all ({{ event.leader.media_count_as_leader }}) videos from {{ event.leader.full_name }}</a></p>
       </div>
     {% endif %}
-    <h4>About {{ event.leader.full_name }}</h4>
+    <h4>About {{ event.leader.first_name }}</h4>
     <p>{{ event.leader.biography|safe|truncatechars:190}} <a href="{% url "artist_detail" pk=event.leader.id %}">Full artist profile</a></p>
  
 

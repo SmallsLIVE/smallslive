@@ -1,0 +1,5 @@
+{% load thumbor_tags %}
+<tr>
+  <td><a href="{ set.media_file }"><img src="{% thumbor_url event.photo.url|urlencode width=100 height=60 smart=True %}" class="img-responsive"  /></a></td>
+  <td><a href="{% url "event_detail" pk=event.id%}">set.event.title</a><br /><span class="text-muted">mm/dd/yyyy w/ sideman, sideman, sideman</span>  </td>
+</tr> 
