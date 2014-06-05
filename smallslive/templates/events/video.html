@@ -133,6 +133,9 @@ sample thumbors:
           {% if event.description %}
             <div class="description {% if not request.GET.isfuture %}none{% endif %}"> 
               {{ event.description|safe }}
+            {% if event.link %}
+              <p>More info on this event: <a href="{{ event.link }}">{{ event.link|truncatechars:100 }}</a></p>
+            {% endif %}
             </div>
           {% endif %}
         </div>
