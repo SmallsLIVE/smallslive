@@ -104,13 +104,13 @@ sample thumbors:
     {% endif %}
     <div class="event-main-container {% if request.GET.isfuture %}future{% endif %}">
       {# Begin rankings #}
-      <p>
+      <div class="rankings">
         <a href="" class="trigger-favorite-video btn btn-primary btn-xs">
           <span class="glyphicon glyphicon-star"></span> Favorite
         </a>
         <a href="{% url "artist_detail" pk=event.leader.id %}" class="btn btn-xs btn-default">#2 in  {{ event.leader.first_name }}'s videos</span></a> 
         <a href="/static_page/search/" class="btn btn-default btn-xs">#134 video overall</a>
-      </p>
+      </div>
       {# end rankings #}
       {# Begin event meta data (photo, description ,etc) #}
       {% if event.photo and request.GET.isfuture %}  
