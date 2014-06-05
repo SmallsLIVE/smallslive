@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.utils.functional import cached_property
 from django.utils.timezone import datetime
 from model_utils import Choices
 from model_utils.fields import StatusField
@@ -92,6 +93,13 @@ class Event(TimeStampedModel):
 
     def get_performers(self):
         return self.artists_gig_info.prefetch_related('artist__instruments')
+
+    def leader(self):
+        try:
+            leader = self.artists_gig_info.get(is_leader=True).artist
+        except GigPlayed.DoesNotExist:
+            leader = None
+        return leader
 
 
 class Set(models.Model):
