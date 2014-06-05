@@ -213,6 +213,16 @@ body.search .facets {
 }
 /*=Event/Media Page*/
 .event {  
+  div.socials {
+    padding-top: 8px;
+  }
+  .event-main-container {
+    border:1px solid #ddd;
+    border-top: none;
+    padding-right: 12px;
+    padding-left: 12px;
+    padding-top: $margin-bottom;
+  }
   .page-header h1 a {
     font-size: 50%;
     margin-left: 24px;
@@ -255,13 +265,20 @@ body.search .facets {
   } 
 }
 .video-player {
-  margin-bottom: $margin-bottom;
   .video-player-controls {
     background: #111;
-    font-size: 32px;
-    text-align: center;
+    font-size: 16px; /* adjust icon size */
     border-top:1px solid #444;
-    padding: 4px 0;
+    padding: 4px 12px; 
+    span.run-time {
+      margin-left: 8px;
+      font-size: 12px;
+      line-height: 24px;
+      color: #aaa;
+      .total {
+        color: #777;
+      }
+    }
     a {
       color: #aaa;
     }
