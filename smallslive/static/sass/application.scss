@@ -216,10 +216,28 @@ body.search .facets {
   .leader-videos {
     margin-bottom: $margin-bottom;
   }
+  .event-photo {
+    
+  }
   div.socials {
     padding-top: 8px;
   }
+  .event-main-container.future {
+    border:1px solid #ddd;
+    padding-top:0;
+    img.event-photo {
+      margin-left: -13px;
+      margin-top:  -1px;
+    }    
+    h4.text-muted {
+      margin-bottom: 0;
+      margin-top: $margin-bottom;
+    }
+  }
   .event-main-container {
+    h4.text-muted {
+      margin-bottom: 0;
+    }
     border:1px solid #ddd;
     border-top: none;
     padding-right: 12px;
@@ -232,11 +250,11 @@ body.search .facets {
   }
  .event-meta {
    margin-bottom: $margin-bottom;
- }
- .event-meta.future {
-   border-top: 1px solid #eee;
-   padding-top: $margin-bottom;
- }  
+   .future {
+     border-top: 1px solid #eee;
+     padding-top: $margin-bottom;
+   } 
+ } 
  .cd {
    background: #eee;
    color: #111;
@@ -246,7 +264,7 @@ body.search .facets {
  }
  .sideman {
     float:left;
-    margin: 0 16px 16px 0;
+    margin: 16px 16px 0 0;
     width: 180px;
     a {
       color: #333;

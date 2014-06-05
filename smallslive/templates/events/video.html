@@ -72,13 +72,7 @@ sample thumbors:
 </div>
 <div class="row">
   <div class="col-sm-8">
-    {% if request.GET.isfuture %}
-        {% if event.photo %}
-          <div>    
-            <img src="{{ event.photo.url }}" class="img-responsive"  />
-          </div>
-        {% endif %}
-    {% else %}
+    {% if not request.GET.isfuture %}
       {% if request.GET.mediaUnavailable %}
         <div class="alert alert-info">Video for this show is being processed and will be available here soon.</div>
         {% if event.photo %}
@@ -108,9 +102,12 @@ sample thumbors:
         </div>         
       {% endif %}
     {% endif %}
-    <div class="event-main-container">
+    <div class="event-main-container {% if request.GET.isfuture %}future{% endif %}">
+      {% if event.photo and request.GET.isfuture %}  
+        <img src="{{ event.photo.url }}" class="img-responsive event-photo"  />
+      {% endif %}
       {% if event.subtitle or event.description or event.link %}
-        <div class="event-meta {% if request.GET.isfuture %} future{% endif %}">
+        <div class="event-meta">
           {% if event.subtitle %}
             <p>{{ event.subtitle }} {% if event.description and not request.GET.isfuture %}  <a href="" class="trigger-show-event-description">More info...</a> {% endif %}</p>
           {% endif %}
