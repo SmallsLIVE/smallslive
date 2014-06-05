@@ -213,6 +213,24 @@ body.search .facets {
 }
 /*=Event/Media Page*/
 .event {  
+  .page-header h1 a {
+    font-size: 50%;
+    margin-left: 24px;
+  }
+ .event-meta {
+   margin-bottom: $margin-bottom;
+ }
+ .event-meta.future {
+   border-top: 1px solid #eee;
+   padding-top: $margin-bottom;
+ }  
+ .cd {
+   background: #eee;
+   color: #111;
+   a { 
+   }
+   padding: 16px;
+ }
  .sideman {
     float:left;
     margin: 0 16px 16px 0;
@@ -237,10 +255,13 @@ body.search .facets {
   } 
 }
 .video-player {
+  margin-bottom: $margin-bottom;
   .video-player-controls {
-    background: #333;
+    background: #111;
     font-size: 32px;
     text-align: center;
+    border-top:1px solid #444;
+    padding: 4px 0;
     a {
       color: #aaa;
     }

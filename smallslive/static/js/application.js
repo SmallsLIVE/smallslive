@@ -55,7 +55,7 @@ $(document).ready(function(){
   }); 
   //END CUSTOMER SIGN UP FORMS
 
-  //Artist signup forms:
+  //ARTIST SIGNUP FORMS:
   //When i approve or disapprove a master, make my name green or red
   $('.toggle-master-approve select[name=approval]').on('change',function(){
     var recording=$(this).closest('tr');
@@ -217,6 +217,14 @@ $(document).ready(function(){
     $('div.mailinglist-not-joined').fadeIn();
   });
   //END MY ACCOUNT 
+  
+  
+  //PUBLIC PAGES
+  //EVENT PAGE/VIDEO PAGE
+  $('.event').on('click','.trigger-show-event-description',function(e) {
+    e.preventDefault();
+    $(this).closest('.event-meta').find('.description').toggle();
+  });
   
 
 });

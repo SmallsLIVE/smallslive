@@ -41,19 +41,15 @@ sample thumbors:
 {% load thumbor_tags %}
 {% block title %}{{ event.title }} - {{ event.start }} in NYC w/ {{ event.performers.all|join:", " }}{% endblock title %}
 {% block content %}
-{% if user.is_superuser %}<a href="{% url "event_edit" pk=event.id %}">Edit this event</a>{% endif %}
-<h1>{% if request.GET.islive %}<span class="label label-primary">Live Now</span> {% endif %}{{ event.title }}</h1>
+<div class="page-header">
+  <h1>{% if request.GET.islive %}<span class="label label-primary">Live Now</span> {% endif %}{{ event.title }}{% if user.is_superuser %}<small><a href="{% url "event_edit" pk=event.id %}">Edit this event</a></small>{% endif %}</h1>
+  <p class="event-date">{% if not request.GET.isfuture %}Recorded{% endif %} {{ event.start }}, {{ event.date_freeform }}</p>
+</div>
 <div class="row">
   <div class="col-sm-8">
     {% if request.GET.isfuture %}
-      <p>{{ event.start }}, {{ event.date_freeform }}</p>
-    {% endif %}
-    {% if event.subtitle %}
-      <p>{{ event.subtitle }}</p>
-    {% endif %}
-    {% if request.GET.isfuture %}
         {% if event.photo %}
-          <div class="well" style="text-align:center;padding:8em 8em">    
+          <div>    
             <img src="{{ event.photo.url }}" class="img-responsive"  />
           </div>
         {% endif %}
@@ -66,34 +62,45 @@ sample thumbors:
           </div>
         {% endif %}
       {% else %}
+        {% if request.GET.hascd %}  
+          <div class="cd">
+           <img src="{% thumbor_url 'http://beta.asoundstrategy.com/sitemaster/userUploads/site372/SL0039_PETERBERNSTEIN1.jpg'|urlencode width=100 height=100 smart=True %}" class="pull-left img-responsive" /> 
+            <h6>This event was produced into a CD:</h6>
+            <h4 class="text-primary">{{ event.dtitle }}</h4>
+            <p class="text-muted">Released in Jan, 2007. Available formats: CD, FLAC/WAV download</p>
+            <p><a class="btn btn-primary btn-sm" role="button">Buy Album / Singles</a>
+          </div>
+        {% endif %}
         <div class="video-player">
           <div id="jquery_jplayer_1"></div>
           <div id="jp_container_1">
             <a href="#" class="jp-play"><span class="glyphicon glyphicon-play"></span></a>
             <a href="#" class="jp-pause"><span class="glyphicon glyphicon-pause"></span></a>
           </div>
-        </div> 
-        <p class="event_date">Recorded {{ event.start }}, {{ event.date_freeform }}</p>
+        </div>         
       {% endif %}
     {% endif %}
-    {# start track list #}
-    {% if request.GET.hascd %}  
-      <div class="row">
-        <div class="col-sm-8">
-          <div class="well">
-           <img src="{% thumbor_url 'http://beta.asoundstrategy.com/sitemaster/userUploads/site372/SL0039_PETERBERNSTEIN1.jpg'|urlencode width=150 height=150 smart=True %}" class="pull-right img-responsive" /> 
-            <h6>This event was produced into a CD:</h6>
-            <h4 class="text-primary">{ CD.title }</h4>
-            <p class="text-muted">Released in Jan, 2007.</p> 
-            <p>Available formats: CD, FLAC/WAV download</p>
-            <p><a class="btn btn-primary btn-lg" role="button">Buy Album</a>
-            <p>&hellip;or download singles below:</p>
+    {% if event.subtitle or event.description or event.link %}
+      <div class="event-meta {% if request.GET.isfuture %} future{% endif %}">
+        {% if event.subtitle %}
+          <p>{{ event.subtitle }} {% if event.description and not request.GET.isfuture %}  <a href="" class="trigger-show-event-description">More info...</a> {% endif %}</p>
+        {% endif %}
+        {% if event.description %}
+          <div class="description {% if not request.GET.isfuture %}none{% endif %}"> 
+            {{ event.description|safe }}
           </div>
-        </div>
+        {% endif %}
       </div>
-    {% else %}
+    {% endif %}
+    {# start track list #}
+    {% if request.GET.hastracks %}
       <h4>(7) Downloads available from this video:</h4>
     {% endif %}
+    {% if request.GET.hascd %}  
+      <h4>Buy Tracks from the Album:</h4>
+    {% endif %}
+    {% if request.GET.hastracks or request.GET.hascd %}
+      
     <table class="table table-striped">
       <thead>
         <tr>
@@ -116,8 +123,9 @@ sample thumbors:
       </tbody>
     </table>
     {# end track list #}
+    {% endif %}
     {# start musician list #}
-    <h2>featuring:</h2> 
+    <h4 class="text-muted">featuring:</h4> 
     {% for artist_info in performers %}
       <div class="sideman">
         <a href="{% url "artist_detail" pk=artist_info.artist.id %}">
@@ -133,11 +141,6 @@ sample thumbors:
       </div>
     {% endfor %} 
     {# end musician list #}
-    {% if event.description %}  
-      <div class="description well"> 
-        {{ event.description|safe }}
-      </div>
-    {% endif %}
   </div>
   <div class="col-sm-4">
   
@@ -169,12 +172,12 @@ sample thumbors:
 <div class="dev">
   <h1>Alternate States:</h1>
   <ul>
+    <li><a href="./?">Past event</a> (default = no audio tracks)</li>
+    <li><a href="./?hascd=1">Past event, w/ CD</a> {hascd} </li>
+    <li><a href="./?hastracks=1">Past event, w/ live singles</a> {hastracks} </li>
     <li><a href="./?isfuture=1">Future/upcoming event</a> {isfuture}</li>
     <li><a href="./?islive=1">Live now event</a> {islive}</li>
-    <li><a href="./?">Past event</a> (Default view)</li>
-    <li><a href="./?hascd=1">Past event, w/ CD</a> {hascd} </li>
     <li><a href="./?mediaUnavailable=1">Past event, no video</a> {mediaUnavailable}</li>
-    <li><a href="./?noTracks=1">No track listing</a> {noTracks}</li>
   </ul>
   <h1>Dev notes</h1>
   <Ul> 
