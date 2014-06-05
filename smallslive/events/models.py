@@ -23,7 +23,7 @@ class Event(TimeStampedModel):
     active = models.BooleanField(default=False)
     date_freeform = models.TextField(blank=True)
     photo = models.ImageField(upload_to='event_images', max_length=150, blank=True)
-    performers = models.ManyToManyField('artists.Artist', through='GigPlayed')
+    performers = models.ManyToManyField('artists.Artist', through='GigPlayed', related_name='events')
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField()
 

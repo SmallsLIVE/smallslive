@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import Sum, Count
 from sortedm2m.fields import SortedManyToManyField
 from tinymce import models as tinymce_models
 from events.models import Event
@@ -36,6 +37,13 @@ class Artist(models.Model):
 
     def get_instruments(self):
         return "\n".join([i.name for i in self.instruments.all()])
+
+    def media_count(self):
+        return self.events.annotate(cnt=Count('sets')).aggregate(count=Sum('cnt'))['count']
+
+    def media_count_as_leader(self):
+        return self.gigs_played.filter(is_leader=True).annotate(
+            cnt=Count('event__sets')).aggregate(count=Sum('cnt'))['count']
 
 
 class Instrument(models.Model):
