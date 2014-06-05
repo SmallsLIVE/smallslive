@@ -103,6 +103,16 @@ sample thumbors:
       {% endif %}
     {% endif %}
     <div class="event-main-container {% if request.GET.isfuture %}future{% endif %}">
+      {# Begin rankings #}
+      <p>
+        <a href="" class="trigger-favorite-video btn btn-primary btn-xs">
+          <span class="glyphicon glyphicon-star"></span> Favorite
+        </a>
+        <a href="{% url "artist_detail" pk=event.leader.id %}" class="btn btn-xs btn-default">#2 in  {{ event.leader.first_name }}'s videos</span></a> 
+        <a href="/static_page/search/" class="btn btn-default btn-xs">#134 video overall</a>
+      </p>
+      {# end rankings #}
+      {# Begin event meta data (photo, description ,etc) #}
       {% if event.photo and request.GET.isfuture %}  
         <img src="{{ event.photo.url }}" class="img-responsive event-photo"  />
       {% endif %}
@@ -118,6 +128,7 @@ sample thumbors:
           {% endif %}
         </div>
       {% endif %}
+      {# End event meta data (photo, description ,etc) #}
       {# start track list #}
       {% if request.GET.hastracks %}
         <h4>(7) Downloads available from this video:</h4>
@@ -126,7 +137,6 @@ sample thumbors:
         <h4>Buy Tracks from the <a class="album" href="https://slstore.herokuapp.com/en-us/catalogue/peter-bernstein_42/">Album</a></h4>
       {% endif %}
       {% if request.GET.hastracks or request.GET.hascd %}
-        
       <table class="table table-striped">
         <thead>
           <tr>
@@ -159,14 +169,6 @@ sample thumbors:
       {# end track list #}
       {% endif %}
       {# start musician list #}
-      <p>
-        <a href="" class="trigger-favorite-video btn btn-primary btn-xs">
-          <span class="glyphicon glyphicon-star"></span> Favorite
-        </a>
-        <a href="{% url "artist_detail" pk=event.leader.id %}" class="btn btn-xs btn-default">#2 in  {{ event.leader.first_name }}'s videos</span></a> 
-        <a href="/static_page/search/" class="btn btn-default btn-xs">#134 video overall</a>
-
-      </p>
       <h4 class="text-muted">featuring:</h4> 
       <div class="clearfix">
         {% for artist_info in performers %}
