@@ -221,9 +221,22 @@ $(document).ready(function(){
   
   //PUBLIC PAGES
   //EVENT PAGE/VIDEO PAGE
+  //Show event description when present:
   $('.event').on('click','.trigger-show-event-description',function(e) {
     e.preventDefault();
     $(this).closest('.event-meta').find('.description').toggle();
+  });
+  //Favorite a video:
+  $('.event').on('click','.trigger-favorite-video',function(e) {
+    e.preventDefault();
+    if ($(this).hasClass('btn-primary')) {
+      $(this).removeClass('btn-primary').addClass('btn-success');
+      $(this).html('<span class="glyphicon glyphicon-ok"></span> Favorited');
+    } else {
+      $(this).removeClass('btn-success').addClass('btn-primary');
+      $(this).html('<span class="glyphicon glyphicon-star"></span> Favorite');
+      
+    }
   });
   
 

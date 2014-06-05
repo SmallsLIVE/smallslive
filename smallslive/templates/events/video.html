@@ -159,6 +159,14 @@ sample thumbors:
       {# end track list #}
       {% endif %}
       {# start musician list #}
+      <p>
+        <a href="" class="trigger-favorite-video btn btn-primary btn-xs">
+          <span class="glyphicon glyphicon-star"></span> Favorite
+        </a>
+        <a href="{% url "artist_detail" pk=event.leader.id %}" class="btn btn-xs btn-default">#2 in  {{ event.leader.first_name }}'s videos</span></a> 
+        <a href="/static_page/search/" class="btn btn-default btn-xs">#134 overall</a>
+
+      </p>
       <h4 class="text-muted">featuring:</h4> 
       <div class="clearfix">
         {% for artist_info in performers %}
