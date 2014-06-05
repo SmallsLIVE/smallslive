@@ -45,6 +45,10 @@ class Artist(models.Model):
         return self.gigs_played.filter(is_leader=True).annotate(
             cnt=Count('event__sets')).aggregate(count=Sum('cnt'))['count']
 
+    def media_count_as_sideman(self):
+        return self.gigs_played.filter(is_leader=False).annotate(
+            cnt=Count('event__sets')).aggregate(count=Sum('cnt'))['count']
+
 
 class Instrument(models.Model):
     name = models.CharField(max_length=255)
