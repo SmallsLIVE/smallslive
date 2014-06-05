@@ -58,7 +58,7 @@ sample thumbors:
       <span class="label label-primary">Live Now</span>
     {% endif %}
     {{ event.title }}
-    <small><time>{{ event.start }}, {{ event.date_freeform }}</time></small>
+    <small><time>{{ event.start }}</time></small>
     {% if user.is_superuser %}
       <small><a href="{% url "event_edit" pk=event.id %}">Edit this event</a></small>
     {% endif %}
@@ -89,11 +89,11 @@ sample thumbors:
       {% else %}
         {% if request.GET.hascd %}  
           <div class="cd">
-           <img src="{% thumbor_url 'http://beta.asoundstrategy.com/sitemaster/userUploads/site372/SL0039_PETERBERNSTEIN1.jpg'|urlencode width=100 height=100 smart=True %}" class="pull-left img-responsive" /> 
-            <h6>This event was produced into a CD:</h6>
-            <h4 class="text-primary">{{ event.dtitle }}</h4>
+           <img src="{% thumbor_url 'http://beta.asoundstrategy.com/sitemaster/userUploads/site372/SL0039_PETERBERNSTEIN1.jpg'|urlencode width=130 height=130 smart=True %}" class="pull-left img-responsive" /> 
+            <h6>This event was recorded as an album:</h6>
+            <h4 class="text-primary"><a href="https://slstore.herokuapp.com/en-us/catalogue/peter-bernstein_42/">Peter Bernstein: Solo Guitar</a></h4>
             <p class="text-muted">Released in Jan, 2007. Available formats: CD, FLAC/WAV download</p>
-            <p><a class="btn btn-primary btn-sm" role="button">Buy Album / Singles</a>
+            <p><a href="https://slstore.herokuapp.com/en-us/catalogue/peter-bernstein_42/" class="btn btn-primary btn-sm" role="button">Buy Album / Singles</a>
           </div>
         {% endif %}
         <div class="video-player">
@@ -126,7 +126,7 @@ sample thumbors:
         <h4>(7) Downloads available from this video:</h4>
       {% endif %}
       {% if request.GET.hascd %}  
-        <h4>Buy Tracks from the Album:</h4>
+        <h4>Buy Tracks from the <a class="album" href="https://slstore.herokuapp.com/en-us/catalogue/peter-bernstein_42/">Album</a></h4>
       {% endif %}
       {% if request.GET.hastracks or request.GET.hascd %}
         
@@ -138,7 +138,7 @@ sample thumbors:
             <th>Composer</th>
             <th>Length</th>
             <th>Price</th>
-            <th>Video cue</th>
+            <th>Video cue <code>1</code></th>
           </tr>
         </thead>
         <tbody>
@@ -149,6 +149,14 @@ sample thumbors:
           {% include 'blocks/track-name.html' %}
           {% include 'blocks/track-name.html' %}
           {% include 'blocks/track-name.html' %}
+          <tr> 
+            <td><a href=""><span class="glyphicon glyphicon-play"></span></a></td>
+            <td>{ # }. { songtitle }</td>
+            <td>{ composer }</td>
+            <td>{ 0:00 }</td>
+            <td><a class="btn btn-xs primary" href="" role="button">Download <code>2</code></a></td>
+            <td>{ n/a or x:xx } </td>
+          </tr>          
         </tbody>
       </table>
       {# end track list #}
@@ -177,27 +185,30 @@ sample thumbors:
     <!-- end event-main-container -->
   </div>
   <div class="col-sm-4">
-   
     {% if event.leader %}
-    <h4>Recent Videos by {{ event.leader.full_name }}</h4>
-    <table class="table">
-      <tbody>
-        <tr>
-          <td>[playButton]</td>
-          <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
-        </tr>
-        <tr>
-          <td>[playButton]</td>
-          <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
-        </tr>
-        <tr>
-          <td>[playButton]</td>
-          <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
-        </tr> 
-      </tbody>
-    </table> 
-    <p><a href="{% url "artist_detail" pk=412%}">Browse all ({{ event.leader.media_count_as_leader }}) videos from {{ event.leader.full_name }}</a></p>
+      <div class="leader-videos"> 
+      <h4>Recent Videos by {{ event.leader.full_name }}</h4>
+      <table class="table">
+        <tbody>
+          <tr>
+            <td>[playButton]</td>
+            <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
+          </tr>
+          <tr>
+            <td>[playButton]</td>
+            <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
+          </tr>
+          <tr>
+            <td>[playButton]</td>
+            <td><a href="{% url "event_detail" pk=412%}">{ pasteventwithaudio.date } - { pasteventwithaudio.displaytitle } </a></td>
+          </tr> 
+        </tbody>
+      </table> 
+      <p><a href="{% url "artist_detail" pk=412%}">Browse all ({{ event.leader.media_count_as_leader }}) videos from {{ event.leader.full_name }}</a></p>
+      </div>
     {% endif %}
+    <h4>About {{ event.leader.full_name }}</h4>
+    <p>{{ event.leader.biography|safe|truncatechars:190}} <a href="{% url "artist_detail" pk=event.leader.id %}">Full artist profile</a></p>
  
 
   </div>
@@ -214,7 +225,8 @@ sample thumbors:
   </ul>
   <h1>Dev notes</h1>
   <Ul> 
-    <li><code>1</code> -  </li> 
+    <li><code>1</code> - if the cuts are   from the CD, we may not want this here if edits were made to audio (pending response from mike bond) as the video/audio may not line up. </li> 
+    <li><code>2</code> - the page knows if the user already bought this track in the past so they can download again here</li>
   </Ul>
 </div>
 
