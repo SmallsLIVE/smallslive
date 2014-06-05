@@ -238,6 +238,26 @@ $(document).ready(function(){
       
     }
   });
+  //Request a missing video be expedited
+  $('.request-video').on('click','a.trigger-request-video',function(e) {
+    e.preventDefault();
+    var newcount;
+    var countHolder=$('.request-video .request-count');
+    var requestCount=parseInt(countHolder.text());
+    if ($(this).hasClass('btn-primary')) {
+      $(this).removeClass('btn-primary').addClass('btn-success');
+      $(this).html('<span class="glyphicon glyphicon-ok"></span> Requested');
+      newCount=requestCount+1;
+      countHolder.text(newCount);
+    } else {
+      $(this).removeClass('btn-success').addClass('btn-primary');
+      $(this).html('<span class="glyphicon glyphicon-star"></span> I want it ASAP!');
+      newCount=requestCount-1;
+      countHolder.text(newCount);
+      
+    }
+  });
+
   
 
 });

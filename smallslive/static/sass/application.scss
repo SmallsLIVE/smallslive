@@ -213,9 +213,8 @@ body.search .facets {
 }
 /*=Event/Media Page*/
 .event {  
-  .leader-videos {
-    margin-bottom: $margin-bottom;
-  }
+  .leader-videos,
+  div.request-video,
   .rankings {
     margin-bottom: $margin-bottom;
   }

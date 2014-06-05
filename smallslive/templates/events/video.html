@@ -74,12 +74,18 @@ sample thumbors:
   <div class="col-sm-8">
     {% if not request.GET.isfuture %}
       {% if request.GET.mediaUnavailable %}
-        <div class="alert alert-info">Video for this show is being processed and will be available here soon.</div>
+        <div class="alert alert-info"><h3>This video  will be available soon.</h3>  
+        <div class="request-video">
+          <a href="" class="trigger-request-video btn btn-primary btn-sm">
+            <span class="glyphicon glyphicon-star"></span> I want it ASAP!
+          </a> 
+          (<span class="request-count">0</span> requests so far)
+        </div>
+        
         {% if event.photo %}
-          <div class="well" style="text-align:center;padding:8em 8em">    
-            <img src="{{ event.photo.url }}"  />
-          </div>
+          <p><img src="{{ event.photo.url }}" class="event-photo img-responsive"  /></p>
         {% endif %}
+        </div>
       {% else %}
         {% if request.GET.hascd %}  
           <div class="cd">
@@ -102,16 +108,19 @@ sample thumbors:
         </div>         
       {% endif %}
     {% endif %}
-    <div class="event-main-container {% if request.GET.isfuture %}future{% endif %}">
-      {# Begin rankings #}
-      <div class="rankings">
-        <a href="" class="trigger-favorite-video btn btn-primary btn-xs">
-          <span class="glyphicon glyphicon-star"></span> Favorite
-        </a>
-        <a href="{% url "artist_detail" pk=event.leader.id %}" class="btn btn-xs btn-default">#2 in  {{ event.leader.first_name }}'s videos</span></a> 
-        <a href="/static_page/search/" class="btn btn-default btn-xs">#134 video overall</a>
-      </div>
-      {# end rankings #}
+    <div class="event-main-container {% if request.GET.isfuture or request.GET.mediaUnavailable %}future{% endif %}">
+      {% if request.GET.isfuture or request.GET.mediaUnavailable %}
+      {% else %}
+        {# Begin rankings #}
+        <div class="rankings">
+          <a href="" class="trigger-favorite-video btn btn-primary btn-xs">
+            <span class="glyphicon glyphicon-star"></span> Favorite
+          </a>
+          <a href="{% url "artist_detail" pk=event.leader.id %}" class="btn btn-xs btn-default">#2 in  {{ event.leader.first_name }}'s videos</span></a> 
+          <a href="/static_page/search/" class="btn btn-default btn-xs">#134 video overall</a>
+        </div>
+        {# end rankings #}
+      {% endif %}
       {# Begin event meta data (photo, description ,etc) #}
       {% if event.photo and request.GET.isfuture %}  
         <img src="{{ event.photo.url }}" class="img-responsive event-photo"  />
