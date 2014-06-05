@@ -58,7 +58,7 @@ sample thumbors:
       <span class="label label-primary">Live Now</span>
     {% endif %}
     {{ event.title }}
-    <small>{% if not request.GET.isfuture %}Recorded{% endif %} <time>{{ event.start }}, {{ event.date_freeform }}</time></small>
+    <small><time>{{ event.start }}, {{ event.date_freeform }}</time></small>
     {% if user.is_superuser %}
       <small><a href="{% url "event_edit" pk=event.id %}">Edit this event</a></small>
     {% endif %}
