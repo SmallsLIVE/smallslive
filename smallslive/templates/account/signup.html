@@ -5,13 +5,12 @@
   <div class="row">
     <div class=" col-sm-offset-2 col-sm-6">
       <div class="page-title">
-        <h1>Sign up for SmallsLIVE [Premium][Free]<code>1</code></h1>
+        <h1>Sign up for a free SmallsLIVE account</h1>
       </div>  
       <p>Think you've registered here already?  <a href="{{ login_url }}">Log in now</a>.</p>
       <ul>
-        <li>Summarized feature 1</li>
-        <li>Summarized feature 2</li>
-        <li>Summarized feature 3</li>
+        <li>Your free account gets you video access to watch each evening's concerts live (watch in real-time only)</li>
+        <li>You also get a 30-day free trial to our Premium Subscription, which includes full access to our archive of 1,000s of concert videos and audio sets taped at Smalls (watch any time)</li>
       </ul>
     </div>
   </div>
@@ -59,10 +58,10 @@
             <p class="help-block">6 characters minimum.[requirements?<code>3</code>]
           </div> 
         {% endif %}
-        <h5>Want uninterrupted service?</h5>
-        <p>Your Premium subscription trial will end on June 26th, 2014 automatically unless you enter your payment/credit card info before that. You can do this now or later. 
+        <h5>Optional: Upgrade to Premium service now for $10/mo?</h5>
+        <p>Trial access to the video archive will end on June 26th, 2014 unless you enter your payment/credit card info before that. You can do this now or later. 
         <div class="checkbox trigger-credit-card-fields ">
-          <label ><input type="checkbox" value="">Add your credit card/payment info now (optional)</label> 
+          <label ><input type="checkbox" value="">Yes, upgrade me to Premium now</label> 
         </div>
         <div class="credit-card-fields none">
           {% include 'blocks/credit-card-fields.html' %}
@@ -78,8 +77,7 @@
   </div>
   <div class="dev">
     <ul>
-      <li><a href="./?facebook=1">View if auth'd with facebook</a> - we hide the SL account sign up fields and still show Terms sign up.</li>
-      <li><code>1</code> - this page has context for which plan is being accessed
+      <li><a href="./?facebook=1">View if auth'd with facebook</a> - we hide the SL account sign up fields and still show Terms sign up.</li> 
       <li><code>2</code> - after they start the trial, take them back to the context_url that they were attempting to access when they started this flow (e.g. if they were trying to watch a video or hear a specific recording, take them to that)
       <li><code>3</code> - fill in requirements here for password</li>
       <li><code>4</code> - this should open in a jQuery style dialog box (dont leave the page, dont open a new browser window). Width should be ~50em and height can = 80% of window height.</li>
