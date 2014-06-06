@@ -238,7 +238,7 @@ $(document).ready(function(){
       
     }
   });
-  //Request a missing video be expedited
+  //Request a missing video be expedited on video.html
   $('.request-video').on('click','a.trigger-request-video',function(e) {
     e.preventDefault();
     var newcount;
@@ -257,6 +257,19 @@ $(document).ready(function(){
       
     }
   });
+  //Request to join artist mailing list on artist_detail.html
+  $('.join-artist-mailing-list').on('submit','form',function() {
+    $(this).closest('div').find('.alert').remove();
+    $(this).before('<div class="alert-success alert">Request sent to artist. This is not an automated process so you may want to follow up later to make sure they received your request.</div>');
+    $(this).hide();
+    return false;
+  });
+  $('.join-artist-mailing-list .alert').on('click','a',function(e) {
+    e.preventDefault();
+    $('.join-artist-mailing-list .alert').remove();
+    $('.join-artist-mailing-list form').slideDown();
+  });
+  //...or show the form even if they have and want to request again
 
   
 

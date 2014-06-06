@@ -601,34 +601,37 @@ body abbr.explained {
 /*=Red*/
 /*=Development*/
 /*=Trash this after design done */
-.dev ul {
-  margin: 0;
-  padding: 0;
-}
 .dev {
-  li {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 .5em 0; 
-  }
-  li.completed {
-    text-decoration: line-through;
-  }
-}
-.dev li li {
-  list-style: circle;
-  margin-left: 3em;
-}
-.dev * {
-  font-size: 12px;
-}
-.dev {
+  max-width: 800px;
+  margin-bottom: $margin-bottom;
   font-family: $font-family-monospace;
   margin-top:2em;
   background: #f3f3f3;
   padding: 1em;
   border:1px solid #aaa;
-}
+  ul {
+    margin: 0;
+    padding: 0;
+  }  
+  li {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 .5em 0; 
+    li {
+      list-style: circle;
+      margin-left: 3em;
+    }
+  }
+  li.completed {
+    text-decoration: line-through;
+  }
+  h1 {
+    font-weight: bold;
+  }
+  * {
+    font-size: 12px;
+  }
+} 
 code {
   color: #fafafa;
   background: #c00;

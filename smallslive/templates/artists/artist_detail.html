@@ -90,31 +90,50 @@
       </ul>
  
     {{ artist.biography|safe }} 
-    <div class="well">
-      <h2>Mailing List:</h2>
-      <form role="form">
-        <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input type="email" placeholder="Enter email" id="" class="form-control">
-        </div>  
-        <div class="form-group">
-          <label for="exampleInputEmail1">Name</label>
-          <input type="text" placeholder="Name" id="" class="form-control">
-        </div>  
-        <div class="form-group">
-          <label for="exampleInputEmail1">ZIP/Postal Code</label>
-          <input type="text" placeholder="POstal Code" id="" class="form-control">
-        </div>      
-        <div class="checkbox">
-          <label>
-            <input type="checkbox"> Also subscribe to SmallsLIVE List
-          </label>
-        </div>
-        <button class="btn btn-primary" type="submit">Submit</button>
-      </form>
+    <div class="well join-artist-mailing-list">
+      <h2>Join {{ artist.first_name }}'s Mailing List:<code>2</code></h2>
+      {% if request.GET.hasRequestedInPast %}
+        <div class="alert alert-info">You already asked to join this list on May 12, 2014. <a href="">Request to join again</a></div>
+      {% endif %}
+        <form role="form" class="{% if request.GET.hasRequestedInPast %} none{% endif %}">
+        <p>* = required field</p>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Email address* </label>
+            <input type="email" value="{{ user.email }}" placeholder="Enter email" id="" class="form-control">
+          </div>  
+          <div class="form-group">
+            <label for="exampleInputEmail1">Name</label>
+            <input type="text" placeholder="Name" value="{{ user.full_name }}" id="" class="form-control">
+          </div>  
+          <div class="form-group">
+            <label for="exampleInputEmail1">ZIP/Postal Code</label>
+            <input type="text" placeholder="POstal Code" id="" value="{{ user.zip }}" class="form-control">
+          </div> 
+          <div class="form-group">
+            <label for="exampleInputEmail1">Country</label>
+            <input type="text" placeholder="POstal Code" id="" value="{{ user.country }}" class="form-control">
+          </div>      
+          <div class="checkbox">
+            <label>
+              <input type="checkbox"> Also subscribe to SmallsLIVE email list <code>1</code>
+            </label>
+          </div>
+   
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
     </div>
   </div>
 </div>
  
- 
+<div class="dev">
+  <h1>Alternate States:</h1>
+  <ul>  
+    <li><a href="./?hasRequestedInPast=1">Fan already requested mailing list status</a> {hasRequestedInPast}</li>
+  </ul>
+  <h1>Dev Notes:</h1>
+  <ul>
+    <li><code>1</code> - hide this if they're on the SL list already</li>
+    <li><code>2</code> - this generates an email (emails/request-to-join-artist-mailing-list.html) sent to artist</li>
+  </ul>
+</div>
 {% endblock content %}
