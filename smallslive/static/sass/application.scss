@@ -211,6 +211,17 @@ body.search .facets {
     }
   } 
 }
+/*=Artist Page*/
+.artist {
+  .jumbotron  {
+    h1 {
+      margin-top: 0;
+    }
+    img {
+      margin-right: 16px;
+    }
+  }
+}
 /*=Event/Media Page*/
 .event {  
   .leader-videos,

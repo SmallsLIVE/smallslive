@@ -29,17 +29,7 @@
     });
   });
   </script>
-  {# start FB like #}   
-  <div id="fb-root"></div>
-  <script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=235621183164222&version=v2.0";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>   
-  {# start twitter sharer #} 
-  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+  {% include 'blocks/social-like-init.html' %}
 {% endblock extra_js %}
 {% comment %}
 sample thumbors:
@@ -70,12 +60,7 @@ sample thumbors:
       <small><a href="{% url "event_edit" pk=event.id %}">Edit this event</a></small>
     {% endif %}
   </h1>
-  <div>   
-    <div class="socials">
-      <div class="fb-like" data-href="http://myurl" data-layout="standard" data-action="like" data-show-faces="true" data-share="true" data-width="250"></div>
-      <a href="https://twitter.com/share" class="twitter-share-button" data-via="smallsjazzclub" data-related="smallsjazzclub">Tweet</a>
-    </div>
-  </div>
+  {% include 'blocks/social-like-buttons.html' %}
 </div>
 <div class="row">
   <div class="col-sm-8">

@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load thumbor_tags %}
+{% block bodyclass %}artist{% endblock %}
 {% block title %}{{ artist.first_name }} {{ artist.last_name }} - {{ artist.instruments.all|join:", " }}  ({{ event.leader.media_count }} videos)  {% endblock title %}
+{% block extra_js %}
+  {% include 'blocks/social-like-init.html' %}
+{% endblock extra_js %}
 {% block content %}
 <div class="row">
   <div class="col-sm-8">
@@ -10,14 +14,29 @@
       {% endif %}
       <h1>{{ artist.first_name }} {{ artist.last_name }}
           {% if artist.user == request.user or request.user.is_superuser %}
-            <small><a href="{% url "artist_edit" pk=artist.id %}">edit profile</a></small>
+            <small><a href="{% url "artist_edit" pk=artist.id %}">edit</a></small>
           {% endif %}
       </h1>
-      <p>{{ artist.instruments.all|join:", " }} - {{ artist.media_count }}  live recordings - LIKE - <a href="{{ artist.website }}">@twittername</a></p>
-      <p><span class="glyphicon glyphicon-ok"></span> #2 Most Watched (of 612 artists)</p>
-      <p><a class="btn btn-primary btn-lg" role="button">Subscribe to my videos</a></p>
+      <p>{{ artist.instruments.all|join:", " }} - {{ artist.media_count }}  videos - <a href="{{ artist.website }}">@twittername</a></p>
+      <p>{% include 'blocks/social-like-buttons.html' %}</p>
+      <p><span class="glyphicon glyphicon-ok"></span> #2 Most Watched (of 612 artists) - 1,423 total video views</p>
+      <a class="btn btn-primary" role="button">Subscribe to this artist</a> <span class="text-muted">- get emailed about new videos or gigs w/ {{ artist.full_name }}</span>
     </div>
  
+    {# begin upcoming events #}
+    {% if artist.upcoming_events|length > 0 %}
+      <h2>Upcoming Shows @ Smalls:</h2>
+      {% if user.is_authenticated %}
+        <p>Watch them live, online for free:</p>
+      {% else %}
+        <p>These concerts are streamed live for free if you  <a href="/accounts/signup/">sign up for an account.</p>
+      {% endif %}
+      <ul>
+        {% for upcoming_event in artist.upcoming_events %}
+          <li>{{ upcoming_event.start }} {{ upcoming_event.display_title }} {% if artist.user == request.user or request.user.is_superuser %}[<a href="{% url "event_edit" pk=upcoming_event.id %}"></a>]{% endif %}</li>
+        {% endfor %} 
+      </ul>
+    {% endif %}
     {# begin artist videos tab set #} 
     <div class="leader-videos"> 
       <h4>Videos with {{ artist.full_name }}</h4>
@@ -62,14 +81,6 @@
     {# end artist videos tab set #} 
   </div>
   <div class="col-sm-4">
-    {% if artist.upcoming_events|length > 0 %}
-    <h2>Upcoming Shows @ Smalls:</h2>
-    <ul>
-      {% for upcoming_event in artist.upcoming_events %}
-        <li>{{ upcoming_event.start }} {{ upcoming_event.display_title }} {% if artist.user == request.user or request.user.is_superuser %}[<a href="{% url "event_edit" pk=upcoming_event.id %}"></a>]{% endif %}</li>
-      {% endfor %} 
-    </ul>
-    {% endif %}
     <h2>About {{ artist.first_name }}</h2>
  
       <ul>
