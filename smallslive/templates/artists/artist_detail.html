@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load thumbor_tags %}
-{% block title %}{{ artist.first_name }} {{ artist.last_name }} - {{ artist.instruments.all|join:", " }}  ({artist.videos.count} concert videos)  {% endblock title %}
+{% block title %}{{ artist.first_name }} {{ artist.last_name }} - {{ artist.instruments.all|join:", " }}  ({{ event.leader.media_count }} videos)  {% endblock title %}
 {% block content %}
 <div class="row">
   <div class="col-sm-8">
@@ -8,76 +8,77 @@
       {% if artist.photo %}
         <img src="{% thumbor_url artist.photo.url|urlencode width=150 height=150 smart=True %}" class="img-responsive pull-left artist-photo" />
       {% endif %}
-      <h1>{{ artist.first_name }} {{ artist.last_name }}</h1>
-      <p>{{ artist.instruments.all|join:", " }} - 6 live recordings - LIKE - <a href="{{ artist.website }}">@twittername</a></p>
+      <h1>{{ artist.first_name }} {{ artist.last_name }}
+          {% if artist.user == request.user or request.user.is_superuser %}
+            <small><a href="{% url "artist_edit" pk=artist.id %}">edit profile</a></small>
+          {% endif %}
+      </h1>
+      <p>{{ artist.instruments.all|join:", " }} - {{ artist.media_count }}  live recordings - LIKE - <a href="{{ artist.website }}">@twittername</a></p>
       <p><span class="glyphicon glyphicon-ok"></span> #2 Most Watched (of 612 artists)</p>
       <p><a class="btn btn-primary btn-lg" role="button">Subscribe to my videos</a></p>
-      {% if artist.user == request.user or request.user.is_superuser %}
-        <p> [<a href="{% url "artist_edit" pk=artist.id %}">EDIT PROFILE IF ALLOWED</a>]</p>
-      {% endif %}
     </div>
+ 
+    {# begin artist videos tab set #} 
+    <div class="leader-videos"> 
+      <h4>Videos with {{ artist.full_name }}</h4>
+      {% if  artist.media_count < 1 %}
+        <p>This artist does not have any videos available yet.</p>
+      {% else %}
+        <ul class="nav nav-tabs">
+          {% if  artist.media_count_as_leader > 0 %}
+            <li class="active"><a href="#as_leader" data-toggle="tab">As Leader ({{ artist.media_count_as_leader}})</a></li>
+          {% endif %}
+          {% if  artist.media_count_as_sideman > 0 %}
+            <li><a href="#as_sideman" data-toggle="tab">As Side Musician ({{ artist.media_count_as_sideman}})</a></li>
+          {% endif %}
+        </ul>
+        <div class="tab-content">
+          {% if  artist.media_count_as_leader > 0 %}
+            <div class="tab-pane active" id="as_leader">
+              <table class="table">
+                <tbody>
+                  {% for past_event in artist.past_events %}
+                    {% include 'blocks/related-video.html' with video_thumb_url=past_event.photo.url  video_id=past_event.id %}  
+                  {% endfor %}
+                </tbody>
+              </table> 
+              <p>[paginate]</p>
+            </div>
+          {% endif %}
+          {% if  artist.media_count_as_sideman > 0 %}          
+            <div class="tab-pane " id="as_sideman">
+              <table class="table">
+                <tbody>
+                  {% for past_event in artist.past_events %}
+                    {% include 'blocks/related-video.html' with video_thumb_url=past_event.photo.url  video_id=past_event.id %}  
+                  {% endfor %}
+                </tbody>
+              </table> 
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>  
+    {# end artist videos tab set #} 
   </div>
   <div class="col-sm-4">
-
+    {% if artist.upcoming_events|length > 0 %}
     <h2>Upcoming Shows @ Smalls:</h2>
     <ul>
       {% for upcoming_event in artist.upcoming_events %}
-        <li>{{ upcoming_event.start }} {{ upcoming_event.display_title }}</li>
-      {% endfor %}
-
-      <li>Tue, 3/4/14 title w/ sidemen-here [<a href="">EDIT LINK IF ALLOWED</a>]</li>
-      <li>Tue, 4/4/14 title  w/ sidemen-here [<a href="">EDIT LINK IF ALLOWED</a>]</li>
-      <li>Tue, 5/4/14 title  w/ sidemen-here [<a href="">EDIT LINK IF ALLOWED</a>]</li>
+        <li>{{ upcoming_event.start }} {{ upcoming_event.display_title }} {% if artist.user == request.user or request.user.is_superuser %}[<a href="{% url "event_edit" pk=upcoming_event.id %}"></a>]{% endif %}</li>
+      {% endfor %} 
     </ul>
-  </div>
-</div>
-<div class="row">
-  <div class="col-sm-3">
-    <div class="well">
-      gigDate, video, clone link (if allowed)
-    </div>
-    <div class="well">
-      gigDate, video, clone link (if allowed)
-    </div>
-  </div>
-  <div class="col-sm-3">
-    <div class="well">
-      gigDate, video, clone link (if allowed)
-    </div>
-    <div class="well">
-      gigDate, video, clone link (if allowed)
-    </div>
-  </div>
-  <div class="col-sm-3">
-    <div class="well">
-      gigDate, video, clone link (if allowed)
-    </div>
-    <div class="well">
-      gigDate, video, clone link (if allowed)
-    </div>  
-  </div>
-  <div class="col-sm-3">
-    <div class="well">
-      gigDate, video, clone link (if allowed)
-    </div>
-    <div class="well">
-      gigDate, video, clone link (if allowed)
-    </div>  
-  </div>
-</div>
-<div class="row">
-  <div class="col-sm-8">
-    <h2>Bio</h2>
-    <div class="pull-right well">    
+    {% endif %}
+    <h2>About {{ artist.first_name }}</h2>
+ 
       <ul>
         <li><a href="{{ artist.website }}">Artist's website</a></li>
  
         <li><a href="{{ artist.website }}">Facebook</a></li>
       </ul>
-    </div>
+ 
     {{ artist.biography|safe }} 
-  </div>
-  <div class="col-sm-4">
     <div class="well">
       <h2>Mailing List:</h2>
       <form role="form">
@@ -103,4 +104,6 @@
     </div>
   </div>
 </div>
+ 
+ 
 {% endblock content %}

@@ -217,6 +217,9 @@ body.search .facets {
   div.request-video,
   .rankings {
     margin-bottom: $margin-bottom;
+    strong {
+      margin-right: 16px;
+    }
   }
   div.socials {
     padding-top: 8px;
@@ -227,6 +230,7 @@ body.search .facets {
     img.event-photo {
       margin-left: -13px;
       margin-top:  -1px;
+      margin-bottom: 16px;
     }    
     h4.text-muted {
       margin-bottom: 0;
