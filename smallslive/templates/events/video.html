@@ -50,7 +50,13 @@ sample thumbors:
       {{ event.description }}
 {% endcomment %}
 {% load thumbor_tags %}
-{% block title %}{{ event.title }} - {{ event.start }} in NYC w/ {{ event.performers.all|join:", " }}{% endblock title %}
+{% block title %}{{ event.title }} - 
+  {% if not request.GET.isfuture %}
+    jazz video of {{ event.performers.all|join:", " }} - {{ event.start }} (NYC)
+  {% else %}
+    {{ event.start }} - {{ event.performers.all|join:", " }} live in NYC
+  {% endif %}
+{% endblock title %}
 {% block content %}
 <div class="page-header">
   <h1>
