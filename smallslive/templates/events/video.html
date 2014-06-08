@@ -3,31 +3,37 @@
 {% block bodyclass %}event{% endblock bodyclass %}
 {% block extra_css %}
   <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="{% static "css/mp3-player-button.css" %}"/>
 {% endblock extra_css %}
 {% block extra_js %}
   <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
   <script type="text/javascript" src="/static/js/jQuery.jPlayer.2.6.0/jquery.jplayer.min.js"></script>
+  <script type="text/javascript" src="{% static "js/soundmanager2.js" %}"></script>
+  <script type="text/javascript" src="{% static "js/mp3-player-button.js" %}"></script>
   <script type="text/javascript">
-  $(document).ready(function(){
-    $("#jquery_jplayer_1").jPlayer({
-      ready: function () {
-        $(this).jPlayer("setMedia", {
-          m4v: "http://orchestrotica.com/media/kit2009/index_files/Andalucia_HD.mp4",
-          poster: "http://orchestrotica.com/media/kit2009/index_files/poster_andalucia.jpg"
-        });
-      },
-      size: {
-  			width: "100%", 
-  			cssClass: "video-player-controls"
-  		},
-      swfPath: "/static/js/jQuery.jPlayer.2.6.0/",
-      supplied: "m4v",      
-  		smoothPlayBar: true,
-  		keyEnabled: true,
-  		remainingDuration: true,
-  		toggleDuration: true
-    });
-  });
+      soundManager.setup({
+          url: '{% static "swf/" %}'
+      });
+      $(document).ready(function () {
+          $("#jquery_jplayer_1").jPlayer({
+              ready: function () {
+                  $(this).jPlayer("setMedia", {
+                      m4v: "http://orchestrotica.com/media/kit2009/index_files/Andalucia_HD.mp4",
+                      poster: "http://orchestrotica.com/media/kit2009/index_files/poster_andalucia.jpg"
+                  });
+              },
+              size: {
+                  width: "100%",
+                  cssClass: "video-player-controls"
+              },
+              swfPath: "/static/js/jQuery.jPlayer.2.6.0/",
+              supplied: "m4v",
+              smoothPlayBar: true,
+              keyEnabled: true,
+              remainingDuration: true,
+              toggleDuration: true
+          });
+      });
   </script>
   {% include 'blocks/social-like-init.html' %}
 {% endblock extra_js %}
@@ -88,6 +94,9 @@ sample thumbors:
             <p><a href="https://slstore.herokuapp.com/en-us/catalogue/peter-bernstein_42/" class="btn btn-primary btn-sm" role="button">Buy Album / Singles</a>
           </div>
         {% endif %}
+        {% for set in event.sets.all %}
+          <p><a href="{{ set.media_file.get_file_url|safe }}" class="sm2_button">Play</a> Set {{ set.set_number }}</p>
+        {% endfor %}
         <div class="video-player">
           <div id="jquery_jplayer_1"></div>
           <div id="jp_container_1">
@@ -97,7 +106,8 @@ sample thumbors:
             <a href="#" class="jp-pause"><span class="glyphicon glyphicon-pause"></span></a>
             <span class="run-time">0:00:00 / <span class="total">1:30:00</span></span>
           </div>
-        </div>         
+        </div>
+
       {% endif %}
     {% endif %}
     <div class="event-main-container {% if request.GET.isfuture or request.GET.mediaUnavailable %}future{% endif %}">
