@@ -1,14 +1,19 @@
 $(document).ready(function(){
   //If customer opts in to pay for subscription during signup of trial,
   //  show credit card fields on signup page:
-  $('.trigger-credit-card-fields input').on('change',function(e){
-    if ($(this).is(":checked")) {
+  function setSignupPaymentType(upgradeNowCheckbox) {
+
+    if ($(upgradeNowCheckbox).is(":checked")) {
       $('.credit-card-fields').slideDown();
     } else {
       $('.credit-card-fields').slideUp();
     }
- 
+  }
+  $('.trigger-credit-card-fields input').on('change',function(){
+    setSignupPaymentType(this);
   });
+  //in case webpage caches checkmark status, we need to reset the UI:
+  setSignupPaymentType($('.trigger-credit-card-fields input'));
   //When user clicks on sign-up-to-mailing-list checkbox during trial sign-up
   // we want to unmute the text
   function toggleEmailSignupCheckboxLabel(checkbox) {

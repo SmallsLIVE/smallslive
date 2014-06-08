@@ -2,45 +2,41 @@
 {% load account crispy_forms_tags socialaccount %}
 {% block title %}Sign up for SmallsLIVE{% endblock %}
 {% block content %} 
-  <div class="row">
-    <div class=" col-sm-offset-2 col-sm-6">
-      <div class="page-title">
+      <div class="page-header">
         <h1>Sign up for a free SmallsLIVE account</h1>
-      </div>  
-      <p>Think you've registered here already?  <a href="{{ login_url }}">Log in now</a>.</p>
+      </div> 
+  <div class="row">
+    <div class="   col-sm-3"> 
+      <p>Already have an account?  <a href="{{ login_url }}">Log in now</a>.</p>
       <ul>
-        <li>Your free account gets you video access to watch each evening's concerts live (watch in real-time only)</li>
-        <li>You also get a 30-day free trial to our Premium Subscription, which includes full access to our archive of 1,000s of concert videos and audio sets taped at Smalls (watch any time)</li>
+        <li>Your free account will let you access each evening's live concert videos (available in real-time only)</li>
+        <li>You also get a 30-day free trial to our Premium Subscription ($10/mo), which includes full access to our archive of 1,000s of concert videos and audio sets taped at Smalls (watch any time)</li>
+        <li>Your Premium Subscription trial will end on June 26, 2014 unless you set up payment before then.</li>
       </ul>
     </div>
-  </div>
-  
-  <div class="row">
-    <div class=" col-sm-offset-2 col-sm-6">
+ 
+    <div class=" col-sm-5 col-md-4">
       <form id="signup_form" method="post" action="{% url 'account_signup' %}">
-      
-      <div class="social-signup {% if request.GET.facebook %}authenticated-by-social{% endif %} "> 
-        <h4 class="text-success">Optional: Sign up with a social media account</h4>
-        
-        {% if request.GET.facebook %}
-        <div class="alert alert-success">
-          <p><span class="glyphicon glyphicon-ok"></span> You are signed in to SmallsLIVE with Facebook</p>
-          <a href="./?" class="text-muted">Disconnect</a>
+        <div class="social-signup {% if request.GET.facebook %}authenticated-by-social{% endif %} "> 
+          <h4 class="text-primary"><span class="label label-primary">Optional</span> Use your social media account to sign up</h4>
+          {% if request.GET.facebook %}
+          <div class="alert alert-success">
+            <p><span class="glyphicon glyphicon-ok"></span> You are signed in to SmallsLIVE with Facebook</p>
+            <a href="./?" class="text-muted">Disconnect</a>
+          </div>
+          {% else %}
+            <p>If you don't want to create a password just for SmallsLIVE, you can use one of these sites to log in to SmallsLIVE going forward. </p> 
+            <p><a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-default btn-sm">Facebook</a> <a href="{% provider_login_url "linkedin_oauth2" method="oauth2" %}" class="btn btn-default btn-sm">LinkedIn</a> <a href="{% provider_login_url "google" method="oauth2" %}" class="btn btn-default btn-sm">Google</a> <a href="{% provider_login_url "twitter" method="oauth2" %}" class="btn btn-default btn-sm">Twitter</a></p>
+          {% endif %}
         </div>
-        {% else %}<p>If you don't want to create a password just for SmallsLIVE, you can use one of these sites to log in to SmallsLIVE going forward. </p> 
-        <p><a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-default btn-sm">Facebook</a> <a href="{% provider_login_url "linkedin_oauth2" method="oauth2" %}" class="btn btn-default btn-sm">LinkedIn</a> <a href="{% provider_login_url "google" method="oauth2" %}" class="btn btn-default btn-sm">Google</a> <a href="{% provider_login_url "twitter" method="oauth2" %}" class="btn btn-default btn-sm">Twitter</a></p>
-        {% endif %}
-        
-      </div>
         {% csrf_token %}
         <!-- {{ form|crispy }} -->
         {% if redirect_field_value %}
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-        {% endif %}
-        
-        {% if request.GET.facebook %}
-        {% else %}
-          <h4 class="text-success">Or, sign up the old-fashioned way:</h4>
+        {% endif %}  
+  
+        {% if not request.GET.facebook %}       
+          <h4 class="text-primary">Or, create an account:</h4>
           <div class="form-group" id="div_id_subscriber_email">
             <label class="control-label " for="div_id_subscriber_email">Your email address:</label>
             <div class="controls ">
@@ -58,26 +54,24 @@
             <p class="help-block">6 characters minimum.[requirements?<code>3</code>]
           </div> 
         {% endif %}
-        <h5>Optional: Upgrade to Premium service now for $10/mo?</h5>
-        <p>Trial access to the video archive will end on June 26th, 2014 unless you enter your payment/credit card info before that. You can do this now or later. 
+        <h5>Upgrade now to Premium service for $10/mo?</h5>
         <div class="checkbox trigger-credit-card-fields ">
-          <label ><input type="checkbox" value="">Yes, upgrade me to Premium now</label> 
-        </div>
-        <div class="credit-card-fields none">
-          {% include 'blocks/credit-card-fields.html' %}
+          <label ><input type="checkbox" value="">Yes, I want to pay for uninterrupted access to the videos</label> 
         </div>
  
-            <p>By pressing "Start my Trial," you are agreeing to the <a href="">SmallsLIVE Terms of Service<code>4</code></a>.</p>
-     
-        <div class="form-group"> 
-          <button type="submit" class="btn btn-primary">Start My Trial <code>2</code></button>   
+        <div class="credit-card-fields none">
+          {% include 'blocks/credit-card-fields.html' %} 
         </div>
       </form>  
     </div> 
   </div>
   <div class="dev">
+  <h1>Alternate Views:</h1>
     <ul>
       <li><a href="./?facebook=1">View if auth'd with facebook</a> - we hide the SL account sign up fields and still show Terms sign up.</li> 
+    </ul>
+  <h1>UI Reqs</h1>
+      <li><code>1</code> - after paypal is clicked, we should process their account/form in the backend, and then redirect - dont take them back to this screen.
       <li><code>2</code> - after they start the trial, take them back to the context_url that they were attempting to access when they started this flow (e.g. if they were trying to watch a video or hear a specific recording, take them to that)
       <li><code>3</code> - fill in requirements here for password</li>
       <li><code>4</code> - this should open in a jQuery style dialog box (dont leave the page, dont open a new browser window). Width should be ~50em and height can = 80% of window height.</li>

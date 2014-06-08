@@ -330,28 +330,47 @@ table.artist-past-gigs-media {
   }
 } 
 /*=Signup screens*/
-.trigger-credit-card-fields {
-  margin-bottom: $margin-bottom;
- 
-}
-.social-signup:not(.authenticated-by-social) {
-  margin-bottom: $margin-bottom;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: $margin-bottom;
-}
-.social-logins {
-  margin-bottom: $margin-bottom;
-  .btn-sm {
-    width: 40%;
-    min-width: 70px;
-    margin-bottom: 12px;
-  }
-}
-.login button.btn {
-  width: 50%;
-}
 form#signup_form {
-  margin-top: 24px; 
+  .trigger-credit-card-fields,
+  #paypal .checkbox,
+  .TOC-checkbox {
+    margin-bottom: $margin-bottom;
+  }
+  > div.form-group:last-child {
+    margin-top:
+    24px;
+  }
+  h5 {
+    font-weight: bold;
+  }
+  >  h4 {
+    margin-top: 0;
+  }
+  .nav-tabs img.paypal {
+    margin-top:-4px;
+    position: relative;
+    top: 2px;
+  }
+  .social-signup:not(.authenticated-by-social),
+  #div_id_password {
+    margin-bottom: $margin-bottom;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: $margin-bottom;
+    .row:last-child .form-group {
+
+    }
+  }
+  .social-logins {
+    margin-bottom: $margin-bottom;
+    .btn-sm {
+      width: 40%;
+      min-width: 70px;
+      margin-bottom: 12px;
+    }
+  }
+  .login button.btn {
+    width: 50%;
+  } 
   #div_id_TOS .well {
     min-height: 200px;
     max-height: 200px;

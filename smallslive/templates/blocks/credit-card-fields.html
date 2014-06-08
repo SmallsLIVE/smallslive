@@ -1,104 +1,122 @@
-<p><code>paypal here?</code> [brian needs to add paypal options]</p>
-<div class="form-group" id="div_id_name">
-  <label class="control-label" for="id_name">Name on Credit Card (be exact!):</label>
-  <div class="controls ">
-    <input type="text" placeholder="" name="name" value="" id="id_name" class="form-control">
-  </div>
-  <p class="help-block "><span class="text-success">Your card won't be charged until May 28, 2014.</span></p>
-</div>
-<div class="form-group" id="div_id_CC">
-  <label class="control-label" for="id_CC">Credit Card Number:</label>
-  <div class="controls ">
-    <input type="number" placeholder="" name="name" value="" id="id_CC" class="form-control">
-  </div>
-  <p class="help-block accepted-payments"><img src="/static/image/credit_card_sprite_small34x22.png" alt="ACcepted payment methods are: {list}"></p>
-</div>
-<div class="row CC-expiration-info">
-  <div class="col-sm-4">
-    <div class="form-group" id="div_id_l_name">
-      <label class="control-label " for="id_exp_month">Expiration Month:</label>
+{% load static %}
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#cc" data-toggle="tab">Use Credit Card</a></li>
+  <li><a href="#paypal" data-toggle="tab">Use <img src="{% static 'image/logo_paypal.png' %}"  border="0" alt="PayPal" class="paypal" /></a></li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active" id="cc">           
+    <div class="form-group" id="div_id_name">
+      <label class="control-label" for="id_name">Name on Credit Card (be exact!):</label>
       <div class="controls ">
-        <input type="number" placeholder="mm" class="form-control" name="exp_month" id="id_exp_month">
+        <input type="text" placeholder="" name="name" value="" id="id_name" class="form-control">
       </div>
-    </div> 
-  </div>
-  <div class="col-sm-4">
-    <div class="form-group" id="div_id_exp_year">
-      <label class="control-label sr-only" for="id_exp_year">Expiration Year:</label>
+      <p class="help-block "><span class="text-success">Your card won't be charged until June 27, 2014.</span></p>
+    </div>
+    <div class="form-group" id="div_id_CC">
+      <label class="control-label" for="id_CC">Credit Card Number:</label>
       <div class="controls ">
-        <input type="number" placeholder="yy" class="form-control" name="exp_year" id="id_exp_year" size="2">
+        <input type="number" placeholder="" name="name" value="" id="id_CC" class="form-control">
       </div>
-    </div> 
-  </div>
-  <div class="col-sm-4">
-    <div class="form-group" id="div_id_CVV">
-      <label class="control-label " for="id_CVV">Security Code/CVV:</label>
-      <div class="controls ">
-        <input type="number" placeholder="" name="CVV" value="" id="id_CVV" class="form-control">
+      <p class="help-block accepted-payments"><img src="/static/image/credit_card_sprite_small34x22.png" alt="ACcepted payment methods are: {list}"></p>
+    </div>
+    <div class="row CC-expiration-info">
+      <div class="col-sm-4">
+        <div class="form-group" id="div_id_l_name">
+          <label class="control-label " for="id_exp_month">Expiration Date:</label>
+          <div class="controls ">
+            <input type="number" title="month" placeholder="mm" class="form-control" name="exp_month" id="id_exp_month">
+          </div>
+        </div> 
       </div>
-    </div> 
+      <div class="col-sm-3">
+        <div class="form-group" id="div_id_exp_year">
+          <label class="control-label sr-only" for="id_exp_year">Expiration Year:</label>
+          <div class="controls ">
+            <input type="number" title="year" placeholder="yy" class="form-control" name="exp_year" id="id_exp_year" size="2">
+          </div>
+        </div> 
+      </div>
+      <div class="col-sm-5">
+        <div class="form-group" id="div_id_CVV">
+          <label class="control-label " for="id_CVV">Security Code/CVV:</label>
+          <div class="controls ">
+            <input type="number" placeholder="" name="CVV" value="" id="id_CVV" class="form-control">
+          </div>
+        </div> 
+      </div>
+    </div>
+    
+    <h4 class="text-primary">Billing Address</h4>
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group" id="div_id_street1">
+          <label class="control-label " for="id_street1">Street (line 1):</label>
+          <div class="controls ">
+            <input type="text" placeholder="" name="street1" value="" id="id_street1" class="form-control">
+          </div>
+        </div> 
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group" id="div_id_street1">
+          <label class="control-label " for="id_street1">Street (line 2 - optional)</label>
+          <div class="controls ">
+            <input type="text" placeholder="" name="street1" value="" id="id_street1" class="form-control">
+          </div>
+        </div> 
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group" id="div_id_country">
+          <label class="control-label" for="id_country">Country:</label>
+          <div class="controls ">
+            <select class="form-control" name="country" id="id_country">
+              <option>United States</option>
+              <option>United Kingdom</option>
+            </select>
+          </div>
+        </div> 
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-sm-5">
+        <div class="form-group" id="div_id_city">
+          <label class="control-label " for="id_city">City:</label>
+          <div class="controls ">
+            <input type="text" placeholder="" name="city" value="" id="id_city" class="form-control">
+          </div>
+        </div> 
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group" id="div_id_state">
+          <label class="control-label " for="id_state">State/Region:</label>
+          <div class="controls ">
+            <select class="form-control" name="state" id="id_state">
+              <option>[None]</option>
+            </select>
+          </div>
+        </div> 
+      </div>
+      <div class="col-sm-4">
+        <div class="form-group" id="div_id_postal_code">
+          <label class="control-label" for="id_postal_code">ZIP/Postal Code:</label>
+          <div class="controls ">
+            <input type="text" placeholder="" name="postal_code" value="" id="id_postal_code" class="form-control">
+          </div>
+        </div> 
+      </div>
+    </div> <!-- end row -->     
+    {% include 'blocks/user-signup-TOC-checkbox.html' %}  
+    <div class="form-group"> 
+      <button type="submit" class="btn btn-primary">Create Account &amp; Start Trial <code>2</code></button>      
+    </div>
+  </div> <!-- end tab -->
+  <div class="tab-pane" id="paypal"> 
+           
+    {% include 'blocks/user-signup-TOC-checkbox.html' %}  
+    <p><code>1</code> <a href=""><img src="https://www.paypalobjects.com/en_US/i/btn/btn_subscribeCC_LG.gif" alt=""></a></p>
   </div>
-</div>
+</div> <!-- end tab content -->
 
-<h4>Billing Address</h4>
-<div class="row">
-  <div class="col-sm-6">
-    <div class="form-group" id="div_id_street1">
-      <label class="control-label " for="id_street1">Street (line 1):</label>
-      <div class="controls ">
-        <input type="text" placeholder="" name="street1" value="" id="id_street1" class="form-control">
-      </div>
-    </div> 
-  </div>
-  <div class="col-sm-6">
-    <div class="form-group" id="div_id_street1">
-      <label class="control-label " for="id_street1">Street (line 2 - optional)</label>
-      <div class="controls ">
-        <input type="text" placeholder="" name="street1" value="" id="id_street1" class="form-control">
-      </div>
-    </div> 
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-sm-6">
-    <div class="form-group" id="div_id_country">
-      <label class="control-label" for="id_country">Country:</label>
-      <div class="controls ">
-        <select class="form-control" name="country" id="id_country">
-          <option>United States</option>
-          <option>United Kingdom</option>
-        </select>
-      </div>
-    </div> 
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-sm-6">
-    <div class="form-group" id="div_id_city">
-      <label class="control-label " for="id_city">City:</label>
-      <div class="controls ">
-        <input type="text" placeholder="" name="city" value="" id="id_city" class="form-control">
-      </div>
-    </div> 
-  </div>
-  <div class="col-sm-3">
-    <div class="form-group" id="div_id_state">
-      <label class="control-label " for="id_state">State/Region:</label>
-      <div class="controls ">
-        <select class="form-control" name="state" id="id_state">
-          <option>[None]</option>
-        </select>
-      </div>
-    </div> 
-  </div>
-  <div class="col-sm-3">
-    <div class="form-group" id="div_id_postal_code">
-      <label class="control-label" for="id_postal_code">ZIP/Postal Code:</label>
-      <div class="controls ">
-        <input type="text" placeholder="" name="postal_code" value="" id="id_postal_code" class="form-control">
-      </div>
-    </div> 
-  </div>
-</div> 
