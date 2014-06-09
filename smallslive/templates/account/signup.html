@@ -2,29 +2,30 @@
 {% load account crispy_forms_tags socialaccount %}
 {% block title %}Sign up for SmallsLIVE{% endblock %}
 {% block content %} 
-      <div class="page-header">
-        <h1>Sign up for a free SmallsLIVE account</h1>
-      </div> 
   <div class="row">
-    <div class="   col-sm-3"> 
-      <p>Already have an account?  <a href="{{ login_url }}">Log in now</a>.</p>
-      <ul>
-        <li>Your free account will let you access each evening's live concert videos (available in real-time only)</li>
-        <li>You also get a 30-day free trial to our Premium Subscription ($10/mo), which includes full access to our archive of 1,000s of concert videos and audio sets taped at Smalls (watch any time)</li>
-        <li>Your Premium Subscription trial will end on June 26, 2014 unless you set up payment before then.</li>
-      </ul>
-    </div>
- 
-    <div class=" col-sm-5 col-md-4">
+    <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
+    
+      <div class="page-header">
+        <h1>Sign up for a free account</h1>
+      </div> 
+      <div class="marketing-reasons">
+        <p>Already have an account?  <a href="{{ login_url }}">Log in now</a>. Otherwise, sign up to get:</p>
+        <ul>
+          <li>Access each evening's live concert videos (available in real-time only)</li>
+          <li>A 30-day free trial to our Premium Subscription ($10/mo), which includes full access to our archive of 1,000s of concert videos and audio sets taped at Smalls (watch any time)</li>
+          <li>Note: Premium Subscription trial will end on June 26, 2014 unless you set up payment</li>
+        </ul>
+      </div>
       <form id="signup_form" method="post" action="{% url 'account_signup' %}">
         <div class="social-signup {% if request.GET.facebook %}authenticated-by-social{% endif %} "> 
-          <h4 class="text-primary"><span class="label label-primary">Optional</span> Use your social media account to sign up</h4>
+
           {% if request.GET.facebook %}
-          <div class="alert alert-success">
-            <p><span class="glyphicon glyphicon-ok"></span> You are signed in to SmallsLIVE with Facebook</p>
-            <a href="./?" class="text-muted">Disconnect</a>
-          </div>
+            <h5>Create Account</h5>
+            <p class="text-success socially-authorized"><span class="glyphicon glyphicon-ok"></span> You are signed in to SmallsLIVE with Facebook (<a href="./?" class="text-muted">Disconnect</a>)</p>
+            
+        
           {% else %}
+            <h4 class="text-primary"><span class="label label-primary">Optional</span> Use your social media account to sign up</h4>
             <p>If you don't want to create a password just for SmallsLIVE, you can use one of these sites to log in to SmallsLIVE going forward. </p> 
             <p><a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-default btn-sm">Facebook</a> <a href="{% provider_login_url "linkedin_oauth2" method="oauth2" %}" class="btn btn-default btn-sm">LinkedIn</a> <a href="{% provider_login_url "google" method="oauth2" %}" class="btn btn-default btn-sm">Google</a> <a href="{% provider_login_url "twitter" method="oauth2" %}" class="btn btn-default btn-sm">Twitter</a></p>
           {% endif %}
@@ -43,9 +44,6 @@
               <input type="text" placeholder="" name="subscriber_email" value="" id="id_subscriber_email" class="form-control">
             </div>
           </div>  
-          <div class="checkbox" id="div_id_subscribe">
-            <label class="text-muted"><input type="checkbox" value="1" checked> Join SmallsLIVE Mailing List</label>      
-          </div> 
           <div class="form-group" id="div_id_password">
             <label class="control-label " for="div_id_password">Choose a password:</label>
             <div class="controls ">
@@ -54,14 +52,18 @@
             <p class="help-block">6 characters minimum.[requirements?<code>3</code>]
           </div> 
         {% endif %}
-        <h5>Upgrade now to Premium service for $10/mo?</h5>
-        <div class="checkbox trigger-credit-card-fields ">
-          <label ><input type="checkbox" value="">Yes, I want to pay for uninterrupted access to the videos</label> 
+          <h5>Upgrade now to Premium service for $10/mo?</h5>
+          <div class="checkbox trigger-credit-card-fields ">
+            <label ><input type="checkbox" value="">Yes, I want to pay for uninterrupted access to the videos</label>             
         </div>
  
         <div class="credit-card-fields none">
-          {% include 'blocks/credit-card-fields.html' %} 
+          {% include 'blocks/credit-card-fields.html' %}
         </div>
+          {% include 'blocks/user-signup-TOC-checkbox.html' %} 
+          <div class="form-group primary-submit"> 
+            <button type="submit" class="btn btn-primary">Sign Up Now <code>2</code></button>      
+          </div>          
       </form>  
     </div> 
   </div>

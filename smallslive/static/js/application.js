@@ -23,11 +23,6 @@ $(document).ready(function(){
       checkbox.closest('label').addClass('text-muted');
     }
   }
-  //Set proper visual status of mailing-list checkbox on init and change:
-  toggleEmailSignupCheckboxLabel($('#div_id_subscribe input'));
-  $('#signup_form').on('change','#div_id_subscribe input',function() {
-    toggleEmailSignupCheckboxLabel($(this));
-  });
   //Process trial sign up form
   $('#signup_form').submit(function(e){
     //AJAX 

@@ -330,15 +330,19 @@ table.artist-past-gigs-media {
   }
 } 
 /*=Signup screens*/
+.marketing-reasons {
+    background: #f5f5f5;
+    padding: 16px;
+    margin-bottom: $margin-bottom;
+}
 form#signup_form {
   .trigger-credit-card-fields,
-  #paypal .checkbox,
-  .TOC-checkbox {
+  .TOC-checkbox,
+  .payment-options {
     margin-bottom: $margin-bottom;
   }
   > div.form-group:last-child {
-    margin-top:
-    24px;
+    margin-top: 24px;
   }
   h5 {
     font-weight: bold;
@@ -347,19 +351,25 @@ form#signup_form {
     margin-top: 0;
   }
   .nav-tabs img.paypal {
-    margin-top:-4px;
+    margin-top:-5px;
     position: relative;
-    top: 2px;
+    top: 3px;
   }
-  .social-signup:not(.authenticated-by-social),
-  #div_id_password {
+  p.socially-authorized {
+    margin-bottom: $margin-bottom;
+  }
+  .payment-options .tab-content {
+    padding: 16px;
+    margin-top:-24px;
+    padding-top: 24px;
+    border: 1px solid #ddd;
+    border-top: none;
+  }
+  .social-signup:not(.authenticated-by-social) {
     margin-bottom: $margin-bottom;
     border-bottom: 1px solid #ccc;
     padding-bottom: $margin-bottom;
-    .row:last-child .form-group {
-
-    }
-  }
+   }
   .social-logins {
     margin-bottom: $margin-bottom;
     .btn-sm {
