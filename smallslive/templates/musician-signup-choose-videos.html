@@ -14,16 +14,17 @@
           <p class="">You have performed on (##) audio recordings ("Masters") at Smalls starting in 2011. These recordings will be made available in the archive, unless you choose not to.</p>
           <ul>
             <li>Until all performers on a given recording have signed the SmallsLIVE ARtist Agreement, it will not be available in our audio archive for listeners and will not be eligible to earn revenue.</li>
-            <li>It is in the recording artist's interest to approve as many recordings as possible. If your peers have not approved a recording you want in the archive, we encourage you to reach out to them and discuss the matter.</li>
-            <li>If you want to approve just a portion of a recording, please select the "do not approve" option and contact us via email. Include the recording date, musician names, and an explanation.</li>
+            <li>When you are the leader, you can decide whether a recording is made available in the archive. By default, all recordings will be included. </li> 
+            <li>You can browse your recordings at a later time too</li>
           </ul> 
           <p>Questions? Email <a href="mailto:info@smallsjazzclub.com?subject=Question about approving my masters during artist sign-up">info@smallsjazzclub.com</a>.</p>     
         </div>
-      </div>   
+      </div>  
+      <h4>Display my recordings <select><option>as leader</option><option>as side musician</option><option>(all)</option></select>  </h4> 
       <table class="table   table-bordered recordings-to-publish">
         <thead>
           <tr> 
-            <th>Allow in archive? <label><input type="checkbox" value="all" checked="checked"> Select all 20</label></th>            
+            <th>Recording Status</th>            
             <th>Artists on the Recording
               <span class="approved"><abbr title="Approved" class="explained">&check;</abbr> = registered for SmallsLIVE</span>  
               <span class="not-approved"><abbr title="Declined" class="explained">&Cross;</abbr> = not registered</span> 
@@ -63,8 +64,7 @@
 <div class="dev">
   <h1>Dev notes</h1>
   <Ul> 
-    <li><code>1</code> - this doesnt work but obviously this needs to have a counter. hide this if no recordings are being published.</li>
-    <li><code>2</code> - is it true that they can un-publish a recording later?</li>
+    <li><code>1</code> - this doesnt work but obviously this needs to have a counter. hide this if no recordings are being published.</li> 
   </Ul>
 </div>
 {% endblock content %}

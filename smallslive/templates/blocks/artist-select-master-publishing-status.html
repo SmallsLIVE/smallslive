@@ -1,6 +1,6 @@
 <tr> 
   <td class="toggle-master-approve">
-    I <select name="approval"><option value="1" class="approved">want to include</option><option value="0" class="not-approved">do not want to include</option><option value="-1">want to mark private (hide from peers)</select>  this recording
+    I <select name="approval"><option value="1" class="approved">want to include</option><option value="0" class="not-approved">do not want to include</option></select>  this recording in the archive
     <div class="add-private-note">
       <label for="notes-{trackID}">Add note for myself</label>
       <div class="form-group">
@@ -8,6 +8,12 @@
       </div>
     </div>
   </td>
+  <td>
+    {% include 'blocks/search-result-media-for-artist.html' %}
+  </td>
+</tr>
+<tr class="my-sideman-video"> 
+  <td class="toggle-master-approve">Contact the leader, %leader_name%,  if you do not want this published.  </td>
   <td>
     {% include 'blocks/search-result-media-for-artist.html' %}
   </td>
