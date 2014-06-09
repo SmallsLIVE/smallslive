@@ -96,8 +96,9 @@ class Event(TimeStampedModel):
 
     def leader(self):
         try:
-            leader = self.artists_gig_info.get(is_leader=True).artist
-        except GigPlayed.DoesNotExist:
+            gig_info = self.artists_gig_info.filter(is_leader=True).first()
+            leader = gig_info.artist
+        except (GigPlayed.DoesNotExist, AttributeError):
             leader = None
         return leader
 

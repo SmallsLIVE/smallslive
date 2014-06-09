@@ -119,7 +119,9 @@ sample thumbors:
           <a href="" class="trigger-favorite-video btn btn-primary btn-xs">
             <span class="glyphicon glyphicon-star"></span> Favorite
           </a>
-          <a href="{% url "artist_detail" pk=event.leader.id %}" class="btn btn-xs btn-default">#2 in  {{ event.leader.first_name }}'s videos</span></a> 
+          {% if event.leader %}
+            <a href="{% url "artist_detail" pk=event.leader.id %}" class="btn btn-xs btn-default">#2 in  {{ event.leader.first_name }}'s videos</a>
+          {% endif %}
           <a href="/static_page/search/" class="btn btn-default btn-xs">#134 video overall</a>
            
         </div>
