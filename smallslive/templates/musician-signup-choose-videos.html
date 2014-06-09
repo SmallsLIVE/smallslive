@@ -11,9 +11,9 @@
     <form action="/static_page/musician-signup-terms/">  
       <div class="row">
         <div class="col-sm-8">
-          <p class="">You have performed on (20) audio recordings ("Masters") at Smalls starting in 2011. Because you own a share of the copyright in each of these Masters, we need your permission to make them available for listening. Please note that:</p>
+          <p class="">You have performed on (##) audio recordings ("Masters") at Smalls starting in 2011. These recordings will be made available in the archive, unless you choose not to.</p>
           <ul>
-            <li>Until all performers on a given recording have granted us permission to publish a set my approving it, it will not be available in our audio archive for listeners and will not be eligible to earn revenue.</li>
+            <li>Until all performers on a given recording have signed the SmallsLIVE ARtist Agreement, it will not be available in our audio archive for listeners and will not be eligible to earn revenue.</li>
             <li>It is in the recording artist's interest to approve as many recordings as possible. If your peers have not approved a recording you want in the archive, we encourage you to reach out to them and discuss the matter.</li>
             <li>If you want to approve just a portion of a recording, please select the "do not approve" option and contact us via email. Include the recording date, musician names, and an explanation.</li>
           </ul> 
@@ -23,10 +23,10 @@
       <table class="table   table-bordered recordings-to-publish">
         <thead>
           <tr> 
-            <th>Allow in archive? <label><input type="checkbox" value="all"> Approve all 20</label></th>            
+            <th>Allow in archive? <label><input type="checkbox" value="all" checked="checked"> Select all 20</label></th>            
             <th>Audio Recording 
-              <span class="approved"><abbr title="Approved" class="explained">&check;</abbr> = approved</span>  
-              <span class="not-approved"><abbr title="Declined" class="explained">&Cross;</abbr> = not approved</span> 
+              <span class="approved"><abbr title="Approved" class="explained">&check;</abbr> = signed agreement</span>  
+              <span class="not-approved"><abbr title="Declined" class="explained">&Cross;</abbr> = not yet signed</span> 
               <span class="text-muted"><abbr title="Not acknowledged yet" class="explained">?</abbr> = no response yet</span> </th>          
           </tr>
         </thead>
@@ -53,7 +53,7 @@
         {% include 'blocks/artist-select-master-publishing-status.html' %}
         </tbody>
       </table>  
-      <div class="alert alert-info">Congratulations! Due to your choices, (2) recordings above now have 100% approval from all artists and are eligible to make money when fans listen. Your peers on these recordings will receive a courtesy email notifying them about this and these recordings may appear in our "Just Added" lists for fans. <code>1</code></div>
+      <div class="alert alert-info">Congratulations! Based on your choices above, (2) more recordings will be added into the archive as they now have 100% artist approval  Your peers on these just-released recordings will receive a courtesy email notifying them about these additions to the archive. Additionally, these recordings may appear in our "Just Added" lists for fans. <code>1</code></div>
       <p><button type="submit" class="btn btn-primary">Continue</button></p>
     </form>
     <small class="text-muted text-sm">* Because you do not own the entire video recording (aka the "Master"), you cannot decide alone which videos go live. For each video, you and the side musicians each own a portion of the copyright in the Master recording and so all musicians on each video must agree for a video to go live on the website. By default, your side musicians are "opted in" to your videos and only have 7 days to opt out before the video goes live.</small>
