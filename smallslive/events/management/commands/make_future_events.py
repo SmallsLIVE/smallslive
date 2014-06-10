@@ -22,4 +22,4 @@ class Command(NoArgsCommand):
                 e.end = e.start.replace(hour=23)
                 slot = 1
                 start_date = start_date + timezone.timedelta(days=1)
-            print e.start
+            e.save()
