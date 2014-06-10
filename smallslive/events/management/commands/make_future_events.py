@@ -1,6 +1,6 @@
 from django.core.management.base import NoArgsCommand
 from events.models import Event
-from django.utils.timezone import datetime, timedelta
+from django.utils import timezone
 
 
 class Command(NoArgsCommand):
@@ -8,7 +8,7 @@ class Command(NoArgsCommand):
 
     def handle_noargs(self, *args, **options):
         slot = 1
-        start_date = datetime.now()
+        start_date = timezone.localtime(timezone.now())
         events = list(Event.objects.all().order_by('-start')[:60])
         events.reverse()
         for e in events:
@@ -21,5 +21,5 @@ class Command(NoArgsCommand):
                 e.start = e.start.replace(hour=21, minute=0, second=0, microsecond=0)
                 e.end = e.start.replace(hour=23)
                 slot = 1
-                start_date = start_date + timedelta(days=1)
-            e.save()
+                start_date = start_date + timezone.timedelta(days=1)
+            print e.start
