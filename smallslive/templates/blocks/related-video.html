@@ -1,5 +1,7 @@
 {% load thumbor_tags %}
 <tr>
-  <td><a href="{ set.media_file }"><img src="{% thumbor_url video_thumb_url|urlencode width=100 height=60 smart=True %}" class="img-responsive"  /></a></td>
+  {% if video_thumb %}
+    <td><a href="{{ set.media_file.get_file_url }}"><img src="{% thumbor_url video_thumb.url|urlencode width=100 height=60 smart=True %}" class="img-responsive"  /></a></td>
+  {% endif %}
   <td><a href="{% url "event_detail" pk=video_id%}">{{ past_event.title }}</a> - <span class="text-muted">{{ past_event.start }}</span><br /> w/  {{ past_event.performers.all|join:", " }}  </td>
 </tr> 

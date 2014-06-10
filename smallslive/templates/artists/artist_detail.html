@@ -56,8 +56,8 @@
             <div class="tab-pane active" id="as_leader">
               <table class="table">
                 <tbody>
-                  {% for past_event in artist.past_events %}
-                    {% include 'blocks/related-video.html' with video_thumb_url=past_event.photo.url  video_id=past_event.id %}  
+                  {% for past_event in artist.past_events|slice:"10" %}
+                    {% include 'blocks/related-video.html' with video_thumb=past_event.photo video_id=past_event.id %}
                   {% endfor %}
                 </tbody>
               </table> 
@@ -68,8 +68,8 @@
             <div class="tab-pane " id="as_sideman">
               <table class="table">
                 <tbody>
-                  {% for past_event in artist.past_events %}
-                    {% include 'blocks/related-video.html' with video_thumb_url=past_event.photo.url  video_id=past_event.id %}  
+                  {% for past_event in artist.past_events|slice:"10" %}
+                    {% include 'blocks/related-video.html' with video_thumb=past_event.photo video_id=past_event.id %}
                   {% endfor %}
                 </tbody>
               </table> 
