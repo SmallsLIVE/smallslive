@@ -219,14 +219,12 @@ sample thumbors:
           {% include 'blocks/related-video.html' with video_thumb_url=past_event.photo.url  video_id=past_event.id %}
         {% endfor %}
         </tbody>
-      </table> 
-      <p><a href="{% url "artist_detail" pk=412%}">Browse all ({{ event.leader.media_count_as_leader }}) videos from {{ event.leader.full_name }}</a></p>
+      </table>
+        <p><a href="{% url "artist_detail" pk=412%}">Browse all ({{ event.leader.media_count_as_leader }}) videos from {{ event.leader.full_name }}</a></p>
       </div>
-    {% endif %}
     <h4>About {{ event.leader.first_name }}</h4>
     <p>{{ event.leader.biography|safe|truncatechars:190}} <a href="{% url "artist_detail" pk=event.leader.id %}">Full artist profile</a></p>
- 
-
+    {% endif %}
   </div>
 </div>    
 <div class="dev">
