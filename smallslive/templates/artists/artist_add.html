@@ -20,7 +20,10 @@
           </div>
         </div>
         <div class="alert alert-warning">
-          <p><strong>This artist has not registered yet for SmallsLIVE.</strong></p>                    
+          <p><strong>This artist has not registered yet for SmallsLIVE.</strong></p> 
+          {% if request.GET.invited %}
+          <p class="text-success"><span class="label label-success">Last invited</span>  8 days ago (June 2, 2014)</p>                 
+          {% endif %}
           <div class="radio">
             <label>
               <input type="radio" name="invitation" id="optionsRadios1" value="yes" checked>
@@ -44,7 +47,7 @@
           <div class="radio">
             <label>
               <input type="radio" name="invitation" id="optionsRadios2" value="no">
-              Do not invite them yet
+              Do not invite them right now <Code>4</Code>
             </label>
           </div>
         </div>  
@@ -52,11 +55,16 @@
     </form>
     
     <div class="dev">
+    <h1>Alternate Views</h1>
+    <ul>
+      <li><a href="./?invited=1">Already invited at least once</a></li>
+    </ul>
     <h1>Dev. notes:</h1>
       <ul>
           <li><code>ArtistSearch</code> Unlike masthead, this autocomplete only matches on artist name (Starts with, and substring). Result should appear as "first_name last_name (instrument_list) and be alpha sorted" </li>
           <li><code>2</code> I would use a type-head chozen for the Artist Type field and change display label to "Instrument(s)"
           <li><code>3</code> The flash message should have text like "Profile saved &amp; invitation sent."</li>
+          <li><code>4</code> - once a user has been invited once to the site, this radio should be the default choice on return visits</li>
       </ul>
     </div>
 
