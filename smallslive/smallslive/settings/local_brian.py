@@ -3,7 +3,7 @@ from .local import *
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'smallslive',
+        'NAME': 'smallslive_media',
         'USER': 'boneill',
         'PASSWORD': '',
         'HOST': '127.0.0.1',
