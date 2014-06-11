@@ -222,7 +222,7 @@ body.search .facets {
     }
   }
 }
-/*=Event/Media Page*/
+/*=Single Event/View Video Page*/
 .event {  
   .leader-videos,
   div.request-video,
@@ -298,7 +298,7 @@ body.search .facets {
   h3 {
     margin-top: 0;
   } 
-}
+} 
 .video-player {
   .video-player-controls {
     background: #111;
@@ -319,9 +319,21 @@ body.search .facets {
     }
   }
 }
+/*=My Gigs / Events*/
+.my-gigs {
+  .downloads {
+    color: $gray-light;
+  }
+  .unpublished-by-another-sideman {
+    color: $gray-light;
+    a, p {
+      color: $gray-light;
+    }
+  }
+}
 /*=Admin screens*/
 table.artist-past-gigs-media {
-  .event_date, .artist-clearance-breakdown table tr td:first-child {
+  .artist-clearance-breakdown table tr td:first-child {
     white-space: nowrap;
   }
   td.downloads {
@@ -610,6 +622,8 @@ table.payment-history {
 .credit {
   font-style: italic;
 }
+.event_date time,
+.event_date,
 .nowrap {
   white-space: nowrap;
 }
@@ -619,6 +633,7 @@ body abbr.explained {
 .row.none, .none {
   display: none;
 }
+
 /*=Color*/
 /*=Green*/
 .approved {

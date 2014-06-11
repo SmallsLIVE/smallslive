@@ -1,13 +1,17 @@
 {% extends "base_admin.html" %}
 {% block title %}Dashboard: %username% {% endblock title%}
 {% block content %}
-  <h1>Dashboard for {{ user.first_name }} </h1>
+  <h1>Dashboard {% if user.first_name %}for {{ user.first_name }}{% endif %} </h1>
   <div class=" alert-warning alert ">
-  <h2>To-Do Items:</h2>
-    <ul class="alert">
-      <li>Your public profile is missing some info (bio, photo) - <a href="">edit my profile</a></li>
-      <li>We can't pay you until you <a href="#" class="alert-link">add your bank information</a></li>
+  <h5>To-Do Items:</h5>
+    <ul>
+      <li>Your public profile is missing some info (bio, photo) - <a href="" class="alert-link">edit my profile</a></li>
+      <li>We can't pay you until you <a href="#" class="alert-link">add your bank information</a> (you're owed $6.12<code>1</code>)</li>
     </ul>
+  </div>
+  <div class=" alert-success alert ">
+    <h5>(2) new recordings featuring you have been added to the archive since your last login</h5>
+    <p><a class="alert-link" href="{% url 'my_gigs' %}">View your published recordings</a></p>   
   </div>
  
   <div class="panel panel-default earnings-summary">
@@ -211,6 +215,7 @@
   <div class="dev">
     <h1>Dev notes</h1>
     <Ul> 
+      <li><code>1</code> - only show amount owed if tey are owed anything. The green alert message is only shown if any videos' published-date stamps are > then last login date.</li>
     </Ul>
   </div>
 {% endblock content %}

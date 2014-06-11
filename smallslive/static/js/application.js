@@ -55,21 +55,14 @@ $(document).ready(function(){
   }); 
   //END CUSTOMER SIGN UP FORMS
 
-  //ARTIST SIGNUP FORMS:
+
   //When i approve or disapprove a master, make my name green or red
-  $('.toggle-master-approve select[name=approval]').on('change',function(){
-    var recording=$(this).closest('tr');
-    var myName=recording.find('span.you');
-    if ($(this).val()=='1') {
-      myName.removeClass('not-approved');
-      myName.addClass('approved');
-      myName.find('span').html('&check;');
-    } else {
-      myName.removeClass('approved');
-      myName.addClass('not-approved');
-      myName.find('span').html('&cross;');
-    }
-  }); 
+  $('.f-toggle-publish').on('submit',function(){
+    $(this).replaceWith('<p class="text-success clearance-summary"><span class="glyphicon glyphicon-ok"></span> This video is now published. <a href="#">Performer details&hellip;</a></p><p class="text-warning clearance-summary"><span class="glyphicon glyphicon-ok"></span> Video will be published once all performers on it have joined SmallsLIVE. <a href="#">Performer details&hellip;</a></p>');
+ 
+    return false;
+  });   
+  //ARTIST SIGNUP FORMS:
   // Let artist leave a comment about  master recording  
   $('.add-private-note .form-group').hide();
   $('.add-private-note label').on('click',function(){
@@ -80,7 +73,7 @@ $(document).ready(function(){
   
   //SUPER ADMIN forms:
   $('.artist-clearance-breakdown table').hide();
-  $('.clearance-summary a').on('click',function(e){
+  $('body').on('click','.clearance-summary a',function(e){
     e.preventDefault();
     $(this).closest('td').find('table').toggle();
   });
@@ -217,6 +210,14 @@ $(document).ready(function(){
     $('div.mailinglist-not-joined').fadeIn();
   });
   //END MY ACCOUNT 
+  // MY GIGS
+  $('.bulk-download .download-configurator').hide();
+  $('.bulk-download').on('click','.trigger-for-content a',function(e) {
+    e.preventDefault();
+    var container=$('.bulk-download');
+    container.find('.download-configurator').toggle();
+  });
+  //END MY GIGS
   
   
   //PUBLIC PAGES
