@@ -1,12 +1,12 @@
 <tr> 
-  <td class="toggle-master-approve">
+  <td><form  class="f-toggle-publish">
     I <select name="approval"><option value="1" class="approved">want to include</option><option value="0" class="not-approved">do not want to include</option></select>  this recording in the archive
     <div class="add-private-note">
       <label for="notes-{trackID}">Add note for myself</label>
       <div class="form-group">
         <textarea class="form-control" id="notes-{trackID}" rows="4"></textarea>
       </div>
-    </div>
+    </div></form>
   </td>
   <td>
     {% include 'blocks/search-result-media-for-artist.html' %}
