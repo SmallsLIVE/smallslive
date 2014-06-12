@@ -225,7 +225,7 @@ sample thumbors:
         {% if request.GET.issubscriber %}
           <p>As a subscriber, you can watch <strong>{{ event.title }}</strong> now and the following shows this evening:</p>
         {% else %}
-          <p>With a free account, you can watch <strong>{{ event.title }}</strong> now, and the following shows this evening:</p>
+          <p>With <a href="/accounts/signup">a free account</a>, you can watch <strong>{{ event.title }}</strong> now, and the following shows this evening:</p>
         {% endif %}
  
         <div class="media">
