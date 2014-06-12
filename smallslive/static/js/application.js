@@ -222,6 +222,27 @@ $(document).ready(function(){
   
   //PUBLIC PAGES
   //EVENT PAGE/VIDEO PAGE
+  //Change publish flag:
+  //First, the fake form should show an "are you sure mesg:"
+  $('.f-publish-video').on('click','.default a.btn-warning',function(e) {
+    e.preventDefault();
+    $('.f-publish-video .default').hide();
+    $('.f-publish-video .are-you-sure').show();
+  });
+  //Now that the ARE YOU SURE UI is showing, process form, or cancel :
+  $('.f-publish-video').on('click','.are-you-sure .btn',function() {
+    if ($(this).val()=='Leave Published') {
+      //Dont save form; return UI to default state:
+      $('.f-publish-video .are-you-sure').hide();
+      $('.f-publish-video .default').show();
+      return false; 
+    } else {
+      //Process Unpublish action:
+      return true;
+    }
+  });
+  //END Change Publishing Status
+  
   //Show event description when present:
   $('.event').on('click','.trigger-show-event-description',function(e) {
     e.preventDefault();
