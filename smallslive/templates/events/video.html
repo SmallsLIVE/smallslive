@@ -61,7 +61,15 @@ sample thumbors:
     {% endif %}
     {{ event.title }}
     {{ event.subtitle }}
-    <small><time>{{ event.start }}</time></small>
+    <small>
+      <time>{{ event.start }}</time>
+      {% if not request.GET.islive %}
+ 
+          <a href=""><span class="label label-success"><span class="glyphicon glyphicon-ok"></span> Streamed Live</span><code>4</code></a>
+          <a href="/accounts/signup/"><span class="label label-success"><span class="glyphicon glyphicon-ok"></span> To Be Archived</span></a>
+  
+      {% endif %}      
+    </small>
     {% if user.is_superuser %}
       <small><a href="{% url "event_edit" pk=event.id %}">Edit this event</a></small>
     {% endif %}
@@ -210,6 +218,45 @@ sample thumbors:
     <!-- end event-main-container -->
   </div>
   <div class="col-sm-4">
+  
+    {% if request.GET.islive %}
+      <div class="well">
+        <h4>Live Shows Streaming Tonight</h4>
+        {% if request.GET.issubscriber %}
+          <p>As a subscriber, you can watch <strong>{{ event.title }}</strong> now and the following shows this evening:</p>
+        {% else %}
+          <p>With a free account, you can watch <strong>{{ event.title }}</strong> now, and the following shows this evening:</p>
+        {% endif %}
+ 
+        <div class="media">
+          <span class="pull-left"> 
+          <small>10pm</small>
+          </span>
+        
+          <a href="/events/8404/" class="pull-right"><img src="http://d3dombqstlgdhj.cloudfront.net/AH6AFUCBeKEpJqnvF6E5n0vOb5o=/130x94/smart/http%3A//d3dombqstlgdhj.cloudfront.net/images/wayne_tucker_pic.jpg" alt=" " class="media-object img-responsive pull-left"></a>
+        
+          <div class="media-body">
+            <h4 class="media-heading"><a href="/events/8404/">"Round Midnight" with: w/ Wayne Tucker<br>The Wayne Tucker Group</a></h4>
+            <p><small>Midnight to close</small></p>
+            <p>Wayne Tucker</p>
+          </div>
+        </div>
+        
+        <div class="media">
+          <span class="pull-left"> 
+          <small>12am</small>
+          </span>
+        
+          <a href="/events/8355/" class="pull-right"><img src="http://d3dombqstlgdhj.cloudfront.net/Z8CKRtQhmpXbymooXUx60Jstdb8=/130x94/smart/http%3A//d3dombqstlgdhj.cloudfront.net/images/Michela..jpg" alt=" " class="media-object img-responsive pull-left"></a>
+        
+          <div class="media-body">
+            <h4 class="media-heading"><a href="/events/8355/">Tap Dance Jam! w/ Michela  Marino Lerman<br>Hosted by Michela Lerman ($10 cover/Musicians free)</a></h4>
+            <p><small>6:00 PM to 9:00 PM</small></p>
+            <p>Michela  Marino Lerman</p>
+          </div>
+        </div>
+      </div>
+    {% endif %}
     {% if event.leader %}
       <div class="leader-videos"> 
       <h4>Recent Videos led by {{ event.leader.full_name }}</h4>
@@ -235,12 +282,14 @@ sample thumbors:
     <li><a href="./?hastracks=1">Past event, w/ live singles</a> {hastracks} </li>
     <li><a href="./?isfuture=1">Future/upcoming event</a> {isfuture}</li>
     <li><a href="./?islive=1">Live now event</a> {islive}</li>
+    <li><a href="./?isSubscriber=1">Is-subscriber</a> {isSubscriber}</li>
     <li><a href="./?mediaUnavailable=1">Past event, no video</a> {mediaUnavailable}</li>
   </ul>
   <h1>Dev notes</h1>
   <Ul> 
     <li><code>1</code> - if the cuts are   from the CD, we may not want this here if edits were made to audio (pending response from mike bond) as the video/audio may not line up. </li> 
     <li><code>2</code> - the page knows if the user already bought this track in the past so they can download again here</li>
+    <li><code>4</code> - take them to current live show</li>
   </Ul>
 </div>
 
