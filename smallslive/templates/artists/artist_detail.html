@@ -52,7 +52,7 @@
             <li {% if  artist.media_count_as_sideman > 0 and   artist.media_count_as_leader < 1 %}class="active"{% endif %}><a href="#as_sideman" data-toggle="tab">As Side Musician ({{ artist.media_count_as_sideman}})</a></li>
         </ul>
         <div class="tab-content">
-          <div class="tab-pane {% if  artist.media_count_as_leader > 0  %} class="active"{% endif %}" id="as_leader">
+          <div class="tab-pane {% if  artist.media_count_as_leader > 0  %}active{% endif %}" id="as_leader">
             {% if  artist.media_count_as_leader > 0 %}
               <table class="table">
                 <tbody>
