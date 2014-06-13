@@ -566,13 +566,21 @@ div.datepicker {
   }
 }
 /*=Components - Bootstrap Overrides*/
-.media span.pull-left {
-  background: $gray-lighter;
-  color: #444;
-  text-align: center;
-  padding: 3px;
-  width: 3em;  
-  @include border-radius(3px);
+.media { 
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid $gray-lighter;
+  p {
+    margin-bottom: 0;
+  }
+  span.pull-left {
+    background: $gray-lighter;
+    color: #444;
+    text-align: center;
+    padding: 3px;
+    width: 3em;  
+    @include border-radius(3px);
+  }
 }
 .nav-tabs,
 .nav-pills,

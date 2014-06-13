@@ -87,13 +87,10 @@
   </div>
   <div class="col-sm-4">
     <h4>About {{ artist.first_name }}</h4>
- 
-      <ul>
-        <li><a href="{{ artist.website }}">Artist's website</a></li>
- 
-        <li><a href="{{ artist.website }}">Facebook</a></li>
-      </ul>
- 
+    <ul>
+      <li><a href="{{ artist.website }}">Artist's website</a></li>
+      <li><a href="{{ artist.website }}">Facebook</a></li>
+    </ul> 
     {{ artist.biography|safe }} 
     <div class="well join-artist-mailing-list">
       <h4>Join {{ artist.first_name }}'s Mailing List:<code>2</code></h4>
