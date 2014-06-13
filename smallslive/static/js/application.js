@@ -228,6 +228,7 @@ $(document).ready(function(){
     e.preventDefault();
     $('.f-publish-video .default').hide();
     $('.f-publish-video .are-you-sure').show();
+    $(this).closest('.alert').removeClass('alert-info').addClass('alert-warning');
   });
   //Now that the ARE YOU SURE UI is showing, process form, or cancel :
   $('.f-publish-video').on('click','.are-you-sure .btn',function() {
@@ -235,6 +236,7 @@ $(document).ready(function(){
       //Dont save form; return UI to default state:
       $('.f-publish-video .are-you-sure').hide();
       $('.f-publish-video .default').show();
+      $(this).closest('.alert').removeClass('alert-warning').addClass('alert-info');
       return false; 
     } else {
       //Process Unpublish action:
