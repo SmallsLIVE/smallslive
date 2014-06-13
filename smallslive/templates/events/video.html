@@ -64,10 +64,8 @@ sample thumbors:
     <small>
       <time>{{ event.start }}</time>
       {% if not request.GET.islive %}
- 
           <a href=""><span class="label label-success"><span class="glyphicon glyphicon-ok"></span> Streamed Live</span><code>4</code></a>
           <a href="/accounts/signup/"><span class="label label-success"><span class="glyphicon glyphicon-ok"></span> To Be Archived</span></a>
-  
       {% endif %}      
     </small>
     {% if user.is_superuser %}
@@ -87,7 +85,6 @@ sample thumbors:
           </a> 
           (<span class="request-count">0</span> requests so far)
         </div>
-        
         {% if event.photo %}
           <p><img src="{{ event.photo.url }}" class="event-photo img-responsive"  /></p>
         {% endif %}
