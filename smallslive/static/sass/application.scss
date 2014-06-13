@@ -566,8 +566,17 @@ div.datepicker {
   }
 }
 /*=Components - Bootstrap Overrides*/
+.media span.pull-left {
+  background: $gray-lighter;
+  color: #444;
+  text-align: center;
+  padding: 3px;
+  width: 3em;  
+  @include border-radius(3px);
+}
 .nav-tabs,
-.nav-pills {
+.nav-pills,
+.upcoming_events {
   margin-bottom: $margin-bottom;
 }
 form {  

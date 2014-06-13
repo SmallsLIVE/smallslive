@@ -224,7 +224,7 @@ $(document).ready(function(){
   //EVENT PAGE/VIDEO PAGE
   //Change publish flag:
   //First, the fake form should show an "are you sure mesg:"
-  $('.f-publish-video').on('click','.default a.btn-warning',function(e) {
+  $('.f-publish-video').on('click','.default a',function(e) {
     e.preventDefault();
     $('.f-publish-video .default').hide();
     $('.f-publish-video .are-you-sure').show();

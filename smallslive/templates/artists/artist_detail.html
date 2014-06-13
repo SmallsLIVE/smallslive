@@ -24,36 +24,36 @@
     </div>
  
     {# begin upcoming events #}
-    {% if artist.upcoming_events|length > 0 %}
-      <h2>Upcoming Shows @ Smalls:</h2>
-      {% if user.is_authenticated %}
-        <p>Watch them live, online for free:</p>
-      {% else %}
-        <p>These concerts are streamed live for free if you  <a href="/accounts/signup/">sign up for an account.</p>
-      {% endif %}
-      <ul>
+    <div class="upcoming_events">
+      <h4>Upcoming Shows with {{ artist.first_name }} @ Smalls</h4>
+      {% if artist.upcoming_events|length > 0 %}
+        {% if user.is_authenticated %}
+          <p>Watch them live, online for free:</p>
+        {% else %}
+          <p>These concerts are streamed live for free if you  <a href="/accounts/signup/">sign up for an account.</p>
+        {% endif %}
         {% for upcoming_event in artist.upcoming_events %}
-          <li>{{ upcoming_event.start }} {{ upcoming_event.display_title }} {% if artist.user == request.user or request.user.is_superuser %}[<a href="{% url "event_edit" pk=upcoming_event.id %}"></a>]{% endif %}</li>
+          {% include 'blocks/event-snippet.html' with event=upcoming_event %}
         {% endfor %} 
-      </ul>
-    {% endif %}
+      {% else %}
+        <p>No upcoming shows at this time.</p>
+      {% endif %}
+    </div>
+    {# end events #}
+    
     {# begin artist videos tab set #} 
     <div class="leader-videos"> 
-      <h4>Videos with {{ artist.full_name }}</h4>
+      <h4>Jazz Videos featuring {{ artist.first_name }}</h4>
       {% if  artist.media_count < 1 %}
         <p>This artist does not have any videos available yet.</p>
       {% else %}
         <ul class="nav nav-tabs">
-          {% if  artist.media_count_as_leader > 0 %}
-            <li class="active"><a href="#as_leader" data-toggle="tab">As Leader ({{ artist.media_count_as_leader}})</a></li>
-          {% endif %}
-          {% if  artist.media_count_as_sideman > 0 %}
-            <li><a href="#as_sideman" data-toggle="tab">As Side Musician ({{ artist.media_count_as_sideman}})</a></li>
-          {% endif %}
+            <li {% if  artist.media_count_as_leader > 0  %} class="active"{% endif %}><a href="#as_leader" data-toggle="tab">As Leader {{ artist.media_count_as_leader|length }} ({{ artist.media_count_as_leader}})</a></li>
+            <li {% if  artist.media_count_as_sideman > 0 and   artist.media_count_as_leader < 1 %}class="active"{% endif %}><a href="#as_sideman" data-toggle="tab">As Side Musician ({{ artist.media_count_as_sideman}})</a></li>
         </ul>
         <div class="tab-content">
-          {% if  artist.media_count_as_leader > 0 %}
-            <div class="tab-pane active" id="as_leader">
+          <div class="tab-pane {% if  artist.media_count_as_leader > 0  %} class="active"{% endif %}" id="as_leader">
+            {% if  artist.media_count_as_leader > 0 %}
               <table class="table">
                 <tbody>
                   {% for past_event in artist.past_events|slice:"10" %}
@@ -62,10 +62,12 @@
                 </tbody>
               </table> 
               <p>[paginate]</p>
-            </div>
-          {% endif %}
-          {% if  artist.media_count_as_sideman > 0 %}          
-            <div class="tab-pane " id="as_sideman">
+            {% else %}
+              <p>{{ artist.first_name }} has no videos as a bandleader at Smalls.</p> 
+            {% endif %}
+          </div>       
+          <div class="tab-pane {% if  artist.media_count_as_sideman > 0 and   artist.media_count_as_leader < 1 %}active{% endif %}" id="as_sideman">
+            {% if  artist.media_count_as_sideman > 0 %}
               <table class="table">
                 <tbody>
                   {% for past_event in artist.past_events|slice:"10" %}
@@ -73,15 +75,18 @@
                   {% endfor %}
                 </tbody>
               </table> 
-            </div>
-          {% endif %}
+              <p>[paginate]</p>
+            {% else %}
+              <p>{{ artist.first_name }} has no videos as a side musician at Smalls.</p> 
+            {% endif %}
+          </div>
         </div>
       {% endif %}
     </div>  
     {# end artist videos tab set #} 
   </div>
   <div class="col-sm-4">
-    <h2>About {{ artist.first_name }}</h2>
+    <h4>About {{ artist.first_name }}</h4>
  
       <ul>
         <li><a href="{{ artist.website }}">Artist's website</a></li>
@@ -91,7 +96,7 @@
  
     {{ artist.biography|safe }} 
     <div class="well join-artist-mailing-list">
-      <h2>Join {{ artist.first_name }}'s Mailing List:<code>2</code></h2>
+      <h4>Join {{ artist.first_name }}'s Mailing List:<code>2</code></h4>
       {% if request.GET.hasRequestedInPast %}
         <div class="alert alert-info">You already asked to join this list on May 12, 2014. <a href="">Request to join again</a></div>
       {% endif %}
