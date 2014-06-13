@@ -222,8 +222,10 @@ sample thumbors:
               <img src="{% static 'image/photo-unavailable-square.svg' %}" width="80" height="80" class="img-responsive artist-photo pull-left" />
             {% endif %}
             <h3>{{ artist_info.artist.full_name }}</h3>
-            {{ artist_info.artist.instruments.all|join:", " }} 
-            <span class="media-count">(<span class="glyphicon glyphicon-music"></span> 6)</span>
+            <div>
+              {{ artist_info.artist.instruments.all|join:", " }} 
+              <span class="media-count">(<span class="glyphicon glyphicon-music"></span> 6)</span>
+            </div>
             </a>
           </div>
         {% endfor %} 

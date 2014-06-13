@@ -279,7 +279,10 @@ body.search .facets {
  .sideman {
     float:left;
     margin: 16px 16px 0 0;
-    width: 180px;
+    width: 206px;
+    div {
+      white-space: nowrap;
+    }
     a {
       color: #333;
     }
@@ -289,7 +292,7 @@ body.search .facets {
   }
   @media all and (min-width : $screen-md-min) {
     .sideman {
-      width: 220px;
+      width: 260px;
     }
   }
   img {
@@ -323,6 +326,9 @@ body.search .facets {
 .my-gigs {
   .downloads {
     color: $gray-light;
+    a {
+      white-space: nowrap;
+    }
   }
   .unpublished-by-another-sideman {
     color: $gray-light;
@@ -566,6 +572,21 @@ div.datepicker {
   }
 }
 /*=Components - Bootstrap Overrides*/
+td.audio-play a {
+  position: relative; 
+  top: 1.2em;
+}
+td.video-thumb a {
+  display: block;
+  position: relative;
+  span {
+    color: #EEEEEE;
+    font-size: 200%;
+    left: 36%;
+    position: absolute;
+    top: 31%;
+  }
+}
 .media { 
   margin-top: 12px;
   padding-top: 12px;
