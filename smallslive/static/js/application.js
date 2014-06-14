@@ -75,7 +75,7 @@ $(document).ready(function(){
   $('.artist-clearance-breakdown table').hide();
   $('body').on('click','.clearance-summary a',function(e){
     e.preventDefault();
-    $(this).closest('td').find('table').toggle();
+    $(this).closest('.artist-clearance-breakdown').find('table').toggle();
   });
   function checkRadio(radio) {
     if ($(radio).hasClass('extra-message')==true) {
@@ -224,7 +224,7 @@ $(document).ready(function(){
   //EVENT PAGE/VIDEO PAGE
   //Change publish flag:
   //First, the fake form should show an "are you sure mesg:"
-  $('.f-publish-video').on('click','.default a',function(e) {
+  $('.f-publish-video').on('click','.default a.trigger-unpublish',function(e) {
     e.preventDefault();
     $('.f-publish-video .default').hide();
     $('.f-publish-video .are-you-sure').show();

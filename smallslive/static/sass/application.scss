@@ -232,6 +232,13 @@ body.search .facets {
       margin-right: 16px;
     }
   }
+  .for-owner-only {
+    @include border-radius(0);
+    .default > span,
+    .default > a {
+      margin-right: 1em;
+    }
+  }
   div.socials {
     padding-top: 8px;
   }

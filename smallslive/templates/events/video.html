@@ -54,6 +54,39 @@ sample thumbors:
   {% endif %}
 {% endblock title %}
 {% block content %}
+{% if not request.GET.isfuture %}
+  {# START Private Info for Artist / Video Owner #}
+  {% if event.leader.user == request.user or request.user.is_superuser %}
+    {% if request.GET.notPublished %}
+      <div class="alert alert-warning">
+            <a href="{% url 'my_gigs' %}" class="pull-right">My Recordings &amp; Gigs&hellip;</a>
+        {% include 'blocks/change-publish-status.html' %}
+      </div>
+    {% else %}
+      <div class="alert alert-info for-owner-only">
+        <form action="form" role="form" class="form-inline f-publish-video">   
+          <div class="default"> 
+            <a href="{% url 'my_gigs' %}" class="pull-right">My Recordings &amp; Gigs&hellip;</a>
+            <span>Earned: <strong>$x.xx</strong> </span>      
+            <a href=""><span class="glyphicon glyphicon-download"></span>   452MB MP4</a>
+            <a href=""><span class="glyphicon glyphicon-download"></span>   12MB AIFF</a>
+            <span>Published: <strong>mm/dd/yy</strong></span> 
+            <a href="" class="trigger-unpublish text-muted">Unpublish <code>3</code></a>
+             
+          </div>
+          <div class="are-you-sure none">            
+            <p>You are about to remove a video from the subcribers' archive. You and the other artists featured in this video will no longer be eligible to earn $ on this video if you unpublish this video.</p>
+            <div class="form-group">
+              <input type="submit" class="btn btn-sm btn-warning cancel" value="Leave Published" name="publish_status">  
+              <input type="submit" class="btn btn-sm btn-default" value="Unpublish" name="publish_status">               
+            </div>
+          </div>
+        </form>
+      </div>
+    {% endif %}
+  {% endif %}
+  {# END Publishing status checkbox #}
+{% endif %}
 <div class="page-header">
   <h1>
     {% if request.GET.islive %}
@@ -91,24 +124,6 @@ sample thumbors:
         </div>
       {% else %}
         {# A video does exist: #}
-        {# START show Publishing status checkbox #}
-        {% if event.leader.user == request.user or request.user.is_superuser %}
-          <div class="alert alert-info">
-            <form action="form" role="form" class="form-inline f-publish-video">   
-              <div class="default"><code>3</code> <span class="glyphicon glyphicon-ok"></span> Video has been published since mm/dd/yy and has earned $x.xx 
-                <a href="">Unpublish Video</a> 
-              </div>
-              <div class="are-you-sure none">            
-                <p>You are about to remove a video from the subcribers' archive. You and the other artists featured in this video will no longer be eligible to earn $ on this video if you unpublish this video.</p>
-                <div class="form-group">
-                  <input type="submit" class="btn btn-sm btn-warning cancel" value="Leave Published" name="publish_status">  
-                  <input type="submit" class="btn btn-sm btn-default" value="Unpublish" name="publish_status">               
-                </div>
-              </div>
-            </form>
-          </div>
-        {% endif %}
-        {# END Publishing status checkbox #}
         {% if request.GET.hascd %}  
           <div class="cd">
            <img src="{% thumbor_url 'http://beta.asoundstrategy.com/sitemaster/userUploads/site372/SL0039_PETERBERNSTEIN1.jpg'|urlencode width=130 height=130 smart=True %}" class="pull-left img-responsive" /> 
@@ -302,13 +317,14 @@ sample thumbors:
     <li><a href="./?islive=1">Live now event</a> {islive}</li>
     <li><a href="./?isSubscriber=1">Is-subscriber</a> {isSubscriber}</li>
     <li><a href="./?mediaUnavailable=1">Past event, no video</a> {mediaUnavailable}</li>
+    <li><a href="./?notPublished=1">Past event, unpublished</a> {mediaUnavailable}</li>
   </ul>
   <h1>Dev notes</h1>
   <Ul> 
     <li><code>1</code> - if the cuts are   from the CD, we may not want this here if edits were made to audio (pending response from mike bond) as the video/audio may not line up. </li> 
     <li><code>2</code> - the page knows if the user already bought this track in the past so they can download again here</li>
-    <li><code>3</code> - log in as super user or as the leader of this video to see unpublish capability. See <code>5</code> for details. </li>
-    <li><code>5</code> - dont show publish date if its never been published. dont show $0 if the video has earned $0 or has never been published before. Do not ask "are you sure" when going from unpublished->published. When a video goes from unpublish->published on this page, do a postback, and show a green standard success message at the top of the page: "Thanks! This video is now in the archive for subscribers to watch and is now eligible to earn money when watched." </li>
+    <li><code>3</code> - log in as super user or as the leader of this video to see unpublish capability, $ earnings to date, and download links. See <code>5</code> for details. </li>
+    <li><code>5</code> - dont show publish date if its never been published. Do not ask "are you sure" when going from unpublished->published status (just publish it w/ ajax, and show the blue default UI as the feedback message). The act of publishing from this place  </li>
     <li><code>4</code> - take them to current live show</li>
   </Ul>
 </div>
