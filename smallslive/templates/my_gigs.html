@@ -32,6 +32,7 @@
                   <option>Gig Date (most recent first)</option>
                   <option>Gig Date (oldest first)</option>
                 </select>
+                <a href="/static_page/search/">Search these videos</a><code>7</code>
             </div>
           </form> 
           <table class="table table-striped">
@@ -222,37 +223,8 @@
                     subtitle <span class="text-muted">(66 mins.)</span>         
                    <div><a href="#">Edit description</a></div>
                 </td>               
-                <td class="artist-clearance-breakdown">
-                 
-                  <form action="#" method="get" class="f-toggle-publish">
-                    <p><button class="btn-primary btn-xs"><code>2</code> Publish Recording</button></p>
-                    <p class="text-warning clearance-summary">You chose not to publish this when you signed up. <a href="" >Performer details&hellip;</a></p>             
-                  </form>
-
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>Artist</th>
-                        <th>Joined SmallsLIVE?</th> 
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                          <td><strong>Me (leader)</strong></td>
-                          <td>
-                            <span class="text-success"> <span class="glyphicon glyphicon-ok"></span> Yes</span>
-                          </td> 
-                      </tr>
-                      <tr>
-                        <td><a href="mailto:jon@grimes.com?subject=Clearing our Smalls recording from Jan 14, 2011&body=Hi Jon,%2C%0D%0A%0D%0AI would love to get this recording of us cleared for use on Smalls so we can all make money on it when users listen to it: %2C%0D%0A%0D%0A[[insert link]]%2C%0D%0A%0D%0AWe share a copyright on the recording and all of us on the gig have to approve the recording before it can go into the SmallsLIVE archive for listeners. %2C%0D%0A%0D%0AThanks, {{ user.first_name }}">Alan Smith (gtr)</a></td>
-                       <td class="text-warning"><span class="glyphicon glyphicon-remove"></span> No</td>
-                      </tr>
-                      <tr>
-                        <td><a href="mailto:jen@olans.com?subject=Clearing our Smalls recording from Jan 14, 2011&body=Hi Jen,%2C%0D%0A%0D%0AI would love to get this recording cleared for use on Smalls so we can all make money on it when users listen to it:%2C%0D%0A%0D%0A[[insert link]]%2C%0D%0A%0D%0AAny particular reason you rejected it? We can edit the recording down if there are specific parts you don't want public. Let me know. %2C%0D%0A%0D%0AThanks, {{ user.first_name }}">Jen Olans (bs)</a></td>
-                       <td class="text-warning"><span class="glyphicon glyphicon-remove"></span> No</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <td>
+                  {% include 'blocks/change-publish-status.html' %}
                 </td>
                 <td class="downloads">
                   <a href=""><span class="glyphicon glyphicon-download"></span> Video</a> 452MB MP4<br />
@@ -363,6 +335,7 @@
       <li><code>4</code> - Publish Date desc. is the default sort order
       <li><code>5</code> - this green mesg only appears at the end of artist signup</li> 
       <li><code>6</code> - any linked THs are sortable</li>
+      <li><code>7</code> - send query to public video search, passing in leader name = artist name</li>
     </Ul>
   </div>
 {% endblock content %}
