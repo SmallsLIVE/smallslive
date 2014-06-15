@@ -331,16 +331,22 @@ body.search .facets {
 }
 /*=My Gigs / Events*/
 .my-gigs {
-  td.audio-play {
+  .media-area {
     background: #f5f5f5;
-    vertical-align: middle;
- 
+  }
+  td.audio-play {
+    @extend .media-area;
   }
   td.choose-set.not-first {
     border-top: none;
   }
   td.choose-set.active {
     background: #f5f5f5;
+  }
+  a.download {
+    display: block;
+    white-space: nowrap;
+    margin-bottom: 4px;
   }
   td.choose-set {
     vertical-align: middle;
@@ -352,12 +358,11 @@ body.search .facets {
     }
   }
   td.video-thumb {
-    background: #f5f5f5;
-    vertical-align: middle;
+    @extend .media-area;
     a {
       display: block;
       position: relative;
-      span {
+      span.glyphicon-play {
         color: #EEEEEE;
         font-size: 200%;
         left: 36%;
