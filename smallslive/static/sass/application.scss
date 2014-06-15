@@ -331,6 +331,41 @@ body.search .facets {
 }
 /*=My Gigs / Events*/
 .my-gigs {
+  td.audio-play {
+    background: #f5f5f5;
+    vertical-align: middle;
+ 
+  }
+  td.choose-set.not-first {
+    border-top: none;
+  }
+  td.choose-set.active {
+    background: #f5f5f5;
+  }
+  td.choose-set {
+    vertical-align: middle;
+    label {
+      font-weight: normal;
+      white-space: nowrap;
+      display: block;
+      margin: 0;
+    }
+  }
+  td.video-thumb {
+    background: #f5f5f5;
+    vertical-align: middle;
+    a {
+      display: block;
+      position: relative;
+      span {
+        color: #EEEEEE;
+        font-size: 200%;
+        left: 36%;
+        position: absolute;
+        top: 27%;
+      }
+    }
+  }
   .downloads {
     color: $gray-light;
     a {
@@ -579,21 +614,6 @@ div.datepicker {
   }
 }
 /*=Components - Bootstrap Overrides*/
-td.audio-play a {
-  position: relative; 
-  top: 1.2em;
-}
-td.video-thumb a {
-  display: block;
-  position: relative;
-  span {
-    color: #EEEEEE;
-    font-size: 200%;
-    left: 36%;
-    position: absolute;
-    top: 31%;
-  }
-}
 .media { 
   margin-top: 12px;
   padding-top: 12px;

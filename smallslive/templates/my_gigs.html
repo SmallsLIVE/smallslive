@@ -35,10 +35,11 @@
                 <a href="/static_page/search/">Search these videos</a><code>7</code>
             </div>
           </form> 
-          <table class="table table-striped">
+          <table class="table">
             <thead>
               <tr>
                 <th>Gig Date</th>
+                <th>Set</th>
                 <th>Video</th>
                 <th>Audio</th>
                 <th>Description</th>
@@ -49,9 +50,12 @@
             </thead>
             <tbody>
               {% for past_event in past_events %}
-              <tr> 
-                <td class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
-                <td class="video-thumb">
+              <tr data-event="{{ past_event.id }}"  class="event_{{ past_event.id }}"> 
+                <td rowspan="2" class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
+                <td  class="choose-set active">
+                  <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="1" checked="checked"> 1 (66min)</label>
+                </td>
+                <td rowspan="2" class="video-thumb">
                   {% if past_event.photo.url != "" %}
                     <a href="/events/{{ past_event.id }}/">
                       <span class="glyphicon glyphicon-play"></span>
@@ -59,22 +63,28 @@
                     </a>
                   {% endif %}
                 </td>
-                <td class="audio-play"> 
+                <td rowspan="2" class="audio-play"> 
                     <a  href="/events/{{ past_event.id }}/" class=" btn btn-default" role="button" title="Play audio {{ past_event.displaytitle }}"><span class="glyphicon glyphicon-play"></span></a>
                 </td>
-                <td> 
+                <td rowspan="2"> 
                    <a href="{{ past_event.get_absolute_url }}">{{ past_event.display_title }}</a><br />
                       {{ past_event.subtitle }}
-                      <span class="text-muted">(66 mins.)</span>         
                    <div><a href="{% url "event_edit" past_event.id %}">{% if past_event.description %}Edit{% else %}Add{% endif %} description</a></div>
                 </td>
-                <td>Jan 1, 2015</td>
-                <td class="num">3</td>
-                <td class="downloads">
+                <td rowspan="2" >Jan 1, 2015</td>
+                <td rowspan="2" class="num">3</td>
+                <td rowspan="" class="downloads">
                   <a href=""><span class="glyphicon glyphicon-download"></span>   452MB MP4</a><br />
                   <a href=""><span class="glyphicon glyphicon-download"></span>   12MB AIFF</a>
                 </td>
               </tr>
+              <tr data-event="{{ past_event.id }}" class="event_{{ past_event.id }}">
+                <td  class="choose-set not-first">
+                
+                  <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="2"> 2 (34min)</label>
+                </td>
+              </tr>
+         
               {% endfor %}
             </tbody>
           </table>
@@ -253,23 +263,20 @@
                 </td>
               </tr>
               <!-- end erase section -->
-              
               {% for past_event in past_events %}
               <tr> 
                 <td class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
                 <td>{% if past_event.photo.url != "" %}
-            <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" class="img-responsive" />
-          {% endif %}</td>
+                      <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" class="img-responsive" />
+                    {% endif %}
+                </td>
                 <td> 
                     <a  href="/events/8323/" class=" btn btn-primary" role="button" title="Play audio {{ past_event.displaytitle }}"><span class="glyphicon glyphicon-play"></span></a></td>
                 <td> 
-              
                    <a href="{{ past_event.get_absolute_url }}">{{ past_event.display_title }}</a><br />
-                      {{ past_event.subtitle }}
-                      <span class="text-muted">(66 mins.)</span>
-                 
-         
-                  <div><a href="{% url "event_edit" past_event.id %}">Edit description</a></div>
+                   {{ past_event.subtitle }}
+                   <span class="text-muted">(66 mins.)</span>
+                   <div><a href="{% url "event_edit" past_event.id %}">Edit description</a></div>
                 </td>
                 <td class="text-warning">status message here</td>
                 <td class="downloads">
