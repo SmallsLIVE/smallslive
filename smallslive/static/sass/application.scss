@@ -234,9 +234,15 @@ body.search .facets {
   }
   .for-owner-only {
     @include border-radius(0);
-    .default > span,
-    .default > a {
-      margin-right: 1em;
+    .default {
+      table {
+        margin-bottom: 0;
+      }
+      > span,
+      a {
+          margin-right: 1em;
+          white-space: nowrap;
+      }
     }
   }
   div.socials {
