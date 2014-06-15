@@ -217,6 +217,12 @@ $(document).ready(function(){
     var container=$('.bulk-download');
     container.find('.download-configurator').toggle();
   });
+  //When I change sets in the table with radio button, highlight the proper radio button
+  $('.choose-set').on('click','input',function(){
+    var id=$(this).closest('tr').data("event");
+    $('tr.event_'+id+' .choose-set').removeClass('active');
+    $(this).closest('.choose-set').addClass('active');
+  });
   //END MY GIGS
   
   
