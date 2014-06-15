@@ -54,39 +54,6 @@ sample thumbors:
   {% endif %}
 {% endblock title %}
 {% block content %}
-{% if not request.GET.isfuture %}
-  {# START Private Info for Artist / Video Owner #}
-  {% if event.leader.user == request.user or request.user.is_superuser %}
-    {% if request.GET.notPublished %}
-      <div class="alert alert-warning">
-            <a href="{% url 'my_gigs' %}" class="pull-right">My Recordings &amp; Gigs&hellip;</a>
-        {% include 'blocks/change-publish-status.html' %}
-      </div>
-    {% else %}
-      <div class="alert alert-info for-owner-only">
-        <form action="form" role="form" class="form-inline f-publish-video">   
-          <div class="default"> 
-            <a href="{% url 'my_gigs' %}" class="pull-right">My Recordings &amp; Gigs&hellip;</a>
-            <span>Earned: <strong>$x.xx</strong> </span>      
-            <a href=""><span class="glyphicon glyphicon-download"></span>   452MB MP4</a>
-            <a href=""><span class="glyphicon glyphicon-download"></span>   12MB AIFF</a>
-            <span>Published: <strong>mm/dd/yy</strong></span> 
-            <a href="" class="trigger-unpublish text-muted">Unpublish <code>3</code></a>
-             
-          </div>
-          <div class="are-you-sure none">            
-            <p>You are about to remove a video from the subcribers' archive. You and the other artists featured in this video will no longer be eligible to earn $ on this video if you unpublish this video.</p>
-            <div class="form-group">
-              <input type="submit" class="btn btn-sm btn-warning cancel" value="Leave Published" name="publish_status">  
-              <input type="submit" class="btn btn-sm btn-default" value="Unpublish" name="publish_status">               
-            </div>
-          </div>
-        </form>
-      </div>
-    {% endif %}
-  {% endif %}
-  {# END Publishing status checkbox #}
-{% endif %}
 <div class="page-header">
   <h1>
     {% if request.GET.islive %}
@@ -109,6 +76,61 @@ sample thumbors:
 </div>
 <div class="row">
   <div class="col-sm-8"> 
+    {% if not request.GET.isfuture %}
+      {# START Private Info for Artist / Video Owner #}
+      {% if event.leader.user == request.user or request.user.is_superuser %}
+        {% if request.GET.notPublished %}
+          <div class="alert alert-warning">
+                <a href="{% url 'my_gigs' %}" class="pull-right">My Recordings &amp; Gigs&hellip;</a>
+            {% include 'blocks/change-publish-status.html' %}
+          </div>
+        {% else %}
+          <div class="alert alert-warning for-owner-only">
+            <form action="form" role="form" class="form-inline f-publish-video">   
+              <div class="default small"> 
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Earnings</th>
+                      <th><span class="glyphicon glyphicon-download"></span> Video MP4</th>
+                      <th><span class="glyphicon glyphicon-download"></span> Audio AIFF</th>
+                      <th><span class="glyphicon glyphicon-download"></span> Published</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td><strong>$x.xx</strong> </td>
+                    <td>
+                      <a href="" class="download">Set 1  - 1.1GB </a>
+                      <a href="" class="download">Set 2  - 1.2GB</a>
+                    </td>
+                    <td>
+                      <a href="" class="download">Set 1  - 42MB </a>
+                      <a href="" class="download">Set 2  - 34MB</a>
+                    </td>
+                    <td> <strong>mm/dd/yy</strong>
+                      <a href="" class="trigger-unpublish text-muted">Unpublish <code>3</code></a>
+                    </td> 
+                    <td>
+                      <a href="{% url 'my_gigs' %}">My Recordings &amp; Gigs&hellip;</a>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="are-you-sure none">            
+                <p>You are about to remove a video from the subcribers' archive. You and the other artists featured in this video will no longer be eligible to earn $ on this video if you unpublish this video.</p>
+                <div class="form-group">
+                  <input type="submit" class="btn btn-sm btn-warning cancel" value="Leave Published" name="publish_status">  
+                  <input type="submit" class="btn btn-sm btn-default" value="Unpublish" name="publish_status">               
+                </div>
+              </div>
+            </form>
+          </div>
+        {% endif %}
+      {% endif %}
+      {# END Publishing status checkbox #}
+    {% endif %}  
     {% if not request.GET.isfuture %}
       {% if request.GET.mediaUnavailable %}
         <div class="alert alert-info"><h3>This video  will be available soon.</h3>  
