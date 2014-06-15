@@ -44,8 +44,7 @@
                 <th>Audio</th>
                 <th>Description</th>
                 <th>Publish Date<code>4</code></th>
-                <th>Fans*</th>
-                <th>Downloads</th>
+                <th>Fans*</th> 
               </tr>
             </thead>
             <tbody>
@@ -56,15 +55,18 @@
                   <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="1" checked="checked"> 1 (66min)</label>
                 </td>
                 <td rowspan="2" class="video-thumb">
+                  <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   1.2GB MP4</a>
+
                   {% if past_event.photo.url != "" %}
                     <a href="/events/{{ past_event.id }}/">
                       <span class="glyphicon glyphicon-play"></span>
                       <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}" class="img-responsive" />
                     </a>
-                  {% endif %}
+                  {% endif %}       
                 </td>
                 <td rowspan="2" class="audio-play"> 
-                    <a  href="/events/{{ past_event.id }}/" class=" btn btn-default" role="button" title="Play audio {{ past_event.displaytitle }}"><span class="glyphicon glyphicon-play"></span></a>
+                    <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   52MB MP3</a>
+                    <a  href="/events/{{ past_event.id }}/" class=" btn btn-default" role="button" title="Play audio {{ past_event.displaytitle }}"><span class="glyphicon glyphicon-play"></span></a>                  
                 </td>
                 <td rowspan="2"> 
                    <a href="{{ past_event.get_absolute_url }}">{{ past_event.display_title }}</a><br />
@@ -73,10 +75,6 @@
                 </td>
                 <td rowspan="2" >Jan 1, 2015</td>
                 <td rowspan="2" class="num">3</td>
-                <td rowspan="" class="downloads">
-                  <a href=""><span class="glyphicon glyphicon-download"></span>   452MB MP4</a><br />
-                  <a href=""><span class="glyphicon glyphicon-download"></span>   12MB AIFF</a>
-                </td>
               </tr>
               <tr data-event="{{ past_event.id }}" class="event_{{ past_event.id }}">
                 <td  class="choose-set not-first">
