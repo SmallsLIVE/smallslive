@@ -237,6 +237,9 @@ body.search .facets {
     .default {
       table {
         margin-bottom: 0;
+        td {
+          border-top-color: $state-warning-border;
+        }
       }
       > span,
       a {
@@ -336,9 +339,9 @@ body.search .facets {
   }
 }
 /*=My Gigs / Events*/
-.my-gigs {
+.list-of-recordings {
   .media-area {
-    background: #f5f5f5;
+    background: #f5f5f5; /*variable*/
   }
   td.audio-play {
     @extend .media-area;
@@ -624,7 +627,13 @@ div.datepicker {
     }
   }
 }
-/*=Components - Bootstrap Overrides*/
+/*=Components , Element and Bootstrap Overrides*/
+.table thead > tr > th {
+  border-bottom: none;
+}
+table.list-of-recordings thead th {
+  white-space: nowrap;
+}
 .media { 
   margin-top: 12px;
   padding-top: 12px;

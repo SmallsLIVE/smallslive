@@ -90,11 +90,12 @@
         <li><a href="/static_page/about-smallslive-for-musicians">Artist Sign Up Starting Point</a> &rarr; <a href="/static_page/musician-signup-login">Artist Reg (1 of 4)</a> (this link starts process)</li> 
         <li><a href="/accounts/login/">Log In</a> &rarr; <a href="/accounts/signup">Choose Subscription</a> &rarr; <a href="/accounts/signup/">Create Account Form</a>
       </ul>
-      <h3>Admin Screens</h3>
+      <h3>Admin/Artist Screens</h3>
       <ul> 
           <li><a href="/static_page/my-account-summary">My Account Section</a> - subscription, downloads, payment history (has many versions, see footer)</li>
-          <li><a href="{% url 'venue_dashboard' %}">Dashboard for Venue</a></li>
-          <li><a href="/static_page/dashboard-musician">Dashboard for Artists</a></li>
+          <li><a href="{% url 'venue_dashboard' %}">Calendar (Dashboard)</a></li>
+          <li><a href="{% url 'video_manager' %}">Videos &amp; Audio</a></li>
+          <li><a href="{% url 'my_gigs' %}">$ Dashboard for Artists</a></li>
           <li><a href="{% url "admin:index" %}">Django Admin</a></li>
       </ul>
     </div>    

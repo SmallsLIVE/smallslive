@@ -3,8 +3,8 @@
   <div class="collapse navbar-collapse" id="main-nav">
     <ul class="nav navbar-nav">
       {% if user.is_superuser %}  
-        <li><a href="/static_page/dashboard-admin">Admin Calendar</a></li> 
-        <li><a href="/static_page/video-manager">Video Manager</a></li> 
+        <li><a href="{% url 'venue_dashboard' %}">Admin Calendar</a></li> 
+        <li><a href="{% url 'video_manager' %}">Videos &amp; Audio</a></li> 
         <li class="divider" role="presentation"></li>
       {% endif %}
       {% if user.is_artist %}  

@@ -22,20 +22,20 @@
                 <th>Pic</th>
                 <th>View Event</th>
                 <th>Edit</th>
-                <th>Artists Registered?</th>
+                <th>Not Registered?</th>
                 <th>Last Updated</th>
               </tr>
             </thead>
             <tbody>
               {% for event in events %}
               <tr>
-                <td>{{ event.start }}</td>
+                <td class="event_date"><time datetime="{{ event.start|date:"c" }}">{{ event.start|date:"D, M. d" }}<br />{{ event.start|date:"Y - f a" }}</time></td>
                 <td>{% if event.photo.url != "" %}
-            <img src="{% thumbor_url event.photo.url|urlencode height=40 smart=True brightness=80 %}" class="img-responsive artist-photo" />
+            <img src="{% thumbor_url event.photo.url|urlencode height=60 width=100 smart=True   %}" class="img-responsive artist-photo" />{% else %}<span class="text-danger">[missing photo]</span>
           {% endif %}</td>
                 <td><a href="{{ event.get_absolute_url }}">{{ event.display_title }}</a></td>
                 <td><a href="{% url "event_edit" pk=event.id %}">edit</a></td>
-                <td><span class="text-danger">0/4</span> <a href="#">Send invitation(s)&hellip;</a></td>
+                <td><span class="text-danger">3/4</span> <a href="/static_page/invite-artists">Send invitation(s)&hellip;</a></td>
                 <td class="text-muted">{{ event.last_modified_by.get_full_name }} {{ event.modified|naturaltime }}</td>
               </tr>
               {% endfor %}

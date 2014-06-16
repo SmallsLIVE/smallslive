@@ -1,83 +1,12 @@
 {% extends "base_admin.html" %}
-{% block title %}Video Manager {% endblock title%}
+{% load humanize %}
+{% load thumbor_tags %}
+{% block title %}Videos &amp; Audio {% endblock title%}
 {% block content %}
-  <h1>Video Manager</h1>
+  <h1>Videos &amp; Audio ({{ past_events|length }})</h1>
   <div class="row">
     <div class="col-sm-12">
-      <ul class="nav nav-tabs">
-        <li class="active"><a href="#need-attention" data-toggle="tab">(32) Unpublished &rarr;</a></li>
-        <li><a href="#pending-licenses" data-toggle="tab">(3) Awaiting Licenses &rarr;</a></li>
-        <li><a href="#in-queue" data-toggle="tab">(2) Going Live Soon &rarr;</a></li>
-        <li><a href="#published" data-toggle="tab">(2) Published (See $ Top Earners)</a></li>
-      </ul>
-      <div class="tab-content">
-        <div class="tab-pane active" id="need-attention">
-          <h2>You need (2) side musicians to clear your recordings: </h2>
-          <table class="table table-condensed table-bordered">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Leader</th>
-                <th># videos together</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>%leaderPhoto%</td>
-                <td>Ari Hoenig</td>
-                <td><a href="6 videos">5 recordings</a></td>
-                <td>You asked him to approve your recording 14 days ago. Ari does not have a SmallsLIVE account yet and may need a reminder email.</td>
-                <td><a href="">Contact Ari</a></td>
-              </tr>
-              <tr>
-                <td>%leaderPhoto%</td>
-                <td>Peter Bernstein</td>
-                <td><a href="6 videos">5 recordings</a></td>
-                <td>You haven't contacted Peter via SmallsLIVE yet.</td>
-                <td><a href="">Contact Peter</a></td>
-              </tr>
-            </tbody>
-          </table>
-          <h2>(2) Leaders Want To Publish Recordings Featuring You:</h2>
-          <table class="table table-condensed table-bordered">
-            <thead>
-              <tr>
-                <th></th>
-                <th>Leader</th>
-                <th>Date/Title</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>%leaderPhoto%</td>
-                <td>Ari Hoenig</td>
-                <td><a href="6 videos">6 recordings</a></td>
-                <th>Status</th>
-                <td><button class="btn btn-primary">Approve All 6</button></td>
-              </tr>
-              <tr>
-                <td>%leaderPhoto%</td>
-                <td>Peter Bernstein</td>
-                <td><a href="6 videos">16 recordings</a></td>
-                <th>Status</th>
-                <td><button class="btn btn-primary">Approve All 16</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="tab-pane" id="pending-licenses">
-        </div>
-        <div class="tab-pane" id="in-queue">
-        <p>The following recordings you played on will go live soon and be eligible to earn money when watched. If you do not want certain songs or entire recordings to go live, click on the recordings and change your permissions. If you unpublish a recording on which you are the leader, the side musicians on the recording will be notified. If you are a side musician on a recording and unpublish it, only the leader will be notified. </p>
-        <p>Remember: the more videos that you allow to be published, the more money everyone in your band(s) will make.</p>
-        </div>
-        <div class="tab-pane" id="published">
-        </div>
-      </div>
+      {% include 'blocks/table-of-media.html' %}
     </div>
   </div>
   <div class="dev">

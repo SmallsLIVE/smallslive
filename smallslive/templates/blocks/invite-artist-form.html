@@ -1,0 +1,44 @@
+{% load crispy_forms_tags %}
+<form method="post" class="f-add-artist" role="form" enctype="multipart/form-data">
+  {% csrf_token %}
+  {% crispy form %}
+  <div id="div_id_email" class="form-group">
+    <label for="id_email" class="control-label ">Email</label>
+    <div class="controls ">
+      <input class="textinput textInput form-control" id="id_email" maxlength="255" name="email" type="text" />
+    </div>
+  </div>
+  <div class="alert alert-warning">
+    <p><strong>This artist has not registered yet for SmallsLIVE.</strong></p> 
+    {% if request.GET.invited %}
+    <p class="text-success"><span class="label label-success">Last invited</span>  8 days ago (June 2, 2014)</p>                 
+    {% endif %}
+    <div class="radio">
+      <label>
+        <input type="radio" name="invitation" id="optionsRadios1" value="yes" checked>
+        Send default invitation email <code>3</code>
+      </label>
+    </div>
+    <div class="radio">
+      <label class="trigger-add-extra-message">
+        <input type="radio" name="invitation" class="extra-message" id="optionsRadios2" value="yes">
+        Send default invitation email &amp; add message...
+      </label>
+      <div class="no-display extra-message clearfix">
+  
+        Dear [first-name],
+        <textarea class="form-control" rows="4"></textarea>
+        <p>{ display uneditable email template text here }</p>
+        <p>{ Sincerely, Spike }</p>
+ 
+      </div>
+    </div>
+    <div class="radio">
+      <label>
+        <input type="radio" name="invitation" id="optionsRadios2" value="no">
+        Do not invite them right now <Code>4</Code>
+      </label>
+    </div>
+  </div>  
+  <button type="submit" class="btn btn-primary">Add artist</button>
+</form>
