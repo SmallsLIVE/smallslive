@@ -680,8 +680,7 @@ form {
     color: #cd0a0a;
   }
 }
-/* Name/value pair tables */
-table.nv tbody { 
+table.nv tbody { /* Name/value pair tables */
   tr:first-child td {
     border-top: none;
   }
@@ -718,7 +717,14 @@ body abbr.explained {
 .row.none, .none {
   display: none;
 }
-
+body .ui-widget {
+  /* override jquery UI*/
+  /* bootstrap values: */
+  font-size: 100%;
+  color: #333333;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  line-height: 1.42857; 
+}
 /*=Color*/
 /*=Green*/
 .approved {

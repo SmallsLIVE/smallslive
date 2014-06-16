@@ -62,13 +62,26 @@ $(document).ready(function(){
  
     return false;
   });   
-  //ARTIST SIGNUP FORMS:
+  //ARTIST SIGNUP:
   // Let artist leave a comment about  master recording  
   $('.add-private-note .form-group').hide();
   $('.add-private-note label').on('click',function(){
     $(this).closest('div').find('.form-group').toggle();
   });   
-  //END ARTIST SIGNUP FORMS
+  //Show video player in popup on musician-signup-choose-videos
+  $('#player').dialog({
+    autoOpen:false,
+    modal:true
+  });
+  $('.musician-registration table.list-of-recordings').on('click','.video-thumb a, .audio-play a',function(e)     {
+    e.preventDefault();
+    var videoRow=$(this).closest('tr');
+    var videoTitle=videoRow.find('.event-title').html();
+    $('#player').dialog('option','title',videoTitle);
+    $('#player').dialog('open');
+  });
+  //end show video in popup  
+  //END ARTIST SIGNUP
   
   
   //SUPER ADMIN forms:
@@ -263,7 +276,6 @@ $(document).ready(function(){
     } else {
       $(this).removeClass('btn-success').addClass('btn-primary');
       $(this).html('<span class="glyphicon glyphicon-star"></span> Favorite');
-      
     }
   });
   //Request a missing video be expedited on video.html
@@ -282,9 +294,9 @@ $(document).ready(function(){
       $(this).html('<span class="glyphicon glyphicon-star"></span> I want it ASAP!');
       newCount=requestCount-1;
       countHolder.text(newCount);
-      
     }
   });
+  
   //Request to join artist mailing list on artist_detail.html
   $('.join-artist-mailing-list').on('submit','form',function() {
     $(this).closest('div').find('.alert').remove();
