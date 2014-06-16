@@ -24,85 +24,12 @@
         <div class="col-sm-9"> 
           <p class="pull-right"><span class="glyphicon glyphicon-flag"></span> Looking for stats? Visit <a href="/static_page/dashboard-musician/">My $ Dashboard</a></p>
           <form class="form-inline" role="form">
-            <label for="sort">Sort: </label>
             <div class="form-group">
-                <select id="sort">
-                  <option>Recently published first</option>
-                  <option>Most Requested by Fans</option>
-                  <option>Gig Date (most recent first)</option>
-                  <option>Gig Date (oldest first)</option>
-                </select>
-                <a href="/static_page/search/">Search these videos</a><code>7</code>
+                <input type="search" class="form-control" placeholder="Search" />
+                <a href="/static_page/search/">Advanced search</a><code>7</code>
             </div>
           </form> 
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Gig Date</th>
-                <th>Set</th>
-                <th>Video</th>
-                <th>Audio</th>
-                <th>Description</th>
-                <th>Publish Date<code>4</code></th>
-                <th>Fans*</th> 
-              </tr>
-            </thead>
-            <tbody>
-              {% for past_event in past_events %}
-              <tr data-event="{{ past_event.id }}"  class="event_{{ past_event.id }}"> 
-                <td rowspan="2" class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
-                <td  class="choose-set active">
-                  <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="1" checked="checked"> 1 (66min)</label>
-                </td>
-                <td rowspan="2" class="video-thumb">
-                  <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   1.2GB MP4</a>
-
-                  {% if past_event.photo.url != "" %}
-                    <a href="/events/{{ past_event.id }}/">
-                      <span class="glyphicon glyphicon-play"></span>
-                      <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}" class="img-responsive" />
-                    </a>
-                  {% endif %}       
-                </td>
-                <td rowspan="2" class="audio-play"> 
-                    <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   52MB MP3</a>
-                    <a  href="/events/{{ past_event.id }}/" class=" btn btn-default" role="button" title="Play audio {{ past_event.displaytitle }}"><span class="glyphicon glyphicon-play"></span></a>                  
-                </td>
-                <td rowspan="2"> 
-                   <a href="{{ past_event.get_absolute_url }}">{{ past_event.display_title }}</a><br />
-                      {{ past_event.subtitle }}
-                   <div><a href="{% url "event_edit" past_event.id %}">{% if past_event.description %}Edit{% else %}Add{% endif %} description</a></div>
-                </td>
-                <td rowspan="2" >Jan 1, 2015</td>
-                <td rowspan="2" class="num">3</td>
-              </tr>
-              <tr data-event="{{ past_event.id }}" class="event_{{ past_event.id }}">
-                <td  class="choose-set not-first">
-                
-                  <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="2"> 2 (34min)</label>
-                </td>
-              </tr>
-         
-              {% endfor %}
-            </tbody>
-          </table>
-          {% if paginator.num_pages > 1 %}
-             <ul class="pagination">
-              {% if page_obj.has_previous %}
-                <li><a href="?page={{ page_obj.previous_page_number }}#past">&laquo;</a></li>
-              {% endif %}
-              {% for num in paginator.page_range %}
-                {% ifequal num page_obj.number %}
-                  <li class="active"><a href="#">{{ num }}</a></li>
-                {% else %}
-                  <li><a href="?page={{ num }}#past"> {{ num }}</a></li>
-                {% endifequal %}
-              {% endfor %}
-              {% if page_obj.has_next %}
-                <li><a href="?page={{ page_obj.next_page_number }}#past">&raquo;</a></li>
-              {% endif %}
-            </ul>
-          {% endif %}          
+          {% include 'blocks/table-of-media.html' %} 
         </div>
         <div class="col-sm-3">
           <div class="panel panel-default bulk-download">
@@ -340,7 +267,7 @@
       <li><code>4</code> - Publish Date desc. is the default sort order
       <li><code>5</code> - this green mesg only appears at the end of artist signup</li> 
       <li><code>6</code> - any linked THs are sortable</li>
-      <li><code>7</code> - send query to public video search, passing in leader name = artist name</li>
+      <li><code>7</code> - search field does ajax filter on table strings. Adv Search: send query to public video search, passing in leader name = artist name</li>
     </Ul>
   </div>
 {% endblock content %}

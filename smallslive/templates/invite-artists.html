@@ -1,0 +1,75 @@
+{% extends "base_admin.html" %}
+{% load crispy_forms_tags %}
+{% block extra_head %}
+  {{ form.media }}
+{% endblock extra_head %}
+{% block title %}Invite artists{% endblock title %}
+{% block content %}
+<div class="row">
+  <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
+    <div class="page-header">
+      <h1>Invite artists to join</h1> 
+    </div>
+    <h4>{ event.title }</h4>
+    <p>{ event.start }</p>
+    <p class="text-warning"><span class="label label-warning">Note:</span> Changing the email address of an artist below will update the artist's email address on file.</p> 
+    {# this could probably be replaced with blocks/invite-artist-form and refactored: #}   
+   
+    <form method="post" class="f-add-artist" role="form" enctype="multipart/form-data">
+      <div id="div_id_email" class="form-group">
+        <label for="id_email" class="control-label ">Artist 1 Email (leader)</label>
+        <div class="controls ">
+          <input class="textinput textInput form-control" id="id_email" maxlength="255" name="email" type="text" />
+        </div>
+        <p class="help-block">(last invitation email sent 1 day ago to a@b.com)</p>
+      </div>
+      <div id="div_id_email2" class="form-group">
+        <label for="id_email2" class="control-label ">Artist 1 Email (leader)</label>
+        <div class="controls ">
+          <input class="textinput textInput form-control" id="id_email2" maxlength="255" name="email2" type="text" />
+        </div>
+        <p class="help-block">(last invitation email sent 1 day ago to a@b.com)</p>
+      </div> 
+      <div id="div_id_email3" class="form-group">
+        <label for="id_email3" class="control-label ">Artist 3 Email (leader)</label>
+        <div class="controls ">
+          <input class="textinput textInput form-control" id="id_email3" maxlength="255" name="email2" type="text" />
+        </div>
+        <p class="help-block">(last invitation email sent 1 day ago to a@b.com)</p>
+      </div>    
+      <div class="alert alert-warning">
+        <p><strong>This artist has not registered yet for SmallsLIVE.</strong></p> 
+        {% if request.GET.invited %}
+        <p class="text-success"><span class="label label-success">Last invited</span>  8 days ago (June 2, 2014)</p>                 
+        {% endif %}
+        <div class="radio">
+          <label>
+            <input type="radio" name="invitation" id="optionsRadios1" value="yes" checked>
+            Send default invitation email 
+          </label>
+        </div>
+        <div class="radio">
+          <label class="trigger-add-extra-message">
+            <input type="radio" name="invitation" class="extra-message" id="optionsRadios2" value="yes">
+            Send default invitation email &amp; add message...
+          </label>
+          <div class="no-display extra-message clearfix">
+          
+            Dear [first-name],
+            <textarea class="form-control" rows="4"></textarea>
+            <p>{ display uneditable email template text here }</p>
+            <p>{ Sincerely, Spike }</p>
+            </div>
+       
+        </div>
+      </div>  
+      <button type="submit" class="btn btn-primary">Send Invitations <code>1</code></button>
+    </form>
+  </div>
+</div>
+<div class="dev">
+  <ul>
+    <li><code>1</code> - return user to Venue Dashboard with green flash message "(2) Invitations sent (to artist1.first_name, artist2.first_name)</li></li>
+  </ul>
+</div>
+{% endblock content %}

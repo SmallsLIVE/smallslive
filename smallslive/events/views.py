@@ -142,3 +142,17 @@ class CalendarView(ListView):
         return Event.objects.all().order_by("-start")[:30]
 
 calendar = CalendarView.as_view()
+
+
+class VideoManager(ListView):
+    """
+    Temporary code from brian to get some events on page:
+    """
+    queryset = Event.objects.order_by('-start')[:50]
+    template_name = 'video-manager.html'
+    context_object_name = 'past_events'
+    
+    def show_leader(request):
+        return 'true'
+
+video_manager = VideoManager.as_view()
