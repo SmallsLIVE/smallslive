@@ -22,7 +22,7 @@ body {
     border-radius: 0;
   }
   nav.navbar {
-  border-radius: 0;
+    @include border-radius(0);
     .longname  {
       display: none;
     }
@@ -233,7 +233,7 @@ body.search .facets {
     }
   }
   .for-owner-only {
-    @include border-radius(0);
+    @include border-radius(0px);
     .default {
       table {
         margin-bottom: 0;
@@ -496,66 +496,7 @@ form#signup_form {
       height: auto;
     }
   }
-}
-table.recordings-to-publish tr {
-  th {
-    vertical-align: top;
-    span {
-      white-space: nowrap;
-    }
-    label {
-      margin: 8px 0;
-      display: block;
-      font-weight: normal;    
-    }
-    @media all and (min-width : $screen-md-min) {  
-      label {
-        margin: 0 0 0 16px;
-        display: inline-block; 
-      }
-    }
-  }
-  .thumbnail {
-    margin-bottom: 0;
-    img {
-      display: none;
-    }
-    a.pull-left {
-      float: none !important;
-      margin-bottom: $margin-bottom;
-    }
-    @media all and (min-width : $screen-sm-min) {  
-      img {
-        display: block;
-      }
-      a.pull-left {
-        float: left !important;
-      }
-    }
-    border: none;
-    padding-bottom: 0;
-  }
-  abbr {
-    margin-left: 16px; 
-  }
-  .copyright-owners { 
-    .owner {
-      white-space: nowrap;
-    }
-  }
-  .add-private-note {
-    border-top: 1px dotted $gray-lighter;
-    padding-top: 4px;
-    label {
-      font-weight: normal;
-      text-decoration: underline;
-      color: $gray-light;
-    }
-    label:after {
-      content:"..."
-    }
-  }
-}
+} 
 input.form-control.text-muted[type=text] {
   color: $gray-light;
 }
@@ -650,6 +591,15 @@ table.list-of-recordings thead th {
     @include border-radius(3px);
   }
 }
+.copyright-owners { 
+  .owner {
+    white-space: nowrap;
+    color: $brand-danger;
+  }
+  .approved {
+    color: $brand-success;
+  }
+}
 .nav-tabs,
 .nav-pills,
 .upcoming_events {
@@ -717,23 +667,23 @@ body abbr.explained {
 .row.none, .none {
   display: none;
 }
+/*jQuery overrides*/
 body .ui-widget {
   /* override jquery UI*/
   /* bootstrap values: */
   font-size: 100%;
-  color: #333333;
+  color: $gray-dark;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   line-height: 1.42857; 
 }
+.ui-widget-header {
+  color: $gray-dark;
+  border: none;
+  border-bottom: 1px solid $gray-light;
+  @include border-radius(0px);
+  
+}
 /*=Color*/
-/*=Green*/
-.approved {
-  color: $brand-success;
-}
-.not-approved {
-  color: $brand-danger;
-}
-/*=Red*/
 /*=Development*/
 /*=Trash this after design done */
 .dev {

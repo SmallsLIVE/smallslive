@@ -31,7 +31,8 @@
             <th>Set</th>
             <th>Video</th>
             <th>Audio</th>
-            <th>Description</th>
+            <th>Description &amp; Artist Registration Status</th>
+            <th>Published?</th>
           </tr>
         </thead>
         <tbody>
@@ -57,7 +58,21 @@
             </td>
             <td rowspan="2" class="event-title"> 
                {{ past_event.display_title }} <br />
-                  <span class="text-muted">{{ past_event.subtitle }}</span>
+              {% if past_event.subtitle %}
+                 <span class="text-muted">{{ past_event.subtitle }}</span>
+              {% endif %}
+              <div class="copyright-owners"> 
+                <span class="owner">Ugonna Okegwo <span>&cross;</span></span>, 
+                <span class="approved owner">Anthony Pinciotti <span>&check;</span></span>, 
+                <span class="owner">David Schnitter <span>&cross;</span></span>
+              </div>
+            </td>
+            <td rowspan="2">
+            <div class="artist-clearance-breakdown">  
+              <div class="checkbox">
+                <label><input type="checkbox" value="1" checked="checked" /> Yes, publish video</label>
+              </div>                          
+            </div>
             </td>
           </tr>
           <tr data-event="{{ past_event.id }}" class="event_{{ past_event.id }}">
