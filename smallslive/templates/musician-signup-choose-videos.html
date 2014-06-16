@@ -1,4 +1,5 @@
 {% extends "base_musician-signup.html" %}
+{% load thumbor_tags %}
 {% block title %}stepnamehere{% endblock title %}
 {% block bodyclass %}musician-registration{% endblock bodyclass %}
 {% block nav %}{% endblock nav %}
@@ -21,39 +22,73 @@
         </div>
       </div>  
       <h4>Display my recordings <select><option>as leader</option><option>as side musician</option><option>(all)</option></select>  </h4> 
-      <table class="table   table-bordered recordings-to-publish">
+
+      {# this could probably use the blocks/table-of-media.html partial at some ppint #}
+      <table class="table list-of-recordings signup">
         <thead>
-          <tr> 
-            <th>Recording Status</th>            
-            <th>Artists on the Recording
-              <span class="approved"><abbr title="Approved" class="explained">&check;</abbr> = joined SmallsLIVE</span>  
-              <span class="not-approved"><abbr title="Declined" class="explained">&Cross;</abbr> = not registered</span> 
-              <span class="text-muted"><abbr title="Not acknowledged yet" class="explained">?</abbr> = no response yet</span> </th>          
+          <tr>
+            <th><a href="">Gig Date</a></th>
+            <th>Set</th>
+            <th>Video</th>
+            <th>Audio</th>
+            <th>Description</th>
           </tr>
         </thead>
-        <tbody>  
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
-        {% include 'blocks/artist-select-master-publishing-status.html' %}
+        <tbody>
+          {% for past_event in past_events %}
+          <tr data-event="{{ past_event.id }}"  class="event_{{ past_event.id }}"> 
+            <td rowspan="2" class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
+            <td  class="choose-set active">
+              <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="1" checked="checked"> 1 (66min)</label>
+            </td>
+            <td rowspan="2" class="video-thumb">
+              <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   1.2GB MP4</a>
+      
+              {% if past_event.photo.url != "" %}
+                <a href="/events/{{ past_event.id }}/">
+                  <span class="glyphicon glyphicon-play"></span>
+                  <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}" class="img-responsive" />
+                </a>
+              {% endif %}       
+            </td>
+            <td rowspan="2" class="audio-play"> 
+                <a href="#" class="download small"><span class="glyphicon glyphicon-download"></span>   52MB MP3</a>
+                <a  href="#" class=" btn btn-default" role="button" title="Play audio {{ past_event.displaytitle }}"><span class="glyphicon glyphicon-play"></span></a>                  
+            </td>
+            <td rowspan="2" class="event-title"> 
+               {{ past_event.display_title }} <br />
+                  <span class="text-muted">{{ past_event.subtitle }}</span>
+            </td>
+          </tr>
+          <tr data-event="{{ past_event.id }}" class="event_{{ past_event.id }}">
+            <td  class="choose-set not-first">
+            
+              <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="2"> 2 (34min)</label>
+            </td>
+          </tr>
+      
+          {% endfor %}
         </tbody>
-      </table>  
+      </table>
+      {% if paginator.num_pages > 1 %}
+         <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li><a href="?page={{ page_obj.previous_page_number }}#past">&laquo;</a></li>
+          {% endif %}
+          {% for num in paginator.page_range %}
+            {% ifequal num page_obj.number %}
+              <li class="active"><a href="#">{{ num }}</a></li>
+            {% else %}
+              <li><a href="?page={{ num }}#past"> {{ num }}</a></li>
+            {% endifequal %}
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}#past">&raquo;</a></li>
+          {% endif %}
+        </ul>
+      {% endif %}         
+      <div id="player">[this is the media player]</div>
+ 
       <div class="alert alert-info">Congratulations! Based on your choices above, (2) more recordings will be added into the archive as they now have 100% artist approval  Your peers on these just-released recordings will receive a courtesy email notifying them about these additions to the archive. Additionally, these recordings may appear in our "Just Added" lists for fans. <code>1</code></div>
       <p><button type="submit" class="btn btn-primary">Continue</button></p>
     </form>

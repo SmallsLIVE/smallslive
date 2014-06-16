@@ -151,8 +151,16 @@ class VideoManager(ListView):
     queryset = Event.objects.order_by('-start')[:50]
     template_name = 'video-manager.html'
     context_object_name = 'past_events'
-    
-    def show_leader(request):
-        return 'true'
 
 video_manager = VideoManager.as_view()
+
+
+class ArtistVideoManager(ListView):
+    """
+    Temporary code from brian to get some events on page:
+    """
+    queryset = Event.objects.order_by('-start')[:50]
+    template_name = 'musician-signup-choose-videos.html'
+    context_object_name = 'past_events'
+
+artist_video_manager = ArtistVideoManager.as_view()
