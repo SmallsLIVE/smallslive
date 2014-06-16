@@ -3,29 +3,5 @@
     <p class="text-warning clearance-summary">You chose not to publish this recording when you joined SmallsLIVE. <a href="" >Performer details&hellip;</a></p>     
     <p><button class="btn-primary btn-xs"><code>2</code> Publish Recording</button></p>        
   </form>
-  {# display statuses of artists on this recording #}
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Artist</th>
-        <th>Joined SmallsLIVE?</th> 
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><strong>Me (leader)</strong></td>
-        <td>
-          <span class="text-success"> <span class="glyphicon glyphicon-ok"></span> Yes</span>
-        </td> 
-      </tr>
-      <tr>
-        <td><a href="mailto:jon@grimes.com?subject=Clearing our Smalls recording from Jan 14, 2011&body=Hi Jon,%2C%0D%0A%0D%0AI would love to get this recording of us cleared for use on Smalls so we can all make money on it when users listen to it: %2C%0D%0A%0D%0A[[insert link]]%2C%0D%0A%0D%0AWe share a copyright on the recording and all of us on the gig have to approve the recording before it can go into the SmallsLIVE archive for listeners. %2C%0D%0A%0D%0AThanks, {{ request.user.first_name }}">Alan Smith (gtr)</a></td>
-       <td class="text-warning"><span class="glyphicon glyphicon-remove"></span> No</td>
-      </tr>
-      <tr>
-        <td><a href="mailto:jen@olans.com?subject=Clearing our Smalls recording from Jan 14, 2011&body=Hi Jen,%2C%0D%0A%0D%0AI would love to get this recording cleared for use on Smalls so we can all make money on it when users listen to it:%2C%0D%0A%0D%0A[[insert link]]%2C%0D%0A%0D%0AAny particular reason you rejected it? We can edit the recording down if there are specific parts you don't want public. Let me know. %2C%0D%0A%0D%0AThanks, {{ request.user.first_name }}">Jen Olans (bs)</a></td>
-       <td class="text-warning"><span class="glyphicon glyphicon-remove"></span> No</td>
-      </tr>
-    </tbody>
-  </table>
+  {% include 'blocks/table-of-artist-registration-statuses.html' %}
 </div>

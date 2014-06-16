@@ -73,7 +73,7 @@ $(document).ready(function(){
     autoOpen:false,
     modal:true
   });
-  $('.musician-registration table.list-of-recordings').on('click','.video-thumb a, .audio-play a',function(e)     {
+  $('.musician-registration table.list-of-recordings').on('click','.video-thumb a:not(.download), .audio-play a:not(.download)',function(e)     {
     e.preventDefault();
     var videoRow=$(this).closest('tr');
     var videoTitle=videoRow.find('.event-title').html();
