@@ -192,7 +192,7 @@
               <tr> 
                 <td class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
                 <td>{% if past_event.photo.url != "" %}
-                      <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" class="img-responsive" />
+                      <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}"   />
                     {% endif %}
                 </td>
                 <td> 
@@ -215,7 +215,7 @@
           {% if paginator.num_pages > 1 %}
              <ul class="pagination">
               {% if page_obj.has_previous %}
-                <li><a href="?page={{ page_obj.previous_page_number }}#past">&laquo;</a></li>
+                <li><a href="?page={{ page_obj.previous_page_number }}#unpublished">&laquo;</a></li>
               {% endif %}
               {% for num in paginator.page_range %}
                 {% ifequal num page_obj.number %}
@@ -225,7 +225,7 @@
                 {% endifequal %}
               {% endfor %}
               {% if page_obj.has_next %}
-                <li><a href="?page={{ page_obj.next_page_number }}#past">&raquo;</a></li>
+                <li><a href="?page={{ page_obj.next_page_number }}#unpublished">&raquo;</a></li>
               {% endif %}
             </ul>
           {% endif %}
