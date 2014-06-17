@@ -1,10 +1,22 @@
 {% extends "base.html" %}
+{% block subbrand %}
+  {% if user.is_superuser and user.is_artist %}
+    <span class="label">For Admin/Artists</span>
+  {% else %}
+    {% if user.is_superuser %}
+      <span class="label">For Admins</span>
+    {% endif %}
+    {% if user.is_artist %}
+      <span class="label">For Artists</span>
+    {% endif %} 
+  {% endif %} 
+{% endblock subbrand %}
 {% block nav %}
   <div class="collapse navbar-collapse" id="main-nav">
     <ul class="nav navbar-nav">
       {% if user.is_superuser %}  
-        <li><a href="{% url 'venue_dashboard' %}">Admin Calendar</a></li> 
-        <li><a href="{% url 'video_manager' %}">Videos &amp; Audio</a></li> 
+        <li><a href="{% url 'venue_dashboard' %}">Calendar</a></li> 
+        <li><a href="{% url 'recordings' %}">Videos &amp; Audio</a></li> 
         <li class="divider" role="presentation"></li>
       {% endif %}
       {% if user.is_artist %}  
