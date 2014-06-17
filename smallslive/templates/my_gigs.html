@@ -95,9 +95,9 @@
       <div class="alert alert-warning">
       <h5>Summary:</h4>
       <ul>
-        <li>(2) recordings will be published as soon as all side musicians have joined SmallsLIVE and signed the Artist Agreement</li>
-        <li>(6) remain unpublished due to your decision (as the leader) not to allow them in the archive  </li>
-        <li>(1) recording you played on (as a side musician) was excluded from the archive by the bandleader</li>
+        <li><strong>(2) are pending full approval</strong> - they'll be published when all performers have joined SmallsLIVE</li>
+        <li><strong>(6) were marked private by you</strong> - you chose to omit them from the archive (you can still opt to publish them)  </li>
+        <li><strong>(1) was marked private by bandleader</strong></li>
       </ul>
       </div>
       <!-- begin table of unpublished -->
@@ -109,6 +109,7 @@
                 <th>Audio</th>
                 <th>Description</th>
                 <th>Status</th>
+                <th><a href="">Fans</a></th>
                 <th class="downloads">Downloads</th>
               </tr>
             </thead>
@@ -125,7 +126,7 @@
                    <div><a href="#">Edit description</a></div>
                 </td>               
                 <td class="artist-clearance-breakdown"><code>1</code> 
-                  <p class="text-warning clearance-summary">Waiting for <strong>1</strong> performer to join SmallsLIVE. <a href="">Performer details&hellip;</a></p>
+                  <p class="text-warning clearance-summary">Waiting for <strong>1</strong> performer to join SmallsLIVE. <a href="" class="trigger-show-musician-registration-status">Performer details&hellip;</a></p>
                   <table class="table ">
                     <thead>
                       <tr>
@@ -149,6 +150,7 @@
                     </tbody>
                   </table>
                 </td> 
+                <td class="fan_count">1</td>
                 <td class="downloads text-muted">Coming soon</td>
               </tr>
               <!-- recording i chose not to publish as leader -->
@@ -167,6 +169,7 @@
                 <td>
                   {% include 'blocks/change-publish-status.html' %}
                 </td>
+                <td class="fan_count">2</td>
                 <td class="downloads">
                   <a href=""><span class="glyphicon glyphicon-download"></span> Video</a> 452MB MP4<br />
                   <a href=""><span class="glyphicon glyphicon-download"></span> Audio</a> 12MB AIFF
@@ -188,6 +191,7 @@
                 <td class="artist-clearance-breakdown">
                   <p><code>3</code><strong>Private</strong> past_event.leader.full_name doesn't want this video in the archive.</p>                    
                 </td>
+                <td class="fan_count">21</td>
                 <td class="downloads">
                   <a href=""><span class="glyphicon glyphicon-download"></span> Video</a> 452MB MP4<br />
                   <a href=""><span class="glyphicon glyphicon-download"></span> Audio</a> 12MB AIFF
@@ -210,6 +214,7 @@
                    <div><a href="{% url "event_edit" past_event.id %}">Edit description</a></div>
                 </td>
                 <td class="text-warning">status message here</td>
+                <td class="fan_count">3</td>
                 <td class="downloads">
                   <a href=""><span class="glyphicon glyphicon-download"></span> Video</a> 452MB MP4<br />
                   <a href=""><span class="glyphicon glyphicon-download"></span> Audio</a> 12MB AIFF
