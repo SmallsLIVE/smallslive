@@ -144,7 +144,7 @@ class CalendarView(ListView):
 calendar = CalendarView.as_view()
 
 
-class VideoManager(ListView):
+class Recordings(ListView):
     """
     Temporary code from brian to get some events on page:
     """
@@ -152,7 +152,7 @@ class VideoManager(ListView):
     template_name = 'video-manager.html'
     context_object_name = 'past_events'
 
-video_manager = VideoManager.as_view()
+recordings = Recordings.as_view()
 
 
 class ArtistVideoManager(ListView):
