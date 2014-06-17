@@ -4,15 +4,21 @@
 {% block bodyclass %}my-gigs{% endblock bodyclass %}
 {% block title %}My Gigs &amp; Recordings{% endblock title%}
 {% block content %}
-  <div class="alert alert-success">
-    <h4><code>5</code> Artist registration complete. Welcome {{ user.first_name }}!</h4>
-    <p>Next, we suggest you do the following:</p>
-    <ol>
-      <li>Review your videos and audio on this page for additional money-making possibilities (see sidebar instructions)</li>
-      <li>Consider contacting any peers with whom you played on recordings and ask them to approve the recording for release into the archive.</li>
-    </ol>
+  <div class="row">
+    <div class="col-sm-9"> 
+      <div class="alert alert-success">
+        <h4><code>5</code> Artist registration complete. Welcome {{ user.first_name }}!</h4>
+        <p>As a result of joining, (4) more videos were just made available in the archive for fans. Next, we suggest you:</p>
+        <ol>
+          <li>Review your videos and audio on this page for additional money-making possibilities (see sidebar instructions)</li>
+          <li>Consider contacting any peers with whom you played on recordings and ask them to approve the recording for release into the archive.</li>
+        </ol>
+      </div>  
+    </div>
   </div>
-  <div class="page-header"><h1>My Recordings &amp Gigs</h1> </div>
+  <div class="page-header">
+    <h1>My Recordings &amp Gigs</h1>
+  </div>
   <ul class="nav nav-tabs">  
     <li class="active"><a href="#published" data-toggle="tab">(#) Published Recordings </a></li>
     <li><a href="#unpublished" data-toggle="tab">(#) Unpublished Recordings</a></li>
