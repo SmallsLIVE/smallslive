@@ -55,14 +55,19 @@
         <tbody>
           {% for past_event in artist.past_events|slice:"10" %}
           <tr>
+            <td>{{ past_event.start|date:"n/j/y" }}</td>
             <td>
-              <a href="{{ past_event.get_absolute_url }}">{{ past_event.start|date:"n/j/y" }}</a></td>
-            <td>
+              <a href="{{ past_event.get_absolute_url }}">
               {% if past_event.displaytitle %}
-                <a href="{{ past_event.get_absolute_url }}"><h3>{{ past_event.displaytitle }}</h3></a>
+                {{ past_event.displaytitle }}<br />
+              {% else %}
+                untitled gig with: 
               {% endif %}
-              {{ past_event.performers.all|join:", " }}</td>
-            <td><a href="">clone</a></td>
+              </a>
+              {{ past_event.performers.all|join:", " }}
+              <span class="text-muted">{{ past_event.subtitle }}</span>
+            </td>
+              {% if user.is_superuser %}<td><a href="">clone</a></td>{% endif %}
           </tr>
           {% endfor %}
           <tr>
