@@ -21,8 +21,15 @@
       {% endif %}
       {% if user.is_artist %}  
         <li><a href="/static_page/dashboard-musician"> <span class="badge pull-right">5</span> $ Dashboard </a></li>      
-        <li><a href="{% url "my_gigs" %}" >Recordings &amp; Gigs</a> </li>    
-        <li><a href="#">Community $ Dashboard</a></li> 
+        <li><a href="{% url "my_gigs" %}" >Recordings &amp; Gigs</a> </li>  
+          
+        <li class="dropdown"><a href="" class="dropdown-toggle" data-toggle="dropdown">Profile <b class="caret"></b></a>   
+          <ul class="dropdown-menu">
+            <li><a href="{% url 'artist_detail' pk=user.artist.id %}">Artist Profile</a></li>   
+            <li><a href="{% url 'artist_edit' pk=user.artist.id %}">View Artist Profile</a></li>       
+          </ul>
+        </li>
+        <li><a href="#">Community Summary</a></li> 
       {% endif %}           
     </ul>  
     {% if user.is_superuser %}  
