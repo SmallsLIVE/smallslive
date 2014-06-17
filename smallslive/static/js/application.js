@@ -58,7 +58,7 @@ $(document).ready(function(){
 
   //When i approve or disapprove a master, make my name green or red
   $('.f-toggle-publish').on('submit',function(){
-    $(this).replaceWith('<p class="text-success clearance-summary"><span class="glyphicon glyphicon-ok"></span> This video is now published. <a href="#">Performer details&hellip;</a></p><p class="text-warning clearance-summary"><span class="glyphicon glyphicon-ok"></span> Video will be published once all performers on it have joined SmallsLIVE. <a href="#">Performer details&hellip;</a></p>');
+    $(this).replaceWith('<p class="text-success clearance-summary"><span class="glyphicon glyphicon-ok"></span> This video is now published. <a href="#"  class="trigger-show-musician-registration-status">Performer details&hellip;</a></p><p class="text-warning clearance-summary"><span class="glyphicon glyphicon-ok"></span> Video will be published once all performers on it have joined SmallsLIVE. <a href="#" class="trigger-show-musician-registration-status">Performer details&hellip;</a></p>');
  
     return false;
   });   
@@ -95,7 +95,7 @@ $(document).ready(function(){
   
   //SUPER ADMIN forms:
   $('.artist-clearance-breakdown table').hide();
-  $('body').on('click','.clearance-summary a',function(e){
+  $('body').on('click','.clearance-summary a.trigger-show-musician-registration-status',function(e){
     e.preventDefault();
     $(this).closest('.artist-clearance-breakdown').find('table').toggle();
   });

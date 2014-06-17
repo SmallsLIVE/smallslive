@@ -26,13 +26,26 @@ body {
     .longname  {
       display: none;
     }
-    .navbar-brand img { 
-        width: 44px;
-        position: relative; 
-        top: -.6em;
-        padding: 2px;
+    .navbar-brand {
+      span.label {
+        font-size: 100%;
+        color: #222;
+        font-size: 60%;
+        color: #222;
+        position: relative;
+        top:-1.1em;
         background: #fff;
-        z-index: 50;
+        @include border-radius(0px);
+      }
+      img { 
+          width: 44px;
+          position: relative; 
+          top: -.6em;
+          padding: 2px;
+          margin-right: -8px;
+          background: #fff;
+          z-index: 50;
+      }
     }
     form.search input:first-child {
       width: 95px;
@@ -128,7 +141,7 @@ footer {
   text-align: right;
 } 
 table {
-  .num {
+  .num, .fan_count {
     @extend .num;
   }
   .txt {
