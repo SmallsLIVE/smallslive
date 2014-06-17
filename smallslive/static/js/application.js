@@ -63,11 +63,20 @@ $(document).ready(function(){
     return false;
   });   
   //ARTIST SIGNUP:
-  // Let artist leave a comment about  master recording  
-  $('.add-private-note .form-group').hide();
-  $('.add-private-note label').on('click',function(){
-    $(this).closest('div').find('.form-group').toggle();
-  });   
+  // Hide list of recordings until "only publish selected recordings" radio is clicked
+  function showOrHideListOfRecordings(someOrAll) {
+    //alert(someOrAll);
+    if (someOrAll=='some') {
+      $('.show-recordings').slideDown();
+    } else {
+      $('.show-recordings').slideUp();
+    } 
+  }
+  $('input[name=trigger-show-recordings]').on('click',function() {
+    showOrHideListOfRecordings($(this).val());
+  });
+  //init - to deal with cached radios
+  showOrHideListOfRecordings($('input[name=trigger-show-recordings]:checked').val());
   //Show video player in popup on musician-signup-choose-videos
   $('#player').dialog({
     autoOpen:false,

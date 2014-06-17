@@ -211,7 +211,16 @@ body.search .facets {
     }
   } 
 }
-/*=Artist Page*/
+/*=Artist Signup */
+.musician-registration {
+  .instructions {
+    @extend .formSectionSeparator;  
+  }
+  .show-recordings {
+    margin-top: $margin-bottom;
+  }
+}
+/*=Artist Bio Page*/
 .artist {
   .jumbotron  {
     h1 {
@@ -403,13 +412,18 @@ table.artist-past-gigs-media {
     color: $gray-light;
   }
 } 
-/*=Signup screens*/
+/*=Signup screens for fans*/
 .marketing-reasons {
-    background: #f5f5f5;
-    padding: 16px;
-    margin-bottom: $margin-bottom;
+  background: #f5f5f5;
+  padding: 16px;
+  margin-bottom: $margin-bottom;
 }
-form#signup_form {
+.formSectionSeparator { /*reused via extensions*/
+  margin-bottom: $margin-bottom;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: $margin-bottom;
+}
+#signup_form {
   .trigger-credit-card-fields,
   .TOC-checkbox,
   .payment-options {
@@ -440,9 +454,7 @@ form#signup_form {
     border-top: none;
   }
   .social-signup:not(.authenticated-by-social) {
-    margin-bottom: $margin-bottom;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: $margin-bottom;
+    @extend .formSectionSeparator;
    }
   .social-logins {
     margin-bottom: $margin-bottom;
@@ -590,15 +602,13 @@ table.list-of-recordings thead th {
     width: 3em;  
     @include border-radius(3px);
   }
+} 
+.owner {
+  white-space: nowrap;
+  color: $brand-danger;
 }
-.copyright-owners { 
-  .owner {
-    white-space: nowrap;
-    color: $brand-danger;
-  }
-  .approved {
-    color: $brand-success;
-  }
+.approved {
+  color: $brand-success;
 }
 .nav-tabs,
 .nav-pills,
