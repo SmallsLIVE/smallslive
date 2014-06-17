@@ -37,14 +37,10 @@
          <a href="{{ past_event.get_absolute_url }}">{{ past_event.display_title }}</a><br />
             {{ past_event.subtitle }}
          <div>
-         
-           {# if show_leader == 'true' #}
-           {#  Led by: {{ past_event.leader.full_name }} #}
-           {# endif #}  
              <a href="{% url "event_edit" past_event.id %}">{% if past_event.description %}Edit{% else %}Add{% endif %} description</a></div>
       </td>
       <td rowspan="2" >Jan 1, 2015</td>
-      <td rowspan="2" class="num">3</td>
+      <td rowspan="2" class="fan_count">3</td>
     </tr>
     <tr data-event="{{ past_event.id }}" class="event_{{ past_event.id }}">
       <td  class="choose-set not-first">
