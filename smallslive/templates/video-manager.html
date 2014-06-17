@@ -6,12 +6,14 @@
   <div class="page-header">
     <h1>Unpublished Video &amp; Audio Recordings ({{ past_events|length }})</h1>
   </div>
+  <div class="table-tools">
   <form class="form-inline" role="form">
     <div class="form-group">
         <input type="search" class="form-control" placeholder="Search unpublished" />
         <a href="/static_page/search/">Browse published recordings</a><code>1</code>
     </div>
   </form> 
+  </div>
   <div class="row">
     <div class="col-sm-12">
       
@@ -119,7 +121,7 @@
   <div class="dev">
     <h1>Dev notes</h1>
     <Ul>  
-      <li><code>1</code> - use the publish UI to find published recordings - from there, a recording can be unpublished on the /events/video template</li>
+      <li><code>1</code> - use the publish UI to find published recordings - from there, a recording can be unpublished on the /events/video template. the search box provides a real time ajax table filtering on any strings (suggest looking at jQuery DataTables). Searchable cells/strings should include Description Date, and Artists (Publish status)</li>
       <li><code>2</code> - linked TH = sortable headers. i think it makes sense to default the sort of the query to most-recent-recordings-first and work backwards through archive (we have more up to date contact info for newer artists most likely so this is more likely to build critical mass). Table headers allow further sorting. In the publishing status tables, list the unregistered musicians first.</li>
       
     </Ul>
