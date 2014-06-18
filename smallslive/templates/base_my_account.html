@@ -7,18 +7,18 @@
   </div>
   {% endif %}
 <div class="page-header">
-  <h1>My Account</h1>
+  <h1>My Account <small>{{ request.user.full_name }}</small></h1>
 </div>
     {% if user.is_artist %}
     <div class="alert alert-warning">
-      <span class="label label-warning">Artists:</span> Use your <a href="{% url 'my_gigs' %}" class="alert-link">Artist Website</a>   to review your $ earnings/payouts, manage your profile, and review your recordings.</li>   
+      <span class="label label-warning">Artists:</span> Use your <a href="/static_page/dashboard-musician.html" class="alert-link">Artist Website</a>   to review your $ earnings/payouts, manage your profile, and review your recordings.</li>   
       </ul>
     </div>
     {% endif %}
 <div class="row">
   <div class="col-sm-3">
     <ul class="nav nav-pills nav-stacked">       
-      <li class="active"><a href="/static_page/my-account-summary">Subscription/Account</a></li>  
+      <li class="active"><a href="/static_page/my-account-summary">Account Summary</a></li>  
       <li><a href="/static_page/my-account-view-orders">Downloads &amp; Orders</a></li>     
       <li><a href="/static_page/my-account-payment-history">Transaction History</a></li>   
       <li><a href="#">Product-in-Stock Alerts</a> <code>2</code> </li>   

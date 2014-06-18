@@ -2,11 +2,9 @@
 {% load socialaccount %}
 {% block title %}My Account &amp; Subscription{% endblock title%}
 {% block content_for_account_mgmt %} 
+ 
   <table class="table nv my-account ">
     <tbody>
-      <tr>
-        <td colspan="3" class="txt"><h2>{ user.full_name }</h2></td>
-      </tr>
       {% if user.is_artist %}
       <tr>
         <td colspan="">Musician/Artist Profile</td>
@@ -14,14 +12,10 @@
       </tr>  
       <tr>
         <td colspan="">How We Will Pay You</td>
-        <td colspan="">[Direct Deposit to your %bank_name%.][Personal check to 123 Main St., Phoenix AZ 85021] <br /><a href="/artists/102/edit">Edit payment method</a><br /><span class="text-muted"><span class="label label-default">Note:</span>
-        Next payouts begin 4/15/15 for Q1 2014.</span></td>
+        <td colspan="">[Direct Deposit to your %bank_name%.][Personal check to %legal_name% @ 123 Main St., Phoenix AZ 85021]<br /><span class="text-muted"><span class="label label-default">Note:</span>
+        Next payouts begin 4/15/15 for Q1 2014.  <a href="/static_page/dashboard-musician.html" class="alert-link">View your $ Dashboard</a></span> <br /><a href="/artists/102/edit">Edit how you get paid</a></td>
       </tr>  
-      {% endif %}
-      <tr>
-        <td colspan="">Legal Name</td>
-        <td colspan=""><p>Firstname Lastname</p><a href="/artists/{{ user.artist.id }}/edit/">Change name on account</a></td>
-      </tr>  
+      {% endif %} 
       {% if request.GET.social %}
         <tr>
           <td>Your Login / Social Media Connections</td>
@@ -66,7 +60,7 @@
         </td>
       </tr>
       <tr>
-        <td>Password</td><td><p>****</p><a href="/static_page/my-account-edit">Change password<code>4</code></a></td>
+        <td>Password</td><td>****<br /><a href="/static_page/my-account-edit">Change password<code>4</code></a></td>
       </tr> 
       {% if user.phone1  %}
       <tr>
@@ -79,7 +73,7 @@
       </tr>
       {% endif %}
       <tr>
-        <td colspan="2" class="txt"><h2>Subscription</h2></td>
+        <td colspan="2" class="txt"><h4>Subscription</h4></td>
       </tr>
       <tr>
         <td colspan="">Current Subscription Type</td>
@@ -123,11 +117,11 @@
         {% if request.GET.inTrial or request.GET.free %}
         {% else %}
         <tr>
-          <td>Billing</td>          
+          <td>Billing / Name on Account</td>          
           <td>
-            <p>{% if request.GET.inTrial %}We will charge{% else %}We are charging{% endif %} your VISA card ending in 1234. </p>
+            <p>Name on account: {{ request.user.full_name }}. {% if request.GET.inTrial %}We will charge{% else %}We are charging{% endif %} a VISA card ending in 1234. </p>
             <p class="text-warning">This card will expire on 6/1/2014.</p>
-            <a href="{% url 'djstripe:change_card' %}">Change credit card</a><code>2</code>
+            <a href="{% url 'djstripe:change_card' %}">Change credit card / name on account</a><code>2</code>
           </td>
         </tr>
         {% endif %}
