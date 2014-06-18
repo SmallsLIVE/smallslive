@@ -119,7 +119,11 @@ sample thumbors:
                 </table>
               </div>
               <div class="are-you-sure none">            
-                <p>You are about to remove a video from the subcribers' archive. You and the other artists featured in this video will no longer be eligible to earn $ on this video if you unpublish this video.</p>
+                {% if not user.is_superuser %}
+                  <p>You are about to remove a video from the subscribers' archive. You and the other artists featured in this video will no longer be eligible to earn $ on this video if you unpublish this video.</p>
+                {% else %}
+                  <p>Unpublish this video? (You may want to notify the artists if you proceed).</p>
+                {% endif %}
                 <div class="form-group">
                   <input type="submit" class="btn btn-sm btn-warning cancel" value="Leave Published" name="publish_status">  
                   <input type="submit" class="btn btn-sm btn-default" value="Unpublish" name="publish_status">               
