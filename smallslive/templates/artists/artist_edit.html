@@ -21,6 +21,48 @@
     <form method="post" role="form" enctype="multipart/form-data">
         {% csrf_token %}
         {% crispy form %}
+        <h4 class="text-info">How Should We Pay You?</h4>
+        <p><span class="label label-info">About Payments</span> We make payments to musicians who have earned any income every quarter, for the previous quarter. This info is private and never shown to anyone. You can provide this data later if you wish.</p>
+        <div class="radio">
+          <label><input type="radio" name="payment-distribution-method" value="DD" checked="checked" /> Pay me via Direct Deposit (fastest)
+        </div>
+        <div class="radio">
+          <label><input type="radio" name="payment-distribution-method" value="check" /> Pay me via mailed check        
+        </div>
+        <div id="div_id_legal_name" class="form-group">
+          <label for="id_tax" class="control-label  requiredField">
+				  Full Legal Name</label>
+				  <div class="controls "><input class="textinput textInput form-control" id="id_legal_name" maxlength="255" placeholder="" name="legal_name" type="text" value=""> </div>
+				  <p class="help-block">For tax purposes and mailed-check payments.</p>
+				</div>	
+        <div class="payment-via-DD">
+          <div id="div_id_bank" class="form-group">
+            <label for="id_bank" class="control-label  requiredField">
+  				  Name of your Bank</label>
+  				  <div class="controls "><input class="textinput textInput form-control" id="id_bank" maxlength="255" name="bank" type="text" value=""> </div>
+  				</div>
+          <div id="div_id_bank_account_number" class="form-group">
+            <label for="id_bank_account_number" class="control-label  requiredField">
+  				Bank Account Number</label>
+  				  <div class="controls "><input class="textinput textInput form-control" id="id_bank_account_number" maxlength="255" name="bank_account" type="text" value=""> </div>
+  				</div>
+          <div id="div_id_bank_routing_number" class="form-group">
+            <label for="id_bank_routing_number" class="control-label  requiredField">
+  				 Routing Number (for Bank)</label>
+  				  <div class="controls "><input class="textinput textInput form-control" id="id_bank_routing_number" maxlength="255" placeholder="" name="routing_number" type="text" value=""> </div>
+  				  <p class="help-block">9 digits usually, often found on the bottom of one of your checks.</p>
+  				</div>	
+        </div>
+        <div class="payment-via-check none">
+          {% include 'blocks/mailing-address-fields.html' %} 
+        </div>	
+        <div id="div_id_tax" class="form-group">
+          <label for="id_tax" class="control-label  requiredField">
+				  Your Best Phone Number</label>
+				  <div class="controls "><input class="textinput textInput form-control" id="id_tax" maxlength="255" placeholder="### ### ####" name="tax" type="text" value=""> </div>
+				  <p class="help-block">If we have problems paying you, we will contact you via phone.</p>
+				</div>				
+				
         <button type="submit" class="btn btn-primary">Save profile</button>
     </form>
   </div>
@@ -35,9 +77,21 @@
         <tbody>
           {% for upcoming_event in artist.upcoming_events|slice:"5" %}
           <tr>
-            <td><a href="{{ upcoming_event.get_absolute_url }}">{{ upcoming_event.start|date:"m/j/y" }}</a></td>
-            <td>{{ upcoming_event.performers.all|join:", " }}</td>
-            <td><a href="">clone</a></td>
+            <td class="event_date"><time datetime="{{ upcoming_event.start|date:"c" }}">{{ upcoming_event.start|date:"D, M. d" }}<br />{{ upcoming_event.start|date:"Y - f a" }}</time></td>
+            <td>
+              {% if upcoming_event.photo.url != "" %}
+                <a href="/events/{{ upcoming_event.id }}/">
+                  <img src="{% thumbor_url upcoming_event.photo.url|urlencode width=100 height=60 smart=True %}" alt="Photo of {{ upcoming_event.title }}" />
+                </a>
+              {% else %}
+                <a href="{% url "event_edit" upcoming_event.id %}"><span class="text-danger">[missing photo]</span></a>                
+              {% endif %} 
+            </td>
+            <td><a href="{{ upcoming_event.get_absolute_url }}">{{ upcoming_event.display_title }}</a><br />
+                {{ upcoming_event.subtitle }}
+            </td>
+            <td>
+                <a href="{% url "event_edit" upcoming_event.id %}">edit event</a> {% if user.is_superuser %} | <a href="">clone</a>{% endif %}</td>
           </tr>
           {% endfor %}
           <tr>
@@ -55,7 +109,16 @@
         <tbody>
           {% for past_event in artist.past_events|slice:"10" %}
           <tr>
-            <td>{{ past_event.start|date:"n/j/y" }}</td>
+            <td class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
+            <td>
+              {% if past_event.photo.url != "" %}
+                <a href="/events/{{ past_event.id }}/">
+                  <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" alt="Photo of {{ past_event.title }}" />
+                </a>
+              {% else %}
+                <a href="{% url "event_edit" past_event.id %}"><span class="text-danger">[missing photo]</span></a>                
+              {% endif %} 
+            </td>
             <td>
               <a href="{{ past_event.get_absolute_url }}">
               {% if past_event.displaytitle %}
@@ -67,7 +130,8 @@
               {{ past_event.performers.all|join:", " }}
               <span class="text-muted">{{ past_event.subtitle }}</span>
             </td>
-              {% if user.is_superuser %}<td><a href="">clone</a></td>{% endif %}
+            <td>
+                <a href="{% url "event_edit" past_event.id %}">edit event</a> {% if user.is_superuser %} | <a href="">clone</a>{% endif %}</td>
           </tr>
           {% endfor %}
           <tr>

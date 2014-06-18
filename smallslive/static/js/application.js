@@ -90,6 +90,22 @@ $(document).ready(function(){
     $('#player').dialog('open');
   });
   //end show video in popup  
+  //On artist/edit, let artist set payment-distribution-method:
+  function showCorrectPaymentFields(DDorCheck) {
+    if (DDorCheck=='DD') {
+      $('.payment-via-check').hide();
+      $('.payment-via-DD').show();
+    } else {
+      $('.payment-via-DD').hide();
+      $('.payment-via-check').show();
+    }
+  }
+  //INIT - handle cached radios:
+  showCorrectPaymentFields($('form input[name=payment-distribution-method]:checked').val());
+  $('form').on('click','input[name=payment-distribution-method]',function() {
+    showCorrectPaymentFields($(this).val());
+  });
+  //END payment-distribution-method
   //END ARTIST SIGNUP
   
   
