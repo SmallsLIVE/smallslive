@@ -10,12 +10,17 @@
       {% if user.is_artist %}
       <tr>
         <td colspan="">Musician/Artist Profile</td>
-        <td colspan=""><a href="/artists/102/edit">Edit your name, artist bio, photo etc. here</a><br />To cancel your artist account, <a href="#">email Spike</a></td>
-      </tr> 
+        <td colspan=""><a href="/artists/102/edit">Edit your artist info, bio, photo etc. here</a><br />To cancel your artist account, <a href="#">email Spike</a></td>
+      </tr>  
+      <tr>
+        <td colspan="">How We Will Pay You</td>
+        <td colspan="">[Direct Deposit to your %bank_name%.][Personal check to 123 Main St., Phoenix AZ 85021] <br /><a href="/artists/102/edit">Edit payment method</a><br /><span class="text-muted"><span class="label label-default">Note:</span>
+        Next payouts begin 4/15/15 for Q1 2014.</span></td>
+      </tr>  
       {% endif %}
       <tr>
-        <td colspan="">Name</td>
-        <td colspan=""><p>Firstname Lastname</p><a href="/artists/102/edit">Change name on account</a></td>
+        <td colspan="">Legal Name</td>
+        <td colspan=""><p>Firstname Lastname</p><a href="/artists/{{ user.artist.id }}/edit/">Change name on account</a></td>
       </tr>  
       {% if request.GET.social %}
         <tr>
