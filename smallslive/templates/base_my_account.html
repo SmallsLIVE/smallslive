@@ -9,6 +9,12 @@
 <div class="page-header">
   <h1>My Account</h1>
 </div>
+    {% if user.is_artist %}
+    <div class="alert alert-warning">
+      <span class="label label-warning">Artists:</span> Use your <a href="{% url 'my_gigs' %}" class="alert-link">Artist Website</a>   to review your $ earnings/payouts, manage your profile, and review your recordings.</li>   
+      </ul>
+    </div>
+    {% endif %}
 <div class="row">
   <div class="col-sm-3">
     <ul class="nav nav-pills nav-stacked">       
@@ -19,14 +25,6 @@
       <li><a href="#">Store Wishlists</a> <code>2</code></li>   
       <li><a href="#">Manage Shipping Addresses</a> <code>1, 2</code></li>
     </ul>
-    {% if user.is_artist %}
-    <div class="well">
-      <h4>For Artists Only:</h4>
-      <ul>  
-        <li>Use the <a href="{% url 'my_gigs' %}">Artist Website</a> at <em>http://artists.smallslive.com</em> to review $ earnings, play stats, and review your recordings</li>   
-      </ul>
-    </div>
-    {% endif %}
     <div class="dev">
       <ul>
         <li><code>1</code> - only show if they have bought something requiring shipping in the past</li>
