@@ -10,7 +10,6 @@
       <p><a href="{% url "event_add" %}"><button class="btn btn-primary">Add new event&hellip;</button></a> <a href="{% url "artist_add" %}"><button class="btn btn-primary">Add new artist</button></a></p>
       <ul class="nav nav-tabs">
         <li class="active"><a href="#upcoming" data-toggle="tab">Upcoming/Confirmed</a></li>
-        <li><a href="#recent" data-toggle="tab">Recently Updated</a></li>
         <li><a href="#all" data-toggle="tab">Calendar View</a></li>
       </ul>
       <div class="tab-content">
@@ -18,13 +17,13 @@
           <table class="table table-condensed">
             <thead>
               <tr>
-                <th>Gig Date</th>
+                <th><a href="#sort">Date &darr;</a><code>2</code></th>
                 <th>Time</th>
-                <th>Pic</th>
-                <th>View Event</th>
-                <th>Edit event</th>
-                <th>Not Registered?</th>
-                <th>Last Updated</th>
+                <th>Event Photo</th>
+                <th>View Event / Title / Subtitle</th>
+                <th class="nowrap">Edit event</th>
+                <th class="nowrap">Artist Status</th>
+                <th class="nowrap"><a href="#sort">Last Updated</a></th>
               </tr>
             </thead>
             <tbody>
@@ -60,7 +59,7 @@
                 <td><a href="{{ event.get_absolute_url }}">{{ event.display_title }}</a
                 {% if event.subtitle %}<span class="text-muted"><br />{{ event.subtitle }}</span>{% endif %}</td>
                 <td><a href="{% url "event_edit" pk=event.id %}">Edit event</a></td>
-                <td><span class="text-danger">3/4</span> <a href="/static_page/invite-artists">Send invitation(s)&hellip;</a></td>
+                <td class="nowrap"><a href="/static_page/invite-artists"><span class="text-danger">3/4 unregistered</span><br /><span class="glyphicon glyphicon-envelope"></span> Invite&hellip;</a></td>
                 <td class="text-muted">{{ event.last_modified_by.get_full_name }} {{ event.modified|naturaltime }}</td>
               </tr>
               {% endfor %}
@@ -68,9 +67,6 @@
             </tbody>
           </table>
         </div> 
-        <div class="tab-pane" id="recent">
-          <p>Table showing held (unconfirmed) gigs in next 60 days ordered by soonest first.</p>
-        </div>
         <div class="tab-pane" id="all">
           <div class="well">This would be a version of the calendar UI on calendar.html w/ all upcoming dates, holds, and open slots. (Yes, we would include drafts/holds in this view even thought those have a dedicated list view as well). However, all event links would point to the /edit and not the /detail view (unlike the public calendar.html screen).</div>
         </div> 
@@ -83,6 +79,7 @@
     <h1>Dev notes</h1>
     <Ul> 
       <li><code>1</code> - example of how 3 gigs happening on one 1 date should look (print the common day just one time with rowspan, print 1 row per slot/artist)</li>
+      <li><code>2</code> - default sort is accurate. note Last updated is also sortable.</li>
     </Ul>
   </div>
 {% endblock content %}
