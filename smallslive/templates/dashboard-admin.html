@@ -9,32 +9,57 @@
       
       <p><a href="{% url "event_add" %}"><button class="btn btn-primary">Add new event&hellip;</button></a> <a href="{% url "artist_add" %}"><button class="btn btn-primary">Add new artist</button></a></p>
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#upcoming" data-toggle="tab">Upcoming</a></li>
+        <li class="active"><a href="#upcoming" data-toggle="tab">Upcoming/Confirmed</a></li>
         <li><a href="#recent" data-toggle="tab">Recently Updated</a></li>
-        <li><a href="#holds" data-toggle="tab">Date Holds/Drafts</a></li>
+        <li><a href="#all" data-toggle="tab">Calendar View</a></li>
       </ul>
       <div class="tab-content">
-        <div class="tab-pane active" id="recent">
+        <div class="tab-pane active" id="upcoming">
           <table class="table table-condensed">
             <thead>
               <tr>
                 <th>Gig Date</th>
+                <th>Time</th>
                 <th>Pic</th>
                 <th>View Event</th>
-                <th>Edit</th>
+                <th>Edit event</th>
                 <th>Not Registered?</th>
                 <th>Last Updated</th>
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <td rowspan="3" class="event_date">
+                  <span>Wed<br />
+                    <small>Jan 9</small>
+                  </span>
+                </td>
+                <td class="event_time">9 - 11PM</td>
+                <td><img src="http://d3dombqstlgdhj.cloudfront.net/uG6cxKo4bKJH1-gvfitnjNKIRmg=/100x60/smart/http%3A//d3dombqstlgdhj.cloudfront.net/images/Michela..jpg" class=""></td>
+                <td colspan="5" rowspan="3"><code>1</code></td>
+              </tr>              
+              <tr>
+                <td class="event_time">11 - 12:30 AM</td>
+                <td><img src="http://d3dombqstlgdhj.cloudfront.net/uG6cxKo4bKJH1-gvfitnjNKIRmg=/100x60/smart/http%3A//d3dombqstlgdhj.cloudfront.net/images/Michela..jpg" class=""></td>
+              </tr>            
+              <tr>
+                <td class="event_time">1 - 2 AM</td>
+                <td><img src="http://d3dombqstlgdhj.cloudfront.net/uG6cxKo4bKJH1-gvfitnjNKIRmg=/100x60/smart/http%3A//d3dombqstlgdhj.cloudfront.net/images/Michela..jpg" class=""></td>
+              </tr>
               {% for event in events %}
               <tr>
-                <td class="event_date"><time datetime="{{ event.start|date:"c" }}">{{ event.start|date:"D, M. d" }}<br />{{ event.start|date:"Y - f a" }}</time></td>
-                <td>{% if event.photo.url != "" %}
-            <img src="{% thumbor_url event.photo.url|urlencode height=60 width=100 smart=True   %}" class="img-responsive artist-photo" />{% else %}<span class="text-danger">[missing photo]</span>
+                <td class="event_date">
+                  <span>{{ event.start|date:"D" }}<br />
+                    <small>{{ event.start|date:"M j" }}</small>
+                  </span>
+                </td>
+
+                <td class="event_time"><time datetime="{{ event.start|date:"c" }}">{{ event.start|date:"f" }} - {{ event.end|date:"f A" }}</time></td>                <td>{% if event.photo.url != "" %}
+            <img src="{% thumbor_url event.photo.url|urlencode height=60 width=100 smart=True   %}" class="" />{% else %}<a href="{% url "event_edit" pk=event.id %}"><span class="text-danger">[missing photo]</span></a>
           {% endif %}</td>
-                <td><a href="{{ event.get_absolute_url }}">{{ event.display_title }}</a></td>
-                <td><a href="{% url "event_edit" pk=event.id %}">edit</a></td>
+                <td><a href="{{ event.get_absolute_url }}">{{ event.display_title }}</a
+                {% if event.subtitle %}<span class="text-muted"><br />{{ event.subtitle }}</span>{% endif %}</td>
+                <td><a href="{% url "event_edit" pk=event.id %}">Edit event</a></td>
                 <td><span class="text-danger">3/4</span> <a href="/static_page/invite-artists">Send invitation(s)&hellip;</a></td>
                 <td class="text-muted">{{ event.last_modified_by.get_full_name }} {{ event.modified|naturaltime }}</td>
               </tr>
@@ -43,10 +68,10 @@
             </tbody>
           </table>
         </div> 
-        <div class="tab-pane" id="holds">
+        <div class="tab-pane" id="recent">
           <p>Table showing held (unconfirmed) gigs in next 60 days ordered by soonest first.</p>
         </div>
-        <div class="tab-pane" id="upcoming">
+        <div class="tab-pane" id="all">
           <div class="well">This would be a version of the calendar UI on calendar.html w/ all upcoming dates, holds, and open slots. (Yes, we would include drafts/holds in this view even thought those have a dedicated list view as well). However, all event links would point to the /edit and not the /detail view (unlike the public calendar.html screen).</div>
         </div> 
       </div> 
@@ -57,6 +82,7 @@
   <div class="dev">
     <h1>Dev notes</h1>
     <Ul> 
+      <li><code>1</code> - example of how 3 gigs happening on one 1 date should look (print the common day just one time with rowspan, print 1 row per slot/artist)</li>
     </Ul>
   </div>
 {% endblock content %}
