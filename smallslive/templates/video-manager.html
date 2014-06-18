@@ -4,118 +4,203 @@
 {% block title %}Videos &amp; Audio {% endblock title%}
 {% block content %}
   <div class="page-header">
-    <h1>Unpublished Video &amp; Audio Recordings ({{ past_events|length }})</h1>
-  </div>
-  <div class="table-tools">
-  <form class="form-inline" role="form">
-    <div class="form-group">
-        <input type="search" class="form-control" placeholder="Search unpublished" />
-        <a href="/static_page/search/">Browse published recordings</a><code>1</code>
-    </div>
-  </form> 
+    <h1>Video &amp; Audio Recordings</h1>
   </div>
   <div class="row">
     <div class="col-sm-12">
       
-      <table class="table list-of-recordings">
-        <thead>
-          <tr>
-            <th><code>2</code> <a href="">Date</a></th>
-            <th>Set</th>
-            <th>Video</th>
-            <th>Audio</th>
-            <th>Description</th>
-            <th>Publish Status<code>4</code></th>
-            <th><a href="">Fans* &darr;</a></th> 
-          </tr>
-        </thead>
-        <tbody>
-          {% for past_event in past_events %}
-          <tr data-event="{{ past_event.id }}"  class="event_{{ past_event.id }}"> 
-            <td rowspan="2" class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
-            <td  class="choose-set active">
-              <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="1" checked="checked"> 1 (66min)</label>
-            </td>
-            <td rowspan="2" class="video-thumb">
-              <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   1.2GB MP4</a>
-              {% if past_event.photo.url != "" %}
-                <a href="/events/{{ past_event.id }}/">
-                  <span class="glyphicon glyphicon-play"></span>
-                  <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}" class="img-responsive" />
-                </a>
-              {% endif %}       
-            </td>
-            <td rowspan="2" class="audio-play"> 
-                <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   52MB MP3</a>
-                <a  href="/events/{{ past_event.id }}/" class=" btn btn-default" role="button" title="Play audio {{ past_event.displaytitle }}"><span class="glyphicon glyphicon-play"></span></a>                  
-            </td>
-            <td rowspan="2"> 
-               <a href="{{ past_event.get_absolute_url }}">{{ past_event.display_title }}</a><br />
-                  {{ past_event.subtitle }}
-               <div>
-                   <a href="{% url "event_edit" past_event.id %}">Edit video</a></div>
-            </td>
-            <td rowspan="2" >
-              <div class="artist-clearance-breakdown">
-                <form action="#" method="get" class="f-toggle-publish">
-                  <p class="text-warning clearance-summary"><a href="" class="trigger-show-musician-registration-status text-danger"><strong>2 artists</strong> missing&hellip;</a>  <a href="/static_page/invite-artists" class="btn btn-xs btn-primary">Invite artists&hellip;</a></p>            
-                </form>
-                {# display statuses of artists on this recording #}
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Artist</th>
-                      <th>Joined SmallsLIVE?</th> 
-                      <th>Last invited</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><a href="mailto:jon@grimes.com?subject=Clearing our Smalls recording from Jan 14, 2011&body=Hi Jon,%2C%0D%0A%0D%0AI would love to get this recording of us cleared for use on Smalls so we can all make money on it when users listen to it: %2C%0D%0A%0D%0A[[insert link]]%2C%0D%0A%0D%0AWe share a copyright on the recording and all of us on the gig have to approve the recording before it can go into the SmallsLIVE archive for listeners. %2C%0D%0A%0D%0AThanks, {{ request.user.first_name }}">Alan Smith (gtr)</a></td>
-                     <td class="text-warning"><span class="glyphicon glyphicon-remove"></span> No</td>
-                     <td>X days ago</td>
-                    </tr>
-                    <tr>
-                      <td><a href="mailto:jen@olans.com?subject=Clearing our Smalls recording from Jan 14, 2011&body=Hi Jen,%2C%0D%0A%0D%0AI would love to get this recording cleared for use on Smalls so we can all make money on it when users listen to it:%2C%0D%0A%0D%0A[[insert link]]%2C%0D%0A%0D%0AAny particular reason you rejected it? We can edit the recording down if there are specific parts you don't want public. Let me know. %2C%0D%0A%0D%0AThanks, {{ request.user.first_name }}">Jen Olans (bs)</a></td>
-                      <td class="text-warning"><span class="glyphicon glyphicon-remove"></span> No</td>
-                      <td>X days ago</td>
-                    </tr>
-                    <tr>
-                      <td><a href="/artists/###">Brian Blade (dr)</a></td>
-                      <td class="text-success"><span class="glyphicon glyphicon-ok"></span> Yes</td>
-                      <td>X days ago</td>
-                    </tr>
-                  </tbody>
-                </table>
+      <ul class="nav nav-tabs">  
+        <li class="active"><a href="#unpublished" data-toggle="tab">Unpublished Recordings (#) </a></li>
+        <li><a href="#published" data-toggle="tab">Most Popular Recordings</a></li>
+      </ul>
+      
+      <div class="tab-content">
+        <div class="tab-pane active" id="unpublished">
+          <div class="table-tools">
+            <form class="form-inline" role="form">
+              <div class="form-group">
+                  <input type="search" class="form-control" placeholder="Search unpublished" />
               </div>
-            </td>
-            <td rowspan="2" class="fan_count">3</td>
-          </tr>
-          <tr data-event="{{ past_event.id }}" class="event_{{ past_event.id }}">
-            <td  class="choose-set not-first">
-              <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="2"> 2 (34min)</label>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      {% if paginator.num_pages > 1 %}
-         <ul class="pagination">
-          {% if page_obj.has_previous %}
-            <li><a href="?page={{ page_obj.previous_page_number }}#past">&laquo;</a></li>
-          {% endif %}
-          {% for num in paginator.page_range %}
-            {% ifequal num page_obj.number %}
-              <li class="active"><a href="#">{{ num }}</a></li>
-            {% else %}
-              <li><a href="?page={{ num }}#past"> {{ num }}</a></li>
-            {% endifequal %}
-          {% endfor %}
-          {% if page_obj.has_next %}
-            <li><a href="?page={{ page_obj.next_page_number }}#past">&raquo;</a></li>
-          {% endif %}
-        </ul>
-      {% endif %}         
+            </form> 
+          </div>
+          <table class="table list-of-recordings">
+            <thead>
+              <tr>
+                <th><code>2</code> <a href="">Date</a></th>
+                <th>Set</th>
+                <th>Video</th>
+                <th>Audio</th>
+                <th>Description</th>
+                <th>Publish Status<code>4</code></th>
+                <th><a href="">Fans* &darr;</a></th> 
+              </tr>
+            </thead>
+            <tbody>
+              {% for past_event in past_events %}
+              <tr data-event="{{ past_event.id }}"  class="event_{{ past_event.id }}"> 
+                <td rowspan="2" class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
+                <td  class="choose-set active">
+                  <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="1" checked="checked"> 1 (66min)</label>
+                </td>
+                <td rowspan="2" class="video-thumb">
+                  <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   1.2GB MP4</a>
+                  {% if past_event.photo.url != "" %}
+                    <a href="/events/{{ past_event.id }}/">
+                      <span class="glyphicon glyphicon-play"></span>
+                      <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}" class="img-responsive" />
+                    </a>
+                  {% endif %}       
+                </td>
+                <td rowspan="2" class="audio-play"> 
+                    <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   52MB MP3</a>
+                    <a  href="/events/{{ past_event.id }}/" class=" btn btn-default" role="button" title="Play audio {{ past_event.displaytitle }}"><span class="glyphicon glyphicon-play"></span></a>                  
+                </td>
+                <td rowspan="2"> 
+                   <a href="{{ past_event.get_absolute_url }}">{{ past_event.display_title }}</a><br />
+                      {{ past_event.subtitle }}
+                   <div>
+                       <a href="{% url "event_edit" past_event.id %}">Edit video</a></div>
+                </td>
+                <td rowspan="2" >
+                  <div class="artist-clearance-breakdown">
+                    <form action="#" method="get" class="f-toggle-publish">
+                      <p class="text-warning clearance-summary"><a href="" class="trigger-show-musician-registration-status text-danger"><strong>2 artists</strong> missing&hellip;</a>  <a href="/static_page/invite-artists" class="btn btn-xs btn-primary">Invite artists&hellip;</a></p>            
+                    </form>
+                    {# display statuses of artists on this recording #}
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Artist</th>
+                          <th>Joined SmallsLIVE?</th> 
+                          <th>Last invited</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><a href="mailto:jon@grimes.com?subject=Clearing our Smalls recording from Jan 14, 2011&body=Hi Jon,%2C%0D%0A%0D%0AI would love to get this recording of us cleared for use on Smalls so we can all make money on it when users listen to it: %2C%0D%0A%0D%0A[[insert link]]%2C%0D%0A%0D%0AWe share a copyright on the recording and all of us on the gig have to approve the recording before it can go into the SmallsLIVE archive for listeners. %2C%0D%0A%0D%0AThanks, {{ request.user.first_name }}">Alan Smith (gtr)</a></td>
+                         <td class="text-warning"><span class="glyphicon glyphicon-remove"></span> No</td>
+                         <td>X days ago</td>
+                        </tr>
+                        <tr>
+                          <td><a href="mailto:jen@olans.com?subject=Clearing our Smalls recording from Jan 14, 2011&body=Hi Jen,%2C%0D%0A%0D%0AI would love to get this recording cleared for use on Smalls so we can all make money on it when users listen to it:%2C%0D%0A%0D%0A[[insert link]]%2C%0D%0A%0D%0AAny particular reason you rejected it? We can edit the recording down if there are specific parts you don't want public. Let me know. %2C%0D%0A%0D%0AThanks, {{ request.user.first_name }}">Jen Olans (bs)</a></td>
+                          <td class="text-warning"><span class="glyphicon glyphicon-remove"></span> No</td>
+                          <td>X days ago</td>
+                        </tr>
+                        <tr>
+                          <td><a href="/artists/###">Brian Blade (dr)</a></td>
+                          <td class="text-success"><span class="glyphicon glyphicon-ok"></span> Yes</td>
+                          <td>X days ago</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </td>
+                <td rowspan="2" class="fan_count">3</td>
+              </tr>
+              <tr data-event="{{ past_event.id }}" class="event_{{ past_event.id }}">
+                <td  class="choose-set not-first">
+                  <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="2"> 2 (34min)</label>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% if paginator.num_pages > 1 %}
+             <ul class="pagination">
+              {% if page_obj.has_previous %}
+                <li><a href="?page={{ page_obj.previous_page_number }}#past">&laquo;</a></li>
+              {% endif %}
+              {% for num in paginator.page_range %}
+                {% ifequal num page_obj.number %}
+                  <li class="active"><a href="#">{{ num }}</a></li>
+                {% else %}
+                  <li><a href="?page={{ num }}#past"> {{ num }}</a></li>
+                {% endifequal %}
+              {% endfor %}
+              {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}#past">&raquo;</a></li>
+              {% endif %}
+            </ul>
+          {% endif %} 
+        </div><!-- end tab -->
+        <div class="tab-pane" id="published">
+          <div class="table-tools">
+            <form class="form-inline" role="form">
+              <div class="form-group">
+                  <input type="search" class="form-control" placeholder="Search published" />
+                  <a href="/static_page/search/">Advanced/public search</a><code>1</code>
+              </div>
+            </form> 
+          </div>
+          <table class="table list-of-recordings">
+            <thead>
+              <tr>
+                <th><a href="">Rank (Views) &darr;</a></th> 
+                <th><code>2</code> <a href="">Date</a></th>
+                <th>Set</th>
+                <th>Video</th>
+                <th>Audio</th>
+                <th>Description</th>
+                <th>Published</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for past_event in past_events %}
+              <tr data-event="{{ past_event.id }}"  class="event_{{ past_event.id }}"> 
+                <td rowspan="2" class="rank"><strong>#1</strong> <span class="text-muted">(4,544)</span></td>
+                <td rowspan="2" class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
+                <td  class="choose-set active">
+                  <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="1" checked="checked"> 1 (66min)</label>
+                </td>
+                <td rowspan="2" class="video-thumb">
+                  <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   1.2GB MP4</a>
+                  {% if past_event.photo.url != "" %}
+                    <a href="/events/{{ past_event.id }}/">
+                      <span class="glyphicon glyphicon-play"></span>
+                      <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}" class="img-responsive" />
+                    </a>
+                  {% endif %}       
+                </td>
+                <td rowspan="2" class="audio-play"> 
+                    <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   52MB MP3</a>
+                    <a  href="/events/{{ past_event.id }}/" class=" btn btn-default" role="button" title="Play audio {{ past_event.displaytitle }}"><span class="glyphicon glyphicon-play"></span></a>                  
+                </td>
+                <td rowspan="2"> 
+                   <a href="{{ past_event.get_absolute_url }}">{{ past_event.display_title }}</a><br />
+                      {{ past_event.subtitle }}
+                   <div>
+                       <a href="{% url "event_edit" past_event.id %}">Edit video</a></div>
+                </td>
+                <td rowspan="2" >mm/dd/yy
+                </td>
+              </tr>
+              <tr data-event="{{ past_event.id }}" class="event_{{ past_event.id }}">
+                <td  class="choose-set not-first">
+                  <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="2"> 2 (34min)</label>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% if paginator.num_pages > 1 %}
+             <ul class="pagination">
+              {% if page_obj.has_previous %}
+                <li><a href="?page={{ page_obj.previous_page_number }}#past">&laquo;</a></li>
+              {% endif %}
+              {% for num in paginator.page_range %}
+                {% ifequal num page_obj.number %}
+                  <li class="active"><a href="#">{{ num }}</a></li>
+                {% else %}
+                  <li><a href="?page={{ num }}#past"> {{ num }}</a></li>
+                {% endifequal %}
+              {% endfor %}
+              {% if page_obj.has_next %}
+                <li><a href="?page={{ page_obj.next_page_number }}#past">&raquo;</a></li>
+              {% endif %}
+            </ul>
+          {% endif %} 
+        </div>
+      </div><!-- end tab container -->        
     </div>
   </div>
   <div class="dev">

@@ -162,6 +162,11 @@ table.table {
       font-weight: bold;
     }
   }
+  tbody td.rank {
+    white-space: nowrap;
+    border-right: 1px solid $table-border-color;
+    text-align: right;
+  }
 }
 /*=SEarch*/
 body.search .facets {
