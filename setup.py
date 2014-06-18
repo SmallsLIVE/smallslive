@@ -13,7 +13,7 @@ if sys.argv[-1] == 'publish':
     sys.exit()
 
 setup(
-    name='music_club',
+    name='smallslive',
     version='0.0.1',
     description=('Sample application for a music club'),
     author='Filip Jukic',
