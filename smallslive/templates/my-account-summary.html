@@ -13,7 +13,7 @@
       <tr>
         <td colspan="">How We Will Pay You</td>
         <td colspan="">[Direct Deposit to your %bank_name%.][Personal check to %legal_name% @ 123 Main St., Phoenix AZ 85021]<br /><span class="text-muted"><span class="label label-default">Note:</span>
-        Next payouts begin 4/15/15 for Q1 2014.  <a href="/static_page/dashboard-musician.html" class="alert-link">View your $ Dashboard</a></span> <br /><a href="/artists/102/edit">Edit how you get paid</a></td>
+        Next payouts begin 4/15/15 for Q1 2014.</span> <br /><a href="/artists/102/edit">Edit how you get paid</a> or <a href="/static_page/dashboard-musician.html" class="alert-link">View your $ Dashboard</a></td>
       </tr>  
       {% endif %} 
       {% if request.GET.social %}
@@ -73,10 +73,10 @@
       </tr>
       {% endif %}
       <tr>
-        <td colspan="2" class="txt"><h4>Subscription</h4></td>
+        <td colspan="2" class="txt"><h4>Subscription Info</h4></td>
       </tr>
       <tr>
-        <td colspan="">Current Subscription Type</td>
+        <td colspan="">Current Subscription</td>
         <td>
           {% if user.is_artist %}
           You have a free artist subscription. Music you listen to does not count towards play counts or royalties.
@@ -109,7 +109,7 @@
       </tr>
       {% if request.GET.cancelled %}
         <tr>
-          <td>Subscription history</td>
+          <td>Subscription History</td>
           <td>You cancelled your last subscription on May 1, 2014.</td>
         </tr>
       {% else %}
@@ -119,17 +119,24 @@
         <tr>
           <td>Billing / Name on Account</td>          
           <td>
-            <p>Name on account: {{ request.user.full_name }}. {% if request.GET.inTrial %}We will charge{% else %}We are charging{% endif %} a VISA card ending in 1234. </p>
-            <p class="text-warning">This card will expire on 6/1/2014.</p>
+            {% if not user.is_artist %}
+              <p>Name on account: {{ request.user.full_name }}. 
+                {% if request.GET.inTrial %}We will charge{% else %}We are charging{% endif %} 
+                a VISA card ending in 1234. 
+              </p>
+            {% endif %}
+            <p class="text-warning">Your VISA card will expire on 6/1/2014.</p>
             <a href="{% url 'djstripe:change_card' %}">Change credit card / name on account</a><code>2</code>
           </td>
         </tr>
         {% endif %}
+       {% if not user.is_artist %}
         <tr>
           <td>Subscriber since</td>
           <td>March 1, 2015</td> 
         </tr>
-        {% if request.GET.inTrial or request.GET.free %}
+        {% endif %}
+        {% if request.GET.inTrial or request.GET.free or user.is_artist %}
         {% else %}
           <tr>
             <td>Artist Revenue Generated</td>
@@ -139,7 +146,8 @@
       {% endif %}
       <tr>
         <td>Orders/Transactions</td>
-        <td>You've placed <a href="">5 additional music orders</a> to date. <a href="/static_pages/my_account_purchase_history">View all payments</a> (including subscription fees).</td>
+        <td>You've placed <a href="">5 music orders</a> to date. <a href="/static_pages/my_account_purchase_history">View all payments you've made</a> 
+       {% if not user.is_artist %}(including subscription fees).{% endif %}</td>
       </tr>
     </tbody>
   </table>
