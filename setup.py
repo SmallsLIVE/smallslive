@@ -1,16 +1,5 @@
 #!/usr/bin/env python
-
-import os
-import sys
-
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
-
-if sys.argv[-1] == 'publish':
-    os.system('python setup.py sdist upload')
-    sys.exit()
+from setuptools import setup, find_packages
 
 setup(
     name='smallslive',
@@ -19,10 +8,7 @@ setup(
     author='Filip Jukic',
     author_email='filip@appsembler.com',
     url='https://github.com/SmallsLIVE/smallslive/',
-    packages=[
-        'smallslive',
-    ],
-    package_dir={'smallslive': 'smallslive'},
+    packages=find_packages(),
     include_package_data=True,
     install_requires=open('requirements.txt').read().splitlines(),
     license='BSD',

@@ -1,0 +1,2 @@
+recursive-include smallslive/static *
+recursive-include smallslive/templates *
