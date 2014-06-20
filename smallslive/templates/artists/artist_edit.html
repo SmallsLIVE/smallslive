@@ -15,12 +15,20 @@
 </div>
 <div class="row">
   <div class="col-sm-7 col-md-offset-1 col-md-5"> 
+    {% if request.GET.signedTerms %}
+      <p class="text-success"><span class="glyphicon glyphicon-ok"></span> Member since 6/20/14</p>
+    {% else %}
+      <div class="alert alert-danger">
+        <p>{{ artist.full_name }} has not signed on to SmallsLIVE yet. Last invitation sent 2 days ago. Last site visit was 2 days ago.</p>
+        <a href="/static_page/invite-artists" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-envelope"></span> Invite to SmallsLIVE</a>
+      </div>
+    {% endif %}
     <div class="alert alert-info">
       <p><a href="">Clone this artist's last show (4/12/14)</a></p>
     </div>
     <form method="post" role="form" enctype="multipart/form-data">
-        {% csrf_token %}
-        {% crispy form %}
+        {% csrf_token %}      
+      {% crispy form %}
         <h4 class="text-info">How Should We Pay You?</h4>
         <p><span class="label label-info">About Payments</span> We make payments to musicians who have earned any income every quarter, for the previous quarter. This info is private and never shown to anyone. You can provide this data later if you wish.</p>
         <div class="radio">
@@ -143,6 +151,12 @@
   </div>
 </div>
     <div class="dev">
+    <h1>Alternate states</h1>
+      <ul>
+          <li><a href="?signedTerms=1">User has signed terms</a> {signedTerms} (by default, they haven't in the UI sample)
+          </li>
+      </ul>
+    </div>
     <h1>Dev. notes:</h1>
       <ul>
           <li><code>1</code> I may suggest we have a search/autocomplete here to avoid duplicates being entered.</li>
