@@ -108,7 +108,7 @@ class Migration(SchemaMigration):
         },
         u'multimedia.mediafile': {
             'Meta': {'object_name': 'MediaFile'},
-            'file': ('multimedia.fields.DynamicBucketFileField', [], {'max_length': '100'}),
+            'file': ('smallslive.multimedia.fields.DynamicBucketFileField', [], {'max_length': '100'}),
             'format': ('django.db.models.fields.CharField', [], {'max_length': '4'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'media_type': ('django.db.models.fields.CharField', [], {'max_length': '10'})

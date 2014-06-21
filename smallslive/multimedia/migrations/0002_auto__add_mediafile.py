@@ -13,7 +13,7 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('media_type', self.gf('django.db.models.fields.CharField')(max_length=10)),
             ('format', self.gf('django.db.models.fields.CharField')(max_length=4)),
-            ('file', self.gf('multimedia.fields.DynamicBucketFileField')(max_length=100)),
+            ('file', self.gf('smallslive.multimedia.fields.DynamicBucketFileField')(max_length=100)),
         ))
         db.send_create_signal(u'multimedia', ['MediaFile'])
 
@@ -35,7 +35,7 @@ class Migration(SchemaMigration):
         },
         u'multimedia.mediafile': {
             'Meta': {'object_name': 'MediaFile'},
-            'file': ('multimedia.fields.DynamicBucketFileField', [], {'max_length': '100'}),
+            'file': ('smallslive.multimedia.fields.DynamicBucketFileField', [], {'max_length': '100'}),
             'format': ('django.db.models.fields.CharField', [], {'max_length': '4'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'media_type': ('django.db.models.fields.CharField', [], {'max_length': '10'})
