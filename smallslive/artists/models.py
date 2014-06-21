@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import Sum, Count
 from sortedm2m.fields import SortedManyToManyField
 from tinymce import models as tinymce_models
-from events.models import Event
+from ..events.models import Event
 
 
 class Artist(models.Model):
