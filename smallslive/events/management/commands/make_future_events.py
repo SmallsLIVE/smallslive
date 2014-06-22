@@ -1,6 +1,6 @@
 from django.core.management.base import NoArgsCommand
-from events.models import Event
 from django.utils import timezone
+from smallslive.events.models import Event
 
 
 class Command(NoArgsCommand):
