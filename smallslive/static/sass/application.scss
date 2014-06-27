@@ -10,7 +10,7 @@
 }
 /* Bootstrap var overrides */
 //** Border color for table and cell borders.
-$table-border-color:            #eee;
+$table-border-color:            #ddd;
 $margin-bottom:                 24px;
 
 /* TEmplate setup - body, footer, etc */
@@ -18,9 +18,9 @@ $margin-bottom:                 24px;
 /* Masthead */
 body { 
   > div.alert {
-    margin-bottom: 0;
+    margin-bottom: 0; 
     border-radius: 0;
-  }
+  } 
   nav.navbar {
     @include border-radius(0);
     .longname  {
@@ -77,7 +77,7 @@ body {
 /*Footer*/
 footer {
   background: #fafafa;
-  color: #333;
+  color: $text-color;
   padding: 1em;
   margin-top:2em;
   border-top:1px solid #ccc;
@@ -153,7 +153,6 @@ table.table {
   tbody td.event_date {
     white-space: nowrap;
     border-right: 1px solid $table-border-color;
-    background: #f5f5f5;
     span {
       @extend .cuteShowDate;
       background-color: #fff !important;
@@ -342,10 +341,10 @@ body.search .facets {
       white-space: nowrap;
     }
     a {
-      color: #333;
+      color: $text-color;
     }
     .media-count {
-      color: #666;
+      color: $gray;
     }
   }
   @media all and (min-width : $screen-md-min) {
@@ -387,15 +386,33 @@ body.search .facets {
   }
   .media-area {
     background: #f5f5f5; /*variable*/
+    border-left: none;
+    border-right: none;
   }
-  td.audio-play {
-    @extend .media-area;
+  > tbody > tr > td.audio-play {
+    @extend .media-area; 
+  }
+  > tbody > tr > td.choose-set {
+    border-bottom: none;
+  }
+  tr .description .label-default {
+    background: #bbb;
+  }
+  td.choose-set {
+    border-right: none;
+    color: $gray;
+    label {
+      display: block;
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
   }
   td.choose-set.not-first {
     border-top: none;
   }
   td.choose-set.active {
-    background: #f5f5f5;
+    background-color: #f5f5f5;
+    color: $text-color;
   }
   a.download {
     display: block;
@@ -703,6 +720,9 @@ table.payment-history {
 .credit {
   font-style: italic;
 }
+.unstyled-link {
+  color: $text-color;
+}
 .event_date time,
 .event_date,
 .nowrap {
@@ -713,6 +733,10 @@ body abbr.explained {
 }
 .row.none, .none {
   display: none;
+}
+.footnote,
+td.publish_date {
+  @extend .text-muted;
 }
 /*jQuery overrides*/
 body .ui-widget {
