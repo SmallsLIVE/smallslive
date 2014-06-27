@@ -4,7 +4,7 @@
 {% block content %}
   <h1>$ Dashboard {% if user.first_name %}for {{ user.first_name }}{% endif %} </h1>
   <div class="row summaries">
-    <div class="col-sm-6">
+    <div class="col-md-6 col-sm-12">
       <div class="alert alert-info">
         <h5>Summary</h5>
         <table class="table nv">
@@ -21,22 +21,22 @@
         </table>
       </div>
     </div>
-    <div class="col-sm-3">
+    <div class="col-md-3 col-sm-6">
       <div class=" alert-danger alert ">
-      <h5>Your To-Do Items</h5>
+      <h5>To-Do Items</h5>
         <ul>
-          <li>Incomplete artist profile<br /> <a href="" class="alert-link">Uupdate my profile</a></li>
-          <li>We don't know how to pay you (and you are owed $42.12)! <br /><a href="#" class="alert-link">Add your bank information</a></li>
+          <li>Incomplete artist profile<br /> <a href="" class="alert-link">Update my profile</a></li>
+          {% if not request.GET.paymentMethodSet %}<li>We don't know how to pay you (and you are owed $42.12)! <br /><a href="#" class="alert-link">Add your bank information</a></li>{% endif %}
         </ul>
       </div>
     </div>
-    <div class="col-sm-3">
-      <div class=" alert-success alert">
-        <h5>About Your Videos</h5> 
+    <div class="col-md-3 col-sm-6">
+      <div class="alert alert-warning">
+        <h5>News &amp; Your Videos <code>2</code></h5> 
         <ul>
-          <li>(2) new recordings featuring you have been added to the archive since your last login</li>
-          <li><a class="alert-link" href="{% url 'my_gigs' %}">(#) published recordings</a></li>
-          <li><a class="alert-link" href="{% url 'my_gigs' %}">(#) unpublished recordings</a></li>
+          <li><span class="label label-warning">Just Added</span> (2) new recordings featuring you have been added to the archive since your last login</li>
+          <li><span class="label label-warning">NEWS (6/26)</span> - some news about a new feature we released... <a href="#" class="alert-link">more</a></li>
+          <li><a class="alert-link" href="{% url 'my_gigs' %}">My video/audio stats</a></li>
         </ul>
         
             
@@ -44,16 +44,15 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-7"> 
-      <h4>Earnings</h4>
-      <table class="table table-bordered">
+    <div class="col-sm-8"> 
+      <table class="table ">
         <thead>
           <tr>
-            <th></th>
-            <th>You</th>
-            <th>Your Rank/Position</th>
-            <th>Musician Average</th>
-            <th>Entire Community</th>
+            <th class="text-primary">Earnings</th>
+            <th class="num">You</th>
+            <th class="num">Your Rank/Position</th>
+            <th class="num">Musician Average</th>
+            <th class="num">Entire Community</th>
           </tr>
         </thead>
         <tbody>
@@ -86,7 +85,7 @@
             <td class="num">$112.62</td>
           </tr> 
           <tr>
-            <td>Lifetime</td>
+            <td><strong>Lifetime</strong></td>
             <td class="num">$104.23</td>
             <td class="rank"> #91  </td>
             <td class="num">$41.15</td>
@@ -96,14 +95,13 @@
       </table>
    
     </div>    
-    <div  class="col-sm-5">
-      <h4># Fans Following You</h4>
-      <table class="table table-bordered fans-following">
+    <div  class="col-sm-4">
+      <table class="table  fans-following">
         <thead>
           <tr>
-            <th></th>
+            <th class="text-primary"># Fans Following You</th>
             <th>You</th>
-            <th>SmallsLIVE Musician Average</th>
+            <th class="num"> Musician Average</th>
           </tr>
         </thead>
         <tbody>
@@ -120,7 +118,7 @@
             <td>Year to Date</td><td><strong>51</strong></td><td><strong>15</strong></td>
           </tr>
           <tr>        
-            <td>Year to Date</td><td><strong>51</strong></td><td><strong>22</strong></td>
+            <td><strong></strong></td><td><strong>51</strong></td><td><strong>22</strong></td>
           </tr>
         </tbody>
       </table>
@@ -140,6 +138,7 @@
     <h1>Dev notes</h1>
     <Ul> 
       <li><code>1</code> - only show amount owed if tey are owed anything. The green alert message is only shown if any videos' published-date stamps are > then last login date.</li>
+      <li><code>2</code> - if there are no red To Do items, the col-md-3 should become col-md-6 for this beige column</li>
     </Ul>
   </div>
 {% endblock content %}
