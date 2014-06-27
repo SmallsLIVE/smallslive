@@ -1,8 +1,54 @@
 {% extends "base_admin.html" %}
-{% load humanize %}
-{% load thumbor_tags %}
+{% load humanize  static   thumbor_tags %}
 {% block bodyclass %}my-gigs{% endblock bodyclass %}
 {% block title %}My Gigs &amp; Recordings{% endblock title%}
+{% block extra_css %}
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" href="{% static "css/mp3-player-button.css" %}"/>
+{% endblock extra_css %}
+{% block extra_js %}
+<script type="text/javascript" src="{% static "js/soundmanager2.js" %}"></script>
+<script type="text/javascript" src="{% static "js/mp3-player-button.js" %}"></script>
+<script type="text/javascript">
+  soundManager.setup({
+      url: '{% static "swf/" %}'
+  });
+  $(document).ready(function () {
+      $("#jquery_jplayer_1").jPlayer({
+          ready: function () {
+              $(this).jPlayer("setMedia", {
+                  m4v: "http://orchestrotica.com/media/kit2009/index_files/Andalucia_HD.mp4",
+                  poster: "http://orchestrotica.com/media/kit2009/index_files/poster_andalucia.jpg"
+              });
+          },
+          size: {
+              width: "100%",
+              cssClass: "video-player-controls"
+          },
+          swfPath: "/static/js/jQuery.jPlayer.2.6.0/",
+          supplied: "m4v",
+          smoothPlayBar: true,
+          keyEnabled: true,
+          remainingDuration: true,
+          toggleDuration: true
+      });
+  });
+  $('.nav-tabs a').click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+  });
+
+  // store the currently selected tab in the hash value
+  $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
+      var id = $(e.target).attr("href").substr(1);
+      window.location.hash = id;
+  });
+
+  // on load of the page: switch to the currently selected tab
+  var hash = window.location.hash;
+  $('.nav-tabs a[href="' + hash + '"]').tab('show');
+</script>
+{% endblock extra_js %}
 {% block content %}
   <div class="row">
     <div class="col-sm-9"> 
@@ -76,7 +122,7 @@
                 </div>
               </form>
             </div>
-          </div>        
+          </div>                 
           <div class="panel panel-default">
             <div class="panel-heading">
               <h3 class="panel-title">Earn more $
@@ -110,16 +156,16 @@
         </form> 
       </div> 
       <!-- begin table of unpublished -->
-      <table class="table artist-past-gigs-media list-of-recordings">
+      <table class="table list-of-recordings table-bordered">
         <thead>
           <tr>
             <th><a href="">Gig Date</a></th>
             <th>Set</th>
             <th>Video</th>
             <th>Audio</th>
-            <th>Description</th>
+            <th class="description"><span class="label label-default">Bandleader</span> &amp; Description  </th>
             <th><a href="">Status</a></th>
-            <th><a href="">Fan Requests &Darr;</a></th> 
+            <th><a href="">Fan Requests &darr;</a></th> 
           </tr>
         </thead>
         <tbody> 
@@ -128,7 +174,7 @@
             <!-- fake content --> 
             <td rowspan="2" class="event_date"><time datetime="2014-07-09T19:00:00-04:00">Wed, Jul. 09<br />2014 - 7 p.m.</time></td>
             <td  class="choose-set active">
-              <label class="small"><input type="radio" name="set_81331" value="1" checked="checked"> 1 (66min)</label>
+              <label class="small"><input type="radio" name="set_81331" value="1" checked="checked"> 1 (66min) <span class="glyphicon glyphicon-arrow-right"></span></label>
             </td>
             <td rowspan="2" class="video-thumb">
               <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   1.2GB MP4</a>
@@ -143,14 +189,14 @@
                 <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   52MB MP3</a>
                 <a  href="/events/8133/" class=" btn btn-default" role="button" title="Play audio "><span class="glyphicon glyphicon-play"></span></a>                  
             </td>
-            <td rowspan="2"> 
-               <a href="/events/8133/">The &quot;Early Bird&quot; Session hosted by: w/ Zaid Nasser, Pasquale Grasso, Ari Roland, Keith Balla</a><br />
-                  Zaid Nasser
-               <div>
-                   <a href="/events/8133/edit/">Edit video</a></div>
+            <td rowspan="2" class="description"> 
+               <span class="label label-default">Zaid Nasser</span>
+              <a  href="#" class="unstyled-link event-title" > The &quot;Early Bird&quot; Session hosted by: w/ Zaid Nasser, Pasquale Grasso, Ari Roland, Keith Balla<br /></a>
+                   
+               <div><small><a href="/events/8133/">View event</a></small></div>
             </td>
             <!-- // fake content --> 
-            <td class="artist-clearance-breakdown"><code>1</code> 
+            <td rowspan="2" class="artist-clearance-breakdown"><code>1</code> 
               <p class="text-warning clearance-summary">Waiting for <strong>1</strong> performer to join SmallsLIVE. <a href="" class="trigger-show-musician-registration-status">Performer details&hellip;</a></p>
               <table class="table ">
                 <thead>
@@ -175,12 +221,12 @@
                 </tbody>
               </table>
             </td> 
-            <td class="fan_count">1</td>
+            <td rowspan="2" class="fan_count">1</td>
           </tr>
           <tr data-event="1" class="event_1">
             <td  class="choose-set not-first">
             
-              <label class="small"><input type="radio" name="set_81331" value="2"> 2 (34min)</label>
+              <label class="small"><input type="radio" name="set_81331" value="2"> 2 (34min) <span></span></label>
             </td>
           </tr>
           <!-- VIDEO 2 - example where status is "Private - I chose to hide this one" -->
@@ -189,7 +235,7 @@
             <!-- fake content --> 
             <td rowspan="2" class="event_date"><time datetime="2014-07-09T19:00:00-04:00">Wed, Jul. 09<br />2014 - 7 p.m.</time></td>
             <td  class="choose-set active">
-              <label class="small"><input type="radio" name="set_81332" value="1" checked="checked"> 1 (66min)</label>
+              <label class="small"><input type="radio" name="set_81332" value="1" checked="checked"> 1 (66min) <span class="glyphicon glyphicon-arrow-right"></span></label>
             </td>
             <td rowspan="2" class="video-thumb">
               <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   1.2GB MP4</a>
@@ -204,22 +250,22 @@
                 <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   52MB MP3</a>
                 <a  href="/events/8133/" class=" btn btn-default" role="button" title="Play audio "><span class="glyphicon glyphicon-play"></span></a>                  
             </td>
-            <td rowspan="2"> 
-               <a href="/events/8133/">The &quot;Early Bird&quot; Session hosted by: w/ Zaid Nasser, Pasquale Grasso, Ari Roland, Keith Balla</a><br />
-                  Zaid Nasser
-               <div>
-                   <a href="/events/8133/edit/">Edit video</a></div>
+            <td rowspan="2" class="description">
+              <span class="label label-default">Zaid Nasser</span>
+              <a  href="#" class="unstyled-link" > The &quot;Early Bird&quot; Session hosted by: w/ Zaid Nasser, Pasquale Grasso, Ari Roland, Keith Balla<br /></a>
+                  
+               <div><small><a href="/events/8133/">View event</a></small></div>
             </td>
             <!-- // fake content -->         
-            <td>
+            <td rowspan="2">
               {% include 'blocks/change-publish-status.html' %}
             </td>
-            <td class="fan_count">2</td>
+            <td rowspan="2" class="fan_count">2</td>
           </tr>
           <tr data-event="1" class="event_1">
             <td  class="choose-set not-first">
             
-              <label class="small"><input type="radio" name="set_81332" value="2"> 2 (34min)</label>
+              <label class="small"><input type="radio" name="set_81332" value="2"> 2 (34min) <span></span></label>
             </td>
           </tr>
           <!-- VIDEO 3 - one where my colleague (leader) chose not to publish -->
@@ -228,7 +274,7 @@
             <!-- fake content --> 
             <td rowspan="2" class="event_date"><time datetime="2014-07-09T19:00:00-04:00">Wed, Jul. 09<br />2014 - 7 p.m.</time></td>
             <td  class="choose-set active">
-              <label class="small"><input type="radio" name="set_81333" value="1" checked="checked"> 1 (66min)</label>
+              <label class="small"><input type="radio" name="set_81333" value="1" checked="checked"> 1 (66min) <span class="glyphicon glyphicon-arrow-right"></span></label>
             </td>
             <td rowspan="2" class="video-thumb">
               <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   1.2GB MP4</a>
@@ -243,22 +289,22 @@
                 <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   52MB MP3</a>
                 <a  href="/events/8133/" class=" btn btn-default" role="button" title="Play audio "><span class="glyphicon glyphicon-play"></span></a>                  
             </td>
-            <td rowspan="2"> 
-               <a href="/events/8133/">The &quot;Early Bird&quot; Session hosted by: w/ Zaid Nasser, Pasquale Grasso, Ari Roland, Keith Balla</a><br />
-                  Zaid Nasser
-               <div>
-                   <a href="/events/8133/edit/">Edit video</a></div>
+            <td rowspan="2" class="description"> 
+              <span class="label label-default">Zaid Nasser</span>
+              <a  href="#" class="unstyled-link" > The &quot;Early Bird&quot; Session hosted by: w/ Zaid Nasser, Pasquale Grasso, Ari Roland, Keith Balla<br /></a>
+                 
+               <div><small><a href="/events/8133/">View event</a></small></div>
             </td>
             <!-- // fake content -->                
-            <td class="artist-clearance-breakdown">
+            <td rowspan="2" class="artist-clearance-breakdown">
               <p><code>3</code><strong>Private</strong> past_event.leader.full_name doesn't want this video in the archive.</p>                    
             </td>
-            <td class="fan_count">21</td>
+            <td rowspan="2" class="fan_count">21</td>
           </tr>
-          <tr data-event="1" class="event_1">
+          <tr data-event="1" class="event_1 unpublished-by-another-sideman">
             <td  class="choose-set not-first">
             
-              <label class="small"><input type="radio" name="set_81333" value="2"> 2 (34min)</label>
+              <label class="small"><input type="radio" name="set_81333" value="2"> 2 (34min) <span></span></label>
             </td>
           </tr>
           <!-- end examples - we can erase above section -->
@@ -266,7 +312,7 @@
             <tr data-event="{{ past_event.id }}"  class="event_{{ past_event.id }}"> 
               <td rowspan="2" class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
               <td  class="choose-set active">
-                <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="1" checked="checked"> 1 (66min)</label>
+                <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="1" checked="checked"> 1 (66min) <span class="glyphicon glyphicon-arrow-right"></span></label>
               </td>
               <td rowspan="2" class="video-thumb">
                 <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   1.2GB MP4</a>
@@ -282,11 +328,18 @@
                   <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   52MB MP3</a>
                   <a  href="/events/{{ past_event.id }}/" class=" btn btn-default" role="button" title="Play audio {{ past_event.displaytitle }}"><span class="glyphicon glyphicon-play"></span></a>                  
               </td>
-              <td rowspan="2"> 
-                 <a href="{{ past_event.get_absolute_url }}">{{ past_event.display_title }}</a><br />
-                    {{ past_event.subtitle }}
-                 <div>
-                     <a href="{% url "event_edit" past_event.id %}">{% if past_event.description %}Edit{% else %}Add{% endif %} description</a></div>
+              <td rowspan="2" class="description">
+                  {% if past_event.leader.user != request.user  %}
+                    <span class="label label-default">{{ past_event.leader.full_name }}</span>
+                  {% endif %}
+                <a href="{% url "event_detail" past_event.id %}" class="unstyled-link" >
+                  {{ past_event.display_title }}<br />
+                </a>
+                <div class="text-muted">{{ past_event.subtitle }}</div>
+                <div>
+                  <small> 
+                     <a href="{% url "event_edit" past_event.id %}">{% if past_event.description %}Edit{% else %}Add{% endif %} description</a></small>
+                </div>
               </td>
               <td rowspan="2" class="artist-clearance-breakdown" >[show status here]</td>
               <td rowspan="2" class="fan_count">3</td>
@@ -294,7 +347,7 @@
             <tr data-event="{{ past_event.id }}" class="event_{{ past_event.id }}">
               <td  class="choose-set not-first">
               
-                <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="2"> 2 (34min)</label>
+                <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="2"> 2 (34min) <span></span></label>
               </td>
             </tr>
           {% endfor %}
@@ -355,7 +408,7 @@
       </table>
     </div>    
   </div> 
- 
+  {% include 'blocks/popup-player.html' %}
   <div class="dev">
     <h1>Dev notes</h1>
     <Ul> 
@@ -368,23 +421,4 @@
       <li><code>7</code> - search field does ajax filter on table strings. Adv Search: send query to public video search, passing in leader name = artist name</li>
     </Ul>
   </div>
-{% endblock content %}
-
-{% block extra_js %}
-<script>
-    $('.nav-tabs a').click(function (e) {
-        e.preventDefault();
-        $(this).tab('show');
-    });
-
-    // store the currently selected tab in the hash value
-    $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
-        var id = $(e.target).attr("href").substr(1);
-        window.location.hash = id;
-    });
-
-    // on load of the page: switch to the currently selected tab
-    var hash = window.location.hash;
-    $('.nav-tabs a[href="' + hash + '"]').tab('show');
-</script>
-{% endblock extra_js %}
+{% endblock content %} 

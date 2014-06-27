@@ -1,15 +1,16 @@
 {% load humanize %}
 {% load thumbor_tags %}
-<table class="table list-of-recordings">
+<table class="table list-of-recordings table-bordered">
   <thead>
     <tr>
       <th><a href="">Gig Date</a></th>
       <th>Set</th>
       <th>Video</th>
       <th>Audio</th>
-      <th>Description</th>
+      <th><a href="">Views &darr;</a></th> 
+      <th><a href="">Site Rank</a></th> 
+      <th><a href="">Lifetime $</a></th> 
       <th><a href="">Publish Date</a><code>4</code></th>
-      <th><a href="">Fans* &darr;</a></th> 
     </tr>
   </thead>
   <tbody>
@@ -17,7 +18,7 @@
     <tr data-event="{{ past_event.id }}"  class="event_{{ past_event.id }}"> 
       <td rowspan="2" class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
       <td  class="choose-set active">
-        <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="1" checked="checked"> 1 (66min)</label>
+        <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="1" checked="checked"> 1 (66min) <span class="glyphicon glyphicon-arrow-right"></span></label>
       </td>
       <td rowspan="2" class="video-thumb">
         <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   1.2GB MP4</a>
@@ -29,26 +30,28 @@
           </a>
         {% endif %}       
       </td>
-      <td rowspan="2" class="audio-play"> 
+      
+      <td class="audio-play" rowspan="2"> 
           <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   52MB MP3</a>
           <a  href="/events/{{ past_event.id }}/" class=" btn btn-default" role="button" title="Play audio {{ past_event.displaytitle }}"><span class="glyphicon glyphicon-play"></span></a>                  
       </td>
-      <td rowspan="2"> 
-         <a href="{{ past_event.get_absolute_url }}">{{ past_event.display_title }}</a><br />
-            {{ past_event.subtitle }}
-         <div>
-             <a href="{% url "event_edit" past_event.id %}">{% if past_event.description %}Edit{% else %}Add{% endif %} description</a></div>
-      </td>
-      <td rowspan="2" >Jan 1, 2015</td>
-      <td rowspan="2" class="fan_count">3</td>
+      <td colspan="4" class="description"> 
+         <a  href="{{ past_event.get_absolute_url }}" class="unstyled-link event-title" >{{ past_event.display_title }}
+         {% if past_event.subtitle %}
+           <br /><span class="text-muted">{{ past_event.subtitle }}</span>
+         {% endif %}</a>
+         <div><small><a  href="{% url "event_edit" past_event.id %}">{% if past_event.description %}Edit{% else %}Add{% endif %} description</a></small></div>
+      </td>   
     </tr>
     <tr data-event="{{ past_event.id }}" class="event_{{ past_event.id }}">
       <td  class="choose-set not-first">
-      
-        <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="2"> 2 (34min)</label>
-      </td>
+        <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="2"> 2 (34min) <span></span></label>
+      </td>   
+      <td   class="fan_count">312</td>
+      <td   class="fan_count">#212</td>
+      <td class="num">$0.01</td>
+      <td   >Jan 1, 2015</td>
     </tr>
-
     {% endfor %}
   </tbody>
 </table>

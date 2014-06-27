@@ -78,16 +78,19 @@ $(document).ready(function(){
   //init - to deal with cached radios
   showOrHideListOfRecordings($('input[name=trigger-show-recordings]:checked').val());
   //Show video player in popup on musician-signup-choose-videos
-  $('#player').dialog({
+  $('#popup-player').dialog({
     autoOpen:false,
-    modal:true
+    modal:true,
+    width: 700
   });
-  $('.musician-registration table.list-of-recordings').on('click','.video-thumb a:not(.download), .audio-play a:not(.download)',function(e)     {
+  $('table.list-of-recordings').on('click','.video-thumb a:not(.download), .audio-play a:not(.download)',function(e)     {
     e.preventDefault();
-    var videoRow=$(this).closest('tr');
-    var videoTitle=videoRow.find('.event-title').html();
-    $('#player').dialog('option','title',videoTitle);
-    $('#player').dialog('open');
+    var mediaRow=$(this).closest('tr');
+    var mediaDate=mediaRow.find('.event_date').text();
+    var mediaDescription=mediaRow.find('.description').html();
+    $('#popup-player').dialog('option','title',mediaDate);
+    $('#popup-player').dialog('open');
+    $('#popup-player .description').html(mediaDescription);
   });
   //end show video in popup  
   //On artist/edit, let artist set payment-distribution-method:
@@ -258,8 +261,12 @@ $(document).ready(function(){
   //When I change sets in the table with radio button, highlight the proper radio button
   $('.choose-set').on('click','input',function(){
     var id=$(this).closest('tr').data("event");
-    $('tr.event_'+id+' .choose-set').removeClass('active');
+    var row=$('tr.event_'+id+' .choose-set');
+    row.find('label span').removeClass('glyphicon glyphicon-arrow-right');
+    
+    row.removeClass('active');
     $(this).closest('.choose-set').addClass('active');
+    $(this).closest('label').find('span').addClass('glyphicon glyphicon-arrow-right');
   });
   //END MY GIGS
   
