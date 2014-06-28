@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='smallslive',
-    version='0.0.1',
+    version='0.0.2',
     description=('Sample application for a music club'),
     author='Filip Jukic',
     author_email='filip@appsembler.com',
