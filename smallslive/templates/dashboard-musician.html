@@ -48,10 +48,10 @@
       <table class="table ">
         <thead>
           <tr>
-            <th class="text-primary">Earnings</th>
+            <th class="text-primary"><select><option>Total Revenue</option><option>Streaming Revenue</option><option>Store Revenue</option></select></th>
             <th class="num">You</th>
             <th class="num">Your Rank/Position</th>
-            <th class="num">Musician Average</th>
+            <th class="num">Musician Average<sup>1</sup></th>
             <th class="num">Entire Community</th>
           </tr>
         </thead>
@@ -93,7 +93,54 @@
           </tr>  
         </tbody>
       </table>
+      
+      <table class="table store-revenue-per-item-breakdown">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th class="text-primary">Lifetime Store Revenue by Item (3)</th>
+            <th class="num"><a href="">Units Sold</a> </th>
+            <th class="num"><a href="">Your Earnings<sup>2</sup> &darr;</a></th>
+            <th>Item Rank</th>
+            <th>View item</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr product_id="1">
+            <td>CD</td>
+            <td class="product"><a href="" class="unstyled-link"><span class="glyphicon glyphicon-expand"></span> Dave Berkman w/ Tom Harrell</a>
+            </td>
+            <td class="num">3 </td>
+            <td class="num">$30.00</td>
+            <td class="rank">#14</td>
+            <td><a href="https://slstore.herokuapp.com/en-us/catalogue/david-berkman-w-tom-harrell_40/">View item</a></td>
+          </tr>
+              {% include 'blocks/store-revenue-per-item-breakdown.html' with product_id=1 %}
+          <tr product_id="2">
+            <td>CD</td>
+            <td class="product"><a href="" class="unstyled-link"><span class="glyphicon glyphicon-expand"></span> Kind of Red</a></td>
+
+            <td class="num">1  </td>
+            <td class="num">$5.00</td>
+            <td class="rank">#11</td>            
+            <td><a href="https://slstore.herokuapp.com/en-us/catalogue/spike-wilner-solo_19/">View item</a></td>
+          </tr>
+              {% include 'blocks/store-revenue-per-item-breakdown.html' with product_id=2 %}
+          <tr product_id="3">
+            <td><span class="glyphicon glyphicon-download"></span></td>
+            <td class="product"><a href="" class="unstyled-link"><span class="glyphicon glyphicon-expand"></span> Summertime</a></td>
+            <td class="num">1 </td>
+            <td class="num">$1.00</td>
+            <td class="rank">#41</td>            
+            <td><a href="https://slstore.herokuapp.com/en-us/catalogue/david-berkman-w-tom-harrell_40/">View item</a></td>
+          </tr>
+              {% include 'blocks/store-revenue-per-item-breakdown.html' with product_id=3 %}
+  
+        </tbody>
+      </table>
    
+
+      
     </div>    
     <div  class="col-sm-4">
       <table class="table  fans-following">
@@ -123,11 +170,9 @@
         </tbody>
       </table>
     </div>
-  </div>
-        
-  
-  
-      <p class="footnote">* Average Musician means any musician with earnings in the last 12 months. For fans,  Average Musician means any musician with at least 1 fan signup in the last year.  SmallsLIVE has been live for 1,301 days and currently has 512 videos published. <a href="">More Community stats</a></p>
+  </div>  
+  <p class="footnote"><sup>1</sup> Musician Average means any musician with earnings in the last 12 months. When counting  fans, the Musician Average only includes musicians with at least 1 fan signup in the last year.  SmallsLIVE has been live for 1,301 days and currently has 512 videos published. <a href="">More Community stats</a></p>
+  <p class="footnote"><sup>2</sup> Your Earnings on store items are your net earnings, after SmallsLIVE has deducted its %.</p>
       
       
   <div class="dev">

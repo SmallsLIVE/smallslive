@@ -163,7 +163,6 @@ table.table {
   }
   tbody td.rank {
     white-space: nowrap;
-    border-right: 1px solid $table-border-color;
     text-align: right;
   }
 }
@@ -637,9 +636,20 @@ div.datepicker {
     }
   }
 }
-/*=Components , Element and Bootstrap Overrides*/
+table.store-revenue-per-item-breakdown > tbody > tr > td.product > a:first-child {
+  @extend .album;
+  display: block;
+  @extend .unstyled-link;
+  :hover {
+    text-decoration: none;
+  }
+}
 table.fans-following tr td:not(:first-child) {
   text-align: right;
+}
+/*=Components , Element and Bootstrap Overrides*/
+.album {
+  font-style: italic;
 }
 body .alert {
   h1,h2,h3,h4,h5,h6 {
@@ -768,8 +778,9 @@ table.payment-history {
 body abbr.explained {
   border: none;
 }
-.row.none, .none {
-  display: none;
+.row.none, 
+.none {
+  @extend .hidden;
 }
 .footnote {
   @extend .text-muted;
