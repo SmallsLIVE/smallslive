@@ -269,6 +269,28 @@ $(document).ready(function(){
     $(this).closest('label').find('span').addClass('glyphicon glyphicon-arrow-right');
   });
   //END MY GIGS
+  //BEGIN ARTIST $ DASHBOARD
+  //Toggle display of each store items $ earnings over different time periods (each item has 4 hidden
+  //  rows of breakdown data that is hidden by default until the product title is clicked
+  $('table.store-revenue-per-item-breakdown table, table.store-revenue-per-item-breakdown tr.item-earning-detail-over-time-period').hide();
+  $('table.store-revenue-per-item-breakdown').on('click','.product > a:first-child',function(e) {
+    e.preventDefault();
+    var productRow=$(this).closest('tr');
+    var product_id=productRow.attr('product_id');
+    console.log('x: '+$('tr.belongs_to_'+product_id+':first-child').css('display'));
+    if (productRow.next('tr').css('display')!='table-row') {
+      $(this).find('span').removeClass('glyphicon-expand').addClass('glyphicon-collapse-down');
+      $(productRow).find('td:first-child').attr('rowspan','5');
+      $('tr.belongs_to_'+product_id).show();
+      productRow.children('td').css('font-weight','bold');
+    } else {
+      $(this).find('span').removeClass('glyphicon-collapse-down').addClass('glyphicon-expand');
+      $(productRow).find('td:first-child').attr('rowspan','1');
+      $('tr.belongs_to_'+product_id).hide();
+      productRow.children('td').css('font-weight','normal');
+    }
+  });
+  //END ARTIST $ DASHBOARD 
   
   
   //PUBLIC PAGES
