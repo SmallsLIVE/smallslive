@@ -126,7 +126,7 @@
               </p>
             {% endif %}
             <p class="text-warning">Your VISA card will expire on 6/1/2014.</p>
-            <a href="{% url 'djstripe:change_card' %}">Change credit card / name on account</a><code>2</code>
+            <a href="{% url 'djstripe:change_card' %}">Change credit card / name on account</a><code>4</code>
           </td>
         </tr>
         {% endif %}
@@ -165,8 +165,7 @@
     <h1>Dev notes</h1>
     <Ul>  
       <li><code>1</code> note pseudo code in comments</li>  
-      <li><code>2</code> - this placement of the cancel-success message is not in the right place. it should be in the masthead per normal site messages.  
-      <li><code>3</code> if there is an artist photo uploaded but no user photo, display that here. Else, show user profile image.</li>
+      <li><code>2</code> - this placement of the cancel-success message is not in the right place. it should be in the masthead per normal site messages.
       <li><code>4</code>  these edit links  open a dialog to change the requested field using a unique form. Display form fields, and on submit,  emit  flash/feedback message in the dialog and provide a button to close dialog (closing dialog should also reload the my-account summary page). See #<code>5</code> for UI requirements for forms</li>
       <li><code>5</code> Forms + Flash messages for each row:
         <ul> 
