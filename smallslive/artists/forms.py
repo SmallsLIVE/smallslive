@@ -1,7 +1,7 @@
 import floppyforms
 from crispy_forms.helper import FormHelper
 from django.forms import ModelForm
-from events.forms import ImageThumbnailWidget
+from smallslive.events.forms import ImageThumbnailWidget
 from .models import Artist
 
 
