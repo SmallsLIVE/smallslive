@@ -8,7 +8,7 @@ from django.views.generic import TemplateView
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
 
-from artists.models import Artist
+from smallslive.artists.models import Artist
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset
 from .models import Event
 from multimedia.models import Media
