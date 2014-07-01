@@ -65,8 +65,11 @@ class ImageSelectField(floppyforms.ChoiceField):
                                                initial=initial, help_text=help_text, *args, **kwargs)
         # Set the images dynamically for the imagepicker widget
         objects = list(queryset)
-        domain = settings.AWS_S3_CUSTOM_DOMAIN or settings.THUMBOR_MEDIA_URL
-        objects = [(id, "https://{0}/{1}".format(domain, photo)) for (id, photo) in objects]
+        if settings.AWS_S3_CUSTOM_DOMAIN:
+            domain = "https://{0}".format(settings.AWS_S3_CUSTOM_DOMAIN)
+        else:
+            domain = settings.THUMBOR_MEDIA_URL
+        objects = [(id, "{0}/{1}".format(domain, photo)) for (id, photo) in objects]
         self.choices = Choices(("", ""))
         self.choices += Choices(*objects)
 
