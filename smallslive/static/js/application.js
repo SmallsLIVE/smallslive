@@ -350,7 +350,27 @@ $(document).ready(function(){
       countHolder.text(newCount);
     }
   });
-  
+  //CONTACT ARTIST BY FAN - POPUP WINOW TO SEND EMAIL
+  $('#send-message').dialog({
+    autoOpen:false,
+    modal:true,
+    width: 500
+  });
+  $('#send-message').on('submit','form',function() {
+    $('#send-message').on('click',' .btn-success',function() {
+      $('#send-message').dialog('close');
+      //remove feedback message and re-show the form (which is hidden since dialog is closed)
+      $('#send-message .message-sent-feedback').remove();
+      $('#send-message form').show();
+    });
+    $(this).hide().after('<p class="message-sent-feedback text-success"><span class="glyphicon glyphicon-ok"></span> Message sent. </p><button  class="btn btn-sm btn-success">Ok</button></div>');
+    return false;
+  });
+  $('.trigger-send-message').click(function(e)     {
+    e.preventDefault();
+    $('#send-message').dialog('open');
+  });  
+  //END CONTACT ARTIST
   //Request to join artist mailing list on artist_detail.html
   $('.join-artist-mailing-list').on('submit','form',function() {
     $(this).closest('div').find('.alert').remove();
