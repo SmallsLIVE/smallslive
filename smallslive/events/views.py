@@ -9,9 +9,10 @@ from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
 
 from smallslive.artists.models import Artist
+from smallslive.multimedia.models import Media
+
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset
 from .models import Event
-from multimedia.models import Media
 
 
 class HomepageView(TemplateView):
