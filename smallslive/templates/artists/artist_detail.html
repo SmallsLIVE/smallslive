@@ -95,7 +95,7 @@
     <div class="well join-artist-mailing-list">
       <h4>Join {{ artist.first_name }}'s Mailing List:<code>2</code></h4>
       {% if request.GET.hasRequestedInPast %}
-        <div class="alert alert-info">You already asked to join this list on May 12, 2014. <a href="">Request to join again</a></div>
+        You already asked to join this list on May 12, 2014. <a href="">Request to join again</a>
       {% endif %}
         <form role="form" class="{% if request.GET.hasRequestedInPast %} none{% endif %}">
         <p>* = required field</p>
