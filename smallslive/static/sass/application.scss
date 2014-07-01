@@ -254,11 +254,43 @@ body.search .facets {
 /*=Artist Bio Page*/
 .artist {
   .jumbotron  {
+    p.instrument {
+      clear: left;
+      margin-top: 24px;
+    }
+    @media all and (min-width : $screen-lg-min) {
+      p.instrument {
+        clear: none;
+        margin-top: 0;
+      }
+    }
     h1 {
       margin-top: 0;
     }
     img {
       margin-right: 16px;
+    }
+  }
+  #connect { 
+    h4 {
+      margin-top: 0;
+    }
+    ul {
+      padding-left: 0;
+      margin-top: 12px; 
+      padding-top: 12px; 
+      border-top: 1px solid #ddd;
+      @media all and (min-width : $screen-sm-min) {
+        padding-left: 12px;
+        border-left: 1px solid #ddd;
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+      }
+      li {
+        list-style: none;
+        margin-bottom: 12px;    
+      }
     }
   }
 }
@@ -379,7 +411,7 @@ body.search .facets {
   }
 }
 /*=My Gigs / Events*/
-.list-of-recordings {
+table.list-of-recordings {
   thead th {
     white-space: nowrap;
   }
@@ -388,14 +420,19 @@ body.search .facets {
     border-left: none;
     border-right: none;
   }
-  > tbody > tr > td.audio-play {
-    @extend .media-area; 
-  }
-  > tbody > tr > td.choose-set {
-    border-bottom: none;
-  }
-  tr .description .label-default {
-    background: #bbb;
+  > tbody  {
+    > tr:first-child > td {
+      border-top: none;
+    }
+    > tr > td.audio-play {
+      @extend .media-area; 
+    }
+    > tr > td.choose-set {
+      border-bottom: none;
+    }
+    .description .label-default {
+      background: #bbb;
+    }
   }
   td.choose-set {
     border-right: none;
@@ -471,6 +508,13 @@ body.search .facets {
   border-bottom: 1px solid #ccc;
   padding-bottom: $margin-bottom;
 }
+.tab-content {
+  padding: 16px;
+  margin-top:-24px;
+  padding-top: 24px;
+  border: 1px solid #ddd;
+  border-top: none;
+}
 #signup_form {
   .trigger-credit-card-fields,
   .TOC-checkbox,
@@ -493,13 +537,6 @@ body.search .facets {
   }
   p.socially-authorized {
     margin-bottom: $margin-bottom;
-  }
-  .payment-options .tab-content {
-    padding: 16px;
-    margin-top:-24px;
-    padding-top: 24px;
-    border: 1px solid #ddd;
-    border-top: none;
   }
   .social-signup:not(.authenticated-by-social) {
     @extend .formSectionSeparator;
@@ -794,6 +831,9 @@ th {
   background: #f5f5f5;
 }
 /*jQuery overrides*/
+body .ui-widget-content a {
+  color: $link-color;
+}
 body .ui-widget {
   /* override jquery UI*/
   /* bootstrap values: */
@@ -802,9 +842,10 @@ body .ui-widget {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   line-height: 1.42857; 
 }
-.ui-widget-header {
+body .ui-widget-header {
   color: $gray-dark;
   border: none;
+  background: none;
   border-bottom: 1px solid $gray-light;
   @include border-radius(0px);
   

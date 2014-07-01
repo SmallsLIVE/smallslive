@@ -7,7 +7,7 @@
 {% endblock extra_js %}
 {% block content %}
 <div class="row">
-  <div class="col-sm-8">
+  <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
     <div class="jumbotron">
       {% if artist.photo %}
         <img src="{% thumbor_url artist.photo.url|urlencode width=150 height=150 smart=True %}" class="img-responsive pull-left artist-photo" />
@@ -17,10 +17,10 @@
             <small><a href="{% url "artist_edit" pk=artist.id %}">edit</a></small>
           {% endif %}
       </h1>
-      <p>{{ artist.instruments.all|join:", " }} - {{ artist.media_count }}  videos - <a href="{{ artist.website }}">@twittername</a></p>
+      <p class="instrument">{{ artist.instruments.all|join:", " }} - {{ artist.media_count }}  videos - <a href="{{ artist.website }}">@twittername</a></p>
       <p>{% include 'blocks/social-like-buttons.html' %}</p>
-      <p><span class="glyphicon glyphicon-ok"></span> #2 Most Watched (of 612 artists) - 1,423 total video views</p>
-      <a class="btn btn-primary" role="button">Subscribe to this artist</a> <span class="text-muted">- get emailed about new videos or gigs w/ {{ artist.full_name }}</span>
+      <p><span class="glyphicon glyphicon-ok"></span> #2 Most Watched (of 612 artists) - 1,423 total video views</p> 
+      <a class="btn btn-primary btn-sm" role="button">Subscribe to Artist</a> <span class="text-muted">- get emailed about new videos or gigs</span>
     </div>
  
     {# begin upcoming events #}
@@ -28,9 +28,9 @@
       <h4>Upcoming Shows with {{ artist.first_name }} @ Smalls</h4>
       {% if artist.upcoming_events|length > 0 %}
         {% if user.is_authenticated %}
-          <p>Watch them live, online for free:</p>
+          <p><span class="label label-primary"><span class="glyphicon glyphicon-ok"></span> All Shows Streamed Live, Free</span></p>
         {% else %}
-          <p>These concerts are streamed live for free if you  <a href="/accounts/signup/">sign up for an account.</p>
+          <p><span class="label label-primary">Free Live Stream</span> - <a href="/accounts/signup/">Sign up for an account</a> to watch these shows online as they happen.</p>
         {% endif %}
         {% for upcoming_event in artist.upcoming_events %}
           {% include 'blocks/event-snippet.html' with event=upcoming_event %}
@@ -41,20 +41,17 @@
     </div>
     {# end events #}
     
-    {# begin artist videos tab set #} 
-    <div class="leader-videos"> 
-      <h4>Jazz Videos featuring {{ artist.first_name }}</h4>
-      {% if  artist.media_count < 1 %}
-        <p>This artist does not have any videos available yet.</p>
-      {% else %}
-        <ul class="nav nav-tabs">
-            <li {% if  artist.media_count_as_leader > 0  %} class="active"{% endif %}><a href="#as_leader" data-toggle="tab">As Leader {{ artist.media_count_as_leader|length }} ({{ artist.media_count_as_leader}})</a></li>
-            <li {% if  artist.media_count_as_sideman > 0 and   artist.media_count_as_leader < 1 %}class="active"{% endif %}><a href="#as_sideman" data-toggle="tab">As Side Musician ({{ artist.media_count_as_sideman}})</a></li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane {% if  artist.media_count_as_leader > 0  %}active{% endif %}" id="as_leader">
-            {% if  artist.media_count_as_leader > 0 %}
-              <table class="table">
+    {# begin tab set #} 
+    <ul class="nav nav-tabs">
+      <li {% if  artist.media_count_as_leader > 0  %} class="active"{% endif %}><a href="#as_leader" data-toggle="tab">Leader Videos {{ artist.media_count_as_leader|length }} ({{ artist.media_count_as_leader}})</a></li>
+      <li {% if  artist.media_count_as_sideman > 0 and   artist.media_count_as_leader < 1 %}class="active"{% endif %}><a href="#as_sideman" data-toggle="tab">Other Videos ({{ artist.media_count_as_sideman}})</a></li>
+      <li class="{% if  artist.media_count < 1  %}active{% endif %}"><a data-toggle="tab"  href="#bio">Bio</a></li>
+      <li class=""><a data-toggle="tab"  href="#connect">Mailing List / Contact</a></li>
+    </ul>
+    <div class="tab-content leader-videos">
+      <div class="tab-pane {% if  artist.media_count_as_leader > 0  %}active{% endif %}" id="as_leader">
+        {% if  artist.media_count_as_leader > 0 %}
+              <table class="table list-of-recordings">
                 <tbody>
                   {% for past_event in artist.past_events|slice:"10" %}
                     {% include 'blocks/related-video.html' with video_thumb=past_event.photo video_id=past_event.id %}
@@ -65,10 +62,10 @@
             {% else %}
               <p>{{ artist.first_name }} has no videos as a bandleader at Smalls.</p> 
             {% endif %}
-          </div>       
-          <div class="tab-pane {% if  artist.media_count_as_sideman > 0 and   artist.media_count_as_leader < 1 %}active{% endif %}" id="as_sideman">
+      </div>       
+      <div class="tab-pane {% if  artist.media_count_as_sideman > 0 and   artist.media_count_as_leader < 1 %}active{% endif %}" id="as_sideman">
             {% if  artist.media_count_as_sideman > 0 %}
-              <table class="table">
+              <table class="table list-of-recordings">
                 <tbody>
                   {% for past_event in artist.past_events|slice:"10" %}
                     {% include 'blocks/related-video.html' with video_thumb=past_event.photo video_id=past_event.id %}
@@ -79,58 +76,84 @@
             {% else %}
               <p>{{ artist.first_name }} has no videos as a side musician at Smalls.</p> 
             {% endif %}
+      </div>   
+      {# tab #}
+      <div class="tab-pane" id="connect">
+        <div class="row">
+          <div class="join-artist-mailing-list col-sm-6">
+          <h4>Join {{ artist.first_name }}'s Mailing List:<code>2</code></h4>
+          {% if request.GET.hasRequestedInPast %}
+            You already asked to join this list on May 12, 2014. <a href="">Request to join again</a>
+          {% endif %}
+            <form role="form" class="{% if request.GET.hasRequestedInPast %} none{% endif %}">
+       
+              <div class="form-group">
+                <label for="exampleInputEmail1">Email address (required) </label>
+                <input type="email" value="{{ user.email }}" placeholder="Enter email" id="" class="form-control">
+              </div>  
+              <div class="form-group">
+                <label for="exampleInputEmail1">Name</label>
+                <input type="text" placeholder="Name" value="{{ user.full_name }}" id="" class="form-control">
+              </div>  
+              <div class="form-group">
+                <label for="exampleInputEmail1">ZIP/Postal Code</label>
+                <input type="text" placeholder="POstal Code" id="" value="{{ user.zip }}" class="form-control">
+              </div> 
+              <div class="form-group">
+                <label for="exampleInputEmail1">Country</label>
+                <input type="text" placeholder="Country" id="" value="{{ user.country }}" class="form-control">
+              </div>      
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> Also subscribe to SmallsLIVE email list <code>1</code>
+                </label>
+              </div>
+       
+              <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+          </div>
+          <div class="col-sm-6"> 
+            <ul>
+              <li><a class="trigger-send-message " role="button"><span class="glyphicon glyphicon-envelope"></span> Contact Artist</a></li>
+              <li><a href="{{ artist.website }}" class=" ">Artist's website</a> </li>
+              <li><a class=" " href="{{ artist.website }}">Facebook Artist Page</a></li>
+            </ul>
           </div>
         </div>
-      {% endif %}
-    </div>  
-    {# end artist videos tab set #} 
-  </div>
-  <div class="col-sm-4">
-    <h4>About {{ artist.first_name }}</h4>
-    <ul>
-      <li><a href="{{ artist.website }}">Artist's website</a></li>
-      <li><a href="{{ artist.website }}">Facebook</a></li>
-    </ul> 
-    {{ artist.biography|safe }} 
-    <div class="well join-artist-mailing-list">
-      <h4>Join {{ artist.first_name }}'s Mailing List:<code>2</code></h4>
-      {% if request.GET.hasRequestedInPast %}
-        You already asked to join this list on May 12, 2014. <a href="">Request to join again</a>
-      {% endif %}
-        <form role="form" class="{% if request.GET.hasRequestedInPast %} none{% endif %}">
-        <p>* = required field</p>
-          <div class="form-group">
-            <label for="exampleInputEmail1">Email address* </label>
-            <input type="email" value="{{ user.email }}" placeholder="Enter email" id="" class="form-control">
-          </div>  
-          <div class="form-group">
-            <label for="exampleInputEmail1">Name</label>
-            <input type="text" placeholder="Name" value="{{ user.full_name }}" id="" class="form-control">
-          </div>  
-          <div class="form-group">
-            <label for="exampleInputEmail1">ZIP/Postal Code</label>
-            <input type="text" placeholder="POstal Code" id="" value="{{ user.zip }}" class="form-control">
-          </div> 
-          <div class="form-group">
-            <label for="exampleInputEmail1">Country</label>
-            <input type="text" placeholder="POstal Code" id="" value="{{ user.country }}" class="form-control">
-          </div>      
-          <div class="checkbox">
-            <label>
-              <input type="checkbox"> Also subscribe to SmallsLIVE email list <code>1</code>
-            </label>
-          </div>
-   
-          <button class="btn btn-primary" type="submit">Submit</button>
-        </form>
-    </div>
-  </div>
-</div>
- 
+      </div>
+      {# end tab #}
+      {#  tab #} 
+      <div class="tab-pane" id="bio">
+        {{ artist.biography|safe }} 
+      </div>     
+    </div>  {# end tab set #} 
+  </div>  {# end col #}
+</div> {# end row }
+{# begin hidden popup #}
+<div id="send-message" title="Send {{ artist.full_name }} a message">
+  {% if user.is_authenticated %}
+    <form role="form" class="{% if request.GET.hasRequestedInPast %} none{% endif %}"> 
+      <div class="form-group" id="">
+        <label class="control-label " for="">Your message</label>
+        <div class="controls ">
+          <textarea rows="10" name="description" id="" cols="40" class=" form-control"></textarea>
+        </div>
+      </div>  
+      <div class="checkbox">
+        <label ><input type="checkbox" checked="checked" value=""> Ask to join {{ artist.first_name }}'s mailing list</label>             
+      </div>    
+      <p class="footnote">Note: SmallsLIVE cannot guarantee artists will respond to your message, however we do deliver emails directly to the artist and they can reply directly to you if they wish.</p>
+      <button class="btn btn-primary" type="submit">Send Message</button>
+    </form>  
+  {% else %}
+    <p>You must have a SmallsLIVE account to contact artists. <a href="">Register free</a> or <a href="">log in</a> if you have an account.</p>
+  {% endif %}     
+</div> 
 <div class="dev">
   <h1>Alternate States:</h1>
   <ul>  
     <li><a href="./?hasRequestedInPast=1">Fan already requested mailing list status</a> {hasRequestedInPast}</li>
+    <li>Popup to send artist an email has logged in and out states w/ working code</li>
   </ul>
   <h1>Dev Notes:</h1>
   <ul>
