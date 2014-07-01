@@ -115,7 +115,7 @@
           <div class="col-sm-6"> 
             <ul>
               <li><a class="trigger-send-message " role="button"><span class="glyphicon glyphicon-envelope"></span> Contact Artist</a></li>
-              <li><a href="{{ artist.website }}" class=" ">Artist's website</a> </li>
+              {% if artist.website %}<li><a href="{{ artist.website }}" class=" ">Artist's website</a> </li>{% endif %}
               <li><a class=" " href="{{ artist.website }}">Facebook Artist Page</a></li>
             </ul>
           </div>
@@ -124,7 +124,11 @@
       {# end tab #}
       {#  tab #} 
       <div class="tab-pane" id="bio">
+        <h4>{{ artist.full_name }}</h4>
         {{ artist.biography|safe }} 
+        {% if artist.website %}
+          <p>More at <a href="{{ artist.website }}" class=" ">{{ artist.website }}</a></p>
+        {% endif %}
       </div>     
     </div>  {# end tab set #} 
   </div>  {# end col #}
