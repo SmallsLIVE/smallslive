@@ -124,15 +124,22 @@
       {# end tab #}
       {#  tab #} 
       <div class="tab-pane" id="bio">
-        <h4>{{ artist.full_name }}</h4>
-        {{ artist.biography|safe }} 
-        {% if artist.website %}
-          <p>More at <a href="{{ artist.website }}" class=" ">{{ artist.website }}</a></p>
+        <h4>{{ artist.full_name }}</h4>        
+        {% if artist.photo %}
+          <img src="{{ artist.photo.url }}" class="img-responsive pull-right " />
         {% endif %}
-      </div>     
+        {% if artist.biography %}
+          {{ artist.biography|safe }} 
+          {% if artist.website %}
+            <p>More at <a href="{{ artist.website }}" class=" ">{{ artist.website }}</a></p>
+          {% endif %}
+        {% else %}
+        <p>This artist has not provided a bio yet.</p>  
+        {% endif %} 
+      </div>    
     </div>  {# end tab set #} 
   </div>  {# end col #}
-</div> {# end row }
+</div> {# end row #}
 {# begin hidden popup #}
 <div id="send-message" title="Send {{ artist.full_name }} a message">
   {% if user.is_authenticated %}
