@@ -363,7 +363,7 @@ $(document).ready(function(){
       $('#send-message .message-sent-feedback').remove();
       $('#send-message form').show();
     });
-    $(this).hide().after('<p class="message-sent-feedback text-success"><span class="glyphicon glyphicon-ok"></span> Message sent. </p><button  class="btn btn-sm btn-success">Ok</button></div>');
+    $(this).hide().after('<p class="message-sent-feedback text-success"><span class="glyphicon glyphicon-ok"></span> Message sent. <code>3</code> </p><button  class="btn btn-sm btn-success">Ok</button></div>');
     return false;
   });
   $('.trigger-send-message').click(function(e)     {
