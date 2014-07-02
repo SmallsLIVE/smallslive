@@ -64,6 +64,7 @@ $(document).ready(function(){
   });   
   //ARTIST SIGNUP:
   // Hide list of recordings until "only publish selected recordings" radio is clicked
+  $('.musician-registration .show-recordings').hide();
   function showOrHideListOfRecordings(someOrAll) {
     //alert(someOrAll);
     if (someOrAll=='some') {
