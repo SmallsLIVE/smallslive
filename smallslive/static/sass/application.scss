@@ -301,7 +301,12 @@ body.search .facets {
 /*=Single Event/View Video Page*/
 .event {  
   .leader-videos,
-  div.request-video,
+  div.request-video {
+    margin-bottom: $margin-bottom;
+    strong {
+      margin-right: 16px;
+    }
+  }
   .rankings {
     margin-bottom: $margin-bottom;
     display: flex;
