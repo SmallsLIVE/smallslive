@@ -828,6 +828,8 @@ td.publish_date {
 }
 th {
   font-size: $font-smaller;
+}
+*:not(.alert) tr th {
   background: #f5f5f5;
 }
 /*jQuery overrides*/
