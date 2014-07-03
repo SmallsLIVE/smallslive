@@ -64,14 +64,13 @@ sample thumbors:
       <time>{{ event.start }}</time>
       {% if not request.GET.islive %}
           <a href=""><span class="label label-success"><span class="glyphicon glyphicon-ok"></span> Streamed Live</span><code>4</code></a>
-          <a href="/accounts/signup/"><span class="label label-success"><span class="glyphicon glyphicon-ok"></span> To Be Archived</span></a>
+          {% if request.GET.isFuture %}<a href="/accounts/signup/"><span class="label label-success"><span class="glyphicon glyphicon-ok"></span> To Be Archived</span></a>{% endif %}
       {% endif %}      
     </small>
     {% if user.is_superuser %}
       <small><a href="{% url "event_edit" pk=event.id %}">Edit this event</a></small>
     {% endif %}
   </h1>
-  {% include 'blocks/social-like-buttons.html' %}
 </div>
 <div class="row">
   <div class="col-sm-8"> 
@@ -179,7 +178,7 @@ sample thumbors:
       {% else %}
         {# Begin rankings #}
         <div class="rankings">
-          <strong>23 views</strong>
+          <strong>23 {% if request.GET.audioOnlyAvailable %}plays{% else %}views{% endif %}</strong>
           <a href="" class="trigger-favorite-video btn btn-primary btn-xs">
             <span class="glyphicon glyphicon-star"></span> Favorite
           </a>
@@ -188,7 +187,8 @@ sample thumbors:
           {% endif %}
           <a href="/static_page/search/" class="btn btn-default btn-xs">#134 video overall</a>
            
-        </div>
+        </div> 
+        {% include 'blocks/social-like-buttons.html' %}
         {# end rankings #}
       {% endif %}
       {# Begin event meta data (photo, description ,etc) #}
@@ -276,7 +276,6 @@ sample thumbors:
     <!-- end event-main-container -->
   </div>
   <div class="col-sm-4">
-  
     {% if request.GET.islive %}
       <div class="well">
         <h4>Live Shows Streaming Tonight</h4>
