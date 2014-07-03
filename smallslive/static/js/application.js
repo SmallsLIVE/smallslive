@@ -319,17 +319,16 @@ $(document).ready(function(){
   
   //EVENT PAGE - 
   //AUDIO PLAYER:
-  /*
+ 
   $('.event').on('click','a.sm2_button',function(e) {
     e.preventDefault();
-    if ($(this).hasClass('sm2_playing')==true) {
+    $('a.sm2_button').find('span.glyphicon-pause').removeClass('glyphicon-pause').addClass('glyphicon-play');   
+    if ($(this).hasClass('sm2_playing')!=true) {
       console.log('playing');
-      $(this).find('span.glyphicon-play').removeClass('glyphicon-play').addClass('glyphicon-pause');
-    } else {
-      $(this).find('span.glyphicon-pause').removeClass('glyphicon-pause').addClass('glyphicon-play');    
+      $(this).find('span.glyphicon-play').removeClass('glyphicon-play').addClass('glyphicon-pause');    
     }
   });
-  */
+ 
   //Show event description when present:
   $('.event').on('click','.trigger-show-event-description',function(e) {
     e.preventDefault();
