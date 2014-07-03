@@ -26,7 +26,7 @@
         {% endif %}     
         {% include 'blocks/credit-card-fields.html' %} 
         <div class="form-group primary-submit"> 
-          <button type="submit" class="btn btn-primary">Upgrade now<code>2</code></button>      <button type="submit" class="btn btn-default">No thanks, I'll keep my free subscription</button>
+          <button type="submit" class="btn btn-primary">Upgrade now<code>2</code></button>      <button type="submit" class="btn btn-default">No thanks, I'll keep my free subscription <code>3</code></button>
         </div>          
       </form>  
     </div> 
@@ -34,7 +34,9 @@
   <div class="dev">
   <h1>Alternate Views:</h1>
     <ul>
-      <li>This alert   banner should appear site-wide once the trial is expiring or expired. If the trial has expired, change the alert class to alert-danger.</li> 
+      <li><code>1</code> - This alert   banner should appear site-wide once the trial is expiring or expired. If the trial has expired, change the alert class to alert-danger.</li> 
+      <li><code>2</code> - when clicked, we send a receipt email to the user, send user to the archive/video homepage, and provide a green success banner that says "You now have a Premium Subscription. Enjoy the archive! [x]"</li>
+      <li><code>3</code> - this is the way by which we kill the alert banner. if clicked, we should show a green success alert message that says "You now have a free subscription. To upgrade in the future, go to <a href="">my account.</a> [x]"</li>
     </ul>
   <h1>UI Reqs</h1>
       <li> </li>
