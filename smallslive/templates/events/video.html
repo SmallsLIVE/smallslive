@@ -3,7 +3,7 @@
 {% block bodyclass %}event{% endblock bodyclass %}
 {% block extra_css %}
   <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-  <link rel="stylesheet" href="{% static "css/mp3-player-button.css" %}"/>
+<!--   <link rel="stylesheet" href="{% static "css/mp3-player-button.css" %}"/> -->
 {% endblock extra_css %}
 {% block extra_js %}
   <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
@@ -23,8 +23,7 @@
                   });
               },
               size: {
-                  width: "100%",
-                  cssClass: "video-player-controls"
+                  width: "100%"
               },
               swfPath: "/static/js/jQuery.jPlayer.2.6.0/",
               supplied: "m4v",
@@ -159,11 +158,20 @@ sample thumbors:
             <p><a href="https://slstore.herokuapp.com/en-us/catalogue/peter-bernstein_42/" class="btn btn-primary btn-sm" role="button">Buy Album / Singles</a>
           </div>
         {% endif %}
-        {% for set in event.sets.all %}
-          <p><a href="{{ set.media_file.get_file_url|safe }}" class="sm2_button">Play</a> Set {{ set.set_number }}</p>
-        {% endfor %}
-        {% include 'blocks/video-player.html' %}
-
+        {% if request.GET.audioOnlyAvailable %}
+          {% if event.sets.all|length > 0 %}
+            <div class="audio-players">
+              {% for set in event.sets.all %}
+<div class="audio-player"><a href="{{ set.media_file.get_file_url|safe }}" class="sm2_button"><span class="glyphicon glyphicon-play"></span>
+                Play Set {{ set.set_number }}</a></div>
+              {% endfor %}
+            </div>  
+          {% else %}
+            <p class="text-muted">[this event has no real audio yet. In the real world, the <a href="./?mediaUnavailable=1">?mediaUnavailable=1</a> state of the page would display if no media at all is available. To see some audio players, use <a href="/events/25/?mediaUnavailable=1">the sample event ID=25</a>]</p>
+          {% endif %}
+        {% else %}
+          {% include 'blocks/video-player.html' %}
+        {% endif %}
       {% endif %}
     {% endif %}
     <div class="event-main-container {% if request.GET.isfuture or request.GET.mediaUnavailable %}future{% endif %}">
@@ -327,14 +335,16 @@ sample thumbors:
 <div class="dev">
   <h1>Alternate States:</h1>
   <ul>
-    <li><a href="./?">Past event</a> (default = no audio tracks)</li>
+    <li><a href="./?">Past event, with video</a> (default = no audio singles for sale)</li>
+    <li><a href="./?audioOnlyAvailable=1">Past event,   audio only (not video)</a> {audioOnlyAvailable}</li>    
     <li><a href="./?hascd=1">Past event, w/ CD</a> {hascd} </li>
     <li><a href="./?hastracks=1">Past event, w/ live singles</a> {hastracks} </li>
     <li><a href="./?isfuture=1">Future/upcoming event</a> {isfuture}</li>
     <li><a href="./?islive=1">Live now event</a> {islive}</li>
     <li><a href="./?isSubscriber=1">Is-subscriber</a> {isSubscriber}</li>
-    <li><a href="./?mediaUnavailable=1">Past event, no video</a> {mediaUnavailable}</li>
-    <li><a href="./?notPublished=1">Past event, unpublished</a> {mediaUnavailable}</li>
+    <li><a href="./?mediaUnavailable=1">Past event, no video or audio</a> {mediaUnavailable}</li>
+
+    <li><a href="./?notPublished=1">Past event, unpublished</a> {notPublished}</li>
   </ul>
   <h1>Dev notes</h1>
   <Ul> 
