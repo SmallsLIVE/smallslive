@@ -2,7 +2,7 @@
 {% load account crispy_forms_tags socialaccount %}
 {% block nav %}{% endblock nav %}
 {% block title %}Upgrade to a Premium Access{% endblock %}
-{% block}
+{% block alert %}<div class="alert alert-danger"> <code>1</code> Your Premium Subscription trial [will expire in][has expired]. <a href="" class="alert-link">View my subscription options</a></div>{% endblock alert %}
 {% block content %} 
   <div class="row">
     <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
@@ -11,12 +11,11 @@
         <h1>Upgrade to a Premium Subscription</h1>
       </div> 
       <div class="marketing-reasons">
-        <p>Your free trial of SmallsLIVE premium archive access is about to expire! If you want to continue receiving uninterrupted access to the archive of 1000s of video and audio recordings, and support the musicians who perform at Smalls Jazz Club, please consider signing up for a Premium Subscription today.</p>
-
-        <p>All you need to do is provide a credit card or payment via PayPal, and we'll make sure you can continue enjoying live jazz from Smalls.</p>
+        <p>Your free trial of SmallsLIVE premium archive access [is about to expire][has expired]. If you want to continue receiving uninterrupted access to the archive of 1000s of video and audio recordings, and support the musicians who perform at Smalls Jazz Club, please purchase a Premium Subscription below.</p> 
         <ul>
           <li>You will be billed on 1st day of each month covering your fees for the following month.</li>
           <li>Cancel anytime and we'll pro-rate and refund any unused portion of your current month</li>
+          <li>If you decide not to purchase a Premium Subscription now, you can do so later. Your free access will still get you video access to each evening's live performances.</li>
         </ul>
       </div>
       <form id="signup_form" method="post" action="{% url 'account_signup' %}">
@@ -25,10 +24,9 @@
         {% if redirect_field_value %}
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}     
-        {% include 'blocks/credit-card-fields.html' %}
-        {% include 'blocks/user-signup-TOC-checkbox.html' %} 
+        {% include 'blocks/credit-card-fields.html' %} 
         <div class="form-group primary-submit"> 
-          <button type="submit" class="btn btn-primary">Sign Up Now <code>2</code></button>      
+          <button type="submit" class="btn btn-primary">Upgrade now<code>2</code></button>      <button type="submit" class="btn btn-default">No thanks, I'll keep my free subscription</button>
         </div>          
       </form>  
     </div> 
@@ -36,7 +34,7 @@
   <div class="dev">
   <h1>Alternate Views:</h1>
     <ul>
-      <li> </li> 
+      <li>This alert   banner should appear site-wide once the trial is expiring or expired. If the trial has expired, change the alert class to alert-danger.</li> 
     </ul>
   <h1>UI Reqs</h1>
       <li> </li>
