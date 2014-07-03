@@ -22,6 +22,10 @@ body {
     border-radius: 0;
   } 
   nav.navbar {
+    margin-bottom: 0;
+    @media all and (min-width : 800px) {
+      margin-bottom: 12px;
+    }
     @include border-radius(0);
     .longname  {
       display: none;
@@ -300,8 +304,18 @@ body.search .facets {
   div.request-video,
   .rankings {
     margin-bottom: $margin-bottom;
+    display: flex;
+    justify-content: center;
     strong {
-      margin-right: 16px;
+      background: #f5f5f5;
+    }
+    strong, a {
+      flex-grow: 1;
+      margin: 0 4px;
+      text-align: center;
+      @media all and (min-width : $screen-md-min) {
+
+      }
     }
   }
   .for-owner-only {
@@ -321,7 +335,9 @@ body.search .facets {
     }
   }
   div.socials {
-    padding-top: 8px;
+    margin-bottom: 12px;
+    border-top: 1px solid #eee;
+    padding-top: 12px;
   }
   .event-main-container.future {
     border:1px solid #ddd;
@@ -349,6 +365,10 @@ body.search .facets {
   .page-header h1 a {
     font-size: 50%;
     margin-left: 24px;
+    display: none;
+    @media all and (min-width : $screen-md-min) {
+      display: inline;
+    }
   }
   .event-meta {
    margin-bottom: $margin-bottom;
@@ -703,8 +723,32 @@ table.store-revenue-per-item-breakdown > tbody > tr > td.product > a:first-child
 }
 table.fans-following tr td:not(:first-child) {
   text-align: right;
-}
+} 
 /*=Components , Element and Bootstrap Overrides*/
+body .page-header  {
+  margin: 0;
+  padding-bottom: 0;
+  border-bottom: none;
+  background: #333;
+  padding: 12px;
+  color: #eee;
+  h1 {
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  @media all and (min-width: $screen-md-min) { 
+    padding:0 0 9px 0;
+    background: none;
+    border-bottom: 1px solid #eee;
+    margin-bottom: $margin-bottom;
+    h1 {
+      font-size: 36px;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+  }
+}
 .album {
   font-style: italic;
 }
