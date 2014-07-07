@@ -1,8 +1,8 @@
+from datetime import datetime, timedelta
 from django.conf import settings
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property
-from django.utils.timezone import datetime
 from model_utils import Choices
 from model_utils.fields import StatusField
 from model_utils.models import QueryManager, TimeStampedModel
@@ -101,6 +101,17 @@ class Event(TimeStampedModel):
         except (GigPlayed.DoesNotExist, AttributeError):
             leader = None
         return leader
+
+    def listing_date(self):
+        """
+        Shows the listing date for an event, for instance an event that is technically
+        on 3/12 at 1:00 AM has a listing date of 3/11 to be correctly grouped with other
+        events under that date.
+        """
+        date = self.start.date()
+        if 0 <= self.start.hour <= 4:
+            date += timedelta(days=-1)
+        return date
 
 
 class Set(models.Model):
