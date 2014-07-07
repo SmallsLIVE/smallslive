@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from django.utils.timezone import datetime, timedelta, get_default_timezone
 from django.conf import settings
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -108,8 +108,10 @@ class Event(TimeStampedModel):
         on 3/12 at 1:00 AM has a listing date of 3/11 to be correctly grouped with other
         events under that date.
         """
-        date = self.start.date()
-        if 0 <= self.start.hour <= 4:
+        timezone = get_default_timezone()
+        date_time = timezone.normalize(self.start)
+        date = date_time.date()
+        if 0 <= date_time.hour <= 4:
             date += timedelta(days=-1)
         return date
 
