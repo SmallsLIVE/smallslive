@@ -115,6 +115,18 @@ class Event(TimeStampedModel):
             date += timedelta(days=-1)
         return date
 
+    def is_early_morning(self):
+        """
+        Shows the listing date for an event, for instance an event that is technically
+        on 3/12 at 1:00 AM has a listing date of 3/11 to be correctly grouped with other
+        events under that date.
+        """
+        timezone = get_default_timezone()
+        date_time = timezone.normalize(self.start)
+        date = date_time.date()
+        listing_date = self.listing_date()
+        return date != listing_date
+
 
 class Set(models.Model):
     media_file = models.OneToOneField('multimedia.MediaFile', primary_key=True, related_name='set')
