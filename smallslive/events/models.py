@@ -127,6 +127,18 @@ class Event(TimeStampedModel):
         listing_date = self.listing_date()
         return date != listing_date
 
+    def status_css_class(self):
+        """
+        Returns the Bootstrap label CSS class for the event status (published/draft/cancelled/hidden)
+        """
+        CSS_STATES = {
+            'Published': 'label-success',
+            'Draft': 'label-warning',
+            'Cancelled': 'label-danger',
+            'Hidden': 'label-default',
+        }
+        return CSS_STATES[self.state]
+
 
 class Set(models.Model):
     media_file = models.OneToOneField('multimedia.MediaFile', primary_key=True, related_name='set')
