@@ -80,12 +80,12 @@
       </ul>
     </div>
     <div class="well">  
-      <h2>Screen Listing</h3>
+      <h2>Screen Listing</h2>
       <h3>Artist and Public Screens </h3>
       <ul>
         <li><a href="/">SmallsLIVE Home</a></li>
         <li><a href="{% url "artist_detail" pk=122 %}">Artist page</a></li>   
-        <li><a href="{% url "event_detail" pk=8402 %}">Event page</a></li>   
+        <li><a href="{% url "event_detail" pk=8402 slug="something" %}">Event page</a></li>
         <li><a href="/static_page/about">About the club</a></li>
         <li><a href="/static_page/about-smallslive-for-musicians">Artist Sign Up Starting Point</a> &rarr; <a href="/static_page/musician-signup-login">Artist Reg (1 of 4)</a> (this link starts process)</li> 
         <li><a href="/accounts/login/">Log In</a> &rarr; <a href="/accounts/signup/">Signup Form</a>
