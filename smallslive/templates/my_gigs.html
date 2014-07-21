@@ -332,7 +332,7 @@
                   {% if past_event.leader.user != request.user  %}
                     <span class="label label-default">{{ past_event.leader.full_name }}</span>
                   {% endif %}
-                <a href="{% url "event_detail" past_event.id %}" class="unstyled-link" >
+                <a href="{{ past_event.get_absolute_url }}" class="unstyled-link" >
                   {{ past_event.display_title }}<br />
                 </a>
                 <div class="text-muted">{{ past_event.subtitle }}</div>
