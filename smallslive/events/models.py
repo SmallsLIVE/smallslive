@@ -1,3 +1,4 @@
+from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta, get_default_timezone
 from django.conf import settings
 from django.db import models
@@ -39,7 +40,7 @@ class Event(TimeStampedModel):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('event_detail', kwargs={'pk': self.id})
+        return reverse('event_detail', kwargs={'pk': self.id, 'page_slug': slugify(self.title)})
 
     def display_title(self):
         """
