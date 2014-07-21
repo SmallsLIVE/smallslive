@@ -40,7 +40,7 @@ class Event(TimeStampedModel):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('event_detail', kwargs={'pk': self.id, 'page_slug': slugify(self.title)})
+        return reverse('event_detail', kwargs={'pk': self.id, 'slug': slugify(self.title)})
 
     def display_title(self):
         """
