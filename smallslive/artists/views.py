@@ -1,17 +1,30 @@
+from django.contrib import messages
 from django.http import HttpResponse
-from django.views.generic.edit import CreateView, UpdateView
+from django.shortcuts import redirect, render
+from django.views.generic.edit import UpdateView
 from django.views.generic.detail import DetailView
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
-from .forms import ArtistAddForm
+from .forms import ArtistAddForm, ArtistInviteForm
 from .models import Artist
 
 
-class ArtistAddView(CreateView):
-    model = Artist
-    form_class = ArtistAddForm
-    template_name = 'artists/artist_add.html'
+def artist_add(request):
+    if request.method == 'POST':
+        artist_add_form = ArtistAddForm(request.POST)
+        artist_invite_form = ArtistInviteForm(request.POST)
+        forms = [artist_add_form, artist_invite_form]
+        if all([form.is_valid() for form in forms]):
+            artist = artist_add_form.save()
+            messages.success(request, "Artist {0} successfully added!".format(artist.full_name()))
+            return redirect('/')
+    else:
+        artist_add_form = ArtistAddForm()
+        artist_invite_form = ArtistInviteForm()
 
-artist_add = ArtistAddView.as_view()
+    return render(request, 'artists/artist_add.html', {
+        'artist_add_form': artist_add_form,
+        'artist_invite_form': artist_invite_form
+    })
 
 
 class ArtistEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
