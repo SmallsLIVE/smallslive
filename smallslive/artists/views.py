@@ -15,8 +15,14 @@ def artist_add(request):
         forms = [artist_add_form, artist_invite_form]
         if all([form.is_valid() for form in forms]):
             artist = artist_add_form.save()
+            email = artist_invite_form.cleaned_data.get('email')
+            invite_type = artist_invite_form.cleaned_data.get('invite_type')
+            if invite_type == ArtistInviteForm.INVITE_TYPE.standard_invite:
+                artist.send_invitation(request, email)
+            elif invite_type == ArtistInviteForm.INVITE_TYPE.custom_invite:
+                artist.send_invitation(request, email, artist_invite_form.cleaned_data.get('invite_text'))
             messages.success(request, "Artist {0} successfully added!".format(artist.full_name()))
-            return redirect('/')
+            return redirect('artist_add')
     else:
         artist_add_form = ArtistAddForm()
         artist_invite_form = ArtistInviteForm()
