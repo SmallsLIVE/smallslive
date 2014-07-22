@@ -1,7 +1,9 @@
 {% load crispy_forms_tags %}
 <form method="post" class="f-add-artist" role="form" enctype="multipart/form-data">
   {% csrf_token %}
-  {% crispy form %}
+  {% crispy artist_add_form %}
+  {% crispy artist_invite_form %}
+  {% comment %}
   <div id="div_id_email" class="form-group">
     <label for="id_email" class="control-label ">Email</label>
     <div class="controls ">
@@ -39,6 +41,7 @@
         Do not invite them right now <Code>4</Code>
       </label>
     </div>
-  </div>  
+  </div>
+  {% endcomment %}
   <button type="submit" class="btn btn-primary">Add artist</button>
 </form>
