@@ -60,7 +60,7 @@
           {% endif %}</td>
                 <td><a href="{{ event.get_absolute_url }}">{{ event.display_title }}</a
                 {% if event.subtitle %}<span class="text-muted"><br />{{ event.subtitle }}</span>{% endif %}</td>
-                <td><a href="{% url "event_edit" pk=event.id %}">Edit event</a></td>
+                <td><a href="{% url "event_edit" pk=event.id slug=event.title|slugify %}">Edit event</a></td>
                 <td class="nowrap"><a href="/static_page/invite-artists"><span class="text-danger">3/4 unregistered</span><br /><span class="glyphicon glyphicon-envelope"></span> Invite&hellip;</a></td>
                 <td class="text-muted">{{ event.last_modified_by.get_full_name }} {{ event.modified|naturaltime }}</td>
               </tr>
