@@ -1,10 +1,14 @@
 from django.conf import settings
+from django.contrib import auth
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Sum, Count
 from sortedm2m.fields import SortedManyToManyField
 from tinymce import models as tinymce_models
 from events.models import Event
+from users.models import SmallsEmailAddress
+
+User = auth.get_user_model()
 
 
 class Artist(models.Model):
@@ -48,6 +52,16 @@ class Artist(models.Model):
     def media_count_as_sideman(self):
         return self.gigs_played.filter(is_leader=False).annotate(
             cnt=Count('event__sets')).aggregate(count=Sum('cnt'))['count']
+
+    def send_invitation(self, request, email, invite_text=None):
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            user = User.objects.create_user(email, is_active=False)
+        self.user = user
+        self.save()
+        email_model, created = SmallsEmailAddress.objects.get_or_create(user=user, email=email)
+        email_model.send_confirmation(request, signup=True, invite_text=invite_text)
 
 
 class Instrument(models.Model):

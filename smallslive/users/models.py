@@ -1,4 +1,9 @@
+from allauth.account import signals
+from allauth.account.adapter import get_adapter
+from allauth.account.models import EmailAddress, EmailConfirmation
+from django.contrib.sites.models import Site
 from django.core.mail import send_mail
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.utils import timezone
@@ -18,7 +23,7 @@ class SmallsUserManager(UserManager):
             raise ValueError('Email address must be set')
         email = self.normalize_email(email)
         user = self.model(email=email,
-                          is_staff=is_staff, is_active=True,
+                          is_staff=is_staff,
                           is_superuser=is_superuser, last_login=now,
                           date_joined=now, **extra_fields)
         user.set_password(password)
@@ -125,3 +130,45 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
         # Existing, valid customer so return true
         return True
+
+
+class SmallsEmailConfirmation(EmailConfirmation):
+    class Meta:
+        proxy = True
+
+    def send(self, request, signup=False, **kwargs):
+        """
+        Overridden method to enable passing kwargs to the email template.
+        """
+        current_site = kwargs["site"] if "site" in kwargs \
+            else Site.objects.get_current()
+        activate_url = reverse("account_confirm_email", args=[self.key])
+        activate_url = request.build_absolute_uri(activate_url)
+        ctx = {
+            "user": self.email_address.user,
+            "activate_url": activate_url,
+            "current_site": current_site,
+            "key": self.key,
+        }
+        ctx.update(**kwargs)
+        if signup:
+            email_template = 'account/email/email_confirmation_signup'
+        else:
+            email_template = 'account/email/email_confirmation'
+        get_adapter().send_mail(email_template,
+                                self.email_address.email,
+                                ctx)
+        self.sent = timezone.now()
+        self.save()
+        signals.email_confirmation_sent.send(sender=self.__class__,
+                                             confirmation=self)
+
+
+class SmallsEmailAddress(EmailAddress):
+    class Meta:
+        proxy = True
+
+    def send_confirmation(self, request, signup=False, **kwargs):
+        confirmation = SmallsEmailConfirmation.create(self)
+        confirmation.send(request, signup=signup, **kwargs)
+        return confirmation
