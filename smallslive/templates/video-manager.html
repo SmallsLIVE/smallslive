@@ -59,7 +59,7 @@
                    <a href="{{ past_event.get_absolute_url }}">{{ past_event.display_title }}</a><br />
                       {{ past_event.subtitle }}
                    <div>
-                       <a href="{% url "event_edit" past_event.id %}">Edit video</a></div>
+                       <a href="{% url "event_edit" pk=past_event.id slug=past_event.title|slugify %}">Edit video</a></div>
                 </td>
                 <td rowspan="2" >
                   <div class="artist-clearance-breakdown">
@@ -169,7 +169,7 @@
                    <a href="{{ past_event.get_absolute_url }}">{{ past_event.display_title }}</a><br />
                       {{ past_event.subtitle }}
                    <div>
-                       <a href="{% url "event_edit" past_event.id %}">Edit video</a></div>
+                       <a href="{% url "event_edit" pk=past_event.id slug=past_event.title|slugify %}">Edit video</a></div>
                 </td>
                 <td rowspan="2" >mm/dd/yy
                 </td>

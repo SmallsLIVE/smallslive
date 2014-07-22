@@ -68,7 +68,7 @@ sample thumbors:
       {% endif %}      
     </small>
     {% if user.is_superuser %}
-      <small><a href="{% url "event_edit" pk=event.id %}">Edit this event</a></small>
+      <small><a href="{% url "event_edit" pk=event.id slug=event.title|slugify %}">Edit this event</a></small>
     {% endif %}
   </h1>
 </div>

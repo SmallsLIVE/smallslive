@@ -338,7 +338,7 @@
                 <div class="text-muted">{{ past_event.subtitle }}</div>
                 <div>
                   <small> 
-                     <a href="{% url "event_edit" past_event.id %}">{% if past_event.description %}Edit{% else %}Add{% endif %} description</a></small>
+                     <a href="{% url "event_edit" pk=past_event.id slug=past_event.title|slugify %}">{% if past_event.description %}Edit{% else %}Add{% endif %} description</a></small>
                 </div>
               </td>
               <td rowspan="2" class="artist-clearance-breakdown" >[show status here]</td>
@@ -394,13 +394,13 @@
                   <img src="{% thumbor_url future_event.photo.url|urlencode width=100 height=60 smart=True %}" alt="Photo of {{ future_event.title }}" class="img-responsive" />
                 </a>
               {% else %}
-                <a href="{% url "event_edit" future_event.id %}"><span class="text-danger">[missing photo]</span></a>                
+                <a href="{% url "event_edit" pk=future_event.id slug=future_event.title|slugify %}"><span class="text-danger">[missing photo]</span></a>
               {% endif %} 
             </td>
             <td><a href="{{ future_event.get_absolute_url }}">{{ future_event.display_title }}</a><br />
                 {{ future_event.subtitle }}
             </td>
-            <td><a href="{% url "event_edit" future_event.id %}">Edit event</a></td>
+            <td><a href="{% url "event_edit" pk=future_event.id slug=future_event.title|slugify %}">Edit event</a></td>
             <td>{% if future_event.last_modified_by.get_full_name %}{{ future_event.last_modified_by.get_full_name }},{% endif %} {{ future_event.modified|naturaltime }}</td>
           </tr>
           {% endfor %} 

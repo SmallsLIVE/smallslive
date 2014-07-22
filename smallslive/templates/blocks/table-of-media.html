@@ -40,7 +40,7 @@
          {% if past_event.subtitle %}
            <br /><span class="text-muted">{{ past_event.subtitle }}</span>
          {% endif %}</a>
-         <div><small><a  href="{% url "event_edit" past_event.id %}">{% if past_event.description %}Edit{% else %}Add{% endif %} description</a></small></div>
+         <div><small><a  href="{% url "event_edit" pk=past_event.id slug=past_event.title|slugify %}">{% if past_event.description %}Edit{% else %}Add{% endif %} description</a></small></div>
       </td>   
     </tr>
     <tr data-event="{{ past_event.id }}" class="event_{{ past_event.id }}">
