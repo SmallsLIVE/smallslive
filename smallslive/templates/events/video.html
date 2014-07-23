@@ -14,12 +14,13 @@
       soundManager.setup({
           url: '{% static "swf/" %}'
       });
+      /*
       $(document).ready(function () {
           $("#jquery_jplayer_1").jPlayer({
               ready: function () {
                   $(this).jPlayer("setMedia", {
                       m4v: "http://orchestrotica.com/media/kit2009/index_files/Andalucia_HD.mp4",
-                      poster: "http://orchestrotica.com/media/kit2009/index_files/poster_andalucia.jpg"
+                      poster: "http://i1.ytimg.com/vi/Rr-d3tO-sXM/maxresdefault.jpg"
                   });
               },
               size: {
@@ -33,6 +34,7 @@
               toggleDuration: true
           });
       });
+      */
   </script>
   {% include 'blocks/social-like-init.html' %}
 {% endblock extra_js %}
@@ -356,3 +358,4 @@ sample thumbors:
 </div>
 
 {% endblock content %}
+
