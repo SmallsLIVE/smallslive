@@ -168,7 +168,7 @@ sample thumbors:
               {% endfor %}
             </div>  
           {% else %}
-            <p class="text-muted">[this event has no real audio yet. In the real world, the <a href="./?mediaUnavailable=1">?mediaUnavailable=1</a> state of the page would display if no media at all is available. To see some audio players, use <a href="/events/25/?mediaUnavailable=1">the sample event ID=25</a>]</p>
+            <p class="text-muted">[this event has no real audio yet. In the real world, the <a href="./?mediaUnavailable=1">?mediaUnavailable=1</a> state of the page would display if no media at all is available. To see some audio players, use <a href="{% url "event_detail" pk=25 slug="round-midnight" %}?mediaUnavailable=1">the sample event ID=25</a>]</p>
           {% endif %}
         {% else %}
           {% include 'blocks/video-player.html' %}
