@@ -1,3 +1,4 @@
+from crispy_forms.layout import Layout, Div, Field, HTML
 from django import forms
 from django.forms.util import ErrorList
 import floppyforms
@@ -26,11 +27,13 @@ class ArtistAddForm(forms.ModelForm):
 
 
 class ArtistInviteForm(forms.Form):
-    INVITE_TYPE = Choices('standard_invite', 'custom_invite', 'no_invite')
+    INVITE_TYPE = Choices(('standard_invite', 'Standard invitation'),
+                          ('custom_invite', 'Custom invitation text'),
+                          ('no_invite', 'Do not invite right now'))
 
     email = forms.EmailField(required=False)
     invite_type = forms.ChoiceField(choices=INVITE_TYPE,
-                                    widget=floppyforms.RadioSelect,
+                                    widget=forms.RadioSelect,
                                     initial=INVITE_TYPE.standard_invite)
     invite_text = forms.CharField(required=False, widget=forms.Textarea)
 
@@ -40,6 +43,14 @@ class ArtistInviteForm(forms.Form):
         self.helper.form_action = 'artist_add'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
+        self.helper.layout = Layout(
+            'email',
+            Div(
+                Field('invite_type', template='form_widgets/invite_type_select.html'),
+                css_class='alert alert-warning'
+            )
+        )
+        self.fields['invite_text'].label = None
 
     def clean(self):
         """
