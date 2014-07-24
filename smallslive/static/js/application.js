@@ -120,20 +120,19 @@ $(document).ready(function(){
     $(this).closest('.artist-clearance-breakdown').find('table').toggle();
   });
   function checkRadio(radio) {
-    if ($(radio).hasClass('extra-message')==true) {
-      $('.trigger-add-extra-message').next('div').slideDown();
+    if ($(radio).filter(':checked').hasClass('custom_invite')) {
+      $('.extra-message').slideDown();
     } else {
-      
-      $('.trigger-add-extra-message').next('div').slideUp();
+      $('.extra-message').slideUp();
     }
   }
   //Let me add a welcome message when inviting artists
-  $('.f-add-artist').delegate('input[name=invitation]','change',function(){
+  $('.f-add-artist').delegate('input[name=invite_type]','change',function(){
     checkRadio(this);
   });
   //Init
   if ($('.f-add-artist').length > 0) {
-    checkRadio('input[name=invitation]');
+    checkRadio('input[name=invite_type]');
   }
   //Date fields need a picker
   $('#id_date').datepicker().on('changeDate', function(ev){
@@ -146,7 +145,7 @@ $(document).ready(function(){
     //callback function: populate the slots properly:
     //unhide the checkboxes, undisable fields, fill in labels and input slots appropriately:
     
-  });;
+  });
   //Draggable musician ordering
   $('.f-gig div.sortable-list').sortable({
     //AJAX in here
