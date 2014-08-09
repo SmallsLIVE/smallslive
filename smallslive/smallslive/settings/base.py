@@ -69,6 +69,7 @@ INSTALLED_APPS = (
     'tinymce',
 
     # project apps
+    'artist_registration',
     'artists',
     'events',
     'multimedia',

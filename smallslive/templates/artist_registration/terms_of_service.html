@@ -1,0 +1,55 @@
+{% extends "base_musician-signup.html" %}
+{% block title %}stepnamehere{% endblock title %}
+{% block nav %}{% endblock nav %}
+{% block content %}
+<div class="row">
+  <div class="col-sm-3">
+    {% include "blocks/musician-signup-steps.html" %}
+  </div>
+  <div class="col-sm-9">
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#agreement-musicians-easy" data-toggle="tab">Basic Summary</a></li>
+      <li><a href="#agreement-musicians-legal" data-toggle="tab">Full Performer Agreement</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content terms">
+      <div class="tab-pane active" id="agreement-musicians-easy">
+        <div class="well">
+          <h3>Earn $ on your live recordings from gigs @ Smalls:</h3>
+          <ul>
+            <li>Subscribers pay $10/month to access our archive of live recordings</li>
+            <li>Each month, we split the revenue 50/50* with artists after our expenses (which include third-party licensing fees for songwriters)</li>
+            <li>We pay you based on how much your music was listened to by subscribers</li>
+            <li>You keep your copyright in your master recordings and any original songs you wrote</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tab-pane" id="agreement-musicians-legal">
+        <div class="well terms">
+        <h2>SmallsLive Performer Agreement</h2>
+      <code>1</code> legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms herelegal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms herelegal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms herelegal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms herelegal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms herelegal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here legal terms here
+        </div>
+      </div>
+    </div>
+    <form action="/static_page/musician-signup-artist-edit"  >
+      <div class="well">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="">I accept the terms of the SmallsLIVE Performer Agreement
+          </label>
+        </div>
+      </div>
+      
+        <button type="submit" class="btn btn-primary">Continue</button>
+    </form>
+  </div>
+</div>
+<div class="dev">
+  <h1>Dev notes</h1>
+  <Ul>
+    <li><code>1</code> This is CMS Content. I might steal ideas and make sure this is similar to what is on <a href="/static_page/about-smallslive-for-musicians">the about-SL-for-musicians screen which starts this workflow.</a></li>
+    <li><code>2</code> Change active state on each page. let users go back once they have completed a step.</li>
+    <li><code>3</code> Don't show login item if they are logged in already somehow.</li>
+  </Ul>
+</div>
+{% endblock content %}
