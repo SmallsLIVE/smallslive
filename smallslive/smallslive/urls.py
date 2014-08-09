@@ -19,7 +19,7 @@ class StaticPageView(TemplateView):
 
 
 urlpatterns = patterns('',
-    url(r'^artist_registration/', include('artist_registration.urls', app_name="artist_registration")),
+    url(r'^artist-registration/', include('artist_registration.urls', app_name="artist_registration")),
     url(r'^artists/', include('artists.urls', app_name="artists")),
     url(r'^events/', include('events.urls', app_name="events")),
     url(r'^static_page/(?P<template_name>[A-Za-z_-]*)/$', StaticPageView.as_view(), name="static_page"),
