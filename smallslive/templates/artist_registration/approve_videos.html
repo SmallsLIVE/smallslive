@@ -1,0 +1,125 @@
+{% extends "base_musician-signup.html" %}
+{% load thumbor_tags %}
+{% block title %}stepnamehere{% endblock title %}
+{% block bodyclass %}musician-registration{% endblock bodyclass %}
+{% block nav %}{% endblock nav %}
+{% block content %}
+<div class="row">
+  <div class="col-sm-3">
+    {% include "blocks/musician-signup-steps.html" %}
+  </div>
+  <div class="col-sm-9">
+    <form action="/static_page/musician-signup-terms/">  
+      <div class="instructions">
+        <p class="">You have performed on (##) audio recordings ("Masters") at Smalls starting in 2011. These recordings will be made available in the archive, unless you choose not to.</p>
+        <ul>
+          <li>Until all performers on a given recording have joined SmallsLIVE  <span class="owner approved">(identified in green w/ a checkmark&check;)</span>, the recording will not be available in our audio archive for listeners and will not be eligible to earn revenue.</li>
+          <li>When you are the leader, you can decide whether a recording is made available in the archive (however, all performers still must be SmallsLIVE members before it will go live). </li> 
+          <li>You can browse or download your recordings at any time after you register. </li>
+        </ul> 
+        <p>Questions? Email <a href="mailto:info@smallsjazzclub.com?subject=Question about approving my masters during artist sign-up">info@smallsjazzclub.com</a>.</p>     
+      </div>
+      <div class="radio ">
+        <label><input type="radio" name="trigger-show-recordings" value="all" checked> Publish <strong>all</strong> ## of my recordings</label>        
+      </div>
+      <div class="radio publish-selected-recordings">
+        <label><input type="radio" name="trigger-show-recordings" value="some" > Publish only <strong>selected</strong> recordings&hellip;</label>
+      </div>
+      <div class="show-recordings">
+        <h4>Display my recordings <select><option>as leader</option><option>as side musician</option><option>(all)</option></select>  </h4> 
+        <table class="table list-of-recordings">
+          <thead>
+            <tr>
+              <th><a href="">Gig Date</a> <code>2</code></th>
+              <th>Set</th>
+              <th>Video</th>
+              <th>Audio</th>
+              <th>Description &amp; Artist Registration Status</th>
+              <th>Publish it?</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for past_event in past_events %}
+            <tr data-event="{{ past_event.id }}"  class="event_{{ past_event.id }}"> 
+              <td rowspan="2" class="event_date"><time datetime="{{ past_event.start|date:"c" }}">{{ past_event.start|date:"D, M. d" }}<br />{{ past_event.start|date:"Y - f a" }}</time></td>
+              <td  class="choose-set active">
+                <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="1" checked="checked"> 1 (66min)</label>
+              </td>
+              <td rowspan="2" class="video-thumb">
+                <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   1.2GB MP4</a>
+        
+                {% if past_event.photo.url != "" %}
+                  <a href="/events/{{ past_event.id }}/">
+                    <span class="glyphicon glyphicon-play"></span>
+                    <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}"  />
+                  </a>
+                {% endif %}       
+              </td>
+              <td rowspan="2" class="audio-play"> 
+                  <a href="#" class="download small"><span class="glyphicon glyphicon-download"></span>   52MB MP3</a>
+                  <a  href="#" class=" btn btn-default" role="button" title="Play audio {{ past_event.displaytitle }}"><span class="glyphicon glyphicon-play"></span></a>                  
+              </td>
+              <td rowspan="2" class="event-title"> 
+                 {{ past_event.display_title }} <br />
+                {% if past_event.subtitle %}
+                   <span class="text-muted">{{ past_event.subtitle }}</span>
+                {% endif %}
+                <div class="copyright-owners"> 
+                  <span class="owner">Ugonna Okegwo <span>&cross;</span></span>, 
+                  <span class="approved owner">Anthony Pinciotti <span>&check;</span></span>, 
+                  <span class="owner">David Schnitter <span>&cross;</span></span>
+                </div>
+              </td>
+              <td rowspan="2">
+              <div class="artist-clearance-breakdown">  
+                <div class="checkbox">
+                  <label><input type="checkbox" value="1" checked="checked" /> Yes <code>3</code></label>
+                </div>                          
+              </div>
+              </td>
+            </tr>
+            <tr data-event="{{ past_event.id }}" class="event_{{ past_event.id }}">
+              <td  class="choose-set not-first">
+              
+                <label class="small"><input type="radio" name="set_{{ past_event.id }}" value="2"> 2 (34min)</label>
+              </td>
+            </tr>
+        
+            {% endfor %}
+          </tbody>
+        </table>
+        {% if paginator.num_pages > 1 %}
+           <ul class="pagination">
+            {% if page_obj.has_previous %}
+              <li><a href="?page={{ page_obj.previous_page_number }}#past">&laquo;</a></li>
+            {% endif %}
+            {% for num in paginator.page_range %}
+              {% ifequal num page_obj.number %}
+                <li class="active"><a href="#">{{ num }}</a></li>
+              {% else %}
+                <li><a href="?page={{ num }}#past"> {{ num }}</a></li>
+              {% endifequal %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+              <li><a href="?page={{ page_obj.next_page_number }}#past">&raquo;</a></li>
+            {% endif %}
+          </ul>
+        {% endif %}         
+        {% include 'blocks/popup-player.html' %}
+    
+      </div>
+      
+        <p><button type="submit" class="btn btn-primary">Continue</button></p>
+    </form>
+    <small class="text-muted text-sm">* Because you do not own the entire video recording (aka the "Master"), you cannot decide alone which videos go live. For each video, you and the side musicians each own a portion of the copyright in the Master recording and so all musicians on each video must agree for a video to go live on the website. By default, your side musicians are "opted in" to your videos and only have 7 days to opt out before the video goes live.</small>
+
+  </div>
+</div>
+<div class="dev">
+  <h1>Dev notes</h1>
+  <Ul>  
+    <li><code>2</li> - show 50 and paginate; important this screen uses ajax pagination.</li>
+    <li><code>3</code> - if this is a non-leader video, disable the checkbox and show it checked</li>
+  </Ul>
+</div>
+{% endblock content %}

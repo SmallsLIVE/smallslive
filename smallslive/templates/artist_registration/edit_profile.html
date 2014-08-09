@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}stepnamehere{% endblock title %}
+{% block bodyclass %}musician-registration{% endblock bodyclass %}
+{% block nav %}{% endblock nav %}
+{% block content %}
+<h1>Ari's SmallsLIVE Performer Registration</h1>
+<div class="row">
+  <div class="col-sm-3">
+    {% include "blocks/musician-signup-steps.html" %}
+  </div>
+  <div class="col-sm-6">
+     
+      <form method="get" action="{% url "my_gigs" %}" role="form" enctype="multipart/form-data">
+        <p>This profile information is visible to the public. </p>
+        <input type='hidden' name='csrfmiddlewaretoken' value='D4ExtZfjupecOam5GLMfTgv533oGK3BA' /> 
+        
+        <div class="row">
+          <div class="col-sm-6">
+            <div id="div_id_first_name" class="form-group">
+              <label for="id_first_name" class="control-label  requiredField">
+				Artist First Name<code>4</code><span class="asteriskField">*</span></label>
+				      <div class="controls "><input class="textinput textInput form-control" id="id_first_name" maxlength="255" name="first_name" type="text" value="Ugonna" /></div>
+				    </div>
+          </div>
+          <div class="col-sm-6">
+            <div id="div_id_last_name" class="form-group">
+              <label for="id_last_name" class="control-label  requiredField">
+  				Artist Last name<span class="asteriskField">*</span></label>
+  				    <div class="controls "><input class="textinput textInput form-control" id="id_last_name" maxlength="255" name="last_name" type="text" value="Okegwo" /> </div>
+  				  </div> 
+          </div>
+        </div>
+	  	<div id="div_id_instruments" class="form-group">
+		    <label for="id_instruments" class="control-label ">
+				Instruments <code>3</code>
+			  </label>
+			<div class="controls "><select multiple="multiple" class="selectmultiple form-control" id="id_instruments" name="instruments"><option value="59">Accordion</option><option value="30">Alto Sax</option><option value="68">Banjo</option><option value="67">Baritone Sax</option><option value="35" selected="selected">Bass</option><option value="37">Bassoon</option><option value="41">Cello</option><option value="33">Clarinet</option><option value="28">Composer</option><option value="61">Conductor</option><option value="66">DJ</option><option value="64">Dancer</option><option value="43">Drums</option><option value="47">Female Vocalist</option><option value="40">Flute</option><option value="53">French Horn</option><option value="39">Guitar</option><option value="57">Harp</option><option value="48">Jazz Orchestra</option><option value="69">Leader</option><option value="56">Lute</option><option value="65">MC</option><option value="46">Male Vocalist</option><option value="34">Oboe</option><option value="49">Orchestra</option><option value="38">Organ</option><option value="44">Percussion</option><option value="36">Piano</option><option value="63">Poet</option><option value="32">Soprano Sax</option><option value="50">String Quartet</option><option value="51">Tap Dancer</option><option value="31">Tenor Sax</option><option value="52">Trombone</option><option value="29">Trumpet</option><option value="42">Vibraphone</option><option value="55">Viola</option><option value="54">Violin</option><option value="45">Vocalist</option><option value="60">Whistle</option><option value="62">Writer</option></select><p id="hint_id_instruments" class="help-block">None Hold down "Control", or "Command" on a Mac, to select more than one.</p></div></div>
+		<div id="div_id_biography" class="form-group">
+		  <label for="id_biography" class="control-label ">
+				Biography
+			</label>
+			<div class="controls "><textarea class="textarea form-control" cols="40" id="id_biography" name="biography" rows="10">
+&lt;p&gt;Ugonna Okegwo is one of the most distinctive and sought-after jazz bassists in the world. Critics across the globe have praised him for his rich tone, supple sense of swing, stylistic range and inventiveness. These qualities have not only earned him a place on the bandstand with jazz legends as diverse as Clark Terry, Benny Golson, Pharoah Sanders and Joseph Jarman  they have established him as one of the leading lights of a younger generation redefining jazz for the new century. &lt;/p&gt;&lt;p&gt;&quot;He is very individualistic, both in his soloing and accompanying. I love the way he plays in the ensemble, says Tom Harrell, with whom Okegwo has worked for several years. Ugonna does some really creative things that I haven&#39;t heard anyone do with his articulation and timing.&quot;&lt;/p&gt;&lt;p&gt;Born March 15, 1962 in London to a German mother and Nigerian father, Okegwo was raised in Germany and grew up listening to African-American music -- James Brown, Jimi Hendrix, Miles Davis, Ornette Coleman, and, eventually, the great Charles Mingus. &lt;/p&gt;&lt;p&gt;&quot;What I always heard first in funk and rock &#39;n roll were the bass lines, the ostinato, and later, in jazz, the walking bass,&quot; he recalls. &quot;That&#39;s what first got me playing bass. The fusing of funk and jazz bass conceptions is a foundation of Okegwo&#39;s unique approach, making his sound instantly recognizable.&lt;/p&gt;&lt;p&gt;In 1986, he moved to Berlin to study with the American expatriate bassist Jay Oliver, and with the American pianist Walter Norris. There Okegwo caught the attention of many prominent jazz musicians, most notably the trombonist and Mingus alum, Lou Blackburn, who invited Okegwo to tour Europe with his Afro-Jazz group Mombasa. While working with Blackburn, Okegwo met and played with trumpeter Joe Newman, drummer Oliver Jackson, and the bassist Major Holley, who encouraged him to move to New York.&lt;/p&gt;&lt;p&gt;In 1989, Okegwo made the leap to Manhattan and began playing with musicians like saxophone legends Big Nick Nicholas, Junior Cook, and James Spaulding. In 1992, a call from legendary vocalist Jon Hendricks led to steady work as a sideman - on stage and in recording studios. In 1994 Hendricks even took Okegwo to the White House to perform for the President. During this time, Okegwo&#39;s artistry attracted two other gifted young musicians -- pianist Jacky Terrason and drummer Leon Parker. The trio joined forces and at famous clubs like the Village Gate and Bradley&#39;s, developing one of the most creative and explosive group sounds of the nineties.&lt;/p&gt;&lt;p&gt;Recently, Okegwo expanded his horizons and became a bandleader. In 2002 he took his quartet to Europe and documented the group with a recording entitled &quot;UOniverse&quot; [Satchmo Jazz]. The material, which consists of his compositions and brilliantly arranged standards, draws from a wide range of influences, including jazz, African, funk, and classical music. &lt;/p&gt;&lt;p&gt;weblinks:&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;http://www.Ugonnaokegwo.com&quot;&gt;www.Ugonnaokegwo.com&lt;/a&gt;&lt;/p&gt;</textarea></div></div><div id="div_id_website" class="form-group"><label for="id_website" class="control-label ">
+				Website
+			</label><div class="controls "><input class="textinput textInput form-control" id="id_website" maxlength="255" name="website" type="text" /> </div></div><div id="div_id_photo" class="form-group"><label for="id_photo" class="control-label ">
+				Photo
+			</label><div class="controls ">
+                    Currently: <a href="http://d3dombqstlgdhj.cloudfront.net/images/Okegwo_Ugonna.jpg">images/Okegwo_Ugonna.jpg</a><input id="photo-clear_id" name="photo-clear" type="checkbox" /> <label for="photo-clear_id">Clear</label><br />Change: <input class="clearablefileinput" id="id_photo" name="photo" type="file" /> </div></div>
+
+         <button type="submit" class="btn btn-primary">Finish<code>1</code></button>
+    </form>
+  
+     
+    </form>  
+  </div>
+</div>
+<div class="dev">
+  <h1>Dev notes</h1>
+  <Ul> 
+    <li><code>1</code> - note this button label is different than the one on artist/edit template.</li>
+    <li><code>2</code> - this form should take them to (My Gigs, Past tab)</li>
+    <li><code>3</code> - this should be a selectize input</li>
+    <li><code>4</code> - note the layout here. name goes on one line/row. you can make this change in the artist admin area too. note the labels are prefixed with "artist" here. this change can be made everywhere or just on this page. 
+  </Ul>
+</div>
+{% endblock content %}
