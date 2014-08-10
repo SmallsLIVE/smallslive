@@ -1,11 +1,15 @@
 import json
 from django.conf import settings
+from django.core.exceptions import ImproperlyConfigured
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
+from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta
 from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
+from django.views.generic.detail import DetailView, BaseDetailView
 from django.views.generic import TemplateView
 
-from braces.views import LoginRequiredMixin, UserPassesTestMixin
+from braces.views import LoginRequiredMixin, SuperuserRequiredMixin, UserPassesTestMixin
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
 
 from smallslive.artists.models import Artist
@@ -98,6 +102,23 @@ class EventEditView(LoginRequiredMixin, NamedFormsetsMixin, UpdateWithInlinesVie
     #     return (artist_id_match or user.is_superuser)
 
 event_edit = EventEditView.as_view()
+
+
+class EventCloneView(LoginRequiredMixin, SuperuserRequiredMixin, BaseDetailView):
+    model = Event
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        new_object = self.object
+        new_object.pk = None
+        new_object.save()
+        self.new_object = new_object
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('event_edit', kwargs={'pk': self.new_object.id, 'slug': slugify(self.new_object.title)})
+
+event_clone = EventCloneView.as_view()
 
 
 class VenueDashboardView(ListView):
