@@ -111,6 +111,7 @@ class EventCloneView(LoginRequiredMixin, SuperuserRequiredMixin, BaseDetailView)
         self.object = self.get_object()
         new_object = self.object
         new_object.pk = None
+        new_object.state = Event.STATUS.Draft
         new_object.save()
         self.new_object = new_object
         return HttpResponseRedirect(self.get_success_url())
