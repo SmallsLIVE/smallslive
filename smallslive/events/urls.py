@@ -8,6 +8,7 @@ urlpatterns = patterns('events.views',
     url(r'^musician-signup-choose-videos/$', 'artist_video_manager', name='artist_video_manager'),
     url(r'^dashboard/$', 'venue_dashboard', name='venue_dashboard'),
     url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/$', 'event_detail', name='event_detail'),
+    url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/clone/$', 'event_clone', name='event_clone'),
     url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/edit/$', 'event_edit', name='event_edit'),
     url(r'^add/$', 'event_add', name='event_add'),
 )
