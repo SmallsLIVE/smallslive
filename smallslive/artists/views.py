@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.detail import DetailView
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from .forms import ArtistAddForm, ArtistInviteForm
@@ -31,6 +31,13 @@ def artist_add(request):
         'artist_add_form': artist_add_form,
         'artist_invite_form': artist_invite_form
     })
+
+
+# note - this is here only for Mezzrow compatibility
+class ArtistAddView(CreateView):
+    model = Artist
+    form_class = ArtistAddForm
+    template_name = 'artists/artist_add.html'
 
 
 class ArtistEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
