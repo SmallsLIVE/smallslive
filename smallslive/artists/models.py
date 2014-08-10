@@ -6,7 +6,7 @@ from django.db.models import Sum, Count
 from sortedm2m.fields import SortedManyToManyField
 from tinymce import models as tinymce_models
 from ..events.models import Event
-from users.models import SmallsEmailAddress
+from smallslive.users.models import SmallsEmailAddress
 
 User = auth.get_user_model()
 
