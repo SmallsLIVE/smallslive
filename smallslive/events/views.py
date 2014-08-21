@@ -108,10 +108,15 @@ class EventCloneView(LoginRequiredMixin, SuperuserRequiredMixin, BaseDetailView)
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
+        gig_info = self.object.get_performers()
         new_object = self.object
         new_object.pk = None
         new_object.state = Event.STATUS.Draft
         new_object.save()
+        for info in gig_info:
+            info.pk = None
+            info.event = new_object
+            info.save()
         self.new_object = new_object
         return HttpResponseRedirect(self.get_success_url())
 
