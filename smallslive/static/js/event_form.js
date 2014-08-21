@@ -121,7 +121,7 @@ EventForm = {
         this.addSlotButtons(moment().isoWeekday());
     },
     initInlineArtistsFunctionality: function() {
-        $artist_row = $(".formset_table tbody tr:last").clone(true);
+        $artist_row = $(".formset_table tbody tr:first").clone(true);
 
         $(".formset_table select").selectize({
             create: false
