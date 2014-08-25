@@ -142,9 +142,6 @@ class EventAddForm(forms.ModelForm):
             'description',
             'link',
             'state',
-            ButtonHolder(
-                Submit('submit', 'Save event', css_class='btn btn-primary')
-            )
         )
         self.fields['state'].label = "Event status"
         self.fields['photo'].label = "Flyer or Band Photo (JPG, PNG)"
