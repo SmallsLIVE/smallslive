@@ -60,7 +60,7 @@ class ImageSelectField(floppyforms.ChoiceField):
 
     def __init__(self, choices=(), required=True, widget=None, label=None,
                  initial=None, help_text='', *args, **kwargs):
-        queryset = kwargs.pop('queryset')
+        queryset = self.get_queryset()
         super(ImageSelectField, self).__init__(required=required, widget=widget, label=label,
                                                initial=initial, help_text=help_text, *args, **kwargs)
         # Set the images dynamically for the imagepicker widget
@@ -72,6 +72,9 @@ class ImageSelectField(floppyforms.ChoiceField):
         objects = [(id, "{0}/{1}".format(domain, photo)) for (id, photo) in objects]
         self.choices = Choices(("", ""))
         self.choices += Choices(*objects)
+
+    def get_queryset(self):
+        return Event.objects.exclude(photo="").order_by('-id').values_list('id', 'photo')[:5]
 
 
 class GigPlayedAddInlineFormSet(InlineFormSet):
@@ -110,8 +113,7 @@ class GigPlayedInlineFormSetHelper(FormHelper):
 class EventAddForm(forms.ModelForm):
     start = forms.DateTimeField(label="Start time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
     end = forms.DateTimeField(label="End time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
-    suggested_images = ImageSelectField(queryset=Event.objects.exclude(photo="").order_by(
-        '-modified').values_list('id', 'photo')[:5], required=False)
+    suggested_images = ImageSelectField(required=False)
 
     class Meta:
         model = Event
