@@ -163,7 +163,7 @@ EventForm = {
 
         $("#id_title").focus(function() {
             if(! $(this).val()) {
-                var title = $(".artist_field div.item").first().text();
+                var title = $(".artist_field div.item").first().text().trim();
                 var remaining_artists = $(".artist_field div.item").not(":first");
                 if (remaining_artists.length > 0) {
                     title += " w/ ";
