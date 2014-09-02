@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
+from smallslive import VERSION
 
 setup(
     name='smallslive',
-    version='0.1.7',
+    version=VERSION,
     description=('Sample application for a music club'),
     author='Filip Jukic',
     author_email='filip@appsembler.com',
