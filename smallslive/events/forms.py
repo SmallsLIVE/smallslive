@@ -98,7 +98,13 @@ class GigPlayedAddInlineFormSet(InlineFormSet):
 
 
 class GigPlayedEditInlineFormset(GigPlayedAddInlineFormSet):
-    extra = 0
+    extra = 1
+
+    def construct_formset(self):
+        # don't automatically show extra rows if there are artists already playing
+        if self.object.performers.count() > 0:
+            self.extra = 0
+        return super(GigPlayedEditInlineFormset, self).construct_formset()
 
 
 class GigPlayedInlineFormSetHelper(FormHelper):
