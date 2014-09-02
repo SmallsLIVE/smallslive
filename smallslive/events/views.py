@@ -117,11 +117,19 @@ class EventCloneView(LoginRequiredMixin, SuperuserRequiredMixin, BaseDetailView)
             info.pk = None
             info.event = new_object
             info.save()
+        self.extra_event_processing(new_object)
         self.new_object = new_object
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse('event_edit', kwargs={'pk': self.new_object.id, 'slug': slugify(self.new_object.title)})
+
+    def extra_event_processing(self, event):
+        """
+        Overridable method meant for extra event processing such as cloning the tickets or doing
+        some other manipulation on the newly cloned event object.
+        """
+        pass
 
 event_clone = EventCloneView.as_view()
 
