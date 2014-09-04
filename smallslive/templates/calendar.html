@@ -19,48 +19,57 @@
     </div>
   </div>
 </div>
-{% regroup events by start as events_calendar %}
+{% regroup events by listing_date as events_calendar %}
 {% for date in events_calendar %}
   <h3>Date: {{ date.grouper }}</h3>
   <ul>
     {% for event in date.list %}
-      <li>{{ event.title }}</li>
+      <li>{{ event.display_title }}</li>
     {% endfor %}
   </ul>
 {% endfor %}
 <div class="row">
+  {% regroup next_3_days by listing_date as upcoming_events %}
   <div class="col-sm-4">
     <h2>Tonight (24)</h2>
-      <div class="well"><img src="" alt="main show photo">
+      <div class="well"><img src="{{ upcoming_events.0.list.0.photo }}" alt="main show photo">
         <ul>
-        <li>slot1time: display_title w/ sidemenList</li>
-        <li>slot2time: display_title w/ sidemenList</li>
-        <li>slot3time: display_title w/ sidemenList</li>
+          {% for event in upcoming_events.0.list %}
+          <li>{{ event.display_title }}</li>
+          {% endfor %}
         </ul>
       </div>
   </div>
   <div class="col-sm-4">
     <h2>Tomorrow (25)</h2>
-      <div class="well"><img src="" alt="main show photo">
+      <div class="well"><img src="{{ upcoming_events.1.list.0.photo }}" alt="main show photo">
         <ul>
-        <li>slot1time: display_title w/ sidemenList</li>
-        <li>slot2time: display_title w/ sidemenList</li>
-        <li>slot3time: display_title w/ sidemenList</li>
+          {% for event in upcoming_events.1.list %}
+          <li>{{ event.display_title }}</li>
+          {% endfor %}
         </ul>
       </div>
   </div>
   <div class="col-sm-4">
     <h2>26</h2>
-      <div class="well"><img src="" alt="main show photo">
+      <div class="well"><img src="{{ upcoming_events.2.list.0.photo }}" alt="main show photo">
         <ul>
-        <li>slot1time: display_title w/ sidemenList</li>
-        <li>slot2time: display_title w/ sidemenList</li>
-        <li>slot3time: display_title w/ sidemenList</li>
+          {% for event in upcoming_events.2.list %}
+          <li>{{ event.display_title }}</li>
+          {% endfor %}
         </ul>
       </div>
   </div>
 </div>
- 
+{% regroup next_month by listing_date as next_month_events %}
+{% for date in next_month_events %}
+  <h3>Date: {{ date.grouper }}</h3>
+  <ul>
+    {% for event in date.list %}
+      <li>{{ event.display_title }}</li>
+    {% endfor %}
+  </ul>
+{% endfor %}
 <div class="calendar-month"> 
   <h2>April, May, and June @ Smalls</h2>
   <div class="row days-of-week">

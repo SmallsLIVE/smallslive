@@ -175,7 +175,18 @@ class CalendarView(ListView):
     context_object_name = 'events'
 
     def get_queryset(self):
-        return Event.objects.all().order_by("-start")[:30]
+        events = Event.objects.filter(start__gte=datetime.today()).reverse()[:30]
+        events.reverse()
+        return events
+
+    def get_context_data(self, **kwargs):
+        data = super(CalendarView, self).get_context_data(**kwargs)
+        today = datetime.today()
+        data['next_3_days'] = Event.objects.filter(start__gte=today, start__lte=(today + timedelta(days=4))).order_by('start')
+        sunday_this_week = today + timedelta(days=6-today.weekday())
+        data['next_month'] = Event.objects.filter(
+            start__gte=sunday_this_week, start__lte=sunday_this_week+timedelta(days=30)).order_by('start')
+        return data
 
 calendar = CalendarView.as_view()
 
