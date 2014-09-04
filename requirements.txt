@@ -21,6 +21,7 @@ django-sortedm2m==0.7.0
 django-storages==1.1.8
 django-thumbor==0.5
 django-tinymce==1.5.2
+git+https://github.com/revsys/django-tos
 gnureadline==6.3.3
 gunicorn==19.0
 html5lib==0.999
