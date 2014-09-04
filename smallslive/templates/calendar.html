@@ -29,12 +29,11 @@
   </ul>
 {% endfor %}
 <div class="row">
-  {% regroup next_3_days by listing_date as upcoming_events %}
   <div class="col-sm-4">
     <h2>Tonight (24)</h2>
-      <div class="well"><img src="{{ upcoming_events.0.list.0.photo }}" alt="main show photo">
+      <div class="well"><img src="{{ events_today.0.photo }}" alt="main show photo">
         <ul>
-          {% for event in upcoming_events.0.list %}
+          {% for event in events_today %}
           <li>{{ event.display_title }}</li>
           {% endfor %}
         </ul>
@@ -42,9 +41,9 @@
   </div>
   <div class="col-sm-4">
     <h2>Tomorrow (25)</h2>
-      <div class="well"><img src="{{ upcoming_events.1.list.0.photo }}" alt="main show photo">
+      <div class="well"><img src="{{ events_tomorrow.0.photo }}" alt="main show photo">
         <ul>
-          {% for event in upcoming_events.1.list %}
+          {% for event in events_tomorrow %}
           <li>{{ event.display_title }}</li>
           {% endfor %}
         </ul>
@@ -52,9 +51,9 @@
   </div>
   <div class="col-sm-4">
     <h2>26</h2>
-      <div class="well"><img src="{{ upcoming_events.2.list.0.photo }}" alt="main show photo">
+      <div class="well"><img src="{{ events_day_after.0.photo }}" alt="main show photo">
         <ul>
-          {% for event in upcoming_events.2.list %}
+          {% for event in events_day_after %}
           <li>{{ event.display_title }}</li>
           {% endfor %}
         </ul>
