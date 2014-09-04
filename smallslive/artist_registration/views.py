@@ -2,6 +2,7 @@ from allauth.account import views as allauth_views
 from allauth.account import app_settings
 from allauth.account.utils import perform_login
 from django.core.urlresolvers import reverse_lazy, reverse
+from .forms import SetUserDataForm
 
 
 class ConfirmEmailView(allauth_views.ConfirmEmailView):
@@ -34,6 +35,7 @@ confirm_email = ConfirmEmailView.as_view()
 
 
 class PasswordSetView(allauth_views.PasswordSetView):
+    form_class = SetUserDataForm
     success_url = reverse_lazy('home')
     template_name = 'artist_registration/set_password.html'
 
