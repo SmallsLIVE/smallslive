@@ -93,7 +93,7 @@ class Event(TimeStampedModel):
         return self.end < datetime.now().date()
 
     def get_performers(self):
-        return self.artists_gig_info.prefetch_related('artist__instruments')
+        return self.artists_gig_info.prefetch_related('artist', 'role')
 
     def leader(self):
         try:
