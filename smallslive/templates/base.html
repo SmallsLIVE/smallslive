@@ -1,113 +1,140 @@
 {% load pipeline static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{% endblock title %}{% block title_prefix %} @ {% endblock title_prefix %}SmallsLIVE{% block title_suffix %}{% endblock title_suffix%}</title>
-    {% stylesheet 'css' %}
-    {% block extra_css %}
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock title %}{% block title_prefix %}
+    @ {% endblock title_prefix %}SmallsLIVE{% block title_suffix %}{% endblock title_suffix %}</title>
+  {% stylesheet 'css' %}
+  {% block extra_css %}
     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-    {% endblock extra_css %}
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
+  {% endblock extra_css %}
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    {% block extra_head %}{% endblock %}
-  </head>
-  <body class="{% block bodyclass%}{% endblock bodyclass %}">
-    {% block alert %}
-      {% for message in messages %}
-        <div class="alert {% if message.tags %}{{ message.tags }}{% endif %} alert-dismissable">
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-          {{ message }}
-        </div>
-      {% endfor %}
-    {% endblock alert %}
-    <nav class="navbar navbar-default" role="navigation">
-      <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/"><img src="{% static 'logo-black.svg' %}" alt="Smalls" class="img-circle" />{% block subbrand %}{% endblock subbrand %}</a>
-        </div>
-        {% block nav %}   
-          <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse" id="main-nav">
-            <ul class="nav navbar-nav"> 
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="/events/8202/"><span class="text-primary">(Live Now!)<code>G1</code></span></a></li>
-              <li><a href="{% url "calendar" %}">Calendar</a></li>
-              <li><a href="/static_page/search">Video <span class="longname"> Archive</span></a></li>              
-              <li><a href="#">Store</a></li>
-              <li><a href="/static_page/about">About</a></li>
-            </ul>
-            <form class="navbar-form navbar-left search" role="search" action="/static_page/search">
-              <div class="form-group">
-                <input type="text" class="form-control input-sm" placeholder="Artist or Date">
-              </div>
-              <button type="submit" class="btn btn-default input-sm">Search</button>
-            </form>
-            {% include 'blocks/nav_personallinks.html' %}
-          </div><!-- /.navbar-collapse -->
-        {% endblock nav %}
-      </div><!-- /.container-fluid -->
-    </nav>  
-    <div class="container-fluid">  
-      {% block custom-page-heading %}{% endblock custom-page-heading %}
-      {% block content %}{% endblock content %}
-    </div>  
-    <footer> 
-      <p>&copy;2014 Smalls  •  183 W. 10th St, New York, NY 10014 <a href="#">(Directions)</a><br /><a href="mailto:info@smallsjazzclub.com">info@smallsjazzclub.com</a> • 212-252-5091</p>
-      <ul>
-        <li><a href="">Staff/Team</a></li>
-        <li><a href="">Mission Statement</a></li>
-      </ul>
-    </footer>
-    <div class="dev">
-      <h1>Global Dev Notes:</h1>
-      <ul>
-        <li><code>G1</code> if a show is going on, we display this in the nav bar. else, hide the link. this goes right to the event that has a show going on.</li>
-        <li><code>g2</code> - cancel musician reg. link - when clicked, cancel the reg in backend as needed, redirect them to about-smallslive-for-musicians and show a green success flash message: "You cancelled the artist sign-up process. Bookmark this page if you want to sign up at a later date."  </li>
-        <li><code>g3</code> - see base_musician-signup.html - we show the artist's name when they are signing up, as soon as the system is capable of displaying it via URL or logged in status.</li>
-      </ul>
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block bodyclass %}{% endblock bodyclass %}">
+{% block alert %}
+  {% for message in messages %}
+    <div class="alert {% if message.tags %}{{ message.tags }}{% endif %} alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      {{ message }}
     </div>
-    <div class="well">  
-      <h2>Screen Listing</h2>
-      <h3>Artist and Public Screens </h3>
-      <ul>
-        <li><a href="/">SmallsLIVE Home</a></li>
-        <li><a href="{% url "artist_detail" pk=122 %}">Artist page</a></li>   
-        <li><a href="{% url "event_detail" pk=8402 slug="something" %}">Event page</a></li>
-        <li><a href="/static_page/about">About the club</a></li>
-        <li><a href="/static_page/about-smallslive-for-musicians">Artist Sign Up Starting Point</a> &rarr; <a href="/static_page/musician-signup-login">Artist Reg (1 of 4)</a> (this link starts process)</li> 
-        <li><a href="/accounts/login/">Log In</a> &rarr; <a href="/accounts/signup/">Signup Form</a>
- &rarr; <a href="/static_page/upgrade/">Upgrade Form</a>
-          <li><a href="/static_page/my-account-summary">My Account Section</a> - subscription, downloads, trans. history (has many versions, see footer)</li>
-          <li><a href="{% url 'my_gigs' %}">$ Dashboard for Artists</a></li>
-      </ul>
-      <h3>Admin Screens</h3>
-      <ul> 
-          <li><a href="{% url 'venue_dashboard' %}">Calendar (Dashboard)</a> &rarr; <a href="/static_page/invite-artists/">Invite artists in bulk</a></li>
-          <li><a href="{% url 'recordings' %}">Videos &amp; Audio</a></li>
-          <li><a href="{% url "admin:index" %}">Django Admin</a></li>
-      </ul>
-    </div>    
+  {% endfor %}
+{% endblock alert %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <a href="/" class="smalls-logo"><img src="{% static 'image/smalls-logo.png' %}" alt="Smalls"
+                                            class="img-circle" width="98" height="98"/>{% block subbrand %}{% endblock subbrand %}</a>
+      <form role="search" class="search-form" action="/static_page/search">
+        <div class="form-group">
+          <div class="input-group search">
+            <input type="text" class="form-control input-sm" placeholder="Artist or Date">
+            <span class="input-group-btn">
+              <button class="btn btn-default input-sm" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+            </span>
+          </div>
+        </div>
+      </form>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="{% static 'js/bootstrap.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/selectize.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/jquery-ui-1.10.4.custom.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/application.js' %}"></script>
-    {% block extra_js %}{% endblock extra_js %}
-  </body>
+  </div>
+  <nav class="main-nav" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    {% block nav %}
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="main-nav">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="/">Home</a></li>
+          <li><a href="/events/8202/"><span class="text-primary">(Live Now!)<code>G1</code></span></a></li>
+          <li><a href="{% url "calendar" %}">Calendar</a></li>
+          <li><a href="/static_page/search">Video <span class="longname"> Archive</span></a></li>
+          <li><a href="#">Store</a></li>
+          <li><a href="/static_page/about">About</a></li>
+        </ul>
+
+        {% include 'blocks/nav_personallinks.html' %}
+      </div><!-- /.navbar-collapse -->
+    {% endblock nav %}
+  </nav>
+</div>
+<!-- /.container-fluid -->
+
+<div class="container-fluid">
+  {% block custom-page-heading %}{% endblock custom-page-heading %}
+  {% block content %}{% endblock content %}
+</div>
+<footer>
+  <p>&copy;2014 Smalls • 183 W. 10th St, New York, NY 10014 <a href="#">(Directions)</a><br/><a
+          href="mailto:info@smallsjazzclub.com">info@smallsjazzclub.com</a> • 212-252-5091</p>
+  <ul>
+    <li><a href="">Staff/Team</a></li>
+    <li><a href="">Mission Statement</a></li>
+  </ul>
+</footer>
+<div class="dev">
+  <h1>Global Dev Notes:</h1>
+  <ul>
+    <li><code>G1</code> if a show is going on, we display this in the nav bar. else, hide the link. this goes right to
+      the event that has a show going on.
+    </li>
+    <li><code>g2</code> - cancel musician reg. link - when clicked, cancel the reg in backend as needed, redirect them
+      to about-smallslive-for-musicians and show a green success flash message: "You cancelled the artist sign-up
+      process. Bookmark this page if you want to sign up at a later date."
+    </li>
+    <li><code>g3</code> - see base_musician-signup.html - we show the artist's name when they are signing up, as soon as
+      the system is capable of displaying it via URL or logged in status.
+    </li>
+  </ul>
+</div>
+<div class="well">
+  <h2>Screen Listing</h2>
+
+  <h3>Artist and Public Screens </h3>
+  <ul>
+    <li><a href="/">SmallsLIVE Home</a></li>
+    <li><a href="{% url "artist_detail" pk=122 %}">Artist page</a></li>
+    <li><a href="{% url "event_detail" pk=8402 slug="something" %}">Event page</a></li>
+    <li><a href="/static_page/about">About the club</a></li>
+    <li><a href="/static_page/about-smallslive-for-musicians">Artist Sign Up Starting Point</a> &rarr; <a
+            href="/static_page/musician-signup-login">Artist Reg (1 of 4)</a> (this link starts process)
+    </li>
+    <li><a href="/accounts/login/">Log In</a> &rarr; <a href="/accounts/signup/">Signup Form</a>
+      &rarr; <a href="/static_page/upgrade/">Upgrade Form</a>
+    <li><a href="/static_page/my-account-summary">My Account Section</a> - subscription, downloads, trans. history (has
+      many versions, see footer)
+    </li>
+    <li><a href="{% url 'my_gigs' %}">$ Dashboard for Artists</a></li>
+  </ul>
+  <h3>Admin Screens</h3>
+  <ul>
+    <li><a href="{% url 'venue_dashboard' %}">Calendar (Dashboard)</a> &rarr; <a href="/static_page/invite-artists/">Invite
+      artists in bulk</a></li>
+    <li><a href="{% url 'recordings' %}">Videos &amp; Audio</a></li>
+    <li><a href="{% url "admin:index" %}">Django Admin</a></li>
+  </ul>
+</div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/selectize.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery-ui-1.10.4.custom.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/application.js' %}"></script>
+{% block extra_js %}{% endblock extra_js %}
+</body>
 </html>

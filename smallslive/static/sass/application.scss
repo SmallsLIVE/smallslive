@@ -15,6 +15,42 @@ $margin-bottom:                 24px;
 $font-smaller:                  11px;
 /* TEmplate setup - body, footer, etc */
 
+body {
+  background: url("../image/faces-background.png") top right no-repeat;
+}
+
+.nav {
+  margin-top: 150px;
+}
+
+.smalls-logo {
+  background-color: #fff;
+  display: block;
+  width: 98px;
+  float: left;
+}
+
+.smalls-logo img {
+  position: relative;
+  z-index: 999;
+}
+
+.search-form {
+  float: left;
+  padding-top: 34px;
+  margin-left: -5px;
+  z-index: 0;
+  position: relative;
+}
+
+.search-form input {
+  padding-left: 10px;
+}
+
+.search {
+  max-width: 282px;
+}
+
 /* Masthead */
 body { 
   > div.alert {
@@ -72,8 +108,7 @@ body {
  (min-width : 950px) {
   .navbar-brand img { 
     top:-.5em;
-    width: 80px;
-    padding: 8px;
+    width: 98px;
   }
 }
 /*Footer*/
