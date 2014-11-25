@@ -1,4 +1,4 @@
-{% load compressed static %}
+{% load pipeline static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock title %}{% block title_prefix %} @ {% endblock title_prefix %}SmallsLIVE{% block title_suffix %}{% endblock title_suffix%}</title>
-    {% compressed_css 'css' %}
+    {% stylesheet 'css' %}
     {% block extra_css %}
     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
     {% endblock extra_css %}
