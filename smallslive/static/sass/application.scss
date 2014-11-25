@@ -32,10 +32,8 @@ body {
     }
     .navbar-brand {
       span.label {
-        font-size: 100%;
         color: #222;
         font-size: 60%;
-        color: #222;
         position: relative;
         top:-1.1em;
         background: #fff;
@@ -118,7 +116,7 @@ footer {
   margin-top: -20px;
   margin-bottom: 20px;
   padding-bottom: 20px;
-  background: #000;
+  background: #fff;
   > div {
   padding-top:20px;
   }
@@ -130,6 +128,12 @@ footer {
   }
   .carousel-caption img {
     width: 100%; 
+  }
+  .carousel-control.left {
+    background-image: none;
+  }
+  .carousel-control.right {
+    background-image: none;
   }
 }
 @media all and 
@@ -735,7 +739,6 @@ table.fans-following tr td:not(:first-child) {
 /*=Components , Element and Bootstrap Overrides*/
 body .page-header  {
   margin: 0;
-  padding-bottom: 0;
   border-bottom: none;
   background: #333;
   padding: 12px;
