@@ -1,7 +1,11 @@
-@import "bootstrap/vendor/assets/stylesheets/bootstrap.scss";
-@import "../css/selectize.bootstrap3.css";
-@import "../js/datepicker.css";
-@import "../js/jqui/jquery-ui-1.10.4.custom.min.css";
+/* Main Sass file
+Code organization as per: http://www.sitepoint.com/architecture-sass-project/
+*/
+
+@import "bootstrap-sass";
+@import "vendors/selectize.bootstrap3.css";
+@import "vendors/datepicker.css";
+@import "vendors/jquery-ui-1.10.4.custom.min.css";
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
      -moz-border-radius: $radius;
@@ -23,33 +27,8 @@ body {
   margin-top: 150px;
 }
 
-.smalls-logo {
-  background-color: #fff;
-  display: block;
-  width: 98px;
-  float: left;
-}
+@import "components/search";
 
-.smalls-logo img {
-  position: relative;
-  z-index: 999;
-}
-
-.search-form {
-  float: left;
-  padding-top: 34px;
-  margin-left: -5px;
-  z-index: 0;
-  position: relative;
-}
-
-.search-form input {
-  padding-left: 10px;
-}
-
-.search {
-  max-width: 282px;
-}
 
 /* Masthead */
 body { 
