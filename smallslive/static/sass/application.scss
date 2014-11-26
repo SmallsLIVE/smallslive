@@ -2,10 +2,11 @@
 Code organization as per: http://www.sitepoint.com/architecture-sass-project/
 */
 
-@import "bootstrap-sass";
+@import "vendors/bootstrap";
 @import "vendors/selectize.bootstrap3.css";
 @import "vendors/datepicker.css";
 @import "vendors/jquery-ui-1.10.4.custom.min.css";
+@import "vendors/_jquery-ui-1.10.4.smoothness.css";
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
      -moz-border-radius: $radius;
