@@ -1,0 +1,32 @@
+@import "../components/search";
+
+header {
+  margin-top: 30px;
+}
+
+nav {
+  margin-bottom: 40px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.nav a {
+  background: url("../image/navbar_separator.png") top right no-repeat;
+  color: #333;
+}
+
+.nav a:hover {
+  background-color: transparent;
+
+}
+
+.nav .glyphicon {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.nav-icon {
+  text-align: center;
+  width: 100%;
+}

@@ -2,7 +2,7 @@
 Code organization as per: http://www.sitepoint.com/architecture-sass-project/
 */
 
-@import "vendors/bootstrap";
+@import "vendors/bootstrap-custom";
 @import "vendors/selectize.bootstrap3";
 @import "vendors/datepicker";
 @import "vendors/jquery-ui-1.10.4.custom.min";
@@ -24,12 +24,7 @@ body {
   background: url("../image/faces-background.png") top right no-repeat;
 }
 
-.nav {
-  margin-top: 150px;
-  margin-bottom: 150px;
-}
-
-@import "components/search";
+@import "layout/header";
 
 
 /* Masthead */
