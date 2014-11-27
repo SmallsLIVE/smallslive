@@ -26,7 +26,7 @@
     </div>
   {% endfor %}
 {% endblock alert %}
-<div class="container">
+<header class="container">
   <div class="row">
     <div class="col-xs-12">
       <a href="/" class="smalls-logo"><img src="{% static 'image/smalls-logo.png' %}" alt="Smalls"
@@ -43,36 +43,14 @@
       </form>
     </div>
   </div>
-  <nav class="main-nav" role="navigation">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
+  <div class="row">
+    <div class="col-lg-offset-1 col-lg-11">
+      {% include "blocks/navigation.html" %}
     </div>
-    {% block nav %}
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      <div class="collapse navbar-collapse" id="main-nav">
-        <ul class="nav navbar-nav">
-          <li class="active"><a href="/">Home</a></li>
-          <li><a href="/events/8202/"><span class="text-primary">(Live Now!)<code>G1</code></span></a></li>
-          <li><a href="{% url "calendar" %}">Calendar</a></li>
-          <li><a href="/static_page/search">Video <span class="longname"> Archive</span></a></li>
-          <li><a href="#">Store</a></li>
-          <li><a href="/static_page/about">About</a></li>
-        </ul>
+  </div>
+</header>
 
-        {% include 'blocks/nav_personallinks.html' %}
-      </div><!-- /.navbar-collapse -->
-    {% endblock nav %}
-  </nav>
-</div>
-<!-- /.container-fluid -->
-
-<div class="container-fluid">
+<div class="container">
   {% block custom-page-heading %}{% endblock custom-page-heading %}
   {% block content %}{% endblock content %}
 </div>

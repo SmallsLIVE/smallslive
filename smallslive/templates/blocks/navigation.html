@@ -1,0 +1,26 @@
+<nav class="main-nav" role="navigation">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  </div>
+  {% block nav %}
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home<span class="glyphicon glyphicon-home nav-icon"></span></a></li>
+        <li><a href="/events/8202/">Live Now!<br/><span class="glyphicon glyphicon-tree-conifer nav-icon"></span></a></li>
+        <li><a href="{% url "calendar" %}">Calendar<span class="glyphicon glyphicon-calendar nav-icon"></span></a></li>
+        <li><a href="/static_page/search">Videos<span class="glyphicon glyphicon-music nav-icon"></span></a></li>
+        <li><a href="#">Store<span class="glyphicon glyphicon-record nav-icon"></span></a></li>
+        <li><a href="/static_page/about">About<span class="glyphicon glyphicon-map-marker nav-icon"></span></a></li>
+      </ul>
+
+      {% include 'blocks/nav_personallinks.html' %}
+    </div><!-- /.navbar-collapse -->
+  {% endblock nav %}
+</nav>
