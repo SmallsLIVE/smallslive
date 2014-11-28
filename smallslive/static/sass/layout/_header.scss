@@ -17,7 +17,7 @@ header {
   margin-top: 30px;
 }
 
-nav {
+.main-nav {
   font-family: museo;
   margin-bottom: 40px;
   text-align: center;
@@ -25,17 +25,22 @@ nav {
   font-weight: bold;
 }
 
-.nav a {
+.main-nav a {
   background: url("../image/navbar_separator.png") top right no-repeat;
   color: #333;
 }
 
-.nav a:hover {
+.main-nav a:hover {
   background-color: transparent;
-
 }
 
-.nav .glyphicon {
+@media (min-width: $screen-md-min) {
+  .main-nav ul {
+    margin-left: 65px;
+  }
+}
+
+.main-nav .glyphicon {
   font-size: 14px;
   margin-top: 4px;
 }
