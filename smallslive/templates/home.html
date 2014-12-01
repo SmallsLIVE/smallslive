@@ -5,18 +5,25 @@
 {% block content %}
   <div class="row">
     <div class="col-sm-9">
-      <h2>Featured Events:<code>1</code></h2>
-      
-      {% for event in events %}
-        {% if forloop.counter < 4 %}
-         {% include 'blocks/event-snippet.html' %}
-        {% endif %}
+{#      <h2>Coming up next @ Smalls:</h2>#}
+{#      {% for event in events %}#}
+{#         {% include 'blocks/event-snippet.html' %}#}
+{#      {% endfor %}#}
+{#      <p><a href="/static_page/calendar">Full calendar</a></p>#}
+      <h3>Newest Videos in the Archive</h3>
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+
+      {% include 'blocks/search-result-media.html' %}
+      <p><a href="/static_page/search">More</a></p>
+      <h3>Most Popular Recordings:</h3>
+      <p>We try to get concert videos posted within 3 days of being taped. Here are the latest:</p>
+      {% for video in videos|slice:":4" %}
+        {% include 'blocks/search-result-media.html' %}
       {% endfor %}
-      <h2>Coming up next @ Smalls:</h2>
-      {% for event in events %}
-         {% include 'blocks/event-snippet.html' %}
-      {% endfor %}
-      <p><a href="/static_page/calendar">Full calendar</a></p>
       <h2>About Smalls and SmallsLIVE</h2>
       <p>Smalls is a historic jazz club in NYC presenting the best in live jazz music 7 days a week. SmallsLIVE is our digital audio service where jazz fans can watch 3000+ hours of concert audio recorded at the club since 2007. We live-stream and record every concert at Smalls, so check out <a href="">tonight's show online for free</a>. To access the archive of recordings, you'll need a <a href="">subscription</a>.</p>
     
@@ -38,31 +45,19 @@
     </div>
 
     <div class="col-sm-3">
-      <div class="well">
-        <span class="text-success">SmallsLIVE</span>
-        <h2><code>3</code>Enjoy 8,000+ Hours of Live Jazz from Smalls</h2>
-        <p>Get 30 days of unlimited access to our archive of over 350 jazz concerts recorded at Smalls since 2007. After your trial, it's just $20/month  to unlock permanent access to the archive. <a href="#">Learn more</a></p>
-        <a class="btn btn-primary" href="/accounts/signup">Start Free Trial</a>
-        <p class="text-muted"><br /><a href="#">Log In (I have an account)</a></p>
+      <div class="free-trial-box">
+        <p class="new-from-smalls">NEW FROM SMALLS LIVE:</p>
+        <ul>
+          <li>1000s of Jazz Videos.</li>
+          <li>Live Broadcasts.</li>
+          <li>Free for 30 days.</li>
+        </ul>
+        <hr/>
+        <p>It's finally here! Get unlimited access to our audio & video archive of over 350 jazz concerts. After 30 days, it's just $20/month.</p>
+        <a class="btn start-trial-button" href="/accounts/signup">Start Free Trial</a>
+        <a class="login" href="#">Log In</a>
       </div>
-      <h3>New Recordings Available:</h3>
-      <p>We try to get the audio recordings of our shows posted within 24 hours of being taped. Here are the latest sets available for streamed listening:</p>
-      {% include 'blocks/search-result-media.html' %}
 
-      {% include 'blocks/search-result-media.html' %}
-
-      {% include 'blocks/search-result-media.html' %}
-
-      {% include 'blocks/search-result-media.html' %}
-
-      {% include 'blocks/search-result-media.html' %}
-      <p><a href="/static_page/search">More</a></p>
-      <h3>Most Popular Recordings:</h3>
-      <p>We try to get concert videos posted within 3 days of being taped. Here are the latest:</p>
-      {% for video in videos %}
-        {% include 'blocks/search-result-media.html' %}
-      {% endfor %}
-      <p><a href="/static_page/search">More audio recordings</a></p>
       <h3>Have you performed at Smalls?</h3>
     <p>You can earn $ on the recordings you have made at Smalls when you participate in <a href="/static_page/about-smallslive-for-musicians/">SmallsLIVE for Musicians</a>.</p>
     </div>
