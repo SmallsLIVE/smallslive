@@ -4,3 +4,9 @@
       -ms-border-radius: $radius;
           border-radius: $radius;
 }
+
+@mixin horizontal-ruler($color) {
+  border-color: $color;
+  background-color: $color;
+  color: $color;
+}

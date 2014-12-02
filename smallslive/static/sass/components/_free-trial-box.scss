@@ -32,9 +32,7 @@
 }
 
 .free-trial-box hr {
-  border-color: #e6e6e6;
-  background-color: #e6e6e6;;
-  color: #e6e6e6;
+  @include horizontal-ruler(#e6e6e6);
 }
 
 .free-trial-box .login {
