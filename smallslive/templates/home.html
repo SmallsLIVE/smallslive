@@ -10,20 +10,23 @@
 {#         {% include 'blocks/event-snippet.html' %}#}
 {#      {% endfor %}#}
 {#      <p><a href="/static_page/calendar">Full calendar</a></p>#}
-      <h3>Newest Videos in the Archive</h3>
-      {% include 'blocks/search-result-media.html' %}
-
-      {% include 'blocks/search-result-media.html' %}
-
-      {% include 'blocks/search-result-media.html' %}
-
-      {% include 'blocks/search-result-media.html' %}
-      <p><a href="/static_page/search">More</a></p>
-      <h3>Most Popular Recordings:</h3>
-      <p>We try to get concert videos posted within 3 days of being taped. Here are the latest:</p>
-      {% for video in videos|slice:":4" %}
-        {% include 'blocks/search-result-media.html' %}
-      {% endfor %}
+      <section class="video-section">
+        <h1>Newest Videos in the Archive</h1>
+        <div class="row">
+          <div class="col-md-3">{% include 'blocks/search-result-media.html' %}</div>
+          <div class="col-md-3">{% include 'blocks/search-result-media.html' %}</div>
+          <div class="col-md-3">{% include 'blocks/search-result-media.html' %}</div>
+          <div class="col-md-3">{% include 'blocks/search-result-media.html' %}</div>
+        </div>
+      </section>
+      <section class="video-section">
+        <h1>Most Popular Videos</h1>
+        <div class="row">
+        {% for video in videos|slice:":4" %}
+          <div class="col-md-3">{% include 'blocks/search-result-media.html' %}</div>
+        {% endfor %}
+        </div>
+      </section>
       <h2>About Smalls and SmallsLIVE</h2>
       <p>Smalls is a historic jazz club in NYC presenting the best in live jazz music 7 days a week. SmallsLIVE is our digital audio service where jazz fans can watch 3000+ hours of concert audio recorded at the club since 2007. We live-stream and record every concert at Smalls, so check out <a href="">tonight's show online for free</a>. To access the archive of recordings, you'll need a <a href="">subscription</a>.</p>
     
