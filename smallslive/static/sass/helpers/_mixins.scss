@@ -6,7 +6,7 @@
 }
 
 @mixin horizontal-ruler($color) {
-  border-color: $color;
   background-color: $color;
+  border-color: $color;
   color: $color;
 }

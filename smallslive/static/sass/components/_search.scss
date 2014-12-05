@@ -1,26 +1,26 @@
-/* Smalls logo and search bar combined */
+// Smalls logo and search bar combined
 .smalls-logo {
   background-color: #fff;
   display: block;
-  width: 98px;
   float: left;
-}
+  width: 98px;
 
-.smalls-logo img {
-  position: relative;
-  z-index: 999;
+  img {
+    position: relative;
+    z-index: 999;
+  }
 }
 
 .search-form {
   float: left;
-  padding-top: 34px;
   margin-left: -5px;
-  z-index: 0;
+  padding-top: 34px;
   position: relative;
-}
+  z-index: 0;
 
-.search-form input {
-  padding-left: 10px;
+  input {
+    padding-left: 10px;
+  }
 }
 
 .search {

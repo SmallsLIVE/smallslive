@@ -1,35 +1,35 @@
-@import "../components/search";
+@import '../components/search';
 
 header {
   margin-top: 30px;
 }
 
 .main-nav {
-  font-family: museo;
-  margin-bottom: 30px;
-  text-align: center;
+  font-family: 'museo500', sans-serif;
   font-size: 18px;
   font-weight: bold;
-}
+  margin-bottom: 30px;
+  text-align: center;
 
-.main-nav a {
-  background: url("../image/navbar_separator.png") top right no-repeat;
-  color: #333;
-}
+  a {
+    background: url('../image/navbar_separator.png') top right no-repeat;
+    color: #333;
+  }
 
-.main-nav a:hover {
-  background-color: transparent;
+  a:hover {
+    background-color: transparent;
+  }
+
+  .glyphicon {
+    font-size: 14px;
+    margin-top: 4px;
+  }
 }
 
 @media (min-width: $screen-md-min) {
   .main-nav ul {
     margin-left: 65px;
   }
-}
-
-.main-nav .glyphicon {
-  font-size: 14px;
-  margin-top: 4px;
 }
 
 .nav-icon {
