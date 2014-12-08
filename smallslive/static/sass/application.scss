@@ -77,49 +77,13 @@ body {
     width: 98px;
   }
 }
-
-/*Footer*/
-footer {
-  background: #fafafa;
-  color: $text-color;
-  padding: 1em;
-  margin-top: 2em;
-  border-top: 1px solid #ccc;
-  text-align: center;
-  position: relative;
-  ul {
-    padding-left: 0;
-    li {
-      text-align: center;
-      list-style: none;
-    }
-  }
-}
-
-@media all and(min-width: 950px) {
-  footer {
-    text-align: left;
-    ul {
-      position: absolute;
-      right: 20px;
-      top: 0;
-      text-align: left;
-      display: inline;
-      li {
-        display: inline;
-        margin-right: 1em;
-      }
-    }
-  }
-}
-
 /*=Public screens*/
 /*Home*/
 .homepage-spotlight {
   margin-top: -20px;
   margin-bottom: 20px;
   padding-bottom: 20px;
-  background: #fff;
+  background: #ddd;
   > div {
     padding-top: 20px;
   }
