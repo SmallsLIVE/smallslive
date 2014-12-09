@@ -1,0 +1,26 @@
+{
+  "name": "smallslive",
+  "version": "1.0.0",
+  "description": "[ ![Codeship Status for SmallsLIVE/smallslive](https://www.codeship.io/projects/fa4ca030-7922-0130-982f-123138094421/status?branch=master)](https://www.codeship.io/projects/2192)",
+  "main": "gulpfile.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "browser-sync": "^1.7.2",
+    "gulp": "^3.8.10",
+    "gulp-sass": "^1.2.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SmallsLIVE/smallslive.git"
+  },
+  "author": "Filip Jukić <filip@appsembler.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SmallsLIVE/smallslive/issues"
+  },
+  "homepage": "https://github.com/SmallsLIVE/smallslive"
+}
