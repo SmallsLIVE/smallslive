@@ -7,7 +7,34 @@
     <div class="col-sm-9">
       <section class="next-in-smalls">
         <h1>Sunday, Aug. 14 @ Smalls in NYC...</h1>
+
+        <div class="row">
+          <div class="col-sm-4">
+            <img src="http://placehold.it/300x300">
+          </div>
+          <div class="col-sm-8">
+            <ol>
+              {% for event in events|slice:":3" %}
+                {# Added microformats classes for events: http://microformats.org/wiki/h-event #}
+                <li class="h-event next-in-smalls__events">
+                  <time><span>{{ event.start|date:"g:i" }}<br />{{ event.start|date:"A"|lower }}</span></time>
+                  <div class="next-in-smalls__event-info">
+                    <h2>{{ event.title }}</h2>
+
+                    <h3>{{ event.leader }}</h3>
+                    <ul class="performers">
+                      {% for performer in event.get_performers %}
+                        <li class="performers__performer"><a href="{{ performer.artist.get_absolute_url }}">{{ performer.artist }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </li>
+              {% endfor %}
+            </ol>
+          </div>
+        </div>
         <p><a href="/static_page/calendar">Full calendar</a></p>
+
       </section>
       <section class="video-section">
         <h1>Newest Videos in the Archive</h1>

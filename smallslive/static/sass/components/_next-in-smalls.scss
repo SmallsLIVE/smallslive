@@ -3,4 +3,73 @@
     font-family: 'museo700', sans-serif;
     font-size: 20px;
   }
+
+  h2 {
+    font-family: "museo_sans500", sans-serif;
+    font-size: 13px;
+    margin-top: 0;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    font-family: 'museo500', sans-serif;
+    font-size: 20px;
+    margin-top: 5px;
+  }
+
+  time {
+    border-radius: 50%;
+    border: 2px #d0d0d0 dotted;
+    color: #d0d0d0;
+    display: inline-block;
+    font-family: 'museo700', sans-serif;
+    font-size: 12px;
+    height: 50px;
+    line-height: 50px;
+    margin-right: 10px;
+    text-align: center;
+    width: 50px;
+    vertical-align: top;
+
+    span {
+      display:inline-block;
+      line-height: 14px;
+      vertical-align:middle
+    }
+
+  }
+
+  &__events {
+    list-style: none;
+    margin-bottom: 20px;
+
+  }
+
+  &__event {
+    }
+
+  &__event-info {
+    display: inline-block;
+  }
+}
+
+.performers {
+
+  padding-left: 0;
+
+  &__performer {
+      display: inline;
+  }
+
+  &__performer:first-child:before {
+    content: none;
+  }
+
+  &__performer:before {
+    content: " • ";
+  }
+}
+
+.row-no-gutter {
+  @include make-row(0);
 }

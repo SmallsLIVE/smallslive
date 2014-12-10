@@ -7,10 +7,7 @@
 @import 'vendors/jquery-ui-1.10.4.custom.min';
 @import 'vendors/jquery-ui-1.10.4.smoothness';
 
-body {
-  background: url('../image/faces-background.png') top right no-repeat;
-}
-
+@import 'base/common';
 @import 'base/typography';
 @import 'helpers/mixins';
 @import 'layout/header';
