@@ -37,7 +37,11 @@
       line-height: 14px;
       vertical-align:middle
     }
+  }
 
+  img {
+    border: 1px solid #d0d0d0;
+    padding: 15px;
   }
 
   &__events {
@@ -52,6 +56,12 @@
   &__event-info {
     display: inline-block;
     margin-left: 65px;
+  }
+
+  &__full-calendar {
+    padding-top: 20px;
+    text-align: center;
+    text-decoration: underline;
   }
 }
 
