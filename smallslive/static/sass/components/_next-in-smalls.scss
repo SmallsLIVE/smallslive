@@ -25,11 +25,12 @@
     font-family: 'museo700', sans-serif;
     font-size: 12px;
     height: 50px;
-    line-height: 50px;
+    line-height: 48px;
     margin-right: 10px;
+    position: absolute;
+    left: 0;
     text-align: center;
     width: 50px;
-    vertical-align: top;
 
     span {
       display:inline-block;
@@ -41,15 +42,16 @@
 
   &__events {
     list-style: none;
-    margin-bottom: 20px;
-
   }
 
   &__event {
-    }
+      position: relative;
+      margin-bottom: 20px;
+  }
 
   &__event-info {
     display: inline-block;
+    margin-left: 65px;
   }
 }
 
@@ -68,8 +70,4 @@
   &__performer:before {
     content: " • ";
   }
-}
-
-.row-no-gutter {
-  @include make-row(0);
 }

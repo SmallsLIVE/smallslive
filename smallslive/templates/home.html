@@ -13,11 +13,11 @@
             <img src="http://placehold.it/300x300">
           </div>
           <div class="col-sm-8">
-            <ol>
+            <ol class="next-in-smalls__events">
               {% for event in events|slice:":3" %}
                 {# Added microformats classes for events: http://microformats.org/wiki/h-event #}
-                <li class="h-event next-in-smalls__events">
-                  <time><span>{{ event.start|date:"g:i" }}<br />{{ event.start|date:"A"|lower }}</span></time>
+                <li class="h-event next-in-smalls__event">
+                    <time><span>{{ event.start|date:"g:i" }}<br />{{ event.start|date:"A"|lower }}</span></time>
                   <div class="next-in-smalls__event-info">
                     <h2>{{ event.title }}</h2>
 
