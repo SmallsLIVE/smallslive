@@ -1,0 +1,46 @@
+.product-section h1 {
+  color: #575757;
+  font-family: "museo500", sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+
+
+.product-thumbnail {
+  display: inline-block;
+}
+
+.product-info {
+  display: inline-block;
+  vertical-align: top;
+  width: 160px;
+  padding-left: 5px;
+}
+
+.product-title {
+  color: #575757;
+  font-family: "museo_sans500", sans-serif;
+  font-size: 11px;
+  line-height: 1.6;
+  margin-bottom: 2px;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+.product-subtitle {
+  color: #888;
+  font-family: "Rosario", sans-serif;
+  font-size: 12px;
+}
+
+.video-available {
+  color: #e83a59;
+  margin-top: 10px;
+}
+
+.buy-button {
+  @include button-size(5px, $padding-base-horizontal, 11px, $line-height-base, 0);
+  @include button-variant(#fff, #32a0d7, #32a0d7);
+  font-family: 'museo500', sans-serif;
+}
