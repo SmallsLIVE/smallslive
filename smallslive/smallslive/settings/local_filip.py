@@ -31,3 +31,14 @@ INSTALLED_APPS += (
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+PIPELINE_COMPILERS = ''
+PIPELINE_SASS_ARGUMENTS = ''
+PIPELINE_CSS = {
+    'css': {
+        'source_filenames': (
+            'css/application.css',
+        ),
+        'output_filename': 'css/application.css',
+    },
+}

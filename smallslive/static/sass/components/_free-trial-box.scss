@@ -1,49 +1,50 @@
 .free-trial-box {
-  padding: 20px 16px 14px;
-  background-color: #F2F2F2;
-  border: 1px solid #E6E6E6;
+  background-color: #f2f2f2;
+  border: 1px solid #e6e6e6;
+  padding: 20px 16px 18px;
+
 
   p {
+    color: #3c3c3c;
     font-family: 'Rosario', sans-serif;
     line-height: 2;
-    color: #3c3c3c;
   }
 
-  p.new-from-smalls {
-    color: #E02147;
+  .new-from-smalls {
+    color: #e02147;
     font-size: 12px;
-    text-align: center;
     line-height: 1;
     margin-bottom: 12px;
+    text-align: center;
   }
-}
 
-.free-trial-box ul {
-  text-align: center;
-  padding: 0;
-  list-style-type: none;
-  color: #6a6a6a;
-  font-family: "museo500";
-  font-size: 18px;
+  ul {
+    color: #6a6a6a;
+    font-family: 'museo500', sans-serif;
+    font-size: 18px;
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
 
-  li {
-    margin-bottom: 10px;
+    li {
+      margin-bottom: 10px;
+    }
   }
-}
 
-.free-trial-box hr {
-  @include horizontal-ruler(#e6e6e6);
-}
+  hr {
+    @include horizontal-ruler(#e6e6e6);
+  }
 
-.free-trial-box .login {
-  margin-left: 14px;
-  font-family: 'Rosario';
-  color: #888;
-  text-decoration: underline;
+  .login {
+    color: #888;
+    font-family: 'Rosario', sans-serif;
+    margin-left: 14px;
+    text-decoration: underline;
+  }
 }
 
 .start-trial-button {
   @include button-size($padding-base-vertical, $padding-base-horizontal, 11px, $line-height-base, 0);
-  @include button-variant(#fff, #32A0D7, #32A0D7);
-  font-family: "museo500";
+  @include button-variant(#fff, #32a0d7, #32a0d7);
+  font-family: 'museo500', sans-serif;
 }

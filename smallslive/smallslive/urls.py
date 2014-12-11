@@ -4,8 +4,6 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.views.generic.base import TemplateView
 
-import djstripe
-
 # uncomment these lines to enable the Djrill admin interface 
 #from djrill import DjrillAdminSite
 #admin.site = DjrillAdminSite()
@@ -26,7 +24,6 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/login/$', 'users.views.login_view', name="account_login"),
     url(r'^accounts/', include('allauth.urls', app_name="allauth")),
-    url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^$', 'events.views.homepage', name="home"),
 
