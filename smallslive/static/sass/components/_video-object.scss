@@ -34,7 +34,7 @@
   @extend .btn;
   @include button-size($padding-base-vertical, 20px, 11px, $line-height-base, 4px);
   @include button-variant(#fff, #e02147, #fff);
-  left: 40%;
+  left: 25%;
   position: absolute;
-  top: 40%;
+  top: 35%;
 }
