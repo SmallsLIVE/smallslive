@@ -10,8 +10,15 @@ header {
   margin-bottom: 30px;
   text-align: center;
 
-  a {
+  li {
     background: url('../image/navbar_separator.png') bottom right no-repeat;
+  }
+
+  li:last-child {
+    background: none;
+  }
+
+  a {
     color: #333;
   }
 
@@ -23,6 +30,25 @@ header {
   .glyphicon {
     font-size: 14px;
     margin-top: 4px;
+  }
+
+  .free-trial {
+    p {
+      color: #8f8f8f;
+      font-size: 11px;
+      padding-left: 15px;
+      padding-top: 5px;
+      text-align: left;
+    }
+  }
+
+  .login {
+    color: #3bafde;
+    text-decoration: none;
+  }
+
+  .login:hover {
+    text-decoration: underline;
   }
 }
 
