@@ -11,12 +11,13 @@ header {
   text-align: center;
 
   a {
-    background: url('../image/navbar_separator.png') top right no-repeat;
+    background: url('../image/navbar_separator.png') bottom right no-repeat;
     color: #333;
   }
 
   a:hover {
     background-color: transparent;
+    color: #3bafde;
   }
 
   .glyphicon {
