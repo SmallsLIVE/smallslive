@@ -44,6 +44,7 @@
 }
 
 .start-trial-button {
+  @extend .btn;
   @include button-size($padding-base-vertical, $padding-base-horizontal, 11px, $line-height-base, 0);
   @include button-variant(#fff, #32a0d7, #32a0d7);
   font-family: 'museo500', sans-serif;
