@@ -5,6 +5,7 @@ MarkupSafe==0.23
 execnet==1.2.0
 factory-boy==2.4.1
 glob2==0.4.1
+model-mommy==1.2.2
 py==1.4.26
 pytest==2.6.4
 pytest-bdd==2.5.1
