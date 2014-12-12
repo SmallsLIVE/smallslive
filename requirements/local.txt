@@ -1,0 +1,16 @@
+-r base.txt # Include the base requirements file
+
+Mako==1.0.0
+MarkupSafe==0.23
+execnet==1.2.0
+factory-boy==2.4.1
+glob2==0.4.1
+py==1.4.26
+pytest==2.6.4
+pytest-bdd==2.5.1
+pytest-django==2.7.0
+pytest-splinter==1.2.4
+python-openid==2.2.5
+pytest-xdist==1.11
+selenium==2.44.0
+splinter==0.7.0
