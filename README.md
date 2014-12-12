@@ -1,6 +1,7 @@
 # SmallsLIVE instructions
 
 [ ![Codeship Status for SmallsLIVE/smallslive](https://www.codeship.io/projects/fa4ca030-7922-0130-982f-123138094421/status?branch=master)](https://www.codeship.io/projects/2192)
+[![Coverage Status](https://img.shields.io/coveralls/SmallsLIVE/smallslive.svg)](https://coveralls.io/r/SmallsLIVE/smallslive)
 
 1. Install pip: `easy_install pip`
 2. Install virtualenv: `pip install virtualenv`
