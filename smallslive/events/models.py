@@ -1,5 +1,6 @@
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta, get_default_timezone
+from django.utils import timezone
 from django.conf import settings
 from django.db import models
 from django.core.urlresolvers import reverse
@@ -86,11 +87,12 @@ class Event(TimeStampedModel):
         display_title = display_title[:-2]
         return display_title
 
+    @property
     def is_past(self):
         """
         Checks if the event happened in the past.
         """
-        return self.end < datetime.now().date()
+        return self.end < timezone.now()
 
     def get_performers(self):
         return self.artists_gig_info.prefetch_related('artist', 'role')
@@ -109,10 +111,8 @@ class Event(TimeStampedModel):
         on 3/12 at 1:00 AM has a listing date of 3/11 to be correctly grouped with other
         events under that date.
         """
-        timezone = get_default_timezone()
-        date_time = timezone.normalize(self.start)
-        date = date_time.date()
-        if 0 <= date_time.hour <= 4:
+        date = self.start.date()
+        if 0 <= self.start.hour <= 4:
             date += timedelta(days=-1)
         return date
 
@@ -122,9 +122,7 @@ class Event(TimeStampedModel):
         on 3/12 at 1:00 AM has a listing date of 3/11 to be correctly grouped with other
         events under that date.
         """
-        timezone = get_default_timezone()
-        date_time = timezone.normalize(self.start)
-        date = date_time.date()
+        date = self.start.date()
         listing_date = self.listing_date()
         return date != listing_date
 
