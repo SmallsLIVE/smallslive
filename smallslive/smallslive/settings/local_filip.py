@@ -27,7 +27,18 @@ THUMBOR_SERVER = os.environ['THUMBOR_SERVER']
 AWS_S3_CUSTOM_DOMAIN = os.environ['AWS_S3_CUSTOM_DOMAIN']
 
 INSTALLED_APPS += (
-    'debug_toolbar',
+    #'debug_toolbar',
 )
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+PIPELINE_COMPILERS = ''
+PIPELINE_SASS_ARGUMENTS = ''
+PIPELINE_CSS = {
+    'css': {
+        'source_filenames': (
+            'css/application.css',
+        ),
+        'output_filename': 'css/application.css',
+    },
+}

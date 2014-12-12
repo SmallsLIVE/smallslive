@@ -61,6 +61,9 @@ media/
 koala-config.json
 .sass-cache/
 
+# NPM stuff
+node_modules/
+
 # data files
 smallsliveusers.txt
 smallslive/static/css/application.css

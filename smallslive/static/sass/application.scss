@@ -1,149 +1,124 @@
-@import "bootstrap/vendor/assets/stylesheets/bootstrap.scss";
-@import "../css/selectize.bootstrap3.css";
-@import "../js/datepicker.css";
-@import "../js/jqui/jquery-ui-1.10.4.custom.min.css";
-@mixin border-radius($radius) {
-  -webkit-border-radius: $radius;
-     -moz-border-radius: $radius;
-      -ms-border-radius: $radius;
-          border-radius: $radius;
-}
-/* Bootstrap var overrides */
-//** Border color for table and cell borders.
-$table-border-color:            #ddd;
-$margin-bottom:                 24px;
-$font-smaller:                  11px;
-/* TEmplate setup - body, footer, etc */
+//Main Sass file
+//Code organization as per: http://www.sitepoint.com/architecture-sass-project/
+@import 'vendors/bootstrap-custom';
+@import 'vendors/font-awesome/font-awesome';
+@import 'vendors/selectize.bootstrap3';
+@import 'vendors/datepicker';
+@import 'vendors/jquery-ui-1.10.4.custom.min';
+@import 'vendors/jquery-ui-1.10.4.smoothness';
 
-/* Masthead */
-body { 
+@import 'base/common';
+@import 'base/typography';
+@import 'helpers/mixins';
+@import 'layout/header';
+@import 'layout/footer';
+@import 'components/about-smalls';
+@import 'components/free-trial-box';
+@import 'components/next-in-smalls';
+@import 'components/popular-in-the-store';
+@import 'components/video-object';
+
+// Masthead
+body {
   > div.alert {
-    margin-bottom: 0; 
+    margin-bottom: 0;
     border-radius: 0;
-  } 
+  }
   nav.navbar {
     margin-bottom: 0;
-    @media all and (min-width : 800px) {
+    @media all and (min-width: 800px) {
       margin-bottom: 12px;
     }
     @include border-radius(0);
-    .longname  {
+    .longname {
       display: none;
     }
     .navbar-brand {
       span.label {
-        font-size: 100%;
         color: #222;
         font-size: 60%;
-        color: #222;
         position: relative;
-        top:-1.1em;
+        top: -1.1em;
         background: #fff;
         @include border-radius(0px);
       }
-      img { 
-          width: 44px;
-          position: relative; 
-          top: -.6em;
-          padding: 2px;
-          margin-right: -8px;
-          background: #fff;
-          z-index: 50;
+      img {
+        width: 44px;
+        position: relative;
+        top: -.6em;
+        padding: 2px;
+        margin-right: -8px;
+        background: #fff;
+        z-index: 50;
       }
     }
     form.search input:first-child {
       width: 95px;
-    }  
+    }
     form.f-artist-date-lookup input {
       min-width: 160px;
-    }  
+    }
   }
 }
-@media all and 
- (min-width : 800px) {
+
+@media all and(min-width: 800px) {
   ul.nav {
     span.longname {
       display: inline;
-    } 
+    }
     a.longname {
       display: block;
     }
   }
 }
-@media all and 
- (min-width : 950px) {
-  .navbar-brand img { 
-    top:-.5em;
-    width: 80px;
-    padding: 8px;
+
+@media all and(min-width: 950px) {
+  .navbar-brand img {
+    top: -.5em;
+    width: 98px;
   }
 }
-/*Footer*/
-footer {
-  background: #fafafa;
-  color: $text-color;
-  padding: 1em;
-  margin-top:2em;
-  border-top:1px solid #ccc;
-  text-align: center;
-  position: relative;
-  ul {
-    padding-left: 0; 
-    li {
-      text-align: center;
-      list-style: none;
-    }
-  }
-}
-@media all and 
- (min-width : 950px) {
-  footer {
-    text-align: left;
-    ul { 
-      position: absolute;
-      right: 20px;
-      top: 0;
-      text-align: left;
-      display: inline;
-      li {
-        display: inline;
-        margin-right: 1em;
-      }
-    }
-  }
-} 
 /*=Public screens*/
 /*Home*/
 .homepage-spotlight {
   margin-top: -20px;
   margin-bottom: 20px;
   padding-bottom: 20px;
-  background: #000;
+  background: #ddd;
   > div {
-  padding-top:20px;
+    padding-top: 20px;
   }
   a, a:visited {
-    color: #fff;  
+    color: #fff;
   }
   .carousel .item {
-    min-height: 400px; 
+    min-height: 400px;
   }
   .carousel-caption img {
-    width: 100%; 
+    width: 100%;
+  }
+  .carousel-control.left {
+    background-image: none;
+  }
+  .carousel-control.right {
+    background-image: none;
   }
 }
-@media all and 
- (min-width : 640px) {
-   .homepage-spotlight .carousel-caption img {
-     width: auto;
-   }
+
+@media all and(min-width: 640px) {
+  .homepage-spotlight .carousel-caption img {
+    width: auto;
+  }
 }
+
 .txt {
   text-align: left;
 }
+
 .num {
   text-align: right;
-} 
+}
+
 table.table {
   .num, .fan_count, .event_time {
     @extend .num;
@@ -170,10 +145,11 @@ table.table {
     text-align: right;
   }
 }
+
 /*=SEarch*/
 body.search .facets {
   div.input-group {
-    margin-bottom: 10px;  
+    margin-bottom: 10px;
   }
   .row div.checkbox {
     padding-left: 33px;
@@ -187,16 +163,17 @@ body.search .facets {
     padding: 0;
   }
 }
+
 /*=Calendar*/
 .calendar {
   .calendar-month {
     font-size: $font-smaller;
     .day {
-      padding: 4px; 
+      padding: 4px;
       time {
         display: block;
         font-size: 14px;
-        margin-top: 8px; 
+        margin-top: 8px;
       }
       ul {
         padding: 4px;
@@ -213,14 +190,15 @@ body.search .facets {
     }
     .past {
       a {
-        color: $gray; 
+        color: $gray;
       }
       background: #f5f5f5;
       color: $gray !important;
     }
   }
 }
-@media all and (min-width : $screen-md-min) {
+
+@media all and (min-width: $screen-md-min) {
   .calendar .calendar-month {
     .days-of-week {
       display: block;
@@ -229,7 +207,7 @@ body.search .facets {
     .day {
       float: left;
       width: 13%;
-      border: 1px solid #f1f1f1;  
+      border: 1px solid #f1f1f1;
       time {
         text-align: right;
         font-size: inherit;
@@ -237,32 +215,34 @@ body.search .facets {
       .month {
         display: none;
       }
-    }  
+    }
     .day.weekend {
       width: 16%;
     }
     .row:not(.days-of-week) .day {
-      height: 15em; 
+      height: 15em;
     }
-  } 
+  }
 }
+
 /*=Artist Signup */
 .musician-registration {
   .instructions {
-    @extend .formSectionSeparator;  
+    @extend .formSectionSeparator;
   }
   .show-recordings {
     margin-top: $margin-bottom;
   }
 }
+
 /*=Artist Bio Page*/
 .artist {
-  .jumbotron  {
+  .jumbotron {
     p.instrument {
       clear: left;
       margin-top: 24px;
     }
-    @media all and (min-width : $screen-lg-min) {
+    @media all and (min-width: $screen-lg-min) {
       p.instrument {
         clear: none;
         margin-top: 0;
@@ -275,16 +255,16 @@ body.search .facets {
       margin-right: 16px;
     }
   }
-  #connect { 
+  #connect {
     h4 {
       margin-top: 0;
     }
     ul {
       padding-left: 0;
-      margin-top: 12px; 
-      padding-top: 12px; 
+      margin-top: 12px;
+      padding-top: 12px;
       border-top: 1px solid #ddd;
-      @media all and (min-width : $screen-sm-min) {
+      @media all and (min-width: $screen-sm-min) {
         padding-left: 12px;
         border-left: 1px solid #ddd;
         margin-top: 0;
@@ -293,13 +273,14 @@ body.search .facets {
       }
       li {
         list-style: none;
-        margin-bottom: 12px;    
+        margin-bottom: 12px;
       }
     }
   }
 }
+
 /*=Single Event/View Video Page*/
-.event {  
+.event {
   .leader-videos,
   div.request-video {
     margin-bottom: $margin-bottom;
@@ -318,7 +299,7 @@ body.search .facets {
       flex-grow: 1;
       margin: 0 4px;
       text-align: center;
-      @media all and (min-width : $screen-md-min) {
+      @media all and (min-width: $screen-md-min) {
 
       }
     }
@@ -334,8 +315,8 @@ body.search .facets {
       }
       > span,
       a {
-          margin-right: 1em;
-          white-space: nowrap;
+        margin-right: 1em;
+        white-space: nowrap;
       }
     }
   }
@@ -345,13 +326,13 @@ body.search .facets {
     padding-top: 12px;
   }
   .event-main-container.future {
-    border:1px solid #ddd;
-    padding-top:0;
+    border: 1px solid #ddd;
+    padding-top: 0;
     img.event-photo {
       margin-left: -13px;
-      margin-top:  -1px;
+      margin-top: -1px;
       margin-bottom: 16px;
-    }    
+    }
     h4.text-muted {
       margin-bottom: 0;
       margin-top: $margin-bottom;
@@ -361,7 +342,7 @@ body.search .facets {
     h4.text-muted {
       margin-bottom: 0;
     }
-    border:1px solid #ddd;
+    border: 1px solid #ddd;
     border-top: none;
     padding-right: 12px;
     padding-left: 12px;
@@ -371,26 +352,26 @@ body.search .facets {
     font-size: 50%;
     margin-left: 24px;
     display: none;
-    @media all and (min-width : $screen-md-min) {
+    @media all and (min-width: $screen-md-min) {
       display: inline;
     }
   }
   .event-meta {
-   margin-bottom: $margin-bottom;
-   .future {
-     border-top: 1px solid #eee;
-     padding-top: $margin-bottom;
-   } 
- } 
- .cd {
-   background: #eee;
-   color: #111;
-   a { 
-   }
-   padding: 16px;
- }
- .sideman {
-    float:left;
+    margin-bottom: $margin-bottom;
+    .future {
+      border-top: 1px solid #eee;
+      padding-top: $margin-bottom;
+    }
+  }
+  .cd {
+    background: #eee;
+    color: #111;
+    a {
+    }
+    padding: 16px;
+  }
+  .sideman {
+    float: left;
     margin: 16px 16px 0 0;
     width: 206px;
     div {
@@ -403,7 +384,7 @@ body.search .facets {
       color: $gray;
     }
   }
-  @media all and (min-width : $screen-md-min) {
+  @media all and (min-width: $screen-md-min) {
     .sideman {
       width: 260px;
     }
@@ -413,14 +394,15 @@ body.search .facets {
   }
   h3 {
     margin-top: 0;
-  } 
-} 
+  }
+}
+
 .video-player {
   .video-player-controls {
     background: #111;
     font-size: 16px; /* adjust icon size */
-    border-top:1px solid #444;
-    padding: 4px 12px; 
+    border-top: 1px solid #444;
+    padding: 4px 12px;
     span.run-time {
       margin-left: 8px;
       font-size: 12px;
@@ -438,13 +420,14 @@ body.search .facets {
     }
   }
 }
+
 .audio-players {
   .span-glyphicon {
     color: $brand-primary;
   }
-  border:1px solid #ddd;
+  border: 1px solid #ddd;
   .audio-player:last-child {
-    border-top:1px solid #ddd;
+    border-top: 1px solid #ddd;
   }
   .audio-player {
     font-size: 200%;
@@ -455,6 +438,7 @@ body.search .facets {
     }
   }
 }
+
 /*=My Gigs / Events*/
 table.list-of-recordings {
   thead th {
@@ -465,12 +449,12 @@ table.list-of-recordings {
     border-left: none;
     border-right: none;
   }
-  > tbody  {
+  > tbody {
     > tr:first-child > td {
       border-top: none;
     }
     > tr > td.audio-play {
-      @extend .media-area; 
+      @extend .media-area;
     }
     > tr > td.choose-set {
       border-bottom: none;
@@ -537,7 +521,8 @@ table.list-of-recordings {
     }
   }
 }
-/*=Admin screens*/ 
+
+/*=Admin screens*/
 .artist-clearance-breakdown table tr td:first-child {
   white-space: nowrap;
 }
@@ -548,18 +533,22 @@ table.list-of-recordings {
   padding: 16px;
   margin-bottom: $margin-bottom;
 }
-.formSectionSeparator { /*reused via extensions*/
+
+.formSectionSeparator {
+  /*reused via extensions*/
   margin-bottom: $margin-bottom;
   border-bottom: 1px solid #ccc;
   padding-bottom: $margin-bottom;
 }
+
 .tab-content {
   padding: 16px;
-  margin-top:-24px;
+  margin-top: -24px;
   padding-top: 24px;
   border: 1px solid #ddd;
   border-top: none;
 }
+
 #signup_form {
   .trigger-credit-card-fields,
   .TOC-checkbox,
@@ -572,11 +561,11 @@ table.list-of-recordings {
   h5 {
     font-weight: bold;
   }
-  >  h4 {
+  > h4 {
     margin-top: 0;
   }
   .nav-tabs img.paypal {
-    margin-top:-5px;
+    margin-top: -5px;
     position: relative;
     top: 3px;
   }
@@ -585,7 +574,7 @@ table.list-of-recordings {
   }
   .social-signup:not(.authenticated-by-social) {
     @extend .formSectionSeparator;
-   }
+  }
   .social-logins {
     margin-bottom: $margin-bottom;
     .btn-sm {
@@ -596,26 +585,26 @@ table.list-of-recordings {
   }
   .login button.btn {
     width: 50%;
-  } 
+  }
   #div_id_TOS .well {
     min-height: 200px;
     max-height: 200px;
-    overflow: auto; 
+    overflow: auto;
   }
-  @media all and (min-width : $screen-sm-min) {  
+  @media all and (min-width: $screen-sm-min) {
     div.form-group {
-      margin-bottom: 22px; 
+      margin-bottom: 22px;
     }
     #id_exp_year {
       position: relative;
-      top:26px;
+      top: 26px;
     }
     #div_id_subscribe {
       margin-top: -10px;
       margin-bottom: 10px;
     }
   }
-  @media all and (min-width : $screen-md-min) {  
+  @media all and (min-width: $screen-md-min) {
     div.CC-expiration-info .col-sm-3:first-child {
       padding-right: 2px;
     }
@@ -626,66 +615,79 @@ table.list-of-recordings {
     #div_id_subscribe {
       margin-top: -20px;
       margin-bottom: 20px;
-    }    
+    }
   }
   p.accepted-payments {
-  height: 29px;
-  overflow: hidden;
+    height: 29px;
+    overflow: hidden;
     img {
       position: relative;
-      top:-38px; 
+      top: -38px;
       width: auto;
       height: auto;
     }
   }
 }
+
 .set-password-contact {
   margin-top: 10px;
 }
+
 input.form-control.text-muted[type=text] {
   color: $gray-light;
 }
+
 .earnings-summary table tr td:not(:first-child):not(.txt) {
   @extend .num;
 }
+
 #agreement-musicians-legal {
   font-family: $font-family-monospace;
 }
+
 .terms {
   max-height: 400px;
   overflow: auto;
   margin-bottom: 20px;
 }
-/*=FOrm to add events*/ 
+
+/*=FOrm to add events*/
 div.trigger_add_set_times {
-  margin-top:20px;
+  margin-top: 20px;
 }
+
 div.datepicker {
-  margin-left:40px;/*This is mainly for the f-gig form to make sure time slots arent hidden by picker*/  
-} 
+  margin-left: 40px; /*This is mainly for the f-gig form to make sure time slots arent hidden by picker*/
+}
+
 .sortable-list .glyphicon-move {
   position: relative;
-  top:34px;
+  top: 34px;
   cursor: pointer;
 }
+
 .slots input[type=text] {
   width: auto;
 }
+
 .add_set_times {;
   margin-left: 32px;
   margin-bottom: 2em;
 }
+
 .lookup-item {
   padding: 1em;
   border: 1px solid #ddd;
   margin-bottom: 1em;
 }
+
 .no-display,
 .longname {
   display: none;
 }
+
 //My Account Area
-.search-orders-by-number, 
+.search-orders-by-number,
 .search-orders-by-date {
   padding-top: 16px;
   padding-bottom: 16px;
@@ -694,16 +696,17 @@ div.datepicker {
   }
   a {
     position: relative;
-    top:.25em;
+    top: .25em;
   }
 }
-@media all and (min-width : $screen-md-min) { 
+
+@media all and (min-width: $screen-md-min) {
   .my-account {
-    h2.orders {  
+    h2.orders {
       margin-top: 0;
       border-bottom: 1px dotted #DDDDDD;
       padding-bottom: 12px;
-    } 
+    }
     p.download-all {
       float: right;
       margin: 0 !important;
@@ -713,14 +716,16 @@ div.datepicker {
     }
   }
 }
+
 /*Dashboard - musicians*/
-.dashboard-musician { 
-  @media all and (min-width: $screen-md-min) { 
+.dashboard-musician {
+  @media all and (min-width: $screen-md-min) {
     .summaries > div > .alert {
       min-height: 220px;
     }
   }
 }
+
 table.store-revenue-per-item-breakdown > tbody > tr > td.product > a:first-child {
   @extend .album;
   display: block;
@@ -729,13 +734,14 @@ table.store-revenue-per-item-breakdown > tbody > tr > td.product > a:first-child
     text-decoration: none;
   }
 }
+
 table.fans-following tr td:not(:first-child) {
   text-align: right;
-} 
+}
+
 /*=Components , Element and Bootstrap Overrides*/
-body .page-header  {
+body .page-header {
   margin: 0;
-  padding-bottom: 0;
   border-bottom: none;
   background: #333;
   padding: 12px;
@@ -744,8 +750,8 @@ body .page-header  {
     margin-top: 0;
     margin-bottom: 0;
   }
-  @media all and (min-width: $screen-md-min) { 
-    padding:0 0 9px 0;
+  @media all and (min-width: $screen-md-min) {
+    padding: 0 0 9px 0;
     background: none;
     border-bottom: 1px solid #eee;
     margin-bottom: $margin-bottom;
@@ -756,23 +762,27 @@ body .page-header  {
     }
   }
 }
+
 .album {
   font-style: italic;
 }
+
 body .alert {
-  h1,h2,h3,h4,h5,h6 {
-    margin-top:0;
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
   }
   td {
     white-space: nowrap;
   }
 }
+
 body .alert ul,
 body .well ul {
-    padding-left: 20px;
-  }
+  padding-left: 20px;
+}
+
 body .alert-info {
-  .table { 
+  .table {
     tr td:last-child {
       white-space: normal;
     }
@@ -785,23 +795,27 @@ body .alert-info {
     font-weight: normal;
   }
 }
+
 .table-tools {
-   background: #f5f5f5;
-   margin-bottom: $margin-bottom;
-   padding: 1em;
+  background: #f5f5f5;
+  margin-bottom: $margin-bottom;
+  padding: 1em;
 }
+
 .cuteShowDate {
-    background-color: $gray-lighter;
-    color: #444;
-    text-align: center;
-    padding: 3px;
-    width: 3em;  
-    @include border-radius(3px);
+  background-color: $gray-lighter;
+  color: #444;
+  text-align: center;
+  padding: 3px;
+  width: 3em;
+  @include border-radius(3px);
 }
+
 .table thead > tr > th {
   border-bottom: none;
 }
-.media { 
+
+.media {
   margin-top: 12px;
   padding-top: 12px;
   border-top: 1px solid $gray-lighter;
@@ -811,26 +825,30 @@ body .alert-info {
   span.pull-left {
     @extend .cuteShowDate;
   }
-} 
+}
+
 .owner {
   white-space: nowrap;
   color: $brand-danger;
 }
+
 .approved {
   color: $brand-success;
 }
+
 .nav-tabs,
 .nav-pills,
 .upcoming_events {
   margin-bottom: $margin-bottom;
 }
-form {  
+
+form {
   .form-control {
     border-color: #dddddd;
     box-shadow: none;
     @include border-radius(0);
   }
-  .form-control:focus {    
+  .form-control:focus {
     box-shadow: none;
   }
   .form-group label[class=''] {
@@ -849,7 +867,9 @@ form {
     color: #cd0a0a;
   }
 }
-table.nv tbody { /* Name/value pair tables */
+
+table.nv tbody {
+  /* Name/value pair tables */
   tr:first-child td {
     border-top: none;
   }
@@ -859,71 +879,86 @@ table.nv tbody { /* Name/value pair tables */
     text-align: right;
   }
 }
+
 table.my-account {
   tr:first-child h2 {
-    margin-top:0;
+    margin-top: 0;
     padding-top: 0;
   }
 }
+
 table.payment-history {
   tr td:first-child,
   tr th:first-child {
     text-align: right;
   }
 }
+
 /* =general table and other misc styles */
 .credit {
   font-style: italic;
 }
+
 .unstyled-link {
   color: $text-color;
 }
+
 .event_date time,
 .event_date,
 .nowrap {
   white-space: nowrap;
 }
+
 body abbr.explained {
   border: none;
 }
-.row.none, 
+
+.row.none,
 .none {
   @extend .hidden;
 }
+
 .footnote {
   @extend .text-muted;
   max-width: 50em;
 }
+
 td.publish_date {
   @extend .text-muted;
 }
+
 th {
   font-size: $font-smaller;
   background-color: #f5f5f5;
 }
+
 .alert tr th {
   background-color: transparent;
 }
+
 /*jQuery overrides*/
 body .ui-widget-content a {
   color: $link-color;
 }
+
 body .ui-widget {
   /* override jquery UI*/
   /* bootstrap values: */
   font-size: 100%;
   color: $gray-dark;
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-  line-height: 1.42857; 
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.42857;
 }
+
 body .ui-widget-header {
   color: $gray-dark;
   border: none;
   background: none;
   border-bottom: 1px solid $gray-light;
   @include border-radius(0px);
-  
+
 }
+
 /*=Color*/
 /*=Development*/
 /*=Trash this after design done */
@@ -931,18 +966,18 @@ body .ui-widget-header {
   max-width: 800px;
   margin-bottom: $margin-bottom;
   font-family: $font-family-monospace;
-  margin-top:2em;
+  margin-top: 2em;
   background: #f3f3f3;
   padding: 1em;
-  border:1px solid #aaa;
+  border: 1px solid #aaa;
   ul {
     margin: 0;
     padding: 0;
-  }  
+  }
   li {
     list-style: none;
     padding: 0;
-    margin: 0 0 .5em 0; 
+    margin: 0 0 .5em 0;
     li {
       list-style: circle;
       margin-left: 3em;
@@ -957,7 +992,8 @@ body .ui-widget-header {
   * {
     font-size: 12px;
   }
-} 
+}
+
 code {
   color: #fafafa;
   background: #c00;

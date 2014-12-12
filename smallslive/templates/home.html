@@ -3,113 +3,97 @@
 {% block title_prefix %}{% endblock title_prefix %}
 {% block title_suffix %} - Smalls Jazz Club: live jazz shows &amp; audio recording archive (NYC){% endblock title_suffix%}
 {% block content %}
-  <div class="row homepage-spotlight">
-    <div class="col-sm-10  col-sm-offset-1"> 
-      <div id="carousel-example-generic" class="carousel slide" >
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-          <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-          <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-        </ol>
-      
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner">
-          {% for event in events %}
-            {% if forloop.counter < 4 %}
-            <div class="item{% if forloop.counter == 1 %} active{% endif %}">
-              <div class="carousel-caption">
-              <a href="{{ event.get_absolute_url }}">
-              {% if event.photo %}
-                <img src="{% thumbor_url event.photo.url|urlencode height=250 fit_in=true %}" alt="{{ event.artists.first_name }} {{ event.artists.last_name }}"  />
-              {% endif %}
-                <h1>{{ event.display_title }}</h1>
-                <h2>{{ event.subtitle }}</h2>
-                <p>Tonight ({{ event.start|date:"D" }}) - {{ event.date_freeform }}</p>
-                <p>
-                </p>
-                <p>Details...</p>
-              </a>
-              </div>
-            </div>
-            {% endif %}
-          {% endfor %}
-        </div>
-        <!-- Controls -->
-        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-          <span class="glyphicon glyphicon-chevron-left"></span>
-        </a>
-        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-          <span class="glyphicon glyphicon-chevron-right"></span>
-        </a>
-      </div>    
-    </div>
-  </div> 
   <div class="row">
-    <div class="col-sm-6">
-      <h2>Featured Events:<code>1</code></h2>
-      
-      {% for event in events %}
-        {% if forloop.counter < 4 %}
-         {% include 'blocks/event-snippet.html' %}
-        {% endif %}
-      {% endfor %}
-      <h2>Coming up next @ Smalls:</h2>
-      {% for event in events %}
-         {% include 'blocks/event-snippet.html' %}
-      {% endfor %}
-      <p><a href="/static_page/calendar">Full calendar</a></p>
-      <h2>About Smalls and SmallsLIVE</h2>
-      <p>Smalls is a historic jazz club in NYC presenting the best in live jazz music 7 days a week. SmallsLIVE is our digital audio service where jazz fans can watch 3000+ hours of concert audio recorded at the club since 2007. We live-stream and record every concert at Smalls, so check out <a href="">tonight's show online for free</a>. To access the archive of recordings, you'll need a <a href="">subscription</a>.</p>
-    
- 
-      <form method="post" class="f-subscriber-signup" role="form" enctype="multipart/form-data">
-        <div class="form-group" id="div_id_subscriber_email">
-          <label class="control-label " for="div_id_subscriber_email">Join Mailing List:<code>4</code></label>
-          <div class="controls ">
-            <input type="text" placeholder="Your email address" name="subscriber_email" value="" id="id_subscriber_email" class="form-control">
+    <div class="col-sm-9">
+      <section class="next-in-smalls">
+        <h1>Sunday, Aug. 14 @ Smalls in NYC...</h1>
+
+        <div class="row">
+          <div class="col-sm-5">
+            <img src="http://placehold.it/280x280">
+            <p class="next-in-smalls__full-calendar"><a href="/static_page/calendar">Full calendar</a></p>
           </div>
-        </div>  
-        <div class="form-group"> 
-          <button type="submit" class="btn btn-primary">Subscribe</button>   
+          <div class="col-sm-7">
+            <ol class="next-in-smalls__events">
+              {% for event in events|slice:":3" %}
+                {# Added microformats classes for events: http://microformats.org/wiki/h-event #}
+                <li class="h-event next-in-smalls__event">
+                    <time><span>{{ event.start|date:"g:i" }}<br />{{ event.start|date:"A"|lower }}</span></time>
+                  <div class="next-in-smalls__event-info">
+                    <h2>{{ event.title }}</h2>
+
+                    <h3>{{ event.leader }}</h3>
+                    <ul class="performers">
+                      {% for performer in event.get_performers %}
+                        <li class="performers__performer"><a href="{{ performer.artist.get_absolute_url }}">{{ performer.artist }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                </li>
+              {% endfor %}
+            </ol>
+          </div>
         </div>
-      </form>  
-      <h5>Stay In Touch:</h5>
-      <p><a href="http://facebook.com/smallsjazzclub" class="">Smalls on Facebook</a></p>
-      <p><a href="http://twitter.com/smallsjazzclub" class="">Follow  @smallsjazzclub</a> on Twitter</p>
+      </section>
+      <hr />
+      <section class="video-section">
+        <h1>Newest Videos in the Archive</h1>
+        <div class="row">
+          <div class="col-md-3">{% include 'blocks/search-result-media.html' %}</div>
+          <div class="col-md-3">{% include 'blocks/search-result-media.html' %}</div>
+          <div class="col-md-3">{% include 'blocks/search-result-media.html' %}</div>
+          <div class="col-md-3">{% include 'blocks/search-result-media.html' %}</div>
+        </div>
+      </section>
+      <hr />
+      <section class="video-section">
+        <h1>Most Popular Videos</h1>
+        <div class="row">
+        {% for video in videos|slice:":4" %}
+          <div class="col-md-3">{% include 'blocks/search-result-media.html' %}</div>
+        {% endfor %}
+        </div>
+      </section>
+      <hr />
+      <section class="product-section">
+        <h1>Popular CDs in The Store</h1>
+        <div class="row">
+          <div class="col-md-4">{% include 'blocks/product-object.html' %}</div>
+          <div class="col-md-4">{% include 'blocks/product-object.html' %}</div>
+          <div class="col-md-4">{% include 'blocks/product-object.html' %}</div>
+        </div>
+      </section>
     </div>
 
-    <div class="col-sm-6">
-      <div class="well">
-        <span class="text-success">SmallsLIVE</span>
-        <h2><code>3</code>Enjoy 8,000+ Hours of Live Jazz from Smalls</h2>
-        <p>Get 30 days of unlimited access to our archive of over 350 jazz concerts recorded at Smalls since 2007. After your trial, it's just $20/month  to unlock permanent access to the archive. <a href="#">Learn more</a></p>
-        <a class="btn btn-primary" href="/accounts/signup">Start Free Trial</a>
-        <p class="text-muted"><br /><a href="#">Log In (I have an account)</a></p>
+    <div class="col-sm-3">
+      <div class="free-trial-box">
+        <p class="new-from-smalls">NEW FROM SMALLS LIVE:</p>
+        <ul>
+          <li>1000s of Jazz Videos.</li>
+          <li>Live Broadcasts.</li>
+          <li>Free for 30 days.</li>
+        </ul>
+        <hr />
+        <p>It's finally here! Get unlimited access to our audio & video archive of over 350 jazz concerts. After 30 days, it's just $20/month.</p>
+        <a class="start-trial-button" href="/accounts/signup">Start Free Trial</a>
+        <a class="login" href="#">Log In</a>
       </div>
-      <h3>New Recordings Available:</h3>
-      <p>We try to get the audio recordings of our shows posted within 24 hours of being taped. Here are the latest sets available for streamed listening:</p>
-      {% include 'blocks/search-result-media.html' %}
-
-      {% include 'blocks/search-result-media.html' %}
-
-      {% include 'blocks/search-result-media.html' %}
-
-      {% include 'blocks/search-result-media.html' %}
-
-      {% include 'blocks/search-result-media.html' %}
-      <p><a href="/static_page/search">More</a></p>
-      <h3>Most Popular Recordings:</h3>
-      <p>We try to get concert videos posted within 3 days of being taped. Here are the latest:</p>
-      {% for video in videos %}
-        {% include 'blocks/search-result-media.html' %}
-      {% endfor %}
-      <p><a href="/static_page/search">More audio recordings</a></p>
-      <h3>Have you performed at Smalls?</h3>
-    <p>You can earn $ on the recordings you have made at Smalls when you participate in <a href="/static_page/about-smallslive-for-musicians/">SmallsLIVE for Musicians</a>.</p>
+      <aside class="about-smalls">
+          <h1>About Smalls Live</h1>
+          <p>Smalls is a historic jazz club in Greenwich Village NYC presenting the best in live jazz music 7 days a
+              week.
+              SmallsLIVE is our digital service where jazz fans can take in 3000+ hours of concert audio and video
+              recorded at the club since 2007.</p>
+          <p>We live-stream and record every concert at Smalls, so check out tonight's show online after getting a
+              free account. To access the archive of recordings, you'll need a subscription.</p>
+          <h2>Connect with us</h2>
+        <a href="http://facebook.com/smallsjazzclub"><span class="fa fa-facebook-square fa-3x"></span></a>
+        <a href="http://twitter.com/smallsjazzclub"><span class="fa fa-twitter fa-3x"></span></a>
+      </aside>
     </div>
   </div>
  
+{% comment %}
   <div class="dev">
     <h1>Dev notes</h1>
     <Ul> 
@@ -118,6 +102,7 @@
       <li><code>4</code> - this should be hidden once a cookie is dropped showing a signup, or the user is logged in and known to be on the list</li>
     </Ul>
   </div>
+{% endcomment %}
 {% endblock content %}
 {% block extra_js %}
 <script type="text/javascript" src="{% static 'js/soundmanager2.js' %}"></script>

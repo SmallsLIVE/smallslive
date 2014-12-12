@@ -1,0 +1,68 @@
+@import '../components/search';
+
+header {
+  margin-top: 30px;
+}
+
+.main-nav {
+  font-family: 'museo700', sans-serif;
+  font-size: 18px;
+  margin-bottom: 30px;
+  text-align: center;
+
+  li {
+    background: url('../image/navbar_separator.png') bottom right no-repeat;
+  }
+
+  li:last-child {
+    background: none;
+  }
+
+  a {
+    color: #333;
+  }
+
+  a:hover {
+    background-color: transparent;
+    color: #3bafde;
+  }
+
+  .glyphicon {
+    font-size: 14px;
+    margin-top: 4px;
+  }
+
+  .free-trial {
+    p {
+      color: #8f8f8f;
+      font-size: 11px;
+      padding-left: 15px;
+      padding-top: 5px;
+      text-align: left;
+    }
+  }
+
+  .login {
+    color: #3bafde;
+    text-decoration: none;
+  }
+
+  .login:hover {
+    text-decoration: underline;
+  }
+}
+
+@media (min-width: $screen-md-min) {
+  .main-nav ul {
+    margin-left: 65px;
+  }
+}
+
+.nav-icon {
+  text-align: center;
+  width: 100%;
+}
+
+.separator-line {
+  @include horizontal-ruler(#e2e2e2);
+}

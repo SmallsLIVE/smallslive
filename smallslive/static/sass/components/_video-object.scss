@@ -1,0 +1,40 @@
+.video-section h1 {
+  color: #575757;
+  font-family: "museo500", sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 14px;
+}
+
+.video-object {
+  padding-right: 30px;
+}
+
+.video-thumbnail {
+  position: relative;
+}
+
+.video-title {
+  color: #575757;
+  font-family: "museo_sans500", sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 2px;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+.video-subtitle {
+  color: #888;
+  font-family: "Rosario", sans-serif;
+  font-size: 12px;
+}
+
+.play-button {
+  @extend .btn;
+  @include button-size($padding-base-vertical, 20px, 11px, $line-height-base, 4px);
+  @include button-variant(#fff, #e02147, #fff);
+  left: 25%;
+  position: absolute;
+  top: 35%;
+}

@@ -60,7 +60,6 @@ INSTALLED_APPS = (
     'crispy_forms',
     'django_extensions',
     'django_thumbor',
-    'djstripe',
     'floppyforms',
     'pipeline',
     'sortedm2m',
@@ -84,7 +83,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'djstripe.middleware.SubscriptionPaymentMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -98,7 +96,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'allauth.account.context_processors.account',
     'allauth.socialaccount.context_processors.socialaccount',
-    'djstripe.context_processors.djstripe_settings',
 )
 
 ROOT_URLCONF = 'smallslive.urls'
@@ -221,12 +218,17 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
+)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 PIPELINE_COMPILERS = (
     'pipeline.compilers.sass.SASSCompiler',
 )
-
+PIPELINE_SASS_ARGUMENTS = '--update --precision 10'
 PIPELINE_CSS = {
     'css': {
         'source_filenames': (
@@ -276,7 +278,6 @@ ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_LOGOUT_ON_GET = True
-#ACCOUNT_SIGNUP_FORM_CLASS = "djstripe.forms.StripeSubscriptionSignupForm"
 
 # TinyMCE
 TINYMCE_JS_URL = os.path.join(STATIC_URL, "js/tinymce/tinymce.min.js")
@@ -289,42 +290,6 @@ TINYMCE_DEFAULT_CONFIG = {
     'statusbar': False,
     'plugins': 'link'
 }
-
-# Stripe settings
-STRIPE_PUBLIC_KEY = os.environ.get("STRIPE_PUBLIC_KEY", "<your publishable test key>")
-STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "<your secret test key>")
-
-DJSTRIPE_PLANS = {
-    "monthly": {
-        "stripe_plan_id": "basic-monthly",
-        "name": "Basic Plan Monthly ($10.00/month)",
-        "description": "The monthly subscription plan to SmallsLIVE",
-        "price": 1000,  # $10.00
-        "currency": "usd",
-        "interval": "month"
-    },
-    "yearly": {
-        "stripe_plan_id": "basic-yearly",
-        "name": "Basic Plan Annual ($100/year)",
-        "description": "The annual subscription plan to the Basic Plan",
-        "price": 10000,  # $100.00
-        "currency": "usd",
-        "interval": "year"
-    }
-}
-
-DJSTRIPE_INVOICE_FROM_EMAIL = ("billing@smallslive.com")
-
-# see http://dj-stripe.readthedocs.org/en/latest/settings.html#djstripe-subscription-required-exception-urls
-DJSTRIPE_SUBSCRIPTION_REQUIRED_EXCEPTION_URLS = (
-    'home',
-    'about',
-    'static_page',
-    '(events)',
-    '(artists)',
-    '(allauth)',  # anything in the django-allauth URLConf
-    '[admin]',
-)
 
 ADMINS = (
     ('Nate Aune', 'nate@appsembler.com'),

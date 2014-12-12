@@ -1,0 +1,28 @@
+// Smalls logo and search bar combined
+.smalls-logo {
+  background-color: #fff;
+  display: block;
+  float: left;
+  width: 98px;
+
+  img {
+    position: relative;
+    z-index: 999;
+  }
+}
+
+.search-form {
+  float: left;
+  margin-left: -5px;
+  padding-top: 34px;
+  position: relative;
+  z-index: 0;
+
+  input {
+    padding-left: 10px;
+  }
+}
+
+.search {
+  max-width: 282px;
+}
