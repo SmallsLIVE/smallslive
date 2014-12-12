@@ -2,6 +2,8 @@
 
 Mako==1.0.0
 MarkupSafe==0.23
+cov-core==1.15.0
+coverage==3.7.1
 execnet==1.2.0
 factory-boy==2.4.1
 glob2==0.4.1
@@ -9,6 +11,7 @@ model-mommy==1.2.2
 py==1.4.26
 pytest==2.6.4
 pytest-bdd==2.5.1
+pytest-cov==1.8.1
 pytest-django==2.7.0
 pytest-splinter==1.2.4
 python-openid==2.2.5
