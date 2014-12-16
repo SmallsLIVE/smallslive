@@ -2,20 +2,13 @@ from datetime import timedelta
 import pytest
 from django.utils import timezone
 
-from model_mommy import mommy
-from model_mommy.recipe import Recipe, foreign_key
-from events.models import Event
+from events.factories import EventFactory
+
 
 @pytest.fixture
 def event():
-    return mommy.prepare(
-        Event,
-        id=50,
-        title=u"A test event",
-        start=timezone.datetime(2014, 12, 10, 20, 30, 0, tzinfo=timezone.get_current_timezone()),
-        end=timezone.datetime(2014, 12, 10, 22, 30, 0, tzinfo=timezone.get_current_timezone())
+    return EventFactory()
 
-    )
 
 @pytest.mark.django_db
 class TestEvent:
@@ -49,3 +42,18 @@ class TestEvent:
         # early morning belongs to next day
         event.start = timezone.datetime(2014, 12, 11, 7, 0, 0, tzinfo=timezone.get_current_timezone())
         assert event.is_early_morning() is False
+
+    def test_status_css_class(self, event):
+        assert event.status_css_class() == 'label-success'
+
+        event.state = 'Draft'
+        assert event.status_css_class() == 'label-warning'
+
+        event.state = 'Cancelled'
+        assert event.status_css_class() == 'label-danger'
+
+        event.state = 'Hidden'
+        assert event.status_css_class() == 'label-default'
+
+    def test_sidemen_string(self, event):
+        assert event.artists_gig_info.count() == 3
