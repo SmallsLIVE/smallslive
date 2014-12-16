@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 from django.core.exceptions import ImproperlyConfigured
+from oscar import get_core_apps, OSCAR_MAIN_TEMPLATE_DIR
+
 
 def get_env_variable(var_name):
     """ Get the environment variable or return exception """
@@ -39,7 +41,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,6 +50,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django.contrib.flatpages',
+
 
     # third party apps
     'allauth',
@@ -57,6 +61,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.linkedin_oauth2',
     'allauth.socialaccount.providers.twitter',
+    'compressor',
     'crispy_forms',
     'django_extensions',
     'django_thumbor',
@@ -73,7 +78,7 @@ INSTALLED_APPS = (
     'multimedia',
     'old_site',
     'users',
-)
+] + get_core_apps()
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -82,19 +87,26 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'oscar.apps.basket.middleware.BasketMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.request',
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'django.core.context_processors.static',
     'django.core.context_processors.tz',
     'django.contrib.messages.context_processors.messages',
-    'django.core.context_processors.request',
     'allauth.account.context_processors.account',
     'allauth.socialaccount.context_processors.socialaccount',
+    'oscar.apps.search.context_processors.search_form',
+    'oscar.apps.promotions.context_processors.promotions',
+    'oscar.apps.checkout.context_processors.checkout',
+    'oscar.apps.customer.notifications.context_processors.notifications',
+    'oscar.core.context_processors.metadata',
 )
 
 ROOT_URLCONF = 'smallslive.urls'
@@ -106,6 +118,9 @@ AUTH_USER_MODEL = 'users.SmallsUser'
 SITE_ID = 1
 
 AUTHENTICATION_BACKENDS = (
+    # Needed by oscar commerce
+    'oscar.apps.customer.auth_backends.EmailBackend',
+
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
 
@@ -240,6 +255,7 @@ PIPELINE_CSS = {
 # Templates
 TEMPLATE_DIRS = [
     os.path.join(BASE_DIR, 'templates'),
+    OSCAR_MAIN_TEMPLATE_DIR,
 ]
 
 # Messages
@@ -299,3 +315,5 @@ MANAGERS = ADMINS
 
 DEFAULT_FROM_EMAIL = 'smallslive@appsembler.com'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+from oscar.defaults import *
