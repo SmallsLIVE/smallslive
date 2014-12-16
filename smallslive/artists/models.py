@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.contrib import auth
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Sum, Count
@@ -8,7 +7,7 @@ from tinymce import models as tinymce_models
 from events.models import Event
 from users.models import SmallsEmailAddress
 
-User = auth.get_user_model()
+User = settings.AUTH_USER_MODEL
 
 
 class Artist(models.Model):

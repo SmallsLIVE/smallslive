@@ -80,8 +80,8 @@ class OldEvent(models.Model):
     displaytitle = models.TextField(db_column='displayTitle', blank=True) # Field name made lowercase.
     displaydescription = models.TextField(db_column='displayDescription', blank=True) # Field name made lowercase.
     extrainformation = models.TextField(db_column='extraInformation', blank=True) # Field name made lowercase.
-    active = models.BooleanField()
-    donotshowartist = models.BooleanField(db_column='doNotShowArtist') # Field name made lowercase.
+    active = models.BooleanField(default=True)
+    donotshowartist = models.BooleanField(db_column='doNotShowArtist', default=False) # Field name made lowercase.
     locationlink = models.TextField(db_column='locationLink', blank=True) # Field name made lowercase.
     tickets = models.CharField(max_length=255, blank=True)
     hours = models.CharField(max_length=255, blank=True)

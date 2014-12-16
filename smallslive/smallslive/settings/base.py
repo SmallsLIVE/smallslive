@@ -63,7 +63,6 @@ INSTALLED_APPS = (
     'floppyforms',
     'pipeline',
     'sortedm2m',
-    'south',
     'storages',
     'tinymce',
 

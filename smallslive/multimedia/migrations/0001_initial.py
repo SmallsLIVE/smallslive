@@ -1,55 +1,55 @@
 # -*- coding: utf-8 -*-
-from south.utils import datetime_utils as datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
+import multimedia.fields
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Media'
-        db.create_table(u'multimedia_media', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=255, db_column='mediaName', blank=True)),
-            ('path', self.gf('django.db.models.fields.CharField')(max_length=255, db_column='mediaPath', blank=True)),
-            ('media_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['multimedia.MediaType'], null=True, blank=True)),
-            ('filename', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-        ))
-        db.send_create_signal(u'multimedia', ['Media'])
+    dependencies = [
+    ]
 
-        # Adding model 'MediaType'
-        db.create_table(u'multimedia_mediatype', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('type', self.gf('django.db.models.fields.CharField')(max_length=255, db_column='mediaType')),
-        ))
-        db.send_create_signal(u'multimedia', ['MediaType'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'Media'
-        db.delete_table(u'multimedia_media')
-
-        # Deleting model 'MediaType'
-        db.delete_table(u'multimedia_mediatype')
-
-
-    models = {
-        u'multimedia.media': {
-            'Meta': {'object_name': 'Media'},
-            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'filename': ('django.db.models.fields.CharField', [], {'max_length': '255', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'media_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['multimedia.MediaType']", 'null': 'True', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '255', 'db_column': "'mediaName'", 'blank': 'True'}),
-            'path': ('django.db.models.fields.CharField', [], {'max_length': '255', 'db_column': "'mediaPath'", 'blank': 'True'})
-        },
-        u'multimedia.mediatype': {
-            'Meta': {'object_name': 'MediaType'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'type': ('django.db.models.fields.CharField', [], {'max_length': '255', 'db_column': "'mediaType'"})
-        }
-    }
-
-    complete_apps = ['multimedia']
+    operations = [
+        migrations.CreateModel(
+            name='Media',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=255, db_column=b'mediaName', blank=True)),
+                ('path', models.CharField(max_length=255, db_column=b'mediaPath', blank=True)),
+                ('filename', models.CharField(max_length=255, blank=True)),
+                ('description', models.TextField(blank=True)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='MediaFile',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('media_type', models.CharField(max_length=10, editable=False, choices=[(b'video', b'video'), (b'audio', b'audio')])),
+                ('format', models.CharField(max_length=4, editable=False, choices=[(b'mp3', b'mp3'), (b'flac', b'flac'), (b'wav', b'wav'), (b'mp4', b'mp4'), (b'mpg', b'mpg'), (b'avi', b'avi'), (b'mkv', b'mkv'), (b'mov', b'mov'), (b'mpeg', b'mpeg'), (b'flv', b'flv'), (b'm4v', b'm4v')])),
+                ('file', multimedia.fields.DynamicBucketFileField(upload_to=b'/')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='MediaType',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('type', models.CharField(max_length=255, db_column=b'mediaType')),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='media',
+            name='media_type',
+            field=models.ForeignKey(blank=True, to='multimedia.MediaType', null=True),
+            preserve_default=True,
+        ),
+    ]
