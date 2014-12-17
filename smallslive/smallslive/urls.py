@@ -3,6 +3,8 @@ from django.conf.urls.static import static
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.views.generic.base import TemplateView
+from oscar.app import application
+
 
 # uncomment these lines to enable the Djrill admin interface 
 #from djrill import DjrillAdminSite
@@ -26,7 +28,7 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('allauth.urls', app_name="allauth")),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^$', 'events.views.homepage', name="home"),
-
+    url(r'', include(application.urls)),
 )
 
 if settings.DEBUG:

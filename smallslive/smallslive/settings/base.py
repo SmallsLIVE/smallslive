@@ -39,6 +39,17 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
+ADMINS = (
+    ('Nate Aune', 'nate@appsembler.com'),
+    ('Filip Jukic', 'filip@appsembler.com'),
+)
+
+MANAGERS = ADMINS
+
+DEFAULT_FROM_EMAIL = 'smallslive@appsembler.com'
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -140,6 +151,7 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': '127.0.0.1',
         'PORT': '5432',
+        'ATOMIC_REQUESTS': True,
     },
     'old': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -158,7 +170,7 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'America/New_York'
 
-USE_I18N = True
+USE_I18N = False
 
 USE_L10N = False
 
@@ -306,14 +318,12 @@ TINYMCE_DEFAULT_CONFIG = {
     'plugins': 'link'
 }
 
-ADMINS = (
-    ('Nate Aune', 'nate@appsembler.com'),
-    ('Filip Jukic', 'filip@appsembler.com'),
-)
+# Oscar Haystack config
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
+}
 
-MANAGERS = ADMINS
-
-DEFAULT_FROM_EMAIL = 'smallslive@appsembler.com'
-SERVER_EMAIL = DEFAULT_FROM_EMAIL
 
 from oscar.defaults import *
