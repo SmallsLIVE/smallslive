@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "smalls_base.html" %}
 {% load thumbor_tags %}
 {% block bodyclass %}artist{% endblock %}
 {% block title %}{{ artist.first_name }} {{ artist.last_name }} - {{ artist.instruments.all|join:", " }}  ({{ event.leader.media_count }} videos)  {% endblock title %}

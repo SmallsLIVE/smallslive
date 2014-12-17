@@ -168,6 +168,10 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
+LANGUAGES = (
+    ('en', 'English'),
+)
+
 TIME_ZONE = 'America/New_York'
 
 USE_I18N = False

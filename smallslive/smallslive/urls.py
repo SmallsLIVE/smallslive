@@ -27,8 +27,8 @@ urlpatterns = patterns('',
     url(r'^accounts/login/$', 'users.views.login_view', name="account_login"),
     url(r'^accounts/', include('allauth.urls', app_name="allauth")),
     url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^store/', include(application.urls)),
     url(r'^$', 'events.views.homepage', name="home"),
-    url(r'', include(application.urls)),
 )
 
 if settings.DEBUG:
