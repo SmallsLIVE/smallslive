@@ -2,26 +2,37 @@ from datetime import timedelta
 import pytest
 from django.utils import timezone
 
-from events.factories import EventFactory
+from events.factories import EventFactory, EventWithPerformersFactory
 
 
 @pytest.fixture
-def event():
-    return EventFactory.build()
+def event_factory():
+    return EventFactory
+
+@pytest.fixture
+def full_event_factory():
+    # event with performers, saved to DB, has ID
+    return EventWithPerformersFactory
 
 
 @pytest.mark.django_db
 class TestEvent:
-    def test_get_absolute_url(self, event):
-        assert event.get_absolute_url() == u'/events/50-a-test-event/'
+    def test_get_absolute_url(self, full_event_factory):
+        event = full_event_factory.create()
+        assert event.get_absolute_url() == u'/events/1-a-test-event-1/'
 
-    def test_is_past(self, event):
+        another_event = full_event_factory.create()
+        assert another_event.get_absolute_url() == u'/events/2-a-test-event-2/'
+
+    def test_is_past(self, event_factory):
+        event = event_factory.build()
         assert event.is_past is True
 
         event.end = timezone.datetime(2099, 12, 10, 22, 30, 0, tzinfo=timezone.get_current_timezone())
         assert event.is_past is False
 
-    def test_listing_date(self, event):
+    def test_listing_date(self, event_factory):
+        event = event_factory.build()
         assert event.listing_date() == event.start.date()
 
         # after midnight should belong to day before
@@ -32,7 +43,8 @@ class TestEvent:
         event.start = timezone.datetime(2014, 12, 11, 7, 0, 0, tzinfo=timezone.get_current_timezone())
         assert event.listing_date() == (event.start.date())
 
-    def test_early_morning(self, event):
+    def test_early_morning(self, event_factory):
+        event = event_factory.build()
         assert event.is_early_morning() is False
 
         # after midnight should belong to day before
@@ -43,7 +55,8 @@ class TestEvent:
         event.start = timezone.datetime(2014, 12, 11, 7, 0, 0, tzinfo=timezone.get_current_timezone())
         assert event.is_early_morning() is False
 
-    def test_status_css_class(self, event):
+    def test_status_css_class(self, event_factory):
+        event = event_factory.build()
         assert event.status_css_class() == 'label-success'
 
         event.state = 'Draft'
@@ -55,5 +68,6 @@ class TestEvent:
         event.state = 'Hidden'
         assert event.status_css_class() == 'label-default'
 
-    def test_sidemen_string(self, event):
+    def test_sidemen_string(self, full_event_factory):
+        event = full_event_factory.create()
         assert event.artists_gig_info.count() == 3
