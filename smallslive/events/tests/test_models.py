@@ -7,7 +7,7 @@ from events.factories import EventFactory
 
 @pytest.fixture
 def event():
-    return EventFactory()
+    return EventFactory.build()
 
 
 @pytest.mark.django_db
