@@ -89,7 +89,9 @@ INSTALLED_APPS = [
     'multimedia',
     'old_site',
     'users',
-] + get_core_apps()
+] + get_core_apps([
+    'oscar_apps.partner',
+])
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
