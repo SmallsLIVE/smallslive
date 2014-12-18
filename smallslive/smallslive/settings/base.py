@@ -91,6 +91,7 @@ INSTALLED_APPS = [
     'users',
 ] + get_core_apps([
     'oscar_apps.partner',
+    'oscar_apps.shipping',
 ])
 
 MIDDLEWARE_CLASSES = (
