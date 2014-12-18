@@ -2,5 +2,10 @@
 omit =
     */tests/*
     */migrations/*
+    */management/commands/*
+    */south_migrations/*
     */settings/*
     */__init__.py
+    */manage.py
+    */urls.py
+    */wsgi.py
