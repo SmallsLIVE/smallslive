@@ -90,6 +90,7 @@ INSTALLED_APPS = [
     'old_site',
     'users',
 ] + get_core_apps([
+    'oscar_apps.address',
     'oscar_apps.partner',
     'oscar_apps.shipping',
 ])
