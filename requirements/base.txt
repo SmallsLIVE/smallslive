@@ -19,6 +19,7 @@ django-floppyforms==1.2.0
 django-haystack==2.3.1
 django-model-utils==2.2
 django-oscar==1.0
+git+https://github.com/labxio/django-oscar-stripe.git#egg=oscar_stripe
 django-pipeline==1.4.1
 django-sortedm2m==0.8.1
 django-storages==1.1.8

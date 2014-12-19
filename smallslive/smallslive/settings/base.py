@@ -77,6 +77,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_thumbor',
     'floppyforms',
+    'oscar_stripe',
     'pipeline',
     'sortedm2m',
     'storages',
@@ -91,6 +92,7 @@ INSTALLED_APPS = [
     'users',
 ] + get_core_apps([
     'oscar_apps.address',
+    'oscar_apps.checkout',
     'oscar_apps.partner',
     'oscar_apps.shipping',
 ])
@@ -332,6 +334,12 @@ HAYSTACK_CONNECTIONS = {
         'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
     },
 }
+
+STRIPE_PUBLISHABLE_KEY = get_env_variable('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = get_env_variable('STRIPE_SECRET_KEY')
+STRIPE_CURRENCY = 'USD'
+
+OSCAR_DEFAULT_CURRENCY = 'USD'
 
 
 from oscar.defaults import *

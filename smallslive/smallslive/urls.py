@@ -5,7 +5,6 @@ from django.contrib import admin
 from django.views.generic.base import TemplateView
 from oscar.app import application
 
-
 # uncomment these lines to enable the Djrill admin interface 
 #from djrill import DjrillAdminSite
 #admin.site = DjrillAdminSite()
