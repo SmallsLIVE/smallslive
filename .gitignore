@@ -66,5 +66,6 @@ node_modules/
 
 # data files
 smallsliveusers.txt
+test_db.sqlite3
 smallslive/static/css/application.css
 smallslive/static/sass/application.css
