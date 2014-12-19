@@ -7,3 +7,7 @@ DATABASES = {
         'TEST': {'NAME': 'test_db.sqlite3'},
     }
 }
+
+# not needed for tests
+STRIPE_PUBLISHABLE_KEY = ''
+STRIPE_SECRET_KEY = ''
