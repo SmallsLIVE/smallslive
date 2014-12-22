@@ -8,6 +8,7 @@
             data-image="{% static 'image/smalls-logo.png' %}" data-email="{{ user.email }}"
             data-key="{{ stripe_publishable_key }}" data-amount="{{ order_total_incl_tax_cents }}"
             data-name="{{ shop_name }}"
+            data-label="Pay with Credit Card"
             data-description="{{ basket.num_items }} item{{ basket.num_items|pluralize }} ({{ order_total.incl_tax|currency }})">
     </script>
 </form>
