@@ -3,7 +3,7 @@ from decimal import Decimal as D
 
 # State tax rates
 STATE_TAX_RATES = {
-    'NJ': D('0.07')
+    'NY': D('0.08875')
 }
 ZERO = D('0.00')
 
