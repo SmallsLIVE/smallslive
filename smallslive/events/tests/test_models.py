@@ -1,21 +1,31 @@
 from datetime import timedelta
 import pytest
 from django.utils import timezone
+from artists.models import Artist
 
-from events.factories import EventFactory, EventWithPerformersFactory
+from events.factories import ArtistFactory, GigPlayedFactory, EventFactory, EventWithPerformersFactory
+from events.models import GigPlayed
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def event_factory():
     return EventFactory
 
-@pytest.fixture
+
+@pytest.fixture(scope="module")
 def full_event_factory():
     # event with performers, saved to DB, has ID
     return EventWithPerformersFactory
 
+@pytest.fixture(autouse=True)
+@pytest.mark.django_db()
+def reset_model_counters():
+    EventFactory.reset_sequence()
+    ArtistFactory.reset_sequence()
+    GigPlayedFactory.reset_sequence()
 
-@pytest.mark.django_db
+
+@pytest.mark.django_db()
 class TestEvent:
     def test_get_absolute_url(self, full_event_factory):
         event = full_event_factory.create()
@@ -71,3 +81,18 @@ class TestEvent:
     def test_sidemen_string(self, full_event_factory):
         event = full_event_factory.create()
         assert event.artists_gig_info.count() == 3
+
+        assert event.sidemen_string() == "First#2 Last#2, First#3 Last#3"
+
+    def test_display_title(self, full_event_factory):
+        # event with preassigned title
+        event = full_event_factory.create()
+        assert event.display_title() == "A test event 1 w/ First#1 Last#1, First#2 Last#2, First#3 Last#3"
+
+        # event with no title
+        event.title = None
+        assert event.display_title() == "First#1 Last#1 w/ First#2 Last#2, First#3 Last#3"
+
+        # event with no title and no leader
+        event.artists_gig_info.all().update(is_leader=False)
+        assert event.display_title() == "First#1 Last#1, First#2 Last#2, First#3 Last#3"

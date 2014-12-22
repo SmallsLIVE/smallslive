@@ -43,26 +43,38 @@ class Event(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('event_detail', kwargs={'pk': self.id, 'slug': slugify(self.title)})
 
+    def performers_string(self):
+        "Returns the comma-separated list of sidemen (including the leader) as a string"
+        return self.leader_string() + ", " + self.sidemen_string()
+
+    def sidemen_string(self):
+        "Returns the comma-separated list of sidemen (without the leader) as a string"
+        performers = self.artists_gig_info.filter(is_leader=False).order_by('sort_order').select_related(
+            'artist').values_list('artist__first_name', 'artist__last_name')
+        # Make full names
+        performers = ["{0} {1}".format(first, last) for first, last in performers]
+        return ", ".join(performers)
+
+    def leader_string(self):
+        leader = self.artists_gig_info.filter(is_leader=True).first()
+        if leader:
+            text = leader.artist.full_name()
+        else:
+            text = ""
+        return text
+
     def display_title(self):
         """
         Returns the event display title. If the title is defined, returns the title, otherwise it generates
         one from the performer names and their roles.
         """
-        performers = self.artists_gig_info.order_by('sort_order').select_related('artist').values_list(
-                'artist__first_name', 'artist__last_name')
-        # Make full names
-        performers = ["{0} {1}".format(first, last) for first, last in performers]
+        leader = self.leader_string()
         if self.title:
-            display_title = self.title
+            display_title = self.title + " w/ " + self.performers_string()
+        elif leader:
+            display_title = self.leader_string() + " w/ " + self.sidemen_string()
         else:
-            first = performers.pop(0)
-            display_title = first[0]
-        # If only one member, show his name, otherwise list all the remaining artists and their instruments
-        if performers:
-            display_title += " w/ "
-            for performer in performers:
-                display_title += "{0}, ".format(performer)
-        display_title = display_title[:-2]
+            display_title = self.sidemen_string()
         return display_title
 
     def display_title_with_instruments(self):

@@ -34,11 +34,10 @@ class GigPlayedFactory(factory.django.DjangoModelFactory):
         model = 'events.GigPlayed'
 
     artist = factory.SubFactory(ArtistFactory)
-    event = factory.SubFactory(EventFactory)
     role = factory.SubFactory(InstrumentFactory)
 
 
 class EventWithPerformersFactory(EventFactory):
-    gig_1 = factory.RelatedFactory(GigPlayedFactory, 'event')
+    gig_1 = factory.RelatedFactory(GigPlayedFactory, 'event', is_leader=True)
     gig_2 = factory.RelatedFactory(GigPlayedFactory, 'event')
     gig_3 = factory.RelatedFactory(GigPlayedFactory, 'event')
