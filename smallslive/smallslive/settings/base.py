@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 from django.core.exceptions import ImproperlyConfigured
 from oscar import get_core_apps, OSCAR_MAIN_TEMPLATE_DIR
+from oscar.defaults import *
 
 
 def get_env_variable(var_name):
@@ -328,7 +329,7 @@ TINYMCE_DEFAULT_CONFIG = {
     'plugins': 'link'
 }
 
-# Oscar Haystack config
+# Oscar settings
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
@@ -340,6 +341,4 @@ STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 STRIPE_CURRENCY = 'USD'
 
 OSCAR_DEFAULT_CURRENCY = 'USD'
-
-
-from oscar.defaults import *
+OSCAR_SHOP_NAME = 'SmallsLIVE'
