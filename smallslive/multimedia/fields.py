@@ -11,6 +11,3 @@ class DynamicBucketFileField(models.FileField):
             storage = VideoS3Storage()
         model_instance.file.storage = storage
         return super(DynamicBucketFileField, self).pre_save(model_instance, add)
-
-from south.modelsinspector import add_introspection_rules
-add_introspection_rules([], ["^multimedia\.fields\.DynamicBucketFileField"])
