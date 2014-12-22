@@ -78,11 +78,35 @@ class TestEvent:
         event.state = 'Hidden'
         assert event.status_css_class() == 'label-default'
 
+    def test_performers_string(self, full_event_factory):
+        event = full_event_factory.create()
+        assert event.performers_string() == "First#1 Last#1, First#2 Last#2, First#3 Last#3"
+
+    def test_performers_with_instruments_string(self, full_event_factory):
+        event = full_event_factory.create()
+        assert event.performers_with_instruments_string() == "First#1 Last#1 (tr), First#2 Last#2 (b), First#3 Last#3 (p)"
+
     def test_sidemen_string(self, full_event_factory):
         event = full_event_factory.create()
-        assert event.artists_gig_info.count() == 3
-
         assert event.sidemen_string() == "First#2 Last#2, First#3 Last#3"
+
+    def test_sidemen_with_instruments_string(self, full_event_factory):
+        event = full_event_factory.create()
+        assert event.sidemen_with_instruments_string() == "First#2 Last#2 (b), First#3 Last#3 (p)"
+
+    def test_leader_string(self, full_event_factory):
+        event = full_event_factory.create()
+        assert event.leader_string() == "First#1 Last#1"
+
+        event.artists_gig_info.all().update(is_leader=False)
+        assert event.leader_string() == ""
+
+    def test_leader_with_instrument_string(self, full_event_factory):
+        event = full_event_factory.create()
+        assert event.leader_with_instrument_string() == "First#1 Last#1 (tr)"
+
+        event.artists_gig_info.all().update(is_leader=False)
+        assert event.leader_with_instrument_string() == ""
 
     def test_display_title(self, full_event_factory):
         # event with preassigned title
