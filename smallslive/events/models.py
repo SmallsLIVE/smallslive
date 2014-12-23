@@ -95,7 +95,7 @@ class Event(TimeStampedModel):
         if self.title:
             display_title = self.title + " w/ " + self.performers_string()
         elif leader:
-            display_title = self.leader_string() + " w/ " + self.sidemen_string()
+            display_title = leader + " w/ " + self.sidemen_string()
         else:
             display_title = self.sidemen_string()
         return display_title
@@ -105,13 +105,13 @@ class Event(TimeStampedModel):
         Returns the event display title. If the title is defined, returns the title, otherwise it generates
         one from the performer names and their roles.
         """
-        leader = self.leader_string_with_instrument()
+        leader = self.leader_with_instrument_string()
         if self.title:
-            display_title = self.title + " w/ " + self.performers_string()
+            display_title = self.title + " w/ " + self.performers_with_instruments_string()
         elif leader:
-            display_title = self.leader_string() + " w/ " + self.sidemen_string()
+            display_title = leader + " w/ " + self.sidemen_with_instruments_string()
         else:
-            display_title = self.sidemen_string()
+            display_title = self.sidemen_with_instruments_string()
         return display_title
 
     @property

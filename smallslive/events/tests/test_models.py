@@ -120,3 +120,16 @@ class TestEvent:
         # event with no title and no leader
         event.artists_gig_info.all().update(is_leader=False)
         assert event.display_title() == "First#1 Last#1, First#2 Last#2, First#3 Last#3"
+
+    def test_display_title_with_instruments(self, full_event_factory):
+        # event with preassigned title
+        event = full_event_factory.create()
+        assert event.display_title_with_instruments() == "A test event 1 w/ First#1 Last#1 (tr), First#2 Last#2 (b), First#3 Last#3 (p)"
+
+        # event with no title
+        event.title = None
+        assert event.display_title_with_instruments() == "First#1 Last#1 (tr) w/ First#2 Last#2 (b), First#3 Last#3 (p)"
+
+        # event with no title and no leader
+        event.artists_gig_info.all().update(is_leader=False)
+        assert event.display_title_with_instruments() == "First#1 Last#1 (tr), First#2 Last#2 (b), First#3 Last#3 (p)"
