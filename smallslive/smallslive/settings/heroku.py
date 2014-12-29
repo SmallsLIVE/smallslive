@@ -17,6 +17,9 @@ ALLOWED_HOSTS = ['*']
 # Static asset configuration
 PIPELINE_SASS_BINARY = '/app/vendor/bundle/bin/sass'
 
+# disable oscar django compressor
+COMPRESS_ENABLED = False
+
 
 INSTALLED_APPS += (
     'djrill',
