@@ -16,6 +16,8 @@ ALLOWED_HOSTS = ['*']
 
 # Static asset configuration
 PIPELINE_SASS_BINARY = '/app/vendor/bundle/bin/sass'
+STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
+
 
 INSTALLED_APPS += (
     'djrill',
