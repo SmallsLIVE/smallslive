@@ -20,12 +20,6 @@ DATABASES = {
     }
 }
 
-
-THUMBOR_MEDIA_URL = os.environ['THUMBOR_MEDIA_URL']
-THUMBOR_SECURITY_KEY = os.environ['THUMBOR_SECURITY_KEY']
-THUMBOR_SERVER = os.environ['THUMBOR_SERVER']
-AWS_S3_CUSTOM_DOMAIN = os.environ['AWS_S3_CUSTOM_DOMAIN']
-
 INSTALLED_APPS += (
     'debug_toolbar',
 )
@@ -34,9 +28,19 @@ COMPRESS_ENABLED = False
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ALLOWED_HOSTS = ['*']
-PIPELINE_ENABLED = True
-PIPELINE_COMPILERS = ''
-PIPELINE_SASS_ARGUMENTS = ''
+PIPELINE_ENABLED = False
+
+# Compiled by pipeline
+# PIPELINE_CSS = {
+#     'css': {
+#         'source_filenames': (
+#             'sass/application.scss',
+#         ),
+#         'output_filename': 'css/application.css',
+#     },
+# }
+
+# Pipeline doesn't touch this, SASS compiled manually by gulp
 PIPELINE_CSS = {
     'css': {
         'source_filenames': (
