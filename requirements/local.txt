@@ -3,6 +3,7 @@
 Mako==1.0.0
 MarkupSafe==0.23
 PyYAML==3.11
+Werkzeug==0.9.6
 cov-core==1.15.0
 coverage==3.7.1
 django-debug-toolbar==1.2.2
