@@ -6,6 +6,7 @@ beautifulsoup4==4.3.2
 bleach==1.4
 boto==2.28.0
 dj-database-url==0.3.0
+dj-static==0.0.6
 djrill==1.1.1
 django-allauth==0.17.0
 django-appconf==0.6
@@ -48,5 +49,6 @@ requests-oauthlib==0.4.1
 six==1.7.3
 sorl-thumbnail==11.12.1b
 sqlparse==0.1.14
-whitenoise==1.0.6
+static==1.1.1
+static3==0.5.1
 wsgiref==0.1.2
