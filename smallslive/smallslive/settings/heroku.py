@@ -15,7 +15,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = ['*']
 
 # Static asset configuration
-PIPELINE_ENABLED = True
+PIPELINE_ENABLED = False
 PIPELINE_SASS_BINARY = '/app/vendor/bundle/bin/sass'
 
 # disable oscar django compressor
