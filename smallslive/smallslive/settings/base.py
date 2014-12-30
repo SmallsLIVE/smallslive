@@ -254,7 +254,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-STATICFILES_STORAGE = 'smallslive.storages.PipelineGzipStorage'
+STATICFILES_STORAGE = 'pipeline.storage.PipelineStorage'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'pipeline.finders.AppDirectoriesFinder',
