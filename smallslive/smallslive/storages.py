@@ -2,6 +2,6 @@ from django.contrib.staticfiles.storage import ManifestStaticFilesStorage, Stati
 from pipeline.storage import PipelineMixin, GZIPMixin
 
 
-class PipelineGzipStorage(GZIPMixin, PipelineMixin, StaticFilesStorage):
+class PipelineGzipStorage(PipelineMixin, StaticFilesStorage):
     # don't normalize paths in the CSS file, make pipeline and manifest storage work together
     patterns = []
