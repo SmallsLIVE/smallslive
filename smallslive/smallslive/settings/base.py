@@ -265,6 +265,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 PIPELINE_COMPILERS = (
     'pipeline.compilers.sass.SASSCompiler',
 )
+PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
 PIPELINE_SASS_ARGUMENTS = '--update --precision 10'
 PIPELINE_CSS = {
     'css': {
