@@ -257,7 +257,7 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = 'smallslive.storages.PipelineGzipStorage'
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'pipeline.finders.AppDirectoriesFinder',
     'pipeline.finders.PipelineFinder',
 )
 MEDIA_URL = '/media/'
