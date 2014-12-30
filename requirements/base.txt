@@ -32,6 +32,7 @@ gnureadline==6.3.3
 gunicorn==19.1.1
 html5lib==0.999
 ipython==2.2.0
+libsass==0.6.2
 libthumbor==1.0.1
 lxml==3.3.4
 mock==1.0.1
