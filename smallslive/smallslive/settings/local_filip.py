@@ -30,8 +30,11 @@ INSTALLED_APPS += (
     'debug_toolbar',
 )
 
+COMPRESS_ENABLED = False
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+ALLOWED_HOSTS = ['*']
+PIPELINE_ENABLED = True
 PIPELINE_COMPILERS = ''
 PIPELINE_SASS_ARGUMENTS = ''
 PIPELINE_CSS = {
