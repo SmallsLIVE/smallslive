@@ -1,10 +1,8 @@
 from datetime import timedelta
 import pytest
 from django.utils import timezone
-from artists.models import Artist
-
-from events.factories import ArtistFactory, GigPlayedFactory, EventFactory, EventWithPerformersFactory
-from events.models import GigPlayed
+from artists.factories import ArtistFactory
+from ..factories import GigPlayedFactory, EventFactory, EventWithPerformersFactory
 
 
 @pytest.fixture(scope="module")

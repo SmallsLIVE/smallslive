@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Sum, Count
@@ -7,7 +8,6 @@ from tinymce import models as tinymce_models
 from events.models import Event
 from users.models import SmallsEmailAddress
 
-User = settings.AUTH_USER_MODEL
 
 
 class Artist(models.Model):
@@ -53,6 +53,7 @@ class Artist(models.Model):
             cnt=Count('event__sets')).aggregate(count=Sum('cnt'))['count']
 
     def send_invitation(self, request, email, invite_text=None):
+        User = get_user_model()
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:

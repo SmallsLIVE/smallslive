@@ -1,19 +1,11 @@
 from django.utils import timezone
 import factory
-from .models import Event
-
-
-class ArtistFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = 'artists.Artist'
-
-    first_name = factory.Sequence(lambda n: u'First#{0}'.format(n))
-    last_name = factory.Sequence(lambda n: u'Last#{0}'.format(n))
+from artists.factories import ArtistFactory
 
 
 class EventFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = Event
+        model = 'events.Event'
 
     title = factory.Sequence(lambda n: u'A test event {0}'.format(n))
     start = timezone.datetime(2014, 12, 10, 20, 30, 0, tzinfo=timezone.get_current_timezone())
