@@ -1,7 +1,7 @@
 import pytest
 from artists.models import Artist
 from ..factories import InstrumentFactory
-from ..forms import ArtistAddForm
+
 
 @pytest.fixture()
 def correct_request():
@@ -15,6 +15,7 @@ def correct_request():
         'photo': ''
     }
 
+
 @pytest.fixture()
 def wrong_request():
     return {
@@ -27,17 +28,26 @@ def wrong_request():
         'photo': ''
     }
 
+
+@pytest.fixture()
+def artist_add_form():
+    from ..forms import ArtistAddForm
+    return ArtistAddForm
+
+
 @pytest.mark.django_db()
 class TestArtistAddForm:
-    def test_form_renders_inputs_correctly(self):
-        artist_add_form = ArtistAddForm()
-        
+    def test_form_renders_inputs_correctly(self, artist_add_form):
+        # importing here because import tries to execute a query and db tables are not yet created
+
+        artist_add_form = artist_add_form()
+
         form_output = artist_add_form.as_p()
         assert "Photo (portrait-style JPG w/ instrument preferred)" in form_output
         assert "<form" not in form_output
 
-    def test_form_accepts_valid_input(self, correct_request):
-        form = ArtistAddForm(correct_request)
+    def test_form_accepts_valid_input(self, artist_add_form, correct_request):
+        form = artist_add_form(correct_request)
         InstrumentFactory.create_batch(3)
 
         form_valid = form.is_valid()
@@ -50,8 +60,8 @@ class TestArtistAddForm:
         assert artist.first_name == "Spike"
         assert artist.instruments.count() == 2
 
-    def test_form_fails_on_wrong_input(self, wrong_request):
-        form = ArtistAddForm(wrong_request)
+    def test_form_fails_on_wrong_input(self, artist_add_form, wrong_request):
+        form = artist_add_form(wrong_request)
         InstrumentFactory.create_batch(3)
 
         form_valid = form.is_valid()
