@@ -1,7 +1,8 @@
 import pytest
 from django.core import mail
 from users.models import SmallsEmailAddress
-from ..factories import ArtistFactory
+from events.factories import EventFactory, GigPlayedFactory
+from ..factories import ArtistFactory, ArtistWithEventsFactory, InstrumentFactory
 
 
 @pytest.fixture(scope="module")
@@ -9,10 +10,21 @@ def artist_factory():
     return ArtistFactory
 
 
+@pytest.fixture(scope="module")
+def artist_with_events_factory():
+    return ArtistWithEventsFactory
+
+
 @pytest.fixture(autouse=True)
 @pytest.mark.django_db()
 def reset_model_counters():
     ArtistFactory.reset_sequence()
+    GigPlayedFactory.reset_sequence()
+    EventFactory.reset_sequence()
+    InstrumentFactory.reset_sequence()
+    InstrumentFactory.name.reset()
+    InstrumentFactory.abbreviation.reset()
+
 
 @pytest.mark.django_db()
 class TestArtist:
@@ -50,3 +62,23 @@ class TestArtist:
         assert SmallsEmailAddress.objects.filter(email=email, user=another_artist.user).count() == 1
         assert len(mail.outbox) == 2
         assert "Confirm E-mail Address" in mail.outbox[1].subject
+
+    def test_get_instruments(self, artist_factory):
+        artist = artist_factory.create()
+        assert artist.instruments.count() == 3
+        assert artist.get_instruments() == "Trumpet\nBass\nPiano"
+
+    def test_upcoming_evenst(self, artist_with_events_factory):
+        artist = artist_with_events_factory.create()
+        assert artist.events.count() == 5
+        assert artist.upcoming_events().count() == 3
+        assert "A test event 1" in artist.upcoming_events().values_list('title', flat=True)
+        assert "A test event 2" in artist.upcoming_events().values_list('title', flat=True)
+        assert "A test event 3" in artist.upcoming_events().values_list('title', flat=True)
+
+    def test_past_events(self, artist_with_events_factory):
+        artist = artist_with_events_factory.create()
+        assert artist.events.count() == 5
+        assert artist.past_events().count() == 2
+        assert "A test event 4" in artist.past_events().values_list('title', flat=True)
+        assert "A test event 5" in artist.past_events().values_list('title', flat=True)

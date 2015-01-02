@@ -1,7 +1,7 @@
 from datetime import timedelta
 import pytest
 from django.utils import timezone
-from artists.factories import ArtistFactory
+from artists.factories import ArtistFactory, InstrumentFactory
 from ..factories import GigPlayedFactory, EventFactory, EventWithPerformersFactory
 
 
@@ -21,6 +21,9 @@ def reset_model_counters():
     EventFactory.reset_sequence()
     ArtistFactory.reset_sequence()
     GigPlayedFactory.reset_sequence()
+    InstrumentFactory.reset_sequence()
+    InstrumentFactory.name.reset()
+    InstrumentFactory.abbreviation.reset()
 
 
 @pytest.mark.django_db()
@@ -34,10 +37,10 @@ class TestEvent:
 
     def test_is_past(self, event_factory):
         event = event_factory.build()
-        assert event.is_past is True
-
-        event.end = timezone.datetime(2099, 12, 10, 22, 30, 0, tzinfo=timezone.get_current_timezone())
         assert event.is_past is False
+
+        event.end = timezone.datetime(2000, 12, 10, 22, 30, 0, tzinfo=timezone.get_current_timezone())
+        assert event.is_past is True
 
     def test_listing_date(self, event_factory):
         event = event_factory.build()
