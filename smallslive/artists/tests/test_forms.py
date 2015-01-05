@@ -31,6 +31,7 @@ def wrong_request():
 
 @pytest.fixture()
 def artist_add_form():
+    # importing here because import tries to execute a query and db tables are not yet created
     from ..forms import ArtistAddForm
     return ArtistAddForm
 
@@ -38,8 +39,6 @@ def artist_add_form():
 @pytest.mark.django_db()
 class TestArtistAddForm:
     def test_form_renders_inputs_correctly(self, artist_add_form):
-        # importing here because import tries to execute a query and db tables are not yet created
-
         artist_add_form = artist_add_form()
 
         form_output = artist_add_form.as_p()

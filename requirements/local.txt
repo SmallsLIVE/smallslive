@@ -13,10 +13,10 @@ glob2==0.4.1
 model-mommy==1.2.2
 py==1.4.26
 pytest==2.6.4
-pytest-bdd==2.5.1
+pytest-bdd==2.5.3
 pytest-cov==1.8.1
 pytest-django==2.7.0
-pytest-splinter==1.2.4
+pytest-splinter==1.2.7
 python-coveralls==2.4.3
 python-openid==2.2.5
 pytest-xdist==1.11
