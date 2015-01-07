@@ -8,6 +8,7 @@ DATABASES = {
     }
 }
 
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
 # not needed for tests
 STRIPE_PUBLISHABLE_KEY = ''
 STRIPE_SECRET_KEY = ''
