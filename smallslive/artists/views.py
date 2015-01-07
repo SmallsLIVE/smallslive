@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.generic.edit import UpdateView, CreateView
@@ -7,7 +8,7 @@ from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from .forms import ArtistAddForm, ArtistInviteForm
 from .models import Artist
 
-
+@user_passes_test(lambda u: u.is_superuser)
 def artist_add(request):
     if request.method == 'POST':
         artist_add_form = ArtistAddForm(request.POST)
