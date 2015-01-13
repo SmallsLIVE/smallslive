@@ -152,11 +152,10 @@ EventForm = {
         });
 
         $(document).on("click", ".artist_remove", function (e) {
-            var $total = $('#id_artists_gig_info-TOTAL_FORMS');
-            var total = $total.val();
-            $(this).parents('tr').remove();
-            total--;
-            $total.val(total);
+            // hide the entry and set the DELETE value to true so Django knows to delete it
+            $(this).parents('tr').hide();
+            var del = $(this).parents('tr').find('input[id$="DELETE"]')[0];
+            $(del).val(true);
             EventForm.fixTableWidths('.formset_table');
             return false;
         });

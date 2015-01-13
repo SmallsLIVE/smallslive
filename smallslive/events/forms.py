@@ -99,6 +99,7 @@ class GigPlayedAddInlineFormSet(InlineFormSet):
 
 class GigPlayedEditInlineFormset(GigPlayedAddInlineFormSet):
     extra = 1
+    can_delete = True
 
     def construct_formset(self):
         # don't automatically show extra rows if there are artists already playing
