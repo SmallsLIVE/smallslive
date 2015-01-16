@@ -28,24 +28,32 @@ COMPRESS_ENABLED = False
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ALLOWED_HOSTS = ['*']
+# Static asset configuration
 PIPELINE_ENABLED = False
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'pipeline.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
+)
+PIPELINE_SASS_BINARY = '/Users/bezidejni/.virtualenvs/smallslive/bin/sassc'
+PIPELINE_SASS_ARGUMENTS = ''
 
 # Compiled by pipeline
-# PIPELINE_CSS = {
-#     'css': {
-#         'source_filenames': (
-#             'sass/application.scss',
-#         ),
-#         'output_filename': 'css/application.css',
-#     },
-# }
-
-# Pipeline doesn't touch this, SASS compiled manually by gulp
 PIPELINE_CSS = {
     'css': {
         'source_filenames': (
-            'css/application.css',
+            'sass/application.scss',
         ),
         'output_filename': 'css/application.css',
     },
 }
+
+# Pipeline doesn't touch this, SASS compiled manually by gulp
+# PIPELINE_CSS = {
+#     'css': {
+#         'source_filenames': (
+#             'css/application.css',
+#         ),
+#         'output_filename': 'css/application.css',
+#     },
+# }
