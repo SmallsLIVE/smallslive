@@ -267,7 +267,7 @@ PIPELINE_COMPILERS = (
 )
 PIPELINE_CSS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
 PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.NoopCompressor'
-PIPELINE_SASS_ARGUMENTS = '--update --precision 10'
+PIPELINE_SASS_ARGUMENTS = '--precision 10'
 PIPELINE_CSS = {
     'css': {
         'source_filenames': (
