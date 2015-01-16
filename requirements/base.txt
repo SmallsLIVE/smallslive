@@ -32,6 +32,7 @@ gnureadline==6.3.3
 gunicorn==19.1.1
 html5lib==0.999
 ipython==2.2.0
+libsass==0.6.2
 libthumbor==1.0.1
 lxml==3.3.4
 mock==1.0.1
@@ -46,7 +47,7 @@ pystache==0.5.4
 pytz==2014.4
 requests==2.4.0
 requests-oauthlib==0.4.1
-six==1.7.3
+six==1.9.0
 sorl-thumbnail==11.12.1b
 sqlparse==0.1.14
 static==1.1.1
