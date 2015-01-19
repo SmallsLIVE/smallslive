@@ -1,10 +1,11 @@
 //Main Sass file
 //Code organization as per: http://www.sitepoint.com/architecture-sass-project/
-@import 'vendors-extensions/bootstrap-custom';
+@import 'vendors-extensions/bootstrap';
 
+@import 'helpers/mixins';
+@import 'helpers/variables';
 @import 'base/common';
 @import 'base/typography';
-@import 'helpers/mixins';
 @import 'layout/header';
 @import 'layout/footer';
 

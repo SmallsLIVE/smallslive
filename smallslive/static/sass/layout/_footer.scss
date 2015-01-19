@@ -1,0 +1,26 @@
+.footer-content {
+  text-align: center;
+  width: 100%;
+}
+
+.footer-logo {
+  color: #0044cc;
+}
+
+.footer-nav {
+  margin: 23px 10px 15px;
+  padding: 0;
+}
+
+.footer-nav li {
+  display: inline;
+}
+
+.footer-nav li:after {
+  content: " \00b7";
+  font-size: 15px;
+}
+
+.footer-nav li:last-child:after {
+  content: none;
+}
