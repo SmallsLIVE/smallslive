@@ -1,6 +1,5 @@
 .from-our-archive {
   background-color: #FFF;
-  border-top: 8px solid #B12E3A;
 }
 
 .from-our-archive__section-title {
@@ -40,6 +39,14 @@
 
   &--purple {
     border-bottom-color: #752C8F;
+  }
+
+  &--darkblue {
+    border-bottom-color: #2E338F;
+  }
+
+  &--orange {
+    border-bottom-color: #DC9231;
   }
 
 }
