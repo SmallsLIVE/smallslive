@@ -1,0 +1,9 @@
+.mini-gallery {
+  padding-left: 0;
+  padding-right: 0;
+
+  &__img {
+    @extend .img-responsive;
+    width: 100%;
+  }
+}

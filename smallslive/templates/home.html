@@ -49,8 +49,8 @@
   </section>
   <section class="about-smalls container">
     <div class="row">
-      <div class="col-sm-6 about-smalls__img"></div>
-      <div class="col-sm-6 about-smalls__info">
+      <div class="col-md-6 visible-md visible-lg about-smalls__img"></div>
+      <div class="col-xs-12 col-md-6 about-smalls__info">
         <h1 class="about-smalls__title">About Smalls Live</h1>
 
         <p class="about-smalls__text">Smalls is a historic jazz club in Greenwich Village NYC presenting the best in live jazz music 7 days a week.
@@ -61,6 +61,14 @@
         <p class="about-smalls__text">Listen. Strange women lying in ponds distributing swords is no basis for a system of government. Supreme
           executive power derives from a mandate from the masses, not from some farcical aquatic ceremony. </p>
       </div>
+    </div>
+  </section>
+  <section class="mini-gallery container">
+    <div class="row no-gutters">
+        <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img1.jpg' %}" class="mini-gallery__img"/></div>
+        <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img2.jpg' %}" class="mini-gallery__img"/></div>
+        <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img3.jpg' %}" class="mini-gallery__img"/></div>
+        <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img4.jpg' %}" class="mini-gallery__img"/></div>
     </div>
   </section>
 {% endblock content %}
