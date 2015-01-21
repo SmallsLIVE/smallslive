@@ -1,0 +1,28 @@
+.about-smalls {
+  background-color: white;
+
+  &__info {
+    padding-left: 20px;
+    padding-top: 35px;
+    padding-right: 29px;
+  }
+
+  &__img {
+    background-image: url('../image/about-smalls-bg.jpg');
+    background-size: cover;
+    height: 317px;
+  }
+
+  &__title {
+    @extend %lato;
+    font-size: 32px;
+    margin-bottom: 16px;
+    margin-top: 0;
+  }
+
+  &__text {
+    @extend %lato;
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+}
