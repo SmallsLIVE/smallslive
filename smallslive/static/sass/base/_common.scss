@@ -1,6 +1,7 @@
 body {
   background-image: url("../image/header_bg.png"), url("../image/background-tile.png");
-  background-position: top center, 500px left;
+  background-position:  center top, 0 0;
   background-repeat: no-repeat, repeat;
+  background-size: 100% 500px, 10px 10px;
   background-color: $background-color;
 }

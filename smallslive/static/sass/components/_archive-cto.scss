@@ -1,0 +1,34 @@
+.archive-cto {
+  background-image: url('../image/archive-bg.jpg');
+  background-size: cover;
+  border-bottom: 8px $main-accent-color solid;
+  color: white;
+  height: 300px;
+  text-align: center;
+
+  &__title {
+    @extend %lato-black;
+    font-size: 48px;
+    margin-top: 70px;
+    margin-bottom: 11px;
+  }
+
+  &__text {
+    @extend %lato-bold;
+    font-size: 14px;
+    margin-bottom: 21px;
+  }
+
+  &__button {
+    @extend .btn;
+    @extend %lato-bold;
+    background-color: rgba(0,0,0,0.5);
+    border: 2px #D21535 solid;
+    color: white;
+    font-style: italic;
+
+    &:hover {
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+}
