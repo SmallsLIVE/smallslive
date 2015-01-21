@@ -1,7 +1,7 @@
 .archive-cto {
+  @extend %bottom-section-border;
   background-image: url('../image/archive-bg.jpg');
   background-size: cover;
-  border-bottom: 8px $main-accent-color solid;
   color: white;
   height: 300px;
   text-align: center;

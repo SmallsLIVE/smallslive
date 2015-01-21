@@ -1,7 +1,7 @@
 .visit-cto {
+  @extend %bottom-section-border;
   background-image: url('../image/visit-us-bg.jpg');
   background-size: cover;
-  border-bottom: 8px $main-accent-color solid;
   color: white;
   height: 300px;
   text-align: center;

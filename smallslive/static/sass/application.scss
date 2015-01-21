@@ -2,8 +2,8 @@
 //Code organization as per: http://www.sitepoint.com/architecture-sass-project/
 @import 'vendors-extensions/bootstrap';
 
-@import 'helpers/mixins';
 @import 'helpers/variables';
+@import 'helpers/mixins';
 @import 'base/common';
 @import 'base/typography';
 @import 'layout/header';
