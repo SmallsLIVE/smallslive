@@ -1,0 +1,61 @@
+.home-store {
+  @extend %bottom-section-border;
+  background-color: white;
+  padding-bottom: 40px;
+
+  &__section-title {
+    @extend %lato-black;
+    color: #B1B1B1;
+    font-size: 24px;
+    margin-bottom: 28px;
+  }
+
+  &__title {
+    @extend %lato-bold;
+    font-size: 16px;
+    margin-top: 0;
+    margin-bottom: 2px;
+    color: #131313;
+  }
+
+  &__type {
+    @extend %lato-bold;
+    color: #777777;
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
+
+  &__price {
+    @extend %lato-bold;
+    color: #D80F2E;
+    font-size: 16px;
+  }
+
+  &__buynow {
+    @extend %lato-bold-italic;
+    color: white;
+    border: none;
+    background-color: #DA0B28;
+    display: block;
+    float: left;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 4px 10px 4px 7px;
+  }
+
+  &__img {
+    @include center-block;
+    @include img-responsive;
+    margin-bottom: 10px;
+    width: 100%;
+  }
+}
+
+.arrow {
+  display: block;
+  float: left;
+  width: 0;
+  height: 0;
+  border: 14px solid transparent;
+  border-left-color: #DA0B28;
+}
