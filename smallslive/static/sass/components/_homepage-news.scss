@@ -2,7 +2,7 @@
   @extend %lato;
   background-color: #1F1F1F;
   color: white;
-  height: 70px;
+  min-height: 70px;
   padding-left: 19px;
   padding-top: 15px;
 
@@ -11,12 +11,12 @@
     font-size: 24px;
     display: inline-block;
     margin-top: 10px;
+    margin-right: 14px;
   }
 
   &__text {
     font-size: 14px;
     display: inline-block;
-    margin-left: 14px;
   }
 
   &__input {
@@ -26,7 +26,8 @@
     color: #333;
     height: 40px;
     padding-left: 15px;
-    width: 270px;
+    max-width: 270px;
+    margin-bottom: 20px;
     vertical-align: middle;
     float: right;
   }
