@@ -1,0 +1,55 @@
+---
+- name: Add PostgreSQL APT repository key
+  apt_key: url=https://www.postgresql.org/media/keys/ACCC4CF8.asc state=present
+
+- name: Add PostgreSQL APT repository key
+  apt_repository: repo='deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main' state=present update_cache=yes
+
+- name: Install PostgreSQL
+  apt: name={{item}} state=latest
+  with_items:
+    - postgresql-9.3
+    - libpq-dev
+  notify:
+    - restart postgres
+
+- name: Install Psycopg2 package
+  pip: name=psycopg2 state=latest
+
+- name: Ensure Postgres is running
+  service: name=postgresql state=running
+
+- name: Create Postgres user
+  sudo: True
+  sudo_user: postgres
+  postgresql_user: name={{postgres_user}} password={{postgres_password}}
+
+- name: Create DB
+  sudo: True
+  sudo_user: postgres
+  postgresql_db: name={{app_name}}
+                 owner={{postgres_user}}
+                 encoding='UTF-8'
+                 lc_collate='en_US.UTF-8'
+                 lc_ctype='en_US.UTF-8'
+                 template='template0'
+
+- name: Install S3 command line tools
+  apt: name=s3cmd state=latest
+  when: deployment_environment == "production"
+
+- name: Copy s3cmd config file
+  template: src=s3cfg dest=/etc/s3cfg
+  when: deployment_environment == "production"
+
+- name: Create backups directory
+  file: path="{{backups_dir}}" state=directory owner=postgres mode=775
+  when: deployment_environment == "production"
+
+- name: Copy cron backup script
+  template: src=daily_backup.sh dest={{backups_dir}} mode=775
+  when: deployment_environment == "production"
+
+- name: Enable the daily backup script
+  cron: name="Daily DB backup" special_time=daily job="{{backups_dir}}/daily_backup.sh >/dev/null"
+  when: deployment_environment == "production"

@@ -1,0 +1,13 @@
+---
+
+- name: Install New Relic python library
+  pip: name=newrelic virtualenv={{venv_dir}} state=latest
+
+- name: Generate New Relic config
+  command: "{{venv_dir}}/bin/newrelic-admin generate-config {{newrelic_license_key}} newrelic.ini chdir={{django_project_dir}}"
+
+- name: Change the application name
+  ini_file: dest="{{django_project_dir}}/newrelic.ini"
+            section=newrelic
+            option=app_name
+            value="Launcher"

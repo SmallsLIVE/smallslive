@@ -70,3 +70,4 @@ smallsliveusers.txt
 test_db.sqlite3
 smallslive/static/css/application.css
 smallslive/static/sass/application.css
+secret_vars.yml

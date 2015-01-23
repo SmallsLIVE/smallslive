@@ -1,0 +1,16 @@
+---
+
+- name: Add redis repo
+  apt_repository: repo='ppa:chris-lea/redis-server'
+
+- name: Install redis
+  apt: name=redis-server state=latest
+
+- name: Copy redis upstart script
+  copy: src=redis-server.conf dest=/etc/init/ owner=root group=root
+
+- name: Copy redis config
+  copy: src=redis.conf dest=/etc/redis/ owner=root group=root
+
+#- name: Start redis
+#  service: name=redis-server state=started

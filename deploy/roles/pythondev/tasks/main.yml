@@ -1,0 +1,37 @@
+---
+
+- name: Update python-setuptools
+  pip: name=setuptools state=latest extra_args='--no-use-wheel'
+
+- name: Install virtualenv and virtualenvwrapper
+  pip: name={{item}} state=latest
+  with_items:
+    - virtualenv
+    - virtualenvwrapper
+
+- name: Set up virtualenvwrapper
+  lineinfile: dest=/root/.zshrc line="{{item}}" state=present
+  with_items:
+    - "export WORKON_HOME='/opt/venv/'"
+    - "export PROJECT_HOME='/opt/'"
+    - "source /usr/local/bin/virtualenvwrapper.sh"
+
+- name: Add node.js repo
+  apt_repository: repo='ppa:chris-lea/node.js'
+
+- name: Install node.js
+  apt: name=nodejs state=latest
+
+- name: Install required npm packages
+  npm: name={{item}} global=yes state=latest
+  with_items:
+    - bower
+    - yuglify
+    - uglify-js
+    - less
+
+- name: Create celery user
+  user: name=celery comment="Celery user" createhome=no
+
+- name: Create celery folder
+  file: path=/opt/celery owner=celery state=directory

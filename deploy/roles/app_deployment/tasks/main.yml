@@ -1,0 +1,48 @@
+---
+
+- name: Clone app repo
+  git: repo={{git_repo_url}} dest={{git_repo_dir}} version={{git_repo_branch}}
+  notify:
+    - reload supervisor config
+  tags: code
+
+- name: Clear pip build dir
+  file: path={{venv_dir}}/build state=absent
+  tags: code
+
+- name: Create a virtual env and install app requirements
+  pip: requirements='requirements/base.txt' virtualenv={{venv_dir}} chdir={{git_repo_dir}}
+  tags: code
+
+- name: Check Django installation
+  django_manage: >
+      command="check"
+      app_path={{django_project_dir}}
+      settings={{django_settings_file}}
+      pythonpath={{django_project_dir}}
+      virtualenv={{venv_dir}}
+  environment: django_env_vars
+  tags: code
+
+- name: Run collectstatic
+  django_manage: >
+      command=collectstatic
+      app_path={{django_project_dir}}
+      settings={{django_settings_file}}
+      pythonpath={{django_project_dir}}
+      virtualenv={{venv_dir}}
+  environment: django_env_vars
+  tags: code
+
+- name: Run DB migrations
+  django_manage: >
+      command=migrate
+      app_path={{django_project_dir}}
+      settings={{django_settings_file}}
+      pythonpath={{django_project_dir}}
+      virtualenv={{venv_dir}}
+  environment: django_env_vars
+  tags: code
+
+- name: Set up virtualenv postactivate scripts
+  template: src=postactivate dest={{venv_dir}}/bin/postactivate mode=0700

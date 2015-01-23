@@ -1,0 +1,23 @@
+deployment_environment: staging
+remote_user: root
+app_url: smallslive.jukic.me
+sendfile: 'on'
+
+# application config
+app_name: smallslive
+git_repo_url: https://github.com/SmallsLIVE/smallslive.git
+git_repo_branch: develop
+git_repo_dir: /opt/{{app_name}}
+venv_dir: /opt/venv/{{app_name}}
+
+# memcached config
+memcached_memory: 16
+
+# django static files
+django_media_dir: "{{git_repo_dir}}/{{app_name}}/media"
+django_project_dir: "{{git_repo_dir}}/{{app_name}}"
+django_static_dir: "{{git_repo_dir}}/{{app_name}}/collected_static"
+django_settings_file: "smallslive.settings.heroku"
+
+# s3 backup
+backups_dir: /opt/backups

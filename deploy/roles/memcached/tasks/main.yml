@@ -1,0 +1,15 @@
+---
+
+- name: Install memcached
+  apt: name={{item}} state=latest
+  with_items:
+    - memcached
+    - libmemcached-dev
+
+- name: Start memcached
+  service: name=memcached state=started
+
+- name: Copy memcached.conf to server
+  template: src=memcached.conf dest=/etc/memcached.conf
+  notify:
+    -  restart memcached
