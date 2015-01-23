@@ -1,7 +1,7 @@
 .home-store {
   @extend %bottom-section-border;
   background-color: white;
-  padding-bottom: 40px;
+  padding-bottom: 20px;
 
   &__section-title {
     @extend %lato-black;
@@ -15,6 +15,7 @@
     font-size: 16px;
     margin-top: 0;
     margin-bottom: 2px;
+    height: 34px;
     color: #131313;
   }
 
@@ -41,6 +42,7 @@
     font-size: 14px;
     line-height: 20px;
     padding: 4px 10px 4px 7px;
+    margin-bottom: 20px;
   }
 
   &__img {
