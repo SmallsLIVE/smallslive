@@ -1,0 +1,17 @@
+---
+- name: Install supervisord
+  pip: name=supervisor state=latest
+
+- name: Copy supervisor configuration file
+  template: src=supervisord.conf dest=/etc/supervisord.conf
+  notify:
+    - reload supervisor config
+
+- name: Create a log folder for supervisor
+  file: path=/var/log/supervisor state=directory
+
+- name: Copy supervisor upstart script
+  copy: src=supervisord.conf dest=/etc/init/ owner=root group=root
+
+- name: Start supervisord
+  service: name=supervisord state=started

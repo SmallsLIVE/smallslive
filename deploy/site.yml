@@ -1,0 +1,17 @@
+---
+- hosts: smalls
+  remote_user: "{{remote_user}}"
+  gather_facts: true
+  vars_files:
+    - hosts/{{deployment_environment}}/secret_vars.yml
+  roles:
+    - common
+    - pythondev
+    - postgresql
+    #- memcached
+    - nginx
+    - uwsgi
+    #- redis
+    - app_deployment
+    #- {role: 'newrelic', newrelic_app: true, newrelic_server: true}
+    - supervisor

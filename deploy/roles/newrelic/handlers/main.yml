@@ -1,0 +1,4 @@
+---
+
+- name: reload new relic monitoring
+  service: name=newrelic-sysmond state=restarted

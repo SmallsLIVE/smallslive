@@ -1,0 +1,5 @@
+#!/usr/local/bin/zsh
+# This hook is sourced after this virtualenv is activated.
+{% for k, v in django_env_vars.iteritems() %}
+export {{ k|upper }}="{{ v }}"
+{% endfor %}

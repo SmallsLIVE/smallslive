@@ -1,0 +1,50 @@
+---
+
+- name: Add nginx repo key
+  apt_key: url=http://nginx.org/keys/nginx_signing.key
+
+- name: Add nginx repo
+  apt_repository: repo="{{item}}"
+  with_items:
+    - deb http://nginx.org/packages/ubuntu/ precise nginx
+    - deb-src http://nginx.org/packages/ubuntu/ precise nginx
+
+- name: Install nginx
+  apt: name=nginx state=latest
+
+- name: Check if Launcher config is already there
+  stat: path=/etc/nginx/sites-available/{{app_name}}.conf
+  register: nginx_launcher_conf
+
+# needed so nginx doesn't take the port 80 by default
+- name: Stop nginx if Launcher config is not installed
+  service: name=nginx state=stopped
+  when: not nginx_launcher_conf.stat.exists
+
+- name: Ensure main Nginx configuration file is up to date
+  template: src=nginx.conf dest=/etc/nginx/nginx.conf
+
+- name: Remove default virtual hosts
+  file: path=/etc/nginx/conf.d/{{item}}.conf state=absent
+  with_items:
+    - default
+    - example_ssl
+
+- name: Create virtual hosts folders
+  file: path=/etc/nginx/{{item}} state=directory
+  with_items:
+    - sites-available
+    - sites-enabled
+
+- name: Copy the virtual host config file
+  template: src=nginx_uwsgi.conf dest=/etc/nginx/sites-available/{{app_name}}.conf
+  notify:
+    - restart nginx
+
+- name: Enable the virtual host
+  file: path=/etc/nginx/sites-enabled/{{app_name}}.conf src=/etc/nginx/sites-available/{{app_name}}.conf state=link
+  notify:
+    - restart nginx
+
+- name: Increase the TCP buffer
+  sysctl: name="net.ipv4.tcp_max_syn_backlog" value=2048 reload=yes

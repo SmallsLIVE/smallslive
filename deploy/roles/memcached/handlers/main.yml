@@ -1,0 +1,7 @@
+---
+
+- name: start memcached
+  service: name=memcached state=started
+
+- name: restart memcached
+  service: name=memcached state=restarted

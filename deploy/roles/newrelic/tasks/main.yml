@@ -1,0 +1,8 @@
+---
+- include: app.yml
+  tags: newrelic_server
+  when: newrelic_app is defined and newrelic_app == true
+
+- include: server.yml
+  tags: newrelic_server
+  when: newrelic_server is defined and newrelic_server == true and deployment_environment != "vagrant"
