@@ -16,7 +16,7 @@ memcached_memory: 16
 # django static files
 django_media_dir: "{{git_repo_dir}}/{{app_name}}/media"
 django_project_dir: "{{git_repo_dir}}/{{app_name}}"
-django_static_dir: "{{git_repo_dir}}/{{app_name}}/collected_static"
+django_static_dir: "{{git_repo_dir}}/{{app_name}}/staticfiles"
 django_settings_file: "smallslive.settings.heroku"
 
 # s3 backup
