@@ -1,0 +1,86 @@
+.upcoming-events {
+}
+
+.event-details {
+  min-height: 340px;
+  background-color: #1B191A;
+  background-size: cover;
+
+  &__title {
+    @extend %lato-black;
+    font-size: 34px;
+    text-transform: uppercase;
+    color: #d80e2d;
+    margin-top: 43px;
+    margin-bottom: 16px;
+  }
+
+  &__artists {
+    @extend %lato-black;
+    font-size: 14px;
+    color: #fefefe;
+    line-height: 160%;
+    padding-right: 50px;
+    letter-spacing: .07em;
+    margin-bottom: 50px;
+  }
+
+  &__instrument {
+    @extend %lato;
+    font-size: 14px;
+  }
+
+  &__event-button {
+    @extend %lato-bold-italic;
+    color: white;
+    border: none;
+    background-color: #DA0B28;
+    display: block;
+    float: left;
+    font-size: 16px;
+    line-height: 20px;
+    padding: 4px 10px 4px 7px;
+    margin-bottom: 20px;
+  }
+}
+
+.event-select {
+  min-height: 96px;
+  color: #fefefe;
+  background-color: $main-accent-color;
+
+  &__title {
+    @extend %lato-black;
+    font-size: 24px;
+    margin-top: 13px;
+  }
+
+  &__date-select {
+    @extend %lato-bold;
+    font-size: 14px;
+    background-color: transparent;
+    color: #fefefe;
+    height: 26px;
+
+  }
+
+  &__slots {
+    @extend %lato-bold;
+    font-size: 14px;
+    margin-top: 55px;
+
+
+    li {
+      color: #F4C4CC;
+      display: inline-block;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    li:hover {
+      color: white;
+    }
+
+
+  }
+}
