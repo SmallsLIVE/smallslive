@@ -18,7 +18,21 @@
 </head>
 <body>
 <header class="container">
-
+  <a href="/" class="smalls-logo"><img src="{% static 'logo.svg' %}" width="101" height="100" alt=""/></a>
+  <nav class="navigation">
+    <ul>
+      <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-2x fa-home "></i> Home</a></li>
+      <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-play-circle"></i> Live now!</a></li>
+      <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-calendar"></i> Schedule</a></li>
+      <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-video-camera"></i> Archive</a></li>
+      <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-shopping-cart"></i> Store</a></li>
+      <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-info-circle"></i> Info</a></li>
+    </ul>
+  </nav>
+  <ul class="header-login">
+    <li class="header-login__item"><a href="">Log in</a></li>
+    <li class="header-login__item"><a href="">Sign up</a></li>
+  </ul>
 </header>
 {% block content %}{% endblock content %}
 <footer class="container">

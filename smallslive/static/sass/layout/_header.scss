@@ -1,3 +1,63 @@
 header {
-  height: 404px;
+  @extend %bottom-section-border;
+  height: 159px;
+}
+
+.smalls-logo {
+  float: left;
+  margin-top: 19px;
+  margin-bottom: 19px;
+}
+
+.navigation {
+  float: left;
+  margin-top: 67px;
+
+  &__item {
+    @extend %lato;
+    display: inline-block;
+    font-size: 16px;
+    text-align: center;
+    border-right: 1px #3C3B3C solid;
+    width: 95px;
+
+    a {
+      color: #929292;
+      display: block;
+
+      &:hover {
+        color: white;
+      }
+    }
+  }
+
+  &__icon {
+    font-size: 22px;
+    margin-bottom: 12px;
+    width: 100%;
+  }
+}
+
+.header-login {
+  float: right;
+  margin-top: 17px;
+
+  &__item {
+    @extend %lato;
+    display: inline-block;
+    font-size: 14px;
+    border-right: 1px #3C3B3C solid;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 25px;
+    vertical-align: middle;
+
+    &:last-child {
+      border-right: none;
+    }
+
+    a {
+      color: #8F8E8F;
+    }
+  }
 }
