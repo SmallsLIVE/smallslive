@@ -10,7 +10,7 @@
     @extend %lato-black;
     font-size: 34px;
     text-transform: uppercase;
-    color: #d80e2d;
+    color: $main-accent-color;
     margin-top: 43px;
     margin-bottom: 16px;
   }
@@ -32,9 +32,9 @@
 
   &__event-button {
     @extend %lato-bold-italic;
-    color: white;
+    color: #FEFEFE;
     border: none;
-    background-color: #DA0B28;
+    background-color: $main-accent-color;
     display: block;
     float: left;
     font-size: 16px;
