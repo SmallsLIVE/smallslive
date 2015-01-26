@@ -21,13 +21,17 @@ header {
     border-right: 1px #3C3B3C solid;
     width: 95px;
 
+    @media (max-width: $screen-md-max) {
+      width: 80px;
+    }
+
     a {
       color: #929292;
       display: block;
+    }
 
-      &:hover {
-        color: white;
-      }
+    a:hover {
+      color: white;
     }
   }
 
@@ -53,11 +57,35 @@ header {
     vertical-align: middle;
 
     &:last-child {
-      border-right: none;
+      border-right: 0;
     }
 
     a {
       color: #8F8E8F;
     }
+
+    a:hover {
+      color: white;
+    }
+  }
+}
+
+.search {
+  float: right;
+  margin-top: 22px;
+  max-width: 400px;
+  width: 30%;
+
+  i {
+    left: 0;
+    right: inherit;
+    pointer-events: none;
+  }
+
+  &__input {
+    width: 100%;
+    background: rgba(255,255,255, 0.2);
+    padding-left: 35px;
+    color: white;
   }
 }

@@ -29,10 +29,17 @@
       <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-info-circle"></i> Info</a></li>
     </ul>
   </nav>
-  <ul class="header-login">
+
+  <ul class="header-login clearfix">
     <li class="header-login__item"><a href="">Log in</a></li>
     <li class="header-login__item"><a href="">Sign up</a></li>
   </ul>
+    <form action="" class="search">
+      <div class="form-group has-feedback">
+        <input type="text" class="form-control input-lg search__input" placeholder="Search our Archive..."/>
+        <i class="fa fa-search form-control-feedback"></i>
+      </div>
+    </form>
 </header>
 {% block content %}{% endblock content %}
 <footer class="container">
