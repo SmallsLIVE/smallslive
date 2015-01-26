@@ -77,13 +77,17 @@ header {
   width: 30%;
 
   i {
+    padding-top: 12px;
     left: 0;
     right: inherit;
     pointer-events: none;
   }
 
   &__input {
+    @extend %lato-italic;
+    height: 40px;
     width: 100%;
+    font-size: 14px;
     background: rgba(255,255,255, 0.2);
     padding-left: 35px;
     color: white;
