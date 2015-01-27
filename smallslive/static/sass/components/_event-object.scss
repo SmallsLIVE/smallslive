@@ -1,5 +1,6 @@
 .event-object {
   @include center-block;
+  color: white;
   position: relative;
   margin-bottom: 30px;
   border-bottom: 8px solid;
@@ -19,8 +20,18 @@
   &__title {
     @extend %lato-black;
     font-size: 24px;
-    color: white;
     text-transform: uppercase;
+  }
+
+  &__artists {
+    @extend %lato;
+    @include list-unstyled;
+    display: none;
+    font-size: 14px;
+
+    &:hover {
+      display: block;
+    }
   }
 
   &--green {
