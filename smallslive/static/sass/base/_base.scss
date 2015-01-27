@@ -1,6 +1,6 @@
 body {
   background-image: url("../image/header_bg.png"), url("../image/background-tile.png");
-  background-position:  center top, 0 0;
+  background-position: center top, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 100% 500px, 10px 10px;
   background-color: $background-color;
@@ -10,6 +10,7 @@ body {
   margin-right: 0;
   margin-left: 0;
 }
+
 .row.no-gutters > [class^="col-"],
 .row.no-gutters > [class*=" col-"] {
   padding-right: 0;

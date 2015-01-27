@@ -1,0 +1,57 @@
+.event-object {
+  @include center-block;
+  position: relative;
+  margin-bottom: 30px;
+  border-bottom: 8px solid;
+
+  &__image {
+    @include img-responsive;
+    width: 100%;
+  }
+
+  &__info {
+    position: absolute;
+    bottom: 20px;
+    left: 18px;
+    width: 65%;
+  }
+
+  &__title {
+    @extend %lato-black;
+    font-size: 24px;
+    color: white;
+    text-transform: uppercase;
+  }
+
+  &--green {
+    border-bottom-color: #5FA051;
+  }
+
+  &--blue {
+    border-bottom-color: #68ACE3;
+  }
+
+  &--yellow {
+    border-bottom-color: #E5DA33;
+  }
+
+  &--gold {
+    border-bottom-color: #AC893B;
+  }
+
+  &--red {
+    border-bottom-color: #7F2D13;
+  }
+
+  &--purple {
+    border-bottom-color: #752C8F;
+  }
+
+  &--darkblue {
+    border-bottom-color: #2E338F;
+  }
+
+  &--orange {
+    border-bottom-color: #DC9231;
+  }
+}
