@@ -39,21 +39,21 @@ PIPELINE_SASS_BINARY = '/Users/bezidejni/.virtualenvs/smallslive/bin/sassc'
 PIPELINE_SASS_ARGUMENTS = ''
 
 # Compiled by pipeline
-PIPELINE_CSS = {
-    'css': {
-        'source_filenames': (
-            'sass/main.scss',
-        ),
-        'output_filename': 'css/application.css',
-    },
-}
-
-# Pipeline doesn't touch this, SASS compiled manually by gulp
 # PIPELINE_CSS = {
 #     'css': {
 #         'source_filenames': (
-#             'css/application.css',
+#             'sass/main.scss',
 #         ),
 #         'output_filename': 'css/application.css',
 #     },
 # }
+
+# Pipeline doesn't touch this, SASS compiled manually by gulp
+PIPELINE_CSS = {
+    'css': {
+        'source_filenames': (
+            'css/main.css',
+        ),
+        'output_filename': 'css/main.css',
+    },
+}
