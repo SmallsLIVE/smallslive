@@ -68,6 +68,6 @@ node_modules/
 # data files
 smallsliveusers.txt
 test_db.sqlite3
-smallslive/static/css/application.css
-smallslive/static/sass/application.css
+smallslive/static/css/main.css
+smallslive/static/sass/main.css
 secret_vars.yml
