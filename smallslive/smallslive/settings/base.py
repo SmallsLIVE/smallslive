@@ -271,7 +271,7 @@ PIPELINE_SASS_ARGUMENTS = '--precision 10'
 PIPELINE_CSS = {
     'css': {
         'source_filenames': (
-            'sass/application.scss',
+            'sass/main.scss',
         ),
         'output_filename': 'css/application.css',
     },

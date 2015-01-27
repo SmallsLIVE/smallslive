@@ -42,7 +42,7 @@ PIPELINE_SASS_ARGUMENTS = ''
 PIPELINE_CSS = {
     'css': {
         'source_filenames': (
-            'sass/application.scss',
+            'sass/main.scss',
         ),
         'output_filename': 'css/application.css',
     },

@@ -1,0 +1,25 @@
+//Main Sass file
+//Code organization as per: http://sass-guidelin.es/#the-7-1-pattern
+@import 'vendors-extensions/bootstrap';
+
+@import 'vendors/font-awesome/font-awesome';
+
+@import 'utils/variables';
+@import 'utils/functions';
+@import 'utils/helpers';
+@import 'utils/mixins';
+
+@import 'base/base';
+@import 'base/typography';
+
+@import 'layout/header';
+@import 'layout/footer';
+
+@import 'components/about-smalls';
+@import 'components/archive-cto';
+@import 'components/homepage-archive';
+@import 'components/homepage-news';
+@import 'components/homepage-store';
+@import 'components/homepage-events';
+@import 'components/mini-gallery';
+@import 'components/visit-cto';
