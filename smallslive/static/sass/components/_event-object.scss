@@ -21,48 +21,89 @@
     @extend %lato-black;
     font-size: 24px;
     text-transform: uppercase;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   &__artists {
     @extend %lato;
     @include list-unstyled;
-    display: none;
+    color: white;
+    max-height: 0;
+    overflow: hidden;
     font-size: 14px;
+    margin-bottom: 0;
+    -webkit-transition: max-height .3s ease-out .15s;
+    -moz-transition: max-height .3s ease-out .15s;
+    -o-transition: max-height .3s ease-out .15s;
+    -ms-transition: max-height .3s ease-out .15s;
+    transition: max-height .3s ease-out .15s;
+  }
 
-    &:hover {
-      display: block;
-    }
+  &:hover &__artists{
+    max-height: 300px;
+    -webkit-transition: max-height .1s ease-in .15s;
+    -moz-transition: max-height .1s ease-in .15s;
+    -o-transition: max-height .1s ease-in .15s;
+    -ms-transition: max-height .1s ease-in .15s;
+    transition: max-height .1s ease-in .15s;
   }
 
   &--green {
     border-bottom-color: #5FA051;
+    &:hover {
+      color: #5FA051;
+    }
   }
 
   &--blue {
     border-bottom-color: #68ACE3;
+    &:hover {
+      color: #68ACE3;
+    }
   }
 
   &--yellow {
     border-bottom-color: #E5DA33;
+    &:hover {
+      color: #E5DA33;
+    }
   }
 
   &--gold {
     border-bottom-color: #AC893B;
+    &:hover {
+      color: #AC893B;
+    }
   }
 
   &--red {
     border-bottom-color: #7F2D13;
+    &:hover {
+      color: #7F2D13;
+    }
   }
 
   &--purple {
     border-bottom-color: #752C8F;
+    &:hover {
+      color: #752C8F;
+    }
   }
 
   &--darkblue {
     border-bottom-color: #2E338F;
+    &:hover {
+      color: #2E338F;
+    }
   }
 
   &--orange {
     border-bottom-color: #DC9231;
+    &:hover {
+      color: #DC9231;
+    }
   }
 }
