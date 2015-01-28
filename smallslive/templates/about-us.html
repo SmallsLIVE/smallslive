@@ -1,64 +1,54 @@
-{% extends "base.html" %}
+{% extends "static-page.html" %}
 {% load static from staticfiles %}
 
-{% block content %}
-  <div class="header-img container">
-  </div>
-  <div class="static-page container">
-    <div class="row">
-      <div class="col-md-3">
-        <ul class="static-nav-menu">
-          <li class="static-nav__item static-nav__item--active"><a href="">About us</a></li>
-          <li class="static-nav__item"><a href="">Mission Statement</a></li>
-          <li class="static-nav__item"><a href="">Contact & Info</a></li>
-          <li class="static-nav__item"><a href="">Photo Gallery</a></li>
-          <li class="static-nav__item"><a href="">Newsletters</a></li>
-          <li class="static-nav__item"><a href="">Press</a></li>
-        </ul>
-      </div>
-        <section class="static-content col-md-5">
-          <h1 class="static-content__main-title">About us</h1>
-          <h2 class="static-content__sub-title">The beginning</h2>
-          <p>Smalls Jazz Club was created in 1994 by the enigmatic Mitchell Borden. Borden, a former Navy submariner,
-            registered nurse, philosopher & jazz violinist, founded the club with an initiative to create an environment
-            that was conducive to Jazz Music and its culture. Borden, who booked and managed the club, approached
-            business from a stance of generosity rather than profit. </p>
-          <h2 class="static-content__sub-title">A Club born</h2>
+{% block about-us-active %}static-nav__item--active{% endblock %}
 
-          <p>The original Smalls was a raw basement space and had no liquor license. For just $10, patrons could bring
-            their own beer and come to the club at any time, day or night. They could stay as long as they liked and
-            often left just as day began to break. Borden’s concern was only with the music and the musicians who
-            created it. Under his generous care, a culture of vibrant and newly energized young musicians claimed Smalls
-            as their home base and began to develop their individuality in the music. This included such musicians
-            as:</p>
-          <p>Howard Alden, J.D. Allen, William Ash, Ehud Asherie, Omer Avital, David Berkman, Peter Bernstein, Brian
-            Blade, Seamus Blake, Dwayne Burno, Chris Byars, Shard Cassity, Dwayne Clemons, Jay Collins, Marion Cowings,
-            Jon Davis, Sasha Dobson, Duane Eubanks, Brian Floody, Joel Frahm, Ray Gallon, Paul Gill, Larry Goldings, Ned
-            Goold, Jimmy Greene, Larry Ham, Tardo Hammer, Roy Hargrove, Ari Hoenig, Sherman Irby, Norah Jones, Ryan
-            Kisor, Guillermo Klein, Myrna Lake, Carolyn Leonhart, Jason Linder, Joe Magnarelli, Jeremy Manasia, Joe
-            Martin, Donny McCauslin, Brad Mehldau, Neal Miner, Tyler Mitchell, Jane Monheit, Mike Mullen, Zaid Nasser,
-            Charles Owens, Jeremy Pelt, Sasha Perry, Jean Michel Pilc, Chris Potter, Josh Redman, Jon Roche, Ari Roland,
-            Kurt Rosenwinkel, Grant Stewart, Phil Stewart, Joe Strasser, Greg Tardy Mark Turner, Diego Urcola, Richie
-            Vitale, Myron Walden, Scott Wendholt, Spike Wilner, Ben Wolfe, Sam Yahel, Peter Zak and many others.</p>
-        </section>
-        <aside class=" static-sidebar col-md-4 hidden-xs hidden-sm">
-          <figure>
-            <img src="{% static 'image/about-us/1.png' %}" class="static-page__image" alt=""/>
-            <figcaption class="static-content__caption">Caption goes here</figcaption>
-          </figure>
-          <figure>
-            <img src="{% static 'image/about-us/2.png' %}" class="static-page__image" alt=""/>
-            <figcaption class="static-content__caption">Caption goes here</figcaption>
-          </figure>
-          <figure>
-            <img src="{% static 'image/about-us/3.png' %}" class="static-page__image" alt=""/>
-            <figcaption class="static-content__caption">Caption goes here</figcaption>
-          </figure>
-          <figure>
-            <img src="{% static 'image/about-us/4.png' %}" class="static-page__image" alt=""/>
-            <figcaption class="static-content__caption">Caption goes here</figcaption>
-          </figure>
-        </aside>
-    </div>
-  </div>
-{% endblock content %}
+{% block static-content %}
+  <section class="static-content col-md-5">
+    <h1 class="static-content__main-title">About us</h1>
+
+    <h2 class="static-content__sub-title">The beginning</h2>
+
+    <p>Smalls Jazz Club was created in 1994 by the enigmatic Mitchell Borden. Borden, a former Navy submariner,
+      registered nurse, philosopher & jazz violinist, founded the club with an initiative to create an environment
+      that was conducive to Jazz Music and its culture. Borden, who booked and managed the club, approached
+      business from a stance of generosity rather than profit. </p>
+
+    <h2 class="static-content__sub-title">A Club born</h2>
+
+    <p>The original Smalls was a raw basement space and had no liquor license. For just $10, patrons could bring
+      their own beer and come to the club at any time, day or night. They could stay as long as they liked and
+      often left just as day began to break. Borden’s concern was only with the music and the musicians who
+      created it. Under his generous care, a culture of vibrant and newly energized young musicians claimed Smalls
+      as their home base and began to develop their individuality in the music. This included such musicians
+      as:</p>
+
+    <p>Howard Alden, J.D. Allen, William Ash, Ehud Asherie, Omer Avital, David Berkman, Peter Bernstein, Brian
+      Blade, Seamus Blake, Dwayne Burno, Chris Byars, Shard Cassity, Dwayne Clemons, Jay Collins, Marion Cowings,
+      Jon Davis, Sasha Dobson, Duane Eubanks, Brian Floody, Joel Frahm, Ray Gallon, Paul Gill, Larry Goldings, Ned
+      Goold, Jimmy Greene, Larry Ham, Tardo Hammer, Roy Hargrove, Ari Hoenig, Sherman Irby, Norah Jones, Ryan
+      Kisor, Guillermo Klein, Myrna Lake, Carolyn Leonhart, Jason Linder, Joe Magnarelli, Jeremy Manasia, Joe
+      Martin, Donny McCauslin, Brad Mehldau, Neal Miner, Tyler Mitchell, Jane Monheit, Mike Mullen, Zaid Nasser,
+      Charles Owens, Jeremy Pelt, Sasha Perry, Jean Michel Pilc, Chris Potter, Josh Redman, Jon Roche, Ari Roland,
+      Kurt Rosenwinkel, Grant Stewart, Phil Stewart, Joe Strasser, Greg Tardy Mark Turner, Diego Urcola, Richie
+      Vitale, Myron Walden, Scott Wendholt, Spike Wilner, Ben Wolfe, Sam Yahel, Peter Zak and many others.</p>
+  </section>
+  <aside class=" static-sidebar col-md-4 hidden-xs hidden-sm">
+    <figure>
+      <img src="{% static 'image/about-us/1.png' %}" class="static-page__image" alt=""/>
+      <figcaption class="static-content__caption">Caption goes here</figcaption>
+    </figure>
+    <figure>
+      <img src="{% static 'image/about-us/2.png' %}" class="static-page__image" alt=""/>
+      <figcaption class="static-content__caption">Caption goes here</figcaption>
+    </figure>
+    <figure>
+      <img src="{% static 'image/about-us/3.png' %}" class="static-page__image" alt=""/>
+      <figcaption class="static-content__caption">Caption goes here</figcaption>
+    </figure>
+    <figure>
+      <img src="{% static 'image/about-us/4.png' %}" class="static-page__image" alt=""/>
+      <figcaption class="static-content__caption">Caption goes here</figcaption>
+    </figure>
+  </aside>
+{% endblock static-content %}
