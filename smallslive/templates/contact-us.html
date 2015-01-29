@@ -1,0 +1,36 @@
+{% extends "static-page.html" %}
+{% load static from staticfiles %}
+
+{% block contact-us-active %}static-nav__item--active{% endblock %}
+
+{% block static-content %}
+  <section class="static-content col-md-3">
+    <h1 class="static-content__main-title">Contact us</h1>
+    <h2 class="static-content__sub-title">Address:</h2>
+    <address>
+      183 West 10th Street<br/>
+      New York, NY<br/>
+      10014 USA
+    </address>
+    <h2 class="static-content__sub-title">Email:</h2>
+    <p><a href="mailto:smallsjazzclub@gmail.com">smallsjazzclub@gmail.com</a></p>
+    <h2 class="static-content__sub-title">Hours:</h2>
+    <p>4.00 PM  -  4.00 AM (EST)</p>
+    <h2 class="static-content__sub-title">Cover:</h2>
+    <dl class="prices">
+      <dt>$20</dt>
+      <dd>(7.30 PM - 12.30 AM)</dd>
+      <dt>$10</dt>
+      <dd>Afterhours</dd>
+      <dt>$10</dt>
+      <dd>Students (2nd set only)</dd>
+      <dt>$0</dt>
+      <dd>Afternoons (1 drink min)</dd>
+    </dl>
+  </section>
+  <aside class="col-md-6">
+  <div class="map-wrapper">
+    <iframe class="map-wrapper__map" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3023.25655190452!2d-74.002738!3d40.73438!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25994686b9ebb%3A0xa994b5b6ffd1279!2sSmalls+Jazz+Club!5e0!3m2!1shr!2shr!4v1422543210059" width="440" height="360" frameborder="0" style="border:0"></iframe>
+  </div>
+  </aside>
+{% endblock static-content %}

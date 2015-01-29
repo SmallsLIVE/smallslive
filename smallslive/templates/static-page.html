@@ -10,7 +10,7 @@
         <ul class="static-nav-menu">
           <li class="static-nav__item {% block about-us-active %}{% endblock %}"><a href="{% url "static_page" "about-us" %}">About us</a></li>
           <li class="static-nav__item {% block mission-statement-active %}{% endblock %}"><a href="{% url "static_page" "mission-statement" %}">Mission Statement</a></li>
-          <li class="static-nav__item"><a href="">Contact & Info</a></li>
+          <li class="static-nav__item {% block contact-us-active %}{% endblock %}"><a href="{% url "static_page" "contact-us" %}">Contact & Info</a></li>
           <li class="static-nav__item"><a href="">Photo Gallery</a></li>
           <li class="static-nav__item"><a href="">Newsletters</a></li>
           <li class="static-nav__item"><a href="">Press</a></li>

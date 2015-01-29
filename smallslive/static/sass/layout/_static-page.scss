@@ -73,3 +73,22 @@
 .static-sidebar {
   padding-top: 63px;
 }
+
+
+.map-wrapper {
+  margin-top: 89px;
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+
+  &__map {
+    max-width: 100%;
+  }
+}
+
+.prices {
+  dt {
+    float: left;
+    clear: left;
+    width: 50px;
+  }
+}
