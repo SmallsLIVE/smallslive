@@ -1,0 +1,14 @@
+.artist-events {
+  background-color: #FFFFFF;
+
+  &__title {
+    @extend %lato-black;
+    font-size: 18px;
+    color: #131313;
+  }
+
+  &__notice {
+    @extend %lato-italic;
+    color: rgba(17, 17, 17, 0.5)
+  }
+}

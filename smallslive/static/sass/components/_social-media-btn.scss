@@ -1,0 +1,44 @@
+.share-social {
+  padding-bottom: 30px;
+
+  &__title {
+    @extend %lato-black;
+    font-size: 18px;
+    color: rgba(19, 19, 19, 0.5);
+  }
+}
+
+.social-btn {
+  width: 68px;
+  color: white;
+  font-size: 20px;
+  padding: 3px 10px;
+  background-color: #8F8F8F;
+  margin-right: 10px;
+
+  &:hover {
+    color: white;
+  }
+
+  &--facebook {
+    &:hover {
+      background-color: #3b5998;
+    }
+  }
+
+  &--twitter {
+    &:hover {
+      background-color: #00aced;
+    }
+  }
+
+  &--google {
+    padding-top: 5px;
+    padding-bottom: 1px;
+
+    &:hover {
+      background-color: #dd4b39;
+    }
+  }
+}
+

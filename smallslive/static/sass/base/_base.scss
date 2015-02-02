@@ -16,3 +16,21 @@ body {
   padding-right: 0;
   padding-left: 0;
 }
+
+.artist {
+  @extend %bottom-section-border;
+  background-color: #fff;
+}
+
+
+// equal height columns on large devices
+@media (min-width: $screen-md-min) {
+  .row{
+    overflow: hidden;
+  }
+
+  [class*="col-"]{
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+  }
+}

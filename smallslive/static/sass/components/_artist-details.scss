@@ -1,0 +1,43 @@
+.artist-details {
+  @extend %bottom-section-border;
+  min-height: 340px;
+  background-color: #1B191A;
+  background-size: cover;
+
+  &__name {
+    @extend %lato-black;
+    font-size: 56px;
+    text-transform: uppercase;
+    color: $main-accent-color;
+    margin-top: 54px;
+    margin-bottom: 6px;
+    min-width: 50%;
+    max-width: 68%;
+  }
+
+  &__instruments {
+    @extend %lato-black;
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 13px;
+    text-transform: uppercase;
+    min-width: 40%;
+    max-width: 80%;
+  }
+
+  &__stats {
+    @extend %lato-black;
+    font-size: 16px;
+    padding: 14px 0;
+    color: #ffffff;
+    border-top: 2px #ccc solid;
+    border-bottom: 2px #ccc solid;
+    margin-bottom: 17px;
+  }
+
+  &__website {
+    @extend %lato-black;
+    color: #D21333;
+    font-size: 16px;
+  }
+}
