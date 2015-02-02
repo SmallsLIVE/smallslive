@@ -1,6 +1,6 @@
-.archive-cto {
+%cto,
+.cto{
   @extend %bottom-section-border;
-  background-image: url('../image/archive-bg.jpg');
   background-size: cover;
   color: white;
   height: 300px;
@@ -33,4 +33,12 @@
       color: rgba(255, 255, 255, 0.6);
     }
   }
+}
+
+.archive-cto {
+  background-image: url('../image/archive-bg.jpg');
+}
+
+.visit-cto {
+  background-image: url('../image/visit-us-bg.jpg');
 }
