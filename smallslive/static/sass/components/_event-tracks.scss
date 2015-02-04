@@ -1,0 +1,68 @@
+.event-tracks {
+  background-color: $main-accent-color;
+}
+
+.event-tracks-header {
+  &__title {
+    @extend %lato-black;
+    font-size: 24px;
+    color: white;
+    margin-top: 5px;
+  }
+
+  &__text {
+    @extend %lato;
+    font-size: 14px;
+    color: white;
+    margin-bottom: 20px;
+  }
+}
+
+.tracks-table-separator {
+  background-color: rgba(51, 51, 51, 0.2);
+  color: rgba(51, 51, 51, 0.2);
+  border: 1px rgba(51, 51, 51, 0.2) solid;
+  border-bottom: 0;
+}
+
+.tracks-table {
+  &__header {
+    color: white;
+  }
+
+  th.tracks-table__header-cell {
+    border-bottom: 0;
+  }
+
+  &__row {
+    background-color: #FFFFFF;
+
+    &:first-child td{
+      border-top: 0;
+    }
+  }
+
+  // needed to write it like this to override aggressive specificity bootstrap styles
+  td.tracks-table__cell {
+    border-color: #EEEEEE;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    vertical-align: middle;
+
+    &:first-child {
+      text-align: center;
+    }
+  }
+
+  &__button {
+    @extend %lato-bold-italic;
+    color: white;
+    border: 0;
+    background-color: #DA0B28;
+    display: block;
+    float: left;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 4px 10px 4px 7px;
+  }
+}

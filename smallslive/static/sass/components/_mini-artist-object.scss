@@ -1,0 +1,54 @@
+.mini-artist {
+  &__image {
+    display: table-cell;
+
+    img {
+      padding: 2px;
+      border: 1px #ccc solid;
+      width: 86px;
+      height: 86px;
+    }
+  }
+}
+
+.mini-artist-info {
+  display: table-cell;
+  vertical-align: top;
+  padding-left: 19px;
+
+  &__title {
+    @extend %lato-black;
+    font-size: 18px;
+    color: #131313;
+    margin-top: 0;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+  }
+
+  &__instrument {
+    @extend %lato;
+    font-size: 14px;
+    color: #131313;
+    margin-bottom: 5px;
+  }
+
+  &__sidemen {
+    @extend %lato-bold;
+    font-size: 14px;
+    color: #131313;
+    margin-bottom: 10px;
+  }
+
+  &__button {
+    @extend %lato-bold-italic;
+    color: white;
+    border: none;
+    background-color: #DA0B28;
+    display: block;
+    float: left;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 4px 10px 4px 7px;
+    margin-bottom: 20px;
+  }
+}

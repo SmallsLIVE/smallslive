@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+  {% if not request.GET.future %}
+      {% if request.GET.video %}
+      <section class="container">
+        <div class="event-video row">
+          <div class="bw-wrapper" style="height: 450px">
+            <iframe width="100%" height="450" src="https://www.youtube.com/embed/Rr-d3tO-sXM?autoplay=0&controls=0&showinfo=0" frameborder="0" allowfullscreen></iframe>
+          </div>
+          <div class="event-video__stats col-xs-12">
+            <p>54:32 min  //  1982 plays</p>
+          </div>
+        </div>
+      </section>
+      {% else %}
+      <section class="video-not-available-cto cto container">
+        <h1 class="cto__title">Video not available (yet)</h1>
+
+        <p class="cto__text">The video for this performance can be made available if you request it.<br/>
+                            We had 181 request for this video so far.</p>
+        <a href="" class="cto__button">Request video</a>
+      </section>
+      {% endif %}
+  {% endif %}
+  <div class="event container">
+    <div class="row">
+      <section class="event-artists col-md-6">
+        <p class="event-heading__date">Monday, January 26, 2015 </p>
+        <h1 class="event-heading__title">the ari hoenig quartet</h1>
+        <p class="event-heading__subtitle">Hosted by Michela Lerman </p>
+
+        <div class="artists">
+          <div class="mini-artist">
+            <div class="mini-artist__image">
+              <img src="http://placehold.it/80x80/232323/" alt=""/>
+            </div>
+            <div class="mini-artist-info">
+              <h2 class="mini-artist-info__title">The David Schnitter Quartet</h2>
+              <p class="mini-artist-info__instrument">drums</p>
+
+              <p class="mini-artist-info__bio">As a drummer, Ari Hoenig’s success has been unprecedented. Growing up in
+                Philadelphia, his parent’s influence exposed Ari to a variety of...</p>
+              <a class="mini-artist-info__button" href="">Artist profile</a><span class="arrow"></span>
+            </div>
+          </div>
+          <div class="mini-artist">
+            <div class="mini-artist__image">
+              <img src="http://placehold.it/80x80/232323/" alt=""/>
+            </div>
+            <div class="mini-artist-info">
+              <h2 class="mini-artist-info__title">The David Schnitter Quartet</h2>
+              <p class="mini-artist-info__instrument">drums</p>
+
+              <p class="mini-artist-info__bio">As a drummer, Ari Hoenig’s success has been unprecedented. Growing up in
+                Philadelphia, his parent’s influence exposed Ari to a variety of...</p>
+              <a class="mini-artist-info__button" href="">Artist profile</a><span class="arrow"></span>
+            </div>
+          </div>
+          <div class="mini-artist">
+            <div class="mini-artist__image">
+              <img src="http://placehold.it/80x80/232323/" alt=""/>
+            </div>
+            <div class="mini-artist-info">
+              <h2 class="mini-artist-info__title">The David Schnitter Quartet</h2>
+              <p class="mini-artist-info__instrument">drums</p>
+
+              <p class="mini-artist-info__bio">As a drummer, Ari Hoenig’s success has been unprecedented. Growing up in
+                Philadelphia, his parent’s influence exposed Ari to a variety of...</p>
+              <a class="mini-artist-info__button" href="">Artist profile</a><span class="arrow"></span>
+            </div>
+          </div>
+          <div class="mini-artist">
+            <div class="mini-artist__image">
+              <img src="http://placehold.it/80x80/232323/" alt=""/>
+            </div>
+            <div class="mini-artist-info">
+              <h2 class="mini-artist-info__title">The David Schnitter Quartet</h2>
+              <p class="mini-artist-info__instrument">drums</p>
+
+              <p class="mini-artist-info__bio">As a drummer, Ari Hoenig’s success has been unprecedented. Growing up in
+                Philadelphia, his parent’s influence exposed Ari to a variety of...</p>
+              <a class="mini-artist-info__button" href="">Artist profile</a><span class="arrow"></span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="event-description col-md-6">
+        <div class="row">
+        <img src="http://placehold.it/600x340/232323/text=Event%20image" alt="" class="event__img img-responsive"/>
+          </div>
+        <h1 class="event-description__title">Event description:</h1>
+
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet
+          dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
+          suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in
+          vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan
+          et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla
+          facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim
+          placerat facer possim assum. </p>
+
+        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet
+          dolore magna aliquam erat volutpat.</p>
+
+        <div class="share-social">
+          <h2 class="share-social__title">Share this event on:</h2>
+          <button class="btn social-btn social-btn--facebook"><i class="fa fa-facebook"></i></button>
+          <button class="btn social-btn social-btn--twitter"><i class="fa fa-twitter"></i></button>
+          <button class="btn social-btn social-btn--google"><i class="fa fa-google-plus"></i></button>
+        </div>
+      </section>
+    </div>
+  </div>
+  {% if not request.GET.future %}
+      <section class="listen-to-show-cto cto container">
+        <h1 class="cto__title">Listen to entire show</h1>
+
+        <p class="cto__text">You can use the player below to listen to the entire show.</p>
+      </section>
+      <section class="event-tracks container">
+        <div class="row">
+          <div class="col-xs-12">
+            <h1 class="event-tracks-header__title">Buy tracks from this show</h1>
+            <p class="event-tracks-header__text">You can buy indivital tracks from this show as digital downloads, so you
+              can listen to it in high quality on your devices even when you’re not online.</p>
+          </div>
+        </div>
+        <div class="row">
+          <hr class="tracks-table-separator"/>
+            <table class="tracks-table table">
+              <thead class="tracks-table__header">
+              <tr>
+                <th class="tracks-table__header-cell">Preview</th>
+                <th class="tracks-table__header-cell">Title</th>
+                <th class="tracks-table__header-cell">Composer</th>
+                <th class="tracks-table__header-cell">Duration</th>
+                <th class="tracks-table__header-cell">Price</th>
+                <th class="tracks-table__header-cell"></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="tracks-table__row">
+                <td class="tracks-table__cell"><i class="fa fa-2x fa-pause"></i></td>
+                <td class="tracks-table__cell">Wrap your troubles in dreams</td>
+                <td class="tracks-table__cell">Ted Koehler</td>
+                <td class="tracks-table__cell">14:23</td>
+                <td class="tracks-table__cell">$0.99</td>
+                <td class="tracks-table__cell"><a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span></td>
+              </tr>
+              <tr class="tracks-table__row">
+                <td class="tracks-table__cell"><i class="fa fa-2x fa-play"></i></td>
+                <td class="tracks-table__cell">Wrap your troubles in dreams</td>
+                <td class="tracks-table__cell">Ted Koehler</td>
+                <td class="tracks-table__cell">14:23</td>
+                <td class="tracks-table__cell">$0.99</td>
+                <td class="tracks-table__cell"><a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span></td>
+              </tr>
+              <tr class="tracks-table__row">
+                <td class="tracks-table__cell"><i class="fa fa-2x fa-play"></i></td>
+                <td class="tracks-table__cell">Wrap your troubles in dreams</td>
+                <td class="tracks-table__cell">Ted Koehler</td>
+                <td class="tracks-table__cell">14:23</td>
+                <td class="tracks-table__cell">$0.99</td>
+                <td class="tracks-table__cell"><a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+      </section>
+      <section class="buy-album container">
+        <div class="row">
+          <div class="col-md-3">
+            <h2 class="buy-album__cto-title">Buy the entire album:</h2>
+            <p class="buy-album__description">Includes lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</p>
+          </div>
+          <div class="col-md-3">
+            <img src="http://placehold.it/220x195/232323/text=Album%20image" alt="" class="event__img img-responsive"/>
+          </div>
+          <div class="col-md-6">
+            <h1 class="buy-album__title">The Ari Hoenig Quartet</h1>
+            <p class="buy-album__description">CD / Digital Download</p>
+            <p class="buy-album__price">$15,00</p>
+            <a class="tracks-table__button" href="">Buy album</a><span class="arrow"></span>
+          </div>
+        </div>
+      </section>
+  {% endif %}
+{% endblock content %}

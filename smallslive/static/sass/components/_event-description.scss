@@ -1,0 +1,17 @@
+.event-description {
+  background-color: #F7F7F7;
+  border-left: 1px #DDDDDD solid;
+
+  &__title {
+    @extend %lato-black;
+    font-size: 18px;
+    color: #131313;
+    margin-top: 10px;
+  }
+
+  p {
+    @extend %lato;
+    font-size: 14px;
+    color: #111;
+  }
+}

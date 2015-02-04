@@ -1,0 +1,29 @@
+.buy-album {
+  background-color: white;
+  padding-top: 40px;
+  padding-bottom: 60px;
+
+  &__cto-title {
+    @extend %lato-black;
+    font-size: 24px;
+    color: rgba(69, 67, 68, 0.32);
+  }
+
+  &__description, &__format {
+    @extend %lato-bold;
+    font-size: 14px;
+    color: #777777;
+  }
+
+  &__title {
+    @extend %lato-bold;
+    font-size: 24px;
+    color: #131313;
+  }
+
+  &__price {
+    @extend %lato-bold;
+    font-size: 20px;
+    color: $main-accent-color;
+  }
+}

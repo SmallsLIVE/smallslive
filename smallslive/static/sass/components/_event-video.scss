@@ -1,0 +1,15 @@
+.event-video {
+  background-color: #000000;
+
+  &__stats {
+    background-color: $main-accent-color;
+    color: white;
+
+    p {
+      @extend %lato-light;
+      font-size: 18px;
+      padding: 13px 0;
+      margin: 0;
+    }
+  }
+}

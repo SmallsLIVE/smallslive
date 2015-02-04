@@ -1,0 +1,34 @@
+.event {
+  @extend %bottom-section-border;
+}
+
+.event-artists {
+  background-color: white;
+  background-size: cover;
+  padding-top: 33px;
+}
+
+.event-heading {
+  &__date {
+    @extend %lato-black;
+    font-size: 18px;
+    margin-bottom: 13px;
+    color: #131313;
+  }
+
+  &__title {
+    @extend %lato-black;
+    font-size: 32px;
+    color: $main-accent-color;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 2px;
+  }
+
+  &__subtitle {
+    @extend %lato-italic;
+    font-size: 22px;
+    color: #131313;
+    margin-bottom: 25px;
+  }
+}
