@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+<section class="schedule-cto cto container">
+  <h1 class="cto__title">SmallsLIVE schedule</h1>
+  <a href="" class="schedule-cto__button cto__button">January // 2015</a>
+</section>
+<section class="schedule container">
+<div class="row">
+  {% for day in "123456789012" %}
+    <div class="day col-xs-6 col-md-3">
+      <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+      <dl>
+        <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+        <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+        <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+        <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+        <dt class="day__event-time">12:00 AM</dt>
+        <dd class="day__event-title">The John Marshall Quintet {% if forloop.counter0|divisibleby:"6" %}QUINTET QUINTET
+          QUINTET QUINTETETETET ETE TET ETE T ET ET E TET SADSADASD ASDSAD ASD SADAS DSA DS ADAS DAS DAS DAS DAS DAS DAS DS AD SAD AS DASD{% endif %} </dd>
+      </dl>
+    </div>
+    {% if forloop.counter|divisibleby:"4" %}
+      {% comment %}Hack needed to wrap 4 columns in each row to allow equal heights of items in a row{% endcomment %}
+      </div>
+      <div class="schedule-event-select row">
+        <div class="col-md-12">
+          <h2 class="schedule-event-select__title">01/06/2015</h2>
+          <ul class="schedule-event-select__slots">
+            <li>7:30pm - 10:00pm</li>
+            <li>10:30pm - 01:00am</li>
+            <li>01:00am - closing</li>
+          </ul>
+        </div>
+      </div>
+      <div class="schedule-event-details row">
+        <div class="col-xs-12 col-md-6 visible-lg visible-md">
+          <img src="{% static 'image/featured-photo.png' %}" class="schedule-event-details__image img img-responsive" alt=""/>
+        </div>
+        <div class="col-xs-12 col-md-6">
+          <h1 class="schedule-event-details__title"><a href="{% url "static_page" "event-detail" %}">Lucas Pino <br/>No Net Nonet</a>
+          </h1>
+
+          <p class="schedule-event-details__artists"><a href="{% url "static_page" "artist-detail" %}">COLIN STRANAHAN <span
+                  class="event-details__instrument">(drums)</span></a> //
+            GLENN ZALESKI <span class="schedule-event-details__instrument">(piano)</span> // LUCAS PINO <span
+                    class="schedule-event-details__instrument">(tenor sax)</span> // DESMOND WHITE <span
+                    class="schedule-event-details__instrument">(bass)</span> // ALEX LORE <span
+                    class="schedule-event-details__instrument">(alto sax)</span> // RAFAL SARNECKI <span
+                    class="schedule-event-details__instrument">(guitar)</span> // NICK FINZER <span
+                    class="schedule-event-details__instrument">(trombone)</span> // ANDREW GUTAUSKAS <span
+                    class="schedule-event-details__instrument">(baritone sax)</span>
+          </p>
+          <a href="" class="schedule-event-details__event-button">Full event page</a><span class="arrow"></span>
+        </div>
+      </div>
+      <div class="row">{% if forloop.last %}</div>{% endif %}
+    {% endif %}
+  {% endfor %}
+</section>
+{% endblock content %}

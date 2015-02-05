@@ -54,3 +54,11 @@
 .video-not-available-cto {
   background-image: url('../image/video-not-available-cto.png');
 }
+
+.schedule-cto {
+  background-image: url('../image/video-not-available-cto.png');
+
+  &__button {
+    margin-top: 40px;
+  }
+}
