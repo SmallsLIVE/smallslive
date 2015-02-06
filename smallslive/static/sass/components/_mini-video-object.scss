@@ -1,0 +1,42 @@
+.mini-video {
+  margin-bottom: 20px;
+
+  &__image {
+    display: table-cell;
+
+    img {
+      padding: 2px;
+      border: 1px #ccc solid;
+      width: 86px;
+      height: 86px;
+    }
+  }
+}
+
+.mini-video-info {
+  display: table-cell;
+  vertical-align: top;
+  padding-left: 19px;
+
+  &__date {
+    @extend %lato;
+    font-size: 14px;
+    color: #131313;
+    margin-bottom: 5px;
+  }
+
+  &__title {
+    @extend %lato-black;
+    font-size: 18px;
+    color: #131313;
+    margin-top: 0;
+    margin-bottom: 6px;
+  }
+
+  &__stats {
+    @extend %lato-bold;
+    font-size: 12px;
+    color: #777777;
+    margin-bottom: 0;
+  }
+}

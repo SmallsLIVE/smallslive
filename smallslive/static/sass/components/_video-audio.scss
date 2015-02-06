@@ -1,0 +1,20 @@
+.video-audio {
+  background-color: #FFFFFF;
+  border-top: 1px #DDDDDD solid;
+  padding-bottom: 50px;
+
+  &__section-title {
+    @extend %lato-black;
+    font-size: 18px;
+    color: #131313;
+    margin-bottom: 20px;
+  }
+
+  &__more-link {
+    @extend %lato-bold-italic;
+    font-size: 16px;
+    color: $main-accent-color;
+    text-decoration: underline;
+    margin-left: 105px;
+  }
+}

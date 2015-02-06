@@ -17,6 +17,11 @@
     @extend %lato-bold;
     font-size: 14px;
     margin-bottom: 21px;
+
+    &--large {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
   }
 
   &__button {
@@ -61,4 +66,7 @@
   &__button {
     margin-top: 40px;
   }
+}
+.archive-cto {
+  background-image: url('../image/archive-cto.png');
 }

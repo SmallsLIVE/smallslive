@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+  <section class="archive-cto cto container">
+    <h1 class="cto__title">SmallsLIVE Archive</h1>
+
+    <p class="cto__text--large">Enjoy 8,000+ Hours of Live Jazz from Smalls!</p>
+    <p class="cto__text">Our archive contains over 350 jazz concerts recorded at Smalls since 2007.</p>
+  </section>
+  <section class="your-requested-videos container">
+    <h1 class="your-requested-videos__section-title">Your requested videos</h1>
+
+    <div class="row">
+      {% for foo in "1234" %}
+       <div class="col-xs-6 col-md-3">
+        <div class="requested-video event-object--gold">
+            <img class="requested-video__image"
+                 src="http://placehold.it/350x300/232323/232323&text=Event%20image" alt=""/>
+            <div class="requested-video__info">
+              <p class="requested-video__date">01/30/2015</p>
+              <h1 class="requested-video__title">Ryan Kisor Quintet</h1>
+              <p class="requested-video__requests"><span class="requested-video__requests--number">27</span> requests</p>
+            </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  <section class="video-audio container">
+    <div class="row">
+      <div class="col-md-6">
+        <h1 class="video-audio__section-title">Most popular videos</h1>
+        <div class="videos">
+        {% for foo in "1234" %}
+          <div class="mini-video">
+            <div class="mini-video__image">
+              <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
+            </div>
+            <div class="mini-video-info">
+              <p class="mini-video-info__date">10/24/2007</p>
+              <h2 class="mini-video-info__title">THE DAVID SCHNITTER QUARTET</h2>
+              <p class="mini-video-info__stats">Added: 11/05/2015</p>
+              <p class="mini-video-info__stats">Views: 3458</p>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+      <p class="video-audio__more-link">Full list of 30 most popular videos</p>
+      </div>
+      <div class="col-md-6">
+        <h1 class="video-audio__section-title">Newly added videos</h1>
+        <div class="videos">
+        {% for foo in "1234" %}
+          <div class="mini-video">
+            <div class="mini-video__image">
+              <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
+            </div>
+            <div class="mini-video-info">
+              <p class="mini-video-info__date">10/24/2007</p>
+              <h2 class="mini-video-info__title">THE DAVID SCHNITTER QUARTET</h2>
+              <p class="mini-video-info__stats">Added: 11/05/2015</p>
+              <p class="mini-video-info__stats">Views: 3458</p>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+        <p class="video-audio__more-link">Full list of 30 most popular videos</p>
+      </div>
+    </div>
+  </section>
+  <section class="your-requested-videos container">
+    <h1 class="your-requested-videos__section-title">Most requested videos</h1>
+
+    <div class="row">
+      {% for foo in "1234" %}
+       <div class="col-xs-6 col-md-3">
+        <div class="requested-video event-object--gold">
+            <img class="requested-video__image"
+                 src="http://placehold.it/350x300/232323/232323&text=Event%20image" alt=""/>
+            <div class="requested-video__info">
+              <p class="requested-video__date">01/30/2015</p>
+              <h1 class="requested-video__title">Ryan Kisor Quintet</h1>
+              <p class="requested-video__requests"><span class="requested-video__requests--number">27</span> requests</p>
+            </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  <section class="video-audio container">
+    <div class="row">
+      <div class="col-md-6">
+        <h1 class="video-audio__section-title">Most popular videos</h1>
+        <div class="videos">
+        {% for foo in "1234" %}
+          <div class="mini-video">
+            <div class="mini-video__image">
+              <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
+            </div>
+            <div class="mini-video-info">
+              <p class="mini-video-info__date">10/24/2007</p>
+              <h2 class="mini-video-info__title">THE DAVID SCHNITTER QUARTET</h2>
+              <p class="mini-video-info__stats">Added: 11/05/2015</p>
+              <p class="mini-video-info__stats">Views: 3458</p>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+      <p class="video-audio__more-link">Full list of 30 most popular videos</p>
+      </div>
+      <div class="col-md-6">
+        <h1 class="video-audio__section-title">Newly added videos</h1>
+        <div class="videos">
+        {% for foo in "1234" %}
+          <div class="mini-video">
+            <div class="mini-video__image">
+              <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
+            </div>
+            <div class="mini-video-info">
+              <p class="mini-video-info__date">10/24/2007</p>
+              <h2 class="mini-video-info__title">THE DAVID SCHNITTER QUARTET</h2>
+              <p class="mini-video-info__stats">Added: 11/05/2015</p>
+              <p class="mini-video-info__stats">Views: 3458</p>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+        <p class="video-audio__more-link">Full list of 30 most popular videos</p>
+      </div>
+    </div>
+  </section>
+{% endblock content %}

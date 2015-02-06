@@ -1,0 +1,51 @@
+.your-requested-videos {
+  background-color: #F7F7F7;
+  border-top: 1px #DDDDDD solid;
+
+  &__section-title {
+    @extend %lato-black;
+    font-size: 24px;
+    color: rgba(69, 67, 68, 0.5);
+    margin-top: 40px;
+    margin-bottom: 30px;
+
+  }
+}
+
+.requested-video {
+  @include center-block;
+  color: white;
+  position: relative;
+  margin-bottom: 30px;
+
+  &__image {
+    @include img-responsive;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  &__date {
+    @extend %lato-bold;
+    font-size: 14px;
+    color: #777777;
+    margin-bottom: 4px;
+  }
+
+  &__title {
+    @extend %lato-bold;
+    font-size: 16px;
+    color: #131313;
+    margin-top: 0;
+  }
+
+  &__requests {
+    @extend %lato;
+    font-size: 16px;
+    color: $main-accent-color;
+
+    &--number {
+      @extend %lato-black;
+    }
+  }
+
+}
