@@ -24,6 +24,8 @@
     {% if forloop.counter|divisibleby:"4" %}
       {% comment %}Hack needed to wrap 4 columns in each row to allow equal heights of items in a row{% endcomment %}
       </div>
+      {% if forloop.last %}
+
       <div class="schedule-event-select row">
         <div class="col-md-12">
           <h2 class="schedule-event-select__title">01/06/2015</h2>
@@ -55,6 +57,7 @@
           <a href="" class="schedule-event-details__event-button">Full event page</a><span class="arrow"></span>
         </div>
       </div>
+      {% endif %}
       <div class="row">{% if forloop.last %}</div>{% endif %}
     {% endif %}
   {% endfor %}
