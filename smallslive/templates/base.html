@@ -26,15 +26,13 @@
   <nav class="navigation">
     <ul>
       <li class="navigation__item"><a href="/"><i class="navigation__icon fa fa-2x fa-home "></i> Home</a></li>
-      <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-play-circle"></i> Live now!</a></li>
+      <li class="navigation__item"><a href="{% url "static_page" "live-stream" %}"><i class="navigation__icon fa fa-play-circle"></i> Live now!</a></li>
       <li class="navigation__item"><a href="{% url "static_page" "schedule" %}"><i class="navigation__icon fa fa-calendar"></i> Schedule</a></li>
       <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-video-camera"></i> Archive</a></li>
       <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-shopping-cart"></i> Store</a></li>
       <li class="navigation__item"><a href="{% url "static_page" "about-us" %}"><i class="navigation__icon fa fa-info-circle"></i> Info</a></li>
     </ul>
   </nav>
-
-
     <form action="" class="search visible-lg visible-md">
       <div class="form-group has-feedback">
         <input type="text" class="form-control search__input" placeholder="Search our Archive..."/>
