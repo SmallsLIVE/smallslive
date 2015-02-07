@@ -68,6 +68,8 @@ node_modules/
 # data files
 smallsliveusers.txt
 test_db.sqlite3
+deploy/.vagrant
 smallslive/static/css/main.css
+smallslive/static/css/vendors/
 smallslive/static/sass/main.css
 secret_vars.yml
