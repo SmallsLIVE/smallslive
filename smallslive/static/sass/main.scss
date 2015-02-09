@@ -16,6 +16,7 @@
 @import 'layout/footer';
 @import 'layout/static-page';
 @import 'layout/call-to-action';
+@import 'layout/pages';
 
 @import 'components/about-smalls';
 @import 'components/artist-bio';
@@ -41,5 +42,7 @@
 @import 'components/requested-video';
 @import 'components/schedule-event-details';
 @import 'components/schedule-object';
+@import 'components/search-artist-object';
+@import 'components/search-nav';
 @import 'components/social-media-btn';
 @import 'components/video-audio';

@@ -70,3 +70,11 @@
 .archive-cto {
   background-image: url('../image/archive-cto.png');
 }
+
+.search-cto {
+  background-image: url('../image/search-cto.png');
+
+  &__title {
+    margin-top: 98px;
+  }
+}

@@ -1,0 +1,69 @@
+.search-artist {
+  padding-bottom: 19px;
+  border-bottom: 1px #DDDDDD solid;
+  padding-top: 20px;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  &__image {
+    display: table-cell;
+
+    img {
+      border: 1px #ccc solid;
+      width: 138px;
+      height: 138px;
+    }
+  }
+}
+
+.search-artist-info {
+  display: table-cell;
+  vertical-align: top;
+  padding-left: 19px;
+
+  &__title {
+    @extend %lato-black;
+    font-size: 22px;
+    color: #131313;
+    margin-top: 7px;
+    margin-bottom: 2px;
+  }
+
+  &__stats {
+    @extend %lato-bold;
+    font-size: 14px;
+    color: $main-accent-color ;
+    margin-bottom: 8px;
+  }
+
+  &__bio {
+    @extend %lato;
+    font-size: 12px;
+    color: #131313;
+  }
+
+  &__link {
+    @extend %lato;
+    font-size: 14px;
+    color: #777777;
+    text-decoration: none;
+
+    &:hover {
+      color: #131313;
+    }
+  }
+}
+
+.search-pagination-info {
+  @extend %lato-bold;
+  font-size: 12px;
+  color: #777777;
+  text-align: center;
+}
+
+.search-pagination {
+  text-align: center;
+  margin-bottom: 30px;
+}

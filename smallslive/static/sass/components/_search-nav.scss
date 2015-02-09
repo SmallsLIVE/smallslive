@@ -1,0 +1,37 @@
+.search-sidebar {
+  background-color: #F7F7F7;
+  border-right: 1px #DDDDDD solid;
+}
+
+.search-nav {
+  list-style: none;
+  padding-left: 0;
+  
+  &__item {
+    @extend %lato-black;
+    font-size: 18px;
+    color: rgba(19, 19, 19, 0.5);
+    border-bottom: 1px #DDDDDD solid;
+    width: 80%;
+    height: 53px;
+    padding-top: 15px;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    &:hover {
+      color: #131313;
+
+      .badge {
+        background-color: #131313;
+      }
+    }
+
+    .badge {
+      vertical-align: middle;
+      margin-top: -5px;
+      margin-left: 2px;
+    }
+  }
+}
