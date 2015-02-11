@@ -1,39 +1,24 @@
-{% extends "base.html" %}
+{% extends "search_base.html" %}
 {% load static from staticfiles %}
 
-{% block content %}
-  <section class="cto cto--search container">
-    <h1 class="cto__title search-cto__title">Search results for:<br/>“Lucas”</h1>
-  </section>
-  <div class="container">
-    <div class="row">
-      <section class="col-md-3 search-sidebar">
-        <ul class="search-nav">
-          <li class="search-nav__item">Artists <span class="badge">3</span></li>
-          <li class="search-nav__item">Events <span class="badge">32</span></li>
-          <li class="search-nav__item">Store <span class="badge">2</span></li>
-        </ul>
-      </section>
-      <section class="col-md-9 search-results">
-        <h1 class="search-results__section-title">Found 32 events:</h1>
-        <div class="search-events">
-          {% for event in "123" %}
-            <div class="search-event">
-              <p class="search-event__date">12/02/2014</p>
-              <h2 class="search-event__title">The David Schnitter Quartet</h2>
-              <p class="search-event__sidemen-section-title">Artists:</p>
-              <p class="search-event__sidemen">Colin Stranahan <span class="search-event__sidemen-instrument">(drums)</span> // Glenn Zaleski (piano) // Lucas Pino (tenor
-                sax) // Desmont White (bass) // Alex Lore (alto sax) // Rafal Sarnecki (guitar) // Nick Finzer
-                (trombone) // Andrew Gutauskas (baritone sax)</p>
-              <p class="search-event__features-section-title">Available features:</p>
-              <p class="search-event__features"><span class="fa fa-volume-down"></span> audio <span class="fa fa-music"></span> tracks <span class="fa fa-video-camera"></span> video</p>
-            </div>
-          {% endfor %}
-        </div>
-        <p class="search-pagination-info">Showing results 1-3 of 3</p>
-        <div class="search-pagination"><span class="fa fa-caret-left"></span> <span class="badge">1</span> <span
-                class="fa fa-caret-right"></span></div>
-      </section>
-    </div>
+{% block search_section_title %}Found 32 events:{% endblock %}
+
+{% block search_content %}
+  <div class="search-events">
+    {% for event in "123" %}
+      <div class="search-event">
+        <p class="search-event__date">12/02/2014</p>
+        <h2 class="search-event__title">The David Schnitter Quartet</h2>
+        <p class="search-event__sidemen-section-title">Artists:</p>
+        <p class="search-event__sidemen">Colin Stranahan <span
+                class="search-event__sidemen-instrument">(drums)</span> // Glenn Zaleski (piano) // Lucas Pino
+          (tenor
+          sax) // Desmont White (bass) // Alex Lore (alto sax) // Rafal Sarnecki (guitar) // Nick Finzer
+          (trombone) // Andrew Gutauskas (baritone sax)</p>
+        <p class="search-event__features-section-title">Available features:</p>
+        <p class="search-event__features"><span class="fa fa-volume-down"></span> audio <span
+                class="fa fa-music"></span> tracks <span class="fa fa-video-camera"></span> video</p>
+      </div>
+    {% endfor %}
   </div>
-{% endblock content %}
+{% endblock search_content %}

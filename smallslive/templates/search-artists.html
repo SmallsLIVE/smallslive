@@ -1,40 +1,24 @@
-{% extends "base.html" %}
+{% extends "search_base.html" %}
 {% load static from staticfiles %}
 
-{% block content %}
-  <section class="cto cto--search container">
-    <h1 class="cto__title search-cto__title">Search results for:<br/>“Lucas”</h1>
-  </section>
-  <div class="container">
-  <div class="row">
-    <section class="col-md-3 search-sidebar">
-      <ul class="search-nav">
-        <li class="search-nav__item">Artists <span class="badge">3</span></li>
-        <li class="search-nav__item">Events <span class="badge">32</span></li>
-        <li class="search-nav__item">Store <span class="badge">2</span></li>
-      </ul>
-    </section>
-    <section class="col-md-9 search-results">
-      <h1 class="search-results__section-title">Found 3 artists:</h1>
-      <div class="search-artists">
-        {% for artist in "123" %}
-        <div class="search-artist">
-            <div class="search-artist__image">
-              <img src="http://placehold.it/140x140/232323/" alt=""/>
-            </div>
-            <div class="search-artist-info">
-              <h2 class="search-artist-info__title">The David Schnitter Quartet</h2>
-              <p class="search-artist-info__stats">Organ // 22 events <a href="" class="search-artist-info__link">(view)</a></p>
+{% block search_section_title %}Found 3 artists:{% endblock %}
 
-              <p class="search-artist-info__bio">As a drummer, Ari Hoenig’s success has been unprecedented. Growing up in
-                Philadelphia, his parent’s influence exposed Ari to a variety of...</p>
-            </div>
-          </div>
-        {% endfor %}
+{% block search_content %}
+  <div class="search-artists">
+    {% for artist in "123" %}
+      <div class="search-artist">
+        <div class="search-artist__image">
+          <img src="http://placehold.it/140x140/232323/" alt=""/>
+        </div>
+        <div class="search-artist-info">
+          <h2 class="search-artist-info__title">The David Schnitter Quartet</h2>
+          <p class="search-artist-info__stats">Organ // 22 events <a href="" class="search-artist-info__link">(view)</a>
+          </p>
+
+          <p class="search-artist-info__bio">As a drummer, Ari Hoenig’s success has been unprecedented. Growing up in
+            Philadelphia, his parent’s influence exposed Ari to a variety of...</p>
+        </div>
       </div>
-      <p class="search-pagination-info">Showing results 1-3 of 3</p>
-      <div class="search-pagination"><span class="fa fa-caret-left"></span> <span class="badge">1</span> <span class="fa fa-caret-right"></span></div>
-    </section>
+    {% endfor %}
   </div>
-  </div>
-{% endblock content %}
+{% endblock search_content %}
