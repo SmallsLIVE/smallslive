@@ -4,9 +4,7 @@
   padding-bottom: 20px;
 
   &__section-title {
-    @include lato-black;
-    color: #B1B1B1;
-    font-size: 24px;
+    @include section-title;
     margin-bottom: 28px;
   }
 

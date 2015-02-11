@@ -3,9 +3,7 @@
   border-top: 1px #DDDDDD solid;
 
   &__section-title {
-    @include lato-black;
-    font-size: 24px;
-    color: rgba(69, 67, 68, 0.5);
+    @include section-title;
     margin-top: 40px;
     margin-bottom: 30px;
 

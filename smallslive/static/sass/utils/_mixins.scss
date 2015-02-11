@@ -2,3 +2,8 @@
   border-bottom: 8px $main-accent-color solid;
 }
 
+@mixin section-title {
+  @include lato-black;
+  color: rgba(69, 67, 68, 0.5);
+  font-size: 24px;
+}
