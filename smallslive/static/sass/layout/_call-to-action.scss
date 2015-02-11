@@ -1,4 +1,3 @@
-%cto,
 .cto{
   @include bottom-section-border;
   background-size: cover;
@@ -38,43 +37,44 @@
       color: rgba(255, 255, 255, 0.6);
     }
   }
-}
 
-.archive-cto {
-  background-image: url('../image/archive-bg.jpg');
-}
-
-.visit-cto {
-  background-image: url('../image/visit-us-bg.jpg');
-}
-
-.subsribe-to-artist-cto {
-  background-image: url('../image/subscribe-artist-cto.png');
-}
-
-.listen-to-show-cto {
-  background-image: url('../image/listen-to-show-cto.png');
-}
-
-.video-not-available-cto {
-  background-image: url('../image/video-not-available-cto.png');
-}
-
-.schedule-cto {
-  background-image: url('../image/video-not-available-cto.png');
-
-  &__button {
-    margin-top: 40px;
+  &--archive {
+    background-image: url('../image/archive-cto.jpg');
   }
-}
-.archive-cto {
-  background-image: url('../image/archive-cto.png');
-}
 
-.search-cto {
-  background-image: url('../image/search-cto.png');
+  &--visit {
+    background-image: url('../image/visit-us-bg.jpg');
+  }
 
-  &__title {
-    margin-top: 98px;
+  &--subscribe-to-artist {
+    background-image: url('../image/subscribe-artist-cto.png');
+  }
+
+  &--listen-to-show {
+    background-image: url('../image/listen-to-show-cto.png');
+  }
+
+  &--video-not-available {
+    background-image: url('../image/video-not-available-cto.png');
+  }
+
+  &--schedule {
+    background-image: url('../image/video-not-available-cto.png');
+
+    & .cto__button {
+      margin-top: 40px;
+    }
+  }
+
+  &--archive-header {
+    background-image: url('../image/archive-header-cto.png');
+  }
+
+  &--search {
+    background-image: url('../image/search-cto.png');
+
+    & .cto__title {
+      margin-top: 98px;
+    }
   }
 }
