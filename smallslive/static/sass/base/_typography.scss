@@ -1,31 +1,31 @@
-%lato-light {
+@mixin lato-light {
   font-family: 'Lato', sans-serif;
   font-weight: 300;
 }
 
-%lato {
+@mixin lato {
   font-family: 'Lato', sans-serif;
   font-weight: 400;
 }
 
-%lato-italic {
+@mixin lato-italic {
   font-family: 'Lato', sans-serif;
   font-style: italic;
   font-weight: 400;
 }
 
-%lato-bold {
+@mixin lato-bold {
   font-family: 'Lato', sans-serif;
   font-weight: 700;
 }
 
-%lato-bold-italic {
+@mixin lato-bold-italic {
   font-family: 'Lato', sans-serif;
   font-style: italic;
   font-weight: 700;
 }
 
-%lato-black {
+@mixin lato-black {
   font-family: 'Lato', sans-serif;
   font-weight: 900;
 }

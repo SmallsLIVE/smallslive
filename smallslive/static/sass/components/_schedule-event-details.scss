@@ -4,7 +4,7 @@
   background-size: cover;
 
   &__title {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 34px;
     text-transform: uppercase;
     color: $main-accent-color;
@@ -13,7 +13,7 @@
   }
 
   &__artists {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 14px;
     color: #fefefe;
     line-height: 160%;
@@ -23,12 +23,12 @@
   }
 
   &__instrument {
-    @extend %lato;
+    @include lato;
     font-size: 14px;
   }
 
   &__event-button {
-    @extend %lato-bold-italic;
+    @include lato-bold-italic;
     color: #FEFEFE;
     border: 0;
     background-color: $main-accent-color;
@@ -47,14 +47,14 @@
   background-color: $main-accent-color;
 
   &__title {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 24px;
     display: inline-block;
     margin-top: 13px;
   }
 
   &__date-select {
-    @extend %lato-bold;
+    @include lato-bold;
     font-size: 14px;
     background-color: transparent;
     color: #fefefe;
@@ -63,7 +63,7 @@
   }
 
   &__slots {
-    @extend %lato-bold;
+    @include lato-bold;
     display: inline-block;
     font-size: 14px;
     margin-top: 18px;

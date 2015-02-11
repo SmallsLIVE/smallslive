@@ -13,14 +13,14 @@
   }
 
   &__title {
-    @extend %lato;
+    @include lato;
     font-size: 32px;
     margin-bottom: 16px;
     margin-top: 0;
   }
 
   &__text {
-    @extend %lato;
+    @include lato;
     font-size: 14px;
     margin-bottom: 6px;
   }

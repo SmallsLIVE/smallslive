@@ -1,5 +1,5 @@
 .homepage-news {
-  @extend %lato;
+  @include lato;
   background-color: #1F1F1F;
   color: white;
   min-height: 70px;
@@ -7,7 +7,7 @@
   padding-top: 15px;
 
   &__title {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 24px;
     display: inline-block;
     margin-top: 10px;
@@ -33,7 +33,7 @@
   }
 
   &__button {
-    @extend %lato-black;
+    @include lato-black;
     @extend .btn;
     font-weight: bold;
     background-color: #555555;

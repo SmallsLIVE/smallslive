@@ -8,7 +8,7 @@
   padding-left: 0;
   
   &__item {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 18px;
     color: rgba(19, 19, 19, 0.5);
     border-bottom: 1px #DDDDDD solid;

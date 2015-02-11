@@ -4,14 +4,14 @@
 
 .event-tracks-header {
   &__title {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 24px;
     color: white;
     margin-top: 5px;
   }
 
   &__text {
-    @extend %lato;
+    @include lato;
     font-size: 14px;
     color: white;
     margin-bottom: 20px;
@@ -58,7 +58,7 @@
   }
 
   &__button {
-    @extend %lato-bold-italic;
+    @include lato-bold-italic;
     color: white;
     border: 0;
     background-color: #DA0B28;

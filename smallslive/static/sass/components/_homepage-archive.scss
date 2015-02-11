@@ -3,7 +3,7 @@
 }
 
 .from-our-archive__section-title {
-  @extend %lato-black;
+  @include lato-black;
   color: #B1B1B1;
   font-size: 24px;
   margin-bottom: 28px;

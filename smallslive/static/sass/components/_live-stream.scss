@@ -6,7 +6,7 @@
     color: white;
 
     p {
-      @extend %lato-black;
+      @include lato-black;
       font-size: 24px;
       padding: 13px 0;
       margin: 0;
@@ -29,7 +29,7 @@
   padding-top: 38px;
 
   &__title {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 32px;
     text-transform: uppercase;
     color: $main-accent-color;
@@ -37,13 +37,13 @@
   }
 
   &__time {
-    @extend %lato-bold;
+    @include lato-bold;
     font-size: 18px;
     color: rgba(0, 0, 0, 0.7);
   }
 
   &__artists {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 14px;
     color: #131313;
     line-height: 160%;
@@ -53,12 +53,12 @@
   }
 
   &__instrument {
-    @extend %lato;
+    @include lato;
     font-size: 14px;
   }
 
   &__event-button {
-    @extend %lato-bold-italic;
+    @include lato-bold-italic;
     color: #FEFEFE;
     border: 0;
     background-color: $main-accent-color;
@@ -77,7 +77,7 @@
   padding-top: 38px;
 
   &__title {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 18px;
     color: #131313;
   }

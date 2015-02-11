@@ -4,14 +4,14 @@
   padding-bottom: 20px;
 
   &__section-title {
-    @extend %lato-black;
+    @include lato-black;
     color: #B1B1B1;
     font-size: 24px;
     margin-bottom: 28px;
   }
 
   &__title {
-    @extend %lato-bold;
+    @include lato-bold;
     font-size: 16px;
     margin-top: 0;
     margin-bottom: 2px;
@@ -20,20 +20,20 @@
   }
 
   &__type {
-    @extend %lato-bold;
+    @include lato-bold;
     color: #777777;
     font-size: 13px;
     margin-bottom: 5px;
   }
 
   &__price {
-    @extend %lato-bold;
+    @include lato-bold;
     color: #D80F2E;
     font-size: 16px;
   }
 
   &__buynow {
-    @extend %lato-bold-italic;
+    @include lato-bold-italic;
     color: white;
     border: none;
     background-color: #DA0B28;

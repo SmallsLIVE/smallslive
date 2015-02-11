@@ -14,7 +14,7 @@ header {
   margin-top: 67px;
 
   &__item {
-    @extend %lato;
+    @include lato;
     display: inline-block;
     font-size: 16px;
     text-align: center;
@@ -47,7 +47,7 @@ header {
   margin-top: 17px;
 
   &__item {
-    @extend %lato;
+    @include lato;
     display: inline-block;
     font-size: 14px;
     border-right: 1px #3C3B3C solid;
@@ -84,7 +84,7 @@ header {
   }
 
   &__input {
-    @extend %lato-italic;
+    @include lato-italic;
     height: 40px;
     width: 100%;
     font-size: 14px;

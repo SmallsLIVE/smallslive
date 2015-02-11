@@ -5,7 +5,7 @@
   background-size: cover;
 
   &__name {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 56px;
     text-transform: uppercase;
     color: $main-accent-color;
@@ -16,7 +16,7 @@
   }
 
   &__instruments {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 24px;
     color: #ffffff;
     margin-bottom: 13px;
@@ -26,7 +26,7 @@
   }
 
   &__stats {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 16px;
     padding: 14px 0;
     color: #ffffff;
@@ -36,7 +36,7 @@
   }
 
   &__website {
-    @extend %lato-black;
+    @include lato-black;
     color: #D21333;
     font-size: 16px;
   }

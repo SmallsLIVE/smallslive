@@ -24,7 +24,7 @@
   padding-left: 19px;
 
   &__title {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 22px;
     color: #131313;
     margin-top: 7px;
@@ -32,20 +32,20 @@
   }
 
   &__stats {
-    @extend %lato-bold;
+    @include lato-bold;
     font-size: 14px;
     color: $main-accent-color ;
     margin-bottom: 8px;
   }
 
   &__bio {
-    @extend %lato;
+    @include lato;
     font-size: 12px;
     color: #131313;
   }
 
   &__link {
-    @extend %lato;
+    @include lato;
     font-size: 14px;
     color: #777777;
     text-decoration: none;
@@ -57,7 +57,7 @@
 }
 
 .search-pagination-info {
-  @extend %lato-bold;
+  @include lato-bold;
   font-size: 12px;
   color: #777777;
   text-align: center;

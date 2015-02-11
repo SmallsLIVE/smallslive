@@ -4,14 +4,14 @@
   padding-top: 10px;
 
   &__title {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 18px;
     color: #131313;
     margin-top: 10px;
   }
 
   p {
-    @extend %lato;
+    @include lato;
     font-size: 14px;
     color: #111;
   }

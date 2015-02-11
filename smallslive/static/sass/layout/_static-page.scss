@@ -10,7 +10,7 @@
 
 .static-nav {
   &__item {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 18px;
 
     height: 63px;
@@ -42,14 +42,14 @@
   }
 
   &__caption {
-    @extend %lato;
+    @include lato;
     font-size: 12px;
     color: #626262;
     margin-bottom: 15px;
   }
 
   &__main-title {
-    @extend %lato-black;
+    @include lato-black;
     color: #D21333;
     margin-top: 0;
     margin-bottom: 24px;
@@ -57,14 +57,14 @@
   }
 
   &__sub-title {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 18px;
     margin-top: 20px;
     margin-bottom: 13px;
   }
 
   p {
-    @extend %lato;
+    @include lato;
     font-size: 14px;
     text-align: justify;
   }

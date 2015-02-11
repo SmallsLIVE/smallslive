@@ -7,14 +7,14 @@
   text-align: center;
 
   &__title {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 48px;
     margin-top: 70px;
     margin-bottom: 11px;
   }
 
   &__text {
-    @extend %lato-bold;
+    @include lato-bold;
     font-size: 14px;
     margin-bottom: 21px;
 
@@ -26,7 +26,7 @@
 
   &__button {
     @extend .btn;
-    @extend %lato-bold;
+    @include lato-bold;
     background-color: rgba(0, 0, 0, 0.5);
     border: 2px #D21535 solid;
     color: white;

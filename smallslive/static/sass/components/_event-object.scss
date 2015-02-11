@@ -18,7 +18,7 @@
   }
 
   &__title {
-    @extend %lato-black;
+    @include lato-black;
     font-size: 24px;
     text-transform: uppercase;
 
@@ -28,7 +28,7 @@
   }
 
   &__artists {
-    @extend %lato;
+    @include lato;
     @include list-unstyled;
     color: white;
     max-height: 0;
