@@ -1,5 +1,5 @@
 .home-store {
-  @extend %bottom-section-border;
+  @include bottom-section-border;
   background-color: white;
   padding-bottom: 20px;
 

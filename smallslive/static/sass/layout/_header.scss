@@ -1,5 +1,5 @@
 header {
-  @extend %bottom-section-border;
+  @include bottom-section-border;
   height: 159px;
 }
 

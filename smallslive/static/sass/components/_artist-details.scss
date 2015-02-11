@@ -1,5 +1,5 @@
 .artist-details {
-  @extend %bottom-section-border;
+  @include bottom-section-border;
   min-height: 340px;
   background-color: #1B191A;
   background-size: cover;

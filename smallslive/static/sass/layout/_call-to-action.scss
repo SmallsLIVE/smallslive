@@ -1,6 +1,6 @@
 %cto,
 .cto{
-  @extend %bottom-section-border;
+  @include bottom-section-border;
   background-size: cover;
   color: white;
   height: 300px;

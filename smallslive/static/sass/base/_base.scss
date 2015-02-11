@@ -18,7 +18,7 @@ body {
 }
 
 .artist {
-  @extend %bottom-section-border;
+  @include bottom-section-border;
   background-color: #fff;
 }
 

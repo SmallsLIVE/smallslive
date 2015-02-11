@@ -1,5 +1,5 @@
 .event {
-  @extend %bottom-section-border;
+  @include bottom-section-border;
 }
 
 .event-artists {

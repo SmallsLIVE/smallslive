@@ -1,5 +1,5 @@
 .about-smalls {
-  @extend %bottom-section-border;
+  @include bottom-section-border;
   background-color: white;
 
   &__info {
