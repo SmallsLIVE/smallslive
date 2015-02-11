@@ -30,25 +30,23 @@
   &__artists {
     @include lato;
     @include list-unstyled;
+    @include transition-property(max-height);
+    @include transition-duration(0.1s);
+    @include transition-timing-function(ease-out);
+    @include transition-delay(0.05s);
     color: white;
     max-height: 0;
     overflow: hidden;
     font-size: 14px;
     margin-bottom: 0;
-    -webkit-transition: max-height .3s ease-out .15s;
-    -moz-transition: max-height .3s ease-out .15s;
-    -o-transition: max-height .3s ease-out .15s;
-    -ms-transition: max-height .3s ease-out .15s;
-    transition: max-height .3s ease-out .15s;
   }
 
   &:hover &__artists{
+    @include transition-property(max-height);
+    @include transition-duration(0.4s);
+    @include transition-timing-function(ease);
+    @include transition-delay(0.05s);
     max-height: 300px;
-    -webkit-transition: max-height .1s ease-in .15s;
-    -moz-transition: max-height .1s ease-in .15s;
-    -o-transition: max-height .1s ease-in .15s;
-    -ms-transition: max-height .1s ease-in .15s;
-    transition: max-height .1s ease-in .15s;
   }
 
   &--green {
