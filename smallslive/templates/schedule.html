@@ -7,7 +7,7 @@
   <a href="" class="schedule-cto__button cto__button">January // 2015</a>
 </section>
 <section class="schedule container">
-<div class="row">
+<div class="equal-heights  row">
   {% for day in "123456789012" %}
     <div class="day col-xs-6 col-md-3">
       <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
@@ -58,7 +58,7 @@
         </div>
       </div>
       {% endif %}
-      <div class="row">{% if forloop.last %}</div>{% endif %}
+      <div class="equal-heights row">{% if forloop.last %}</div>{% endif %}
     {% endif %}
   {% endfor %}
 </section>
