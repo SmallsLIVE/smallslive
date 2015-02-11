@@ -1,5 +1,5 @@
 body {
-  background-image: url("../image/header_bg.png"), url("../image/background-tile.png");
+  @include background-image(url("../image/header_bg.png"), url("../image/background-tile.png"));
   background-position: center top, 0 0;
   background-repeat: no-repeat, repeat;
   background-size: 100% 404px, 10px 10px;
@@ -36,6 +36,5 @@ body {
 }
 
 .bw-wrapper {
-  filter: grayscale(100%);
-  -webkit-filter: grayscale(100%);
+  @include filter(grayscale(100%));
 }

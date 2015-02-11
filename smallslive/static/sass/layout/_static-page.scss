@@ -77,8 +77,7 @@
 
 .map-wrapper {
   margin-top: 89px;
-  filter: grayscale(100%);
-  -webkit-filter: grayscale(100%);
+  @include filter(grayscale(100%));
 
   &__map {
     max-width: 100%;
