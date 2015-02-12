@@ -105,3 +105,13 @@
     }
   }
 }
+
+
+@media (max-width: 700px) {
+  .event-object {
+
+    &__title {
+      font-size: 18px;
+    }
+  }
+}

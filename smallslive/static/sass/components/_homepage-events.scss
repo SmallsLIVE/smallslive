@@ -68,6 +68,7 @@
 .event-select {
   min-height: 96px;
   color: #fefefe;
+  position: relative;
   background-color: $main-accent-color;
 
   &__title {
@@ -105,8 +106,27 @@
       color: white;
     }
 
+    li.current {
+      color: white;
+    }
+
 
   }
+}
+
+.event-select:after {
+  bottom: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: rgba(210, 21, 253, 0);
+  border-bottom-color: $main-accent-color;
+  border-width: 20px;
+  margin-left: -20px;
 }
 
 @media (max-width: 700px) {
@@ -126,4 +146,36 @@
       margin-bottom: 40px;
     }
   }
+
+  .event-select {
+      text-align: center;
+      padding: 20px;
+
+    &__title {
+      margin-bottom: 20px;
+    }
+
+    &__date-select {
+
+    }
+
+    &__date-select option {;
+    }
+
+    &__slots {
+      margin-top: 20px;
+      padding: 0;
+      text-align: center;
+
+      li {
+        padding: 15px 0;
+        width: 100%;
+      }
+
+      li:hover {
+
+      }
+    }
+  }
+
 }
