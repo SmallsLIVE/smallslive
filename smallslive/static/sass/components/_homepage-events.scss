@@ -8,8 +8,17 @@
     font-size: 34px;
     text-transform: uppercase;
     color: $main-accent-color;
-    margin-top: 43px;
     margin-bottom: 16px;
+    margin-top: 30px;
+  }
+
+  &__title a {
+    color: #D21535;
+    text-decoration: none;
+  }
+
+  &__title a:hover {
+    opacity: 0.7;
   }
 
   &__artists {
@@ -19,7 +28,16 @@
     line-height: 160%;
     padding-right: 50px;
     letter-spacing: 0.07em;
-    margin-bottom: 50px;
+    margin-bottom: 24px;
+  }
+
+  &__artists a {
+    color: white;
+    text-decoration: none;
+  }
+
+  &__artists a:hover {
+    opacity: 0.7;
   }
 
   &__instrument {
@@ -37,7 +55,13 @@
     font-size: 16px;
     line-height: 20px;
     padding: 4px 10px 4px 7px;
-    margin-bottom: 20px;
+    text-decoration: none;
+    margin-bottom: 30px;
+  }
+  
+  &__event-button:hover {
+    color: rgba(254,254,254,0.8);
+    text-decoration: none;
   }
 }
 
@@ -57,8 +81,10 @@
     font-size: 14px;
     background-color: transparent;
     color: #fefefe;
-    height: 26px;
+  }
 
+  &__date-select option {
+    color: #131313;
   }
 
   &__slots {
@@ -72,6 +98,7 @@
       display: inline-block;
       padding-left: 10px;
       padding-right: 10px;
+      cursor: pointer;
     }
 
     li:hover {
@@ -79,5 +106,24 @@
     }
 
 
+  }
+}
+
+@media (max-width: 700px) {
+  .event-details {
+    min-height: 0;
+
+    &__title {
+      margin-top: 30px;
+    }
+
+    &__artists {
+      padding-right: 0;
+      margin-bottom: 20px;
+    }
+
+    &__event-button {
+      margin-bottom: 40px;
+    }
   }
 }

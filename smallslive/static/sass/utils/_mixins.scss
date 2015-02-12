@@ -7,3 +7,10 @@
   color: rgba(69, 67, 68, 0.5);
   font-size: 24px;
 }
+
+
+@mixin animated {
+		-webkit-transition: all .2s ease-in-out;
+		-moz-transition: all .2s ease-in-out;
+		transition: all .2s ease-in-out;
+}

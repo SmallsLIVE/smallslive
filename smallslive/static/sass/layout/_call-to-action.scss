@@ -2,13 +2,13 @@
   @include bottom-section-border;
   background-size: cover;
   color: white;
-  height: 300px;
+  min-height: 300px;
   text-align: center;
 
   &__title {
     @include lato-black;
     font-size: 48px;
-    margin-top: 70px;
+    margin-top: 0;
     margin-bottom: 11px;
   }
 
@@ -31,6 +31,7 @@
     color: white;
     font-style: italic;
     padding: 11px 35px;
+    font-size: 16px;
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.7);

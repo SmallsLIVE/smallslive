@@ -5,5 +5,11 @@
   &__img {
     @extend .img-responsive;
     width: 100%;
+    @include filter(grayscale(100%));
+    cursor: pointer;
+  }
+
+  &__img:hover {
+    @include filter(none);
   }
 }

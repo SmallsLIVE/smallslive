@@ -26,13 +26,15 @@
     color: #333;
     height: 40px;
     padding-left: 15px;
-    max-width: 270px;
+    max-width: 350px;
+    width: 270px;
     margin-bottom: 20px;
     vertical-align: middle;
     float: right;
   }
 
   &__button {
+    @include transition(all 0.2s ease-in-out);
     @include lato-black;
     @extend .btn;
     font-weight: bold;
@@ -43,5 +45,10 @@
     margin-right: 10px;
     float: right;
     width: 110px;
+
+    &:hover {
+      color: #fefefe;
+      background-color: #D21535;
+    }
   }
 }

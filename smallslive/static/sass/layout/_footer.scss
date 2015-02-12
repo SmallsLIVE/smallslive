@@ -1,5 +1,15 @@
 footer {
   margin-top: 27px;
+  font-size: 12px;
+}
+
+footer a {
+  color: #121212;
+}
+
+footer a:hover {
+  color: rgba(0, 0, 0, 0.6);
+  text-decoration: none;
 }
 
 .footer-content {
@@ -14,6 +24,10 @@ footer {
 .footer-nav {
   margin: 23px 10px 15px;
   padding: 0;
+
+  & a {
+    font-weight: bolder;
+  }
 }
 
 .footer-nav li {

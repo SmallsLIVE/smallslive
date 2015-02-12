@@ -26,8 +26,10 @@ header {
     }
 
     a {
+      @include transition(all 0.2s ease-in-out);
       color: #929292;
       display: block;
+      text-decoration: none;
     }
 
     a:hover {
@@ -61,7 +63,9 @@ header {
     }
 
     a {
+      @include transition(all 0.2s ease-in-out);
       color: #8F8E8F;
+      text-decoration: none;
     }
 
     a:hover {
