@@ -2,244 +2,292 @@
 {% load static from staticfiles %}
 
 {% block content %}
-  <section class="upcoming-events container ">
-      <div class="event-details row">
-        <div class="col-xs-12 col-md-6 vcenter">
-            <div class="gradient-overlay hidden-xs"></div>
-            <img src="{% static 'image/featured-photo.png' %}" class=" event-details__image img img-responsive" alt=""/>
-        </div><!--
-        --><div class="col-xs-12 col-md-6 vcenter">
-            <div>
-                <h1 class="event-details__title"><a href="{% url "static_page" "event-detail" %}">Lucas Pino <br/>No Net Nonet</a></h1>
+    <div class="content-wrapper">
+      <section class="mobile-intro container hidden">
+          <a href="/" class="smalls-logo"><img src="{% static 'logo.svg' %}" alt=""/></a>
+      </section>
+      <section class="upcoming-events container ">
+          <div class="event-details row">
+            <div class="col-xs-12 col-md-6 vcenter">
+                <div class="gradient-overlay"></div>
+                <img src="{% static 'image/featured-photo.png' %}" class=" event-details__image img img-responsive div-fill-img" alt=""/>
+            </div><!--
+            --><div class="col-xs-12 col-md-6 vcenter">
+                <div>
+                    <h1 class="event-details__title"><a href="{% url "static_page" "event-detail" %}">Lucas Pino <br/>No Net Nonet</a></h1>
 
-                <p class="event-details__artists"><a href="{% url "static_page" "artist-detail" %}">COLIN STRANAHAN <span class="event-details__instrument">(drums)</span></a> //
-                    GLENN ZALESKI <span class="event-details__instrument">(piano)</span> // LUCAS PINO <span
-                            class="event-details__instrument">(tenor sax)</span> // DESMOND WHITE <span
-                            class="event-details__instrument">(bass)</span> // ALEX LORE <span
-                            class="event-details__instrument">(alto sax)</span> // RAFAL SARNECKI <span
-                            class="event-details__instrument">(guitar)</span> // NICK FINZER <span
-                            class="event-details__instrument">(trombone)</span> // ANDREW GUTAUSKAS <span
-                            class="event-details__instrument">(baritone sax)</span>
-                </p>
-                <a href="" class="event-details__event-button">Full event page</a><span class="arrow"></span>
+                    <p class="event-details__artists"><a href="{% url "static_page" "artist-detail" %}">COLIN STRANAHAN <span class="event-details__instrument">(drums)</span></a> //
+                        GLENN ZALESKI <span class="event-details__instrument">(piano)</span> // LUCAS PINO <span
+                                class="event-details__instrument">(tenor sax)</span> // DESMOND WHITE <span
+                                class="event-details__instrument">(bass)</span> // ALEX LORE <span
+                                class="event-details__instrument">(alto sax)</span> // RAFAL SARNECKI <span
+                                class="event-details__instrument">(guitar)</span> // NICK FINZER <span
+                                class="event-details__instrument">(trombone)</span> // ANDREW GUTAUSKAS <span
+                                class="event-details__instrument">(baritone sax)</span>
+                    </p>
+                    <a href="" class="event-details__event-button">Full event page</a><span class="arrow"></span>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="event-select row">
-      <div class="col-md-3">
-        <h2 class="event-select__title">Live Schedule</h2>
-        <select name="" id="" class="event-select__date-select form-control">
-          <option value="">Tonight // 02/12/2014</option>
-          <option value="">Tomorrow // 02/13/2014</option>
-          <option value="">Saturday // 02/14/2014</option>
-          <option value="">Sunday // 02/15/2014</option>
-          <option value="">Monday // 02/16/2014</option>
-        </select>
-      </div>
-      <div class="col-md-9">
-        <ul class="event-select__slots">
-          <li>7:30pm - 10:00pm</li>
-          <li class="current">10:30pm - 01:00am</li>
-          <li>01:00am - closing</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-  <section class="cto cto--archive container vertical-align-parent">
-    <div class="vertical-align-child">
-        <h1 class="cto__title">Amazing Archive</h1>
+        <div class="event-select row">
+            <div class="col-xs-12 float-none">
+                <h2 class="event-select__title">Live Schedule</h2>
+                    <div class="row">
+                        <div class="col-md-3 col-xs-12 vcenter">
+                            <select name="" id="" class="event-select__date-select form-control">
+                              <option value="">Tonight // 02/12/2014</option>
+                              <option value="">Tomorrow // 02/13/2014</option>
+                              <option value="">Saturday // 02/14/2014</option>
+                              <option value="">Sunday // 02/15/2014</option>
+                              <option value="">Monday // 02/16/2014</option>
+                            </select>
+                          </div><!--
+                       --><div class="col-md-9 col-xs-12 vcenter">
+                            <ul class="event-select__slots">
+                              <li>7:30pm - 10:00pm</li>
+                              <li class="current">10:30pm - 01:00am</li>
+                              <li>01:00am - closing</li>
+                            </ul>
+                          </div>
+                    </div>
+            </div>
+        </div>
+      </section>
+      <section class="cto cto--archive container vertical-align-parent">
+        <div class="vertical-align-child">
+            <h1 class="cto__title">Amazing Archive</h1>
 
-        <p class="cto__text">It’s finally here! Get unlimited access to our audio & video archive of over 350 jazz
-          concerts. <br/>
-          You can take a trial of 30 days, and afterwards it’s just $20/month.
-        </p>
-        <a href="" class="cto__button">Go to the Archive</a>
-    </div>
-  </section>
-  <section class="from-our-archive container">
-    <h1 class="from-our-archive__section-title">New in our Archive</h1>
+            <p class="cto__text">It’s finally here! Get unlimited access to our audio & video archive of over 350 jazz
+              concerts. <br/>
+              You can take a trial of 30 days, and afterwards it’s just $20/month.
+            </p>
+            <a href="" class="cto__button">Go to the Archive</a>
+        </div>
+      </section>
+      <section class="from-our-archive container">
+        <h1 class="from-our-archive__section-title">New in our Archive</h1>
 
-    <div class="row">
-      <div class="col-xs-6 col-md-4">
-        <div class="event-object event-object--green">
-            <img class="event-object__image"
-                 src="http://placehold.it/350x300/232323/232323&text=Event%20image" alt=""/>
-            <div class="event-object__info">
-              <h1 class="event-object__title">Ryan Kisor Quintet</h1>
-              <ul class="event-object__artists">
-                <li>Marcus Parsley</li>
-                <li>Rick Germanson</li>
-                <li>Al Street</li>
-                <li>Neal Miner</li>
-                <li>Brian Floody</li>
-                <li>Bosco Mann</li>
-              </ul>
+        <div class="row">
+          <div class="col-xs-6 col-md-4">
+            <div class="event-object event-object--green">
+                <img class="event-object__image"
+                     src="{% static 'image/archive-thumbs/01.jpg' %}" alt=""/>
+                <div class="event-object__info">
+                  <h1 class="event-object__title">Ryan Kisor Quintet</h1>
+                  <ul class="event-object__artists">
+                    <li>Marcus Parsley</li>
+                    <li>Rick Germanson</li>
+                    <li>Al Street</li>
+                    <li>Neal Miner</li>
+                    <li>Brian Floody</li>
+                    <li>Bosco Mann</li>
+                  </ul>
+                </div>
             </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-md-4">
-        <div class="event-object event-object--blue">
-            <img class="event-object__image"
-                 src="http://placehold.it/350x300/232323/232323&text=Event%20image" alt=""/>
-            <div class="event-object__info">
-              <h1 class="event-object__title">Steve Davis Quintet</h1>
-              <ul class="event-object__artists">
-                <li>Marcus Parsley</li>
-                <li>Rick Germanson</li>
-                <li>Al Street</li>
-                <li>Neal Miner</li>
-                <li>Brian Floody</li>
-                <li>Bosco Mann</li>
-              </ul>
+          </div>
+          <div class="col-xs-6 col-md-4">
+            <div class="event-object event-object--blue">
+                <img class="event-object__image"
+                     src="{% static 'image/archive-thumbs/02.jpg' %}" alt=""/>
+                <div class="event-object__info">
+                  <h1 class="event-object__title">Steve Davis Quintet</h1>
+                  <ul class="event-object__artists">
+                    <li>Marcus Parsley</li>
+                    <li>Rick Germanson</li>
+                    <li>Al Street</li>
+                    <li>Neal Miner</li>
+                    <li>Brian Floody</li>
+                    <li>Bosco Mann</li>
+                  </ul>
+                </div>
             </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-md-4">
-        <div class="event-object event-object--yellow">
-            <img class="event-object__image"
-                 src="http://placehold.it/350x300/232323/232323&text=Event%20image" alt=""/>
-            <div class="event-object__info">
-              <h1 class="event-object__title">Kevin Hays Trio</h1>
+          </div>
+          <div class="col-xs-6 col-md-4">
+            <div class="event-object event-object--yellow">
+                <img class="event-object__image"
+                     src="{% static 'image/archive-thumbs/03.jpg' %}" alt=""/>
+                <div class="event-object__info">
+                  <h1 class="event-object__title">Kevin Hays Trio</h1>
+                  <ul class="event-object__artists">
+                    <li>Doug Weiss</li>
+                    <li>Bill Stewart</li>
+                  </ul>
+                </div>
             </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-md-4">
-        <div class="event-object event-object--gold">
-            <img class="event-object__image"
-                 src="http://placehold.it/350x300/232323/232323&text=Event%20image" alt=""/>
-            <div class="event-object__info">
-              <h1 class="event-object__title">Ryan Kisor Quintet</h1>
+          </div>
+          <div class="col-xs-6 col-md-4">
+            <div class="event-object event-object--gold">
+                <img class="event-object__image"
+                     src="{% static 'image/archive-thumbs/04.jpg' %}" alt=""/>
+                <div class="event-object__info">
+                  <h1 class="event-object__title">Dezron Douglas</h1>
+                  <ul class="event-object__artists">
+                    <li>Willie Jones III</li>
+                    <li>Josh Evans</li>
+                    <li>Stacy Dillard</li>
+                    <li>David Bryant</li>
+                  </ul>
+                </div>
             </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-md-4">
-        <div class="event-object event-object--red">
-            <img class="event-object__image"
-                 src="http://placehold.it/350x300/232323/232323&text=Event%20image" alt=""/>
-            <div class="event-object__info">
-              <h1 class="event-object__title">David Kikoski Trio</h1>
+          </div>
+          <div class="col-xs-6 col-md-4">
+            <div class="event-object event-object--red">
+                <img class="event-object__image"
+                     src="{% static 'image/archive-thumbs/05.jpg' %}" alt=""/>
+                <div class="event-object__info">
+                  <h1 class="event-object__title">David Kikoski Trio</h1>
+                  <ul class="event-object__artists">
+                    <li>Hans Glawischnig</li>
+                    <li>Obed Calvaire</li>
+                  </ul>
+                </div>
             </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-md-4">
-        <div class="event-object event-object--purple">
-            <img class="event-object__image"
-                 src="http://placehold.it/350x300/232323/232323&text=Event%20image" alt=""/>
-            <div class="event-object__info">
-              <h1 class="event-object__title">Seamus Blake Quintet</h1>
+          </div>
+          <div class="col-xs-6 col-md-4">
+            <div class="event-object event-object--purple">
+                <img class="event-object__image"
+                     src="{% static 'image/archive-thumbs/06.jpg' %}" alt=""/>
+                <div class="event-object__info">
+                  <h1 class="event-object__title">Seamus Blake Quintet</h1>
+                  <ul class="event-object__artists">
+                    <li>Lage Lund</li>
+                    <li>David Kikoski</li>
+                    <li>Matt Clohesy</li>
+                    <li>Bill Stewart</li>
+                  </ul>
+                </div>
             </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
-  <section class="from-our-archive container">
-    <h1 class="from-our-archive__section-title">Most Popular from the Archive</h1>
+      </section>
+      <section class="from-our-archive container">
+        <h1 class="from-our-archive__section-title">Most Popular from the Archive</h1>
 
-    <div class="row">
-      <div class="col-xs-6 col-md-4">
-        <div class="event-object event-object--darkblue">
-            <img class="event-object__image"
-                 src="http://placehold.it/350x300/232323/232323&text=Event%20image" alt=""/>
-            <div class="event-object__info">
-              <h1 class="event-object__title">Ben Wolfe Quintet</h1>
+        <div class="row">
+          <div class="col-xs-6 col-md-4">
+            <div class="event-object event-object--darkblue">
+                <img class="event-object__image"
+                     src="{% static 'image/archive-thumbs/07.jpg' %}" alt=""/>
+                <div class="event-object__info">
+                  <h1 class="event-object__title">Ben Wolfe Quintet</h1>
+                  <ul class="event-object__artists">
+                    <li>Marcus Strickland</li>
+                    <li>Ryan Kisor</li>
+                    <li>Luis Perdomo</li>
+                    <li>Gregory Hutchinson</li>
+                  </ul>
+                </div>
             </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-md-4">
-        <div class="event-object event-object--orange">
-            <img class="event-object__image"
-                 src="http://placehold.it/350x300/232323/232323&text=Event%20image" alt=""/>
-            <div class="event-object__info">
-              <h1 class="event-object__title">Neal Smith Quintet</h1>
+          </div>
+          <div class="col-xs-6 col-md-4">
+            <div class="event-object event-object--orange">
+                <img class="event-object__image"
+                     src="{% static 'image/archive-thumbs/08.jpg' %}" alt=""/>
+                <div class="event-object__info">
+                  <h1 class="event-object__title">Neal Smith Quintet</h1>
+                  <ul class="event-object__artists">
+                    <li>Eric Alexander</li>
+                    <li>Steve Wilson</li>
+                    <li>Mulgrew Miller</li>
+                    <li>Mark Whitfield</li>
+                    <li>Dezron Douglas</li>
+                  </ul>
+                </div>
             </div>
-        </div>
-      </div>
-      <div class="col-xs-6 col-md-4">
-        <div class="event-object event-object--blue">
-            <img class="event-object__image"
-                 src="http://placehold.it/350x300/232323/232323&text=Event%20image" alt=""/>
-            <div class="event-object__info">
-              <h1 class="event-object__title">Steve Davis Quintet</h1>
+          </div>
+          <div class="col-xs-6 col-md-4">
+            <div class="event-object event-object--blue">
+                <img class="event-object__image"
+                     src="{% static 'image/archive-thumbs/09.jpg' %}" alt=""/>
+                <div class="event-object__info">
+                  <h1 class="event-object__title">Steve Davis Quintet</h1>
+                  <ul class="event-object__artists">
+                    <li>Larry Willis</li>
+                    <li>Mike Dirubbo</li>
+                    <li>Gerald Cannon</li>
+                    <li>Willie Jones III</li>
+                  </ul>
+                </div>
             </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
-  <section class="home-store container">
-    <h1 class="home-store__section-title">Popular in our Store</h1>
-    <div class="row">
-      <div class="col-xs-6 col-md-3">
-        <img class="home-store__img" src="http://placehold.it/220x200/232323&text=Store%20image" alt=""/>
-        <h2 class="home-store__title"><a href="#">Jesse Davis Quintet Live at Smalls</a></h2>
-        <p class="home-store__type">CD / Digital Download</p>
-        <p class="home-store__price">$15,00</p>
-        <a href="" class="home-store__buynow">Buy now</a><span class="arrow"></span>
-      </div>
-      <div class="col-xs-6 col-md-3">
-        <img class="home-store__img" src="http://placehold.it/220x200/232323&text=Store%20image" alt=""/>
-        <h2 class="home-store__title"><a href="#">Bopjuice (Ralph Lalama, Joel Forbes, Clifford Barbaro)</a></h2>
-        <p class="home-store__type">CD / Digital Download</p>
-        <p class="home-store__price">$12,00</p>
-        <a href="" class="home-store__buynow">Buy now</a><span class="arrow"></span>
-      </div>
-      <div class="col-xs-6 col-md-3">
-        <img class="home-store__img" src="http://placehold.it/220x200/232323&text=Store%20image" alt=""/>
-        <h2 class="home-store__title"><a href="#">Dezron Douglas Live at Smalls + a whole bunch of other dudes blah blah omg so long name</a></h2>
-        <p class="home-store__type">2CD / Digital Download</p>
-        <p class="home-store__price">$20,00</p>
-        <a href="" class="home-store__buynow">Buy now</a><span class="arrow"></span>
-      </div>
-      <div class="col-xs-6 col-md-3">
-        <img class="home-store__img" src="http://placehold.it/220x200/232323&text=Store%20image" alt=""/>
-        <h2 class="home-store__title"><a href="#">Grant Stewart Live at Smalls</a></h2>
-        <p class="home-store__type">CD / Digital Download</p>
-        <p class="home-store__price">$15,00</p>
-        <a href="" class="home-store__buynow">Buy now</a><span class="arrow"></span>
-      </div>
-    </div>
-  </section>
-  <section class="cto cto--visit container vertical-align-parent">
-    <div class="vertical-align-child">
-        <h1 class="cto__title">Visit us</h1>
+      </section>
+      <section class="home-store container">
+        <h1 class="home-store__section-title">Popular in our Store</h1>
+        <div class="row">
+          <div class="col-xs-6 col-md-3">
+            <a href="#"><img class="home-store__img"  src="{% static 'image/store-thumbs/01.jpg' %}" alt=""/></a>
+            <h2 class="home-store__title"><a href="#">Jesse Davis Quintet Live at Smalls</a></h2>
+            <p class="home-store__type">CD / Digital Download</p>
+            <p class="home-store__price">$15,00</p>
+            <a href="" class="home-store__buynow">Buy now</a><span class="arrow"></span>
+          </div>
+          <div class="col-xs-6 col-md-3">
+            <a href="#"><img class="home-store__img"  src="{% static 'image/store-thumbs/02.jpg' %}" alt=""/></a>
+            <h2 class="home-store__title"><a href="#">Bopjuice (Ralph Lalama, Joel Forbes, Clifford Barbaro)</a></h2>
+            <p class="home-store__type">CD / Digital Download</p>
+            <p class="home-store__price">$12,00</p>
+            <a href="" class="home-store__buynow">Buy now</a><span class="arrow"></span>
+          </div>
+          <div class="col-xs-6 col-md-3">
+            <a href="#"><img class="home-store__img"  src="{% static 'image/store-thumbs/03.jpg' %}" alt=""/></a>
+            <h2 class="home-store__title"><a href="#">Dezron Douglas Live at Smalls + a whole bunch of other dudes blah blah omg so long name</a></h2>
+            <p class="home-store__type">2CD / Digital Download</p>
+            <p class="home-store__price">$20,00</p>
+            <a href="" class="home-store__buynow">Buy now</a><span class="arrow"></span>
+          </div>
+          <div class="col-xs-6 col-md-3">
+            <a href="#"><img class="home-store__img"  src="{% static 'image/store-thumbs/04.jpg' %}" alt=""/></a>
+            <h2 class="home-store__title"><a href="#">Grant Stewart Live at Smalls</a></h2>
+            <p class="home-store__type">CD / Digital Download</p>
+            <p class="home-store__price">$15,00</p>
+            <a href="" class="home-store__buynow">Buy now</a><span class="arrow"></span>
+          </div>
+        </div>
+      </section>
+      <section class="cto cto--visit container vertical-align-parent">
+        <div class="vertical-align-child">
+            <h1 class="cto__title">Visit us</h1>
 
-        <p class="cto__text">183 W. 10th St, New York, NY 10014</p>
-        <a href="" class="cto__button">Get Directions</a>
-    </div>
-  </section>
-  <section class="about-smalls container">
-    <div class="row">
-      <div class="col-md-6 visible-md visible-lg about-smalls__img"></div>
-      <div class="col-xs-12 col-md-6 about-smalls__info">
-        <h1 class="about-smalls__title">About Smalls Live</h1>
+            <p class="cto__text">183 W. 10th St, New York, NY 10014</p>
+            <a href="" class="cto__button">Get Directions</a>
+        </div>
+      </section>
+      <section class="about-smalls container">
+        <div class="row">
+          <div class="col-md-6 visible-md visible-lg about-smalls__img"></div>
+          <div class="col-xs-12 col-md-6 about-smalls__info">
+            <h1 class="about-smalls__title">About Smalls Live</h1>
 
-        <p class="about-smalls__text">Smalls is a historic jazz club in Greenwich Village NYC presenting the best in live jazz music 7 days a week.
-          SmallsLIVE is our digital service where jazz fans can take in 3000+ hours of concert audio and video recorded
-          at the club since 2007.</p>
-        <p class="about-smalls__text">We live-stream and record every concert at Smalls, so check out tonight’s show online after getting a free
-          account. To access the archive of recordings, you’ll need a subscription.</p>
-        <p class="about-smalls__text">Listen. Strange women lying in ponds distributing swords is no basis for a system of government. Supreme
-          executive power derives from a mandate from the masses, not from some farcical aquatic ceremony. </p>
-      </div>
+            <p class="about-smalls__text">Smalls is a historic jazz club in Greenwich Village NYC presenting the best in live jazz music 7 days a week.
+              SmallsLIVE is our digital service where jazz fans can take in 3000+ hours of concert audio and video recorded
+              at the club since 2007.</p>
+            <p class="about-smalls__text">We live-stream and record every concert at Smalls, so check out tonight’s show online after getting a free
+              account. To access the archive of recordings, you’ll need a subscription.</p>
+            <p class="about-smalls__text">Listen. Strange women lying in ponds distributing swords is no basis for a system of government. Supreme
+              executive power derives from a mandate from the masses, not from some farcical aquatic ceremony. </p>
+          </div>
+        </div>
+      </section>
+      <section class="mini-gallery visible-md visible-lg container">
+        <div class="row no-gutters">
+            <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img1.jpg' %}" class="mini-gallery__img"/></div>
+            <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img2.jpg' %}" class="mini-gallery__img"/></div>
+            <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img3.jpg' %}" class="mini-gallery__img"/></div>
+            <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img4.jpg' %}" class="mini-gallery__img"/></div>
+        </div>
+      </section>
+      <section class="homepage-news container">
+        <div class="row">
+          <div class="col-xs-12 col-md-6 vcenter">
+            <h1 class="homepage-news__title">Smalls Newsletter</h1>
+            <p class="homepage-news__text">Stay informed on everything regarding Smalls!</p>
+          </div><!--
+       --><div class="col-xs-12 col-md-6 vcenter">
+              <input type="text" class="homepage-news__input" placeholder="Your email address"/>
+              <input type="submit" value="SUBSCRIBE" class="homepage-news__button"/>
+          </div>
+        </div>
+      </section>
     </div>
-  </section>
-  <section class="mini-gallery visible-md visible-lg container">
-    <div class="row no-gutters">
-        <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img1.jpg' %}" class="mini-gallery__img"/></div>
-        <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img2.jpg' %}" class="mini-gallery__img"/></div>
-        <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img3.jpg' %}" class="mini-gallery__img"/></div>
-        <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img4.jpg' %}" class="mini-gallery__img"/></div>
-    </div>
-  </section>
-  <section class="homepage-news container">
-    <div class="row">
-      <div class="col-xs-12 col-md-6">
-        <h1 class="homepage-news__title">Smalls Newsletter</h1>
-        <p class="homepage-news__text">Stay informed on everything regarding Smalls!</p>
-      </div>
-      <div class="col-xs-12 col-md-6">
-          <input type="text" class="homepage-news__input" placeholder="Your email address"/>
-          <input type="submit" value="SUBSCRIBE" class="homepage-news__button"/>
-      </div>
-    </div>
-  </section>
 {% endblock content %}

@@ -16,11 +16,100 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+
+<!-- MODALS -->
+<!-- Log in modal -->
+	<div class="modal fade" id="logIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="true" aria-hidden="true">
+		<div class="modal-dialog">
+            <div class="modal-content login-modal">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="modal-body">
+                    <div class="col-xs-12">
+                        <h1 class="login-modal__title">Log in</h1>
+                        <p class="login-modal__text--heavy">Log in to gain access to live stream and streamable audio and video content.</p>
+                    </div>
+                    <form role="form" id="form-login" action="#">
+                        <div class="col-xs-12">
+                            <input type="email" class="form-control" name="email" placeholder="Your email">
+                            <input type="password" class="form-control" name="password" placeholder="Your password">
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="col-sm-6 col-xs-12 vcenter">
+                                <input type="checkbox" name="remember-password"><span class="checkbox-label">Remember me</span>
+                            </div><!--
+                         --><div class="col-sm-6 col-xs-12 vcenter">
+                                <a class="forgot-password" data-dismiss="modal" href="#">Forgot password</a>
+                            </div>
+                        </div>
+                        <div class="empty-separator-20"></div>
+                        <div class="col-sm-5 col-xs-12">
+                            <a class="login-button" href="">Log in</a>
+                        </div>
+                        <div class="col-sm-7 col-xs-12">
+                            <a class="fb-login-button" href=""><div class="vcenter"><i class="fa fa-facebook-square"></i></div><div class="vcenter">Log in with Facebook</div></a>
+                        </div>
+                        <div class="col-xs-12 modal-separator"></div>
+                        <div class="col-xs-12">
+                            <h2 class="login-modal__subtitle">Don’t have an account yet?</h2>
+                            <p class="login-modal__text">Sign up for a free account to watch our live stream, or get unlimited access to our audio & video archive of over 350 jazz concerts! You can take a free trial of 30 days, and afterwards it’s just $20/month!</p>
+                            <a href="" class="login-modal__cta-signup">Click here to sign up!</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- /MODALS -->
+
 <body>
-<header class="container">
+<!-- mobile devices header -->
+<nav class="navbar navbar-default mobile-navbar visible-xs visible-sm" role="navigation">
+		<div class="container mobile-menu">
+			<!-- Grouping logo and toggle for mobile -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+                <a href="/" class="smalls-hor-logo"><img src="{% static 'smalls_live_horizontal_negative.svg' %}" alt=""/></a>
+			</div>
+
+			<!-- Collect the nav links, forms and other content for toggling -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<div class="header-top">
+					<div class="container">
+                        <ul class="nav navbar-nav">
+                            <li><a href="/">Home</a></li>
+                            <li><a href="{% url "static_page" "live-stream" %}">Live now!</a></li>
+                            <li><a href="{% url "static_page" "schedule" %}">Schedule</a></li>
+                            <li><a href="{% url "static_page" "archive" %}">Archive</a></li>
+                            <li><a href="">Store</a></li>
+                            <li><a href="{% url "static_page" "about-us" %}">Info</a></li>
+                            <li role="presentation" class="divider"></li>
+                            <li><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
+                            <li><a href="">Sign up</a></li>
+						</ul>
+					</div>
+				</div>
+			</div><!-- /.navbar-collapse -->
+<!--
+            <form action="" class="search">
+                <div class="form-group has-feedback">
+                    <input type="text" class="form-control search__input" placeholder="Search our Archive..."/>
+                    <i class="fa fa-search form-control-feedback"></i>
+                </div>
+            </form>
+-->
+		</div><!-- /. container-fluid -->
+</nav>
+
+<header class="container hidden-xs hidden-sm">
   <a href="/" class="smalls-logo"><img src="{% static 'logo.svg' %}" width="101" height="100" alt=""/></a>
     <ul class="header-login clearfix">
-    <li class="header-login__item"><a href="">Log in</a></li>
+    <li class="header-login__item"><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
     <li class="header-login__item"><a href="">Sign up</a></li>
   </ul>
   <nav class="navigation navbar-collapse">
@@ -40,7 +129,9 @@
       </div>
     </form>
 </header>
+
 {% block content %}{% endblock content %}
+
 <footer class="container">
   <div class="footer-content">
     <img class="footer-logo" src="{% static "logo-black.svg" %}" alt=""/>
@@ -56,5 +147,11 @@
     </address>
   </div>
 </footer>
+    <!-- Include jQuery 1.11.2 -->
+    <script src="static/js/jquery-1.11.2.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="static/js/bootstrap.min.js"></script>
+    <!-- SmallsLIVE base JavaScript -->
+    <script src="static/js/base.js"></script>
 </body>
 </html>

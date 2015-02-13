@@ -4,10 +4,18 @@
   position: relative;
   margin-bottom: 30px;
   border-bottom: 8px solid;
+  overflow: hidden;
+  cursor: pointer;
 
   &__image {
     @include img-responsive;
     width: 100%;
+    @include filter(brightness(0.6));
+    @include transition(filter 0.2s ease-in-out);
+  }
+
+  &:hover &__image {
+    @include filter(blur(2px) brightness(0.3));
   }
 
   &__info {
