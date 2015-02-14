@@ -7,6 +7,10 @@
     @include filter(grayscale(100%));
   }
 
+  & .info {
+    padding: 0 20px;
+  }
+
   &__title {
     @include lato-black;
     font-size: 34px;
@@ -75,6 +79,9 @@
   min-height: 96px;
   color: #fefefe;
   position: relative;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0 10px;
   background-color: $main-accent-color;
 
   &__title {
@@ -227,5 +234,9 @@
   .event-details .div-fill-img.wide {
     width: 100%;
     height: auto;
+  }
+
+  .event-details .info {
+    padding: 20px 30px;
   }
 }
