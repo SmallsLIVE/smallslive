@@ -1,3 +1,12 @@
+.modal {
+  top:10%;
+}
+
+.modal-backdrop {
+  height: 100%;
+  opacity: 0.65 !important;
+}
+
 .login-modal .modal-body {
   overflow: hidden;
 }
@@ -8,6 +17,7 @@
   background-size: cover;
   background-position: center center;
   color: white;
+  border: 1px solid rgba(255,255,255,0.3);
 
   &__title {
     @include lato-black;

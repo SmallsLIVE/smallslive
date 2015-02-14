@@ -6,53 +6,9 @@
       <section class="mobile-intro container hidden">
           <a href="/" class="smalls-logo"><img src="{% static 'logo.svg' %}" alt=""/></a>
       </section>
-      <section class="upcoming-events container ">
-          <div class="event-details row">
-            <div class="col-xs-12 col-md-6 vcenter">
-                <div class="gradient-overlay"></div>
-                <img src="{% static 'image/featured-photo.png' %}" class=" event-details__image img img-responsive div-fill-img" alt=""/>
-            </div><!--
-            --><div class="col-xs-12 col-md-6 vcenter">
-                <div>
-                    <h1 class="event-details__title"><a href="{% url "static_page" "event-detail" %}">Lucas Pino <br/>No Net Nonet</a></h1>
 
-                    <p class="event-details__artists"><a href="{% url "static_page" "artist-detail" %}">COLIN STRANAHAN <span class="event-details__instrument">(drums)</span></a> //
-                        GLENN ZALESKI <span class="event-details__instrument">(piano)</span> // LUCAS PINO <span
-                                class="event-details__instrument">(tenor sax)</span> // DESMOND WHITE <span
-                                class="event-details__instrument">(bass)</span> // ALEX LORE <span
-                                class="event-details__instrument">(alto sax)</span> // RAFAL SARNECKI <span
-                                class="event-details__instrument">(guitar)</span> // NICK FINZER <span
-                                class="event-details__instrument">(trombone)</span> // ANDREW GUTAUSKAS <span
-                                class="event-details__instrument">(baritone sax)</span>
-                    </p>
-                    <a href="" class="event-details__event-button">Full event page</a><span class="arrow"></span>
-                </div>
-            </div>
-        </div>
-        <div class="event-select row">
-            <div class="col-xs-12 float-none">
-                <h2 class="event-select__title">Live Schedule</h2>
-                    <div class="row">
-                        <div class="col-md-3 col-xs-12 vcenter">
-                            <select name="" id="" class="event-select__date-select form-control">
-                              <option value="">Tonight // 02/12/2014</option>
-                              <option value="">Tomorrow // 02/13/2014</option>
-                              <option value="">Saturday // 02/14/2014</option>
-                              <option value="">Sunday // 02/15/2014</option>
-                              <option value="">Monday // 02/16/2014</option>
-                            </select>
-                          </div><!--
-                       --><div class="col-md-9 col-xs-12 vcenter">
-                            <ul class="event-select__slots">
-                              <li>7:30pm - 10:00pm</li>
-                              <li class="current">10:30pm - 01:00am</li>
-                              <li>01:00am - closing</li>
-                            </ul>
-                          </div>
-                    </div>
-            </div>
-        </div>
-      </section>
+      {% include "blocks/homepage-upcoming-events.html" %}
+
       <section class="cto cto--archive container vertical-align-parent">
         <div class="vertical-align-child">
             <h1 class="cto__title">Amazing Archive</h1>
