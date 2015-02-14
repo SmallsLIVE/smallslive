@@ -49,7 +49,7 @@ class Event(TimeStampedModel):
 
     def performers_with_instruments_string(self):
         "Returns the comma-separated list of performers with instruments (including the leader) as a string"
-        return self.leader_with_instrument_string() + ", " + self.sidemen_with_instruments_string()
+        return self.leader_with_instrument_string() + " // " + self.sidemen_with_instruments_string()
 
     def sidemen_string(self):
         "Returns the comma-separated list of sidemen (without the leader) as a string"
@@ -65,9 +65,9 @@ class Event(TimeStampedModel):
         (without the leader) as a string
         """
         performers = self.artists_gig_info.filter(is_leader=False).order_by('sort_order').select_related(
-            'artist', 'role').values_list('artist__first_name', 'artist__last_name', 'role__abbreviation')
+            'artist', 'role').values_list('artist__first_name', 'artist__last_name', 'role__name')
         # Make full names
-        performers = ["{0} {1} ({2})".format(first, last, abbr) for first, last, abbr in performers]
+        performers = ["{0} {1} ({2})".format(first, last, instrument) for first, last, instrument in performers]
         return ", ".join(performers)
 
     def leader_string(self):
@@ -81,7 +81,7 @@ class Event(TimeStampedModel):
     def leader_with_instrument_string(self):
         leader = self.artists_gig_info.select_related('artist', 'role').filter(is_leader=True).first()
         if leader:
-            text = "{0} ({1})".format(leader.artist.full_name(), leader.role.abbreviation)
+            text = "{0} ({1})".format(leader.artist.full_name(), leader.role.name)
         else:
             text = ""
         return text
