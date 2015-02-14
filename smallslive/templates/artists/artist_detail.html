@@ -1,45 +1,56 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
+{% load thumbor_tags %}
+
 
 {% block content %}
   <section class="container">
-      <div class="artist-details row">
-        <div class="col-xs-12 col-md-6 visible-lg visible-md">
-          <img src="{% static 'image/featured-photo.png' %}" class=" artist-details__image img img-responsive" alt=""/>
-        </div>
-        <div class="col-xs-12 col-md-6">
-            <h1 class="artist-details__name">{{ artist.full_name }}</h1>
+    <div class="artist-details row">
+      <div class="col-xs-12 col-md-6 visible-lg visible-md">
+        {% if artist.photo %}
+            <img src="{% thumbor_url artist.photo.url height=400 width=600 smart=True %}"
+                 class=" artist-details__image img img-responsive" alt=""/>
+        {% endif %}
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <h1 class="artist-details__name">{{ artist.full_name }}</h1>
 
-          <p class="artist-details__instruments">{{ artist.instruments.all|join:" //" }}</p>
-          <p class="artist-details__stats">{{ artist.events.count }} live shows{% comment %} //  2 albums in store{% endcomment %}</p>
-          {% if artist.website %}<a href="" class="artist-details__website">{{ artist.website }}</a>{% endif %}
-        </div>
+        <p class="artist-details__instruments">{{ artist.instruments.all|join:" //" }}</p>
+        <p class="artist-details__stats">{{ artist.events.count }} live
+          shows{% comment %} //  2 albums in store{% endcomment %}</p>
+        {% if artist.website %}<a href="" class="artist-details__website">{{ artist.website }}</a>{% endif %}
+      </div>
     </div>
   </section>
   <div class="artist container">
     <div class="equal-heights row">
       <section class="artist-events col-md-6">
-        <h2 class="artist-events__title">Upcoming shows:</h2>
-        <div class="events">
-        {% for upcoming_event in artist.upcoming_events %}
-          <div class="mini-event">
-            <div class="mini-event__image">
-              <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
-            </div>
-            <div class="mini-event-info">
-              <p class="mini-event-info__date">{{ upcoming_event.listing_date|date:"n/j/Y" }}</p>
-              <h2 class="mini-event-info__title">{{ upcoming_event.title }} {{ upcoming_event.subtitle }}</h2>
-              <p class="mini-event-info__sidemen">{{ upcoming_event.performers_with_instruments_string }}</p>
-              <a class="mini-event-info__button" href="{{ upcoming_event.get_absolute_url }}">Go to event</a><span class="arrow"></span>
-            </div>
+        {% with artist.upcoming_events|slice:":4" as upcoming_events %}
+          <h2 class="artist-events__title">Upcoming shows {% if upcoming_events %} ({{ upcoming_events|length }}
+            ):{% endif %}</h2>
+          <div class="events">
+            {% for upcoming_event in upcoming_events %}
+              <div class="mini-event">
+                <div class="mini-event__image">
+                  <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
+                </div>
+                <div class="mini-event-info">
+                  <p class="mini-event-info__date">{{ upcoming_event.listing_date|date:"n/j/Y" }}</p>
+                  <h2 class="mini-event-info__title">{{ upcoming_event.title }} {{ upcoming_event.subtitle }}</h2>
+                  <p class="mini-event-info__sidemen">{{ upcoming_event.performers_with_instruments_string }}</p>
+                  <a class="mini-event-info__button" href="{{ upcoming_event.get_absolute_url }}">Go to event</a><span
+                        class="arrow"></span>
+                </div>
+              </div>
+            {% empty %}
+              <p class="artist-events__notice">There are no upcoming shows for this artist.</p>
+            {% endfor %}
           </div>
-        {% empty %}
-          <p class="artist-events__notice">There are no upcoming shows for this artist.</p>
-        {% endfor %}
-        </div>
-        {% with artist.past_events as past_events %}
-            <h2 class="artist-events__title">Previous shows {% if past_events %} ({{ past_events|length }}):{% endif %}</h2>
-            <div class="events">
+        {% endwith %}
+        {% with artist.past_events|slice:":4" as past_events %}
+          <h2 class="artist-events__title">Previous shows {% if past_events %} ({{ past_events|length }}
+            ):{% endif %}</h2>
+          <div class="events">
             {% for past_event in past_events %}
               <div class="mini-event">
                 <div class="mini-event__image">
@@ -49,13 +60,14 @@
                   <p class="mini-event-info__date">{{ past_event.listing_date|date:"n/j/Y" }}</p>
                   <h2 class="mini-event-info__title">{{ past_event.title }} {{ past_event.subtitle }}</h2>
                   <p class="mini-event-info__sidemen">{{ past_event.performers_with_instruments_string }}</p>
-                  <a class="mini-event-info__button" href="{{ past_event.get_absolute_url }}">Go to event</a><span class="arrow"></span>
+                  <a class="mini-event-info__button" href="{{ past_event.get_absolute_url }}">Go to event</a><span
+                        class="arrow"></span>
                 </div>
               </div>
             {% empty %}
               <p class="artist-events__notice">There are no past shows for this artist.</p>
             {% endfor %}
-            </div>
+          </div>
         {% endwith %}
       </section>
       <section class="artist-bio col-md-6">
