@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Sum, Count
+from django.utils.text import slugify
 from sortedm2m.fields import SortedManyToManyField
 from tinymce import models as tinymce_models
 from events.models import Event
@@ -18,6 +19,7 @@ class Artist(models.Model):
     website = models.CharField(max_length=255, blank=True)
     photo = models.ImageField(upload_to='artist_images', max_length=150, blank=True)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='artist', blank=True, null=True)
+    slug = models.SlugField(blank=True, max_length=100)
 
     class Meta:
         ordering = ['last_name']
@@ -26,7 +28,7 @@ class Artist(models.Model):
         return u"{0} {1}".format(self.first_name, self.last_name)
 
     def get_absolute_url(self):
-        return reverse('artist_detail', kwargs={'pk': self.pk})
+        return reverse('artist_detail', kwargs={'pk': self.pk, 'slug': self.slug})
 
     def full_name(self):
         return "{0} {1}".format(self.first_name, self.last_name)
@@ -39,6 +41,9 @@ class Artist(models.Model):
 
     def get_instruments(self):
         return "\n".join([i.name for i in self.instruments.all()])
+
+    def events_count(self):
+        return self.events.count()
 
     def media_count(self):
         return self.events.annotate(cnt=Count('sets')).aggregate(count=Sum('cnt'))['count']
@@ -61,6 +66,12 @@ class Artist(models.Model):
         self.save()
         email_model, created = SmallsEmailAddress.objects.get_or_create(user=user, email=email)
         email_model.send_confirmation(request, signup=True, invite_text=invite_text)
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if not self.slug:
+            self.slug = slugify(self.full_name())
+        super(Artist, self).save(force_insert, force_update, using, update_fields)
 
 
 class Instrument(models.Model):
