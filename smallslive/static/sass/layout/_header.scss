@@ -9,6 +9,11 @@ header {
   margin-bottom: 19px;
 }
 
+.navbar-default {
+  background: none;
+  border: none;
+}
+
 .navigation {
   float: left;
   margin-top: 67px;
@@ -74,6 +79,23 @@ header {
   }
 }
 
+.login-section {
+  float: right;
+}
+
+.nav.menu {
+  margin-left: 30px;
+}
+
+.nav.menu li {
+  text-align: center;
+  padding: 10px 15px;
+
+  & a {
+    padding: 0;
+  }
+}
+
 .search {
   float: right;
   margin-top: 22px;
@@ -98,3 +120,77 @@ header {
     border-color: #828181;
   }
 }
+
+@media (min-width: 980px) {
+  .search {
+      width: 220px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .search {
+    width: 360px;
+  }
+}
+
+///
+
+.mobile-navbar {
+  background-color: $main-accent-color;
+  margin-bottom: 0;
+
+  .navbar-nav li a {
+    color: #ffffff;
+    text-align: center;
+    width: 100%;
+    font-size: 16px;
+    padding: 15px 0;
+  }
+}
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form {
+  border: none;
+}
+
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+  background: none;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: #fff;
+}
+
+.mobile-intro {
+  background-color: #1B191A;
+  width: 100%;
+  display: block;
+}
+
+.mobile-intro .smalls-logo {
+  width: 180px;
+  margin: 50px auto 20px;
+  float: none;
+  display: block;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.smalls-hor-logo {
+  height: 30px;
+  display: block;
+  margin: 10px;
+
+  img {
+    height: 100%;
+    width: auto;
+  }
+}
+
+
+
+
+//MODALS TEMP
+

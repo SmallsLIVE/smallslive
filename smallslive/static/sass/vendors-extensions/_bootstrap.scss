@@ -18,12 +18,12 @@
 @import "../vendors/bootstrap/buttons";
 
 // Components
-//@import "../vendors/bootstrap/component-animations";
-//@import "../vendors/bootstrap/dropdowns";
+@import "../vendors/bootstrap/component-animations";
+@import "../vendors/bootstrap/dropdowns";
 //@import "../vendors/bootstrap/button-groups";
 //@import "../vendors/bootstrap/input-groups";
-//@import "../vendors/bootstrap/navs";
-//@import "../vendors/bootstrap/navbar";
+@import "../vendors/bootstrap/navs";
+@import "../vendors/bootstrap/navbar";
 //@import "../vendors/bootstrap/breadcrumbs";
 //@import "../vendors/bootstrap/pagination";
 //@import "../vendors/bootstrap/pager";
@@ -41,7 +41,7 @@
 //@import "../vendors/bootstrap/close";
 
 // Components w/ JavaScript
-//@import "../vendors/bootstrap/modals";
+@import "../vendors/bootstrap/modals";
 //@import "../vendors/bootstrap/tooltip";
 //@import "../vendors/bootstrap/popovers";
 //@import "../vendors/bootstrap/carousel";

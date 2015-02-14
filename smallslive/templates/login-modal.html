@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+
+{% block login-modal %}
+<!-- Log in modal -->
+	<div class="modal fade" id="logIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close animated" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<div class="modal-title"><b>Sign in</b></div>
+				</div>
+				<div class="modal-body">
+					<div>
+						<form role="form" id="form-login" action="#">
+							<div class="form-group">
+								<div class="col-sm-12 col-xs-12">
+									<button class="social-login-btn linkedin animated"><i class="fa fa-linkedin-square animated vcenter"></i><div class="vcenter">Sign up using LinkedIn</div></button>
+								</div>
+								<div class="horizontal-divider-lg"></div>
+								<div id="message-login" class="col-xs-12 animated"></div>
+								<div class="col-xs-12">
+									<label for="inputName">Email address</label>
+									<input type="email" class="form-control" name="email" placeholder="">
+								</div>
+								<div class="col-xs-12">
+									<label for="inputTitle">Password</label>
+									<input type="password" class="form-control" name="password" placeholder="">
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<label>
+										<input type="checkbox" name="remember"><span class="checkbox-label">Keep me logged in</span>
+									</label>
+								</div>
+								<div id="forgot-password" class="col-xs-12 col-sm-6">
+									<a data-dismiss="modal" data-toggle="modal" data-target="#forgotPassword">Forgot your password?</a>
+								</div>
+							</div>
+							<div class="full-width v-align">
+								<div class="col-sm-5 col-xs-12">
+									<input type="submit" class="btn btn-primary btn-lg btn-perform animated" id="btn-reset-password" data-dismiss="modal" value="Submit">
+								</div>
+								<div class="col-sm-7 right col-xs-12">
+									<div class="signup-call">
+										Don't have an account? <a href="#">Sign up!</a>
+									</div>
+								</div>
+								<div class="spacer-20"></div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock login-modal %}

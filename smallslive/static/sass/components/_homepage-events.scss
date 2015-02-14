@@ -91,7 +91,7 @@
   &__slots {
     @include lato-bold;
     font-size: 14px;
-    margin-top: 55px;
+    margin-top: 10px;
 
 
     li {
@@ -129,9 +129,10 @@
   margin-left: -20px;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 780px) {
   .event-details {
     min-height: 0;
+    text-align: center;
 
     &__title {
       margin-top: 30px;
@@ -139,11 +140,15 @@
 
     &__artists {
       padding-right: 0;
-      margin-bottom: 20px;
+      margin-bottom: 50px;
     }
 
     &__event-button {
-      margin-bottom: 40px;
+      display: none;
+    }
+
+    .arrow {
+      display: none;
     }
   }
 
@@ -178,4 +183,11 @@
     }
   }
 
+}
+
+@media (max-width: 993px) {
+  .event-details .div-fill-img.wide {
+    width: 100%;
+    height: auto;
+  }
 }
