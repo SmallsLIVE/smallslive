@@ -1,7 +1,11 @@
 .event-details {
-  min-height: 340px;
+  min-height: 320px;
   background-color: #1B191A;
   background-size: cover;
+
+  &__image {
+    @include filter(grayscale(100%));
+  }
 
   &__title {
     @include lato-black;
@@ -25,10 +29,11 @@
     @include lato-black;
     font-size: 14px;
     color: #fefefe;
-    line-height: 160%;
+    line-height: 24px;
     padding-right: 50px;
     letter-spacing: 0.07em;
     margin-bottom: 24px;
+    text-transform: uppercase;
   }
 
   &__artists a {
@@ -43,6 +48,7 @@
   &__instrument {
     @include lato;
     font-size: 14px;
+    text-transform: lowercase;
   }
 
   &__event-button {
@@ -106,7 +112,7 @@
       color: white;
     }
 
-    li.current {
+    li.active {
       color: white;
     }
 
@@ -127,6 +133,38 @@
   border-bottom-color: $main-accent-color;
   border-width: 20px;
   margin-left: -20px;
+}
+
+#upcoming-carousel {
+  margin-left: -10px;
+  margin-right: -10px;
+}
+
+.carousel-indicators {
+  position: initial;
+  bottom: initial;
+  left: initial;
+  width: initial;
+  margin-left: initial;
+  padding-left: initial;
+  text-align: initial;
+
+  & .active {
+    margin: initial;
+    width: initial;
+    height: initial;
+    background-color: initial;
+    color: white;
+  }
+
+  & li {
+    text-indent: initial;
+    border: initial;
+    border-radius: initial;
+    width: initial;
+    height: initial;
+    margin: initial;
+  }
 }
 
 @media (max-width: 780px) {
