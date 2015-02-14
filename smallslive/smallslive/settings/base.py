@@ -90,6 +90,7 @@ INSTALLED_APPS = [
     'events',
     'multimedia',
     'old_site',
+    'static_pages',
     'users',
 ] + get_core_apps([
     'oscar_apps.address',

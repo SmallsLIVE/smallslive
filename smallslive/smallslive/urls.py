@@ -30,5 +30,11 @@ urlpatterns = patterns('',
     url(r'^$', 'events.views.homepage', name="home"),
 )
 
+urlpatterns += patterns('django.contrib.flatpages.views',
+    url(r'^mission-statement/$', 'flatpage', {'url': '/mission-statement/'}, name='mission-statement'),
+    url(r'^about-us/$', 'flatpage', {'url': '/about-us/'}, name='about-us'),
+    url(r'^contact-and-info/$', 'flatpage', {'url': '/contact-and-info/'}, name='contact-and-info'),
+)
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,30 @@
+{% extends "static-page.html" %}
+{% load static from staticfiles %}
+
+{% block about-us-active %}static-nav__item--active{% endblock %}
+
+{% block static-content %}
+  <section class="static-content col-md-5">
+    <h1 class="static-content__main-title">{{ flatpage.title }}</h1>
+
+    {{ flatpage.content }}
+  </section>
+  <aside class=" static-sidebar col-md-4 hidden-xs hidden-sm">
+    <figure>
+      <img src="{% static 'image/about-us/1.png' %}" class="static-page__image" alt=""/>
+      <figcaption class="static-content__caption">Caption goes here</figcaption>
+    </figure>
+    <figure>
+      <img src="{% static 'image/about-us/2.png' %}" class="static-page__image" alt=""/>
+      <figcaption class="static-content__caption">Caption goes here</figcaption>
+    </figure>
+    <figure>
+      <img src="{% static 'image/about-us/3.png' %}" class="static-page__image" alt=""/>
+      <figcaption class="static-content__caption">Caption goes here</figcaption>
+    </figure>
+    <figure>
+      <img src="{% static 'image/about-us/4.png' %}" class="static-page__image" alt=""/>
+      <figcaption class="static-content__caption">Caption goes here</figcaption>
+    </figure>
+  </aside>
+{% endblock static-content %}
