@@ -18,7 +18,7 @@
         <p class="artist-details__instruments">{{ artist.instruments.all|join:" //" }}</p>
         <p class="artist-details__stats">{{ artist.events.count }} live
           shows{% comment %} //  2 albums in store{% endcomment %}</p>
-        {% if artist.website %}<a href="" class="artist-details__website">{{ artist.website }}</a>{% endif %}
+        {% if artist.website %}<a href="{{ artist.website }}" class="artist-details__website">{{ artist.website }}</a>{% endif %}
       </div>
     </div>
   </section>
