@@ -27,6 +27,10 @@ INSTALLED_APPS += (
 COMPRESS_ENABLED = False
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+THUMBOR_MEDIA_URL = '/media/'
+THUMBOR_SECURITY_KEY = 'TEST'
+THUMBOR_SERVER = 'http://127.0.0.1:8888'
+
 ALLOWED_HOSTS = ['*']
 # Static asset configuration
 PIPELINE_ENABLED = False
