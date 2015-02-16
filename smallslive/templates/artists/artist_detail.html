@@ -8,7 +8,7 @@
     <div class="artist-details row">
       <div class="col-xs-12 col-md-6 visible-lg visible-md">
         {% if artist.photo %}
-            <img src="{% thumbor_url artist.photo.url height=400 width=600 smart=True %}"
+            <img src="{% thumbor_url artist.photo.url|urlencode height=400 width=600 smart=True %}"
                  class=" artist-details__image img img-responsive" alt=""/>
         {% endif %}
       </div>
