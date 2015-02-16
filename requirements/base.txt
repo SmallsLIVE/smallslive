@@ -6,7 +6,7 @@ beautifulsoup4==4.3.2
 bleach==1.4
 boto==2.28.0
 dj-database-url==0.3.0
-dj-static==0.0.6
+git+git://github.com/kennethreitz/dj-static.git
 djrill==1.1.1
 django-allauth==0.17.0
 django-appconf==0.6
