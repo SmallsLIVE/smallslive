@@ -29,6 +29,7 @@ class Event(TimeStampedModel):
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed', related_name='events')
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField(default=STATUS.Draft)
+    slug = models.SlugField(blank=True, max_length=150)
 
     objects = models.Manager()
     past = QueryManager(start__lt=datetime.now()).order_by('-start')
@@ -164,6 +165,12 @@ class Event(TimeStampedModel):
             'Hidden': 'label-default',
         }
         return CSS_STATES[self.state]
+
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if not self.slug:
+            self.slug = slugify(self.full_name())
+        super(Event, self).save(force_insert, force_update, using, update_fields)
 
 
 class Set(models.Model):
