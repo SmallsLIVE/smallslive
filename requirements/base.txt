@@ -9,7 +9,7 @@ dj-database-url==0.3.0
 git+git://github.com/kennethreitz/dj-static.git
 djrill==1.1.1
 django-allauth==0.17.0
-django-appconf==0.6
+django-appconf==1.0.1
 django-braces==1.4.0
 django-compressor==1.4
 django-crispy-forms==1.4.0
