@@ -32,7 +32,11 @@
             {% for upcoming_event in upcoming_events %}
               <div class="mini-event">
                 <div class="mini-event__image">
-                  <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
+                  {% if upcoming_event.photo %}
+                    <img src="{% thumbor_url upcoming_event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                  {% else %}
+                    <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
+                  {% endif %}
                 </div>
                 <div class="mini-event-info">
                   <p class="mini-event-info__date">{{ upcoming_event.listing_date|date:"n/j/Y" }}</p>
@@ -54,7 +58,12 @@
             {% for past_event in past_events %}
               <div class="mini-event">
                 <div class="mini-event__image">
-                  <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
+                  {% if past_event.photo %}
+                    <img src="{% thumbor_url past_event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                  {% else %}
+                    <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
+                  {% endif %}
+
                 </div>
                 <div class="mini-event-info">
                   <p class="mini-event-info__date">{{ past_event.listing_date|date:"n/j/Y" }}</p>
