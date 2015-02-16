@@ -8,7 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SmallsLIVE</title>
   {% stylesheet 'css' %}
-  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,400italic,700,700italic,900' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,400italic,700,700italic,900' rel='stylesheet'
+        type='text/css'>
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -22,69 +23,76 @@
 <body>
 <!-- mobile devices header -->
 <nav class="navbar navbar-default mobile-navbar visible-xs visible-sm" role="navigation">
-		<div class="container mobile-menu">
-			<!-- Grouping logo and toggle for mobile -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-                <a href="/" class="smalls-hor-logo"><img src="{% static 'smalls_live_horizontal_negative.svg' %}" alt=""/></a>
-			</div>
+  <div class="container mobile-menu">
+    <!-- Grouping logo and toggle for mobile -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+              data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="/" class="smalls-hor-logo"><img src="{% static 'smalls_live_horizontal_negative.svg' %}" alt=""/></a>
+    </div>
 
-			<!-- Collect the nav links, forms and other content for toggling -->
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<div class="header-top">
-					<div class="container">
-                        <ul class="nav navbar-nav">
-                            <li><a href="/">Home</a></li>
-                            <li><a href="{% url "static_page" "live-stream" %}">Live now!</a></li>
-                            <li><a href="{% url "static_page" "schedule" %}">Schedule</a></li>
-                            <li><a href="{% url "static_page" "archive" %}">Archive</a></li>
-                            <li><a href="">Store</a></li>
-                            <li><a href="{% url "about-us" %}">Info</a></li>
-                            <li role="presentation" class="divider"></li>
-                            <li><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
-                            <li><a href="">Sign up</a></li>
-						</ul>
-					</div>
-				</div>
-			</div><!-- /.navbar-collapse -->
-<!--
-            <form action="" class="search">
-                <div class="form-group has-feedback">
-                    <input type="text" class="form-control search__input" placeholder="Search our Archive..."/>
-                    <i class="fa fa-search form-control-feedback"></i>
-                </div>
-            </form>
--->
-		</div><!-- /. container-fluid -->
+    <!-- Collect the nav links, forms and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <div class="header-top">
+        <div class="container">
+          <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="{% url "static_page" "live-stream" %}">Live now!</a></li>
+            <li><a href="{% url "static_page" "schedule" %}">Schedule</a></li>
+            <li><a href="{% url "static_page" "archive" %}">Archive</a></li>
+            <li><a href="">Store</a></li>
+            <li><a href="{% url "about-us" %}">Info</a></li>
+            <li role="presentation" class="divider"></li>
+            <li><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
+            <li><a href="">Sign up</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- /.navbar-collapse -->
+    <!--
+                <form action="" class="search">
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control search__input" placeholder="Search our Archive..."/>
+                        <i class="fa fa-search form-control-feedback"></i>
+                    </div>
+                </form>
+    -->
+  </div>
+  <!-- /. container-fluid -->
 </nav>
 
 <header class="container hidden-xs hidden-sm">
   <a href="/" class="smalls-logo"><img src="{% static 'logo.svg' %}" width="101" height="100" alt=""/></a>
-    <ul class="header-login clearfix">
+  <ul class="header-login clearfix">
     <li class="header-login__item"><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
     <li class="header-login__item"><a href="">Sign up</a></li>
   </ul>
   <nav class="navigation navbar-collapse">
     <ul>
       <li class="navigation__item"><a href="/"><i class="navigation__icon fa fa-2x fa-home "></i> Home</a></li>
-      <li class="navigation__item"><a href="{% url "static_page" "live-stream" %}"><i class="navigation__icon fa fa-play-circle"></i> Live now!</a></li>
-      <li class="navigation__item"><a href="{% url "static_page" "schedule" %}"><i class="navigation__icon fa fa-calendar"></i> Schedule</a></li>
-      <li class="navigation__item"><a href="{% url "static_page" "archive" %}"><i class="navigation__icon fa fa-video-camera"></i> Archive</a></li>
+      <li class="navigation__item"><a href="{% url "static_page" "live-stream" %}"><i
+              class="navigation__icon fa fa-play-circle"></i> Live now!</a></li>
+      <li class="navigation__item"><a href="{% url "static_page" "schedule" %}"><i
+              class="navigation__icon fa fa-calendar"></i> Schedule</a></li>
+      <li class="navigation__item"><a href="{% url "static_page" "archive" %}"><i
+              class="navigation__icon fa fa-video-camera"></i> Archive</a></li>
       <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-shopping-cart"></i> Store</a></li>
-      <li class="navigation__item"><a href="{% url "about-us" %}"><i class="navigation__icon fa fa-info-circle"></i> Info</a></li>
+      <li class="navigation__item"><a href="{% url "about-us" %}"><i class="navigation__icon fa fa-info-circle"></i>
+        Info</a></li>
     </ul>
   </nav>
-    <form action="" class="search visible-lg visible-md">
-      <div class="form-group has-feedback">
-        <input type="text" class="form-control search__input" placeholder="Search our Archive..."/>
-        <i class="fa fa-search form-control-feedback"></i>
-      </div>
-    </form>
+  <form action="" class="search visible-lg visible-md">
+    <div class="form-group has-feedback">
+      <input type="text" class="form-control search__input" placeholder="Search our Archive..."/>
+      <i class="fa fa-search form-control-feedback"></i>
+    </div>
+  </form>
 </header>
 
 {% block content %}{% endblock content %}
@@ -104,11 +112,11 @@
     </address>
   </div>
 </footer>
-    <!-- Include jQuery 1.11.2 -->
-    <script src="static/js/jquery-1.11.2.min.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="static/js/bootstrap.min.js"></script>
-    <!-- SmallsLIVE base JavaScript -->
-    <script src="static/js/base.js"></script>
+<!-- Include jQuery 1.11.2 -->
+<script src="{% static 'js/jquery-1.11.2.min.js'%}"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<!-- SmallsLIVE base JavaScript -->
+<script src="{% static 'js/base.js' %}"></script>
 </body>
 </html>
