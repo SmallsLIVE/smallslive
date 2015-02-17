@@ -2,7 +2,7 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
-{% block search_section_title %}Found 3 artists:{% endblock %}
+{% block search_section_title %}Found {{ page.object_list|length }} artist{{ page.object_list|length|pluralize }}:{% endblock %}
 
 {% block search_content %}
   <div class="search-artists">
