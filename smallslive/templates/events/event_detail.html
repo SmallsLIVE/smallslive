@@ -16,12 +16,14 @@
         </div>
       </section>
       {% else %}
-      <section class="cto cto--video-not-available container">
-        <h1 class="cto__title">Video not available (yet)</h1>
+      <section class="cto cto--video-not-available container vertical-align-parent">
+            <div class="vertical-align-child">
+                <h1 class="cto__title">Video not available (yet)</h1>
 
-        <p class="cto__text">The video for this performance can be made available if you request it.<br/>
-                            We had 181 request for this video so far.</p>
-        <a href="" class="cto__button">Request video</a>
+                <p class="cto__text">The video for this performance can be made available if you request it.<br/>
+                                    We had 181 request for this video so far.</p>
+                <a href="" class="cto__button">Request video</a>
+            </div>
       </section>
       {% endif %}
   {% endif %}
@@ -45,8 +47,11 @@
             <div class="mini-artist-info">
               <h2 class="mini-artist-info__title">{{ gig_info.artist.full_name }}</h2>
               <p class="mini-artist-info__instrument">{{ gig_info.role }}</p>
-
-              <p class="mini-artist-info__bio">{{ gig_info.artist.biography|striptags|truncatewords:25 }}</p>
+              {% if gig_info.artist.biography %}
+                <p class="mini-artist-info__bio">{{ gig_info.artist.biography|striptags|truncatewords:28 }}</p>
+              {% else %}
+                <p class="mini-artist-info__bio unavailable">No artist biography available</p>
+              {% endif %}
               <a class="mini-artist-info__button" href="{{ gig_info.artist.get_absolute_url }}">Artist profile</a><span class="arrow"></span>
             </div>
           </div>
@@ -57,14 +62,16 @@
       </section>
       <section class="event-description col-md-6">
         <div class="row">
-        <img src="{% thumbor_url event.photo.url|urlencode height=340 width=600 %}" alt="" class="event__img img-responsive"/>
+            <img src="{% thumbor_url event.photo.url|urlencode height=340 width=600 %}" alt="" class="event__img img-responsive"/>
           </div>
-        <h1 class="event-description__title">Event description:</h1>
-        {% if event.description %}
-            {{ event.description }}
-        {% else %}
-          <p>No event description available.</p>
-        {% endif %}
+        <div class="event-description__text-block">
+            <h1 class="event-description__title">Event description:</h1>
+            {% if event.description %}
+                {{ event.description }}
+            {% else %}
+              <p>No event description available.</p>
+            {% endif %}
+        </div>
         <div class="share-social">
           <h2 class="share-social__title">Share this event on:</h2>
           <button class="btn social-btn social-btn--facebook"><i class="fa fa-facebook"></i></button>
@@ -75,75 +82,207 @@
     </div>
   </div>
   {% if not request.GET.future %}
-      <section class="cto cto--listen-to-show container">
-        <h1 class="cto__title">Listen to entire show</h1>
+      <section class="cto cto--listen-to-show container vertical-align-parent">
+        <div class="vertical-align-child">
+            <h1 class="cto__title">Listen to entire show</h1>
 
-        <p class="cto__text">You can use the player below to listen to the entire show.</p>
+            <p class="cto__text">You can use the player below to listen to the entire show.</p>
+        </div>
       </section>
       <section class="event-tracks container">
-        <div class="row">
+        <div class="row event-tracks-header vcenter">
           <div class="col-xs-12">
             <h1 class="event-tracks-header__title">Buy tracks from this show</h1>
             <p class="event-tracks-header__text">You can buy indivital tracks from this show as digital downloads, so you
               can listen to it in high quality on your devices even when you’re not online.</p>
           </div>
         </div>
-        <div class="row">
-          <hr class="tracks-table-separator"/>
-            <table class="tracks-table table">
-              <thead class="tracks-table__header">
-              <tr>
-                <th class="tracks-table__header-cell">Preview</th>
-                <th class="tracks-table__header-cell">Title</th>
-                <th class="tracks-table__header-cell">Composer</th>
-                <th class="tracks-table__header-cell">Duration</th>
-                <th class="tracks-table__header-cell">Price</th>
-                <th class="tracks-table__header-cell"></th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr class="tracks-table__row">
-                <td class="tracks-table__cell"><i class="fa fa-2x fa-pause"></i></td>
-                <td class="tracks-table__cell">Wrap your troubles in dreams</td>
-                <td class="tracks-table__cell">Ted Koehler</td>
-                <td class="tracks-table__cell">14:23</td>
-                <td class="tracks-table__cell">$0.99</td>
-                <td class="tracks-table__cell"><a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span></td>
-              </tr>
-              <tr class="tracks-table__row">
-                <td class="tracks-table__cell"><i class="fa fa-2x fa-play"></i></td>
-                <td class="tracks-table__cell">Wrap your troubles in dreams</td>
-                <td class="tracks-table__cell">Ted Koehler</td>
-                <td class="tracks-table__cell">14:23</td>
-                <td class="tracks-table__cell">$0.99</td>
-                <td class="tracks-table__cell"><a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span></td>
-              </tr>
-              <tr class="tracks-table__row">
-                <td class="tracks-table__cell"><i class="fa fa-2x fa-play"></i></td>
-                <td class="tracks-table__cell">Wrap your troubles in dreams</td>
-                <td class="tracks-table__cell">Ted Koehler</td>
-                <td class="tracks-table__cell">14:23</td>
-                <td class="tracks-table__cell">$0.99</td>
-                <td class="tracks-table__cell"><a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span></td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="tracks-table-separator"></div>
+        <div class="row tracks-table">
+            <!--table header-->
+            <div class="col-xs-12 tracks-table__header">
+                <div class="col-sm-1 col-xs-2 text-center">
+                    <div class="hidden-xs">Preview</div>
+                </div>
+                <div class="col-sm-4 col-xs-5">
+                    Title
+                </div>
+                <div class="col-sm-3 hidden-xs">
+                    Composer
+                </div>
+                <div class="col-sm-1 hidden-xs text-center">
+                    Duration
+                </div>
+                <div class="col-sm-1 hidden-xs text-center">
+                    Price
+                </div>
+                <div class="col-sm-2 col-xs-5 text-center">
+
+                </div>
+            </div>
+            <!--end of table header-->
+            <!--single table row-->
+            <div class="col-xs-12 tracks-table__row vcenter">
+                <div class="col-sm-1 col-xs-2 text-center vcenter">
+                    <a href="#" class="playback-control"><i class="fa fa-pause"></i></a>
+                </div><!--
+             --><div class="col-sm-4 col-xs-5 title vcenter">
+                    Wrap your troubles in dreams
+                </div><!--
+             --><div class="col-sm-3 hidden-xs composer vcenter">
+                    Ted Koehler
+                </div><!--
+             --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                    14:23
+                </div><!--
+             --><div class="col-sm-1 hidden-xs text-center price vcenter">
+                    $0.99
+                </div><!--
+             --><div class="col-sm-2 col-xs-5 text-center vcenter">
+                    <div class="buy-button-container">
+                        <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                    </div>
+                </div>
+            </div>
+            <!--end of single table row-->
+            <!--single table row-->
+            <div class="col-xs-12 tracks-table__row vcenter">
+                <div class="col-sm-1 col-xs-2 text-center vcenter">
+                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                </div><!--
+             --><div class="col-sm-4 col-xs-5 title vcenter">
+                    All too soon
+                </div><!--
+             --><div class="col-sm-3 hidden-xs composer vcenter">
+                    Duke Ellington
+                </div><!--
+             --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                    14:23
+                </div><!--
+             --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                    $0.99
+                </div><!--
+             --><div class="col-sm-2 col-xs-5 text-center vcenter">
+                    <div class="buy-button-container">
+                        <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                    </div>
+                </div>
+            </div>
+            <!--end of single table row-->
+            <!--single table row-->
+            <div class="col-xs-12 tracks-table__row vcenter">
+                <div class="col-sm-1 col-xs-2 text-center vcenter">
+                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                </div><!--
+             --><div class="col-sm-4 col-xs-5 title vcenter">
+                    Lullaby of the leaves
+                </div><!--
+             --><div class="col-sm-3 hidden-xs composer vcenter">
+                    Bernice Petkere
+                </div><!--
+             --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                    14:23
+                </div><!--
+             --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                    $0.99
+                </div><!--
+             --><div class="col-sm-2 col-xs-5 text-center vcenter">
+                    <div class="buy-button-container">
+                        <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                    </div>
+                </div>
+            </div>
+            <!--end of single table row-->
+            <!--single table row-->
+            <div class="col-xs-12 tracks-table__row vcenter">
+                <div class="col-sm-1 col-xs-2 text-center vcenter">
+                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                </div><!--
+             --><div class="col-sm-4 col-xs-5 title vcenter">
+                    Bess, you is my woman now
+                </div><!--
+             --><div class="col-sm-3 hidden-xs composer vcenter">
+                    George Gershwin
+                </div><!--
+             --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                    14:23
+                </div><!--
+             --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                    $0.99
+                </div><!--
+             --><div class="col-sm-2 col-xs-5 text-center vcenter">
+                    <div class="buy-button-container">
+                        <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                    </div>
+                </div>
+            </div>
+            <!--end of single table row-->
+            <!--single table row-->
+            <div class="col-xs-12 tracks-table__row vcenter">
+               <div class="col-sm-1 col-xs-2 text-center vcenter">
+                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                </div><!--
+             --><div class="col-sm-4 col-xs-5 title vcenter">
+                    Gone with the wind
+                </div><!--
+             --><div class="col-sm-3 hidden-xs composer vcenter">
+                    Allie Wrubel
+                </div><!--
+             --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                    14:23
+                </div><!--
+             --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                    $0.99
+                </div><!--
+             --><div class="col-sm-2 col-xs-5 text-center vcenter">
+                    <div class="buy-button-container">
+                        <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                    </div>
+                </div>
+            </div>
+            <!--end of single table row-->
+            <!--single table row-->
+            <div class="col-xs-12 tracks-table__row vcenter">
+                <div class="col-sm-1 col-xs-2 text-center vcenter">
+                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                </div><!--
+             --><div class="col-sm-4 col-xs-5 title vcenter">
+                    I can’t get started
+                </div><!--
+             --><div class="col-sm-3 hidden-xs composer vcenter">
+                    Vernon Duke
+                </div><!--
+             --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                    14:23
+                </div><!--
+             --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                    $0.99
+                </div><!--
+             --><div class="col-sm-2 col-xs-5 text-center vcenter">
+                    <div class="buy-button-container">
+                        <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                    </div>
+                </div>
+            </div>
+            <!--end of single table row-->
+        </div>
       </section>
       <section class="buy-album container">
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-sm-3 col-xs-12 text-center-xs vcenter">
             <h2 class="buy-album__cto-title">Buy the entire album:</h2>
             <p class="buy-album__description">Includes lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</p>
-          </div>
-          <div class="col-md-3">
+          </div><!--
+       --><div class="col-sm-3 col-xs-12 vcenter">
             <img src="http://placehold.it/220x195/232323/text=Album%20image" alt="" class="event__img img-responsive"/>
-          </div>
-          <div class="col-md-6">
+          </div><!--
+       --><div class="col-sm-6 col-xs-12 text-center-xs vcenter">
             <h1 class="buy-album__title">The Ari Hoenig Quartet</h1>
             <p class="buy-album__description">CD / Digital Download</p>
             <p class="buy-album__price">$15,00</p>
-            <a class="tracks-table__button" href="">Buy album</a><span class="arrow"></span>
+            <div class="buy-button-container">
+                <a class="buy-album__button" href="">Buy album</a><span class="arrow"></span>
+            </div>
           </div>
         </div>
       </section>

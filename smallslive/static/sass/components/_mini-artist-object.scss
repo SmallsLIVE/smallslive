@@ -1,4 +1,6 @@
 .mini-artist {
+  padding-bottom: 30px;
+
   &__image {
     display: table-cell;
 
@@ -8,6 +10,16 @@
       width: 86px;
       height: 86px;
     }
+  }
+
+  & p {
+    @include lato;
+    text-align: left;
+  }
+
+  & p.unavailable {
+    opacity: 0.6;
+    font-style: italic;
   }
 }
 
@@ -26,10 +38,11 @@
   }
 
   &__instrument {
-    @include lato;
+    @include lato-bold;
     font-size: 14px;
     color: #131313;
     margin-bottom: 5px;
+    text-transform: lowercase;
   }
 
   &__sidemen {
@@ -41,14 +54,6 @@
 
   &__button {
     @include lato-bold-italic;
-    color: white;
-    border: none;
-    background-color: #DA0B28;
-    display: block;
-    float: left;
-    font-size: 14px;
-    line-height: 20px;
-    padding: 4px 10px 4px 7px;
-    margin-bottom: 20px;
+    @include red-button;
   }
 }

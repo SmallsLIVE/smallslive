@@ -2,6 +2,10 @@
   background-color: #F7F7F7;
   border-left: 1px #DDDDDD solid;
 
+  &__text-block {
+    padding: 30px 10px;
+  }
+  
   &__title {
     @include lato-black;
     font-size: 18px;
@@ -13,5 +17,10 @@
     @include lato;
     font-size: 14px;
     color: #111;
+    text-align: justify;
+  }
+
+  & img {
+    width: 100%;
   }
 }
