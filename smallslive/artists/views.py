@@ -5,6 +5,8 @@ from django.shortcuts import redirect, render
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.detail import DetailView
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
+from haystack.query import SearchQuerySet
+from haystack.views import SearchView
 from .forms import ArtistAddForm, ArtistInviteForm
 from .models import Artist
 
@@ -66,6 +68,12 @@ class ArtistDetailView(DetailView):
     context_object_name = 'artist'
 
 artist_detail = ArtistDetailView.as_view()
+
+
+artist_search = SearchView(
+    searchqueryset=SearchQuerySet().models(Artist),
+    template='search/artist_search.html'
+)
 
 
 def artist_instrument_ajax(request, pk):

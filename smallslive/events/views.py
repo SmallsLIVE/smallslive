@@ -11,6 +11,8 @@ from django.views.generic import TemplateView
 
 from braces.views import LoginRequiredMixin, SuperuserRequiredMixin, UserPassesTestMixin
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
+from haystack.query import SearchQuerySet
+from haystack.views import SearchView
 
 from artists.models import Artist
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset
@@ -133,6 +135,12 @@ class EventCloneView(LoginRequiredMixin, SuperuserRequiredMixin, BaseDetailView)
         pass
 
 event_clone = EventCloneView.as_view()
+
+
+event_search = SearchView(
+    searchqueryset=SearchQuerySet().models(Event).order_by('-start'),
+    template='search/event_search.html'
+)
 
 
 class VenueDashboardView(ListView):

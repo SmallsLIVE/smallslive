@@ -27,9 +27,19 @@ INSTALLED_APPS += (
 COMPRESS_ENABLED = False
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# Thumbor
 THUMBOR_MEDIA_URL = '/media/'
 THUMBOR_SECURITY_KEY = 'TEST'
 THUMBOR_SERVER = 'http://127.0.0.1:8888'
+
+# Haystack elasticsearch backend
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://192.168.59.103:9200/',
+        'INDEX_NAME': 'haystack',
+    },
+}
 
 ALLOWED_HOSTS = ['*']
 # Static asset configuration
