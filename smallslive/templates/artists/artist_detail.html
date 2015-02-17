@@ -6,19 +6,22 @@
 {% block content %}
   <section class="container">
     <div class="artist-details row">
-      <div class="col-xs-12 col-md-6 visible-lg visible-md">
+      <div class="col-xs-12 col-md-6 visible-lg visible-md hero-image">
+        <div class="gradient-overlay"></div>
         {% if artist.photo %}
             <img src="{% thumbor_url artist.photo.url|urlencode height=400 width=600 smart=True %}"
                  class=" artist-details__image img img-responsive" alt=""/>
         {% endif %}
-      </div>
-      <div class="col-xs-12 col-md-6">
-        <h1 class="artist-details__name">{{ artist.full_name }}</h1>
+      </div><!--
+   --><div class="col-xs-12 col-md-6">
+        <div class="vcenter">
+            <h1 class="artist-details__name">{{ artist.full_name }}</h1>
 
-        <p class="artist-details__instruments">{{ artist.instruments.all|join:" //" }}</p>
-        <p class="artist-details__stats">{{ artist.events.count }} live
-          shows{% comment %} //  2 albums in store{% endcomment %}</p>
-        {% if artist.website %}<a href="{{ artist.website }}" class="artist-details__website">{{ artist.website }}</a>{% endif %}
+            <p class="artist-details__instruments">{{ artist.instruments.all|join:" //" }}</p>
+            <p class="artist-details__stats">{{ artist.events.count }} live
+              shows{% comment %} //  2 albums in store{% endcomment %}</p>
+            {% if artist.website %}<a href="{{ artist.website }}" class="artist-details__website">{{ artist.website }}</a>{% endif %}
+        </div>
       </div>
     </div>
   </section>
@@ -84,14 +87,16 @@
         {% endwith %}
       </section>
       <section class="artist-bio col-md-6">
-        <h1 class="artist-bio__title">Artist biography:</h1>
-        {{ artist.biography|safe }}
-        <div class="share-social">
-          <h2 class="share-social__title">Share this profile on:</h2>
-          <button class="btn social-btn social-btn--facebook"><i class="fa fa-facebook"></i></button>
-          <button class="btn social-btn social-btn--twitter"><i class="fa fa-twitter"></i></button>
-          <button class="btn social-btn social-btn--google"><i class="fa fa-google-plus"></i></button>
-        </div>
+          <div class="artist-bio__text-block">
+            <h1 class="artist-bio__title">Artist biography:</h1>
+            {{ artist.biography|safe }}
+          </div>
+          <div class="share-social">
+              <h2 class="share-social__title">Share this profile on:</h2>
+              <button class="btn social-btn social-btn--facebook"><i class="fa fa-facebook"></i></button>
+              <button class="btn social-btn social-btn--twitter"><i class="fa fa-twitter"></i></button>
+              <button class="btn social-btn social-btn--google"><i class="fa fa-google-plus"></i></button>
+          </div>
       </section>
     </div>
   </div>

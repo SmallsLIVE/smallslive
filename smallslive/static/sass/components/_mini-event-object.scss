@@ -1,4 +1,6 @@
 .mini-event {
+  padding-bottom: 30px;
+
   &__image {
     display: table-cell;
 
@@ -8,6 +10,10 @@
       width: 86px;
       height: 86px;
     }
+  }
+
+  & p {
+    line-height: 22px;
   }
 }
 
@@ -52,7 +58,7 @@
     @include lato;
     font-size: 14px;
     color: #1F1F1F;
-    text-transform: none;
+    text-transform: lowercase;
   }
 
   &__button {

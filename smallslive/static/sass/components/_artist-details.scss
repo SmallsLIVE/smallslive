@@ -4,6 +4,10 @@
   background-color: #1B191A;
   background-size: cover;
 
+  & .hero-image {
+    padding: 0;
+  }
+
   &__name {
     @include lato-black;
     font-size: 56px;
