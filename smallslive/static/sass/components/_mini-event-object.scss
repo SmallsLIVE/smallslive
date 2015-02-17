@@ -1,5 +1,5 @@
 .mini-event {
-  padding-bottom: 30px;
+  padding: 10px 0 20px;
 
   &__image {
     display: table-cell;
@@ -63,14 +63,6 @@
 
   &__button {
     @include lato-bold-italic;
-    color: white;
-    border: none;
-    background-color: #DA0B28;
-    display: block;
-    float: left;
-    font-size: 14px;
-    line-height: 20px;
-    padding: 4px 10px 4px 7px;
-    margin-bottom: 20px;
+    @include red-button;
   }
 }

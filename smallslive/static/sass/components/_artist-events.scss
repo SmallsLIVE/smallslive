@@ -10,6 +10,11 @@
 
   &__notice {
     @include lato-italic;
-    color: rgba(17, 17, 17, 0.5)
+    color: rgba(17, 17, 17, 0.5);
+    margin-top: 10px;
+  }
+
+  & .events {
+    margin-bottom: 30px;
   }
 }

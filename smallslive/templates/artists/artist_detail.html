@@ -11,6 +11,9 @@
         {% if artist.photo %}
             <img src="{% thumbor_url artist.photo.url|urlencode height=400 width=600 smart=True %}"
                  class=" artist-details__image img img-responsive" alt=""/>
+        {% else %}
+            <img src="{% static 'image/no-artist-photo.jpg' %}"
+                 class=" artist-details__image img img-responsive" alt=""/>
         {% endif %}
       </div><!--
    --><div class="col-xs-12 col-md-6">
@@ -100,10 +103,12 @@
       </section>
     </div>
   </div>
-  <section class="cto cto--subscribe-to-artist container">
-    <h1 class="cto__title">Subscribe to this artist</h1>
+  <section class="cto cto--subscribe-to-artist container vertical-align-parent">
+    <div class="vertical-align-child">
+        <h1 class="cto__title">Subscribe to this artist</h1>
 
-    <p class="cto__text">Get emailed about new videos or gigs.</p>
-    <a href="" class="cto__button">Subscribe</a>
+        <p class="cto__text">Get emailed about new videos or gigs.</p>
+        <a href="" class="cto__button">Subscribe</a>
+    </div>
   </section>
 {% endblock content %}

@@ -6,6 +6,10 @@
 
   & .hero-image {
     padding: 0;
+
+    & img {
+      @include filter(grayscale(100%));
+    }
   }
 
   &__name {
