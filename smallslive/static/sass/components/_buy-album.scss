@@ -1,7 +1,6 @@
 .buy-album {
   background-color: white;
-  padding-top: 40px;
-  padding-bottom: 60px;
+  padding: 40px 20px 60px;
 
   &__cto-title {
     @include lato-black;
@@ -25,5 +24,25 @@
     @include lato-bold;
     font-size: 20px;
     color: $main-accent-color;
+  }
+
+  &__button {
+    @include lato-bold-italic;
+    @include red-button;
+  }
+
+  & img {
+    display: block;
+    float: none;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 760px) {
+  .buy-album .buy-button-container {
+    margin: 0 auto;
+    float: none;
+    display: inline-block;
+    margin-left: 30px;
   }
 }

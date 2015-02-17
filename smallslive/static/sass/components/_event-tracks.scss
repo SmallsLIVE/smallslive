@@ -76,14 +76,6 @@
 
   &__button {
     @include lato-bold-italic;
-    color: white;
-    border: 0;
-    background-color: #DA0B28;
-    display: block;
-    margin: 0 auto;
-    float: left;
-    font-size: 14px;
-    line-height: 20px;
-    padding: 4px 10px 4px 7px;
+    @include red-button;
   }
 }
