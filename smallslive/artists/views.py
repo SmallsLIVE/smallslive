@@ -71,7 +71,8 @@ artist_detail = ArtistDetailView.as_view()
 
 
 artist_search = SearchView(
-    searchqueryset=SearchQuerySet().models(Artist)
+    searchqueryset=SearchQuerySet().models(Artist),
+    template='search/artist_search.html'
 )
 
 

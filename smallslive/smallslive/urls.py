@@ -27,6 +27,7 @@ urlpatterns = patterns('',
     url(r'^accounts/', include('allauth.urls', app_name="allauth")),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^search/artist/', 'artists.views.artist_search', name='artist_search'),
+    url(r'^search/event/', 'events.views.event_search', name='event_search'),
     url(r'^store/', include(application.urls)),
     url(r'^$', 'events.views.homepage', name="home"),
 )

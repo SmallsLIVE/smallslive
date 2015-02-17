@@ -1,0 +1,25 @@
+{% extends "search_base.html" %}
+{% load static from staticfiles %}
+
+{% block search_section_title %}Found {{ page.object_list|length }} event{{ page.object_list|length|pluralize }}:{% endblock %}
+
+{% block search_content %}
+  <div class="search-events">
+    {% for result in page.object_list %}
+      <div class="search-event">
+        <p class="search-event__date">{{ result.object.listing_date|date:"n/j/Y" }}</p>
+        <h2 class="search-event__title">{{ result.object.title }}</h2>
+        <p class="search-event__sidemen-section-title">Artists:</p>
+        <p class="search-event__sidemen">Colin Stranahan <span
+                class="search-event__sidemen-instrument">(drums)</span> // Glenn Zaleski (piano) // Lucas Pino
+          (tenor
+          sax) // Desmont White (bass) // Alex Lore (alto sax) // Rafal Sarnecki (guitar) // Nick Finzer
+          (trombone) // Andrew Gutauskas (baritone sax)</p>
+        {% comment %}
+        <p class="search-event__features-section-title">Available features:</p>
+        <p class="search-event__features"><span class="fa fa-volume-down"></span> audio <span
+                class="fa fa-music"></span> tracks <span class="fa fa-video-camera"></span> video</p>{% endcomment %}
+      </div>
+    {% endfor %}
+  </div>
+{% endblock search_content %}
