@@ -1,0 +1,30 @@
+{% extends "search_base.html" %}
+{% load static from staticfiles %}
+
+{% block search_section_title %}Found 3 artists:{% endblock %}
+
+{% block search_content %}
+  <div class="search-artists">
+    {% for result in page.object_list %}
+      <div class="search-artist">
+        <div class="search-artist__image">
+          {% if result.object.photo %}
+            <img src="{% thumbor_url artist.photo.url|urlencode height=140 width=140 smart=True %}" alt="{{ result.object.full_name }} photo"/>
+          {% else %}
+            <img src="http://placehold.it/140x140/232323/" alt=""/>
+          {% endif %}
+
+        </div>
+        <div class="search-artist-info">
+          <h2 class="search-artist-info__title">{{ result.object.full_name }}</h2>
+          <p class="search-artist-info__stats">{{ result.object.instruments.all|join:" // " }} // {{ result.object.events.count }} events <a href="" class="search-artist-info__link">(view)</a>
+          </p>
+
+          <p class="search-artist-info__bio">{{ result.object.biography|striptags|truncatewords:50 }}</p>
+        </div>
+      </div>
+    {% empty %}
+      <p>No artists found.</p>
+    {% endfor %}
+  </div>
+{% endblock search_content %}
