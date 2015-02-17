@@ -5,7 +5,11 @@
 .event-artists {
   background-color: white;
   background-size: cover;
-  padding-top: 33px;
+  padding: 30px 20px 0;
+
+  & .artists {
+    padding: 30px 0;
+  }
 }
 
 .event-heading {
@@ -29,7 +33,6 @@
     @include lato-italic;
     font-size: 22px;
     color: #131313;
-    margin-bottom: 25px;
   }
 }
 
@@ -41,12 +44,4 @@
     top: 0;
     left: 0;
     z-index: 10000;
-}
-
-.jwplayer-mockup {
-  height: 61px;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  background-image: url('../image/jwplayer-mockup.png');
 }
