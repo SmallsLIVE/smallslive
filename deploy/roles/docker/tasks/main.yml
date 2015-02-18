@@ -21,4 +21,4 @@
   pip: name=docker-py state=latest
 
 - name: Start elasticsearch
-  docker: image=barnybug/elasticsearch ports=9200,9300
+  docker: image=barnybug/elasticsearch ports=9200:9200,9300:9300
