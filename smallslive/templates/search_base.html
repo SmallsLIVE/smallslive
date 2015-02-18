@@ -19,7 +19,7 @@
         <h1 class="search-results__section-title">{% block search_section_title %}{% endblock %}</h1>
         {% block search_content %}
         {% endblock search_content %}
-        <p class="search-pagination-info">Showing results 1-3 of 3</p>
+        <p class="search-pagination-info">Showing results {{ page.start_index }}-{{ page.end_index }} of {{ paginator.count }}</p>
         {% if page.has_previous or page.has_next %}
             <div class="search-pagination"><span class="fa fa-caret-left"></span> <span class="badge">1</span> <span
                     class="fa fa-caret-right"></span></div>
