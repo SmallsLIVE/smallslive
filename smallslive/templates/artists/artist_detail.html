@@ -92,7 +92,11 @@
       <section class="artist-bio col-md-6">
           <div class="artist-bio__text-block">
             <h1 class="artist-bio__title">Artist biography:</h1>
-            {{ artist.biography|safe }}
+            {% if artist.biography %}
+              {{ artist.biography|safe }}
+            {% else %}
+              <p>This artist does not have a bio yet.</p>
+            {% endif %}
           </div>
           <div class="share-social">
               <h2 class="share-social__title">Share this profile on:</h2>
