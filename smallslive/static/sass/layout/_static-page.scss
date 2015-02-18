@@ -5,19 +5,18 @@
 .static-nav-menu {
   @include list-unstyled;
   margin-top: 15px;
+  padding: 0 10px;
 }
 
 .static-nav {
   &__item {
     @include lato-black;
     font-size: 18px;
-
-    height: 63px;
     border-bottom: 1px #DDD solid;
     width: 90%;
 
     a {
-      padding: 20px 30px 20px 0;
+      padding: 20px 0;
       display: block;
       color: #898989;
     }
@@ -33,8 +32,7 @@
 }
 
 .static-content{
-  min-height: 600px;
-  padding-top: 39px;
+  padding: 40px 20px;
 
   &__image {
     margin-bottom: 4px;
@@ -70,7 +68,11 @@
 }
 
 .static-sidebar {
-  padding-top: 63px;
+  padding: 40px 20px 40px 0;
+
+  &__image {
+    width: 100%;
+  }
 }
 
 
@@ -88,5 +90,12 @@
     float: left;
     clear: left;
     width: 50px;
+  }
+}
+
+
+@media (max-width: 960px) {
+  .static-nav-menu {
+    margin-top: 0;
   }
 }

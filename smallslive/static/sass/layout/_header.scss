@@ -140,12 +140,17 @@ header {
   margin-bottom: 0;
 
   .navbar-nav li a {
-    color: #ffffff;
+    color: #ffffff !important;
     text-align: center;
     width: 100%;
     font-size: 16px;
-    padding: 15px 0;
+    padding: 15px 0 !important;
   }
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+  background: none;
+  border: none1;
 }
 
 .navbar-default .navbar-collapse, .navbar-default .navbar-form {
