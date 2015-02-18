@@ -47,6 +47,13 @@ body {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(254, 254, 254, 0.6);
 }
 
+a:focus {
+  color: rgba(254, 254, 254, 0.8);
+  text-decoration: none;
+  box-shadow: none;
+  outline: none;
+}
+
 .vcenter {
   display: inline-block;
   vertical-align: middle;
