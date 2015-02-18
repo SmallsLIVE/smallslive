@@ -80,7 +80,7 @@
   margin-top: 100px;
   margin-bottom: 40px;
   margin-right: 10px;
-  @include filter(grayscale(100%));
+  @include filter(grayscale(60%));
   position: relative;
   padding-bottom: 75%; // This is the aspect ratio
   height: 0;
