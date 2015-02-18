@@ -57,21 +57,8 @@
 
   &__event-button {
     @include lato-bold-italic;
-    color: #FEFEFE;
-    border: 0;
-    background-color: $main-accent-color;
-    display: block;
-    float: left;
-    font-size: 16px;
-    line-height: 20px;
-    padding: 4px 10px 4px 7px;
-    text-decoration: none;
+    @include red-button;
     margin-bottom: 30px;
-  }
-  
-  &__event-button:hover {
-    color: rgba(254,254,254,0.8);
-    text-decoration: none;
   }
 }
 
