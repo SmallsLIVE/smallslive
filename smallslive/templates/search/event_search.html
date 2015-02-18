@@ -10,11 +10,10 @@
         <p class="search-event__date">{{ result.object.listing_date|date:"n/j/Y" }}</p>
         <h2 class="search-event__title">{{ result.object.title }}</h2>
         <p class="search-event__sidemen-section-title">Artists:</p>
-        <p class="search-event__sidemen">Colin Stranahan <span
-                class="search-event__sidemen-instrument">(drums)</span> // Glenn Zaleski (piano) // Lucas Pino
-          (tenor
-          sax) // Desmont White (bass) // Alex Lore (alto sax) // Rafal Sarnecki (guitar) // Nick Finzer
-          (trombone) // Andrew Gutauskas (baritone sax)</p>
+        <p class="search-event__sidemen">
+            {% for gig_info in result.object.get_performers %}{{ gig_info.artist }} <span
+                class="search-event__sidemen-instrument">({{ gig_info.role.name }})</span> {% if not forloop.last %} // {% endif %}{% endfor %}
+        </p>
         {% comment %}
         <p class="search-event__features-section-title">Available features:</p>
         <p class="search-event__features"><span class="fa fa-volume-down"></span> audio <span
