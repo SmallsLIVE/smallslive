@@ -36,6 +36,17 @@ body {
   }
 }
 
+// equal height columns on all devices
+  .equal-heights-xs.row {
+    overflow: hidden;
+  }
+
+  .equal-heights-xs [class*="col-"] {
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+  }
+
+
 .bw-wrapper {
   @include filter(grayscale(100%));
 }

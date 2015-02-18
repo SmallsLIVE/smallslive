@@ -1,11 +1,22 @@
 .schedule {
   background-color: white;
-  border-bottom: 1px #CCCCCC solid;;
+  border-bottom: 1px #CCCCCC solid;
+  padding: 0;
+
+  &__event-details-container {
+    width: 100%;
+    border-bottom: $main-accent-color 8px solid;
+  }
+}
+
+.schedule-groupof-4, .schedule-groupof-2 {
+  padding: 0;
+  margin: 0;
 }
 
 .day {
   border: 1px #CCCCCC solid;
-  border-left: 0;
+  background-color: #fff;
 
   &:first-child {
       border-left: 1px #CCCCCC solid;
@@ -41,5 +52,17 @@
     @include lato-bold;
     font-size: 14px;
     color: #000000;
+  }
+
+  &.selected {
+    background-image: url("../image/background-tile-darker.png");
+    
+    & .day__date {
+      color: #000;
+    }
+    
+    & .day__date, .day__event-time, .day__event-title {
+      opacity: 0.5;
+    }
   }
 }

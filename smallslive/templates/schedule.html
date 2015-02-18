@@ -2,12 +2,227 @@
 {% load static from staticfiles %}
 
 {% block content %}
-<section class="cto cto--schedule container">
-  <h1 class="cto__title">SmallsLIVE schedule</h1>
-  <a href="" class="schedule-cto__button cto__button">January // 2015</a>
+<section class="cto cto--schedule container vertical-align-parent">
+    <div class="vertical-align-child">
+        <h1 class="cto__title">SmallsLIVE schedule</h1>
+        <a href="" class="schedule-cto__button cto__button">January // 2015</a>
+    </div>
 </section>
+<!--
 <section class="schedule container">
-<div class="equal-heights  row">
+    <div class="schedule-group-4 row">
+        <div class="schedule-group-2 col-xs-12 col-md-6">
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet</dd>
+                </dl>
+            </div>
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="schedule-group-2 col-xs-12 col-md-6">
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet QUINTET QUINTET
+                      QUINTET QUINTETETETET ETE TET ETE T ET ET E TET SADSADASD ASDSAD ASD SADAS DSA DS ADAS DAS DAS DAS DAS DAS DAS DS AD SAD AS DASD</dd>
+                </dl>
+            </div>
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="schedule-group-4 row">
+        <div class="schedule-group-2 col-xs-12 col-md-6">
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet</dd>
+                </dl>
+            </div>
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="schedule-group-2 col-xs-12 col-md-6">
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet QUINTET QUINTET
+                      QUINTET QUINTETETETET ETE TET ETE T ET ET E TET SADSADASD ASDSAD ASD SADAS DSA DS ADAS DAS DAS DAS DAS DAS DAS DS AD SAD AS DASD</dd>
+                </dl>
+            </div>
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</section>
+-->
+
+<section class="schedule container">
+    <div class="equal-heights-xs schedule-groupof-4 row">
+        <div class="equal-heights-xs col-xs-12 col-md-6 schedule-groupof-2">
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet IAONOAGO AOIND IOADN IOA DOIAN DONADONAID OINO ODIASNDOIAN DOINA DO</dd>
+                </dl>
+            </div>
+            <div class="day selected col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="equal-heights-xs col-xs-12 col-md-6 schedule-groupof-2">
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet</dd>
+                </dl>
+            </div>
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet OIDNAOD OINDOA DONIA DOIANDOIAD AONDAOIDIOA DOANDO IADOAINDOIA DOADNOAIDNOA IDOIAND OADNOAI DNPIUGBP FIAINBP OGAI IAOJBD </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <!-- test event expand -->
+    {% include "blocks/schedule-event-details-carousel.html" %}
+    <!-- end test -->
+    <div class="equal-heights-xs schedule-groupof-4 row">
+        <div class="equal-heights-xs col-xs-12 col-md-6 schedule-groupof-2">
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet</dd>
+                </dl>
+            </div>
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet</dd>
+                </dl>
+            </div>
+        </div>
+        <div class="equal-heights-xs col-xs-12 col-md-6 schedule-groupof-2">
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet ISUSE JEL MOGUĆE DA OVO RADI AAAA PA JEL MOGUĆE?!</dd>
+                </dl>
+            </div>
+            <div class="day col-xs-6">
+                <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
+                <dl>
+                    <dt class="day__event-time">6:00 PM to 9:00 PM</dt>
+                    <dd class="day__event-title">Saturday afternoon Open Jam Session With: Tuomo Uusitalo Trio</dd>
+                    <dt class="day__event-time">9:30 PM to 12:00 AM</dt>
+                    <dd class="day__event-title">The Larry Ham/Woody Witt Quartet </dd>
+                    <dt class="day__event-time">12:00 AM</dt>
+                    <dd class="day__event-title">The John Marshall Quintet</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</section>
+<!--
+<section class="schedule container">
+<div class="equal-heights-xs row">
   {% for day in "123456789012" %}
     <div class="day col-xs-6 col-md-3">
       <h2 class="day__date">Saturday // 0{{ forloop.counter }}/03/2015</h2>
@@ -58,8 +273,9 @@
         </div>
       </div>
       {% endif %}
-      <div class="equal-heights row">{% if forloop.last %}</div>{% endif %}
+      <div class="equal-heights-xs row">{% if forloop.last %}</div>{% endif %}
     {% endif %}
   {% endfor %}
 </section>
+-->
 {% endblock content %}
