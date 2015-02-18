@@ -5,27 +5,27 @@
 
 {% block content %}
   <section class="container">
-    <div class="artist-details row">
-      <div class="col-xs-12 col-md-6 visible-lg visible-md hero-image">
-        <div class="gradient-overlay"></div>
-        {% if artist.photo %}
-            <img src="{% thumbor_url artist.photo.url|urlencode height=400 width=600 smart=True %}"
-                 class=" artist-details__image img img-responsive" alt=""/>
-        {% else %}
-            <img src="{% static 'image/no-artist-photo.jpg' %}"
-                 class=" artist-details__image img img-responsive" alt=""/>
-        {% endif %}
-      </div><!--
-   --><div class="col-xs-12 col-md-6">
-        <div class="vcenter">
-            <h1 class="artist-details__name">{{ artist.full_name }}</h1>
+    <div class="row">
+        <div class="artist-details">
+          <div class="col-xs-12 col-md-6 hero-image vcenter">
+            <div class="gradient-overlay"></div>
+            {% if artist.photo %}
+                <img src="{% thumbor_url artist.photo.url|urlencode height=400 width=600 smart=True %}"
+                     class=" artist-details__image img img-responsive" alt=""/>
+            {% else %}
+                <img src="{% static 'image/no-artist-photo.jpg' %}"
+                     class=" artist-details__image img img-responsive" alt=""/>
+            {% endif %}
+          </div><!--
+       --><div class="col-xs-12 col-md-6 artist-details__info vcenter">
+                <h1 class="artist-details__name">{{ artist.full_name }}</h1>
 
-            <p class="artist-details__instruments">{{ artist.instruments.all|join:" //" }}</p>
-            <p class="artist-details__stats">{{ artist.events.count }} live
-              shows{% comment %} //  2 albums in store{% endcomment %}</p>
-            {% if artist.website %}<a href="{{ artist.website }}" class="artist-details__website">{{ artist.website }}</a>{% endif %}
+                <p class="artist-details__instruments">{{ artist.instruments.all|join:" //" }}</p>
+                <p class="artist-details__stats">{{ artist.events.count }} live
+                  shows{% comment %} //  2 albums in store{% endcomment %}</p>
+                {% if artist.website %}<a href="{{ artist.website }}" class="artist-details__website">{{ artist.website }}</a>{% endif %}
+          </div>
         </div>
-      </div>
     </div>
   </section>
   <div class="artist container">

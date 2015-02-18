@@ -13,8 +13,7 @@
   }
 
   & p {
-    @include lato;
-    text-align: left;
+
   }
 
   & p.unavailable {
@@ -43,6 +42,11 @@
     color: #131313;
     margin-bottom: 5px;
     text-transform: lowercase;
+  }
+
+  &__bio {
+    @include lato;
+    text-align: left;
   }
 
   &__sidemen {

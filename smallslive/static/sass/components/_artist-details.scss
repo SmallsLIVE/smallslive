@@ -3,13 +3,20 @@
   min-height: 340px;
   background-color: #1B191A;
   background-size: cover;
+  float: left;
+  width: 100%;
 
   & .hero-image {
     padding: 0;
 
     & img {
       @include filter(grayscale(100%));
+      width: 100%;
     }
+  }
+
+  &__info {
+    padding: 20px;
   }
 
   &__name {
@@ -17,7 +24,6 @@
     font-size: 56px;
     text-transform: uppercase;
     color: $main-accent-color;
-    margin-top: 54px;
     margin-bottom: 6px;
     min-width: 50%;
     max-width: 68%;

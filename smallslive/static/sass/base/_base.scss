@@ -90,6 +90,10 @@ a:focus {
   float: none;
 }
 
+.float-left {
+  float: left;
+}
+
 .content-wrapper {
   border: 10px solid rgba(31,31,31,0.07);
   border-top: none;
@@ -97,7 +101,7 @@ a:focus {
   margin-left: auto;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 740px) {
   .content-wrapper {
     width: 100%;
     border: none;
