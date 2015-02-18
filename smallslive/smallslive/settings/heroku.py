@@ -19,6 +19,16 @@ PIPELINE_ENABLED = False
 PIPELINE_SASS_BINARY = 'sassc'
 PIPELINE_SASS_ARGUMENTS = ''
 
+# Haystack elasticsearch backend
+ELASTICSEARCH_IP = get_env_variable('ELASTICSEARCH_IP')
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://{0}:9200/'.format(ELASTICSEARCH_IP),
+        'INDEX_NAME': 'haystack',
+    },
+}
+
 # disable oscar django compressor
 COMPRESS_ENABLED = False
 
