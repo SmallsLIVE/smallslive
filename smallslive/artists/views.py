@@ -85,14 +85,23 @@ class ArtistSearchView(SearchView):
     def get_results(self):
         return super(ArtistSearchView, self).get_results().models(Artist)
 
-
 artist_search = ArtistSearchView()
 
 
-instrument_search = SearchView(
-    searchqueryset=SearchQuerySet().models(Instrument),
-    template='search/instrument_search.html'
-)
+class InstrumentSearchView(SearchView):
+    template = 'search/instrument_search.html'
+
+    def extra_context(self):
+        return {
+            'artist_count': super(InstrumentSearchView, self).get_results().models(Artist).count(),
+            'event_count': super(InstrumentSearchView, self).get_results().models(Event).count(),
+            'instrument_count': super(InstrumentSearchView, self).get_results().models(Instrument).count(),
+        }
+
+    def get_results(self):
+        return super(InstrumentSearchView, self).get_results().models(Instrument)
+
+instrument_search = InstrumentSearchView()
 
 
 def artist_instrument_ajax(request, pk):

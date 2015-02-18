@@ -14,7 +14,7 @@ from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInl
 from haystack.query import SearchQuerySet
 from haystack.views import SearchView
 
-from artists.models import Artist
+from artists.models import Artist, Instrument
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset
 from .models import Event
 from multimedia.models import Media
@@ -137,10 +137,20 @@ class EventCloneView(LoginRequiredMixin, SuperuserRequiredMixin, BaseDetailView)
 event_clone = EventCloneView.as_view()
 
 
-event_search = SearchView(
-    searchqueryset=SearchQuerySet().models(Event).order_by('-start'),
-    template='search/event_search.html'
-)
+class EventSearchView(SearchView):
+    template = 'search/event_search.html'
+
+    def extra_context(self):
+        return {
+            'artist_count': super(EventSearchView, self).get_results().models(Artist).count(),
+            'event_count': super(EventSearchView, self).get_results().models(Event).count(),
+            'instrument_count': super(EventSearchView, self).get_results().models(Instrument).count(),
+        }
+
+    def get_results(self):
+        return super(EventSearchView, self).get_results().models(Event).order_by('-start')
+
+event_search = EventSearchView()
 
 
 class VenueDashboardView(ListView):
