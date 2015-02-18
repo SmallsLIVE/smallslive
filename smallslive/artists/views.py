@@ -8,7 +8,8 @@ from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from haystack.query import SearchQuerySet
 from haystack.views import SearchView
 from .forms import ArtistAddForm, ArtistInviteForm
-from .models import Artist
+from .models import Artist, Instrument
+
 
 @user_passes_test(lambda u: u.is_superuser)
 def artist_add(request):
@@ -73,6 +74,12 @@ artist_detail = ArtistDetailView.as_view()
 artist_search = SearchView(
     searchqueryset=SearchQuerySet().models(Artist),
     template='search/artist_search.html'
+)
+
+
+instrument_search = SearchView(
+    searchqueryset=SearchQuerySet().models(Instrument),
+    template='search/instrument_search.html'
 )
 
 
