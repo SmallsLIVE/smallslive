@@ -7,11 +7,11 @@
   <section class="static-content col-md-9">
     <h1 class="static-content__main-title">Photo Gallery</h1>
     <div class="row photo-gallery">
-      {% for img in "123456789" %}
+      {% for img in "12345678901" %}
         {% if forloop.counter0|divisibleby:"6"  %}
-            <div class="col-md-8"><img src="{% static 'image/photo-gallery/wide.png' %}" class="img-responsive photo-gallery__image" alt=""/></div>
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12"><a href="" class="photo-gallery__image"><img src="{% static 'image/photo-gallery/2x.jpg' %}" class="img-responsive photo-gallery__image" alt=""/></a></div>
         {% else %}
-            <div class="col-md-4"><img src="{% static 'image/photo-gallery/normal.png' %}" class="img-responsive  photo-gallery__image" alt=""/></div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"><a href="" class="photo-gallery__image"><img src="{% static 'image/photo-gallery/normal.jpg' %}" class="img-responsive  photo-gallery__image" alt=""/></a></div>
         {% endif %} 
       {% endfor %}
     </div>

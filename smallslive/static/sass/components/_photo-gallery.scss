@@ -1,5 +1,15 @@
 .photo-gallery {
+
   &__image {
-    margin-bottom: 20px;
+    margin-bottom: 21px;
+    @include filter(grayscale(100%));
+
+    &:hover {
+      @include filter(none);
+    }
+  }
+
+  & img {
+    width: 100%;
   }
 }
