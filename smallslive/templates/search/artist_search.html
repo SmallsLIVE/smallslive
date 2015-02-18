@@ -10,7 +10,7 @@
       <div class="search-artist">
         <div class="search-artist__image">
           {% if result.object.photo %}
-            <img src="{% thumbor_url artist.photo.url|urlencode height=140 width=140 smart=True %}" alt="{{ result.object.full_name }} photo"/>
+            <img src="{% thumbor_url result.object.photo.url|urlencode height=140 width=140 smart=True %}" alt="{{ result.object.full_name }} photo"/>
           {% else %}
             <img src="http://placehold.it/140x140/232323/" alt=""/>
           {% endif %}

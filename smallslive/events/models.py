@@ -44,23 +44,23 @@ class Event(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('event_detail', kwargs={'pk': self.id, 'slug': slugify(self.title)})
 
-    def performers_string(self):
+    def performers_string(self, separator=", "):
         "Returns the comma-separated list of performers (including the leader) as a string"
-        return self.leader_string() + ", " + self.sidemen_string()
+        return self.leader_string() + separator + self.sidemen_string()
 
-    def performers_with_instruments_string(self):
+    def performers_with_instruments_string(self, separator=", "):
         "Returns the comma-separated list of performers with instruments (including the leader) as a string"
-        return self.leader_with_instrument_string() + " // " + self.sidemen_with_instruments_string()
+        return self.leader_with_instrument_string() + separator + self.sidemen_with_instruments_string()
 
-    def sidemen_string(self):
+    def sidemen_string(self, separator=", "):
         "Returns the comma-separated list of sidemen (without the leader) as a string"
         performers = self.artists_gig_info.filter(is_leader=False).order_by('sort_order').select_related(
             'artist').values_list('artist__first_name', 'artist__last_name')
         # Make full names
-        performers = ["{0} {1}".format(first, last) for first, last in performers]
-        return ", ".join(performers)
+        performers = [u"{0} {1}".format(first, last) for first, last in performers]
+        return separator.join(performers)
 
-    def sidemen_with_instruments_string(self):
+    def sidemen_with_instruments_string(self, separator=", "):
         """
         Returns the comma-separated list of sidemen with instrument abbreviations
         (without the leader) as a string
@@ -68,23 +68,23 @@ class Event(TimeStampedModel):
         performers = self.artists_gig_info.filter(is_leader=False).order_by('sort_order').select_related(
             'artist', 'role').values_list('artist__first_name', 'artist__last_name', 'role__name')
         # Make full names
-        performers = ["{0} {1} ({2})".format(first, last, instrument) for first, last, instrument in performers]
-        return ", ".join(performers)
+        performers = [u"{0} {1} ({2})".format(first, last, instrument) for first, last, instrument in performers]
+        return separator.join(performers)
 
     def leader_string(self):
         leader = self.artists_gig_info.filter(is_leader=True).first()
         if leader:
             text = leader.artist.full_name()
         else:
-            text = ""
+            text = u""
         return text
 
     def leader_with_instrument_string(self):
         leader = self.artists_gig_info.select_related('artist', 'role').filter(is_leader=True).first()
         if leader:
-            text = "{0} ({1})".format(leader.artist.full_name(), leader.role.name)
+            text = u"{0} ({1})".format(leader.artist.full_name(), leader.role.name)
         else:
-            text = ""
+            text = u""
         return text
 
     def display_title(self):
