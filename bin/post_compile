@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# Run Django migrations.
+python smallslive/manage.py migrate
