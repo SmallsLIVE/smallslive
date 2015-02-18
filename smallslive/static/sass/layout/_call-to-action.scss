@@ -41,26 +41,32 @@
 
   &--archive {
     background-image: url('../image/archive-cto.jpg');
+    background-position: center center;
   }
 
   &--visit {
     background-image: url('../image/visit-us-bg.jpg');
+    background-position: center center;
   }
 
   &--subscribe-to-artist {
     background-image: url('../image/subscribe-artist-cto.png');
+    background-position: center center;
   }
 
   &--listen-to-show {
     background-image: url('../image/listen-to-show-cto.png');
+    background-position: center center;
   }
 
   &--video-not-available {
     background-image: url('../image/video-not-available-cto.png');
+    background-position: center center;
   }
 
   &--schedule {
     background-image: url('../image/video-not-available-cto.png');
+    background-position: center center;
 
     & .cto__button {
       margin-top: 40px;
@@ -69,10 +75,12 @@
 
   &--archive-header {
     background-image: url('../image/archive-header-cto.png');
+    background-position: center center;
   }
 
   &--search {
     background-image: url('../image/search-cto.png');
+    background-position: center center;
 
     & .cto__title {
       margin-top: 98px;
