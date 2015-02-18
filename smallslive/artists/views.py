@@ -7,6 +7,7 @@ from django.views.generic.detail import DetailView
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from haystack.query import SearchQuerySet
 from haystack.views import SearchView
+from events.models import Event
 from .forms import ArtistAddForm, ArtistInviteForm
 from .models import Artist, Instrument
 
@@ -71,10 +72,21 @@ class ArtistDetailView(DetailView):
 artist_detail = ArtistDetailView.as_view()
 
 
-artist_search = SearchView(
-    searchqueryset=SearchQuerySet().models(Artist),
-    template='search/artist_search.html'
-)
+class ArtistSearchView(SearchView):
+    template = 'search/artist_search.html'
+
+    def extra_context(self):
+        return {
+            'artist_count': super(ArtistSearchView, self).get_results().models(Artist).count(),
+            'event_count': super(ArtistSearchView, self).get_results().models(Event).count(),
+            'instrument_count': super(ArtistSearchView, self).get_results().models(Instrument).count(),
+        }
+
+    def get_results(self):
+        return super(ArtistSearchView, self).get_results().models(Artist)
+
+
+artist_search = ArtistSearchView()
 
 
 instrument_search = SearchView(
