@@ -77,11 +77,30 @@
 
 
 .map-wrapper {
-  margin-top: 89px;
+  margin-top: 100px;
+  margin-bottom: 40px;
+  margin-right: 10px;
   @include filter(grayscale(100%));
+  position: relative;
+  padding-bottom: 75%; // This is the aspect ratio
+  height: 0;
+  overflow: hidden;
 
   &__map {
-    max-width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+@media (max-width: 740px) {
+  .map-wrapper {
+    margin-top: 0;
+    margin-bottom: 20px;
+    margin-left: -10px;
+    margin-right: -10px;
   }
 }
 
