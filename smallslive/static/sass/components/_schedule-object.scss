@@ -32,8 +32,9 @@
     color: #fff;
     
     &:hover {
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255, 255, 255, 0.8);
       cursor: pointer;
+      background-image: url("../image/background-tile-red.png");
     }
 
     & .flex-center {
