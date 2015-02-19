@@ -2,25 +2,27 @@
 {% load static from staticfiles %}
 
 {% block content %}
-  <div class="header-img container">
-  </div>
-  <div class="static-page container">
-    <div class="equal-heights  row">
-      <div class="left-content-section col-md-3 hidden-xs hidden-sm">
-        <ul class="static-nav-menu">
-          <li class="static-nav__item {% block about-us-active %}{% endblock %}"><a
-                  href="{% url "about-us" %}">About us</a></li>
-          <li class="static-nav__item {% block mission-statement-active %}{% endblock %}"><a
-                  href="{% url "mission-statement" %}">Mission Statement</a></li>
-          <li class="static-nav__item {% block contact-us-active %}{% endblock %}"><a
-                  href="{% url "contact-and-info" %}">Contact & Info</a></li>
-          <li class="static-nav__item {% block photo-gallery-active %}{% endblock %}"><a
-                  href="{% url "static_page" "photo-gallery" %}">Photo Gallery</a></li>
-          <li class="static-nav__item"><a href="">Newsletters</a></li>
-          <li class="static-nav__item"><a href="">Press</a></li>
-        </ul>
+    <div class="content-wrapper">
+      <div class="header-img container">
       </div>
-      {% block static-content %}{% endblock static-content %}
+      <div class="static-page container">
+        <div class="equal-heights  row">
+          <div class="left-content-section col-md-3 hidden-xs hidden-sm">
+            <ul class="static-nav-menu">
+              <li class="static-nav__item {% block about-us-active %}{% endblock %}"><a
+                      href="{% url "about-us" %}">About us</a></li>
+              <li class="static-nav__item {% block mission-statement-active %}{% endblock %}"><a
+                      href="{% url "mission-statement" %}">Mission Statement</a></li>
+              <li class="static-nav__item {% block contact-us-active %}{% endblock %}"><a
+                      href="{% url "contact-and-info" %}">Contact & Info</a></li>
+              <li class="static-nav__item {% block photo-gallery-active %}{% endblock %}"><a
+                      href="{% url "static_page" "photo-gallery" %}">Photo Gallery</a></li>
+              <li class="static-nav__item"><a href="">Newsletters</a></li>
+              <li class="static-nav__item"><a href="">Press</a></li>
+            </ul>
+          </div>
+          {% block static-content %}{% endblock static-content %}
+        </div>
+      </div>
     </div>
-  </div>
 {% endblock content %}

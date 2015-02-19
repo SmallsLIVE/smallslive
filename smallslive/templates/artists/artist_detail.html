@@ -4,115 +4,117 @@
 
 
 {% block content %}
-  <section class="container">
-    <div class="row">
-        <div class="artist-details">
-          <div class="col-xs-12 col-md-6 hero-image vcenter">
-            <div class="gradient-overlay"></div>
-            {% if artist.photo %}
-                <img src="{% thumbor_url artist.photo.url|urlencode height=400 width=600 smart=True %}"
-                     class=" artist-details__image img img-responsive" alt=""/>
-            {% else %}
-                <img src="{% static 'image/no-artist-photo.jpg' %}"
-                     class=" artist-details__image img img-responsive" alt=""/>
-            {% endif %}
-          </div><!--
-       --><div class="col-xs-12 col-md-6 artist-details__info vcenter">
-                <h1 class="artist-details__name">{{ artist.full_name }}</h1>
+ <div class="content-wrapper">
+      <section class="container">
+        <div class="row">
+            <div class="artist-details">
+              <div class="col-xs-12 col-md-6 hero-image vcenter">
+                <div class="gradient-overlay"></div>
+                {% if artist.photo %}
+                    <img src="{% thumbor_url artist.photo.url|urlencode height=400 width=600 smart=True %}"
+                         class=" artist-details__image img img-responsive" alt=""/>
+                {% else %}
+                    <img src="{% static 'image/no-artist-photo.jpg' %}"
+                         class=" artist-details__image img img-responsive" alt=""/>
+                {% endif %}
+              </div><!--
+           --><div class="col-xs-12 col-md-6 artist-details__info vcenter">
+                    <h1 class="artist-details__name">{{ artist.full_name }}</h1>
 
-                <p class="artist-details__instruments">{{ artist.instruments.all|join:" //" }}</p>
-                <p class="artist-details__stats">{{ artist.events.count }} live
-                  shows{% comment %} //  2 albums in store{% endcomment %}</p>
-                {% if artist.website %}<a href="{{ artist.website }}" class="artist-details__website">{{ artist.website }}</a>{% endif %}
-          </div>
+                    <p class="artist-details__instruments">{{ artist.instruments.all|join:" //" }}</p>
+                    <p class="artist-details__stats">{{ artist.events.count }} live
+                      shows{% comment %} //  2 albums in store{% endcomment %}</p>
+                    {% if artist.website %}<a href="{{ artist.website }}" class="artist-details__website">{{ artist.website }}</a>{% endif %}
+              </div>
+            </div>
         </div>
-    </div>
-  </section>
-  <div class="artist container">
-    <div class="equal-heights row">
-      <section class="artist-events col-md-6">
-        {% with artist.upcoming_events|slice:":4" as upcoming_events %}
-          <h2 class="artist-events__title">Upcoming shows {% if upcoming_events %} ({{ upcoming_events|length }}
-            ):{% endif %}</h2>
-          <div class="events">
-            {% for upcoming_event in upcoming_events %}
-              <div class="mini-event">
-                <div class="mini-event__image">
-                  {% if upcoming_event.photo %}
-                    <img src="{% thumbor_url upcoming_event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
-                  {% else %}
-                    <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
-                  {% endif %}
-                </div>
-                <div class="mini-event-info">
-                  <p class="mini-event-info__date">{{ upcoming_event.listing_date|date:"n/j/Y" }}</p>
-                  <h2 class="mini-event-info__title">{{ upcoming_event.title }} {{ upcoming_event.subtitle }}</h2>
-                  <p class="mini-event-info__sidemen">{{ upcoming_event.performers_with_instruments_string }}</p>
-                  <a class="mini-event-info__button" href="{{ upcoming_event.get_absolute_url }}">Go to event</a><span
-                        class="arrow"></span>
-                </div>
-              </div>
-            {% empty %}
-              <p class="artist-events__notice">There are no upcoming shows for this artist.</p>
-            {% endfor %}
-          </div>
-        {% endwith %}
-        {% with artist.past_events|slice:":4" as past_events %}
-          <h2 class="artist-events__title">Previous shows {% if past_events %} ({{ past_events|length }}
-            ):{% endif %}</h2>
-          <div class="events">
-            {% for past_event in past_events %}
-              <div class="mini-event">
-                <div class="mini-event__image">
-                  {% if past_event.photo %}
-                    <img src="{% thumbor_url past_event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
-                  {% else %}
-                    <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
-                  {% endif %}
-
-                </div>
-                <div class="mini-event-info">
-                  <p class="mini-event-info__date">{{ past_event.listing_date|date:"n/j/Y" }}</p>
-                  <h2 class="mini-event-info__title">{{ past_event.title }} {{ past_event.subtitle }}</h2>
-                  <p class="mini-event-info__sidemen">
-                    {% for gig_info in past_event.get_performers %}
-                      <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span class="mini-event-info__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}  // {% endif %}
-                    {% endfor %}
-                  </p>
-                  <a class="mini-event-info__button" href="{{ past_event.get_absolute_url }}">Go to event</a><span
-                        class="arrow"></span>
-                </div>
-              </div>
-            {% empty %}
-              <p class="artist-events__notice">There are no past shows for this artist.</p>
-            {% endfor %}
-          </div>
-        {% endwith %}
       </section>
-      <section class="artist-bio col-md-6">
-          <div class="artist-bio__text-block">
-            <h1 class="artist-bio__title">Artist biography:</h1>
-            {% if artist.biography %}
-              {{ artist.biography|safe }}
-            {% else %}
-              <p class="unavailable">This artist does not have a bio yet.</p>
-            {% endif %}
-          </div>
-          <div class="share-social">
-              <h2 class="share-social__title">Share this profile on:</h2>
-              <button class="btn social-btn social-btn--facebook"><i class="fa fa-facebook"></i></button>
-              <button class="btn social-btn social-btn--twitter"><i class="fa fa-twitter"></i></button>
-              <button class="btn social-btn social-btn--google"><i class="fa fa-google-plus"></i></button>
-          </div>
-      </section>
-    </div>
-  </div>
-  <section class="cto cto--subscribe-to-artist container vertical-align-parent">
-    <div class="vertical-align-child">
-        <h1 class="cto__title">Subscribe to this artist</h1>
+      <div class="artist container">
+        <div class="equal-heights row">
+          <section class="artist-events col-md-6">
+            {% with artist.upcoming_events|slice:":4" as upcoming_events %}
+              <h2 class="artist-events__title">Upcoming shows {% if upcoming_events %} ({{ upcoming_events|length }}
+                ):{% endif %}</h2>
+              <div class="events">
+                {% for upcoming_event in upcoming_events %}
+                  <div class="mini-event">
+                    <div class="mini-event__image">
+                      {% if upcoming_event.photo %}
+                        <img src="{% thumbor_url upcoming_event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      {% else %}
+                        <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
+                      {% endif %}
+                    </div>
+                    <div class="mini-event-info">
+                      <p class="mini-event-info__date">{{ upcoming_event.listing_date|date:"n/j/Y" }}</p>
+                      <h2 class="mini-event-info__title">{{ upcoming_event.title }} {{ upcoming_event.subtitle }}</h2>
+                      <p class="mini-event-info__sidemen">{{ upcoming_event.performers_with_instruments_string }}</p>
+                      <a class="mini-event-info__button" href="{{ upcoming_event.get_absolute_url }}">Go to event</a><span
+                            class="arrow"></span>
+                    </div>
+                  </div>
+                {% empty %}
+                  <p class="artist-events__notice">There are no upcoming shows for this artist.</p>
+                {% endfor %}
+              </div>
+            {% endwith %}
+            {% with artist.past_events|slice:":4" as past_events %}
+              <h2 class="artist-events__title">Previous shows {% if past_events %} ({{ past_events|length }}
+                ):{% endif %}</h2>
+              <div class="events">
+                {% for past_event in past_events %}
+                  <div class="mini-event">
+                    <div class="mini-event__image">
+                      {% if past_event.photo %}
+                        <img src="{% thumbor_url past_event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      {% else %}
+                        <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
+                      {% endif %}
 
-        <p class="cto__text">Get emailed about new videos or gigs.</p>
-        <a href="" class="cto__button">Subscribe</a>
-    </div>
-  </section>
+                    </div>
+                    <div class="mini-event-info">
+                      <p class="mini-event-info__date">{{ past_event.listing_date|date:"n/j/Y" }}</p>
+                      <h2 class="mini-event-info__title">{{ past_event.title }} {{ past_event.subtitle }}</h2>
+                      <p class="mini-event-info__sidemen">
+                        {% for gig_info in past_event.get_performers %}
+                          <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span class="mini-event-info__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}  // {% endif %}
+                        {% endfor %}
+                      </p>
+                      <a class="mini-event-info__button" href="{{ past_event.get_absolute_url }}">Go to event</a><span
+                            class="arrow"></span>
+                    </div>
+                  </div>
+                {% empty %}
+                  <p class="artist-events__notice">There are no past shows for this artist.</p>
+                {% endfor %}
+              </div>
+            {% endwith %}
+          </section>
+          <section class="artist-bio col-md-6">
+              <div class="artist-bio__text-block">
+                <h1 class="artist-bio__title">Artist biography:</h1>
+                {% if artist.biography %}
+                  {{ artist.biography|safe }}
+                {% else %}
+                  <p class="unavailable">This artist does not have a bio yet.</p>
+                {% endif %}
+              </div>
+              <div class="share-social">
+                  <h2 class="share-social__title">Share this profile on:</h2>
+                  <button class="btn social-btn social-btn--facebook"><i class="fa fa-facebook"></i></button>
+                  <button class="btn social-btn social-btn--twitter"><i class="fa fa-twitter"></i></button>
+                  <button class="btn social-btn social-btn--google"><i class="fa fa-google-plus"></i></button>
+              </div>
+          </section>
+        </div>
+      </div>
+      <section class="cto cto--subscribe-to-artist container vertical-align-parent">
+        <div class="vertical-align-child">
+            <h1 class="cto__title">Subscribe to this artist</h1>
+
+            <p class="cto__text">Get emailed about new videos or gigs.</p>
+            <a href="" class="cto__button">Subscribe</a>
+        </div>
+      </section>
+</div>
 {% endblock content %}
