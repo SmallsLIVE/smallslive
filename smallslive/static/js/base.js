@@ -5,3 +5,13 @@ $(window).load(function(){
   $(this).addClass(imgClass);
  })
 })
+
+/* Adds swipeable ability to event carousel */
+$(document).ready(function() {
+   $("#upcoming-carousel").swiperight(function() {
+      $(this).carousel('prev');
+    });
+   $("#upcoming-carousel").swipeleft(function() {
+      $(this).carousel('next');
+   });
+});
