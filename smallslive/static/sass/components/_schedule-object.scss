@@ -1,11 +1,66 @@
 .schedule {
   background-color: white;
-  border-bottom: 1px #CCCCCC solid;
+  border: 1px #CCCCCC solid;
+  border-top: none;
+  border-left: none;
   padding: 0;
+
+  &.container:before {
+    display: none;
+  }
+
+  &.flex {
+    @include display(flex);
+    @include flex-direction(row);
+    @include flex-wrap(wrap);
+  }
 
   &__event-details-container {
     width: 100%;
     border-bottom: $main-accent-color 8px solid;
+  }
+
+  &__nav {
+    padding: 20px;
+    @include display(flex);
+    -webkit-box-align: center;
+    -webkit-flex-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    background-color: $main-accent-color;
+    color: #fff;
+    
+    &:hover {
+      color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+    }
+
+    & .flex-center {
+      margin: 0 auto;
+    }
+
+    & .icon {
+      font-size: 64px;
+      line-height: 72px;
+      float: left;
+    }
+
+    & .text {
+      @include lato;
+      font-size: 24px;
+      text-transform: uppercase;
+      float: left;
+      line-height: 28px;
+      margin: 0 20px;
+
+      & span {
+        font-size: 18px;
+        display: block;
+        width: 100%;
+        line-height: 20px;
+      }
+    }
   }
 }
 
@@ -15,8 +70,13 @@
 }
 
 .day {
-  border: 1px #CCCCCC solid;
+  border-bottom: 1px #CCCCCC solid;
+  border-left: 1px #CCCCCC solid;
   background-color: #fff;
+
+  &.flex {
+
+  }
 
   &:first-child {
       border-left: 1px #CCCCCC solid;
@@ -24,7 +84,6 @@
 
   &:hover {
     background-image: url("../image/background-tile.png");
-
     cursor: pointer;
   }
 
@@ -56,6 +115,7 @@
 
   &.selected {
     background-image: url("../image/background-tile-darker.png");
+    border-bottom: none;
     
     & .day__date {
       color: #000;
@@ -63,6 +123,40 @@
     
     & .day__date, .day__event-time, .day__event-title {
       opacity: 0.5;
+    }
+  }
+}
+
+.selected:after {
+    bottom: 0;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(210, 21, 253, 0);
+    border-bottom-color: $main-accent-color;
+    border-width: 20px;
+    margin-left: -20px;
+    z-index: 10001;
+  }
+
+.schedule .event-select:after {
+  border-top-color: $main-accent-color;
+  border-bottom-color: rgba(210, 21, 253, 0);
+  bottom: -40px;
+}
+
+@media (max-width: 767px) {
+  .schedule {
+
+    &__nav {
+
+      & .text {
+        margin: 10px 0;
+      }
     }
   }
 }
