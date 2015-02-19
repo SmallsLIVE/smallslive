@@ -74,6 +74,7 @@
   border-bottom: 1px #CCCCCC solid;
   border-left: 1px #CCCCCC solid;
   background-color: #fff;
+  padding: 30px 20px;
 
   &.flex {
 
@@ -96,7 +97,7 @@
     @include lato;
     font-size: 16px;
     color: $main-accent-color;
-    margin-top: 20px;
+    margin-top: 0;
     margin-bottom: 15px;
   }
 
@@ -125,6 +126,10 @@
     & .day__date, .day__event-time, .day__event-title {
       opacity: 0.5;
     }
+  }
+
+  & dl {
+    margin-bottom: 0;
   }
 }
 
