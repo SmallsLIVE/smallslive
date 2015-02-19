@@ -105,6 +105,10 @@ a:focus {
   float: left;
 }
 
+.modal {
+  z-index: 100000;
+}
+
 p.unavailable {
     opacity: 0.6;
     font-style: italic;
