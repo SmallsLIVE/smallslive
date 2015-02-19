@@ -105,6 +105,11 @@ a:focus {
   float: left;
 }
 
+p.unavailable {
+    opacity: 0.6;
+    font-style: italic;
+  }
+
 .content-wrapper {
   border: 10px solid rgba(31,31,31,0.07);
   border-top: none;
