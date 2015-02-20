@@ -8,11 +8,11 @@
     {% for result in page.object_list %}
       <div class="search-event">
         <p class="search-event__date">{{ result.object.listing_date|date:"n/j/Y" }}</p>
-        <h2 class="search-event__title">{{ result.object.title }}</h2>
+        <a href="{{ result.object.get_absolute_url }}"><h2 class="search-event__title">{{ result.object.title }}</h2></a>
         <p class="search-event__sidemen-section-title">Artists:</p>
         <p class="search-event__sidemen">
-            {% for gig_info in result.object.get_performers %}{{ gig_info.artist }} <span
-                class="search-event__sidemen-instrument">({{ gig_info.role.name }})</span> {% if not forloop.last %} // {% endif %}{% endfor %}
+            {% for gig_info in result.object.get_performers %} <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist }} <span
+                class="search-event__sidemen-instrument">({{ gig_info.role.name }})</span></a> {% if not forloop.last %} // {% endif %}{% endfor %}
         </p>
         {% comment %}
         <p class="search-event__features-section-title">Available features:</p>

@@ -17,7 +17,7 @@
 
         </div>
         <div class="search-artist-info">
-          <h2 class="search-artist-info__title">{{ result.object.full_name }}</h2>
+          <a href="{{ result.object.get_absolute_url }}"><h2 class="search-artist-info__title">{{ result.object.full_name }}</h2></a>
           <p class="search-artist-info__stats">{{ result.object.instruments.all|join:" // " }} // {{ result.object.events.count }} events <a href="" class="search-artist-info__link">(view)</a>
           </p>
 
