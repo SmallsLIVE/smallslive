@@ -141,11 +141,27 @@ class EventSearchView(SearchView):
     template = 'search/event_search.html'
 
     def extra_context(self):
-        return {
+        context = {}
+        paginator, page = self.build_page()
+        adjacent_pages = 2
+        startPage = max(page.number - adjacent_pages, 1)
+        if startPage <= 3:
+            startPage = 1
+        endPage = page.number + adjacent_pages + 1
+        if endPage >= paginator.num_pages - 1:
+            endPage = paginator.num_pages + 1
+        page_numbers = [n for n in xrange(startPage, endPage) if n > 0 and n <= paginator.num_pages]
+        context.update({
+            'page_numbers': page_numbers,
+            'show_first': 1 not in page_numbers,
+            'show_last': paginator.num_pages not in page_numbers,
+            })
+        context.update({
             'artist_count': super(EventSearchView, self).get_results().models(Artist).count(),
             'event_count': super(EventSearchView, self).get_results().models(Event).count(),
             'instrument_count': super(EventSearchView, self).get_results().models(Instrument).count(),
-        }
+        })
+        return context
 
     def get_results(self):
         return super(EventSearchView, self).get_results().models(Event).order_by('-start')

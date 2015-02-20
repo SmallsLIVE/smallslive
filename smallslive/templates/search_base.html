@@ -22,8 +22,21 @@
             {% endblock search_content %}
             <p class="search-pagination-info">Showing results {{ page.start_index }}-{{ page.end_index }} of {{ paginator.count }}</p>
             {% if page.has_previous or page.has_next %}
-                <div class="search-pagination"><span class="fa fa-caret-left"></span> <span class="badge">1</span> <span
-                        class="fa fa-caret-right"></span></div>
+                <div class="search-pagination">
+                  {% if page.has_previous %}<a href="{{ request.path }}?q={{ request.GET.q }}&page={{ page.previous_page_number }}"><span class="fa fa-caret-left"></span></a>{% endif %}
+                  {% if show_first %}
+                    <a href="{{ request.path }}?q={{ request.GET.q }}&page=1"><span class="badge">1</span></a>
+                    ...
+                  {% endif %}
+                  {% for page_obj in page_numbers %}
+                    <a href="{{ request.path }}?q={{ request.GET.q }}&page={{ page_obj }}"><span class="badge">{{ page_obj }}</span></a>
+                  {% endfor %}
+                  {% if show_last %}
+                    ...
+                    <a href="{{ request.path }}?q={{ request.GET.q }}&page={{ paginator.num_pages }}"><span class="badge">{{ paginator.num_pages }}</span></a>
+                  {% endif %}
+                  {% if page.has_next %}<a href="{{ request.path }}?q={{ request.GET.q }}&page={{ page.next_page_number }}"><span class="fa fa-caret-right"></span></a>{% endif %}
+                </div>
             {% endif %}
           </section>
         </div>
