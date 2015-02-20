@@ -4,13 +4,13 @@
 {% block content %}
    <div class="content-wrapper">
       <section class="cto cto--search container">
-        <h1 class="cto__title search-cto__title">Search results for:<br/>“Lucas”</h1>
+        <h1 class="cto__title search-cto__title">Search results for:<br/>“{{ request.GET.q }}”</h1>
       </section>
       <div class="container">
         <div class="equal-heights row">
           <section class="col-md-3 search-sidebar">
             <ul class="search-nav">
-              <li class="search-nav__item"><a href="{% url "artist_search" %}?q={{ requests.GET.q }}">Artists <span class="badge">{{ artist_count }}</span></a></li>
+              <li class="search-nav__item"><a href="{% url "artist_search" %}?q={{ request.GET.q }}">Artists <span class="badge">{{ artist_count }}</span></a></li>
               <li class="search-nav__item"><a href="{% url "event_search" %}?q={{ request.GET.q }}">Events <span class="badge">{{ event_count }}</span></a></li>
               <li class="search-nav__item"><a href="{% url "instrument_search" %}?q={{ request.GET.q }}">Instruments <span class="badge">{{ instrument_count }}</span></a></li>
               {% comment %}<li class="search-nav__item">Store <span class="badge">2</span></li>{% endcomment %}
