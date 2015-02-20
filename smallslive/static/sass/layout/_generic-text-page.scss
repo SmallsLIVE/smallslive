@@ -1,0 +1,39 @@
+.generic-text-page {
+  padding: 20px 30px 40px;
+  margin-top: 8px solid $main-accent-color;
+  @include lato;
+  color: #131313;
+  background-color: #fff;
+  text-align: justify;
+  line-height: 140%;
+  
+  & h2 {
+    @include lato-black;
+    text-transform: uppercase;
+    color: $main-accent-color;
+    margin: 25px 0;
+  }
+  
+  & h3 {
+    @include lato-bold;
+    margin-top: 20px;
+  }
+  
+  & p {
+
+  }
+  
+  & a {
+    @include lato-bold;
+    text-decoration: none;
+    color: $main-accent-color;
+  }
+  
+  & ul {
+    
+  }
+  
+  & ul li {
+    margin-bottom: 5px;
+  }
+}

@@ -117,9 +117,9 @@
     <img class="footer-logo" src="{% static "logo-black.svg" %}" alt=""/>
     <ul class="footer-nav">
       <li><a href="#">Staff / Team</a></li>
-      <li><a href="#">Mission Statement</a></li>
-      <li><a href="#">Privacy</a></li>
-      <li><a href="#">Terms and Conditions</a></li>
+      <li><a href="{% url "static_page" "mission-statement" %}">Mission Statement</a></li>
+      <li><a href="{% url "static_page" "privacy" %}">Privacy</a></li>
+      <li><a href="{% url "static_page" "terms-of-use" %}">Terms and Conditions</a></li>
     </ul>
     <address>
       <a href="https://goo.gl/maps/s4jFT">183 W. 10th St, New York, NY 10014</a> <br/>
