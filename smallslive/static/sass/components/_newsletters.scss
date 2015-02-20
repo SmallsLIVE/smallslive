@@ -38,6 +38,12 @@
       margin-right: 10px;
       float: left;
       width: 28%;
+
+      &:hover {
+      color: #fefefe;
+      background-color: $main-accent-color;
+      border-color: $main-accent-color;
+    }
     }
   }
   
