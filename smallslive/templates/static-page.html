@@ -3,7 +3,7 @@
 
 {% block content %}
     <div class="content-wrapper">
-      <div class="header-img container">
+      <div class="header-img container hidden-xs hidden-sm">
       </div>
       <div class="static-page container">
         <div class="equal-heights  row">
@@ -18,7 +18,7 @@
               <li class="static-nav__item {% block photo-gallery-active %}{% endblock %}"><a
                       href="{% url "static_page" "photo-gallery" %}">Photo Gallery</a></li>
               <li class="static-nav__item {% block newsletters-active %}{% endblock %}"><a href="{% url "static_page" "newsletters" %}">Newsletters</a></li>
-              <li class="static-nav__item"><a href="">Press</a></li>
+              <li class="static-nav__item {% block press-active %}{% endblock %}"><a href="{% url "static_page" "press" %}">Press</a></li>
             </ul>
           </div>
           {% block static-content %}{% endblock static-content %}
