@@ -1,0 +1,177 @@
+.social-connect {
+  background-image: url('../image/visit-us-bg.jpg');
+  background-position: center center;
+  @include bottom-section-border;
+  background-size: cover;
+  color: white;
+  min-height: 300px;
+  text-align: center;
+
+  & .fb-login-button {
+    @extend .btn;
+    @include lato-bold;
+    background-color: rgba(59, 89, 151, 0.5);
+    border: 2px #3B5996 solid;
+    color: white;
+    font-style: italic;
+    padding: 10px 40px;
+    font-size: 14px;
+    margin: 0 auto;
+
+    & i {
+      font-size: 28px;
+      margin-right: 8px;
+      font-weight: normal;
+    }
+
+    &:hover {
+      background-color: rgba(59, 89, 151, 0.3);
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+
+  &__title {
+    @include lato-black;
+    font-size: 48px;
+    margin-top: 0;
+    margin-bottom: 11px;
+  }
+
+  &__text {
+    @include lato-bold;
+    font-size: 14px;
+    margin-bottom: 21px;
+
+    &--large {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+  }
+}
+
+.sign-up {
+  background-color: #FFFFFF;
+  padding: 30px 20px 20px;
+
+  & a {
+    @include lato-bold;
+    color: $main-accent-color;
+    text-decoration: none;
+
+    &:hover {
+      opacity: 0.8;
+      text-decoration: none;
+    }
+  }
+
+  &__main-title {
+    @include lato-black;
+    font-size: 32px;
+    color: $main-accent-color;
+    line-height: 130%;
+    margin-bottom: 20px;
+  }
+
+  &__form {
+    border-right: 1px solid #ddd;
+    padding-right: 20px;
+    margin-bottom: 30px;
+
+    &__heading {
+      @include lato-black;
+      font-size: 18px;
+      color: #131313;
+      margin-top: 30px;
+      margin-bottom: 15px;
+    }
+
+    & label {
+      @include lato;
+      font-size: 12px;
+
+      & .required {
+        @include lato-bold;
+        font-size: 12px;
+        color: $main-accent-color;
+      }
+    }
+
+    & .form-control {
+        @include lato;
+        font-size: 16px;
+        padding: 20px 10px;
+        margin-bottom: 10px;
+        border-radius: 0;
+      }
+
+    & input[type="checkbox"] {
+        float: left;
+        clear: left;
+        display: block;
+        margin-left: 10px;
+    }
+
+    & .checkbox-label {
+        @include lato;
+        font-size: 14px;
+        display: block;
+        float: left;
+        margin-bottom: 10px;
+      }
+
+    &__button {
+      @include lato-bold;
+      font-size: 16px;
+      padding: 10px 60px;
+      background-color: $main-accent-color;
+      color: #fff !important;
+      text-decoration: none;
+      margin-top: 30px;
+      margin-bottom: 10px;
+      display: block;
+      float: left;
+
+      &:hover {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+      }
+    }
+  }
+
+  &__hints {
+    padding-left: 20px;
+    @include lato;
+    font-size: 14px;
+
+    &__list {
+      list-style: none;
+      padding: 0;
+
+      & li {
+          margin-bottom: 5px;
+          padding-left: 20px;
+          text-indent: -15px;
+
+          &:before {
+            content: "• ";
+            color: $main-accent-color;
+            margin-right: 6px;
+          }
+      }
+    }
+  }
+}
+
+
+@media (max-width: 760px) {
+  .sign-up {
+    &__form {
+      border: none;
+      padding-right: 10px;
+    }
+
+    &__hints {
+      border-top: 1px solid #ddd;
+    }
+  }
+}

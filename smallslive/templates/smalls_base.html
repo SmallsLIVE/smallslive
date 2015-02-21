@@ -61,7 +61,7 @@
             </li>
             <li role="presentation" class="divider"></li>
             <li><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
-            <li><a href="">Sign up</a></li>
+            <li><a href="{% url "static_page" "sign-up" %}">Sign up</a></li>
           </ul>
         </div>
       </div>
@@ -85,7 +85,7 @@
   <a href="/" class="smalls-logo"><img src="{% static 'logo.svg' %}" width="101" height="100" alt=""/></a>
   <ul class="header-login clearfix">
     <li class="header-login__item"><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
-    <li class="header-login__item"><a href="">Sign up</a></li>
+    <li class="header-login__item"><a href="{% url "static_page" "sign-up" %}">Sign up</a></li>
   </ul>
   <nav class="navigation navbar-collapse">
     <ul>
