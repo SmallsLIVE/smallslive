@@ -1,0 +1,63 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+<div class="content-wrapper">
+
+  <section class="user-settings container">
+
+    <h1 class="sign-up__main-title">Account settings</h1>
+
+    <div class="row">
+        <form role="form" id="form-login" action="#">
+
+            <div class="col-sm-6 col-xs-12 user-settings__form left">
+
+                <h2 class="user-settings__form__heading">Email address:</h2>
+                <label for="email">Your email address</label>
+                <input type="email" class="form-control" name="email" value="spike@smallslive.com">
+                <a class="user-settings__form__button disabled" href="">Save</a>
+
+                <h2 class="user-settings__form__heading">Change password:</h2>
+                <label for="current-password">Current password</label>
+                <input type="password" class="form-control" name="current-password" placeholder="Current password">
+                <label for="new-password">New password</label>
+                <input type="password" class="form-control" name="new-password" placeholder="New password">
+                <label for="confirm-password">Confirm new password</label>
+                <input type="password" class="form-control" name="confirm-password" placeholder="Confirm new password">
+                <a class="user-settings__form__button disabled" href="">Change password</a>
+
+            </div>
+
+            <div class="col-sm-6 col-xs-12 user-settings__form">
+
+                <h2 class="user-settings__form__heading">Personal information:</h2>
+                <label for="name">Name</label>
+                <input type="text" class="form-control" name="name" value="Spike">
+                <label for="surname">Surname</label>
+                <input type="text" class="form-control" name="surname" value="Wilner">
+                <label for="location">Location</label>
+                <input type="text" class="form-control" name="location" value="New York, NY">
+                <a class="user-settings__form__button" href="">Save</a>
+
+                <h2 class="user-settings__form__heading">Notification settings:</h2>
+                <div class="row">
+                    <div>
+                        <input type="checkbox" name="terms-agree">
+                    </div>
+                    <div class="col-xs-10">
+                        <span class="checkbox-label">I wish to recieve news and updates on SmallsLIVE and Mezzrow
+    via email.</span>
+                    </div>
+                </div>
+                <a class="user-settings__form__button disabled" href="">Save</a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+  </section>
+</div>
+{% endblock content %}
