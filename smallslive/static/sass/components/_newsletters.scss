@@ -38,6 +38,9 @@
       margin-right: 10px;
       float: left;
       width: 28%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       &:hover {
       color: #fefefe;
@@ -107,5 +110,13 @@
 
   &__view-button {
     @include red-button;
+  }
+}
+
+@media (max-width: 760px) {
+  .newsletter {
+    &__excerpt {
+      text-align: left;
+    }
   }
 }
