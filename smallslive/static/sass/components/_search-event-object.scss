@@ -34,6 +34,10 @@
     @include lato-bold;
     font-size: 12px;
     color: #131313;
+
+    & a {
+      color: #131313;
+    }
   }
 
   &__sidemen-instrument {
@@ -47,8 +51,10 @@
     color: #777777;
 
     .fa {
-      font-size: 20px;
+      font-size: 18px;
       margin-left: 10px;
+      margin-right: 5px;
+      vertical-align: middle;
 
       &:first-child {
         margin-left: 0;

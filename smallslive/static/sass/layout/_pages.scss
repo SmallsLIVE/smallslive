@@ -11,10 +11,12 @@
 
 .search-results {
   background-color: #FFFFFF;
+  padding: 20px;
 
   &__section-title {
     @include lato-black;
     font-size: 32px;
     color: #999999;
+    margin-top: 10px;
   }
 }
