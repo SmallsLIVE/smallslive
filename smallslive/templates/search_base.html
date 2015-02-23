@@ -25,7 +25,7 @@
                 <div class="search-pagination">
                   {% if page.has_previous %}<a href="{{ request.path }}?q={{ request.GET.q }}&page={{ page.previous_page_number }}"><span class="search-pagination__previous fa fa-caret-left"></span></a>{% endif %}
                   {% if show_first %}
-                    <a href="{{ request.path }}?q={{ request.GET.q }}&page=1"><span class="badge">1</span></a>
+                    <a href="{{ request.path }}?q={{ request.GET.q }}&page=1"><span class="search-pagination__page">1</span></a>
                     ...
                   {% endif %}
                   {% for page_obj in page_numbers %}
@@ -33,7 +33,7 @@
                   {% endfor %}
                   {% if show_last %}
                     ...
-                    <a href="{{ request.path }}?q={{ request.GET.q }}&page={{ paginator.num_pages }}"><span class="badge">{{ paginator.num_pages }}</span></a>
+                    <a href="{{ request.path }}?q={{ request.GET.q }}&page={{ paginator.num_pages }}"><span class="search-pagination__page">{{ paginator.num_pages }}</span></a>
                   {% endif %}
                   {% if page.has_next %}<a href="{{ request.path }}?q={{ request.GET.q }}&page={{ page.next_page_number }}"><span class="search-pagination__next fa fa-caret-right"></span></a>{% endif %}
                 </div>

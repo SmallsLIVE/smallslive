@@ -1,11 +1,11 @@
 {% load static from staticfiles %}
 
-<section class="upcoming-events container">
-    <div class="carousel slide" id="upcoming-carousel" data-ride="carousel" data-interval="false">
-        <div class="carousel-inner">
+<section class="upcoming-events container hidden-xs hidden-sm">
+    <div class="carousel slide" id="upcoming-carousel" data-ride="carousel" data-interval="6000">
+        <div class="carousel-inner" id="event-details-slides">
             <!-- Carousel slide -->
             <div class="event-details row item active">
-                <div class="col-xs-12 col-md-6 vcenter">
+                <div class="col-xs-12 col-md-6 vcenter hidden-xs">
                     <div class="gradient-overlay"></div>
                     <img src="{% static 'image/upcoming-events/01.jpg' %}" class=" event-details__image img img-responsive div-fill-img" alt=""/>
                 </div><!--
@@ -32,7 +32,7 @@
             </div>
             <!-- Carousel slide -->
             <div class="event-details row item">
-                <div class="col-xs-12 col-md-6 vcenter">
+                <div class="col-xs-12 col-md-6 vcenter hidden-xs">
                     <div class="gradient-overlay"></div>
                     <img src="{% static 'image/upcoming-events/02.jpg' %}" class=" event-details__image img img-responsive div-fill-img" alt=""/>
                 </div><!--
@@ -53,7 +53,7 @@
             </div>
             <!-- Carousel slide -->
             <div class="event-details row item">
-                <div class="col-xs-12 col-md-6 vcenter">
+                <div class="col-xs-12 col-md-6 vcenter hidden-xs">
                     <div class="gradient-overlay"></div>
                     <img src="{% static 'image/upcoming-events/03.jpg' %}" class=" event-details__image img img-responsive div-fill-img" alt=""/>
                 </div><!--
@@ -72,7 +72,7 @@
                 </div>
             </div>
         </div>
-        <div class="event-select row">
+        <div class="event-select row" id="event-details-selector">
             <div class="col-xs-12 float-none">
                 <h2 class="event-select__title">Live Schedule</h2>
                 <div class="row">
