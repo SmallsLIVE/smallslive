@@ -33,6 +33,9 @@
     font-size: 16px;
     color: #131313;
     margin-top: 0;
+    height: 34px;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   &__requests {
@@ -43,6 +46,11 @@
     &--number {
       @include lato-black;
     }
+  }
+
+  &__request {
+    @include red-button;
+    margin-bottom: 20px;
   }
 
 }

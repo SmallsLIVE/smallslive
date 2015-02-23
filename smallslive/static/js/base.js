@@ -6,7 +6,7 @@ $(window).load(function(){
  })
 })
 
-/* Adds swipeable ability to event carousel */
+/* Adds swipe ability to Bootstrap event carousel */
 $(document).ready(function() {
    $("#upcoming-carousel").swiperight(function() {
       $(this).carousel('prev');
@@ -15,6 +15,33 @@ $(document).ready(function() {
       $(this).carousel('next');
    });
 });
+
+
+/* Initialize Slick responsive carousel for Archive page */
+$(document).ready(function(){
+  $('.archive-carousel').slick({
+    dots: true,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    responsive: [
+        {
+            breakpoint: 992,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3
+            }
+        },
+        {
+            breakpoint: 767,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2
+            }
+        }
+    ]
+  });
+});
+
 
 /* Expanding details for schedule */
 $(document).ready(function () {

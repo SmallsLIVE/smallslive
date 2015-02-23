@@ -34,9 +34,38 @@
   }
 
   &__stats {
-    @include lato-bold;
+    @include lato;
     font-size: 12px;
     color: #777777;
-    margin-bottom: 0;
+    float: left;
+    margin-right: 5px;
+
+    & p {
+      margin-bottom: 0;
+    }
+
+    & span {
+      @include lato-bold;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .mini-video-info__title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 345px;
+    height: 19px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .mini-video-info__title {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 430px;
+    height: 19px;
   }
 }
