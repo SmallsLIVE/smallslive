@@ -9,9 +9,9 @@
     <div class="row photo-gallery">
       {% for img in "12345678901" %}
         {% if forloop.counter0|divisibleby:"6"  %}
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12"><a href="" class="photo-gallery__image"><img src="{% static 'image/photo-gallery/2x.jpg' %}" class="img-responsive photo-gallery__image" alt=""/></a></div>
+            <div class="col-sm-8 col-xs-6 photo-gallery__image-container"><a href="" class="photo-gallery__image"><img src="{% static 'image/photo-gallery/2x.jpg' %}" class="img-responsive photo-gallery__image" alt=""/></a></div>
         {% else %}
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"><a href="" class="photo-gallery__image"><img src="{% static 'image/photo-gallery/normal.jpg' %}" class="img-responsive  photo-gallery__image" alt=""/></a></div>
+            <div class="col-sm-4 col-xs-6 photo-gallery__image-container"><a href="" class="photo-gallery__image"><img src="{% static 'image/photo-gallery/normal.jpg' %}" class="img-responsive  photo-gallery__image" alt=""/></a></div>
         {% endif %} 
       {% endfor %}
     </div>

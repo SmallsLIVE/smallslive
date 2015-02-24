@@ -1,7 +1,9 @@
 .photo-gallery {
+  margin-left: -11px;
+  margin-right: -11px;
 
   &__image {
-    margin-bottom: 21px;
+    margin-bottom: 20px;
     @include filter(grayscale(100%));
 
     &:hover {
