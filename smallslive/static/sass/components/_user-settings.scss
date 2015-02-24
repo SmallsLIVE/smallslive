@@ -31,6 +31,16 @@
       margin-bottom: 30px;
     }
 
+    &.right {
+      box-shadow: -1px 0 0 0 #ddd
+    }
+
+    &__text {
+      @include lato;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
     &__heading {
       @include lato-black;
       font-size: 18px;
