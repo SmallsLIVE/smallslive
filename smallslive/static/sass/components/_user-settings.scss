@@ -32,7 +32,9 @@
     }
 
     &.right {
-      box-shadow: -1px 0 0 0 #ddd
+      box-shadow: -1px 0 0 0 #ddd;
+      -moz-box-shadow: -1px 0 0 0 #ddd;
+      -webkit-box-shadow: -1px 0 0 0 #ddd;
     }
 
     &__text {
@@ -114,6 +116,9 @@
 
     &__form {
       border: none;
+      box-shadow: none;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
       padding-right: 10px;
       padding-left: 10px;
       
