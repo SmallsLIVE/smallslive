@@ -64,7 +64,9 @@
           </section>
           <section class="event-description col-md-6">
             <div class="row">
-                <img src="{% thumbor_url event.photo.url|urlencode height=340 width=600 %}" alt="" class="event__img img-responsive"/>
+                {% if event.photo %}
+                    <img src="{% thumbor_url event.photo.url|urlencode height=340 width=600 %}" alt="" class="event__img img-responsive"/>
+                {% endif %}
               </div>
             <div class="event-description__text-block">
                 <h1 class="event-description__title">Event description:</h1>
