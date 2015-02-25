@@ -8,6 +8,7 @@ from django.template import Context
 from django.template.loader import render_to_string
 from extra_views import InlineFormSet
 import floppyforms
+from haystack.forms import SearchForm
 from model_utils import Choices
 from .models import Event, GigPlayed
 
@@ -166,3 +167,18 @@ class EventAddForm(forms.ModelForm):
                 pass
         object.save()
         return object
+
+
+class EventSearchForm(SearchForm):
+    artist = forms.IntegerField(required=False)
+
+    def search(self):
+        sqs = super(EventSearchForm, self).search()
+
+        if self.cleaned_data.get('artist'):
+            sqs = sqs.filter(performers=self.cleaned_data.get('artist'))
+
+        return sqs.load_all()
+
+    def no_query_found(self):
+        return self.searchqueryset.all()

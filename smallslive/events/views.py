@@ -11,11 +11,12 @@ from django.views.generic import TemplateView
 
 from braces.views import LoginRequiredMixin, SuperuserRequiredMixin, UserPassesTestMixin
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
-from haystack.query import SearchQuerySet
+from haystack.query import SearchQuerySet, RelatedSearchQuerySet
 from haystack.views import SearchView
 
 from artists.models import Artist, Instrument
-from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset
+from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
+    EventSearchForm
 from .models import Event
 from multimedia.models import Media
 
@@ -156,17 +157,24 @@ class EventSearchView(SearchView):
             'show_first': 1 not in page_numbers,
             'show_last': paginator.num_pages not in page_numbers,
             })
+
+        facet_counts = super(EventSearchView, self).get_results().facet('model', order='term').facet_counts()
+        fields = facet_counts.get('fields', {})
+        facet_counts = {model: count for (model, count) in fields.get('model', [])}
         context.update({
-            'artist_count': super(EventSearchView, self).get_results().models(Artist).count(),
-            'event_count': super(EventSearchView, self).get_results().models(Event).count(),
-            'instrument_count': super(EventSearchView, self).get_results().models(Instrument).count(),
+            'artist_count': facet_counts.get('artist', 0),
+            'event_count': facet_counts.get('event', 0),
+            'instrument_count': facet_counts.get('instrument', 0),
         })
         return context
 
     def get_results(self):
         return super(EventSearchView, self).get_results().models(Event).order_by('-start')
 
-event_search = EventSearchView()
+event_search = EventSearchView(
+    form_class=EventSearchForm,
+    searchqueryset=RelatedSearchQuerySet()
+)
 
 
 class VenueDashboardView(ListView):

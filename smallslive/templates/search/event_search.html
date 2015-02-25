@@ -1,7 +1,7 @@
 {% extends "search_base.html" %}
 {% load static from staticfiles %}
 
-{% block search_section_title %}Found {{ page.object_list|length }} event{{ page.object_list|length|pluralize }}:{% endblock %}
+{% block search_section_title %}Found {{ paginator.count }} event{{ paginator.count|pluralize }}:{% endblock %}
 
 {% block search_content %}
   <div class="search-events">

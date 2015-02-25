@@ -93,7 +93,8 @@ class ArtistSearchView(SearchView):
             })
 
         facet_counts = super(ArtistSearchView, self).get_results().facet('model', order='term').facet_counts()
-        facet_counts = {model: count for (model, count) in facet_counts['fields']['model']}
+        fields = facet_counts.get('fields', {})
+        facet_counts = {model: count for (model, count) in fields.get('model', [])}
         context.update({
             'artist_count': facet_counts.get('artist', 0),
             'event_count': facet_counts.get('event', 0),
@@ -132,7 +133,8 @@ class InstrumentSearchView(SearchView):
             })
 
         facet_counts = super(InstrumentSearchView, self).get_results().facet('model', order='term').facet_counts()
-        facet_counts = {model: count for (model, count) in facet_counts['fields']['model']}
+        fields = facet_counts.get('fields', {})
+        facet_counts = {model: count for (model, count) in fields.get('model', [])}
         context.update({
             'artist_count': facet_counts.get('artist', 0),
             'event_count': facet_counts.get('event', 0),
