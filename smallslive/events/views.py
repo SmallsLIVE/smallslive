@@ -166,6 +166,14 @@ class EventSearchView(SearchView):
             'event_count': facet_counts.get('event', 0),
             'instrument_count': facet_counts.get('instrument', 0),
         })
+
+        artist_id = self.request.GET.get('artist')
+        if artist_id:
+            search_term = Artist.objects.get(id=artist_id).full_name()
+        else:
+            search_term = self.request.GET.get('q')
+        context['search_term'] = search_term
+
         return context
 
     def get_results(self):

@@ -101,6 +101,13 @@ class ArtistSearchView(SearchView):
             'instrument_count': facet_counts.get('instrument', 0),
         })
 
+        instrument_id = self.request.GET.get('instrument')
+        if instrument_id:
+            search_term = Instrument.objects.get(id=instrument_id).name
+        else:
+            search_term = self.request.GET.get('q')
+        context['search_term'] = search_term
+
         return context
 
     def get_results(self):
@@ -140,6 +147,8 @@ class InstrumentSearchView(SearchView):
             'event_count': facet_counts.get('event', 0),
             'instrument_count': facet_counts.get('instrument', 0),
         })
+
+        context['search_term'] = self.request.GET.get('q')
 
         return context
 
