@@ -14,10 +14,11 @@
             {% for gig_info in result.object.get_performers %} <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist }} <span
                 class="search-event__sidemen-instrument">({{ gig_info.role.name }})</span></a> {% if not forloop.last %} // {% endif %}{% endfor %}
         </p>
-
+        {% comment %}
         <p class="search-event__features-section-title">Available features:</p>
         <p class="search-event__features"><span class="fa fa-volume-down"></span> audio <span
                 class="fa fa-music"></span> tracks <span class="fa fa-video-camera"></span> video</p>
+        {% endcomment %}
       </div>
     {% endfor %}
   </div>
