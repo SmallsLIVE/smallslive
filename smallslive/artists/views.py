@@ -5,10 +5,10 @@ from django.shortcuts import redirect, render
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.detail import DetailView
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
-from haystack.query import SearchQuerySet
-from haystack.views import SearchView
+from haystack.query import SearchQuerySet, RelatedSearchQuerySet
+from haystack.views import FacetedSearchView, SearchView
 from events.models import Event
-from .forms import ArtistAddForm, ArtistInviteForm
+from .forms import ArtistAddForm, ArtistInviteForm, ArtistSearchForm
 from .models import Artist, Instrument
 
 
@@ -76,27 +76,70 @@ class ArtistSearchView(SearchView):
     template = 'search/artist_search.html'
 
     def extra_context(self):
-        return {
-            'artist_count': super(ArtistSearchView, self).get_results().models(Artist).count(),
-            'event_count': super(ArtistSearchView, self).get_results().models(Event).count(),
-            'instrument_count': super(ArtistSearchView, self).get_results().models(Instrument).count(),
-        }
+        context = {}
+        paginator, page = self.build_page()
+        adjacent_pages = 2
+        startPage = max(page.number - adjacent_pages, 1)
+        if startPage <= 3:
+            startPage = 1
+        endPage = page.number + adjacent_pages + 1
+        if endPage >= paginator.num_pages - 1:
+            endPage = paginator.num_pages + 1
+        page_numbers = [n for n in xrange(startPage, endPage) if n > 0 and n <= paginator.num_pages]
+        context.update({
+            'page_numbers': page_numbers,
+            'show_first': 1 not in page_numbers,
+            'show_last': paginator.num_pages not in page_numbers,
+            })
+
+        facet_counts = super(ArtistSearchView, self).get_results().facet('model', order='term').facet_counts()
+        facet_counts = {model: count for (model, count) in facet_counts['fields']['model']}
+        context.update({
+            'artist_count': facet_counts.get('artist', 0),
+            'event_count': facet_counts.get('event', 0),
+            'instrument_count': facet_counts.get('instrument', 0),
+        })
+
+        return context
 
     def get_results(self):
         return super(ArtistSearchView, self).get_results().models(Artist)
 
-artist_search = ArtistSearchView()
+artist_search = ArtistSearchView(
+    form_class=ArtistSearchForm,
+    searchqueryset=RelatedSearchQuerySet()
+)
 
 
 class InstrumentSearchView(SearchView):
     template = 'search/instrument_search.html'
 
     def extra_context(self):
-        return {
-            'artist_count': super(InstrumentSearchView, self).get_results().models(Artist).count(),
-            'event_count': super(InstrumentSearchView, self).get_results().models(Event).count(),
-            'instrument_count': super(InstrumentSearchView, self).get_results().models(Instrument).count(),
-        }
+        context = {}
+        paginator, page = self.build_page()
+        adjacent_pages = 2
+        startPage = max(page.number - adjacent_pages, 1)
+        if startPage <= 3:
+            startPage = 1
+        endPage = page.number + adjacent_pages + 1
+        if endPage >= paginator.num_pages - 1:
+            endPage = paginator.num_pages + 1
+        page_numbers = [n for n in xrange(startPage, endPage) if n > 0 and n <= paginator.num_pages]
+        context.update({
+            'page_numbers': page_numbers,
+            'show_first': 1 not in page_numbers,
+            'show_last': paginator.num_pages not in page_numbers,
+            })
+
+        facet_counts = super(InstrumentSearchView, self).get_results().facet('model', order='term').facet_counts()
+        facet_counts = {model: count for (model, count) in facet_counts['fields']['model']}
+        context.update({
+            'artist_count': facet_counts.get('artist', 0),
+            'event_count': facet_counts.get('event', 0),
+            'instrument_count': facet_counts.get('instrument', 0),
+        })
+
+        return context
 
     def get_results(self):
         return super(InstrumentSearchView, self).get_results().models(Instrument)

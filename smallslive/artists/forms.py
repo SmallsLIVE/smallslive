@@ -1,10 +1,12 @@
 from crispy_forms.layout import Layout, Div, Field, HTML
 from django import forms
+from django.db.models import Count
 from django.forms.util import ErrorList
 import floppyforms
 from crispy_forms.helper import FormHelper
 from model_utils import Choices
 from events.forms import ImageThumbnailWidget
+from haystack.forms import SearchForm
 from .models import Artist
 
 
@@ -66,3 +68,23 @@ class ArtistInviteForm(forms.Form):
         if invite_type == self.INVITE_TYPE.custom_invite and not invite_text:
             self._errors['invite_text'] = ErrorList(['You have to enter custom invite text'])
         return cleaned_data
+
+
+class ArtistSearchForm(SearchForm):
+    instrument = forms.IntegerField(required=False)
+
+    def search(self):
+        sqs = super(ArtistSearchForm, self).search()
+
+        sqs = sqs.load_all_queryset(
+            Artist,
+            Artist.objects.annotate(events_count=Count('gigs_played')).prefetch_related('instruments')
+        )
+
+        if self.cleaned_data.get('instrument'):
+            sqs = sqs.filter(instruments=self.cleaned_data.get('instrument'))
+
+        return sqs.load_all()
+
+    def no_query_found(self):
+        return self.searchqueryset.all()

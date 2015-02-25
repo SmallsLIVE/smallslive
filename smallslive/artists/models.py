@@ -14,7 +14,7 @@ class Artist(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     salutation = models.CharField(max_length=255, blank=True)
-    instruments = SortedManyToManyField('Instrument', blank=True)
+    instruments = SortedManyToManyField('Instrument', blank=True, related_name='artists')
     biography = tinymce_models.HTMLField(blank=True)
     website = models.CharField(max_length=255, blank=True)
     photo = models.ImageField(upload_to='artist_images', max_length=150, blank=True)

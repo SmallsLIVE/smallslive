@@ -8,7 +8,7 @@
     {% for result in page.object_list %}
       <div class="search-event">
         <h2 class="search-event__title">{{ result.object.name }}</h2>
-        <p class="search-event__sidemen-section-title">96 Artists</p>
+        <p class="search-event__sidemen-section-title"><a href="{% url "artist_search" %}?instrument={{ result.object.id }}">{{ result.object.artists.count }} Artists</a></p>
       </div>
     {% endfor %}
   </div>
