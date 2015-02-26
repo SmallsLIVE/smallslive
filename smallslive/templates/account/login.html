@@ -1,45 +1,52 @@
-{% extends "smalls_base.html" %}
-{% load account crispy_forms_tags socialaccount %}
+{% load socialaccount %}
 
-{% block title %}Log In or Sign Up{% endblock %}
+{% providers_media_js %}
+<!-- MODALS -->
+<!-- Log in modal -->
+	<div class="modal fade" id="logIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+            <div class="modal-content login-modal">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="modal-body">
+                    <div class="col-xs-12">
+                        <h1 class="login-modal__title">Log in</h1>
+                        <p class="login-modal__text--heavy">Log in to gain access to live stream and streamable audio and video content.</p>
+                    </div>
+                    <form role="form" id="form-login" method="post" action="#">
+                        {% csrf_token %}
+                        <div class="col-xs-12">
+                          <div class="form-group">
+                            <input type="email" class="form-control" name="login" placeholder="Your email">
+                            <p id="login-error"></p>
+                          </div>
+                            <input type="password" class="form-control" name="password" placeholder="Your password">
+                            {{ form.password.errors }}
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="col-sm-6 col-xs-12 vcenter">
+                                <input type="checkbox" name="remember"><span class="checkbox-label">Remember me</span>
+                            </div><!--
+                         --><div class="col-sm-6 col-xs-12 vcenter">
+                                <a class="forgot-password" data-dismiss="modal" href="#">Forgot password</a>
+                            </div>
+                        </div>
+                        <div class="empty-separator-20"></div>
+                        <div class="col-sm-5 col-xs-12">
+                            <input class="login-button" value="Log in" type="submit">
+                        </div>
+                        <div class="col-sm-7 col-xs-12">
+                            <a class="fb-login-button" href="{% provider_login_url "facebook" method="js_sdk" %}"><div class="vcenter"><i class="fa fa-facebook-square"></i></div><div class="vcenter">Log in with Facebook</div></a>
+                        </div>
+                        <div class="col-xs-12 modal-separator"></div>
+                        <div class="col-xs-12">
+                            <h2 class="login-modal__subtitle">Don’t have an account yet?</h2>
+                            <p class="login-modal__text">Sign up for a free account to watch our live stream, or get unlimited access to our audio & video archive of over 350 jazz concerts! You can take a free trial of 30 days, and afterwards it’s just $20/month!</p>
+                            <a href="{% url "static_page" "sign-up" %}" class="login-modal__cta-signup">Click here to sign up!</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-{% block content %}
-<div class="row">
-  <div class="col-sm-9 col-sm-offset-1">
-    <div class="alert alert-warning">
-      <h1>Looking for {context}?</h1>
-      <p><code>1</code> You'll need to sign up for SmallsLIVE to access this {recording}{live stream}:</p>
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-sm-5 col-sm-offset-1">
-    <div class="well login">
-      <h1>Log In</h1>
-      <p>If you used one of these social media sites to sign up in the past, log in with that option now:</p>
-      <div class="social-logins"><a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-default btn-sm">Facebook</a> <a href="{% provider_login_url "linkedin_oauth2" method="oauth2" %}" class="btn btn-default btn-sm">LinkedIn</a> <a href="{% provider_login_url "google" method="oauth2" %}" class="btn btn-default btn-sm">Google</a> <a href="{% provider_login_url "twitter" method="oauth2" %}" class="btn btn-default btn-sm">Twitter</a></div>
-      <p>Otherwise, log in with your SmallsLIVE password:</p>
- 
-      <form class="login" method="POST" action="{% url 'account_login' %}">
-        {% csrf_token %}
-        {{ form|crispy }}
-        {% if redirect_field_value %}
-          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-        {% endif %}
-        <button class="btn btn-primary" type="submit">Log In</button>
-        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">Forgot Password?</a>
-      </form>
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <h2>Create an Account</h2>
-    <p>You'll need a account to hear archived audio or watch videos. Learn about our free and paid subscriptions:</p>  
-    <p><a href="/accounts/signup" class="btn-sm btn-default btn">Continue</a></p>
-  </div>
-</div>
-<div class="dev">
-  <ul>
-    <li><code>1</code> - context means "the page they came from." Its possible a user came from a specific audio recording or live stream; if that happens, its helpful to have this context recorded and to carry the return-URL into this screen so that after signup, we take them right to what they wanted. This yellow box only appears when a context has been carried into this screen.</li>
-  </ul>
-</div>
-{% endblock %}
+<!-- /MODALS -->

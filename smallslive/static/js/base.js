@@ -1,52 +1,53 @@
 /* Solves issues with images filling div's. Adds a img.wide or img.tall class to img element. */
-$(window).load(function(){
- $('.container').find('img').each(function(){
-  var imgClass = (this.width/this.height > 1) ? 'wide' : 'tall';
-  $(this).addClass(imgClass);
- })
-})
+$(window).load(function () {
+    $('.container').find('img').each(function () {
+        var imgClass = (this.width / this.height > 1) ? 'wide' : 'tall';
+        $(this).addClass(imgClass);
+    })
+});
 
 /* Adds swipe ability to Bootstrap event carousel */
-$(document).ready(function() {
-   $("#upcoming-carousel").swiperight(function() {
-      $(this).carousel('prev');
+$(document).ready(function () {
+    $carousel = $("#upcoming-carousel");
+    $carousel.swiperight(function () {
+        $(this).carousel('prev');
     });
-   $("#upcoming-carousel").swipeleft(function() {
-      $(this).carousel('next');
-   });
+    $carousel.swipeleft(function () {
+        $(this).carousel('next');
+    });
 });
 
 
 /* Initialize Slick responsive carousel for Archive page */
-$(document).ready(function(){
-  $('.archive-carousel').slick({
-    dots: true,
-    slidesToShow: 4,
-    slidesToScroll: 4,
-    responsive: [
-        {
-            breakpoint: 992,
-            settings: {
-                slidesToShow: 3,
-                slidesToScroll: 3
+$(document).ready(function () {
+    $('.archive-carousel').slick({
+        dots: true,
+        slidesToShow: 4,
+        slidesToScroll: 4,
+        responsive: [
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3
+                }
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
             }
-        },
-        {
-            breakpoint: 767,
-            settings: {
-                slidesToShow: 2,
-                slidesToScroll: 2
-            }
-        }
-    ]
-  });
+        ]
+    });
 });
 
 
 /* Expanding details for schedule */
 $(document).ready(function () {
     var active = "0";
-    $(".day").click(function(){
+    $(".day").click(function () {
         $("#event-details-expanded").remove();
         $(".selected").removeClass('selected');
         var position = $(this).data('position');
@@ -82,4 +83,4 @@ $(document).ready(function () {
             active = 0;
         }
     });
-})
+});
