@@ -34,10 +34,12 @@
             <div class="form-group {% if form.password1.errors %}has-error{% endif %}">
                 <label for="password">Your password <span class="required">required</span></label>
                 <input type="password" class="form-control" name="password1" placeholder="Your password">
+                <p class="form-error-text">Invalid password tralalalalallalala.</p>
             </div>
             <div class="form-group {% if form.password2.errors %}has-error{% endif %}">
                 <label for="confirm-password">Confirm your password <span class="required">required</span></label>
                 <input type="password" class="form-control" name="password2" placeholder="Confirm your password">
+                <p class="form-error-text">Invalid password tralalalalallalala.</p>
             </div>
 
             <h2 class="sign-up__form__heading">Personal information:</h2>
@@ -56,9 +58,10 @@
                 <input type="checkbox" name="terms_of_service">
               </div>
               <div class="col-xs-10">
-                <span class="checkbox-label">I agree with <a href="{% url "static_page" "terms-of-use" %}"
+                <p class="checkbox-label">I agree with <a href="{% url "static_page" "terms-of-use" %}"
                                                              target="_blank">terms and
-                  conditions</a> of SmallsLIVE</span>
+                  conditions</a> of SmallsLIVE</p>
+                <p class="form-error-text">Invalid password tralalalalallalala.</p>
               </div>
             </div>
             <div class="row">
@@ -66,7 +69,7 @@
                 <input type="checkbox" name="terms-agree">
               </div>
               <div class="col-xs-10">
-                <span class="checkbox-label">I wish to receive news and updates on SmallsLIVE and Mezzrow via email.</span>
+                <p class="checkbox-label">I wish to receive news and updates on SmallsLIVE and Mezzrow via email.</p>
               </div>
             </div>
             {{ form.confirmation_key }}

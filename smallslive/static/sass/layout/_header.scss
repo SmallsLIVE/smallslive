@@ -53,6 +53,39 @@ header {
   float: right;
   margin-top: 17px;
 
+  &__user-name {
+      @include lato-bold;
+      font-size: 14px;
+      @include transition(all 0.2s ease-in-out);
+      color: #8F8E8F;
+      text-decoration: none;
+
+      &:hover, &:active {
+        color: white;
+        text-decoration: none;
+      }
+  }
+
+  &__user-dropdown {
+      @include lato;
+      font-size: 14px;
+      color: white;
+      background-color: rgba(0,0,0,0.8);
+      border: 1px solid rgba(255,255,255,0.2);
+      margin-top: 10px;
+      padding: 0;
+
+      & li a {
+        padding: 15px 30px;
+        color: white;
+
+        &:hover {
+          background-color: rgba(255,255,255,0.1);
+          color: white;
+        }
+      }
+  }
+
   &__item {
     @include lato;
     display: inline-block;
@@ -139,7 +172,7 @@ header {
   background-color: $main-accent-color;
   margin-bottom: 0;
 
-  .navbar-nav li a {
+  .navbar-nav li a, .navbar-nav li {
     color: #ffffff !important;
     text-align: center;
     width: 100%;
@@ -194,8 +227,4 @@ header {
   }
 }
 
-
-
-
-//MODALS TEMP
 

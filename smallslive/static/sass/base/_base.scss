@@ -121,6 +121,12 @@ p.unavailable {
   margin-left: auto;
 }
 
+.form-error-text {
+  @include lato;
+  font-size: 12px;
+  color: $main-accent-color;
+}
+
 @media (max-width: 740px) {
   .content-wrapper {
     width: 100%;

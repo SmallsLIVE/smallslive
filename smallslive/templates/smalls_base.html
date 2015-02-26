@@ -50,19 +50,19 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Info <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li role="presentation" class="divider"></li>
                     <li><a href="{% url "about-us" %}">About us</a></li>
                     <li><a href="{% url "mission-statement" %}">Mission Statement</a></li>
                     <li ><a href="{% url "contact-and-info" %}">Contact & Info</a></li>
                     <li><a href="{% url "static_page" "photo-gallery" %}">Photo Gallery</a></li>
                     <li><a href="{% url "static_page" "newsletters" %}">Newsletters</a></li>
                     <li><a href="{% url "static_page" "press" %}">Press</a></li>
-                    <li role="presentation" class="divider"></li>
                 </ul>
             </li>
             <li role="presentation" class="divider"></li>
             {% if user.is_authenticated %}
-                <li><a href="#" data-toggle="modal" data-target="#logIn">{% user_display user %}</a></li>
+                <li>{% user_display user %}</li>
+                <li><a href="{% url "static_page" "user-settings" %}">User Settings</a></li>
+                <li><a href="{% url "account_logout" %}">Log out</a></li>
              {% else %}
                 <li><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
                 <li><a href="{% url "static_page" "sign-up" %}">Sign up</a></li>
@@ -90,7 +90,13 @@
   <a href="/" class="smalls-logo"><img src="{% static 'logo.svg' %}" width="101" height="100" alt=""/></a>
   <ul class="header-login clearfix">
     {% if user.is_authenticated %}
-      <li class="header-login__item">Logged in as: <a href="{% url "account_logout" %}">{% user_display user %}</a></li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle header-login__user-name" data-toggle="dropdown" role="button" aria-expanded="false">{% user_display user %} <span class="caret"></span></a>
+        <ul class="dropdown-menu header-login__user-dropdown" role="menu">
+            <li><a href="{% url "static_page" "user-settings" %}">User Settings</a></li>
+            <li><a href="{% url "account_logout" %}">Log out</a></li>
+        </ul>
+      </li>
     {% else %}
         <li class="header-login__item"><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
         <li class="header-login__item"><a href="{% url "account_signup" %}">Sign up</a></li>
