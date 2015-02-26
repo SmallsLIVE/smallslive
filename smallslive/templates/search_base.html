@@ -1,5 +1,7 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
+{% load add_get_parameter %}
+
 
 {% block content %}
    <div class="content-wrapper">
@@ -10,9 +12,22 @@
         <div class="equal-heights row">
           <section class="col-md-3 search-sidebar">
             <ul class="search-nav">
-              <li class="search-nav__item"><a href="{% url "artist_search" %}?q={{ request.GET.q }}">Artists <span class="badge">{{ artist_count }}</span></a></li>
-              <li class="search-nav__item"><a href="{% url "event_search" %}?q={{ request.GET.q }}">Events <span class="badge">{{ event_count }}</span></a></li>
-              <li class="search-nav__item"><a href="{% url "instrument_search" %}?q={{ request.GET.q }}">Instruments <span class="badge">{{ instrument_count }}</span></a></li>
+              {% if artist_count %}
+                <li class="search-nav__item"><a href="{% url "artist_search" %}?q={{ request.GET.q }}">Artists <span class="badge">{{ artist_count }}</span></a></li>
+              {% else %}
+                <li class="search-nav__item">Artists <span class="badge">{{ artist_count }}</span></li>
+              {% endif %}
+              {% if event_count %}
+                <li class="search-nav__item"><a href="{% url "event_search" %}?q={{ request.GET.q }}">Events <span class="badge">{{ event_count }}</span></a></li>
+              {% else %}
+                <li class="search-nav__item">Events <span class="badge">{{ event_count }}</span></li>
+              {% endif %}
+              {% if instrument_count %}
+                <li class="search-nav__item"><a href="{% url "instrument_search" %}?q={{ request.GET.q }}">Instruments <span class="badge">{{ instrument_count }}</span></a></li>
+              {% else %}
+                <li class="search-nav__item">Instruments <span class="badge">{{ instrument_count }}</span></li>
+              {% endif %}
+
               {% comment %}<li class="search-nav__item">Store <span class="badge">2</span></li>{% endcomment %}
             </ul>
           </section>
@@ -23,19 +38,19 @@
             <p class="search-pagination-info">Showing results {{ page.start_index }}-{{ page.end_index }} of {{ paginator.count }}</p>
             {% if page.has_previous or page.has_next %}
                 <div class="search-pagination">
-                  {% if page.has_previous %}<a href="{{ request.path }}?q={{ request.GET.q }}&page={{ page.previous_page_number }}"><span class="search-pagination__previous fa fa-caret-left"></span></a>{% endif %}
+                  {% if page.has_previous %}<a href="{% add_get page=page.previous_page_number %}"><span class="search-pagination__previous fa fa-caret-left"></span></a>{% endif %}
                   {% if show_first %}
-                    <a href="{{ request.path }}?q={{ request.GET.q }}&page=1"><span class="search-pagination__page">1</span></a>
+                    <a href="{% add_get page=1 %}"><span class="search-pagination__page">1</span></a>
                     ...
                   {% endif %}
                   {% for page_obj in page_numbers %}
-                    <a href="{{ request.path }}?q={{ request.GET.q }}&page={{ page_obj }}"><span class="search-pagination__page">{{ page_obj }}</span></a>
+                    <a href="{% add_get page=page_obj %}"><span class="search-pagination__page {% if page_obj == page.number %}active{% endif %}">{{ page_obj }}</span></a>
                   {% endfor %}
                   {% if show_last %}
                     ...
-                    <a href="{{ request.path }}?q={{ request.GET.q }}&page={{ paginator.num_pages }}"><span class="search-pagination__page">{{ paginator.num_pages }}</span></a>
+                    <a href="{% add_get page=paginator.num_pages %}"><span class="search-pagination__page">{{ paginator.num_pages }}</span></a>
                   {% endif %}
-                  {% if page.has_next %}<a href="{{ request.path }}?q={{ request.GET.q }}&page={{ page.next_page_number }}"><span class="search-pagination__next fa fa-caret-right"></span></a>{% endif %}
+                  {% if page.has_next %}<a href="{% add_get page=page.next_page_number %}"><span class="search-pagination__next fa fa-caret-right"></span></a>{% endif %}
                 </div>
             {% endif %}
           </section>

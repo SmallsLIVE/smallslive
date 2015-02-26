@@ -22,19 +22,15 @@
       &:hover {
         color: #131313;
         text-decoration: none;
+
+        .badge {
+          background-color: #131313;
+        }
       }
     }
 
     &:last-child {
       border-bottom: 0;
-    }
-
-    &:hover {
-      color: #131313;
-
-      .badge {
-        background-color: #131313;
-      }
     }
 
     .badge {
