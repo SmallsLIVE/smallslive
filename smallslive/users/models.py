@@ -80,6 +80,13 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         verbose_name = 'user'
         verbose_name_plural = 'users'
 
+    def display_name(self):
+        """
+        This is the name that's shown in the frontend - either full name if available,
+        or the email address.
+        """
+        return self.get_full_name() or self.email
+
     def get_full_name(self):
         """
         Returns the first_name plus the last_name, with a space in between.

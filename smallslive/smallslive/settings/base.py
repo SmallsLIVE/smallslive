@@ -89,6 +89,7 @@ INSTALLED_APPS = [
     'old_site',
     'static_pages',
     'users',
+    'utils',
 ] + get_core_apps([
     'oscar_apps.address',
     'oscar_apps.checkout',
@@ -316,6 +317,8 @@ ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_USER_DISPLAY = lambda u: u.display_name()
+SOCIALACCOUNT_EMAIL_VERIFICATION = False
 
 # TinyMCE
 TINYMCE_JS_URL = os.path.join(STATIC_URL, "js/tinymce/tinymce.min.js")
