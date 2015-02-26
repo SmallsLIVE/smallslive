@@ -52,6 +52,7 @@ header {
 .header-login {
   float: right;
   margin-top: 17px;
+  list-style: none;
 
   &__user-name {
       @include lato-bold;
