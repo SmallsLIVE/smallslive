@@ -8,7 +8,6 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('account', '__first__'),
         ('auth', '0001_initial'),
     ]
 
@@ -49,23 +48,5 @@ class Migration(migrations.Migration):
                 'verbose_name_plural': 'users',
             },
             bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='SmallsEmailAddress',
-            fields=[
-            ],
-            options={
-                'proxy': True,
-            },
-            bases=('account.emailaddress',),
-        ),
-        migrations.CreateModel(
-            name='SmallsEmailConfirmation',
-            fields=[
-            ],
-            options={
-                'proxy': True,
-            },
-            bases=('account.emailconfirmation',),
         ),
     ]
