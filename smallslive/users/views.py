@@ -1,4 +1,5 @@
-from allauth.account.views import SignupView as AllauthSignupView
+from allauth.account import app_settings
+from allauth.account.views import SignupView as AllauthSignupView, ConfirmEmailView as CoreConfirmEmailView
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
@@ -32,3 +33,18 @@ def user_settings_view(request):
         'email_change_form': email_change_form,
         'change_profile_form': edit_profile_form,
     })
+
+
+class ConfirmEmailView(CoreConfirmEmailView):
+    def login_on_confirm(self, confirmation):
+        """
+        Redirects the user to the user settings page only after successfully confirming the email address.
+        """
+        resp = super(ConfirmEmailView, self).login_on_confirm(confirmation)
+        if resp:
+            if app_settings.EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL:
+                return HttpResponseRedirect(app_settings.EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL)
+            else:
+                return HttpResponseRedirect('/')
+
+confirm_email = ConfirmEmailView.as_view()
