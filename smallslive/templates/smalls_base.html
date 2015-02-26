@@ -1,3 +1,4 @@
+{% load account %}
 {% load pipeline %}
 {% load static from staticfiles %}
 <!DOCTYPE html>
@@ -60,8 +61,12 @@
                 </ul>
             </li>
             <li role="presentation" class="divider"></li>
-            <li><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
-            <li><a href="{% url "static_page" "sign-up" %}">Sign up</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="#" data-toggle="modal" data-target="#logIn">{% user_display user %}</a></li>
+             {% else %}
+                <li><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
+                <li><a href="{% url "static_page" "sign-up" %}">Sign up</a></li>
+            {% endif %}
           </ul>
         </div>
       </div>
@@ -84,8 +89,12 @@
 <header class="container hidden-xs hidden-sm">
   <a href="/" class="smalls-logo"><img src="{% static 'logo.svg' %}" width="101" height="100" alt=""/></a>
   <ul class="header-login clearfix">
-    <li class="header-login__item"><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
-    <li class="header-login__item"><a href="{% url "static_page" "sign-up" %}">Sign up</a></li>
+    {% if user.is_authenticated %}
+      <li class="header-login__item">Logged in as: <a href="#" data-toggle="modal" data-target="#logIn">{% user_display user %}</a></li>
+    {% else %}
+        <li class="header-login__item"><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
+        <li class="header-login__item"><a href="{% url "static_page" "sign-up" %}">Sign up</a></li>
+    {% endif %}
   </ul>
   <nav class="navigation navbar-collapse">
     <ul>

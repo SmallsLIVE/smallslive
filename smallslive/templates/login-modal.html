@@ -1,3 +1,5 @@
+{% load socialaccount %}
+{% providers_media_js %}
 <!-- MODALS -->
 <!-- Log in modal -->
 	<div class="modal fade" id="logIn" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -27,7 +29,7 @@
                             <a class="login-button" href="">Log in</a>
                         </div>
                         <div class="col-sm-7 col-xs-12">
-                            <a class="fb-login-button" href=""><div class="vcenter"><i class="fa fa-facebook-square"></i></div><div class="vcenter">Log in with Facebook</div></a>
+                            <a class="fb-login-button" href="{% provider_login_url "facebook" method="js_sdk" %}"><div class="vcenter"><i class="fa fa-facebook-square"></i></div><div class="vcenter">Log in with Facebook</div></a>
                         </div>
                         <div class="col-xs-12 modal-separator"></div>
                         <div class="col-xs-12">
