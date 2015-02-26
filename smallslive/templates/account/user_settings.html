@@ -1,0 +1,63 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+<div class="content-wrapper">
+
+  <section class="user-settings container">
+
+    <h1 class="sign-up__main-title">Account settings</h1>
+
+    <div class="row">
+
+
+            <div class="col-sm-6 col-xs-12 user-settings__form left">
+
+                <h2 class="user-settings__form__heading">Email address:</h2>
+                <p class="user-settings__form__text">Please note that you'll need to confirm your ownership of the new email address once you set it. To do that just follow the confirmation link we'll send to that address.</p>
+                {{ email_change_form.email.label_tag }}
+                {{ email_change_form.email }}
+                <input type="submit" class="user-settings__form__button disabled" value="Save">
+
+                <h2 class="user-settings__form__heading">Change password:</h2>
+                <p class="user-settings__form__text">To change your password please input your new password twice.</p>
+                <label for="name">New password</label>
+                <input type="password" class="form-control" name="password1">
+                <label for="surname">New password again</label>
+                <input type="password" class="form-control" name="password2">
+                <input type="submit" class="user-settings__form__button" value="Change password">
+
+            </div>
+
+            <div class="col-sm-6 col-xs-12 user-settings__form right">
+                <form role="form" id="form-login" method="post" action="{% url "user_settings" %}">
+                    <h2 class="user-settings__form__heading">Personal information:</h2>
+                    {% csrf_token %}
+                    {{ change_profile_form.first_name.label_tag }}
+                    {{ change_profile_form.first_name }}
+                    {{ change_profile_form.last_name.label_tag }}
+                    {{ change_profile_form.last_name }}
+                    {% comment %}<label for="location">Location</label>
+                    <input type="text" class="form-control" name="location" value="New York, NY">{% endcomment %}
+
+                    <h2 class="user-settings__form__heading">Notification settings:</h2>
+                    <div class="row">
+                        <div>
+                            <input type="checkbox" name="terms-agree">
+                        </div>
+                        <div class="col-xs-10">
+                            <span class="checkbox-label">I wish to receive news and updates on SmallsLIVE and Mezzrow
+        via email.</span>
+                        </div>
+                    </div>
+                    <input type="submit" class="user-settings__form__button disabled" disabled name="edit_profile" value="Save">
+                </form>
+
+            </div>
+
+
+    </div>
+
+  </section>
+</div>
+{% endblock content %}

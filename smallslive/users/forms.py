@@ -27,3 +27,42 @@ class UserSignupForm(SignupForm):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         user.save()
+
+
+class ChangeEmailForm(forms.Form):
+    email = forms.EmailField(max_length=80, required=True,
+                             label="Your email address",
+                             widget=forms.TextInput(attrs={
+                                 'class': 'form-control'
+                             }))
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super(ChangeEmailForm, self).__init__(*args, **kwargs)
+        self.fields['email'].initial = self.user.email
+
+
+class EditProfileForm(forms.Form):
+    first_name = forms.CharField(max_length=50, required=False,
+                                 label="First name",
+                                 widget=forms.TextInput(attrs={
+                                     'placeholder': 'Your first name',
+                                     'class': 'form-control'
+                                 }))
+    last_name = forms.CharField(max_length=50, required=False,
+                                label="Last name",
+                                widget=forms.TextInput(attrs={
+                                    'placeholder': 'Your last name',
+                                    'class': 'form-control'
+                                }))
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        self.fields['first_name'].initial = self.user.first_name
+        self.fields['last_name'].initial = self.user.last_name
+
+    def save(self):
+        self.user.first_name = self.cleaned_data['first_name']
+        self.user.last_name = self.cleaned_data['last_name']
+        self.user.save()
