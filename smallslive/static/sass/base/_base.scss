@@ -144,8 +144,9 @@ p.unavailable {
   @include lato;
   font-size: 12px;
   background-color: rgba(210,21,53,0.7);
-  padding: 4px;
+  padding: 4px 8px;
   color: white;
+  border-radius: 100%;
 }
 
 @media (max-width: 740px) {
