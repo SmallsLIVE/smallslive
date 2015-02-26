@@ -90,10 +90,10 @@
   <a href="/" class="smalls-logo"><img src="{% static 'logo.svg' %}" width="101" height="100" alt=""/></a>
   <ul class="header-login clearfix">
     {% if user.is_authenticated %}
-      <li class="header-login__item">Logged in as: <a href="#" data-toggle="modal" data-target="#logIn">{% user_display user %}</a></li>
+      <li class="header-login__item">Logged in as: <a href="{% url "account_logout" %}">{% user_display user %}</a></li>
     {% else %}
         <li class="header-login__item"><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
-        <li class="header-login__item"><a href="{% url "static_page" "sign-up" %}">Sign up</a></li>
+        <li class="header-login__item"><a href="{% url "account_signup" %}">Sign up</a></li>
     {% endif %}
   </ul>
   <nav class="navigation navbar-collapse">

@@ -1,84 +1,101 @@
 {% extends "smalls_base.html" %}
-{% load account crispy_forms_tags socialaccount %}
-{% block nav %}{% endblock nav %}
-{% block title %}Sign up for SmallsLIVE{% endblock %}
-{% block content %} 
-  <div class="row">
-    <div class="col-sm-offset-2 col-md-offset-3 col-sm-8 col-md-6">
-    
-      <div class="page-header">
-        <h1>Sign up for a free account</h1>
-      </div> 
-      <div class="marketing-reasons">
-        <p>Already have an account?  <a href="{{ login_url }}">Log in now</a>. Otherwise, sign up to get:</p>
-        <ul>
-          <li>Access each evening's live concert videos (available in real-time only)</li>
-          <li>A 30-day free trial to our Premium Subscription ($10/mo), which includes full access to our archive of 1,000s of concert videos and audio sets taped at Smalls (watch any time)</li>
-          <li>Note: Premium Subscription trial will end on June 26, 2014 unless you set up payment</li>
-        </ul>
+{% load static from staticfiles %}
+{% load socialaccount %}
+
+{% block content %}
+  <div class="content-wrapper">
+
+    <section class="social-connect container vertical-align-parent">
+      <div class="vertical-align-child">
+        <h1 class="social-connect__title">Sign up with one click</h1>
+
+        <p class="social-connect__text">You can sign up for SmallsLIVE with just one click if you have a Facebook
+          account!<br>Alternatively, below you can quickly sign up using your email.</p>
+        <a class="fb-login-button" href="{% provider_login_url "facebook" method="js_sdk" %}">
+          <div class="vcenter"><i class="fa fa-facebook-square"></i></div>
+          <div class="vcenter">Sign up with Facebook</div>
+        </a>
       </div>
-      <form id="signup_form" method="post" action="{% url 'account_signup' %}">
-        <div class="social-signup {% if request.GET.facebook %}authenticated-by-social{% endif %} "> 
+    </section>
 
-          {% if request.GET.facebook %}
-            <h5>Create Account</h5>
-            <p class="text-success socially-authorized"><span class="glyphicon glyphicon-ok"></span> You are signed in to SmallsLIVE with Facebook (<a href="./?" class="text-muted">Disconnect</a>)</p>
-            
-        
-          {% else %}
-            <h4 class="text-primary"><span class="label label-primary">Optional</span> Use your social media account to sign up</h4>
-            <p>If you don't want to create a password just for SmallsLIVE, you can use one of these sites to log in to SmallsLIVE going forward. </p> 
-            <p><a href="{% provider_login_url "facebook" method="oauth2" %}" class="btn btn-default btn-sm">Facebook</a> <a href="{% provider_login_url "linkedin_oauth2" method="oauth2" %}" class="btn btn-default btn-sm">LinkedIn</a> <a href="{% provider_login_url "google" method="oauth2" %}" class="btn btn-default btn-sm">Google</a> <a href="{% provider_login_url "twitter" method="oauth2" %}" class="btn btn-default btn-sm">Twitter</a></p>
-          {% endif %}
-        </div>
-        {% csrf_token %}
-        <!-- {{ form|crispy }} -->
-        {% if redirect_field_value %}
-          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-        {% endif %}  
-  
-        {% if not request.GET.facebook %}       
-          <h4 class="text-primary">Or, create an account:</h4>
-          <div class="form-group" id="div_id_subscriber_email">
-            <label class="control-label " for="div_id_subscriber_email">Your email address:</label>
-            <div class="controls ">
-              <input type="text" placeholder="" name="subscriber_email" value="" id="id_subscriber_email" class="form-control">
-            </div>
-          </div>  
-          <div class="form-group" id="div_id_password">
-            <label class="control-label " for="div_id_password">Choose a password:</label>
-            <div class="controls ">
-              <input type="password" placeholder="" name="password" value="" id="id_password" class="form-control">
-            </div>
-            <p class="help-block">6 characters minimum.[requirements?<code>3</code>]
-          </div> 
-        {% endif %}
-          <h5>Upgrade now to Premium service for $10/mo?</h5>
-          <div class="checkbox trigger-credit-card-fields ">
-            <label ><input type="checkbox" value="">Yes, I want to pay for uninterrupted access to the video &amp; audio</label>             
-        </div>
- 
-        <div class="credit-card-fields ">
-          {% include 'blocks/credit-card-fields.html' %}
-        </div>
-          {% include 'blocks/user-signup-TOC-checkbox.html' %} 
-          <div class="form-group primary-submit"> 
-            <button type="submit" class="btn btn-primary">Sign Up Now <code>2</code></button>      
-          </div>          
-      </form>  
-    </div> 
-  </div>
-  <div class="dev">
-  <h1>Alternate Views:</h1>
-    <ul>
-      <li><a href="./?facebook=1">View if auth'd with facebook</a> - we hide the SL account sign up fields and still show Terms sign up.</li> 
-    </ul>
-  <h1>UI Reqs</h1>
-      <li><code>1</code> - after paypal is clicked, we should process their account/form in the backend, and then redirect - dont take them back to this screen.
-      <li><code>2</code> - after they start the trial, take them back to the context_url that they were attempting to access when they started this flow (e.g. if they were trying to watch a video or hear a specific recording, take them to that)
-      <li><code>3</code> - fill in requirements here for password</li>
-      <li><code>4</code> - this should open in a jQuery style dialog box (dont leave the page, dont open a new browser window). Width should be ~50em and height can = 80% of window height.</li>
-    </ul>
-  </div>
-{% endblock %}
+    <section class="sign-up container">
 
+      <h1 class="sign-up__main-title">Sign up for SmallsLIVE using email</h1>
+      <div class="row">
+        <div class="col-sm-6 col-xs-12 sign-up__form">
+          <form role="form" id="form-login" action="{% url "account_signup" %}" method="post">
+            {% csrf_token %}
+            {{ form.errors }}
+            <h2 class="sign-up__form__heading">Basic account information:</h2>
+            <div class="form-group {% if form.email.errors %}has-error{% endif %}">
+            <label class="control-label" for="email">Your email address <span class="required">required</span></label>
+            {{ form.email }}
+            </div>
+            <div class="form-group {% if form.password1.errors %}has-error{% endif %}">
+                <label for="password">Your password <span class="required">required</span></label>
+                <input type="password" class="form-control" name="password1" placeholder="Your password">
+            </div>
+            <div class="form-group {% if form.password2.errors %}has-error{% endif %}">
+                <label for="confirm-password">Confirm your password <span class="required">required</span></label>
+                <input type="password" class="form-control" name="password2" placeholder="Confirm your password">
+            </div>
+
+            <h2 class="sign-up__form__heading">Personal information:</h2>
+            {{ form.first_name.label_tag }}
+            {{ form.first_name }}
+            {{ form.last_name.label_tag }}
+            {{ form.last_name }}
+            {% comment %}
+            <label for="location">Location</label>
+            <input type="text" class="form-control" name="location" placeholder="Your location">
+            {% endcomment %}
+
+            <h2 class="sign-up__form__heading">Notification settings:</h2>
+            <div class="row">
+              <div>
+                <input type="checkbox" name="terms_of_service">
+              </div>
+              <div class="col-xs-10">
+                <span class="checkbox-label">I agree with <a href="{% url "static_page" "terms-of-use" %}"
+                                                             target="_blank">terms and
+                  conditions</a> of SmallsLIVE</span>
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <input type="checkbox" name="terms-agree">
+              </div>
+              <div class="col-xs-10">
+                <span class="checkbox-label">I wish to receive news and updates on SmallsLIVE and Mezzrow via email.</span>
+              </div>
+            </div>
+            {{ form.confirmation_key }}
+            <input type="submit" class="sign-up__form__button" value="Sign up with email">
+          </form>
+        </div>
+
+        <div class="col-sm-6 col-xs-12 sign-up__hints">
+          <h2 class="sign-up__form__heading">Some info:</h2>
+          <ul class="sign-up__hints__list">
+            <li><b>Please provide a valid email address.</b> A confirmation email will be sent to the address you
+              provide. Without <b>confirming the email address you will not be able to use the benefits</b> of your
+              SmallsLIVE account.
+            </li>
+            <li>We recommend that your password contains <b>at least 6 characters</b>, and that you use a combination of
+              small and capital letters and numerals.
+            </li>
+            <li><b>SmallsLIVE will not share any of your personal information</b> with any third parties, and will use
+              it only to enhance your experience of SmallsLIVE platform.
+            </li>
+            <li>We send weekly news and updates to our users and fans via newsletters. If you don’t want to receive
+              those go on and break our heart by turning them off in notification settings.
+            </li>
+            <li>If you encounter any problems with the signup process, or have any questions, feel free to contact us on
+              <a href="mailto:info@smallsjazzclub.com" target="_blank">info@smallsjazzclub.com</a></li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+  </div>
+{% endblock content %}

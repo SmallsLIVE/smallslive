@@ -121,6 +121,7 @@
 
     &__button {
       @include lato-bold;
+      border: 0;
       font-size: 16px;
       padding: 10px 60px;
       background-color: $main-accent-color;
@@ -132,7 +133,7 @@
       float: left;
 
       &:hover {
-        color: rgba(255, 255, 255, 0.7);
+        opacity: 0.8;
         text-decoration: none;
       }
     }
