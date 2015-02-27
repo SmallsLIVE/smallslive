@@ -241,8 +241,13 @@
             <p class="homepage-news__text">Stay informed on everything regarding Smalls!</p>
           </div><!--
        --><div class="col-xs-12 col-md-6 vcenter">
-              <input type="text" class="homepage-news__input" placeholder="Your email address"/>
-              <input type="submit" value="SUBSCRIBE" class="homepage-news__button"/>
+            {% if not user.newsletter %}
+              <form action="{% url "newsletters" %}" method="post">
+                  {% csrf_token %}
+                  <input type="email" required class="homepage-news__input" name="email" placeholder="Your email address" value="{% if user.is_authenticated %}{{ user.email }}{% endif %}"/>
+                  <input type="submit" value="SUBSCRIBE" class="homepage-news__button"/>
+              </form>
+            {% endif %}
           </div>
         </div>
       </section>

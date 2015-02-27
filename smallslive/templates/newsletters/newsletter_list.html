@@ -9,6 +9,7 @@
     <p>
         This is the newsletter archive. This text explains what our newsletters are, and also may get people to want to subscribe. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
     </p>
+    {% if not user.newsletter %}
     <div class="newsletters__subscribe row">
         <div class="col-xs-12 newsletters__subscribe__text">
             Sign up and stay informed!
@@ -21,6 +22,7 @@
           </form>
         </div>
     </div>
+    {% endif %}
   {% regroup newsletters by date.year as newsletter_years %}
   {% for year in newsletter_years %}
     <div class="newsletters__year row">
