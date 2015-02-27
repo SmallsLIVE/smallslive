@@ -35,7 +35,7 @@
                             <p class="form-error-text">{{ error  }}</p>
                         {% endfor %}
                     </div>
-                    <input type="submit" class="user-settings__form__button" name="change_password" value="Change password">
+                    <input type="submit" class="user-settings__form__button disabled" name="change_password" disabled value="Change password">
                 </form>
 
             </div>
@@ -44,12 +44,20 @@
                 <form role="form" id="edit-profile-form" method="post" action="{% url "user_settings" %}">
                     <h2 class="user-settings__form__heading">Personal information:</h2>
                     {% csrf_token %}
-                    {{ change_profile_form.first_name.label_tag }}
-                    {{ change_profile_form.first_name }}
-                    {% if change_profile_form.first_name.error %}<p class="form-error-text">{{ change_profile_form.first_name.error }}</p>{% endif %}
-                    {{ change_profile_form.last_name.label_tag }}
-                    {{ change_profile_form.last_name }}
-                    {% if change_profile_form.last_name.error %}<p class="form-error-text">{{ change_profile_form.last_name.error }}</p>{% endif %}
+                    <div class="form-group {% if change_profile_form.first_name.errors  %}has-error{% endif %}">
+                        {{ change_profile_form.first_name.label_tag }}
+                        {{ change_profile_form.first_name }}
+                        {% for error in change_profile_form.first_name.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group {% if change_profile_form.last_name.errors  %}has-error{% endif %}">
+                        {{ change_profile_form.last_name.label_tag }}
+                        {{ change_profile_form.last_name }}
+                        {% for error in change_profile_form.last_name.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
                     {% comment %}<label for="location">Location</label>
                     <input type="text" class="form-control" name="location" value="New York, NY">{% endcomment %}
 
