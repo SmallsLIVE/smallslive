@@ -1,12 +1,19 @@
-from django.conf import settings
-from django.shortcuts import render
-from django.views.generic import ListView
+from django.shortcuts import redirect, render
+from .forms import NewsletterSubscribeForm
 from .models import Newsletter
 
 
-class NewsletterListView(ListView):
-    model = Newsletter
-    context_object_name = 'newsletters'
-    template_name = 'newsletters/newsletter_list.html'
+def newsletter_list(request):
+    user = request.user or None
+    if request.method == 'POST':
+        form = NewsletterSubscribeForm(request.POST, user=user)
+        if form.is_valid():
+            form.subscribe()
+            return redirect('home')
+    else:
+        form = NewsletterSubscribeForm(user=user)
 
-newsletter_list = NewsletterListView.as_view()
+    return render(request, 'newsletters/newsletter_list.html', {
+        'newsletters': Newsletter.objects.all(),
+        'form': form
+    })

@@ -14,8 +14,11 @@
             Sign up and stay informed!
         </div>
         <div class="col-xs-12 col-sm-7">
-            <input type="text" class="newsletters__subscribe__input" placeholder="Your email address"/>
+          <form action="{% url "newsletters" %}" method="post">
+            {% csrf_token %}
+            {{ form.email }}
             <input type="submit" value="SUBSCRIBE" class="newsletters__subscribe__button"/>
+          </form>
         </div>
     </div>
   {% regroup newsletters by date.year as newsletter_years %}

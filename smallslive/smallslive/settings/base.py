@@ -326,6 +326,7 @@ SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 
 # Mailchimp
 MAILCHIMP_API_KEY = os.environ.get('MAILCHIMP_API_KEY')
+MAILCHIMP_LIST_ID = os.environ.get('MAILCHIMP_LIST_ID')  # mailing list id
 
 # TinyMCE
 TINYMCE_JS_URL = os.path.join(STATIC_URL, "js/tinymce/tinymce.min.js")
