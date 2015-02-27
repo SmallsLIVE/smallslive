@@ -23,11 +23,14 @@ class UserSignupForm(SignupForm):
                                     'class': 'form-control'
                                 }))
     terms_of_service = forms.BooleanField(required=True)
+    newsletter = forms.BooleanField()
 
     def signup(self, request, user):
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
         user.save()
+        if self.cleaned_data.get('newsletter'):
+            user.subscribe_to_newsletter()
 
 
 class EditProfileForm(forms.Form):
@@ -43,6 +46,7 @@ class EditProfileForm(forms.Form):
                                     'placeholder': 'Your last name',
                                     'class': 'form-control'
                                 }))
+    newsletter = forms.BooleanField()
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
@@ -54,6 +58,8 @@ class EditProfileForm(forms.Form):
         self.user.first_name = self.cleaned_data['first_name']
         self.user.last_name = self.cleaned_data['last_name']
         self.user.save()
+        if self.cleaned_data.get('newsletter'):
+            self.user.subscribe_to_newsletter()
 
 
 class ChangeEmailForm(AddEmailForm):

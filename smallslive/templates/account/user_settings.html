@@ -71,11 +71,11 @@
                     <h2 class="user-settings__form__heading">Notification settings:</h2>
                     <div class="row">
                         <div>
-                            <input type="checkbox" name="terms-agree">
+                            {{ change_profile_form.newsletter }}
                         </div>
                         <div class="col-xs-10">
-                            <span class="checkbox-label">I wish to receive news and updates on SmallsLIVE and Mezzrow
-        via email.</span>
+                            <label for="id_newsletter" class="checkbox-label">I wish to receive news and updates on SmallsLIVE and Mezzrow
+        via email.</label>
                         </div>
                     </div>
                     <input type="submit" class="user-settings__form__button disabled" disabled name="edit_profile" value="Save">

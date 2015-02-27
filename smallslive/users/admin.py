@@ -88,7 +88,7 @@ class SmallsUserAdmin(UserAdmin):
         ('Personal info', {'fields': ('first_name', 'last_name', 'address_1', 'address_2', 'city', 'state',
                                       'zip', 'country', 'phone_1', 'website', 'photo')}),
         ('Site info', {'fields': ('access_level', 'login_count', 'accept_agreement', 'renewal_date',
-                                  'subscription_price', 'company_name')}),
+                                  'subscription_price', 'company_name', 'newsletter')}),
         ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser',
                                     'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),

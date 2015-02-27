@@ -70,7 +70,7 @@
 
             <h2 class="sign-up__form__heading">Notification settings:</h2>
             <div class="row">
-                <input type="checkbox" name="terms_of_service" id="id_terms_of_service">
+                {{ form.terms_of_service }}
               <div class="col-xs-10">
                 <div class="form-group {% if form.terms_of_service.errors %}has-error{% endif %}">
                 <label for="id_terms_of_service" class="checkbox-label control-label">I agree with <a href="{% url "static_page" "terms-of-use" %}"
@@ -84,10 +84,10 @@
             </div>
             <div class="row">
               <div>
-                <input type="checkbox" name="terms-agree">
+                {{ form.newsletter }}
               </div>
               <div class="col-xs-10">
-                <p class="checkbox-label">I wish to receive news and updates on SmallsLIVE and Mezzrow via email.</p>
+                <label for="id_newsletter" class="checkbox-label">I wish to receive news and updates on SmallsLIVE and Mezzrow via email.</label>
               </div>
             </div>
             {{ form.confirmation_key }}
