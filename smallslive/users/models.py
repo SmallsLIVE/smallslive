@@ -1,6 +1,7 @@
 from allauth.account import signals
 from allauth.account.adapter import get_adapter
 from allauth.account.models import EmailAddress, EmailConfirmation
+from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
@@ -8,6 +9,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.utils import timezone
 from django.utils.functional import cached_property
+from mailchimp import Mailchimp
+from newsletters.utils import subscribe_to_newsletter, unsubscribe_from_newsletter
 
 from model_utils import Choices
 
@@ -71,6 +74,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     country = models.CharField(max_length=100, blank=True)
     phone_1 = models.CharField(max_length=100, blank=True)
     website = models.CharField(max_length=100, blank=True)
+    newsletter = models.BooleanField(default=False)
 
     objects = SmallsUserManager()
 
@@ -114,6 +118,20 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         Checks if a user has an artist model assigned
         """
         return hasattr(self, "artist")
+
+    def subscribe_to_newsletter(self):
+        if not self.newsletter:
+            subscribed = subscribe_to_newsletter(self.email)
+            if subscribed:
+                self.newsletter = True
+                self.save()
+
+    def unsubscribe_from_newsletter(self):
+        if self.newsletter:
+            unsubscribed = unsubscribe_from_newsletter(self.email)
+            if unsubscribed:
+                self.newsletter = False
+                self.save()
 
 
 class SmallsEmailConfirmation(EmailConfirmation):
