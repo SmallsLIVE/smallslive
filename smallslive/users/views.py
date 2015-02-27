@@ -1,6 +1,7 @@
 from allauth.account import app_settings
 from allauth.account.forms import SetPasswordForm
 from allauth.account.views import SignupView as AllauthSignupView, ConfirmEmailView as CoreConfirmEmailView
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
@@ -26,9 +27,12 @@ def user_settings_view(request):
         edit_profile_form = EditProfileForm(user=request.user)
 
     if 'change_email' in request.POST:
-        email_change_form = ChangeEmailForm(request.POST, user=request.user)
+        change_email_form = ChangeEmailForm(data=request.POST, user=request.user)
+        if change_email_form.is_valid():
+            change_email_form.save(request)
+            return HttpResponseRedirect(reverse('account_email_verification_sent'))
     else:
-        email_change_form = ChangeEmailForm(user=request.user)
+        change_email_form = ChangeEmailForm(user=request.user)
 
     if 'change_password' in request.POST:
         change_password_form = SetPasswordForm(data=request.POST, user=request.user)
@@ -39,7 +43,7 @@ def user_settings_view(request):
         change_password_form = SetPasswordForm(user=request.user)
 
     return render(request, 'account/user_settings.html', {
-        'email_change_form': email_change_form,
+        'change_email_form': change_email_form,
         'change_profile_form': edit_profile_form,
         'change_password_form': change_password_form,
     })
