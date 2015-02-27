@@ -1,0 +1,39 @@
+{% extends "static-page.html" %}
+{% load static from staticfiles %}
+
+{% block newsletters-active %}static-nav__item--active{% endblock %}
+
+{% block static-content %}
+  <section class="static-content newsletters col-xs-12 col-md-9">
+    <h1 class="static-content__main-title">Newsletters Archive</h1>
+    <p>
+        This is the newsletter archive. This text explains what our newsletters are, and also may get people to want to subscribe. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+    </p>
+    <div class="newsletters__subscribe row">
+        <div class="col-xs-12 newsletters__subscribe__text">
+            Sign up and stay informed!
+        </div>
+        <div class="col-xs-12 col-sm-7">
+            <input type="text" class="newsletters__subscribe__input" placeholder="Your email address"/>
+            <input type="submit" value="SUBSCRIBE" class="newsletters__subscribe__button"/>
+        </div>
+    </div>
+  {% regroup newsletters by date.year as newsletter_years %}
+  {% for year in newsletter_years %}
+    <div class="newsletters__year row">
+        <div class="newsletters__year__heading col-xs-12">{{ year.grouper }}</div>
+        {% for newsletter in year.list %}
+        <div class="newsletter col-xs-6 col-sm-4">
+            <div class="newsletter__title">{{ newsletter.title }}</div>
+            <div class="newsletter__date">{{ newsletter.date|date:"n/j/Y" }}</div>
+            <div class="newsletter__excerpt">{{ newsletter.content|truncatewords:60 }}</div>
+            <div class="newsletter__separator"></div>
+            <a href="{{ newsletter.link }}" class="newsletter__view-button">Read <span class="hidden-xs">newsletter</span></a><span class="arrow"></span>
+        </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+
+
+  </section>
+{% endblock static-content %}

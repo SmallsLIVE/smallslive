@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     'artists',
     'events',
     'multimedia',
+    'newsletters',
     'old_site',
     'static_pages',
     'users',
@@ -322,6 +323,9 @@ ACCOUNT_USER_DISPLAY = lambda u: u.display_name()
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = reverse_lazy('user_settings')
 SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
+
+# Mailchimp
+MAILCHIMP_API_KEY = os.environ.get('MAILCHIMP_API_KEY')
 
 # TinyMCE
 TINYMCE_JS_URL = os.path.join(STATIC_URL, "js/tinymce/tinymce.min.js")
