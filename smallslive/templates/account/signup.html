@@ -25,28 +25,44 @@
         <div class="col-sm-6 col-xs-12 sign-up__form">
           <form role="form" id="form-login" action="{% url "account_signup" %}" method="post">
             {% csrf_token %}
-            {{ form.errors }}
             <h2 class="sign-up__form__heading">Basic account information:</h2>
             <div class="form-group {% if form.email.errors %}has-error{% endif %}">
-            <label class="control-label" for="email">Your email address <span class="required">required</span></label>
-            {{ form.email }}
+                <label class="control-label" for="id_email">Your email address <span class="required">required</span></label>
+                {{ form.email }}
+                {% for error in form.email.errors %}
+                    <p class="form-error-text">{{ error  }}</p>
+                {% endfor %}
             </div>
             <div class="form-group {% if form.password1.errors %}has-error{% endif %}">
-                <label for="password">Your password <span class="required">required</span></label>
-                <input type="password" class="form-control" name="password1" placeholder="Your password">
-                <p class="form-error-text">Invalid password tralalalalallalala.</p>
+                <label class="control-label" for="id_password1">Your password <span class="required">required</span></label>
+                <input type="password" class="form-control" name="password1" id="id_password1" placeholder="Your password">
+                {% for error in form.password1.errors %}
+                    <p class="form-error-text">{{ error  }}</p>
+                {% endfor %}
             </div>
             <div class="form-group {% if form.password2.errors %}has-error{% endif %}">
-                <label for="confirm-password">Confirm your password <span class="required">required</span></label>
-                <input type="password" class="form-control" name="password2" placeholder="Confirm your password">
-                <p class="form-error-text">Invalid password tralalalalallalala.</p>
+                <label class="control-label" for="id_password2">Confirm your password <span class="required">required</span></label>
+                <input type="password" class="form-control" name="password2" id="id_password2" placeholder="Confirm your password">
+                {% for error in form.password2.errors %}
+                    <p class="form-error-text">{{ error  }}</p>
+                {% endfor %}
             </div>
 
             <h2 class="sign-up__form__heading">Personal information:</h2>
-            {{ form.first_name.label_tag }}
-            {{ form.first_name }}
-            {{ form.last_name.label_tag }}
-            {{ form.last_name }}
+            <div class="form-group {% if form.first_name.errors %}has-error{% endif %}">
+                {{ form.first_name.label_tag }}
+                {{ form.first_name }}
+                {% for error in form.first_name.errors %}
+                    <p class="form-error-text">{{ error  }}</p>
+                {% endfor %}
+            </div>
+            <div class="form-group {% if form.last_name.errors %}has-error{% endif %}">
+                {{ form.last_name.label_tag }}
+                {{ form.last_name }}
+                {% for error in form.last_name.errors %}
+                    <p class="form-error-text">{{ error  }}</p>
+                {% endfor %}
+            </div>
             {% comment %}
             <label for="location">Location</label>
             <input type="text" class="form-control" name="location" placeholder="Your location">
@@ -54,14 +70,16 @@
 
             <h2 class="sign-up__form__heading">Notification settings:</h2>
             <div class="row">
-              <div>
-                <input type="checkbox" name="terms_of_service">
-              </div>
+                <input type="checkbox" name="terms_of_service" id="id_terms_of_service">
               <div class="col-xs-10">
-                <p class="checkbox-label">I agree with <a href="{% url "static_page" "terms-of-use" %}"
+                <div class="form-group {% if form.terms_of_service.errors %}has-error{% endif %}">
+                <label for="id_terms_of_service" class="checkbox-label control-label">I agree with <a href="{% url "static_page" "terms-of-use" %}"
                                                              target="_blank">terms and
-                  conditions</a> of SmallsLIVE</p>
-                <p class="form-error-text">Invalid password tralalalalallalala.</p>
+                  conditions</a> of SmallsLIVE</label>
+                </div>
+                {% for error in form.terms_of_service.errors %}
+                    <p class="form-error-text">{{ error  }}</p>
+                {% endfor %}
               </div>
             </div>
             <div class="row">
