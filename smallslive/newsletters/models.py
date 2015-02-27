@@ -10,3 +10,6 @@ class Newsletter(models.Model):
 
     class Meta:
         ordering = ['-date']
+
+    def __unicode__(self):
+        return u"{:%m/%d/%Y} {}".format(self.date, self.title)
