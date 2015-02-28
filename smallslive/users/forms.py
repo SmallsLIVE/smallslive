@@ -46,13 +46,14 @@ class EditProfileForm(forms.Form):
                                     'placeholder': 'Your last name',
                                     'class': 'form-control'
                                 }))
-    newsletter = forms.BooleanField()
+    newsletter = forms.BooleanField(required=False)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(EditProfileForm, self).__init__(*args, **kwargs)
         self.fields['first_name'].initial = self.user.first_name
         self.fields['last_name'].initial = self.user.last_name
+        self.fields['newsletter'].initial = self.user.newsletter
 
     def save(self):
         self.user.first_name = self.cleaned_data['first_name']
@@ -60,6 +61,8 @@ class EditProfileForm(forms.Form):
         self.user.save()
         if self.cleaned_data.get('newsletter'):
             self.user.subscribe_to_newsletter()
+        else:
+            self.user.unsubscribe_from_newsletter()
 
 
 class ChangeEmailForm(AddEmailForm):
