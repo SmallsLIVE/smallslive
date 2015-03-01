@@ -8,6 +8,7 @@ boto==2.28.0
 dj-database-url==0.3.0
 git+git://github.com/kennethreitz/dj-static.git
 djrill==1.1.1
+djangoajax==2.2.15
 django-allauth==0.19.1
 django-appconf==1.0.1
 django-braces==1.4.0

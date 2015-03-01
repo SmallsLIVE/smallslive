@@ -9,6 +9,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView, BaseDetailView
 from django.views.generic import TemplateView
 
+from django_ajax.mixin import AJAXMixin
 from braces.views import LoginRequiredMixin, SuperuserRequiredMixin, UserPassesTestMixin
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
 from haystack.query import SearchQuerySet, RelatedSearchQuerySet
@@ -265,3 +266,9 @@ class ArtistVideoManager(ListView):
     context_object_name = 'past_events'
 
 artist_video_manager = ArtistVideoManager.as_view()
+
+
+class EventCarouselAjaxView(AJAXMixin, TemplateView):
+    template_name = "blocks/schedule-event-details-carousel.html"
+
+event_carousel_ajax = EventCarouselAjaxView.as_view()
