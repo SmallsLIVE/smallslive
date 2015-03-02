@@ -24,21 +24,19 @@ from .models import Event
 from multimedia.models import Media
 
 
-class HomepageView(TemplateView):
+class HomepageView(ListView):
     template_name = 'home.html'
     context_object_name = 'events'
 
+    def get_queryset(self):
+        date_range_start = timezone.localtime(timezone.now()).replace(hour=5, minute=0)
+        date_range_end = date_range_start + timedelta(days=1)
+        return Event.objects.filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
+
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
-        today = datetime.now().date()
-        few_days_out = today + timedelta(days=3)
-        # temporarily removing this so we don't have to generate future events for testing all the time,
-        # just show the 5 future events for now
-        #context['events'] = Event.objects.filter(start__range=(today, few_days_out)).reverse()
-        events = list(Event.objects.all().order_by("-start")[:8])
-        events.reverse()
-        context['events'] = events
-        context['videos'] = Media.objects.order_by('-id')[:5]
+        start = timezone.localtime(timezone.now()) - timedelta(hours=4)
+        context['dates'] = [start + timedelta(days=d) for d in range(5)]
         return context
 
 homepage = HomepageView.as_view()
