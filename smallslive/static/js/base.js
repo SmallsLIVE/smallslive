@@ -94,10 +94,10 @@ $(document).ready(function () {
 /* Bootstrap datepicker for Schedule page */
 
 $('#schedule__date-picker input').datepicker({
-    format: "MM // yyyy",
-    startView: 1,
-    minViewMode: 1,
+    format: 'MM // yyyy',
+    minViewMode: "months",
     orientation: "top auto",
     autoclose: true,
-    todayHighlight: true
 });
+
+$('#schedule__date-picker input').datepicker("setDate", new Date());
