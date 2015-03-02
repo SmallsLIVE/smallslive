@@ -1,0 +1,28 @@
+.alert {
+  color: #fff;
+  border-radius: 0;
+  @include lato;
+  border: none;
+
+  &.alert-success {
+    background-color: #5FA051;
+  }
+
+  &.alert-info {
+    background-color: #68ACE3;
+  }
+
+  &.alert-warning {
+    background-color: #DC9231;
+  }
+
+  &.alert-danger {
+    background-color: $main-accent-color;
+  }
+
+  & .close {
+    background: none;
+    margin-right: 30px;
+    vertical-align: middle;
+  }
+}
