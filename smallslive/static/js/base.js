@@ -46,16 +46,18 @@ $(document).ready(function () {
 
 /* Expanding details for schedule */
 $(document).ready(function () {
-    var active = "0";
+    var active = 0;
     $(".day").click(function () {
+        var position = $(this).data('position');
         $("#event-details-expanded").remove();
-        var that = this;
-        var date = $(this).attr('data-date');
-        $.get('/events/event_carousel_ajax/?date='+date, function(data) {
-            var template = data.content;
-            $(".selected").removeClass('selected');
-            var position = $(that).data('position');
-            if (position != active) {
+        $(".selected").removeClass('selected');
+        if (position != active) {
+            var that = this;
+            var date = $(this).attr('data-date');
+
+            $.get('/events/event_carousel_ajax/?date=' + date, function (data) {
+                var template = data.content;
+
                 $(that).addClass('selected');
                 /* larger devices */
                 var offset;
@@ -69,11 +71,9 @@ $(document).ready(function () {
                 var new_position = position + offset;
                 $('div[data-position=' + new_position + ']').after(template);
                 active = position;
-            }
-            else {
-                active = 0;
-            }
-        });
-
+            })
+        } else {
+            active = 0;
+        }
     });
 });
