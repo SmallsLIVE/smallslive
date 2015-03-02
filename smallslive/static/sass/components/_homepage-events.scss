@@ -4,7 +4,7 @@
   background-size: cover;
 
   &__image {
-    @include filter(grayscale(100%));
+    @include cross-browser-grayscale;
   }
 
   & .info {
@@ -81,6 +81,7 @@
     font-size: 14px;
     background-color: transparent;
     color: #fefefe;
+    cursor:pointer;
   }
 
   &__date-select option {
@@ -135,29 +136,29 @@
 }
 
 .carousel-indicators {
-  position: initial;
-  bottom: initial;
-  left: initial;
-  width: initial;
-  margin-left: initial;
-  padding-left: initial;
-  text-align: initial;
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: auto;
+  margin-left: 0;
+  padding-left: 0;
+  text-align: left;
 
   & .active {
-    margin: initial;
-    width: initial;
-    height: initial;
-    background-color: initial;
+    margin: 0;
+    width: auto;
+    height: auto;
+    background: none;
     color: white;
   }
 
   & li {
-    text-indent: initial;
-    border: initial;
-    border-radius: initial;
-    width: initial;
-    height: initial;
-    margin: initial;
+    text-indent: inherit;
+    border: none;
+    border-radius: 0;
+    width: auto;
+    height: auto;
+    margin: 0;
   }
 }
 

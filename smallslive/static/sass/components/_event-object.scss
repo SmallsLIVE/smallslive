@@ -6,16 +6,17 @@
   border-bottom: 8px solid;
   overflow: hidden;
   cursor: pointer;
+  background-color: #000;
 
   &__image {
     @include img-responsive;
     width: 100%;
-    @include filter(brightness(0.6));
-    @include transition(filter 0.2s ease-in-out);
+    opacity: 0.6;
+    @include transition(opacity 0.2s ease-in-out);
   }
 
   &:hover &__image {
-    @include filter(blur(2px) brightness(0.3));
+    opacity: 0.3;
   }
 
   &__info {
