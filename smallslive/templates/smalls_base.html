@@ -19,7 +19,9 @@
     <![endif]-->
 </head>
 
-{% include "account/login.html" %}
+{% if not user.is_authenticated %}
+    {% include "account/login.html" %}
+{% endif %}
 
 <body>
 <!-- mobile devices header -->
