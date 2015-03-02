@@ -93,7 +93,7 @@ $(document).ready(function () {
 
 /* Bootstrap datepicker for Schedule page */
 
-$('#schedule__date-picker').datepicker({
+$('#schedule__date-picker input').datepicker({
     format: "MM // yyyy",
     startView: 1,
     minViewMode: 1,
