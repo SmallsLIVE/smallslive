@@ -246,4 +246,12 @@ class EventCarouselAjaxView(AJAXMixin, ListView):
             return Event.objects.filter(start__range=(date, end_range_date)).order_by('start')
         return Event.objects.none()
 
+    def get_context_data(self, **kwargs):
+        context = super(EventCarouselAjaxView, self).get_context_data(**kwargs)
+        if self.request.GET.get("template") == "home":
+            start = timezone.localtime(timezone.now()) - timedelta(hours=4)
+            context['dates'] = [start + timedelta(days=d) for d in range(5)]
+        return context
+
+
 event_carousel_ajax = EventCarouselAjaxView.as_view()

@@ -31,7 +31,7 @@
                     <div class="col-md-3 col-xs-12 vcenter">
                         <select name="" id="homepage-date-select" class="event-select__date-select form-control">
                           {% for date in dates %}
-                            <option value="{{ date|date:"n/j/Y" }}">{{ date|naturalday:"l"|capfirst }} // {{ date|date:"n/j/Y" }}</option>
+                            <option value="{{ date|date:"n/j/Y" }}" {% if request.GET.date == date|date:"n/j/Y" %}selected{% endif %}>{{ date|naturalday:"l"|capfirst }} // {{ date|date:"n/j/Y" }}</option>
                           {% endfor %}
                         </select>
                     </div><!--

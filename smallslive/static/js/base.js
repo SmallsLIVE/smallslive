@@ -1,9 +1,14 @@
 /* Solves issues with images filling div's. Adds a img.wide or img.tall class to img element. */
-$(window).load(function () {
-    $('.container').find('img').each(function () {
+
+function makeImagesResponsive(selector) {
+    $(selector).find('img').each(function () {
         var imgClass = (this.width / this.height > 1) ? 'wide' : 'tall';
         $(this).addClass(imgClass);
     })
+}
+
+$(window).load(function () {
+    makeImagesResponsive('.container');
 });
 
 /* Adds swipe ability to Bootstrap event carousel */
@@ -82,12 +87,14 @@ $(document).ready(function () {
 /* Event data for the homepage */
 $(document).ready(function () {
     var active = 0;
-    $("#homepage-date-select").change(function (d) {
+    $("body").on('change', '#homepage-date-select', function (d) {
         var date = $(this).val();
+        var $carousel =
         $.get('/events/event_carousel_ajax/?template=home&date=' + date, function (data) {
                 var template = data.content;
                 $("#upcoming-events-fullsize").replaceWith(template);
-            })
+                makeImagesResponsive('#upcoming-events-fullsize');
+            });
     });
 });
 
