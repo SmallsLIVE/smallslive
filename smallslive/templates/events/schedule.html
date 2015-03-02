@@ -14,6 +14,7 @@
     <!-- flexbox solution -->
     <section class="schedule flex container">
         <div class="schedule__nav flex col-xs-6 col-md-3">
+          {% if not prev_url %}
           <a href="{{ prev_url }}">
             <div class="flex-center">
                 <div class="icon">
@@ -24,6 +25,8 @@
                 </div>
             </div>
           </a>
+        {% endif %}
+
         </div>
         {% regroup events by listing_date as days %}
         {% for day in days %}
