@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 
 
 urlpatterns = patterns('events.views',
+    url(r'^schedule/$', 'schedule', name='schedule'),
     url(r'^event_carousel_ajax/$', 'event_carousel_ajax', name='event_carousel_ajax'),
     url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/$', 'event_detail', name='event_detail'),
     url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/clone/$', 'event_clone', name='event_clone'),

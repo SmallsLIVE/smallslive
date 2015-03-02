@@ -2,7 +2,9 @@ import json
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 from django.http import HttpResponseRedirect
+from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta
 from django.views.generic.list import ListView
@@ -184,6 +186,48 @@ event_search = EventSearchView(
     form_class=EventSearchForm,
     searchqueryset=RelatedSearchQuerySet()
 )
+
+
+class ScheduleView(ListView):
+    context_object_name = 'events'
+    template_name = 'events/schedule.html'
+
+    def get_queryset(self):
+        """
+        The view returns a list of events in two week intervals, for both the home page
+        and the "next" links. The correct two week interval is set through the URL or by
+        default it's a two week interval from the current date. The admin user sees all future
+        events immediately, regardless of date intervals and event status.
+        """
+        two_week_interval = int(self.request.GET.get('week', 0))
+        start_days = two_week_interval * 14
+        date_range_start = timezone.localtime(timezone.now()) + timezone.timedelta(days=start_days)
+        # don't show last nights events that are technically today
+        date_range_start = date_range_start.replace(hour=10)
+        date_range_end = date_range_start + timezone.timedelta(days=14)
+        events = Event.objects.filter(start__gte=date_range_start, start__lte=date_range_end)
+        # only admin sees draft and hidden events
+        #events = events.filter(Q(state=Event.STATUS.Published) | Q(state=Event.STATUS.Cancelled))
+        return events.reverse()
+
+    def get_context_data(self, **kwargs):
+        data = super(ScheduleView, self).get_context_data(**kwargs)
+        week = int(self.request.GET.get('week', 0))
+        if week > 1:
+            data['prev_url'] = "{0}?week={1}".format(reverse('schedule'), week-1)
+        elif week == 1:
+            data['prev_url'] = reverse('schedule')
+        # check if there are events in the next interval before showing the "next" link
+        start_days = ((week + 1) * 14) + 1
+        date_range_start = timezone.now().date() + timezone.timedelta(days=start_days)
+        end_days = ((week + 2) * 14) + 1
+        date_range_end = date_range_start + timezone.timedelta(days=end_days)
+        next_events_exist = Event.objects.filter(start__range=(date_range_start, date_range_end)).exists()
+        if next_events_exist:
+            data['next_url'] = "{0}?week={1}".format(reverse('schedule'), week+1)
+        return data
+
+schedule = ScheduleView.as_view()
 
 
 class EventCarouselAjaxView(AJAXMixin, ListView):

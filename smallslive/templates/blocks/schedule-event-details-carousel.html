@@ -11,7 +11,7 @@
                  --><div class="col-md-9 col-xs-12 vcenter">
                         <ol class="event-select__slots carousel-indicators">
                             {% for event in events %}
-                              <li data-target="#upcoming-carousel" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}>{{ event.start|date:"h:i a" }} - {{ event.end|date:"h:i a" }}</li>
+                              <li data-target="#upcoming-carousel" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}>{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</li>
                             {% endfor %}
 
                         </ol>

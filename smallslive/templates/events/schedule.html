@@ -1,0 +1,57 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+<div class="content-wrapper">
+
+    <section class="cto cto--schedule container vertical-align-parent">
+        <div class="vertical-align-child">
+            <h1 class="cto__title">SmallsLIVE schedule</h1>
+            <a href="" class="schedule-cto__button cto__button">January // 2015</a>
+        </div>
+    </section>
+
+    <!-- flexbox solution -->
+    <section class="schedule flex container">
+        <div class="schedule__nav flex col-xs-6 col-md-3">
+          <a href="{{ prev_url }}">
+            <div class="flex-center">
+                <div class="icon">
+                    <i class="fa fa-angle-left"></i>
+                </div>
+                <div class="text">
+                    <span>View</span> previous<br>14 days
+                </div>
+            </div>
+          </a>
+        </div>
+        {% regroup events by listing_date as days %}
+        {% for day in days %}
+        <div class="day flex col-xs-6 col-md-3"
+             data-position={{ forloop.counter|add:"1" }} data-date="{{ day.grouper|date:"n/j/Y" }}">
+          <h2 class="day__date">{{ day.grouper|date:"l" }} // {{ day.grouper|date:"n/j/Y" }}</h2>
+          <dl>
+            {% for event in day.list %}
+              <dt class="day__event-time">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</dt>
+              <dd class="day__event-title">{{ event.title }}</dd>
+            {% endfor %}
+
+          </dl>
+        </div>
+        {% endfor %}
+        <div class="schedule__nav flex col-xs-6 col-md-3" data-position=16>
+          <a href="{{ next_url }}">
+            <div class="flex-center">
+                <div class="text">
+                    <span>View</span> next<br>14 days
+                </div>
+                <div class="icon">
+                    <i class="fa fa-angle-right"></i>
+                </div>
+            </div>
+          </a>
+        </div>
+    </section>
+
+</div>
+{% endblock content %}
