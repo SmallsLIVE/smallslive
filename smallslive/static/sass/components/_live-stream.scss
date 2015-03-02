@@ -4,6 +4,7 @@
   &__header {
     background-color: $main-accent-color;
     color: white;
+    padding: 0 20px;
 
     p {
       @include lato-black;
@@ -27,6 +28,8 @@
 
 .live-stream-current {
   padding-top: 38px;
+  padding-left: 20px;
+  padding-right: 20px;
 
   &__title {
     @include lato-black;
@@ -75,6 +78,8 @@
   background-color: #F7F7F7;
   border-left: 1px #DDDDDD solid;
   padding-top: 38px;
+  padding-left: 20px;
+  padding-right: 20px;
 
   &__title {
     @include lato-black;
