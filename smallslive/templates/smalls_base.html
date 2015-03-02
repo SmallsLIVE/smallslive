@@ -46,7 +46,7 @@
           <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
             <li><a href="{% url "static_page" "live-stream" %}">Live now!</a></li>
-            <li><a href="{% url "static_page" "schedule" %}">Schedule</a></li>
+            <li><a href="{% url "schedule" %}">Schedule</a></li>
             <li><a href="{% url "static_page" "archive" %}">Archive</a></li>
             <li><a href="">Store</a></li>
             <li class="dropdown">
@@ -56,7 +56,7 @@
                     <li><a href="{% url "mission-statement" %}">Mission Statement</a></li>
                     <li ><a href="{% url "contact-and-info" %}">Contact & Info</a></li>
                     <li><a href="{% url "static_page" "photo-gallery" %}">Photo Gallery</a></li>
-                    <li><a href="{% url "static_page" "newsletters" %}">Newsletters</a></li>
+                    <li><a href="{% url "newsletters" %}">Newsletters</a></li>
                     <li><a href="{% url "static_page" "press" %}">Press</a></li>
                 </ul>
             </li>
@@ -67,7 +67,7 @@
                 <li><a href="{% url "account_logout" %}">Log out</a></li>
              {% else %}
                 <li><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
-                <li><a href="{% url "static_page" "sign-up" %}">Sign up</a></li>
+                <li><a href="{% url "account_signup" %}">Sign up</a></li>
             {% endif %}
           </ul>
         </div>
@@ -109,7 +109,7 @@
       <li class="navigation__item"><a href="/"><i class="navigation__icon fa fa-2x fa-home "></i> Home</a></li>
       <li class="navigation__item"><a href="{% url "static_page" "live-stream" %}"><i
               class="navigation__icon fa fa-play-circle"></i> Live now!</a></li>
-      <li class="navigation__item"><a href="{% url "static_page" "schedule" %}"><i
+      <li class="navigation__item"><a href="{% url "schedule" %}"><i
               class="navigation__icon fa fa-calendar"></i> Schedule</a></li>
       <li class="navigation__item"><a href="{% url "static_page" "archive" %}"><i
               class="navigation__icon fa fa-video-camera"></i> Archive</a></li>
@@ -136,7 +136,6 @@
       <li><a href="#">Staff / Team</a></li>
       <li><a href="{% url "static_page" "privacy" %}">Privacy</a></li>
       <li><a href="{% url "static_page" "terms-of-use" %}">Terms and Conditions</a></li>
-      <li><a href="{% url "static_page" "user-settings" %}">User Settings</a></li>
     </ul>
     <address>
       <a href="https://goo.gl/maps/s4jFT">183 W. 10th St, New York, NY 10014</a> <br/>
