@@ -268,7 +268,17 @@ class ArtistVideoManager(ListView):
 artist_video_manager = ArtistVideoManager.as_view()
 
 
-class EventCarouselAjaxView(AJAXMixin, TemplateView):
+class EventCarouselAjaxView(AJAXMixin, ListView):
     template_name = "blocks/schedule-event-details-carousel.html"
+    context_object_name = 'events'
+
+    def get_queryset(self):
+        date = self.request.GET.get('date')
+        print date
+        if date and date != "undefined":
+            date = datetime.strptime(date, "%m/%d/%Y").date()
+            end_range_date = date + timedelta(days=1)
+            return Event.objects.filter(start__range=(date, end_range_date)).order_by('start')
+        return Event.objects.none()
 
 event_carousel_ajax = EventCarouselAjaxView.as_view()

@@ -50,7 +50,8 @@ $(document).ready(function () {
     $(".day").click(function () {
         $("#event-details-expanded").remove();
         var that = this;
-        $.get('/events/event_carousel_ajax/', function(data) {
+        var date = $(this).attr('data-date');
+        $.get('/events/event_carousel_ajax/?date='+date, function(data) {
             var template = data.content;
             $(".selected").removeClass('selected');
             var position = $(that).data('position');
