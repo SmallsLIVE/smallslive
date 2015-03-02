@@ -229,8 +229,13 @@ schedule = ScheduleView.as_view()
 
 
 class EventCarouselAjaxView(AJAXMixin, ListView):
-    template_name = "blocks/schedule-event-details-carousel.html"
     context_object_name = 'events'
+
+    def get_template_names(self):
+        if self.request.GET.get("template") == "home":
+            return ["blocks/homepage-upcoming-events-carousel.html"]
+        else:
+            return ["blocks/schedule-event-details-carousel.html"]
 
     def get_queryset(self):
         date = self.request.GET.get('date')

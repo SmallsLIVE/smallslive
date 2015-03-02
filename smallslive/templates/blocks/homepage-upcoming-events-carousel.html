@@ -1,7 +1,7 @@
 {% load static from staticfiles %}
 {% load humanize %}
 
-<section class="upcoming-events container hidden-xs hidden-sm">
+<section id="upcoming-events-fullsize" class="upcoming-events container hidden-xs hidden-sm">
     <div class="carousel slide" id="upcoming-carousel" data-ride="carousel" data-interval="6000">
         <div class="carousel-inner" id="event-details-slides">
             {% for event in events %}
@@ -29,7 +29,7 @@
                 <h2 class="event-select__title">Live Schedule</h2>
                 <div class="row">
                     <div class="col-md-3 col-xs-12 vcenter">
-                        <select name="" id="" class="event-select__date-select form-control">
+                        <select name="" id="homepage-date-select" class="event-select__date-select form-control">
                           {% for date in dates %}
                             <option value="{{ date|date:"n/j/Y" }}">{{ date|naturalday:"l"|capfirst }} // {{ date|date:"n/j/Y" }}</option>
                           {% endfor %}

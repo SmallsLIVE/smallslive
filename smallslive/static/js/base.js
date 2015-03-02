@@ -79,6 +79,18 @@ $(document).ready(function () {
 });
 
 
+/* Event data for the homepage */
+$(document).ready(function () {
+    var active = 0;
+    $("#homepage-date-select").change(function (d) {
+        var date = $(this).val();
+        $.get('/events/event_carousel_ajax/?template=home&date=' + date, function (data) {
+                var template = data.content;
+                $("#upcoming-events-fullsize").replaceWith(template);
+            })
+    });
+});
+
 /* Bootstrap datepicker for Schedule page */
 
 $('#schedule__date-picker').datepicker({
