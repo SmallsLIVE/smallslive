@@ -77,3 +77,15 @@ $(document).ready(function () {
         }
     });
 });
+
+
+/* Bootstrap datepicker for Schedule page */
+
+$('#schedule__date-picker').datepicker({
+    format: "MM // yyyy",
+    startView: 1,
+    minViewMode: 1,
+    orientation: "top auto",
+    autoclose: true,
+    todayHighlight: true
+});
