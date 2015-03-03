@@ -1,5 +1,6 @@
-{% extends "base_admin.html" %}
+{% extends "smalls_base.html" %}
 {% load crispy_forms_tags %}
+{% load static from staticfiles %}
 
 {% block extra_head %}
   {{ artist_add_form.media }}
@@ -8,26 +9,22 @@
 {% block title %}Add new artist{% endblock title %}
 
 {% block content %}
-    <h1>Add artist</h1>
-    {% include "blocks/form_lookup_artist.html" %}
-    {% include 'blocks/invite-artist-form.html' %}    
-    <div class="dev">
-    <h1>Alternate Views</h1>
-    <ul>
-      <li><a href="./?invited=1">Already invited at least once</a></li>
-    </ul>
-    <h1>Dev. notes:</h1>
-      <ul>
-          <li><code>ArtistSearch</code> Unlike masthead, this autocomplete only matches on artist name (Starts with, and substring). Result should appear as "first_name last_name (instrument_list) and be alpha sorted" </li>
-          <li><code>2</code> I would use a type-head chozen for the Artist Type field and change display label to "Instrument(s)"
-          <li><code>3</code> The flash message should have text like "Profile saved &amp; invitation sent."</li>
-          <li><code>4</code> - once a user has been invited once to the site, this radio should be the default choice on return visits</li>
-      </ul>
-    </div>
+  <div class="content-wrapper">
+  <section class="sign-up container">
+    <h1 class="sign-up__main-title">Add artist</h1>
+    <form method="post" class="f-add-artist" role="form" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% crispy artist_add_form %}
+      {% crispy artist_invite_form %}
+      <button type="submit" name="submit" class="btn btn-primary">Add artist</button>
+    </form>
+    </section>
+  </div>
 
 {% endblock content %}
 
 {% block extra_js %}
+  <script type="text/javascript" src="{% static 'js/selectize.min.js' %}"></script>
   <script>
     $("#id_instruments").selectize({
       create: function(input) {

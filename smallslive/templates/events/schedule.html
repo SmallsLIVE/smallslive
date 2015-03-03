@@ -17,7 +17,7 @@
     <!-- flexbox solution -->
     <section class="schedule flex container">
         <div class="schedule__nav flex col-xs-6 col-md-3">
-          {% if not prev_url %}
+          {% if prev_url %}
           <a href="{{ prev_url }}">
             <div class="flex-center">
                 <div class="icon">
@@ -31,18 +31,20 @@
         {% endif %}
 
         </div>
-        {% regroup events by listing_date as days %}
-        {% for day in days %}
+        {% for date, events in dates.iteritems %}
         <div class="day flex col-xs-6 col-md-3"
-             data-position={{ forloop.counter|add:"1" }} data-date="{{ day.grouper|date:"n/j/Y" }}">
-          <h2 class="day__date">{{ day.grouper|date:"l" }} // {{ day.grouper|date:"n/j/Y" }}</h2>
-          <dl>
-            {% for event in day.list %}
-              <dt class="day__event-time">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</dt>
-              <dd class="day__event-title">{{ event.title }}</dd>
-            {% endfor %}
-
-          </dl>
+             data-position={{ forloop.counter|add:"1" }} data-date="{{ date|date:"n/j/Y" }}">
+          <h2 class="day__date">{{ date|date:"l" }} // {{ date|date:"n/j/Y" }}</h2>
+          {% if events %}
+              <dl>
+                {% for event in events %}
+                  <dt class="day__event-time">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</dt>
+                  <dd class="day__event-title">{{ event.title }}</dd>
+                {% endfor %}
+              </dl>
+          {% else %}
+          <h3>No events today.</h3>
+          {% endif %}
         </div>
         {% endfor %}
         <div class="schedule__nav flex col-xs-6 col-md-3" data-position=16>
@@ -61,3 +63,11 @@
 
 </div>
 {% endblock content %}
+
+{% block extra_js %}
+  <script>
+  var date = new Date("{{ year}}-{{ month }}-1");
+  console.log(date);
+  $datePicker.datepicker("setDate", date);
+  </script>
+{% endblock extra_js %}

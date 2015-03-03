@@ -17,10 +17,10 @@
                         <div class="col-xs-12">
                           <div class="form-group">
                             <input type="email" class="form-control" name="login" placeholder="Your email">
-                            <p class="form-error-text">Invalid password tralalalalallalala.</p>
+                            <p class="form-error-text hidden" id="login-error"></p>
                           </div>
                             <input type="password" class="form-control" name="password" placeholder="Your password">
-                            {{ form.password.errors }}
+                            <p class="form-error-text hidden" id="password-error"></p>
                         </div>
                         <div class="col-xs-12">
                             <div class="col-sm-6 col-xs-12 vcenter">

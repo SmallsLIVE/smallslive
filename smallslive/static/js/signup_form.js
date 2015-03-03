@@ -12,9 +12,14 @@ $loginForm.submit(function(e){
         error: function(jqXHR, textStatus, errorThrown) {
             var response = jqXHR.responseJSON;
             //$("#login-modal").html(jqXHR.responseJSON.html);
-            $("input[name=login]").parent().addClass('has-error');
-            $("#login-error").text(response.form_errors.login[0]);
-            $("input[name=password]").parent().addClass('has-error');
+            if (response.form_errors.login) {
+                $("input[name=login]").parent().addClass('has-error');
+                $("#login-error").removeClass('hidden').text(response.form_errors.login[0]);
+            }
+            if (response.form_errors.password) {
+                $("input[name=password]").parent().addClass('has-error');
+                $("#password-error").removeClass('hidden').text(response.form_errors.password[0]);
+            }
         }
     });
     return false;
