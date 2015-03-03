@@ -82,12 +82,12 @@ INSTALLED_APPS = [
     'tinymce',
 
     # project apps
-    'artist_registration',
+    #'artist_registration',
     'artists',
     'events',
     'multimedia',
     'newsletters',
-    'old_site',
+    #'old_site',
     'static_pages',
     'users',
     'utils',
