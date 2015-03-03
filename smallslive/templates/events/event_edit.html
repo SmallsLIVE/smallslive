@@ -1,57 +1,40 @@
-{% extends "base_admin.html" %}
-{% load crispy_forms_tags static thumbor_tags %}
-
-{% block title %}Edit gig {{ event.title }} : {{ event.subtitle }} {% endblock %}
-
-{% block extra_head %}
-  {{ form.media }}
-  <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
-  <link href="{% static 'css/image-picker.css' %}" rel="stylesheet">
-{% endblock extra_head %}
+{% extends "events/event_add.html" %}
+{% load crispy_forms_tags static %}
 
 {% block content %}
-  <h1>Edit gig: {{ event.title }} </h1>
-  <div class="row">
-    <div class="col-sm-7">
-      <div class="alert alert-success">
-        <p>Edit this event below, or <a href="#">clone it</a> to make a new one.</p>
+  <div class="content-wrapper">
+  <section class="sign-up container">
+  <h1 class="sign-up__main-title">Add/Edit gig:</h1>
+    <form method="post"  class="sign-up__form" enctype="multipart/form-data">
+      {% crispy form %}
+      <div class="buttonHolder">
+        <input type="submit" name="submit" value="Save event" class="sign-up__form__button" id="submit-id-submit">
+        <input type="button" name="delete" value="Delete event" class="btn btn btn-danger" id="button-id-delete" data-target="#deleteModal" data-toggle="modal">
       </div>
-      <div class="alert alert-warning">
-        <p><code>ToDo:</code>This event happened in the past. Be careful editing details.</p>
-      </div>
-      <form method="post" role="form" enctype="multipart/form-data">
-          {% csrf_token %}
-          {% crispy form %}
-          <div class="buttonHolder">
-            <input type="submit" name="submit" value="Save event" class="btn btn-primary btn btn-primary" id="submit-id-submit">
-          </div>
-      </form>
-    </div>
-    <div class="col-sm-3">
-      {% if event.photo %}
-      <div class="well">
-          <img src="{% thumbor_url event.photo.url|urlencode width=300 %}" class="img-responsive" />
-      </div>
-      {% endif %}
-    </div>
+    </form>
+    </section>
   </div>
-  <div class="dev">
-    <h1>Dev notes</h1>
-    <ul>
-      <li><code>1</code> draggable</li> 
-    </ul>
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+       aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                  class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="myModalLabel">Delete {{ event.title }}</h4>
+        </div>
+        <div class="modal-body">
+          Are you <strong>sure</strong> you want to delete the event {{ event.title }}?
+        </div>
+        <div class="modal-footer">
+          <form action="{% url "event_delete" pk=event.id slug=event.slug %}" method="post"
+                class="left-aligned-form">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-danger" value="Delete"/>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 {% endblock content %}
-
-{% block extra_js %}
-  <script src="{% static "js/event_form.js" %}"></script>
-  <script src="{% static "js/image-picker.js" %}"></script>
-  <script>
-    var show_times = {{ show_times|safe }};
-    $(document).ready(function() {
-      EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
-      EventForm.init();
-      $('.imagepicker').imagepicker();
-    });
-  </script>
-{% endblock extra_js %}

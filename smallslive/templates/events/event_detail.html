@@ -71,7 +71,7 @@
             <div class="event-description__text-block">
                 <h1 class="event-description__title">Event description:</h1>
                 {% if event.description %}
-                    {{ event.description }}
+                    {{ event.description|safe }}
                 {% else %}
                   <p class="unavailable">No event description available.</p>
                 {% endif %}
@@ -85,6 +85,7 @@
           </section>
         </div>
       </div>
+      {% comment %}
       {% if not request.GET.future %}
           <section class="cto cto--listen-to-show container vertical-align-parent">
             <div class="vertical-align-child">
@@ -291,5 +292,6 @@
             </div>
           </section>
       {% endif %}
+      {% endcomment %}
     </div>
 {% endblock content %}

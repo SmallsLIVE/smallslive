@@ -1,4 +1,4 @@
-{% extends "base_admin.html" %}
+{% extends "smalls_base.html" %}
 {% load crispy_forms_tags static %}
 
 {% block title %}Add/Edit Gig: %dateAndArtistandTitleHere%{% endblock title %}
@@ -6,358 +6,33 @@
 {% block extra_head %}
   {{ form.media }}
   <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
-  <link href="{% static 'css/image-picker.css' %}" rel="stylesheet">
+  <link href="{% static 'css/selectize.bootstrap3.css' %}" rel="stylesheet">
 {% endblock extra_head %}
 
 {% block content %}
-  <h1>Add/Edit gig:</h1>
-  <div class="row">
-    <div class="col-sm-7">
-    <form method="post" enctype="multipart/form-data">
+  <div class="content-wrapper">
+  <section class="sign-up container">
+  <h1 class="sign-up__main-title">Add/Edit gig:</h1>
+    <form method="post"  class="sign-up__form" enctype="multipart/form-data">
       {% crispy form %}
       <div class="buttonHolder">
-            <input type="submit" name="submit" value="Save event" class="btn btn-primary btn btn-primary" id="submit-id-submit">
+            <input type="submit" name="submit" value="Save event" class="sign-up__form__button" id="submit-id-submit">
       </div>
     </form>
-    <hr/>
-    <hr/>
-    {% comment %}
-      <form method="post" class="f-gig" role="form" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <!-- date -->
-        <div class="row">
-          <div class="col-sm-4">
-            <div class="form-group" id="div_id_start_day">
-              <label class="control-label " for="id_start_day"><code>7</code>Date of show:<abbr class="asteriskField" title="(required)">*</abbr></label>
-              <div class="controls ">
-                <input type="text" name="start_day" value="4/13/14" id="id_start_day" class="form-control">
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- slot -->
-        <div class="row slot">
-          <div class="col-sm-6">
-            <div class="form-group">
-              <label class="control-label " for="slot1">Slot 1</label>
-              <div class="input-group">
-                <span class="input-group-addon">
-                  <input type="checkbox">
-                </span>
-                <input type="text" id="slot1" class="form-control text-muted" value="%prefillSlot1Default%">
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-4 trigger_add_set_times">          
-            <!-- checkbox for set times -->
-            <div class="checkbox">
-              <label>
-                <input type="checkbox" class=""> <code>2</code> Edit set times&hellip;
-              </label>
-            </div> 
-          </div> 
-        </div>
-        <div class="row add_set_times"> 
-          <div class="col-sm-3">
-            <!-- set time -->
-            <div class="form-group" id="div_set_time_1">
-              <label class="control-label " for="set_time_1">Set 1:</label>
-              <div class="controls ">
-                <input type="time" placeholder="6-7pm" name="set_time_1" id="set_time_1" class="form-control input-sm">
-              </div>
-            </div>  
-          </div>
-          <div class="col-sm-3">
-            <!-- set time -->
-            <div class="form-group" id="div_set_time_1">
-              <label class="control-label " for="set_time_1">Set 2:</label>
-              <div class="controls ">
-                <input type="time" placeholder="715-815pm" name="set_time_1" id="set_time_1" class="form-control input-sm">
-              </div>
-            </div>  
-          </div>
-        </div>
-        
-        
-        <!-- slot 2 -->
-        <div class="row slot">
-          <div class="col-sm-6">
-            <div class="form-group">
-              <label class="control-label " for="slot2">Slot 2</label>
-              <div class="input-group">
-                <span class="input-group-addon">
-                  <input type="checkbox" disabled="">
-                </span>
-                <input type="text" class="form-control text-muted" id="slot2" value="[8] Ari Hoenig  (9-10p,1015-1115p)" disabled>
-              </div>
-            </div>
-          </div>
-        </div>
- 
-        <!-- slot 3 -->
-        <div class="row slot">
-          <div class="col-sm-6">
-            <div class="form-group">
-              <label class="control-label " for="slot3">Slot 3</label>
-              <div class="input-group">
-                <span class="input-group-addon">
-                  <input type="checkbox">
-                </span>
-                <input type="text" class="form-control text-muted" id="slot3" value="%prefillSlot1Default%">
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-4 trigger_add_set_times">          
-            <!-- checkbox for set times -->
-            <div class="checkbox">
-              <label>
-                <input type="checkbox"> <code>2</code> Edit set times&hellip;
-              </label>
-            </div> 
-          </div> 
-        </div>
-        <div class="row add_set_times"> 
-          <div class="col-sm-3">
-            <!-- set time -->
-            <div class="form-group" id="div_set_time_1">
-              <label class="control-label " for="set_time_1">Set 1:</label>
-              <div class="controls ">
-                <input type="time" placeholder="6-7pm" name="set_time_1" id="set_time_1" class="form-control input-sm">
-              </div>
-            </div>  
-          </div>
-          <div class="col-sm-3">
-            <!-- set time -->
-            <div class="form-group" id="div_set_time_1">
-              <label class="control-label " for="set_time_1">Set 2:</label>
-              <div class="controls ">
-                <input type="time" placeholder="715-815pm" name="set_time_1" id="set_time_1" class="form-control input-sm">
-              </div>
-            </div>  
-          </div>
-        </div> 
-             
-         
-        <div class="sortable-list">  
-          <!-- side musician -->   
-          <div class="row musician">
-            <div class="col-sm-5">
-              <div class="form-group" id="div_id_sideman_1">
-                <label class="control-label " for="id_sidemen_1"><code>4</code>  Musician:</label>
-                <div class="controls ">
-                  <input type="text" name="title" id="id_sideman_1" class="form-control sideman_name" value="Ari Hoenig, john Grimes">
-                </div>
-              </div>    
-            </div>      
-            <div class="col-sm-4">
-              <div class="form-group" id="div_id_sideman_instruments_1">
-                <label class="control-label " for="id_sideman_instruments_1"><code>3</code>   Instruments:</label>
-                <div class="controls ">
-                  <input type="text" id="id_sideman_instruments_1" class="form-control sideman_instruments" value="piano, tenor sax, guitar">            
-                </div>
-              </div>  
-            </div>  
-            <div class="col-sm-2 trigger_add_set_times">          
-              <!-- checkbox for set times -->
-              <div class="checkbox">
-                <label>
-                   <input type="checkbox"> Leader
-                </label>
-              </div> 
-            </div>
-            <div class="col-sm-1">
-              <span class="glyphicon glyphicon-move"></span>
-            </div> 
-          </div>
-          <!-- side musician -->   
-          <div class="row musician">
-            <div class="col-sm-5">
-              <div class="form-group" id="div_id_sideman_2">
-                <label class="control-label " for="id_sidemen_2"> Musician:</label>
-                <div class="controls ">
-                  <input type="text" name="title" id="id_sideman_2" class="form-control sideman_name " value="Ari Hoenig, john Grimes">
-                </div>
-              </div>    
-            </div>      
-            <div class="col-sm-4">
-              <div class="form-group" id="div_id_sideman_instruments_2">
-                <label class="control-label " for="id_sideman_instruments_2">Instruments:</label>
-                <div class="controls ">
-                  <input type="text" id="id_sideman_instruments_2" class="form-control sideman_instruments" value="piano, tenor sax, guitar">            
-                </div>
-              </div>  
-            </div>  
-            <div class="col-sm-2 trigger_add_set_times">          
-              <!-- checkbox for set times -->
-              <div class="checkbox">
-                <label>
-                   <input type="checkbox"> Leader
-                </label>
-              </div> 
-            </div> 
-            <div class="col-sm-1">
-              <span class="glyphicon glyphicon-move"></span>
-            </div>
-          </div>
-          <!-- side musician -->   
-          <div class="row musician">
-            <div class="col-sm-5">
-              <div class="form-group" id="div_id_sideman_3">
-                <label class="control-label " for="id_sidemen_3">   Musician:</label>
-                <div class="controls ">
-                  <input type="text" name="title" id="id_sideman_3" class="form-control sideman_name " value="Ari Hoenig, john Grimes">
-                </div>
-              </div>    
-            </div>      
-            <div class="col-sm-4">
-              <div class="form-group" id="div_id_sideman_instruments_3">
-                <label class="control-label " for="id_sideman_instruments_3">     Instruments:</label>
-                <div class="controls ">
-                  <input type="text" id="id_sideman_instruments_3" class="form-control sideman_instruments" value="piano, tenor sax, guitar">          
-                </div>
-              </div>  
-            </div> 
-            <div class="col-sm-2 trigger_add_set_times">          
-              <!-- checkbox for set times -->
-              <div class="checkbox">
-                <label>
-                   <input type="checkbox"> Leader
-                </label>
-              </div> 
-            </div> 
-            <div class="col-sm-1">
-              <span class="glyphicon glyphicon-move"></span>
-            </div> 
-          </div>
-          <!-- side musician -->   
-          <div class="row musician">
-            <div class="col-sm-5">
-              <div class="form-group" id="div_id_sideman_4">
-                <label class="control-label " for="id_sidemen_4">   Musician :</label>
-                <div class="controls ">
-                  <input type="text" name="title" id="id_sideman_4" class="form-control sideman_name " value="Ari Hoenig, john Grimes">
-                </div>
-              </div>    
-            </div>      
-            <div class="col-sm-4">
-              <div class="form-group" id="div_id_sideman_instruments_4">
-                <label class="control-label " for="id_sideman_instruments_4">  Instruments:</label>
-                <div class="controls ">
-                  <input type="text" id="id_sideman_instruments_4" class="form-control sideman_instruments" value="piano, tenor sax, guitar">        
-                </div>
-              </div>  
-            </div>
-            <div class="col-sm-2 trigger_add_set_times">          
-              <!-- checkbox for set times -->
-              <div class="checkbox">
-                <label>
-                   <input type="checkbox"> Leader
-                </label>
-              </div> 
-            </div>   
-            <div class="col-sm-1">
-              <span class="glyphicon glyphicon-move"></span>
-            </div>
-          </div>
-        </div>
-        <!-- custom title -->
-        <div class="form-group" id="div_id_title">
-          <label class="control-label text-muted" for="id_title">Event Title (for special events, e.g. record release):</label>
-          <div class="controls ">
-            <input type="text" name="title" id="id_title" class="form-control">
-          </div>
-        </div>    
-        <div class="form-group" id="div_id_subtitle">
-          <label class="control-label text-muted" for="id_subtitle">Event Subtitle</label>
-          <div class="controls ">
-            <input type="text" name="subtitle" maxlength="255" id="id_subtitle" class="  form-control">
-          </div>
-        </div>                
-        <!-- photo -->
-        <div class="well">
-          <div class="form-group" id="div_id_photo">
-            <label class="control-label " for="id_photo"><code>5</code>Flyer or Band Photo (JPG, PNG)</label>         
-            <div class="controls ">
-              <input type="file" name="photo" id="id_photo" class="clearablefileinput">
-            </div>
-            <p class="help-block">Don't upload artist headshots here; those will be displayed automatically.</p>
-          </div>   
-        </div>
-        <div class="form-group" id="div_id_description">
-          <label class="control-label " for="id_description">Description</label>
-          <div class="controls ">
-            <textarea rows="10" name="description" id="id_description" cols="40" class=" form-control"></textarea>
-          </div>
-        </div>            
-        <div class="form-group" id="div_id_genres">
-          <label class="control-label " for="id_genres">Genre(s)</label>
-          <div class="controls ">
-            <input type="text" name="genres" maxlength="255" id="id_genres" value="jazz" class="form-control">
-          </div>
-        </div>    
-        <div class="form-group" id="div_id_external_link">
-          <label class="control-label " for="id_external_link">Link to more <span class="text-primary">event info</span>:</label>
-          <div class="controls ">
-            <input type="text" name="external_link" maxlength="255" placeholder="http://" id="id_external_link" class="  form-control">
-          </div>
-        </div>  
-        <div class="form-group" id="div_id_external_tix_link">
-          <label class="control-label " for="id_external_tix_link">Link to  <span class="text-primary">buy tickets</span>:</label>
-          <div class="controls ">
-            <input type="text" name="external_link" maxlength="255" placeholder="http://" id="id_external_tix_link" class="  form-control">
-          </div>
-        </div>       
-        <!-- status -->
-        <div class="radio bg-success">
-          <label>
-            <input type="radio" name="status" id="" value="option1" checked> Publish now (public)
-          </label>
-        </div>
-        <div class="radio bg-warning">
-          <label>
-            <input type="radio" name="status" id="" value="option2"> Hold date and slot (private)
-          </label>
-        </div>      
-        <div class="radio">
-          <label>
-            <input type="radio" name="status" id="" value="option2"> Cancelled (public will see event as "cancelled")
-          </label>
-        </div>      
-        <div class="radio">
-          <label>
-            <input type="radio" name="status" id="" value="option2"> Delete this event
-          </label>
-        </div>            
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-      {% endcomment %}
-    </div>
-  </div>
-  <div class="dev">
-    <h1>Dev notes</h1>
-    <Ul>
-      <li><code>1</code> draggable</li>
-      <li><code>2</code> number of fields to expose here should be dependent on the number of slots chosen above. we should also prefill these if possible with some logical set of time (1hr + 15min break + allocate rest of time in slot to 2nd set?</li>
-      <li><code>3</code>  selectize: multi select, allow new</li>
-      <li><code>4</code> selectize: single item, allow new</li>
-      <li><code>5</code> plugin? recommendations?</li>
-      <li><code>6</code> onKeyUp, if text exists in any field of musician 4, we print a new 5th slot for musician 5 and so forth - a new blank set of musicians fields is always available below the last row that has anything in it.</li>
-      <li><code>7</code> Disable date that are full. Default: prefill with first available date in the cal that isn't blocked or held. I would suggest that you run an ajax query here and fill the form after a date is entered. Also, this page should be built so that they can land here from anotehr screen with a date param passed like gig/add?date=4/14/14 . Finally, if there is a nickname for the slot, like "late night sunday jam", put it in the "title" field. </li>
-      <li><code>8</code> validation: disable show slots that are already booked up.</li>
-    </Ul>
+    </section>
   </div>
 {% endblock content %}
 
 {% block extra_js %}
+  <script type="text/javascript" src="{% static 'js/selectize.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
   <script src="{% static "js/event_form.js" %}"></script>
-  <script src="{% static "js/image-picker.js" %}"></script>
   <script>
     var show_times = {{ show_times|safe }};
     $(document).ready(function() {
       EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
       EventForm.init();
-      $('.imagepicker').imagepicker();
     });
   </script>
 {% endblock %}

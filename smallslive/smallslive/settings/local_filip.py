@@ -30,7 +30,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
 # Thumbor
-THUMBOR_MEDIA_URL = '/media/'
+THUMBOR_MEDIA_URL = 'http://127.0.0.1:8000/media/'
 THUMBOR_SECURITY_KEY = 'TEST'
 THUMBOR_SERVER = 'http://127.0.0.1:8888'
 

@@ -106,7 +106,10 @@ class GigPlayedEditInlineFormset(GigPlayedAddInlineFormSet):
         # don't automatically show extra rows if there are artists already playing
         if self.object.performers.count() > 0:
             self.extra = 0
-        return super(GigPlayedEditInlineFormset, self).construct_formset()
+        formset = super(GigPlayedEditInlineFormset, self).construct_formset()
+        for num, form in enumerate(formset):
+            form.fields['DELETE'].widget = forms.HiddenInput()
+        return formset
 
 
 class GigPlayedInlineFormSetHelper(FormHelper):
@@ -121,11 +124,10 @@ class GigPlayedInlineFormSetHelper(FormHelper):
 class EventAddForm(forms.ModelForm):
     start = forms.DateTimeField(label="Start time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
     end = forms.DateTimeField(label="End time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
-    suggested_images = ImageSelectField(required=False)
 
     class Meta:
         model = Event
-        fields = ('start', 'end', 'title', 'subtitle', 'photo', 'suggested_images', 'description', 'link', 'state')
+        fields = ('start', 'end', 'title', 'subtitle', 'photo', 'description', 'link', 'state')
         widgets = {
             'state': EventStatusWidget,
             'link': floppyforms.URLInput,
@@ -148,25 +150,12 @@ class EventAddForm(forms.ModelForm):
             'title',
             'subtitle',
             'photo',
-            Field('suggested_images', css_class='imagepicker'),
             'description',
             'link',
             'state',
         )
         self.fields['state'].label = "Event status"
         self.fields['photo'].label = "Flyer or Band Photo (JPG, PNG)"
-
-    def save(self, commit=True):
-        object = super(EventAddForm, self).save()
-        if not object.photo and self.cleaned_data['suggested_images']:
-            # get the photo from an existing event
-            try:
-                event_photo = Event.objects.get(id=self.cleaned_data['suggested_images']).photo
-                object.photo = event_photo
-            except Event.DoesNotExist:
-                pass
-        object.save()
-        return object
 
 
 class EventSearchForm(SearchForm):

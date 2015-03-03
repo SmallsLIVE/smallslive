@@ -3,12 +3,13 @@ from itertools import groupby
 import calendar
 import json
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect
 from django.template.defaulttags import regroup
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta
+from django.views.generic import DeleteView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView, BaseDetailView
 
@@ -105,6 +106,13 @@ class EventEditView(LoginRequiredMixin, NamedFormsetsMixin, UpdateWithInlinesVie
     #     return (artist_id_match or user.is_superuser)
 
 event_edit = EventEditView.as_view()
+
+
+class EventDeleteView(DeleteView):
+    model = Event
+    success_url = reverse_lazy('home')
+
+event_delete = EventDeleteView.as_view()
 
 
 class EventCloneView(LoginRequiredMixin, SuperuserRequiredMixin, BaseDetailView):

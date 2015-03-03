@@ -41,6 +41,12 @@ class Event(TimeStampedModel):
     def __unicode__(self):
         return self.title
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super(Event, self).save(force_insert, force_update, using, update_fields)
+
     def get_absolute_url(self):
         return reverse('event_detail', kwargs={'pk': self.id, 'slug': slugify(self.title)})
 

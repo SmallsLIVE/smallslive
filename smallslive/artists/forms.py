@@ -19,11 +19,6 @@ class ArtistAddForm(forms.ModelForm):
             'photo': ImageThumbnailWidget
         }
 
-    class Media:
-        css = {
-            'all': ('css/selectize.bootstrap3.css',)
-        }
-
     def __init__(self, *args, **kwargs):
         super(ArtistAddForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
