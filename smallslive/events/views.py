@@ -1,15 +1,16 @@
+from collections import OrderedDict
+from itertools import groupby
+import calendar
 import json
 from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
-from django.db.models import Q
 from django.http import HttpResponseRedirect
+from django.template.defaulttags import regroup
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView, BaseDetailView
-from django.views.generic import TemplateView
 
 from django_ajax.mixin import AJAXMixin
 from braces.views import LoginRequiredMixin, SuperuserRequiredMixin, UserPassesTestMixin
@@ -21,7 +22,6 @@ from artists.models import Artist, Instrument
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
     EventSearchForm
 from .models import Event
-from multimedia.models import Media
 
 
 class HomepageView(ListView):
@@ -187,7 +187,7 @@ event_search = EventSearchView(
 
 
 class ScheduleView(ListView):
-    context_object_name = 'events'
+    context_object_name = 'dates'
     template_name = 'events/schedule.html'
 
     def get_queryset(self):
@@ -197,35 +197,74 @@ class ScheduleView(ListView):
         default it's a two week interval from the current date. The admin user sees all future
         events immediately, regardless of date intervals and event status.
         """
+        dates = {}
         two_week_interval = int(self.request.GET.get('week', 0))
         start_days = two_week_interval * 14
         date_range_start = timezone.localtime(timezone.now()) + timezone.timedelta(days=start_days)
         # don't show last nights events that are technically today
         date_range_start = date_range_start.replace(hour=10)
         date_range_end = date_range_start + timezone.timedelta(days=14)
-        events = Event.objects.filter(start__gte=date_range_start, start__lte=date_range_end)
-        # only admin sees draft and hidden events
-        #events = events.filter(Q(state=Event.STATUS.Published) | Q(state=Event.STATUS.Cancelled))
-        return events.reverse()
+        events = Event.objects.filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
+        for k, g in groupby(events, lambda e: timezone.localtime(e.start).date()):
+            dates[k] = list(g)
+        for date in [(date_range_start + timedelta(days=d)).date() for d in range(14)]:
+            if date not in dates:
+                dates[date] = []
+        sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0]))
+        return sorted_dates
 
     def get_context_data(self, **kwargs):
-        data = super(ScheduleView, self).get_context_data(**kwargs)
+        context = super(ScheduleView, self).get_context_data(**kwargs)
+        context['month'] = timezone.now().month
+        context['year'] = timezone.now().year
         week = int(self.request.GET.get('week', 0))
         if week > 1:
-            data['prev_url'] = "{0}?week={1}".format(reverse('schedule'), week-1)
+            context['prev_url'] = "{0}?week={1}".format(reverse('schedule'), week-1)
         elif week == 1:
-            data['prev_url'] = reverse('schedule')
-        # check if there are events in the next interval before showing the "next" link
-        start_days = ((week + 1) * 14) + 1
-        date_range_start = timezone.now().date() + timezone.timedelta(days=start_days)
-        end_days = ((week + 2) * 14) + 1
-        date_range_end = date_range_start + timezone.timedelta(days=end_days)
-        next_events_exist = Event.objects.filter(start__range=(date_range_start, date_range_end)).exists()
-        if next_events_exist:
-            data['next_url'] = "{0}?week={1}".format(reverse('schedule'), week+1)
-        return data
+            context['prev_url'] = reverse('schedule')
+        context['next_url'] = "{0}?week={1}".format(reverse('schedule'), week+1)
+        return context
 
 schedule = ScheduleView.as_view()
+
+
+class MonthlyScheduleView(ListView):
+    context_object_name = 'dates'
+    template_name = 'events/schedule.html'
+
+    def get_queryset(self):
+        dates = {}
+        month = int(self.kwargs.get('month', timezone.now().month))
+        year = int(self.kwargs.get('year', timezone.now().year))
+        # don't show last nights events that are technically today
+        date_range_start = timezone.make_aware(timezone.datetime(year, month, 1, hour=10),
+                                               timezone.get_current_timezone())
+        last_day_of_month = calendar.monthrange(year, month)[1]
+        events = Event.objects.filter(start__month=month, start__year=year).order_by('start')
+        for k, g in groupby(events, lambda e: timezone.localtime(e.start).date()):
+            dates[k] = list(g)
+        for date in [(date_range_start + timedelta(days=d)).date() for d in range(last_day_of_month)]:
+            if date not in dates:
+                dates[date] = []
+        sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0]))
+        return sorted_dates
+
+    def get_context_data(self, **kwargs):
+        """
+        Timedelta doesn't support months so to get the next and previous months, we do a max delta (31 days) for the
+        next month, and a min one (1 day) for the previous month.
+        """
+        context = super(MonthlyScheduleView, self).get_context_data(**kwargs)
+        context['month'] = int(self.kwargs.get('month', timezone.now().month))
+        context['year'] = int(self.kwargs.get('year', timezone.now().year))
+        current_month = timezone.datetime(year=context['year'], month=context['month'], day=1)
+        next_month = current_month + timezone.timedelta(days=31)
+        prev_month = current_month - timezone.timedelta(days=1)
+        context['prev_url'] = reverse('monthly_schedule', kwargs={'year': prev_month.year, 'month': prev_month.month})
+        context['next_url'] = reverse('monthly_schedule', kwargs={'year': next_month.year, 'month': next_month.month})
+        return context
+
+monthly_schedule = MonthlyScheduleView.as_view()
 
 
 class EventCarouselAjaxView(AJAXMixin, ListView):

@@ -100,11 +100,16 @@ $(document).ready(function () {
 
 /* Bootstrap datepicker for Schedule page */
 
-$('#schedule__date-picker input').datepicker({
+$datePicker = $('#schedule__date-picker input');
+$datePicker.datepicker({
     format: 'MM // yyyy',
     minViewMode: "months",
     orientation: "top auto",
-    autoclose: true,
+    autoclose: true
+});
+$datePicker.on('changeMonth', function(d){
+    var month = d.date.getMonth() + 1;
+    var year = d.date.getFullYear();
+    window.location = '/events/schedule/' + year + '/' + month + '/';
 });
 
-$('#schedule__date-picker input').datepicker("setDate", new Date());
