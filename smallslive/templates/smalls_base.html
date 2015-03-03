@@ -125,9 +125,16 @@
         Info</a></li>
     </ul>
   </nav>
-  <form action="{% url "artist_search" %}" method="get" class="search visible-lg visible-md">
+ {% comment %} <form action="{% url "artist_search" %}" method="get" class="search visible-lg visible-md">
     <div class="form-group has-feedback">
       <input type="text" name="q" class="form-control search__input" placeholder="Search our Archive..."/>
+      <i class="fa fa-search form-control-feedback"></i>
+    </div>
+  </form> {% endcomment %}
+
+  <form action="{% url "artist_search" %}" method="get" class="search visible-lg visible-md">
+    <div class="form-group has-feedback">
+      <input id="header--search" type="text" name="q" class="form-control search__input" placeholder="Search our Archive..."/>
       <i class="fa fa-search form-control-feedback"></i>
     </div>
   </form>
@@ -154,6 +161,8 @@
 <script src="{% static 'js/jquery-1.11.2.min.js'%}"></script>
 <!-- Include jQuery mobile -->
 <script src="{% static 'js/jquery.mobile.custom.min.js'%}"></script>
+<!-- Include jQuery UI -->
+<script src="{% static 'js/jquery-ui.js'%}"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
 <!-- Slick carousel JavaScript -->

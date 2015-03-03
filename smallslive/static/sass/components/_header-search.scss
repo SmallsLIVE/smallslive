@@ -1,0 +1,40 @@
+.ui-autocomplete {
+  background-color: #fff;
+  width: 100%;
+  @include lato;
+  padding: 10px 0;
+
+
+  & .ui-menu-item {
+    @include list-unstyled;
+    padding: 8px 20px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
+  }
+
+  &-category {
+    @include list-unstyled;
+    @include lato-bold;
+    color: #A1A0A0;
+    text-transform: uppercase;
+    padding: 20px 20px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 12px;
+  }
+}
+
+
+@media (min-width: 980px) {
+  .ui-autocomplete {
+      width: 220px !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .ui-autocomplete {
+    width: 360px !important;
+  }
+}
