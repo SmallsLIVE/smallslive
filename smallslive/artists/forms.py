@@ -19,13 +19,18 @@ class ArtistAddForm(forms.ModelForm):
             'photo': ImageThumbnailWidget
         }
 
+    class Media:
+        css = {
+            'all': ('css/selectize.bootstrap3.css',)
+        }
+
     def __init__(self, *args, **kwargs):
         super(ArtistAddForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_action = 'artist_add'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
-        self.fields['photo'].label = "Photo (portrait-style JPG w/ instrument preferred)"
+        self.fields['photo'].label = "Photo (landscape-style JPG w/ instrument preferred)"
 
 
 class ArtistInviteForm(forms.Form):

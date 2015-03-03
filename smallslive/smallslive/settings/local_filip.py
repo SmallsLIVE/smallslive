@@ -27,6 +27,8 @@ INSTALLED_APPS += (
 COMPRESS_ENABLED = False
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+
 # Thumbor
 THUMBOR_MEDIA_URL = '/media/'
 THUMBOR_SECURITY_KEY = 'TEST'
