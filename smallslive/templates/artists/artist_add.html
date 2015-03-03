@@ -3,7 +3,7 @@
 {% load static from staticfiles %}
 
 {% block extra_head %}
-  {{ artist_add_form.media }}
+  {{ form.media }}
 {% endblock extra_head %}
 
 {% block title %}Add new artist{% endblock title %}
@@ -12,11 +12,11 @@
   <div class="content-wrapper">
   <section class="sign-up container">
     <h1 class="sign-up__main-title">Add artist</h1>
-    <form method="post" class="f-add-artist" role="form" enctype="multipart/form-data">
+    <form method="post" class="sign-up__form" role="form" enctype="multipart/form-data">
       {% csrf_token %}
-      {% crispy artist_add_form %}
-      {% crispy artist_invite_form %}
-      <button type="submit" name="submit" class="btn btn-primary">Add artist</button>
+      {% crispy form %}
+      {% comment %}{% crispy artist_invite_form %}{% endcomment %}
+      <button type="submit" name="submit" class="sign-up__form__button">Add artist</button>
     </form>
     </section>
   </div>
@@ -26,13 +26,6 @@
 {% block extra_js %}
   <script type="text/javascript" src="{% static 'js/selectize.min.js' %}"></script>
   <script>
-    $("#id_instruments").selectize({
-      create: function(input) {
-          return {
-              value: input,
-              text: input
-          }
-      }
-    });
+    $("#id_instruments").selectize();
   </script>
 {% endblock extra_js %}

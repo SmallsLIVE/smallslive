@@ -12,32 +12,33 @@ from .forms import ArtistAddForm, ArtistInviteForm, ArtistSearchForm
 from .models import Artist, Instrument
 
 
-@user_passes_test(lambda u: u.is_superuser)
-def artist_add(request):
-    if request.method == 'POST':
-        artist_add_form = ArtistAddForm(request.POST)
-        artist_invite_form = ArtistInviteForm(request.POST)
-        forms = [artist_add_form, artist_invite_form]
-        if all([form.is_valid() for form in forms]):
-            print "valid"
-            print artist_add_form.cleaned_data['photo']
-            artist = artist_add_form.save()
-            email = artist_invite_form.cleaned_data.get('email')
-            invite_type = artist_invite_form.cleaned_data.get('invite_type')
-            if invite_type == ArtistInviteForm.INVITE_TYPE.standard_invite:
-                artist.send_invitation(request, email)
-            elif invite_type == ArtistInviteForm.INVITE_TYPE.custom_invite:
-                artist.send_invitation(request, email, artist_invite_form.cleaned_data.get('invite_text'))
-            messages.success(request, u"Artist {0} successfully added!".format(artist.full_name()))
-            return redirect('artist_add')
-    else:
-        artist_add_form = ArtistAddForm()
-        artist_invite_form = ArtistInviteForm()
-
-    return render(request, 'artists/artist_add.html', {
-        'artist_add_form': artist_add_form,
-        'artist_invite_form': artist_invite_form
-    })
+# not used right now, may be needed in the future if artist inviting will work the same way
+# @user_passes_test(lambda u: u.is_superuser)
+# def artist_add(request):
+#     if request.method == 'POST':
+#         artist_add_form = ArtistAddForm(request.POST, request.FILES)
+#         artist_invite_form = ArtistInviteForm(request.POST)
+#         forms = [artist_add_form, artist_invite_form]
+#         if all([form.is_valid() for form in forms]):
+#             print "valid"
+#             print artist_add_form.cleaned_data['photo']
+#             artist = artist_add_form.save()
+#             email = artist_invite_form.cleaned_data.get('email')
+#             invite_type = artist_invite_form.cleaned_data.get('invite_type')
+#             if invite_type == ArtistInviteForm.INVITE_TYPE.standard_invite:
+#                 artist.send_invitation(request, email)
+#             elif invite_type == ArtistInviteForm.INVITE_TYPE.custom_invite:
+#                 artist.send_invitation(request, email, artist_invite_form.cleaned_data.get('invite_text'))
+#             messages.success(request, u"Artist {0} successfully added!".format(artist.full_name()))
+#             return redirect('artist_add')
+#     else:
+#         artist_add_form = ArtistAddForm()
+#         artist_invite_form = ArtistInviteForm()
+#
+#     return render(request, 'artists/artist_add.html', {
+#         'artist_add_form': artist_add_form,
+#         'artist_invite_form': artist_invite_form
+#     })
 
 
 # note - this is here only for Mezzrow compatibility
@@ -45,6 +46,8 @@ class ArtistAddView(CreateView):
     model = Artist
     form_class = ArtistAddForm
     template_name = 'artists/artist_add.html'
+
+artist_add = ArtistAddView.as_view()
 
 
 class ArtistEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
