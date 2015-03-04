@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.detail import DetailView
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
+from haystack.inputs import Exact
 from haystack.query import SearchQuerySet, RelatedSearchQuerySet
 from haystack.views import FacetedSearchView, SearchView
 from events.models import Event
@@ -97,8 +98,7 @@ class ArtistSearchView(SearchView):
             'show_last': paginator.num_pages not in page_numbers,
             })
 
-        facet_counts = super(ArtistSearchView, self).get_results().facet('model', order='term').facet_counts()
-        fields = facet_counts.get('fields', {})
+        fields = self.sqs.facet_counts().get('fields', {})
         facet_counts = {model: count for (model, count) in fields.get('model', [])}
         context.update({
             'artist_count': facet_counts.get('artist', 0),
@@ -116,7 +116,8 @@ class ArtistSearchView(SearchView):
         return context
 
     def get_results(self):
-        return super(ArtistSearchView, self).get_results().models(Artist)
+        self.sqs = super(ArtistSearchView, self).get_results().facet('model', order='term')
+        return self.sqs.models(Artist)
 
 artist_search = ArtistSearchView(
     form_class=ArtistSearchForm,

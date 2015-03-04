@@ -23,7 +23,7 @@ PIPELINE_SASS_ARGUMENTS = ''
 ELASTICSEARCH_IP = get_env_variable('ELASTICSEARCH_IP')
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'ENGINE': 'search.backends.ConfigurableElasticSearchEngine',
         'URL': 'http://{0}:9200/'.format(ELASTICSEARCH_IP),
         'INDEX_NAME': 'haystack',
     },

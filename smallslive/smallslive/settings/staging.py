@@ -22,7 +22,7 @@ PIPELINE_SASS_ARGUMENTS = ''
 # Haystack elasticsearch backend
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'ENGINE': 'search.backends.ConfigurableElasticSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': 'haystack',
     },
