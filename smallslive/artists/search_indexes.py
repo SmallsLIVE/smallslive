@@ -1,6 +1,5 @@
 import datetime
 from haystack import indexes
-from elasticstack import fields
 from .models import Artist, Instrument
 
 
