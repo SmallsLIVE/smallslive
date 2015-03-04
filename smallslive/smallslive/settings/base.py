@@ -74,7 +74,6 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_extensions',
     'django_thumbor',
-    'elasticstack',
     'floppyforms',
     'oscar_stripe',
     'pipeline',
