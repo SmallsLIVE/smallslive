@@ -309,7 +309,8 @@ def search_autocomplete(request):
     sqs = SearchQuerySet().autocomplete(content_auto=request.GET.get('term', ''))[:10]
     sorted_by_model = sorted(sqs, key=attrgetter('model_exact', 'score'))
     suggestions = [{'label': result.object.autocomplete_label(),
-                    'category': result.model_exact} for result in sorted_by_model]
+                    'category': result.model_exact,
+                    'url': result.object.get_absolute_url()} for result in sorted_by_model]
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
     the_data = json.dumps({

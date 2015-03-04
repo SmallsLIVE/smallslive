@@ -87,5 +87,8 @@ class Instrument(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return "{0}?q={1}".format(reverse("instrument_search"), self.name)
+
     def autocomplete_label(self):
         return self.name

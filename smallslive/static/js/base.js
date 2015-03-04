@@ -122,7 +122,6 @@ $.widget( "custom.catcomplete", $.ui.autocomplete, {
       this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
     },
     _renderMenu: function( ul, items ) {
-        console.log(items);
         var that = this,
         currentCategory = "";
       $.each( items[0], function( index, item ) {
@@ -136,60 +135,16 @@ $.widget( "custom.catcomplete", $.ui.autocomplete, {
           li.attr( "aria-label", item.category + " : " + item.label );
         }
       });
+    },
+    _renderItem: function( ul, item ) {
+        return $( "<li>" )
+            .attr( "data-value", item.value )
+            .append('<a href="' + item.url + '">' + item.label + "</a>" )
+            .appendTo( ul );
     }
   });
 
 $(function() {
-    var searchData = [
-      { label: "Accordion", category: "Instruments" },
-      { label: "Alto Sax", category: "Instruments" },
-      { label: "Banjo", category: "Instruments" },
-      { label: "Baritone Sax", category: "Instruments" },
-      { label: "Bass", category: "Instruments" },
-      { label: "Bassoon", category: "Instruments" },
-      { label: "Cello", category: "Instruments" },
-      { label: "Clarinet", category: "Instruments" },
-      { label: "Composer", category: "Instruments" },
-      { label: "Conductor", category: "Instruments" },
-      { label: "Dancer", category: "Instruments" },
-      { label: "DJ", category: "Instruments" },
-      { label: "Drums", category: "Instruments" },
-      { label: "Female Vocalist", category: "Instruments" },
-      { label: "Flute", category: "Instruments" },
-      { label: "French Horn", category: "Instruments" },
-      { label: "Guitar", category: "Instruments" },
-      { label: "Harp", category: "Instruments" },
-      { label: "Jazz Orchestra", category: "Instruments" },
-      { label: "Leader", category: "Instruments" },
-      { label: "Lute", category: "Instruments" },
-      { label: "Male Vocalist", category: "Instruments" },
-      { label: "MC", category: "Instruments" },
-      { label: "Oboe", category: "Instruments" },
-      { label: "Orchestra", category: "Instruments" },
-      { label: "Organ", category: "Instruments" },
-      { label: "Percussion", category: "Instruments" },
-      { label: "Piano", category: "Instruments" },
-      { label: "Poet", category: "Instruments" },
-      { label: "Soprano Sax", category: "Instruments" },
-      { label: "String Quartet", category: "Instruments" },
-      { label: "Tap Dancer", category: "Instruments" },
-      { label: "Tenor Sax", category: "Instruments" },
-      { label: "Trombone", category: "Instruments" },
-      { label: "Trumpet", category: "Instruments" },
-      { label: "Vibraphone", category: "Instruments" },
-      { label: "Viola", category: "Instruments" },
-      { label: "Violin", category: "Instruments" },
-      { label: "Vocalist", category: "Instruments" },
-      { label: "Whistle", category: "Instruments" },
-      { label: "Nasar Abadey", category: "Artists" },
-      { label: "Carlos Abadie", category: "Artists" },
-      { label: "Rez Abbasi", category: "Artists" },
-      { label: "Brian Adler", category: "Artists" },
-      { label: "Cyrille Aimee", category: "Artists" },
-      { label: "Melissa Aldana", category: "Artists" },
-      { label: "Aaron Alexander", category: "Artists" }
-    ];
-
     $( "#header--search" ).catcomplete({
       delay: 500,
       source: '/events/search_autocomplete/'
