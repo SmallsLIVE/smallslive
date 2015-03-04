@@ -122,9 +122,10 @@ $.widget( "custom.catcomplete", $.ui.autocomplete, {
       this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
     },
     _renderMenu: function( ul, items ) {
-      var that = this,
+        console.log(items);
+        var that = this,
         currentCategory = "";
-      $.each( items, function( index, item ) {
+      $.each( items[0], function( index, item ) {
         var li;
         if ( item.category != currentCategory ) {
           ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
@@ -190,7 +191,7 @@ $(function() {
     ];
 
     $( "#header--search" ).catcomplete({
-      delay: 0,
-      source: searchData
+      delay: 500,
+      source: '/events/search_autocomplete/'
     });
   });

@@ -1,10 +1,11 @@
 from collections import OrderedDict
 from itertools import groupby
+from operator import itemgetter, attrgetter
 import calendar
 import json
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template.defaulttags import regroup
 from django.utils import timezone
 from django.utils.text import slugify
@@ -302,3 +303,16 @@ class EventCarouselAjaxView(AJAXMixin, ListView):
 
 
 event_carousel_ajax = EventCarouselAjaxView.as_view()
+
+
+def search_autocomplete(request):
+    sqs = SearchQuerySet().autocomplete(content_auto=request.GET.get('term', ''))[:10]
+    sorted_by_model = sorted(sqs, key=attrgetter('model_exact', 'score'))
+    suggestions = [{'label': result.object.autocomplete_label(),
+                    'category': result.model_exact} for result in sorted_by_model]
+    # Make sure you return a JSON object, not a bare list.
+    # Otherwise, you could be vulnerable to an XSS attack.
+    the_data = json.dumps({
+        'results': suggestions
+    })
+    return HttpResponse(the_data, content_type='application/json')

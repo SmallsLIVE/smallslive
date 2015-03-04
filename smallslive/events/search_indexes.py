@@ -9,6 +9,7 @@ class EventIndex(indexes.SearchIndex, indexes.Indexable):
     start = indexes.DateTimeField(model_attr='start')  # needed for results sorting
     model = indexes.CharField(model_attr='_meta__verbose_name', faceted=True)
     performers = indexes.MultiValueField(null=True)
+    content_auto = indexes.EdgeNgramField(model_attr='title')
 
     def get_model(self):
         return Event

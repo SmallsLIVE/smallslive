@@ -73,6 +73,9 @@ class Artist(models.Model):
             self.slug = slugify(self.full_name())
         super(Artist, self).save(force_insert, force_update, using, update_fields)
 
+    def autocomplete_label(self):
+        return self.full_name()
+
 
 class Instrument(models.Model):
     name = models.CharField(max_length=255)
@@ -82,4 +85,7 @@ class Instrument(models.Model):
         ordering = ['name']
 
     def __unicode__(self):
+        return self.name
+
+    def autocomplete_label(self):
         return self.name

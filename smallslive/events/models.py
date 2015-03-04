@@ -172,6 +172,9 @@ class Event(TimeStampedModel):
         }
         return CSS_STATES[self.state]
 
+    def autocomplete_label(self):
+        return "{} - {dt.month}/{dt.day}/{dt.year}".format(self.title, dt=self.start)
+
 
 class Set(models.Model):
     media_file = models.OneToOneField('multimedia.MediaFile', primary_key=True, related_name='set')
