@@ -18,8 +18,8 @@ def search_autocomplete(request):
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
     the_data = json.dumps({
+        'counts': facets_by_model_name(sqs),
         'results': suggestions,
-        'counts': facets_by_model_name(sqs)
-    })
+    }, sort_keys=True)
     resp = HttpResponse(the_data, content_type='application/json')
     return resp
