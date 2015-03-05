@@ -1,0 +1,37 @@
+.admin-nav {
+  background-color: $main-accent-color;
+  color: #fff;
+  padding: 15px;
+  @include lato;
+
+  &__left {
+    float: left;
+    font-size: 26px;
+    @include lato-black;
+  }
+
+  &__right {
+    float: right;
+
+    & ul {
+      margin-bottom: 0;
+    }
+
+    & ul li {
+      display: inline-block;
+      @include list-unstyled;
+
+      & a {
+        display: block;
+        font-size: 16px;
+        color: #fff;
+        padding: 10px 20px;
+
+        &:hover {
+          color: rgba(255, 255, 255, 0.7);
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
