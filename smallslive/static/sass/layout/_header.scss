@@ -110,6 +110,10 @@ header {
     a:hover {
       color: white;
     }
+
+    &.active a {
+      color: #fff;
+    }
   }
 }
 
