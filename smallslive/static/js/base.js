@@ -124,22 +124,30 @@ $.widget( "custom.catcomplete", $.ui.autocomplete, {
     _renderMenu: function( ul, items ) {
         var that = this,
         currentCategory = "";
-      $.each( items[1], function( index, item ) {
-        var li;
-        if ( item.category != currentCategory ) {
-          ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
-          currentCategory = item.category;
-        }
-        li = that._renderItemData( ul, item );
-        if ( item.category ) {
-          li.attr( "aria-label", item.category + " : " + item.label );
-        }
-      });
+        console.log(items);
+
+        $.each ( items[1], function( index, item ) {
+            var li;
+            if ( item.category != currentCategory ) {
+                if ( currentCategory != "" && items[0][currentCategory] > 5 ) {
+                    ul.append ( "<li class='ui-autocomplete-more-count'><a href='/search/" + currentCategory + "/?q=" + that.term + "'>+" + ( items[0][currentCategory] - 5 ) + " more</a></li>" );
+                }
+                currentCategory = item.category;
+                ul.append ( "<li class='ui-autocomplete-category'><span class='name'>" + item.category + "</span><span class='results-count'>(" + items[0][currentCategory] + ")</span></li>" );
+            }
+            li = that._renderItemData( ul, item );
+            if ( item.category ) {
+              li.attr( "aria-label", item.category + " : " + item.label );
+            }
+        });
+        if ( currentCategory != "" && items[0][currentCategory] > 5 ) {
+                    ul.append ( "<li class='ui-autocomplete-more-count'><a href='/search/" + currentCategory + "/?q=" + that.term + "'>+" + ( items[0][currentCategory] - 5 ) + " more</a></li>" );
+                }
     },
     _renderItem: function( ul, item ) {
         return $( "<li>" )
             .attr( "data-value", item.value )
-            .append('<a href="' + item.url + '">' + item.label + "</a>" )
+            .append('<a href="' + item.url + '"><span class="name">' + item.label + '</span><span class="sublabel">' + item.sublabel + "</span></a>" )
             .appendTo( ul );
     }
   });
