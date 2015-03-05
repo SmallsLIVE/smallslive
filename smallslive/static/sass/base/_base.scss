@@ -12,6 +12,7 @@ button, input[type="submit"] {
 }
 
 .form-control {
+  height: auto;
 
   &:focus {
     border-color: $main-accent-color !important;

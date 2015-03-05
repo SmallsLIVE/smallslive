@@ -1,0 +1,116 @@
+.login {
+  background-color: #fff;
+  padding: 40px 0 60px;
+  @include lato;
+
+  &__title {
+    @include lato-black;
+    font-size: 48px;
+    color: #D21535;
+    line-height: 130%;
+    margin-bottom: 20px;
+    margin-top: 10px;
+  }
+
+  &__text {
+
+    &--heavy {
+      @include lato-bold;
+      font-size: 14px;
+    }
+  }
+
+  & form {
+      display: block;
+      float: left;
+      padding: 30px 0;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      margin: 20px 0;
+  }
+
+  & .form-control {
+      @include lato;
+      font-size: 16px;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 0;
+  }
+
+  &__checkbox-container {
+      float: left;
+      width: 100%;
+  }
+
+  & input[type="checkbox"] {
+      float: left;
+      clear: left;
+      display: block;
+      margin-right: 6px;
+  }
+
+  & .checkbox-label {
+      @include lato;
+      font-size: 14px;
+      display: block;
+      margin-bottom: 10px;
+  }
+
+  &__forgot-password {
+      @include lato-bold;
+      color: $main-accent-color;
+      &:hover, &focus {
+        color: $main-accent-color-darker;
+        text-decoration: none;
+      }
+  }
+
+  &__login-button {
+      @include lato-bold;
+      font-size: 16px;
+      padding: 10px;
+      text-align: center;
+      background-color: #D21535;
+      color: #fff !important;
+      text-decoration: none;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      display: block;
+      width: 100%;
+      min-height: 46px;
+
+      &.facebook {
+          background-color: #3b5998;
+
+          & i {
+          margin-right: 10px;
+          font-size: 18px;
+        }
+      }
+  }
+
+  &__signup-cta {
+
+    &__title {
+      @include lato-black;
+      font-size: 32px;
+      color: #D21535;
+      line-height: 130%;
+      margin-bottom: 20px;
+      margin-top: 10px;
+    }
+
+    &__button {
+      @include lato-black;
+      font-size: 16px;
+      color: $main-accent-color;
+      display: block;
+      margin-top: 20px;
+      
+      &:hover, &:focus {
+        text-decoration: none;
+        color: $main-accent-color-darker;
+      }
+    }
+  }
+}

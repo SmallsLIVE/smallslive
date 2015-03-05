@@ -6,47 +6,50 @@
 
 
 {% block content %}
-
-    <div class="container">
-        <div class="login col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-            <h1 class="login__title">Log in</h1>
-            <p class="login__text--heavy">Log in to gain access to live stream and streamable audio and video content.</p>
-            <form role="form" id="form-login" method="post" action="#">
-                {%  csrf_token %}
+    <div class="content-wrapper">
+        <div class="container login">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                 <div class="col-xs-12">
-                    <div class="form-group">
-                        <input type="email" class="form-control" name="login" placeholder="Your email">
-                        <p class="form-error-text hidden" id="login-error"></p>
+                    <h1 class="login__title">Log in</h1>
+                    <p class="login__text--heavy">Log in to gain access to live stream and streamable audio and video content.</p>
+                </div>
+                <form role="form" id="form-login" method="post" action="#">
+                    {%  csrf_token %}
+                    <div class="col-xs-12">
+                        <div class="form-group has-error">
+                            <input type="email" class="form-control" name="login" placeholder="Your email">
+                            <p class="form-error-text hidden" id="login-error">{{ form.login.error }}</p>
+                        </div>
+                        <div class="form-group has-error">
+                            <input type="password" class="form-control" name="password" placeholder="Your password">
+                            <p class="form-error-text hidden" id="password-error">{{ form.password.error }}</p>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input type="password" class="form-control" name="password" placeholder="Your password">
-                        <p class="form-error-text hidden" id="password-error"></p>
+                    <div class="login__checkbox-container">
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="checkbox" name="remember_me" id="remember_me">
+                            <div class="form-group {% if form.terms_of_service.errors %}has-error{% endif %}">
+                                <label for="id_terms_of_service" class="checkbox-label control-label">Keep me logged in</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <a href="#" class="login__forgot-password">Forgot password?</a>
+                        </div>
                     </div>
-                </div>
-                <div class="col-xs-12">
-                    <div class="col-sm-6 col-xs-12 vcenter">
-                        <input type="checkbox" name="remember"><span class="checkbox-label">Remember me</span>
-                    </div><!--
-                 --><div class="col-sm-6 col-xs-12 vcenter">
-                        <a class="forgot-password" data-dismiss="modal" href="#">Forgot password</a>
+                    <div class="col-xs-12 col-sm-5 col-md-6">
+                        <input class="login__login-button" value="Log in" type="submit">
                     </div>
+                    <div class="col-xs-12 col-sm-7 col-md-6">
+                        <a class="login__login-button facebook" href="{% provider_login_url "facebook" method="js_sdk" %}"><div class="vcenter"><i class="fa fa-facebook-square"></i></div><div class="vcenter">Log in with Facebook</div></a>
+                    </div>
+                </form>
+                <div class="col-xs-12 login__signup-cta">
+                    <h2 class="login__signup-cta__title">Don’t have an account yet?</h2>
+                    <p class="login__signup-cta__text">Sign up for a free account to watch our live stream, or get unlimited access to our audio & video archive of over 350 jazz concerts! You can take a free trial of 30 days, and afterwards it’s just $20/month!</p>
+                    <a href="{% url "account_signup" %}" class="login__signup-cta__button">Click here to sign up!</a>
                 </div>
-                <div class="empty-separator-20"></div>
-                <div class="col-sm-5 col-xs-12">
-                    <input class="login-button" value="Log in" type="submit">
-                </div>
-                <div class="col-sm-7 col-xs-12">
-                    <a class="fb-login-button" href="{% provider_login_url "facebook" method="js_sdk" %}"><div class="vcenter"><i class="fa fa-facebook-square"></i></div><div class="vcenter">Log in with Facebook</div></a>
-                </div>
-                <div class="col-xs-12 modal-separator"></div>
-                <div class="col-xs-12">
-                    <h2 class="login-modal__subtitle">Don’t have an account yet?</h2>
-                    <p class="login-modal__text">Sign up for a free account to watch our live stream, or get unlimited access to our audio & video archive of over 350 jazz concerts! You can take a free trial of 30 days, and afterwards it’s just $20/month!</p>
-                    <a href="{% url "account_signup" %}" class="login-modal__cta-signup">Click here to sign up!</a>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-
 {% endblock content %}
 
