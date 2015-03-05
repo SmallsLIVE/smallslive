@@ -74,17 +74,23 @@ class ArtistSearchForm(SearchForm):
     instrument = forms.IntegerField(required=False)
 
     def search(self):
-        sqs = super(ArtistSearchForm, self).search()
+        print self.searchqueryset
+        if not self.is_valid():
+            return self.no_query_found()
+
+        if self.cleaned_data.get('q'):
+            sqs = self.searchqueryset.filter(content__contains=self.cleaned_data.get('q'))
+        elif self.cleaned_data.get('instrument'):
+            sqs = self.searchqueryset.filter(instruments=self.cleaned_data.get('instrument'))
+        else:
+            sqs = self.no_query_found()
+
+        if self.load_all:
+            sqs = sqs.load_all()
 
         sqs = sqs.load_all_queryset(
             Artist,
             Artist.objects.annotate(events_count=Count('gigs_played')).prefetch_related('instruments')
         )
 
-        if self.cleaned_data.get('instrument'):
-            sqs = sqs.filter(instruments=self.cleaned_data.get('instrument'))
-
-        return sqs.load_all()
-
-    def no_query_found(self):
-        return self.searchqueryset.all()
+        return sqs

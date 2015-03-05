@@ -37,7 +37,7 @@ THUMBOR_SERVER = 'http://127.0.0.1:8888'
 # Haystack elasticsearch backend
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'ENGINE': 'search.backends.ConfigurableElasticSearchEngine',
         'URL': 'http://192.168.59.103:9200/',
         'INDEX_NAME': 'haystack',
     },

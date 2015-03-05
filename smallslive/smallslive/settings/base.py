@@ -354,3 +354,61 @@ STRIPE_CURRENCY = 'USD'
 OSCAR_DEFAULT_CURRENCY = 'USD'
 OSCAR_SHOP_NAME = 'SmallsLIVE'
 OSCAR_IMAGE_FOLDER = 'product_images/%Y/%m/'
+
+ELASTICSEARCH_INDEX_SETTINGS = {
+    'settings': {
+        "number_of_shards": 1,
+        "analysis": {
+            "analyzer": {
+                "ngram_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "lowercase",
+                    "filter": ["haystack_ngram"]
+                },
+                "edgengram_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "standard",
+                    "filter": ["lowercase", "haystack_edgengram"]
+                }
+            },
+            "tokenizer": {
+                "haystack_ngram_tokenizer": {
+                    "type": "nGram",
+                    "min_gram": 3,
+                    "max_gram": 15,
+                },
+                "haystack_edgengram_tokenizer": {
+                    "type": "edgeNGram",
+                    "min_gram": 3,
+                    "max_gram": 15,
+                    "side": "front"
+                }
+            },
+            "filter": {
+                "haystack_ngram": {
+                    "type": "nGram",
+                    "min_gram": 3,
+                    "max_gram": 15
+                },
+                "haystack_edgengram": {
+                    "type": "edgeNGram",
+                    "min_gram": 3,
+                    "max_gram": 15
+                }
+            }
+        }
+    }
+}
+
+ELASTICSEARCH_FIELD_MAPPINGS = {
+    'edge_ngram': {'type': 'string', 'index_analyzer': 'edgengram_analyzer', 'search_analyzer': 'standard'},
+    'ngram':      {'type': 'string', 'analyzer': 'ngram_analyzer'},
+    'date':       {'type': 'date'},
+    'datetime':   {'type': 'date'},
+
+    'location':   {'type': 'geo_point'},
+    'boolean':    {'type': 'boolean'},
+    'float':      {'type': 'float'},
+    'long':       {'type': 'long'},
+    'integer':    {'type': 'long'},
+}
