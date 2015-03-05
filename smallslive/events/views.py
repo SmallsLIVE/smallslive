@@ -169,8 +169,7 @@ class EventSearchView(SearchView):
             'show_last': paginator.num_pages not in page_numbers,
             })
 
-        sqs = super(EventSearchView, self).get_results().facet('model', order='term')
-        context.update(facets_by_model_name(sqs))
+        context['counts'] = facets_by_model_name(self.sqs)
 
         artist_id = self.request.GET.get('artist')
         if artist_id:

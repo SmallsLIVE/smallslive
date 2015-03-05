@@ -12,21 +12,9 @@
         <div class="equal-heights row">
           <section class="col-md-3 search-sidebar">
             <ul class="search-nav">
-              {% if artist_count %}
-                <li class="search-nav__item"><a href="{% url "artist_search" %}?q={{ request.GET.q }}">Artists <span class="badge">{{ artist_count }}</span></a></li>
-              {% else %}
-                <li class="search-nav__item">Artists <span class="badge">{{ artist_count }}</span></li>
-              {% endif %}
-              {% if event_count %}
-                <li class="search-nav__item"><a href="{% url "event_search" %}?q={{ request.GET.q }}">Events <span class="badge">{{ event_count }}</span></a></li>
-              {% else %}
-                <li class="search-nav__item">Events <span class="badge">{{ event_count }}</span></li>
-              {% endif %}
-              {% if instrument_count %}
-                <li class="search-nav__item"><a href="{% url "instrument_search" %}?q={{ request.GET.q }}">Instruments <span class="badge">{{ instrument_count }}</span></a></li>
-              {% else %}
-                <li class="search-nav__item">Instruments <span class="badge">{{ instrument_count }}</span></li>
-              {% endif %}
+                <li class="search-nav__item"><a href="{% url "artist_search" %}?q={{ request.GET.q }}">Artists <span class="badge">{{ counts.artist }}</span></a></li>
+                <li class="search-nav__item"><a href="{% url "event_search" %}?q={{ request.GET.q }}">Events <span class="badge">{{ counts.event }}</span></a></li>
+                <li class="search-nav__item"><a href="{% url "instrument_search" %}?q={{ request.GET.q }}">Instruments <span class="badge">{{ counts.instrument }}</span></a></li>
 
               {% comment %}<li class="search-nav__item">Store <span class="badge">2</span></li>{% endcomment %}
             </ul>

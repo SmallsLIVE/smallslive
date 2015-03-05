@@ -99,7 +99,7 @@ class ArtistSearchView(SearchView):
             'show_last': paginator.num_pages not in page_numbers,
             })
 
-        context.update(facets_by_model_name(self.sqs))
+        context['counts'] = facets_by_model_name(self.sqs)
 
         instrument_id = self.request.GET.get('instrument')
         if instrument_id:
@@ -140,9 +140,7 @@ class InstrumentSearchView(SearchView):
             'show_last': paginator.num_pages not in page_numbers,
             })
 
-        sqs = super(InstrumentSearchView, self).get_results().facet('model', order='term')
-        context.update(facets_by_model_name(sqs))
-
+        context['counts'] = facets_by_model_name(self.sqs)
         context['search_term'] = self.request.GET.get('q')
 
         return context
