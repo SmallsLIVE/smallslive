@@ -1,0 +1,11 @@
+{% load thumbnail %}
+
+{% if record.file.url %}
+    {% with image=record.file %}
+        <a href="{{ image.original.url }}" rel="lightbox" class="sub-image">
+            <img src="{% thumbnail image "70x70" upscale=False %}" alt="{{ record.name }}" data-description="">
+        </a>
+    {% endwith %}
+{% else %}
+    —
+{% endif %}
