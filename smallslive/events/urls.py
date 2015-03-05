@@ -2,7 +2,6 @@ from django.conf.urls import patterns, include, url
 
 
 urlpatterns = patterns('events.views',
-    url(r'^search_autocomplete/$', 'search_autocomplete', name='search_autocomplete'),
     url(r'^schedule/(?P<year>\d+)/(?P<month>\d+)/$', 'monthly_schedule', name='monthly_schedule'),
     url(r'^schedule/$', 'schedule', name='schedule'),
     url(r'^event_carousel_ajax/$', 'event_carousel_ajax', name='event_carousel_ajax'),

@@ -9,6 +9,7 @@ from haystack.inputs import Exact
 from haystack.query import SearchQuerySet, RelatedSearchQuerySet
 from haystack.views import FacetedSearchView, SearchView
 from events.models import Event
+from search.utils import facets_by_model_name
 from .forms import ArtistAddForm, ArtistInviteForm, ArtistSearchForm
 from .models import Artist, Instrument
 
@@ -98,13 +99,7 @@ class ArtistSearchView(SearchView):
             'show_last': paginator.num_pages not in page_numbers,
             })
 
-        fields = self.sqs.facet_counts().get('fields', {})
-        facet_counts = {model: count for (model, count) in fields.get('model', [])}
-        context.update({
-            'artist_count': facet_counts.get('artist', 0),
-            'event_count': facet_counts.get('event', 0),
-            'instrument_count': facet_counts.get('instrument', 0),
-        })
+        context.update(facets_by_model_name(self.sqs))
 
         instrument_id = self.request.GET.get('instrument')
         if instrument_id:
@@ -145,21 +140,16 @@ class InstrumentSearchView(SearchView):
             'show_last': paginator.num_pages not in page_numbers,
             })
 
-        facet_counts = super(InstrumentSearchView, self).get_results().facet('model', order='term').facet_counts()
-        fields = facet_counts.get('fields', {})
-        facet_counts = {model: count for (model, count) in fields.get('model', [])}
-        context.update({
-            'artist_count': facet_counts.get('artist', 0),
-            'event_count': facet_counts.get('event', 0),
-            'instrument_count': facet_counts.get('instrument', 0),
-        })
+        sqs = super(InstrumentSearchView, self).get_results().facet('model', order='term')
+        context.update(facets_by_model_name(sqs))
 
         context['search_term'] = self.request.GET.get('q')
 
         return context
 
     def get_results(self):
-        return super(InstrumentSearchView, self).get_results().models(Instrument)
+        self.sqs = super(InstrumentSearchView, self).get_results().facet('model', order='term')
+        return self.sqs.models(Instrument)
 
 instrument_search = InstrumentSearchView()
 

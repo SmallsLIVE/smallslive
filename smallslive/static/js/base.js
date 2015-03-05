@@ -100,7 +100,7 @@ $(document).ready(function () {
 
 /* Bootstrap datepicker for Schedule page */
 
-$datePicker = $('#schedule__date-picker input');
+var $datePicker = $('#schedule__date-picker input');
 $datePicker.datepicker({
     format: 'MM // yyyy',
     minViewMode: "months",
@@ -124,7 +124,7 @@ $.widget( "custom.catcomplete", $.ui.autocomplete, {
     _renderMenu: function( ul, items ) {
         var that = this,
         currentCategory = "";
-      $.each( items[0], function( index, item ) {
+      $.each( items[1], function( index, item ) {
         var li;
         if ( item.category != currentCategory ) {
           ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
@@ -147,6 +147,6 @@ $.widget( "custom.catcomplete", $.ui.autocomplete, {
 $(function() {
     $( "#header--search" ).catcomplete({
       delay: 500,
-      source: '/events/search_autocomplete/'
+      source: '/search/autocomplete/'
     });
   });

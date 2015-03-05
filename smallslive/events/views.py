@@ -21,6 +21,7 @@ from haystack.query import SearchQuerySet, RelatedSearchQuerySet
 from haystack.views import SearchView
 
 from artists.models import Artist, Instrument
+from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
     EventSearchForm
 from .models import Event
@@ -168,14 +169,8 @@ class EventSearchView(SearchView):
             'show_last': paginator.num_pages not in page_numbers,
             })
 
-        facet_counts = super(EventSearchView, self).get_results().facet('model', order='term').facet_counts()
-        fields = facet_counts.get('fields', {})
-        facet_counts = {model: count for (model, count) in fields.get('model', [])}
-        context.update({
-            'artist_count': facet_counts.get('artist', 0),
-            'event_count': facet_counts.get('event', 0),
-            'instrument_count': facet_counts.get('instrument', 0),
-        })
+        sqs = super(EventSearchView, self).get_results().facet('model', order='term')
+        context.update(facets_by_model_name(sqs))
 
         artist_id = self.request.GET.get('artist')
         if artist_id:
@@ -187,7 +182,8 @@ class EventSearchView(SearchView):
         return context
 
     def get_results(self):
-        return super(EventSearchView, self).get_results().models(Event).order_by('-start')
+        self.sqs = super(EventSearchView, self).get_results().facet('model', order='term').order_by('-start')
+        return self.sqs.models(Event)
 
 event_search = EventSearchView(
     form_class=EventSearchForm,
@@ -303,17 +299,3 @@ class EventCarouselAjaxView(AJAXMixin, ListView):
 
 
 event_carousel_ajax = EventCarouselAjaxView.as_view()
-
-
-def search_autocomplete(request):
-    sqs = SearchQuerySet().autocomplete(content_auto=request.GET.get('term', ''))[:10]
-    sorted_by_model = sorted(sqs, key=attrgetter('model_exact', 'score'))
-    suggestions = [{'label': result.object.autocomplete_label(),
-                    'category': result.model_exact,
-                    'url': result.object.get_absolute_url()} for result in sorted_by_model]
-    # Make sure you return a JSON object, not a bare list.
-    # Otherwise, you could be vulnerable to an XSS attack.
-    the_data = json.dumps({
-        'results': suggestions
-    })
-    return HttpResponse(the_data, content_type='application/json')
