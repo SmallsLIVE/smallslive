@@ -23,7 +23,7 @@
       float: left;
     }
 
-    &:hover {
+    &:hover, &:focus {
       background-color: #f0f0f0;
     }
 
@@ -67,6 +67,10 @@
     color: #A1A0A0;
     font-size: 12px;
   }
+}
+
+.ui-helper-hidden-accessible {
+  display: none;
 }
 
 

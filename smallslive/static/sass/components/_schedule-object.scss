@@ -80,6 +80,13 @@
   background-color: #fff;
   padding: 30px 20px;
 
+  & h3 {
+    @include lato;
+    color: #ccc;
+    font-style: italic;
+    font-size: 14px;
+  }
+
   &.flex {
 
   }
