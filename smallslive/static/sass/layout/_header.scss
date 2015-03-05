@@ -156,6 +156,16 @@ header {
     padding-left: 35px;
     color: white;
     border-color: #828181;
+    @include transition(all 0.1s ease-in-out);
+
+    &:focus {
+      background: rgba(255,255,255,0.8);
+      @include transition(all 0.1s ease-in-out);
+      color: #121212;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none1;
+    }
   }
 }
 
