@@ -74,6 +74,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_extensions',
     'django_thumbor',
+    #'easy_thumbnails',
+    'filer',
     'floppyforms',
     'oscar_stripe',
     'pipeline',
@@ -94,6 +96,8 @@ INSTALLED_APPS = [
 ] + get_core_apps([
     'oscar_apps.address',
     'oscar_apps.checkout',
+    'oscar_apps.dashboard',
+    'oscar_apps.dashboard.files',
     'oscar_apps.partner',
     'oscar_apps.shipping',
 ])
@@ -354,6 +358,19 @@ STRIPE_CURRENCY = 'USD'
 OSCAR_DEFAULT_CURRENCY = 'USD'
 OSCAR_SHOP_NAME = 'SmallsLIVE'
 OSCAR_IMAGE_FOLDER = 'product_images/%Y/%m/'
+
+OSCAR_DASHBOARD_NAVIGATION += [
+    {
+        'label': 'Files',
+        'icon': 'icon-file',
+        'children': [
+            {
+                'label': 'Press Files',
+                'url_name': 'dashboard:press-file-list',
+            },
+         ],
+    },
+]
 
 ELASTICSEARCH_INDEX_SETTINGS = {
     'settings': {
