@@ -42,6 +42,13 @@ class Artist(models.Model):
     def get_instruments(self):
         return "\n".join([i.name for i in self.instruments.all()])
 
+    def get_main_instrument_name(self):
+        instrument = self.instruments.first()
+        if instrument:
+            return instrument.name
+        else:
+            return ""
+
     def events_count(self):
         return self.events.count()
 
@@ -76,6 +83,9 @@ class Artist(models.Model):
     def autocomplete_label(self):
         return self.full_name()
 
+    def autocomplete_sublabel(self):
+        return self.get_main_instrument_name()
+
 
 class Instrument(models.Model):
     name = models.CharField(max_length=255)
@@ -88,7 +98,10 @@ class Instrument(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return "{0}?q={1}".format(reverse("instrument_search"), self.name)
+        return "{0}?instrument={1}".format(reverse("artist_search"), self.id)
 
     def autocomplete_label(self):
         return self.name
+
+    def autocomplete_sublabel(self):
+        return u""

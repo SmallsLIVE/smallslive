@@ -173,7 +173,10 @@ class Event(TimeStampedModel):
         return CSS_STATES[self.state]
 
     def autocomplete_label(self):
-        return "{} - {dt.month}/{dt.day}/{dt.year}".format(self.title, dt=self.start)
+        return u"{} - {dt.month}/{dt.day}/{dt.year}".format(self.title, dt=self.start)
+
+    def autocomplete_sublabel(self):
+        return u""
 
 
 class Set(models.Model):
