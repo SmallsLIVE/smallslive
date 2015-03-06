@@ -28,7 +28,9 @@
                 <div class="col-xs-12 col-md-6 vcenter">
                     <div class="gradient-overlay"></div>
                     {% if event.photo %}
-                        <img src="{% thumbor_url event.photo.url|urlencode width=600  height=360 smart=True %}" class=" event-details__image img img-responsive div-fill-img" alt=""/>
+                        <img src="{% thumbor_url event.photo.url|urlencode width=600  height=360 smart=True %}" class=" event-details__image img img-responsive div-fill-img" alt="{{ event.title }} photo"/>
+                    {% else %}
+                        <img src="{% static "image/no-event-image-placeholder.jpg" %}" class="event-details__image img img-responsive div-fill-img" alt=""/>
                     {% endif %}
                 </div><!--
              --><div class="col-xs-12 col-md-6 info vcenter">
