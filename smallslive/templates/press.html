@@ -1,5 +1,7 @@
 {% extends "static-page.html" %}
 {% load static from staticfiles %}
+{% load thumbor_tags %}
+
 
 {% block press-active %}static-nav__item--active{% endblock %}
 
@@ -15,82 +17,30 @@
 
     <div class="press__section">
         <div class="press__section__heading col-xs-12">Press releases and materials</div>
-
-        <div class="press__file col-sm-4 col-xs-6">
-            <div class="press__file__photo col-sm-8 col-xs-12">
-                <img src="{% static 'image/press/file-icon-pdf.png' %}" alt="PDF file"/>
+        {% for file in files %}
+            <div class="press__file col-sm-4 col-xs-6">
+                <div class="press__file__photo col-sm-8 col-xs-12">
+                    <img src="{% static 'image/press/file-icon-pdf.png' %}" alt="{{ file.name }} file"/>
+                </div>
+                <div class="press__file__title">{{ file.name }}</div>
+                <div class="press__file__meta">{{ file.extension|upper }}  |  {{ file.size|filesizeformat }}</div>
+                <a href="{{ file.file.url }}" class="press__file__download-button">Download</a><span class="arrow"></span>
             </div>
-            <div class="press__file__title">About Smalls Club</div>
-            <div class="press__file__meta">PDF  |  0.6mb</div>
-            <a href="" class="press__file__download-button">Download</a><span class="arrow"></span>
-        </div>
-
-        <div class="press__file col-sm-4 col-xs-6">
-            <div class="press__file__photo col-sm-8 col-xs-12">
-                <img src="{% static 'image/press/file-icon-doc.png' %}" alt="DOC file"/>
-            </div>
-            <div class="press__file__title">About SmallsLIVE</div>
-            <div class="press__file__meta">DOC  |  0.9mb</div>
-            <a href="" class="press__file__download-button">Download</a><span class="arrow"></span>
-        </div>
-
-        <div class="press__file col-sm-4 col-xs-6">
-            <div class="press__file__photo col-sm-8 col-xs-12">
-                <img src="{% static 'image/press/file-icon-zip.png' %}" alt="ZIP file"/>
-            </div>
-            <div class="press__file__title">Smalls logo</div>
-            <div class="press__file__meta">ZIP  |  1.8mb</div>
-            <a href="" class="press__file__download-button">Download</a><span class="arrow"></span>
-        </div>
+        {% endfor %}
     </div>
 
     <div class="press__section">
         <div class="press__section__heading col-xs-12">High resolution photos</div>
-
-        <div class="press__file col-sm-4 col-xs-6">
-            <div class="press__file__photo col-xs-12">
-                <img src="{% static 'image/press/1.jpg' %}" alt="PDF file"/>
+        {% for photo in photos %}
+            <div class="press__file col-sm-4 col-xs-6">
+                <div class="press__file__photo col-xs-12">
+                    <img src="{% thumbor_url photo.file.url|urlencode height=255 width=255 smart=True %}" alt="{{ photo.name }} photo"/>
+                </div>
+                <div class="press__file__title">{{ photo.name }}</div>
+                <div class="press__file__meta">{{ photo.extension|upper }}  |  {{ photo.size|filesizeformat }}  |  1685x2288px</div>
+                <a href="{{ photo.file.url }}" class="press__file__download-button">Download</a><span class="arrow"></span>
             </div>
-            <div class="press__file__title">Photo caption</div>
-            <div class="press__file__meta">JPEG  |  1.2mb  |  1685x2288px</div>
-            <a href="" class="press__file__download-button">Download</a><span class="arrow"></span>
-        </div>
-
-        <div class="press__file col-sm-4 col-xs-6">
-            <div class="press__file__photo col-xs-12">
-                <img src="{% static 'image/press/2.jpg' %}" alt="DOC file"/>
-            </div>
-            <div class="press__file__title">Photo caption</div>
-            <div class="press__file__meta">JPEG  |  1.2mb  |  1685x2288px</div>
-            <a href="" class="press__file__download-button">Download</a><span class="arrow"></span>
-        </div>
-
-        <div class="press__file col-sm-4 col-xs-6">
-            <div class="press__file__photo col-xs-12">
-                <img src="{% static 'image/press/3.jpg' %}" alt="ZIP file"/>
-            </div>
-            <div class="press__file__title">Photo caption</div>
-            <div class="press__file__meta">JPEG  |  1.2mb  |  1685x2288px</div>
-            <a href="" class="press__file__download-button">Download</a><span class="arrow"></span>
-        </div>
-
-        <div class="press__file col-sm-4 col-xs-6">
-            <div class="press__file__photo col-xs-12">
-                <img src="{% static 'image/press/4.jpg' %}" alt="ZIP file"/>
-            </div>
-            <div class="press__file__title">Photo caption</div>
-            <div class="press__file__meta">JPEG  |  1.2mb  |  1685x2288px</div>
-            <a href="" class="press__file__download-button">Download</a><span class="arrow"></span>
-        </div>
-
-        <div class="press__file col-sm-4 col-xs-6">
-            <div class="press__file__photo col-xs-12">
-                <img src="{% static 'image/press/5.jpg' %}" alt="ZIP file"/>
-            </div>
-            <div class="press__file__title">Photo caption</div>
-            <div class="press__file__meta">JPEG  |  1.2mb  |  1685x2288px</div>
-            <a href="" class="press__file__download-button">Download</a><span class="arrow"></span>
-        </div>
+        {% endfor %}
     </div>
 
   </section>

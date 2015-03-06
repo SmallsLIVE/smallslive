@@ -24,6 +24,7 @@ urlpatterns = patterns('',
     url(r'^search/', include('search.urls', app_name="search")),
     url(r'^static_page/(?P<template_name>[A-Za-z_-]*)/$', StaticPageView.as_view(), name="static_page"),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^press/$', 'static_pages.views.press_view', name="press"),
     url(r'^newsletters/$', 'newsletters.views.newsletter_list', name="newsletters"),
 
     url(r"^accounts/confirm-email/(?P<key>\w+)/$", 'users.views.confirm_email',
