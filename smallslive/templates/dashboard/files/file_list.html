@@ -22,13 +22,13 @@
             <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
             <span class="divider">/</span>
         </li>
-        <li class="active">{{ object_name|capfirst }}s</li>
+        <li class="active">{{ full_object_name|capfirst }}</li>
     </ul>
 {% endblock %}
 
 {% block header %}
     <div class="page-header action">
-        <h1>{{ object_name|capfirst }}s</h1>
+        <h1>{{ full_object_name|capfirst }}</h1>
     </div>
 {% endblock header %}
 

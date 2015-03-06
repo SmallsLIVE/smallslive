@@ -3,7 +3,7 @@
 {% load i18n %}
 
 {% block title %}
-    {{ title }} | Press files | {{ block.super }}
+    {{ title }} | {{ object_name|capfirst }}s | {{ block.super }}
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -13,7 +13,7 @@
             <span class="divider">/</span>
         </li>
         <li>
-            <a href="{% url 'dashboard:press-file-list' %}">Press files</a>
+            <a href="{% url 'dashboard:file-list' category=category %}">{{ object_name|capfirst }}s</a>
             <span class="divider">/</span>
         </li>
         <li class="active">{{ title }}</li>

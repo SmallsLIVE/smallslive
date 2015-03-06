@@ -366,11 +366,24 @@ OSCAR_DASHBOARD_NAVIGATION += [
         'children': [
             {
                 'label': 'Press Files',
-                'url_name': 'dashboard:press-file-list',
+                'url_name': 'dashboard:file-list',
+                'url_kwargs': {
+                    "category": "press-file"
+                }
             },
             {
                 'label': 'Press Photos',
-                'url_name': 'dashboard:press-photo-list',
+                'url_name': 'dashboard:file-list',
+                'url_kwargs': {
+                    "category": "press-photo"
+                }
+            },
+            {
+                'label': 'Photo Gallery',
+                'url_name': 'dashboard:file-list',
+                'url_kwargs': {
+                    "category": "gallery-photo"
+                }
             },
          ],
     },

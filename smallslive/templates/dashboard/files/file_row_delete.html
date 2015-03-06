@@ -2,6 +2,6 @@
 {% load i18n %}
 <div class="btn-toolbar">
     <div class="btn-group">
-        <a class="btn btn-danger" href="{% url "dashboard:press-file-delete" pk=record.id %}">Delete</a>
+        <a class="btn btn-danger" href="{% url "dashboard:file-delete" category=category pk=record.id %}">Delete</a>
     </div>
 </div>

@@ -3,13 +3,12 @@ from filer.models.filemodels import File, Folder
 
 
 class FileForm(forms.ModelForm):
-    folder_name = "Temp"
-
     class Meta:
         fields = ('name', 'file')
         model = File
 
     def __init__(self, *args, **kwargs):
+        self.folder_name = kwargs.pop("folder_name", "Temp")
         super(FileForm, self).__init__(*args, **kwargs)
         self.fields['name'].required = True
         self.fields['file'].required = True
@@ -20,11 +19,3 @@ class FileForm(forms.ModelForm):
         object.folder = folder
         object.save()
         return object
-
-
-class PressFileForm(FileForm):
-    folder_name = "Press files"
-
-
-class PressPhotoForm(FileForm):
-    folder_name = "Press photos"

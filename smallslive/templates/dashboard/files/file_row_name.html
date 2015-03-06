@@ -1,2 +1,2 @@
 {% load django_tables2 %}
-<a href="{% url 'dashboard:press-file' pk=record.pk %}{% querystring %}">{{ value }}</a>
+<a href="{% url 'dashboard:file-edit' category=category pk=record.pk %}{% querystring %}">{{ value }}</a>
