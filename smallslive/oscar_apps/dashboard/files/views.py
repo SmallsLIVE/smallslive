@@ -8,7 +8,7 @@ from .tables import PressFileTable
 
 
 class PressFileCreateView(generic.CreateView):
-    template_name = 'dashboard/catalogue/product_class_form.html'
+    template_name = 'dashboard/files/file_form.html'
     model = File
     form_class = PressFileForm
 
@@ -23,7 +23,7 @@ class PressFileCreateView(generic.CreateView):
 
 
 class PressFileUpdateView(generic.UpdateView):
-    template_name = 'dashboard/catalogue/product_class_form.html'
+    template_name = 'dashboard/files/file_form.html'
     model = File
     form_class = PressFileForm
 

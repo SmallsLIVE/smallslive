@@ -19,8 +19,8 @@ class PressFileTable(Table):
         template_name='dashboard/files/file_row_filesize.html',
         order_by='_file_size', accessor=A('size'))
     file = TemplateColumn(
-        verbose_name=_('Image'),
-        template_name='dashboard/files/file_row_image.html',
+        verbose_name='File',
+        template_name='dashboard/files/file_row_file.html',
         orderable=False)
 
     class Meta(DashboardTable.Meta):

@@ -4,13 +4,9 @@ from oscar.forms.widgets import ImageInput
 
 
 class PressFileForm(forms.ModelForm):
-
     class Meta:
         fields = ('name', 'file')
         model = File
-        widgets = {
-            'file': ImageInput(),
-        }
 
     def save(self, commit=True):
         object = super(PressFileForm, self).save(commit=False)
