@@ -368,6 +368,10 @@ OSCAR_DASHBOARD_NAVIGATION += [
                 'label': 'Press Files',
                 'url_name': 'dashboard:press-file-list',
             },
+            {
+                'label': 'Press Photos',
+                'url_name': 'dashboard:press-photo-list',
+            },
          ],
     },
 ]

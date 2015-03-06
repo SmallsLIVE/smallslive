@@ -32,3 +32,28 @@ class PressFileTable(Table):
         fields = ('name', 'size', 'file')
         sequence = ('name', 'size', 'file')
         order_by = '-modified_at'
+
+
+class PressPhotoTable(Table):
+    name = TemplateColumn(
+        verbose_name='Name',
+        template_name='dashboard/files/file_row_name.html',
+        order_by='name', accessor=A('name'))
+    size = TemplateColumn(
+        verbose_name='File Size',
+        template_name='dashboard/files/file_row_filesize.html',
+        order_by='_file_size', accessor=A('size'))
+    file = TemplateColumn(
+        verbose_name='File',
+        template_name='dashboard/files/file_row_image.html',
+        orderable=False)
+    delete = TemplateColumn(
+        verbose_name='Delete',
+        template_name='dashboard/files/file_row_delete.html',
+        orderable=False)
+
+    class Meta(DashboardTable.Meta):
+        model = File
+        fields = ('name', 'size', 'file')
+        sequence = ('name', 'size', 'file')
+        order_by = '-modified_at'
