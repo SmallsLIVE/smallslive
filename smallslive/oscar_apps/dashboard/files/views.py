@@ -121,7 +121,7 @@ class PressPhotoDeleteView(generic.DeleteView):
 
     def get_success_url(self):
         messages.info(self.request, "Press photo deleted successfully")
-        return reverse("dashboard:press-photos-list")
+        return reverse("dashboard:press-photo-list")
 
 
 class PressPhotoListView(SingleTableMixin, generic.TemplateView):
