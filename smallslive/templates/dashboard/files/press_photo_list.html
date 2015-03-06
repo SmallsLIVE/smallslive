@@ -7,6 +7,17 @@
 
 {% block body_class %}{{ block.super }} catalogue{% endblock %}
 
+{% block extrastyles %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "css/dropzone.min.css" %}" />
+{#    <style>#}
+{#        .dz-default {#}
+{#          background-color: red;#}
+{#          height: 300px;#}
+{#        }#}
+{#    </style>#}
+{% endblock %}
+
 {% block title %}
     Press photos | {{ block.super }}
 {% endblock %}
@@ -35,6 +46,12 @@
         <div class="well">
             <a href="{% url "dashboard:press-photo-create" %}" class="btn btn-primary" type="submit"><i class="icon-plus"></i> New press photo</a>
         </div>
+        <div class="well">
+            <form action="{% url "dashboard:press-photo-create" %}" class="dropzone" id="my-awesome-dropzone">
+              {% csrf_token %}
+              <input type="hidden" name="name" value="Photo"/>
+            </form>
+        </div>
     {% endblock %}
 
     {% if files %}
@@ -49,3 +66,9 @@
     {% endif %}
 
 {% endblock dashboard_content %}
+
+
+{% block extrascripts %}
+  {{ block.super }}
+  <script src="{% static "js/dropzone.min.js" %}" type="text/javascript" charset="utf-8"></script>
+{% endblock %}
