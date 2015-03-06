@@ -195,6 +195,16 @@
 <!-- SmallsLIVE base JavaScript -->
 <script src="{% static 'js/base.js' %}"></script>
 <script src="{% static 'js/signup_form.js' %}"></script>
+<script>
+  $(function() {
+    // setTimeout() function will be fired after page is loaded
+    // it will wait for 5 sec. and then will fire
+    // $("#successMessage").hide() function
+    setTimeout(function() {
+        $(".alert-dismissible").hide(500)
+    }, 3000);
+});
+</script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>
