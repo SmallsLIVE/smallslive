@@ -40,6 +40,10 @@ header {
     a:hover {
       color: white;
     }
+
+    &.active a {
+      color: #fff;
+    }
   }
 
   &__icon {
@@ -110,10 +114,6 @@ header {
     a:hover {
       color: white;
     }
-
-    &.active a {
-      color: #fff;
-    }
   }
 }
 
@@ -164,7 +164,7 @@ header {
       color: #121212;
       -webkit-box-shadow: none;
       -moz-box-shadow: none;
-      box-shadow: none1;
+      box-shadow: none;
     }
   }
 }

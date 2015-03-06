@@ -61,6 +61,7 @@
                 {% empty %}
                   <p class="artist-events__notice">There are no upcoming shows for this artist.</p>
                 {% endfor %}
+                <a href="" class="artist-events__view-more">View more shows...</a>
               </div>
             {% endwith %}
             {% with artist.past_events|slice:":4" as past_events %}
@@ -92,6 +93,7 @@
                 {% empty %}
                   <p class="artist-events__notice">There are no past shows for this artist.</p>
                 {% endfor %}
+                <a href="" class="artist-events__view-more">View more shows...</a>
               </div>
             {% endwith %}
           </section>
