@@ -20,7 +20,7 @@
         {% for file in files %}
             <div class="press__file col-sm-4 col-xs-6">
                 <div class="press__file__photo col-sm-8 col-xs-12">
-                    <img src="{% static 'image/press/file-icon-pdf.png' %}" alt="{{ file.name }} file"/>
+                    <img src="{% static 'image/file-thumbnail-vector.svg' %}" alt="{{ file.name }} file"/>
                 </div>
                 <div class="press__file__title">{{ file.name }}</div>
                 <div class="press__file__meta">{{ file.extension|upper }}  |  {{ file.size|filesizeformat }}</div>
