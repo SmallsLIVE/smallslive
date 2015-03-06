@@ -1,19 +1,33 @@
 {% extends "static-page.html" %}
 {% load static from staticfiles %}
+{% load thumbor_tags %}
 
 {% block photo-gallery-active %}static-nav__item--active{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/vendors/fancybox/jquery.fancybox.css' %}">
+{% endblock %}
 
 {% block static-content %}
   <section class="static-content col-md-9">
     <h1 class="static-content__main-title">Photo Gallery</h1>
     <div class="row photo-gallery">
-      {% for img in "12345678901" %}
+      {% for photo in photos %}
         {% if forloop.counter0|divisibleby:"6"  %}
-            <div class="col-sm-8 col-xs-6 photo-gallery__image-container"><a href="" class="photo-gallery__image"><img src="{% static 'image/photo-gallery/2x.jpg' %}" class="img-responsive photo-gallery__image" alt=""/></a></div>
+            <div class="col-sm-8 col-xs-6 photo-gallery__image-container"><a href="{{ photo.file.url }}" rel="group" class="photo-gallery__image fancybox"><img src="{% thumbor_url photo.file.url|urlencode height=548 width=548 smart=True %}" class="img-responsive photo-gallery__image" alt=""/></a></div>
         {% else %}
-            <div class="col-sm-4 col-xs-6 photo-gallery__image-container"><a href="" class="photo-gallery__image"><img src="{% static 'image/photo-gallery/normal.jpg' %}" class="img-responsive  photo-gallery__image" alt=""/></a></div>
+            <div class="col-sm-4 col-xs-6 photo-gallery__image-container"><a href="{{ photo.file.url }}" rel="group" class="photo-gallery__image fancybox"><img src="{% thumbor_url photo.file.url|urlencode height=264 width=264 smart=True %}" class="img-responsive  photo-gallery__image" alt=""/></a></div>
         {% endif %} 
       {% endfor %}
     </div>
   </section>
 {% endblock static-content %}
+
+{% block extra_js %}
+  <script src="{% static 'js/jquery.fancybox.pack.js' %}"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".fancybox").fancybox();
+    });
+  </script>
+{% endblock %}

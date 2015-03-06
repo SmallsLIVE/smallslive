@@ -21,7 +21,7 @@ class FileHandlingMixin(object):
 
     @property
     def folder_name(self):
-        return "{0}s".format(self.object_name.capitalize())
+        return "{0}s".format(self.full_object_name.capitalize())
 
     @property
     def full_object_name(self):

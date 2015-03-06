@@ -37,7 +37,7 @@
                     <img src="{% thumbor_url photo.file.url|urlencode height=255 width=255 smart=True %}" alt="{{ photo.name }} photo"/>
                 </div>
                 <div class="press__file__title">{{ photo.name }}</div>
-                <div class="press__file__meta">{{ photo.extension|upper }}  |  {{ photo.size|filesizeformat }}  |  1685x2288px</div>
+                <div class="press__file__meta">{{ photo.extension|upper }}  |  {{ photo.size|filesizeformat }}</div>
                 <a href="{{ photo.file.url }}" class="press__file__download-button">Download</a><span class="arrow"></span>
             </div>
         {% endfor %}

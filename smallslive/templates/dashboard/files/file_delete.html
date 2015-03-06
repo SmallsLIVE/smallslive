@@ -10,10 +10,10 @@
             <span class="divider">/</span>
         </li>
         <li>
-        <a href="{% url 'dashboard:press-file-list' %}">Press files</a>
+        <a href="{% url 'dashboard:file-list' category=category %}">{{ object_name|capfirst }}s</a>
         <span class="divider">/</span>
     </li>
-    <li class="active">Delete press file?</li>
+    <li class="active">Delete {{ object_name}}?</li>
 </ul>
 {% endblock %}
 
@@ -29,11 +29,11 @@
     {% csrf_token %}
     {{ form }}
     <p>
-      Delete press file <strong>{{ object.name }}</strong> - are you sure?
+      Delete {{ object_name}} <strong>{{ object.name }}</strong> - are you sure?
     </p>
     <div class="form-actions">
       <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
-      {% trans "or" %} <a href="{% url 'dashboard:press-file-list' %}">{% trans "cancel" %}</a>
+      {% trans "or" %} <a href="{% url 'dashboard:file-list' category=category %}">{% trans "cancel" %}</a>
     </div>
   </form>
 {% endblock %}

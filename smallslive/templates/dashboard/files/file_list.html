@@ -68,6 +68,7 @@
   <script src="{% static "js/dropzone.min.js" %}" type="text/javascript" charset="utf-8"></script>
   <script>
     Dropzone.options.dropzoneForm = {
+      parallelUploads: 1,
       init: function () {
         // Set up any event handlers
         this.on('complete', function () {
