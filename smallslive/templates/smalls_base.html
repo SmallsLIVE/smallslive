@@ -34,6 +34,7 @@
 
 <body>
 
+{% if user.is_superuser %}
 <div class="container-fluid admin-nav">
     <div class="container">
         <div class="admin-nav__left">
@@ -41,17 +42,17 @@
         </div>
         <div class="admin-nav__right">
             <ul>
-                <li><a href="">Homepage</a></li>
-                <li><a href="">Events</a></li>
-                <li><a href="">Add events</a></li>
-                <li><a href="">Artists</a></li>
-                <li><a href="">Add artists</a></li>
-                <li><a href="">Store dashboard</a></li>
-                <li><a href="">Log out</a></li>
+                <li><a href="{% url "home" %}">Homepage</a></li>
+                <li><a href="{% url "event_add" %}">Add events</a></li>
+                <li><a href="{% url "artist_add" %}">Add artists</a></li>
+                <li><a href="{% url "dashboard:index" %}">Store dashboard</a></li>
+                <li><a href="{% url "account_logout" %}">Log out</a></li>
             </ul>
         </div>
     </div>
 </div>
+{% endif %}
+
 
 <!-- mobile devices header -->
 <nav class="navbar navbar-default mobile-navbar visible-xs visible-sm" role="navigation">
