@@ -1,7 +1,7 @@
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 
-from django_tables2 import Table, Column, LinkColumn, TemplateColumn, A
+from django_tables2 import Table, Column, LinkColumn, TemplateColumn, A, FileColumn
 from filer.models import File
 
 from oscar.core.loading import get_class, get_model
@@ -9,18 +9,17 @@ from oscar.core.loading import get_class, get_model
 DashboardTable = get_class('dashboard.tables', 'DashboardTable')
 
 
-class PressFileTable(Table):
+class FileTable(Table):
     name = TemplateColumn(
         verbose_name='Name',
         template_name='dashboard/files/file_row_name.html',
         order_by='name', accessor=A('name'))
     size = TemplateColumn(
+        "{{ record.size|filesizeformat }}",
         verbose_name='File Size',
-        template_name='dashboard/files/file_row_filesize.html',
         order_by='_file_size', accessor=A('size'))
-    file = TemplateColumn(
+    file = FileColumn(
         verbose_name='File',
-        template_name='dashboard/files/file_row_file.html',
         orderable=False)
     delete = TemplateColumn(
         verbose_name='Delete',
@@ -34,17 +33,17 @@ class PressFileTable(Table):
         order_by = '-modified_at'
 
 
-class PressPhotoTable(Table):
+class PhotoTable(Table):
     name = TemplateColumn(
         verbose_name='Name',
         template_name='dashboard/files/file_row_name.html',
         order_by='name', accessor=A('name'))
     size = TemplateColumn(
+        "{{ record.size|filesizeformat }}",
         verbose_name='File Size',
-        template_name='dashboard/files/file_row_filesize.html',
         order_by='_file_size', accessor=A('size'))
     file = TemplateColumn(
-        verbose_name='File',
+        verbose_name='Image',
         template_name='dashboard/files/file_row_image.html',
         orderable=False)
     delete = TemplateColumn(

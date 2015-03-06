@@ -3,69 +3,24 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django_tables2 import SingleTableMixin
 from filer.models.filemodels import File
-from .forms import PressFileForm, PressPhotoForm
-from .tables import PressFileTable, PressPhotoTable
+from .forms import PressFileForm, PressPhotoForm, FileForm
+from .tables import FileTable, PhotoTable
 from django.template.defaultfilters import pluralize
 
 
-class PressFileCreateView(generic.CreateView):
-    template_name = 'dashboard/files/file_form.html'
-    model = File
-    form_class = PressFileForm
-
-    def get_context_data(self, **kwargs):
-        ctx = super(PressFileCreateView, self).get_context_data(**kwargs)
-        ctx['title'] = "Add a new press file"
-        return ctx
-
-    def get_success_url(self):
-        messages.info(self.request, "Press file uploaded successfully")
-        return reverse("dashboard:press-file-list")
-
-
-class PressFileUpdateView(generic.UpdateView):
-    template_name = 'dashboard/files/file_form.html'
-    model = File
-    form_class = PressFileForm
-
-    def get_context_data(self, **kwargs):
-        ctx = super(PressFileUpdateView, self).get_context_data(**kwargs)
-        ctx['title'] = "Update press file '%s'" % self.object.name
-        return ctx
-
-    def get_success_url(self):
-        messages.info(self.request, "Press file updated successfully")
-        return reverse("dashboard:press-file-list")
-
-
-class PressFileDeleteView(generic.DeleteView):
-    template_name = 'dashboard/files/press_file_delete.html'
-    model = File
-    form_class = PressFileForm
-
-    def get_context_data(self, *args, **kwargs):
-        ctx = super(PressFileDeleteView, self).get_context_data(*args, **kwargs)
-        ctx['title'] = "Delete press file '%s'" % self.object.name
-        return ctx
-
-    def get_success_url(self):
-        messages.info(self.request, "Press file deleted successfully")
-        return reverse("dashboard:press-file-list")
-
-
-class PressFileListView(SingleTableMixin, generic.TemplateView):
-    """
-    Dashboard view of the product list.
-    Supports the permission-based dashboard.
-    """
-
-    template_name = 'dashboard/files/press_file_list.html'
-    table_class = PressFileTable
+class FileListView(SingleTableMixin, generic.TemplateView):
+    table_class = FileTable
     context_table_name = 'files'
+    object_name = "file"
+    folder_name = "Files"
+    template_name = 'dashboard/files/file_list.html'
 
     def get_context_data(self, **kwargs):
-        ctx = super(PressFileListView, self).get_context_data(**kwargs)
-        ctx['queryset_description'] = "Press files"
+        ctx = super(FileListView, self).get_context_data(**kwargs)
+        ctx['queryset_description'] = self.object_name.capitalize()
+        ctx['object_name'] = self.object_name
+        ctx['object_add_url'] = self.object_add_url()
+        ctx['dropzone'] = True
         return ctx
 
     def get_table_pagination(self):
@@ -75,76 +30,127 @@ class PressFileListView(SingleTableMixin, generic.TemplateView):
         """
         Build the queryset for this list
         """
-        queryset = File.objects.filter(folder__name="Press files")
+        queryset = File.objects.filter(folder__name=self.folder_name)
         return queryset
 
+    def object_add_url(self):
+        # Override this in a subclass and return the url that shows the object add form
+        return ""
 
-class PressPhotoCreateView(generic.CreateView):
+
+class FileCreateView(generic.CreateView):
     template_name = 'dashboard/files/file_form.html'
     model = File
-    form_class = PressPhotoForm
+    form_class = None
+    object_name = "file"
 
     def get_context_data(self, **kwargs):
-        ctx = super(PressPhotoCreateView, self).get_context_data(**kwargs)
-        ctx['title'] = "Add a new press photo"
+        ctx = super(FileCreateView, self).get_context_data(**kwargs)
+        ctx['title'] = "Add a new {0}".format(self.object_name)
         return ctx
 
     def get_success_url(self):
-        messages.info(self.request, "Press photo uploaded successfully")
-        return reverse("dashboard:press-photo-list")
+        messages.info(self.request, "{0} uploaded successfully".format(self.object_name.capitalize()))
+        return reverse("dashboard:index")
 
 
-class PressPhotoUpdateView(generic.UpdateView):
+class FileUpdateView(generic.UpdateView):
     template_name = 'dashboard/files/file_form.html'
     model = File
-    form_class = PressPhotoForm
+    form_class = None
+    object_name = "file"
 
     def get_context_data(self, **kwargs):
-        ctx = super(PressPhotoUpdateView, self).get_context_data(**kwargs)
-        ctx['title'] = "Update press photo '%s'" % self.object.name
+        ctx = super(FileUpdateView, self).get_context_data(**kwargs)
+        ctx['title'] = "Update {0} '{1}'".format(self.object_name, self.object.name)
         return ctx
 
     def get_success_url(self):
-        messages.info(self.request, "Press photo updated successfully")
-        return reverse("dashboard:press-photo-list")
+        messages.info(self.request, "{0} updated successfully".format(self.object_name.capitalize()))
+        return reverse("dashboard:index")
 
 
-class PressPhotoDeleteView(generic.DeleteView):
-    template_name = 'dashboard/files/press_file_delete.html'
+class FileDeleteView(generic.DeleteView):
+    template_name = 'dashboard/files/file_delete.html'
     model = File
-    form_class = PressPhotoForm
+    form_class = FileForm
+    object_name = "file"
 
     def get_context_data(self, *args, **kwargs):
-        ctx = super(PressPhotoDeleteView, self).get_context_data(*args, **kwargs)
-        ctx['title'] = "Delete press photo '%s'" % self.object.name
+        ctx = super(FileDeleteView, self).get_context_data(*args, **kwargs)
+        ctx['title'] = "Delete {0} '{1}'".format(self.object_name, self.object.name)
         return ctx
 
     def get_success_url(self):
-        messages.info(self.request, "Press photo deleted successfully")
+        messages.info(self.request, "{0} deleted successfully".format(self.object_name.capitalize()))
+        return reverse("dashboard:index")
+
+
+class PressFileListView(FileListView):
+    object_name = "press file"
+    folder_name = "Press files"
+
+    def object_add_url(self):
+        return reverse("dashboard:press-file-create")
+
+
+class PressFileCreateView(FileCreateView):
+    form_class = PressFileForm
+    object_name = "press file"
+
+    def get_success_url(self):
+        super(PressFileCreateView, self).get_success_url()
+        return reverse("dashboard:press-file-list")
+
+
+class PressFileUpdateView(FileUpdateView):
+    form_class = PressFileForm
+    object_name = "press file"
+
+    def get_success_url(self):
+        super(PressFileUpdateView, self).get_success_url()
+        return reverse("dashboard:press-file-list")
+
+
+class PressFileDeleteView(FileDeleteView):
+    form_class = PressFileForm
+    object_name = "press file"
+
+    def get_success_url(self):
+        super(PressFileDeleteView, self).get_success_url()
+        return reverse("dashboard:press-file-list")
+
+
+class PressPhotoListView(FileListView):
+    object_name = "press photo"
+    folder_name = "Press photos"
+
+    def object_add_url(self):
+        return reverse("dashboard:press-photo-create")
+
+
+class PressPhotoCreateView(FileCreateView):
+    form_class = PressPhotoForm
+    object_name = "press photo"
+
+    def get_success_url(self):
+        super(PressPhotoCreateView, self).get_success_url()
         return reverse("dashboard:press-photo-list")
 
 
-class PressPhotoListView(SingleTableMixin, generic.TemplateView):
-    """
-    Dashboard view of the product list.
-    Supports the permission-based dashboard.
-    """
+class PressPhotoUpdateView(FileUpdateView):
+    form_class = PressPhotoForm
+    object_name = "press photo"
 
-    template_name = 'dashboard/files/press_photo_list.html'
-    table_class = PressPhotoTable
-    context_table_name = 'files'
+    def get_success_url(self):
+        super(PressPhotoUpdateView, self).get_success_url()
+        return reverse("dashboard:press-photo-list")
 
-    def get_context_data(self, **kwargs):
-        ctx = super(PressPhotoListView, self).get_context_data(**kwargs)
-        ctx['queryset_description'] = "Press photos"
-        return ctx
 
-    def get_table_pagination(self):
-        return dict(per_page=20)
+class PressPhotoDeleteView(FileDeleteView):
+    form_class = PressPhotoForm
+    object_name = "press photo"
 
-    def get_queryset(self):
-        """
-        Build the queryset for this list
-        """
-        queryset = File.objects.filter(folder__name="Press photos")
-        return queryset
+    def get_success_url(self):
+        super(PressPhotoDeleteView, self).get_success_url()
+        return reverse("dashboard:press-photo-list")
