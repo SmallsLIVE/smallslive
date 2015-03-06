@@ -1,0 +1,39 @@
+{% extends 'dashboard/layout.html' %}
+{% load i18n %}
+
+{% block body_class %}{{ block.super }} create-page{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li>
+        <a href="{% url 'dashboard:press-file-list' %}">Press files</a>
+        <span class="divider">/</span>
+    </li>
+    <li class="active">Delete press file?</li>
+</ul>
+{% endblock %}
+
+{% block headertext %}
+    {{ title }}
+{% endblock %}
+
+{% block dashboard_content %}
+  <div class="table-header">
+    <h2>{% trans "Delete press file" %}</h2>
+  </div>
+  <form action="." method="post" class="well">
+    {% csrf_token %}
+    {{ form }}
+    <p>
+      Delete press file <strong>{{ object.name }}</strong> - are you sure?
+    </p>
+    <div class="form-actions">
+      <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+      {% trans "or" %} <a href="{% url 'dashboard:press-file-list' %}">{% trans "cancel" %}</a>
+    </div>
+  </form>
+{% endblock %}

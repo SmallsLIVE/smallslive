@@ -8,6 +8,11 @@ class PressFileForm(forms.ModelForm):
         fields = ('name', 'file')
         model = File
 
+    def __init__(self, *args, **kwargs):
+        super(PressFileForm, self).__init__(*args, **kwargs)
+        self.fields['name'].required = True
+        self.fields['file'].required = True
+
     def save(self, commit=True):
         object = super(PressFileForm, self).save(commit=False)
         folder, created = Folder.objects.get_or_create(name="Press files")

@@ -22,6 +22,10 @@ class PressFileTable(Table):
         verbose_name='File',
         template_name='dashboard/files/file_row_file.html',
         orderable=False)
+    delete = TemplateColumn(
+        verbose_name='Delete',
+        template_name='dashboard/files/file_row_delete.html',
+        orderable=False)
 
     class Meta(DashboardTable.Meta):
         model = File

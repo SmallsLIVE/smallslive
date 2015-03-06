@@ -18,7 +18,7 @@ class PressFileCreateView(generic.CreateView):
         return ctx
 
     def get_success_url(self):
-        messages.info(self.request, "Product type created successfully")
+        messages.info(self.request, "Press file uploaded successfully")
         return reverse("dashboard:press-file-list")
 
 
@@ -33,7 +33,22 @@ class PressFileUpdateView(generic.UpdateView):
         return ctx
 
     def get_success_url(self):
-        messages.info(self.request, _("Product type update successfully"))
+        messages.info(self.request, "Press file updated successfully")
+        return reverse("dashboard:press-file-list")
+
+
+class PressFileDeleteView(generic.DeleteView):
+    template_name = 'dashboard/files/press_file_delete.html'
+    model = File
+    form_class = PressFileForm
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(PressFileDeleteView, self).get_context_data(*args, **kwargs)
+        ctx['title'] = "Delete product type '%s'" % self.object.name
+        return ctx
+
+    def get_success_url(self):
+        messages.info(self.request, "Press file deleted successfully")
         return reverse("dashboard:press-file-list")
 
 

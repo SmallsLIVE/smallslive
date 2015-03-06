@@ -1,1 +1,1 @@
-<a href="{{ record.file.url }}">Download file</a>
+<a href="{% if record.file %}{{ record.file.url }}{% endif %}">Download file</a>
