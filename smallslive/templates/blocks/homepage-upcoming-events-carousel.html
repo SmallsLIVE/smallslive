@@ -1,5 +1,6 @@
 {% load static from staticfiles %}
 {% load humanize %}
+{% load thumbor_tags %}
 
 <section id="upcoming-events-fullsize" class="upcoming-events container hidden-xs hidden-sm">
     <div class="carousel slide" id="upcoming-carousel" data-ride="carousel" data-interval="6000">
@@ -9,7 +10,9 @@
             <div class="event-details row item {% if forloop.first %}active{% endif %}">
                 <div class="col-xs-12 col-md-6 vcenter hidden-xs">
                     <div class="gradient-overlay"></div>
-                    <img src="{% static 'image/upcoming-events/01.jpg' %}" class=" event-details__image img img-responsive div-fill-img" alt=""/>
+                    {% if event.photo %}
+                        <img src="{% thumbor_url event.photo.url|urlencode width=600  height=360 smart=True %}" class=" event-details__image img img-responsive div-fill-img" alt=""/>
+                    {% endif %}
                 </div><!--
              --><div class="col-xs-12 col-md-6 info vcenter">
                     <div>

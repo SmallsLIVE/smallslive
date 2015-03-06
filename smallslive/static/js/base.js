@@ -4,7 +4,7 @@ function makeImagesResponsive(selector) {
     $(selector).find('img').each(function () {
         var imgClass = (this.width / this.height > 1) ? 'wide' : 'tall';
         $(this).addClass(imgClass);
-    })
+    });
 }
 
 $(window).load(function () {
@@ -76,7 +76,8 @@ $(document).ready(function () {
                 var new_position = position + offset;
                 $('div[data-position=' + new_position + ']').after(template);
                 active = position;
-            })
+                makeImagesResponsive(".container");
+            });
         } else {
             active = 0;
         }
