@@ -1,9 +1,14 @@
-from django.views.generic import TemplateView, ListView
+from django.contrib.flatpages.models import FlatPage
+from django.views.generic import TemplateView, ListView, DetailView
 from filer.models import File, Folder
 
 
-class PressView(TemplateView):
+class PressView(DetailView):
     template_name = "press.html"
+    context_object_name = "page"
+
+    def get_object(self, queryset=None):
+        return FlatPage.objects.get(title="Press")
 
     def get_context_data(self, **kwargs):
         context = super(PressView, self).get_context_data(**kwargs)
