@@ -1,6 +1,7 @@
 from allauth.account import app_settings
 from allauth.account.forms import SetPasswordForm
-from allauth.account.views import SignupView as AllauthSignupView, ConfirmEmailView as CoreConfirmEmailView
+from allauth.account.views import SignupView as AllauthSignupView, ConfirmEmailView as CoreConfirmEmailView,\
+    LoginView as CoreLoginView
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -62,3 +63,13 @@ class ConfirmEmailView(CoreConfirmEmailView):
                 return HttpResponseRedirect('/')
 
 confirm_email = ConfirmEmailView.as_view()
+
+
+class LoginView(CoreLoginView):
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return ["account/ajax_login.html"]
+        else:
+            return ["account/login.html"]
+
+login_view = LoginView.as_view()

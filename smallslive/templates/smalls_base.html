@@ -21,6 +21,8 @@
   {% block extra_head %}
   {% endblock %}
 </head>
+<body>
+{% include "account/ajax_login.html" %}
 
 <!-- ALERT TEST -->
 {% if messages %}
@@ -31,8 +33,6 @@
 </div>
 {% endfor %}
 {% endif %}
-
-<body>
 
 {% if user.is_superuser %}
 <div class="container-fluid admin-nav">

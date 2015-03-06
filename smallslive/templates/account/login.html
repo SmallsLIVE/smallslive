@@ -15,23 +15,32 @@
                     <h1 class="login__title">Log in</h1>
                     <p class="login__text--heavy">Log in to gain access to live stream and streamable audio and video content.</p>
                 </div>
-                <form role="form" id="form-login" method="post" action="#">
+                <form role="form" method="post" action="#">
                     {%  csrf_token %}
                     <div class="col-xs-12">
-                        <div class="form-group has-error">
+                        <div class="form-group {% if form.login.errors %}has-error{% endif %}">
                             <input type="email" class="form-control" name="login" placeholder="Your email">
-                            <p class="form-error-text hidden" id="login-error">{{ form.login.error }}</p>
+                            {% if form.login.errors %}
+                              {% for error in form.login.errors %}
+                                <p class="form-error-text" id="login-error">{{ error }}</p>
+                              {% endfor %}
+                            {% endif %}
+
                         </div>
-                        <div class="form-group has-error">
+                        <div class="form-group {% if form.password.errors %}has-error{% endif %}">
                             <input type="password" class="form-control" name="password" placeholder="Your password">
-                            <p class="form-error-text hidden" id="password-error">{{ form.password.error }}</p>
+                            {% if form.password.errors %}
+                              {% for error in form.password.errors %}
+                                <p class="form-error-text" id="login-error">{{ error }}</p>
+                              {% endfor %}
+                            {% endif %}
                         </div>
                     </div>
                     <div class="login__checkbox-container">
                         <div class="col-xs-12 col-sm-6">
-                            <input type="checkbox" name="remember_me" id="remember_me">
+                            <input type="checkbox" name="remember" id="remember_me">
                             <div class="form-group {% if form.terms_of_service.errors %}has-error{% endif %}">
-                                <label for="id_terms_of_service" class="checkbox-label control-label">Keep me logged in</label>
+                                <label for="id_remember_me" class="checkbox-label control-label">Keep me logged in</label>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6">
