@@ -222,11 +222,14 @@ class ScheduleView(ListView):
         context['month'] = timezone.now().month
         context['year'] = timezone.now().year
         week = int(self.request.GET.get('week', 0))
-        if week > 1:
+        if week != 1:
             context['prev_url'] = "{0}?week={1}".format(reverse('schedule'), week-1)
-        elif week == 1:
+        else:
             context['prev_url'] = reverse('schedule')
-        context['next_url'] = "{0}?week={1}".format(reverse('schedule'), week+1)
+        if week == -1:
+            context['next_url'] = reverse('schedule')
+        else:
+            context['next_url'] = "{0}?week={1}".format(reverse('schedule'), week+1)
         return context
 
 schedule = ScheduleView.as_view()
