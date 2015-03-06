@@ -2,6 +2,10 @@
 {% load static from staticfiles %}
 {% load socialaccount %}
 
+{% block extra_head %}
+    {% providers_media_js %}
+{% endblock %}
+
 {% block content %}
   <div class="content-wrapper">
 

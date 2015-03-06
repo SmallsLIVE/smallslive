@@ -2,7 +2,9 @@
 {% load static from staticfiles %}
 {% load socialaccount %}
 
-{% providers_media_js %}
+{% block extra_head %}
+    {% providers_media_js %}
+{% endblock %}
 
 
 {% block content %}
