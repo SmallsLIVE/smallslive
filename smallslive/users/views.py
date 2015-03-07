@@ -1,8 +1,9 @@
 from allauth.account import app_settings
-from allauth.account.forms import SetPasswordForm
+from allauth.account.forms import ChangePasswordForm
 from allauth.account.views import SignupView as AllauthSignupView, ConfirmEmailView as CoreConfirmEmailView,\
     LoginView as CoreLoginView
 from django.core.urlresolvers import reverse
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
@@ -22,6 +23,7 @@ def user_settings_view(request):
         # check whether it's valid:
         if edit_profile_form.is_valid():
             edit_profile_form.save()
+            messages.success(request, "You've successfully updated your profile.")
             return HttpResponseRedirect('/')
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -31,17 +33,19 @@ def user_settings_view(request):
         change_email_form = ChangeEmailForm(data=request.POST, user=request.user)
         if change_email_form.is_valid():
             change_email_form.save(request)
+            messages.success(request, 'Your email address has been changed successfully.')
             return HttpResponseRedirect(reverse('account_email_verification_sent'))
     else:
         change_email_form = ChangeEmailForm(user=request.user)
 
     if 'change_password' in request.POST:
-        change_password_form = SetPasswordForm(data=request.POST, user=request.user)
+        change_password_form = ChangePasswordForm(data=request.POST, user=request.user)
         if change_password_form.is_valid():
             change_password_form.save()
+            messages.success(request, 'Your password has been changed successfully.')
             return HttpResponseRedirect('/')
     else:
-        change_password_form = SetPasswordForm(user=request.user)
+        change_password_form = ChangePasswordForm(user=request.user)
 
     return render(request, 'account/user_settings.html', {
         'change_email_form': change_email_form,
