@@ -43,13 +43,13 @@
               <div class="mini-artist">
                 <div class="mini-artist__image">
                   {% if gig_info.artist.photo %}
-                    <img src="{% thumbor_url gig_info.artist.photo.url|urlencode height=80 width=80 smart=True %}" alt="{{ gig_info.artist.full_name }} photo"/>
+                    <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% thumbor_url gig_info.artist.photo.url|urlencode height=80 width=80 smart=True %}" alt="{{ gig_info.artist.full_name }} photo"/></a>
                   {% else %}
-                    <img src="http://placehold.it/80x80/232323/" alt=""/>
+                    <a href="{{ gig_info.artist.get_absolute_url }}"><img src="http://placehold.it/80x80/232323/" alt=""/></a>
                   {% endif %}
                 </div>
                 <div class="mini-artist-info">
-                  <h2 class="mini-artist-info__title">{{ gig_info.artist.full_name }}</h2>
+                  <h2 class="mini-artist-info__title"><a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }}</a></h2>
                   <p class="mini-artist-info__instrument">{{ gig_info.role }}</p>
                   {% if gig_info.artist.biography %}
                     <p class="mini-artist-info__bio">{{ gig_info.artist.biography|striptags|truncatewords:28 }}</p>

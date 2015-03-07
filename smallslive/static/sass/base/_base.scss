@@ -39,26 +39,32 @@ button, input[type="submit"] {
 
 
 // equal height columns on large devices
-@media (min-width: $screen-md-min) {
-  .equal-heights.row {
-    overflow: hidden;
-  }
+//@media (min-width: $screen-md-min) {
+//  .equal-heights.row {
+//    overflow: hidden;
+//
+//  }
 
-  .equal-heights [class*="col-"] {
-    margin-bottom: -99999px;
-    padding-bottom: 99999px;
-  }
-}
+//  .equal-heights [class*="col-"] {
+//    margin-bottom: -99999px;
+//    padding-bottom: 99999px;
+//  }
+//}
 
 // equal height columns on all devices
-  .equal-heights-xs.row {
-    overflow: hidden;
-  }
+//  .equal-heights-xs.row {
+//    overflow: hidden;
+//      @include display(flex);
+//  }
 
-  .equal-heights-xs [class*="col-"] {
-    margin-bottom: -99999px;
-    padding-bottom: 99999px;
-  }
+//  .equal-heights-xs [class*="col-"] {
+//    margin-bottom: -99999px;
+//    padding-bottom: 99999px;
+//  }
+
+.equal-heights.row {
+  @include display(flex);
+}
 
 
 .bw-wrapper {
@@ -70,6 +76,10 @@ button, input[type="submit"] {
   outline: 0;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(254, 254, 254, 0.6);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(254, 254, 254, 0.6);
+}
+
+a {
+  color: $main-accent-color;
 }
 
 a:focus {

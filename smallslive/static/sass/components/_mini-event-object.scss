@@ -9,6 +9,11 @@
       border: 1px #ccc solid;
       width: 86px;
       height: 86px;
+      @include filter(grayscale(100%));
+
+      &:hover {
+        @include filter(none);
+      }
     }
   }
 
@@ -34,7 +39,16 @@
     font-size: 18px;
     color: #131313;
     margin-top: 0;
-    margin-bottom: 6px;
+    margin-bottom: 10px;
+
+    & a {
+      color: #131313;
+
+      &:hover {
+        text-decoration: none;
+        color: #131313;
+      }
+    }
   }
 
   &__sidemen {

@@ -9,6 +9,11 @@
       border: 1px #ccc solid;
       width: 86px;
       height: 86px;
+      @include filter(grayscale(100%));
+
+      &:hover {
+        @include filter(none);
+      }
     }
   }
 
@@ -29,6 +34,15 @@
     margin-top: 0;
     margin-bottom: 2px;
     text-transform: uppercase;
+
+    & a {
+      color: #131313;
+
+      &:hover {
+        text-decoration: none;
+        color: #131313;
+      }
+    }
   }
 
   &__instrument {

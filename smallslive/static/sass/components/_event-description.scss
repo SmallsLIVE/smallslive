@@ -22,5 +22,10 @@
 
   & img {
     width: 100%;
+    @include filter(grayscale(100%));
+
+      &:hover {
+        @include filter(none);
+      }
   }
 }

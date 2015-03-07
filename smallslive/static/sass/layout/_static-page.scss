@@ -36,6 +36,12 @@
 
   &__image {
     margin-bottom: 4px;
+    @include filter(grayscale(100%));
+
+    &:hover {
+      @include filter(none);
+      cursor: pointer;
+    }
   }
 
   &__caption {
