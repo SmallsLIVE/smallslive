@@ -22,7 +22,7 @@
             {% with current_event=events.0 %}
 
             <h1 class="live-stream-current__title">{{ current_event.title }}</h1>
-            <p class="live-stream-current__time">{{ current_event.start|date:"g:i A" }} - {{ current_event.end|date:"g:i A" }}</p>
+            <p class="live-stream-current__time" data-end-time="{{ current_event.end }}">{{ current_event.start|date:"g:i A" }} - {{ current_event.end|date:"g:i A" }}</p>
             <p class="live-stream-current__artists">
               {% for gig_info in current_event.get_performers %}
                 <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span class="event-details__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}  // {% endif %}
@@ -61,4 +61,8 @@
         </div>
       </section>
     </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static "js/live-stream.js" %}"></script>
 {% endblock %}
