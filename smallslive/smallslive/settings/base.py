@@ -427,7 +427,7 @@ ELASTICSEARCH_INDEX_SETTINGS = {
                 },
                 "haystack_edgengram": {
                     "type": "edgeNGram",
-                    "min_gram": 3,
+                    "min_gram": 1,
                     "max_gram": 15
                 }
             }
