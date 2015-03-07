@@ -1,0 +1,64 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block livestream_nav_active %}active{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+      <section class="container">
+        <div class="live-stream row">
+          <div class="bw-wrapper" style="height: 480px">
+            <iframe class="live-stream__player" width="720" height="480"
+                    src="http://smallslive.live-s.cdn.bitgravity.com:1935/content:cdn-live/smallslive/secure/live/multibitrate.smil?e=1423210977&amp;h=0e4558f0844e201c4fa50ac50007e285&amp;bgsecuredir=1&amp;height=480&amp;width=720&amp;DefaultRatio=1.33&amp;VideoFit=stretch&amp;BufferTime=4" frameborder="0"
+                    allowfullscreen></iframe>
+          </div>
+          <div class="live-stream__header col-xs-12">
+            <p>Live now:</p>
+          </div>
+        </div>
+        <div class="live-stream-info  equal-heights  row">
+          <div class="live-stream-current col-xs-12 col-md-6">
+            {% with current_event=events.0 %}
+
+            <h1 class="live-stream-current__title">{{ current_event.title }}</h1>
+            <p class="live-stream-current__time">{{ current_event.start|date:"g:i A" }} - {{ current_event.end|date:"g:i A" }}</p>
+            <p class="live-stream-current__artists">
+              {% for gig_info in current_event.get_performers %}
+                <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span class="event-details__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}  // {% endif %}
+              {% endfor %}
+            </p>
+            <a href="{{ current_event.get_absolute_url }}" class="live-stream-current__event-button">Full event page</a><span class="arrow"></span>
+            {% endwith %}
+          </div>
+          <div class="coming-up col-xs-12 col-md-6">
+            <h2 class="coming-up__title">Coming up:</h2>
+            <div class="events">
+              {% for upcoming_event in events|slice:"1:" %}
+                  <div class="mini-event">
+                    <div class="mini-event__image">
+                      {% if upcoming_event.photo %}
+                        <img src="{% thumbor_url upcoming_event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      {% else %}
+                        <img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/>
+                      {% endif %}
+                    </div>
+                    <div class="mini-event-info">
+                      <p class="mini-event-info__date">{{ upcoming_event.start|date:"g:i A" }} - {{ upcoming_event.end|date:"g:i A" }}</p>
+                      <h2 class="mini-event-info__title">{{ upcoming_event.title }} {{ upcoming_event.subtitle }}</h2>
+                       <p class="mini-event-info__sidemen">
+                        {% for gig_info in upcoming_event.get_performers %}
+                          <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span class="mini-event-info__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}  // {% endif %}
+                        {% endfor %}
+                      </p>
+                      <a class="mini-event-info__button" href="{{ upcoming_event.get_absolute_url }}">Go to event</a><span
+                            class="arrow"></span>
+                    </div>
+                  </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+{% endblock %}

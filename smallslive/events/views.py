@@ -302,3 +302,16 @@ class EventCarouselAjaxView(AJAXMixin, ListView):
 
 
 event_carousel_ajax = EventCarouselAjaxView.as_view()
+
+
+class LiveStreamView(ListView):
+    context_object_name = "events"
+    template_name = "events/live-stream.html"
+
+    def get_queryset(self):
+        now = timezone.localtime(timezone.now())
+        tomorrow = now + timedelta(days=1)
+        tomorrow = tomorrow.replace(hour=6)
+        return Event.objects.filter(end__gte=timezone.localtime(timezone.now()), start__lte=tomorrow).order_by('start')
+
+live_stream = LiveStreamView.as_view()
