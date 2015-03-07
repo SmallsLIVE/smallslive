@@ -14,12 +14,12 @@ var LiveStream = (function() {
             var $nextEvent = $(".mini-event").first();
             if($nextEvent.length) {
                 end = new Date($nextEvent.attr("data-end-time"));
-                var nextEventHtml = $nextEvent.find('.mini-event-info').html().replace(/mini-event-info/gi, "live-stream-current");
+                var $nextEventHtml = $($nextEvent.find('.mini-event-info').html().replace(/mini-event-info/gi, "live-stream-current"));
                 $nextEvent.remove();
-                $currentEvent.html(nextEventHtml);
+                $currentEvent.html($nextEventHtml);
+                $(".live-stream-current__date").before($('.live-stream-current__title'));
             } else {
                 noEventStreaming();
-                $(".live-stream-info").remove();
                 clearInterval(intervalId);
             }
         }
@@ -27,9 +27,11 @@ var LiveStream = (function() {
     var noEventStreaming = function() {
         $(".live-stream__title").hide();
         $(".live-stream__title--no-show").show();
+        $(".live-stream-info").remove();
     };
-    var init = function(currentEventEnd) {
-        if (currentEventEnd !== "") {
+    var init = function(currentEventStart, currentEventEnd) {
+        var now = new Date();
+        if (currentEventEnd !== "" && now > currentEventStart) {
             end = new Date(currentEventEnd);
             intervalId = window.setInterval(checkIfEnded, CHECK_INTERVAL * 1000);
         } else {

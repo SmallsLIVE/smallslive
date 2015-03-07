@@ -178,6 +178,9 @@ class Event(TimeStampedModel):
     def autocomplete_sublabel(self):
         return u"{dt.month}/{dt.day}/{dt.year}".format(dt=self.start)
 
+    def has_started(self):
+        return timezone.localtime(timezone.now()) > timezone.localtime(self.start)
+
 
 class Set(models.Model):
     media_file = models.OneToOneField('multimedia.MediaFile', primary_key=True, related_name='set')

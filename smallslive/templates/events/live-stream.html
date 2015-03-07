@@ -24,10 +24,11 @@
                     allowfullscreen></iframe>
           </div>
           <div class="live-stream__header col-xs-12">
-            <p class="live-stream__title">Live now:</p>
-            <p class="live-stream__title--no-show" style="display:none;">There’s no live show currently going on. Next show starts at {{ show_next_day.start|date:"g:i A" }} EST.</p>
+            {% if events and events.0.has_started %}<p class="live-stream__title">Live now:</p>{% endif %}
+            <p class="live-stream__title--no-show" {% if events and events.0.has_started %}style="display:none;"{% endif %}>There’s no live show currently going on. Next show starts at {{ show_next_day.start|date:"g:i A" }} EST.</p>
           </div>
         </div>
+        {% if events and events.0.has_started %}
         <div class="live-stream-info equal-heights row">
           <div class="live-stream-current col-xs-12 col-md-6">
             {% with current_event=events.0 %}
@@ -71,6 +72,7 @@
             </div>
           </div>
         </div>
+      {% endif %}
       </section>
     </div>
 {% endblock %}
@@ -78,6 +80,8 @@
 {% block extra_js %}
   <script src="{% static "js/live-stream.js" %}"></script>
   <script>
-    LiveStream.init("{{ events.0.end.isoformat }}");
+    {% if events and events.0.has_started %}
+        LiveStream.init("{{ events.0.start.isoformat }}", "{{ events.0.end.isoformat }}");
+    {% endif %}
   </script>
 {% endblock %}
