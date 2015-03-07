@@ -264,6 +264,7 @@ class MonthlyScheduleView(ListView):
         context = super(MonthlyScheduleView, self).get_context_data(**kwargs)
         context['month'] = int(self.kwargs.get('month', timezone.now().month))
         context['year'] = int(self.kwargs.get('year', timezone.now().year))
+        context['month_view'] = True
         current_month = timezone.datetime(year=context['year'], month=context['month'], day=1)
         next_month = current_month + timezone.timedelta(days=31)
         prev_month = current_month - timezone.timedelta(days=1)

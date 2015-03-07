@@ -26,7 +26,12 @@
                     <i class="fa fa-angle-left"></i>
                 </div>
                 <div class="text">
-                    <span>View</span> previous<br>14 days
+                    {% if month_view %}
+                        <span>View</span> previous<br>month
+                    {% else %}
+                        <span>View</span> previous<br>14 days
+                    {% endif %}
+
                 </div>
             </div>
           </a>
@@ -35,7 +40,7 @@
         </div>
         {% for date, events in dates.iteritems %}
         <div class="day flex col-xs-6 col-md-3"
-             data-position={{ forloop.counter|add:"1" }} data-date="{{ date|date:"n/j/Y" }}">
+             data-position={{ forloop.counter|add:"1" }} data-date="{{ date|date:"n/j/Y" }}"
           <h2 class="day__date">{{ date|date:"l" }} // {{ date|date:"n/j/Y" }}</h2>
           {% if events %}
               <dl>
@@ -53,7 +58,11 @@
           <a href="{{ next_url }}">
             <div class="flex-center">
                 <div class="text">
-                    <span>View</span> next<br>14 days
+                    {% if month_view %}
+                        <span>View</span> next<br>month
+                    {% else %}
+                        <span>View</span> next<br>14 days
+                    {% endif %}
                 </div>
                 <div class="icon">
                     <i class="fa fa-angle-right"></i>
