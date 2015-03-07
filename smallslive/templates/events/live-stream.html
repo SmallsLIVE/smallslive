@@ -6,6 +6,7 @@
 
 {% block content %}
     <div class="content-wrapper">
+    {% if not user.is_authenticated %}
       <section class="cto cto--video-not-available container vertical-align-parent">
         <div class="vertical-align-child">
             <h1 class="cto__title">Logged in users only</h1>
@@ -16,13 +17,16 @@
             <a href="" class="cto__button">Sign up!</a>
         </div>
       </section>
+    {% endif %}
       <section class="container">
         <div class="live-stream row">
+        {% if user.is_authenticated %}
           <div class="bw-wrapper" style="height: 480px">
             <iframe class="live-stream__player" width="720" height="480"
                     src="http://smallslive.live-s.cdn.bitgravity.com:1935/content:cdn-live/smallslive/secure/live/multibitrate.smil?e=1423210977&amp;h=0e4558f0844e201c4fa50ac50007e285&amp;bgsecuredir=1&amp;height=480&amp;width=720&amp;DefaultRatio=1.33&amp;VideoFit=stretch&amp;BufferTime=4" frameborder="0"
                     allowfullscreen></iframe>
           </div>
+        {% endif %}
           <div class="live-stream__header col-xs-12">
             {% if events and events.0.has_started %}<p class="live-stream__title">Live now:</p>{% endif %}
             <p class="live-stream__title--no-show" {% if events and events.0.has_started %}style="display:none;"{% endif %}>There’s no live show currently going on. Next show starts at {{ show_next_day.start|date:"g:i A" }} EST.</p>

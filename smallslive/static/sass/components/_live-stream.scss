@@ -4,7 +4,7 @@
   &__header {
     background-color: $main-accent-color;
     color: white;
-    padding: 0 20px;
+    padding: 0 20px 8px;
 
     p {
       @include lato-black;
