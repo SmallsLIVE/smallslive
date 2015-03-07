@@ -314,4 +314,11 @@ class LiveStreamView(ListView):
         tomorrow = tomorrow.replace(hour=6)
         return Event.objects.filter(end__gte=timezone.localtime(timezone.now()), start__lte=tomorrow).order_by('start')
 
+    def get_context_data(self, **kwargs):
+        context = super(LiveStreamView, self).get_context_data(**kwargs)
+        tomorrow = timezone.localtime(timezone.now()) + timedelta(days=1)
+        tomorrow = tomorrow.replace(hour=6)
+        context['show_next_day'] = Event.objects.filter(start__gte=tomorrow).order_by('start').first()
+        return context
+
 live_stream = LiveStreamView.as_view()
