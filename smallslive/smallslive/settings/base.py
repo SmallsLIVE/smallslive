@@ -386,6 +386,14 @@ OSCAR_DASHBOARD_NAVIGATION += [
                     "category": "gallery-photo"
                 }
             },
+            {
+                'label': 'About us photos',
+                'url_name': 'dashboard:file-list',
+                'url_kwargs': {
+                    "category": "about-photo"
+                }
+            },
+
          ],
     },
 ]

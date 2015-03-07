@@ -3,6 +3,22 @@ from django.views.generic import TemplateView, ListView, DetailView
 from filer.models import File, Folder
 
 
+class AboutUsView(DetailView):
+    template_name = "flatpages/about-us.html"
+    context_object_name = "page"
+
+    def get_object(self, queryset=None):
+        return FlatPage.objects.get(title="About us")
+
+    def get_context_data(self, **kwargs):
+        context = super(AboutUsView, self).get_context_data(**kwargs)
+        files_folder, _ = Folder.objects.get_or_create(name="About photos")
+        context['files'] = files_folder.files
+        return context
+
+about_view = AboutUsView.as_view()
+
+
 class PressView(DetailView):
     template_name = "press.html"
     context_object_name = "page"
