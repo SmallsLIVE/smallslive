@@ -3,6 +3,18 @@ from .base import *
 import dj_database_url
 
 
+def env_var(key, default=None):
+    """Retrieves env vars and makes Python boolean replacements"""
+    val = os.environ.get(key, default)
+    if val == 'True':
+        val = True
+    elif val == 'False':
+        val = False
+    return val
+
+DEBUG = env_var("DEBUG", False)
+TEMPLATE_DEBUG = env_var("DEBUG", False)
+
 SECRET_KEY = os.environ.get("SECRET_KEY", "herokudefault")
 
 # Parse database configuration from $DATABASE_URL
@@ -15,7 +27,6 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = ['*']
 
 # Static asset configuration
-PIPELINE_ENABLED = True
 PIPELINE_SASS_BINARY = 'sassc'
 PIPELINE_SASS_ARGUMENTS = '--precision 8'
 
