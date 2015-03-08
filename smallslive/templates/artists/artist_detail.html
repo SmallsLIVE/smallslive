@@ -43,7 +43,7 @@
                       {% if upcoming_event.photo %}
                         <a href="{{ upcoming_event.get_absolute_url }}"><img src="{% thumbor_url upcoming_event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/></a>
                       {% else %}
-                        <a href="{{ upcoming_event.get_absolute_url }}"><img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/></a>
+                        <a href="{{ upcoming_event.get_absolute_url }}"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/></a>
                       {% endif %}
                     </div>
                     <div class="mini-event-info">
@@ -77,7 +77,7 @@
                       {% if past_event.photo %}
                         <a href="{{ past_event.get_absolute_url }}"><img src="{% thumbor_url past_event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/></a>
                       {% else %}
-                        <a href="{{ past_event.get_absolute_url }}"><img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/></a>
+                        <a href="{{ past_event.get_absolute_url }}"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/></a>
                       {% endif %}
 
                     </div>

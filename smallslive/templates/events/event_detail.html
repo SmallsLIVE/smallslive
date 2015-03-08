@@ -45,7 +45,7 @@
                   {% if gig_info.artist.photo %}
                     <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% thumbor_url gig_info.artist.photo.url|urlencode height=80 width=80 smart=True %}" alt="{{ gig_info.artist.full_name }} photo"/></a>
                   {% else %}
-                    <a href="{{ gig_info.artist.get_absolute_url }}"><img src="http://placehold.it/80x80/232323/" alt=""/></a>
+                    <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
                   {% endif %}
                 </div>
                 <div class="mini-artist-info">

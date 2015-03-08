@@ -33,6 +33,9 @@
       color: #121212;
       display: block;
       float: left;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
 
     & .sublabel {
@@ -78,11 +81,19 @@
 @media (min-width: 980px) {
   .ui-autocomplete {
       width: 220px !important;
+
+      & .ui-menu-item__name {
+        max-width: 60%;
+      }
   }
 }
 
 @media (min-width: 1200px) {
   .ui-autocomplete {
     width: 360px !important;
+
+    & .ui-menu-item__name {
+        max-width: 75%;
+      }
   }
 }
