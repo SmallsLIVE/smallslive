@@ -82,7 +82,7 @@
   .ui-autocomplete {
       width: 220px !important;
 
-      & .ui-menu-item__name {
+      & .ui-menu-item .name {
         max-width: 60%;
       }
   }
@@ -92,7 +92,7 @@
   .ui-autocomplete {
     width: 360px !important;
 
-    & .ui-menu-item__name {
+    & .ui-menu-item .name {
         max-width: 75%;
       }
   }
