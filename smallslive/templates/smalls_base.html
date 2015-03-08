@@ -75,9 +75,9 @@
         <div class="container">
           <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
-            <li><a href="{% url "static_page" "live-stream" %}">Live now!</a></li>
+            <li><a href="{% url "live-stream" %}">Live now!</a></li>
             <li><a href="{% url "schedule" %}">Schedule</a></li>
-            <li><a href="{% url "static_page" "archive" %}">Archive</a></li>
+            <li><a href="{% url "archive" %}">Archive</a></li>
             <li><a href="">Store</a></li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Info <span class="caret"></span></a>
@@ -85,7 +85,7 @@
                     <li><a href="{% url "about-us" %}">About us</a></li>
                     <li><a href="{% url "mission-statement" %}">Mission Statement</a></li>
                     <li ><a href="{% url "contact-and-info" %}">Contact & Info</a></li>
-                    <li><a href="{% url "static_page" "photo-gallery" %}">Photo Gallery</a></li>
+                    <li><a href="{% url "photo-gallery" %}">Photo Gallery</a></li>
                     <li><a href="{% url "newsletters" %}">Newsletters</a></li>
                     <li><a href="{% url "static_page" "press" %}">Press</a></li>
                 </ul>
