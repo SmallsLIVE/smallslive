@@ -15,9 +15,9 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = ['*']
 
 # Static asset configuration
-PIPELINE_ENABLED = False
+PIPELINE_ENABLED = True
 PIPELINE_SASS_BINARY = 'sassc'
-PIPELINE_SASS_ARGUMENTS = ''
+PIPELINE_SASS_ARGUMENTS = '--precision 8'
 
 # Haystack elasticsearch backend
 ELASTICSEARCH_IP = get_env_variable('ELASTICSEARCH_IP')
