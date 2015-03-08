@@ -22,7 +22,7 @@ def user_settings_view(request):
         edit_profile_form = EditProfileForm(data=request.POST, user=request.user)
         # check whether it's valid:
         if edit_profile_form.is_valid():
-            edit_profile_form.save()
+            edit_profile_form.save(request)
             messages.success(request, "You've successfully updated your profile.")
             return HttpResponseRedirect('/')
     # if a GET (or any other method) we'll create a blank form

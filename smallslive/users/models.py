@@ -125,6 +125,8 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
             if subscribed:
                 self.newsletter = True
                 self.save()
+                return True
+        return False
 
     def unsubscribe_from_newsletter(self):
         if self.newsletter:
@@ -132,6 +134,8 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
             if unsubscribed:
                 self.newsletter = False
                 self.save()
+                return True
+        return False
 
 
 class SmallsEmailConfirmation(EmailConfirmation):

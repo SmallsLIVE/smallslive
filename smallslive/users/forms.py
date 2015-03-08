@@ -1,4 +1,5 @@
 from allauth.account.models import EmailAddress
+from django.contrib import messages
 import floppyforms as forms
 from allauth.account.forms import SignupForm, AddEmailForm
 
@@ -55,14 +56,22 @@ class EditProfileForm(forms.Form):
         self.fields['last_name'].initial = self.user.last_name
         self.fields['newsletter'].initial = self.user.newsletter
 
-    def save(self):
+    def save(self, request=None):
         self.user.first_name = self.cleaned_data['first_name']
         self.user.last_name = self.cleaned_data['last_name']
         self.user.save()
         if self.cleaned_data.get('newsletter'):
-            self.user.subscribe_to_newsletter()
+            subscribed = self.user.subscribe_to_newsletter()
+            if subscribed:
+                messages.success(request, "You've been subscribed to the SmallsLIVE newsletter.")
+            else:
+                messages.error(request, "There's been an error while trying to subscribe to the SmallsLIVE newsletter.")
         else:
-            self.user.unsubscribe_from_newsletter()
+            unsubscribed = self.user.unsubscribe_from_newsletter()
+            if unsubscribed:
+                messages.success(request, "You've been unsubscribed to the SmallsLIVE newsletter.")
+            else:
+                messages.error(request, "There's been an error while trying to unsubscribe to the SmallsLIVE newsletter.")
 
 
 class ChangeEmailForm(AddEmailForm):
