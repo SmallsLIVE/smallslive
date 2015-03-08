@@ -33,9 +33,14 @@ class FileHandlingMixin(object):
 
 
 class FileListView(FileHandlingMixin, SingleTableMixin, generic.TemplateView):
-    table_class = FileTable
     context_table_name = 'files'
     template_name = 'dashboard/files/file_list.html'
+
+    def get_table_class(self):
+        if "photo" in self.kwargs.get('category'):
+            return PhotoTable
+        else:
+            return FileTable
 
     def get_context_data(self, **kwargs):
         ctx = super(FileListView, self).get_context_data(**kwargs)
