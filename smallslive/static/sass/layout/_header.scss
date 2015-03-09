@@ -262,6 +262,10 @@ header {
   background-color: #fff;
 }
 
+.nav > li > a:hover, .nav > li > a:focus {
+  background: none;
+}
+
 .mobile-intro {
   background-color: #1B191A;
   width: 100%;
