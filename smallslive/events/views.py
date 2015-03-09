@@ -69,6 +69,7 @@ class EventDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(EventDetailView, self).get_context_data(**kwargs)
         context['performers'] = self.object.get_performers()
+        context['facebook_app_id'] = settings.FACEBOOK_APP_ID
         return context
 
     # def get_template_names(self):

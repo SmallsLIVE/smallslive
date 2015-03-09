@@ -4,6 +4,18 @@
 
 {% block schedule_nav_active %}active{% endblock %}
 
+{% block extra_head %}
+<meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:type" content="profile" />
+  <meta property="og:site_name" content="SmallsLIVE" />
+  <meta property="og:title" content="{{ artist.full_name }} profile" />
+  <meta property="og:title" content="{{ artist.biography|truncatewords:40|striptags }}" />
+  {% if artist.photo %}
+    <meta property="og:image" content="{% thumbor_url artist.photo.url|urlencode height=315 width=600 smart=True %}" />
+  {% endif %}
+  <meta property="fb:app_id" content="{{ facebook_app_id }}" />
+{% endblock %}
+
 {% block content %}
  <div class="content-wrapper">
       <section class="container">
@@ -113,9 +125,13 @@
               </div>
               <div class="share-social">
                   <h2 class="share-social__title">Share this profile on:</h2>
-                  <button class="btn social-btn social-btn--facebook"><i class="fa fa-facebook"></i></button>
-                  <button class="btn social-btn social-btn--twitter"><i class="fa fa-twitter"></i></button>
-                  <button class="btn social-btn social-btn--google"><i class="fa fa-google-plus"></i></button>
+                  <a href="https://www.facebook.com/dialog/share?app_id=1545755109027164&&display=popup&href={{ request.build_absolute_uri|urlencode }}&redirect_uri={{ request.build_absolute_uri|urlencode }}"
+                     class="btn social-btn social-btn--facebook" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fa fa-facebook"></i></a>
+                  <a href="https://twitter.com/share?url={{ request.build_absolute_uri|urlencode }}&text={{ "Check out "|urlencode }}{{ artist.full_name|urlencode }}{{ "'s profile on SmallsLIVE:"|urlencode }}&hashtags=SmallsLIVE"
+                      class="btn social-btn social-btn--twitter" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fa fa-twitter"></i></a>
+                <a href="https://plus.google.com/share?url={{ request.build_absolute_uri|urlencode }}" class="btn social-btn social-btn--google"
+                   onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i
+                        class="fa fa-google-plus"></i></a>
               </div>
           </section>
         </div>

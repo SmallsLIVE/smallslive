@@ -456,3 +456,5 @@ ELASTICSEARCH_FIELD_MAPPINGS = {
     'long':       {'type': 'long'},
     'integer':    {'type': 'long'},
 }
+
+FACEBOOK_APP_ID = os.environ.get('FACEBOOK_APP_ID')
