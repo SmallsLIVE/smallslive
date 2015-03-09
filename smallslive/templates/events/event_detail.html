@@ -94,7 +94,7 @@
                 {% endif %}
             </div>
             <div class="share-social">
-                  <h2 class="share-social__title">Share this profile on:</h2>
+                  <h2 class="share-social__title">Share this event on:</h2>
                   <a href="https://www.facebook.com/dialog/share?app_id={{facebook_app_id}}&display=popup&href={{ request.build_absolute_uri|urlencode }}&redirect_uri={{ request.build_absolute_uri|urlencode }}"
                      class="btn social-btn social-btn--facebook" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fa fa-facebook"></i></a>
                   <a href="https://twitter.com/share?url={{ request.build_absolute_uri|urlencode }}&text={{ "Check out "|urlencode }}{{ event.title }}{{ " show on SmallsLIVE:"|urlencode }}&hashtags=SmallsLIVE"
