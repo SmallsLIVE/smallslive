@@ -39,17 +39,17 @@ button, input[type="submit"] {
 
 
 // equal height columns on large devices
-//@media (min-width: $screen-md-min) {
-//  .equal-heights.row {
-//    overflow: hidden;
-//
-//  }
+@media (min-width: $screen-md-min) {
+  .equal-heights.row {
+    overflow: hidden;
 
-//  .equal-heights [class*="col-"] {
-//    margin-bottom: -99999px;
-//    padding-bottom: 99999px;
-//  }
-//}
+  }
+
+  .equal-heights [class*="col-"] {
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+  }
+}
 
 // equal height columns on all devices
 //  .equal-heights-xs.row {
@@ -62,9 +62,9 @@ button, input[type="submit"] {
 //    padding-bottom: 99999px;
 //  }
 
-.equal-heights.row {
-  @include display(flex);
-}
+//.equal-heights.row {
+//  @include display(flex);
+//}
 
 
 .bw-wrapper {
