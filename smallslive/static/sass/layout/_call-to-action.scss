@@ -64,6 +64,14 @@
     background-position: center center;
   }
 
+  &--schedule-not-authenticated {
+    background-image: url('../image/video-not-available-cto.jpg');
+    background-position: center center;
+    & span {
+      margin: 0 10px;
+    }
+  }
+
   &--schedule {
     background-image: url('../image/video-not-available-cto.jpg');
     background-position: center center;
