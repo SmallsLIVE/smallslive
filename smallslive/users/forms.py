@@ -61,17 +61,9 @@ class EditProfileForm(forms.Form):
         self.user.last_name = self.cleaned_data['last_name']
         self.user.save()
         if self.cleaned_data.get('newsletter'):
-            subscribed = self.user.subscribe_to_newsletter()
-            if subscribed:
-                messages.success(request, "You've been subscribed to the SmallsLIVE newsletter.")
-            else:
-                messages.error(request, "There's been an error while trying to subscribe to the SmallsLIVE newsletter.")
+            self.user.subscribe_to_newsletter(request)
         else:
-            unsubscribed = self.user.unsubscribe_from_newsletter()
-            if unsubscribed:
-                messages.success(request, "You've been unsubscribed to the SmallsLIVE newsletter.")
-            else:
-                messages.error(request, "There's been an error while trying to unsubscribe to the SmallsLIVE newsletter.")
+            self.user.unsubscribe_from_newsletter(request)
 
 
 class ChangeEmailForm(AddEmailForm):

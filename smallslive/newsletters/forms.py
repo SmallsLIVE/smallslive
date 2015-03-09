@@ -16,8 +16,8 @@ class NewsletterSubscribeForm(forms.Form):
         if self.user:
             self.fields['email'].initial = self.user.email
 
-    def subscribe(self):
+    def subscribe(self, request=None):
         if self.user:
-            self.user.subscribe_to_newsletter()
+            self.user.subscribe_to_newsletter(request)
         else:
-            subscribe_to_newsletter(self.cleaned_data.get('email'))
+            subscribe_to_newsletter(self.cleaned_data.get('email'), request)

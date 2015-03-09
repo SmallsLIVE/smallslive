@@ -12,7 +12,7 @@ def newsletter_list(request):
     if request.method == 'POST':
         form = NewsletterSubscribeForm(request.POST, user=user)
         if form.is_valid():
-            form.subscribe()
+            form.subscribe(request)
             return redirect('home')
     else:
         form = NewsletterSubscribeForm(user=user)

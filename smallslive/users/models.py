@@ -119,18 +119,18 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         """
         return hasattr(self, "artist")
 
-    def subscribe_to_newsletter(self):
+    def subscribe_to_newsletter(self, request=None):
         if not self.newsletter:
-            subscribed = subscribe_to_newsletter(self.email)
+            subscribed = subscribe_to_newsletter(self.email, request)
             if subscribed:
                 self.newsletter = True
                 self.save()
                 return True
         return False
 
-    def unsubscribe_from_newsletter(self):
+    def unsubscribe_from_newsletter(self, request=None):
         if self.newsletter:
-            unsubscribed = unsubscribe_from_newsletter(self.email)
+            unsubscribed = unsubscribe_from_newsletter(self.email, request)
             if unsubscribed:
                 self.newsletter = False
                 self.save()
