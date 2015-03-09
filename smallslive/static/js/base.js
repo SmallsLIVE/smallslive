@@ -160,3 +160,14 @@ $(function() {
       minLength: 3
     });
   });
+
+/* Header search focus effect */
+$(document).ready(function () {
+    $('.search__input').on('blur', function(){
+        console.log('out');
+        $('.navigation__item').removeClass('search-active');
+    }).on('focus', function(){
+        $('.navigation__item').addClass('search-active');
+        console.log('in');
+    });
+});

@@ -140,33 +140,32 @@
         <li class="header-login__item"><a href="{% url "account_signup" %}">Sign up</a></li>
     {% endif %}
   </ul>
-  <nav class="navigation navbar-collapse">
-    <ul>
-      <li class="navigation__item {% block homepage_nav_active %}{% endblock %}"><a href="/"><i class="navigation__icon fa fa-2x fa-home "></i> Home</a></li>
-      <li class="navigation__item {% block livestream_nav_active %}{% endblock %}"><a href="{% url "live-stream" %}"><i
-              class="navigation__icon fa fa-play-circle"></i> Live now!</a></li>
-      <li class="navigation__item {% block schedule_nav_active %}{% endblock %}"><a href="{% url "schedule" %}"><i
-              class="navigation__icon fa fa-calendar"></i> Schedule</a></li>
-      <li class="navigation__item"><a href="{% url "static_page" "archive" %}"><i
-              class="navigation__icon fa fa-video-camera"></i> Archive</a></li>
-      <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-shopping-cart"></i> Store</a></li>
-      <li class="navigation__item {% block info_nav_active %}{% endblock %}"><a href="{% url "about-us" %}"><i class="navigation__icon fa fa-info-circle"></i>
-        Info</a></li>
-    </ul>
-  </nav>
- {% comment %} <form action="{% url "artist_search" %}" method="get" class="search visible-lg visible-md">
-    <div class="form-group has-feedback">
-      <input type="text" name="q" class="form-control search__input" placeholder="Search our Archive..."/>
-      <i class="fa fa-search form-control-feedback"></i>
-    </div>
-  </form> {% endcomment %}
-
-  <form action="{% url "artist_search" %}" method="get" class="search visible-lg visible-md">
-    <div class="form-group has-feedback">
-      <input id="header--search" type="text" name="q" class="form-control search__input" placeholder="Search our Archive..."/>
-      <i class="fa fa-search form-control-feedback"></i>
-    </div>
-  </form>
+  <div class="header-nav-group">
+      <nav class="navigation navbar-collapse">
+        <ul>
+          <li class="navigation__item {% block homepage_nav_active %}{% endblock %}"><a href="/"><i class="navigation__icon fa fa-2x fa-home "></i><span>Home</span></a></li>
+          <li class="navigation__item {% block livestream_nav_active %}{% endblock %}"><a href="{% url "live-stream" %}"><i
+                  class="navigation__icon fa fa-play-circle"></i><span>Live now!</span></a></li>
+          <li class="navigation__item {% block schedule_nav_active %}{% endblock %}"><a href="{% url "schedule" %}"><i
+                  class="navigation__icon fa fa-calendar"></i><span>Schedule</span></a></li>
+          <li class="navigation__item"><a href="{% url "static_page" "archive" %}"><i
+                  class="navigation__icon fa fa-video-camera"></i><span>Archive</span></a></li>
+          <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-shopping-cart"></i><span>Store</span></a></li>
+          <li class="navigation__item {% block info_nav_active %}{% endblock %}"><a href="{% url "about-us" %}"><i class="navigation__icon fa fa-info-circle"></i>
+           <span>Info</span></a></li>
+          <li class="navigation__item">
+              <div class="search">
+                  <form action="{% url "artist_search" %}" method="get">
+                    <div class="form-group has-feedback">
+                      <input id="header--search" type="text" name="q" class="form-control search__input" placeholder="Search our Archive..."/>
+                      <i class="fa fa-search form-control-feedback"></i>
+                    </div>
+                  </form>
+              </div>
+          </li>
+        </ul>
+      </nav>
+  </div>
 </header>
 <!-- end of regular header -->
 

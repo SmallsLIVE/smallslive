@@ -14,20 +14,44 @@ header {
   border: none;
 }
 
+.header-nav-group {
+  clear: right;
+  @include display(flex);
+  @include align-items(center);
+  @include flex-wrap(nowrap);
+}
+
 .navigation {
+  @include transition(all 0.2s ease-in-out);
   float: left;
-  margin-top: 67px;
+  width: 100%;
+
+  & ul {
+    @include display(flex);
+    @include align-items(center);
+    @include flex-wrap(nowrap);
+    width: 100%;
+  }
+
 
   &__item {
     @include lato;
-    display: inline-block;
     font-size: 16px;
     text-align: center;
     border-right: 1px #3C3B3C solid;
-    width: 95px;
+    @include transition(all 0.3s ease-in-out);
+    list-style-type: none;
+    padding: 0 15px;
+    @include flex-grow(0);
+    max-width: 100px;
+
+    & span {
+      white-space: nowrap;
+      @include transition(all 0.2s ease-in-out);
+    }
 
     @media (max-width: $screen-md-max) {
-      width: 80px;
+      padding: 0 8px;
     }
 
     a {
@@ -41,8 +65,36 @@ header {
       color: white;
     }
 
+    & i {
+      @include transition(all 0.2s ease-in-out);
+    }
+
     &.active a {
       color: #fff;
+    }
+
+    &:last-child {
+      border-right: none;
+      padding-right: 0;
+      @include flex-grow(1);
+      max-width: none !important;
+
+      & i {
+        margin-top: 0 !important;
+      }
+    }
+
+    &.search-active {
+      max-width: 51px;
+
+      & span {
+        opacity: 0;
+      }
+
+      & i {
+        margin-bottom: 0;
+        margin-top: 24px;
+      }
     }
   }
 
@@ -135,10 +187,12 @@ header {
 }
 
 .search {
-  float: right;
-  margin-top: 22px;
-  max-width: 400px;
-  width: 30%;
+  width: 100%;
+  margin-left: 10px;
+
+  & .form-group {
+    margin-bottom: 0;
+  }
 
   i {
     padding-top: 12px;
@@ -157,6 +211,7 @@ header {
     color: white;
     border-color: #828181;
     @include transition(all 0.1s ease-in-out);
+    @include transition(width 1s ease-in-out);
 
     &:focus {
       background: rgba(255,255,255,0.8);
@@ -169,20 +224,6 @@ header {
   }
 }
 
-@media (min-width: 980px) {
-  .search {
-      width: 220px;
-  }
-}
-
-@media (min-width: 1200px) {
-  .search {
-    width: 360px;
-  }
-}
-
-///
-
 .mobile-navbar {
   background-color: $main-accent-color;
   margin-bottom: 0;
@@ -193,6 +234,10 @@ header {
     width: 100%;
     font-size: 16px;
     padding: 10px 0;
+  }
+
+  .navbar-nav li {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
   }
 }
 
@@ -247,3 +292,8 @@ header {
 }
 
 
+@media (max-width: $screen-sm-max) {
+  .search {
+    margin: 0;
+  }
+}
