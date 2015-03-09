@@ -154,7 +154,7 @@ $.widget( "custom.catcomplete", $.ui.autocomplete, {
   });
 
 $(function() {
-    $( "#header--search" ).catcomplete({
+    $( ".search__input" ).catcomplete({
       delay: 500,
       source: '/search/autocomplete/',
       minLength: 3
