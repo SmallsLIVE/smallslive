@@ -207,6 +207,7 @@ class ScheduleView(ListView):
         date_range_start = timezone.localtime(timezone.now()) + timezone.timedelta(days=start_days)
         # don't show last nights events that are technically today
         date_range_start = date_range_start.replace(hour=10)
+        self.date_start = date_range_start
         date_range_end = date_range_start + timezone.timedelta(days=14)
         events = Event.objects.filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
         for k, g in groupby(events, lambda e: timezone.localtime(e.start).date()):
@@ -219,8 +220,9 @@ class ScheduleView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ScheduleView, self).get_context_data(**kwargs)
-        context['month'] = timezone.now().month
-        context['year'] = timezone.now().year
+        # js months are zero indexed
+        context['month'] = self.date_start.month - 1
+        context['year'] = self.date_start.year
         week = int(self.request.GET.get('week', 0))
         if week != 1:
             context['prev_url'] = "{0}?week={1}".format(reverse('schedule'), week-1)
@@ -262,7 +264,8 @@ class MonthlyScheduleView(ListView):
         next month, and a min one (1 day) for the previous month.
         """
         context = super(MonthlyScheduleView, self).get_context_data(**kwargs)
-        context['month'] = int(self.kwargs.get('month', timezone.now().month))
+        # js months are zero indexed
+        context['month'] = int(self.kwargs.get('month', timezone.now().month)) - 1
         context['year'] = int(self.kwargs.get('year', timezone.now().year))
         context['month_view'] = True
         current_month = timezone.datetime(year=context['year'], month=context['month'], day=1)
