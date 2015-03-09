@@ -48,6 +48,16 @@
     border-top: 2px #ccc solid;
     border-bottom: 2px #ccc solid;
     margin-bottom: 17px;
+
+    & a {
+      color: #fff;
+      text-decoration: none;
+
+      &:hover {
+        color: rgba(255,255,255,0.7);
+        text-decoration: none;
+      }
+    }
   }
 
   &__website {
