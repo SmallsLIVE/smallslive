@@ -4,21 +4,30 @@
   padding: 15px;
   @include lato;
 
-  &__left {
-    float: left;
+  & .heading {
     font-size: 26px;
     @include lato-black;
   }
 
-  &__right {
+  & .navbar-toggle {
+    color: #fff;
+    margin-right: 0;
+    border-color: #fff;
+
+    & span {
+      background-color: #fff;
+    }
+  }
+
+  & .navbar-collapse {
     float: right;
 
     & ul {
       margin-bottom: 0;
+      padding-left: 0;
     }
 
     & ul li {
-      display: inline-block;
       @include list-unstyled;
 
       & a {
@@ -32,6 +41,28 @@
           text-decoration: none;
         }
       }
+    }
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+  .admin-nav {
+    padding: 5px 0;
+    border-bottom: 1px solid #fff;
+    background-color: #121212;
+
+    & .heading {
+      display: block;
+      margin-top: 6px;
+    }
+
+    & .navbar-collapse {
+      width: 100%;
+      padding-bottom: 15px;
+    }
+
+    & ul li {
+      text-align: center;
     }
   }
 }

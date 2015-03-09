@@ -37,16 +37,19 @@
 {% if user.is_superuser %}
 <div class="container-fluid admin-nav">
     <div class="container">
-        <div class="admin-nav__left">
-            <span>Smalls admin</span>
-        </div>
-        <div class="admin-nav__right">
-            <ul>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#admin-navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <span class="heading">Smalls admin</span>
+        <div class="collapse navbar-collapse" id="admin-navbar">
+            <ul class="nav navbar-nav">
                 <li><a href="{% url "home" %}">Homepage</a></li>
                 <li><a href="{% url "event_add" %}">Add events</a></li>
                 <li><a href="{% url "artist_add" %}">Add artists</a></li>
                 <li><a href="{% url "dashboard:index" %}">Store dashboard</a></li>
-                <li><a href="{% url "account_logout" %}">Log out</a></li>
             </ul>
         </div>
     </div>
@@ -74,22 +77,25 @@
       <div class="header-top">
         <div class="container">
           <ul class="nav navbar-nav">
+            <li>
+                <form action="{% url "artist_search" %}" method="get" class="search">
+                    <div class="form-group has-feedback">
+                      <input id="header--search" type="text" name="q" class="form-control search__input" placeholder="Search our Archive..."/>
+                      <i class="fa fa-search form-control-feedback"></i>
+                    </div>
+                </form>
+            </li>
             <li><a href="/">Home</a></li>
             <li><a href="{% url "live-stream" %}">Live now!</a></li>
             <li><a href="{% url "schedule" %}">Schedule</a></li>
             <li><a href="{% url "static_page" "archive" %}">Archive</a></li>
             <li><a href="">Store</a></li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Info <span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                    <li><a href="{% url "about-us" %}">About us</a></li>
-                    <li><a href="{% url "mission-statement" %}">Mission Statement</a></li>
-                    <li ><a href="{% url "contact-and-info" %}">Contact & Info</a></li>
-                    <li><a href="{% url "photo-gallery" %}">Photo Gallery</a></li>
-                    <li><a href="{% url "newsletters" %}">Newsletters</a></li>
-                    <li><a href="{% url "static_page" "press" %}">Press</a></li>
-                </ul>
-            </li>
+            <li><a href="{% url "about-us" %}">About us</a></li>
+            <li><a href="{% url "mission-statement" %}">Mission Statement</a></li>
+            <li ><a href="{% url "contact-and-info" %}">Contact & Info</a></li>
+            <li><a href="{% url "photo-gallery" %}">Photo Gallery</a></li>
+            <li><a href="{% url "newsletters" %}">Newsletters</a></li>
+            <li><a href="{% url "static_page" "press" %}">Press</a></li>
             <li role="presentation" class="divider"></li>
             {% if user.is_authenticated %}
                 <li>{% user_display user %}</li>

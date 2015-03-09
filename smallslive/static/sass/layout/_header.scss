@@ -127,7 +127,7 @@ header {
 
 .nav.menu li {
   text-align: center;
-  padding: 10px 15px;
+  padding: 0 15px;
 
   & a {
     padding: 0;
@@ -192,8 +192,12 @@ header {
     text-align: center;
     width: 100%;
     font-size: 16px;
-    padding: 15px 0 !important;
+    padding: 10px 0;
   }
+}
+
+.navbar-header {
+  padding: 5px 0;
 }
 
 .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {

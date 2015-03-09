@@ -77,8 +77,26 @@
   display: none;
 }
 
+.navbar-nav .search {
+  float: none;
+  width: 100%;
 
-@media (min-width: 980px) {
+  & input {
+    border-color: #fff;
+    background-color: #fff;
+    font-size: 16px;
+    padding: 12px;
+    padding-left: 30px;
+    height: auto;
+  }
+
+  & i {
+    color: rgba(0,0,0,0.35);
+    margin-top: 4px;
+  }
+}
+
+@media (min-width: $screen-md-min) {
   .ui-autocomplete {
       width: 220px !important;
 
@@ -88,7 +106,7 @@
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: $screen-lg-min) {
   .ui-autocomplete {
     width: 360px !important;
 
