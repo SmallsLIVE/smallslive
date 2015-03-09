@@ -26,7 +26,7 @@ header {
   float: left;
   width: 100%;
 
-  & ul {
+  & .navigation__menu {
     @include display(flex);
     @include align-items(center);
     @include flex-wrap(nowrap);
@@ -87,7 +87,7 @@ header {
     &.search-active {
       max-width: 51px;
 
-      & span {
+      & .menu-label {
         opacity: 0;
       }
 

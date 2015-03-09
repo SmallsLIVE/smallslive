@@ -157,17 +157,16 @@ $(function() {
     $( ".search__input" ).catcomplete({
       delay: 500,
       source: '/search/autocomplete/',
-      minLength: 3
+      minLength: 3,
+      appendTo: '#header-search-container'
     });
   });
 
 /* Header search focus effect */
 $(document).ready(function () {
     $('.search__input').on('blur', function(){
-        console.log('out');
         $('.navigation__item').removeClass('search-active');
     }).on('focus', function(){
         $('.navigation__item').addClass('search-active');
-        console.log('in');
     });
 });

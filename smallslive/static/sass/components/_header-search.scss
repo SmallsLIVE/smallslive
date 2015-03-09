@@ -1,11 +1,12 @@
 .ui-autocomplete {
   background-color: #fff;
-  width: 100%;
+  width: 100% !important;
   @include lato;
   padding: 10px 0;
   float: left;
   border: 1px solid #cccccc;
-  z-index: 9999;
+  z-index: 100001;
+  font-size: 14px;
 
   & li {
     float: left;
@@ -14,7 +15,7 @@
 
   & .ui-menu-item {
     @include list-unstyled;
-    padding: 10px 20px;
+    padding: 10px 20px !important;
     cursor: pointer;
 
     & a {
@@ -51,7 +52,7 @@
     @include lato-bold;
     color: #A1A0A0;
     text-transform: uppercase;
-    padding: 20px 20px 10px;
+    padding: 20px 20px 10px !important;
     border-bottom: 1px solid #f0f0f0;
     font-size: 12px;
     width: 100%;
@@ -98,7 +99,14 @@
 
 @media (min-width: $screen-md-min) {
   .ui-autocomplete {
-      width: 220px !important;
+    position: absolute !important;
+    margin-top: 42px;
+  }
+}
+
+@media (min-width: $screen-md-min) {
+  .ui-autocomplete {
+      //width: 220px !important;
 
       & .ui-menu-item .name {
         max-width: 60%;
@@ -108,7 +116,7 @@
 
 @media (min-width: $screen-lg-min) {
   .ui-autocomplete {
-    width: 360px !important;
+    //width: 360px !important;
 
     & .ui-menu-item .name {
         max-width: 75%;
