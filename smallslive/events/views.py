@@ -266,10 +266,12 @@ class MonthlyScheduleView(ListView):
         """
         context = super(MonthlyScheduleView, self).get_context_data(**kwargs)
         # js months are zero indexed
-        context['month'] = int(self.kwargs.get('month', timezone.now().month)) - 1
-        context['year'] = int(self.kwargs.get('year', timezone.now().year))
+        month = int(self.kwargs.get('month', timezone.now().month))
+        year = int(self.kwargs.get('year', timezone.now().year))
+        context['month'] = month - 1
+        context['year'] = year
         context['month_view'] = True
-        current_month = timezone.datetime(year=context['year'], month=context['month'], day=1)
+        current_month = timezone.datetime(year=year, month=month, day=1)
         next_month = current_month + timezone.timedelta(days=31)
         prev_month = current_month - timezone.timedelta(days=1)
         context['prev_url'] = reverse('monthly_schedule', kwargs={'year': prev_month.year, 'month': prev_month.month})
