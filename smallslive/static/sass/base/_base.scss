@@ -76,6 +76,11 @@ a:focus {
   outline: none;
 }
 
+a:hover {
+  color: $main-accent-color-darker;
+  text-decoration: none;
+}
+
 .vcenter {
   display: inline-block;
   vertical-align: middle;
