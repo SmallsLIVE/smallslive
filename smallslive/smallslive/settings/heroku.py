@@ -27,6 +27,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = ['*']
 
 # Static asset configuration
+STATICFILES_STORAGE = "utils.storages.GzipManifestPipelineStorage"
 PIPELINE_SASS_BINARY = 'sassc'
 PIPELINE_SASS_ARGUMENTS = '--precision 8'
 
