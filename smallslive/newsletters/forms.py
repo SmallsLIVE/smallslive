@@ -5,7 +5,7 @@ from .utils import subscribe_to_newsletter
 class NewsletterSubscribeForm(forms.Form):
     email = forms.EmailField(max_length=80, required=True,
                              label="E-mail",
-                             widget=forms.TextInput(attrs={
+                             widget=forms.EmailInput(attrs={
                                  'placeholder': 'Your e-mail address',
                                  'class': 'newsletters__subscribe__input'
                              }))

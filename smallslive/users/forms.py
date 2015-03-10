@@ -1,5 +1,4 @@
 from allauth.account.models import EmailAddress
-from django.contrib import messages
 import floppyforms as forms
 from allauth.account.forms import SignupForm, AddEmailForm
 
@@ -7,7 +6,7 @@ from allauth.account.forms import SignupForm, AddEmailForm
 class UserSignupForm(SignupForm):
     email = forms.EmailField(max_length=80, required=True,
                              label="E-mail",
-                             widget=forms.TextInput(attrs={
+                             widget=forms.EmailInput(attrs={
                                  'placeholder': 'Your e-mail address',
                                  'class': 'form-control'
                              }))
@@ -69,7 +68,7 @@ class EditProfileForm(forms.Form):
 class ChangeEmailForm(AddEmailForm):
     email = forms.EmailField(max_length=80, required=True,
                              label="E-mail",
-                             widget=forms.TextInput(attrs={
+                             widget=forms.EmailInput(attrs={
                                  'placeholder': 'Your e-mail address',
                                  'class': 'form-control'
                              }))
