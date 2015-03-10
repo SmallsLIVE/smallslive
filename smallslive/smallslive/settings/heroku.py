@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ['*']
 # Static asset configuration
 STATICFILES_STORAGE = "utils.storages.GzipManifestPipelineStorage"
 PIPELINE_SASS_BINARY = 'sassc'
-PIPELINE_SASS_ARGUMENTS = '--precision 8'
+PIPELINE_SASS_ARGUMENTS = '--precision 8 -s compressed'
 
 # Haystack elasticsearch backend
 ELASTICSEARCH_IP = get_env_variable('ELASTICSEARCH_IP')
