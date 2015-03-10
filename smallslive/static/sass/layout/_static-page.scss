@@ -1,5 +1,9 @@
 .static-page {
   background-color: #FFFFFF;
+
+  & .row:before {
+    display: none;
+  }
 }
 
 .static-nav-menu {
