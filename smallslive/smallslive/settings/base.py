@@ -281,6 +281,21 @@ PIPELINE_CSS = {
         'output_filename': 'css/application.css',
     },
 }
+PIPELINE_JS = {
+    'js': {
+        'source_filenames': (
+          'js/jquery.mobile.custom.min.js',
+          'js/jquery-ui.js',
+          'js/bootstrap.min.js',
+          'js/slick/slick.min.js',
+          'js/base.js',
+          'js/signup_form.js'
+
+        ),
+        'output_filename': 'js/main.js',
+    }
+}
+PIPELINE_DISABLE_WRAPPER = True
 
 # Templates
 TEMPLATE_DIRS = [

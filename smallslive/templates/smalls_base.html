@@ -186,31 +186,9 @@
     </address>
   </div>
 </footer>
-<!-- Include jQuery 1.11.2 -->
-<script src="{% static 'js/jquery-1.11.2.min.js'%}"></script>
-<!-- Include jQuery mobile -->
-<script src="{% static 'js/jquery.mobile.custom.min.js'%}"></script>
-<!-- Include jQuery UI -->
-<script src="{% static 'js/jquery-ui.js'%}"></script>
-<!-- Bootstrap Core JavaScript -->
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
-<!-- Slick carousel JavaScript -->
-<script src="{% static 'js/slick/slick.min.js' %}"></script>
-<!-- Bootstrap datepicker JavaScript -->
-<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-<!-- SmallsLIVE base JavaScript -->
-<script src="{% static 'js/base.js' %}"></script>
-<script src="{% static 'js/signup_form.js' %}"></script>
-<script>
-  $(function() {
-    // setTimeout() function will be fired after page is loaded
-    // it will wait for 5 sec. and then will fire
-    // $("#successMessage").hide() function
-    setTimeout(function() {
-        $(".alert-dismissible").hide(500)
-    }, 3000);
-});
-</script>
+
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+{% javascript 'js' %}
 {% block extra_js %}{% endblock %}
 </body>
 </html>

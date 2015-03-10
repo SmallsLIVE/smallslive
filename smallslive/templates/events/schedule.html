@@ -40,7 +40,7 @@
         </div>
         {% for date, events in dates.iteritems %}
         <div class="day flex col-xs-6 col-md-3"
-             data-position={{ forloop.counter|add:"1" }} data-date="{{ date|date:"n/j/Y" }}"
+             data-position={{ forloop.counter|add:"1" }} data-date="{{ date|date:"n/j/Y" }}">
           <h2 class="day__date">{{ date|date:"l" }} // {{ date|date:"n/j/Y" }}</h2>
           {% if events %}
               <dl>
@@ -76,9 +76,11 @@
 {% endblock content %}
 
 {% block extra_js %}
+  <!-- Bootstrap datepicker JavaScript -->
+  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+  <script src="{% static 'js/schedule_datepicker.js' %}"></script>
   <script>
   var date = new Date({{ year}}, {{ month }}, 1);
-  console.log(date);
   $datePicker.datepicker("setDate", date);
   </script>
 {% endblock extra_js %}

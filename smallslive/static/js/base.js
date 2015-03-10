@@ -11,6 +11,15 @@ $(window).load(function () {
     makeImagesResponsive('.container');
 });
 
+$(function() {
+    // setTimeout() function will be fired after page is loaded
+    // it will wait for 5 sec. and then will fire
+    // $("#successMessage").hide() function
+    setTimeout(function() {
+        $(".alert-dismissible").hide(500)
+    }, 3000);
+});
+
 /* Adds swipe ability to Bootstrap event carousel */
 $(document).ready(function () {
     $carousel = $("#upcoming-carousel");
@@ -97,21 +106,6 @@ $(document).ready(function () {
                 makeImagesResponsive('#upcoming-events-fullsize');
             });
     });
-});
-
-/* Bootstrap datepicker for Schedule page */
-
-var $datePicker = $('#schedule__date-picker input');
-$datePicker.datepicker({
-    format: 'MM // yyyy',
-    minViewMode: "months",
-    orientation: "top auto",
-    autoclose: true
-});
-$datePicker.on('changeMonth', function(d){
-    var month = d.date.getMonth() + 1;
-    var year = d.date.getFullYear();
-    window.location = '/events/schedule/' + year + '/' + month + '/';
 });
 
 
