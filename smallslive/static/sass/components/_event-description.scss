@@ -28,4 +28,35 @@
         @include filter(none);
       }
   }
+
+  &__admin-buttons {
+    @include lato-bold;
+    padding: 10px;
+    float: left;
+    width: 100%;
+    margin-bottom: 30px;
+    text-transform: capitalize;
+
+    &__edit, &__clone {
+      display: block;
+      float: left;
+      padding: 10px 20px;
+      color: #fff;
+      border-radius: 10px;
+
+      &:hover {
+        color: rgba(255,255,255,0.7);
+        text-decoration: none;
+      }
+    }
+
+    &__edit {
+      background-color: $main-accent-color;
+    }
+
+    &__clone {
+      background-color: $main-accent-color-darker;
+      margin-left: 10px;
+    }
+  }
 }

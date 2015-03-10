@@ -47,6 +47,12 @@
                 {% for event in events %}
                   <dt class="day__event-time">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</dt>
                   <dd class="day__event-title">{{ event.title }}</dd>
+                  {% if user.is_superuser %}
+                    <div class="schedule__admin-buttons">
+                      <a class="schedule__admin-buttons__edit" href="">edit</a>
+                      <a class="schedule__admin-buttons__clone" href="">clone</a>
+                    </div>
+                  {% endif %}
                 {% endfor %}
               </dl>
           {% else %}
