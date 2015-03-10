@@ -103,6 +103,7 @@ INSTALLED_APPS = [
 ])
 
 MIDDLEWARE_CLASSES = (
+    'pipeline.middleware.MinifyHTMLMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
