@@ -120,7 +120,7 @@
           <section class="artist-bio col-md-6">
               {% if user.is_superuser %}
                 <div class="event-description__admin-buttons">
-                    <a href="" class="event-description__admin-buttons__edit">edit artist</a>
+                    <a href="{% url "artist_edit" pk=artist.id slug=artist.slug %}" class="event-description__admin-buttons__edit">edit artist</a>
                 </div>
               {% endif %}
               <div class="artist-bio__text-block">

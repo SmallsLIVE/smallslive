@@ -49,8 +49,11 @@
                   <dd class="day__event-title">{{ event.title }}</dd>
                   {% if user.is_superuser %}
                     <div class="schedule__admin-buttons">
-                      <a class="schedule__admin-buttons__edit" href="">edit</a>
-                      <a class="schedule__admin-buttons__clone" href="">clone</a>
+                      <a class="schedule__admin-buttons__edit" href="{% url "event_edit" pk=event.id slug=event.slug %}">edit</a>
+                      <form action="{% url "event_clone" pk=event.id slug=event.slug %}" method="post">
+                        {% csrf_token %}
+                        <input class="schedule__admin-buttons__clone" type="submit" value="clone">
+                      </form>
                     </div>
                   {% endif %}
                 {% endfor %}

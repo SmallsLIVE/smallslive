@@ -56,7 +56,7 @@ artist_add = ArtistAddView.as_view()
 class ArtistEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Artist
     form_class = ArtistAddForm
-    template_name = 'artists/artist_edit.html'
+    template_name = 'artists/artist_add.html'
 
     def test_func(self, user):
         """

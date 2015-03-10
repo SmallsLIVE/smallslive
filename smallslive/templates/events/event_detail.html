@@ -87,7 +87,7 @@
               </div>
             {% if user.is_superuser %}
             <div class="event-description__admin-buttons">
-                <a href="" class="event-description__admin-buttons__edit">edit event</a>
+                <a href="{% url "event_edit" pk=event.id slug=event.slug %}" class="event-description__admin-buttons__edit">edit event</a>
                 <a href="" class="event-description__admin-buttons__clone">clone event</a>
             </div>
             {% endif %}
