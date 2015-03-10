@@ -4,6 +4,9 @@
 {% block title %}Add/Edit Gig: %dateAndArtistandTitleHere%{% endblock title %}
 
 {% block extra_head %}
+  <script>
+    var django = {jQuery: jQuery};
+  </script>
   {{ form.media }}
   <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
   <link href="{% static 'css/selectize.bootstrap3.css' %}" rel="stylesheet">
