@@ -118,6 +118,11 @@
             {% endwith %}
           </section>
           <section class="artist-bio col-md-6">
+              {% if user.is_superuser %}
+                <div class="event-description__admin-buttons">
+                    <a href="" class="event-description__admin-buttons__edit">edit artist</a>
+                </div>
+              {% endif %}
               <div class="artist-bio__text-block">
                 <h1 class="artist-bio__title">Artist biography:</h1>
                 {% if artist.biography %}
