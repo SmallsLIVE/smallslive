@@ -241,6 +241,12 @@
 
   .event-details .info {
     padding: 20px 30px;
+    overflow: hidden;
+  }
+
+  .event-details__cancelled-ribbon {
+    top: 40px;
+    z-index: 100;
   }
 }
 

@@ -22,6 +22,7 @@
         </div><!--
      --><div class="col-xs-12 col-md-6 info vcenter">
             <div>
+                {% if event.is_cancelled %}<span class="event-details__cancelled-ribbon">cancelled</span>{% endif %}
                 <span class="event-details__timeslot">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</span>
 
                 <h1 class="event-details__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h1>
