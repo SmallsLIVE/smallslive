@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.shortcuts import render_to_response
 from django.views.generic.base import TemplateView
 from oscar.app import application
 
@@ -15,6 +16,10 @@ admin.autodiscover()
 class StaticPageView(TemplateView):
     def get_template_names(self):
         return ["{0}.html".format(self.kwargs['template_name'])]
+
+
+def robots_view(request):
+    return render_to_response("robots.txt", content_type="text/plain")
 
 
 urlpatterns = patterns('',
@@ -41,6 +46,7 @@ urlpatterns = patterns('',
     url(r'^search/event/', 'events.views.event_search', name='event_search'),
     url(r'^search/instrument/', 'artists.views.instrument_search', name='instrument_search'),
     url(r'^store/', include(application.urls)),
+    url(r'^robots\.txt', robots_view),
     url(r'^$', 'events.views.homepage', name="home"),
 )
 
