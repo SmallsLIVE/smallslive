@@ -155,6 +155,17 @@
     @include lato-bold;
     font-size: 14px;
     color: #000000;
+
+    &.cancelled {
+      text-decoration: line-through;
+      color: #666;
+    }
+  }
+
+  &__event-cancelled {
+    @include lato-bold;
+    color: $main-accent-color;
+    font-size: 12px;
   }
 
   &.selected {

@@ -46,7 +46,8 @@
               <dl>
                 {% for event in events %}
                   <dt class="day__event-time">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</dt>
-                  <dd class="day__event-title">{{ event.title }}</dd>
+                  <dd class="day__event-title cancelled">{{ event.title }}</dd>
+                  <span class="day__event-cancelled">(cancelled)</span>
                   {% if user.is_superuser %}
                     <div class="schedule__admin-buttons">
                       <a class="schedule__admin-buttons__edit" href="{% url "event_edit" pk=event.id slug=event.slug %}">edit</a>
