@@ -27,7 +27,7 @@
     @extend .btn;
     @include lato-bold;
     background-color: rgba(0, 0, 0, 0.5);
-    border: 2px #D21535 solid;
+    border: 2px $main-accent-color solid;
     color: white;
     font-style: italic;
     padding: 11px 35px;

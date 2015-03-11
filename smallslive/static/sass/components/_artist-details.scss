@@ -62,7 +62,7 @@
 
   &__website {
     @include lato-black;
-    color: #D21333;
+    color: $main-accent-color;
     font-size: 16px;
   }
 }

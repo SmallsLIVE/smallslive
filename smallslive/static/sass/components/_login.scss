@@ -6,7 +6,7 @@
   &__title {
     @include lato-black;
     font-size: 48px;
-    color: #D21535;
+    color: $main-accent-color;
     line-height: 130%;
     margin-bottom: 20px;
     margin-top: 10px;
@@ -70,7 +70,7 @@
       font-size: 16px;
       padding: 10px;
       text-align: center;
-      background-color: #D21535;
+      background-color: $main-accent-color;
       color: #fff !important;
       text-decoration: none;
       margin-top: 10px;
@@ -94,7 +94,7 @@
     &__title {
       @include lato-black;
       font-size: 32px;
-      color: #D21535;
+      color: $main-accent-color;
       line-height: 130%;
       margin-bottom: 20px;
       margin-top: 10px;

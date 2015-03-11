@@ -22,7 +22,7 @@
   & .form-error-text {
     @include lato;
     font-size: 12px;
-    background-color: rgba(210,21,53,0.7);
+    background-color: $main-accent-color-darker;
     padding: 4px 8px;
     color: white;
     border-radius: 5px;
@@ -86,7 +86,7 @@
     @extend .btn;
     @include lato-bold;
     background-color: rgba(0, 0, 0, 0.5);
-    border: 2px #D21535 solid;
+    border: 2px $main-accent-color solid;
     color: white;
     font-style: italic;
     padding: 11px 35px;

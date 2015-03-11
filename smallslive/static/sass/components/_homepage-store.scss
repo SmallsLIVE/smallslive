@@ -44,7 +44,7 @@
 
   &__price {
     @include lato-bold;
-    color: #D80F2E;
+    color: $main-accent-color;
     font-size: 16px;
     font-weight: 800;
   }
@@ -70,5 +70,5 @@
   width: 0;
   height: 0;
   border: 14px solid transparent;
-  border-left-color: #DA0B28;
+  border-left-color: $main-accent-color;
 }

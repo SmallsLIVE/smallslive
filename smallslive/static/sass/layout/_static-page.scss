@@ -58,7 +58,7 @@
 
   &__main-title {
     @include lato-black;
-    color: #D21333;
+    color: $main-accent-color;
     margin-top: 0;
     margin-bottom: 24px;
     font-size: 32px;

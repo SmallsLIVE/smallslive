@@ -40,7 +40,7 @@
 
   &__price {
     @include lato-bold;
-    color: #D80F2E;
+    color: $main-accent-color;
     font-size: 16px;
     margin-bottom: 10px;
   }
@@ -49,7 +49,7 @@
     @include lato-bold-italic;
     color: white;
     border: none;
-    background-color: #DA0B28;
+    background-color: $main-accent-color;
     display: block;
     float: left;
     font-size: 14px;
