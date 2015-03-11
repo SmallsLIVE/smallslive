@@ -32,4 +32,12 @@
   <script>
     $("#id_instruments").selectize();
   </script>
+  {% if request.GET.popup %}
+    <script>
+        window.onunload = refreshParent;
+        function refreshParent() {
+            window.opener.location.reload();
+        }
+    </script>
+  {% endif %}
 {% endblock extra_js %}
