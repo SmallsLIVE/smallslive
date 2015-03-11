@@ -35,7 +35,7 @@
                 </div><!--
              --><div class="col-xs-12 col-md-6 info vcenter">
                     <div>
-                        <span class="event-details__cancelled-ribbon">cancelled</span>
+                        {% if event.is_cancelled %}<span class="event-details__cancelled-ribbon">cancelled</span>{% endif %}
                         <h1 class="event-details__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h1>
 
                         <p class="event-details__artists">{% for gig_info in event.get_performers %} <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist }} <span

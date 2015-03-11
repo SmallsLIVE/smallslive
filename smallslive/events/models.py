@@ -172,6 +172,9 @@ class Event(TimeStampedModel):
         }
         return CSS_STATES[self.state]
 
+    def if_cancelled(self):
+        return self.state == self.STATUS.Cancelled
+
     def autocomplete_label(self):
         return self.title
 
