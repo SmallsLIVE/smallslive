@@ -14,8 +14,8 @@ logging.basicConfig(level=logging.DEBUG,
 
 class EventScraper(object):
     def __init__(self):
-        self._refresh_gateway()
         self.gateway_url = os.environ.get('GATEWAY_URL')
+        self._refresh_gateway()
 
     def _refresh_gateway(self):
         # needed to avoid weird unicode decode errors
