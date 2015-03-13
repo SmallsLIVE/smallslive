@@ -145,8 +145,9 @@ class Event(TimeStampedModel):
         on 3/12 at 1:00 AM has a listing date of 3/11 to be correctly grouped with other
         events under that date.
         """
-        date = self.start.date()
-        if 0 <= self.start.hour <= 4:
+        local_time = timezone.localtime(self.start)
+        date = local_time.date()
+        if 0 <= local_time.hour <= 4:
             date += timedelta(days=-1)
         return date
 

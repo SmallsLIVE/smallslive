@@ -211,7 +211,7 @@ class ScheduleView(ListView):
         self.date_start = date_range_start
         date_range_end = date_range_start + timezone.timedelta(days=14)
         events = Event.objects.filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
-        for k, g in groupby(events, lambda e: timezone.localtime(e.start).date()):
+        for k, g in groupby(events, lambda e: e.listing_date()):
             dates[k] = list(g)
         for date in [(date_range_start + timedelta(days=d)).date() for d in range(14)]:
             if date not in dates:
@@ -292,11 +292,14 @@ class EventCarouselAjaxView(AJAXMixin, ListView):
 
     def get_queryset(self):
         date = self.request.GET.get('date')
-        print date
         if date and date != "undefined":
-            date = datetime.strptime(date, "%m/%d/%Y").date()
+            date = timezone.make_aware(datetime.strptime(date, "%m/%d/%Y").replace(hour=6, minute=0),
+                                       timezone.get_current_timezone())
+            print date
             end_range_date = date + timedelta(days=1)
-            return Event.objects.filter(start__range=(date, end_range_date)).order_by('start')
+            print end_range_date
+            events = Event.objects.filter(start__range=(date, end_range_date)).order_by('start')
+            return events
         return Event.objects.none()
 
     def get_context_data(self, **kwargs):
