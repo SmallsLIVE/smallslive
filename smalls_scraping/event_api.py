@@ -13,6 +13,8 @@ logging.basicConfig(level=logging.DEBUG,
 
 
 class EventScraper(object):
+    CUTOFF_NUM = 100
+
     def __init__(self):
         self.gateway_url = os.environ.get('GATEWAY_URL')
         self._refresh_gateway()
@@ -20,7 +22,7 @@ class EventScraper(object):
     def _refresh_gateway(self):
         # needed to avoid weird unicode decode errors
         self.gateway = RemotingService(self.gateway_url, amf_version=AMF3)
-        self.gateway.setProxy("127.0.0.1:8888")
+        #self.gateway.setProxy("127.0.0.1:8888")
         self.service = self.gateway.getService("com.smallslive.cfc.smallslive")
 
     def _date_handler(self, obj):
@@ -47,7 +49,7 @@ class EventScraper(object):
             with open("events_list.json", "w") as f:
                 json.dump(events, f, default=self._date_handler)
 
-        return (event['eventId'] for event in events)
+        return [event['eventId'] for event in events]
 
     def _event_request(self, operation, event_id, jsonify=False, as_list=True):
         message = self._create_message(operation, [event_id])
@@ -80,15 +82,21 @@ class EventScraper(object):
     def full_events_list(self):
         event_ids = self.event_ids_list()
         events = []
-        for idx, id in enumerate(event_ids, start=1):
-            event = self.full_event(id)
-            events.append(event)
-            time.sleep(uniform(0, 1.2))
-            if idx % 5 == 0:
-                print idx
-        with open("full_events_list.json", "w") as f:
-            json.dump(events, f, default=self._date_handler)
+        for cnt, offset in enumerate(xrange(0, len(event_ids), self.CUTOFF_NUM), start=1):
 
+            segment = event_ids[offset:offset+self.CUTOFF_NUM]
+
+            for idx, id in enumerate(segment, start=1):
+                event = self.full_event(id)
+                events.append(event)
+                time.sleep(uniform(0, 0.6))
+                if idx % 100 == 0:
+                    print idx
+
+            file_name = "full_events_list_{0}.json".format(cnt)
+            with open(file_name, "w") as f:
+                print "Writing {0}".format(file_name)
+                json.dump(events, f, default=self._date_handler)
 
 if __name__ == '__main__':
     es = EventScraper()
