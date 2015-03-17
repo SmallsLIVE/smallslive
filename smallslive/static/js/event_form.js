@@ -160,20 +160,20 @@ EventForm = {
             return false;
         });
 
-        $("#id_title").focus(function() {
-            if(! $(this).val()) {
-                var title = $(".artist_field div.item").first().text().trim();
-                var remaining_artists = $(".artist_field div.item").not(":first");
-                if (remaining_artists.length > 0) {
-                    title += " w/ ";
-                    remaining_artists.not(':last').each(function() {
-                        title += $(this).text() + ", ";
-                    });
-                    title += remaining_artists.last().text();
-                }
-                $(this).val(title);
-            }
-        });
+        //$("#id_title").focus(function() {
+        //    if(! $(this).val()) {
+        //        var title = $(".artist_field div.item").first().text().trim();
+        //        var remaining_artists = $(".artist_field div.item").not(":first");
+        //        if (remaining_artists.length > 0) {
+        //            title += " w/ ";
+        //            remaining_artists.not(':last').each(function() {
+        //                title += $(this).text() + ", ";
+        //            });
+        //            title += remaining_artists.last().text();
+        //        }
+        //        $(this).val(title);
+        //    }
+        //});
     },
     init: function () {
         this.initDateTimeFunctionality();
