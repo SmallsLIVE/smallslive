@@ -129,6 +129,11 @@
 <!-- regular header -->
 <header class="container hidden-xs hidden-sm">
   <a href="/" class="smalls-logo"><img src="{% static 'logo.svg' %}" width="101" height="100" alt=""/></a>
+  <ul class="header-social clearfix">
+          <li class="header-social__item"><a href=""><i class="fa fa-facebook"></i></a></li>
+          <li class="header-social__item"><a href=""><i class="fa fa-twitter"></i></a></li>
+          <li class="header-social__item"><a href=""><i class="fa fa-instagram"></i></a></li>
+  </ul>
   <ul class="header-login clearfix">
     {% if user.is_authenticated %}
       <li class="dropdown">
@@ -172,6 +177,8 @@
 </header>
 <!-- end of regular header -->
 
+
+
 {% block content %}{% endblock content %}
 
 <footer class="container">
@@ -182,8 +189,8 @@
       <li><a href="{% url "terms-and-conditions" %}">Terms and Conditions</a></li>
     </ul>
     <address>
-      <a href="https://goo.gl/maps/s4jFT">183 W. 10th St, New York, NY 10014</a> <br/>
-      <a href="mailto:info@smallsjazzclub.com">info@smallsjazzclub.com</a> · <a href="tel:+12122525091">212-252-5091</a>
+      <a href="https://goo.gl/maps/s4jFT">SmallsLIVE  |  183 West 10th Street, Basement  |  New York City, NY 10014</a> <br/>
+      <a href="mailto:smallsjazzclub@gmail.com">smallsjazzclub@gmail.com</a> · <a href="tel:+164647614346">(646) 476-4346</a>
     </address>
   </div>
 </footer>

@@ -34,16 +34,6 @@
               </div>
             </div>
           </section>
-          {% else %}
-          <section class="cto cto--video-not-available container vertical-align-parent">
-                <div class="vertical-align-child">
-                    <h1 class="cto__title">Video not available (yet)</h1>
-
-                    <p class="cto__text">The video for this performance can be made available if you request it.<br/>
-                                        We had 181 request for this video so far.</p>
-                    <a href="" class="cto__button">Request video</a>
-                </div>
-          </section>
           {% endif %}
       {% endif %}
       <div class="event container">
@@ -51,6 +41,7 @@
           <section class="event-artists col-md-6">
             {% if event.is_cancelled %}<span class="event__cancelled-ribbon">cancelled</span>{% endif %}
             <p class="event-heading__date">{{ event.listing_date|date:"l, F j, Y" }}</p>
+            <p class="event-heading__timeslot">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</p>
             <h1 class="event-heading__title">{{ event.title }}</h1>
             <p class="event-heading__subtitle">{{ event.subtitle }}</p>
 
@@ -113,6 +104,19 @@
           </section>
         </div>
       </div>
+      {% if not request.GET.future %}
+          {% if not request.GET.video %}
+          <section class="cto cto--video-not-available container vertical-align-parent">
+                <div class="vertical-align-child">
+                    <h1 class="cto__title">Video not available (yet)</h1>
+
+                    <p class="cto__text">The video for this performance can be made available if you request it.<br/>
+                                        We had 181 request for this video so far.</p>
+                    <a href="" class="cto__button">Request video</a>
+                </div>
+          </section>
+          {% endif %}
+      {% endif %}
       {% comment %}
       {% if not request.GET.future %}
           <section class="cto cto--listen-to-show container vertical-align-parent">

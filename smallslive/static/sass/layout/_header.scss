@@ -1,6 +1,6 @@
 header {
   @include bottom-section-border;
-  height: 159px;
+
 }
 
 .smalls-logo {
@@ -155,6 +155,44 @@ header {
 
     &:last-child {
       border-right: 0;
+    }
+
+    a {
+      @include transition(all 0.2s ease-in-out);
+      color: #8F8E8F;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: white;
+    }
+  }
+}
+
+.header-social {
+  float: right;
+  margin-top: 17px;
+  list-style: none;
+  padding-left: 20px;
+
+  &__item {
+    @include lato;
+    display: inline-block;
+    font-size: 14px;
+    border-right: 1px #3C3B3C solid;
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 25px;
+    vertical-align: middle;
+    color: #8F8E8F;
+
+    &:last-child {
+      border-right: 0;
+    }
+
+    & i {
+      font-size: 16px;
+      vertical-align: middle;
     }
 
     a {

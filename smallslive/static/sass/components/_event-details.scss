@@ -35,6 +35,14 @@
     color: #131313;
   }
 
+  &__timeslot {
+    @include lato-black;
+    font-size: 14px;
+    margin-bottom: 13px;
+    color: #131313;
+    margin-top: -10px;
+  }
+
   &__title {
     @include lato-black;
     font-size: 32px;
