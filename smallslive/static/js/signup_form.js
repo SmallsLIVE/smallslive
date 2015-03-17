@@ -2,6 +2,8 @@ $loginForm = $('#form-login');
 
 $loginForm.submit(function(e){
     e.preventDefault();
+    $("#login-error").addClass('hidden')
+    $("#password-error").addClass('hidden')
     $.ajax({
         type: "POST",
         url: '/accounts/login/',
@@ -19,6 +21,10 @@ $loginForm.submit(function(e){
             if (response.form_errors.password) {
                 $("input[name=password]").parent().addClass('has-error');
                 $("#password-error").removeClass('hidden').text(response.form_errors.password[0]);
+            }
+            if (response.form_errors.__all__) {
+                $("input[name=password]").parent().addClass('has-error');
+                $("#password-error").removeClass('hidden').text(response.form_errors.__all__[0]);
             }
         }
     });
