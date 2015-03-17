@@ -16,8 +16,8 @@ $(function() {
     // it will wait for 5 sec. and then will fire
     // $("#successMessage").hide() function
     setTimeout(function() {
-        $(".alert-dismissible").hide(500)
-    }, 3000);
+        $(".alert-dismissible").hide(500);
+    }, 10000);
 });
 
 /* Adds swipe ability to Bootstrap event carousel */
