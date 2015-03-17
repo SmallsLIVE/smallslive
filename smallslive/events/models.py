@@ -50,6 +50,9 @@ class Event(TimeStampedModel):
     def get_absolute_url(self):
         return reverse('event_detail', kwargs={'pk': self.id, 'slug': slugify(self.title)})
 
+    def full_title(self):
+        return u"{0} {1}".format(self.title, self.subtitle)
+
     def performers_string(self, separator=", "):
         "Returns the comma-separated list of performers (including the leader) as a string"
         return self.leader_string() + separator + self.sidemen_string()
