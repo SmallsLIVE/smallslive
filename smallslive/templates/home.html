@@ -14,13 +14,11 @@
 
       <section class="cto cto--archive container vertical-align-parent">
         <div class="vertical-align-child">
-            <h1 class="cto__title">Amazing Archive</h1>
+            <h1 class="cto__title">SmallsLIVE Audio/Video Archive</h1>
 
-            <p class="cto__text">It’s finally here! Get unlimited access to our audio & video archive of over 350 jazz
-              concerts. <br/>
-              You can take a trial of 30 days, and afterwards it’s just $20/month.
+            <p class="cto__text">Sign up for access to our comprehensive audio/video archive of past performances.
             </p>
-            <a href="" class="cto__button">Go to the Archive</a>
+            <a href="{% url "static_page" "archive" %}" class="cto__button">Go to the Archive</a>
         </div>
       </section>
       <section class="from-our-archive container">
@@ -208,7 +206,7 @@
         <div class="vertical-align-child">
             <h1 class="cto__title">Visit us</h1>
 
-            <p class="cto__text">183 W. 10th St, New York, NY 10014</p>
+            <p class="cto__text">Smalls Jazz Club, 183 West 10th Street, basement, Greenwich Village, NYC, 10014</p>
             <a href="{% url "contact-and-info" %}" class="cto__button">Get Directions</a>
         </div>
       </section>
@@ -239,8 +237,8 @@
       <section class="homepage-news container">
         <div class="row">
           <div class="col-xs-12 col-md-6 vcenter">
-            <h1 class="homepage-news__title">Smalls Newsletter</h1>
-            <p class="homepage-news__text">Stay informed on everything regarding Smalls!</p>
+            <h1 class="homepage-news__title">SmallsLIVE Newsletter</h1>
+            <p class="homepage-news__text">Sign up for our weekly newsletter!</p>
           </div><!--
        --><div class="col-xs-12 col-md-6 vcenter">
             {% if not user.newsletter %}

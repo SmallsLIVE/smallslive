@@ -20,7 +20,7 @@
                     <div>
                         {% if event.is_cancelled %}<span class="event-details__cancelled-ribbon">cancelled</span>{% endif %}
                         <h1 class="event-details__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h1>
-
+                        <h3 class="event-details__timeslot">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</h3>
                         <p class="event-details__artists">{% for gig_info in event.get_performers %} <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist }} <span
                 class="event-details__instrument">({{ gig_info.role.name }})</span></a> {% if not forloop.last %} // {% endif %}{% endfor %}
                         </p>
@@ -32,12 +32,12 @@
         </div>
         <div class="event-select row" id="event-details-selector">
             <div class="col-xs-12 float-none">
-                <h2 class="event-select__title">Live Schedule</h2>
+                <h2 class="event-select__title">SmallsLIVE Schedule</h2>
                 <div class="row">
                     <div class="col-md-3 col-xs-12 vcenter">
                         <select name="" id="homepage-date-select" class="event-select__date-select form-control">
                           {% for date in dates %}
-                            <option value="{{ date|date:"n/j/Y" }}" {% if request.GET.date == date|date:"n/j/Y" %}selected{% endif %}>{{ date|naturalday:"l"|capfirst }} // {{ date|date:"n/j/Y" }}</option>
+                            <option value="{{ date|date:"n/j/Y" }}" {% if request.GET.date == date|date:"n/j/Y" %}selected{% endif %}>{{ date|naturalday:"l"|capfirst }} {{ date|date:"n/j/Y" }}</option>
                           {% endfor %}
                         </select>
                     </div><!--

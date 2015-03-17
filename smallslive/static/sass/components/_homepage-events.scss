@@ -31,13 +31,21 @@
     font-size: 34px;
     text-transform: uppercase;
     color: $main-accent-color;
-    margin-bottom: 16px;
+    margin-bottom: 0;
     margin-top: 30px;
   }
 
   &__title a {
     color: $main-accent-color;
     text-decoration: none;
+  }
+
+  &__timeslot {
+    @include lato-black;
+    font-size: 18px;
+    color: rgba(255,255,255,1);
+    margin-top: 10px;
+    margin-bottom: 20px;
   }
 
   &__title a:hover {
