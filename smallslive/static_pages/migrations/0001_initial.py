@@ -9,6 +9,8 @@ def add_static_pages(apps, schema_editor):
     # version than this migration expects. We use the historical version.
     Site = apps.get_model("sites", "Site")
     site = Site.objects.first()
+    if not site:
+        site = Site.objects.create(domain="localhost:8000", name="localhost")
     FlatPage = apps.get_model("flatpages", "FlatPage")
     about_us = FlatPage.objects.create(url='/about-us/', title='About us',
                                        template_name='flatpages/about-us.html')
