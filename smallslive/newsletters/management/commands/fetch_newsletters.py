@@ -9,8 +9,11 @@ class Command(NoArgsCommand):
 
     def handle_noargs(self, *args, **options):
         mc = Mailchimp(settings.MAILCHIMP_API_KEY)
-        campaigns = mc.campaigns.list(filters={'status': 'sent'})
-        for campaign in campaigns.get('data', ):
+        campaigns = mc.campaigns.list(filters={
+            'status': 'sent',
+            'title': 'SmallsLIVE',
+            'exact': False}, limit=1000)
+        for campaign in campaigns.get('data'):
             if not Newsletter.objects.filter(id=campaign.get('id')).exists():
                 newsletter = Newsletter.objects.create(
                     id=campaign.get('id'),
@@ -18,6 +21,3 @@ class Command(NoArgsCommand):
                     date=campaign.get('send_time'),
                     link=campaign.get('archive_url')
                 )
-                content = mc.campaigns.content(campaign.get('id'))
-                newsletter.content = content.get('text', '')
-                newsletter.save()

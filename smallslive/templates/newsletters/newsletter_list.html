@@ -31,8 +31,6 @@
         <div class="newsletter col-xs-6 col-sm-4">
             <div class="newsletter__title">{{ newsletter.title }}</div>
             <div class="newsletter__date">{{ newsletter.date|date:"n/j/Y" }}</div>
-            <div class="newsletter__excerpt">{{ newsletter.content|striptags|safe|truncatewords:60 }}</div>
-            <div class="newsletter__separator"></div>
             <a href="{{ newsletter.link }}" class="newsletter__view-button">Read <span class="hidden-xs">newsletter</span></a><span class="arrow"></span>
         </div>
       {% endfor %}
