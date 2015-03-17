@@ -117,8 +117,10 @@ class ArtistSearchView(SearchView):
         return context
 
     def get_results(self):
-        self.sqs = super(ArtistSearchView, self).get_results().facet('model', order='term')
-        return self.sqs.models(Artist)
+        self.sqs = super(ArtistSearchView, self).get_results().facet('model', order='term').models(Artist)
+        if self.request.GET.get('instrument'):
+            self.sqs = self.sqs.order_by('last_name')
+        return self.sqs
 
 artist_search = ArtistSearchView(
     form_class=ArtistSearchForm,
