@@ -15,7 +15,7 @@ class Event(TimeStampedModel):
     SETS = Choices(('22:00-23:00', '10-11pm'), ('23:00-0:00', '11-12pm'), ('0:00-1:00', '12-1am'))
     STATUS = Choices('Published', 'Draft', 'Cancelled', 'Hidden')
 
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=500)
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
     set = models.CharField(choices=SETS, blank=True, max_length=10)
@@ -29,7 +29,7 @@ class Event(TimeStampedModel):
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed', related_name='events')
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField(default=STATUS.Draft)
-    slug = models.SlugField(blank=True, max_length=150)
+    slug = models.SlugField(blank=True, max_length=500)
 
     objects = models.Manager()
     past = QueryManager(start__lt=datetime.now()).order_by('-start')

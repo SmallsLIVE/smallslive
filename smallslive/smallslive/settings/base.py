@@ -89,7 +89,7 @@ INSTALLED_APPS = [
     'events',
     'multimedia',
     'newsletters',
-    #'old_site',
+    'old_site',
     'static_pages',
     'users',
     'utils',
