@@ -71,6 +71,9 @@ class EventScraper(object):
     def event_media(self, event_id, jsonify=False):
         return self._event_request('getMediaByEvent', event_id, jsonify)
 
+    def artist_media(self, artist_id, jsonify=False):
+        return self._event_request('getMediaByPerson', artist_id, jsonify)
+
     def full_event(self, event_id, jsonify=False):
         event = self.event_info(event_id)
         event['media'] = self.event_media(event_id)
@@ -97,6 +100,36 @@ class EventScraper(object):
             with open(file_name, "w") as f:
                 print "Writing {0}".format(file_name)
                 json.dump(events, f, default=self._date_handler)
+
+    def full_artists_list(self, save=False):
+        message = self._create_message('getAllPeople', [])
+        response = self.service.getAllPeople(message)
+        artists = response.body
+
+        count = 0
+        for artist in artists:
+            artist['media'] = self.artist_media(artist.get('personId'))
+            time.sleep(0.5)
+            count += 1
+            if count % 10 == 0:
+                print count
+
+        if save:
+            with open("artists_list.json", "w") as f:
+                json.dump(artists, f)
+
+        return artists
+
+    def full_instrument_list(self, save=False):
+        message = self._create_message('getPeopleTypes', [])
+        response = self.service.getPeopleTypes(message)
+        instruments = response.body
+
+        if save:
+            with open("instrument_list.json", "w") as f:
+                json.dump(instruments, f)
+
+        return instruments
 
 if __name__ == '__main__':
     es = EventScraper()
