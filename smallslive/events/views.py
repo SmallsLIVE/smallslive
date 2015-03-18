@@ -2,6 +2,7 @@ from collections import OrderedDict
 from itertools import groupby
 from operator import itemgetter, attrgetter
 import calendar
+import monthdelta
 import json
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -248,10 +249,11 @@ class MonthlyScheduleView(ListView):
         year = int(self.kwargs.get('year', timezone.now().year))
         # don't show last nights events that are technically today
         date_range_start = timezone.make_aware(timezone.datetime(year, month, 1, hour=10),
-                                               timezone.get_current_timezone())
+                                               timezone.get_default_timezone())
+        date_range_end = date_range_start + monthdelta.MonthDelta(1)
         last_day_of_month = calendar.monthrange(year, month)[1]
-        events = Event.objects.filter(start__month=month, start__year=year).order_by('start')
-        for k, g in groupby(events, lambda e: timezone.localtime(e.start).date()):
+        events = Event.objects.filter(start__range=(date_range_start, date_range_end)).order_by('start')
+        for k, g in groupby(events, lambda e: e.listing_date()):
             dates[k] = list(g)
         for date in [(date_range_start + timedelta(days=d)).date() for d in range(last_day_of_month)]:
             if date not in dates:
