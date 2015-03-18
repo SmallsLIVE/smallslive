@@ -39,7 +39,7 @@ class Command(BaseCommand):
 
     def create_event(self, event_dict):
         e = Event(id=event_dict.get('eventId'))
-        e.title = u"{0} {1}".format(event_dict.get('title', ''), event_dict.get('subTitle', ''))
+        e.title = u"{0} {1}".format(event_dict.get('title', '').strip(), event_dict.get('subTitle', '').strip())
         e.description = event_dict.get('description', '')
 
         start = arrow.get(event_dict.get('startDay')).naive
