@@ -41,7 +41,7 @@
         {% for date, events in dates.iteritems %}
         <div class="day flex col-xs-6 col-md-3"
              data-position={{ forloop.counter|add:"1" }} data-date="{{ date|date:"n/j/Y" }}">
-          <h2 class="day__date">{{ date|date:"l" }} // {{ date|date:"n/j/Y" }}</h2>
+          <h2 class="day__date">{{ date|date:"l" }} {{ date|date:"n/j/Y" }}</h2>
           {% if events %}
               <dl>
                 {% for event in events %}
