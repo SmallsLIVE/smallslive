@@ -24,7 +24,7 @@ from haystack.views import SearchView
 from artists.models import Artist, Instrument
 from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
-    EventSearchForm
+    EventSearchForm, EventEditForm
 from .models import Event
 
 
@@ -85,7 +85,7 @@ event_detail = EventDetailView.as_view()
 
 class EventEditView(LoginRequiredMixin, NamedFormsetsMixin, UpdateWithInlinesView):
     model = Event
-    form_class = EventAddForm
+    form_class = EventEditForm
     template_name = 'events/event_edit.html'
     inlines = [GigPlayedEditInlineFormset]
     inlines_names = ['artists']
