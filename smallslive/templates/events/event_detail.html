@@ -80,7 +80,10 @@
             {% if user.is_superuser %}
             <div class="event-description__admin-buttons">
                 <a href="{% url "event_edit" pk=event.id slug=event.slug %}" class="event-description__admin-buttons__edit">edit event</a>
-                <a href="" class="event-description__admin-buttons__clone">clone event</a>
+                <form action="{% url "event_clone" pk=event.id slug=event.slug %}" method="post">
+                    {% csrf_token %}
+                    <input class="event-description__admin-buttons__clone" type="submit" value="Clone">
+                </form>
             </div>
             {% endif %}
             <div class="event-description__text-block">
