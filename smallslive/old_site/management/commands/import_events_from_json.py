@@ -1,3 +1,4 @@
+import os
 from django.core.management import BaseCommand, CommandError
 import bleach
 import re
@@ -8,6 +9,7 @@ from django.core.management.base import NoArgsCommand
 from django.utils import timezone
 from django.utils.dateparse import parse_time
 import datetime
+import requests
 
 from artists.models import Artist, Instrument
 from events.models import Event, EventType, GigPlayed
@@ -26,9 +28,11 @@ class Command(BaseCommand):
         else:
             raise CommandError('Provide the path to csv file as an argument to this command')
 
-        self.import_instruments(instruments)
-        self.import_artists(artists)
-        self.import_events(events)
+        #self.import_instruments(instruments)
+        #self.import_artists(artists)
+        #self.import_events(events)
+        #self.save_images(events)
+        self.save_images(artists)
 
     def import_events(self, events):
         for event in events:
@@ -164,3 +168,23 @@ class Command(BaseCommand):
                 p.decompose()
 
         return unicode(soup)
+
+    def save_images(self, objects):
+        if not os.path.exists('images/'):
+            os.makedirs('images/')
+        images = [e.get('media') for e in objects if e.get('media')]
+        count = 0
+        for image in images:
+            path = image[0]['path'].strip()
+            if path[-1] != '/':
+                path += '/'
+            filename = image[0]['fileName'].strip()
+            url = u"{0}{1}".format(path, filename)
+            if not os.path.exists(os.path.join(u'images', filename)):
+                r = requests.get(url)
+                with open(os.path.join(u'images', filename), 'w') as f:
+                    f.write(r.content)
+
+            count += 1
+            if count % 50 == 0:
+                print count
