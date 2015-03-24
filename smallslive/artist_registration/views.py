@@ -2,7 +2,33 @@ from allauth.account import views as allauth_views
 from allauth.account import app_settings
 from allauth.account.utils import perform_login
 from django.core.urlresolvers import reverse_lazy, reverse
-from .forms import SetUserDataForm
+from django.views.generic.edit import FormView
+from artists.models import Artist
+from .forms import SetUserDataForm, InviteArtistForm
+
+
+class InviteArtistView(FormView):
+    form_class = InviteArtistForm
+    template_name = "artist_registration/invite-artist.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(InviteArtistView, self).get_context_data(**kwargs)
+        context['artist'] = self.artist
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super(InviteArtistView, self).get_form_kwargs()
+        self.artist = Artist.objects.get(pk=self.kwargs.get('artist'))
+        kwargs['artist'] = self.artist
+        return kwargs
+
+    def form_valid(self, form):
+        response = super(InviteArtistView, self).form_valid(form)
+        form.invite_artist(self.request)
+        return response
+
+    def get_success_url(self):
+        return self.artist.get_absolute_url()
 
 
 class ConfirmEmailView(allauth_views.ConfirmEmailView):

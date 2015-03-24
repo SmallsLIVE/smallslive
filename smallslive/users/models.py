@@ -146,9 +146,10 @@ class SmallsEmailConfirmation(EmailConfirmation):
         """
         Overridden method to enable passing kwargs to the email template.
         """
+        activate_view = kwargs.pop('activate_view', 'account_confirm_email')
         current_site = kwargs["site"] if "site" in kwargs \
             else Site.objects.get_current()
-        activate_url = reverse("account_confirm_email", args=[self.key])
+        activate_url = reverse(activate_view, args=[self.key])
         activate_url = request.build_absolute_uri(activate_url)
         ctx = {
             "user": self.email_address.user,
