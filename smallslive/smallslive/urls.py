@@ -23,6 +23,7 @@ def robots_view(request):
 
 
 urlpatterns = patterns('',
+    url(r'^dashboard/', include('artist_dashboard.urls', app_name="artist_dashboard")),
     url(r'^artist-registration/', include('artist_registration.urls', app_name="artist_registration")),
     url(r'^artists/', include('artists.urls', app_name="artists")),
     url(r'^events/', include('events.urls', app_name="events")),

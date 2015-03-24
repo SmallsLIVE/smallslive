@@ -1,0 +1,36 @@
+{% load pipeline %}
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% stylesheet 'css' %}
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,400italic,700,700italic,900' rel='stylesheet'
+        type='text/css'>
+  <title>Artist Dashboard - SmallsLIVE</title>
+</head>
+<body>
+  <div class="container-fluid admin-nav">
+    <div class="container">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#admin-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <span class="heading">Smalls admin</span>
+      <div class="collapse navbar-collapse" id="admin-navbar">
+        <ul class="nav navbar-nav">
+          <li><a href="{% url "home" %}">Homepage</a></li>
+          <li><a href="{% url "dashboard_my_gigs" %}">My gigs</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  {% block content %}
+  {% endblock %}
+</body>
+</html>
