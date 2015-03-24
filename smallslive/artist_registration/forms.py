@@ -8,12 +8,11 @@ from allauth.account.forms import SetPasswordForm, BaseSignupForm
 from users.utils import send_email_confirmation
 
 
-class SetUserDataForm(SetPasswordForm):
+class CompleteSignupForm(SetPasswordForm):
     email = forms.EmailField()
 
     def __init__(self, user=None, *args, **kwargs):
-        super(SetUserDataForm, self).__init__(user, *args, **kwargs)
-        self.fields['email'].initial = self.user.email
+        super(CompleteSignupForm, self).__init__(user, *args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.form_method = 'post'
         self.helper.form_tag = False
@@ -24,11 +23,8 @@ class SetUserDataForm(SetPasswordForm):
             StrictButton('Complete registration', css_class="btn-primary", type="submit"),
         )
         self.fields['email'].read_only = True
+        self.fields['email'].initial = self.user.email
         self.fields['email'].help_text = "This is used to log in to SmallsLIVE. You can update it now if you want to."
-    
-    def save(self):
-        self.user.email = self.cleaned_data['email']
-        super(SetUserDataForm, self).save()
 
 
 class InviteArtistForm(BaseSignupForm):
