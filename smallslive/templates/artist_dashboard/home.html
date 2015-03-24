@@ -1,0 +1,15 @@
+{% extends "dashboard_base.html" %}
+
+{% block content %}
+  <div class="content-wrapper">
+    <div class="header-img container"></div>
+    <div class="generic-text-page container">
+      <ul>
+        {% for event in upcoming_events %}
+          <li>{{ event.display_title }} - {{ event.listing_date }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+{% endblock content %}
