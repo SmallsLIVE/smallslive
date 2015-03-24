@@ -1,0 +1,19 @@
+{% extends "generic-text-page.html" %}
+
+{% load url from future %}
+{% load i18n %}
+{% load crispy_forms_tags static %}
+
+
+{% block head_title %}{% trans "Confirm E-mail Address" %}{% endblock %}
+
+
+{% block static-content %}
+    <h1>{% trans "Confirm E-mail Address" %}</h1>
+
+    <form method="post" action="{% url 'invite_artist' artist.id %}">
+    {% csrf_token %}
+        {% crispy form %}
+        <input type="submit" class="user-settings__form__button" value="{% trans 'Confirm' %}">
+    </form>
+{% endblock %}
