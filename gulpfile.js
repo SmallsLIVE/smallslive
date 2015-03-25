@@ -1,7 +1,7 @@
 var gulp        = require('gulp');
 var browserSync = require('browser-sync');
 var sass        = require('gulp-sass');
-var watch       = require('gulp-watch');
+var changed     = require('gulp-changed');
 var sourcemaps  = require('gulp-sourcemaps');
 
 
@@ -16,7 +16,7 @@ gulp.task('browser-sync', function() {
 // will auto-update browsers
 gulp.task('sass', function () {
     return gulp.src('smallslive/static/sass/**/*.scss')
-        .pipe(watch('smallslive/static/sass/**/*.scss'), {verbose: true, name: 'SASS'})
+        .pipe(changed('smallslive/static/css'))
         .pipe(sourcemaps.init())
         .pipe(sass({errLogToConsole: true}))
         .pipe(sourcemaps.write())
@@ -32,4 +32,5 @@ gulp.task('bs-reload', function () {
 // Default task to be run with `gulp`
 gulp.task('default', ['browser-sync', 'sass'], function () {
     gulp.watch("smallslive/templates/**/*.html", ['bs-reload']);
+    gulp.watch("smallslive/static/sass/**/*.scss", ['sass']);
 });
