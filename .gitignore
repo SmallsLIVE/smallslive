@@ -70,6 +70,7 @@ smallsliveusers.txt
 test_db.sqlite3
 deploy/.vagrant
 smallslive/media
+smallslive/static/css/dashboard.css
 smallslive/static/css/main.css
 smallslive/static/css/vendors/*
 smallslive/static/sass/main.css
