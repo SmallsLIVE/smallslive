@@ -5,9 +5,11 @@
   "main": "gulpfile.js",
   "dependencies": {},
   "devDependencies": {
-    "browser-sync": "^1.9.1",
-    "gulp": "^3.8.10",
-    "gulp-sass": "^1.3.2"
+    "browser-sync": "^2.4.0",
+    "gulp": "^3.8.11",
+    "gulp-sass": "^1.3.3",
+    "gulp-sourcemaps": "^1.5.1",
+    "gulp-watch": "^4.2.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
