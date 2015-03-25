@@ -295,6 +295,16 @@ PIPELINE_JS = {
 
         ),
         'output_filename': 'js/main.js',
+    },
+    'dashboard_js': {
+        'source_filenames': (
+          'js/jquery.mobile.custom.min.js',
+          'js/jquery-ui.js',
+          'js/bootstrap.min.js',
+          'js/base.js',
+
+        ),
+        'output_filename': 'js/dashboard_main.js',
     }
 }
 PIPELINE_DISABLE_WRAPPER = True

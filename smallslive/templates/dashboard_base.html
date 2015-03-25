@@ -9,7 +9,10 @@
   {% stylesheet 'css' %}
   <link href='http://fonts.googleapis.com/css?family=Lato:300,400,400italic,700,700italic,900' rel='stylesheet'
         type='text/css'>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
   <title>Artist Dashboard - SmallsLIVE</title>
+  {% block extra_head %}
+  {% endblock extra_head %}
 </head>
 <body>
   <div class="container-fluid admin-nav">
@@ -23,7 +26,8 @@
       <span class="heading">Smalls admin</span>
       <div class="collapse navbar-collapse" id="admin-navbar">
         <ul class="nav navbar-nav">
-          <li><a href="{% url "home" %}">Homepage</a></li>
+          <li><a href="{% url "dashboard_home" %}">Homepage</a></li>
+          <li><a href="{% url "dashboard_edit_profile" %}">Edit public profile</a></li>
           <li><a href="{% url "dashboard_my_gigs" %}">My gigs</a></li>
         </ul>
       </div>
@@ -31,6 +35,9 @@
   </div>
 
   {% block content %}
-  {% endblock %}
+  {% endblock content %}
+  {% javascript 'dashboard_js' %}
+  {% block extra_js %}
+  {% endblock extra_js %}
 </body>
 </html>
