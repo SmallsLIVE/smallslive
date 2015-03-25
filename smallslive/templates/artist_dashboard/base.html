@@ -35,7 +35,7 @@
                     <li class="navbar__item"><a href="{% url "dashboard_my_gigs" %}">My Events</a></li>
                     <li class="navbar__item"><a href="{% url "dashboard_edit_profile" %}">Edit Public Profile</a></li>
                     <li class="navbar__item"><a href="#">Legal <span class="contract__pending"><i class="fa fa-exclamation-circle"></i></span></a></li>
-                    <li class="navbar__user">
+                    <li class="navbar__user hidden-xs">
                         <div class="dropdown">
                             <button class="navbar__user__button dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-expanded="true">
                                 <img class="navbar__user__image" src="{% static 'image/dashboard/user-image.jpg' %}">
@@ -47,6 +47,7 @@
                         </div>
                     </li>
                     <li class="navbar__item navbar__settings"><a href="#"><i class="fa fa-gear"></i></a></li>
+                    <li class="navbar__item visible-xs"><a href="#">Log out</a></li>
 				</ul>
 			</div>
 		</div>

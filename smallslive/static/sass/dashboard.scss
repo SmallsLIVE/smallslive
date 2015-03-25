@@ -14,9 +14,16 @@
 
 @import 'base/typography';
 
+@import 'dashboard/coloring';
+
 @import 'dashboard/base';
 @import 'dashboard/header';
 @import 'layout/footer';
+@import 'dashboard/dashboard';
+@import 'dashboard/dashboard-metrics';
+@import 'dashboard/mini-event';
+@import 'dashboard/upcoming-event';
+@import 'dashboard/cta';
 
 @import 'layout/alerts';
 

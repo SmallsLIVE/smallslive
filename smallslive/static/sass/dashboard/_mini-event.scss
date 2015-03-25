@@ -1,0 +1,56 @@
+.mini-events__container {
+  padding: 0;
+}
+
+.mini-event {
+  @include list-unstyled;
+  padding: 10px 0;
+
+  &__image {
+    float: left;
+    padding: 2px;
+    border: 1px solid #dfdfdf;
+    margin-right: 20px;
+
+    & img {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  &__details {
+
+    & p {
+      margin-bottom: 0;
+    }
+
+    &__date {
+      color: #888;
+      @include lato-bold;
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    &__title {
+      color: #222;
+      @include lato-black;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    &__labels {
+      color: #777;
+      @include lato;
+      font-size: 12px;
+      float: left;
+      margin-right: 10px;
+    }
+
+    &__values {
+      color: #777;
+      @include lato-black;
+      font-size: 12px;
+      float: left;
+    }
+  }
+}

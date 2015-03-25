@@ -1,0 +1,21 @@
+.dashboard {
+
+  &__section-title {
+    @include lato-black;
+    font-size: 18px;
+    color: #878787;
+  }
+
+  &__best-list {
+    background-color: #fff;
+    padding: 40px 20px;
+    text-align: left;
+  }
+
+  &__upcoming-events {
+    padding: 40px 20px 30px;
+    background-color: #f7f7f7;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+  }
+}

@@ -1,0 +1,231 @@
+{% extends "artist_dashboard/base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <section class="container cta cta--contract flexbox-equal-height">
+            <div class="cta__content">
+                <h2>To gain access to Metrics, and to enter our Artists revenue sharing program, you need to review and sign The SmallsLIVE Artist Revenue Sharing Contract.</h2>
+                <h3>To do that please visit the “Legal” section in the menu above, or click the button below.</h3>
+                <a href="#" class="cta__button">Go to Legal</a>
+            </div>
+        </section>
+        <section class="container featured-metrics flexbox-equal-height">
+            <!-- Single metric -->
+            <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+                <div class="featured-metrics__metric__name">My trend</div>
+                <div class="featured-metrics__metric__content">
+                    <div class="featured-metrics__metric__content__primary">
+                        <h2 class="neutral">This week:</h2>
+                        <h1 class="positive"><i class="fa fa-arrow-up"></i> 4.2%</h1>
+                    </div>
+                    <div class="featured-metrics__metric__content__secondary">
+                        <h2 class="neutral">This month:</h2>
+                        <h1 class="negative"><i class="fa fa-arrow-down"></i> 2.7%</h1>
+                    </div>
+                </div>
+            </div>
+            <!-- End of single metric -->
+            <!-- Single metric -->
+            <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+                <div class="featured-metrics__metric__name">My trend</div>
+                <div class="featured-metrics__metric__content">
+                    <div class="featured-metrics__metric__content__donut">
+                        <h1 class="positive">12.51%</h1>
+                    </div>
+                </div>
+            </div>
+            <!-- End of single metric -->
+            <!-- Single metric -->
+            <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+                <div class="featured-metrics__metric__name">My income</div>
+                <div class="featured-metrics__metric__content">
+                    <div class="featured-metrics__metric__content__primary">
+                        <h2 class="neutral">This month:</h2>
+                        <h1 class="positive"><i class="fa fa-arrow-up"></i> $1247.14</h1>
+                    </div>
+                    <div class="featured-metrics__metric__content__secondary">
+                        <h2 class="neutral">vs last month:</h2>
+                        <h1 class="negative"><i class="fa fa-arrow-down"></i> 1.9%</h1>
+                    </div>
+                </div>
+            </div>
+            <!-- End of single metric -->
+            <!-- Single metric -->
+            <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+                <div class="featured-metrics__metric__name">All time</div>
+                <div class="featured-metrics__metric__content">
+                    <div class="featured-metrics__metric__content__primary">
+                        <h2 class="neutral">Streamed:</h2>
+                        <h1 class="positive">198hrs</h1>
+                    </div>
+                    <div class="featured-metrics__metric__content__secondary">
+                        <h2 class="neutral">This month:</h2>
+                        <h1 class="positive">61.4k</h1>
+                    </div>
+                </div>
+            </div>
+            <!-- End of single metric -->
+        </section>
+        <section class="dashboard__best-list container">
+            <div class="col-xs-12 col-sm-6">
+                <p class="dashboard__section-title">My most viewed events:</p>
+                <ul class="mini-events__container">
+                    <!-- single mini event -->
+                    <li class="mini-event flexbox-equal-height">
+                        <div class="mini-event__image">
+                            <img src="{% static 'image/dashboard/default-event-thumbnail.jpg' %}" alt="">
+                        </div>
+                        <div class="mini-event__details">
+                            <p class="mini-event__details__date">10/24/2007</p>
+                            <p class="mini-event__details__title">The early bird session hosted by Ari Hoenig</p>
+                            <div class="mini-event__details__labels">
+                                <p>Time:</p>
+                                <p>Views:</p>
+                            </div>
+                            <div class="mini-event__details__values">
+                                <p>16:21:46</p>
+                                <p>3842</p>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- end of single mini event -->
+                    <!-- single mini event -->
+                    <li class="mini-event flexbox-equal-height">
+                        <div class="mini-event__image">
+                            <img src="{% static 'image/dashboard/default-event-thumbnail.jpg' %}" alt="">
+                        </div>
+                        <div class="mini-event__details">
+                            <p class="mini-event__details__date">10/24/2007</p>
+                            <p class="mini-event__details__title">The early bird session hosted by Ari Hoenig</p>
+                            <div class="mini-event__details__labels">
+                                <p>Time:</p>
+                                <p>Views:</p>
+                            </div>
+                            <div class="mini-event__details__values">
+                                <p>16:21:46</p>
+                                <p>3842</p>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- end of single mini event -->
+                    <!-- single mini event -->
+                    <li class="mini-event flexbox-equal-height">
+                        <div class="mini-event__image">
+                            <img src="{% static 'image/dashboard/default-event-thumbnail.jpg' %}" alt="">
+                        </div>
+                        <div class="mini-event__details">
+                            <p class="mini-event__details__date">10/24/2007</p>
+                            <p class="mini-event__details__title">The early bird session hosted by Ari Hoenig</p>
+                            <div class="mini-event__details__labels">
+                                <p>Time:</p>
+                                <p>Views:</p>
+                            </div>
+                            <div class="mini-event__details__values">
+                                <p>16:21:46</p>
+                                <p>3842</p>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- end of single mini event -->
+                </ul>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <p class="dashboard__section-title">My most listened to events:</p>
+                <ul class="mini-events__container">
+                    <!-- single mini event -->
+                    <li class="mini-event flexbox-equal-height">
+                        <div class="mini-event__image">
+                            <img src="{% static 'image/dashboard/default-event-thumbnail.jpg' %}" alt="">
+                        </div>
+                        <div class="mini-event__details">
+                            <p class="mini-event__details__date">10/24/2007</p>
+                            <p class="mini-event__details__title">The early bird session hosted by Ari Hoenig</p>
+                            <div class="mini-event__details__labels">
+                                <p>Time:</p>
+                                <p>Plays:</p>
+                            </div>
+                            <div class="mini-event__details__values">
+                                <p>16:21:46</p>
+                                <p>3842</p>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- end of single mini event -->
+                    <!-- single mini event -->
+                    <li class="mini-event flexbox-equal-height">
+                        <div class="mini-event__image">
+                            <img src="{% static 'image/dashboard/default-event-thumbnail.jpg' %}" alt="">
+                        </div>
+                        <div class="mini-event__details">
+                            <p class="mini-event__details__date">10/24/2007</p>
+                            <p class="mini-event__details__title">The early bird session hosted by Ari Hoenig</p>
+                            <div class="mini-event__details__labels">
+                                <p>Time:</p>
+                                <p>Plays:</p>
+                            </div>
+                            <div class="mini-event__details__values">
+                                <p>16:21:46</p>
+                                <p>3842</p>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- end of single mini event -->
+                    <!-- single mini event -->
+                    <li class="mini-event flexbox-equal-height">
+                        <div class="mini-event__image">
+                            <img src="{% static 'image/dashboard/default-event-thumbnail.jpg' %}" alt="">
+                        </div>
+                        <div class="mini-event__details">
+                            <p class="mini-event__details__date">10/24/2007</p>
+                            <p class="mini-event__details__title">The early bird session hosted by Ari Hoenig</p>
+                            <div class="mini-event__details__labels">
+                                <p>Time:</p>
+                                <p>Plays:</p>
+                            </div>
+                            <div class="mini-event__details__values">
+                                <p>16:21:46</p>
+                                <p>3842</p>
+                            </div>
+                        </div>
+                    </li>
+                    <!-- end of single mini event -->
+                </ul>
+            </div>
+        </section>
+        <section class="dashboard__upcoming-events container">
+            <p class="dashboard__section-title">My upcoming events at Smalls:</p>
+            <ul class="upcoming-events__container">
+                <li class="upcoming-event flexbox-equal-height">
+                    <div class="upcoming-event__image">
+                        <img src="{% static 'image/dashboard/default-event-thumbnail.jpg' %}" alt="">
+                    </div>
+                    <div class="upcoming-event__details">
+                        <p class="upcoming-event__details__date">05/22/2015</p>
+                        <p class="upcoming-event__details__title">Petern Bernstein and his crowd</p>
+                        <p class="upcoming-event__details__label">With:</p>
+                        <p class="upcoming-event__details__artists">Danny Fox <span class="instrument">(sax)</span>  //  Ari Hoenig <span class="instrument">(drums)</span>  //  Spencer Murphy <span class="instrument">(bass)</span>  //  Spike Wilner <span class="instrument">(piano)</span></p>
+                        <span class="is-leader">You are the leader.</span>
+                        <a href="#" class="red-arrow-button">Edit event</a><span class="arrow"></span>
+                    </div>
+                </li>
+                <li class="upcoming-event flexbox-equal-height">
+                    <div class="upcoming-event__image">
+                        <img src="{% static 'image/dashboard/default-event-thumbnail.jpg' %}" alt="">
+                    </div>
+                    <div class="upcoming-event__details">
+                        <p class="upcoming-event__details__date">05/22/2015</p>
+                        <p class="upcoming-event__details__title">Petern Bernstein solo guitar</p>
+                        <p class="upcoming-event__details__label">With:</p>
+                        <p class="upcoming-event__details__artists"><span class="playing-solo">(you're playing solo)</span></p>
+                        <span class="is-leader">You are the leader.</span>
+                        <a href="#" class="red-arrow-button">Edit event</a><span class="arrow"></span>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+    </div>
+
+{% endblock content %}

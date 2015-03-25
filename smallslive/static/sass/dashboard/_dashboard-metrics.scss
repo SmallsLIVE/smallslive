@@ -1,0 +1,59 @@
+.featured-metrics {
+  padding: 40px 20px;
+  background-color: #f7f7f7;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+
+  &__metric {
+    text-align: center;
+
+    & .positive {
+      color: $metric-positive;
+    }
+
+    & .neutral {
+      color: $metric-neutral;
+    }
+
+    & .negative {
+      color: $metric-negative;
+    }
+
+    &__name {
+      @include lato-black;
+      font-size: 12px;
+      color: #aaa;
+      text-transform: uppercase;
+    }
+
+    &__content {
+      @include lato-black;
+
+      &__primary, &__donut {
+
+        & h2 {
+          font-size: 16px;
+          @include lato-black;
+        }
+
+        & h1 {
+          font-size: 36px;
+          @include lato-black;
+        }
+      }
+
+      &__secondary {
+
+        & h2 {
+          font-size: 12px;
+          @include lato-black;
+        }
+
+        & h1 {
+          font-size: 24px;
+          @include lato-black;
+        }
+      }
+    }
+  }
+}

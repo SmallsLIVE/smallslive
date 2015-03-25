@@ -100,3 +100,74 @@
     font-size: 24px;
   }
 }
+
+@media (max-width: $screen-xs-max) {
+  .navbar-default .navbar-toggle .icon-bar {
+    background-color: #fff;
+  }
+
+  .navbar-toggle {
+    margin-right: 0;
+  }
+
+  .navbar-default .navbar-collapse, .navbar-default .navbar-form {
+    border: none;
+  }
+
+  .navbar {
+    padding: 8px 20px;
+
+    &__logo {
+      margin-top: 12px;
+    }
+
+    & .navbar-nav {
+    float: left;
+
+      & li a {
+        color: #fff;
+        opacity: 1;
+        padding: 20px 10px;
+        border-bottom: 1px solid rgba(255,255,255,0.3);
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+
+      & .active a {
+        opacity: 0.7;
+      }
+
+      & .dropdown-menu {
+
+        & li a {
+          color: #fff;
+        }
+      }
+    }
+
+    &__logo {
+      opacity: 1;
+      display: block;
+    }
+
+    &__item {
+      border-left: none;
+    }
+
+    &__settings {
+
+      & i {
+        font-size: 0px;
+
+        &:after {
+          @include lato-bold;
+          content: "Settings";
+          font-size: 16px;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
