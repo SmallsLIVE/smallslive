@@ -13,7 +13,7 @@ from .forms import CompleteSignupForm, InviteArtistForm
 
 class InviteArtistView(FormView):
     form_class = InviteArtistForm
-    template_name = "artist_registration/invite-artist.html"
+    template_name = "artist_registration/invite_artist.html"
 
     def get_context_data(self, **kwargs):
         context = super(InviteArtistView, self).get_context_data(**kwargs)
