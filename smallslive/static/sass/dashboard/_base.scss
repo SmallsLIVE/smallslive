@@ -1,0 +1,53 @@
+body {
+  @include background-image(url("../image/background-tile.png"));
+  background-repeat: repeat;
+  background-color: $background-color;
+  text-rendering: optimizeLegibility;
+}
+
+button, input[type="submit"] {
+  border: none;
+}
+
+.content-wrapper {
+  border: 10px solid rgba(31,31,31,0.07);
+  border-top: none;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.form-error-text {
+  @include lato;
+  font-size: 12px;
+  color: $main-accent-color;
+}
+
+
+@media (max-width: 740px) {
+  .content-wrapper {
+    width: 100%;
+    border: none;
+  }
+
+  .text-center-xs {
+    text-align: center;
+  }
+}
+
+@media (min-width: 768px) {
+  .content-wrapper {
+    width: 760px;
+  }
+}
+
+@media (min-width: 992px) {
+  .content-wrapper {
+    width: 980px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .content-wrapper {
+    width: 1180px;
+  }
+}

@@ -15,27 +15,62 @@
   {% endblock extra_head %}
 </head>
 <body>
-  <div class="container-fluid admin-nav">
-    <div class="container">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#admin-navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="heading">Smalls admin</span>
-      <div class="collapse navbar-collapse" id="admin-navbar">
-        <ul class="nav navbar-nav">
-          <li><a href="{% url "dashboard_home" %}">Homepage</a></li>
-          <li><a href="{% url "dashboard_edit_profile" %}">Edit public profile</a></li>
-          <li><a href="{% url "dashboard_my_gigs" %}">My gigs</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
+
+    <!-- Dashboard navigation -->
+    <nav class="navbar navbar-default" id="navbar">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#hb-navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="page-scroll navbar__logo" href="{% url "dashboard_home" %}"><img src="{% static 'smalls_live_horizontal_negative.svg' %}" alt=""/></a>
+			</div>
+			<div class="collapse navbar-collapse" id="hb-navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="navbar__item active"><a href="{% url "dashboard_home" %}">Dashboard</a></li>
+                    <li class="navbar__item"><a href="#">Metrics</a></li>
+                    <li class="navbar__item"><a href="{% url "dashboard_my_gigs" %}">My Events</a></li>
+                    <li class="navbar__item"><a href="{% url "dashboard_edit_profile" %}">Edit Public Profile</a></li>
+                    <li class="navbar__item"><a href="#">Legal <span class="contract__pending"><i class="fa fa-exclamation-circle"></i></span></a></li>
+                    <li class="navbar__user">
+                        <div class="dropdown">
+                            <button class="navbar__user__button dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown" aria-expanded="true">
+                                <img class="navbar__user__image" src="{% static 'image/dashboard/user-image.jpg' %}">
+                                <span><i class="fa fa-caret-down"></i></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" aria-labelledby="userDropdown">
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Log out</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="navbar__item navbar__settings"><a href="#"><i class="fa fa-gear"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+    <!-- End of Dashboard navigation -->
+
 
   {% block content %}
   {% endblock content %}
+
+  <footer class="container">
+      <div class="footer-content">
+          <img class="footer-logo" src="{% static "logo-black.svg" %}" alt=""/>
+          <ul class="footer-nav">
+              <li><a href="{% url "static_page" "privacy" %}">Privacy</a></li>
+              <li><a href="{% url "terms-and-conditions" %}">Terms and Conditions</a></li>
+          </ul>
+          <address>
+              <a href="https://goo.gl/maps/s4jFT">SmallsLIVE  |  183 West 10th Street, Basement  |  New York City, NY 10014</a> <br/>
+              <a href="mailto:smallsjazzclub@gmail.com">smallsjazzclub@gmail.com</a> · <a href="tel:+164647614346">(646) 476-4346</a>
+          </address>
+      </div>
+  </footer>
+
   {% javascript 'dashboard_js' %}
   {% block extra_js %}
   {% endblock extra_js %}
