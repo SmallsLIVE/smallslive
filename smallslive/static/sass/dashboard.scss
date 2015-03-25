@@ -1,0 +1,67 @@
+//Main Sass file
+//Code organization as per: http://sass-guidelin.es/#the-7-1-pattern
+@import 'vendors-extensions/bootstrap';
+
+@import 'vendors/font-awesome/font-awesome';
+@import 'vendors/bourbon/bourbon';
+@import 'vendors/slick';
+@import 'vendors/slick-theme';
+
+@import 'utils/variables';
+@import 'utils/functions';
+@import 'utils/helpers';
+@import 'utils/mixins';
+
+@import 'base/typography';
+@import 'base/base';
+
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/static-page';
+@import 'layout/call-to-action';
+@import 'layout/pages';
+@import 'layout/generic-text-page';
+@import 'layout/alerts';
+
+@import 'components/about-smalls';
+@import 'components/artist-bio';
+@import 'components/artist-details';
+@import 'components/artist-events';
+@import 'components/buy-album';
+@import 'components/event-description';
+@import 'components/event-details';
+@import 'components/event-object';
+@import 'components/event-tracks';
+@import 'components/event-video';
+@import 'components/header-img';
+@import 'components/homepage-archive';
+@import 'components/homepage-news';
+@import 'components/homepage-store';
+@import 'components/homepage-events';
+@import 'components/live-stream';
+@import 'components/mini-artist-object';
+@import 'components/mini-event-object';
+@import 'components/mini-gallery';
+@import 'components/mini-video-object';
+@import 'components/photo-gallery';
+@import 'components/requested-video';
+@import 'components/schedule-event-details';
+@import 'components/schedule-object';
+@import 'components/search-artist-object';
+@import 'components/search-event-object';
+@import 'components/search-instrument-object';
+@import 'components/search-nav';
+@import 'components/search-store-object';
+@import 'components/social-media-btn';
+@import 'components/video-audio';
+@import 'components/login-modal';
+@import 'components/newsletters';
+@import 'components/press';
+@import 'components/sign-up';
+@import 'components/user-settings';
+@import 'components/datepicker';
+@import 'components/header-search';
+@import 'components/login';
+@import 'components/admin-forms';
+@import 'components/admin-nav';
+@import 'components/password-reset';

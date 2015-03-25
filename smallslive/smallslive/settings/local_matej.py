@@ -29,4 +29,10 @@ PIPELINE_CSS = {
         ),
         'output_filename': 'css/main.css',
     },
+    'dashboard_css': {
+        'source_filenames': (
+            'css/dashboard.css',
+        ),
+        'output_filename': 'css/dashboard.css',
+    },
 }

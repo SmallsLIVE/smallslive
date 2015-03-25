@@ -282,6 +282,12 @@ PIPELINE_CSS = {
         ),
         'output_filename': 'css/application.css',
     },
+    'dashboard_css': {
+        'source_filenames': (
+            'sass/dashboard.scss',
+        ),
+        'output_filename': 'css/dashboard.css',
+    },
 }
 PIPELINE_JS = {
     'js': {
