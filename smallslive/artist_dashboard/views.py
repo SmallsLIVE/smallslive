@@ -5,13 +5,13 @@ from events.models import Event
 
 
 class MyGigsView(ListView):
-    context_object_name = 'events'
+    context_object_name = 'gigs'
     paginate_by = 15
     template_name = 'artist_dashboard/my_gigs.html'
 
     def get_queryset(self):
         artist = self.request.user.artist
-        return artist.events.all()
+        return artist.gigs_played.select_related('event').order_by('-event__start')
 
 my_gigs = MyGigsView.as_view()
 

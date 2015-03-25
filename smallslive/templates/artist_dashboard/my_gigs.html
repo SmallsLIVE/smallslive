@@ -5,8 +5,8 @@
     <div class="header-img container"></div>
     <div class="generic-text-page container">
       <ul>
-        {% for event in events %}
-          <li>{{ event.display_title }} - {{ event.listing_date }}</li> {% if event.is_leader %}{% endif %}
+        {% for gig_info in gigs %}
+          <li>{{ gig_info.event.full_title }} - {{ gig_info.event.listing_date }} {% if gig_info.is_leader %}<a href="">Edit</a> {% endif %} </li>
         {% endfor %}
       </ul>
     </div>
