@@ -60,6 +60,204 @@
 
     & .active {
       color: #222 !important;
+
+      & a {
+        color: #222 !important;
+      }
+    }
+  }
+}
+
+.events__list {
+  background-color: #fff;
+  padding: 10px;
+
+  & ul {
+    padding: 10px 0;
+  }
+}
+
+.event-row {
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+  &__image {
+
+    & img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &__description {
+    padding-right: 20px;
+    border-right: 1px solid #ddd;
+
+    &__date {
+      @include lato-bold;
+      color: #1f1f1f;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    &__name {
+      @include lato-black;
+      color: $main-accent-color;
+      font-size: 18px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    &__label {
+      @include lato-bold;
+      color: #777;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    &__artists {
+      @include lato-bold;
+      font-size: 14px;
+      color: #1f1f1f;
+      margin-bottom: 12px;
+
+      & .instrument {
+        @include lato;
+        color: #878787;
+      }
+    }
+  }
+
+  &__is-leader {
+    @include lato-black;
+    font-size: 10px;
+    display: inline-block;
+    padding: 3px 5px;
+    color: #fff;
+    margin-left: 4px;
+    background-color: #3F9E52;
+    border-radius: 2px;
+  }
+
+  &__info {
+    text-align: center;
+
+    & i {
+      font-size: 20px;
+      display: block;
+      padding: 7px;
+      margin-bottom: 6px;
+
+      &.processing {
+        color: #ccc;
+      }
+
+      &.published {
+        color: #468C00;
+      }
+
+      &.private {
+        color: #D21333;
+      }
+    }
+
+    &__label {
+      @include lato;
+      font-size: 12px;
+      color: #1f1f1f;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    &__status {
+      @include lato-bold;
+      font-size: 12px;
+      color: #777;
+      display: block;
+
+      &.processing {
+        color: #ccc;
+      }
+
+      &.published {
+        color: #468C00;
+      }
+
+      &.private {
+        color: #D21333;
+      }
+    }
+
+    &__edit-button {
+        display: block;
+
+      & i {
+        background-color: #999;
+        display: table;
+        margin: 0 auto;
+        padding: 7px;
+        clear: both;
+        color: #fff;
+        border-radius: 100%;
+        margin-bottom: 6px;
+      }
+
+      &:hover, &:focus {
+        text-decoration: none;
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+
+.page-pagination {
+  background-color: #fff;
+  padding: 30px 20px;
+}
+
+.search-pagination {
+  @include lato-bold;
+  margin: 0 auto;
+  display: table;
+
+  &-info {
+    text-align: center;
+  }
+
+  &__previous, &__next {
+    font-size: 20px;
+    vertical-align: middle;
+    color: #131313;
+  }
+
+  &__previous {
+    margin-right: 5px;
+  }
+
+  &__next {
+    margin-left: 5px;
+  }
+
+  &__page {
+    margin: 0 4px;
+    display: inline-block;
+    font-size: 14px;
+    vertical-align: middle;
+    text-align: center;
+    color: #131313;
+
+    &.active {
+      min-width: 10px;
+      padding: 3px 7px;
+      color: #fff;
+      white-space: nowrap;
+      background-color: $main-accent-color;
+      border-radius: 10px;
     }
   }
 }

@@ -1,11 +1,11 @@
 .page-heading {
-  padding: 60px 20px 20px;
+  padding: 40px 20px 20px;
   background-color: #fff;
 
   & h1 {
     @include lato-black;
     font-size: 32px;
     color: $main-accent-color;
-    margin: 0;
+    margin-bottom: 10px;
   }
 }
