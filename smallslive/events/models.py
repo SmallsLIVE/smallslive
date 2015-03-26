@@ -11,6 +11,14 @@ from model_utils.models import QueryManager, TimeStampedModel
 from tinymce import models as tinymce_models
 
 
+class EventQuerySet(models.QuerySet):
+    def upcoming(self):
+        return self.filter(start__gte=timezone.now()).order_by('-start')
+
+    def past(self):
+        return self.filter(start__lt=timezone.now()).order_by('start')
+
+
 class Event(TimeStampedModel):
     SETS = Choices(('22:00-23:00', '10-11pm'), ('23:00-0:00', '11-12pm'), ('0:00-1:00', '12-1am'))
     STATUS = Choices('Published', 'Draft', 'Cancelled', 'Hidden')
@@ -31,9 +39,9 @@ class Event(TimeStampedModel):
     state = StatusField(default=STATUS.Draft)
     slug = models.SlugField(blank=True, max_length=500)
 
-    objects = models.Manager()
-    past = QueryManager(start__lt=datetime.now()).order_by('-start')
-    upcoming = QueryManager(start__gte=datetime.now()).order_by('start')
+    objects = EventQuerySet.as_manager()
+    #past = QueryManager(start__lt=datetime.now()).order_by('-start')
+    #upcoming = QueryManager(start__gte=datetime.now()).order_by('start')
 
     class Meta:
         ordering = ['-start']

@@ -34,10 +34,10 @@ class Artist(models.Model):
         return u"{0} {1}".format(self.first_name, self.last_name)
 
     def upcoming_events(self):
-        return Event.upcoming.filter(performers=self)
+        return Event.objects.upcoming().filter(performers=self)
 
     def past_events(self):
-        return Event.past.filter(performers=self)
+        return Event.objects.past().filter(performers=self)
 
     def get_instruments(self):
         return "\n".join([i.name for i in self.instruments.all()])

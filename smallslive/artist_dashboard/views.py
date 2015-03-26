@@ -1,7 +1,6 @@
 from django.views.generic import TemplateView
 from django.views.generic.list import ListView
 from artists.views import ArtistEditView
-from events.models import Event
 
 
 class MyGigsView(ListView):
@@ -21,7 +20,8 @@ class DashboardView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
-        context['upcoming_events'] = Event.upcoming.all()[:5]
+        artist = self.request.user.artist
+        context['upcoming_events'] = artist.events.upcoming()[:5]
         return context
 
 dashboard = DashboardView.as_view()
