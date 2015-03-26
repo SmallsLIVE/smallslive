@@ -6,8 +6,20 @@
     <div class="header-img container"></div>
     <div class="generic-text-page container">
       <h1>{{ event.full_title }}</h1>
+      <h2>Audio</h2>
       <ul>
-        {% for recording in event.recordings_info.all %}
+        {% for recording in event.recordings_info.audio.all %}
+          <li>
+            {{ event.full_title }} {{ recording.media_file.media_type|capfirst }} - Set {{ recording.set_number }}
+            <form action="">
+              <input type="checkbox" name="media_state_{{ recording.id }}" {% if recording.is_published %}checked{% endif %} />
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+      <h2>Video</h2>
+      <ul>
+        {% for recording in event.recordings_info.video.all %}
           <li>{{ event.full_title }} {{ recording.media_file.media_type|capfirst }} - Set {{ recording.set_number }} </li>
         {% endfor %}
       </ul>

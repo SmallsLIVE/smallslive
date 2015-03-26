@@ -207,15 +207,21 @@ class RecordingQuerySet(models.QuerySet):
 
 
 class Recording(models.Model):
+    STATUS = Choices('Published', 'Private')
+
     media_file = models.ForeignKey('multimedia.MediaFile', related_name='recording')
     event = models.ForeignKey(Event, related_name='recordings_info')
     title = models.CharField(max_length=150, blank=True)
     set_number = models.IntegerField(default=1)
+    state = StatusField(default=STATUS.Published)
 
     objects = RecordingQuerySet.as_manager()
 
     class Meta:
         ordering = ['set_number']
+
+    def is_published(self):
+        return self.state == self.STATUS.Published
 
 
 class EventType(models.Model):
