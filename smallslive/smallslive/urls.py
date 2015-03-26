@@ -1,9 +1,12 @@
+import os
 from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.http import Http404
 from django.shortcuts import render_to_response
 from django.views.generic.base import TemplateView
+from django.template import TemplateDoesNotExist
 from oscar.app import application
 
 # uncomment these lines to enable the Djrill admin interface 
@@ -15,7 +18,10 @@ admin.autodiscover()
 
 class StaticPageView(TemplateView):
     def get_template_names(self):
-        return ["{0}.html".format(self.kwargs['template_name'])]
+        template_name = os.path.join(settings.BASE_DIR, 'templates', "{0}.html".format(self.kwargs['template_name']))
+        if not os.path.exists(template_name):
+            raise Http404
+        return [template_name]
 
 
 def robots_view(request):
