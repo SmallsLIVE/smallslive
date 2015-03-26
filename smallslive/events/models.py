@@ -35,6 +35,7 @@ class Event(TimeStampedModel):
     date_freeform = models.TextField(blank=True)
     photo = models.ImageField(upload_to='event_images', max_length=150, blank=True)
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed', related_name='events')
+    recordings = models.ManyToManyField('multimedia.MediaFile', through='Recording')
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField(default=STATUS.Draft)
     slug = models.SlugField(blank=True, max_length=500)
@@ -197,10 +198,21 @@ class Event(TimeStampedModel):
         return timezone.localtime(timezone.now()) > timezone.localtime(self.start)
 
 
-class Set(models.Model):
-    media_file = models.OneToOneField('multimedia.MediaFile', primary_key=True, related_name='set')
-    event = models.ForeignKey(Event, related_name='sets')
+class RecordingQuerySet(models.QuerySet):
+    def video(self):
+        return self.filter(media_file__media_type='video')
+
+    def audio(self):
+        return self.filter(media_file__media_type='audio')
+
+
+class Recording(models.Model):
+    media_file = models.ForeignKey('multimedia.MediaFile', related_name='recording')
+    event = models.ForeignKey(Event, related_name='recordings_info')
+    title = models.CharField(max_length=150, blank=True)
     set_number = models.IntegerField(default=1)
+
+    objects = RecordingQuerySet.as_manager()
 
     class Meta:
         ordering = ['set_number']

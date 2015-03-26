@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from models import Event, Set
+from models import Event, Recording
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -15,4 +15,4 @@ class EventAdmin(admin.ModelAdmin):
         obj.save()
 
 admin.site.register(Event, EventAdmin)
-admin.site.register(Set)
+admin.site.register(Recording)
