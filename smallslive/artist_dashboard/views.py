@@ -44,3 +44,9 @@ class EventDetailView(event_views.EventDetailView):
     template_name = 'artist_dashboard/event_detail.html'
 
 event_detail = EventDetailView.as_view()
+
+
+class EventEditView(event_views.EventEditView):
+    template_name = 'artist_dashboard/event_edit.html'
+
+event_edit = EventEditView.as_view()
