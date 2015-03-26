@@ -1,7 +1,11 @@
+from django.http import HttpResponse
 from django.views.generic import TemplateView
+from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 import artists.views as artist_views
+from events.models import Recording
 import events.views as event_views
+from .forms import ToggleRecordingStateForm
 
 
 class MyGigsView(ListView):
@@ -50,3 +54,19 @@ class EventEditView(event_views.EventEditView):
     template_name = 'artist_dashboard/event_edit.html'
 
 event_edit = EventEditView.as_view()
+
+
+class ToggleRecordingStateView(UpdateView):
+    form_class = ToggleRecordingStateForm
+    model = Recording
+    success_url = '/'
+
+    def form_valid(self, form):
+        super(ToggleRecordingStateView, self).form_valid(form)
+        return HttpResponse(status=204)
+
+    def form_invalid(self, form):
+        super(ToggleRecordingStateView, self).form_invalid(form)
+        return HttpResponse(status=400)
+
+toggle_recording_state = ToggleRecordingStateView.as_view()

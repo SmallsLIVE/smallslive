@@ -4,15 +4,18 @@
 {% block content %}
   <div class="content-wrapper">
     <div class="header-img container"></div>
-    <div class="generic-text-page container">
+    <div class="generic-text-page container" id="event">
       <h1>{{ event.full_title }}</h1>
       <h2>Audio</h2>
       <ul>
         {% for recording in event.recordings_info.audio.all %}
           <li>
             {{ event.full_title }} {{ recording.media_file.media_type|capfirst }} - Set {{ recording.set_number }}
-            <form action="">
-              <input type="checkbox" name="media_state_{{ recording.id }}" {% if recording.is_published %}checked{% endif %} />
+            <form action="{% url "artist_dashboard:recording_toggle" pk=recording.id %}" method="post" v-el="form_{{ recording.id }}">
+              <i class="fa {$ published_{{ recording.id }} == 'Published' ? 'fa-gear' : 'fa-wrench' $}"
+                 v-on="click: toggleState('{{ recording.id }}')"  ></i>
+              {% csrf_token %}
+              <input type="hidden" name="state" value="{{ recording.state }}" v-model="published_{{ recording.id }}" />
             </form>
           </li>
         {% endfor %}
@@ -26,3 +29,36 @@
     </div>
   </div>
 {% endblock content %}
+
+{% block extra_js %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/0.11.5/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+  <script>
+    Vue.config.debug = true;
+    Vue.config.delimiters = ['{$', '$}'];
+    var data = {
+    {% for recording in event.recordings_info.all %}
+      published_{{ recording.id }}: '{{ recording.state }}'{% if not forloop.last %},{% endif %}
+    {% endfor %}
+    };
+    window.vm = new Vue({
+      el: '#event',
+      data: data,
+      methods: {
+        toggleState: function (name) {
+          var fieldName = "published_" + name;
+          var formName = "form_" + name;
+          var form = this.$$[formName];
+          var oldState = this.$data[fieldName];
+          console.log(oldState);
+          this.$data[fieldName] = oldState === "Published" ? "Hidden" : "Published";
+          console.log(this.$data[fieldName]);
+          $.post(form.action, $(form).serialize()).fail(function() {
+            this.$data[fieldName] = oldState;
+          }.bind(this));
+        }
+      }
+    });
+  </script>
+{% endblock %}

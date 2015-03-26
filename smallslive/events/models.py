@@ -207,7 +207,7 @@ class RecordingQuerySet(models.QuerySet):
 
 
 class Recording(models.Model):
-    STATUS = Choices('Published', 'Private')
+    STATUS = Choices('Published', 'Hidden')
 
     media_file = models.ForeignKey('multimedia.MediaFile', related_name='recording')
     event = models.ForeignKey(Event, related_name='recordings_info')
