@@ -4,6 +4,11 @@
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
 
+  .slick-prev, .slick-next {
+    z-index: 101;
+    bottom: 140px;
+  }
+
   &__metric {
     text-align: center;
 

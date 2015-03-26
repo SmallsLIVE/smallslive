@@ -307,7 +307,9 @@ PIPELINE_JS = {
           'js/jquery.mobile.custom.min.js',
           'js/jquery-ui.js',
           'js/bootstrap.min.js',
+          'js/slick/slick.min.js',
           'js/base.js',
+          'js/dashboard-base.js'
 
         ),
         'output_filename': 'js/dashboard_main.js',
