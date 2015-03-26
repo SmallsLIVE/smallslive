@@ -1,6 +1,7 @@
 from django.views.generic import TemplateView
 from django.views.generic.list import ListView
-from artists.views import ArtistEditView
+import artists.views as artist_views
+import events.views as event_views
 
 
 class MyGigsView(ListView):
@@ -27,7 +28,7 @@ class DashboardView(TemplateView):
 dashboard = DashboardView.as_view()
 
 
-class EditProfileView(ArtistEditView):
+class EditProfileView(artist_views.ArtistEditView):
     template_name = 'artist_dashboard/edit_profile.html'
 
     def get_object(self, queryset=None):
@@ -37,3 +38,9 @@ class EditProfileView(ArtistEditView):
         return True
 
 edit_profile = EditProfileView.as_view()
+
+
+class EventDetailView(event_views.EventDetailView):
+    template_name = 'artist_dashboard/event_detail.html'
+
+event_detail = EventDetailView.as_view()

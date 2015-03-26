@@ -6,7 +6,7 @@
     <div class="generic-text-page container">
       <ul>
         {% for gig_info in gigs %}
-          <li>{{ gig_info.event.full_title }} - {{ gig_info.event.listing_date }} {% if gig_info.is_leader %}<a href="">Edit</a> {% endif %} </li>
+          <li><a href="{% url 'artist_dashboard:event_detail' pk=gig_info.event.id slug=gig_info.event.slug %}">{{ gig_info.event.full_title }} - {{ gig_info.event.listing_date }}</a> {% if gig_info.is_leader %}<a href="">Edit</a> {% endif %} </li>
         {% endfor %}
       </ul>
     </div>
