@@ -1,0 +1,38 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block schedule_nav_active %}active{% endblock %}
+
+{% block content %}
+  <div class="content-wrapper">
+    <section class="container">
+      <div class="event-video row">
+        <div id="video-player" style="height: 450px">
+        </div>
+        <div class="event-video__stats col-xs-12">
+          <p>54:32 min // 1982 plays</p>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock content %}
+
+{% block extra_js %}
+  <script src="http://jwpsrv.com/library/wAJS9rqGEeOf0iIACrqE1A.js"></script>
+  <script>
+    jwplayer("video-player").setup({
+    {% if request.GET.720p %}
+        file: "https://s3.amazonaws.com/smallslivevideooutput/simpsons/720p/simpsons-720p.mp4",
+    {% elif request.GET.480p %}
+        file: "https://s3.amazonaws.com/smallslivevideooutput/simpsons/480p/simpsons-480p.mp4",
+    {% elif request.GET.hlsv3 %}
+        file: "https://s3.amazonaws.com/smallslivevideooutput/simpsons/hlsv3/simpsons.m3u8",
+    {% elif request.GET.hlsv4 %}
+        file: "https://s3.amazonaws.com/smallslivevideooutput/simpsons/hlsv4/simpsons.m3u8",
+    {% endif %}
+        width: "100%",
+        aspectratio: "16:9"
+    });
+  </script>
+{% endblock %}
