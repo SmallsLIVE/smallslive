@@ -1,0 +1,208 @@
+.account-settings {
+  padding: 20px 20px 40px;
+  background-color: #fff;
+
+  & label {
+      @include lato;
+      font-size: 12px;
+      color: #1f1f1f;
+    }
+
+  & .form-control {
+      @include lato;
+      font-size: 16px;
+      color: #1f1f1f;
+      background-color: #fff;
+      border-radius: 0;
+      border: 1px solid #a4a4a4;
+      padding: 10px;
+      height: auto;
+      margin-bottom: 10px;
+
+      &:focus {
+        border: 2px solid #e88a9a;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+      }
+    }
+
+  & .row_stack {
+    display: inline-block;
+    width: auto;
+    margin-right: 30px;
+  }
+
+  & .half_width {
+        margin-left: 2%;
+        margin-right: 2%;
+        width: 48%;
+        float: left;
+
+        &.left {
+          margin-left: 0;
+        }
+
+        &.right {
+          margin-right: 0;
+        }
+      }
+
+  & button, input[type="submit"] {
+    @include lato-bold;
+    font-size: 16px;
+    color: #fff;
+    background-color: $main-accent-color;
+    padding: 10px 50px;
+    margin: 25px 0 15px;
+  }
+
+  .bootstrap-select {
+    padding: 0;
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+    & button {
+      @include lato;
+      font-size: 16px;
+      color: #1f1f1f;
+      background-color: #fff;
+      padding: 10px;
+      margin: 0 0 10px 0;
+      border: 1px solid #a4a4a4;
+      border-radius: 0;
+      width: 100%;
+
+      & .caret {
+        float: right;
+        margin-top: 10px;
+      }
+    }
+
+    & .dropdown-menu {
+      position: relative;
+      margin-top: -10px;
+      width: 100%;
+      border-radius: 0;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+      border: 1px solid #a4a4a4;
+      padding: 10px 0 0 0;
+      max-height: 100px;
+      overflow: auto;
+
+      &.inner {
+        padding: 0;
+        border: none;
+      }
+
+      & ul {
+        padding: 0;
+
+        & li {
+          padding: 0px;
+
+          & a {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+          }
+
+          &:last-child {
+
+            & a {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  & .radio-button {
+      width: 18px;
+      height: 18px;
+      margin: 10px 0;
+
+      &__label {
+        @include lato;
+        font-size: 16px;
+        position: relative;
+        bottom: 3px;
+        margin-left: 10px;
+      }
+    }
+
+  &__form {
+
+    &__column {
+
+      padding: 0 20px;
+      border-right: 1px solid #ddd;
+      margin-bottom: 20px;
+
+      &:first-child {
+        padding-left: 0;
+      }
+
+      &:last-child {
+        border-right: none;
+        padding-right: 0;
+      }
+    }
+
+    &__group {
+      margin: 40px 0;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    &__heading {
+      @include lato-black;
+      color: #1f1f1f;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    &__text {
+      @include lato;
+      color: #4a4a4a;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+  }
+
+  &__form__hidden {
+    margin: 20px 0 30px;
+  }
+}
+
+@media (max-width: $screen-xs-max) {
+  .account-settings {
+    padding: 0;
+
+    &__form {
+
+      &__column {
+
+        border: none;
+
+        &:first-child {
+          padding-left: 20px;
+        }
+
+        &:last-child {
+          padding-right: 20px;
+        }
+      }
+    }
+  }
+}

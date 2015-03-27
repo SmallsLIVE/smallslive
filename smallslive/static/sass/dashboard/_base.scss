@@ -11,12 +11,15 @@ button, input[type="submit"] {
 
 .flexbox-equal-height {
   @include display(flex);
-	-webkit-box-align: center;
-    -webkit-flex-align: center;
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-    align-content: center;
+  @include box-align(center);
   @include flex-wrap(wrap);
+}
+
+.flexbox-align-top {
+  @include display(flex);
+  @include box-align(start);
+  @include flex-wrap(wrap);
+  @include flex-direction(row);
 }
 
 .red-arrow-button {
@@ -72,5 +75,11 @@ button, input[type="submit"] {
 @media (min-width: 1200px) {
   .content-wrapper {
     width: 1180px;
+  }
+}
+
+@media (min-width: 768px) {
+  .flexbox-align-top .col-sm-6 {
+    width: 49.9%;
   }
 }
