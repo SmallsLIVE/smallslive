@@ -16,6 +16,7 @@ button, input[type="submit"] {
     -ms-flex-align: center;
     -webkit-align-items: center;
     align-content: center;
+  @include flex-wrap(wrap);
 }
 
 .red-arrow-button {
