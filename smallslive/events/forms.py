@@ -128,7 +128,7 @@ class EventAddForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        fields = ('start', 'end', 'id', 'title', 'subtitle', 'photo', 'description', 'link', 'state')
+        fields = ('start', 'end', 'id', 'title', 'subtitle', 'photo', 'description', 'state')
         widgets = {
             'state': EventStatusWidget,
             'link': floppyforms.URLInput,
@@ -153,7 +153,6 @@ class EventAddForm(forms.ModelForm):
             'subtitle',
             'photo',
             'description',
-            'link',
             'state',
         )
         self.fields['id'].label = "Event ID - MUST match the event ID in the old system"
