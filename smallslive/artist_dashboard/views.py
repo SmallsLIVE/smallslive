@@ -5,7 +5,7 @@ from django.views.generic.list import ListView
 import artists.views as artist_views
 from events.models import Recording
 import events.views as event_views
-from .forms import ToggleRecordingStateForm
+from .forms import ToggleRecordingStateForm, EventEditForm
 
 
 class MyGigsView(ListView):
@@ -51,6 +51,7 @@ event_detail = EventDetailView.as_view()
 
 
 class EventEditView(event_views.EventEditView):
+    form_class = EventEditForm
     template_name = 'artist_dashboard/event_edit.html'
 
 event_edit = EventEditView.as_view()
