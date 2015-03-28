@@ -1,0 +1,53 @@
+{% load pipeline %}
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% stylesheet 'dashboard_css' %}
+  <link href='http://fonts.googleapis.com/css?family=Lato:300,400,400italic,700,700italic,900' rel='stylesheet'
+        type='text/css'>
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <title>Artist Dashboard - SmallsLIVE</title>
+  {% block extra_head %}
+  {% endblock extra_head %}
+</head>
+<body>
+
+    <section class="artist-dashboard__welcome flexbox-equal-height">
+        <div class="container artist-dashboard__welcome__container">
+            <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4 col-sm-offset-2 col-md-offset-3 col-lg-offset-4">
+                <div class="artist-dashboard__welcome__header">
+                    <img src="{% static 'smalls_live_horizontal_negative.svg' %}" alt=""/>
+                    <span class="artist-dashboard__welcome__header__heading">Welcome</span>
+                </div>
+                <div class="artist-dashboard__welcome__intro-text">
+                    <b>Welcome to SmallsLIVE!</b> To complete your registration and gain access to your SmallsLIVE account, please create your password. Please note that the <b>email displayed below</b> is also your username for logging in to your SmallsLIVE account.
+                </div>
+                <div class="artist-dashboard__welcome__form">
+                    <h2>Complete your login credentials</h2>
+                    <form>
+                        <label for="email">Your email address (also your username for SmallsLIVE)</label>
+                        <input type="email" class="form-control" name="email" value="spike@smallslive.com" disabled>
+                        <label for="password">Choose your password <span class="required">(required)</span> </label>
+                        <input type="password" class="form-control" name="password" placeholder="Your password">
+                        <label for="confirm-password">Confirm password <span class="required">(required)</span> </label>
+                        <input type="password" class="form-control" name="confirm-password" placeholder="Confirm password">
+                        <input type="submit" class="account-settings__form__button" value="Finish registration">
+                    </form>
+                </div>
+                <div class="artist-dashboard__welcome__helper-text">
+                    If you encounter a problem during the registration process, or need assistance, please let us know at <a href="mailto:support@smallslive.com" target="_blank">support@smallslive.com</a>.
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+  {% javascript 'dashboard_js' %}
+  {% block extra_js %}
+  {% endblock extra_js %}
+</body>
+</html>

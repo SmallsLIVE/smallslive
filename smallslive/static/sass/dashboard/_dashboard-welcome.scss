@@ -1,0 +1,170 @@
+.artist-dashboard__welcome {
+  width: 100%;
+  min-height: 100vh;
+  background-image: url('../image/dashboard/artist--welcome_background_img.jpg');
+  background-position: center center;
+  background-size: cover;
+
+  &__header {
+    margin-bottom: 20px;
+
+    & img {
+      display: inline-block;
+      height: 48px;
+      width: auto;
+      padding: 8px 20px 8px 0;
+      margin-right: 20px;
+      border-right: 1px solid rgba(255,255,255,0.5);
+    }
+
+    &__heading {
+      display: inline-block;
+      @include lato-black;
+      color: #fff;
+      font-size: 30px;
+      position: relative;
+      top: 13px;
+    }
+  }
+
+  &__intro-text {
+    @include lato;
+    font-size: 14px;
+    color: #fff;
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #fff;
+    text-align: justify;
+  }
+
+  &__form {
+
+    &.login {
+
+      & input[type="submit"] {;
+        margin-top: 20px;
+      }
+    }
+    
+    & input[type="checkbox"] {
+      height: 16px;
+      width: 16px;
+
+      &:focus {
+        outline-color: $main-accent-color;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+      }
+    }
+
+    &__remember {
+      @include lato;
+      font-size: 14px;
+      color: #fff;
+      position: relative;
+      bottom: 3px;
+      left: 2px;
+      display: inline-block;
+      margin-right: 30px;
+    }
+
+    &__forgot {
+      @include lato-bold;
+      color: $main-accent-color;
+      font-size: 14px;
+      position: relative;
+      bottom: 2px;
+    }
+  }
+
+  & h2 {
+    @include lato-black;
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 15px;
+  }
+
+  & label {
+    color: #fff;
+
+    & .required {
+      @include lato-bold;
+      color: $main-accent-color;
+    }
+  }
+
+  & .form-control[disabled] {
+    background-color: rgba(255,255,255,0.7);
+    color: rgba(0,0,0,0.6);
+  }
+
+  & .form-control:focus {
+    border-color: $main-accent-color;
+  }
+
+  & input[type="submit"] {
+    border: 2px solid $main-accent-color;
+    background-color: rgba(0,0,0,0.5);
+    @include lato-bold-italic;
+    margin-top: 10px;
+    padding-left: 80px;
+    padding-right: 80px;
+
+    &:hover, &:focus {
+      color: rgba(255,255,255,0.7);
+      outline: none;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+  }
+
+  &__helper-text {
+    margin-top: 15px;
+    padding-top: 25px;
+    border-top: 1px solid #fff;
+    color: #fff;
+    @include lato;
+    font-size: 12px;
+    text-align: justify;
+
+    & a {
+      color: $main-accent-color;
+
+      &:hover, &:focus {
+        color: $main-accent-color-darker;
+        text-decoration: none;
+      }
+    }
+
+    &.login {
+
+    }
+  }
+}
+
+
+@media (max-width: $screen-xs-max) {
+  .artist-dashboard__welcome {
+
+    &__header {
+      margin-bottom: 20px;
+
+      img {
+        padding-right: 0;
+        padding-bottom: 20px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,0.5);
+        margin-bottom: 0px;
+        height: 60px;
+      }
+
+      & span {
+        display: block;
+        margin-top: 0px;
+        margin-bottom: 40px;
+      }
+    }
+  }
+}
