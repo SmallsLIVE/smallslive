@@ -221,15 +221,9 @@
                         <a href="#" class="upcoming-event__details__title">{{ event.full_title }}</a>
                         <p class="upcoming-event__details__label">With:</p>
                         <p class="upcoming-event__details__artists">
-                          {% with performers=event.get_performers %}
-                            {% if performers|length_is:"1" %}
-                              <span class="playing-solo">(you're playing solo)</span>
-                            {% else %}
-                              {% for gig_info in performers %}
-                                {{ gig_info.artist.full_name }} <span class="instrument">({{ gig_info.role }})</span>{% if not forloop.last %}  // {% endif %}
-                              {% endfor %}
-                            {% endif %}                           
-                          {% endwith %}
+                          {% for gig_info in performers %}
+                            {{ gig_info.artist.full_name }} <span class="instrument">({{ gig_info.role }})</span>{% if not forloop.last %}  // {% endif %}
+                          {% endfor %}
                         </p>
                         {% if gig_info.is_leader %}
                           <span class="is-leader">You are the leader.</span>
@@ -238,6 +232,8 @@
                     </div>
                 </li>
               {% endwith %}
+              {% empty %}
+                <p>No upcoming events.</p>
               {% endfor %}
             </ul>
         </section>

@@ -1,5 +1,7 @@
 {% extends "artist_dashboard/base.html" %}
 {% load static from staticfiles %}
+{% load thumbor_tags %}
+
 
 {% block content %}
     <div class="content-wrapper">
@@ -34,16 +36,26 @@
         </section>
         <section class="events__list container">
             <ul>
+              {% for gig_info in gigs %}
+                {% with event=gig_info.event  %}
                 <!-- single event row -->
                 <li class="event-row flexbox-equal-height">
                     <div class="hidden-xs hidden-sm col-md-2 event-row__image">
-                        <img src="{% static 'image/dashboard/default-event-thumbnail.jpg' %}" alt="">
+                        {% if event.photo %}
+                          <img src="{% thumbor_url event.photo.url|urlencode height=170 width=170 smart=True %}" alt=""/>
+                        {% else %}
+                          <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                        {% endif %}
                     </div>
                     <div class="col-xs-12 col-sm-8 col-md-7 event-row__description">
-                        <p class="event-row__description__date">Monday, September 2, 2013  |  7:30 PM - 9:45 PM</p>
-                        <p class="event-row__description__name">A set of solo guitar with: Peter Bernstein <span class="event-row__is-leader">leader</span></p>
+                        <p class="event-row__description__date">{{ event.listing_date|date:"l, F d, Y" }}  |  {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</p>
+                        <p class="event-row__description__name">{{ event.full_title }} {% if gig_info.is_leader %}<span class="event-row__is-leader">leader</span>{% endif %}</p>
                         <p class="event-row__description__label">Artists:</p>
-                        <p class="event-row__description__artists">Danny Fox <span class="instrument">(sax)</span>  //  Ari Hoenig <span class="instrument">(drums)</span>  //  Spencer Murphy <span class="instrument">(bass)</span>  //  Spike Wilner <span class="instrument">(piano)</span></p>
+                        <p class="event-row__description__artists">
+                          {% for gig_info in event.get_performers %}
+                            {{ gig_info.artist.full_name }} <span class="instrument">({{ gig_info.role }})</span>{% if not forloop.last %}  // {% endif %}
+                          {% endfor %}
+                        </p>
                     </div>
                     <div class="col-xs-12 col-sm-4 col-md-3 event-row__info">
                         <div class="col-xs-4 event-row__info__audio">
@@ -62,65 +74,8 @@
                         </a>
                     </div>
                 </li>
-                <!-- end of single event row -->
-                <!-- single event row -->
-                <li class="event-row flexbox-equal-height">
-                    <div class="hidden-xs hidden-sm col-md-2 event-row__image">
-                        <img src="{% static 'image/dashboard/default-event-thumbnail.jpg' %}" alt="">
-                    </div>
-                    <div class="col-xs-12 col-sm-8 col-md-7 event-row__description">
-                        <p class="event-row__description__date">Monday, September 2, 2013  |  7:30 PM - 9:45 PM</p>
-                        <p class="event-row__description__name">A set of solo guitar with: Peter Bernstein <span class="event-row__is-leader">leader</span></p>
-                        <p class="event-row__description__label">Artists:</p>
-                        <p class="event-row__description__artists">Danny Fox <span class="instrument">(sax)</span>  //  Ari Hoenig <span class="instrument">(drums)</span>  //  Spencer Murphy <span class="instrument">(bass)</span>  //  Spike Wilner <span class="instrument">(piano)</span></p>
-                    </div>
-                    <div class="col-xs-12 col-sm-4 col-md-3 event-row__info">
-                        <div class="col-xs-4 event-row__info__audio">
-                            <i class="fa fa-volume-down published"></i>
-                            <p class="event-row__info__label">Event audio</p>
-                            <p class="event-row__info__status published">Published</p>
-                        </div>
-                        <div class="col-xs-4 event-row__info__video">
-                            <i class="fa fa-video-camera published"></i>
-                            <p class="event-row__info__label">Event video</p>
-                            <p class="event-row__info__status published">Published</p>
-                        </div>
-                        <a class="col-xs-4 event-row__info__edit-button" href="#">
-                            <i class="fa fa-edit"></i>
-                            <p class="event-row__info__label">Event details / edit</p>
-                        </a>
-                    </div>
-                </li>
-                <!-- end of single event row -->
-                <!-- single event row -->
-                <li class="event-row flexbox-equal-height">
-                    <div class="hidden-xs hidden-sm col-md-2 event-row__image">
-                        <img src="{% static 'image/dashboard/default-event-thumbnail.jpg' %}" alt="">
-                    </div>
-                    <div class="col-xs-12 col-sm-8 col-md-7 event-row__description">
-                        <p class="event-row__description__date">Monday, September 2, 2013  |  7:30 PM - 9:45 PM</p>
-                        <p class="event-row__description__name">A set of solo guitar with: Peter Bernstein <span class="event-row__is-leader">leader</span></p>
-                        <p class="event-row__description__label">Artists:</p>
-                        <p class="event-row__description__artists">Danny Fox <span class="instrument">(sax)</span>  //  Ari Hoenig <span class="instrument">(drums)</span>  //  Spencer Murphy <span class="instrument">(bass)</span>  //  Spike Wilner <span class="instrument">(piano)</span></p>
-                    </div>
-                    <div class="col-xs-12 col-sm-4 col-md-3 event-row__info">
-                        <div class="col-xs-4 event-row__info__audio">
-                            <i class="fa fa-volume-down private"></i>
-                            <p class="event-row__info__label">Event audio</p>
-                            <p class="event-row__info__status private">Published</p>
-                        </div>
-                        <div class="col-xs-4 event-row__info__video">
-                            <i class="fa fa-video-camera private"></i>
-                            <p class="event-row__info__label">Event video</p>
-                            <p class="event-row__info__status private">Published</p>
-                        </div>
-                        <a class="col-xs-4 event-row__info__edit-button" href="#">
-                            <i class="fa fa-align-center"></i>
-                            <p class="event-row__info__label">Event details</p>
-                        </a>
-                    </div>
-                </li>
-                <!-- end of single event row -->
+                {% endwith %}
+              {% endfor %}
             </ul>
         </section>
         <section class="page-pagination container">
