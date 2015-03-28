@@ -2,18 +2,151 @@
 {% load crispy_forms_tags static %}
 
 {% block content %}
-  <div class="content-wrapper">
-  <section class="admin-interface container">
-  <h1 class="admin-interface__main-title">Add/Edit gig:</h1>
-    <form method="post"  class="admin-interface__form" enctype="multipart/form-data">
-      {% crispy form %}
-      <div class="buttonHolder">
-        <input type="submit" name="submit" value="Save event" class="admin-interface__form__button" id="submit-id-submit">
-        <input type="button" name="delete" value="Delete event" class="admin-interface__form__button danger" id="button-id-delete" data-target="#deleteModal" data-toggle="modal">
-      </div>
-    </form>
-    </section>
-  </div>
+    <div class="content-wrapper">
+        <section class="container cta cta--contract flexbox-equal-height">
+            <div class="cta__content">
+                <h1>Event Metrics Section</h1>
+            </div>
+        </section>
+        <section class="event-media container">
+            <h2 class="event-media__heading">Event audio:</h2>
+            <ul class="event-media__list">
+                <!-- single media -->
+                <li class="event-media__single flexbox-equal-height">
+                    <div class="col-xs-12 col-sm-4 flexbox-equal-height">
+                        <div class="event-media__single__icon published flexbox-equal-height">
+                            <i class="fa fa-volume-down"></i>
+                        </div>
+                        <div class="event-media__details">
+                            <p class="event-media__title">File-name-goes-here.mp3</p>
+                            <p class="event-media__meta">124.6 mb</p>
+                        </div>
+                    </div>
+                    <div class="event-media__controls col-xs-12 col-sm-4">
+                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
+                        <button class="event-media__control make-private"><span>Make private</span></button>
+                    </div>
+                    <div class="event-media__player col-xs-12 col-sm-4">
+                        <span class="jwplayer-placeholder">jwplayer goes here</span>
+                    </div>
+                </li>
+                <!-- end of single media -->
+                <!-- single media -->
+                <li class="event-media__single flexbox-equal-height">
+                    <div class="col-xs-12 col-sm-4 flexbox-equal-height">
+                        <div class="event-media__single__icon private flexbox-equal-height">
+                            <i class="fa fa-volume-down"></i>
+                        </div>
+                        <div class="event-media__details">
+                            <p class="event-media__title">File-name-goes-here.mp3</p>
+                            <p class="event-media__meta">124.6 mb</p>
+                        </div>
+                    </div>
+                    <div class="event-media__controls col-xs-12 col-sm-4">
+                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
+                        <button class="event-media__control publish"><span>Publish</span></button>
+                    </div>
+                    <div class="event-media__player col-xs-12 col-sm-4">
+                        <span class="jwplayer-placeholder">jwplayer goes here</span>
+                    </div>
+                </li>
+                <!-- end of single media -->
+                <!-- single media -->
+                <li class="event-media__single flexbox-equal-height">
+                    <div class="col-xs-12 col-sm-4 flexbox-equal-height">
+                        <div class="event-media__single__icon published flexbox-equal-height">
+                            <i class="fa fa-volume-down"></i>
+                        </div>
+                        <div class="event-media__details">
+                            <p class="event-media__title">File-name-goes-here.mp3</p>
+                            <p class="event-media__meta">124.6 mb</p>
+                        </div>
+                    </div>
+                    <div class="event-media__controls col-xs-12 col-sm-4">
+                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
+                        <button class="event-media__control make-private"><span>Make private</span></button>
+                    </div>
+                    <div class="event-media__player col-xs-12 col-sm-4">
+                        <span class="jwplayer-placeholder">jwplayer goes here</span>
+                    </div>
+                </li>
+                <!-- end of single media -->
+            </ul>
+        </section>
+        <section class="event-media container">
+            <h2 class="event-media__heading">Event video:</h2>
+            <ul class="event-media__list">
+                <!-- single media -->
+                <li class="event-media__single flexbox-equal-height">
+                    <div class="col-xs-12 col-sm-4 flexbox-equal-height">
+                        <div class="event-media__single__icon published flexbox-equal-height">
+                            <i class="fa fa-video-camera"></i>
+                        </div>
+                        <div class="event-media__details">
+                            <p class="event-media__title">File-name-goes-here.mp3</p>
+                            <p class="event-media__meta">124.6 mb</p>
+                        </div>
+                    </div>
+                    <div class="event-media__controls col-xs-12 col-sm-4">
+                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
+                        <button class="event-media__control make-private"><span>Make private</span></button>
+                    </div>
+                    <div class="event-media__player col-xs-12 col-sm-4">
+                        <a href="#" class="event-media__download" data-target="#videoPlayerModal" data-toggle="modal"><i class="fa fa-play-circle"></i><span>Watch video</span></a>
+                    </div>
+                </li>
+                <!-- end of single media -->
+                <!-- single media -->
+                <li class="event-media__single flexbox-equal-height">
+                    <div class="col-xs-12 col-sm-4 flexbox-equal-height">
+                        <div class="event-media__single__icon private flexbox-equal-height">
+                            <i class="fa fa-video-camera"></i>
+                        </div>
+                        <div class="event-media__details">
+                            <p class="event-media__title">File-name-goes-here.mp3</p>
+                            <p class="event-media__meta">124.6 mb</p>
+                        </div>
+                    </div>
+                    <div class="event-media__controls col-xs-12 col-sm-4">
+                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
+                        <button class="event-media__control publish"><span>Publish</span></button>
+                    </div>
+                    <div class="event-media__player col-xs-12 col-sm-4">
+                        <a href="#" class="event-media__download" data-target="#videoPlayerModal" data-toggle="modal"><i class="fa fa-play-circle"></i><span>Watch video</span></a>
+                    </div>
+                </li>
+                <!-- end of single media -->
+            </ul>
+        </section>
+        <section class="event-media artists-status container">
+            <h2 class="event-media__heading">Contracts status:</h2>
+            <ul class="contracts-list">
+                <li><i class="fa fa-check-circle signed"></i>Me<span class="contracts-list__is-leader">leader</span></li>
+                <li><i class="fa fa-check-circle"></i>Richard Clemens</li>
+                <li><i class="fa fa-check-circle signed"></i>Murray Wall</li>
+            </ul>
+        </section>
+        <section class="page-heading container">
+            <h1>Edit event info:</h1>
+        </section>
+        <section class="event-edit container">
+            <form method="post"  class="admin-interface__form" enctype="multipart/form-data">
+                {% crispy form %}
+                <div class="buttonHolder">
+                    <input type="submit" name="submit" value="Save event" class="admin-interface__form__button" id="submit-id-submit">
+                </div>
+            </form>
+        </section>
+    </div>
+
+
+    <div class="modal fade" id="videoPlayerModal" tabindex="-1" role="dialog" aria-labelledby="VideoPlayerModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'><iframe src='http://www.youtube.com/embed/dQw4w9WgXcQ' frameborder='0' allowfullscreen></iframe></div>
+        </div>
+    </div>
+
+
   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
        aria-hidden="true">
     <div class="modal-dialog">
