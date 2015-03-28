@@ -1,5 +1,7 @@
 {% extends "artist_dashboard/base.html" %}
 {% load static from staticfiles %}
+{% load thumbor_tags %}
+
 
 {% block content %}
 
@@ -72,6 +74,7 @@
                     </div>
                 </div>
             </div>
+          </div>
             <!-- End of single metric -->
         </section>
         <section class="dashboard__best-list container">
@@ -203,32 +206,39 @@
         <section class="dashboard__upcoming-events container">
             <p class="dashboard__section-title">My upcoming events at Smalls:</p>
             <ul class="upcoming-events__container">
+              {% for gig_info in upcoming_events %}
+              {% with event=gig_info.event  %}
                 <li class="upcoming-event flexbox-equal-height">
                     <a href="#" class="upcoming-event__image">
-                        <img src="{% static 'image/dashboard/default-event-thumbnail.jpg' %}" alt="">
+                      {% if event.photo %}
+                        <img src="{% thumbor_url event.photo.url|urlencode height=140 width=140 smart=True %}" alt=""/>
+                      {% else %}
+                        <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                      {% endif %}
                     </a>
                     <div class="upcoming-event__details">
-                        <p class="upcoming-event__details__date">05/22/2015</p>
-                        <a href="#" class="upcoming-event__details__title">Petern Bernstein and his crowd</a>
+                        <p class="upcoming-event__details__date">{{ event.listing_date|date:"n/j/Y" }}</p>
+                        <a href="#" class="upcoming-event__details__title">{{ event.full_title }}</a>
                         <p class="upcoming-event__details__label">With:</p>
-                        <p class="upcoming-event__details__artists">Danny Fox <span class="instrument">(sax)</span>  //  Ari Hoenig <span class="instrument">(drums)</span>  //  Spencer Murphy <span class="instrument">(bass)</span>  //  Spike Wilner <span class="instrument">(piano)</span></p>
-                        <span class="is-leader">You are the leader.</span>
-                        <a href="#" class="red-arrow-button">Edit event</a><span class="arrow"></span>
+                        <p class="upcoming-event__details__artists">
+                          {% with performers=event.get_performers %}
+                            {% if performers|length_is:"1" %}
+                              <span class="playing-solo">(you're playing solo)</span>
+                            {% else %}
+                              {% for gig_info in performers %}
+                                {{ gig_info.artist.full_name }} <span class="instrument">({{ gig_info.role }})</span>{% if not forloop.last %}  // {% endif %}
+                              {% endfor %}
+                            {% endif %}                           
+                          {% endwith %}
+                        </p>
+                        {% if gig_info.is_leader %}
+                          <span class="is-leader">You are the leader.</span>
+                          <a href="#" class="red-arrow-button">Edit event</a><span class="arrow"></span>
+                        {% endif %}
                     </div>
                 </li>
-                <li class="upcoming-event flexbox-equal-height">
-                    <a href="#" class="upcoming-event__image">
-                        <img src="{% static 'image/dashboard/default-event-thumbnail.jpg' %}" alt="">
-                    </a>
-                    <div class="upcoming-event__details">
-                        <p class="upcoming-event__details__date">05/22/2015</p>
-                        <a href="#" class="upcoming-event__details__title">Petern Bernstein solo guitar</a>
-                        <p class="upcoming-event__details__label">With:</p>
-                        <p class="upcoming-event__details__artists"><span class="playing-solo">(you're playing solo)</span></p>
-                        <span class="is-leader">You are the leader.</span>
-                        <a href="#" class="red-arrow-button">Edit event</a><span class="arrow"></span>
-                    </div>
-                </li>
+              {% endwith %}
+              {% endfor %}
             </ul>
         </section>
 

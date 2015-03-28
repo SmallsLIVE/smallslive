@@ -31,7 +31,7 @@ class DashboardView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
         artist = self.request.user.artist
-        context['upcoming_events'] = artist.events.upcoming()[:5]
+        context['upcoming_events'] = artist.gigs_played.upcoming().select_related('event', 'artist')[:5]
         return context
 
 dashboard = DashboardView.as_view()

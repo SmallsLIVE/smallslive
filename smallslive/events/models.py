@@ -141,7 +141,7 @@ class Event(TimeStampedModel):
         return self.end < timezone.now()
 
     def get_performers(self):
-        return self.artists_gig_info.prefetch_related('artist', 'role')
+        return self.artists_gig_info.select_related('artist', 'role')
 
     def leader(self):
         try:
@@ -232,12 +232,22 @@ class EventType(models.Model):
         return self.name
 
 
+class GigPlayedQuerySet(models.QuerySet):
+    def upcoming(self):
+        return self.filter(event__start__gte=timezone.now()).order_by('-event__start')
+
+    def past(self):
+        return self.filter(event__start__lt=timezone.now()).order_by('event__start')
+
+
 class GigPlayed(models.Model):
     artist = models.ForeignKey('artists.Artist', related_name='gigs_played')
     event = models.ForeignKey('events.Event', related_name='artists_gig_info')
     role = models.ForeignKey('artists.Instrument')
     is_leader = models.BooleanField(default=False)
     sort_order = models.CharField(max_length=30, blank=True)
+
+    objects = GigPlayedQuerySet.as_manager()
 
     class Meta:
         ordering = ['event', 'sort_order', 'is_leader']
