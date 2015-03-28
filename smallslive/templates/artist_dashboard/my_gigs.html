@@ -69,7 +69,11 @@
                             <p class="event-row__info__status processing">Processing</p>
                         </div>
                         <a class="col-xs-4 event-row__info__edit-button" href="#">
-                            <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}"><i class="fa {% if gig_info.is_leader %}fa-edit{% else %}fa-align-center{% endif %}"></i></a>
+                          {% if gig_info.is_leader %}
+                            <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}"><i class="fa fa-edit"></i></a>
+                          {% else %}
+                            <a href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}"><i class="fa fa-align-center"></i></a>
+                          {% endif %}
                             <p class="event-row__info__label">Event details{% if gig_info.is_leader %} / edit{% endif %}</p>
                         </a>
                     </div>
