@@ -52,3 +52,10 @@ $(document).ready(function () {
         $('input[name=payout_selection]:checked');
       }
 })
+
+
+/* Make private/published button change */
+$(".event-media__control").click(function() {
+    $( ".publish" ).switchClass( "publish", "make-private", 300 );
+    $( ".make-private" ).switchClass( "make-private", "publish", 300 );
+})
