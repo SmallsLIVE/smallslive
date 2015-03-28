@@ -10,7 +10,7 @@
     float: left;
     padding: 2px;
     border: 1px solid #dfdfdf;
-    margin-right: 20px;
+    margin-right: 10px;
     display: inline-table;
     background-color: #fff;
 
@@ -19,8 +19,8 @@
     }
 
     & img {
-      width: 80px;
-      height: 80px;
+      width: 100%;
+      height: auto;
     }
   }
 
@@ -71,7 +71,7 @@
   .mini-event {
 
     &__image {
-      display: none;
+
     }
   }
 }

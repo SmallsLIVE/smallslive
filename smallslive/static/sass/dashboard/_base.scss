@@ -26,6 +26,12 @@ button, input[type="submit"] {
   @include flex-direction(row);
 }
 
+@media (min-width: $screen-sm-min) {
+  .flexbox-nowrap {
+    @include flex-wrap(nowrap);
+  }
+}
+
 .red-arrow-button {
   @include red-button;
 }
