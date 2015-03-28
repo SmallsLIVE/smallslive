@@ -43,19 +43,21 @@ $(document).ready(function () {
             $.cookie('showTop', 'collapsed'); //Add cookie 'ShowTop'
         }
      });
-        var showTop = $.cookie('showTop');
-        if (showTop == 'expanded') {
-        $("#paypal-info").show("fast");
-        $('input[name=payout_selection]:checked');
-      } else {
-        $("#paypal-info").hide("fast");
-        $('input[name=payout_selection]:checked');
-      }
 })
 
 
 /* Make private/published button change */
-$(".event-media__control").click(function() {
-    $( ".publish" ).switchClass( "publish", "make-private", 300 );
-    $( ".make-private" ).switchClass( "make-private", "publish", 300 );
+$(document).ready(function () {
+    $(".event-media__control").click(function() {
+        if ($(this).hasClass("make-private")) {
+            $(this).removeClass("make-private");
+            $(this).addClass("publish");
+            $(this).closest('.event-media__single').find('.event-media__single__icon').switchClass( "published", "private", 500, "easeInOutQuad" );
+        }
+        else {
+            $(this).removeClass("publish");
+            $(this).addClass("make-private");
+            $(this).closest('.event-media__single').find('.event-media__single__icon').switchClass( "private", "published", 500, "easeInOutQuad" );
+        }
+    })
 })

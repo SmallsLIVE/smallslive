@@ -107,6 +107,10 @@
         top: 6px;
         margin-right: 8px;
       }
+
+      & span:after {
+        content: "Publish"
+      }
     }
 
     &.make-private {
@@ -123,6 +127,10 @@
         position: relative;
         top: 6px;
         margin-right: 8px;
+      }
+
+      & span:after {
+        content: "Make private";
       }
     }
   }
