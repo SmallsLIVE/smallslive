@@ -19,6 +19,11 @@ button, input[type="submit"] {
   @include flex-wrap(wrap);
 }
 
+.flexbox-equal-height-nocenter {
+  @include display(flex);
+  @include flex-wrap(wrap);
+}
+
 .flexbox-align-top {
   @include display(flex);
   @include box-align(start);

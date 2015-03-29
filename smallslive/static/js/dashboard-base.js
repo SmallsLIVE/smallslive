@@ -72,3 +72,13 @@ $(document).ready(function () {
         }
     })
 })
+
+
+/* Emulate image cover css effect on event image */
+
+var img = document.getElementById('eventImageCover');
+
+imgCoverEffect(img, {
+    alignX: 'center',
+    alignY: 'middle'
+})

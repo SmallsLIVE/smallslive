@@ -310,8 +310,8 @@ PIPELINE_JS = {
           'js/slick/slick.min.js',
           'js/bootstrap-select.js',
           'js/base.js',
+          'js/imgCoverEffect.min.js',
           'js/dashboard-base.js'
-
         ),
         'output_filename': 'js/dashboard_main.js',
     }
