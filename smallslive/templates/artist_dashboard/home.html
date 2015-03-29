@@ -6,7 +6,7 @@
 {% block content %}
 
     <div class="content-wrapper">
-        <section class="container cta cta--contract flexbox-equal-height">
+        <section class="container cta cta--contract flexbox-equal-height" data-step="7" data-intro="Please note that, for your Artist Dashboard to be fully in function (and for you to get your rightfully deserved money :)), you need to sign the Artist Agreement.">
             <div class="cta__content">
                 <h2>To gain access to Metrics, and to enter our Artists revenue sharing program, you need to review and sign The SmallsLIVE Artist Revenue Sharing Contract.</h2>
                 <h3>To do that please visit the “Legal” section in the menu above, or click the button below.</h3>
@@ -241,3 +241,15 @@
     </div>
 
 {% endblock content %}
+
+
+{% block extra_js %}
+  <script src="{% static 'js/intro/intro.min.js' %}"></script>
+  <script>
+      $(document).ready(function () {
+          if( $(window).width() > 1000) {
+              introJs().start();
+          }
+      })
+  </script>
+{% endblock %}

@@ -16,8 +16,10 @@
       opacity: 0.7;
       padding: 10px 20px;
 
-      &:hover {
-        color: #fff;
+      &:hover, &:focus {
+        color: #fff !important;
+        background-color: transparent !important;
+        outline: none;
       }
     }
 
@@ -25,9 +27,15 @@
       margin-left: 4px;
     }
 
-    & li:hover a {
+    & li, li:hover, & li:focus {
+      background-color: $main-accent-color;
+      outline: none;
+    }
+
+    & li:hover a, & li:focus a {
       color: #fff;
       opacity: 1;
+      background-color: transparent;
     }
 
     & .active a {

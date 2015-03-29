@@ -31,11 +31,11 @@
     </div>
     <div class="collapse navbar-collapse" id="hb-navbar-collapse">
       <ul class="nav navbar-nav">
-        <li class="navbar__item active"><a href="{% url "artist_dashboard:home" %}">Dashboard</a></li>
-        <li class="navbar__item"><a href="#">Metrics</a></li>
-        <li class="navbar__item"><a href="{% url "artist_dashboard:my_gigs" %}">My Events</a></li>
-        <li class="navbar__item"><a href="{% url "artist_dashboard:edit_profile" %}">Edit Public Profile</a></li>
-        <li class="navbar__item"><a href="#">Legal <span class="contract__pending"><i
+        <li class="navbar__item active" data-step="1" data-intro="Here you can access your main Dashboard. It displays most important information like featured metrics, most viewed and listened events you played,and your upcoming events at Smalls."><a href="{% url "artist_dashboard:home" %}">Dashboard</a></li>
+        <li class="navbar__item" data-step="2" data-intro="This takes you to the full metrics page."><a href="#">Metrics</a></li>
+        <li class="navbar__item" data-step="3" data-intro="Here you can access a full list of events you played at Smalls."><a href="{% url "artist_dashboard:my_gigs" %}">My Events</a></li>
+        <li class="navbar__item" data-step="4" data-intro="This section allows you to edit your publicly displayed Artist profile on SmallsLIVE."><a href="{% url "artist_dashboard:edit_profile" %}">Edit Public Profile</a></li>
+        <li class="navbar__item" data-step="5" data-intro="Here you can view, download, print out and sign the SmallsLIVE Artist Agreement."><a href="#">Legal <span class="contract__pending"><i
                 class="fa fa-exclamation-circle"></i></span></a></li>
         <li class="navbar__user hidden-xs">
           <div class="dropdown">
@@ -49,7 +49,7 @@
             </ul>
           </div>
         </li>
-        <li class="navbar__item navbar__settings"><a href="{% url "artist_dashboard:settings" %}"><i class="fa fa-gear"></i></a></li>
+        <li class="navbar__item navbar__settings" data-step="6" data-intro="This takes you to your settings. Here you can edit your personal information, and of course provide us with information required for payouts."><a href="{% url "artist_dashboard:settings" %}"><i class="fa fa-gear"></i></a></li>
         <li class="navbar__item visible-xs"><a href="#">Log out</a></li>
       </ul>
     </div>
