@@ -61,3 +61,14 @@ $(document).ready(function () {
         }
     })
 })
+
+
+/* Legal section sign button transition */
+$(document).ready(function () {
+    $(".legal-page__button").click(function() {
+        if ($(this).hasClass("sign")) {
+            $(this).removeClass("sign");
+            $(this).addClass("signed");
+        }
+    })
+})

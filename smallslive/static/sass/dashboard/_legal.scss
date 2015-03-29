@@ -1,0 +1,164 @@
+.legal-page {
+  color: #1f1f1f;
+
+  &__heading {
+    @include lato-black;
+    font-size: 18px;
+    color: #1f1f1f;
+    margin-bottom: 20px;
+    margin-top: 0;
+  }
+
+  &__full-contract {
+    padding: 20px 20px 40px;
+    background-color: #fff;
+  }
+
+  &__download {
+    padding: 0 20px 40px;
+    background-color: #fff;
+  }
+
+  &__bullets {
+    padding: 40px 20px;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    font-size: 14px;
+    text-align: justify;
+    @include lato-bold;
+
+    & ul {
+      padding: 0 15px 0 30px;
+
+      & li {
+        margin-bottom: 10px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  &__sign {
+    padding: 40px 20px;
+    background-color: #fff;
+
+    &__text {
+      font-size: 16px;
+      text-align: center;
+      @include lato-italic;
+      opacity: 0.8;
+    }
+  }
+
+  &__button {
+    padding: 10px 40px;
+    @include lato-bold;
+    font-size: 14px;
+    display: inline-block;
+
+    & i {
+      margin-right: 10px;
+    }
+
+    &.secondary {
+      background-color: #ccc;
+      color: #6f6f6f;
+      margin-right: 10px;
+    }
+
+    &.sign {
+      margin: 30px 30% 0;
+      padding: 15px 80px;
+      background-color: #D21535;
+      color: #fff;
+      text-align: center;
+      width: 40%;
+      font-size: 16px;
+
+      & span:after {
+        content: 'Sign';
+      }
+
+      &:hover, &:focus {
+        background-color: $main-accent-color-darker;
+        text-decoration: none;
+      }
+    }
+
+    &.signed {
+      margin: 30px 30% 0;
+      padding: 15px 80px;
+      background-color: #ddd;
+      color: #fff;
+      text-align: center;
+      width: 40%;
+      font-size: 16px;
+      pointer-events: none;
+      cursor: default;
+
+      & span:after {
+        content: 'Signed';
+      }
+    }
+  }
+}
+
+.contract-content {
+  @include lato;
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  padding: 20px;
+  font-size: 14px;
+
+  & h1 {
+    @include lato-black;
+    font-size: 32px;
+    color: $main-accent-color;
+    margin-bottom: 30px;
+  }
+
+  & h2 {
+    @include lato-black;
+    font-size: 14px;
+  }
+
+  & h3 {
+    @include lato-black;
+    font-size: 14px;
+  }
+
+  & h4 {
+    @include lato-bold;
+    font-size: 14px;
+  }
+
+  & p {
+
+    &.example {
+      font-size: 12px;
+    }
+
+    &.formula {
+      @include lato-italic;
+    }
+
+    &.final-paragraph {
+      @include lato-bold;
+      margin-top: 40px;
+    }
+  }
+
+  & a {
+    @include lato-bold;
+    color: $main-accent-color;
+
+    &:hover, &:focus {
+      color: $main-accent-color-darker;
+      text-decoration: none;
+    }
+  }
+}
