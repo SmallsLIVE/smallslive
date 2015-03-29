@@ -211,4 +211,19 @@
       EventForm.init();
     });
   </script>
+
+  <script>
+    /* Emulate image cover css effect on event image */
+    $(document).ready(function () {
+    var img = document.getElementById('eventImageCover');
+        imgCoverEffect(img, {
+            alignX: 'center',
+            alignY: 'middle'
+        })
+    })
+  </script>
 {% endblock %}
+
+{% block extra_js %}
+
+{% endblock extra_js %}
