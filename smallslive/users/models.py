@@ -45,6 +45,7 @@ class SmallsUserManager(UserManager):
 class SmallsUser(AbstractBaseUser, PermissionsMixin):
     ACCESS_LEVELS = Choices('48-hour pass', 'Half Year Membership', 'Monthly Pass', 'Three Month Membership',
                             'admin', 'basic membership', 'member', 'musician', 'smallslive membership', 'trialMember')
+    PAYOUT_CHOICES = Choices('Check', 'PayPal')
 
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=50, blank=True)
@@ -75,6 +76,8 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     phone_1 = models.CharField(max_length=100, blank=True)
     website = models.CharField(max_length=100, blank=True)
     newsletter = models.BooleanField(default=False)
+    payout_method = models.CharField(max_length=10, choices=PAYOUT_CHOICES, default=PAYOUT_CHOICES.Check)
+    paypal_email = models.EmailField(max_length=100, blank=True)
 
     objects = SmallsUserManager()
 

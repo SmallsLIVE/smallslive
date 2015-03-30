@@ -32,13 +32,15 @@ $(document).ready(function () {
 
 /* Settings payment div reveal js */
 $(document).ready(function () {
-    $("#paypal-info").css("display","none");
+    if ($('input[name=payout_method]:checked').val() == "Check") {
+        $("#paypal-info").css("display", "none");
+    };
     $(".radio-button").click(function(){
-        if ($('input[name=payout_selection]:checked').val() == "Paypal") {
+        if ($('input[name=payout_method]:checked').val() == "PayPal") {
             $("#paypal-info").slideDown("fast"); //Slide Down Effect
             $.cookie('showTop', 'expanded'); //Add cookie 'ShowTop'
         }
-        if ($('input[name=payout_selection]:checked').val() == "Check"){
+        if ($('input[name=payout_method]:checked').val() == "Check"){
             $("#paypal-info").slideUp("fast");
             $.cookie('showTop', 'collapsed'); //Add cookie 'ShowTop'
         }

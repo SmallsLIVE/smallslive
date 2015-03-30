@@ -27,24 +27,24 @@
                 <form role="form" id="change-password-form" method="post" action="{% url "user_settings" %}">
                     {% csrf_token %}
                     <h2 class="user-settings__form__heading">Change password:</h2>
-                    <p class="user-settings__form__text">To change your password please input your old password and your new password twice.</p>
+                    <p class="user-settings__form__text">To change your password please input your current password and your new password twice.</p>
                     <div class="form-group {% if change_password_form.oldpassword.errors  %}has-error{% endif %}">
-                        <label for="name">Old password</label>
-                        <input type="password" class="form-control" name="oldpassword">
+                        <label for="oldpassword">Current password</label>
+                        <input type="password" class="form-control" name="oldpassword" id="oldpassword">
                         {% for error in change_password_form.oldpassword.errors %}
                             <p class="form-error-text">{{ error  }}</p>
                         {% endfor %}
                     </div>
                     <div class="form-group {% if change_password_form.password1.errors  %}has-error{% endif %}">
-                        <label for="name">New password</label>
-                        <input type="password" class="form-control" name="password1">
+                        <label for="password1">New password</label>
+                        <input type="password" class="form-control" name="password1" id="password1">
                         {% for error in change_password_form.password1.errors %}
                             <p class="form-error-text">{{ error  }}</p>
                         {% endfor %}
                     </div>
                     <div class="form-group {% if change_password_form.password1.errors  %}has-error{% endif %}">
-                        <label for="surname">New password again</label>
-                        <input type="password" class="form-control" name="password2">
+                        <label for="password2">New password again</label>
+                        <input type="password" class="form-control" name="password2" id="password2">
                         {% for error in change_password_form.password2.errors %}
                             <p class="form-error-text">{{ error  }}</p>
                         {% endfor %}

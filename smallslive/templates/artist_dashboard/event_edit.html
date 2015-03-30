@@ -42,13 +42,14 @@
             <h2 class="event-media__heading">Event audio:</h2>
             <ul class="event-media__list">
                 <!-- single media -->
+              {% for recording in audio %}
                 <li class="event-media__single flexbox-equal-height">
                     <div class="col-xs-12 col-sm-4 flexbox-equal-height">
                         <div class="event-media__single__icon published flexbox-equal-height">
                             <i class="fa fa-volume-down"></i>
                         </div>
                         <div class="event-media__details">
-                            <p class="event-media__title">File-name-goes-here.mp3</p>
+                            <p class="event-media__title">{{ recording.media_file.file.name }}</p>
                             <p class="event-media__meta">124.6 mb</p>
                         </div>
                     </div>
@@ -60,6 +61,7 @@
                         <span class="jwplayer-placeholder">jwplayer goes here</span>
                     </div>
                 </li>
+              {% endfor %}
                 <!-- end of single media -->
                 <!-- single media -->
                 <li class="event-media__single flexbox-equal-height">
@@ -223,7 +225,3 @@
     })
   </script>
 {% endblock %}
-
-{% block extra_js %}
-
-{% endblock extra_js %}

@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
@@ -59,6 +59,11 @@ class EventEditView(event_views.EventEditView):
     form_class = EventEditForm
     template_name = 'artist_dashboard/event_edit.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(EventEditView, self).get_context_data(**kwargs)
+        context['audio'] = self.object.recordings_info.audio()
+        return context
+
 event_edit = EventEditView.as_view()
 
 
@@ -87,7 +92,7 @@ def artist_settings(request):
         if artist_info_form.is_valid():
             artist_info_form.save(request)
             messages.success(request, "You've successfully updated your profile.")
-            return HttpResponseRedirect('/')
+            return redirect('artist_dashboard:settings')
     # if a GET (or any other method) we'll create a blank form
     else:
         artist_info_form = ArtistInfoForm(instance=request.user)
@@ -97,7 +102,7 @@ def artist_settings(request):
         if change_email_form.is_valid():
             change_email_form.save(request)
             messages.success(request, 'Your email address has been changed successfully.')
-            return HttpResponseRedirect(reverse('account_email_verification_sent'))
+            return redirect('account_email_verification_sent')
     else:
         change_email_form = user_forms.ChangeEmailForm(user=request.user)
 
@@ -106,7 +111,7 @@ def artist_settings(request):
         if change_password_form.is_valid():
             change_password_form.save()
             messages.success(request, 'Your password has been changed successfully.')
-            return HttpResponseRedirect('/')
+            return redirect('artist_dashboard:settings')
     else:
         change_password_form = ChangePasswordForm(user=request.user)
 
