@@ -14,15 +14,16 @@ class MediaFile(models.Model):
     media_type = models.CharField(max_length=10, choices=MEDIA_TYPE, editable=False)
     format = models.CharField(max_length=4, choices=FORMATS, editable=False)
     file = DynamicBucketFileField(upload_to='/')
-    size = models.IntegerField(help_text="File size in bytes", default=0)
+    size = models.BigIntegerField(help_text="File size in bytes", default=0)
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-        self.format = os.path.splitext(str(self.file))[1].lower()
-        if self.format in self.VIDEO_FORMATS:
-            self.media_type = 'video'
-        else:
-            self.media_type = 'audio'
+        self.format = os.path.splitext(str(self.file))[1].lower().replace('.', '')
+        if not self.media_type:
+            if self.format in self.AUDIO_FORMATS:
+                self.media_type = 'audio'
+            else:
+                self.media_type = 'video'
         super(MediaFile, self).save()
 
     def get_file_url(self):
