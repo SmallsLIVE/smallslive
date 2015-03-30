@@ -6,7 +6,7 @@ from django.db.models import Sum, Count
 from django.utils.text import slugify
 from sortedm2m.fields import SortedManyToManyField
 from tinymce import models as tinymce_models
-from events.models import Event
+from events.models import Event, GigPlayed
 from users.models import SmallsEmailAddress
 
 
@@ -85,6 +85,9 @@ class Artist(models.Model):
 
     def autocomplete_sublabel(self):
         return self.get_main_instrument_name()
+
+    def is_leader_for_event(self, event):
+        return GigPlayed.objects.filter(artist=self, event=event, is_leader=True).exists()
 
 
 class Instrument(models.Model):

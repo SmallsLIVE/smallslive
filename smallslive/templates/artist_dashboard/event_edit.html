@@ -1,4 +1,4 @@
-{% extends "artist_dashboard/base.html" %}
+{% extends "artist_dashboard/event_detail.html" %}
 {% load crispy_forms_tags static %}
 {% load thumbor_tags %}
 
@@ -13,195 +13,46 @@
 {% endblock extra_head %}
 
 {% block content %}
-    <div class="content-wrapper">
-        <section class="container cta cta--contract flexbox-equal-height">
-            <div class="cta__content">
-                <h1>Event Metrics Section</h1>
-            </div>
-        </section>
-        <section class="page-heading-event flexbox-equal-height-nocenter container">
-            <div class="col-xs-12 col-sm-8 page-heading-event__info">
-                <p class="page-heading-event__name">{{ event.full_title }}</p>
-                <p class="page-heading-event__date">{{ event.listing_date|date:"l, F j, Y" }} {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</p>
-                <p class="page-heading-event__label">With:</p>
-                <p class="page-heading-event__artists">
-                    {% for gig_info in event.get_performers %}
-                        {{ gig_info.artist.full_name }} <span class="instrument">({{ gig_info.role }})</span>{% if not forloop.last %}  // {% endif %}
-                    {% endfor %}
-                </p>
-            </div>
-            <div class="col-xs-12 col-sm-4 hidden-xs page-heading-event__image">
-                {% if event.photo %}
-                    <img id="eventImageCover" src="{% thumbor_url event.photo.url|urlencode height=320 width=320 smart=True %}" alt=""/>
-                {% else %}
-                    <img id="eventImageCover" src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                {% endif %}
-            </div>
-        </section>
-        <section class="event-media container">
-            <h2 class="event-media__heading">Event audio:</h2>
-            <ul class="event-media__list">
-                <!-- single media -->
-              {% for recording in audio %}
-                <li class="event-media__single flexbox-equal-height">
-                    <div class="col-xs-12 col-sm-4 flexbox-equal-height">
-                        <div class="event-media__single__icon published flexbox-equal-height">
-                            <i class="fa fa-volume-down"></i>
-                        </div>
-                        <div class="event-media__details">
-                            <p class="event-media__title">{{ recording.media_file.file.name }}</p>
-                            <p class="event-media__meta">124.6 mb</p>
-                        </div>
-                    </div>
-                    <div class="event-media__controls col-xs-12 col-sm-4">
-                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
-                        <button class="event-media__control make-private"><span></span></button>
-                    </div>
-                    <div class="event-media__player col-xs-12 col-sm-4">
-                        <span class="jwplayer-placeholder">jwplayer goes here</span>
-                    </div>
-                </li>
-              {% endfor %}
-                <!-- end of single media -->
-                <!-- single media -->
-                <li class="event-media__single flexbox-equal-height">
-                    <div class="col-xs-12 col-sm-4 flexbox-equal-height">
-                        <div class="event-media__single__icon private flexbox-equal-height">
-                            <i class="fa fa-volume-down"></i>
-                        </div>
-                        <div class="event-media__details">
-                            <p class="event-media__title">File-name-goes-here.mp3</p>
-                            <p class="event-media__meta">124.6 mb</p>
-                        </div>
-                    </div>
-                    <div class="event-media__controls col-xs-12 col-sm-4">
-                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
-                        <button class="event-media__control publish"><span></span></button>
-                    </div>
-                    <div class="event-media__player col-xs-12 col-sm-4">
-                        <span class="jwplayer-placeholder">jwplayer goes here</span>
-                    </div>
-                </li>
-                <!-- end of single media -->
-                <!-- single media -->
-                <li class="event-media__single flexbox-equal-height">
-                    <div class="col-xs-12 col-sm-4 flexbox-equal-height">
-                        <div class="event-media__single__icon published flexbox-equal-height">
-                            <i class="fa fa-volume-down"></i>
-                        </div>
-                        <div class="event-media__details">
-                            <p class="event-media__title">File-name-goes-here.mp3</p>
-                            <p class="event-media__meta">124.6 mb</p>
-                        </div>
-                    </div>
-                    <div class="event-media__controls col-xs-12 col-sm-4">
-                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
-                        <button class="event-media__control make-private"><span></span></button>
-                    </div>
-                    <div class="event-media__player col-xs-12 col-sm-4">
-                        <span class="jwplayer-placeholder">jwplayer goes here</span>
-                    </div>
-                </li>
-                <!-- end of single media -->
-            </ul>
-        </section>
-        <section class="event-media container">
-            <h2 class="event-media__heading">Event video:</h2>
-            <ul class="event-media__list">
-                <!-- single media -->
-                <li class="event-media__single flexbox-equal-height">
-                    <div class="col-xs-12 col-sm-4 flexbox-equal-height">
-                        <div class="event-media__single__icon published flexbox-equal-height">
-                            <i class="fa fa-video-camera"></i>
-                        </div>
-                        <div class="event-media__details">
-                            <p class="event-media__title">File-name-goes-here.mp3</p>
-                            <p class="event-media__meta">124.6 mb</p>
-                        </div>
-                    </div>
-                    <div class="event-media__controls col-xs-12 col-sm-4">
-                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
-                        <button class="event-media__control make-private"><span></span></button>
-                    </div>
-                    <div class="event-media__player col-xs-12 col-sm-4">
-                        <a href="#" class="event-media__download" data-target="#videoPlayerModal" data-toggle="modal"><i class="fa fa-play-circle"></i><span>Watch video</span></a>
-                    </div>
-                </li>
-                <!-- end of single media -->
-                <!-- single media -->
-                <li class="event-media__single flexbox-equal-height">
-                    <div class="col-xs-12 col-sm-4 flexbox-equal-height">
-                        <div class="event-media__single__icon private flexbox-equal-height">
-                            <i class="fa fa-video-camera"></i>
-                        </div>
-                        <div class="event-media__details">
-                            <p class="event-media__title">File-name-goes-here.mp3</p>
-                            <p class="event-media__meta">124.6 mb</p>
-                        </div>
-                    </div>
-                    <div class="event-media__controls col-xs-12 col-sm-4">
-                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
-                        <button class="event-media__control publish"><span></span></button>
-                    </div>
-                    <div class="event-media__player col-xs-12 col-sm-4">
-                        <a href="#" class="event-media__download" data-target="#videoPlayerModal" data-toggle="modal"><i class="fa fa-play-circle"></i><span>Watch video</span></a>
-                    </div>
-                </li>
-                <!-- end of single media -->
-            </ul>
-        </section>
-        <section class="event-media artists-status container">
-            <h2 class="event-media__heading">Contracts status:</h2>
-            <ul class="contracts-list">
-                <li><i class="fa fa-check-circle signed"></i>Me<span class="contracts-list__is-leader">leader</span></li>
-                <li><i class="fa fa-check-circle"></i>Richard Clemens</li>
-                <li><i class="fa fa-check-circle signed"></i>Murray Wall</li>
-            </ul>
-        </section>
-        <section class="event-edit container">
-            <form method="post"  class="admin-interface__form" enctype="multipart/form-data">
-                {% crispy form %}
-                <div class="buttonHolder">
-                    <input type="submit" name="submit" value="Save event" class="admin-interface__form__button" id="submit-id-submit">
-                </div>
-            </form>
-        </section>
-    </div>
+  {{ block.super }}
+
+  <section class="event-edit container">
+    <form method="post" class="admin-interface__form" enctype="multipart/form-data">
+      {% crispy form %}
+      <div class="buttonHolder">
+        <input type="submit" name="submit" value="Save event" class="admin-interface__form__button"
+               id="submit-id-submit">
+      </div>
+    </form>
+  </section>
 
 
-    <div class="modal fade" id="videoPlayerModal" tabindex="-1" role="dialog" aria-labelledby="VideoPlayerModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <style>.embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } .embed-container iframe, .embed-container object, .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }</style><div class='embed-container'><iframe src='http://www.youtube.com/embed/dQw4w9WgXcQ' frameborder='0' allowfullscreen></iframe></div>
-        </div>
-    </div>
-
-
-  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  <div class="modal fade" id="videoPlayerModal" tabindex="-1" role="dialog" aria-labelledby="VideoPlayerModal"
        aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                  class="sr-only">Close</span></button>
-          <h4 class="modal-title" id="myModalLabel">Delete {{ event.title }}</h4>
-        </div>
-        <div class="modal-body">
-          Are you <strong>sure</strong> you want to delete the event {{ event.title }}?
-        </div>
-        <div class="modal-footer">
-          <form action="{% url "event_delete" pk=event.id slug=event.slug %}" method="post"
-                class="left-aligned-form">
-            {% csrf_token %}
-            <input type="submit" class="btn btn-danger" value="Delete"/>
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          </form>
-        </div>
+      <style>.embed-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        max-width: 100%;
+      }
+
+      .embed-container iframe, .embed-container object, .embed-container embed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }</style>
+      <div class='embed-container'>
+        <iframe src='http://www.youtube.com/embed/dQw4w9WgXcQ' frameborder='0' allowfullscreen></iframe>
       </div>
     </div>
   </div>
 {% endblock content %}
 
 {% block extra_js %}
+  {{ block.super }}
   <script type="text/javascript" src="{% static 'js/selectize.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
   <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>

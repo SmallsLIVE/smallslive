@@ -63,6 +63,7 @@ class EventDetailView(event_views.EventDetailView):
 
     def get_context_data(self, **kwargs):
         context = super(EventDetailView, self).get_context_data(**kwargs)
+        context['is_leader'] = self.request.user.artist.is_leader_for_event(self.object)
         context['audio'] = self.object.recordings_info.audio()
         context['video'] = self.object.recordings_info.video()
         return context
@@ -76,6 +77,7 @@ class EventEditView(event_views.EventEditView):
 
     def get_context_data(self, **kwargs):
         context = super(EventEditView, self).get_context_data(**kwargs)
+        context['is_leader'] = self.request.user.artist.is_leader_for_event(self.object)
         context['audio'] = self.object.recordings_info.audio()
         context['video'] = self.object.recordings_info.video()
         return context

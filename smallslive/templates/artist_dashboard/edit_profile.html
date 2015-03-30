@@ -13,19 +13,16 @@
 {% block title %}Add new artist{% endblock title %}
 
 {% block content %}
-  <div class="content-wrapper">
-      <section class="page-heading container">
-            <h1>Edit my public profile</h1>
-       </section>
-      <section class="edit-public-profile container">
-          <form method="post" class="admin-interface__form" role="form" enctype="multipart/form-data">
-              {% csrf_token %}
-              {% crispy form %}
-              <input type="submit" name="submit" class="admin-interface__form__button" value="Save">
-          </form>
-      </section>
-  </div>
-
+  <section class="page-heading container">
+        <h1>Edit my public profile</h1>
+   </section>
+  <section class="edit-public-profile container">
+      <form method="post" class="admin-interface__form" role="form" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% crispy form %}
+          <input type="submit" name="submit" class="admin-interface__form__button" value="Save">
+      </form>
+  </section>
 {% endblock content %}
 
 {% block extra_js %}

@@ -49,20 +49,20 @@ $(document).ready(function () {
 
 
 /* Make private/published button change */
-$(document).ready(function () {
-    $(".event-media__control").click(function() {
-        if ($(this).hasClass("make-private")) {
-            $(this).removeClass("make-private");
-            $(this).addClass("publish");
-            $(this).closest('.event-media__single').find('.event-media__single__icon').switchClass( "published", "private", 500, "easeInOutQuad" );
-        }
-        else {
-            $(this).removeClass("publish");
-            $(this).addClass("make-private");
-            $(this).closest('.event-media__single').find('.event-media__single__icon').switchClass( "private", "published", 500, "easeInOutQuad" );
-        }
-    })
-})
+//$(document).ready(function () {
+//    $(".event-media__control").click(function() {
+//        if ($(this).hasClass("make-private")) {
+//            $(this).removeClass("make-private");
+//            $(this).addClass("publish");
+//            $(this).closest('.event-media__single').find('.event-media__single__icon').switchClass( "published", "private", 500, "easeInOutQuad" );
+//        }
+//        else {
+//            $(this).removeClass("publish");
+//            $(this).addClass("make-private");
+//            $(this).closest('.event-media__single').find('.event-media__single__icon').switchClass( "private", "published", 500, "easeInOutQuad" );
+//        }
+//    })
+//})
 
 
 /* Legal section sign button transition */
