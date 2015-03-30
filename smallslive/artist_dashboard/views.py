@@ -61,6 +61,12 @@ edit_profile = EditProfileView.as_view()
 class EventDetailView(event_views.EventDetailView):
     template_name = 'artist_dashboard/event_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(EventDetailView, self).get_context_data(**kwargs)
+        context['audio'] = self.object.recordings_info.audio()
+        context['video'] = self.object.recordings_info.video()
+        return context
+
 event_detail = EventDetailView.as_view()
 
 
@@ -71,6 +77,7 @@ class EventEditView(event_views.EventEditView):
     def get_context_data(self, **kwargs):
         context = super(EventEditView, self).get_context_data(**kwargs)
         context['audio'] = self.object.recordings_info.audio()
+        context['video'] = self.object.recordings_info.video()
         return context
 
 event_edit = EventEditView.as_view()

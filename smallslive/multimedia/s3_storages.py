@@ -5,7 +5,7 @@ class ProtectedS3Storage(S3BotoStorage):
     def __init__(self, *args, **kwargs):
         kwargs['bucket_acl'] = 'private'
         kwargs['querystring_auth'] = True
-        kwargs['querystring_expire'] = 600
+        kwargs['querystring_expire'] = 300
         kwargs['custom_domain'] = None
         super(ProtectedS3Storage, self).__init__(*args, **kwargs)
 
@@ -18,5 +18,5 @@ class AudioS3Storage(ProtectedS3Storage):
 
 class VideoS3Storage(ProtectedS3Storage):
     def __init__(self, *args, **kwargs):
-        kwargs['bucket'] = 'smallslivevideo'
+        kwargs['bucket'] = 'smallslivevid'
         super(VideoS3Storage, self).__init__(*args, **kwargs)

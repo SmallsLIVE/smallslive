@@ -32,70 +32,33 @@
             <h2 class="event-media__heading">Event audio:</h2>
             <ul class="event-media__list">
                 <!-- single media -->
+              {% for recording in audio %}
                 <li class="event-media__single flexbox-equal-height">
                     <div class="col-xs-12 col-sm-4 flexbox-equal-height">
                         <div class="event-media__single__icon published flexbox-equal-height">
                             <i class="fa fa-volume-down"></i>
                         </div>
                         <div class="event-media__details">
-                            <p class="event-media__title">File-name-goes-here.mp3</p>
-                            <p class="event-media__meta">124.6 mb</p>
+                            <p class="event-media__title">{{ recording.media_file.file.name }}</p>
+                            <p class="event-media__meta">{{ recording.media_file.size|filesizeformat }}</p>
                         </div>
                     </div>
                     <div class="event-media__controls col-xs-12 col-sm-4">
-                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
-                        <button class="event-media__control make-private"><span></span></button>
+                        <a href="{{ recording.media_file.get_file_url }}" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
                     </div>
+                  {% comment %}
                     <div class="event-media__player col-xs-12 col-sm-4">
                         <span class="jwplayer-placeholder">jwplayer goes here</span>
                     </div>
+                  {% endcomment %}
                 </li>
-                <!-- end of single media -->
-                <!-- single media -->
-                <li class="event-media__single flexbox-equal-height">
-                    <div class="col-xs-12 col-sm-4 flexbox-equal-height">
-                        <div class="event-media__single__icon private flexbox-equal-height">
-                            <i class="fa fa-volume-down"></i>
-                        </div>
-                        <div class="event-media__details">
-                            <p class="event-media__title">File-name-goes-here.mp3</p>
-                            <p class="event-media__meta">124.6 mb</p>
-                        </div>
-                    </div>
-                    <div class="event-media__controls col-xs-12 col-sm-4">
-                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
-                        <button class="event-media__control publish"><span></span></button>
-                    </div>
-                    <div class="event-media__player col-xs-12 col-sm-4">
-                        <span class="jwplayer-placeholder">jwplayer goes here</span>
-                    </div>
-                </li>
-                <!-- end of single media -->
-                <!-- single media -->
-                <li class="event-media__single flexbox-equal-height">
-                    <div class="col-xs-12 col-sm-4 flexbox-equal-height">
-                        <div class="event-media__single__icon published flexbox-equal-height">
-                            <i class="fa fa-volume-down"></i>
-                        </div>
-                        <div class="event-media__details">
-                            <p class="event-media__title">File-name-goes-here.mp3</p>
-                            <p class="event-media__meta">124.6 mb</p>
-                        </div>
-                    </div>
-                    <div class="event-media__controls col-xs-12 col-sm-4">
-                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
-                        <button class="event-media__control make-private"><span></span></button>
-                    </div>
-                    <div class="event-media__player col-xs-12 col-sm-4">
-                        <span class="jwplayer-placeholder">jwplayer goes here</span>
-                    </div>
-                </li>
-                <!-- end of single media -->
+              {% endfor %}
             </ul>
         </section>
         <section class="event-media container">
             <h2 class="event-media__heading">Event video:</h2>
             <ul class="event-media__list">
+              {% for recording in video %}
                 <!-- single media -->
                 <li class="event-media__single flexbox-equal-height">
                     <div class="col-xs-12 col-sm-4 flexbox-equal-height">
@@ -103,39 +66,20 @@
                             <i class="fa fa-video-camera"></i>
                         </div>
                         <div class="event-media__details">
-                            <p class="event-media__title">File-name-goes-here.mp3</p>
-                            <p class="event-media__meta">124.6 mb</p>
+                            <p class="event-media__title">{{ recording.media_file.file.name }}</p>
+                            <p class="event-media__meta">{{ recording.media_file.size|filesizeformat }}</p>
                         </div>
                     </div>
                     <div class="event-media__controls col-xs-12 col-sm-4">
-                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
-                        <button class="event-media__control make-private"><span></span></button>
+                        <a href="{{ recording.media_file.get_file_url }}" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
                     </div>
+                    {% comment %}
                     <div class="event-media__player col-xs-12 col-sm-4">
                         <a href="#" class="event-media__download" data-target="#videoPlayerModal" data-toggle="modal"><i class="fa fa-play-circle"></i><span>Watch video</span></a>
                     </div>
+                    {% endcomment %}
                 </li>
-                <!-- end of single media -->
-                <!-- single media -->
-                <li class="event-media__single flexbox-equal-height">
-                    <div class="col-xs-12 col-sm-4 flexbox-equal-height">
-                        <div class="event-media__single__icon private flexbox-equal-height">
-                            <i class="fa fa-video-camera"></i>
-                        </div>
-                        <div class="event-media__details">
-                            <p class="event-media__title">File-name-goes-here.mp3</p>
-                            <p class="event-media__meta">124.6 mb</p>
-                        </div>
-                    </div>
-                    <div class="event-media__controls col-xs-12 col-sm-4">
-                        <a href="#" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
-                        <button class="event-media__control publish"><span></span></button>
-                    </div>
-                    <div class="event-media__player col-xs-12 col-sm-4">
-                        <a href="#" class="event-media__download" data-target="#videoPlayerModal" data-toggle="modal"><i class="fa fa-play-circle"></i><span>Watch video</span></a>
-                    </div>
-                </li>
-                <!-- end of single media -->
+              {% endfor %}
             </ul>
         </section>
         <section class="event-media artists-status container">
@@ -180,9 +124,7 @@
 {% endblock content %}
 
 {% block extra_js %}
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/0.11.5/vue.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
   <script>
     Vue.config.debug = true;
     Vue.config.delimiters = ['{$', '$}'];
