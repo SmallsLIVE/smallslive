@@ -246,10 +246,13 @@
 {% block extra_js %}
   <script src="{% static 'js/intro/intro.min.js' %}"></script>
   <script>
-      $(document).ready(function () {
+      var firstTime = {{ first_time }};
+      if (firstTime) {
+        $(document).ready(function () {
           if( $(window).width() > 1000) {
               introJs().start();
           }
-      })
+        })
+      }
   </script>
 {% endblock %}
