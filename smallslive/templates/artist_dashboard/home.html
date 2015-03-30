@@ -209,14 +209,14 @@
               {% for gig_info in upcoming_events %}
               {% with event=gig_info.event  %}
                 <li class="upcoming-event flexbox-equal-height flexbox-nowrap">
-                    <div class="upcoming-event__image col-xs-3 col-lg-2">
+                    <div class="upcoming-event__image col-xs-12 col-sm-3 col-lg-2">
                       {% if event.photo %}
                         <a href="#"><img src="{% thumbor_url event.photo.url|urlencode height=140 width=140 smart=True %}" alt=""/></a>
                       {% else %}
                         <a href="#"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/></a>
                       {% endif %}
                     </div>
-                    <div class="upcoming-event__details col-xs-9 col-lg-10">
+                    <div class="upcoming-event__details col-xs-12 col-sm-9 col-lg-10">
                         <p class="upcoming-event__details__date">{{ event.listing_date|date:"n/j/Y" }}</p>
                         <a href="#" class="upcoming-event__details__title">{{ event.full_title }}</a>
                         <p class="upcoming-event__details__label">With:</p>

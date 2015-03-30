@@ -81,10 +81,10 @@
 
 @media (max-width: $screen-xs-max) {
   .upcoming-event__image {
-    display: none;
+    margin-bottom: 20px;
   }
 
   .upcoming-event__details {
-    padding-right: 0;
+
   }
 }
