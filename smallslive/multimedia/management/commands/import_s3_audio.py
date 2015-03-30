@@ -12,6 +12,7 @@ class Command(NoArgsCommand):
         conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
         bucket = conn.get_bucket("smallsliveaudio")
         files_imported = 0
+        count = 0
         for event in Event.objects.all():
             for set_num in range(1, 7):
                 filename = '{0}-{1}.mp3'.format(event.id, set_num)
@@ -28,5 +29,9 @@ class Command(NoArgsCommand):
                         recording.media_file = media_file
                         recording.save()
                         files_imported += 1
+
+                count += 1
+                if count % 500 == 0:
+                    print count
 
         self.stdout.write("{0} files imported".format(files_imported))
