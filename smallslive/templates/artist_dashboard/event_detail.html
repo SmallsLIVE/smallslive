@@ -54,11 +54,9 @@
                     </form>
                   {% endif %}
               </div>
-            {% comment %}
               <div class="event-media__player col-xs-12 col-sm-4">
-                  <span class="jwplayer-placeholder">jwplayer goes here</span>
+                  <div class="jwplayer-placeholder" id="audio_{{ recording.id }}" data-audio="{{ recording.media_file.get_file_url }}">jwplayer goes here</div>
               </div>
-            {% endcomment %}
           </li>
         {% endfor %}
       </ul>
@@ -141,6 +139,7 @@
 {% endblock content %}
 
 {% block extra_js %}
+  <script src="http://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/0.11.5/vue.js"></script>
   <script>
     Vue.config.debug = true;
@@ -174,11 +173,18 @@
   <script>
     /* Emulate image cover css effect on event image */
     $(document).ready(function () {
-    var img = document.getElementById('eventImageCover');
-        imgCoverEffect(img, {
-            alignX: 'center',
-            alignY: 'middle'
-        })
+      var img = document.getElementById('eventImageCover');
+      imgCoverEffect(img, {
+        alignX: 'center',
+        alignY: 'middle'
+      });
+      $(".jwplayer-placeholder").each(function(el) {
+        jwplayer(this.id).setup({
+          file: $(this).attr('data-audio'),
+          width: "100%",
+          height: 30
+        });
+      })
     })
   </script>
 {% endblock %}
