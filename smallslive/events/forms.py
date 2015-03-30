@@ -28,8 +28,9 @@ class Formset(LayoutObject):
 
     template = "%s/formset.html" % TEMPLATE_PACK
 
-    def __init__(self, formset_name_in_context, template=None):
+    def __init__(self, formset_name_in_context, template=None, **kwargs):
         self.formset_name_in_context = formset_name_in_context
+        self.admin = kwargs.pop('admin', True)
 
         # crispy_forms/layout.py:302 requires us to have a fields property
         self.fields = []

@@ -5,6 +5,7 @@ import floppyforms
 from localflavor.us.forms import USStateField
 from localflavor.us.us_states import STATE_CHOICES
 from events import forms as event_forms
+from events.forms import Formset
 from events.models import Event
 
 User = get_user_model()
@@ -20,9 +21,15 @@ class ToggleRecordingStateForm(forms.ModelForm):
 
 
 class EventEditForm(event_forms.EventEditForm):
+    class Meta(event_forms.EventEditForm.Meta):
+        pass
+
     def __init__(self, *args, **kwargs):
         super(EventEditForm, self).__init__(*args, **kwargs)
         del self.fields['state']
+        del self.fields['start']
+        del self.fields['end']
+        self.helper[3] = Formset('artists', template='form_widgets/formset_layout.html', admin=False)
 
 
 class ArtistInfoForm(forms.ModelForm):

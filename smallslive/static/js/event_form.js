@@ -175,8 +175,10 @@ EventForm = {
         //    }
         //});
     },
-    init: function () {
-        this.initDateTimeFunctionality();
+    init: function (datepicker) {
+        if (datepicker) {
+            this.initDateTimeFunctionality();
+        }
         this.initInlineArtistsFunctionality();
     }
 };

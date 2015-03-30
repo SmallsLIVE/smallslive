@@ -210,7 +210,7 @@
     var show_times = {{ show_times|safe }};
     $(document).ready(function() {
       EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
-      EventForm.init();
+      EventForm.init(false);
     });
   </script>
 
