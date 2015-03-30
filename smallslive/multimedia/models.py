@@ -14,6 +14,7 @@ class MediaFile(models.Model):
     media_type = models.CharField(max_length=10, choices=MEDIA_TYPE, editable=False)
     format = models.CharField(max_length=4, choices=FORMATS, editable=False)
     file = DynamicBucketFileField(upload_to='/')
+    size = models.IntegerField(help_text="File size in bytes", default=0)
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
