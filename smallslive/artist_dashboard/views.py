@@ -5,14 +5,17 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
+
 from allauth.account.forms import ChangePasswordForm
 import allauth.account.views as allauth_views
 import artists.views as artist_views
+
 from events.models import Recording
 import events.views as event_views
 import users.forms as user_forms
-from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm
 from users.models import LegalAgreementAcceptance
+from users.views import HasArtistAssignedMixin
+from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm
 
 
 class MyGigsView(ListView):
@@ -27,7 +30,7 @@ class MyGigsView(ListView):
 my_gigs = MyGigsView.as_view()
 
 
-class DashboardView(TemplateView):
+class DashboardView(HasArtistAssignedMixin, TemplateView):
     template_name = 'artist_dashboard/home.html'
 
     def get_context_data(self, **kwargs):

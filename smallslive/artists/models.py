@@ -18,7 +18,6 @@ class Artist(models.Model):
     biography = tinymce_models.HTMLField(blank=True)
     website = models.CharField(max_length=255, blank=True)
     photo = models.ImageField(upload_to='artist_images', max_length=150, blank=True)
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='artist', blank=True, null=True)
     slug = models.SlugField(blank=True, max_length=100)
 
     class Meta:

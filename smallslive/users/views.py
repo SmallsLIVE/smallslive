@@ -2,6 +2,7 @@ from allauth.account import app_settings
 from allauth.account.forms import ChangePasswordForm
 from allauth.account.views import SignupView as AllauthSignupView, ConfirmEmailView as CoreConfirmEmailView,\
     LoginView as CoreLoginView
+from braces.views import UserPassesTestMixin
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -77,3 +78,12 @@ class LoginView(CoreLoginView):
             return ["account/login.html"]
 
 login_view = LoginView.as_view()
+
+
+class HasArtistAssignedMixin(UserPassesTestMixin):
+    def test_func(self, user):
+        return user.artist_id is not None
+
+    def get_login_url(self):
+        messages.error(self.request, 'You need to be an artist to access that part of the site.')
+        return reverse('home')

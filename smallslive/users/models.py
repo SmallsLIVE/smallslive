@@ -59,6 +59,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         help_text='Designates whether this user should be treated as active. '
                   'Unselect this instead of deleting accounts.'
     )
+    artist = models.OneToOneField('artists.Artist', related_name='user', blank=True, null=True)
     date_joined = models.DateTimeField(default=timezone.now)
     photo = models.ImageField(upload_to='user_photos', blank=True)
     access_level = models.CharField(choices=ACCESS_LEVELS, default='', max_length=30, blank=True)
@@ -78,6 +79,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     newsletter = models.BooleanField(default=False)
     payout_method = models.CharField(max_length=10, choices=PAYOUT_CHOICES, default=PAYOUT_CHOICES.Check)
     paypal_email = models.EmailField(max_length=100, blank=True)
+
 
     objects = SmallsUserManager()
 
