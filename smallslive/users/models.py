@@ -182,3 +182,8 @@ class SmallsEmailAddress(EmailAddress):
         confirmation = SmallsEmailConfirmation.create(self)
         confirmation.send(request, signup=signup, **kwargs)
         return confirmation
+
+
+class LegalAgreementAcceptance(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='legal_agreement_acceptance')
+    date = models.DateTimeField(auto_now_add=True)

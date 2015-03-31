@@ -1,6 +1,5 @@
 from django.contrib import messages
-from django.core.urlresolvers import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView
@@ -11,6 +10,7 @@ from events.models import Recording
 import events.views as event_views
 import users.forms as user_forms
 from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm
+from users.models import LegalAgreementAcceptance
 
 
 class MyGigsView(ListView):
@@ -99,6 +99,17 @@ class ToggleRecordingStateView(UpdateView):
         return HttpResponse(status=400)
 
 toggle_recording_state = ToggleRecordingStateView.as_view()
+
+
+def legal(request):
+    user_signed = LegalAgreementAcceptance.objects.filter(user=request.user).exists()
+    if not user_signed and 'sign-agreement' in request.POST:
+        LegalAgreementAcceptance.objects.create(user=request.user)
+        user_signed = True
+        messages.success(request, "You've successfully signed the artist agreement.")
+    return render(request, 'artist_dashboard/legal.html', {
+        'user_signed': user_signed
+    })
 
 
 def artist_settings(request):
