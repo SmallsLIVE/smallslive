@@ -1,4 +1,5 @@
 {% extends "artist_dashboard/base.html" %}
+{% load add_get_parameter %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
@@ -85,14 +86,24 @@
       </ul>
   </section>
   <section class="page-pagination container">
-      <p class="search-pagination-info">Showing results 7-12 of 23</p>
-          <div class="search-pagination">
-              <a href="#"><span class="search-pagination__previous fa fa-caret-left"></span></a>
-              <a href="#"><span class="search-pagination__page">1</span></a>
-              <a href="#"><span class="search-pagination__page active">2</span></a>
-              <a href="#"><span class="search-pagination__page">3</span></a>
-              <a href="#"><span class="search-pagination__page">4</span></a>
-              <a href="#"><span class="search-pagination__next fa fa-caret-right"></span></a>
-          </div>
+      <p class="search-pagination-info">Showing results {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ paginator.count }}</p>
+          {% if page_obj.has_previous or page_obj.has_next %}
+                <div class="search-pagination">
+                  {% if page_obj.has_previous %}<a href="{% add_get page=page_obj.previous_page_number %}"><span class="search-pagination__previous fa fa-caret-left"></span></a>{% endif %}
+                  {% if show_first %}
+                    <a href="{% add_get page=1 %}"><span class="search-pagination__page">1</span></a>
+                    ...
+                  {% endif %}
+                  {% for page in page_numbers %}
+                    <a href="{% add_get page=page %}"><span class="search-pagination__page {% if page == page_obj.number %}active{% endif %}">{{ page }}</span></a>
+                  {% endfor %}
+                  {% if show_last %}
+                    ...
+                    <a href="{% add_get page=paginator.num_pages %}"><span class="search-pagination__page">{{ paginator.num_pages }}</span></a>
+                  {% endif %}
+                  {% if page_obj.has_next %}<a href="{% add_get page=page_obj.next_page_number %}"><span class="search-pagination__next fa fa-caret-right"></span></a>{% endif %}
+
+                </div>
+            {% endif %}
   </section>
 {% endblock content %}

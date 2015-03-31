@@ -23,6 +23,26 @@ class MyGigsView(ListView):
     paginate_by = 15
     template_name = 'artist_dashboard/my_gigs.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(MyGigsView, self).get_context_data(**kwargs)
+        paginator = context['paginator']
+        page = paginator.page(self.kwargs.get('page', 1))
+        adjacent_pages = 2
+        startPage = max(page.number - adjacent_pages, 1)
+        if startPage <= 3:
+            startPage = 1
+        endPage = page.number + adjacent_pages + 1
+        if endPage >= paginator.num_pages - 1:
+            endPage = paginator.num_pages + 1
+        page_numbers = [n for n in xrange(startPage, endPage) if n > 0 and n <= paginator.num_pages]
+        context.update({
+            'page_numbers': page_numbers,
+            'show_first': 1 not in page_numbers,
+            'show_last': paginator.num_pages not in page_numbers,
+            })
+
+        return context
+
     def get_queryset(self):
         artist = self.request.user.artist
         return artist.gigs_played.select_related('event').order_by('-event__start')
