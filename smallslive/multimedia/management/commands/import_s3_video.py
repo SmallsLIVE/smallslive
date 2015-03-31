@@ -16,7 +16,7 @@ class Command(NoArgsCommand):
         count = 0
         for event in Event.objects.all():
             for set_num in range(1, 7):
-                filename = '{0.year}-{0.month}-{0.day}/{1}-{2}.mp4'.format(event.listing_date()+timedelta(days=1), event.id, set_num)
+                filename = '{0.year}-{0.month}-{0.day}/{1}-{2}.mp4'.format(event.listing_date(), event.id, set_num)
                 print filename
                 key = bucket.get_key(filename)
                 if key:
@@ -26,7 +26,7 @@ class Command(NoArgsCommand):
                     except Recording.DoesNotExist:
                         recording = Recording(event_id=event.id, set_number=set_num)
                     if not recording.media_file_id:
-                        media_file = MediaFile.objects.create(media_type="video", file=filename, size=key.size)
+                        media_file, created = MediaFile.objects.get_or_create(media_type="video", file=filename, size=key.size)
                         recording.media_file = media_file
                         recording.save()
                         files_imported += 1

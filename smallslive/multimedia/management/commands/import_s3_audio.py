@@ -25,7 +25,7 @@ class Command(NoArgsCommand):
                     except Recording.DoesNotExist:
                         recording = Recording(event_id=event.id, set_number=set_num)
                     if not recording.media_file_id:
-                        media_file = MediaFile.objects.create(media_type="audio", file=filename, size=key.size)
+                        media_file, created = MediaFile.objects.get_or_create(media_type="audio", file=filename, size=key.size)
                         recording.media_file = media_file
                         recording.save()
                         files_imported += 1
