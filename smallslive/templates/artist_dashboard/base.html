@@ -44,8 +44,8 @@
         <li class="navbar__item" data-step="2" data-intro="This takes you to the full metrics page."><a href="#">Metrics</a></li>
         <li class="navbar__item" data-step="3" data-intro="Here you can access a full list of events you played at Smalls."><a href="{% url "artist_dashboard:my_gigs" %}">My Events</a></li>
         <li class="navbar__item" data-step="4" data-intro="This section allows you to edit your publicly displayed Artist profile on SmallsLIVE."><a href="{% url "artist_dashboard:edit_profile" %}">Edit Public Profile</a></li>
-        <li class="navbar__item" data-step="5" data-intro="Here you can view, download, print out and sign the SmallsLIVE Artist Agreement."><a href="#">Legal <span class="contract__pending"><i
-                class="fa fa-exclamation-circle"></i></span></a></li>
+        <li class="navbar__item" data-step="5" data-intro="Here you can view, download, print out and sign the SmallsLIVE Artist Agreement."><a href="{% url "artist_dashboard:legal" %}">Legal {% if not user.legal_agreement_acceptance  %}<span class="contract__pending"><i
+                class="fa fa-exclamation-circle"></i></span>{% endif %}</a></li>
         <li class="navbar__user hidden-xs">
           <div class="dropdown">
             <button class="navbar__user__button dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown"
