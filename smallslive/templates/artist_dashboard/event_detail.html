@@ -101,9 +101,11 @@
   <section class="event-media artists-status container">
       <h2 class="event-media__heading">Contracts status:</h2>
       <ul class="contracts-list">
-          <li><i class="fa fa-check-circle signed"></i>Me<span class="contracts-list__is-leader">leader</span></li>
-          <li><i class="fa fa-check-circle"></i>Richard Clemens</li>
-          <li><i class="fa fa-check-circle signed"></i>Murray Wall</li>
+        {% for gig_info in event.artists_gig_info.all %}
+          <li><i class="fa fa-check-circle {% if gig_info.artist.user.legal_agreement_acceptance %}signed{% endif %}">
+          </i>{% if request.user == gig_info.artist.user %}Me{% else %}{{ gig_info.artist.full_name }}{% endif %}
+            {% if gig_info.is_leader %}<span class="contracts-list__is-leader">leader</span>{% endif %}</li>
+        {% endfor %}
       </ul>
   </section>
 
