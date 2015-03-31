@@ -89,8 +89,8 @@ class HasArtistAssignedMixin(braces.views.UserPassesTestMixin):
         return self.has_artist
 
     def get_login_url(self):
-        messages.error(self.request, 'You need to be an artist to access that part of the site.')
         if not self.logged_in:
             return reverse('artist_dashboard:login')
         else:
+            messages.error(self.request, 'You need to be an artist to access that part of the site.')
             return reverse('home')
