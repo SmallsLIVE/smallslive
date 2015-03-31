@@ -45,7 +45,28 @@ class MyGigsView(ListView):
 
     def get_queryset(self):
         artist = self.request.user.artist
-        return artist.gigs_played.select_related('event').order_by('-event__start')
+        queryset = artist.gigs_played.select_related('event').order_by('-event__start')
+        audio_filter = self.request.GET.get('audio_filter')
+        video_filter = self.request.GET.get('video_filter')
+        if audio_filter and audio_filter in Recording.STATUS:
+            if audio_filter == 'None':
+                queryset = queryset.filter(event__recordings=None)
+            elif audio_filter == Recording.STATUS.Hidden:
+                queryset = queryset.filter(event__recordings__media_file__media_type='audio',
+                                           event__recordings__state=Recording.STATUS.Hidden)
+            elif audio_filter == Recording.STATUS.Published:
+                queryset = queryset.filter(event__recordings__media_file__media_type='audio',
+                                           event__recordings__state=Recording.STATUS.Published)
+        elif video_filter and video_filter in Recording.STATUS:
+            if video_filter == 'None':
+                queryset = queryset.filter(event__recordings=None)
+            elif video_filter == Recording.STATUS.Hidden:
+                queryset = queryset.filter(event__recordings__media_file__media_type='video',
+                                           event__recordings__state=Recording.STATUS.Hidden)
+            elif video_filter == Recording.STATUS.Published:
+                queryset = queryset.filter(event__recordings__media_file__media_type='video',
+                                           event__recordings__state=Recording.STATUS.Published)
+        return queryset
 
 my_gigs = MyGigsView.as_view()
 

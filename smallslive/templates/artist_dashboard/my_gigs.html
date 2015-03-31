@@ -15,22 +15,22 @@
           </li>
           <li class="events__filters__group">
               <ul>
-                  <li class="active">Audio:</li>
-                  <li class="active"><a href="#">Published</a></li>
-                  <li><a href="#">Private</a></li>
-                  <li><a href="#">Not available</a></li>
+                  <li {% if request.GET.audio_filter %}class="active"{% endif %}>Audio:</li>
+                  <li {% if request.GET.audio_filter == "Published" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?audio_filter=Published">Published</a></li>
+                  <li {% if request.GET.audio_filter == "Hidden" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?audio_filter=Hidden">Private</a></li>
+                  <li {% if request.GET.audio_filter == "None" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?audio_filter=None">Not available</a></li>
               </ul>
           </li>
           <li class="events__filters__group">
               <ul>
-                  <li>Video:</li>
-                  <li><a href="#">Published</a></li>
-                  <li><a href="#">Private</a></li>
-                  <li><a href="#">Not available</a></li>
+                  <li {% if request.GET.video_filter %}class="active"{% endif %}>Video:</li>
+                  <li {% if request.GET.video_filter == "Published" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?video_filter=Published">Published</a></li>
+                  <li {% if request.GET.video_filter == "Hidden" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?video_filter=Hidden">Private</a></li>
+                  <li {% if request.GET.video_filter == "None" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?video_filter=None">Not available</a></li>
               </ul>
           </li>
           <li class="events__filters__group">
-              <a class="clear-toggle" href="#"><i class="fa fa-remove"></i> Clear filters</a>
+              <a class="clear-toggle" href="{% url "artist_dashboard:my_gigs" %}"><i class="fa fa-remove"></i> Clear filters</a>
           </li>
       </ul>
   </section>

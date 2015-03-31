@@ -199,7 +199,6 @@ class Event(TimeStampedModel):
     @cached_property
     def audio_status(self):
         audio_count = self.recordings.audio().count()
-        print audio_count
         if audio_count == 0:
             status = "none"
         else:
@@ -213,7 +212,6 @@ class Event(TimeStampedModel):
     @cached_property
     def video_status(self):
         video_count = self.recordings.video().count()
-        print video_count
         if video_count == 0:
             status = "none"
         else:
