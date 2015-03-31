@@ -212,6 +212,8 @@ class ScheduleView(ListView):
         self.date_start = date_range_start
         date_range_end = date_range_start + timezone.timedelta(days=14)
         events = Event.objects.filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
+        if not self.request.user.is_staff:
+            events = events.exclude(state=Event.STATUS.Draft)
         for k, g in groupby(events, lambda e: e.listing_date()):
             dates[k] = list(g)
         for date in [(date_range_start + timedelta(days=d)).date() for d in range(14)]:
@@ -253,6 +255,8 @@ class MonthlyScheduleView(ListView):
         date_range_end = date_range_start + monthdelta.MonthDelta(1)
         last_day_of_month = calendar.monthrange(year, month)[1]
         events = Event.objects.filter(start__range=(date_range_start, date_range_end)).order_by('start')
+        if not self.request.user.is_staff:
+            events = events.exclude(state=Event.STATUS.Draft)
         for k, g in groupby(events, lambda e: e.listing_date()):
             dates[k] = list(g)
         for date in [(date_range_start + timedelta(days=d)).date() for d in range(last_day_of_month)]:

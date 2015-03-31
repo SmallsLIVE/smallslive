@@ -47,6 +47,7 @@
                 {% for event in events %}
                   <dt class="day__event-time">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</dt>
                   <dd class="day__event-title {% if event.is_cancelled %}cancelled{% endif %}">{{ event.title }}</dd>
+                  {% if event.state == "Draft" %}<span class="day__event-cancelled">(Draft)</span>{% endif %}
                   {% if event.is_cancelled %}<span class="day__event-cancelled">(cancelled)</span>{% endif %}
                   {% if user.is_superuser %}
                     <div class="schedule__admin-buttons">

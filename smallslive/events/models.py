@@ -21,7 +21,7 @@ class EventQuerySet(models.QuerySet):
 
 class Event(TimeStampedModel):
     SETS = Choices(('22:00-23:00', '10-11pm'), ('23:00-0:00', '11-12pm'), ('0:00-1:00', '12-1am'))
-    STATUS = Choices('Published', 'Draft', 'Cancelled', 'Hidden')
+    STATUS = Choices('Published', 'Draft', 'Cancelled')
 
     title = models.CharField(max_length=500)
     start = models.DateTimeField(blank=True, null=True)
@@ -180,7 +180,6 @@ class Event(TimeStampedModel):
             'Published': 'label-success',
             'Draft': 'label-warning',
             'Cancelled': 'label-danger',
-            'Hidden': 'label-default',
         }
         return CSS_STATES[self.state]
 
