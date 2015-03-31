@@ -52,6 +52,10 @@
   }
 }
 
+.selectpicker li {
+  cursor: pointer;
+}
+
 @media (max-width: $screen-xs-max) {
   .account-settings {
     padding: 0;

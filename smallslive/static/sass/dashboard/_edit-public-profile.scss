@@ -1,4 +1,12 @@
 .edit-public-profile {
   background-color: #fff;
   padding: 20px 20px 40px;
+
+  &__heading {
+    @include lato-black;
+    font-size: 18px;
+    color: #1f1f1f;
+    margin-bottom: 15px;
+    margin-top: 22px;
+  }
 }

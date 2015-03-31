@@ -17,9 +17,68 @@
         <h1>Edit my public profile</h1>
    </section>
   <section class="edit-public-profile container">
-      <form method="post" class="admin-interface__form" role="form" enctype="multipart/form-data">
-          {% csrf_token %}
-          {% crispy form %}
+      <form>
+          <h2 class="edit-public-profile__heading">Basic information</h2>
+          <div class="form-group row">
+              <div class="col-xs-12 col-sm-2">
+                  <label for="salutation">Salutation</label>
+                  <select class="form-control selectpicker" name="salutation" title="">
+                      <option>Mr.</option>
+                      <option>Mrs.</option>
+                      <option>Ms.</option>
+                      <option>Lord</option>
+                      <option>Captain</option>
+                  </select>
+              </div>
+              <div class="col-xs-12 col-sm-5">
+                  <label for="name">Name</label>
+                  <input type="text" class="form-control" name="Name" value="Name">
+              </div>
+              <div class="col-xs-12 col-sm-5">
+                  <label for="surname">Surname</label>
+                  <input type="text" class="form-control" name="surname" value="Surname">
+              </div>
+          </div>
+          <div class="form-separator-light"></div>
+          <h2 class="edit-public-profile__heading">My instruments</h2>
+          <div id="div_id_instruments" class="form-group">
+              <label for="id_instruments" class="control-label ">Instruments</label>
+              <div class="controls ">
+                  <select name="instruments" multiple="multiple" class="selectmultiple form-control" id="id_instruments">
+                      <option value="59">Accordion</option><option value="30">Alto Sax</option><option value="68">Banjo</option><option value="67">Baritone Sax</option><option value="35">Bass</option><option value="37">Bassoon</option><option value="41">Cello</option><option value="33">Clarinet</option><option value="28">Composer</option><option value="61">Conductor</option><option value="64">Dancer</option><option value="66">DJ</option><option value="43">Drums</option><option value="47">Female Vocalist</option><option value="40">Flute</option><option value="53">French Horn</option><option value="39">Guitar</option><option value="57">Harp</option><option value="48">Jazz Orchestra</option><option value="69">Leader</option><option value="56">Lute</option><option value="46">Male Vocalist</option><option value="65">MC</option><option value="34">Oboe</option><option value="49">Orchestra</option><option value="38">Organ</option><option value="44">Percussion</option><option value="36">Piano</option><option value="63">Poet</option><option value="32">Soprano Sax</option><option value="50">String Quartet</option><option value="51">Tap Dancer</option><option value="31" selected="selected">Tenor Sax</option><option value="52">Trombone</option><option value="29">Trumpet</option><option value="42">Vibraphone</option><option value="55">Viola</option><option value="54">Violin</option><option value="45">Vocalist</option><option value="60">Whistle</option><option value="62">Writer</option>
+                  </select>
+              </div>
+          </div>
+          <div class="form-separator-light"></div>
+          <h2 class="edit-public-profile__heading">Biography</h2>
+          <div id="div_id_biography" class="form-group">
+              <div class="controls ">
+                  <textarea class="tinymce" cols="40" data-mce-conf="{&quot;spellchecker_languages&quot;: &quot;+English=en&quot;, &quot;elements&quot;: &quot;id_biography&quot;, &quot;language&quot;: &quot;en&quot;, &quot;statusbar&quot;: false, &quot;plugins&quot;: &quot;link&quot;, &quot;directionality&quot;: &quot;ltr&quot;, &quot;theme&quot;: &quot;modern&quot;, &quot;strict_loading_mode&quot;: 1, &quot;mode&quot;: &quot;exact&quot;, &quot;skin&quot;: &quot;light&quot;, &quot;toolbar&quot;: &quot;bold italic | link&quot;, &quot;menubar&quot;: false}" id="id_biography" name="biography" rows="10">&lt;p&gt;Stein Brothers&lt;/p&gt;&lt;p&gt;Although well known and with a following in the Greater Newark (New Jersey) Area, as North New Jersey natives, Asher (alto sax) and Alex (tenor sax) are still in their early twenties. They started their careers by playing in the late lamented Tuesday jam session at the old Peppermint Lounge in Orange, and have appeared in such venues as New Jersey PAC (Performing Arts Center- including the &quot;Absolut Sounds of the City &quot; Summer Festival), Kavehaz (Manhattan), the Carlyle Hotel (Manhattan), the South Orange &quot;Giants of Jazz&quot;, Cecil&#39;s Place (West Orange), Shanghai Jazz (Madison), the Crossroads (Garwood), Trumpet&#39;s (Montclair), Bula (Newton) and the Priory&#39;s (Newark) Friday night Jazz Series. &lt;/p&gt;&lt;p&gt;	Each Alex and Asher graduated with majors in Jazz Studies from the University of North Carolina at Chapel Hill.  Both me were awarded Burch Fellowships to study jazz- Asher studied Latin and Caribbean Music in Cuba in 2003 and Alex studied with top musicians and grammy award winning arranger Slide Hampton during the summer of 2002.&lt;/p&gt;&lt;p&gt;	 Alex and Asher are leaders of their own quintet, are members of the Bud Powell Tribute Sextet and frequently appear as members of the T.S. Monk Sextet.	&lt;/p&gt;&lt;p&gt;The Star Ledger newspaper in 2001 named Asher the youngest on its list of the 20 most promising jazz musicians in the State under forty, describing him as a &quot;fearless improviser.&quot; Alex appeared in the Star Ledger photo &quot;A Great Day in New Jersey.&quot;  In a November 3, 2003 review in the Newark Star Ledger, Zan Stewart, formerly the jazz critic with the Los Angeles Times, wrote of the Stein Brothers, in an article entitled &quot;Brothers In BeBop&quot;, as follows:&lt;/p&gt;&lt;p&gt;	&quot; . . . . they . . . display an impressive command of, and keen intuition for [bebop&#39;s] language [and] are capable of crafting solos and compositions packed with the kind of winsome lines and propulsive rhythms that make listeners pat their feet and nod their heads in appreciation.&quot; &lt;/p&gt;&lt;p&gt;Weblinks:&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;http://www.steinbrothersjazz.com&quot;&gt;www.steinbrothersjazz.com&lt;/a&gt;&lt;/p&gt;</textarea>
+              </div>
+          </div>
+          <div class="form-separator-light"></div>
+          <div class="form-group">
+              <label for="website">Website</label>
+              <input type="text" class="form-control" name="website" placeholder="http://...">
+          </div>
+          <div class="form-separator-light"></div>
+          <h2 class="edit-public-profile__heading">Photo</h2>
+          <div id="div_id_photo" class="form-group">
+              <label for="id_photo" class="control-label ">Photo (landscape-style JPG w/ instrument preferred)</label>
+              <div class="controls ">
+                  <div class="well">
+                      Currently:
+                      <a target="_blank" href="http://smallslivestatic.s3.amazonaws.com/images/SteinBrothers.jpg" class="img-thumbnail">
+                          <img src="http://104.131.108.76/nr55LCfcn7iRng0OCmFIwzRkWik=/100x0/http%3A//smallslivestatic.s3.amazonaws.com/images/SteinBrothers.jpg" alt="images/SteinBrothers.jpg" />
+                      </a>
+                      <div class="checkbox">
+                          <label for="photo-clear_id"><input type="checkbox" name="photo-clear" id="photo-clear_id">Delete this photo</label>
+                      </div>
+                      Change:
+                      <input type="file" name="photo">
+                  </div>
+              </div>
+          </div>
           <input type="submit" name="submit" class="admin-interface__form__button" value="Save">
       </form>
   </section>

@@ -134,3 +134,15 @@ input[type="submit"] {
     margin-left: 10px;
   }
 }
+
+.form-separator-light {
+  margin: 10px 0;
+  height: 1px;
+  background-color: #ddd;
+  width: 100%;
+}
+
+.form-group {
+  margin-top: 0;
+  margin-bottom: 0;
+}

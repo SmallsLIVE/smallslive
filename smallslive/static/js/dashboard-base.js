@@ -30,7 +30,7 @@ $(document).ready(function () {
 });
 
 
-/* Settings payment div reveal js */
+/* Settings payment div reveal Paypal js */
 $(document).ready(function () {
     if ($('input[name=payout_method]:checked').val() == "Check") {
         $("#paypal-info").css("display", "none");

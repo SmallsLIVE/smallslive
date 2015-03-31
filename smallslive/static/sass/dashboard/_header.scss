@@ -51,10 +51,19 @@
 
     & .dropdown-menu {
 
-    & li a {
-      color: #222;
+      & li {
+        background: none;
+      }
+
+      & li a {
+        color: #222;
+        
+        &:hover {
+          color: #222;
+          opacity: 0.8;
+        }
+      }
     }
-  }
   }
   
   &__logo {
