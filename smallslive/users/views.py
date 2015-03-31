@@ -83,8 +83,10 @@ login_view = LoginView.as_view()
 class HasArtistAssignedMixin(braces.views.UserPassesTestMixin):
     def test_func(self, user):
         self.logged_in = user.is_authenticated()
+        if not self.logged_in:
+            return False
         self.has_artist = user.artist_id is not None
-        return self.logged_in and self.has_artist
+        return self.has_artist
 
     def get_login_url(self):
         messages.error(self.request, 'You need to be an artist to access that part of the site.')
