@@ -91,7 +91,7 @@ confirm_email = ConfirmEmailView.as_view()
 
 class PasswordSetView(allauth_views.PasswordSetView):
     form_class = CompleteSignupForm
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('artist_dashboard:home')
     template_name = 'artist_registration/set_password.html'
 
 password_set = PasswordSetView.as_view()

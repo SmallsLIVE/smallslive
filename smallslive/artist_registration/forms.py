@@ -40,8 +40,8 @@ class InviteArtistForm(BaseSignupForm):
         adapter = get_adapter()
         user = adapter.new_user(request)
         user = adapter.save_user(request, user, self)
-        self.artist.user = user
-        self.artist.save()
+        user.artist = self.artist
+        user.save()
         self.custom_signup(request, user)
         # TODO: Move into adapter `save_user` ?
         setup_user_email(request, user, [])
