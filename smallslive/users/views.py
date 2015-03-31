@@ -2,8 +2,8 @@ from allauth.account import app_settings
 from allauth.account.forms import ChangePasswordForm
 from allauth.account.views import SignupView as AllauthSignupView, ConfirmEmailView as CoreConfirmEmailView,\
     LoginView as CoreLoginView
-from braces.views import UserPassesTestMixin
-from django.core.urlresolvers import reverse
+import braces.views
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -80,7 +80,12 @@ class LoginView(CoreLoginView):
 login_view = LoginView.as_view()
 
 
-class HasArtistAssignedMixin(UserPassesTestMixin):
+class LoginRequiredMixin(braces.views.LoginRequiredMixin):
+    def get_login_url(self):
+        return reverse('artist_dashboard:login')
+
+
+class HasArtistAssignedMixin(braces.views.UserPassesTestMixin):
     def test_func(self, user):
         return user.artist_id is not None
 
