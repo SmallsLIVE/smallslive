@@ -495,3 +495,8 @@ ELASTICSEARCH_FIELD_MAPPINGS = {
 }
 
 FACEBOOK_APP_ID = os.environ.get('FACEBOOK_APP_ID')
+
+COUNTRIES_FIRST = [
+    'US',
+    'GB',
+]
