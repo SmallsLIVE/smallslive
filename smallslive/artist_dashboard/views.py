@@ -14,7 +14,7 @@ from events.models import Recording
 import events.views as event_views
 import users.forms as user_forms
 from users.models import LegalAgreementAcceptance
-from users.views import HasArtistAssignedMixin, LoginRequiredMixin
+from users.views import HasArtistAssignedMixin
 from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm
 
 
@@ -71,7 +71,7 @@ class MyGigsView(ListView):
 my_gigs = MyGigsView.as_view()
 
 
-class DashboardView(LoginRequiredMixin, HasArtistAssignedMixin, TemplateView):
+class DashboardView(HasArtistAssignedMixin, TemplateView):
     template_name = 'artist_dashboard/home.html'
 
     def get_context_data(self, **kwargs):

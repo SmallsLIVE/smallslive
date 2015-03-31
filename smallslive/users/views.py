@@ -80,15 +80,15 @@ class LoginView(CoreLoginView):
 login_view = LoginView.as_view()
 
 
-class LoginRequiredMixin(braces.views.LoginRequiredMixin):
-    def get_login_url(self):
-        return reverse('artist_dashboard:login')
-
-
 class HasArtistAssignedMixin(braces.views.UserPassesTestMixin):
     def test_func(self, user):
-        return user.artist_id is not None
+        self.logged_in = user.is_authenticated()
+        self.has_artist = user.artist_id is not None
+        return self.logged_in and self.has_artist
 
     def get_login_url(self):
         messages.error(self.request, 'You need to be an artist to access that part of the site.')
-        return reverse('home')
+        if not self.logged_in:
+            return reverse('artist_dashboard:login')
+        else:
+            return reverse('home')
