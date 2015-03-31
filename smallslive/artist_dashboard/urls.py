@@ -10,5 +10,6 @@ urlpatterns = patterns('artist_dashboard.views',
     url(r'^settings/$', 'artist_settings', name='settings'),
     url(r'^my-gigs/$', 'my_gigs', name='my_gigs'),
     url(r'^legal-agreement/$', 'legal', name='legal'),
+    url(r'^login/$', 'login', name='login'),
     url(r'^$', 'dashboard', name='home'),
 )

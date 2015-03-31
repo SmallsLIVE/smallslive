@@ -1,10 +1,12 @@
 from django.contrib import messages
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from allauth.account.forms import ChangePasswordForm
+import allauth.account.views as allauth_views
 import artists.views as artist_views
 from events.models import Recording
 import events.views as event_views
@@ -149,3 +151,13 @@ def artist_settings(request):
         'artist_info_form': artist_info_form,
         'change_password_form': change_password_form,
     })
+
+
+class DashboardLoginView(allauth_views.LoginView):
+    success_url = reverse_lazy('artist_dashboard:home')
+    template_name = 'artist_dashboard/login.html'
+
+    def get_authenticated_redirect_url(self):
+        return reverse('artist_dashboard:home')
+
+login = DashboardLoginView.as_view()

@@ -15,6 +15,15 @@
   {% endblock extra_head %}
 </head>
 <body>
+<!-- ALERT TEST -->
+{% if messages %}
+{% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><i class="fa fa-close"></i></button>
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
 
 <!-- Dashboard navigation -->
 <nav class="navbar navbar-default" id="navbar">
@@ -45,12 +54,12 @@
               <span><i class="fa fa-caret-down"></i></span>
             </button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="userDropdown">
-              <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Log out</a></li>
+              <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url "account_logout" %}">Log out</a></li>
             </ul>
           </div>
         </li>
         <li class="navbar__item navbar__settings" data-step="6" data-intro="This takes you to your settings. Here you can edit your personal information, and of course provide us with information required for payouts."><a href="{% url "artist_dashboard:settings" %}"><i class="fa fa-gear"></i></a></li>
-        <li class="navbar__item visible-xs"><a href="#">Log out</a></li>
+        <li class="navbar__item visible-xs"><a href="{% url "account_logout" %}">Log out</a></li>
       </ul>
     </div>
   </div>
