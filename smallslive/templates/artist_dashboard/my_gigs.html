@@ -30,6 +30,13 @@
               </ul>
           </li>
           <li class="events__filters__group">
+              <ul>
+                  <li {% if request.GET.leader_filter %}class="active"{% endif %}>Leader status:</li>
+                  <li {% if request.GET.leader_filter == "true" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?leader_filter=true">Leader</a></li>
+                  <li {% if request.GET.leader_filter == "false" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?leader_filter=false">Sideman</a></li>
+              </ul>
+          </li>
+          <li class="events__filters__group">
               <a class="clear-toggle" href="{% url "artist_dashboard:my_gigs" %}"><i class="fa fa-remove"></i> Clear filters</a>
           </li>
       </ul>

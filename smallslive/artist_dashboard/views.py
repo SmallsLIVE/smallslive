@@ -46,8 +46,13 @@ class MyGigsView(ListView):
     def get_queryset(self):
         artist = self.request.user.artist
         queryset = artist.gigs_played.select_related('event').order_by('-event__start')
+        queryset = self.apply_filters(queryset)
+        return queryset
+
+    def apply_filters(self, queryset):
         audio_filter = self.request.GET.get('audio_filter')
         video_filter = self.request.GET.get('video_filter')
+        leader_filter = self.request.GET.get('leader_filter')
         if audio_filter and audio_filter in Recording.STATUS:
             if audio_filter == 'None':
                 queryset = queryset.filter(event__recordings=None)
@@ -66,6 +71,12 @@ class MyGigsView(ListView):
             elif video_filter == Recording.STATUS.Published:
                 queryset = queryset.filter(event__recordings__media_file__media_type='video',
                                            event__recordings__state=Recording.STATUS.Published)
+        elif leader_filter:
+            if leader_filter == 'true':
+                queryset = queryset.filter(is_leader=True)
+            else:
+                queryset = queryset.filter(is_leader=False)
+
         return queryset
 
 my_gigs = MyGigsView.as_view()
