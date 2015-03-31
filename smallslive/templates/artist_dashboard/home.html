@@ -216,7 +216,7 @@
               </div>
               <div class="upcoming-event__details col-xs-12 col-sm-9 col-lg-10">
                   <p class="upcoming-event__details__date">{{ event.listing_date|date:"n/j/Y" }}</p>
-                  <a href="#" class="upcoming-event__details__title">{{ event.full_title }}</a>
+                  <a href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}" class="upcoming-event__details__title">{{ event.full_title }}</a>
                   <p class="upcoming-event__details__label">With:</p>
                   <p class="upcoming-event__details__artists">
                     {% for gig_info in event.get_performers %}
