@@ -28,6 +28,7 @@
       </div>
   </section>
   <div id="event-media">
+  {% if audio %}
   <section class="event-media container">
       <h2 class="event-media__heading">Event audio:</h2>
       <ul class="event-media__list">
@@ -43,17 +44,17 @@
                       <p class="event-media__meta">{{ recording.media_file.size|filesizeformat }}</p>
                   </div>
               </div>
+            {% if is_leader %}
               <div class="event-media__controls col-xs-12 col-sm-4">
                   <a href="{{ recording.media_file.get_file_url }}" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
-                  {% if is_leader %}
                     <form action="{% url "artist_dashboard:recording_toggle" pk=recording.id %}" method="post" v-el="form_{{ recording.id }}">
                       <button class="event-media__control {$ published_{{ recording.id }} == 'Published' ? 'make-private' : 'publish' $}"
                          v-on="click: toggleState('{{ recording.id }}')"><span></span></button>
                       {% csrf_token %}
                       <input type="hidden" name="state" value="{{ recording.state }}" v-model="published_{{ recording.id }}" />
                     </form>
-                  {% endif %}
               </div>
+            {% endif %}
               <div class="event-media__player col-xs-12 col-sm-4">
                   <div class="jwplayer-placeholder" id="audio_{{ recording.id }}" data-audio="{{ recording.media_file.get_file_url }}">jwplayer goes here</div>
               </div>
@@ -61,6 +62,8 @@
         {% endfor %}
       </ul>
   </section>
+  {% endif %}
+  {% if video %}
   <section class="event-media container">
       <h2 class="event-media__heading">Event video:</h2>
       <ul class="event-media__list">
@@ -76,18 +79,17 @@
                       <p class="event-media__meta">{{ recording.media_file.size|filesizeformat }}</p>
                   </div>
               </div>
+            {% if is_leader %}
               <div class="event-media__controls col-xs-12 col-sm-4">
                   <a href="{{ recording.media_file.get_file_url }}" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
-                  {% if is_leader %}
                     <form action="{% url "artist_dashboard:recording_toggle" pk=recording.id %}" method="post" v-el="form_{{ recording.id }}">
                       <button class="event-media__control {$ published_{{ recording.id }} == 'Published' ? 'make-private' : 'publish' $}"
                          v-on="click: toggleState('{{ recording.id }}')"><span></span></button>
                       {% csrf_token %}
                       <input type="hidden" name="state" value="{{ recording.state }}" v-model="published_{{ recording.id }}" />
                     </form>
-                  {% endif %}
-
               </div>
+            {% endif %}
               {% comment %}
               <div class="event-media__player col-xs-12 col-sm-4">
                   <a href="#" class="event-media__download" data-target="#videoPlayerModal" data-toggle="modal"><i class="fa fa-play-circle"></i><span>Watch video</span></a>
@@ -97,6 +99,7 @@
         {% endfor %}
       </ul>
   </section>
+  {% endif %}
   </div>
   <section class="event-media artists-status container">
       <h2 class="event-media__heading">Contracts status:</h2>
