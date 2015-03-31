@@ -35,7 +35,6 @@ class Event(TimeStampedModel):
     date_freeform = models.TextField(blank=True)
     photo = models.ImageField(upload_to='event_images', max_length=150, blank=True)
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed', related_name='events')
-    recordings = models.ManyToManyField('multimedia.MediaFile', through='Recording')
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField(default=STATUS.Draft)
     slug = models.SlugField(blank=True, max_length=500)
@@ -197,6 +196,34 @@ class Event(TimeStampedModel):
     def has_started(self):
         return timezone.localtime(timezone.now()) > timezone.localtime(self.start)
 
+    @cached_property
+    def audio_status(self):
+        audio_count = self.recordings.audio().count()
+        print audio_count
+        if audio_count == 0:
+            status = "none"
+        else:
+            audio_published_count = self.recordings.all().audio().published().count()
+            if audio_published_count < audio_count:
+                status = "partial"
+            else:
+                status = "published"
+        return status
+
+    @cached_property
+    def video_status(self):
+        video_count = self.recordings.video().count()
+        print video_count
+        if video_count == 0:
+            status = "none"
+        else:
+            audio_published_count = self.recordings.all().video().published().count()
+            if audio_published_count < video_count:
+                status = "partial"
+            else:
+                status = "published"
+        return status
+
 
 class RecordingQuerySet(models.QuerySet):
     def video(self):
@@ -205,17 +232,27 @@ class RecordingQuerySet(models.QuerySet):
     def audio(self):
         return self.filter(media_file__media_type='audio')
 
+    def published(self):
+        return self.filter(state=Recording.STATUS.Published)
+
+    def hidden(self):
+        return self.filter(state=Recording.STATUS.Hidden)
+
+
+class RecordingManager(models.Manager.from_queryset(RecordingQuerySet)):
+    use_for_related_fields = True
+
 
 class Recording(models.Model):
     STATUS = Choices('Published', 'Hidden')
 
     media_file = models.ForeignKey('multimedia.MediaFile', related_name='recording')
-    event = models.ForeignKey(Event, related_name='recordings_info')
+    event = models.ForeignKey(Event, related_name='recordings')
     title = models.CharField(max_length=150, blank=True)
     set_number = models.IntegerField(default=1)
     state = StatusField(default=STATUS.Published)
 
-    objects = RecordingQuerySet.as_manager()
+    objects = RecordingManager()
 
     class Meta:
         ordering = ['set_number']

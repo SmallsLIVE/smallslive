@@ -59,14 +59,14 @@
               </div>
               <div class="col-xs-12 col-sm-4 col-md-3 event-row__info">
                   <div class="col-xs-4 event-row__info__audio">
-                      <i class="fa fa-volume-down processing"></i>
+                      <i class="fa fa-volume-down {{ event.audio_status }}"></i>
                       <p class="event-row__info__label">Event audio</p>
-                      <p class="event-row__info__status processing">Processing</p>
+                      <p class="event-row__info__status {{ event.audio_status }}">{{ event.audio_status|capfirst }}</p>
                   </div>
                   <div class="col-xs-4 event-row__info__video">
-                      <i class="fa fa-video-camera processing"></i>
+                      <i class="fa fa-video-camera {{ event.video_status }}"></i>
                       <p class="event-row__info__label">Event video</p>
-                      <p class="event-row__info__status processing">Processing</p>
+                      <p class="event-row__info__status {{ event.video_status }}">{{ event.video_status|capfirst }}</p>
                   </div>
                   {% if gig_info.is_leader %}
                       <a class="col-xs-4 event-row__info__edit-button" href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">

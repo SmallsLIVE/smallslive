@@ -154,7 +154,7 @@
       padding: 7px;
       margin-bottom: 6px;
 
-      &.processing {
+      &.none {
         color: #ccc;
       }
 
@@ -162,7 +162,11 @@
         color: #468C00;
       }
 
-      &.private {
+      &.partial {
+        color: #85f000;
+      }
+
+      &.hidden {
         color: #D21333;
       }
     }
@@ -181,7 +185,7 @@
       color: #777;
       display: block;
 
-      &.processing {
+      &.none {
         color: #ccc;
       }
 
@@ -189,7 +193,11 @@
         color: #468C00;
       }
 
-      &.private {
+      &.partial {
+        color: #85f000;
+      }
+
+      &.hidden {
         color: #D21333;
       }
     }

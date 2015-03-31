@@ -145,7 +145,7 @@
     Vue.config.debug = true;
     Vue.config.delimiters = ['{$', '$}'];
     var data = {
-    {% for recording in event.recordings_info.all %}
+    {% for recording in event.recordings.all %}
       published_{{ recording.id }}: '{{ recording.state }}'{% if not forloop.last %},{% endif %}
     {% endfor %}
     };
