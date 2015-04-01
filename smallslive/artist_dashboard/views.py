@@ -15,7 +15,7 @@ import events.views as event_views
 import users.forms as user_forms
 from users.models import LegalAgreementAcceptance
 from users.views import HasArtistAssignedMixin
-from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm
+from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm, EditProfileForm
 
 
 class MyGigsView(ListView):
@@ -104,6 +104,7 @@ dashboard = DashboardView.as_view()
 
 
 class EditProfileView(artist_views.ArtistEditView):
+    form_class = EditProfileForm
     template_name = 'artist_dashboard/edit_profile.html'
 
     def get_object(self, queryset=None):

@@ -4,6 +4,7 @@ from django_countries import countries
 import floppyforms
 from localflavor.us.forms import USStateField
 from localflavor.us.us_states import STATE_CHOICES
+from artists.forms import ArtistAddForm
 from events import forms as event_forms
 from events.forms import Formset
 from events.models import Event
@@ -66,3 +67,11 @@ class ArtistInfoForm(forms.ModelForm):
             if cleaned_data.get('paypal_email') != cleaned_data.get('paypal_email_again'):
                 raise forms.ValidationError(u'The two email addresses must match.')
         return cleaned_data
+
+
+class EditProfileForm(ArtistAddForm):
+    def __init__(self, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        for field in self.Meta.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
+        self.fields['salutation'].widget.attrs['class'] = 'form-control selectpicker'

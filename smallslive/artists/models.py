@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Sum, Count
 from django.utils.text import slugify
+from model_utils import Choices
 from sortedm2m.fields import SortedManyToManyField
 from tinymce import models as tinymce_models
 from events.models import Event, GigPlayed
@@ -11,9 +12,11 @@ from users.models import SmallsEmailAddress
 
 
 class Artist(models.Model):
+    SALUTATIONS = Choices('Mr.', 'Mrs.', 'Ms.')
+
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    salutation = models.CharField(max_length=255, blank=True)
+    salutation = models.CharField(choices=SALUTATIONS, max_length=255, blank=True)
     instruments = SortedManyToManyField('Instrument', blank=True, related_name='artists')
     biography = tinymce_models.HTMLField(blank=True)
     website = models.CharField(max_length=255, blank=True)
