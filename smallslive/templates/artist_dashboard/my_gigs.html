@@ -16,24 +16,24 @@
           <li class="events__filters__group">
               <ul>
                   <li {% if request.GET.audio_filter %}class="active"{% endif %}>Audio:</li>
-                  <li {% if request.GET.audio_filter == "Published" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?audio_filter=Published">Published</a></li>
-                  <li {% if request.GET.audio_filter == "Hidden" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?audio_filter=Hidden">Private</a></li>
-                  <li {% if request.GET.audio_filter == "None" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?audio_filter=None">Not available</a></li>
+                  <li {% if request.GET.audio_filter == "Published" %}class="active"{% endif %}><a href="{% add_get audio_filter="Published" %}">Published</a> {% if request.GET.audio_filter == "Published" %}<a href="{% add_get audio_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
+                  <li {% if request.GET.audio_filter == "Hidden" %}class="active"{% endif %}><a href="{% add_get audio_filter="Hidden" %}">Private</a> {% if request.GET.audio_filter == "Hidden" %}<a href="{% add_get audio_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
+                  <li {% if request.GET.audio_filter == "None" %}class="active"{% endif %}><a href="{% add_get audio_filter="None" %}">Not available</a> {% if request.GET.audio_filter == "None" %}<a href="{% add_get audio_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
               </ul>
           </li>
           <li class="events__filters__group">
               <ul>
                   <li {% if request.GET.video_filter %}class="active"{% endif %}>Video:</li>
-                  <li {% if request.GET.video_filter == "Published" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?video_filter=Published">Published</a></li>
-                  <li {% if request.GET.video_filter == "Hidden" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?video_filter=Hidden">Private</a></li>
-                  <li {% if request.GET.video_filter == "None" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?video_filter=None">Not available</a></li>
+                  <li {% if request.GET.video_filter == "Published" %}class="active"{% endif %}><a href="{% add_get video_filter="Published" %}">Published</a> {% if request.GET.video_filter == "Published" %}<a href="{% add_get video_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
+                  <li {% if request.GET.video_filter == "Hidden" %}class="active"{% endif %}><a href="{% add_get video_filter="Hidden" %}">Private</a> {% if request.GET.video_filter == "Hidden" %}<a href="{% add_get video_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
+                  <li {% if request.GET.video_filter == "None" %}class="active"{% endif %}><a href="{% add_get video_filter="None" %}">Not available</a> {% if request.GET.video_filter == "None" %}<a href="{% add_get video_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
               </ul>
           </li>
           <li class="events__filters__group">
               <ul>
                   <li {% if request.GET.leader_filter %}class="active"{% endif %}>Leader status:</li>
-                  <li {% if request.GET.leader_filter == "true" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?leader_filter=true">Leader</a></li>
-                  <li {% if request.GET.leader_filter == "false" %}class="active"{% endif %}><a href="{% url "artist_dashboard:my_gigs" %}?leader_filter=false">Sideman</a></li>
+                  <li {% if request.GET.leader_filter == "true" %}class="active"{% endif %}><a href="{% add_get leader_filter="true" %}">Leader</a> {% if request.GET.leader_filter == "true" %}<a href="{% add_get leader_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
+                  <li {% if request.GET.leader_filter == "false" %}class="active"{% endif %}><a href="{% add_get leader_filter="false" %}">Sideman</a> {% if request.GET.leader_filter == "false" %}<a href="{% add_get leader_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
               </ul>
           </li>
           <li class="events__filters__group">

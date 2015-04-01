@@ -36,7 +36,11 @@ class AddGetParameter(Node):
         req = resolve_variable('request', context)
         params = req.GET.copy()
         for key, value in self.values.items():
-            params[key] = value.resolve(context)
+            val = value.resolve(context)
+            if val:
+                params[key] = val
+            else:
+                del params[key]
         return '?%s' % params.urlencode()
 
 

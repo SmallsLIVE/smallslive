@@ -242,6 +242,7 @@ class RecordingManager(models.Manager.from_queryset(RecordingQuerySet)):
 
 class Recording(models.Model):
     STATUS = Choices('Published', 'Hidden')
+    FILTER_STATUS = STATUS + ['None']
 
     media_file = models.ForeignKey('multimedia.MediaFile', related_name='recording')
     event = models.ForeignKey(Event, related_name='recordings')
@@ -256,6 +257,9 @@ class Recording(models.Model):
 
     def is_published(self):
         return self.state == self.STATUS.Published
+
+    def is_valid_status(self, status):
+        return status in self.STATUS or status == "None"
 
 
 class EventType(models.Model):

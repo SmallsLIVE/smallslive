@@ -45,39 +45,39 @@ class MyGigsView(ListView):
 
     def get_queryset(self):
         artist = self.request.user.artist
-        queryset = artist.gigs_played.select_related('event').order_by('-event__start')
-        queryset = self.apply_filters(queryset)
+        queryset = artist.gigs_played.select_related('event')
+        queryset = self.apply_filters(queryset).order_by('-event__start')
         return queryset
 
     def apply_filters(self, queryset):
         audio_filter = self.request.GET.get('audio_filter')
         video_filter = self.request.GET.get('video_filter')
         leader_filter = self.request.GET.get('leader_filter')
-        if audio_filter and audio_filter in Recording.STATUS:
+        if audio_filter and audio_filter in Recording.FILTER_STATUS:
             if audio_filter == 'None':
-                queryset = queryset.filter(event__recordings=None)
+                queryset = queryset.exclude(event__recordings__media_file__media_type='audio')
             elif audio_filter == Recording.STATUS.Hidden:
                 queryset = queryset.filter(event__recordings__media_file__media_type='audio',
                                            event__recordings__state=Recording.STATUS.Hidden)
             elif audio_filter == Recording.STATUS.Published:
                 queryset = queryset.filter(event__recordings__media_file__media_type='audio',
                                            event__recordings__state=Recording.STATUS.Published)
-        elif video_filter and video_filter in Recording.STATUS:
+        if video_filter and video_filter in Recording.FILTER_STATUS:
             if video_filter == 'None':
-                queryset = queryset.filter(event__recordings=None)
+                queryset = queryset.exclude(event__recordings__media_file__media_type='video')
             elif video_filter == Recording.STATUS.Hidden:
                 queryset = queryset.filter(event__recordings__media_file__media_type='video',
                                            event__recordings__state=Recording.STATUS.Hidden)
             elif video_filter == Recording.STATUS.Published:
                 queryset = queryset.filter(event__recordings__media_file__media_type='video',
                                            event__recordings__state=Recording.STATUS.Published)
-        elif leader_filter:
+        if leader_filter:
             if leader_filter == 'true':
                 queryset = queryset.filter(is_leader=True)
             else:
                 queryset = queryset.filter(is_leader=False)
 
-        return queryset
+        return queryset.distinct()
 
 my_gigs = MyGigsView.as_view()
 
