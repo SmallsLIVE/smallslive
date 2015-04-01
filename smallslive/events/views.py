@@ -305,6 +305,8 @@ class EventCarouselAjaxView(AJAXMixin, ListView):
             end_range_date = date + timedelta(days=1)
             print end_range_date
             events = Event.objects.filter(start__range=(date, end_range_date)).order_by('start')
+            if not self.request.user.is_staff:
+                events = events.exclude(state=Event.STATUS.Draft)
             return events
         return Event.objects.none()
 
