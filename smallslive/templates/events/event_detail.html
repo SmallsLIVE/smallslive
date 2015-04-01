@@ -42,7 +42,7 @@
             {% if event.is_cancelled %}<span class="event__cancelled-ribbon">cancelled</span>{% endif %}
             <p class="event-heading__date">{{ event.listing_date|date:"l, F j, Y" }}</p>
             <p class="event-heading__timeslot">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</p>
-            <h1 class="event-heading__title">{{ event.title }}</h1>
+            <h1 class="event-heading__title">{{ event.title }} {% if request.user.is_staff %}(ID: {{ event.id }}){% endif %}</h1>
             <p class="event-heading__subtitle">{{ event.subtitle }}</p>
 
             <div class="artists">
