@@ -1,0 +1,44 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block schedule_nav_active %}active{% endblock %}
+
+{% block content %}
+
+  <div class="content-wrapper">
+    <div class="event container">
+      <div class="equal-heights row">
+        <section class="event-artists col-md-12">
+          <form action="" method="get">
+            {{ filter.form.as_p }}
+            <input type="submit" />
+          </form>
+          <div class="artists">
+            {% for artist in artists %}
+              <div class="mini-artist">
+                <div class="mini-artist__image">
+                  {% if artist.photo %}
+                    <a href="{{ artist.get_absolute_url }}"><img
+                            src="{% thumbor_url artist.photo.url|urlencode height=80 width=80 smart=True %}"
+                            alt="{{ artist.full_name }} photo"/></a>
+                  {% else %}
+                    <a href="{{ artist.get_absolute_url }}"><img
+                            src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
+                  {% endif %}
+                </div>
+                <div class="mini-artist-info">
+                  <h2 class="mini-artist-info__title"><a
+                          href="{{ artist.get_absolute_url }}">{{ artist.full_name }}</a></h2>
+                  <p class="mini-artist-info__instrument">{{ artist.instruments.all }}</p>
+                  <a class="mini-artist-info__button" href="{% url "artist_edit" pk=artist.id slug=artist.slug %}">Edit
+                    artist</a><span class="arrow"></span>
+                </div>
+              </div>
+            {% empty %}
+              <p class="artist-events__notice">There is no performer data available.</p>
+            {% endfor %}
+          </div>
+        </section>
+      </div>
+{% endblock content %}
