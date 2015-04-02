@@ -15,6 +15,7 @@ django-braces==1.4.0
 django-compressor==1.4
 django-countries==3.3
 django-crispy-forms==1.4.0
+git+https://github.com/pydanny/dj-stripe.git@0.4.0beta#egg=dj-stripe
 django-extensions==1.4.8
 django-extra-views==0.6.4
 django-filer==0.9.9
@@ -30,6 +31,7 @@ django-pipeline==1.4.6
 django-polymorphic==0.6.1
 django-sortedm2m==0.8.1
 django-storages==1.1.8
+dj-stripe==0.3.5
 django-tables2==0.15.0
 django-thumbor==0.5
 django-tinymce==1.5.3
@@ -56,12 +58,13 @@ purl==1.0.3
 pycrypto==2.6.1
 pystache==0.5.4
 pytz==2014.10
-requests==2.5.3
+requests==2.6.0
 requests-oauthlib==0.4.2
 six==1.9.0
 sorl-thumbnail==11.12.1b
 sqlparse==0.1.14
 static==1.1.1
+stripe==1.22.1
 static3==0.5.1
 urllib3==1.10.1
 whitenoise==1.0.6
