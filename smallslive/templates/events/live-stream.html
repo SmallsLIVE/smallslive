@@ -24,9 +24,12 @@
         <div class="live-stream row">
         {% if user.is_authenticated %}
           <div class="bw-wrapper" style="height: 480px">
-            <iframe class="live-stream__player" width="720" height="480"
-                    src="http://smallslive.live-s.cdn.bitgravity.com:1935/content:cdn-live/smallslive/secure/live/multibitrate.smil?e=1423210977&amp;h=0e4558f0844e201c4fa50ac50007e285&amp;bgsecuredir=1&amp;height=480&amp;width=720&amp;DefaultRatio=1.33&amp;VideoFit=stretch&amp;BufferTime=4" frameborder="0"
-                    allowfullscreen></iframe>
+            <div id="bg_player_location">
+            <a href="http://www.adobe.com/go/getflashplayer">
+            <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif"
+            alt="Get Adobe Flash player" />
+            </a>
+            </div>
           </div>
         {% endif %}
           <div class="live-stream__header col-xs-12">
@@ -90,4 +93,25 @@
         LiveStream.init("{{ events.0.start.isoformat }}", "{{ events.0.end.isoformat }}");
     {% endif %}
   </script>
+  <script type="text/javascript"
+src="http://player.bc.cdn.bitgravity.com/10/jquery.js"></script>
+<script type="text/javascript"
+src="http://player.bc.cdn.bitgravity.com/10/functions.js"></script>
+<script type="text/javascript"
+src="http://player.bc.cdn.bitgravity.com/10/swfobject.js"></script>
+<script type="text/javascript">
+var flashVars = {};
+flashVars.File =
+"http://smallslive.live.cdn.bitgravity.com/smallslive/secure/live/feed01?e=1427849625%26h=2e189e9817dba790ec5697a81e93ed4d";
+flashVars.Mode = "live";
+flashVars.AutoPlay = "true";
+flashVars.streamType = "live";
+flashVars.ForceReconnect = "0";
+var params = {};
+params.allowFullScreen = "true";
+params.allowScriptAccess = "always";
+swfobject.embedSWF(info.BitGravityswf, "bg_player_location", "640",
+"500", info.swfVersionStr, info.xiSwfUrlStr, flashVars, params,
+attributes);
+</script>
 {% endblock %}
