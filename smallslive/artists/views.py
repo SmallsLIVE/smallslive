@@ -1,17 +1,21 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.detail import DetailView
-from braces.views import LoginRequiredMixin, UserPassesTestMixin
+from braces.views import LoginRequiredMixin, UserPassesTestMixin, StaffuserRequiredMixin
+from django_filters.views import FilterView
 from haystack.inputs import Exact
 from haystack.query import SearchQuerySet, RelatedSearchQuerySet
 from haystack.views import FacetedSearchView, SearchView
 from events.models import Event
 from search.utils import facets_by_model_name
 from .forms import ArtistAddForm, ArtistInviteForm, ArtistSearchForm
+from .filters import ArtistFilter
 from .models import Artist, Instrument
 
 
@@ -83,6 +87,16 @@ class ArtistDetailView(DetailView):
         return context
 
 artist_detail = ArtistDetailView.as_view()
+
+
+class ArtistFilterView(StaffuserRequiredMixin, FilterView):
+    context_object_name = 'artists'
+    filterset_class = ArtistFilter
+    paginate_by = 30
+    template_name = 'artists/artist_list.html'
+
+
+artist_list = ArtistFilterView.as_view()
 
 
 class ArtistSearchView(SearchView):
