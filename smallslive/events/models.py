@@ -13,10 +13,10 @@ from tinymce import models as tinymce_models
 
 class EventQuerySet(models.QuerySet):
     def upcoming(self):
-        return self.filter(start__gte=timezone.now()).order_by('-start')
+        return self.filter(start__gte=timezone.now()).order_by('start')
 
     def past(self):
-        return self.filter(start__lt=timezone.now()).order_by('start')
+        return self.filter(start__lt=timezone.now()).order_by('-start')
 
 
 class Event(TimeStampedModel):
