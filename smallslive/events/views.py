@@ -2,8 +2,10 @@ from collections import OrderedDict
 from itertools import groupby
 from operator import itemgetter, attrgetter
 import calendar
+import hashlib
 import monthdelta
 import json
+import time
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponseRedirect, HttpResponse
@@ -336,6 +338,9 @@ class LiveStreamView(ListView):
         tomorrow = timezone.localtime(timezone.now()) + timedelta(days=1)
         tomorrow = tomorrow.replace(hour=6)
         context['show_next_day'] = Event.objects.filter(start__gte=tomorrow).order_by('start').first()
+        context['stream_expire'] = int(time.time()) + 10
+        context['stream_hash'] = hashlib.md5("{0}{1}?e={2}".format(settings.BITGRAVITY_SECRET, "/smallslive/secure/",
+                                                                   context['stream_expire'])).hexdigest()
         return context
 
 live_stream = LiveStreamView.as_view()
