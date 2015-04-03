@@ -1,5 +1,7 @@
 {% load pipeline %}
 {% load static from staticfiles %}
+{% load thumbor_tags %}
+
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -50,7 +52,11 @@
           <div class="dropdown">
             <button class="navbar__user__button dropdown-toggle" type="button" id="userDropdown" data-toggle="dropdown"
                     aria-expanded="true">
-              <img class="navbar__user__image" src="{% static 'image/dashboard/user-image.jpg' %}">
+              {% if request.user.artist.photo %}
+                <img class="navbar__user__image" src="{% thumbor_url request.user.artist.photo.url|urlencode height=40 width=40 smart=True %}" alt=""/>
+              {% else %}
+                <img class="navbar__user__image" src="{% static 'image/dashboard/user-image.jpg' %}">
+              {% endif %}
               <span><i class="fa fa-caret-down"></i></span>
             </button>
             <ul class="dropdown-menu" role="menu" aria-labelledby="userDropdown">
