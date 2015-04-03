@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_extensions',
     'django_thumbor',
+    'djstripe',
     'easy_thumbnails',
     'filer',
     'floppyforms',
@@ -390,8 +391,36 @@ HAYSTACK_CONNECTIONS = {
 }
 
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
+STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 STRIPE_CURRENCY = 'USD'
+
+DJSTRIPE_PLANS = {
+    "bronze": {
+        "stripe_plan_id": "bronze",
+        "name": "Bronze ($15/month)",
+        "description": "Bronze plan: livestream only",
+        "price": 1500,  # $15.00
+        "currency": "usd",
+        "interval": "month"
+    },
+    "silver": {
+        "stripe_plan_id": "silver",
+        "name": "Silver ($40/month)",
+        "description": "Silver plan: live stream + SD videos",
+        "price": 4000,  # $40.00
+        "currency": "usd",
+        "interval": "month"
+    },
+    "gold": {
+        "stripe_plan_id": "gold",
+        "name": "Gold ($60/month)",
+        "description": "Gold plan: live stream + SD and HD videos",
+        "price": 6000,  # $60.00
+        "currency": "usd",
+        "interval": "month"
+    },
+}
 
 OSCAR_DEFAULT_CURRENCY = 'USD'
 OSCAR_SHOP_NAME = 'SmallsLIVE'
