@@ -18,7 +18,7 @@ from users.views import HasArtistAssignedMixin
 from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm, EditProfileForm
 
 
-class MyGigsView(ListView):
+class MyGigsView(HasArtistAssignedMixin, ListView):
     context_object_name = 'gigs'
     paginate_by = 15
     template_name = 'artist_dashboard/my_gigs.html'
@@ -103,7 +103,7 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
 dashboard = DashboardView.as_view()
 
 
-class EditProfileView(artist_views.ArtistEditView):
+class EditProfileView(HasArtistAssignedMixin, artist_views.ArtistEditView):
     form_class = EditProfileForm
     template_name = 'artist_dashboard/edit_profile.html'
 
@@ -116,7 +116,7 @@ class EditProfileView(artist_views.ArtistEditView):
 edit_profile = EditProfileView.as_view()
 
 
-class EventDetailView(event_views.EventDetailView):
+class EventDetailView(HasArtistAssignedMixin, event_views.EventDetailView):
     template_name = 'artist_dashboard/event_detail.html'
 
     def get_context_data(self, **kwargs):
@@ -129,7 +129,7 @@ class EventDetailView(event_views.EventDetailView):
 event_detail = EventDetailView.as_view()
 
 
-class EventEditView(event_views.EventEditView):
+class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
     form_class = EventEditForm
     template_name = 'artist_dashboard/event_edit.html'
 
@@ -143,7 +143,7 @@ class EventEditView(event_views.EventEditView):
 event_edit = EventEditView.as_view()
 
 
-class ToggleRecordingStateView(UpdateView):
+class ToggleRecordingStateView(HasArtistAssignedMixin, UpdateView):
     form_class = ToggleRecordingStateForm
     model = Recording
     success_url = '/'
