@@ -23,7 +23,7 @@
       <section class="container">
         <div class="live-stream row">
         {% if user.is_authenticated %}
-          <div class="bw-wrapper" style="height: 480px">
+          <div>
             <iframe width="720" height="480"
                     src="http://smallslive.live-s.cdn.bitgravity.com:1935/content:cdn-live/smallslive/secure/live/multibitrate.smil?e={{ stream_expire }}&h={{ stream_hash }}&bgsecuredir=1"></iframe>
 
@@ -31,7 +31,7 @@
         {% endif %}
           <div class="live-stream__header col-xs-12">
             {% if events and events.0.has_started %}<p class="live-stream__title">Live now:</p>{% endif %}
-            <p class="live-stream__title--no-show" {% if events and events.0.has_started %}style="display:none;"{% endif %}>There’s no live show currently going on. Next show starts at {{ show_next_day.start|date:"g:i A" }} EST.</p>
+            <p class="live-stream__title--no-show" {% if events and events.0.has_started %}style="display:none;"{% endif %}>There is currently no live show being broadcast.  Our next live broadcast is at {{ show_next_day.start|date:"g:i A" }} EST.</p>
           </div>
         </div>
         {% if events and events.0.has_started %}

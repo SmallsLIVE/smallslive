@@ -19,6 +19,12 @@
     width: 720px;
     display: block;
   }
+
+  & iframe {
+    display: block;
+    margin: 0 auto;
+    border: none;
+  }
 }
 
 .live-stream-info {
