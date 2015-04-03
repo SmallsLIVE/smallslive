@@ -16,8 +16,7 @@ class Command(NoArgsCommand):
         count = 0
         for event in Event.objects.all():
             for set_num in range(1, 7):
-                filename = '{0.year}-{0.month}-{0.day}/{1}-{2}.mp4'.format(event.listing_date(), event.id, set_num)
-                print filename
+                filename = '{0.year}-{0.month:02}-{0.day:02}/{1}-{2}.mp4'.format(event.listing_date(), event.id, set_num)
                 key = bucket.get_key(filename)
                 if key:
                     try:
@@ -30,9 +29,10 @@ class Command(NoArgsCommand):
                         recording.media_file = media_file
                         recording.save()
                         files_imported += 1
+                        print "{0} imported".format(filename)
 
                 count += 1
-                if count % 500 == 0:
+                if count % 50 == 0:
                     print count
 
         self.stdout.write("{0} files imported".format(files_imported))
