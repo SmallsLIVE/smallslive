@@ -23,11 +23,7 @@
       <section class="container">
         <div class="live-stream row">
         {% if user.is_authenticated %}
-          <div>
-            <iframe id="stream-iframe" width="640" height="380"
-                    src="http://smallslive.live-s.cdn.bitgravity.com:1935/content:cdn-live/smallslive/secure/live/multibitrate.smil?e={{ stream_expire }}&h={{ stream_hash }}&bgsecuredir=1"></iframe>
-
-          </div>
+          <div id="jwplayer-placeholder"></div>
         {% endif %}
           <div class="live-stream__header col-xs-12">
             {% if events and events.0.has_started %}<p class="live-stream__title">Live now:</p>{% endif %}
@@ -81,30 +77,31 @@
       {% endif %}
       </section>
     </div>
-
-<script type="text/javascript" src="http://player.bc.cdn.bitgravity.com/10/jquery.js"></script>
-<script type="text/javascript" src="http://player.bc.cdn.bitgravity.com/10/functions.js"></script>
-<script type="text/javascript" src="http://player.bc.cdn.bitgravity.com/10/swfobject.js"></script>
-<script type="text/javascript">
-var flashVars = {};
-flashVars.File = "http://smallslive.live.cdn.bitgravity.com/smallslive/secure/live/feed01?e=1427849625%26h=2e189e9817dba790ec5697a81e93ed4d";
-flashVars.Mode = "live";
-flashVars.AutoPlay = "true";
-flashVars.streamType = "live";
-flashVars.ForceReconnect = "0";
-var params = {};
-params.allowFullScreen = "true";
-params.allowScriptAccess = "always";
-swfobject.embedSWF(info.BitGravityswf, "bg_player_location", "640", "500", info.swfVersionStr, info.xiSwfUrlStr, flashVars, params, attributes);
-</script>
-{% endblock %}
+  {% endblock %}
 
 {% block extra_js %}
+  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   <script src="{% static "js/live-stream.js" %}"></script>
   <script>
     {% if events and events.0.has_started %}
         LiveStream.init("{{ events.0.start.isoformat }}", "{{ events.0.end.isoformat }}");
     {% endif %}
   </script>
-
+    <script>
+    /* Emulate image cover css effect on event image */
+    $(document).ready(function () {
+        jwplayer('jwplayer-placeholder').setup({
+          file: "http://smallslive.live-s.cdn.bitgravity.com/cdn-live/_definst_/smallslive/secure/live/multibitrate.smil/playlist.m3u8?e={{ stream_expire }}&h={{ stream_hash }}&bgsecuredir=1",
+          width: "60%",
+          aspectratio: "4:3",
+          androidhls: true,
+          hlslabels: {
+            "64": "Audio",
+            "323": "Low",
+            "628": "Medium",
+            "1128": "High"
+          }
+        });
+    })
+  </script>
 {% endblock %}
