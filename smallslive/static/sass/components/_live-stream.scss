@@ -19,12 +19,6 @@
     width: 720px;
     display: block;
   }
-
-  & iframe {
-    display: block;
-    margin: 0 auto;
-    border: none;
-  }
 }
 
 .live-stream-info {
@@ -119,3 +113,10 @@
     margin-top: 20px;
   }
 }
+
+
+#stream-iframe {
+    display: block;
+    margin: 0 auto;
+    border: none;
+  }

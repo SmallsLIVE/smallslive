@@ -24,7 +24,7 @@
         <div class="live-stream row">
         {% if user.is_authenticated %}
           <div>
-            <iframe width="720" height="480"
+            <iframe id="stream-iframe" width="640" height="380"
                     src="http://smallslive.live-s.cdn.bitgravity.com:1935/content:cdn-live/smallslive/secure/live/multibitrate.smil?e={{ stream_expire }}&h={{ stream_hash }}&bgsecuredir=1"></iframe>
 
           </div>
