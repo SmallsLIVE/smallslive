@@ -6,7 +6,161 @@
 
 {% block content %}
 
-  <div class="content-wrapper">
+    <div class="content-wrapper">
+        <section class="page-heading container">
+            <h1>Artists list:</h1>
+        </section>
+        <section class="artists-list__search">
+            <form>
+                <span class="artists-list__search__heading">Search:</span>
+                <input type="search" name="search-term" class="form-control search" placeholder="Search by name">
+                <input type="submit" value="Search">
+            </form>
+        </section>
+        <section class="artists-list__filters">
+            <form>
+                <ul>
+                    <li class="artists-list__filters__group">
+                        <span>Instrument:</span>
+                        <select class="form-control selectpicker" name="filter_option">
+                            <option><span class="filter-disabled">Disabled</span></option>
+                            <option>Female Vocalist</option>
+                            <option>Sax</option>
+                            <option>Piano</option>
+                        </select>
+                    </li>
+                    <li class="artists-list__filters__group">
+                        <span>Invited:</span>
+                        <select class="form-control selectpicker" name="filter_option">
+                            <option><span class="filter-disabled">Disabled</span></option>
+                            <option>Yes</option>
+                            <option>No</option>
+                        </select>
+                    </li>
+                    <li class="artists-list__filters__group">
+                        <span>Registered:</span>
+                        <select class="form-control selectpicker" name="filter_option">
+                            <option><span class="filter-disabled">Disabled</span></option>
+                            <option>Yes</option>
+                            <option>No</option>
+                        </select>
+                    </li>
+                    <li class="artists-list__filters__group">
+                        <span>Signed:</span>
+                        <select class="form-control selectpicker" name="filter_option">
+                            <option><span class="filter-disabled">Disabled</span></option>
+                            <option>Yes</option>
+                            <option>No</option>
+                        </select>
+                    </li>
+                    <li class="artists-list__filters__group">
+                        <span>Has photo:</span>
+                        <select class="form-control selectpicker" name="filter_option">
+                            <option><span class="filter-disabled">Disabled</span></option>
+                            <option>Yes</option>
+                            <option>No</option>
+                        </select>
+                    </li>
+                    <li class="artists-list__filters__group">
+                        <input type="submit" value="Apply">
+                    </li>
+                </ul>
+            </form>
+        </section>
+        <section class="artists-list__list container">
+            <div class="artists-list__list__header row">
+                <div class="hidden-xs col-sm-2 col-md-1">
+                    Image
+                </div>
+                <div class="col-xs-5 col-sm-4 col-md-3">
+                    Name
+                </div>
+                <div class="col-xs-4 col-sm-3 col-md-2">
+                    Instrument
+                </div>
+                <div class="hidden-xs hidden-sm col-md-4 artists-list__list__states">
+                    <div class="artists-list__list__state">Shows</div>
+                    <div class="artists-list__list__state">Invited</div>
+                    <div class="artists-list__list__state">Registered</div>
+                    <div class="artists-list__list__state">Signed</div>
+                    <div class="artists-list__list__state">Photo</div>
+                </div>
+                <div class="col-xs-3 col-sm-3 col-md-2 artists-list__list__actions">
+                    Action(s)
+                </div>
+            </div>
+            <ul>
+                {% for artist in artists %}
+                    <li class="artists-list__list__row row">
+                        <div class="hidden-xs col-sm-2 col-md-1 artists-list__list__image">
+                            {% if artist.photo %}
+                                <img src="{% thumbor_url artist.photo.url|urlencode height=40 width=40 smart=True %}" alt="{{ artist.full_name }} photo"/>
+                            {% else %}
+                                <img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt="No photo available"/>
+                            {% endif %}
+                        </div>
+                        <div class="col-xs-5 col-sm-4 col-md-3 artists-list__list__name">
+                            {{ artist.full_name }}
+                        </div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 artists-list__list__instrument">
+                            {{ artist.instruments.all|join:" , " }}
+                        </div>
+                        <div class="hidden-xs hidden-sm col-md-4 artists-list__list__states">
+                            <div class="artists-list__list__state">{{ artist.events.count }}</div>
+                            <div class="artists-list__list__state true"><i class="fa fa-check-circle"></i></div>
+                            <div class="artists-list__list__state"><i class="fa fa-times-circle"></i></div>
+                            <div class="artists-list__list__state"><i class="fa fa-times-circle"></i></div>
+                            {% if artist.photo %}
+                                <div class="artists-list__list__state true"><i class="fa fa-check-circle"></i></div>
+                            {% else %}
+                                <div class="artists-list__list__state"><i class="fa fa-times-circle"></i></div>
+                            {% endif %}
+                        </div>
+                        <div class="col-xs-3 col-sm-3 col-md-2 artists-list__list__actions">
+                            <div class="btn-group">
+                                <a href="{% url "artist_edit" pk=artist.id slug=artist.slug %}"><button type="button" class="btn">Edit</button></a>
+                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{% url "artist_edit" pk=artist.id slug=artist.slug %}">Edit</a></li>
+                                    <li><a href="#" data-toggle="modal" data-target="#inviteArtist">Invite</a></li>
+                                    <li class="divider"></li>
+                                    <li class="warning"><a href="#">Delete artist</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="artists-list__list__row-empty row">No artists found.</li>
+                {% endfor %}
+            </ul>
+        </section>
+    </div>
+
+
+    <!-- Invite artist modal -->
+	<div class="modal fade" id="inviteArtist" tabindex="-1" role="dialog" aria-labelledby="inviteArtist" aria-hidden="true">
+		<div class="modal-dialog">
+            <div class="modal-content invite-artist-modal">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="modal-body">
+                    <form>
+                          <div class="from-group">
+                            <h2 class="invite-artist-modal__heading">Invite artist to SmallsLIVE</h2>
+                            <p class="invite-artist-modal__text">This artist <b>hasn't yet been invited</b> to SmallsLIVE artist program. To invite this artist check the email address below (or enter a new one if one is currently not set) and press the "Invite Artist" button.</p>
+                            <input type="email" class="form-control" name="artist-email" placeholder="Email address">
+                            <input type="submit" value="Invite artist">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <div class="event container">
       <div class="equal-heights row">
         <section class="event-artists col-md-12">
@@ -14,31 +168,7 @@
             {{ filter.form.as_p }}
             <input type="submit" />
           </form>
-          <div class="artists">
-            {% for artist in artists %}
-              <div class="mini-artist">
-                <div class="mini-artist__image">
-                  {% if artist.photo %}
-                    <a href="{{ artist.get_absolute_url }}"><img
-                            src="{% thumbor_url artist.photo.url|urlencode height=80 width=80 smart=True %}"
-                            alt="{{ artist.full_name }} photo"/></a>
-                  {% else %}
-                    <a href="{{ artist.get_absolute_url }}"><img
-                            src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
-                  {% endif %}
-                </div>
-                <div class="mini-artist-info">
-                  <h2 class="mini-artist-info__title"><a
-                          href="{{ artist.get_absolute_url }}">{{ artist.full_name }}</a></h2>
-                  <p class="mini-artist-info__instrument">{{ artist.instruments.all }}</p>
-                  <a class="mini-artist-info__button" href="{% url "artist_edit" pk=artist.id slug=artist.slug %}">Edit
-                    artist</a><span class="arrow"></span>
-                </div>
-              </div>
-            {% empty %}
-              <p class="artist-events__notice">There is no performer data available.</p>
-            {% endfor %}
-          </div>
         </section>
       </div>
+    </div>
 {% endblock content %}
