@@ -8,7 +8,7 @@ from .utils import facets_by_model_name
 def search_autocomplete(request):
     sqs = SearchQuerySet().autocomplete(content=request.GET.get('term', '')).facet('model')
     artists = sqs.filter(model_exact="artist")[:5]
-    events = sqs.filter(model_exact="event")[:5]
+    events = sqs.filter(model_exact="event").order_by('-start')[:5]
     instruments = sqs.filter(model_exact="instrument")[:5]
     suggestions = [{'label': result.object.autocomplete_label(),
                     'sublabel': result.object.autocomplete_sublabel(),
