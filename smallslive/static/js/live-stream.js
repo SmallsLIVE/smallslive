@@ -5,6 +5,7 @@ Periodically checks if the time is after the current event end time and either s
 
 var LiveStream = (function() {
     var CHECK_INTERVAL = 60; // in seconds
+    var start;
     var end;
     var intervalId;
     var checkIfEnded = function() {
@@ -31,7 +32,8 @@ var LiveStream = (function() {
     };
     var init = function(currentEventStart, currentEventEnd) {
         var now = new Date();
-        if (currentEventEnd !== "" && now > currentEventStart) {
+        start = new Date(currentEventStart);
+        if (currentEventEnd !== "" && now > start) {
             end = new Date(currentEventEnd);
             intervalId = window.setInterval(checkIfEnded, CHECK_INTERVAL * 1000);
         } else {
