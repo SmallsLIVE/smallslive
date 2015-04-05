@@ -142,6 +142,9 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
                 return True
         return False
 
+    def is_first_login(self):
+        return self.date_joined == self.last_login
+
 
 class SmallsEmailConfirmation(EmailConfirmation):
     class Meta:

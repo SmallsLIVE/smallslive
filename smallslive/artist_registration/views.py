@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import Http404
 from django.shortcuts import redirect
+from django.utils import timezone
 from django.views.generic.edit import FormView
 from artists.models import Artist
 from .forms import CompleteSignupForm, InviteArtistForm
@@ -76,8 +77,11 @@ class ConfirmEmailView(allauth_views.ConfirmEmailView):
         delete the confirmation model to prevent further login with that confirmation
         link in order to improve security.
         """
+        date = timezone.now()
         user = confirmation.email_address.user
         user.is_active = True
+        user.date_joined = date
+        user.last_login = date
         user.save()
         confirmation.delete()
         if self.request.user.is_anonymous():

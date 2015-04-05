@@ -241,8 +241,8 @@
 {% block extra_js %}
   <script src="{% static 'js/intro/intro.min.js' %}"></script>
   <script>
-      var firstTime = {{ first_time }};
-      if (firstTime) {
+      var firstLogin = {{ first_login|lower }};
+      if (firstLogin) {
         $(document).ready(function () {
           if( $(window).width() > 1000) {
               introJs().start();

@@ -1,7 +1,9 @@
+from datetime import timedelta
 from django.contrib import messages
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from django.views.generic import TemplateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
@@ -89,16 +91,13 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
         context = super(DashboardView, self).get_context_data(**kwargs)
         artist = self.request.user.artist
         context['upcoming_events'] = artist.gigs_played.upcoming().select_related('event', 'artist')[:5]
-        context['first_time'] = self.request.session.get('first_time', 'true')
+        first_login = self.request.user.is_first_login()
+        context['first_login'] = first_login
+        # don't show intro.js when user reloads the dashboard
+        if first_login:
+            self.request.user.last_login += timedelta(seconds=1)
+            self.request.user.save()
         return context
-
-    def get(self, request, *args, **kwargs):
-        # check if this is the users first time on the dashboard, and if it is,
-        # set a variable in the template so that intro.js widget can start
-        response = super(DashboardView, self).get(request, *args, **kwargs)
-        if not request.session.get('first_time'):
-            request.session['first_time'] = 'false'
-        return response
 
 dashboard = DashboardView.as_view()
 
@@ -212,6 +211,12 @@ def artist_settings(request):
 class DashboardLoginView(allauth_views.LoginView):
     success_url = reverse_lazy('artist_dashboard:home')
     template_name = 'artist_dashboard/login.html'
+
+    def form_valid(self, form):
+        response = super(DashboardLoginView, self).form_valid(form)
+        form.user.last_login = timezone.now()
+        form.user.save()
+        return response
 
     def get_authenticated_redirect_url(self):
         return reverse('artist_dashboard:home')
