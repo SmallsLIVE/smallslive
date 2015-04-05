@@ -14,12 +14,14 @@ var LiveStream = (function() {
             var $currentEvent= $(".live-stream-current");
             var $nextEvent = $(".mini-event").first();
             if($nextEvent.length) {
+                $(".coming-up__no-events").hide();
                 end = new Date($nextEvent.attr("data-end-time"));
                 var $nextEventHtml = $($nextEvent.find('.mini-event-info').html().replace(/mini-event-info/gi, "live-stream-current"));
                 $nextEvent.remove();
                 $currentEvent.html($nextEventHtml);
                 $(".live-stream-current__date").before($('.live-stream-current__title'));
             } else {
+                $(".coming-up__no-events").show();
                 noEventStreaming();
                 clearInterval(intervalId);
             }
