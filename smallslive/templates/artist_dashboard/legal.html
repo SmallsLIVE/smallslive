@@ -224,6 +224,9 @@
                 </form>
               {% else %}
                 <button class="legal-page__button signed" disabled><i class="fa fa-check-circle"></i><span></span></button>
+                <div class="legal-page__sign__text col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+                  Legal agreement was signed on {{ request.user.legal_agreement_acceptance.date|date:"F j, Y g:i A" }}
+                </div>
               {% endif %}
 
             </div>
