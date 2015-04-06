@@ -14,7 +14,7 @@
           <p class="login-modal__text--heavy">Log in to gain access to live stream and streamable audio and video
             content.</p>
         </div>
-        <form role="form" id="form-login" method="post" action="#">
+        <form role="form" id="form-login" method="post" action="{% url "accounts_login" %}?next={{ request.path }}">
           {% csrf_token %}
           <div class="col-xs-12">
             <div class="form-group">

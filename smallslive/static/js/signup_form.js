@@ -2,11 +2,11 @@ $loginForm = $('#form-login');
 
 $loginForm.submit(function(e){
     e.preventDefault();
-    $("#login-error").addClass('hidden')
-    $("#password-error").addClass('hidden')
+    $("#login-error").addClass('hidden');
+    $("#password-error").addClass('hidden');
     $.ajax({
         type: "POST",
-        url: '/accounts/login/',
+        url: $loginForm.attr('action'),
         data: $loginForm.serialize(),
         success: function(data) {
             window.location = data.location;
