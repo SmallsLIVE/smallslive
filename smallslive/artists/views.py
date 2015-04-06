@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.generic import ListView
@@ -49,7 +49,7 @@ from .models import Artist, Instrument
 
 
 # note - this is here only for Mezzrow compatibility
-class ArtistAddView(CreateView):
+class ArtistAddView(StaffuserRequiredMixin, CreateView):
     model = Artist
     form_class = ArtistAddForm
     template_name = 'artists/artist_add.html'
@@ -57,22 +57,10 @@ class ArtistAddView(CreateView):
 artist_add = ArtistAddView.as_view()
 
 
-class ArtistEditView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class ArtistEditView(StaffuserRequiredMixin, UpdateView):
     model = Artist
     form_class = ArtistAddForm
     template_name = 'artists/artist_add.html'
-
-    def test_func(self, user):
-        """
-        Show 403 forbidden page only when the logged in user doesn't have required
-        permissions, redirect anonymous users to the login screen.
-        """
-        self.raise_exception = True
-        try:
-            artist_id_match = self.kwargs.get('pk') == str(user.artist.id)
-        except Artist.DoesNotExist:
-            artist_id_match = False
-        return (artist_id_match or user.is_superuser)
 
 artist_edit = ArtistEditView.as_view()
 
