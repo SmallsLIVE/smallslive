@@ -10,31 +10,35 @@
   <link href="{% static 'css/selectize.bootstrap3.css' %}" rel="stylesheet">
 {% endblock extra_head %}
 
-{% block title %}Add new artist{% endblock title %}
+{% block title %}{{ action_name|capfirst }} artist{% endblock title %}
 
 {% block content %}
   <div class="content-wrapper">
-  <section class="admin-interface container">
-    <h1 class="admin-interface__main-title">Add artist</h1>
-    <form method="post" class="admin-interface__form" role="form" enctype="multipart/form-data">
-      {% csrf_token %}
-      {% crispy form %}
-      {% comment %}{% crispy artist_invite_form %}{% endcomment %}
-      <button type="submit" name="submit" class="admin-interface__form__button">Add artist</button>
-    </form>
-    </section>
-  <section class="invite-artist container">
-      <form>
-          <div class="from-group">
-              <h2 class="invite-artist__heading">Invite artist to SmallsLIVE</h2>
-              <p class="invite-artist__text">This artist <b>hasn't yet been invited</b> to SmallsLIVE artist program. To invite this artist check the email address below (or enter a new one if one is currently not set) and press the "Invite Artist" button.</p>
-              <input type="email" class="form-control" name="artist-email" placeholder="Email address">
-              <input type="submit" value="Invite artist">
-          </div>
+    <section class="admin-interface container">
+      <h1 class="admin-interface__main-title">{{ action_name|capfirst }} artist</h1>
+      <form method="post" class="admin-interface__form" role="form" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% crispy form %}
+        {% comment %}{% crispy artist_invite_form %}{% endcomment %}
+        <button type="submit" name="submit" class="admin-interface__form__button">{{ action_name|capfirst }} artist
+        </button>
       </form>
-  </section>
+    </section>
+    {% if action_name == "edit" %}
+      <section class="invite-artist container">
+        <form>
+          <div class="from-group">
+            <h2 class="invite-artist__heading">Invite artist to SmallsLIVE</h2>
+            <p class="invite-artist__text">This artist <b>hasn't yet been invited</b> to SmallsLIVE artist program. To
+              invite this artist check the email address below (or enter a new one if one is currently not set) and
+              press the "Invite Artist" button.</p>
+            <input type="email" class="form-control" name="artist-email" placeholder="Email address">
+            <input type="submit" value="Invite artist">
+          </div>
+        </form>
+      </section>
+    {% endif %}
   </div>
-
 {% endblock content %}
 
 {% block extra_js %}

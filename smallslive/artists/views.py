@@ -54,6 +54,11 @@ class ArtistAddView(StaffuserRequiredMixin, CreateView):
     form_class = ArtistAddForm
     template_name = 'artists/artist_add.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(ArtistAddView, self).get_context_data(**kwargs)
+        context['action_name'] = 'add'
+        return context
+
 artist_add = ArtistAddView.as_view()
 
 
@@ -61,6 +66,11 @@ class ArtistEditView(StaffuserRequiredMixin, UpdateView):
     model = Artist
     form_class = ArtistAddForm
     template_name = 'artists/artist_add.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ArtistEditView, self).get_context_data(**kwargs)
+        context['action_name'] = 'edit'
+        return context
 
 artist_edit = ArtistEditView.as_view()
 
