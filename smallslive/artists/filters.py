@@ -1,9 +1,9 @@
 from distutils.util import strtobool
 from django.db.models import Q
 import django_filters
-from .models import Artist
+from .models import Artist, Instrument
 
-BOOLEAN_CHOICES = (('', ''),('true', 'True'), ('false', 'False'), )
+BOOLEAN_CHOICES = (('', 'Disabled'), ('true', 'Yes'), ('false', 'No'), )
 
 
 def has_photo(qs, val):
@@ -20,14 +20,46 @@ def search_name(qs, val):
     return qs
 
 
+def has_registered(qs, val):
+    if val == 'true':
+        qs = qs.exclude(user__isnull=True).extra(
+            where=[
+                'artists_artist.id=users_smallsuser.artist_id',
+                'users_smallsuser.id=account_emailaddress.user_id',
+                'account_emailaddress.verified = TRUE'
+            ],
+            tables=['users_smallsuser', 'account_emailaddress']
+        )
+    elif val == 'false':
+        qs = qs.exclude(user__isnull=True)
+    return qs
+
+
 class ArtistFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(action=search_name)
-    has_registered = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, coerce=strtobool,
+    instruments = django_filters.ModelChoiceFilter(queryset=Instrument.objects.all())
+    is_invited = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, coerce=strtobool,
                                                       name="user", lookup_type='isnull', exclude=True)
+    has_registered = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, action=has_registered)
     has_photo = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, name="photo", action=has_photo)
     signed_legal_agreement = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, coerce=strtobool,
                                                       name="user__legal_agreement_acceptance", lookup_type='isnull', exclude=True)
 
     class Meta:
-        fields = ['name', 'has_registered', 'has_photo', 'signed_legal_agreement', 'instruments']
+        fields = ['name', 'is_invited', 'has_registered', 'has_photo', 'signed_legal_agreement', 'instruments']
         model = Artist
+
+    def __init__(self, *args, **kwargs):
+        super(ArtistFilter, self).__init__(*args, **kwargs)
+        self.filters['has_registered'].label = 'Registered'
+        self.filters['has_photo'].label = 'Has photo'
+        self.filters['signed_legal_agreement'].label = 'Signed'
+
+    @property
+    def form(self):
+        form = super(ArtistFilter, self).form  # it's a property, so there's no method call
+        for field in self.Meta.fields:
+            form.fields[field].widget.attrs['class'] = 'form-control selectpicker'
+        form.fields['name'].widget.attrs['class'] = 'form-control search'
+        form.fields['name'].widget.attrs['placeholder'] = 'Search by name'
+        return form

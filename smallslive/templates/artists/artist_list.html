@@ -11,55 +11,35 @@
             <h1>Artists list:</h1>
         </section>
         <section class="artists-list__search">
-            <form>
+            <form method="get" action="{% url "artist_list" %}">
                 <span class="artists-list__search__heading">Search:</span>
-                <input type="search" name="search-term" class="form-control search" placeholder="Search by name">
+                {{ filter.form.name }}
                 <input type="submit" value="Search">
             </form>
         </section>
         <section class="artists-list__filters">
-            <form>
+            <form method="get" action="{% url "artist_list" %}">
+                <input type="hidden" name="name" value="{{request.GET.name}}">
                 <ul>
                     <li class="artists-list__filters__group">
-                        <span>Instrument:</span>
-                        <select class="form-control selectpicker" name="filter_option">
-                            <option><span class="filter-disabled">Disabled</span></option>
-                            <option>Female Vocalist</option>
-                            <option>Sax</option>
-                            <option>Piano</option>
-                        </select>
+                        {{ filter.form.instruments.label_tag }}
+                        {{ filter.form.instruments }}
                     </li>
                     <li class="artists-list__filters__group">
-                        <span>Invited:</span>
-                        <select class="form-control selectpicker" name="filter_option">
-                            <option><span class="filter-disabled">Disabled</span></option>
-                            <option>Yes</option>
-                            <option>No</option>
-                        </select>
+                        {{ filter.form.is_invited.label_tag }}
+                        {{ filter.form.is_invited }}
                     </li>
                     <li class="artists-list__filters__group">
-                        <span>Registered:</span>
-                        <select class="form-control selectpicker" name="filter_option">
-                            <option><span class="filter-disabled">Disabled</span></option>
-                            <option>Yes</option>
-                            <option>No</option>
-                        </select>
+                        {{ filter.form.has_registered.label_tag }}
+                        {{ filter.form.has_registered }}
                     </li>
                     <li class="artists-list__filters__group">
-                        <span>Signed:</span>
-                        <select class="form-control selectpicker" name="filter_option">
-                            <option><span class="filter-disabled">Disabled</span></option>
-                            <option>Yes</option>
-                            <option>No</option>
-                        </select>
+                        {{ filter.form.signed_legal_agreement.label_tag }}
+                        {{ filter.form.signed_legal_agreement }}
                     </li>
                     <li class="artists-list__filters__group">
-                        <span>Has photo:</span>
-                        <select class="form-control selectpicker" name="filter_option">
-                            <option><span class="filter-disabled">Disabled</span></option>
-                            <option>Yes</option>
-                            <option>No</option>
-                        </select>
+                        {{ filter.form.has_photo.label_tag }}
+                        {{ filter.form.has_photo }}
                     </li>
                     <li class="artists-list__filters__group">
                         <input type="submit" value="Apply">
@@ -107,9 +87,9 @@
                         </div>
                         <div class="hidden-xs hidden-sm col-md-4 artists-list__list__states">
                             <div class="artists-list__list__state">{{ artist.events.count }}</div>
-                            <div class="artists-list__list__state"><i class="fa {% if artist.is_invited %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
-                            <div class="artists-list__list__state"><i class="fa {% if artist.has_registered %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
-                            <div class="artists-list__list__state"><i class="fa {% if artist.has_signed_legal %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
+                            <div class="artists-list__list__state"><i class="fa {% if request.GET.is_invited == "true" or artist.is_invited %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
+                            <div class="artists-list__list__state"><i class="fa {% if request.GET.has_registered == "true" or artist.has_registered %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
+                            <div class="artists-list__list__state"><i class="fa {% if request.GET.signed_legal == "true" or artist.has_signed_legal %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
                             <div class="artists-list__list__state">
                               {% if artist.photo %}
                                 <i class="fa fa-check-circle true"></i>
@@ -129,7 +109,7 @@
                                     <li><a href="{% url "artist_edit" pk=artist.id slug=artist.slug %}">Edit</a></li>
                                     <li><a href="#" data-toggle="modal" data-target="#inviteArtist">Invite</a></li>
                                     <li class="divider"></li>
-                                    <li class="warning"><a href="#">Delete artist</a></li>
+                                    {% comment %}<li class="warning"><a href="#">Delete artist</a></li>{% endcomment %}
                                 </ul>
                             </div>
                         </div>
@@ -159,18 +139,5 @@
                 </div>
             </div>
         </div>
-    </div>
-
-
-
-    <div class="event container">
-      <div class="equal-heights row">
-        <section class="event-artists col-md-12">
-          <form action="" method="get">
-            {{ filter.form.as_p }}
-            <input type="submit" />
-          </form>
-        </section>
-      </div>
     </div>
 {% endblock content %}

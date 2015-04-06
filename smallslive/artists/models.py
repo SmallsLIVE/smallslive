@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Sum, Count
+from django.utils.functional import cached_property
 from django.utils.text import slugify
 from allauth.account.models import EmailAddress
 from model_utils import Choices
@@ -92,6 +93,7 @@ class Artist(models.Model):
     def is_leader_for_event(self, event):
         return GigPlayed.objects.filter(artist=self, event=event, is_leader=True).exists()
 
+    @cached_property
     def is_invited(self):
         if hasattr(self, 'user'):
             user = self.user
@@ -99,6 +101,7 @@ class Artist(models.Model):
         else:
             return False
 
+    @cached_property
     def has_registered(self):
         if hasattr(self, 'user'):
             user = self.user
@@ -106,6 +109,7 @@ class Artist(models.Model):
         else:
             return False
 
+    @cached_property
     def has_signed_legal(self):
         if hasattr(self, 'user'):
             return self.user.legal_agreement_acceptance
