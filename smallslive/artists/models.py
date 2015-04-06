@@ -4,11 +4,12 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Sum, Count
 from django.utils.text import slugify
+from allauth.account.models import EmailAddress
 from model_utils import Choices
 from sortedm2m.fields import SortedManyToManyField
 from tinymce import models as tinymce_models
 from events.models import Event, GigPlayed
-from users.models import SmallsEmailAddress
+from users.models import SmallsEmailAddress, SmallsUser
 
 
 class Artist(models.Model):
@@ -90,6 +91,26 @@ class Artist(models.Model):
 
     def is_leader_for_event(self, event):
         return GigPlayed.objects.filter(artist=self, event=event, is_leader=True).exists()
+
+    def is_invited(self):
+        if hasattr(self, 'user'):
+            user = self.user
+            return EmailAddress.objects.filter(email=user.email).exists()
+        else:
+            return False
+
+    def has_registered(self):
+        if hasattr(self, 'user'):
+            user = self.user
+            return EmailAddress.objects.filter(email=user.email, verified=True).exists()
+        else:
+            return False
+
+    def has_signed_legal(self):
+        if hasattr(self, 'user'):
+            return self.user.legal_agreement_acceptance
+        else:
+            return False
 
 
 class Instrument(models.Model):

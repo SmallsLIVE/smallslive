@@ -95,6 +95,9 @@ class ArtistFilterView(StaffuserRequiredMixin, FilterView):
     paginate_by = 30
     template_name = 'artists/artist_list.html'
 
+    def get_queryset(self):
+        return Artist.objects.select_related('user').prefetch_related('instruments', 'events')
+
 
 artist_list = ArtistFilterView.as_view()
 

@@ -107,14 +107,16 @@
                         </div>
                         <div class="hidden-xs hidden-sm col-md-4 artists-list__list__states">
                             <div class="artists-list__list__state">{{ artist.events.count }}</div>
-                            <div class="artists-list__list__state true"><i class="fa fa-check-circle"></i></div>
-                            <div class="artists-list__list__state"><i class="fa fa-times-circle"></i></div>
-                            <div class="artists-list__list__state"><i class="fa fa-times-circle"></i></div>
-                            {% if artist.photo %}
-                                <div class="artists-list__list__state true"><i class="fa fa-check-circle"></i></div>
-                            {% else %}
-                                <div class="artists-list__list__state"><i class="fa fa-times-circle"></i></div>
+                            <div class="artists-list__list__state"><i class="fa {% if artist.is_invited %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
+                            <div class="artists-list__list__state"><i class="fa {% if artist.has_registered %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
+                            <div class="artists-list__list__state"><i class="fa {% if artist.has_signed_legal %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
+                            <div class="artists-list__list__state">
+                              {% if artist.photo %}
+                                <i class="fa fa-check-circle true"></i>
+                              {% else %}
+                                <i class="fa fa-times-circle"></i>
                             {% endif %}
+                            </div>
                         </div>
                         <div class="col-xs-3 col-sm-3 col-md-2 artists-list__list__actions">
                             <div class="btn-group">
