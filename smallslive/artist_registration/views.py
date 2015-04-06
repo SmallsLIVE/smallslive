@@ -33,7 +33,7 @@ class InviteArtistView(FormView):
         return response
 
     def get_success_url(self):
-        return reverse('artist_edit', kwargs={'pk': self.object.id, 'slug': self.object.slug})
+        return reverse('artist_edit', kwargs={'pk': self.artist.id, 'slug': self.artist.slug})
 
 
 class ConfirmEmailView(allauth_views.ConfirmEmailView):

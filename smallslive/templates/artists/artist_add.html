@@ -39,11 +39,16 @@
           </div>
         </form>
         {% elif not artist.has_registered %}
-          <div class="from-group">
-            <h2 class="invite-artist__heading">Artist already invited!</h2>
-            <p class="invite-artist__text">{{ artist.full_name }} has already been invited to SmallsLIVE on
-              {{ artist.email_invitation.sent|date:"F j, Y g:i A" }}</p>
-          </div>
+          <form action="{% url "invite_artist" artist=artist.id %}" method="post">
+            {% csrf_token %}
+            <div class="from-group">
+              <h2 class="invite-artist__heading">Artist already invited!</h2>
+              <p class="invite-artist__text">{{ artist.full_name }} has already been invited to SmallsLIVE on
+                {{ artist.email_invitation.sent|date:"F j, Y g:i A" }}</p>
+            </div>
+            <input type="hidden" class="form-control" name="email" value="{{ artist.user.email }}">
+            <input type="submit" value="Resend invite">
+          </form>
         {% else %}
           <div class="from-group">
             <h2 class="invite-artist__heading">Artist already registered!</h2>
