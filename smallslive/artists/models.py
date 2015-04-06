@@ -5,7 +5,7 @@ from django.db import models
 from django.db.models import Sum, Count
 from django.utils.functional import cached_property
 from django.utils.text import slugify
-from allauth.account.models import EmailAddress
+from allauth.account.models import EmailAddress, EmailConfirmation
 from model_utils import Choices
 from sortedm2m.fields import SortedManyToManyField
 from tinymce import models as tinymce_models
@@ -113,6 +113,13 @@ class Artist(models.Model):
     def has_signed_legal(self):
         if hasattr(self, 'user'):
             return self.user.legal_agreement_acceptance
+        else:
+            return False
+
+    @cached_property
+    def email_invitation(self):
+        if hasattr(self, 'user'):
+            return EmailConfirmation.objects.filter(email_address__email=self.user.email).order_by('-sent').first()
         else:
             return False
 

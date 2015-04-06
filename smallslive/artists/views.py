@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
+from django.core.urlresolvers import reverse
 from django.db.models import Q, Count
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
@@ -59,6 +60,9 @@ class ArtistAddView(StaffuserRequiredMixin, CreateView):
         context['action_name'] = 'add'
         return context
 
+    def get_success_url(self):
+        return reverse('artist_edit', kwargs={'pk': self.object.id, 'slug': self.object.slug})
+
 artist_add = ArtistAddView.as_view()
 
 
@@ -71,6 +75,9 @@ class ArtistEditView(StaffuserRequiredMixin, UpdateView):
         context = super(ArtistEditView, self).get_context_data(**kwargs)
         context['action_name'] = 'edit'
         return context
+
+    def get_success_url(self):
+        return reverse('artist_edit', kwargs={'pk': self.object.id, 'slug': self.object.slug})
 
 artist_edit = ArtistEditView.as_view()
 
