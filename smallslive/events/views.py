@@ -18,7 +18,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView, BaseDetailView
 
 from django_ajax.mixin import AJAXMixin
-from braces.views import LoginRequiredMixin, SuperuserRequiredMixin, UserPassesTestMixin
+from braces.views import LoginRequiredMixin, SuperuserRequiredMixin, StaffuserRequiredMixin
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
 from haystack.query import SearchQuerySet, RelatedSearchQuerySet
 from haystack.views import SearchView
@@ -48,7 +48,7 @@ class HomepageView(ListView):
 homepage = HomepageView.as_view()
 
 
-class EventAddView(NamedFormsetsMixin, CreateWithInlinesView):
+class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlinesView):
     template_name = 'events/event_add.html'
     model = Event
     form_class = EventAddForm
@@ -85,7 +85,7 @@ class EventDetailView(DetailView):
 event_detail = EventDetailView.as_view()
 
 
-class EventEditView(LoginRequiredMixin, NamedFormsetsMixin, UpdateWithInlinesView):
+class EventEditView(StaffuserRequiredMixin, NamedFormsetsMixin, UpdateWithInlinesView):
     model = Event
     form_class = EventEditForm
     template_name = 'events/event_edit.html'
@@ -114,14 +114,14 @@ class EventEditView(LoginRequiredMixin, NamedFormsetsMixin, UpdateWithInlinesVie
 event_edit = EventEditView.as_view()
 
 
-class EventDeleteView(DeleteView):
+class EventDeleteView(StaffuserRequiredMixin, DeleteView):
     model = Event
     success_url = reverse_lazy('home')
 
 event_delete = EventDeleteView.as_view()
 
 
-class EventCloneView(LoginRequiredMixin, SuperuserRequiredMixin, BaseDetailView):
+class EventCloneView(StaffuserRequiredMixin, BaseDetailView):
     model = Event
 
     def post(self, request, *args, **kwargs):
