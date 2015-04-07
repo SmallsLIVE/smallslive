@@ -10,6 +10,7 @@ from django.views.generic.list import ListView
 
 from allauth.account.forms import ChangePasswordForm
 import allauth.account.views as allauth_views
+from artists.models import Artist
 import artists.views as artist_views
 
 from events.models import Recording
@@ -102,15 +103,17 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
 dashboard = DashboardView.as_view()
 
 
-class EditProfileView(HasArtistAssignedMixin, artist_views.ArtistEditView):
+class EditProfileView(HasArtistAssignedMixin, UpdateView):
     form_class = EditProfileForm
+    model = Artist
     template_name = 'artist_dashboard/edit_profile.html'
 
     def get_object(self, queryset=None):
         return self.request.user.artist
 
-    def test_func(self, user):
-        return True
+    def get_success_url(self):
+        messages.success(self.request, "You've successfully updated your artist profile.")
+        return reverse('artist_dashboard:edit_profile')
 
 edit_profile = EditProfileView.as_view()
 

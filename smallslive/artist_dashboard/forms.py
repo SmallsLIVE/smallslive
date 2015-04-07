@@ -84,3 +84,4 @@ class EditProfileForm(ArtistAddForm):
         for field in self.Meta.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
         self.fields['salutation'].widget.attrs['class'] = 'form-control selectpicker'
+        self.fields['website'].widget.attrs['placeholder'] = 'http://www.yourwebsite.com'
