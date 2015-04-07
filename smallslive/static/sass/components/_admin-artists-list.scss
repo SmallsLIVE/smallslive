@@ -111,6 +111,18 @@
     color: #fff;
     @include lato;
     font-size: 14px;
+
+    & .sort-column {
+      cursor: pointer;
+
+      &:hover {
+        color: shade(#fff, 20%);
+      }
+
+      & i {
+        margin-left: 8px;
+      }
+    }
   }
 
   &__states {
@@ -120,6 +132,11 @@
   &__state {
     width: 20%;
     text-align: center;
+
+    &.sort-column i {
+      font-size: 14px;
+      color: #fff;
+    }
 
     & i {
       font-size: 18px;
