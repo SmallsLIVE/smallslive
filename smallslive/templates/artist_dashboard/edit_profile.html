@@ -15,6 +15,7 @@
 {% block content %}
   <section class="page-heading container">
         <h1>Edit my public profile</h1>
+        <a href="{{ request.user.artist.get_absolute_url }}">View on live site</a>
    </section>
   <section class="edit-public-profile container">
       <form action="{% url "artist_dashboard:edit_profile" %}" method="post" enctype="multipart/form-data">
