@@ -30,7 +30,7 @@ class UserSignupForm(SignupForm):
         user.last_name = self.cleaned_data['last_name']
         user.save()
         if self.cleaned_data.get('newsletter'):
-            user.subscribe_to_newsletter()
+            user.subscribe_to_newsletter(request)
 
 
 class EditProfileForm(forms.Form):
