@@ -48,6 +48,15 @@ class ArtistFilter(django_filters.FilterSet):
     class Meta:
         fields = ['name', 'is_invited', 'has_registered', 'has_photo', 'signed_legal_agreement', 'instruments']
         model = Artist
+        order_by = (
+            ('last_name', 'Last name'),
+            ('-last_name', 'Last name desc'),
+            ('events_count', 'Events count'),
+            ('-events_count', 'Events count desc'),
+            ('instruments', 'Instrument'),
+            ('-instruments', 'Instrument desc'),
+        )
+        strict = False
 
     def __init__(self, *args, **kwargs):
         super(ArtistFilter, self).__init__(*args, **kwargs)

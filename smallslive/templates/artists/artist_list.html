@@ -19,8 +19,9 @@
             </form>
         </section>
         <section class="artists-list__filters">
-            <form method="get" action="{% url "artist_list" %}">
+            <form method="get" action="{% url "artist_list" %}" id="artist-form">
                 <input type="hidden" name="name" value="{{request.GET.name}}">
+                <input type="hidden" name="o" id="sort_form_field" value="{{request.GET.o }}">
                 <ul>
                     <li class="artists-list__filters__group">
                         {{ filter.form.instruments.label_tag }}
@@ -53,14 +54,14 @@
                 <div class="hidden-xs col-sm-2 col-md-1">
                     Image
                 </div>
-                <div class="col-xs-5 col-sm-4 col-md-3">
+                <div class="col-xs-5 col-sm-4 col-md-3 sort-column" data-sort="last_name">
                     Name
                 </div>
-                <div class="col-xs-4 col-sm-3 col-md-2">
+                <div class="col-xs-4 col-sm-3 col-md-2 sort-column" data-sort="instruments">
                     Instrument
                 </div>
                 <div class="hidden-xs hidden-sm col-md-4 artists-list__list__states">
-                    <div class="artists-list__list__state">Shows</div>
+                    <div class="artists-list__list__state sort-column" data-sort="-events_count">Shows</div>
                     <div class="artists-list__list__state">Invited</div>
                     <div class="artists-list__list__state">Registered</div>
                     <div class="artists-list__list__state">Signed</div>
@@ -87,7 +88,7 @@
                             {{ artist.instruments.all|join:" , " }}
                         </div>
                         <div class="hidden-xs hidden-sm col-md-4 artists-list__list__states">
-                            <div class="artists-list__list__state">{{ artist.events.count }}</div>
+                            <div class="artists-list__list__state">{{ artist.events_count }}</div>
                             <div class="artists-list__list__state"><i class="fa {% if request.GET.is_invited == "true" or artist.is_invited %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
                             <div class="artists-list__list__state"><i class="fa {% if request.GET.has_registered == "true" or artist.has_registered %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
                             <div class="artists-list__list__state"><i class="fa {% if request.GET.signed_legal == "true" or artist.has_signed_legal %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
@@ -176,13 +177,30 @@
 
 {% block extra_js %}
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       var $inviteForm = $('#invite-artist-form');
       var $inviteButtons = $('.invite-artist-button');
-      $inviteButtons.on('click', function() {
+      $inviteButtons.on('click', function () {
         console.log($(this).attr('data-url'));
         $inviteForm.attr('action', $(this).attr('data-url'));
       });
+
+      $(".sort-column").on('click', function () {
+        var sortColumnValue = $(this).attr('data-sort');
+        var $sortField = $("#sort_form_field");
+        var sortFieldValue = $sortField.val();
+        if (sortColumnValue === sortFieldValue) {
+          if (sortFieldValue[0] === '-') {
+            sortFieldValue = sortFieldValue.substring(1);
+          } else {
+            sortFieldValue = "-" + sortColumnValue;
+          }
+          $sortField.val(sortFieldValue);
+        } else {
+          $sortField.val(sortColumnValue);
+        }
+        $("#artist-form").submit();
+      })
     })
   </script>
 {% endblock extra_js %}

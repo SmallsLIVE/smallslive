@@ -101,7 +101,10 @@ class ArtistFilterView(StaffuserRequiredMixin, FilterView):
     template_name = 'artists/artist_list.html'
 
     def get_queryset(self):
-        return Artist.objects.select_related('user').prefetch_related('instruments', 'events')
+        # faster event count compared to annotate()
+        return Artist.objects.extra(
+            {'events_count': 'SELECT COUNT(*) FROM events_gigplayed WHERE events_gigplayed.artist_id = artists_artist.id'}
+        ).select_related('user').prefetch_related('instruments', 'events')
 
     def get_context_data(self, **kwargs):
         context = super(ArtistFilterView, self).get_context_data(**kwargs)
