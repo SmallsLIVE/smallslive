@@ -1,4 +1,5 @@
 {% extends "smalls_base.html" %}
+{% load humanize %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
@@ -28,30 +29,37 @@
             </div>
         {% endif %}
           <div class="live-stream__header col-xs-12">
-            {% if events and events.0.has_started %}<p class="live-stream__title">Live now:</p>{% endif %}
-            <p class="live-stream__title--no-show" {% if events and events.0.has_started %}style="display:none;"{% endif %}>There is currently no live show being broadcast.  Our next live broadcast is at {{ show_next_day.start|date:"g:i A" }} EST.</p>
+            {% if currently_playing %}
+              <p class="live-stream__title">Live now:</p>
+            {% else %}
+              <p class="live-stream__title--no-show">There is currently no live show being broadcast, next live broadcast is on {{ show_next_day.start|naturalday:"n/j/Y" }} at {{ show_next_day.start|date:"g:i A" }} EST.</p>
+            {% endif %}
           </div>
         </div>
-        {% if events and events.0.has_started %}
         <div class="live-stream-info equal-heights row">
           <div class="live-stream-current col-xs-12 col-md-6">
-            {% with current_event=events.0 %}
-
-            <h1 class="live-stream-current__title"><a href="{{ current_event.get_absolute_url }}">{{ current_event.title }}</a></h1>
-            <p class="live-stream-current__date">{{ current_event.start|date:"g:i A" }} - {{ current_event.end|date:"g:i A" }}</p>
-            <p class="live-stream-current__sidemen">
-              {% for gig_info in current_event.get_performers %}
-                <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span class="event-details__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}  // {% endif %}
-              {% endfor %}
-            </p>
-            <a href="{{ current_event.get_absolute_url }}" class="live-stream-current__button">Full event page</a><span class="arrow"></span>
-            {% endwith %}
+              {% if currently_playing %}
+                <h1 class="live-stream-current__title"><a
+                        href="{{ currently_playing.get_absolute_url }}">{{ currently_playing.title }}</a></h1>
+                <p class="live-stream-current__date">{{ currently_playing.start|date:"g:i A" }}
+                  - {{ currently_playing.end|date:"g:i A" }}</p>
+                <p class="live-stream-current__sidemen">
+                  {% for gig_info in currently_playing.get_performers %}
+                    <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span
+                            class="event-details__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}
+                    // {% endif %}
+                  {% endfor %}
+                </p>
+                <a href="{{ currently_playing.get_absolute_url }}" class="live-stream-current__button">Full event page</a>
+                <span class="arrow"></span>
+              {% else %}
+                <p>A break between two events is happening right now.</p>
+              {% endif %}
           </div>
           <div class="coming-up col-xs-12 col-md-6">
             <h2 class="coming-up__title">Coming up:</h2>
             <div class="events">
-              <p class="coming-up__no-events">No upcoming events for today.</p>
-              {% for upcoming_event in events|slice:"1:" %}
+              {% for upcoming_event in events %}
                   <div class="mini-event" data-end-time="{{ upcoming_event.end.isoformat }}">
                     <div class="mini-event__image">
                       {% if upcoming_event.photo %}
@@ -72,11 +80,12 @@
                             class="arrow"></span>
                     </div>
                   </div>
+              {% empty %}
+                <p class="coming-up__no-events">No upcoming events for today.</p>
               {% endfor %}
             </div>
           </div>
         </div>
-      {% endif %}
       </section>
     </div>
   {% endblock %}
@@ -85,8 +94,12 @@
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   <script src="{% static "js/live-stream.js" %}"></script>
   <script>
-    {% if events and events.0.has_started %}
-        LiveStream.init("{{ events.0.start.isoformat }}", "{{ events.0.end.isoformat }}");
+    {% if currently_playing and events %}
+        LiveStream.init("{{ currently_playing.end.isoformat }}", "{{ events.0.start.isoformat }}");
+    {% elif events %}
+        LiveStream.init(false, "{{ events.0.start.isoformat }}");
+    {% elif currently_playing %}
+        LiveStream.init("{{ events.0.start.isoformat }}", false);
     {% endif %}
   </script>
     <script>

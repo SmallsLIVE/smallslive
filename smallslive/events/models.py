@@ -18,6 +18,12 @@ class EventQuerySet(models.QuerySet):
     def past(self):
         return self.filter(start__lt=timezone.now()).order_by('-start')
 
+    def public(self):
+        return self.exclude(state=Event.STATUS.Draft).order_by('-start')
+
+    def draft(self):
+        return self.filter(state=Event.STATUS.Draft).order_by('-start')
+
 
 class Event(TimeStampedModel):
     SETS = Choices(('22:00-23:00', '10-11pm'), ('23:00-0:00', '11-12pm'), ('0:00-1:00', '12-1am'))
