@@ -110,6 +110,12 @@
       font-size: 18px;
       text-transform: uppercase;
       margin-bottom: 10px;
+      text-decoration: none;
+
+      &:hover, &:focus {
+        text-decoration: none;
+        color: $main-accent-color-darker;
+      }
     }
 
     &__label {

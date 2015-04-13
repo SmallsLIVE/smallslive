@@ -49,14 +49,34 @@
           <li class="event-row flexbox-equal-height">
               <div class="hidden-xs hidden-sm col-md-2 event-row__image">
                   {% if event.photo %}
-                    <img src="{% thumbor_url event.photo.url|urlencode height=170 width=170 smart=True %}" alt=""/>
+                      {% if gig_info.is_leader %}
+                          <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
+                            <img src="{% thumbor_url event.photo.url|urlencode height=170 width=170 smart=True %}" alt=""/>
+                          </a>
+                      {% else %}
+                          <a href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">
+                            <img src="{% thumbor_url event.photo.url|urlencode height=170 width=170 smart=True %}" alt=""/>
+                          </a>
+                      {% endif %}
                   {% else %}
-                    <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                      {% if gig_info.is_leader %}
+                          <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
+                            <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                          </a>
+                      {% else %}
+                          <a href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">
+                            <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                          </a>
+                      {% endif %}
                   {% endif %}
               </div>
               <div class="col-xs-12 col-sm-8 col-md-7 event-row__description">
                   <p class="event-row__description__date">{{ event.listing_date|date:"l, F d, Y" }}  |  {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</p>
-                  <p class="event-row__description__name">{{ event.full_title }} {% if gig_info.is_leader %}<span class="event-row__is-leader">leader</span>{% endif %}</p>
+                  {% if gig_info.is_leader %}
+                    <a class="event-row__description__name" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">{{ event.full_title }} {% if gig_info.is_leader %}<span class="event-row__is-leader">leader</span>{% endif %}</a>
+                  {% else %}
+                    <a class="event-row__description__name" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">{{ event.full_title }} {% if gig_info.is_leader %}<span class="event-row__is-leader">leader</span>{% endif %}</a>
+                  {% endif %}
                   <p class="event-row__description__label">Artists:</p>
                   <p class="event-row__description__artists">
                     {% for gig_info in event.get_performers %}
