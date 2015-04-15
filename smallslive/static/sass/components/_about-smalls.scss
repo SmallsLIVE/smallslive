@@ -13,11 +13,13 @@
   }
 
   &__title {
-    @include lato;
-    font-size: 32px;
-    font-weight: 600;
-    margin-bottom: 16px;
     margin-top: 0;
+    margin-bottom: 16px;
+    @include lato-black;
+    color: $base-text-color;
+    font-size: 28px;
+    text-align: left;
+    line-height: 130%;
   }
 
   &__text {

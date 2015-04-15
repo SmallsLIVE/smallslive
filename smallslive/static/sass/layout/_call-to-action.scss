@@ -42,6 +42,46 @@
   &--archive {
     background-image: url('../image/archive-cto.jpg');
     background-position: center center;
+    border-top: 8px $main-accent-color solid;
+    position: relative;
+
+    &:after {
+      top: 100%;
+      left: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border-color: rgba(136, 183, 213, 0);
+      border-top-color: $main-accent-color;
+      border-width: 32px;
+      margin-left: -32px;
+    }
+  }
+
+  &--membership {
+    background-image: url('../image/home-membership-cta.jpg');
+    background-position: center center;
+    padding: 30px;
+
+    &__title {
+      @include lato-black;
+      font-size: 42px;
+      max-width: 760px;
+      margin: 0 auto 10px;
+    }
+
+    & p {
+      max-width: 840px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    & .cto__button {
+      margin-top: 0px;
+    }
   }
 
   &--visit {

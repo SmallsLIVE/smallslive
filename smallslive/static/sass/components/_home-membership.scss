@@ -1,0 +1,50 @@
+.home-membership {
+  padding: 0;
+  background-color: #fff;
+  @include lato;
+  text-align: justify;
+  @include display(flex);
+  @include align-items(stretch);
+
+  &:before {
+    display: none;
+  }
+
+  &__content {
+    padding: 40px 20px;
+    min-height: 320px;
+    @include display(flex);
+    @include align-items(center);
+  }
+
+  &__title {
+    margin-top: 0;
+    margin-bottom: 10px;
+    @include lato-black;
+    color: $main-accent-color;
+    font-size: 28px;
+    text-align: left;
+    line-height: 130%;
+  }
+
+  &__subtitle {
+    @include lato-bold;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+
+  & .cto__button {
+    margin-top: 10px;
+    border: none;
+    background-color: $main-accent-color;
+    color: #fff;
+  }
+
+  &__photo {
+    background-image: url('../image/homepage-membership--image.jpg');
+    background-position: center center;
+    background-size: cover;
+  }
+
+}
