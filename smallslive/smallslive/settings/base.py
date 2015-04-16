@@ -297,6 +297,7 @@ PIPELINE_JS = {
           'js/jquery-ui.js',
           'js/bootstrap.min.js',
           'js/slick/slick.min.js',
+          'js/raphael-min.js',
           'js/base.js',
           'js/signup_form.js'
 
