@@ -75,19 +75,16 @@ $(document).ready(function () {
 
 /* Expanding details for schedule */
 $(document).ready(function () {
-    var active = 0;
-    $(".day").click(function () {
-        var position = $(this).data('position');
+    var activeEventId = 0;
+    $(".day__event-title").click(function () {
+        var position = $(this).parents('.day').data('position');
+        var eventId = $(this).attr('data-event-id');
         $("#event-details-expanded").remove();
-        $(".selected").removeClass('selected');
-        if (position !== active) {
+        if (eventId !== activeEventId) {
             var that = this;
-            var date = $(this).attr('data-date');
-
-            $.get('/events/event_carousel_ajax/?date=' + date, function (data) {
+            $.get('/events/schedule_carousel_ajax/' + eventId + '/', function (data) {
                 var template = data.content;
 
-                $(that).addClass('selected');
                 /* larger devices */
                 var offset;
                 if ($(window).width() > 768) {
@@ -100,12 +97,12 @@ $(document).ready(function () {
                 var new_position = position + offset;
                 $('div[data-position=' + new_position + ']').after(template);
 
-                active = position;
+                activeEventId = eventId;
                 makeImagesResponsive(".container");
                 $("#event-details-expanded").scrollIntoView();
             });
         } else {
-            active = 0;
+            activeEventId = 0;
         }
     });
 });

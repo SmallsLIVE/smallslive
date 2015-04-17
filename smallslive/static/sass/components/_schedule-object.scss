@@ -30,7 +30,7 @@
     background-color: $main-accent-color;
     color: #fff;
     @include align-items(stretch);
-    
+
     &:hover {
       color: rgba(255, 255, 255, 0.8);
       cursor: pointer;
@@ -135,11 +135,6 @@
       border-left: 1px #CCCCCC solid;
   }
 
-  &:hover {
-    background-image: url("../image/background-tile.png");
-    cursor: pointer;
-  }
-
   &--navigate {
     background-color: $main-accent-color;
   }
@@ -176,19 +171,7 @@
     color: $main-accent-color;
     font-size: 12px;
   }
-
-  &.selected {
-    background-image: url("../image/background-tile-darker.png");
-    border-bottom: none;
-    
-    & .day__date {
-      color: #000;
-    }
-    
-    & .day__date, .day__event-time, .day__event-title {
-      opacity: 0.5;
-    }
-  }
+  
 
   & dl {
     margin-bottom: 0;
