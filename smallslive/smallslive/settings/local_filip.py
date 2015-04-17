@@ -1,3 +1,4 @@
+import dj_database_url
 from .local import *
 import os
 
@@ -19,6 +20,8 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+DATABASES['heroku'] = dj_database_url.config()
 
 INSTALLED_APPS += (
     'debug_toolbar',
