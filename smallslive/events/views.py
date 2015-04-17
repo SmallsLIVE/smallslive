@@ -289,14 +289,17 @@ class MonthlyScheduleView(ListView):
 monthly_schedule = MonthlyScheduleView.as_view()
 
 
-class EventCarouselAjaxView(AJAXMixin, ListView):
-    context_object_name = 'events'
+class ScheduleCarouselAjaxView(AJAXMixin, DetailView):
+    context_object_name = 'event'
+    model = Event
+    template_name = "blocks/schedule-event-details-carousel.html"
 
-    def get_template_names(self):
-        if self.request.GET.get("template") == "home":
-            return ["blocks/homepage-upcoming-events-carousel.html"]
-        else:
-            return ["blocks/schedule-event-details-carousel.html"]
+schedule_carousel_ajax = ScheduleCarouselAjaxView.as_view()
+
+
+class HomepageEventCarouselAjaxView(AJAXMixin, ListView):
+    context_object_name = 'events'
+    template_name = "blocks/homepage-upcoming-events-carousel.html"
 
     def get_queryset(self):
         date = self.request.GET.get('date')
@@ -313,14 +316,13 @@ class EventCarouselAjaxView(AJAXMixin, ListView):
         return Event.objects.none()
 
     def get_context_data(self, **kwargs):
-        context = super(EventCarouselAjaxView, self).get_context_data(**kwargs)
+        context = super(HomepageEventCarouselAjaxView, self).get_context_data(**kwargs)
         if self.request.GET.get("template") == "home":
             start = timezone.localtime(timezone.now()) - timedelta(hours=4)
             context['dates'] = [start + timedelta(days=d) for d in range(5)]
         return context
 
-
-event_carousel_ajax = EventCarouselAjaxView.as_view()
+event_carousel_ajax = HomepageEventCarouselAjaxView.as_view()
 
 
 class LiveStreamView(ListView):

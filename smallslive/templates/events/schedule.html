@@ -40,13 +40,13 @@
         </div>
         {% for date, events in dates.iteritems %}
         <div class="day flex col-xs-6 col-md-3"
-             data-position={{ forloop.counter|add:"1" }} data-date="{{ date|date:"n/j/Y" }}">
+             data-position={{ forloop.counter|add:"1" }}>
           <h2 class="day__date">{{ date|date:"l" }} {{ date|date:"n/j/Y" }}</h2>
           {% if events %}
               <dl>
                 {% for event in events %}
                   <dt class="day__event-time">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</dt>
-                  <dd class="day__event-title {% if event.is_cancelled %}cancelled{% endif %}">{{ event.title }} {% if request.user.is_staff %}(ID: {{ event.id }}){% endif %}</dd>
+                  <dd data-event-id="{{ event.id }}" class="day__event-title {% if event.is_cancelled %}cancelled{% endif %}">{{ event.title }} {% if request.user.is_staff %}(ID: {{ event.id }}){% endif %}</dd>
                   {% if event.state == "Draft" %}<span class="day__event-cancelled">(Draft)</span>{% endif %}
                   {% if event.is_cancelled %}<span class="day__event-cancelled">(cancelled)</span>{% endif %}
                   {% if user.is_superuser %}
