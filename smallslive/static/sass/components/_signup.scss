@@ -104,7 +104,22 @@
   & .container {
     @include display(flex);
     @include align-items(stretch);
+    @include flex-wrap(wrap);
+
+    &:before {
+      display: none;
+    }
   }
+
+  &__downgrade-notice {
+      @include lato;
+      font-size: 12px;
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      padding: 0 20px;
+      margin-bottom: 0;
+    }
 }
 
 .signup-plan {
@@ -269,7 +284,7 @@
     background-color: $main-accent-color;
     color: #fff;
     @include lato-bold-italic;
-    font-size: 20px;
+    font-size: 16px;
     text-align: center;
     padding: 10px;
 
@@ -277,6 +292,10 @@
       outline: none;
       border: none;
       color: rgba(255,255,255,0.6);
+    }
+
+    &.disabled {
+      background-color: #dfdfdf;
     }
   }
 }
@@ -503,7 +522,7 @@
       display: inline-block;
 
       &.half {
-        width: 48%;
+        width: 47.5%;
         margin-right: 0;
       }
 
@@ -527,17 +546,22 @@
       &:hover, &:focus {
         color: rgba(255,255,255,0.7);
       }
+
+      &.disabled {
+        background-color: #dedede;
+      }
     }
   }
 
   &__card-icons {
       margin-top: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
 
       & img {
         height: 42px;
         width: auto;
         border: 1px solid #ddd;
+        margin-bottom: 5px;
       }
     }
 
@@ -547,7 +571,7 @@
 
     & .card-wrapper {
       @include display(flex);
-      margin: 80px auto 20px;
+      margin: 20px auto;
 
       & .jp-card.jp-card-identified {
         -webkit-box-shadow: none;
@@ -634,5 +658,23 @@
       background-color: $main-accent-color;
       color: rgba(255,255,255,0.7);
     }
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+  .signup-plan {
+    margin-bottom: 30px;
+
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+  }
+
+  .card-wrapper {
+    display: none !important;
+  }
+
+  .signup__done__plan {
+    margin-bottom: 30px;
   }
 }
