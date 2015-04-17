@@ -164,6 +164,11 @@
       text-decoration: line-through;
       color: #666;
     }
+
+    &:hover {
+      cursor: pointer;
+      text-decoration: underline;
+    }
   }
 
   &__event-cancelled {
@@ -171,7 +176,7 @@
     color: $main-accent-color;
     font-size: 12px;
   }
-  
+
 
   & dl {
     margin-bottom: 0;
