@@ -88,8 +88,6 @@
 .event-select {
   color: #fefefe;
   position: relative;
-  margin-left: 0;
-  margin-right: 0;
   padding: 15px 10px;
   background-color: $main-accent-color;
 
@@ -183,6 +181,10 @@
     height: auto;
     margin: 0;
   }
+}
+
+.upcoming-events .slick-slider {
+  margin-bottom: 0;
 }
 
 @media (max-width: 780px) {

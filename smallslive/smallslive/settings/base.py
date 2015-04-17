@@ -300,7 +300,6 @@ PIPELINE_JS = {
           'js/raphael-min.js',
           'js/base.js',
           'js/signup_form.js'
-
         ),
         'output_filename': 'js/main.js',
     },

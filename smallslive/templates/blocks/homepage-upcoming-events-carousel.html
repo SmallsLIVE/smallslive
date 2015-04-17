@@ -3,18 +3,17 @@
 {% load thumbor_tags %}
 
 <section id="upcoming-events-fullsize" class="upcoming-events container hidden-xs hidden-sm">
-    <div class="carousel slide" id="upcoming-carousel" data-ride="carousel" data-interval="6000">
-        <div class="carousel-inner" id="event-details-slides">
-            {% for event in events %}
-            <!-- Carousel slide -->
-            <div class="event-details row item {% if forloop.first %}active{% endif %}">
-                <div class="col-xs-12 col-md-6 vcenter hidden-xs">
-                    <div class="gradient-overlay"></div>
-                    {% if event.photo %}
-                        <img src="{% thumbor_url event.photo.url|urlencode width=600  height=360 smart=True %}" class=" event-details__image img img-responsive div-fill-img" alt=""/>
-                     {% else %}
-                        <img src="{% static "image/no-event-image-placeholder.jpg" %}" class="event-details__image img img-responsive div-fill-img" alt="{{ event.title }} photo"/>
-                    {% endif %}
+    <div class="row upcoming-carousel" id="upcoming-carousel">
+        {% for event in events %}
+        <!-- single slide -->
+        <div class="upcoming-carousel-single event-details">
+            <div class="col-xs-12 col-md-6 vcenter hidden-xs">
+                <div class="gradient-overlay"></div>
+                {% if event.photo %}
+                    <img src="{% thumbor_url event.photo.url|urlencode width=600  height=360 smart=True %}" class=" event-details__image img img-responsive div-fill-img" alt=""/>
+                {% else %}
+                    <img src="{% static "image/no-event-image-placeholder.jpg" %}" class="event-details__image img img-responsive div-fill-img" alt="{{ event.title }} photo"/>
+                {% endif %}
                 </div><!--
              --><div class="col-xs-12 col-md-6 info vcenter">
                     <div>
@@ -27,29 +26,29 @@
                         <a href="{{ event.get_absolute_url }}" class="event-details__event-button">Full event page</a><span class="arrow"></span>
                     </div>
                 </div>
-            </div>
-            {% endfor %}
         </div>
-        <div class="event-select row" id="event-details-selector">
-            <div class="col-xs-12 float-none">
-                <h2 class="event-select__title">SmallsLIVE Schedule</h2>
-                <div class="row">
-                    <div class="col-md-3 col-xs-12 vcenter">
-                        <select name="" id="homepage-date-select" class="event-select__date-select form-control">
-                          {% for date in dates %}
+        {% endfor %}
+    </div>
+    <div class="event-select row" id="event-details-selector">
+        <div class="col-xs-12 float-none">
+            <h2 class="event-select__title">SmallsLIVE Schedule</h2>
+            <div class="row">
+                <div class="col-md-3 col-xs-12 vcenter">
+                    <select name="" id="homepage-date-select" class="event-select__date-select form-control">
+                        {% for date in dates %}
                             <option value="{{ date|date:"n/j/Y" }}" {% if request.GET.date == date|date:"n/j/Y" %}selected{% endif %}>{{ date|naturalday:"l"|capfirst }} {{ date|date:"n/j/Y" }}</option>
-                          {% endfor %}
-                        </select>
-                    </div><!--
-                 --><div class="col-md-9 col-xs-12 vcenter">
-                        <ol class="event-select__slots carousel-indicators">
-                          {% for event in events %}
-                            <li data-target="#upcoming-carousel" data-slide-to="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}>{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</li>
-                          {% endfor %}
-                        </ol>
-                    </div>
+                        {% endfor %}
+                    </select>
+                </div><!--
+             --><div class="col-md-9 col-xs-12 vcenter">
+                    <ol class="event-select__slots carousel-indicators">
+                        {% for event in events %}
+                            <li data-slickPosition="{{ forloop.counter0 }}" {% if forloop.first %}class="active"{% endif %}>{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</li>
+                        {% endfor %}
+                    </ol>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
