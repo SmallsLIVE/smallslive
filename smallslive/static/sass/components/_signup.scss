@@ -477,6 +477,10 @@
     @include align-content(stretch);
     @include flex-wrap(wrap);
 
+    &:before {
+      display: none;
+    }
+
     & label {
       @include lato;
       font-size: 12px;
@@ -500,10 +504,15 @@
 
       &.half {
         width: 48%;
-        margin-right: 3%;
+        margin-right: 0;
+      }
+
+      &.quarter-group {
+        width: 22.5%;
+        margin-right: 1.5%;
 
         &:nth-child(2n) {
-          margin-right: 0;
+          margin-right: 3%;
         }
       }
     }
