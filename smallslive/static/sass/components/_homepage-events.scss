@@ -187,6 +187,35 @@
   margin-bottom: 0;
 }
 
+#header__date-picker {
+
+  & input {
+    @extend .btn;
+    @include lato-bold;
+    background-color: $main-accent-color;
+    border: 1px rgba(255,255,255,0.6) solid;
+    color: white;
+    padding: 10px 35px 10px 15px;
+    font-size: 14px;
+    width: 100%;
+    text-align: left;
+    @include transition(all 0.2s ease-in-out);
+    background-image: url('../image/calendar-dropdown-input-bg.png');
+    background-position: right center;
+    background-repeat: no-repeat;
+
+
+    &:hover, &:focus {
+      opacity: 0.8;
+      color: #fff;
+      outline: none;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+  }
+}
+
 @media (max-width: 780px) {
   .event-details {
     min-height: 0;

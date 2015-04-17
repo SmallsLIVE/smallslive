@@ -82,8 +82,9 @@ $(document).ready(function () {
         $(".carousel-indicators li.active").toggleClass( "active" );
         $(this).toggleClass( "active" );
     });
+});
 
-    $.fn.unslick = function() {
+$.fn.unslick = function() {
         var _ = this;
         return _.each(function(index, element) {
 
@@ -93,17 +94,24 @@ $(document).ready(function () {
 
         });
     };
-});
-
 
 
 /* Expanding details for schedule */
 $(document).ready(function () {
     var activeEventId = 0;
     $(".day__event-title").click(function () {
+        if ($(this).hasClass("event-active")) {
+            $(this).toggleClass("event-active");
+            $(this).parents('.day').toggleClass("day-active");
+        }
+        else {
+            $(".event-active").removeClass("event-active");
+            $(this).addClass("event-active");
+            $(this).parents('.day').addClass("day-active");
+        }
         var position = $(this).parents('.day').data('position');
         var eventId = $(this).attr('data-event-id');
-        $("#event-details-expanded").remove();
+        $("#event-details-expanded").slideUp(300, 'easeInOutCubic');
         if (eventId !== activeEventId) {
             var that = this;
             $.get('/events/schedule_carousel_ajax/' + eventId + '/', function (data) {
@@ -119,11 +127,12 @@ $(document).ready(function () {
                     offset = position % 2;
                 }
                 var new_position = position + offset;
+                $("#event-details-expanded").remove();
                 $('div[data-position=' + new_position + ']').after(template);
-
+                $('#event-details-expanded').hide().slideDown( 400, 'easeInOutCubic' );
 
                 activeEventId = eventId;
-                $("#event-details-expanded").scrollIntoView();
+                //$("#event-details-expanded").scrollIntoView();
             });
         } else {
             activeEventId = 0;
@@ -133,7 +142,7 @@ $(document).ready(function () {
 
 
 /* Event data for the homepage */
-$(document).ready(function () {
+/*$(document).ready(function () {
     var active = 0;
     $("body").on('change', '#homepage-date-select', function (d) {
         var date = $(this).val();
@@ -141,16 +150,21 @@ $(document).ready(function () {
         $.get('/events/event_carousel_ajax/?template=home&date=' + date, function (data) {
                 var template = data.content;
                 $("#upcoming-events-fullsize").replaceWith(template);
+                $('.upcoming-carousel').unslick();
+                $('.upcoming-carousel').slick({
+                    dots: false,
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    arrows: false
+                })
             });
-        $('.upcoming-carousel').unslick();
-        $('.upcoming-carousel').slick({
-            dots: false,
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false
-        })
     });
-});
+});*/
+
+
+/* Change event data on header carousel */
+
+
 
 
 /* Header search autocomplete */

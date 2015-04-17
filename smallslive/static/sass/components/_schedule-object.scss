@@ -17,6 +17,7 @@
 
   &__event-details-container {
     width: 100%;
+    border-top: $main-accent-color 8px solid;
     border-bottom: $main-accent-color 8px solid;
   }
 
@@ -183,8 +184,12 @@
   }
 }
 
-.selected:after {
-    bottom: 0;
+.event-active {
+  color: $main-accent-color;
+}
+
+.day-active:after {
+    bottom: -1px;
     left: 50%;
     border: solid transparent;
     content: " ";
@@ -198,6 +203,7 @@
     margin-left: -20px;
     z-index: 10001;
   }
+
 
 .schedule .event-select:after {
   border-top-color: $main-accent-color;
