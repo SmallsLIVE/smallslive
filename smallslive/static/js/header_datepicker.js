@@ -1,13 +1,19 @@
 /* Bootstrap datepicker for Schedule page */
+var date = new Date();
+var startDate = new Date(date.getFullYear(), date.getMonth(), 1);
+var endDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
 
 var $datePicker = $('#header__date-picker input');
 $datePicker.datepicker({
-    format: 'DD, mm/dd/yyyy',
+    format: 'DD, m/d/yyyy',
     orientation: "top auto",
-    autoclose: true
+    autoclose: true,
+    datesDisabled: window.disabledDates,
+    startDate: startDate,
+    endDate: endDate
 });
 
-var date = new Date();
 $datePicker.datepicker("setDate", date);
 
 $datePicker.on('changeDate', function(d){
