@@ -2,7 +2,9 @@
 {% load humanize %}
 {% load thumbor_tags %}
 
+{% if not request.is_ajax %}
 <section id="upcoming-events-fullsize" class="upcoming-events container hidden-xs hidden-sm">
+{% endif %}
     <div class="row upcoming-carousel" id="upcoming-carousel">
         {% for event in events %}
         <!-- single slide -->
@@ -29,6 +31,7 @@
         </div>
         {% endfor %}
     </div>
+{% if not request.is_ajax %}
     <div class="event-select row" id="event-details-selector">
         <div class="col-xs-12 float-none">
             <h2 class="event-select__title">SmallsLIVE Schedule</h2>
@@ -37,11 +40,6 @@
                     <div id="header__date-picker">
                         <input class="" type="text" readonly>
                     </div>
-<!--                    <select name="" id="homepage-date-select" class="event-select__date-select form-control">
-                        {% for date in dates %}
-                            <option value="{{ date|date:"n/j/Y" }}" {% if request.GET.date == date|date:"n/j/Y" %}selected{% endif %}>{{ date|naturalday:"l"|capfirst }} {{ date|date:"n/j/Y" }}</option>
-                        {% endfor %}
--->                    </select>
                 </div><!--
              --><div class="col-md-9 col-xs-12 vcenter">
                     <ol class="event-select__slots carousel-indicators">
@@ -54,4 +52,5 @@
         </div>
     </div>
 </section>
+{% endif %}
 

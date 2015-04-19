@@ -12,16 +12,26 @@ $datePicker.datepicker("setDate", date);
 
 $datePicker.on('changeDate', function(d){
     var date = d.date.getMonth()+1 + '/' + d.date.getDate() + '/' + d.date.getFullYear();
-    var $carousel =
+    var $carousel = $('#upcoming-carousel');
     $.get('/events/event_carousel_ajax/?template=home&date=' + date, function (data) {
         var template = data.content;
-        $("#upcoming-events-fullsize").replaceWith(template);
-        $('.upcoming-carousel').unslick();
-        $('.upcoming-carousel').slick({
+        var $eventTimes = $(template).find('.event-details__timeslot');
+        $('.event-select__slots').empty();
+        $eventTimes.each(function(index) {
+            var slot = '<li data-slickPosition="' + index + '"';
+            if (index === 0) {
+                slot += ' class="active"';
+            }
+            slot += '>' + $(this).text() + '</li>';
+            $('.event-select__slots').append(slot);
+        });
+        $carousel.unslick();
+        $carousel.replaceWith(template);
+        $('#upcoming-carousel').slick({
             dots: false,
             slidesToShow: 1,
             slidesToScroll: 1,
             arrows: false
-        })
+        });
     });
 });

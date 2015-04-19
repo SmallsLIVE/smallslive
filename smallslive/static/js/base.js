@@ -1,26 +1,30 @@
 /* Solves issues with images filling div's. Adds a img.wide or img.tall class to img element. */
 
-/*!
- * $.fn.scrollIntoView - similar to the default browser scrollIntoView
- * The default browser behavior always places the element at the top or bottom of its container.
- * This override is smart enough to not scroll if the element is already visible.
- *
- * Copyright 2011 Arwid Bancewicz
- * Licensed under the MIT license
- * http://www.opensource.org/licenses/mit-license.php
- *
- * @date 8 Jan 2013
- * @author Arwid Bancewicz http://arwid.ca
- * @version 0.3
- */
-(function(a){a.fn.scrollIntoView=function(f,j,c){var b=a.extend({},a.fn.scrollIntoView.defaults);if(a.type(f)=="object"){a.extend(b,f)}else{if(a.type(f)=="number"){a.extend(b,{duration:f,easing:j,complete:c})}else{if(f==false){b.smooth=false}}}var h=Infinity,e=0;if(this.size()==1){((h=this.get(0).offsetTop)==null||(e=h+this.get(0).offsetHeight))}else{this.each(function(m,n){(n.offsetTop<h?h=n.offsetTop:n.offsetTop+n.offsetHeight>e?e=n.offsetTop+n.offsetHeight:null)})}e-=h;var k=this.commonAncestor().get(0);var g=a(window).height();while(k){var d=k.scrollTop,l=k.clientHeight;if(l>g){l=g}if(l==0&&k.tagName=="BODY"){l=g}if((k.scrollTop!=((k.scrollTop+=1)==null||k.scrollTop)&&(k.scrollTop-=1)!=null)||(k.scrollTop!=((k.scrollTop-=1)==null||k.scrollTop)&&(k.scrollTop+=1)!=null)){if(h<=d){i(k,h)}else{if((h+e)>(d+l)){i(k,h+e-l)}else{i(k,undefined)}}return}k=k.parentNode}function i(n,m){if(m===undefined){if(a.isFunction(b.complete)){b.complete.call(n)}}else{if(b.smooth){a(n).stop().animate({scrollTop:m},b)}else{n.scrollTop=m;if(a.isFunction(b.complete)){b.complete.call(n)}}}}return this};a.fn.scrollIntoView.defaults={smooth:true,duration:null,easing:a.easing&&a.easing.easeOutExpo?"easeOutExpo":null,complete:a.noop(),step:null,specialEasing:{}};a.fn.isOutOfView=function(b){var c=true;this.each(function(){var h=this.parentNode,d=h.scrollTop,g=h.clientHeight,f=this.offsetTop,e=this.offsetHeight;if(b?(f)>(d+g):(f+e)>(d+g)){}else{if(b?(f+e)<d:f<d){}else{c=false}}});return c};a.fn.commonAncestor=function(){var c=[];var f=Infinity;a(this).each(function(){var g=a(this).parents();c.push(g);f=Math.min(f,g.length)});for(var d=0;d<c.length;d++){c[d]=c[d].slice(c[d].length-f)}for(var d=0;d<c[0].length;d++){var e=true;for(var b in c){if(c[b][d]!=c[0][d]){e=false;break}}if(e){return a(c[0][d])}}return a([])}})(jQuery);
-
 /*function makeImagesResponsive(selector) {
     $(selector).find('img').each(function () {
         var imgClass = (this.width / this.height > 1) ? 'wide' : 'tall';
         $(this).addClass(imgClass);
     });
 }*/
+
+/* Initialize Slick responsive carousel for Archive page */
+$(document).ready(function () {
+    $('#upcoming-carousel').slick({
+        dots: false,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false
+    });
+
+    $(".carousel-indicators").on('click', 'li', function(){
+        slideIndex = $(this).attr("data-slickPosition");
+        console.log(this);
+        var slider = $( '.upcoming-carousel' );
+        slider[0].slick.slickGoTo(slideIndex);
+        $(".carousel-indicators li.active").toggleClass( "active" );
+        $(this).toggleClass( "active" );
+    });
+});
 
 $(function() {
     // setTimeout() function will be fired after page is loaded
@@ -65,22 +69,6 @@ $(document).ready(function () {
                 }
             }
         ]
-    });
-
-    $('.upcoming-carousel').slick({
-        dots: false,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: false
-    })
-
-    $(".carousel-indicators li").click(function(){
-        slideIndex = $(this).attr("data-slickPosition");
-        console.log(slideIndex);
-        var slider = $( '.upcoming-carousel' );
-        slider[0].slick.slickGoTo(slideIndex);
-        $(".carousel-indicators li.active").toggleClass( "active" );
-        $(this).toggleClass( "active" );
     });
 });
 
@@ -139,32 +127,6 @@ $(document).ready(function () {
         }
     });
 });
-
-
-/* Event data for the homepage */
-/*$(document).ready(function () {
-    var active = 0;
-    $("body").on('change', '#homepage-date-select', function (d) {
-        var date = $(this).val();
-        var $carousel =
-        $.get('/events/event_carousel_ajax/?template=home&date=' + date, function (data) {
-                var template = data.content;
-                $("#upcoming-events-fullsize").replaceWith(template);
-                $('.upcoming-carousel').unslick();
-                $('.upcoming-carousel').slick({
-                    dots: false,
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    arrows: false
-                })
-            });
-    });
-});*/
-
-
-/* Change event data on header carousel */
-
-
 
 
 /* Header search autocomplete */
