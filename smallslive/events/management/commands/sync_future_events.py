@@ -24,9 +24,10 @@ class Command(NoArgsCommand):
                 print event.title
                 for performer in e.performers.all():
                     Artist.objects.get_or_create(
-                        id=performer.id,
-                        first_name=performer.first_name,
-                        last_name=performer.last_name
+                        id=performer.id, defaults={
+                            'first_name': performer.first_name,
+                            'last_name': performer.last_name
+                        }
                     )
                 for gig in e.artists_gig_info.all():
                     GigPlayed.objects.get_or_create(
