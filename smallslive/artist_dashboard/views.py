@@ -162,6 +162,7 @@ class ToggleRecordingStateView(HasArtistAssignedMixin, UpdateView):
 toggle_recording_state = ToggleRecordingStateView.as_view()
 
 
+@login_required
 def legal(request):
     user_signed = LegalAgreementAcceptance.objects.filter(user=request.user).exists()
     if not user_signed and 'sign-agreement' in request.POST:
