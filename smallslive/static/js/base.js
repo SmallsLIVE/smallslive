@@ -103,6 +103,7 @@ $(document).ready(function () {
         else {
             $(".event-active").removeClass("event-active");
             $(this).addClass("event-active");
+            $('.day-active').removeClass("day-active");
             $(this).parents('.day').addClass("day-active");
         }
         var position = $(this).parents('.day').data('position');
