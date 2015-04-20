@@ -60,7 +60,7 @@
     float: left;
     @include display(flex);
     @include flex-wrap(wrap);
-    border-bottom: 8px solid $main-accent-color;
+    border-bottom: 2px solid #eeeeee;
 
     &__single {
       padding: 0 20px;

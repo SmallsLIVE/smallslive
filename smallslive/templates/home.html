@@ -12,15 +12,52 @@
       {% include "blocks/today-schedule-mobile.html" %}
       {% include "blocks/homepage-upcoming-events-carousel.html" %}
 
-      <section class="cto cto--archive container vertical-align-parent">
-        <div class="vertical-align-child">
-            <h1 class="cto__title">SmallsLIVE Audio/Video Archive</h1>
-            <p class="cto__text">Sign up for access to our comprehensive audio/video archive of past performances.
-            </p>
-            <a href="{% url "static_page" "archive" %}" class="cto__button">Go to the full Archive</a>
-        </div>
-      </section>
-
+      {% if request.user.is_authenticated %}
+          <section class="cto cto--archive container vertical-align-parent">
+            <div class="vertical-align-child">
+                <h1 class="cto__title">SmallsLIVE Audio/Video Archive</h1>
+                <p class="cto__text">Sign up for access to our comprehensive audio/video archive of past performances.
+                </p>
+                <a href="{% url "static_page" "archive" %}" class="cto__button">Go to the full Archive</a>
+            </div>
+          </section>
+      {% else %}
+          <section class="home-membership container">
+              <div class="home-membership__header vertical-align-parent">
+                  <div class="vertical-align-child">
+                      <h1 class="home-membership__header__title">Become a member of SmallsLIVE and access our live streamed shows nightly!</h1>
+                      <p class="home-membership__header__text">Become a subscribing member and gain unlimited access to our extensive audio/video archive of past shows. By becoming a subscribing member you are directly supporting the musicians and the SmallsLIVE Revenue Share Project.</p>
+                      <a href="{% url "account_signup" %}" class="cto__button">Sign up!</a>
+                  </div>
+              </div>
+              <div class="home-membership__points">
+                  <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
+                      <i class="home-membership__points__graphic livicon" data-name="albums" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
+                      <div class="home-membership__points__text">
+                          The SmallsLIVE Archive is a library of every show (audio and video) performed at Smalls Jazz Club since September of 2007 and incorporates more than 9000 recordings and over 1000 musicians.   20 shows per week are added to the Archive on an average.
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
+                      <i class="home-membership__points__graphic livicon" data-name="sitemap" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
+                      <div class="home-membership__points__text">
+                          Subscriptions collected from members of SmallsLIVE are pooled and distributed directly to the musicians based on usage.  The more you listen to your favorite musicians or band, the larger the percentage of the revenue share they will receive.
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
+                      <i class="home-membership__points__graphic livicon" data-name="users-add" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
+                      <div class="home-membership__points__text">
+                          You can follow your favorite musicians directly, receive updates as to when they will perform and share this with your friends.  Certain shows will be available for download for your personal usage.
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
+                      <i class="home-membership__points__graphic livicon" data-name="heart" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
+                      <div class="home-membership__points__text">
+                          By becoming a subscribing member of SmallsLIVE you will have a direct impact on the club and the artists that create the music nightly.
+                      </div>
+                  </div>
+              </div>
+          </section>
+      {% endif %}
       <section class="from-our-archive container">
         <h1 class="from-our-archive__section-title">New in our Archive</h1>
 
@@ -201,42 +238,6 @@
             <a href="" class="home-store__buynow">Buy now</a><span class="arrow"></span>
           </div>
         </div>
-      </section>
-
-      <section class="home-membership container">
-          <div class="home-membership__header vertical-align-parent">
-              <div class="vertical-align-child">
-                  <h1 class="home-membership__header__title">Become a member of SmallsLIVE and access our live streamed shows nightly!</h1>
-                  <p class="home-membership__header__text">Become a subscribing member and gain unlimited access to our extensive audio/video archive of past shows. By becoming a subscribing member you are directly supporting the musicians and the SmallsLIVE Revenue Share Project.</p>
-                  <a href="{% url "account_signup" %}" class="cto__button">Sign up!</a>
-              </div>
-          </div>
-          <div class="home-membership__points">
-              <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
-                  <i class="home-membership__points__graphic livicon" data-name="albums" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
-                  <div class="home-membership__points__text">
-                      The SmallsLIVE Archive is a library of every show (audio and video) performed at Smalls Jazz Club since September of 2007 and incorporates more than 9000 recordings and over 1000 musicians.   20 shows per week are added to the Archive on an average.
-                  </div>
-              </div>
-              <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
-                  <i class="home-membership__points__graphic livicon" data-name="sitemap" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
-                  <div class="home-membership__points__text">
-                      Subscriptions collected from members of SmallsLIVE are pooled and distributed directly to the musicians based on usage.  The more you listen to your favorite musicians or band, the larger the percentage of the revenue share they will receive.
-                  </div>
-              </div>
-              <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
-                  <i class="home-membership__points__graphic livicon" data-name="users-add" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
-                  <div class="home-membership__points__text">
-                      You can follow your favorite musicians directly, receive updates as to when they will perform and share this with your friends.  Certain shows will be available for download for your personal usage.
-                  </div>
-              </div>
-              <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
-                  <i class="home-membership__points__graphic livicon" data-name="heart" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
-                  <div class="home-membership__points__text">
-                      By becoming a subscribing member of SmallsLIVE you will have a direct impact on the club and the artists that create the music nightly.
-                  </div>
-              </div>
-          </div>
       </section>
 
       <section class="cto cto--visit container vertical-align-parent">
