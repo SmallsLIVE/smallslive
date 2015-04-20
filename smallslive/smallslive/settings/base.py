@@ -311,6 +311,7 @@ PIPELINE_JS = {
           'js/bootstrap.min.js',
           'js/slick/slick.min.js',
           'js/bootstrap-select.js',
+          'js/raphael-min.js',
           'js/base.js',
           'js/imgCoverEffect.min.js',
           'js/dashboard-base.js'
