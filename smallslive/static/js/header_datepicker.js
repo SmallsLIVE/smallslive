@@ -39,5 +39,6 @@ $datePicker.on('changeDate', function(d){
             slidesToScroll: 1,
             arrows: false
         });
+        FillDivImg();
     });
 });

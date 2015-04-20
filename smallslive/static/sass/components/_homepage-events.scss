@@ -2,6 +2,8 @@
   min-height: 320px;
   background-color: #000;
   background-size: cover;
+  @include display(flex);
+  @include align-items(stretch);
 
   &__cancelled-ribbon {
     @include lato-bold;
@@ -24,6 +26,8 @@
 
   & .info {
     padding: 0 50px 0 20px;
+    @include display(flex);
+    @include align-items(center);
   }
 
   &__title {
@@ -183,8 +187,31 @@
   }
 }
 
+.no-events {
+
+  &__container {
+    @include display(flex);
+    @include align-items(center);
+    width: 100%;
+  }
+
+  &__title {
+    @include lato-black;
+    color: #fff;
+    opacity: 0.5;
+    font-size: 32px;
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+}
+
 .upcoming-events .slick-slider {
   margin-bottom: 0;
+}
+
+.slick-initialized .slick-slide {
+  @include display(flex);
 }
 
 #header__date-picker {

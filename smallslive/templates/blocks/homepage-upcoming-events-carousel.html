@@ -12,9 +12,9 @@
             <div class="col-xs-12 col-md-6 vcenter hidden-xs">
                 <div class="gradient-overlay"></div>
                 {% if event.photo %}
-                    <img src="{% thumbor_url event.photo.url|urlencode width=600  height=360 smart=True %}" class=" event-details__image img img-responsive div-fill-img" alt=""/>
+                    <img src="{% thumbor_url event.photo.url|urlencode width=600  height=360 smart=True %}" class=" event-details__image img div-fill-img" alt=""/>
                 {% else %}
-                    <img src="{% static "image/no-event-image-placeholder.jpg" %}" class="event-details__image img img-responsive div-fill-img" alt="{{ event.title }} photo"/>
+                    <img src="{% static "image/no-event-image-placeholder.jpg" %}" class="event-details__image img div-fill-img" alt="{{ event.title }} photo"/>
                 {% endif %}
                 </div><!--
              --><div class="col-xs-12 col-md-6 info vcenter">
@@ -29,6 +29,12 @@
                     </div>
                 </div>
         </div>
+        {% empty %}
+            <div class="upcoming-carousel-single event-details no-events">
+                <div class="no-events__container">
+                    <h2 class="no-events__title">No events for this date.</h2>
+                </div>
+            </div>
         {% endfor %}
     </div>
 {% if not request.is_ajax %}
