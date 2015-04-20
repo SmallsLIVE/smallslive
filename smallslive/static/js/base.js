@@ -197,7 +197,6 @@ $(document).ready(function () {
 /* Image cover effect emulation function */
 function FillDivImg() {
     $('.div-fill-img').each(function() {
-        console.log('nasao');
         var img = this;
         imgCoverEffect(img, {
             alignX: 'center',
@@ -213,7 +212,7 @@ $(document).ready(function () {
 
 /* Make all carousel slides fill carousel by height */
 function CarouselSlideHeight() {
-    $(".content").css('height',$("#upcoming-carousel").height());
+    $(".upcoming-carousel-single").css('height',$("#upcoming-carousel").height());
 }
 
 $(document).ready(function () {
