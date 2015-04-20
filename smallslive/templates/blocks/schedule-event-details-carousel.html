@@ -2,31 +2,24 @@
 {% load thumbor_tags %}
 
 {% if event %}
-<section class="schedule__event-details-container container" id="event-details-expanded">
-    <div class="carousel slide" id="upcoming-carousel" data-ride="carousel" data-interval="false">
-        <div class="carousel-inner">
-            <!-- Carousel slide -->
-            <div class="event-details row item active">
-                <div class="col-xs-12 col-md-6 vcenter">
-                    <div class="gradient-overlay"></div>
-                    {% if event.photo %}
-                        <img src="{% thumbor_url event.photo.url|urlencode width=600  height=360 smart=True %}" class=" event-details__image img img-responsive div-fill-img" alt="{{ event.title }} photo"/>
-                    {% else %}
-                        <img src="{% static "image/no-event-image-placeholder.jpg" %}" class="event-details__image img img-responsive div-fill-img" alt=""/>
-                    {% endif %}
-                </div><!--
-             --><div class="col-xs-12 col-md-6 info vcenter">
-                    <div>
-                        {% if event.is_cancelled %}<span class="event-details__cancelled-ribbon">cancelled</span>{% endif %}
-                        <h1 class="event-details__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h1>
-                        <h3 class="event-details__timeslot">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</h3>
-
-                        <p class="event-details__artists">{% for gig_info in event.get_performers %} <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist }} <span
-                class="event-details__instrument">({{ gig_info.role.name }})</span></a> {% if not forloop.last %} // {% endif %}{% endfor %}
-                        </p>
-                        <a href="{{ event.get_absolute_url }}" class="event-details__event-button">Full event page</a><span class="arrow"></span>
-                    </div>
-                </div>
+<section class="schedule__event-details-container container" id="event-details-expanded" xmlns="http://www.w3.org/1999/html">
+    <div class="event-details row item active">
+        <div class="col-xs-12 col-md-6">
+            <div class="gradient-overlay"></div>
+            {% if event.photo %}
+                <img src="{% thumbor_url event.photo.url|urlencode width=600  height=360 smart=True %}" class=" event-details__image img div-fill-img" alt="{{ event.title }} photo"/>
+            {% else %}
+                <img src="{% static "image/no-event-image-placeholder.jpg" %}" class="event-details__image img div-fill-img" alt=""/>
+            {% endif %}
+        </div>
+        <div class="col-xs-12 col-md-6 info">
+            <div>
+                {% if event.is_cancelled %}<span class="event-details__cancelled-ribbon">cancelled</span>{% endif %}
+                <h1 class="event-details__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h1>
+                <h3 class="event-details__timeslot">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</h3>
+                <p class="event-details__artists">{% for gig_info in event.get_performers %} <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist }} <span
+                class="event-details__instrument">({{ gig_info.role.name }})</span></a> {% if not forloop.last %} // {% endif %}{% endfor %}</p>
+                <a href="{{ event.get_absolute_url }}" class="event-details__event-button">Full event page</a><span class="arrow"></span>
             </div>
         </div>
     </div>

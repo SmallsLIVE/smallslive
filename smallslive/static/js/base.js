@@ -128,6 +128,7 @@ $(document).ready(function () {
                 $('#event-details-expanded').hide().slideDown( 400, 'easeInOutCubic' );
 
                 activeEventId = eventId;
+                FillDivImg();
                 //$("#event-details-expanded").scrollIntoView();
             });
         } else {
