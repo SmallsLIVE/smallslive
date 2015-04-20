@@ -48,9 +48,7 @@ class HomepageView(ListView):
         cursor.execute("SELECT DISTINCT EXTRACT( DAY FROM start) from events_event WHERE EXTRACT(MONTH FROM start) = %s AND EXTRACT(YEAR FROM start) = %s AND state='Published'", [start.month, start.year])
         days_with_events = cursor.fetchall()
         days_with_events = [int(x[0]) for x in days_with_events]
-        print days_with_events
         context['disabled_dates'] = ['{}/{}/{}'.format(start.month, x, start.year) for x in range(1, 30) if x not in days_with_events]
-        print context['disabled_dates']
         return context
 
 homepage = HomepageView.as_view()
