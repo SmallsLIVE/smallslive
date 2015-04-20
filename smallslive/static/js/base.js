@@ -7,7 +7,7 @@
     });
 }*/
 
-/* Initialize Slick responsive carousel for Archive page */
+/* Initialize Slick responsive carousel */
 $(document).ready(function () {
     $('#upcoming-carousel').slick({
         dots: false,
@@ -24,7 +24,15 @@ $(document).ready(function () {
         $(".carousel-indicators li.active").toggleClass( "active" );
         $(this).toggleClass( "active" );
     });
+
+    $('#upcoming-events-fullsize').on('afterChange', '.upcoming-carousel', function(slick, currentSlide){
+        var currentSlide = $(this).slick('slickCurrentSlide');
+        $(".carousel-indicators li.active").toggleClass( "active" );
+        var indicator = $('.carousel-indicators li');
+        $(indicator[currentSlide]).toggleClass("active");
+    });
 });
+
 
 $(function() {
     // setTimeout() function will be fired after page is loaded

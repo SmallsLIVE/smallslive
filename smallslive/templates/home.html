@@ -289,13 +289,6 @@
 {% endblock content %}
 
 {% block extra_js %}
-  <script>
-    window.disabledDates = [
-      {% for date in disabled_dates %}
-        '{{ date }}'{% if not forloop.last %},{% endif %}
-      {% endfor %}
-    ]
-  </script>
   <!-- Bootstrap datepicker JavaScript -->
   <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
   <script src="{% static 'js/header_datepicker.js' %}"></script>

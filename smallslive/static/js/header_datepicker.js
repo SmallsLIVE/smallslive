@@ -9,9 +9,7 @@ $datePicker.datepicker({
     format: 'DD, m/d/yyyy',
     orientation: "top auto",
     autoclose: true,
-    datesDisabled: window.disabledDates,
-    startDate: startDate,
-    endDate: endDate
+    datesDisabled: window.disabledDates
 });
 
 $datePicker.datepicker("setDate", date);
