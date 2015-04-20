@@ -17,9 +17,16 @@
   }
   
   & h3 {
-    @include lato-bold;
-    margin-top: 20px;
+    @include lato-black;
+    margin-top: 30px;
+    margin-bottom: 20px;
     text-align: left;
+  }
+
+  & h4 {
+    @include lato-black;
+    margin-top: 25px;
+    margin-bottom: 15px;
   }
   
   & p {
@@ -38,5 +45,12 @@
   
   & ul li {
     margin-bottom: 5px;
+  }
+
+  & .privacy__contact-link {
+    margin-bottom: 40px;
+    font-size: 16px;
+    @include lato-black;
+    display: inline-block;
   }
 }
