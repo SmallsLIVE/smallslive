@@ -8,10 +8,32 @@
   <div class="content-wrapper">
     <section class="container">
       <div class="event-video row">
-        <div id="video-player" style="height: 450px">
-        </div>
         <div class="event-video__stats col-xs-12">
-          <p>54:32 min // 1982 plays</p>
+          <p>360p mp4 video</p>
+        </div>
+        <div id="video-player-360p" style="height: 450px">
+        </div>
+
+      </div>
+      <div class="event-video row">
+        <div class="event-video__stats col-xs-12">
+          <p>720p mp4 video</p>
+        </div>
+        <div id="video-player-720p" style="height: 450px">
+        </div>
+      </div>
+      <div class="event-video row">
+        <div class="event-video__stats col-xs-12">
+          <p>400kb/s HLS video</p>
+        </div>
+        <div id="video-player-hls400" style="height: 450px">
+        </div>
+      </div>
+      <div class="event-video row">
+        <div class="event-video__stats col-xs-12">
+          <p>1000kb/s HLS video</p>
+        </div>
+        <div id="video-player-hls1000" style="height: 450px">
         </div>
       </div>
     </section>
@@ -19,20 +41,31 @@
 {% endblock content %}
 
 {% block extra_js %}
-  <script src="http://jwpsrv.com/library/wAJS9rqGEeOf0iIACrqE1A.js"></script>
+  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   <script>
-    jwplayer("video-player").setup({
-    {% if request.GET.720p %}
-        file: "https://s3.amazonaws.com/smallslivevideooutput/simpsons/720p/simpsons-720p.mp4",
-    {% elif request.GET.480p %}
-        file: "https://s3.amazonaws.com/smallslivevideooutput/simpsons/480p/simpsons-480p.mp4",
-    {% elif request.GET.hlsv3 %}
-        file: "https://s3.amazonaws.com/smallslivevideooutput/simpsons/hlsv3/simpsons.m3u8",
-    {% elif request.GET.hlsv4 %}
-        file: "https://s3.amazonaws.com/smallslivevideooutput/simpsons/hlsv4/simpsons.m3u8",
-    {% endif %}
-        width: "100%",
-        aspectratio: "16:9"
+    jwplayer("video-player-360p").setup({
+      file: "https://s3.amazonaws.com/smallslivevideooutput/bunny/360p/bunny.mp4",
+      image: "https://s3.amazonaws.com/smallslivevideothumbnails/bunny/360p/bunny-00003.png",
+      width: "100%",
+      aspectratio: "16:9"
+    });
+    jwplayer("video-player-720p").setup({
+      file: "https://s3.amazonaws.com/smallslivevideooutput/bunny/720p/bunny.mp4",
+      image: "https://s3.amazonaws.com/smallslivevideothumbnails/bunny/720p/bunny-00003.png",
+      width: "100%",
+      aspectratio: "16:9"
+    });
+    jwplayer("video-player-hls400").setup({
+      file: "https://s3.amazonaws.com/smallslivevideooutput/bunny/hls400_v3/bunny_400_playlist.m3u8",
+      image: "https://s3.amazonaws.com/smallslivevideothumbnails/bunny/hls400_v3/bunny-00002.png",
+      width: "100%",
+      aspectratio: "16:9"
+    });
+    jwplayer("video-player-hls1000").setup({
+      file: "https://s3.amazonaws.com/smallslivevideooutput/bunny/hls1000_v3/bunny_1000_playlist.m3u8",
+      image: "https://s3.amazonaws.com/smallslivevideothumbnails/bunny/hls1000_v3/bunny-00002.png",
+      width: "100%",
+      aspectratio: "16:9"
     });
   </script>
 {% endblock %}
