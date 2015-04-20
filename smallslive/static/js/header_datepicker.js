@@ -38,5 +38,6 @@ $datePicker.on('changeDate', function(d){
             arrows: false
         });
         FillDivImg();
+        CarouselSlideHeight();
     });
 });
