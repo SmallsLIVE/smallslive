@@ -1,5 +1,6 @@
 from datetime import timedelta
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -172,6 +173,7 @@ def legal(request):
     })
 
 
+@login_required
 def artist_settings(request):
     # if this is a POST request we need to process the form data
     if 'artist_info' in request.POST:
