@@ -199,7 +199,7 @@ class Event(TimeStampedModel):
         return u"{dt.month}/{dt.day}/{dt.year}".format(dt=self.start)
 
     def has_started(self):
-        return timezone.localtime(timezone.now()) > timezone.localtime(self.start)
+        return timezone.now() > self.start
 
     @cached_property
     def audio_status(self):

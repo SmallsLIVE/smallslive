@@ -32,7 +32,7 @@
             {% if currently_playing %}
               <p class="live-stream__title">Live now:</p>
             {% else %}
-              <p class="live-stream__title--no-show">There is currently no live show being broadcast, next live broadcast is on {{ show_next_day.start|naturalday:"n/j/Y" }} at {{ show_next_day.start|date:"g:i A" }} EST.</p>
+              <p class="live-stream__title--no-show">There is currently no live show being broadcast, next live broadcast is on {{ first_future_show.start|naturalday:"n/j/Y" }} at {{ first_future_show.start|date:"g:i A" }} EST.</p>
             {% endif %}
           </div>
         </div>
