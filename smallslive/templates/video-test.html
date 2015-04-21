@@ -26,14 +26,7 @@
         <div class="event-video__stats col-xs-12">
           <p>400kb/s HLS video</p>
         </div>
-        <div id="video-player-hls400" style="height: 450px">
-        </div>
-      </div>
-      <div class="event-video row">
-        <div class="event-video__stats col-xs-12">
-          <p>1000kb/s HLS video</p>
-        </div>
-        <div id="video-player-hls1000" style="height: 450px">
+        <div id="video-player-hls" style="height: 450px">
         </div>
       </div>
     </section>
@@ -44,26 +37,20 @@
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   <script>
     jwplayer("video-player-360p").setup({
-      file: "https://s3.amazonaws.com/smallslivevideooutput/bunny/360p/bunny.mp4",
-      image: "https://s3.amazonaws.com/smallslivevideothumbnails/bunny/360p/bunny-00003.png",
+      file: "https://s3.amazonaws.com/smallslivevideooutput/8512-1/360p/8512-1-360p.mp4",
+      image: "https://s3.amazonaws.com/smallslivevideothumbnails/8512-1/360p/8512-1-00003.png",
       width: "100%",
       aspectratio: "16:9"
     });
     jwplayer("video-player-720p").setup({
-      file: "https://s3.amazonaws.com/smallslivevideooutput/bunny/720p/bunny.mp4",
-      image: "https://s3.amazonaws.com/smallslivevideothumbnails/bunny/720p/bunny-00003.png",
+      file: "https://s3.amazonaws.com/smallslivevideooutput/8512-1/720p/8512-1-720p.mp4",
+      image: "https://s3.amazonaws.com/smallslivevideothumbnails/8512-1/720p/8512-1-00003.png",
       width: "100%",
       aspectratio: "16:9"
     });
-    jwplayer("video-player-hls400").setup({
-      file: "https://s3.amazonaws.com/smallslivevideooutput/bunny/hls400_v3/bunny_400_playlist.m3u8",
-      image: "https://s3.amazonaws.com/smallslivevideothumbnails/bunny/hls400_v3/bunny-00002.png",
-      width: "100%",
-      aspectratio: "16:9"
-    });
-    jwplayer("video-player-hls1000").setup({
-      file: "https://s3.amazonaws.com/smallslivevideooutput/bunny/hls1000_v3/bunny_1000_playlist.m3u8",
-      image: "https://s3.amazonaws.com/smallslivevideothumbnails/bunny/hls1000_v3/bunny-00002.png",
+    jwplayer("video-player-hls").setup({
+      file: "https://s3.amazonaws.com/smallslivevideooutput/8512-1/hlsv3/8512-1.m3u8",
+      image: "https://s3.amazonaws.com/smallslivevideothumbnails/8512-1/720p/8512-1-00003.png",
       width: "100%",
       aspectratio: "16:9"
     });
