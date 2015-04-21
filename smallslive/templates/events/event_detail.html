@@ -87,11 +87,9 @@
             </div>
             {% endif %}
             <div class="event-description__text-block">
+              {% if event.description %}
                 <h1 class="event-description__title">Event description:</h1>
-                {% if event.description %}
                     {{ event.description|safe }}
-                {% else %}
-                  <p class="unavailable">No event description available.</p>
                 {% endif %}
             </div>
             <div class="share-social">
