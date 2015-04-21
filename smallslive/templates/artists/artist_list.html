@@ -117,7 +117,7 @@
                         </div>
                     </li>
                 {% empty %}
-                    <li class="artists-list__list__row-empty row">No artists found.</li>
+                    <li class="artists-list__list__row--empty row">No artists found. Do you want to  <a href="{% url "artist_add" %}"> add a new artist</a>?</li>
                 {% endfor %}
             </ul>
         </section>
