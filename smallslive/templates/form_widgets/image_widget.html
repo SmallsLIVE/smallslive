@@ -9,5 +9,5 @@
 {% endif %}
 Change:
 {% endif %}
-<input type="{{ type }}" name="{{ name }}"{% if required %} required{% endif %}>
+<input type="{{ type }}" name="{{ name }}"{% if required %} required{% endif %} {% for attr,val in attrs.items %}{{ attr }}={{ val }} {% endfor %} >
 </div>

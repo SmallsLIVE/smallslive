@@ -6,6 +6,7 @@ from django.db.models import Sum, Count
 from django.utils.functional import cached_property
 from django.utils.text import slugify
 from allauth.account.models import EmailAddress, EmailConfirmation
+from image_cropping import ImageRatioField
 from model_utils import Choices
 from sortedm2m.fields import SortedManyToManyField
 from tinymce import models as tinymce_models
@@ -23,6 +24,7 @@ class Artist(models.Model):
     biography = tinymce_models.HTMLField(blank=True)
     website = models.URLField(max_length=255, blank=True)
     photo = models.ImageField(upload_to='artist_images', max_length=150, blank=True)
+    cropping = ImageRatioField('photo', '580x400', help_text="Enable cropping", allow_fullsize=True)
     slug = models.SlugField(blank=True, max_length=100)
 
     class Meta:
@@ -122,6 +124,13 @@ class Artist(models.Model):
             return EmailConfirmation.objects.filter(email_address__email=self.user.email).order_by('-sent').first()
         else:
             return False
+
+    @cached_property
+    def photo_crop_box(self):
+        if not self.cropping or '-' in self.cropping:
+            return
+        top_x, top_y, bottom_x, bottom_y = self.cropping.split(',')
+        return ((top_x, top_y), (bottom_x, bottom_y))
 
 
 class Instrument(models.Model):

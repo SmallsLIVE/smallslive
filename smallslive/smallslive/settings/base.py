@@ -78,6 +78,7 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'filer',
     'floppyforms',
+    'image_cropping',
     'localflavor',
     'oscar_stripe',
     'pipeline',

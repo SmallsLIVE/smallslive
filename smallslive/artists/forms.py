@@ -5,18 +5,18 @@ from django.forms.util import ErrorList
 import floppyforms
 from crispy_forms.helper import FormHelper
 from model_utils import Choices
-from events.forms import ImageThumbnailWidget
 from haystack.forms import SearchForm
+from utils.widgets import ImageCropWidget
 from .models import Artist
 
 
 class ArtistAddForm(forms.ModelForm):
     class Meta:
         model = Artist
-        fields = ('salutation', 'first_name', 'last_name',  'instruments', 'biography', 'website', 'photo')
+        fields = ('salutation', 'first_name', 'last_name',  'instruments', 'biography', 'website', 'photo', 'cropping')
         widgets = {
             'instruments': floppyforms.SelectMultiple,
-            'photo': ImageThumbnailWidget
+            'photo': ImageCropWidget,
         }
 
     def __init__(self, *args, **kwargs):

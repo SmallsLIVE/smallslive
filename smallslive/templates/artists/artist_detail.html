@@ -28,8 +28,13 @@
               <div class="col-xs-12 col-md-6 hero-image vcenter">
                 <div class="gradient-overlay"></div>
                 {% if artist.photo %}
-                    <img src="{% thumbor_url artist.photo.url|urlencode height=400 width=600 smart=True %}"
+                  {% if artist.photo_crop_box %}
+                    <img src="{% thumbor_url artist.photo.url|urlencode  crop=artist.photo_crop_box width=580 %}"
                          class=" artist-details__image img img-responsive" alt=""/>
+                  {% else %}
+                    <img src="{% thumbor_url artist.photo.url|urlencode height=400 width=580 smart=True %}"
+                         class=" artist-details__image img img-responsive" alt=""/>
+                  {% endif %}
                 {% else %}
                     <img src="{% static 'image/no-artist-photo.jpg' %}"
                          class=" artist-details__image img img-responsive" alt=""/>
