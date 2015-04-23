@@ -398,29 +398,37 @@ STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 STRIPE_CURRENCY = 'USD'
 
 DJSTRIPE_PLANS = {
-    "bronze": {
-        "stripe_plan_id": "bronze",
-        "name": "Bronze ($15/month)",
-        "description": "Bronze plan: livestream only",
+    "basic_monthly": {
+        "stripe_plan_id": "basic_monthly",
+        "name": "Basic ($9/month)",
+        "description": "Basic plan: livestream + audio",
+        "price": 900,  # $9.00
+        "currency": "usd",
+        "interval": "month"
+    },
+    "basic_yearly": {
+        "stripe_plan_id": "basic_yearly",
+        "name": "Basic ($90/year)",
+        "description": "Basic plan: livestream + audio",
+        "price": 9000,  # $9.00
+        "currency": "usd",
+        "interval": "year"
+    },
+    "premium_monthly": {
+        "stripe_plan_id": "premium_monthly",
+        "name": "Premium ($15/month)",
+        "description": "Premium plan: livestream + audio + video",
         "price": 1500,  # $15.00
         "currency": "usd",
         "interval": "month"
     },
-    "silver": {
-        "stripe_plan_id": "silver",
-        "name": "Silver ($40/month)",
-        "description": "Silver plan: live stream + SD videos",
-        "price": 4000,  # $40.00
+    "premium_yearly": {
+        "stripe_plan_id": "premium_yearly",
+        "name": "Premium ($150/year)",
+        "description": "Premium plan: livestream + audio + video",
+        "price": 15000,  # $150.00
         "currency": "usd",
-        "interval": "month"
-    },
-    "gold": {
-        "stripe_plan_id": "gold",
-        "name": "Gold ($60/month)",
-        "description": "Gold plan: live stream + SD and HD videos",
-        "price": 6000,  # $60.00
-        "currency": "usd",
-        "interval": "month"
+        "interval": "year"
     },
 }
 
