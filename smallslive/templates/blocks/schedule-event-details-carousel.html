@@ -7,7 +7,11 @@
         <div class="col-xs-12 col-md-6">
             <div class="gradient-overlay"></div>
             {% if event.photo %}
-                <img src="{% thumbor_url event.photo.url|urlencode width=600  height=360 smart=True %}" class=" event-details__image img div-fill-img" alt="{{ event.title }} photo"/>
+                {% if event.photo_crop_box %}
+                      <img src="{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=600 %}" alt="" class="event-details__image img div-fill-img"/>
+                    {% else %}
+                      <img src="{% thumbor_url event.photo.url|urlencode height=360 width=600 smart=True %}" alt="" class="event-details__image img div-fill-img"/>
+                    {% endif %}
             {% else %}
                 <img src="{% static "image/no-event-image-placeholder.jpg" %}" class="event-details__image img div-fill-img" alt=""/>
             {% endif %}

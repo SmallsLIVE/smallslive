@@ -74,7 +74,11 @@
           <section class="event-description col-md-6">
             <div class="row">
                 {% if event.photo %}
-                    <img src="{% thumbor_url event.photo.url|urlencode height=340 width=600 %}" alt="" class="event__img img-responsive"/>
+                  {% if event.photo_crop_box %}
+                    <img src="{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=580 %}" alt="" class="event__img img-responsive"/>
+                  {% else %}
+                    <img src="{% thumbor_url event.photo.url|urlencode height=340 width=580 %}" alt="" class="event__img img-responsive"/>
+                  {% endif %}
                 {% endif %}
               </div>
             {% if user.is_superuser %}

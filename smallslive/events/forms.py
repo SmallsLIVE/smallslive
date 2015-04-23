@@ -15,6 +15,7 @@ from .models import Event, GigPlayed
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 from urllib2 import urlopen
+from utils.widgets import ImageCropWidget, ImageSelectWidget
 
 
 class Formset(LayoutObject):
@@ -45,16 +46,9 @@ class Formset(LayoutObject):
             'formset': formset}))
 
 
-class ImageThumbnailWidget(floppyforms.ClearableFileInput):
-    template_name = 'form_widgets/image_widget.html'
-
 
 class EventStatusWidget(floppyforms.RadioSelect):
     template_name = 'form_widgets/event_status.html'
-
-
-class ImageSelectWidget(floppyforms.Select):
-    template_name = 'form_widgets/select_images.html'
 
 
 class ImageSelectField(floppyforms.ChoiceField):
@@ -129,11 +123,11 @@ class EventAddForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        fields = ('start', 'end', 'id', 'title', 'subtitle', 'photo', 'description', 'state')
+        fields = ('start', 'end', 'id', 'title', 'subtitle', 'photo', 'cropping', 'description', 'state')
         widgets = {
             'state': EventStatusWidget,
             'link': floppyforms.URLInput,
-            'photo': ImageThumbnailWidget
+            'photo': ImageCropWidget
         }
 
     def __init__(self, *args, **kwargs):
@@ -153,6 +147,7 @@ class EventAddForm(forms.ModelForm):
             'title',
             'subtitle',
             'photo',
+            'cropping',
             'description',
             'state',
         )
