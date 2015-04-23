@@ -1,0 +1,134 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load socialaccount %}
+
+{% block content %}
+    <div class="content-wrapper">
+
+        <section class="signup-membership container">
+            <div class="signup-membership__header vertical-align-parent">
+                <div class="vertical-align-child">
+                    <h1 class="signup-membership__header__title">Become a member of SmallsLIVE and access our live streamed shows nightly!</h1>
+                    <p class="signup-membership__header__text">Become a subscribing member and gain unlimited access to our extensive audio/video archive of past shows. By becoming a subscribing member you are directly supporting the musicians and the SmallsLIVE Revenue Share Project.</p>
+                </div>
+            </div>
+            <div class="signup-membership__points">
+                <div class="col-xs-12 col-sm-6 col-md-3 signup-membership__points__single">
+                    <i class="signup-membership__points__graphic livicon" data-name="albums" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
+                    <div class="signup-membership__points__text">
+                        The SmallsLIVE Archive is a library of every show (audio and video) performed at Smalls Jazz Club since September of 2007 and incorporates more than 9000 recordings and over 1000 musicians.   20 shows per week are added to the Archive on an average.
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3 signup-membership__points__single">
+                    <i class="signup-membership__points__graphic livicon" data-name="sitemap" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
+                    <div class="signup-membership__points__text">
+                        Subscriptions collected from members of SmallsLIVE are pooled and distributed directly to the musicians based on usage.  The more you listen to your favorite musicians or band, the larger the percentage of the revenue share they will receive.
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3 signup-membership__points__single">
+                    <i class="signup-membership__points__graphic livicon" data-name="users-add" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
+                    <div class="signup-membership__points__text">
+                        You can follow your favorite musicians directly, receive updates as to when they will perform and share this with your friends.  Certain shows will be available for download for your personal usage.
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3 signup-membership__points__single">
+                    <i class="signup-membership__points__graphic livicon" data-name="heart" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
+                    <div class="signup-membership__points__text">
+                        By becoming a subscribing member of SmallsLIVE you will have a direct impact on the club and the artists that create the music nightly.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="signup-plans">
+            <div class="container">
+                <div class="col-xs-12 col-sm-4 signup-plan">
+                    <div class="signup-plan__content">
+                        <p class="signup-plan__name">Free Plan</p>
+                        <div class="signup-plan__price__container" id="signup-plan-price-slave">
+                            <div class="signup-plan__price__free">
+                                Free
+                            </div>
+                        </div>
+                        <div class="signup-plan__arrow-separator"></div>
+                        <ul class="signup-plan__features">
+                            <li class="signup-plan__features__single">just register with a valid email address and <b>watch all our shows live</b> via our live stream.</li>
+                        </ul>
+                        <a class="signup-plan__button" href="#">Sign up</a>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-4 signup-plan">
+                    <div class="signup-plan__content">
+                        <p class="signup-plan__name">Basic Membership</p>
+                        <div class="signup-plan__price__container" id="signup-plan-price-master">
+                            <div class="signup-plan__price__primary">
+                                <span class="signup-plan__price__primary__currency">$</span>
+                                <span class="signup-plan__price__primary__amount">9</span>
+                                <span class="signup-plan__price__primary__period">/ MO</span>
+                            </div>
+                            <div class="signup-plan__price__promo">
+                                Or get 2 months for free
+                            </div>
+                            <div class="signup-plan__price__secondary">
+                                <span class="signup-plan__price__secondary__currency">$</span>
+                                <span class="signup-plan__price__secondary__amount">90</span>
+                                <span class="signup-plan__price__secondary__period">/ year</span>
+                            </div>
+                        </div>
+                        <div class="signup-plan__arrow-separator"></div>
+                        <ul class="signup-plan__features">
+                            <li class="signup-plan__features__single">watch <b>all our shows live</b> via our live stream</li>
+                            <li class="signup-plan__features__single">access to <b>all audio recordings</b></li>
+                            <li class="signup-plan__features__single">new shows <b>added weekly</b> </li>
+                            <li class="signup-plan__features__single">revenue from subscriptions pooled and <b>directly distributed to artists</b> based on how much they get listened to</li>
+                        </ul>
+                        <a class="signup-plan__button" href="#">Sign up</a>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-4 signup-plan">
+                    <div class="signup-plan__content">
+                        <p class="signup-plan__name">Premium Membership</p>
+                        <div class="signup-plan__price__container">
+                            <div class="signup-plan__price__primary">
+                                <span class="signup-plan__price__primary__currency">$</span>
+                                <span class="signup-plan__price__primary__amount">15</span>
+                                <span class="signup-plan__price__primary__period">/ MO</span>
+                            </div>
+                            <div class="signup-plan__price__promo">
+                                Or get 2 months for free
+                            </div>
+                            <div class="signup-plan__price__secondary">
+                                <span class="signup-plan__price__secondary__currency">$</span>
+                                <span class="signup-plan__price__secondary__amount">150</span>
+                                <span class="signup-plan__price__secondary__period">/ year</span>
+                            </div>
+                        </div>
+                        <div class="signup-plan__arrow-separator"></div>
+                        <ul class="signup-plan__features">
+                            <li class="signup-plan__features__single">watch <b>all our shows live</b> via our live stream</li>
+                            <li class="signup-plan__features__single">access to <b>all audio recordings</b></li>
+                            <li class="signup-plan__features__single">access to <b>all video recordings</b></li>
+                            <li class="signup-plan__features__single">new shows <b>added weekly</b> </li>
+                            <li class="signup-plan__features__single">revenue from subscriptions pooled and <b>directly distributed to artists</b> based on how much they get listened to</li>
+                        </ul>
+                        <a class="signup-plan__button" href="#">Sign up</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="signup-premium container vertical-align-parent">
+            <div class="vertical-align-child">
+                <h1 class="signup-premium__title">Become a member of SmallsLIVE and access our live streamed shows nightly!</h1>
+                <p class="signup-premium__text">Become a subscribing member and gain unlimited access to our extensive audio/video archive of past shows. By becoming a subscribing member you are directly supporting the musicians and the SmallsLIVE Revenue Share Project.</p>
+                <a href="{% url "account_signup" %}" class="signup-premium__button">Sign up!</a>
+            </div>
+        </section>
+
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script>
+
+    </script>
+{% endblock %}

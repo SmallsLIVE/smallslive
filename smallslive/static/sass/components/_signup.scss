@@ -1,0 +1,282 @@
+.signup-membership {
+  padding: 0;
+  background-color: #fff;
+  @include lato;
+
+  &:before {
+    display: none;
+  }
+
+  &__header {
+    background-image: url('../image/home-membership-cta.jpg');
+    background-position: center center;
+    background-size: cover;
+    text-align: center;
+    border-bottom: 8px solid $main-accent-color;
+    color: #fff;
+    width: 100%;
+    padding: 20px 20px;
+    position: relative;
+
+    &__title {
+      @include lato-black;
+      font-size: 32px;
+      max-width: 640px;
+      margin: 0 auto 15px;
+      line-height: 130%;
+    }
+
+    &__text {
+      @include lato-bold;
+      font-size: 14px;
+      margin: 0 auto;
+      line-height: 130%;
+      max-width: 760px;
+    }
+
+    & .cto__button {
+      margin-top: 30px;
+    }
+
+    &:after {
+      top: 100%;
+      left: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border-color: rgba(136, 183, 213, 0);
+      border-top-color: $main-accent-color;
+      border-width: 30px;
+      margin-left: -30px;
+    }
+  }
+
+  &__points {
+    padding: 20px 10px 40px;
+    text-align: center;
+    float: left;
+    @include display(flex);
+    @include flex-wrap(wrap);
+    border-bottom: 2px solid #eeeeee;
+    position: relative;
+
+    &__single {
+      padding: 0 20px;
+      margin-top: 30px;
+    }
+
+    &__graphic {
+      margin-bottom: 20px;
+      display: inline-block;
+
+      & img {
+        max-width: 54px;
+        max-height: 54px;
+        width: auto;
+        height: auto;
+      }
+    }
+
+    &:after {
+      top: 100%;
+      left: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border-color: rgba(136, 183, 213, 0);
+      border-top-color: #fff;
+      border-width: 30px;
+      margin-left: -30px;
+    }
+  }
+}
+
+.signup-plans {
+  padding: 60px 0;
+  background-color: #efefef;
+
+  & .container {
+    @include display(flex);
+    @include align-items(stretch);
+  }
+}
+
+.signup-plan {
+  padding: 0 20px;
+  @include display(flex);
+  @include align-items(stretch);
+
+  &__content {
+    padding: 30px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    @include display(flex);
+    @include flex-wrap(wrap);
+  }
+
+  &__arrow-separator {
+    width: 100%;
+    border-bottom: 1px solid #d6d6d6;
+    height: 1px;
+    position: relative;
+    margin: 15px 0 25px;
+
+    &:after, &:before {
+      top: 100%;
+      left: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    &:after {
+      border-color: rgba(255, 255, 255, 0);
+      border-top-color: #fff;
+      border-width: 15px;
+      margin-left: -15px;
+    }
+
+    &:before {
+      border-color: rgba(214, 214, 214, 0);
+      border-top-color: #d6d6d6;
+      border-width: 16px;
+      margin-left: -16px;
+    }
+  }
+
+  &__name {
+    @include lato-black;
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 100%;
+    display: block;
+  }
+
+  &__price {
+
+    &__container {
+      width: 100%;
+    }
+
+    &__free {
+      @include lato-black;
+      font-size: 64px;
+      color: $main-accent-color;
+      width: 100%;
+      padding: 10px 0;
+      border-top: 1px solid #d6d6d6;
+      border-bottom: 1px solid #d6d6d6;
+      margin: 6px 0;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    &__primary {
+      text-align: center;
+      text-transform: uppercase;
+      width: 100%;
+      margin-top: -10px;
+
+      &__currency {
+        @include lato-black;
+        font-size: 24px;
+        color: $main-accent-color;
+        opacity: 0.7;
+        position: relative;
+        top: -28px;
+      }
+
+      &__amount {
+        @include lato-black;
+        font-size: 64px;
+        color: $main-accent-color;
+      }
+
+      &__period {
+        @include lato-black;
+        font-size: 18px;
+        color: $main-accent-color;
+        opacity: 0.7;
+      }
+    }
+
+    &__secondary {
+      text-align: center;
+      text-transform: uppercase;
+      width: 100%;
+      margin-top: 10px;
+
+      &__currency {
+        @include lato-black;
+        font-size: 28px;
+        color: $main-accent-color;
+      }
+
+      &__amount {
+        @include lato-black;
+        font-size: 28px;
+        color: $main-accent-color;
+      }
+
+      &__period {
+        @include lato-black;
+        font-size: 18px;
+        color: $main-accent-color;
+        opacity: 0.7;
+      }
+    }
+
+    &__promo {
+      @include lato-black;
+      font-size: 14px;
+      text-align: center;
+      color: $main-accent-color;
+      width: 100%;
+      padding: 10px 0;
+      border-top: 1px solid #d6d6d6;
+      border-bottom: 1px solid #d6d6d6;
+      text-transform: uppercase;
+    }
+  }
+
+  &__features {
+    display: block;
+    padding-left: 20px;
+
+    &__single {
+      @include lato;
+      margin-bottom: 2px;
+    }
+  }
+
+  &__button {
+    @include align-self(flex-end);
+    margin: 20px 0 0;
+    display: block;
+    width: 100%;
+    background-color: $main-accent-color;
+    color: #fff;
+    @include lato-bold-italic;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+
+    &:hover, &:focus {
+      outline: none;
+      border: none;
+      color: rgba(255,255,255,0.6);
+    }
+  }
+}
