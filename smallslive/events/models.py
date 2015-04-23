@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property
+from image_cropping import ImageRatioField
 from model_utils import Choices
 from model_utils.fields import StatusField
 from model_utils.models import QueryManager, TimeStampedModel
@@ -40,6 +41,7 @@ class Event(TimeStampedModel):
     active = models.BooleanField(default=False)
     date_freeform = models.TextField(blank=True)
     photo = models.ImageField(upload_to='event_images', max_length=150, blank=True)
+    cropping = ImageRatioField('photo', '600x360', help_text="Enable cropping", allow_fullsize=True)
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed', related_name='events')
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField(default=STATUS.Draft)
@@ -226,6 +228,13 @@ class Event(TimeStampedModel):
             else:
                 status = "published"
         return status
+
+    @cached_property
+    def photo_crop_box(self):
+        if not self.cropping or '-' in self.cropping:
+            return
+        top_x, top_y, bottom_x, bottom_y = self.cropping.split(',')
+        return ((top_x, top_y), (bottom_x, bottom_y))
 
 
 class RecordingQuerySet(models.QuerySet):

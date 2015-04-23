@@ -1,5 +1,13 @@
+import floppyforms
 from image_cropping.widgets import CropWidget, get_attrs
-from events.forms import ImageThumbnailWidget
+
+
+class ImageThumbnailWidget(floppyforms.ClearableFileInput):
+    template_name = 'form_widgets/image_widget.html'
+
+
+class ImageSelectWidget(floppyforms.Select):
+    template_name = 'form_widgets/select_images.html'
 
 
 class ImageCropWidget(ImageThumbnailWidget, CropWidget):
