@@ -82,6 +82,6 @@ class EditProfileForm(ArtistAddForm):
     def __init__(self, *args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)
         for field in self.Meta.fields:
-            self.fields[field].widget.attrs['class'] = 'form-control'
+            self.fields[field].widget.attrs['class'] = self.fields[field].widget.attrs.get('class', '') + ' form-control'
         self.fields['salutation'].widget.attrs['class'] = 'form-control selectpicker'
         self.fields['website'].widget.attrs['placeholder'] = 'http://www.yourwebsite.com'

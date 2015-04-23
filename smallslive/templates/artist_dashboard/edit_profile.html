@@ -86,6 +86,10 @@
                 <p class="form-error-text">{{ error  }}</p>
             {% endfor %}
           </div>
+          <div id="div_id_cropping" class="form-group {% if form.photo.errors  %}has-error{% endif %}">
+            <p class="help">Enable cropping</p>
+            {{ form.cropping }}
+          </div>
           <input type="submit" name="submit" class="admin-interface__form__button" value="Save">
       </form>
   </section>
