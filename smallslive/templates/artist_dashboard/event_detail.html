@@ -188,11 +188,16 @@
         });
       })
     });
-    jwplayer("embed-container").setup({
-      file: "https://s3.amazonaws.com/smallslivevideooutput/8512-1/360p/8512-1-360p.mp4",
-      image: "https://s3.amazonaws.com/smallslivevideothumbnails/8512-1/360p/8512-1-00003.png",
-      width: "100%",
-      aspectratio: "16:9"
+    $('.jwplayer-video').on('click', function() {
+      jwplayer("embed-container").setup({
+        file: $(this).attr('data-video'),
+        width: "100%",
+        aspectratio: "16:9"
+      });
     });
+    $('#videoPlayerModal').on('hide.bs.modal', function () {
+      jwplayer().remove();
+    })
+
   </script>
 {% endblock %}
