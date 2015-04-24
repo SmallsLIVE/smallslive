@@ -397,3 +397,153 @@
     }
   }
 }
+
+.signup__payment {
+  padding: 40px 20px;
+  background-color: #fff;
+
+  &__heading {
+    @include lato-black;
+    font-size: 18px;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  &__text {
+    @include lato;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  &__type {
+    padding-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+
+    &__selection {
+
+      &__container {
+        margin-top: 20px;
+      }
+
+      &__option {
+        margin-top: 5px;
+
+        & input[type="radio"] {
+          display: none;
+        }
+
+        & label {
+          cursor: pointer;
+
+          &:before {
+            content: "";
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            position: absolute;
+            background-color: #fff;
+            border-radius: 100%;
+            border: 1px solid #A4A4A4;
+          }
+        }
+
+        & input[type=radio]:checked + label:before {
+          content: "\2022";
+          color: #666;
+          font-size: 34px;
+          text-align: center;
+          line-height: 17px;
+          padding-left: 1px;
+        }
+
+        & span {
+          @include lato-bold;
+          font-size: 14px;
+          margin-left: 28px;
+
+          &.price {
+            @include lato;
+            color: $main-accent-color;
+            margin-left: 5px;
+          }
+        }
+      }
+    }
+  }
+
+  &__information {
+    padding: 30px 0;
+    @include display(flex);
+    @include align-content(stretch);
+
+    & label {
+      @include lato;
+      font-size: 12px;
+    }
+
+    & label#expiry-label {
+      width: 51%;
+    }
+
+    & label#cvc-label {
+      width: 47%;
+    }
+
+    & input, & select {
+      @include lato;
+      font-size: 16px;
+      padding: 10px 15px;
+      border-radius: 0;
+      margin-bottom: 15px;
+      display: inline-block;
+
+      &.half {
+        width: 48%;
+        margin-right: 3%;
+
+        &:nth-child(2n) {
+          margin-right: 0;
+        }
+      }
+    }
+
+    & input[type="submit"] {
+      @include lato-bold;
+      color: #fff;
+      background-color: $main-accent-color;
+      padding: 10px 60px;
+      margin-top: 20px;
+
+      &:hover, &:focus {
+        color: rgba(255,255,255,0.7);
+      }
+    }
+  }
+
+  &__card-icons {
+      margin-top: 10px;
+      margin-bottom: 20px;
+
+      & img {
+        height: 42px;
+        width: auto;
+        border: 1px solid #ddd;
+      }
+    }
+
+  &__card__image {
+    @include display(flex);
+    @include align-content(center);
+
+    & .card-wrapper {
+      @include display(flex);
+      margin: 80px auto 20px;
+
+      & .jp-card.jp-card-identified {
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+      }
+    }
+  }
+}
