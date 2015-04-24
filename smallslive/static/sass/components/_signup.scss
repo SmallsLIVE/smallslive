@@ -475,6 +475,7 @@
     padding: 30px 0;
     @include display(flex);
     @include align-content(stretch);
+    @include flex-wrap(wrap);
 
     & label {
       @include lato;
@@ -544,6 +545,85 @@
         -moz-box-shadow: none;
         box-shadow: none;
       }
+    }
+  }
+}
+
+.signup__done {
+  @include display(flex);
+  @include flex-wrap(wrap);
+  @include align-content(stretch);
+  background-color: #fff;
+  padding: 40px 20px;
+
+  &:before {
+    display: none;
+  }
+
+  & .signup-plan__name {
+    @include lato-black;
+    font-size: 24px;
+    color: $main-accent-color;
+    margin-bottom: 0;
+  }
+
+  &__content {
+
+    & .vertical-align-child {
+      padding: 0;
+    }
+
+    &__heading {
+      @include lato-black;
+      font-size: 28px;
+      margin-top: 0;
+      margin-bottom: 20px;
+    }
+
+    & ul {
+      padding-left: 20px;
+
+      & li {
+        @include lato;
+        margin-bottom: 5px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.signup__what-next {
+  padding: 60px 20px;
+  border-top: 1px solid #ddd;
+  background-color: #fff;
+  text-align: center;
+
+  & h1 {
+    @include lato-black;
+    font-size: 36px;
+    color: $main-accent-color;
+    margin-top: 0;
+    margin-bottom: 15px;
+  }
+
+  & p {
+    @include lato-bold;
+    font-size: 14px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  & .cto__button {
+    background-color: $main-accent-color;
+    border: none;
+    margin-top: 20px;
+
+    &:hover, &:focus {
+      background-color: $main-accent-color;
+      color: rgba(255,255,255,0.7);
     }
   }
 }
