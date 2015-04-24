@@ -3,6 +3,7 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('events.views',
     url(r'^live-stream/$', 'live_stream', name='live-stream'),
+    url(r'^archive/$', 'archive', name='archive'),
     url(r'^schedule/(?P<year>\d+)/(?P<month>\d+)/$', 'monthly_schedule', name='monthly_schedule'),
     url(r'^schedule/$', 'schedule', name='schedule'),
     url(r'^schedule_carousel_ajax/(?P<pk>\d+)/$', 'schedule_carousel_ajax', name='schedule_carousel_ajax'),

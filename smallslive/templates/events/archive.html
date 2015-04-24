@@ -1,0 +1,598 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <div class="content-wrapper">
+      {% if request.user.is_authenticated %}
+          <section class="cto cto--archive container vertical-align-parent">
+            <div class="vertical-align-child">
+                <h1 class="cto__title">SmallsLIVE Audio/Video Archive</h1>
+                <p class="cto__text">Sign up for access to our comprehensive audio/video archive of past performances.
+                </p>
+                <a href="{% url "static_page" "archive" %}" class="cto__button">Go to the full Archive</a>
+            </div>
+          </section>
+      {% else %}
+          <section class="home-membership container">
+              <div class="home-membership__header vertical-align-parent">
+                  <div class="vertical-align-child">
+                      <h1 class="home-membership__header__title">Become a member of SmallsLIVE and access our live streamed shows nightly!</h1>
+                      <p class="home-membership__header__text">Become a subscribing member and gain unlimited access to our extensive audio/video archive of past shows. By becoming a subscribing member you are directly supporting the musicians and the SmallsLIVE Revenue Share Project.</p>
+                      <a href="{% url "account_signup" %}" class="cto__button">Sign up!</a>
+                  </div>
+              </div>
+              <div class="home-membership__points">
+                  <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
+                      <i class="home-membership__points__graphic livicon" data-name="albums" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
+                      <div class="home-membership__points__text">
+                          The SmallsLIVE Archive is a library of every show (audio and video) performed at Smalls Jazz Club since September of 2007 and incorporates more than 9000 recordings and over 1000 musicians.   20 shows per week are added to the Archive on an average.
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
+                      <i class="home-membership__points__graphic livicon" data-name="sitemap" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
+                      <div class="home-membership__points__text">
+                          Subscriptions collected from members of SmallsLIVE are pooled and distributed directly to the musicians based on usage.  The more you listen to your favorite musicians or band, the larger the percentage of the revenue share they will receive.
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
+                      <i class="home-membership__points__graphic livicon" data-name="users-add" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
+                      <div class="home-membership__points__text">
+                          You can follow your favorite musicians directly, receive updates as to when they will perform and share this with your friends.  Certain shows will be available for download for your personal usage.
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
+                      <i class="home-membership__points__graphic livicon" data-name="heart" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
+                      <div class="home-membership__points__text">
+                          By becoming a subscribing member of SmallsLIVE you will have a direct impact on the club and the artists that create the music nightly.
+                      </div>
+                  </div>
+              </div>
+          </section>
+      {% endif %}
+{% comment %}
+      <section class="your-requested-videos container">
+        <h1 class="your-requested-videos__section-title">Your requested videos</h1>
+
+        <div class="row archive-carousel">
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/02.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">The Ari Hoenig Trio</h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">66</span> requests</p>
+                </div>
+            </div>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/03.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">Siren Dan an experimental sound salon </h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">38</span> requests</p>
+                </div>
+            </div>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/06.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">Mike DiRubbo Quintet</h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">28</span> requests</p>
+                </div>
+            </div>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/08.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">The David Gibson Quinte</h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">22</span> requests</p>
+                </div>
+            </div>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/10.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">The Tyler Mitchell Trio</h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">17</span> requests</p>
+                </div>
+            </div>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/11.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">Josh Evans Big Band</h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">8</span> requests</p>
+                </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+{% endcomment %}
+      <section class="video-audio container">
+        <div class="row">
+          <div class="col-md-6">
+            <h1 class="video-audio__section-title">Most popular videos</h1>
+            <div class="videos">
+
+                <div class="mini-video">
+                <div class="mini-video__image">
+                  <img src="{% static 'image/archive-temp/lists/01.jpg' %}" alt=""/>
+                </div>
+                <div class="mini-video-info">
+                  <p class="mini-video-info__date">10/24/2007</p>
+                  <h2 class="mini-video-info__title">George Gee Orchestra</h2>
+                  <div class="mini-video-info__stats">
+                      <p>Added:</p>
+                      <p>Views:</p>
+                  </div>
+                  <div class="mini-video-info__stats">
+                      <p><span>11/05/2015</span></p>
+                      <p><span>3458</span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-video">
+                <div class="mini-video__image">
+                  <img src="{% static 'image/archive-temp/lists/02.jpg' %}" alt=""/>
+                </div>
+                <div class="mini-video-info">
+                  <p class="mini-video-info__date">10/24/2007</p>
+                  <h2 class="mini-video-info__title">The Legendary Johnny O'Neal</h2>
+                  <div class="mini-video-info__stats">
+                      <p>Added:</p>
+                      <p>Views:</p>
+                  </div>
+                  <div class="mini-video-info__stats">
+                      <p><span>11/05/2015</span></p>
+                      <p><span>3458</span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-video">
+                <div class="mini-video__image">
+                  <img src="{% static 'image/archive-temp/lists/03.jpg' %}" alt=""/>
+                </div>
+                <div class="mini-video-info">
+                  <p class="mini-video-info__date">10/24/2007</p>
+                  <h2 class="mini-video-info__title">Joe Magnarelli Quartet</h2>
+                  <div class="mini-video-info__stats">
+                      <p>Added:</p>
+                      <p>Views:</p>
+                  </div>
+                  <div class="mini-video-info__stats">
+                      <p><span>11/05/2015</span></p>
+                      <p><span>3458</span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-video">
+                <div class="mini-video__image">
+                  <img src="{% static 'image/archive-temp/lists/04.jpg' %}" alt=""/>
+                </div>
+                <div class="mini-video-info">
+                  <p class="mini-video-info__date">10/24/2007</p>
+                  <h2 class="mini-video-info__title">Peter Bernstein Solo Guitar</h2>
+                  <div class="mini-video-info__stats">
+                      <p>Added:</p>
+                      <p>Views:</p>
+                  </div>
+                  <div class="mini-video-info__stats">
+                      <p><span>11/05/2015</span></p>
+                      <p><span>3458</span></p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          <p class="video-audio__more-link">Full list of 30 most popular videos</p>
+          </div>
+          <div class="col-md-6">
+            <h1 class="video-audio__section-title">Newly added videos</h1>
+            <div class="videos">
+
+                <div class="mini-video">
+                <div class="mini-video__image">
+                  <img src="{% static 'image/archive-temp/lists/05.jpg' %}" alt=""/>
+                </div>
+                <div class="mini-video-info">
+                  <p class="mini-video-info__date">10/24/2007</p>
+                  <h2 class="mini-video-info__title">Gerry Gibbs Group</h2>
+                  <div class="mini-video-info__stats">
+                      <p>Added:</p>
+                      <p>Views:</p>
+                  </div>
+                  <div class="mini-video-info__stats">
+                      <p><span>11/05/2015</span></p>
+                      <p><span>3458</span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-video">
+                <div class="mini-video__image">
+                  <img src="{% static 'image/archive-temp/lists/06.jpg' %}" alt=""/>
+                </div>
+                <div class="mini-video-info">
+                  <p class="mini-video-info__date">10/24/2007</p>
+                  <h2 class="mini-video-info__title">The Spike Wilner Trio</h2>
+                  <div class="mini-video-info__stats">
+                      <p>Added:</p>
+                      <p>Views:</p>
+                  </div>
+                  <div class="mini-video-info__stats">
+                      <p><span>11/05/2015</span></p>
+                      <p><span>3458</span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-video">
+                <div class="mini-video__image">
+                  <img src="{% static 'image/archive-temp/lists/07.jpg' %}" alt=""/>
+                </div>
+                <div class="mini-video-info">
+                  <p class="mini-video-info__date">10/24/2007</p>
+                  <h2 class="mini-video-info__title">Smalls Legacy Band Feat. Frank Lacy</h2>
+                  <div class="mini-video-info__stats">
+                      <p>Added:</p>
+                      <p>Views:</p>
+                  </div>
+                  <div class="mini-video-info__stats">
+                      <p><span>11/05/2015</span></p>
+                      <p><span>3458</span></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-video">
+                <div class="mini-video__image">
+                  <img src="{% static 'image/archive-temp/lists/08.jpg' %}" alt=""/>
+                </div>
+                <div class="mini-video-info">
+                  <p class="mini-video-info__date">10/24/2007</p>
+                  <h2 class="mini-video-info__title">The Next Generation Sessions hosted by Kyle Poole and Friends</h2>
+                  <div class="mini-video-info__stats">
+                      <p>Added:</p>
+                      <p>Views:</p>
+                  </div>
+                  <div class="mini-video-info__stats">
+                      <p><span>11/05/2015</span></p>
+                      <p><span>3458</span></p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <p class="video-audio__more-link">Full list of 30 most popular videos</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="your-requested-videos container">
+        <h1 class="your-requested-videos__section-title">Most requested videos</h1>
+
+        <div class="row archive-carousel">
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/01.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">Jill McCarron Trio</h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">87</span> requests</p>
+                </div>
+                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
+            </div>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/02.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">The Ari Hoenig Trio</h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">66</span> requests</p>
+                </div>
+                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
+            </div>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/03.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">Siren Dan an experimental sound salon </h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">45</span> requests</p>
+                </div>
+                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
+            </div>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/04.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">Saturday afternoon Open Jam Session with: Jonathan Thomas Trio </h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">42</span> requests</p>
+                </div>
+                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
+            </div>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/05.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">Sylvia Cuenca Organ Quartet</h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">38</span> requests</p>
+                </div>
+                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
+            </div>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/06.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">Mike DiRubbo Quintet </h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">28</span> requests</p>
+                </div>
+                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
+            </div>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/07.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">The Chuck Redd Quartet </h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">25</span> requests</p>
+                </div>
+                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
+            </div>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/08.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">The David Gibson Quintet</h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">22</span> requests</p>
+                </div>
+                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
+            </div>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/09.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">Amos Hoffman Quintet</h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">18</span> requests</p>
+                </div>
+                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
+            </div>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="requested-video event-object--gold">
+                <img class="requested-video__image"
+                     src="{% static 'image/archive-temp/10.jpg' %}" alt=""/>
+                <div class="requested-video__info">
+                  <p class="requested-video__date">01/30/2015</p>
+                  <h1 class="requested-video__title">The Tyler Mitchell Trio</h1>
+                  <p class="requested-video__requests"><span class="requested-video__requests--number">17</span> requests</p>
+                </div>
+                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="video-audio container">
+        <div class="row">
+          <div class="col-md-6">
+            <h1 class="video-audio__section-title">Most popular audio</h1>
+            <div class="videos">
+
+                <div class="mini-video">
+                    <div class="mini-video__image">
+                      <img src="{% static 'image/archive-temp/lists/09.jpg' %}" alt=""/>
+                    </div>
+                    <div class="mini-video-info">
+                      <p class="mini-video-info__date">10/24/2007</p>
+                      <h2 class="mini-video-info__title">Godwin Louis' Band</h2>
+                      <div class="mini-video-info__stats">
+                          <p>Added:</p>
+                          <p>Plays:</p>
+                      </div>
+                      <div class="mini-video-info__stats">
+                          <p><span>11/05/2015</span></p>
+                          <p><span>3458</span></p>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="mini-video">
+                    <div class="mini-video__image">
+                      <img src="{% static 'image/archive-temp/lists/10.jpg' %}" alt=""/>
+                    </div>
+                    <div class="mini-video-info">
+                      <p class="mini-video-info__date">10/24/2007</p>
+                      <h2 class="mini-video-info__title">"Round Midnight" With: Jon Beshay Quartet</h2>
+                      <div class="mini-video-info__stats">
+                          <p>Added:</p>
+                          <p>Plays:</p>
+                      </div>
+                      <div class="mini-video-info__stats">
+                          <p><span>11/05/2015</span></p>
+                          <p><span>3458</span></p>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="mini-video">
+                    <div class="mini-video__image">
+                      <img src="{% static 'image/archive-temp/lists/11.jpg' %}" alt=""/>
+                    </div>
+                    <div class="mini-video-info">
+                      <p class="mini-video-info__date">10/24/2007</p>
+                      <h2 class="mini-video-info__title">"Early Bird Session" With: The Joel Press Quartet</h2>
+                      <div class="mini-video-info__stats">
+                          <p>Added:</p>
+                          <p>Plays:</p>
+                      </div>
+                      <div class="mini-video-info__stats">
+                          <p><span>11/05/2015</span></p>
+                          <p><span>3458</span></p>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="mini-video">
+                    <div class="mini-video__image">
+                      <img src="{% static 'image/archive-temp/lists/12.jpg' %}" alt=""/>
+                    </div>
+                    <div class="mini-video-info">
+                      <p class="mini-video-info__date">10/24/2007</p>
+                      <h2 class="mini-video-info__title">Tardo Hammer Trio</h2>
+                      <div class="mini-video-info__stats">
+                          <p>Added:</p>
+                          <p>Plays:</p>
+                      </div>
+                      <div class="mini-video-info__stats">
+                          <p><span>11/05/2015</span></p>
+                          <p><span>3458</span></p>
+                      </div>
+                    </div>
+                </div>
+
+            </div>
+          <p class="video-audio__more-link">Full list of 30 most popular audio recordings</p>
+          </div>
+          <div class="col-md-6">
+            <h1 class="video-audio__section-title">Newly added audio</h1>
+            <div class="videos">
+              {% for recording in recent_audio %}
+                <div class="mini-video">
+                    <div class="mini-video__image">
+                      <img src="{% static 'image/archive-temp/lists/13.jpg' %}" alt=""/>
+                    </div>
+                    <div class="mini-video-info">
+                      <p class="mini-video-info__date">{{ recording.event.start }}</p>
+                      <h2 class="mini-video-info__title">{{ recording.event.title }}</h2>
+                      <div class="mini-video-info__stats">
+                          <p>Added:</p>
+                          <p>Plays:</p>
+                      </div>
+                      <div class="mini-video-info__stats">
+                          <p><span>{{ recording.date_added }}</span></p>
+                          <p><span>3458</span></p>
+                      </div>
+                    </div>
+                </div>
+              {% endfor %}
+
+                <div class="mini-video">
+                    <div class="mini-video__image">
+                      <img src="{% static 'image/archive-temp/lists/14.jpg' %}" alt=""/>
+                    </div>
+                    <div class="mini-video-info">
+                      <p class="mini-video-info__date">10/24/2007</p>
+                      <h2 class="mini-video-info__title">Afterhours with: Lawrence Leathers</h2>
+                      <div class="mini-video-info__stats">
+                          <p>Added:</p>
+                          <p>Plays:</p>
+                      </div>
+                      <div class="mini-video-info__stats">
+                          <p><span>11/05/2015</span></p>
+                          <p><span>3458</span></p>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="mini-video">
+                    <div class="mini-video__image">
+                      <img src="{% static 'image/archive-temp/lists/15.jpg' %}" alt=""/>
+                    </div>
+                    <div class="mini-video-info">
+                      <p class="mini-video-info__date">10/24/2007</p>
+                      <h2 class="mini-video-info__title">Billy Kaye</h2>
+                      <div class="mini-video-info__stats">
+                          <p>Added:</p>
+                          <p>Plays:</p>
+                      </div>
+                      <div class="mini-video-info__stats">
+                          <p><span>11/05/2015</span></p>
+                          <p><span>3458</span></p>
+                      </div>
+                    </div>
+                </div>
+
+                <div class="mini-video">
+                    <div class="mini-video__image">
+                      <img src="{% static 'image/archive-temp/lists/16.jpg' %}" alt=""/>
+                    </div>
+                    <div class="mini-video-info">
+                      <p class="mini-video-info__date">10/24/2007</p>
+                      <h2 class="mini-video-info__title">Alex Sipiagin Quintet</h2>
+                      <div class="mini-video-info__stats">
+                          <p>Added:</p>
+                          <p>Plays:</p>
+                      </div>
+                      <div class="mini-video-info__stats">
+                          <p><span>11/05/2015</span></p>
+                          <p><span>3458</span></p>
+                      </div>
+                    </div>
+                </div>
+
+            </div>
+            <p class="video-audio__more-link">Full list of 30 newest audio recordings</p>
+          </div>
+        </div>
+      </section>
+    </div>
+{% endblock content %}

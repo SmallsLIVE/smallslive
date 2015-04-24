@@ -14,7 +14,7 @@ from django.template.defaulttags import regroup
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta
-from django.views.generic import DeleteView
+from django.views.generic import DeleteView, TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView, BaseDetailView
 
@@ -28,7 +28,7 @@ from artists.models import Artist, Instrument
 from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
     EventSearchForm, EventEditForm
-from .models import Event
+from .models import Event, Recording
 
 
 class HomepageView(ListView):
@@ -354,3 +354,15 @@ class LiveStreamView(ListView):
         return context
 
 live_stream = LiveStreamView.as_view()
+
+
+class ArchiveView(TemplateView):
+    template_name = "events/archive.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super(ArchiveView, self).get_context_data(**kwargs)
+        context['recent_audio'] = Recording.objects.audio().order_by('-date_added')[:5]
+        context['recent_video'] = Recording.objects.video().order_by('-date_added')[:5]
+        return context
+
+archive = ArchiveView.as_view()
