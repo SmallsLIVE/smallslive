@@ -107,3 +107,8 @@ button, input[type="submit"] {
 .alert-dismissible {
   margin-bottom: 3px;
 }
+
+.modal-backdrop.in {
+  opacity: 0.8;
+  z-index: 10;
+}

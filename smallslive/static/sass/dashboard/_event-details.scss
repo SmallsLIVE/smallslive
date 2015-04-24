@@ -212,6 +212,36 @@
   }
 }
 
+.event-video-modal.in {
+  display: -webkit-box !important;
+  display: -moz-box !important;
+  display: box !important;
+  display: -webkit-flex !important;
+  display: -moz-flex !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  @include align-items(center)
+}
+
+.modal-dialog.event-video {
+  border: 10px solid rgba(255,255,255,0.6);
+  width: 80%;
+  max-width: 980px;
+
+  & .close {
+    border-radius: 100%;
+    position: absolute;
+    z-index: 10;
+    right: -25px;
+    top: -25px;
+    font-size: 16px;
+
+    &:hover, &:focus {
+      outline: none;
+    }
+  }
+}
+
 @media (max-width: $screen-xs-max) {
   .event-media {
 
