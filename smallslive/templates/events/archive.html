@@ -1,5 +1,7 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
+{% load thumbor_tags %}
+
 
 {% block content %}
     <div class="content-wrapper">
@@ -214,78 +216,31 @@
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Newly added videos</h1>
             <div class="videos">
-
+              {% for recording in recent_video %}
                 <div class="mini-video">
-                <div class="mini-video__image">
-                  <img src="{% static 'image/archive-temp/lists/05.jpg' %}" alt=""/>
+                    <div class="mini-video__image">
+                      <a href="{{ recording.event.get_absolute_url }}">
+                      {% if recording.event.photo %}
+                        <img src="{% thumbor_url recording.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      {% else %}
+                        <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                      {% endif %}
+                      </a>
+                    </div>
+                    <div class="mini-video-info">
+                      <p class="mini-video-info__date">{{ recording.event.start|date:"n/j/Y" }}</p>
+                      <h2 class="mini-video-info__title">{{ recording.event.title }}</h2>
+                      <div class="mini-video-info__stats">
+                          <p>Added:</p>
+                          <p>Plays:</p>
+                      </div>
+                      <div class="mini-video-info__stats">
+                          <p><span>{{ recording.date_added|date:"n/j/Y" }}</span></p>
+                          <p><span>3458</span></p>
+                      </div>
+                    </div>
                 </div>
-                <div class="mini-video-info">
-                  <p class="mini-video-info__date">10/24/2007</p>
-                  <h2 class="mini-video-info__title">Gerry Gibbs Group</h2>
-                  <div class="mini-video-info__stats">
-                      <p>Added:</p>
-                      <p>Views:</p>
-                  </div>
-                  <div class="mini-video-info__stats">
-                      <p><span>11/05/2015</span></p>
-                      <p><span>3458</span></p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mini-video">
-                <div class="mini-video__image">
-                  <img src="{% static 'image/archive-temp/lists/06.jpg' %}" alt=""/>
-                </div>
-                <div class="mini-video-info">
-                  <p class="mini-video-info__date">10/24/2007</p>
-                  <h2 class="mini-video-info__title">The Spike Wilner Trio</h2>
-                  <div class="mini-video-info__stats">
-                      <p>Added:</p>
-                      <p>Views:</p>
-                  </div>
-                  <div class="mini-video-info__stats">
-                      <p><span>11/05/2015</span></p>
-                      <p><span>3458</span></p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mini-video">
-                <div class="mini-video__image">
-                  <img src="{% static 'image/archive-temp/lists/07.jpg' %}" alt=""/>
-                </div>
-                <div class="mini-video-info">
-                  <p class="mini-video-info__date">10/24/2007</p>
-                  <h2 class="mini-video-info__title">Smalls Legacy Band Feat. Frank Lacy</h2>
-                  <div class="mini-video-info__stats">
-                      <p>Added:</p>
-                      <p>Views:</p>
-                  </div>
-                  <div class="mini-video-info__stats">
-                      <p><span>11/05/2015</span></p>
-                      <p><span>3458</span></p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mini-video">
-                <div class="mini-video__image">
-                  <img src="{% static 'image/archive-temp/lists/08.jpg' %}" alt=""/>
-                </div>
-                <div class="mini-video-info">
-                  <p class="mini-video-info__date">10/24/2007</p>
-                  <h2 class="mini-video-info__title">The Next Generation Sessions hosted by Kyle Poole and Friends</h2>
-                  <div class="mini-video-info__stats">
-                      <p>Added:</p>
-                      <p>Views:</p>
-                  </div>
-                  <div class="mini-video-info__stats">
-                      <p><span>11/05/2015</span></p>
-                      <p><span>3458</span></p>
-                  </div>
-                </div>
-              </div>
+              {% endfor %}
 
             </div>
             <p class="video-audio__more-link">Full list of 30 most popular videos</p>
@@ -518,77 +473,28 @@
               {% for recording in recent_audio %}
                 <div class="mini-video">
                     <div class="mini-video__image">
-                      <img src="{% static 'image/archive-temp/lists/13.jpg' %}" alt=""/>
+                      <a href="{{ recording.event.get_absolute_url }}">
+                      {% if recording.event.photo %}
+                        <img src="{% thumbor_url recording.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      {% else %}
+                        <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                      {% endif %}
+                      </a>
                     </div>
                     <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ recording.event.start }}</p>
+                      <p class="mini-video-info__date">{{ recording.event.start|date:"n/j/Y" }}</p>
                       <h2 class="mini-video-info__title">{{ recording.event.title }}</h2>
                       <div class="mini-video-info__stats">
                           <p>Added:</p>
                           <p>Plays:</p>
                       </div>
                       <div class="mini-video-info__stats">
-                          <p><span>{{ recording.date_added }}</span></p>
+                          <p><span>{{ recording.date_added|date:"n/j/Y" }}</span></p>
                           <p><span>3458</span></p>
                       </div>
                     </div>
                 </div>
               {% endfor %}
-
-                <div class="mini-video">
-                    <div class="mini-video__image">
-                      <img src="{% static 'image/archive-temp/lists/14.jpg' %}" alt=""/>
-                    </div>
-                    <div class="mini-video-info">
-                      <p class="mini-video-info__date">10/24/2007</p>
-                      <h2 class="mini-video-info__title">Afterhours with: Lawrence Leathers</h2>
-                      <div class="mini-video-info__stats">
-                          <p>Added:</p>
-                          <p>Plays:</p>
-                      </div>
-                      <div class="mini-video-info__stats">
-                          <p><span>11/05/2015</span></p>
-                          <p><span>3458</span></p>
-                      </div>
-                    </div>
-                </div>
-
-                <div class="mini-video">
-                    <div class="mini-video__image">
-                      <img src="{% static 'image/archive-temp/lists/15.jpg' %}" alt=""/>
-                    </div>
-                    <div class="mini-video-info">
-                      <p class="mini-video-info__date">10/24/2007</p>
-                      <h2 class="mini-video-info__title">Billy Kaye</h2>
-                      <div class="mini-video-info__stats">
-                          <p>Added:</p>
-                          <p>Plays:</p>
-                      </div>
-                      <div class="mini-video-info__stats">
-                          <p><span>11/05/2015</span></p>
-                          <p><span>3458</span></p>
-                      </div>
-                    </div>
-                </div>
-
-                <div class="mini-video">
-                    <div class="mini-video__image">
-                      <img src="{% static 'image/archive-temp/lists/16.jpg' %}" alt=""/>
-                    </div>
-                    <div class="mini-video-info">
-                      <p class="mini-video-info__date">10/24/2007</p>
-                      <h2 class="mini-video-info__title">Alex Sipiagin Quintet</h2>
-                      <div class="mini-video-info__stats">
-                          <p>Added:</p>
-                          <p>Plays:</p>
-                      </div>
-                      <div class="mini-video-info__stats">
-                          <p><span>11/05/2015</span></p>
-                          <p><span>3458</span></p>
-                      </div>
-                    </div>
-                </div>
-
             </div>
             <p class="video-audio__more-link">Full list of 30 newest audio recordings</p>
           </div>
