@@ -265,6 +265,7 @@ class Recording(models.Model):
     set_number = models.IntegerField(default=1)
     state = StatusField(default=STATUS.Published)
     date_added = models.DateTimeField(auto_now_add=True)
+    view_count = models.PositiveIntegerField(default=0)
 
     objects = RecordingManager()
 
