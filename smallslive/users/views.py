@@ -7,7 +7,14 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.views.generic import TemplateView
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
+
+
+class SignupLandingView(TemplateView):
+    template_name = 'account/signup-landing.html'
+
+signup_landing = SignupLandingView.as_view()
 
 
 class SignupView(AllauthSignupView):

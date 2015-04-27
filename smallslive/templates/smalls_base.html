@@ -110,7 +110,7 @@
                 <li><a href="{% url "account_logout" %}">Log out</a></li>
              {% else %}
                 <li><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
-                <li><a href="{% url "account_signup" %}">Sign up</a></li>
+                <li><a href="{% url "signup_landing" %}">Sign up</a></li>
             {% endif %}
           </ul>
         </div>
@@ -152,7 +152,7 @@
       </li>
     {% else %}
         <li class="header-login__item"><a href="#" data-toggle="modal" data-target="#logIn">Log in</a></li>
-        <li class="header-login__item"><a href="{% url "account_signup" %}">Sign up</a></li>
+        <li class="header-login__item"><a href="{% url "signup_landing" %}">Sign up</a></li>
     {% endif %}
   </ul>
   <div class="header-nav-group">
