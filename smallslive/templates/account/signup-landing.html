@@ -54,7 +54,7 @@
                         <ul class="signup-plan__features">
                             <li class="signup-plan__features__single">just register with a valid email address and <b>watch all our shows live</b> via our live stream.</li>
                         </ul>
-                        <a class="signup-plan__button" href="#">Sign up</a>
+                        <a class="signup-plan__button" href="{% url "accounts_signup" plan_name="free" %}">Sign up</a>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-4 signup-plan">
@@ -82,7 +82,7 @@
                             <li class="signup-plan__features__single">new shows <b>added weekly</b> </li>
                             <li class="signup-plan__features__single">revenue from subscriptions pooled and <b>directly distributed to artists</b> based on how much they get listened to</li>
                         </ul>
-                        <a class="signup-plan__button" href="#">Sign up</a>
+                        <a class="signup-plan__button" href="{% url "accounts_signup" plan_name="basic" %}">Sign up</a>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-4 signup-plan">
@@ -111,7 +111,7 @@
                             <li class="signup-plan__features__single">new shows <b>added weekly</b> </li>
                             <li class="signup-plan__features__single">revenue from subscriptions pooled and <b>directly distributed to artists</b> based on how much they get listened to</li>
                         </ul>
-                        <a class="signup-plan__button" href="#">Sign up</a>
+                        <a class="signup-plan__button" href="{% url "accounts_signup" plan_name="premium" %}">Sign up</a>
                     </div>
                 </div>
             </div>

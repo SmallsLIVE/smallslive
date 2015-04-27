@@ -3,9 +3,10 @@ from allauth.account.forms import ChangePasswordForm
 from allauth.account.views import SignupView as AllauthSignupView, ConfirmEmailView as CoreConfirmEmailView,\
     LoginView as CoreLoginView
 import braces.views
+from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
@@ -19,6 +20,15 @@ signup_landing = SignupLandingView.as_view()
 
 class SignupView(AllauthSignupView):
     form_class = UserSignupForm
+
+    def get_context_data(self, **kwargs):
+        context = super(SignupView, self).get_context_data(**kwargs)
+        plan_name = self.kwargs.get('plan_name')
+        plan = settings.SUBSCRIPTION_PLANS.get(plan_name)
+        if not plan:
+            raise Http404
+        context['plan'] = plan
+        return context
 
 signup_view = SignupView.as_view()
 
