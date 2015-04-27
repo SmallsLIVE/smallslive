@@ -92,7 +92,7 @@
             <li><a href="/">Home</a></li>
             <li><a href="{% url "live-stream" %}">Live now!</a></li>
             <li><a href="{% url "schedule" %}">Schedule</a></li>
-            <li><a href="{% url "static_page" "archive" %}">Archive</a></li>
+            <li><a href="{% url "archive" %}">Archive</a></li>
             <li><a href="">Store</a></li>
             <li><a href="{% url "about-us" %}">About us</a></li>
             <li><a href="{% url "mission-statement" %}">Mission Statement</a></li>
@@ -163,7 +163,7 @@
                   class="navigation__icon fa fa-play-circle"></i><span class="menu-label">Live now!</span></a></li>
           <li class="navigation__item {% block schedule_nav_active %}{% endblock %}"><a href="{% url "schedule" %}"><i
                   class="navigation__icon fa fa-calendar"></i><span class="menu-label">Schedule</span></a></li>
-          <li class="navigation__item"><a href="{% url "static_page" "archive" %}"><i
+          <li class="navigation__item"><a href="{% url "archive" %}"><i
                   class="navigation__icon fa fa-video-camera"></i><span class="menu-label">Archive</span></a></li>
           <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-shopping-cart"></i><span class="menu-label">Store</span></a></li>
           <li class="navigation__item {% block info_nav_active %}{% endblock %}"><a href="{% url "about-us" %}"><i class="navigation__icon fa fa-info-circle"></i>
