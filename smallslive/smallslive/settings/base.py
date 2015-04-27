@@ -432,6 +432,24 @@ DJSTRIPE_PLANS = {
     },
 }
 
+SUBSCRIPTION_PLANS = {
+    'free': {
+        'name': 'Free',
+        'monthly': None,
+        'yearly': None,
+    },
+    'basic': {
+        'name': 'Basic',
+        'monthly': DJSTRIPE_PLANS['basic_monthly'],
+        'yearly': DJSTRIPE_PLANS['basic_yearly'],
+    },
+    'premium': {
+        'name': 'Premium',
+        'monthly': DJSTRIPE_PLANS['premium_monthly'],
+        'yearly': DJSTRIPE_PLANS['premium_yearly'],
+    },
+}
+
 OSCAR_DEFAULT_CURRENCY = 'USD'
 OSCAR_SHOP_NAME = 'SmallsLIVE'
 OSCAR_IMAGE_FOLDER = 'product_images/%Y/%m/'
