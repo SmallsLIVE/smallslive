@@ -41,12 +41,7 @@ urlpatterns = patterns('',
     url(r'^press/$', 'static_pages.views.press_view', name="press"),
     url(r'^newsletters/$', 'newsletters.views.newsletter_list', name="newsletters"),
 
-    url(r"^accounts/confirm-email/(?P<key>\w+)/$", 'users.views.confirm_email',
-        name="account_confirm_email"),
-    url(r'^accounts/login/', 'users.views.login_view', name="accounts_login"),
-    url(r'^accounts/user-settings/', 'users.views.user_settings_view', name="user_settings"),
-    url(r'^accounts/signup/', 'users.views.signup_view', name="account_signup"),
-    url(r'^accounts/', include('allauth.urls', app_name="allauth")),
+    url(r'^accounts/', include('users.urls')),
 
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^search/artist/', 'artists.views.artist_search', name='artist_search'),
