@@ -1,14 +1,22 @@
 from allauth.account import app_settings
 from allauth.account.forms import ChangePasswordForm
+from allauth.account.utils import complete_signup
 from allauth.account.views import SignupView as AllauthSignupView, ConfirmEmailView as CoreConfirmEmailView,\
     LoginView as CoreLoginView
 import braces.views
+from braces.views import FormValidMessageMixin
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.shortcuts import render, redirect
+from django.views.generic import TemplateView, FormView
+from djstripe.forms import PlanForm
+from djstripe.mixins import SubscriptionMixin
+from djstripe.models import Customer
+from djstripe.settings import subscriber_request_callback
+from allauth.account.app_settings import EmailVerificationMethod
+import stripe
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
 
 
@@ -27,10 +35,56 @@ class SignupView(AllauthSignupView):
         plan = settings.SUBSCRIPTION_PLANS.get(plan_name)
         if not plan:
             raise Http404
-        context['plan'] = plan
+        context['plan'] = self.request.session['selected_plan'] = plan
         return context
 
+    def form_valid(self, form):
+        user = form.save(self.request)
+        complete_signup(self.request, user,
+                        EmailVerificationMethod.OPTIONAL,
+                        self.get_success_url())
+        return redirect(self.get_success_url())
+
+    def get_success_url(self):
+        if self.kwargs['plan_name'] == 'Free':
+            return reverse('home')
+        else:
+            return reverse('accounts_signup_payment')
+
 signup_view = SignupView.as_view()
+
+
+class SignupPaymentView(FormValidMessageMixin, SubscriptionMixin, FormView):
+    # TODO - needs tests
+
+    form_class = PlanForm
+    template_name = 'account/signup-payment.html'
+    success_url = reverse_lazy("djstripe:history")
+    form_valid_message = "You are now subscribed!"
+
+    def post(self, request, *args, **kwargs):
+        """
+        Handles POST requests, instantiating a form instance with the passed
+        POST variables and then checked for validity.
+        """
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        if form.is_valid():
+            try:
+                customer, created = Customer.get_or_create(
+                    subscriber=subscriber_request_callback(self.request))
+                customer.update_card(self.request.POST.get("stripe_token"))
+                customer.subscribe(form.cleaned_data["plan"])
+            except stripe.StripeError as e:
+                # add form error here
+                self.error = e.args[0]
+                return self.form_invalid(form)
+            # redirect to confirmation page
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+signup_payment = SignupPaymentView.as_view()
 
 
 def user_settings_view(request):
