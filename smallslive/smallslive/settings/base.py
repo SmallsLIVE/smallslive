@@ -435,16 +435,19 @@ DJSTRIPE_PLANS = {
 SUBSCRIPTION_PLANS = {
     'free': {
         'name': 'Free',
+        'id': 'free',
         'monthly': None,
         'yearly': None,
     },
     'basic': {
         'name': 'Basic',
+        'id': 'basic',
         'monthly': DJSTRIPE_PLANS['basic_monthly'],
         'yearly': DJSTRIPE_PLANS['basic_yearly'],
     },
     'premium': {
         'name': 'Premium',
+        'id': 'premium',
         'monthly': DJSTRIPE_PLANS['premium_monthly'],
         'yearly': DJSTRIPE_PLANS['premium_yearly'],
     },
