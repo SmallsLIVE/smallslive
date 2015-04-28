@@ -15,9 +15,9 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = ['*']
 
 # Static asset configuration
-PIPELINE_ENABLED = False
+STATICFILES_STORAGE = "utils.storages.GzipManifestPipelineStorage"
 PIPELINE_SASS_BINARY = '/opt/venv/smallslive/bin/sassc'
-PIPELINE_SASS_ARGUMENTS = ''
+PIPELINE_SASS_ARGUMENTS = '--precision 8 -s compressed'
 
 # Haystack elasticsearch backend
 HAYSTACK_CONNECTIONS = {
