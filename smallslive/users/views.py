@@ -40,10 +40,11 @@ class SignupView(AllauthSignupView):
 
     def form_valid(self, form):
         user = form.save(self.request)
-        if self.kwargs['plan_name'] == 'free':
-            verification_method = EmailVerificationMethod.MANDATORY
-        else:
-            verification_method = EmailVerificationMethod.OPTIONAL
+        # if self.kwargs['plan_name'] == 'free':
+        #     verification_method = EmailVerificationMethod.MANDATORY
+        # else:
+        #     verification_method = EmailVerificationMethod.OPTIONAL
+        verification_method = EmailVerificationMethod.OPTIONAL
         complete_signup(self.request, user,
                         verification_method,
                         self.get_success_url())
@@ -102,7 +103,6 @@ class SignupPaymentView(FormValidMessageMixin, SubscriptionMixin, FormView):
                 return self.form_invalid(form)
 
             # redirect to confirmation page
-            logout(request)
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
@@ -112,6 +112,11 @@ signup_payment = SignupPaymentView.as_view()
 
 class SignupCompleteView(TemplateView):
     template_name = 'account/signup-complete.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SignupCompleteView, self).get_context_data(**kwargs)
+        context['active_plan'] = self.request.user.get_subscription_plan()
+        return context
 
 signup_complete = SignupCompleteView.as_view()
 

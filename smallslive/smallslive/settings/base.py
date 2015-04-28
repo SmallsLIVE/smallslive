@@ -399,7 +399,7 @@ STRIPE_CURRENCY = 'USD'
 DJSTRIPE_PLANS = {
     "basic_yearly": {
         "stripe_plan_id": "basic_yearly",
-        "name": "Basic ($90/year)",
+        "name": "Basic",
         "type": 'basic',
         "description": "Basic plan: livestream + audio",
         "price": 9000,  # $9.00
@@ -408,7 +408,7 @@ DJSTRIPE_PLANS = {
     },
     "basic_monthly": {
         "stripe_plan_id": "basic_monthly",
-        "name": "Basic ($9/month)",
+        "name": "Basic",
         "type": 'basic',
         "description": "Basic plan: livestream + audio",
         "price": 900,  # $9.00
@@ -417,7 +417,7 @@ DJSTRIPE_PLANS = {
     },
     "premium_yearly": {
         "stripe_plan_id": "premium_yearly",
-        "name": "Premium ($150/year)",
+        "name": "Premium",
         "type": 'premium',
         "description": "Premium plan: livestream + audio + video",
         "price": 15000,  # $150.00
@@ -426,7 +426,7 @@ DJSTRIPE_PLANS = {
     },
     "premium_monthly": {
         "stripe_plan_id": "premium_monthly",
-        "name": "Premium ($15/month)",
+        "name": "Premium",
         "type": 'premium',
         "description": "Premium plan: livestream + audio + video",
         "price": 1500,  # $15.00
