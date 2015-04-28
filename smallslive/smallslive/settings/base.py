@@ -392,43 +392,46 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
-STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
+STRIPE_PUBLISHABLE_KEY = STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 STRIPE_CURRENCY = 'USD'
 
 DJSTRIPE_PLANS = {
-    "basic_monthly": {
-        "stripe_plan_id": "basic_monthly",
-        "name": "Basic ($9/month)",
-        "description": "Basic plan: livestream + audio",
-        "price": 900,  # $9.00
-        "currency": "usd",
-        "interval": "month"
-    },
     "basic_yearly": {
         "stripe_plan_id": "basic_yearly",
         "name": "Basic ($90/year)",
+        "type": 'basic',
         "description": "Basic plan: livestream + audio",
         "price": 9000,  # $9.00
         "currency": "usd",
         "interval": "year"
     },
-    "premium_monthly": {
-        "stripe_plan_id": "premium_monthly",
-        "name": "Premium ($15/month)",
-        "description": "Premium plan: livestream + audio + video",
-        "price": 1500,  # $15.00
+    "basic_monthly": {
+        "stripe_plan_id": "basic_monthly",
+        "name": "Basic ($9/month)",
+        "type": 'basic',
+        "description": "Basic plan: livestream + audio",
+        "price": 900,  # $9.00
         "currency": "usd",
         "interval": "month"
     },
     "premium_yearly": {
         "stripe_plan_id": "premium_yearly",
         "name": "Premium ($150/year)",
+        "type": 'premium',
         "description": "Premium plan: livestream + audio + video",
         "price": 15000,  # $150.00
         "currency": "usd",
         "interval": "year"
+    },
+    "premium_monthly": {
+        "stripe_plan_id": "premium_monthly",
+        "name": "Premium ($15/month)",
+        "type": 'premium',
+        "description": "Premium plan: livestream + audio + video",
+        "price": 1500,  # $15.00
+        "currency": "usd",
+        "interval": "month"
     },
 }
 

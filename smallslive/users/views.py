@@ -8,16 +8,16 @@ from braces.views import FormValidMessageMixin
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
+from django.contrib.auth import logout
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, FormView
-from djstripe.forms import PlanForm
 from djstripe.mixins import SubscriptionMixin
 from djstripe.models import Customer
 from djstripe.settings import subscriber_request_callback
 from allauth.account.app_settings import EmailVerificationMethod
 import stripe
-from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
+from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm
 
 
 class SignupLandingView(TemplateView):
@@ -35,7 +35,7 @@ class SignupView(AllauthSignupView):
         plan = settings.SUBSCRIPTION_PLANS.get(plan_name)
         if not plan:
             raise Http404
-        context['plan'] = self.request.session['selected_plan'] = plan
+        context['plan'] = plan
         return context
 
     def form_valid(self, form):
@@ -43,6 +43,8 @@ class SignupView(AllauthSignupView):
         complete_signup(self.request, user,
                         EmailVerificationMethod.OPTIONAL,
                         self.get_success_url())
+        plan_name = self.kwargs.get('plan_name')
+        self.request.session['selected_plan'] = plan_name
         return redirect(self.get_success_url())
 
     def get_success_url(self):
@@ -59,8 +61,23 @@ class SignupPaymentView(FormValidMessageMixin, SubscriptionMixin, FormView):
 
     form_class = PlanForm
     template_name = 'account/signup-payment.html'
-    success_url = reverse_lazy("djstripe:history")
+    success_url = reverse_lazy("accounts_signup_complete")
     form_valid_message = "You are now subscribed!"
+
+    def get_form_kwargs(self):
+        kwargs = super(SignupPaymentView, self).get_form_kwargs()
+        kwargs['selected_plan_type'] = self.request.session['selected_plan']
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(FormView, self).get_context_data(**kwargs)
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        plan_name = self.request.session['selected_plan']
+        plan = settings.SUBSCRIPTION_PLANS.get(plan_name)
+        if not plan:
+            raise Http404
+        context['plan'] = plan
+        return context
 
     def post(self, request, *args, **kwargs):
         """
@@ -79,12 +96,20 @@ class SignupPaymentView(FormValidMessageMixin, SubscriptionMixin, FormView):
                 # add form error here
                 self.error = e.args[0]
                 return self.form_invalid(form)
+
             # redirect to confirmation page
+            logout(request)
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
 
 signup_payment = SignupPaymentView.as_view()
+
+
+class SignupCompleteView(TemplateView):
+    template_name = 'account/signup-complete.html'
+
+signup_complete = SignupCompleteView.as_view()
 
 
 def user_settings_view(request):

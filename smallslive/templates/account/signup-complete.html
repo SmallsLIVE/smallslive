@@ -1,0 +1,54 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load socialaccount %}
+
+{% block extra_head %}
+    {% providers_media_js %}
+{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+
+        <section class="signup-step__header container vertical-align-parent">
+            <div class="vertical-align-child">
+                <h1>All done!</h1>
+                <div class="signup-step__header__info">You have successfully signed up for a <b>Basic SmallsLIVE plan</b>!</div>
+            </div>
+        </section>
+
+        <section class="signup__done container">
+            <div class="col-xs-12 col-sm-6 signup__done__plan vertical-align-parent">
+                <div class="col-xs-12 col-sm-8 col-sm-offset-2 signup-plan vertical-align-child">
+                    <div class="signup-plan__content">
+                        <p class="signup-plan__name">Basic Membership</p>
+                        <div class="signup-plan__arrow-separator"></div>
+                        <ul class="signup-plan__features">
+                            <li class="signup-plan__features__single">watch <b>all our shows live</b> via our live stream</li>
+                            <li class="signup-plan__features__single">access to <b>all audio recordings</b></li>
+                            <li class="signup-plan__features__single">new shows <b>added weekly</b> </li>
+                            <li class="signup-plan__features__single">revenue from subscriptions pooled and <b>directly distributed to artists</b> based on how much they get listened to</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 signup__done__content vertical-align-parent">
+                <div class="vertical-align-child">
+                    <h2 class="signup__done__content__heading">Payment successfull!</h2>
+                    <ul>
+                        <li>your credit card has been charged for <b>$9.00</b></li>
+                        <li>you are now subscribed to our <b>Basic membership plan</b></li>
+                        <li>your subscription plan expires on <b>05/22/2015</b></li>
+                        <li>auto renewal is activated on your Subscription, so your credit card will be charged again for the next month on <b>05/22/2015</b> for <b>$9.00</b> to renew your selected plan.</li>
+                        <li>you can disable auto renewal under your <a href="#">Subscription settings</a>. In that case, after your subscription plan expires, you’ll need to <b>manually renew it</b> to continue using its perks (until that time you’ll be <b>reverted to the Free plan</b>).</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section class="signup__what-next">
+            <h1>What’s next?</h1>
+            <p>You can now check out our amazing archive - now with more than 9000 recordings and over 1000 musicians in the archive and growing each week!</p>
+            <a class="cto__button" href="#">Go to the Archive</a>
+        </section>
+
+    </div>
+{% endblock content %}

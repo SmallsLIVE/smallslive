@@ -9,6 +9,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.utils import timezone
 from django.utils.functional import cached_property
+from djstripe.utils import subscriber_has_active_subscription
 from mailchimp import Mailchimp
 from newsletters.utils import subscribe_to_newsletter, unsubscribe_from_newsletter
 
@@ -144,6 +145,19 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
     def is_first_login(self):
         return self.date_joined == self.last_login
+
+    @cached_property
+    def has_active_subscription(self):
+        """Checks if a user has an active subscription."""
+        return subscriber_has_active_subscription(self)
+
+    @cached_property
+    def get_subscription_type(self):
+        if self.has_active_subscription():
+            plan_id = self.customer.current_subscription.plan
+            return settings.DJSTRIPE_PLANS[plan_id]['type']
+        else:
+            return None
 
 
 class SmallsEmailConfirmation(EmailConfirmation):

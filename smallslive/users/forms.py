@@ -1,4 +1,6 @@
 from allauth.account.models import EmailAddress
+from django.conf import settings
+from djstripe.settings import PAYMENTS_PLANS
 import floppyforms as forms
 from allauth.account.forms import SignupForm, AddEmailForm
 
@@ -80,3 +82,15 @@ class ChangeEmailForm(AddEmailForm):
     def save(self, request):
         old_email = EmailAddress.objects.get(email=self.user.email)
         old_email.change(request, new_email=self.cleaned_data['email'], confirm=True)
+
+
+class PlanForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        selected_plan_type = kwargs.pop('selected_plan_type')
+        super(PlanForm, self).__init__(*args, **kwargs)
+        if selected_plan_type:
+            monthly_plan = settings.SUBSCRIPTION_PLANS[selected_plan_type]['monthly']
+            yearly_plan = settings.SUBSCRIPTION_PLANS[selected_plan_type]['yearly']
+            plans = [(monthly_plan.get('stripe_plan_id'), monthly_plan),
+                     (yearly_plan.get('stripe_plan_id'), yearly_plan)]
+            self.fields['plan'] = forms.ChoiceField(choices=plans)
