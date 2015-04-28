@@ -40,16 +40,20 @@ class SignupView(AllauthSignupView):
 
     def form_valid(self, form):
         user = form.save(self.request)
+        if self.kwargs['plan_name'] == 'free':
+            verification_method = EmailVerificationMethod.MANDATORY
+        else:
+            verification_method = EmailVerificationMethod.OPTIONAL
         complete_signup(self.request, user,
-                        EmailVerificationMethod.OPTIONAL,
+                        verification_method,
                         self.get_success_url())
         plan_name = self.kwargs.get('plan_name')
         self.request.session['selected_plan'] = plan_name
         return redirect(self.get_success_url())
 
     def get_success_url(self):
-        if self.kwargs['plan_name'] == 'Free':
-            return reverse('home')
+        if self.kwargs['plan_name'] == 'free':
+            return reverse('accounts_signup_complete')
         else:
             return reverse('accounts_signup_payment')
 
