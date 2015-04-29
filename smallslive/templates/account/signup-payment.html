@@ -128,7 +128,7 @@
           if (response.error) {
             // Show the errors on the form
             $form.find('.payment-errors').text(response.error.message);
-            $form.find('button').prop('disabled', false).removeClass('disabled');
+            $form.find('.submit-button').prop('disabled', false).removeClass('disabled');
           } else {
             // token contains id, last4, and card type
             var token = response.id;

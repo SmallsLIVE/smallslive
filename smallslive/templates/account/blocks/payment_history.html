@@ -1,0 +1,39 @@
+<section class="subscription-settings transaction-history" id="payment-history">
+  <h3 class="subscription-settings__heading">Transaction history</h3>
+  <div class="transaction-history__table">
+    <div class="transaction-history__table__header">
+      <div class="row">
+        <div class="align-left date col-xs-12 col-sm-2">
+          Date
+        </div>
+        <div class="align-left description col-xs-12 col-sm-7">
+          Description
+        </div>
+        <div class="align-right amount col-xs-12 col-sm-1">
+          Amount
+        </div>
+        <div class="align-left receipt col-xs-12 col-sm-2">
+          Receipt
+        </div>
+      </div>
+    </div>
+    <div class="transaction-history__table__body">
+      {% for invoice in user.customer.invoices.all %}
+        <div class="row">
+          <div class="align-left date col-xs-12 col-sm-2">
+            {{ invoice.date }}
+          </div>
+          <div class="align-left description col-xs-12 col-sm-7">
+            {{ invoice.charges.all.0.description }}
+          </div>
+          <div class="align-right amount col-xs-12 col-sm-1">
+            ${{ invoice.subtotal }}
+          </div>
+          <div class="align-left receipt col-xs-12 col-sm-2">
+            <a href="#">View receipt</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

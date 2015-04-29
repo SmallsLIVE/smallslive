@@ -15,6 +15,7 @@ from django.views.generic import TemplateView, FormView
 from djstripe.mixins import SubscriptionMixin
 from djstripe.models import Customer
 from djstripe.settings import subscriber_request_callback
+from djstripe.views import SyncHistoryView
 from allauth.account.app_settings import EmailVerificationMethod
 import stripe
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm
@@ -115,10 +116,20 @@ class SignupCompleteView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(SignupCompleteView, self).get_context_data(**kwargs)
-        context['active_plan'] = self.request.user.get_subscription_plan()
+        context['active_plan'] = self.request.user.get_subscription_plan
         return context
 
 signup_complete = SignupCompleteView.as_view()
+
+
+class SyncPaymentHistoryView(SyncHistoryView):
+    template_name = 'account/blocks/payment_history.html'
+
+sync_payment_history = SyncPaymentHistoryView.as_view()
+
+
+def subscription_settings(request):
+    return render(request, 'account/subscription-settings.html')
 
 
 def user_settings_view(request):

@@ -146,16 +146,25 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     def is_first_login(self):
         return self.date_joined == self.last_login
 
+    @cached_property
     def has_active_subscription(self):
         """Checks if a user has an active subscription."""
         return subscriber_has_active_subscription(self)
 
+    @cached_property
     def get_subscription_plan(self):
-        if self.has_active_subscription():
+        if self.has_active_subscription:
             plan_id = self.customer.current_subscription.plan
             return settings.DJSTRIPE_PLANS[plan_id]
         else:
             return {'name': 'Free', 'type': 'free'}
+
+    @cached_property
+    def get_current_subscription(self):
+        if self.has_active_subscription:
+            return self.customer.current_subscription
+        else:
+            return None
 
 
 class SmallsEmailConfirmation(EmailConfirmation):
