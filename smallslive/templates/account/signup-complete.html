@@ -43,8 +43,8 @@
                         {% if request.user.has_active_subscription %}
                           <li>your credit card has been charged for <b>${{ active_plan.price|djdiv:100|floatformat:"2" }}</b></li>
                           {% with subscription=request.user.get_current_subscription %}
-                            <li>your subscription plan expires on <b>{{ subscription.current_period_end }}</b></li>
-                            <li>auto renewal is activated on your Subscription, so your credit card will be charged again for the next {% if active_plan.interval == "month" %}month{% else %}year{% endif %} on <b>{{ subscription.current_period_end }}</b> for <b>${{ active_plan.price|djdiv:100|floatformat:"2" }}</b> to renew your selected plan.</li>
+                            <li>your subscription plan expires on <b>{{ subscription.current_period_end|date:"n/j/Y" }}</b></li>
+                            <li>auto renewal is activated on your Subscription, so your credit card will be charged again for the next {% if active_plan.interval == "month" %}month{% else %}year{% endif %} on <b>{{ subscription.current_period_end|date:"n/j/Y" }}</b> for <b>${{ active_plan.price|djdiv:100|floatformat:"2" }}</b> to renew your selected plan.</li>
                           {% endwith %}
                           <li>you can disable auto renewal under your <a href="#">Subscription settings</a>. In that case, after your subscription plan expires, you’ll need to <b>manually renew it</b> to continue using its perks (until that time you’ll be <b>reverted to the Free plan</b>).</li>
                         {% endif %}

@@ -62,7 +62,7 @@
                         </ul>
                         {% with active_plan=user.get_subscription_plan.type %}
                           {% if active_plan == "basic" %}
-                            <p class="signup-plan__active__expiry">Plan expires on {{ user.get_current_subscription.current_period_end }}</p>
+                            <p class="signup-plan__active__expiry">Plan expires on {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}</p>
                           {% elif active_plan == "premium" %}
                             <p class="signup-plan__button disabled" href="#">Can’t downgrade*</p>
                           {% elif active_plan == "free" %}
@@ -99,7 +99,7 @@
                         </ul>
                         {% with active_plan=user.get_subscription_plan.type %}
                           {% if active_plan == "premium" %}
-                            <p class="signup-plan__active__expiry">Plan expires on {{ user.get_current_subscription.current_period_end }}</p>
+                            <p class="signup-plan__active__expiry">Plan expires on {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}</p>
                           {% elif active_plan == "basic" %}
                             <a class="signup-plan__button" href="#">Upgrade (+ $6/mo)</a>
                           {% elif active_plan == "free" %}
@@ -119,14 +119,14 @@
             <div class="row">
               {% if user.has_active_subscription %}
                 <div class="col-xs-12 col-sm-9 subscription-settings__auto-renewal__text">
-                    Auto renewal is activated on your Subscription, so your credit card will be charged again for the next month on <b>{{ user.get_current_subscription.current_period_end }} for ${{ user.get_subscription_plan.price|djdiv:100|floatformat:"2" }}</b> to renew your selected plan.
+                    Auto renewal is activated on your Subscription, so your credit card will be charged again for the next month on <b>{{ user.get_current_subscription.current_period_end|date:"n/j/Y" }} for ${{ user.get_subscription_plan.price|djdiv:100|floatformat:"2" }}</b> to renew your selected plan.
                 </div>
                 <div class="col-xs-12 col-sm-3">
                     <button class="setting-toggle-button">Disable Auto renewal</button>
                 </div>
               {% else %}
                 <div class="col-xs-12 col-sm-9 subscription-settings__auto-renewal__text">
-                    Auto renewal is disabled on your Subscription. When the current subscription ends on <b>{{ user.get_current_subscription.current_period_end }}</b>, you'll be downgraded to the
+                    Auto renewal is disabled on your Subscription. When the current subscription ends on <b>{{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}</b>, you'll be downgraded to the
                 <b>Free</b> plan and will have to subscribe once again manually.
                 </div>
               {% endif %}
@@ -158,7 +158,9 @@
             </form>
         </section>
     {% if user.has_active_subscription %}
-      {% include "account/blocks/payment_history.html" %}
+      <div id="payment-history">
+        {% include "account/blocks/payment_history.html" %}
+      </div>
     {% endif %}
 
     </div>
