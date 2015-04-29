@@ -134,28 +134,35 @@
         </section>
 
         <section class="subscription-settings signup__payment">
-            <form class="payment-form">
-            <div class="signup__payment__information row">
-                <div class="col-xs-12 col-sm-6">
-                    <h3 class="signup__payment__heading">Billing information:</h3>
-                    <div class="signup__payment__card__info">
-                        <label for="card-number">Credit card number</label>
-                        <input type="text" class="form-control" name="card-number" id="card-number" value="5300 XXXX XXXX XXXX">
-                        <label for="expiry" id="expiry-label">Valid thru:</label>
-                        <label for="cvc" id="cvc-label">Secret number</label>
-                        <input type="text" class="form-control quarter-group" name="expiry-month" id="expiry-month" value="06">
-                        <input type="text" class="form-control quarter-group" name="expiry-year" id="expiry-year" value="17">
-                        <input type="text" class="form-control half" name="cvc" id="cvc" placeholder="368">
-                        <label for="name">Name on card</label>
-                        <input type="text" class="form-control" name="name" value="Spike Wilner">
-                        <input type="submit" class="submit-button disabled" disabled value="Save Changes">
-                    </div>
+            <h3 class="signup__payment__heading">Billing information:</h3>
+          {% if user.has_active_subscription %}
+            <p class="signup__payment__existing-card">You have a saved {{ user.customer.card_kind }} credit card ending with {{ user.customer.card_last_4 }}.
+              <a href="" id="payment-form-toggle">Click here</a> to change your active credit card.</p>
+          {% endif %}
+          <div class="signup__payment__information row" {% if user.has_active_subscription %}style="display:none"{% endif %}>
+            <div class="col-xs-12 col-sm-6">
+              <form class="payment-form" >
+                <div class="signup__payment__card__info">
+                  <label for="card-number">Credit card number</label>
+                  <input type="text" class="form-control" name="card-number" id="card-number"
+                         placeholder="XXXX XXXX XXXX XXXX">
+                  <label for="expiry" id="expiry-label">Valid thru:</label>
+                  <label for="cvc" id="cvc-label">Secret number</label>
+                  <input type="text" class="form-control quarter-group" name="expiry-month" id="expiry-month"
+                         placeholder="MM">
+                  <input type="text" class="form-control quarter-group" name="expiry-year" id="expiry-year" placeholder="YY">
+                  <input type="text" class="form-control half" name="cvc" id="cvc" placeholder="xxx">
+                  <label for="name">Name on card</label>
+                  <input type="text" class="form-control" name="name" placeholder="Name">
+                  <input type="submit" class="submit-button disabled" disabled value="Save Changes">
                 </div>
-                <div class="col-xs-12 col-sm-6 signup__payment__card__image">
-                    <div class="card-wrapper"></div>
-                </div>
+              </form>
+
             </div>
-            </form>
+            <div class="col-xs-12 col-sm-6 signup__payment__card__image">
+              <div class="card-wrapper"></div>
+            </div>
+          </div>
         </section>
     {% if user.has_active_subscription %}
       <div id="payment-history">
@@ -191,10 +198,10 @@
 
             // Default values for rendered fields - optional
             values: {
-                number: '5300 XXXX XXXX XXXX',
-                name: 'Spike Wilner',
-                expiry: '06/17',
-                cvc: '368'
+                number: 'XXXX XXXX XXXX XXXX',
+                name: 'Name',
+                expiry: '••/••',
+                cvc: '•••'
             },
 
             // if true, will log helpful messages for setting up Card
@@ -208,5 +215,13 @@
               $('.in-progress-gif').hide();
           });
       });
+    $(document).ready(function() {
+      $("#payment-form-toggle").on('click', function(e) {
+        e.preventDefault();
+        $(".signup__payment__information").toggle();
+        $(".signup__payment__existing-card").toggle();
+        return false;
+      })
+    })
   </script>
 {% endblock %}
