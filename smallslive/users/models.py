@@ -10,10 +10,9 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserM
 from django.utils import timezone
 from django.utils.functional import cached_property
 from djstripe.utils import subscriber_has_active_subscription
-from mailchimp import Mailchimp
-from newsletters.utils import subscribe_to_newsletter, unsubscribe_from_newsletter
-
 from model_utils import Choices
+
+from newsletters.utils import subscribe_to_newsletter, unsubscribe_from_newsletter
 
 
 class SmallsUserManager(UserManager):
@@ -80,7 +79,6 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     newsletter = models.BooleanField(default=False)
     payout_method = models.CharField(max_length=10, choices=PAYOUT_CHOICES, default=PAYOUT_CHOICES.Check)
     paypal_email = models.EmailField(max_length=100, blank=True)
-
 
     objects = SmallsUserManager()
 
@@ -165,6 +163,12 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
             return self.customer.current_subscription
         else:
             return None
+
+    @cached_property
+    def has_activated_account(self):
+        has_verified_email = EmailAddress.objects.filter(user=self,
+                                                         verified=True).exists()
+        return has_verified_email
 
 
 class SmallsEmailConfirmation(EmailConfirmation):

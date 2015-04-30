@@ -20,10 +20,20 @@
             <a href="{% url "account_signup" %}" class="cto__button">Sign up!</a>
         </div>
       </section>
+    {% elif not user.has_activated_account %}
+      <section class="cto cto--schedule-not-authenticated container vertical-align-parent">
+        <div class="vertical-align-child">
+            <h1 class="cto__title">Activated users only</h1>
+
+            <p class="cto__text">To view our live stream you need to confirm your email address.<br/>
+              Open your email inbox and click on the link inside the SmallsLIVE confirmation email you should've received.
+            </p>
+        </div>
+      </section>
     {% endif %}
       <section class="container">
         <div class="live-stream row">
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user.has_activated_account %}
             <div class="jwplayer_wrapper">
                 <div id="jwplayer-placeholder"></div>
             </div>
