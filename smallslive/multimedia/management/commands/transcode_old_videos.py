@@ -2,6 +2,7 @@ import os
 import time
 from django.conf import settings
 from django.core.management.base import NoArgsCommand
+from django.utils import timezone
 from boto.s3.connection import S3Connection
 from boto import elastictranscoder
 from events.models import Event, Recording
@@ -18,6 +19,7 @@ class Command(NoArgsCommand):
         self.transcoder = elastictranscoder.connect_to_region('us-east-1')
         self.files_transcoded = 0
         count = 0
+        cutoff_date = timezone.datetime(2013, 11, 1).date()
 
         self.params_in = {'AspectRatio': 'auto',
                           'Container': 'auto',
@@ -30,13 +32,18 @@ class Command(NoArgsCommand):
                            'Rotate': 'auto',
                            'ThumbnailPattern': ''}
 
-        videos = Recording.objects.filter(media_file__media_type='video').order_by('event__start')[3:]
+        videos = Recording.objects.filter(media_file__media_type='video',
+                                          event__start__gte=timezone.datetime(2013, 10, 29)).order_by('event__start')
         for video in videos:
             original_file = str(video.media_file.file)
             folder, file = original_file.split('/')
             file_name, ext = os.path.splitext(file)
             filename_360p = os.path.join(folder, '360p', '{0}_360p{1}'.format(file_name, ext))
             thumbnail_filename = os.path.join(folder, 'thumbnails', '{0}_{{count}}'.format(file_name))
+            if video.event.listing_date() < cutoff_date:
+                self.params_out['PresetId'] = '1351620000001-000050'  # 360p 4:3 preset
+            else:
+                self.params_out['PresetId'] = '1351620000001-000040'  # 360p 16:9 preset
             self.transcode_video(original_file, filename_360p, thumbnail_filename)
             count += 1
             if count % 50 == 0:
@@ -55,7 +62,8 @@ class Command(NoArgsCommand):
             print original_filename
             print new_filename
             print thumbnail_filename
+            print self.params_out['PresetId']
             print
-            self.transcoder.create_job(PIPELINE_ID, self.params_in, self.params_out)
+            #self.transcoder.create_job(PIPELINE_ID, self.params_in, self.params_out)
             time.sleep(0.6)
             self.files_transcoded += 1
