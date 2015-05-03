@@ -32,8 +32,7 @@ class Command(NoArgsCommand):
                            'Rotate': 'auto',
                            'ThumbnailPattern': ''}
 
-        videos = Recording.objects.filter(media_file__media_type='video',
-                                          event__start__gte=timezone.datetime(2013, 10, 29)).order_by('event__start')
+        videos = Recording.objects.filter(media_file__media_type='video').order_by('event__start')
         for video in videos:
             original_file = str(video.media_file.file)
             folder, file = original_file.split('/')
@@ -64,6 +63,6 @@ class Command(NoArgsCommand):
             print thumbnail_filename
             print self.params_out['PresetId']
             print
-            #self.transcoder.create_job(PIPELINE_ID, self.params_in, self.params_out)
+            self.transcoder.create_job(PIPELINE_ID, self.params_in, self.params_out)
             time.sleep(0.6)
             self.files_transcoded += 1
