@@ -355,7 +355,9 @@ class ArchiveView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(ArchiveView, self).get_context_data(**kwargs)
         context['recent_audio'] = Recording.objects.audio().order_by('-date_added')[:4]
+        context['most_popular_audio'] = Recording.objects.audio().order_by('-view_count')[:4]
         context['recent_video'] = Recording.objects.video().order_by('-date_added')[:4]
+        context['most_popular_video'] = Recording.objects.video().order_by('-view_count')[:4]
         return context
 
 archive = ArchiveView.as_view()
