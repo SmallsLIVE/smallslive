@@ -22,8 +22,7 @@
 {% block content %}
 
     <div class="content-wrapper">
-      {% if not request.GET.future %}
-          {% if request.GET.video %}
+    {% if user.get_subscription_plan.type == 'premium' and event.published_videos %}
           <section class="container">
             <div class="event-video row">
               <div class="bw-wrapper" style="height: 450px">
@@ -34,7 +33,6 @@
               </div>
             </div>
           </section>
-          {% endif %}
       {% endif %}
       <div class="event container">
         <div class="equal-heights row">
@@ -109,28 +107,28 @@
           </section>
         </div>
       </div>
-      {% if not request.GET.future %}
-          {% if not request.GET.video %}
-          <section class="cto cto--video-not-available container vertical-align-parent">
-                <div class="vertical-align-child">
-                    <h1 class="cto__title">Video not available (yet)</h1>
+      {% if user.get_subscription_plan.type == 'premium' and not event.published_videos %}
+        <section class="cto cto--video-not-available container vertical-align-parent">
+          <div class="vertical-align-child">
+            <h1 class="cto__title">Video not available (yet)</h1>
 
-                    <p class="cto__text">The video for this performance can be made available if you request it.<br/>
-                                        We had 181 request for this video so far.</p>
-                    <a href="" class="cto__button">Request video</a>
-                </div>
-          </section>
-          {% endif %}
+            <p class="cto__text">The video for this performance can be made available if you request it.<br/>
+              We had 181 request for this video so far.</p>
+            <a href="" class="cto__button">Request video</a>
+          </div>
+        </section>
       {% endif %}
-      {% comment %}
-      {% if not request.GET.future %}
-          <section class="cto cto--listen-to-show container vertical-align-parent">
-            <div class="vertical-align-child">
-                <h1 class="cto__title">Listen to entire show</h1>
 
-                <p class="cto__text">You can use the player below to listen to the entire show.</p>
-            </div>
-          </section>
+      <section class="cto cto--listen-to-show container vertical-align-parent">
+        <div class="vertical-align-child">
+          <h1 class="cto__title">Listen to entire show</h1>
+
+          <p class="cto__text">You can use the player below to listen to the entire show.</p>
+        </div>
+      </section>
+      <div id="player-audio"></div>
+      {% comment %}
+        {% if not request.GET.future %}
           <section class="event-tracks container">
             <div class="row event-tracks-header vcenter">
               <div class="col-xs-12">
@@ -332,3 +330,30 @@
       {% endcomment %}
     </div>
 {% endblock content %}
+
+{% block extra_js %}
+    <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+  {% if user.get_subscription_plan.type != 'free' and event.published_audio %}
+    <script>
+    jwplayer("player-audio").setup({
+      playlist: [
+      {% for audio in event.published_audio %}
+        {
+          sources: [{
+            file: "{{ audio.media_file.get_file_url|safe }}"
+          }],
+          title: "{{ event.title }}: Set {{ audio.set_number }}"
+        }{% if not forloop.last %},{% endif %}
+      {% endfor %}
+      ],
+      width: "100%",
+      height: 120,
+      listbar: {
+        position: "bottom",
+        layout: 'basic',
+        size: 90
+      }
+    });
+    </script>
+  {% endif %}
+{% endblock %}

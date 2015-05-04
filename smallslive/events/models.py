@@ -205,7 +205,7 @@ class Event(TimeStampedModel):
 
     @cached_property
     def audio_status(self):
-        audio_count = self.recordings.audio().count()
+        audio_count = self.recordings.all().audio().count()
         if audio_count == 0:
             status = "none"
         else:
@@ -217,8 +217,12 @@ class Event(TimeStampedModel):
         return status
 
     @cached_property
+    def published_videos(self):
+        return self.recordings.all().video().published()
+
+    @cached_property
     def video_status(self):
-        video_count = self.recordings.video().count()
+        video_count = self.recordings.all().video().count()
         if video_count == 0:
             status = "none"
         else:
@@ -228,6 +232,10 @@ class Event(TimeStampedModel):
             else:
                 status = "published"
         return status
+
+    @cached_property
+    def published_audio(self):
+        return self.recordings.all().audio().published()
 
     @cached_property
     def photo_crop_box(self):
