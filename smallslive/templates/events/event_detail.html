@@ -332,28 +332,41 @@
 {% endblock content %}
 
 {% block extra_js %}
-    <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   {% if user.get_subscription_plan.type != 'free' and event.published_audio %}
     <script>
-    jwplayer("player-audio").setup({
-      playlist: [
-      {% for audio in event.published_audio %}
-        {
-          sources: [{
-            file: "{{ audio.media_file.get_file_url|safe }}"
-          }],
-          title: "{{ event.title }}: Set {{ audio.set_number }}"
-        }{% if not forloop.last %},{% endif %}
-      {% endfor %}
-      ],
-      width: "100%",
-      height: 120,
-      listbar: {
-        position: "bottom",
-        layout: 'basic',
-        size: 90
-      }
-    });
+      var playsCountSent = [];
+      jwplayer("player-audio").setup({
+        playlist: [
+          {% for audio in event.published_audio %}
+            {
+              sources: [{
+                file: "{{ audio.media_file.get_file_url|safe }}"
+              }],
+              title: "{{ event.title }}: Set {{ audio.set_number }}",
+              mediaid: {{ audio.id }}
+            }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ],
+        width: "100%",
+        height: 120,
+        listbar: {
+          position: "bottom",
+          layout: 'basic',
+          size: 90
+        }
+      });
+      jwplayer('player-audio').onPlay(function (state) {
+        var id = this.getPlaylistItem(this.getPlaylistIndex()).mediaid;
+        if (playsCountSent.indexOf(id) === -1) {
+          playsCountSent.push(id);
+          $.post('/multimedia/update_media_viewcount/', {
+            recording_id: id,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+
+          });
+        }
+      });
     </script>
   {% endif %}
 {% endblock %}

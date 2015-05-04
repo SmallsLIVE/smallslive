@@ -42,6 +42,7 @@ urlpatterns = patterns('',
     url(r'^newsletters/$', 'newsletters.views.newsletter_list', name="newsletters"),
 
     url(r'^accounts/', include('users.urls')),
+    url(r'^multimedia/', include('multimedia.urls')),
 
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^search/artist/', 'artists.views.artist_search', name='artist_search'),

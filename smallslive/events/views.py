@@ -81,13 +81,6 @@ class EventDetailView(DetailView):
         context['facebook_app_id'] = settings.FACEBOOK_APP_ID
         return context
 
-    # def get_template_names(self):
-    #     if self.object.is_past():
-    #        template_name = 'events/video.html'
-    #    else:
-    #        template_name = 'events/event_detail.html'
-    #    return [template_name]
-
 event_detail = EventDetailView.as_view()
 
 
