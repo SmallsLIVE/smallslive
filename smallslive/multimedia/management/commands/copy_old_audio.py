@@ -35,7 +35,8 @@ class Command(NoArgsCommand):
                 new_bucket.copy_key(filename, old_bucket_name, file.key)
                 count += 1
 
-            # if new_bucket.get_key(filename):
-            #     old_bucket.delete_key(file.key)
+            if new_bucket.get_key(filename):
+                print "Deleting {0}".format(file.key)
+                old_bucket.delete_key(file.key)
 
         self.stdout.write("{0} files copied".format(count))
