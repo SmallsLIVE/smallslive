@@ -15,7 +15,7 @@ from django.views.generic import TemplateView, FormView
 from djstripe.mixins import SubscriptionMixin
 from djstripe.models import Customer
 from djstripe.settings import subscriber_request_callback
-from djstripe.views import SyncHistoryView
+from djstripe.views import SyncHistoryView, ChangeCardView
 from allauth.account.app_settings import EmailVerificationMethod
 import stripe
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm
@@ -128,8 +128,26 @@ class SyncPaymentHistoryView(SyncHistoryView):
 sync_payment_history = SyncPaymentHistoryView.as_view()
 
 
-def subscription_settings(request):
-    return render(request, 'account/subscription-settings.html')
+class SubscriptionSettingsView(TemplateView):
+    template_name = 'account/subscription-settings.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SubscriptionSettingsView, self).get_context_data(**kwargs)
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        return context
+
+subscription_settings = SubscriptionSettingsView.as_view()
+
+
+class UpdateCardView(ChangeCardView):
+    def get_post_success_url(self):
+        return reverse('subscription_settings')
+
+    def get(self, request, *args, **kwargs):
+        # only POST
+        return redirect(self.get_post_success_url())
+
+update_card = UpdateCardView.as_view()
 
 
 def user_settings_view(request):

@@ -138,37 +138,48 @@
         </section>
       {% endif %}
 
-        <section class="subscription-settings signup__payment">
-            <h3 class="signup__payment__heading">Billing information:</h3>
-          {% if user.has_active_subscription %}
-            <p class="signup__payment__existing-card">You have a saved {{ user.customer.card_kind }} credit card ending with {{ user.customer.card_last_4 }}.
-              <a href="" id="payment-form-toggle">Click here</a> to change your active credit card.</p>
-          {% endif %}
-          <div class="signup__payment__information row" {% if user.has_active_subscription %}style="display:none"{% endif %}>
-            <div class="col-xs-12 col-sm-6">
-              <form class="payment-form" >
-                <div class="signup__payment__card__info">
-                  <label for="card-number">Credit card number</label>
-                  <input type="text" class="form-control" name="card-number" id="card-number"
-                         placeholder="XXXX XXXX XXXX XXXX">
-                  <label for="expiry" id="expiry-label">Valid thru:</label>
-                  <label for="cvc" id="cvc-label">Secret number</label>
-                  <input type="text" class="form-control quarter-group" name="expiry-month" id="expiry-month"
-                         placeholder="MM">
-                  <input type="text" class="form-control quarter-group" name="expiry-year" id="expiry-year" placeholder="YY">
-                  <input type="text" class="form-control half" name="cvc" id="cvc" placeholder="xxx">
-                  <label for="name">Name on card</label>
-                  <input type="text" class="form-control" name="name" placeholder="Name">
-                  <input type="submit" class="submit-button disabled" disabled value="Save Changes">
-                </div>
-              </form>
+      <section class="subscription-settings signup__payment">
+        <h3 class="signup__payment__heading">Billing information:</h3>
+        {% if user.customer.card_last_4 %}
+          <p class="signup__payment__existing-card">You have a saved {{ user.customer.card_kind }} credit card ending
+            with {{ user.customer.card_last_4 }}.
+            <a href="" id="payment-form-toggle">Click here</a> to change your active credit card.</p>
+        {% endif %}
+        <div class="signup__payment__information row" {% if user.customer.card_last_4 %}style="display:none"{% endif %}>
+          <div class="col-xs-12 col-sm-6">
+            <form class="payment-form" id="payment-form" method="post" action="{% url "update_card" %}">
+              {% csrf_token %}
+              <div class="signup__payment__card__info">
+                <label for="card-number">Credit card number</label>
+                <input type="text" class="form-control" name="card-number" id="card-number"
+                       placeholder="XXXX XXXX XXXX XXXX"
+                       size="20" pattern="[\d ]*" autocomplete="off" data-stripe="number">
+                <label for="expiry" id="expiry-label">Valid thru:</label>
+                <label for="cvc" id="cvc-label">CVC</label>
+                <input type="text" class="form-control quarter-group" name="expiry-month" id="expiry-month"
+                       placeholder="MM"
+                       size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month">
+                <input type="text" class="form-control quarter-group" name="expiry-year" id="expiry-year"
+                       placeholder="YY"
+                       size="2" pattern="\d*" autocomplete="off" data-stripe="exp-year">
+                <input type="text" class="form-control half" name="cvc" id="cvc" placeholder="xxx" size="4"
+                       pattern="\d*"
+                       autocomplete="off" data-stripe="cvc">
+                <label for="name">Name on card</label>
+                <input type="text" class="form-control" name="name" placeholder="Name on card">
+                <div class="payment-errors"></div>
+                <input type="submit" class="submit-button" value="Save Changes">
+                <button class="submit-button" id="card-update-cancel">Cancel</button>
+              </div>
+            </form>
 
-            </div>
-            <div class="col-xs-12 col-sm-6 signup__payment__card__image">
-              <div class="card-wrapper"></div>
-            </div>
           </div>
-        </section>
+          <div class="col-xs-12 col-sm-6 signup__payment__card__image">
+            <div class="card-wrapper"></div>
+          </div>
+        </div>
+
+      </section>
     {% if user.has_active_subscription %}
       <div id="payment-history">
         {% include "account/blocks/payment_history.html" %}
@@ -221,7 +232,7 @@
           });
       });
     $(document).ready(function() {
-      $("#payment-form-toggle").on('click', function(e) {
+      $("#payment-form-toggle, #card-update-cancel").on('click', function(e) {
         e.preventDefault();
         $(".signup__payment__information").toggle();
         $(".signup__payment__existing-card").toggle();
@@ -229,4 +240,38 @@
       })
     })
   </script>
+      <script type="text/javascript">
+      // This identifies your website in the createToken call below
+      Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
+      jQuery(function ($) {
+        $('#payment-form').submit(function (event) {
+          var $form = $(this);
+
+          // Disable the submit button to prevent repeated clicks
+          $form.find('.submit-button').prop('disabled', true).addClass('disabled');
+
+          Stripe.card.createToken($form, stripeResponseHandler);
+
+          // Prevent the form from submitting with the default action
+          return false;
+        });
+
+        var stripeResponseHandler = function (status, response) {
+          var $form = $('#payment-form');
+
+          if (response.error) {
+            // Show the errors on the form
+            $form.find('.payment-errors').text(response.error.message);
+            $form.find('.submit-button').prop('disabled', false).removeClass('disabled');
+          } else {
+            // token contains id, last4, and card type
+            var token = response.id;
+            // Insert the token into the form so it gets submitted to the server
+            $form.append($('<input type="hidden" name="stripe_token" />').val(token));
+            // and submit
+            $form.get(0).submit();
+          }
+        };
+      });
+    </script>
 {% endblock %}
