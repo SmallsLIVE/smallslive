@@ -123,7 +123,7 @@ class EventAddForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        fields = ('start', 'end', 'id', 'title', 'subtitle', 'photo', 'cropping', 'description', 'state')
+        fields = ('start', 'end', 'id', 'title', 'subtitle', 'photo', 'description', 'state')
         widgets = {
             'state': EventStatusWidget,
             'link': floppyforms.URLInput,
@@ -162,6 +162,9 @@ class EventAddForm(forms.ModelForm):
 
 
 class EventEditForm(EventAddForm):
+    class Meta(EventAddForm.Meta):
+        fields = ('start', 'end', 'id', 'title', 'subtitle', 'photo', 'cropping', 'description', 'state')
+
     def __init__(self, *args, **kwargs):
         super(EventEditForm, self).__init__(*args, **kwargs)
         del self.fields['id']
