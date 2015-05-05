@@ -5,42 +5,46 @@
 
 {% block content %}
    <div class="content-wrapper">
-      <section class="cto cto--search container vertical-align-parent">
-        <h1 class="cto__title search-cto__title">Search results for:<br/>“{{ search_term }}”</h1>
+      <section class="cto cto--archive container vertical-align-parent">
+          <div class="vertical-align-child">
+              <h1 class="cto__title search-cto__title">Archive top lists</h1>
+          </div>
       </section>
       <div class="container">
         <div class="equal-heights row">
-          <section class="col-md-3 search-sidebar">
-            <ul class="search-nav">
-                <li class="search-nav__item"><a href="{% url "artist_search" %}?q={{ request.GET.q }}">Artists <span class="badge">{{ counts.artist }}</span></a></li>
-                <li class="search-nav__item"><a href="{% url "event_search" %}?q={{ request.GET.q }}">Events <span class="badge">{{ counts.event }}</span></a></li>
-                <li class="search-nav__item"><a href="{% url "instrument_search" %}?q={{ request.GET.q }}">Instruments <span class="badge">{{ counts.instrument }}</span></a></li>
-
-              {% comment %}<li class="search-nav__item">Store <span class="badge">2</span></li>{% endcomment %}
+          <section class="col-md-3 archive-lists__sidebar">
+            <ul class="archive-lists__nav">
+                <li class="archive-lists__nav__item active"><a href="#">Most popular videos</a></li>
+                <li class="archive-lists__nav__item"><a href="#">Most recent videos</a></li>
+                <li class="archive-lists__nav__item"><a href="#">Most popular audio</a></li>
+                <li class="archive-lists__nav__item"><a href="#">Most recent audio</a></li>
             </ul>
           </section>
-          <section class="col-md-9 search-results">
-            <h1 class="search-results__section-title">{% block search_section_title %}{% endblock %}</h1>
-            {% block search_content %}
-            {% endblock search_content %}
-            <p class="search-pagination-info">Showing results {{ page.start_index }}-{{ page.end_index }} of {{ paginator.count }}</p>
-            {% if page.has_previous or page.has_next %}
-                <div class="search-pagination">
-                  {% if page.has_previous %}<a href="{% add_get page=page.previous_page_number %}"><span class="search-pagination__previous fa fa-caret-left"></span></a>{% endif %}
-                  {% if show_first %}
-                    <a href="{% add_get page=1 %}"><span class="search-pagination__page">1</span></a>
-                    ...
-                  {% endif %}
-                  {% for page_obj in page_numbers %}
-                    <a href="{% add_get page=page_obj %}"><span class="search-pagination__page {% if page_obj == page.number %}active{% endif %}">{{ page_obj }}</span></a>
-                  {% endfor %}
-                  {% if show_last %}
-                    ...
-                    <a href="{% add_get page=paginator.num_pages %}"><span class="search-pagination__page">{{ paginator.num_pages }}</span></a>
-                  {% endif %}
-                  {% if page.has_next %}<a href="{% add_get page=page.next_page_number %}"><span class="search-pagination__next fa fa-caret-right"></span></a>{% endif %}
-                </div>
-            {% endif %}
+          <section class="col-md-9 archive-list">
+            <h1 class="archive-list__section-title">Most popular videos in Archive:</h1>
+            <div class="archive-list__content">
+                {% for artist in "123456789012345678901234567890" %}
+                  <div class="archive-list__event">
+                    <div class="archive-list__event__image">
+                        <img src="http://placehold.it/140x140/232323/" alt=""/>
+                    </div>
+                    <div class="archive-list__event__info">
+                        <p class="archive-list__event__date">12/02/2014</p>
+                        <h2 class="archive-list__event__title"><a href="#">The David Schnitter Quartet</a></h2>
+                        <div class="archive-list__event__meta">
+                            <div class="archive-list__event__meta__labels">
+                                <p>Added:</p>
+                                <p>Plays:</p>
+                            </div>
+                            <div class="archive-list__event__meta__values">
+                                <p>4/24/2015</p>
+                                <p>12341890</p>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
           </section>
         </div>
       </div>
