@@ -337,6 +337,7 @@
     <script>
       var playsCountSent = [];
       jwplayer("player-audio").setup({
+        primary: 'html5',
         playlist: [
           {% for audio in event.published_audio %}
             {
