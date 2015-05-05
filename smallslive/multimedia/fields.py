@@ -10,4 +10,5 @@ class DynamicBucketFileField(models.FileField):
         else:
             storage = VideoS3Storage()
         model_instance.file.storage = storage
+        model_instance.sd_video_file.storage = storage
         return super(DynamicBucketFileField, self).pre_save(model_instance, add)
