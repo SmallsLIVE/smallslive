@@ -129,6 +129,11 @@ a:hover {
   z-index: 100000;
 }
 
+.alert {
+  margin-bottom: 0;
+  padding: 10px;
+}
+
 p.unavailable {
     opacity: 0.6;
     font-style: italic;
