@@ -66,7 +66,7 @@
                           {% elif active_plan == "premium" %}
                             <p class="signup-plan__button disabled" href="#">Can’t downgrade*</p>
                           {% elif active_plan == "free" %}
-                            <a class="signup-plan__button" href="#">Upgrade (+ $9/mo)</a>
+                            <a class="signup-plan__button" href="{% url "upgrade_plan" plan_name="basic" %}">Upgrade (+ $9/mo)</a>
                           {% endif %}
                         {% endwith %}
                     </div>
@@ -101,9 +101,9 @@
                           {% if active_plan == "premium" %}
                             <p class="signup-plan__active__expiry">Plan expires on {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}</p>
                           {% elif active_plan == "basic" %}
-                            <a class="signup-plan__button" href="#">Upgrade (+ $6/mo)</a>
+                            <a class="signup-plan__button" href="{% url "upgrade_plan" plan_name="premium" %}">Upgrade (+ $6/mo)</a>
                           {% elif active_plan == "free" %}
-                            <a class="signup-plan__button" href="#">Upgrade (+ $15/mo)</a>
+                            <a class="signup-plan__button" href="{% url "upgrade_plan" plan_name="premium" %}">Upgrade (+ $15/mo)</a>
                           {% endif %}
                         {% endwith %}
                     </div>
@@ -140,13 +140,20 @@
 
       <section class="subscription-settings signup__payment">
         <h3 class="signup__payment__heading">Billing information:</h3>
-        {% if user.customer.card_last_4 %}
+        {% if user.customer.can_charge %}
           <p class="signup__payment__existing-card">You have a saved {{ user.customer.card_kind }} credit card ending
             with {{ user.customer.card_last_4 }}.
             <a href="" id="payment-form-toggle">Click here</a> to change your active credit card.</p>
         {% endif %}
         <div class="signup__payment__information row" {% if user.customer.card_last_4 %}style="display:none"{% endif %}>
           <div class="col-xs-12 col-sm-6">
+            <p class="signup__payment__text">We accept the following credit cards:</p>
+                    <div class="signup__payment__card-icons">
+                        <img src="{% static 'image/payment/visa.png' %}" alt="Visa">
+                        <img src="{% static 'image/payment/mastercard.png' %}" alt="MasterCard">
+                        <img src="{% static 'image/payment/amex.png' %}" alt="American Express">
+                        <img src="{% static 'image/payment/diners.png' %}" alt="Diners">
+                    </div>
             <form class="payment-form" id="payment-form" method="post" action="{% url "update_card" %}">
               {% csrf_token %}
               <div class="signup__payment__card__info">

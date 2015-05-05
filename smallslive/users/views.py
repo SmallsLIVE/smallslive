@@ -150,6 +150,12 @@ class UpdateCardView(ChangeCardView):
 update_card = UpdateCardView.as_view()
 
 
+class UpgradePlanView(TemplateView):
+    template_name = 'account/upgrade-plan.html'
+
+upgrade_plan = UpgradePlanView.as_view()
+
+
 def user_settings_view(request):
     # if this is a POST request we need to process the form data
     if 'edit_profile' in request.POST:
