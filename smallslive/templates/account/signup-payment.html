@@ -49,14 +49,14 @@
                     <div class="signup__payment__card__info">
                         {% csrf_token %}
                         <label for="card-number">Credit card number</label>
-                        <input type="text" class="form-control" name="card-number" id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*" autocomplete="off" data-stripe="number">
+                        <input type="text" class="form-control"  id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*" autocomplete="off" data-stripe="number">
                         <label for="expiry" id="expiry-label">Valid thru:</label>
                         <label for="cvc" id="cvc-label">CVC</label>
-                        <input type="text" class="form-control quarter-group" name="expiry-month" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month">
-                        <input type="text" class="form-control quarter-group" name="expiry-year" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-year">
-                        <input type="text" class="form-control half" name="cvc" id="cvc" placeholder="xxx" size="4" pattern="\d*" autocomplete="off" data-stripe="cvc">
+                        <input type="text" class="form-control quarter-group" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month">
+                        <input type="text" class="form-control quarter-group" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-year">
+                        <input type="text" class="form-control half" id="cvc" placeholder="xxx" size="4" pattern="\d*" autocomplete="off" data-stripe="cvc">
                         <label for="name">Name on card</label>
-                        <input type="text" class="form-control" name="name" placeholder="Name on card">
+                        <input type="text" class="form-control" placeholder="Name on card" autocomplete="off" data-stripe="name">
                         <div class="payment-errors"></div>
                         <input type="submit" class="submit-button" value="Continue">
                     </div>
@@ -84,10 +84,10 @@
         container: '.card-wrapper', // *required*
 
         formSelectors: {
-          numberInput: 'input[name="card-number"]', // optional — default input[name="number"]
-          expiryInput: 'input[name="expiry-month"], input[name="expiry-year"]', // optional — default input[name="expiry"]
-          cvcInput: 'input[name="cvc"]', // optional — default input[name="cvc"]
-          nameInput: 'input[name="name"]' // optional - defaults input[name="name"]
+          numberInput: 'input[data-stripe="number"]', // optional — default input[name="number"]
+          expiryInput: 'input[data-stripe="exp-month"], input[data-stripe="exp-year"]', // optional — default input[name="expiry"]
+          cvcInput: 'input[data-stripe="cvc"]', // optional — default input[name="cvc"]
+          nameInput: 'input[data-stripe="name"]' // optional - defaults input[name="name"]
         },
 
         width: 350, // optional — default 350px
