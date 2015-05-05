@@ -25,9 +25,11 @@
                         <div class="signup-plan__arrow-separator"></div>
                         <ul class="signup-plan__features">
                             <li class="signup-plan__features__single">watch <b>all our shows live</b> via our live stream</li>
+                            {% if active_plan.type == "premium" %}
+                              <li class="signup-plan__features__single">access to <b>all video</b> recordings</li>
+                            {% endif %}
                             {% if active_plan.type != "free" %}
-                              <li class="signup-plan__features__single">access to <b>all video recordings</b></li>
-                              <li class="signup-plan__features__single">access to <b>all audio recordings</b></li>
+                              <li class="signup-plan__features__single">access to <b>all audio</b> recordings</li>
                               <li class="signup-plan__features__single">new shows <b>added weekly</b> </li>
                               <li class="signup-plan__features__single">revenue from subscriptions pooled and <b>directly distributed to artists</b> based on how much they get listened to</li>
                             {% endif %}
