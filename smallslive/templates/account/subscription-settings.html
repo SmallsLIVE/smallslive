@@ -141,9 +141,11 @@
       <section class="subscription-settings signup__payment">
         <h3 class="signup__payment__heading">Billing information:</h3>
         {% if user.customer.can_charge %}
-          <p class="signup__payment__existing-card">You have a saved {{ user.customer.card_kind }} credit card ending
-            with {{ user.customer.card_last_4 }}.
-            <a href="" id="payment-form-toggle">Click here</a> to change your active credit card.</p>
+          <div class="row">
+              <p class="signup__payment__existing-card">You have a saved {{ user.customer.card_kind }} credit card ending
+                with {{ user.customer.card_last_4 }}.
+                <a href="" id="payment-form-toggle">Click here</a> to change your active credit card.</p>
+          </div>
         {% endif %}
         <div class="signup__payment__information row" {% if user.customer.card_last_4 %}style="display:none"{% endif %}>
           <div class="col-xs-12 col-sm-6">
@@ -176,7 +178,7 @@
                 <input type="text" class="form-control" name="name" placeholder="Name on card">
                 <div class="payment-errors"></div>
                 <input type="submit" class="submit-button" value="Save Changes">
-                <button class="submit-button" id="card-update-cancel">Cancel</button>
+                <button class="submit-button light-button" id="card-update-cancel">Cancel</button>
               </div>
             </form>
 
@@ -241,8 +243,8 @@
     $(document).ready(function() {
       $("#payment-form-toggle, #card-update-cancel").on('click', function(e) {
         e.preventDefault();
-        $(".signup__payment__information").toggle();
-        $(".signup__payment__existing-card").toggle();
+        $(".signup__payment__information").slideToggle("fast");
+        $(".signup__payment__existing-card").slideToggle("fast");
         return false;
       })
     })

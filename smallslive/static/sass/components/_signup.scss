@@ -536,22 +536,49 @@
       }
     }
 
-    & input[type="submit"] {
+    & input[type="submit"], .submit-button {
       @include lato-bold;
       color: #fff;
       background-color: $main-accent-color;
       padding: 10px 60px;
       margin-top: 20px;
+      font-size: 16px;
+      margin-right: 5px;
 
       &:hover, &:focus {
         color: rgba(255,255,255,0.7);
+        outline: none;
+        border: none;
       }
 
       &.disabled {
         background-color: #dedede;
       }
     }
+
+    .light-button {
+      background-color: #cbcbcb;
+      color: #9a9a9a;
+    }
   }
+
+  &__existing-card {
+    @include lato;
+    padding: 10px;
+    border: 1px solid #ddd;
+    display: inline-block;
+    margin: 0 5px;
+    width: 100%;
+
+      & a {
+        @include lato-bold;
+        color: $main-accent-color;
+
+        &:hover, &:focus {
+          color: $main-accent-color-darker
+        }
+      }
+    }
 
   &__card-icons {
       margin-top: 10px;

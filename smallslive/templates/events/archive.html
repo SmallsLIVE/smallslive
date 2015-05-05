@@ -9,9 +9,7 @@
           <section class="cto cto--archive container vertical-align-parent">
             <div class="vertical-align-child">
                 <h1 class="cto__title">SmallsLIVE Audio/Video Archive</h1>
-                <p class="cto__text">Sign up for access to our comprehensive audio/video archive of past performances.
-                </p>
-                <a href="{% url "static_page" "archive" %}" class="cto__button">Go to the full Archive</a>
+                <p class="cto__text">This is a dummy text. We need some actual text for this section.</p>
             </div>
           </section>
       {% else %}
@@ -150,7 +148,7 @@
                     </div>
                     <div class="mini-video-info">
                       <p class="mini-video-info__date">{{ recording.event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title">{{ recording.event.title }}</h2>
+                      <h2 class="mini-video-info__title"><a href="{{ recording.event.get_absolute_url }}">{{ recording.event.title }}</a></h2>
                       <div class="mini-video-info__stats">
                           <p>Added:</p>
                           <p>Plays:</p>
@@ -163,7 +161,7 @@
                 </div>
               {% endfor %}
             </div>
-          <p class="video-audio__more-link">Full list of 30 most popular videos</p>
+          <a href="#" class="video-audio__more-link">Full list of 30 most popular videos</a>
           </div>
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Newly added videos</h1>
@@ -181,7 +179,7 @@
                     </div>
                     <div class="mini-video-info">
                       <p class="mini-video-info__date">{{ recording.event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title">{{ recording.event.title }}</h2>
+                      <h2 class="mini-video-info__title"><a href="{{ recording.event.get_absolute_url }}">{{ recording.event.title }}</a></h2>
                       <div class="mini-video-info__stats">
                           <p>Added:</p>
                           <p>Plays:</p>
@@ -195,7 +193,7 @@
               {% endfor %}
 
             </div>
-            <p class="video-audio__more-link">Full list of 30 most popular videos</p>
+            <a href="#" class="video-audio__more-link">Full list of 30 most popular videos</a>
           </div>
         </div>
       </section>
@@ -211,7 +209,7 @@
                      src="{% static 'image/archive-temp/01.jpg' %}" alt=""/>
                 <div class="requested-video__info">
                   <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">Jill McCarron Trio</h1>
+                  <h1 class="requested-video__title"><a href="#">Jill McCarron Trio</a></h1>
                   <p class="requested-video__requests"><span class="requested-video__requests--number">87</span> requests</p>
                 </div>
                 <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
@@ -357,7 +355,7 @@
                     </div>
                     <div class="mini-video-info">
                       <p class="mini-video-info__date">{{ recording.event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title">{{ recording.event.title }}</h2>
+                      <h2 class="mini-video-info__title"><a href="{{ recording.event.get_absolute_url }}">{{ recording.event.title }}</a></h2>
                       <div class="mini-video-info__stats">
                           <p>Added:</p>
                           <p>Plays:</p>
@@ -370,7 +368,7 @@
                 </div>
               {% endfor %}
             </div>
-          <p class="video-audio__more-link">Full list of 30 most popular audio recordings</p>
+          <a href="#" class="video-audio__more-link">Full list of 30 most popular audio recordings</a>
           </div>
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Newly added audio</h1>
@@ -388,7 +386,7 @@
                     </div>
                     <div class="mini-video-info">
                       <p class="mini-video-info__date">{{ recording.event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title">{{ recording.event.title }}</h2>
+                      <h2 class="mini-video-info__title"><a href="{{ recording.event.get_absolute_url }}">{{ recording.event.title }}</a></h2>
                       <div class="mini-video-info__stats">
                           <p>Added:</p>
                           <p>Plays:</p>
@@ -401,7 +399,7 @@
                 </div>
               {% endfor %}
             </div>
-            <p class="video-audio__more-link">Full list of 30 newest audio recordings</p>
+            <a href="#" class="video-audio__more-link">Full list of 30 newest audio recordings</a>
           </div>
         </div>
       </section>

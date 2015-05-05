@@ -1,0 +1,48 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load add_get_parameter %}
+
+
+{% block content %}
+   <div class="content-wrapper">
+      <section class="cto cto--search container vertical-align-parent">
+        <h1 class="cto__title search-cto__title">Search results for:<br/>“{{ search_term }}”</h1>
+      </section>
+      <div class="container">
+        <div class="equal-heights row">
+          <section class="col-md-3 search-sidebar">
+            <ul class="search-nav">
+                <li class="search-nav__item"><a href="{% url "artist_search" %}?q={{ request.GET.q }}">Artists <span class="badge">{{ counts.artist }}</span></a></li>
+                <li class="search-nav__item"><a href="{% url "event_search" %}?q={{ request.GET.q }}">Events <span class="badge">{{ counts.event }}</span></a></li>
+                <li class="search-nav__item"><a href="{% url "instrument_search" %}?q={{ request.GET.q }}">Instruments <span class="badge">{{ counts.instrument }}</span></a></li>
+
+              {% comment %}<li class="search-nav__item">Store <span class="badge">2</span></li>{% endcomment %}
+            </ul>
+          </section>
+          <section class="col-md-9 search-results">
+            <h1 class="search-results__section-title">{% block search_section_title %}{% endblock %}</h1>
+            {% block search_content %}
+            {% endblock search_content %}
+            <p class="search-pagination-info">Showing results {{ page.start_index }}-{{ page.end_index }} of {{ paginator.count }}</p>
+            {% if page.has_previous or page.has_next %}
+                <div class="search-pagination">
+                  {% if page.has_previous %}<a href="{% add_get page=page.previous_page_number %}"><span class="search-pagination__previous fa fa-caret-left"></span></a>{% endif %}
+                  {% if show_first %}
+                    <a href="{% add_get page=1 %}"><span class="search-pagination__page">1</span></a>
+                    ...
+                  {% endif %}
+                  {% for page_obj in page_numbers %}
+                    <a href="{% add_get page=page_obj %}"><span class="search-pagination__page {% if page_obj == page.number %}active{% endif %}">{{ page_obj }}</span></a>
+                  {% endfor %}
+                  {% if show_last %}
+                    ...
+                    <a href="{% add_get page=paginator.num_pages %}"><span class="search-pagination__page">{{ paginator.num_pages }}</span></a>
+                  {% endif %}
+                  {% if page.has_next %}<a href="{% add_get page=page.next_page_number %}"><span class="search-pagination__next fa fa-caret-right"></span></a>{% endif %}
+                </div>
+            {% endif %}
+          </section>
+        </div>
+      </div>
+    </div>
+{% endblock content %}

@@ -16,5 +16,10 @@
     color: $main-accent-color;
     text-decoration: underline;
     margin-left: 105px;
+
+    &:hover, &:focus {
+      text-decoration: underline;
+      color: $main-accent-color-darker;
+    }
   }
 }

@@ -31,6 +31,14 @@
     color: #131313;
     margin-top: 0;
     margin-bottom: 6px;
+
+    & a {
+      color: #131313;
+
+      &:hover, &:focus {
+        opacity: 0.8;
+      }
+    }
   }
 
   &__stats {
