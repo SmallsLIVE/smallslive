@@ -37,6 +37,8 @@ class SignupView(AllauthSignupView):
         if not plan:
             raise Http404
         context['plan'] = plan
+        self.request.session['selected_plan'] = plan_name
+        context['facebook_next_url'] = reverse('accounts_signup_payment', kwargs={'plan_name': plan_name})
         return context
 
     def form_valid(self, form):
@@ -50,14 +52,14 @@ class SignupView(AllauthSignupView):
                         verification_method,
                         self.get_success_url())
         plan_name = self.kwargs.get('plan_name')
-        self.request.session['selected_plan'] = plan_name
+        self.selected_plan = plan_name
         return redirect(self.get_success_url())
 
     def get_success_url(self):
         if self.kwargs['plan_name'] == 'free':
             return reverse('accounts_signup_complete')
         else:
-            return reverse('accounts_signup_payment')
+            return reverse('accounts_signup_payment', kwargs={'plan_name': self.kwargs['plan_name']})
 
 signup_view = SignupView.as_view()
 
@@ -72,13 +74,13 @@ class SignupPaymentView(FormValidMessageMixin, SubscriptionMixin, FormView):
 
     def get_form_kwargs(self):
         kwargs = super(SignupPaymentView, self).get_form_kwargs()
-        kwargs['selected_plan_type'] = self.request.session['selected_plan']
+        kwargs['selected_plan_type'] = self.kwargs.get('plan_name')
         return kwargs
 
     def get_context_data(self, **kwargs):
         context = super(FormView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-        plan_name = self.request.session['selected_plan']
+        plan_name = self.kwargs.get('plan_name')
         plan = settings.SUBSCRIPTION_PLANS.get(plan_name)
         if not plan:
             raise Http404
