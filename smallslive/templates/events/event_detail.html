@@ -25,9 +25,7 @@
     {% if user.get_subscription_plan.type == 'premium' and event.published_videos %}
           <section class="container">
             <div class="event-video row">
-              <div class="bw-wrapper" style="height: 450px">
-                <iframe width="100%" height="450" src="https://www.youtube.com/embed/Rr-d3tO-sXM?autoplay=0&controls=0&showinfo=0" frameborder="0" allowfullscreen></iframe>
-              </div>
+              <div id="player-video"></div>
               <div class="event-video__stats col-xs-12">
                 <p>54:32 min  //  1982 plays</p>
               </div>
@@ -333,9 +331,21 @@
 
 {% block extra_js %}
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
-  {% if user.get_subscription_plan.type != 'free' and event.published_audio %}
     <script>
       var playsCountSent = [];
+      function updateViewCount(state) {
+        var id = this.getPlaylistItem(this.getPlaylistIndex()).mediaid;
+        if (playsCountSent.indexOf(id) === -1) {
+          playsCountSent.push(id);
+          $.post('/multimedia/update_media_viewcount/', {
+            recording_id: id,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+
+          });
+        }
+      }
+
+      {% if user.get_subscription_plan.type != 'free' and event.published_audio %}
       jwplayer("player-audio").setup({
         primary: 'html5',
         playlist: [
@@ -357,17 +367,32 @@
           size: 90
         }
       });
-      jwplayer('player-audio').onPlay(function (state) {
-        var id = this.getPlaylistItem(this.getPlaylistIndex()).mediaid;
-        if (playsCountSent.indexOf(id) === -1) {
-          playsCountSent.push(id);
-          $.post('/multimedia/update_media_viewcount/', {
-            recording_id: id,
-            csrfmiddlewaretoken: '{{ csrf_token }}'
+      jwplayer('player-audio').onPlay(updateViewCount);
+      {% endif %}
 
-          });
+      {% if user.get_subscription_plan.type == 'premium' and event.published_videos %}
+      jwplayer("player-video").setup({
+        primary: 'html5',
+        playlist: [
+          {% for video in event.published_videos %}
+            {
+              sources: [{
+                file: "{{ video.media_file.get_sd_video_url|safe }}"
+              }],
+              title: "{{ event.title }}: Set {{ video.set_number }}",
+              mediaid: {{ video.id }}
+            }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ],
+        width: "100%",
+        height: 450,
+        listbar: {
+          position: "bottom",
+          layout: 'basic',
+          size: 90
         }
       });
+      jwplayer('player-video').onPlay(updateViewCount);
+      {% endif %}
     </script>
-  {% endif %}
 {% endblock %}

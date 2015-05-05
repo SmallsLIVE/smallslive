@@ -34,6 +34,13 @@ class MediaFile(models.Model):
             self.file.storage = VideoS3Storage()
         return self.file.url
 
+    def get_sd_video_url(self):
+        if self.media_type == 'audio':
+            self.sd_video_file.storage = AudioS3Storage()
+        else:
+            self.sd_video_file.storage = VideoS3Storage()
+        return self.sd_video_file.url
+
 
 class Media(models.Model):
     name = models.CharField(db_column='mediaName', max_length=255, blank=True)
