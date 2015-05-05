@@ -42,7 +42,7 @@ elasticsearch==1.4.0
 gnureadline==6.3.3
 gunicorn==19.3.0
 html5lib==0.999
-libsass==0.7.0
+libsass==0.8.0
 libthumbor==1.0.1
 lxml==3.3.4
 mailchimp==2.0.9
