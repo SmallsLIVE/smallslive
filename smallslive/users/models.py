@@ -168,7 +168,16 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     def has_activated_account(self):
         has_verified_email = EmailAddress.objects.filter(user=self,
                                                          verified=True).exists()
-        return has_verified_email
+        is_social_account = self.socialaccount_set.exists()
+        return has_verified_email or is_social_account
+
+    @cached_property
+    def can_watch_video(self):
+        return (self.has_activated_account and self.get_subscription_plan.type == 'premium') or self.is_staff
+
+    @cached_property
+    def can_listen_to_audio(self):
+        return (self.has_activated_account and self.get_subscription_plan.type != 'free') or self.is_staff
 
 
 class SmallsEmailConfirmation(EmailConfirmation):
