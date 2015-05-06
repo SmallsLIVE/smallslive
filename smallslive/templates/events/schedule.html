@@ -65,7 +65,7 @@
           {% endif %}
         </div>
         {% endfor %}
-        <div class="schedule__nav flex col-xs-6 col-md-3" data-position=16>
+        <div class="schedule__nav flex col-xs-6 col-md-3" {% if month_view %}data-position={{ next_month_position }}{% else %}data-position=16{% endif %}>
           <a href="{{ next_url }}">
             <div class="flex-center">
                 <div class="text">

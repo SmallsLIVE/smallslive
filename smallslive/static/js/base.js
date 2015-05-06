@@ -141,6 +141,11 @@ $(document).ready(function () {
                     offset = position % 2;
                 }
                 var new_position = position + offset;
+                var last_box_position = $("div[data-position]").last().data('position');
+                // special case if the last row isn't full
+                if (new_position > last_box_position) {
+                    new_position = last_box_position;
+                }
                 $("#event-details-expanded").remove();
                 $('div[data-position=' + new_position + ']').after(template);
                 $('#event-details-expanded').hide().slideDown( 400, 'easeInOutCubic', function() {
