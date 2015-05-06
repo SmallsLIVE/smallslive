@@ -38,7 +38,10 @@ class SignupView(AllauthSignupView):
             raise Http404
         context['plan'] = plan
         self.request.session['selected_plan'] = plan_name
-        context['facebook_next_url'] = reverse('accounts_signup_payment', kwargs={'plan_name': plan_name})
+        if plan_name == "free":
+            context['facebook_next_url'] = reverse('accounts_signup_complete')
+        else:
+            context['facebook_next_url'] = reverse('accounts_signup_payment', kwargs={'plan_name': plan_name})
         return context
 
     def form_valid(self, form):
