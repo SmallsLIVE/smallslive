@@ -19,20 +19,27 @@
     </div>
     <div class="transaction-history__table__body">
       {% for invoice in user.customer.invoices.all %}
+        {% for invoice_item in invoice.items.all %}
         <div class="row">
           <div class="align-left date col-xs-12 col-sm-2">
             {{ invoice.date|date:"n/j/Y" }}
           </div>
           <div class="align-left description col-xs-12 col-sm-7">
-            {{ invoice.items.all.0.plan_display }} plan
+            {% if invoice_item.description %}
+              {{ invoice_item.description}}
+            {% else %}
+              {{ invoice_item.plan_display }} plan
+            {% endif %}
+
           </div>
           <div class="align-right amount col-xs-12 col-sm-1">
-            ${{ invoice.subtotal }}
+            ${{ invoice_item.amount }}
           </div>
           <div class="align-left receipt col-xs-12 col-sm-2">
             <a href="#">View receipt</a>
           </div>
         </div>
+          {% endfor %}
       {% endfor %}
     </div>
   </div>

@@ -66,7 +66,7 @@
                           {% elif active_plan == "premium" %}
                             <p class="signup-plan__button disabled" href="#">Can’t downgrade*</p>
                           {% elif active_plan == "free" %}
-                            <a class="signup-plan__button" href="{% url "accounts_signup_payment" plan_name="basic" %}">Upgrade (+ $9/mo)</a>
+                            <a class="signup-plan__button" href="{% url "upgrade_plan" plan_name="basic" %}">Upgrade (+ $9/mo)</a>
                           {% endif %}
                         {% endwith %}
                     </div>
@@ -101,9 +101,9 @@
                           {% if active_plan == "premium" %}
                             <p class="signup-plan__active__expiry">Plan expires on {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}</p>
                           {% elif active_plan == "basic" %}
-                            <a class="signup-plan__button" href="{% url "accounts_signup_payment" plan_name="premium" %}">Upgrade (+ $6/mo)</a>
+                            <a class="signup-plan__button" href="{% url "upgrade_plan" plan_name="premium" %}">Upgrade (+ $6/mo)</a>
                           {% elif active_plan == "free" %}
-                            <a class="signup-plan__button" href="{% url "accounts_signup_payment" plan_name="premium" %}">Upgrade (+ $15/mo)</a>
+                            <a class="signup-plan__button" href="{% url "upgrade_plan" plan_name="premium" %}">Upgrade (+ $15/mo)</a>
                           {% endif %}
                         {% endwith %}
                     </div>

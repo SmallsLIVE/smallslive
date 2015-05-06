@@ -12,15 +12,17 @@
 
         <section class="signup-step__header container vertical-align-parent">
             <div class="vertical-align-child">
+              {% block page_header %}
                 <h2>Sign up for a</h2>
-                <h1>SmallsLIVE Basic Plan</h1>
+                <h1>SmallsLIVE {{ plan.name }} Plan</h1>
                 <h3>Just <b>${{ plan.monthly.price|djdiv:100|floatformat:"-1" }}/month or ${{ plan.yearly.price|djdiv:100|floatformat:"-1" }}/year</b> (you get two months for free).</h3>
                 <div class="signup-step__header__info">Step 2/2 - please provide the payment information</div>
+              {% endblock %}
             </div>
         </section>
 
         <section class="signup__payment">
-            <form class="payment-form" id="payment-form" method="post" action="{% url "accounts_signup_payment" plan_name=plan.id %}">
+            <form class="payment-form" id="payment-form" method="post" action="{% block form_url %}{% url "accounts_signup_payment" plan_name=plan.id %}{% endblock form_url %}">
             <div class="signup__payment__type">
                 <h3 class="signup__payment__heading">Do you want to pay monthy or annualy?</h3>
                 <p class="signup__payment__text">If you choose to pay for the full year in advance, you get <b>2 months for free</b>. Once you sign up for a plan, you’ll have auto renewal set up meaning that once the plan runs out we’ll automatically bill your credit card for the next month or year (depending on how you paid initially) and extend your plan. You can always deactivate this option in your Account settings and extend your membership manually.</p>
@@ -30,7 +32,7 @@
                       {% if plan_details.interval == 'year' %}
                         <input type="radio" name="plan" id="{{ plan_name }}" value="{{ plan_name }}"><label for="{{ plan_name }}"><span>Pay annually</span><span class="price">(${{ plan_details.price|djdiv:100|floatformat:"-1" }} per year - get two months for free)</span></label>
                       {% else %}
-                        <input type="radio" name="plan" id="{{ plan_name }}" value="{{ plan_name }}"><label for="{{ plan_name }}"><span>Pay monthly</span><span class="price">(${{ plan_details.price|djdiv:100|floatformat:"-1" }} per month)</span></label>
+                        <input type="radio" name="plan" id="{{ plan_name }}" value="{{ plan_name }}" checked><label for="{{ plan_name }}"><span>Pay monthly</span><span class="price">(${{ plan_details.price|djdiv:100|floatformat:"-1" }} per month)</span></label>
                       {% endif %}
                     </div>
                   {% endfor %}

@@ -278,6 +278,8 @@ class MonthlyScheduleView(ListView):
         context['month'] = month - 1
         context['year'] = year
         context['month_view'] = True
+        # position of the "NEXT" box, after all the dates and the "PREV" box
+        context['next_month_position'] = len(context['dates']) + 2
         current_month = timezone.datetime(year=year, month=month, day=1)
         next_month = current_month + timezone.timedelta(days=31)
         prev_month = current_month - timezone.timedelta(days=1)
