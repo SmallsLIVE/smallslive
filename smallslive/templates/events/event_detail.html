@@ -21,18 +21,18 @@
 
 {% block content %}
 
-    <div class="content-wrapper">
-      {% if user.get_subscription_plan.type == 'premium' and event.published_videos %}
-          <section class="container">
-            <div class="event-video row">
-              <div id="player-video"></div>
-              <div class="event-video__stats col-xs-12">
-                <p>54:32 min  //  1982 plays</p>
-              </div>
+  <div class="content-wrapper">
+    {% if user.can_watch_video %}
+      {% if event.published_videos %}
+        <section class="container">
+          <div class="event-video row">
+            <div id="player-video"></div>
+            <div class="event-video__stats col-xs-12">
+              <p>54:32 min // 1982 plays</p>
             </div>
-          </section>
-      {% endif %}
-      {% if user.get_subscription_plan.type == 'premium' and not event.published_videos %}
+          </div>
+        </section>
+      {% else %}
         <section class="cto cto--video-not-available container vertical-align-parent">
           <div class="vertical-align-child">
             <h1 class="cto__title">Video not available (yet)</h1>
@@ -43,6 +43,7 @@
           </div>
         </section>
       {% endif %}
+    {% endif %}
       <div class="event container">
         <div class="equal-heights row">
           <section class="event-artists col-md-6">
@@ -116,14 +117,16 @@
           </section>
         </div>
       </div>
-
-      <section class="cto cto--listen-to-show audio-player__container container vertical-align-parent">
+      {% if user.can_listen_to_audio and event.published_audio %}
+        <section class="cto cto--listen-to-show audio-player__container container vertical-align-parent">
           <div class="audio-player__text">
-              <h1 class="cto__title">Listen to entire show</h1>
-              <p class="cto__text">You can use the player below to listen to the entire show.</p>
+            <h1 class="cto__title">Listen to entire show</h1>
+            <p class="cto__text">You can use the player below to listen to the entire show.</p>
           </div>
           <div id="player-audio" class="audio-player__player"></div>
-      </section>
+        </section>
+      {% endif %}
+
       {% comment %}
         {% if not request.GET.future %}
           <section class="event-tracks container">
@@ -344,7 +347,7 @@
         }
       }
 
-      {% if user.get_subscription_plan.type != 'free' and event.published_audio %}
+      {% if user.can_listen_to_audio and event.published_audio %}
       jwplayer("player-audio").setup({
         primary: 'html5',
         playlist: [
@@ -370,7 +373,7 @@
       jwplayer('player-audio').onPlay(updateViewCount);
       {% endif %}
 
-      {% if user.get_subscription_plan.type == 'premium' and event.published_videos %}
+      {% if user.can_watch_video and event.published_videos %}
       jwplayer("player-video").setup({
         primary: 'html5',
         playlist: [
