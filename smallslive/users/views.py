@@ -15,7 +15,7 @@ from django.views.generic import TemplateView, FormView
 from djstripe.mixins import SubscriptionMixin
 from djstripe.models import Customer
 from djstripe.settings import subscriber_request_callback
-from djstripe.views import SyncHistoryView, ChangeCardView
+from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView
 from allauth.account.app_settings import EmailVerificationMethod
 import stripe
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm
@@ -150,6 +150,29 @@ class UpdateCardView(ChangeCardView):
         return redirect(self.get_post_success_url())
 
 update_card = UpdateCardView.as_view()
+
+
+class UpgradePlanView(ChangePlanView):
+    form_class = PlanForm
+    success_url = reverse_lazy("subscription_settings")
+    template_name = 'account/upgrade_plan.html'
+
+    def get_form_kwargs(self):
+        kwargs = super(UpgradePlanView, self).get_form_kwargs()
+        kwargs['selected_plan_type'] = self.kwargs.get('plan_name')
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(UpgradePlanView, self).get_context_data(**kwargs)
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        plan_name = self.kwargs.get('plan_name')
+        plan = settings.SUBSCRIPTION_PLANS.get(plan_name)
+        if not plan:
+            raise Http404
+        context['plan'] = plan
+        return context
+
+upgrade_plan = UpgradePlanView.as_view()
 
 
 def user_settings_view(request):
