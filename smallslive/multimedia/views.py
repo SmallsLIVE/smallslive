@@ -1,6 +1,7 @@
 import json
 from django.db.models import F
 from django.http import Http404, HttpResponse
+from django.views.generic import ListView
 from events.models import Recording
 
 
@@ -28,3 +29,55 @@ def update_media_viewcount(request):
 
     response = json.dumps({'status': True})
     return HttpResponse(response, content_type="application/json")
+
+
+class MostPopularVideos(ListView):
+    context_object_name = "recordings"
+    queryset = Recording.objects.video().most_popular()[:30]
+    template_name = "multimedia/archive-list.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super(MostPopularVideos, self).get_context_data(**kwargs)
+        context['most_popular_videos'] = True
+        return context
+
+most_popular_videos = MostPopularVideos.as_view()
+
+
+class MostRecentVideos(ListView):
+    context_object_name = "recordings"
+    queryset = Recording.objects.video().most_recent()[:30]
+    template_name = "multimedia/archive-list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(MostRecentVideos, self).get_context_data(**kwargs)
+        context['most_recent_videos'] = True
+        return context
+
+most_recent_videos = MostRecentVideos.as_view()
+
+
+class MostPopularAudio(ListView):
+    context_object_name = "recordings"
+    queryset = Recording.objects.audio().most_popular()[:30]
+    template_name = "multimedia/archive-list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(MostPopularAudio, self).get_context_data(**kwargs)
+        context['most_popular_audio'] = True
+        return context
+
+most_popular_audio = MostPopularAudio.as_view()
+
+
+class MostRecentAudio(ListView):
+    context_object_name = "recordings"
+    queryset = Recording.objects.audio().most_recent()[:30]
+    template_name = "multimedia/archive-list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(MostRecentAudio, self).get_context_data(**kwargs)
+        context['most_recent_audio'] = True
+        return context
+
+most_recent_audio = MostRecentAudio.as_view()

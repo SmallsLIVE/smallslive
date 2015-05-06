@@ -258,6 +258,12 @@ class RecordingQuerySet(models.QuerySet):
     def hidden(self):
         return self.filter(state=Recording.STATUS.Hidden)
 
+    def most_popular(self):
+        return self.order_by('-view_count')
+
+    def most_recent(self):
+        return self.order_by('-date_added')
+
 
 class RecordingManager(models.Manager.from_queryset(RecordingQuerySet)):
     use_for_related_fields = True

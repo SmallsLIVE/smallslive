@@ -161,7 +161,7 @@
                 </div>
               {% endfor %}
             </div>
-          <a href="#" class="video-audio__more-link">Full list of 30 most popular videos</a>
+          <a href="{% url "most_popular_videos" %}" class="video-audio__more-link">Full list of 30 most popular videos</a>
           </div>
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Newly added videos</h1>
@@ -193,7 +193,7 @@
               {% endfor %}
 
             </div>
-            <a href="#" class="video-audio__more-link">Full list of 30 most popular videos</a>
+            <a href="{% url "most_recent_videos" %}" class="video-audio__more-link">Full list of 30 most popular videos</a>
           </div>
         </div>
       </section>
@@ -368,7 +368,7 @@
                 </div>
               {% endfor %}
             </div>
-          <a href="#" class="video-audio__more-link">Full list of 30 most popular audio recordings</a>
+          <a href="{% url "most_popular_audio" %}" class="video-audio__more-link">Full list of 30 most popular audio recordings</a>
           </div>
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Newly added audio</h1>
@@ -399,7 +399,7 @@
                 </div>
               {% endfor %}
             </div>
-            <a href="#" class="video-audio__more-link">Full list of 30 newest audio recordings</a>
+            <a href="{% url "most_recent_audio" %}" class="video-audio__more-link">Full list of 30 newest audio recordings</a>
           </div>
         </div>
       </section>
