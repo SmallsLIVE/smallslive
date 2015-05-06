@@ -22,7 +22,7 @@
 {% block content %}
 
     <div class="content-wrapper">
-    {% if user.get_subscription_plan.type == 'premium' and event.published_videos %}
+      {% if user.get_subscription_plan.type == 'premium' and event.published_videos %}
           <section class="container">
             <div class="event-video row">
               <div id="player-video"></div>
@@ -31,6 +31,17 @@
               </div>
             </div>
           </section>
+      {% endif %}
+      {% if user.get_subscription_plan.type == 'premium' and not event.published_videos %}
+        <section class="cto cto--video-not-available container vertical-align-parent">
+          <div class="vertical-align-child">
+            <h1 class="cto__title">Video not available (yet)</h1>
+
+            <p class="cto__text">The video for this performance can be made available if you request it.<br/>
+              We had 181 request for this video so far.</p>
+            <a href="" class="cto__button">Request video</a>
+          </div>
+        </section>
       {% endif %}
       <div class="event container">
         <div class="equal-heights row">
@@ -105,26 +116,14 @@
           </section>
         </div>
       </div>
-      {% if user.get_subscription_plan.type == 'premium' and not event.published_videos %}
-        <section class="cto cto--video-not-available container vertical-align-parent">
-          <div class="vertical-align-child">
-            <h1 class="cto__title">Video not available (yet)</h1>
 
-            <p class="cto__text">The video for this performance can be made available if you request it.<br/>
-              We had 181 request for this video so far.</p>
-            <a href="" class="cto__button">Request video</a>
+      <section class="cto cto--listen-to-show audio-player__container container vertical-align-parent">
+          <div class="audio-player__text">
+              <h1 class="cto__title">Listen to entire show</h1>
+              <p class="cto__text">You can use the player below to listen to the entire show.</p>
           </div>
-        </section>
-      {% endif %}
-
-      <section class="cto cto--listen-to-show container vertical-align-parent">
-        <div class="vertical-align-child">
-          <h1 class="cto__title">Listen to entire show</h1>
-
-          <p class="cto__text">You can use the player below to listen to the entire show.</p>
-        </div>
+          <div id="player-audio" class="audio-player__player"></div>
       </section>
-      <div id="player-audio"></div>
       {% comment %}
         {% if not request.GET.future %}
           <section class="event-tracks container">
@@ -359,6 +358,7 @@
             }{% if not forloop.last %},{% endif %}
           {% endfor %}
         ],
+        skin: "{% static "jwplayer-skin/smalls.xml" %}",
         width: "100%",
         height: 120,
         listbar: {
