@@ -174,11 +174,11 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
     @cached_property
     def can_watch_video(self):
-        return self.is_staff or (self.has_activated_account and self.get_subscription_plan.type == 'premium')
+        return self.is_staff or (self.has_activated_account and self.get_subscription_plan['type'] == 'premium')
 
     @cached_property
     def can_listen_to_audio(self):
-        return self.is_staff or (self.has_activated_account and self.get_subscription_plan.type != 'free')
+        return self.is_staff or (self.has_activated_account and self.get_subscription_plan['type'] != 'free')
 
 
 class SmallsEmailConfirmation(EmailConfirmation):
