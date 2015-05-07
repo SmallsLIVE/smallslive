@@ -12,7 +12,7 @@ from events.models import Event
 User = get_user_model()
 
 STATE_CHOICES_WITH_EMPTY = (('', ''),) + STATE_CHOICES
-COUNTRIES_WITH_EMPTY = ((None, ''),) + tuple(countries)
+COUNTRIES_WITH_EMPTY = (('', ''),) + tuple(countries)
 
 
 class ToggleRecordingStateForm(forms.ModelForm):
