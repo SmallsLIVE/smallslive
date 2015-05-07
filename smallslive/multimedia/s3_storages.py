@@ -12,7 +12,7 @@ class ProtectedS3Storage(S3BotoStorage):
 
 class AudioS3Storage(ProtectedS3Storage):
     def __init__(self, *args, **kwargs):
-        kwargs['bucket'] = 'smallsliveaudio'
+        kwargs['bucket'] = 'smallslivemp3'
         super(AudioS3Storage, self).__init__(*args, **kwargs)
 
 
