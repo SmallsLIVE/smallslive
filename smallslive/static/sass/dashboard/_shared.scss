@@ -8,6 +8,25 @@
     color: $main-accent-color;
     margin-bottom: 10px;
   }
+
+  &__button-link {
+    display: inline-block;
+    font-size: 14px;
+    margin-top: 5px;
+    padding: 8px 14px;
+    @include lato-bold;
+    color: #fff;
+    background-color: $main-accent-color;
+    border-radius: 4px;
+
+    &:hover, &:focus {
+      outline: none;
+      border: none;
+      color: #fff;
+      background-color: $main-accent-color-darker;
+      text-decoration: none;
+    }
+  }
 }
 
 .page-heading-event {
