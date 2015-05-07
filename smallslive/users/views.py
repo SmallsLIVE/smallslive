@@ -4,7 +4,7 @@ from allauth.account.utils import complete_signup
 from allauth.account.views import SignupView as AllauthSignupView, ConfirmEmailView as CoreConfirmEmailView,\
     LoginView as CoreLoginView
 import braces.views
-from braces.views import FormValidMessageMixin
+from braces.views import FormValidMessageMixin, LoginRequiredMixin
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
@@ -67,7 +67,7 @@ class SignupView(AllauthSignupView):
 signup_view = SignupView.as_view()
 
 
-class SignupPaymentView(FormValidMessageMixin, SubscriptionMixin, FormView):
+class SignupPaymentView(LoginRequiredMixin, FormValidMessageMixin, SubscriptionMixin, FormView):
     # TODO - needs tests
 
     form_class = PlanForm
@@ -116,7 +116,7 @@ class SignupPaymentView(FormValidMessageMixin, SubscriptionMixin, FormView):
 signup_payment = SignupPaymentView.as_view()
 
 
-class SignupCompleteView(TemplateView):
+class SignupCompleteView(LoginRequiredMixin, TemplateView):
     template_name = 'account/signup-complete.html'
 
     def get_context_data(self, **kwargs):
@@ -127,13 +127,13 @@ class SignupCompleteView(TemplateView):
 signup_complete = SignupCompleteView.as_view()
 
 
-class SyncPaymentHistoryView(SyncHistoryView):
+class SyncPaymentHistoryView(LoginRequiredMixin, SyncHistoryView):
     template_name = 'account/blocks/payment_history.html'
 
 sync_payment_history = SyncPaymentHistoryView.as_view()
 
 
-class SubscriptionSettingsView(TemplateView):
+class SubscriptionSettingsView(LoginRequiredMixin, TemplateView):
     template_name = 'account/subscription-settings.html'
 
     def get_context_data(self, **kwargs):
@@ -173,6 +173,7 @@ class UpgradePlanView(ChangePlanView):
         if not plan:
             raise Http404
         context['plan'] = plan
+        context['stripe_token'] = self.request.user.customer.card_fingerprint
         return context
 
 upgrade_plan = UpgradePlanView.as_view()

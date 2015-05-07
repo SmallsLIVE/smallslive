@@ -38,6 +38,7 @@
                   {% endfor %}
                 </div>
             </div>
+            {% block payment_info %}
             <div class="signup__payment__information row">
                 <div class="col-xs-12 col-sm-6">
                     <h3 class="signup__payment__heading">Payment information:</h3>
@@ -67,6 +68,7 @@
                     <div class="card-wrapper"></div>
                 </div>
             </div>
+            {% endblock %}
             </form>
         </section>
 
@@ -108,38 +110,40 @@
         debug: false // optional - default false
       });
     </script>
-    <script type="text/javascript">
-      // This identifies your website in the createToken call below
-      Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
-      jQuery(function ($) {
-        $('#payment-form').submit(function (event) {
-          var $form = $(this);
+    {% block stripe_payment %}
+      <script type="text/javascript">
+        // This identifies your website in the createToken call below
+        Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
+        jQuery(function ($) {
+          $('#payment-form').submit(function (event) {
+            var $form = $(this);
 
-          // Disable the submit button to prevent repeated clicks
-          $form.find('.submit-button').prop('disabled', true).addClass('disabled');
+            // Disable the submit button to prevent repeated clicks
+            $form.find('.submit-button').prop('disabled', true).addClass('disabled');
 
-          Stripe.card.createToken($form, stripeResponseHandler);
+            Stripe.card.createToken($form, stripeResponseHandler);
 
-          // Prevent the form from submitting with the default action
-          return false;
+            // Prevent the form from submitting with the default action
+            return false;
+          });
+
+          var stripeResponseHandler = function (status, response) {
+            var $form = $('#payment-form');
+
+            if (response.error) {
+              // Show the errors on the form
+              $form.find('.payment-errors').text(response.error.message);
+              $form.find('.submit-button').prop('disabled', false).removeClass('disabled');
+            } else {
+              // token contains id, last4, and card type
+              var token = response.id;
+              // Insert the token into the form so it gets submitted to the server
+              $form.append($('<input type="hidden" name="stripe_token" />').val(token));
+              // and submit
+              $form.get(0).submit();
+            }
+          };
         });
-
-        var stripeResponseHandler = function (status, response) {
-          var $form = $('#payment-form');
-
-          if (response.error) {
-            // Show the errors on the form
-            $form.find('.payment-errors').text(response.error.message);
-            $form.find('.submit-button').prop('disabled', false).removeClass('disabled');
-          } else {
-            // token contains id, last4, and card type
-            var token = response.id;
-            // Insert the token into the form so it gets submitted to the server
-            $form.append($('<input type="hidden" name="stripe_token" />').val(token));
-            // and submit
-            $form.get(0).submit();
-          }
-        };
-      });
-    </script>
+      </script>
+    {% endblock %}
 {% endblock %}
