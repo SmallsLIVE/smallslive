@@ -11,7 +11,8 @@
 .from-our-archive__section-link {
   font-size: 16px;
   @include lato-bold;
-  margin-left: 5px;
+  margin-left: 2px;
+  white-space: nowrap;
 
   &:hover, &:focus {
     color: $main-accent-color-darker;
