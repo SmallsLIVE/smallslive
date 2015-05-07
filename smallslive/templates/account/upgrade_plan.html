@@ -2,7 +2,15 @@
 {% load djstripe_tags %}
 
 
-{% block form_url %}{% url "upgrade_plan" plan_name=plan.id %}{% endblock form_url %}
+{% block form_url %}{% spaceless %}
+  {% with active_plan=user.get_subscription_plan.type %}
+    {% if active_plan == "free" %}
+        {% url "accounts_signup_payment" plan_name=plan.id %}
+    {% else %}
+        {% url "upgrade_plan" plan_name=plan.id %}
+    {% endif %}
+  {% endwith %}
+{% endspaceless %}{% endblock form_url %}
 
 {% block page_header %}
   <h2>Upgrade to</h2>
