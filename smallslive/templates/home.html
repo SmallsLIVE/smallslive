@@ -1,5 +1,7 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
+{% load thumbor_tags %}
+
 
 {% block homepage_nav_active %}active{% endblock %}
 
@@ -36,148 +38,50 @@
         <h1 class="from-our-archive__section-title">New in our Archive</h1>
 
         <div class="row">
-          <div class="col-xs-6 col-md-4">
-            <div class="event-object event-object--green">
-                <img class="event-object__image"
-                     src="{% static 'image/archive-thumbs/01.jpg' %}" alt=""/>
-                <div class="event-object__info">
-                  <h1 class="event-object__title">Ryan Kisor Quintet</h1>
-                  <ul class="event-object__artists">
-                    <li>Marcus Parsley</li>
-                    <li>Rick Germanson</li>
-                    <li>Al Street</li>
-                    <li>Neal Miner</li>
-                    <li>Brian Floody</li>
-                    <li>Bosco Mann</li>
-                  </ul>
-                </div>
+          {% for recording in new_in_archive %}
+            <div class="col-xs-6 col-md-4">
+              <div class="event-object event-object--{% cycle "green" "blue" "yellow" "gold" "red" "purple" %}">
+                {% if recording.event.photo %}
+                  <img class="event-object__image" src="{% thumbor_url recording.event.photo.url|urlencode width=360 height=309 smart=True %}" alt=""/>
+                {% else %}
+                  <img class="event-object__image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                {% endif %}
+                  <div class="event-object__info">
+                    <h1 class="event-object__title">{{ recording.event.title }}</h1>
+                    <ul class="event-object__artists">
+                      {% for performer in recording.event.performers.all %}
+                        <li>{{ performer.full_name }}</li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+              </div>
             </div>
-          </div>
-          <div class="col-xs-6 col-md-4">
-            <div class="event-object event-object--blue">
-                <img class="event-object__image"
-                     src="{% static 'image/archive-thumbs/02.jpg' %}" alt=""/>
-                <div class="event-object__info">
-                  <h1 class="event-object__title">Steve Davis Quintet</h1>
-                  <ul class="event-object__artists">
-                    <li>Marcus Parsley</li>
-                    <li>Rick Germanson</li>
-                    <li>Al Street</li>
-                    <li>Neal Miner</li>
-                    <li>Brian Floody</li>
-                    <li>Bosco Mann</li>
-                  </ul>
-                </div>
-            </div>
-          </div>
-          <div class="col-xs-6 col-md-4">
-            <div class="event-object event-object--yellow">
-                <img class="event-object__image"
-                     src="{% static 'image/archive-thumbs/03.jpg' %}" alt=""/>
-                <div class="event-object__info">
-                  <h1 class="event-object__title">Kevin Hays Trio</h1>
-                  <ul class="event-object__artists">
-                    <li>Doug Weiss</li>
-                    <li>Bill Stewart</li>
-                  </ul>
-                </div>
-            </div>
-          </div>
-          <div class="col-xs-6 col-md-4">
-            <div class="event-object event-object--gold">
-                <img class="event-object__image"
-                     src="{% static 'image/archive-thumbs/04.jpg' %}" alt=""/>
-                <div class="event-object__info">
-                  <h1 class="event-object__title">Dezron Douglas</h1>
-                  <ul class="event-object__artists">
-                    <li>Willie Jones III</li>
-                    <li>Josh Evans</li>
-                    <li>Stacy Dillard</li>
-                    <li>David Bryant</li>
-                  </ul>
-                </div>
-            </div>
-          </div>
-          <div class="col-xs-6 col-md-4">
-            <div class="event-object event-object--red">
-                <img class="event-object__image"
-                     src="{% static 'image/archive-thumbs/05.jpg' %}" alt=""/>
-                <div class="event-object__info">
-                  <h1 class="event-object__title">David Kikoski Trio</h1>
-                  <ul class="event-object__artists">
-                    <li>Hans Glawischnig</li>
-                    <li>Obed Calvaire</li>
-                  </ul>
-                </div>
-            </div>
-          </div>
-          <div class="col-xs-6 col-md-4">
-            <div class="event-object event-object--purple">
-                <img class="event-object__image"
-                     src="{% static 'image/archive-thumbs/06.jpg' %}" alt=""/>
-                <div class="event-object__info">
-                  <h1 class="event-object__title">Seamus Blake Quintet</h1>
-                  <ul class="event-object__artists">
-                    <li>Lage Lund</li>
-                    <li>David Kikoski</li>
-                    <li>Matt Clohesy</li>
-                    <li>Bill Stewart</li>
-                  </ul>
-                </div>
-            </div>
-          </div>
+          {% endfor %}
         </div>
       </section>
       <section class="from-our-archive container">
         <h1 class="from-our-archive__section-title">Most Popular from the Archive</h1>
 
         <div class="row">
-          <div class="col-xs-6 col-md-4">
-            <div class="event-object event-object--darkblue">
-                <img class="event-object__image"
-                     src="{% static 'image/archive-thumbs/07.jpg' %}" alt=""/>
-                <div class="event-object__info">
-                  <h1 class="event-object__title">Ben Wolfe Quintet</h1>
-                  <ul class="event-object__artists">
-                    <li>Marcus Strickland</li>
-                    <li>Ryan Kisor</li>
-                    <li>Luis Perdomo</li>
-                    <li>Gregory Hutchinson</li>
-                  </ul>
-                </div>
+          {% for recording in popular_in_archive %}
+            <div class="col-xs-6 col-md-4">
+              <div class="event-object event-object--{% cycle "darkblue" "orange" "blue"%}">
+                {% if recording.event.photo %}
+                  <img class="event-object__image" src="{% thumbor_url recording.event.photo.url|urlencode width=360 height=309 smart=True %}" alt=""/>
+                {% else %}
+                  <img class="event-object__image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                {% endif %}
+                  <div class="event-object__info">
+                    <h1 class="event-object__title">{{ recording.event.title }}</h1>
+                    <ul class="event-object__artists">
+                      {% for performer in recording.event.performers.all %}
+                        <li>{{ performer.full_name }}</li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+              </div>
             </div>
-          </div>
-          <div class="col-xs-6 col-md-4">
-            <div class="event-object event-object--orange">
-                <img class="event-object__image"
-                     src="{% static 'image/archive-thumbs/08.jpg' %}" alt=""/>
-                <div class="event-object__info">
-                  <h1 class="event-object__title">Neal Smith Quintet</h1>
-                  <ul class="event-object__artists">
-                    <li>Eric Alexander</li>
-                    <li>Steve Wilson</li>
-                    <li>Mulgrew Miller</li>
-                    <li>Mark Whitfield</li>
-                    <li>Dezron Douglas</li>
-                  </ul>
-                </div>
-            </div>
-          </div>
-          <div class="col-xs-6 col-md-4">
-            <div class="event-object event-object--blue">
-                <img class="event-object__image"
-                     src="{% static 'image/archive-thumbs/09.jpg' %}" alt=""/>
-                <div class="event-object__info">
-                  <h1 class="event-object__title">Steve Davis Quintet</h1>
-                  <ul class="event-object__artists">
-                    <li>Larry Willis</li>
-                    <li>Mike Dirubbo</li>
-                    <li>Gerald Cannon</li>
-                    <li>Willie Jones III</li>
-                  </ul>
-                </div>
-            </div>
-          </div>
+          {% endfor %}
         </div>
       </section>
       <section class="home-store container">
