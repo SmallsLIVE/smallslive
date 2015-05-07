@@ -2,6 +2,13 @@
   padding: 20px;
   background-color: #fff;
 
+  & .artist-list-form {
+    padding-top: 10px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 30px;
+  }
+
   & .formset_table {
 
     & tr {
