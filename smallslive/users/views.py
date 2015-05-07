@@ -127,7 +127,7 @@ class SignupCompleteView(LoginRequiredMixin, TemplateView):
 signup_complete = SignupCompleteView.as_view()
 
 
-class SyncPaymentHistoryView(LoginRequiredMixin, SyncHistoryView):
+class SyncPaymentHistoryView(SyncHistoryView):
     template_name = 'account/blocks/payment_history.html'
 
 sync_payment_history = SyncPaymentHistoryView.as_view()
