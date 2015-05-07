@@ -75,7 +75,6 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_thumbor',
     'djstripe',
-    'easy_thumbnails',
     'filer',
     'floppyforms',
     'image_cropping',
@@ -104,7 +103,9 @@ INSTALLED_APPS = [
     'oscar_apps.dashboard.files',
     'oscar_apps.partner',
     'oscar_apps.shipping',
-])
+]) + [
+    'easy_thumbnails',  # needs to go after the oscar import to avoid template tag clashes
+]
 
 MIDDLEWARE_CLASSES = (
     'pipeline.middleware.MinifyHTMLMiddleware',
