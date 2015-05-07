@@ -93,6 +93,8 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
         context = super(DashboardView, self).get_context_data(**kwargs)
         artist = self.request.user.artist
         context['upcoming_events'] = artist.gigs_played.upcoming().select_related('event', 'artist')[:5]
+        context['most_viewed'] = Recording.objects.audio().most_popular().filter(event__performers=artist)[:3]
+        context['most_listened_to'] = Recording.objects.video().most_popular().filter(event__performers=artist)[:3]
         first_login = self.request.user.is_first_login()
         context['first_login'] = first_login
         # don't show intro.js when user reloads the dashboard
