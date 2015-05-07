@@ -8,6 +8,16 @@
   margin-bottom: 28px;
 }
 
+.from-our-archive__section-link {
+  font-size: 16px;
+  @include lato-bold;
+  margin-left: 5px;
+
+  &:hover, &:focus {
+    color: $main-accent-color-darker;
+  }
+}
+
 .homepage-archive-header {
   padding: 40px 0;
   background-color: $main-accent-color;

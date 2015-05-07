@@ -13,10 +13,12 @@
     width: 100%;
     opacity: 0.6;
     @include transition(opacity 0.2s ease-in-out);
+    @include filter(grayscale(100%));
   }
 
   &:hover &__image {
     opacity: 0.3;
+    @include filter(grayscale(0%) blur(3px));
   }
 
   &__info {
@@ -80,30 +82,30 @@
   }
 
   &--gold {
-    border-bottom-color: #AC893B;
+    border-bottom-color: #f39c12;
     &:hover {
-      color: #AC893B;
+      color: #f39c12;
     }
   }
 
   &--red {
-    border-bottom-color: #7F2D13;
+    border-bottom-color: #e74c3c;
     &:hover {
-      color: #7F2D13;
+      color: shade(#e74c3c, 20%);
     }
   }
 
   &--purple {
-    border-bottom-color: #752C8F;
+    border-bottom-color: #9b59b6;
     &:hover {
-      color: #752C8F;
+      color: #9b59b6;
     }
   }
 
   &--darkblue {
-    border-bottom-color: #2E338F;
+    border-bottom-color: #1abc9c;
     &:hover {
-      color: #2E338F;
+      color: shade(#1abc9c, 20%);
     }
   }
 

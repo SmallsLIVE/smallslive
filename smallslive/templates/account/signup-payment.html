@@ -24,7 +24,7 @@
         <section class="signup__payment">
             <form class="payment-form" id="payment-form" method="post" action="{% block form_url %}{% url "accounts_signup_payment" plan_name=plan.id %}{% endblock form_url %}">
             <div class="signup__payment__type">
-                <h3 class="signup__payment__heading">Do you want to pay monthy or annualy?</h3>
+                <h3 class="signup__payment__heading">Do you want to pay monthly or annually?</h3>
                 <p class="signup__payment__text">If you choose to pay for the full year in advance, you get <b>2 months for free</b>. Once you sign up for a plan, you’ll have auto renewal set up meaning that once the plan runs out we’ll automatically bill your credit card for the next month or year (depending on how you paid initially) and extend your plan. You can always deactivate this option in your Account settings and extend your membership manually.</p>
                 <div class="signup__payment__type__selection__container">
                   {% for plan_name, plan_details in form.fields.plan.choices %}

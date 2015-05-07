@@ -20,7 +20,7 @@
                 <h1 class="cto__title">SmallsLIVE Audio/Video Archive</h1>
                 <p class="cto__text">Sign up for access to our comprehensive audio/video archive of past performances.
                 </p>
-                <a href="{% url "static_page" "archive" %}" class="cto__button">Go to the full Archive</a>
+                <a href="{% url "archive" %}" class="cto__button">Go to the full Archive</a>
             </div>
           </section>
       {% else %}
@@ -35,7 +35,7 @@
           </section>
       {% endif %}
       <section class="from-our-archive container">
-        <h1 class="from-our-archive__section-title">New in our Archive</h1>
+        <h1 class="from-our-archive__section-title">New in our Archive <a class="from-our-archive__section-link" href="{% url "most_recent_videos" %}">(Full newest entry lists)</a></h1>
 
         <div class="row">
           {% for recording in new_in_archive %}
@@ -60,7 +60,7 @@
         </div>
       </section>
       <section class="from-our-archive container">
-        <h1 class="from-our-archive__section-title">Most Popular from the Archive</h1>
+        <h1 class="from-our-archive__section-title">Most Popular from the Archive  <a class="from-our-archive__section-link" href="{% url "most_popular_videos" %}">(Full most popular lists)</a></h1>
 
         <div class="row">
           {% for recording in popular_in_archive %}
