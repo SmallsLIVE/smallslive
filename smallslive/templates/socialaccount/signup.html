@@ -20,7 +20,7 @@
           <div class="col-xs-12">
             <div class="form-group {% if form.email.errors %}has-error{% endif %}">
               <label class="control-label" for="id_email">Your email address <span class="required">required</span></label>
-              <input type="email" id="id_email" class="form-control" name="email" placeholder="Your email" value="{{ form.email.value }}">
+              <input type="email" id="id_email" class="form-control" name="email" placeholder="Your email">
               {% if form.email.errors %}
                 {% for error in form.email.errors %}
                   <p class="form-error-text" id="login-error">{{ error }}</p>
