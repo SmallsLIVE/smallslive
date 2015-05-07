@@ -84,7 +84,7 @@
               </div>
             {% if is_leader %}
               <div class="event-media__controls col-xs-12 col-sm-4">
-                  <a href="{{ recording.media_file.get_file_url }}" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
+                  <a href="{{ recording.media_file.get_sd_video_url }}" class="event-media__download"><i class="fa fa-arrow-circle-down"></i><span>Download</span></a>
                     <form action="{% url "artist_dashboard:recording_toggle" pk=recording.id %}" method="post" v-el="form_{{ recording.id }}">
                       <button class="event-media__control {$ published_{{ recording.id }} == 'Published' ? 'make-private' : 'publish' $}"
                          v-on="click: toggleState('{{ recording.id }}')"><span></span></button>
@@ -94,7 +94,7 @@
               </div>
             {% endif %}
               <div class="event-media__player col-xs-12 col-sm-4">
-                  <a href="#" class="event-media__download jwplayer-video" data-target="#videoPlayerModal" data-toggle="modal" data-video="{{ recording.media_file.get_file_url }}"><i class="fa fa-play-circle"></i><span>Watch video</span></a>
+                  <a href="#" class="event-media__download jwplayer-video" data-target="#videoPlayerModal" data-toggle="modal" data-video="{{ recording.media_file.get_sd_video_url }}"><i class="fa fa-play-circle"></i><span>Watch video</span></a>
               </div>
           </li>
         {% endfor %}
