@@ -119,6 +119,15 @@
                         <p class="form-error-text">{{ error  }}</p>
                     {% endfor %}
                   </div>
+                  <div class="account-settings__form__hidden" id="taxpayer_id">
+                    <div class="form-group {% if artist_info_form.taxpayer_id.errors  %}has-error{% endif %}">
+                      {{ artist_info_form.taxpayer_id.label_tag }}
+                      {{ artist_info_form.taxpayer_id }}
+                      {% for error in artist_info_form.taxpayer_id.errors %}
+                          <p class="form-error-text">{{ error  }}</p>
+                      {% endfor %}
+                    </div>
+                  </div>
                   <div class="form-group {% if artist_info_form.phone_1.errors  %}has-error{% endif %}">
                     {{ artist_info_form.phone_1.label_tag }}
                     {{ artist_info_form.phone_1 }}

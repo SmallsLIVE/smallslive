@@ -44,7 +44,7 @@ class ArtistInfoForm(forms.ModelForm):
 
     class Meta:
         fields = ('first_name', 'last_name', 'address_1', 'address_2', 'city', 'zip', 'state', 'country',
-                  'payout_method', 'paypal_email', 'paypal_email_again')
+                  'payout_method', 'paypal_email', 'paypal_email_again', 'taxpayer_id')
         model = User
 
     def __init__(self, *args, **kwargs):
@@ -72,9 +72,14 @@ class ArtistInfoForm(forms.ModelForm):
             state = cleaned_data.get('state')
             if not state:
                 self.add_error('state', 'You must select a valid US state or territory.')
+            taxpayer_id = cleaned_data.get('taxpayer_id')
+            if not taxpayer_id:
+                self.add_error('taxpayer_id', 'You must enter a valid taxpayer ID as a US citizen.')
             self.fields['state'].clean(state)
+            self.fields['taxpayer_id'].clean(state)
         else:
             cleaned_data['state'] = ''
+            cleaned_data['taxpayer_id'] = ''
         return cleaned_data
 
 
