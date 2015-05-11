@@ -18,6 +18,7 @@ class ImageCropWidget(ImageThumbnailWidget, CropWidget):
         if value:
             new_attrs = get_attrs(value, name)
             # fix to make it work with thumbor instead of easy_thumbnails
-            new_attrs['data-thumbnail-url'] = generate_url(value.url, width=300)
+            if hasattr(value, 'url'):
+                new_attrs['data-thumbnail-url'] = generate_url(value.url, width=300)
             attrs.update(new_attrs)
         return super(ImageThumbnailWidget, self).render(name, value, attrs)
