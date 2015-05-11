@@ -9,6 +9,8 @@ urlpatterns = patterns('artist_dashboard.views',
     url(r'^settings/$', 'artist_settings', name='settings'),
     url(r'^my-events/$', 'my_gigs', name='my_gigs'),
     url(r'^legal-agreement/$', 'legal', name='legal'),
+    url(r'^forgot-password/done/$', 'forgot_password_done', name='forgot_password_done'),
+    url(r'^forgot-password/$', 'forgot_password', name='forgot_password'),
     url(r'^login/$', 'login', name='login'),
     url(r'^$', 'dashboard', name='home'),
 )

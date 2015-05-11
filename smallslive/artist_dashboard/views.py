@@ -230,3 +230,16 @@ class DashboardLoginView(allauth_views.LoginView):
         return reverse('artist_dashboard:home')
 
 login = DashboardLoginView.as_view()
+
+
+class ForgotPasswordView(allauth_views.PasswordResetView):
+    success_url = reverse_lazy("artist_dashboard:forgot_password_done")
+    template_name = 'artist_dashboard/forgot_password.html'
+
+forgot_password = ForgotPasswordView.as_view()
+
+
+class ForgotPasswordDoneView(allauth_views.PasswordResetDoneView):
+    template_name = 'artist_dashboard/forgot_password_done.html'
+
+forgot_password_done = ForgotPasswordDoneView.as_view()
