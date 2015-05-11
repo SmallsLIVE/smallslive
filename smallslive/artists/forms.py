@@ -1,4 +1,4 @@
-from crispy_forms.layout import Layout, Div, Field, HTML
+from crispy_forms.layout import Layout, Div, Field
 from django import forms
 from django.db.models import Count
 from django.forms.util import ErrorList
@@ -6,6 +6,7 @@ import floppyforms
 from crispy_forms.helper import FormHelper
 from model_utils import Choices
 from haystack.forms import SearchForm
+
 from utils.widgets import ImageCropWidget
 from .models import Artist
 

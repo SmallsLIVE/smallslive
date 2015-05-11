@@ -21,6 +21,7 @@ class ArtistWithEventsFactory(ArtistFactory):
     @factory.post_generation
     def events(self, create, extracted, **kwargs):
         from events.factories import GigPlayedFactory, PastGigPlayedFactory
+
         if not create:
             # Simple build, do nothing.
             return

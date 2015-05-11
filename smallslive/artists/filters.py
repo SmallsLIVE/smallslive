@@ -1,7 +1,10 @@
 from distutils.util import strtobool
+
 from django.db.models import Q
 import django_filters
+
 from .models import Artist, Instrument
+
 
 BOOLEAN_CHOICES = (('', 'Disabled'), ('true', 'Yes'), ('false', 'No'), )
 

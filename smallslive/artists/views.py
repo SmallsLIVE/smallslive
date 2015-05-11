@@ -1,55 +1,19 @@
 from django.conf import settings
-from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
 from django.core.urlresolvers import reverse
-from django.db.models import Q, Count
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
-from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.detail import DetailView
-from braces.views import LoginRequiredMixin, UserPassesTestMixin, StaffuserRequiredMixin
+from braces.views import StaffuserRequiredMixin
 from django_filters.views import FilterView
-from haystack.inputs import Exact
-from haystack.query import SearchQuerySet, RelatedSearchQuerySet
-from haystack.views import FacetedSearchView, SearchView
-from events.models import Event
+from haystack.query import RelatedSearchQuerySet
+from haystack.views import SearchView
+
 from search.utils import facets_by_model_name
-from .forms import ArtistAddForm, ArtistInviteForm, ArtistSearchForm
+from .forms import ArtistAddForm, ArtistSearchForm
 from .filters import ArtistFilter
 from .models import Artist, Instrument
 
 
-# not used right now, may be needed in the future if artist inviting will work the same way
-# @user_passes_test(lambda u: u.is_superuser)
-# def artist_add(request):
-#     if request.method == 'POST':
-#         artist_add_form = ArtistAddForm(request.POST, request.FILES)
-#         artist_invite_form = ArtistInviteForm(request.POST)
-#         forms = [artist_add_form, artist_invite_form]
-#         if all([form.is_valid() for form in forms]):
-#             print "valid"
-#             print artist_add_form.cleaned_data['photo']
-#             artist = artist_add_form.save()
-#             email = artist_invite_form.cleaned_data.get('email')
-#             invite_type = artist_invite_form.cleaned_data.get('invite_type')
-#             if invite_type == ArtistInviteForm.INVITE_TYPE.standard_invite:
-#                 artist.send_invitation(request, email)
-#             elif invite_type == ArtistInviteForm.INVITE_TYPE.custom_invite:
-#                 artist.send_invitation(request, email, artist_invite_form.cleaned_data.get('invite_text'))
-#             messages.success(request, u"Artist {0} successfully added!".format(artist.full_name()))
-#             return redirect('artist_add')
-#     else:
-#         artist_add_form = ArtistAddForm()
-#         artist_invite_form = ArtistInviteForm()
-#
-#     return render(request, 'artists/artist_add.html', {
-#         'artist_add_form': artist_add_form,
-#         'artist_invite_form': artist_invite_form
-#     })
-
-
-# note - this is here only for Mezzrow compatibility
 class ArtistAddView(StaffuserRequiredMixin, CreateView):
     model = Artist
     form_class = ArtistAddForm
@@ -143,7 +107,7 @@ class ArtistSearchView(SearchView):
         endPage = page.number + adjacent_pages + 1
         if endPage >= paginator.num_pages - 1:
             endPage = paginator.num_pages + 1
-        page_numbers = [n for n in xrange(startPage, endPage) if n > 0 and n <= paginator.num_pages]
+        page_numbers = [n for n in xrange(startPage, endPage) if 0 < n <= paginator.num_pages]
         context.update({
             'page_numbers': page_numbers,
             'show_first': 1 not in page_numbers,
@@ -186,7 +150,7 @@ class InstrumentSearchView(SearchView):
         endPage = page.number + adjacent_pages + 1
         if endPage >= paginator.num_pages - 1:
             endPage = paginator.num_pages + 1
-        page_numbers = [n for n in xrange(startPage, endPage) if n > 0 and n <= paginator.num_pages]
+        page_numbers = [n for n in xrange(startPage, endPage) if 0 < n <= paginator.num_pages]
         context.update({
             'page_numbers': page_numbers,
             'show_first': 1 not in page_numbers,

@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -10,8 +9,9 @@ from image_cropping import ImageRatioField
 from model_utils import Choices
 from sortedm2m.fields import SortedManyToManyField
 from tinymce import models as tinymce_models
+
 from events.models import Event, GigPlayed
-from users.models import SmallsEmailAddress, SmallsUser
+from users.models import SmallsEmailAddress
 
 
 class Artist(models.Model):
