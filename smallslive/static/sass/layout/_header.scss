@@ -43,7 +43,7 @@ header {
     list-style-type: none;
     padding: 0 15px;
     @include flex-grow(0);
-    max-width: 140px;
+    max-width: 130px;
 
     & span {
       white-space: nowrap;
