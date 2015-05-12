@@ -40,21 +40,23 @@
         <div class="row">
           {% for recording in new_in_archive %}
             <div class="col-xs-12 col-sm-6 col-md-4 {% if forloop.counter > 3 %}hidden-xs{% endif %}">
-              <div class="event-object event-object--{% cycle "green" "blue" "yellow" "gold" "red" "purple" %}">
-                {% if recording.event.photo %}
-                  <img class="event-object__image" src="{% thumbor_url recording.event.photo.url|urlencode width=360 height=309 smart=True %}" alt=""/>
-                {% else %}
-                  <img class="event-object__image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                {% endif %}
-                  <div class="event-object__info">
-                    <h1 class="event-object__title">{{ recording.event.title }}</h1>
-                    <ul class="event-object__artists">
-                      {% for performer in recording.event.performers.all %}
-                        <li>{{ performer.full_name }}</li>
-                      {% endfor %}
-                    </ul>
-                  </div>
-              </div>
+              <a href="{{ recording.event.get_absolute_url }}">
+                <div class="event-object event-object--{% cycle "green" "blue" "yellow" "gold" "red" "purple" %}">
+                  {% if recording.event.photo %}
+                    <img class="event-object__image" src="{% thumbor_url recording.event.photo.url|urlencode width=360 height=309 smart=True %}" alt=""/>
+                  {% else %}
+                    <img class="event-object__image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                  {% endif %}
+                    <div class="event-object__info">
+                      <h1 class="event-object__title">{{ recording.event.title }}</h1>
+                      <ul class="event-object__artists">
+                        {% for performer in recording.event.performers.all %}
+                          <li>{{ performer.full_name }}</li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+              </a>
             </div>
           {% endfor %}
         </div>
@@ -65,21 +67,23 @@
         <div class="row">
           {% for recording in popular_in_archive %}
             <div class="col-xs-12 col-sm-6 col-md-4">
-              <div class="event-object event-object--{% cycle "darkblue" "orange" "blue"%}">
-                {% if recording.event.photo %}
-                  <img class="event-object__image" src="{% thumbor_url recording.event.photo.url|urlencode width=360 height=309 smart=True %}" alt=""/>
-                {% else %}
-                  <img class="event-object__image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                {% endif %}
-                  <div class="event-object__info">
-                    <h1 class="event-object__title">{{ recording.event.title }}</h1>
-                    <ul class="event-object__artists">
-                      {% for performer in recording.event.performers.all %}
-                        <li>{{ performer.full_name }}</li>
-                      {% endfor %}
-                    </ul>
-                  </div>
-              </div>
+              <a href="{{ recording.event.get_absolute_url }}">
+                <div class="event-object event-object--{% cycle "darkblue" "orange" "blue"%}">
+                  {% if recording.event.photo %}
+                    <img class="event-object__image" src="{% thumbor_url recording.event.photo.url|urlencode width=360 height=309 smart=True %}" alt=""/>
+                  {% else %}
+                    <img class="event-object__image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                  {% endif %}
+                    <div class="event-object__info">
+                      <h1 class="event-object__title">{{ recording.event.title }}</h1>
+                      <ul class="event-object__artists">
+                        {% for performer in recording.event.performers.all %}
+                          <li>{{ performer.full_name }}</li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                </div>
+              </a>
             </div>
           {% endfor %}
         </div>
