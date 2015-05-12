@@ -43,7 +43,7 @@ header {
     list-style-type: none;
     padding: 0 15px;
     @include flex-grow(0);
-    max-width: 100px;
+    max-width: 140px;
 
     & span {
       white-space: nowrap;
@@ -78,6 +78,7 @@ header {
       padding-right: 0;
       @include flex-grow(1);
       max-width: none !important;
+      @include flex-grow(1);
 
       & i {
         margin-top: 0 !important;

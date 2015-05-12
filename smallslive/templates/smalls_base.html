@@ -98,8 +98,8 @@
             </li>
             <li><a href="/">Home</a></li>
             <li><a href="{% url "live-stream" %}">Live now!</a></li>
-            <li><a href="{% url "schedule" %}">Schedule</a></li>
-            <li><a href="{% url "archive" %}">Archive</a></li>
+            <li><a href="{% url "schedule" %}">Calendar</a></li>
+            <li><a href="{% url "archive" %}">New/Popular</a></li>
             <li><a href="">Store</a></li>
             <li><a href="{% url "about-us" %}">About us</a></li>
             <li><a href="{% url "mission-statement" %}">Mission Statement</a></li>
@@ -175,9 +175,9 @@
           <li class="navigation__item {% block livestream_nav_active %}{% endblock %}"><a href="{% url "live-stream" %}"><i
                   class="navigation__icon fa fa-play-circle"></i><span class="menu-label">Live now!</span></a></li>
           <li class="navigation__item {% block schedule_nav_active %}{% endblock %}"><a href="{% url "schedule" %}"><i
-                  class="navigation__icon fa fa-calendar"></i><span class="menu-label">Schedule</span></a></li>
+                  class="navigation__icon fa fa-calendar"></i><span class="menu-label">Calendar</span></a></li>
           <li class="navigation__item"><a href="{% url "archive" %}"><i
-                  class="navigation__icon fa fa-video-camera"></i><span class="menu-label">Archive</span></a></li>
+                  class="navigation__icon fa fa-video-camera"></i><span class="menu-label">New/Popular</span></a></li>
           <li class="navigation__item"><a href=""><i class="navigation__icon fa fa-shopping-cart"></i><span class="menu-label">Store</span></a></li>
           <li class="navigation__item {% block info_nav_active %}{% endblock %}"><a href="{% url "about-us" %}"><i class="navigation__icon fa fa-info-circle"></i>
            <span class="menu-label">Info</span></a></li>
@@ -185,7 +185,7 @@
               <div class="search">
                   <form action="{% url "artist_search" %}" method="get">
                     <div class="form-group has-feedback" id="header-search-container">
-                      <input id="header--search" type="text" name="q" class="form-control search__input" placeholder="Search our Archive..."/>
+                      <input id="header--search" type="text" name="q" class="form-control search__input" placeholder="Search by artist name, event or instrument..."/>
                       <i class="fa fa-search form-control-feedback"></i>
                     </div>
                   </form>
