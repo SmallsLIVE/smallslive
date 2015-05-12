@@ -21,32 +21,6 @@
                       <a href="{% url "account_signup" %}" class="cto__button">Sign up!</a>
                   </div>
               </div>
-              <div class="home-membership__points">
-                  <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
-                      <i class="home-membership__points__graphic livicon" data-name="albums" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
-                      <div class="home-membership__points__text">
-                          The SmallsLIVE Archive is a library of every show (audio and video) performed at Smalls Jazz Club since September of 2007 and incorporates more than 9000 recordings and over 1000 musicians.   20 shows per week are added to the Archive on an average.
-                      </div>
-                  </div>
-                  <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
-                      <i class="home-membership__points__graphic livicon" data-name="sitemap" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
-                      <div class="home-membership__points__text">
-                          Subscriptions collected from members of SmallsLIVE are pooled and distributed directly to the musicians based on usage.  The more you listen to your favorite musicians or band, the larger the percentage of the revenue share they will receive.
-                      </div>
-                  </div>
-                  <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
-                      <i class="home-membership__points__graphic livicon" data-name="users-add" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
-                      <div class="home-membership__points__text">
-                          You can follow your favorite musicians directly, receive updates as to when they will perform and share this with your friends.  Certain shows will be available for download for your personal usage.
-                      </div>
-                  </div>
-                  <div class="col-xs-12 col-sm-6 col-md-3 home-membership__points__single">
-                      <i class="home-membership__points__graphic livicon" data-name="heart" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
-                      <div class="home-membership__points__text">
-                          By becoming a subscribing member of SmallsLIVE you will have a direct impact on the club and the artists that create the music nightly.
-                      </div>
-                  </div>
-              </div>
           </section>
       {% endif %}
 {% comment %}
@@ -133,38 +107,7 @@
       <section class="video-audio container">
         <div class="row">
           <div class="col-md-6">
-            <h1 class="video-audio__section-title">Most popular videos</h1>
-            <div class="videos">
-              {% for recording in most_popular_video %}
-                <div class="mini-video">
-                    <div class="mini-video__image">
-                      <a href="{{ recording.event.get_absolute_url }}">
-                      {% if recording.event.photo %}
-                        <img src="{% thumbor_url recording.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
-                      {% else %}
-                        <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                      {% endif %}
-                      </a>
-                    </div>
-                    <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ recording.event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ recording.event.get_absolute_url }}">{{ recording.event.title }}</a></h2>
-                      <div class="mini-video-info__stats">
-                          <p>Added:</p>
-                          <p>Plays:</p>
-                      </div>
-                      <div class="mini-video-info__stats">
-                          <p><span>{{ recording.date_added|date:"n/j/Y" }}</span></p>
-                          <p><span>{{ recording.view_count }}</span></p>
-                      </div>
-                    </div>
-                </div>
-              {% endfor %}
-            </div>
-          <a href="{% url "most_popular_videos" %}" class="video-audio__more-link">Full list of 30 most popular videos</a>
-          </div>
-          <div class="col-md-6">
-            <h1 class="video-audio__section-title">Newly added videos</h1>
+            <h1 class="video-audio__section-title">Recently Added Video</h1>
             <div class="videos">
               {% for recording in recent_video %}
                 <div class="mini-video">
@@ -193,7 +136,38 @@
               {% endfor %}
 
             </div>
-            <a href="{% url "most_recent_videos" %}" class="video-audio__more-link">Full list of 30 most popular videos</a>
+            <a href="{% url "most_recent_videos" %}" class="video-audio__more-link">Full list of 30 recently added videos</a>
+          </div>
+          <div class="col-md-6">
+            <h1 class="video-audio__section-title">Recently Added Audio</h1>
+            <div class="videos">
+              {% for recording in recent_audio %}
+                <div class="mini-video">
+                    <div class="mini-video__image">
+                      <a href="{{ recording.event.get_absolute_url }}">
+                      {% if recording.event.photo %}
+                        <img src="{% thumbor_url recording.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      {% else %}
+                        <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                      {% endif %}
+                      </a>
+                    </div>
+                    <div class="mini-video-info">
+                      <p class="mini-video-info__date">{{ recording.event.start|date:"n/j/Y" }}</p>
+                      <h2 class="mini-video-info__title"><a href="{{ recording.event.get_absolute_url }}">{{ recording.event.title }}</a></h2>
+                      <div class="mini-video-info__stats">
+                          <p>Added:</p>
+                          <p>Plays:</p>
+                      </div>
+                      <div class="mini-video-info__stats">
+                          <p><span>{{ recording.date_added|date:"n/j/Y" }}</span></p>
+                          <p><span>{{ recording.view_count }}</span></p>
+                      </div>
+                    </div>
+                </div>
+              {% endfor %}
+            </div>
+            <a href="{% url "most_recent_audio" %}" class="video-audio__more-link">Full list of 30 recently added audio recordings</a>
           </div>
         </div>
       </section>
@@ -340,7 +314,38 @@
       <section class="video-audio container">
         <div class="row">
           <div class="col-md-6">
-            <h1 class="video-audio__section-title">Most popular audio</h1>
+            <h1 class="video-audio__section-title">Most Popular Video</h1>
+            <div class="videos">
+              {% for recording in most_popular_video %}
+                <div class="mini-video">
+                    <div class="mini-video__image">
+                      <a href="{{ recording.event.get_absolute_url }}">
+                      {% if recording.event.photo %}
+                        <img src="{% thumbor_url recording.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      {% else %}
+                        <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                      {% endif %}
+                      </a>
+                    </div>
+                    <div class="mini-video-info">
+                      <p class="mini-video-info__date">{{ recording.event.start|date:"n/j/Y" }}</p>
+                      <h2 class="mini-video-info__title"><a href="{{ recording.event.get_absolute_url }}">{{ recording.event.title }}</a></h2>
+                      <div class="mini-video-info__stats">
+                          <p>Added:</p>
+                          <p>Plays:</p>
+                      </div>
+                      <div class="mini-video-info__stats">
+                          <p><span>{{ recording.date_added|date:"n/j/Y" }}</span></p>
+                          <p><span>{{ recording.view_count }}</span></p>
+                      </div>
+                    </div>
+                </div>
+              {% endfor %}
+            </div>
+          <a href="{% url "most_popular_videos" %}" class="video-audio__more-link">Full list of 30 most popular videos</a>
+          </div>
+          <div class="col-md-6">
+            <h1 class="video-audio__section-title">Most Popular Audio</h1>
             <div class="videos">
               {% for recording in most_popular_audio %}
                 <div class="mini-video">
@@ -370,37 +375,7 @@
             </div>
           <a href="{% url "most_popular_audio" %}" class="video-audio__more-link">Full list of 30 most popular audio recordings</a>
           </div>
-          <div class="col-md-6">
-            <h1 class="video-audio__section-title">Newly added audio</h1>
-            <div class="videos">
-              {% for recording in recent_audio %}
-                <div class="mini-video">
-                    <div class="mini-video__image">
-                      <a href="{{ recording.event.get_absolute_url }}">
-                      {% if recording.event.photo %}
-                        <img src="{% thumbor_url recording.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
-                      {% else %}
-                        <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                      {% endif %}
-                      </a>
-                    </div>
-                    <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ recording.event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ recording.event.get_absolute_url }}">{{ recording.event.title }}</a></h2>
-                      <div class="mini-video-info__stats">
-                          <p>Added:</p>
-                          <p>Plays:</p>
-                      </div>
-                      <div class="mini-video-info__stats">
-                          <p><span>{{ recording.date_added|date:"n/j/Y" }}</span></p>
-                          <p><span>{{ recording.view_count }}</span></p>
-                      </div>
-                    </div>
-                </div>
-              {% endfor %}
-            </div>
-            <a href="{% url "most_recent_audio" %}" class="video-audio__more-link">Full list of 30 newest audio recordings</a>
-          </div>
+
         </div>
       </section>
     </div>
