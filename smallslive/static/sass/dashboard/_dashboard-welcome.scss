@@ -135,6 +135,10 @@
     font-size: 12px;
     text-align: justify;
 
+    &.larger {
+      font-size: 14px;
+    }
+
     & a {
       color: $main-accent-color;
 
