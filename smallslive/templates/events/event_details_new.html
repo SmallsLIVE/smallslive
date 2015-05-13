@@ -1,0 +1,115 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block schedule_nav_active %}active{% endblock %}
+
+{% block extra_head %}
+  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="SmallsLIVE" />
+  <meta property="og:title" content="{{ event.full_title }}" />
+  <meta property="og:description" content="{{ event.listing_date|date:"l, F j, Y" }} {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}" />
+  {% if event.photo %}
+    <meta property="og:image" content="{% thumbor_url event.photo.url|urlencode height=315 width=600 smart=True %}" />
+    <meta itemprop="image" content="{% thumbor_url event.photo.url|urlencode height=315 width=600 smart=True %}">
+  {% endif %}
+  <meta property="fb:app_id" content="{{ facebook_app_id }}" />
+  <meta itemprop="name" content="{{ event.full_title }}">
+  <meta itemprop="description" content="{{ event.listing_date|date:"l, F j, Y" }} {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <section class="event-view__header container">
+            
+        </section>
+        <section class="event-view__details container">
+
+        </section>
+        <section class="event-view__artists container">
+
+        </section>
+        <section class="event-view__tracks container">
+
+        </section>
+        <section class="event-view__store container">
+
+        </section>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+    <script>
+      var playsCountSent = [];
+      function updateViewCount(state) {
+        var id = this.getPlaylistItem(this.getPlaylistIndex()).mediaid;
+        if (playsCountSent.indexOf(id) === -1) {
+          playsCountSent.push(id);
+          $.post('/multimedia/update_media_viewcount/', {
+            recording_id: id,
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+
+          });
+        }
+      }
+
+      {% if user.can_listen_to_audio and event.published_audio %}
+      jwplayer("player-audio").setup({
+        primary: 'html5',
+        playlist: [
+          {% for audio in event.published_audio %}
+            {
+              sources: [{
+                file: "{{ audio.media_file.get_file_url|safe }}"
+              }],
+              title: "{{ event.title }}: Set {{ audio.set_number }}",
+              mediaid: {{ audio.id }}
+            }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ],
+        skin: "{% static "jwplayer-skin/smalls.xml" %}",
+        {% if event.published_audio|length > 1 %}
+        listbar: {
+          position: "bottom",
+          layout: 'basic',
+          size: 90
+        },
+        {% endif %}
+        width: "100%",
+        height: 120
+      });
+      jwplayer('player-audio').onPlay(updateViewCount);
+      {% endif %}
+
+      {% if user.can_watch_video and event.published_videos %}
+      jwplayer("player-video").setup({
+        primary: 'html5',
+        playlist: [
+          {% for video in event.published_videos %}
+            {
+              sources: [{
+                file: "{{ video.media_file.get_sd_video_url|safe }}"
+              }],
+              title: "{{ event.title }}: Set {{ video.set_number }}",
+              mediaid: {{ video.id }}
+            }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ],
+        skin: "{% static "jwplayer-skin/smalls.xml" %}",
+        {% if event.published_videos|length > 1 %}
+        listbar: {
+          position: "bottom",
+          layout: 'basic',
+          size: 90
+        },
+        {% endif %}
+        width: "100%",
+        height: 450
+      });
+      jwplayer('player-video').onPlay(updateViewCount);
+      {% endif %}
+    </script>
+{% endblock %}

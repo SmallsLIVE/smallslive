@@ -75,7 +75,7 @@ event_add = EventAddView.as_view()
 class EventDetailView(DetailView):
     model = Event
     context_object_name = 'event'
-    template_name = 'events/event_detail.html'
+    template_name = 'events/event_details_new.html'
 
     def get_context_data(self, **kwargs):
         context = super(EventDetailView, self).get_context_data(**kwargs)
