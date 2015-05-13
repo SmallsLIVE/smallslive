@@ -17,8 +17,10 @@
 - name: Install Docker
   apt: name=lxc-docker state=latest
 
+# Required by Ansible's "docker" command
+# (fixed docker-py version due to this bug: https://github.com/ansible/ansible/issues/10879)
 - name: Install python Docker client
-  pip: name=docker-py state=latest
+  pip: name=docker-py state=present version=1.1.0
 
 - name: Start elasticsearch
   docker: image=barnybug/elasticsearch ports=9200:9200,9300:9300
