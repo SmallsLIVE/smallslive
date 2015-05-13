@@ -73,7 +73,7 @@
                         <div id="player-video"></div>
                         <div class="event-view__header__video__close">
                             <i class="fa fa-chevron-circle-left event-view__header__video-link__icon"></i>
-                            <p>Close video</p>
+                            <p>Close<br>video</p>
                         </div>
                     </div>
                 {% endif %}
@@ -136,13 +136,229 @@
             </div>
         </section>
         <section class="event-view__artists container">
-
+            <h3>Event artists:</h3>
+            <div class="row">
+            {% for gig_info in event.get_performers %}
+                <div class="mini-artist col-xs-12 col-sm-6">
+                    <div class="mini-artist__image">
+                        {% if gig_info.artist.photo %}
+                            <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% thumbor_url gig_info.artist.photo.url|urlencode height=80 width=80 smart=True %}" alt="{{ gig_info.artist.full_name }} photo"/></a>
+                        {% else %}
+                            <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
+                        {% endif %}
+                    </div>
+                    <div class="mini-artist-info">
+                        <h2 class="mini-artist-info__title"><a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }}</a></h2>
+                        <p class="mini-artist-info__instrument">{{ gig_info.role }}</p>
+                        {% if gig_info.artist.biography %}
+                            <p class="mini-artist-info__bio">{{ gig_info.artist.biography|striptags|truncatewords:28 }}</p>
+                        {% else %}
+                            <p class="mini-artist-info__bio unavailable">No artist biography available</p>
+                        {% endif %}
+                        <a class="mini-artist-info__button" href="{{ gig_info.artist.get_absolute_url }}">Artist profile</a><span class="arrow"></span>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="artist-events__notice">There is no performer data available.</p>
+            {% endfor %}
+            </div>
         </section>
-        <section class="event-view__tracks container">
+        <section class="event-tracks container">
+            <div class="row event-tracks-header vcenter">
+              <div class="col-xs-12">
+                <h1 class="event-tracks-header__title">Buy tracks from this show</h1>
+                <p class="event-tracks-header__text">You can buy indivital tracks from this show as digital downloads, so you
+                  can listen to it in high quality on your devices even when you’re not online.</p>
+              </div>
+            </div>
+            <div class="tracks-table-separator"></div>
+            <div class="row tracks-table">
+                <!--table header-->
+                <div class="col-xs-12 tracks-table__header">
+                    <div class="col-sm-1 col-xs-2 text-center">
+                        <div class="hidden-xs">Preview</div>
+                    </div>
+                    <div class="col-sm-4 col-xs-5">
+                        Title
+                    </div>
+                    <div class="col-sm-3 hidden-xs">
+                        Composer
+                    </div>
+                    <div class="col-sm-1 hidden-xs text-center">
+                        Duration
+                    </div>
+                    <div class="col-sm-1 hidden-xs text-center">
+                        Price
+                    </div>
+                    <div class="col-sm-2 col-xs-5 text-center">
 
+                    </div>
+                </div>
+                <!--end of table header-->
+                <!--single table row-->
+                <div class="col-xs-12 tracks-table__row vcenter">
+                    <div class="col-sm-1 col-xs-2 text-center vcenter">
+                        <a href="#" class="playback-control"><i class="fa fa-pause"></i></a>
+                    </div><!--
+                 --><div class="col-sm-4 col-xs-5 title vcenter">
+                        Wrap your troubles in dreams
+                    </div><!--
+                 --><div class="col-sm-3 hidden-xs composer vcenter">
+                        Ted Koehler
+                    </div><!--
+                 --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                        14:23
+                    </div><!--
+                 --><div class="col-sm-1 hidden-xs text-center price vcenter">
+                        $0.99
+                    </div><!--
+                 --><div class="col-sm-2 col-xs-5 text-center vcenter">
+                        <div class="buy-button-container">
+                            <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                        </div>
+                    </div>
+                </div>
+                <!--end of single table row-->
+                <!--single table row-->
+                <div class="col-xs-12 tracks-table__row vcenter">
+                    <div class="col-sm-1 col-xs-2 text-center vcenter">
+                        <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                    </div><!--
+                 --><div class="col-sm-4 col-xs-5 title vcenter">
+                        All too soon
+                    </div><!--
+                 --><div class="col-sm-3 hidden-xs composer vcenter">
+                        Duke Ellington
+                    </div><!--
+                 --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                        14:23
+                    </div><!--
+                 --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                        $0.99
+                    </div><!--
+                 --><div class="col-sm-2 col-xs-5 text-center vcenter">
+                        <div class="buy-button-container">
+                            <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                        </div>
+                    </div>
+                </div>
+                <!--end of single table row-->
+                <!--single table row-->
+                <div class="col-xs-12 tracks-table__row vcenter">
+                    <div class="col-sm-1 col-xs-2 text-center vcenter">
+                        <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                    </div><!--
+                 --><div class="col-sm-4 col-xs-5 title vcenter">
+                        Lullaby of the leaves
+                    </div><!--
+                 --><div class="col-sm-3 hidden-xs composer vcenter">
+                        Bernice Petkere
+                    </div><!--
+                 --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                        14:23
+                    </div><!--
+                 --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                        $0.99
+                    </div><!--
+                 --><div class="col-sm-2 col-xs-5 text-center vcenter">
+                        <div class="buy-button-container">
+                            <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                        </div>
+                    </div>
+                </div>
+                <!--end of single table row-->
+                <!--single table row-->
+                <div class="col-xs-12 tracks-table__row vcenter">
+                    <div class="col-sm-1 col-xs-2 text-center vcenter">
+                        <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                    </div><!--
+                 --><div class="col-sm-4 col-xs-5 title vcenter">
+                        Bess, you is my woman now
+                    </div><!--
+                 --><div class="col-sm-3 hidden-xs composer vcenter">
+                        George Gershwin
+                    </div><!--
+                 --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                        14:23
+                    </div><!--
+                 --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                        $0.99
+                    </div><!--
+                 --><div class="col-sm-2 col-xs-5 text-center vcenter">
+                        <div class="buy-button-container">
+                            <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                        </div>
+                    </div>
+                </div>
+                <!--end of single table row-->
+                <!--single table row-->
+                <div class="col-xs-12 tracks-table__row vcenter">
+                   <div class="col-sm-1 col-xs-2 text-center vcenter">
+                        <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                    </div><!--
+                 --><div class="col-sm-4 col-xs-5 title vcenter">
+                        Gone with the wind
+                    </div><!--
+                 --><div class="col-sm-3 hidden-xs composer vcenter">
+                        Allie Wrubel
+                    </div><!--
+                 --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                        14:23
+                    </div><!--
+                 --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                        $0.99
+                    </div><!--
+                 --><div class="col-sm-2 col-xs-5 text-center vcenter">
+                        <div class="buy-button-container">
+                            <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                        </div>
+                    </div>
+                </div>
+                <!--end of single table row-->
+                <!--single table row-->
+                <div class="col-xs-12 tracks-table__row vcenter">
+                    <div class="col-sm-1 col-xs-2 text-center vcenter">
+                        <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                    </div><!--
+                 --><div class="col-sm-4 col-xs-5 title vcenter">
+                        I can’t get started
+                    </div><!--
+                 --><div class="col-sm-3 hidden-xs composer vcenter">
+                        Vernon Duke
+                    </div><!--
+                 --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                        14:23
+                    </div><!--
+                 --><div class="col-sm-1 hidden-xs text-center duration vcenter">
+                        $0.99
+                    </div><!--
+                 --><div class="col-sm-2 col-xs-5 text-center vcenter">
+                        <div class="buy-button-container">
+                            <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                        </div>
+                    </div>
+                </div>
+                <!--end of single table row-->
+            </div>
         </section>
-        <section class="event-view__store container">
-
+        <section class="buy-album container">
+            <div class="row">
+              <div class="col-sm-3 col-xs-12 text-center-xs vcenter">
+                <h2 class="buy-album__cto-title">Buy the entire album:</h2>
+                <p class="buy-album__description">Includes lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</p>
+              </div><!--
+           --><div class="col-sm-3 col-xs-12 vcenter">
+                <img src="http://placehold.it/220x195/232323/text=Album%20image" alt="" class="event__img img-responsive"/>
+              </div><!--
+           --><div class="col-sm-6 col-xs-12 text-center-xs vcenter">
+                <h1 class="buy-album__title">The Ari Hoenig Quartet</h1>
+                <p class="buy-album__description">CD / Digital Download</p>
+                <p class="buy-album__price">$15,00</p>
+                <div class="buy-button-container">
+                    <a class="buy-album__button" href="">Buy album</a><span class="arrow"></span>
+                </div>
+              </div>
+            </div>
         </section>
     </div>
 {% endblock content %}

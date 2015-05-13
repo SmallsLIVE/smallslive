@@ -109,9 +109,11 @@ $event-view_header-height: 450px;
       border-radius: 10px;
       @include transition(all 0.3s ease-in-out);
       cursor: pointer;
+      opacity: 0.6;
 
       &:hover, &:focus {
         border-color: rgba(255,255,255,0.7);
+        opacity: 1;
       }
 
       &__icon {
@@ -158,14 +160,15 @@ $event-view_header-height: 450px;
 
       &__close {
         position: absolute;
-        top: 180px;
+        top: 120px;
         z-index: 100;
-        opacity: 0.5;
+        opacity: 0.3;
         @include transition(all 0.3s ease-in-out);
         cursor: pointer;
         color: #fff;
         text-align: center;
-        padding: 20px;
+        padding: 80px 20px;
+        border-right: 1px solid rgba(255,255,255,0.5);
 
         & i {
           font-size: 32px;
@@ -246,6 +249,17 @@ $event-view_header-height: 450px;
         margin: 0 0 15px;
         color: #858585;
       }
+    }
+  }
+
+  &__artists {
+    background-color: #fff;
+    padding: 30px 20px;
+
+    & h3 {
+      @include lato-black;
+      font-size: 18px;
+      margin: 0 0 30px;
     }
   }
 }
