@@ -48,6 +48,13 @@ $(document).ready(function () {
         var indicator = $('.carousel-indicators li');
         $(indicator[currentSlide]).toggleClass("active");
     });
+
+    $('#event-view-header').slick({
+        dots: false,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        arrows: false
+    });
 });
 
 
