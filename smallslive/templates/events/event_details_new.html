@@ -23,7 +23,39 @@
 
     <div class="content-wrapper">
         <section class="event-view__header container">
-            
+            <div class="event-view__header__info">
+                <div class="event-view__header__bg-photo">
+                    {% if event.photo %}
+                        {% if event.photo_crop_box %}
+                            <img src="{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=980 %}" alt="" class="event__img img-responsive"/>
+                        {% else %}
+                            <img src="{% thumbor_url event.photo.url|urlencode height=400 width=980 %}" alt="" class="event__img img-responsive"/>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="col-xs-12 col-sm-8 event-view__header__meta">
+                    <span class="event-view__header__meta__time">{{ event.listing_date|date:"l, F j, Y" }}  |  {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</span>
+                    <h1 class="event-view__header__meta__title">{{ event.title }} {% if request.user.is_staff %}(ID: {{ event.id }}){% endif %}</h1>
+                    <h3 class="event-view__header__meta__subtitle">Subtitle: {{ event.subtitle }}</h3>
+                </div>
+                <div class="col-xs-12 col-sm-4 event-view__header__video-link">
+                    <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
+                    <p>Event video available</p>
+                    <p class="smaller">Upgrade to a premium account to gain access to event video streaming.</p>
+                    <a href="#" class="event-view__header__video-link__cta">Click to upgrade</a>
+                </div>
+                <div class="col-xs-12 event-view__header__track">
+                    <div class="col-xs-12 col-sm-6 col-md-4">
+                        <p>Listen to event audio recording:</p>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-8">
+                        PLAYER
+                    </div>
+                </div>
+            </div>
+            <div class="event-view__header__video">
+
+            </div>
         </section>
         <section class="event-view__details container">
 
