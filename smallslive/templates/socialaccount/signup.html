@@ -13,7 +13,7 @@
           <h1 class="login__title">Finish sign up</h1>
           <p class="login__text--heavy">You are trying to use your
               {{ account.get_provider.name  }} account to signup to
-              {{ site.name }}, but an user with the email {{ form.email.value }} already exists in the system. Please choose a different email address:</p>
+              {{ site.name }}, but a user with the email {{ form.email.value }} already exists in the system. Please choose a different email address:</p>
         </div>
         <form class="signup" role="form" method="post" action="{% url 'socialaccount_signup' %}">
           {% csrf_token %}
