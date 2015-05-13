@@ -42,6 +42,33 @@ class TestArtist:
         another_artist = artist_factory.build()
         assert another_artist.full_name() == u'First#2 Last#2'
 
+    def test_upcoming_events(self, artist_with_events_factory):
+        artist = artist_with_events_factory.create()
+        assert artist.events.count() == 5
+        assert artist.upcoming_events().count() == 3
+        assert "A test event 1" in artist.upcoming_events().values_list('title', flat=True)
+        assert "A test event 2" in artist.upcoming_events().values_list('title', flat=True)
+        assert "A test event 3" in artist.upcoming_events().values_list('title', flat=True)
+
+    def test_past_events(self, artist_with_events_factory):
+        artist = artist_with_events_factory.create()
+        assert artist.events.count() == 5
+        assert artist.past_events().count() == 2
+        assert "A test event 4" in artist.past_events().values_list('title', flat=True)
+        assert "A test event 5" in artist.past_events().values_list('title', flat=True)
+
+    def test_get_instruments(self, artist_factory):
+        artist = artist_factory.create()
+        assert artist.instruments.count() == 3
+        assert artist.get_instruments() == "Trumpet\nBass\nPiano"
+
+    def test_get_main_instrument_name(self, artist_factory):
+        artist = artist_factory.create()
+        assert artist.get_main_instrument_name() == "Trumpet"
+
+        artist.instruments.all().delete()
+        assert artist.get_main_instrument_name() == ""
+
     def test_send_invitation(self, artist_factory, django_user_model, rf):
         # artist without a User model assigned
         request = rf.get('artist_add')
@@ -62,23 +89,3 @@ class TestArtist:
         assert SmallsEmailAddress.objects.filter(email=email, user=another_artist.user).count() == 1
         assert len(mail.outbox) == 2
         assert "Confirm E-mail Address" in mail.outbox[1].subject
-
-    def test_get_instruments(self, artist_factory):
-        artist = artist_factory.create()
-        assert artist.instruments.count() == 3
-        assert artist.get_instruments() == "Trumpet\nBass\nPiano"
-
-    def test_upcoming_evenst(self, artist_with_events_factory):
-        artist = artist_with_events_factory.create()
-        assert artist.events.count() == 5
-        assert artist.upcoming_events().count() == 3
-        assert "A test event 1" in artist.upcoming_events().values_list('title', flat=True)
-        assert "A test event 2" in artist.upcoming_events().values_list('title', flat=True)
-        assert "A test event 3" in artist.upcoming_events().values_list('title', flat=True)
-
-    def test_past_events(self, artist_with_events_factory):
-        artist = artist_with_events_factory.create()
-        assert artist.events.count() == 5
-        assert artist.past_events().count() == 2
-        assert "A test event 4" in artist.past_events().values_list('title', flat=True)
-        assert "A test event 5" in artist.past_events().values_list('title', flat=True)

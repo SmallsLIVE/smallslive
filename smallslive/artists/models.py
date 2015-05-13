@@ -55,9 +55,6 @@ class Artist(models.Model):
         else:
             return ""
 
-    def events_count(self):
-        return self.events.count()
-
     def media_count(self):
         return self.events.annotate(cnt=Count('sets')).aggregate(count=Sum('cnt'))['count']
 
