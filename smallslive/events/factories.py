@@ -12,6 +12,10 @@ class EventFactory(factory.django.DjangoModelFactory):
     end = timezone.datetime(2016, 12, 10, 22, 30, 0, tzinfo=timezone.get_current_timezone())
     state = 'Published'
 
+    @classmethod
+    def _setup_next_sequence(self):
+        return 1
+
 
 class PastEventFactory(EventFactory):
     start = timezone.datetime(2000, 12, 10, 20, 30, 0, tzinfo=timezone.get_current_timezone())
@@ -25,6 +29,10 @@ class GigPlayedFactory(factory.django.DjangoModelFactory):
     artist = factory.SubFactory(ArtistFactory)
     role = factory.SubFactory(InstrumentFactory)
     event = factory.SubFactory(EventFactory)
+
+    @classmethod
+    def _setup_next_sequence(self):
+        return 1
 
 
 class PastGigPlayedFactory(GigPlayedFactory):

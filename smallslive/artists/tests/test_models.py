@@ -30,10 +30,10 @@ def reset_model_counters():
 class TestArtist:
     def test_get_absolute_url(self, artist_factory):
         artist = artist_factory.create()
-        assert artist.get_absolute_url() == u'/artists/1/'
+        assert artist.get_absolute_url() == u'/artists/1-first1-last1/'
 
         another_artist = artist_factory.create()
-        assert another_artist.get_absolute_url() == u'/artists/2/'
+        assert another_artist.get_absolute_url() == u'/artists/2-first2-last2/'
 
     def test_full_name(self, artist_factory):
         artist = artist_factory.build()
@@ -46,7 +46,7 @@ class TestArtist:
         # artist without a User model assigned
         request = rf.get('artist_add')
         email = "test@example.com"
-        artist = artist_factory.build()
+        artist = artist_factory.create()
         artist.send_invitation(request, email=email)
         assert artist.user.id == 1
         assert SmallsEmailAddress.objects.filter(email=email, user=artist.user).count() == 1
@@ -56,7 +56,7 @@ class TestArtist:
         # User already exists in the DB
         email = "test2@example.com"
         django_user_model.objects.create_user(email=email)
-        another_artist = artist_factory.build()
+        another_artist = artist_factory.create()
         another_artist.send_invitation(request, email=email)
         assert another_artist.user.id == 2
         assert SmallsEmailAddress.objects.filter(email=email, user=another_artist.user).count() == 1

@@ -16,6 +16,10 @@ class ArtistFactory(factory.django.DjangoModelFactory):
 
         self.instruments = InstrumentFactory.create_batch(3)
 
+    @classmethod
+    def _setup_next_sequence(self):
+        return 1
+
 
 class ArtistWithEventsFactory(ArtistFactory):
     @factory.post_generation

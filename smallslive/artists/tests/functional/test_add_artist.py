@@ -6,16 +6,17 @@ from pytest_bdd import given, when, then
 from users.models import SmallsEmailAddress
 
 scenario = partial(pytest_bdd.scenario, 'add_artist.feature')
+skip = pytest.mark.skipif(True, reason="skipping for now")
 pytestmark = pytest.mark.django_db
 
 
-@pytest.mark.xfail
+@skip
 @scenario('Submitting an empty artist form')
 def test_submit_empty_form(transactional_db):
     pass
 
 
-@pytest.mark.xfail
+@skip
 @scenario('Submitting a valid artist')
 def test_add_valid_artist(transactional_db):
     pass

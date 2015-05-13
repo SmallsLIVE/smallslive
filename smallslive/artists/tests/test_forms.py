@@ -42,7 +42,7 @@ class TestArtistAddForm:
         artist_add_form = artist_add_form()
 
         form_output = artist_add_form.as_p()
-        assert "Photo (portrait-style JPG w/ instrument preferred)" in form_output
+        assert "Photo (landscape-style JPG w/ instrument preferred)" in form_output
         assert "<form" not in form_output
 
     def test_form_accepts_valid_input(self, artist_add_form, correct_request):
