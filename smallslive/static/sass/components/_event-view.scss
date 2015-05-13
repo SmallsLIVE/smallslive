@@ -1,4 +1,4 @@
-$event-view_header-height: 400px;
+$event-view_header-height: 450px;
 
 .event-view {
 
@@ -100,6 +100,7 @@ $event-view_header-height: 400px;
 
     &__video-link {
       text-align: center;
+      display: block;
       color: #fff;
       max-width: 200px;
       margin: 0 auto;
@@ -107,6 +108,7 @@ $event-view_header-height: 400px;
       padding: 20px;
       border-radius: 10px;
       @include transition(all 0.3s ease-in-out);
+      cursor: pointer;
 
       &:hover, &:focus {
         border-color: rgba(255,255,255,0.7);
@@ -147,7 +149,6 @@ $event-view_header-height: 400px;
         }
       }
 
-
       &__container {
         padding: 20px 40px;
       }
@@ -155,6 +156,31 @@ $event-view_header-height: 400px;
 
     &__video {
 
+      &__close {
+        position: absolute;
+        top: 180px;
+        z-index: 100;
+        opacity: 0.5;
+        @include transition(all 0.3s ease-in-out);
+        cursor: pointer;
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+
+        & i {
+          font-size: 32px;
+          margin-bottom: 10px;
+        }
+
+        & p {
+          font-size: 14px;
+          @include lato;
+        }
+
+        &:hover, &:focus {
+          opacity: 1;
+        }
+      }
     }
   }
 

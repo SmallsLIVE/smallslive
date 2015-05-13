@@ -55,6 +55,16 @@ $(document).ready(function () {
         slidesToScroll: 1,
         arrows: false
     });
+
+    $(".event-view__header__video-link").on('click', function(){
+        var slider = $( '#event-view-header' );
+        slider[0].slick.slickGoTo(1);
+    });
+
+    $(".event-view__header__video__close").on('click', function(){
+        var slider = $( '#event-view-header' );
+        slider[0].slick.slickGoTo(0);
+    });
 });
 
 
