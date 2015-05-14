@@ -38,6 +38,16 @@
                         <span class="event-view__header__meta__time">{{ event.listing_date|date:"l, F j, Y" }}<span>|</span>{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</span>
                         <h1 class="event-view__header__meta__title">{{ event.title }} {% if request.user.is_staff %}(ID: {{ event.id }}){% endif %}</h1>
                         <h3 class="event-view__header__meta__subtitle">{{ event.subtitle }}</h3>
+                        <div class="event-view__share-social">
+                            <h3 class="event-view__share-social__title">Share this event on:</h3>
+                            <a href="https://www.facebook.com/dialog/share?app_id={{facebook_app_id}}&display=popup&href={{ request.build_absolute_uri|urlencode }}&redirect_uri={{ request.build_absolute_uri|urlencode }}"
+                             class="btn social-btn social-btn--facebook" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fa fa-facebook"></i></a>
+                            <a href="https://twitter.com/share?url={{ request.build_absolute_uri|urlencode }}&text={{ "Check out "|urlencode }}{{ event.title }}{{ " show on SmallsLIVE:"|urlencode }}&hashtags=SmallsLIVE"
+                              class="btn social-btn social-btn--twitter" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fa fa-twitter"></i></a>
+                            <a href="https://plus.google.com/share?url={{ request.build_absolute_uri|urlencode }}" class="btn social-btn social-btn--google"
+                           onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i
+                                class="fa fa-google-plus"></i></a>
+                        </div>
                     </div>
                     <div class="col-xs-12 col-sm-4">
                         {% if event.published_videos %}
@@ -120,21 +130,10 @@
                 {% endif %}
             {% endif %}
         </section>
+        {% if event.description or user.is_superuser %}
         <section class="event-view__details container">
             <div class="row">
-                <div class="col-xs-12 col-md-4 col-md-push-8 event-view__details__share">
-                    <div class="share-social">
-                        <h3>Share this event on:</h3>
-                        <a href="https://www.facebook.com/dialog/share?app_id={{facebook_app_id}}&display=popup&href={{ request.build_absolute_uri|urlencode }}&redirect_uri={{ request.build_absolute_uri|urlencode }}"
-                         class="btn social-btn social-btn--facebook" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fa fa-facebook"></i></a>
-                        <a href="https://twitter.com/share?url={{ request.build_absolute_uri|urlencode }}&text={{ "Check out "|urlencode }}{{ event.title }}{{ " show on SmallsLIVE:"|urlencode }}&hashtags=SmallsLIVE"
-                          class="btn social-btn social-btn--twitter" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fa fa-twitter"></i></a>
-                        <a href="https://plus.google.com/share?url={{ request.build_absolute_uri|urlencode }}" class="btn social-btn social-btn--google"
-                       onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i
-                            class="fa fa-google-plus"></i></a>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-md-8 col-md-pull-4 event-view__details__description">
+                <div class="col-xs-12 event-view__details__description">
                     {% if event.description %}
                         <h3>Event description:</h3>
                         <p>{{ event.description|safe }}</p>
@@ -151,6 +150,7 @@
                 </div>
             </div>
         </section>
+        {% endif %}
         <section class="event-view__artists container">
             <h3>Event artists:</h3>
             <div class="row event-view__artists__container">
