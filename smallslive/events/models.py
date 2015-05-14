@@ -143,9 +143,16 @@ class Event(TimeStampedModel):
     @property
     def is_past(self):
         """
-        Checks if the event happened in the past.
+        Checks if the event happened in the past and already ended.
         """
         return self.end < timezone.now()
+
+    @property
+    def is_future(self):
+        """
+        Checks if the event will happen in the future and hasn't yet started.
+        """
+        return self.start > timezone.now()
 
     def get_performers(self):
         return self.artists_gig_info.select_related('artist', 'role')
