@@ -210,7 +210,6 @@ $event-view_header-height: 450px;
         background-color: #000;
         @include display(flex);
         @include align-items(center);
-        @include flex-wrap(wrap);
       }
 
       &__close {
@@ -503,6 +502,7 @@ $event-view_header-height: 450px;
 
         &__container {
           padding: 0;
+          @include flex-wrap(wrap);
         }
 
         &__close {
