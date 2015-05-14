@@ -280,7 +280,7 @@ class Recording(models.Model):
     STATUS = Choices('Published', 'Hidden')
     FILTER_STATUS = STATUS + ['None']
 
-    media_file = models.ForeignKey('multimedia.MediaFile', related_name='recording')
+    media_file = models.OneToOneField('multimedia.MediaFile', related_name='recording')
     event = models.ForeignKey(Event, related_name='recordings')
     title = models.CharField(max_length=150, blank=True)
     set_number = models.IntegerField(default=1)
