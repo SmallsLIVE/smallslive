@@ -29,7 +29,7 @@
                         {% if event.photo_crop_box %}
                             <img src="{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=980 %}" alt="" class="event__img img-responsive"/>
                         {% else %}
-                            <img src="{% thumbor_url event.photo.url|urlencode height=400 width=980 %}" alt="" class="event__img img-responsive"/>
+                            <img src="{% thumbor_url event.photo.url|urlencode height=640 width=980 %}" alt="" class="event__img img-responsive"/>
                         {% endif %}
                     {% endif %}
                 </div>
@@ -142,14 +142,14 @@
                     {% endif %}
                     {% if request.user.is_staff %}
                         <div class="event-view__details__admin">
-                            <span class="event-view__details__admin__id">
-                                ID: {{ event.id }}
-                            </span>
                             <a href="{% url "event_edit" pk=event.id slug=event.slug %}" class="event-view__details__admin__button button-edit">edit event</a>
                             <form action="{% url "event_clone" pk=event.id slug=event.slug %}" method="post">
                                 {% csrf_token %}
                                 <input class="event-view__details__admin__button button-clone" type="submit" value="Clone">
                             </form>
+                            <span class="event-view__details__admin__id">
+                                ID: {{ event.id }}
+                            </span>
                         </div>
                     {% endif %}
                 </div>
@@ -436,12 +436,6 @@
           {% endfor %}
         ],
         skin: "{% static "jwplayer-skin/smalls.xml" %}",
-        {% if event.published_videos|length > 1 %}
-        listbar: {
-          position: "right",
-          size: 260
-        },
-        {% endif %}
         width: "100%",
         height: 450
       });
