@@ -39,7 +39,7 @@
                         <h1 class="event-view__header__meta__title">{{ event.title }} {% if request.user.is_staff %}(ID: {{ event.id }}){% endif %}</h1>
                         <h3 class="event-view__header__meta__subtitle">Subtitle: {{ event.subtitle }}</h3>
                     </div>
-                    <div class="col-xs-12 col-sm-4 event-view__header__video-link__container">
+                    <div class="col-xs-12 col-sm-4 event-view__header__video-link__container {% if event.is_future %}no-track{% endif %}">
                         {% if event.published_videos %}
                             {% if user.can_watch_video %}
                                 <span data-slickPosition="1" class="event-view__header__video-link">
@@ -47,24 +47,59 @@
                                     <p>Play event video</p>
                                 </span>
                             {% else %}
-                                <div class="event-view__header__video-link">
-                                    <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                                    <p>Event video available</p>
-                                    <p class="smaller">Upgrade to a premium account to gain access to event video streaming.</p>
-                                    <a href="#" class="event-view__header__video-link__cta">Click to upgrade</a>
+                                {% if user.can_listen_to_audio %}
+                                    <div class="event-view__header__video-link">
+                                        <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
+                                        <p>Event video available</p>
+                                        <p class="smaller">Upgrade to a premium account to gain access to event video streaming.</p>
+                                        <a href="{% url "subscription_settings" %}" class="event-view__header__video-link__cta">Click to upgrade</a>
+                                    </div>
+                                {% else %}
+                                    <div class="event-view__header__video-link">
+                                        <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
+                                        <p>Event video available</p>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    {% if not event.is_future %}
+                        {% if event.published_audio %}
+                            {% if user.is_authenticated %}
+                                {% if user.can_listen_to_audio %}
+                                    <div class="col-xs-12 event-view__header__track">
+                                        <div class="col-xs-12 col-sm-6 col-md-6 event-view__header__track__info">
+                                            {% if event.published__video %}
+                                                <p>Listen to event audio recording:</p>
+                                            {% else %}
+                                                <p>No video available. Listen to event audio recording:</p>
+                                            {% endif %}
+                                        </div>
+                                        <div id="player-audio" class="col-xs-12 col-sm-6 col-md-6 event-view__header__track__player">
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="col-xs-12 event-view__header__track">
+                                        <div class="col-xs-12 event-view__header__track__info">
+                                            <p class="not-allowed">Event audio (and video) are available only to users with basic (and premium) memberships. <a href="{% url "subscription_settings" %}" class="event-view__header__track__info__cta">Click to upgrade</a></p>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="col-xs-12 event-view__header__track">
+                                    <div class="col-xs-12 event-view__header__track__info">
+                                        <p class="not-allowed">Sign up to gain access to our vast archive of event audio and video recordings! <a href="{% url "signup_landing" %}" class="event-view__header__track__info__cta">Sign up!</a></p>
+                                    </div>
                                 </div>
                             {% endif %}
                         {% else %}
-
+                            <div class="col-xs-12 event-view__header__track">
+                                <div class="col-xs-12 event-view__header__track__info">
+                                    <p class="no-media">No event audio recording available.</p>
+                                </div>
+                            </div>
                         {% endif %}
-                    </div>
-                    <div class="col-xs-12 event-view__header__track">
-                        <div class="col-xs-12 col-sm-6 col-md-4 event-view__header__track__info">
-                            <p>Listen to event audio recording:</p>
-                        </div>
-                        <div id="player-audio" class="col-xs-12 col-sm-6 col-md-8 event-view__header__track__player">
-                        </div>
-                    </div>
+                    {% endif %}
                 </div>
             </div>
             {% if user.can_watch_video %}
@@ -78,31 +113,6 @@
                     </div>
                 {% endif %}
             {% endif %}
-
-            <div class="event-view__header__video">
-            {% if user.can_watch_video %}
-              {% if event.published_videos %}
-                <section class="container">
-                  <div class="event-video row">
-                    <div id="player-video"></div>
-                    <div class="event-video__stats col-xs-12">
-                      <p>54:32 min // 1982 plays</p>
-                    </div>
-                  </div>
-                </section>
-              {% else %}
-                <section class="cto cto--video-not-available container vertical-align-parent">
-                  <div class="vertical-align-child">
-                    <h1 class="cto__title">Video not available (yet)</h1>
-
-                    <p class="cto__text">The video for this performance can be made available if you request it.<br/>
-                      We had 181 request for this video so far.</p>
-                    <a href="" class="cto__button">Request video</a>
-                  </div>
-                </section>
-              {% endif %}
-            {% endif %}
-            </div>
         </section>
         <section class="event-view__details container">
             <div class="row">

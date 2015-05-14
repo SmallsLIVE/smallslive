@@ -37,6 +37,10 @@ $event-view_header-height: 450px;
         padding-bottom: 60px;
         @include display(flex);
         @include align-items(center);
+
+        &.no-track {
+          padding-bottom: 0;
+        }
       }
     }
 
@@ -89,6 +93,37 @@ $event-view_header-height: 450px;
           font-size: 16px;
           color: #fff;
           margin: 0;
+          
+          &.no-media {
+            @include lato-italic;
+            opacity: 0.7;
+          }
+
+          &.not-allowed {
+            font-size: 14px;
+            opacity: 0.8;
+            @include transition(all 0.3s ease-in-out);
+            
+            &:hover, &:focus {
+              opacity: 1;
+            }
+          }
+        }
+
+        &__cta {
+          @include lato-bold;
+          margin-left: 10px;
+          padding: 6px 10px;
+          border: 2px solid rgba(255,255,255,0.5);
+          border-radius: 4px;
+          color: #fff;
+          @include transition(all 0.3s ease-in-out);
+
+          &:hover, &:focus {
+            background-color: rgba(255,255,255,0.6);
+            border-color: rgba(255,255,255,0.7);
+            color: #000;
+          }
         }
       }
 
@@ -109,7 +144,7 @@ $event-view_header-height: 450px;
       border-radius: 10px;
       @include transition(all 0.3s ease-in-out);
       cursor: pointer;
-      opacity: 0.6;
+      opacity: 0.8;
 
       &:hover, &:focus {
         border-color: rgba(255,255,255,0.7);
