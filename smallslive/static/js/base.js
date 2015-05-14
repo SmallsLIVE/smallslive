@@ -54,7 +54,8 @@ $(document).ready(function () {
         slidesToShow: 1,
         slidesToScroll: 1,
         arrows: false,
-        draggable: false
+        draggable: false,
+        swipe: false
     });
 
     $(".event-view__header__video-link").on('click', function(){

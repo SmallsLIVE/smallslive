@@ -433,8 +433,16 @@ $event-view_header-height: 450px;
         width: auto;
       }
 
+      &__info {
+
+        &__container {
+          @include align-items(flex-start);
+        }
+      }
+
       &__meta {
         padding: 20px 30px;
+        @include flex-grow(0);
 
         &__time {
           font-size: 16px;
@@ -455,24 +463,40 @@ $event-view_header-height: 450px;
           display: inline-block;
           font-size: 48px;
           float: left;
-          margin: 0 10px 0 0;
+          margin: 0;
         }
 
         &__container {
           border: none;
-          padding: 0;
+          padding: 0 0 80px;
+          @include align-self(flex-start);
+          @include display(flex);
         }
 
         & p {
           display: inline-block;
           float: left;
           text-align: left;
+          margin-left: 20px;
         }
       }
 
       &__track {
-        position: relative;
-        top: 20px;
+        position: absolute;
+        bottom: 30px;
+        left: 0;
+
+        &__info {
+          background: none;
+          margin-bottom: 10px;
+          @include flex-shrink(1);
+
+          &__cta {
+            display: block;
+            @include flex-shrink(0);
+            text-align: center;
+          }
+        }
       }
 
       &__video {

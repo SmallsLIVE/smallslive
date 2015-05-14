@@ -97,14 +97,14 @@
                                 {% else %}
                                     <div class="col-xs-12 event-view__header__track">
                                         <div class="col-xs-12 event-view__header__track__info">
-                                            <p class="not-allowed">Event audio (and video) are available only to users with basic (and premium) memberships. <a href="{% url "subscription_settings" %}" class="event-view__header__track__info__cta">Click to upgrade</a></p>
+                                            <p class="not-allowed">Event audio (and video) are available only to users with basic (and premium) memberships.</p><a href="{% url "subscription_settings" %}" class="event-view__header__track__info__cta">Click to upgrade</a>
                                         </div>
                                     </div>
                                 {% endif %}
                             {% else %}
                                 <div class="col-xs-12 event-view__header__track">
                                     <div class="col-xs-12 event-view__header__track__info">
-                                        <p class="not-allowed">Sign up to gain access to our vast archive of event audio and video recordings! <a href="{% url "signup_landing" %}" class="event-view__header__track__info__cta">Sign up!</a></p>
+                                        <p class="not-allowed">Sign up to gain access to our vast archive of event audio and video recordings!</p><a href="{% url "signup_landing" %}" class="event-view__header__track__info__cta">Sign up!</a>
                                     </div>
                                 </div>
                             {% endif %}
