@@ -307,5 +307,30 @@ $event-view_header-height: 450px;
       font-size: 18px;
       margin: 0 0 30px;
     }
+
+    &__container {
+      @include display(flex);
+      @include flex-wrap(wrap);
+
+      &:before, &:after {
+        display: none;
+      }
+    }
+
+    & .mini-artist {
+      margin-bottom: 10px;
+
+      &-info__bio {
+        min-height: 58px;
+      }
+
+      &:nth-child(even) {
+        padding-left: 20px;
+      }
+
+      &:nth-child(odd) {
+        padding-right: 20px;
+      }
+    }
   }
 }

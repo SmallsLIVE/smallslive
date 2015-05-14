@@ -37,7 +37,7 @@
                     <div class="col-xs-12 col-sm-8 event-view__header__meta">
                         <span class="event-view__header__meta__time">{{ event.listing_date|date:"l, F j, Y" }}<span>|</span>{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</span>
                         <h1 class="event-view__header__meta__title">{{ event.title }} {% if request.user.is_staff %}(ID: {{ event.id }}){% endif %}</h1>
-                        <h3 class="event-view__header__meta__subtitle">Subtitle: {{ event.subtitle }}</h3>
+                        <h3 class="event-view__header__meta__subtitle">{{ event.subtitle }}</h3>
                     </div>
                     <div class="col-xs-12 col-sm-4">
                         {% if event.published_videos %}
@@ -153,7 +153,7 @@
         </section>
         <section class="event-view__artists container">
             <h3>Event artists:</h3>
-            <div class="row">
+            <div class="row event-view__artists__container">
             {% for gig_info in event.get_performers %}
                 <div class="mini-artist col-xs-12 col-sm-6">
                     <div class="mini-artist__image">

@@ -18,6 +18,7 @@
     font-size: 18px;
     border-bottom: 1px #DDD solid;
     width: 90%;
+    padding: 0 10px;
 
     a {
       padding: 20px 0;
@@ -36,7 +37,7 @@
 }
 
 .static-content{
-  padding: 40px 20px;
+  padding: 40px 30px;
   min-height: 350px;
 
   &__image {
@@ -79,7 +80,7 @@
 }
 
 .static-sidebar {
-  padding: 40px 20px 40px 0;
+  padding: 40px 30px 40px 0;
 
   &__image {
     width: 100%;
@@ -90,7 +91,7 @@
 .map-wrapper {
   margin-top: 100px;
   margin-bottom: 40px;
-  margin-right: 10px;
+  margin-right: 20px;
   @include filter(grayscale(60%));
   position: relative;
   padding-bottom: 75%; // This is the aspect ratio
