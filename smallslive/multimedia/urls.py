@@ -2,6 +2,8 @@ from django.conf.urls import patterns, include, url
 
 
 urlpatterns = patterns('multimedia.views',
+    url(r"^media-redirect/(?P<recording_id>\d+)/$", 'media_redirect',
+        name="media_redirect"),
     url(r"^update_media_viewcount/$", 'update_media_viewcount',
         name="update_media_viewcount"),
     url(r"^most-popular-videos/$", 'most_popular_videos',

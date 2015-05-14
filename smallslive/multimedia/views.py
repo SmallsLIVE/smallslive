@@ -1,6 +1,7 @@
 import json
 from django.db.models import F
 from django.http import Http404, HttpResponse
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView
 from events.models import Recording
 
@@ -81,3 +82,13 @@ class MostRecentAudio(ListView):
         return context
 
 most_recent_audio = MostRecentAudio.as_view()
+
+
+def media_redirect(request, recording_id):
+    recording = get_object_or_404(Recording, id=recording_id)
+    media_file = recording.media_file
+    if media_file.media_type == "audio":
+        url = media_file.get_file_url()
+    else:
+        url = media_file.get_sd_video_url()
+    return redirect(url)

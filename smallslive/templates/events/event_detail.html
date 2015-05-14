@@ -354,9 +354,10 @@
           {% for audio in event.published_audio %}
             {
               sources: [{
-                file: "{{ audio.media_file.get_file_url|safe }}"
+                file: "{{ audio.get_redirect_url|safe }}",
+                type: "mp3"
               }],
-              title: "{{ event.title }}: Set {{ audio.set_number }}",
+              title: "{{ event.title }}: Audio set {{ audio.set_number }}",
               mediaid: {{ audio.id }}
             }{% if not forloop.last %},{% endif %}
           {% endfor %}
@@ -379,15 +380,16 @@
       jwplayer("player-video").setup({
         primary: 'html5',
         playlist: [
-          {% for video in event.published_videos %}
+          {% for video in event.published_videos %} {% if video.media_file.sd_video_file %}
             {
               sources: [{
-                file: "{{ video.media_file.get_sd_video_url|safe }}"
+                file: "{{ video.get_redirect_url|safe }}",
+                type: "mp4"
               }],
-              title: "{{ event.title }}: Set {{ video.set_number }}",
+              title: "{{ event.title }}: Video set {{ video.set_number }}",
               mediaid: {{ video.id }}
             }{% if not forloop.last %},{% endif %}
-          {% endfor %}
+            {% endif %}{% endfor %}
         ],
         skin: "{% static "jwplayer-skin/smalls.xml" %}",
         {% if event.published_videos|length > 1 %}
