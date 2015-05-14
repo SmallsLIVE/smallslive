@@ -90,7 +90,7 @@ $event-view_header-height: 450px;
 
         & p {
           @include lato;
-          font-size: 16px;
+          font-size: 14px;
           color: #fff;
           margin: 0;
           
@@ -204,10 +204,15 @@ $event-view_header-height: 450px;
 
     &__video {
 
+      &__container {
+        padding: 0;
+        background-color: #000;
+        @include display(flex);
+        @include align-items(center);
+      }
+
       &__close {
-        position: absolute;
-        top: 120px;
-        z-index: 100;
+        width: 260px;
         opacity: 0.3;
         @include transition(all 0.3s ease-in-out);
         cursor: pointer;
@@ -255,7 +260,22 @@ $event-view_header-height: 450px;
     }
 
     &__admin {
-      margin-top: 35px;
+      margin: 0 0 20px;
+      float: left;
+      width: 100%;
+      @include display(flex);
+      @include align-items(center);
+      @include flex-wrap(wrap);
+
+      &__id {
+        display: inline-block;
+        float: left;
+        margin-right: 20px;
+        font-size: 16px;
+        @include lato-black;
+        padding: 8px 15px;
+        border: 1px solid rgba(0,0,0,0.4);
+      }
 
       &__button {
         display: inline-block;

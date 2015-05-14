@@ -53,7 +53,8 @@ $(document).ready(function () {
         dots: false,
         slidesToShow: 1,
         slidesToScroll: 1,
-        arrows: false
+        arrows: false,
+        draggable: false
     });
 
     $(".event-view__header__video-link").on('click', function(){
