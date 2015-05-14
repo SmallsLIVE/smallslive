@@ -55,16 +55,11 @@ class Artist(models.Model):
         else:
             return ""
 
+    def events_count(self):
+        return self.events.count()
+
     def media_count(self):
-        return self.events.annotate(cnt=Count('sets')).aggregate(count=Sum('cnt'))['count']
-
-    def media_count_as_leader(self):
-        return self.gigs_played.filter(is_leader=True).annotate(
-            cnt=Count('event__sets')).aggregate(count=Sum('cnt'))['count']
-
-    def media_count_as_sideman(self):
-        return self.gigs_played.filter(is_leader=False).annotate(
-            cnt=Count('event__sets')).aggregate(count=Sum('cnt'))['count']
+        return self.events.annotate(cnt=Count('recordings')).aggregate(count=Sum('cnt'))['count']
 
     def send_invitation(self, request, email, invite_text=None):
         User = get_user_model()

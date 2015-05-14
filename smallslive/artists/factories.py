@@ -30,8 +30,22 @@ class ArtistWithEventsFactory(ArtistFactory):
             # Simple build, do nothing.
             return
 
-        GigPlayedFactory.create_batch(3, artist=self)
+        GigPlayedFactory.create(artist=self, is_leader=True)
+        GigPlayedFactory.create_batch(2, artist=self)
         PastGigPlayedFactory.create_batch(2, artist=self)
+
+
+class ArtistWithMediaFactory(ArtistFactory):
+    @factory.post_generation
+    def events(self, create, extracted, **kwargs):
+        from events.factories import GigPlayedFactory, PastGigPlayedWithMediaFactory
+
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        GigPlayedFactory.create_batch(3, artist=self)
+        PastGigPlayedWithMediaFactory.create_batch(2, artist=self)
 
 
 class InstrumentFactory(factory.django.DjangoModelFactory):
