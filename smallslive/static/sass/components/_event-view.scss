@@ -77,7 +77,6 @@ $event-view_header-height: 450px;
 
     &__track {
       @include display(flex);
-      @include flex-wrap(wrap);
       position: absolute;
       bottom: 0;
       left: 0;
@@ -482,6 +481,7 @@ $event-view_header-height: 450px;
       }
 
       &__track {
+        @include flex-wrap(wrap);
         position: absolute;
         bottom: 30px;
         left: 0;
