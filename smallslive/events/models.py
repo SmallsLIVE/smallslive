@@ -299,6 +299,13 @@ class Recording(models.Model):
     def is_valid_status(self, status):
         return status in self.STATUS or status == "None"
 
+    def get_redirect_url(self):
+        """
+        Redirect view used to track media using jwplayer analytics in a way that they have a
+        consistent URL and not have the S3 access key.
+        """
+        return reverse('media_redirect', kwargs={'recording_id': self.id})
+
 
 class EventType(models.Model):
     name = models.CharField(max_length=50)
