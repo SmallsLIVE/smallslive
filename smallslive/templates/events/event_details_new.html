@@ -33,31 +33,37 @@
                         {% endif %}
                     {% endif %}
                 </div>
-                <div class="event-view__header__info__container">
+                <div class="event-view__header__info__container {% if event.is_future %}no-track{% endif %}">
                     <div class="col-xs-12 col-sm-8 event-view__header__meta">
                         <span class="event-view__header__meta__time">{{ event.listing_date|date:"l, F j, Y" }}<span>|</span>{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</span>
                         <h1 class="event-view__header__meta__title">{{ event.title }} {% if request.user.is_staff %}(ID: {{ event.id }}){% endif %}</h1>
                         <h3 class="event-view__header__meta__subtitle">Subtitle: {{ event.subtitle }}</h3>
                     </div>
-                    <div class="col-xs-12 col-sm-4 event-view__header__video-link__container {% if event.is_future %}no-track{% endif %}">
+                    <div class="col-xs-12 col-sm-4">
                         {% if event.published_videos %}
                             {% if user.can_watch_video %}
-                                <span data-slickPosition="1" class="event-view__header__video-link">
-                                    <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                                    <p>Play event video</p>
-                                </span>
+                                <div class="event-view__header__video-link__container playable">
+                                    <span data-slickPosition="1" class="event-view__header__video-link playable">
+                                        <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
+                                        <p>Play event video</p>
+                                    </span>
+                                </div>
                             {% else %}
                                 {% if user.can_listen_to_audio %}
-                                    <div class="event-view__header__video-link">
-                                        <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                                        <p>Event video available</p>
-                                        <p class="smaller">Upgrade to a premium account to gain access to event video streaming.</p>
-                                        <a href="{% url "subscription_settings" %}" class="event-view__header__video-link__cta">Click to upgrade</a>
+                                    <div class="event-view__header__video-link__container">
+                                        <div class="event-view__header__video-link">
+                                            <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
+                                            <p>Event video available</p>
+                                            <p class="smaller">Upgrade to a premium account to gain access to event video streaming.</p>
+                                            <a href="{% url "subscription_settings" %}" class="event-view__header__video-link__cta">Click to upgrade</a>
+                                        </div>
                                     </div>
                                 {% else %}
-                                    <div class="event-view__header__video-link">
-                                        <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                                        <p>Event video available</p>
+                                    <div class="event-view__header__video-link__container">
+                                        <div class="event-view__header__video-link">
+                                            <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
+                                            <p>Event video available</p>
+                                        </div>
                                     </div>
                                 {% endif %}
                             {% endif %}
