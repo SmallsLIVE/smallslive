@@ -22,7 +22,7 @@
 {% block content %}
 
     <div class="content-wrapper">
-        <section id="event-view-header" class="event-view__header container">
+        <section {% if not event.is_future %}{% if event.published_videos %}id="event-view-header"{% endif %}{% endif %} class="event-view__header {% if event.is_future %}future-event{% endif %} {% if not event.published_videos %}{% if not event.published_audio %}no-media{% endif %}{% endif %} container">
             <div class="event-view__header__info">
                 <div class="event-view__header__bg-photo">
                     {% if event.photo %}
@@ -38,6 +38,9 @@
                         <span class="event-view__header__meta__time">{{ event.listing_date|date:"l, F j, Y" }}<span>|</span>{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</span>
                         <h1 class="event-view__header__meta__title">{{ event.title }}</h1>
                         <h3 class="event-view__header__meta__subtitle">{{ event.subtitle }}</h3>
+                        {% if not event.published_videos %}{% if not event.publiched_audio %}
+                            <p class="event-view__header__meta__no-media visible-xs visible-sm">No media is currently available for this event.</p>
+                        {% endif %}{% endif %}
                         <div class="event-view__share-social">
                             <h3 class="event-view__share-social__title">Share this event on:</h3>
                             <a href="https://www.facebook.com/dialog/share?app_id={{facebook_app_id}}&display=popup&href={{ request.build_absolute_uri|urlencode }}&redirect_uri={{ request.build_absolute_uri|urlencode }}"
@@ -109,7 +112,7 @@
                                 </div>
                             {% endif %}
                         {% else %}
-                            <div class="col-xs-12 event-view__header__track">
+                            <div class="col-xs-12 event-view__header__track hidden-xs hidden-sm">
                                 <div class="col-xs-12 event-view__header__track__info">
                                     <p class="no-media">No event audio recording available.</p>
                                 </div>
