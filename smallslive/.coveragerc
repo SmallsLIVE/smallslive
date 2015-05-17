@@ -1,5 +1,6 @@
 [run]
 omit =
+    */factories.py
     */tests/*
     */migrations/*
     */management/commands/*
