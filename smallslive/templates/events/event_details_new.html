@@ -391,8 +391,8 @@
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
     <script>
       var playsCountSent = [];
-      function updateViewCount(state) {
-        var id = this.getPlaylistItem(this.getPlaylistIndex()).mediaid;
+      function updateViewCount(player) {
+        var id = player.getPlaylistItem(player.getPlaylistIndex()).mediaid;
         if (playsCountSent.indexOf(id) === -1) {
           playsCountSent.push(id);
           $.post('/multimedia/update_media_viewcount/', {
@@ -421,7 +421,10 @@
         width: "100%",
         height: 30
       });
-      jwplayer('player-audio').onPlay(updateViewCount);
+      jwplayer('player-audio').onPlay(function(){
+        jwplayer('player-video').pause(true);
+        updateViewCount(this);
+      });
       {% endif %}
 
       {% if user.can_watch_video and event.published_videos %}
@@ -442,7 +445,10 @@
         width: "100%",
         height: 450
       });
-      jwplayer('player-video').onPlay(updateViewCount);
+      jwplayer('player-video').onPlay(function(){
+        jwplayer('player-audio').pause(true);
+        updateViewCount(this);
+      });
       {% endif %}
     </script>
 {% endblock %}
