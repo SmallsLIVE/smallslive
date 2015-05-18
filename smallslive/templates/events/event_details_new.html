@@ -61,63 +61,59 @@
                                         <p>Play event video</p>
                                     </span>
                                 </div>
+                            {% elif user.can_listen_to_audio %}
+                                <div class="event-view__header__video-link__container">
+                                    <div class="event-view__header__video-link">
+                                        <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
+                                        <p>Event video available</p>
+                                        <p class="smaller">Upgrade to a premium account to gain access to event video streaming.</p>
+                                        <a href="{% url "subscription_settings" %}" class="event-view__header__video-link__cta">Click to upgrade</a>
+                                    </div>
+                                </div>
                             {% else %}
-                                {% if user.can_listen_to_audio %}
-                                    <div class="event-view__header__video-link__container">
-                                        <div class="event-view__header__video-link">
-                                            <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                                            <p>Event video available</p>
-                                            <p class="smaller">Upgrade to a premium account to gain access to event video streaming.</p>
-                                            <a href="{% url "subscription_settings" %}" class="event-view__header__video-link__cta">Click to upgrade</a>
-                                        </div>
+                                <div class="event-view__header__video-link__container">
+                                    <div class="event-view__header__video-link">
+                                        <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
+                                        <p>Event video available</p>
                                     </div>
-                                {% else %}
-                                    <div class="event-view__header__video-link__container">
-                                        <div class="event-view__header__video-link">
-                                            <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                                            <p>Event video available</p>
-                                        </div>
-                                    </div>
-                                {% endif %}
+                                </div>
                             {% endif %}
                         {% endif %}
                     </div>
-                    {% if not event.is_future %}
-                        {% if event.published_audio %}
-                            {% if user.is_authenticated %}
-                                {% if user.can_listen_to_audio %}
-                                    <div class="col-xs-12 event-view__header__track">
-                                        <div class="col-xs-12 col-sm-6 col-md-6 event-view__header__track__info">
-                                            {% if event.published_videos %}
-                                                <p>Listen to event audio recording:</p>
-                                            {% else %}
-                                                <p>No video available. Listen to event audio recording:</p>
-                                            {% endif %}
-                                        </div>
-                                        <div id="player-audio" class="col-xs-12 col-sm-6 col-md-6 event-view__header__track__player">
-                                        </div>
+                    {% if event.published_audio %}
+                        {% if user.is_authenticated %}
+                            {% if user.can_listen_to_audio %}
+                                <div class="col-xs-12 event-view__header__track">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 event-view__header__track__info">
+                                        {% if event.published_videos %}
+                                            <p>Listen to event audio recording:</p>
+                                        {% else %}
+                                            <p>No video available. Listen to event audio recording:</p>
+                                        {% endif %}
                                     </div>
-                                {% else %}
-                                    <div class="col-xs-12 event-view__header__track">
-                                        <div class="col-xs-12 event-view__header__track__info">
-                                            <p class="not-allowed">Event audio (and video) are available only to users with basic (and premium) memberships.</p><a href="{% url "subscription_settings" %}" class="event-view__header__track__info__cta">Click to upgrade</a>
-                                        </div>
+                                    <div id="player-audio" class="col-xs-12 col-sm-6 col-md-6 event-view__header__track__player">
                                     </div>
-                                {% endif %}
+                                </div>
                             {% else %}
                                 <div class="col-xs-12 event-view__header__track">
                                     <div class="col-xs-12 event-view__header__track__info">
-                                        <p class="not-allowed">Sign up to gain access to our vast archive of event audio and video recordings!</p><a href="{% url "signup_landing" %}" class="event-view__header__track__info__cta">Sign up!</a>
+                                        <p class="not-allowed">Event audio (and video) are available only to users with basic (and premium) memberships.</p><a href="{% url "subscription_settings" %}" class="event-view__header__track__info__cta">Click to upgrade</a>
                                     </div>
                                 </div>
                             {% endif %}
                         {% else %}
-                            <div class="col-xs-12 event-view__header__track hidden-xs hidden-sm">
+                            <div class="col-xs-12 event-view__header__track">
                                 <div class="col-xs-12 event-view__header__track__info">
-                                    <p class="no-media">No event audio recording available.</p>
+                                    <p class="not-allowed">Sign up to gain access to our vast archive of event audio and video recordings!</p><a href="{% url "signup_landing" %}" class="event-view__header__track__info__cta">Sign up!</a>
                                 </div>
                             </div>
                         {% endif %}
+                    {% else %}
+                        <div class="col-xs-12 event-view__header__track hidden-xs hidden-sm">
+                            <div class="col-xs-12 event-view__header__track__info">
+                                <p class="no-media">No event audio recording available.</p>
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
             </div>
