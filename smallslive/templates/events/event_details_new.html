@@ -54,6 +54,7 @@
                                 class="fa fa-google-plus"></i></a>
                         </div>
                     </div>
+                    {% if event.is_past %}
                     <div class="col-xs-12 col-sm-4">
                         {% if event.published_videos %}
                             {% if user.can_watch_video %}
@@ -117,6 +118,7 @@
                             </div>
                         </div>
                     {% endif %}
+                  {% endif %}
                 </div>
             </div>
             {% if user.can_watch_video %}
