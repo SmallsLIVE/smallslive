@@ -31,6 +31,8 @@
                         {% else %}
                             <img src="{% thumbor_url event.photo.url|urlencode height=640 width=980 %}" alt="" class="event__img img-responsive"/>
                         {% endif %}
+                    {% else %}
+                            <img src="{% static "image/no-event-image-placeholder.jpg" %}" alt="" class="event__img img-responsive"/>
                     {% endif %}
                 </div>
                 <div class="event-view__header__info__container {% if event.is_future %}no-track{% endif %}">
