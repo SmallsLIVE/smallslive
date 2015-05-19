@@ -1,3 +1,21 @@
+.archive-page-header {
+  padding: 20px 0 30px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  background-color: #fff;
+
+  & h1 {
+    @include lato-black;
+    font-size: 42px;
+    color: $main-accent-color;
+  }
+
+  & p {
+    @include lato-bold;
+    font-size: 16px;
+  }
+}
+
 .archive-lists {
 
   &__sidebar {

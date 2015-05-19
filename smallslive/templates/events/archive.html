@@ -6,11 +6,9 @@
 {% block content %}
     <div class="content-wrapper">
       {% if request.user.is_authenticated %}
-          <section class="cto cto--archive container vertical-align-parent">
-            <div class="vertical-align-child">
-                <h1 class="cto__title">SmallsLIVE Audio/Video Archive</h1>
-                <p class="cto__text">This is a dummy text. We need some actual text for this section.</p>
-            </div>
+          <section class="archive-page-header">
+              <h1>Newest and most popular content</h1>
+              <p>This is a place for some optional text. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</p>
           </section>
       {% else %}
           <section class="home-membership container">
