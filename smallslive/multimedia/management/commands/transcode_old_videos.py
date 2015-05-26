@@ -32,7 +32,7 @@ class Command(NoArgsCommand):
                            'Rotate': 'auto',
                            'ThumbnailPattern': ''}
 
-        videos = Recording.objects.filter(media_file__media_type='video').order_by('event__start')
+        videos = Recording.objects.filter(media_file__media_type='video', media_file__sd_video_file="").order_by('event__start')
         for video in videos:
             original_file = str(video.media_file.file)
             folder, file = original_file.split('/')
