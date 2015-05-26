@@ -15,7 +15,7 @@ class Command(NoArgsCommand):
         self.bucket = conn.get_bucket("smallslivevid")
         self.files_imported = 0
         count = 0
-        videos_start = timezone.datetime(year=2014, month=8, day=24)
+        videos_start = timezone.datetime(year=2011, month=10, day=1)
         for event in Event.objects.filter(start__gte=videos_start).order_by('start'):
             for set_num in range(1, 7):
                 filename = '{0.year}-{0.month:02}-{0.day:02}/{1}-{2}.mp4'.format(event.listing_date(), event.id, set_num)
