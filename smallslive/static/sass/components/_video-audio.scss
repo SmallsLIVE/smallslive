@@ -23,3 +23,14 @@
     }
   }
 }
+
+@media (max-width: $screen-xs-max) {
+  .video-audio {
+
+    &__more-link {
+      margin-left: 0;
+      margin-bottom: 50px;
+      display: block;
+    }
+  }
+}

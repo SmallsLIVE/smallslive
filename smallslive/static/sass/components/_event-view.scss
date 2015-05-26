@@ -4,7 +4,7 @@ $future-event-view_header-height: 300px;
 .event-view {
 
   &__header {
-    height: $event-view_header-height;
+    min-height: 380px;
     padding: 0;
 
     &.future-event, &.no-media {
@@ -15,32 +15,14 @@ $future-event-view_header-height: 300px;
       & .event-view__header {
 
         &__bg-photo {
-          position: absolute;
-          top: 0;
-        }
-
-        &__info {
-          overflow: hidden;
-          width: 100%;
-
-          &__container {
-            position: inherit;
-            padding: 40px 0;
-            height: auto;
-          }
-        }
-
-        &__meta {
-
-          &__title {
-
-          }
+          z-index: 0;
         }
       }
     }
 
     & .slick-slide {
-      display: block;
+      @include display(flex);
+      @include flex-wrap(wrap);
     }
 
     &.slick-slider {
@@ -49,9 +31,13 @@ $future-event-view_header-height: 300px;
 
     &__bg-photo {
       width: 100%;
-      height: $event-view_header-height;
       overflow: hidden;
-      position: relative;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: -1;
 
       & img {
         width: 100%;
@@ -64,17 +50,10 @@ $future-event-view_header-height: 300px;
     &__info {
 
       &__container {
-        position: relative;
-        top: -$event-view_header-height;
-        height: $event-view_header-height;
-        padding-bottom: 60px;
         @include display(flex);
         @include align-items(center);
         @include flex-wrap(wrap);
-
-        &.no-track {
-          padding-bottom: 0;
-        }
+        margin: 60px 0 40px;
       }
     }
 
@@ -119,9 +98,6 @@ $future-event-view_header-height: 300px;
 
     &__track {
       @include display(flex);
-      position: absolute;
-      bottom: 0;
-      left: 0;
       padding: 0;
 
       &__info {
@@ -173,6 +149,36 @@ $future-event-view_header-height: 300px;
       & .jwplayer {
         position: relative;
         top: 30px;
+      }
+
+      &__playlist {
+        background-color: rgba(51,51,51,0.5);
+        height: 60px;
+        @include display(flex);
+        @include align-items(center);
+        @include flex-wrap(nowrap);
+        padding: 10px 30px;
+
+        & span {
+          @include lato-bold;
+          font-size: 12px;
+          text-transform: uppercase;
+          margin: 0 15px;
+          color: #fff;
+          opacity: 0.7;
+        }
+
+        & .player-control-icon {
+          opacity: 0.7;
+          height: 24px;
+          width: auto;
+          cursor: pointer;
+          @include transition(opacity 0.3s ease-in-out);
+
+          &:hover, &:focus {
+            opacity: 1;
+          }
+        }
       }
     }
 
@@ -228,6 +234,7 @@ $future-event-view_header-height: 300px;
 
       &__container {
         padding: 40px 20px;
+        margin-bottom: 40px;
         border-left: 1px solid rgba(255,255,255,0.5);
         opacity: 0.7;
         @include transition(all 0.3s ease-in-out);
@@ -248,7 +255,7 @@ $future-event-view_header-height: 300px;
     &__video {
 
       &__container {
-        padding-right: 200px;
+        width: 100%;
         background-color: #000;
         @include display(flex);
         @include align-items(center);
@@ -276,6 +283,65 @@ $future-event-view_header-height: 300px;
 
         &:hover, &:focus {
           opacity: 1;
+        }
+      }
+
+      &__playlist {
+        width: 200px;
+        @include transition(all 0.3s ease-in-out);
+        cursor: pointer;
+        color: #fff;
+        text-align: left;
+        padding: 80px 20px;
+        border-left: 1px solid rgba(255,255,255,0.25);
+        opacity: 0.6;
+
+        &:hover {
+          opacity: 1;
+          width: 360px;
+        }
+
+        &__heading {
+          display: block;
+          @include lato-bold;
+          font-size: 16px;
+          padding-bottom: 10px;
+          border-bottom: 1px solid rgba(255,255,255,0.2);
+          margin-bottom: 10px;
+          color: rgba(255,255,255,0.8);
+        }
+
+        & ul {
+          padding: 0;
+          margin: 0;
+        }
+
+        &__item {
+          display: block;
+          width: 100%;
+          float: left;
+          @include lato;
+          font-size: 14px;
+          color: #fff;
+          opacity: 0.8;
+          padding: 8px 10px;
+          border-bottom: 1px solid rgba(255,255,255,0.35);
+          cursor: pointer;
+          @include transition(all 0.3s ease-in-out);
+
+          & .duration {
+            font-size: 12px;
+            @include lato-bold;
+            float: right;
+          }
+
+          &.active {
+            background-color: rgba(255,255,255,0.8);
+          }
+          
+          &:hover, &:focus {
+            opacity: 1;
+          }
         }
       }
     }
@@ -401,6 +467,7 @@ $future-event-view_header-height: 300px;
 
   &__share-social {
     margin-top: 10px;
+    margin-bottom: 20px;
     border-top: 1px solid rgba(255,255,255,0.6);
     float: left;
     padding-right: 20px;
@@ -412,6 +479,7 @@ $future-event-view_header-height: 300px;
       opacity: 1;
       margin-top: 20px;
       padding-top: 10px;
+      margin-bottom: 0;
     }
 
     &__title {
@@ -477,6 +545,7 @@ $future-event-view_header-height: 300px;
 
         &__container {
           @include align-items(flex-start);
+          margin: 40px 0 20px;
         }
       }
 
@@ -516,7 +585,8 @@ $future-event-view_header-height: 300px;
 
         &__container {
           border: none;
-          padding: 0 0 80px;
+          padding: 0;
+          margin-bottom: 0;
           @include align-self(flex-start);
           @include display(flex);
         }
@@ -531,13 +601,16 @@ $future-event-view_header-height: 300px;
 
       &__track {
         @include flex-wrap(wrap);
-        position: absolute;
-        bottom: 30px;
-        left: 0;
+
+        &.audio-available {
+          position: relative;
+          bottom: -55px;
+        }
 
         &__info {
-          background: none;
-          margin-bottom: 10px;
+          margin-bottom: 0;
+          padding-left: 20px;
+          padding-bottom: 0;
           @include flex-shrink(1);
 
           &__cta {
@@ -545,6 +618,10 @@ $future-event-view_header-height: 300px;
             @include flex-shrink(0);
             text-align: center;
           }
+        }
+
+        &__playlist {
+          margin-top: 30px;
         }
       }
 
@@ -571,11 +648,20 @@ $future-event-view_header-height: 300px;
             display: none;
           }
         }
+
+        &__playlist {
+          width: 100%;
+          border-left: none;
+          padding: 20px 30px;
+        }
       }
     }
 
     &__share-social {
-      display: none;
+
+      & h3 {
+        display: block;
+      }
     }
 
     &__artists {

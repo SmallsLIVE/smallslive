@@ -83,18 +83,26 @@
                             {% endif %}
                         {% endif %}
                     </div>
+                    {% endif %}
+                </div>
+                {% if event.is_past %}
                     {% if event.published_audio %}
-                        {% if user.is_authenticated %}
-                            {% if user.can_listen_to_audio %}
-                                <div class="col-xs-12 event-view__header__track">
-                                    <div class="col-xs-12 col-sm-6 col-md-6 event-view__header__track__info">
+                    {% if user.is_authenticated %}
+                        {% if user.can_listen_to_audio %}
+                                <div class="col-xs-12 event-view__header__track audio-available">
+                                    <div class="col-xs-12 col-sm-6 col-md-4 event-view__header__track__info">
                                         {% if event.published_videos %}
                                             <p>Listen to event audio recording:</p>
                                         {% else %}
-                                            <p>No video available. Listen to event audio recording:</p>
+                                            <p>Listen to event audio recording:</p>
                                         {% endif %}
                                     </div>
-                                    <div id="player-audio" class="col-xs-12 col-sm-6 col-md-6 event-view__header__track__player">
+                                    <div id="player-audio" class="col-xs-12 col-sm-6 col-md-5 event-view__header__track__player">
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6 col-md-3 event-view__header__track__playlist">
+                                        <img class="player-control-icon" id="audio-control_prev" src="{% static 'image/player-control/controller-prev.svg' %}" alt="Previous set">
+                                        <span class="player-control-current" id="audio-control__current">Set 1/3</span>
+                                        <img class="player-control-icon" id="audio-control_next" src="{% static 'image/player-control/controller-next.svg' %}" alt="Next set">
                                     </div>
                                 </div>
                             {% else %}
@@ -119,7 +127,6 @@
                         </div>
                     {% endif %}
                   {% endif %}
-                </div>
             </div>
             {% if user.can_watch_video %}
                 {% if event.published_videos %}
@@ -130,6 +137,14 @@
                                 <p>Close<br>video</p>
                             </div>
                             <div id="player-video"></div>
+                            <div class="col-xs-12 col-sm-6 col-md-3 event-view__header__video__playlist">
+                                <span class="event-view__header__video__playlist__heading">Event playlist</span>
+                                <ul>
+                                    <li class="event-view__header__video__playlist__item active">Set 1 <span class="duration">48:23</span></li>
+                                    <li class="event-view__header__video__playlist__item">Set 2 <span class="duration">48:23</span></li>
+                                    <li class="event-view__header__video__playlist__item">Set 3 <span class="duration">48:23</span></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 {% endif %}
