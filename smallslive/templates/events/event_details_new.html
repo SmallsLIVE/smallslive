@@ -139,7 +139,7 @@
                             <div id="player-video"></div>
                             <div class="col-xs-12 col-sm-6 col-md-3 event-view__header__video__playlist">
                                 <span class="event-view__header__video__playlist__heading">Event playlist</span>
-                                <ul>
+                                <ul id="video-sets-list">
                                     <li class="event-view__header__video__playlist__item active">Set 1 <span class="duration">48:23</span></li>
                                     <li class="event-view__header__video__playlist__item">Set 2 <span class="duration">48:23</span></li>
                                     <li class="event-view__header__video__playlist__item">Set 3 <span class="duration">48:23</span></li>
@@ -426,7 +426,7 @@
     }
 
     {% if user.can_listen_to_audio and event.published_audio %}
-    jwplayer("player-audio").setup({
+    audioPlayer = jwplayer("player-audio").setup({
       primary: 'html5',
       playlist: [
         {% for audio in event.published_audio %}
@@ -444,19 +444,40 @@
       width: "100%",
       height: 30
     });
-    jwplayer('player-audio').onPlay(function(){
-      jwplayer('player-video').pause(true);
+    audioPlayer.onPlay(function(){
+      videoPlayer.pause(true);
       updateViewCount(this);
     });
-    jwplayer('player-audio').onReady(function(){
-      var currentItem = jwplayer('player-audio').getPlaylistIndex() + 1;
-      var totalItems = jwplayer('player-audio').getPlaylist().length;
+    audioPlayer.onReady(function(){
+      var currentItem = audioPlayer.getPlaylistIndex() + 1;
+      var totalItems = audioPlayer.getPlaylist().length;
       updateSetText('#audio-control__current', currentItem, totalItems);
+    });
+
+    $('#audio-control_next').on('click', function(){
+      var playlistLength = audioPlayer.getPlaylist().length;
+      var currentIndex = audioPlayer.getPlaylistIndex();
+      // if current item is last, do nothing
+      if (currentIndex !== playlistLength - 1) {
+        var nextItemIndex = (currentIndex + 1) % playlistLength;
+        audioPlayer.playlistItem(nextItemIndex);
+        updateSetText('#audio-control__current', nextItemIndex+1, playlistLength);
+      }
+    });
+
+    $('#audio-control_prev').on('click', function(){
+      var playlistLength = audioPlayer.getPlaylist().length;
+      var currentIndex = audioPlayer.getPlaylistIndex();
+      if (currentIndex !== 0) {
+        var nextItemIndex = (currentIndex - 1);
+        audioPlayer.playlistItem(nextItemIndex);
+        updateSetText('#audio-control__current', nextItemIndex+1, playlistLength);
+      }
     });
     {% endif %}
 
     {% if user.can_watch_video and event.published_videos %}
-    jwplayer("player-video").setup({
+    videoPlayer = jwplayer("player-video").setup({
       primary: 'html5',
       playlist: [
         {% for video in event.published_videos %}{% if video.media_file.sd_video_file %}
@@ -474,33 +495,32 @@
       width: "100%",
       height: 450
     });
-    jwplayer('player-video').onPlay(function(){
-      jwplayer('player-audio').pause(true);
+    videoPlayer.onPlay(function(){
+      audioPlayer.pause(true);
       updateViewCount(this);
+    });
+    videoPlayer.onReady(function(){
+      var playlist = videoPlayer.getPlaylist();
+      var playlistItems = "";
+      $.each(playlist, function(index, item) {
+        playlistItems += '<li class="event-view__header__video__playlist__item';
+        if (index === 0) {
+          playlistItems += ' active';
+        }
+        playlistItems += '" data-playlist-index="' + index + '">Set ' + (index+1) + '</li>';
+      });
+      $("#video-sets-list").html(playlistItems);
     });
     {% endif %}
 
-    $('#audio-control_next').on('click', function(){
-      var audioPlayer = jwplayer("player-audio");
-      var playlistLength = audioPlayer.getPlaylist().length;
-      var currentIndex = audioPlayer.getPlaylistIndex();
-      // if current item is last, do nothing
-      if (currentIndex !== playlistLength - 1) {
-        var nextItemIndex = (currentIndex + 1) % playlistLength;
-        audioPlayer.playlistItem(nextItemIndex);
-        updateSetText('#audio-control__current', nextItemIndex+1, playlistLength);
-      }
+    $('#video-sets-list').on('click', 'li', function(){
+      var currentIndex = videoPlayer.getPlaylistIndex();
+      var selectedIndex = $(this).data('playlist-index');
+      videoPlayer.playlistItem(selectedIndex);
+      $(this).toggleClass('active');
+      $('li[data-playlist-index=' + currentIndex + ']').toggleClass('active');
+
     });
 
-    $('#audio-control_prev').on('click', function(){
-      var audioPlayer = jwplayer("player-audio");
-      var playlistLength = audioPlayer.getPlaylist().length;
-      var currentIndex = audioPlayer.getPlaylistIndex();
-      if (currentIndex !== 0) {
-        var nextItemIndex = (currentIndex - 1);
-        audioPlayer.playlistItem(nextItemIndex);
-        updateSetText('#audio-control__current', nextItemIndex+1, playlistLength);
-      }
-    });
   </script>
 {% endblock %}
