@@ -101,7 +101,7 @@
                                     </div>
                                     <div class="col-xs-12 col-sm-6 col-md-3 event-view__header__track__playlist">
                                         <img class="player-control-icon" id="audio-control_prev" src="{% static 'image/player-control/controller-prev.svg' %}" alt="Previous set">
-                                        <span class="player-control-current" id="audio-control__current">Set 1/3</span>
+                                        <span class="player-control-current" id="audio-control__current">Set</span>
                                         <img class="player-control-icon" id="audio-control_next" src="{% static 'image/player-control/controller-next.svg' %}" alt="Next set">
                                     </div>
                                 </div>
@@ -406,68 +406,101 @@
 
 {% block extra_js %}
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
-    <script>
-      var playsCountSent = [];
-      function updateViewCount(player) {
-        var id = player.getPlaylistItem(player.getPlaylistIndex()).mediaid;
-        if (playsCountSent.indexOf(id) === -1) {
-          playsCountSent.push(id);
-          $.post('/multimedia/update_media_viewcount/', {
-            recording_id: id,
-            csrfmiddlewaretoken: '{{ csrf_token }}'
+  <script>
+    var playsCountSent = [];
+    function updateViewCount(player) {
+      var id = player.getPlaylistItem(player.getPlaylistIndex()).mediaid;
+      if (playsCountSent.indexOf(id) === -1) {
+        playsCountSent.push(id);
+        $.post('/multimedia/update_media_viewcount/', {
+          recording_id: id,
+          csrfmiddlewaretoken: '{{ csrf_token }}'
 
-          });
-        }
+        });
       }
+    }
 
-      {% if user.can_listen_to_audio and event.published_audio %}
-      jwplayer("player-audio").setup({
-        primary: 'html5',
-        playlist: [
-          {% for audio in event.published_audio %}
-            {
-              sources: [{
-                file: "{{ audio.get_redirect_url|safe }}",
-                type: "mp3"
-              }],
-              title: "{{ event.title }}: Set {{ audio.set_number }}",
-              mediaid: {{ audio.id }}
-            }{% if not forloop.last %},{% endif %}
-          {% endfor %}
-        ],
-        skin: "{% static "jwplayer-skin/smalls.xml" %}",
-        width: "100%",
-        height: 30
-      });
-      jwplayer('player-audio').onPlay(function(){
-        jwplayer('player-video').pause(true);
-        updateViewCount(this);
-      });
-      {% endif %}
+    function updateSetText(textElement, currentItem, totalSets) {
+      var setText = "Set " + currentItem + "/" + totalSets;
+      $(textElement).text(setText);
+    }
 
-      {% if user.can_watch_video and event.published_videos %}
-      jwplayer("player-video").setup({
-        primary: 'html5',
-        playlist: [
-          {% for video in event.published_videos %}{% if video.media_file.sd_video_file %}
-            {
-              sources: [{
-                file: "{{ video.get_redirect_url|safe }}",
-                type: "mp4"
-              }],
-              title: "{{ event.title }}: Set {{ video.set_number }}",
-              mediaid: {{ video.id }}
-            }{% if not forloop.last %},{% endif %}
-          {% endif %}{% endfor %}
-        ],
-        skin: "{% static "jwplayer-skin/smalls.xml" %}",
-        width: "100%",
-        height: 450
-      });
-      jwplayer('player-video').onPlay(function(){
-        jwplayer('player-audio').pause(true);
-        updateViewCount(this);
-      });
-      {% endif %}
-    </script>
+    {% if user.can_listen_to_audio and event.published_audio %}
+    jwplayer("player-audio").setup({
+      primary: 'html5',
+      playlist: [
+        {% for audio in event.published_audio %}
+          {
+            sources: [{
+              file: "{{ audio.get_redirect_url|safe }}",
+              type: "mp3"
+            }],
+            title: "{{ event.title }}: Set {{ audio.set_number }}",
+            mediaid: {{ audio.id }}
+          }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ],
+      skin: "{% static "jwplayer-skin/smalls.xml" %}",
+      width: "100%",
+      height: 30
+    });
+    jwplayer('player-audio').onPlay(function(){
+      jwplayer('player-video').pause(true);
+      updateViewCount(this);
+    });
+    jwplayer('player-audio').onReady(function(){
+      var currentItem = jwplayer('player-audio').getPlaylistIndex() + 1;
+      var totalItems = jwplayer('player-audio').getPlaylist().length;
+      updateSetText('#audio-control__current', currentItem, totalItems);
+    });
+    {% endif %}
+
+    {% if user.can_watch_video and event.published_videos %}
+    jwplayer("player-video").setup({
+      primary: 'html5',
+      playlist: [
+        {% for video in event.published_videos %}{% if video.media_file.sd_video_file %}
+          {
+            sources: [{
+              file: "{{ video.get_redirect_url|safe }}",
+              type: "mp4"
+            }],
+            title: "{{ event.title }}: Set {{ video.set_number }}",
+            mediaid: {{ video.id }}
+          }{% if not forloop.last %},{% endif %}
+        {% endif %}{% endfor %}
+      ],
+      skin: "{% static "jwplayer-skin/smalls.xml" %}",
+      width: "100%",
+      height: 450
+    });
+    jwplayer('player-video').onPlay(function(){
+      jwplayer('player-audio').pause(true);
+      updateViewCount(this);
+    });
+    {% endif %}
+
+    $('#audio-control_next').on('click', function(){
+      var audioPlayer = jwplayer("player-audio");
+      var playlistLength = audioPlayer.getPlaylist().length;
+      var currentIndex = audioPlayer.getPlaylistIndex();
+      // if current item is last, do nothing
+      if (currentIndex !== playlistLength - 1) {
+        var nextItemIndex = (currentIndex + 1) % playlistLength;
+        audioPlayer.playlistItem(nextItemIndex);
+        updateSetText('#audio-control__current', nextItemIndex+1, playlistLength);
+      }
+    });
+
+    $('#audio-control_prev').on('click', function(){
+      var audioPlayer = jwplayer("player-audio");
+      var playlistLength = audioPlayer.getPlaylist().length;
+      var currentIndex = audioPlayer.getPlaylistIndex();
+      if (currentIndex !== 0) {
+        var nextItemIndex = (currentIndex - 1);
+        audioPlayer.playlistItem(nextItemIndex);
+        updateSetText('#audio-control__current', nextItemIndex+1, playlistLength);
+      }
+    });
+  </script>
 {% endblock %}
