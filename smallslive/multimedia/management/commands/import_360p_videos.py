@@ -13,7 +13,7 @@ class Command(NoArgsCommand):
         self.bucket = conn.get_bucket("smallslivevid")
         self.files_imported = 0
         count = 0
-        for video in Recording.objects.all().video():
+        for video in Recording.objects.video().filter(media_file__sd_video_file=""):
             original_file = str(video.media_file.file)
             folder, file = original_file.split('/')
             file_name, ext = os.path.splitext(file)
