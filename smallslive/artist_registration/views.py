@@ -3,6 +3,7 @@ from allauth.account import app_settings
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import perform_login
 from django.contrib import messages
+from django.contrib.auth import logout
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import Http404
 from django.shortcuts import redirect
@@ -47,6 +48,8 @@ class ConfirmEmailView(allauth_views.ConfirmEmailView):
         return self.render_to_response(ctx)
 
     def post(self, *args, **kwargs):
+        # logout an user in case he's logged in with a different account
+        logout(self.request)
         self.object = confirmation = self.get_object()
         confirmation.confirm(self.request)
         get_adapter().add_message(self.request,
