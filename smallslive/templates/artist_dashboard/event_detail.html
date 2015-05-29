@@ -160,11 +160,8 @@
           var formName = "form_" + name;
           var form = this.$$[formName];
           var oldState = this.$data[fieldName];
-          console.log(oldState);
           this.$data[fieldName] = oldState === "Published" ? "Hidden" : "Published";
-          console.log(this.$data[fieldName]);
           $.post(form.action, $(form).serialize()).fail(function() {
-            console.log("FIL");
             this.$data[fieldName] = oldState;
           }.bind(this));
         }

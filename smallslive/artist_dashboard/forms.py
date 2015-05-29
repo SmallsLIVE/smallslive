@@ -7,7 +7,7 @@ from localflavor.us.us_states import STATE_CHOICES
 from artists.forms import ArtistAddForm
 from events import forms as event_forms
 from events.forms import Formset
-from events.models import Event
+from events.models import Recording
 
 User = get_user_model()
 
@@ -17,7 +17,7 @@ COUNTRIES_WITH_EMPTY = (('', ''),) + tuple(countries)
 
 class ToggleRecordingStateForm(forms.ModelForm):
     class Meta:
-        model = Event
+        model = Recording
         fields = ('state',)
 
 
