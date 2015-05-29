@@ -39,7 +39,7 @@ class AddGetParameter(Node):
             val = value.resolve(context)
             if val:
                 params[key] = val
-            else:
+            elif key in params:
                 del params[key]
         return '?%s' % params.urlencode()
 

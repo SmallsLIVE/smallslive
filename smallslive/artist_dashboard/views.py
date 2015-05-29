@@ -30,12 +30,12 @@ class MyGigsView(HasArtistAssignedMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(MyGigsView, self).get_context_data(**kwargs)
         paginator = context['paginator']
-        page = paginator.page(self.kwargs.get('page', 1))
+        current_page_number = context['page_obj'].number
         adjacent_pages = 2
-        startPage = max(page.number - adjacent_pages, 1)
+        startPage = max(current_page_number - adjacent_pages, 1)
         if startPage <= 3:
             startPage = 1
-        endPage = page.number + adjacent_pages + 1
+        endPage = current_page_number + adjacent_pages + 1
         if endPage >= paginator.num_pages - 1:
             endPage = paginator.num_pages + 1
         page_numbers = [n for n in xrange(startPage, endPage) if n > 0 and n <= paginator.num_pages]

@@ -18,24 +18,24 @@
           <li class="events__filters__group">
               <ul>
                   <li {% if request.GET.audio_filter %}class="active"{% endif %}>Audio:</li>
-                  <li {% if request.GET.audio_filter == "Published" %}class="active"{% endif %}><a href="{% add_get audio_filter="Published" %}">Published</a> {% if request.GET.audio_filter == "Published" %}<a href="{% add_get audio_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.audio_filter == "Hidden" %}class="active"{% endif %}><a href="{% add_get audio_filter="Hidden" %}">Private</a> {% if request.GET.audio_filter == "Hidden" %}<a href="{% add_get audio_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.audio_filter == "None" %}class="active"{% endif %}><a href="{% add_get audio_filter="None" %}">Not available</a> {% if request.GET.audio_filter == "None" %}<a href="{% add_get audio_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
+                  <li {% if request.GET.audio_filter == "Published" %}class="active"{% endif %}><a href="{% add_get audio_filter="Published" page=None %}">Published</a> {% if request.GET.audio_filter == "Published" %}<a href="{% add_get audio_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
+                  <li {% if request.GET.audio_filter == "Hidden" %}class="active"{% endif %}><a href="{% add_get audio_filter="Hidden" page=None %}">Private</a> {% if request.GET.audio_filter == "Hidden" %}<a href="{% add_get audio_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
+                  <li {% if request.GET.audio_filter == "None" %}class="active"{% endif %}><a href="{% add_get audio_filter="None" page=None %}">Not available</a> {% if request.GET.audio_filter == "None" %}<a href="{% add_get audio_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
               </ul>
           </li>
           <li class="events__filters__group">
               <ul>
                   <li {% if request.GET.video_filter %}class="active"{% endif %}>Video:</li>
-                  <li {% if request.GET.video_filter == "Published" %}class="active"{% endif %}><a href="{% add_get video_filter="Published" %}">Published</a> {% if request.GET.video_filter == "Published" %}<a href="{% add_get video_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.video_filter == "Hidden" %}class="active"{% endif %}><a href="{% add_get video_filter="Hidden" %}">Private</a> {% if request.GET.video_filter == "Hidden" %}<a href="{% add_get video_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.video_filter == "None" %}class="active"{% endif %}><a href="{% add_get video_filter="None" %}">Not available</a> {% if request.GET.video_filter == "None" %}<a href="{% add_get video_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
+                  <li {% if request.GET.video_filter == "Published" %}class="active"{% endif %}><a href="{% add_get video_filter="Published" page=None %}">Published</a> {% if request.GET.video_filter == "Published" %}<a href="{% add_get video_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
+                  <li {% if request.GET.video_filter == "Hidden" %}class="active"{% endif %}><a href="{% add_get video_filter="Hidden" page=None %}">Private</a> {% if request.GET.video_filter == "Hidden" %}<a href="{% add_get video_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
+                  <li {% if request.GET.video_filter == "None" %}class="active"{% endif %}><a href="{% add_get video_filter="None" page=None %}">Not available</a> {% if request.GET.video_filter == "None" %}<a href="{% add_get video_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
               </ul>
           </li>
           <li class="events__filters__group">
               <ul>
                   <li {% if request.GET.leader_filter %}class="active"{% endif %}>Leader status:</li>
-                  <li {% if request.GET.leader_filter == "true" %}class="active"{% endif %}><a href="{% add_get leader_filter="true" %}">Leader</a> {% if request.GET.leader_filter == "true" %}<a href="{% add_get leader_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.leader_filter == "false" %}class="active"{% endif %}><a href="{% add_get leader_filter="false" %}">Sideman</a> {% if request.GET.leader_filter == "false" %}<a href="{% add_get leader_filter="" %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
+                  <li {% if request.GET.leader_filter == "true" %}class="active"{% endif %}><a href="{% add_get leader_filter="true" page=None %}">Leader</a> {% if request.GET.leader_filter == "true" %}<a href="{% add_get leader_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
+                  <li {% if request.GET.leader_filter == "false" %}class="active"{% endif %}><a href="{% add_get leader_filter="false" page=None %}">Sideman</a> {% if request.GET.leader_filter == "false" %}<a href="{% add_get leader_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
               </ul>
           </li>
           <li class="events__filters__group">
@@ -120,7 +120,7 @@
                 <div class="search-pagination">
                   {% if page_obj.has_previous %}<a href="{% add_get page=page_obj.previous_page_number %}"><span class="search-pagination__previous fa fa-caret-left"></span></a>{% endif %}
                   {% if show_first %}
-                    <a href="{% add_get page=1 %}"><span class="search-pagination__page">1</span></a>
+                    <a href="{% add_get page=1 %}"><span class="search-pagination__page {% if page_obj.number == 1 %}active{% endif %}">1</span></a>
                     ...
                   {% endif %}
                   {% for page in page_numbers %}
@@ -128,7 +128,7 @@
                   {% endfor %}
                   {% if show_last %}
                     ...
-                    <a href="{% add_get page=paginator.num_pages %}"><span class="search-pagination__page">{{ paginator.num_pages }}</span></a>
+                    <a href="{% add_get page=paginator.num_pages %}"><span class="search-pagination__page {% if page_obj.number == paginator.num_pages %}active{% endif %}">{{ paginator.num_pages }}</span></a>
                   {% endif %}
                   {% if page_obj.has_next %}<a href="{% add_get page=page_obj.next_page_number %}"><span class="search-pagination__next fa fa-caret-right"></span></a>{% endif %}
 
