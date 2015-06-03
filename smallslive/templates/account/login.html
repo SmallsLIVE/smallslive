@@ -12,8 +12,8 @@
         <div class="container login">
             <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
                 <div class="col-xs-12">
-                    <h1 class="login__title">Log in</h1>
-                    <p class="login__text--heavy">Log in to gain access to live stream and streamable audio and video content.</p>
+                    <h1 class="login__title">Sign in</h1>
+                    <p class="login__text--heavy">Sign in to access our live stream and audio video archive.</p>
                 </div>
                 <form role="form" method="post" action="#">
                     {%  csrf_token %}
@@ -45,7 +45,7 @@
                         <div class="col-xs-12 col-sm-6">
                             <input type="checkbox" name="remember" id="remember_me">
                             <div class="form-group {% if form.terms_of_service.errors %}has-error{% endif %}">
-                                <label for="id_remember_me" class="checkbox-label control-label">Keep me logged in</label>
+                                <label for="remember_me" class="checkbox-label control-label">Keep me logged in</label>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6">
@@ -53,16 +53,16 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-5 col-md-6">
-                        <input class="login__login-button" value="Log in" type="submit">
+                        <input class="login__login-button" value="Sign in" type="submit">
                     </div>
                     <div class="col-xs-12 col-sm-7 col-md-6">
-                        <a class="login__login-button facebook" href="{% provider_login_url "facebook" method="js_sdk" %}"><div class="vcenter"><i class="fa fa-facebook-square"></i></div><div class="vcenter">Log in with Facebook</div></a>
+                        <a class="login__login-button facebook" href="{% provider_login_url "facebook" method="js_sdk" %}"><div class="vcenter"><i class="fa fa-facebook-square"></i></div><div class="vcenter">Sign in with Facebook</div></a>
                     </div>
                 </form>
                 <div class="col-xs-12 login__signup-cta">
-                    <h2 class="login__signup-cta__title">Don’t have an account yet?</h2>
-                    <p class="login__signup-cta__text">Sign up for a free account to watch our live stream, or get unlimited access to our audio & video archive of over 350 jazz concerts! You can take a free trial of 30 days, and afterwards it’s just $20/month!</p>
-                    <a href="{% url "account_signup" %}" class="login__signup-cta__button">Click here to sign up!</a>
+                    <h2 class="login__signup-cta__title">Not a member of SmallsLIVE?</h2>
+                    <p class="login__signup-cta__text">Become a member of SmallsLIVE to watch our live stream.  Subscribing members get unlimited access to our audio/video archive.  By becoming a subscribing member you are directly supporting the musicians and the venue./p>
+                    <a href="{% url "account_signup" %}" class="login__signup-cta__button">Click here to become a member</a>
                 </div>
             </div>
         </div>
