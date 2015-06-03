@@ -5,203 +5,237 @@
 {% block schedule_nav_active %}active{% endblock %}
 
 {% block extra_head %}
-  <meta property="og:url" content="{{ request.build_absolute_uri }}" />
-  <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="SmallsLIVE" />
-  <meta property="og:title" content="{{ event.full_title }}" />
-  <meta property="og:description" content="{{ event.listing_date|date:"l, F j, Y" }} {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}" />
+  <meta property="og:url" content="{{ request.build_absolute_uri }}"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:site_name" content="SmallsLIVE"/>
+  <meta property="og:title" content="{{ event.full_title }}"/>
+  <meta property="og:description"
+        content="{{ event.listing_date|date:"l, F j, Y" }} {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}"/>
   {% if event.photo %}
-    <meta property="og:image" content="{% thumbor_url event.photo.url|urlencode height=315 width=600 smart=True %}" />
+    <meta property="og:image" content="{% thumbor_url event.photo.url|urlencode height=315 width=600 smart=True %}"/>
     <meta itemprop="image" content="{% thumbor_url event.photo.url|urlencode height=315 width=600 smart=True %}">
   {% endif %}
-  <meta property="fb:app_id" content="{{ facebook_app_id }}" />
+  <meta property="fb:app_id" content="{{ facebook_app_id }}"/>
   <meta itemprop="name" content="{{ event.full_title }}">
-  <meta itemprop="description" content="{{ event.listing_date|date:"l, F j, Y" }} {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}">
+  <meta itemprop="description"
+        content="{{ event.listing_date|date:"l, F j, Y" }} {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}">
 {% endblock %}
 
 {% block content %}
 
-    <div class="content-wrapper">
-        <section {% if not event.is_future %}{% if event.published_videos %}id="event-view-header"{% endif %}{% endif %} class="event-view__header {% if event.is_future %}future-event{% endif %} {% if not event.published_videos %}{% if not event.published_audio %}no-media{% endif %}{% endif %} container">
-            <div class="event-view__header__info">
-                <div class="event-view__header__bg-photo">
-                    {% if event.photo %}
-                        {% if event.photo_crop_box %}
-                            <img src="{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=980 %}" alt="" class="event__img img-responsive"/>
-                        {% else %}
-                            <img src="{% thumbor_url event.photo.url|urlencode height=640 width=980 %}" alt="" class="event__img img-responsive"/>
-                        {% endif %}
-                    {% else %}
-                            <img src="{% static "image/no-event-image-placeholder.jpg" %}" alt="" class="event__img img-responsive"/>
-                    {% endif %}
-                </div>
-                <div class="event-view__header__info__container {% if event.is_future %}no-track{% endif %}">
-                    <div class="col-xs-12 col-sm-8 event-view__header__meta">
-                        <span class="event-view__header__meta__time">{{ event.listing_date|date:"l, F j, Y" }}<span>|</span>{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</span>
-                        <h1 class="event-view__header__meta__title">{{ event.title }}</h1>
-                        <h3 class="event-view__header__meta__subtitle">{{ event.subtitle }}</h3>
-                        {% if not event.is_future %}{% if not event.published_videos %}{% if not event.publiched_audio %}
-                            <p class="event-view__header__meta__no-media visible-xs visible-sm">No media is currently available for this event.</p>
-                        {% endif %}{% endif %}{% endif %}
-                        <div class="event-view__share-social">
-                            <h3 class="event-view__share-social__title">Share this event on:</h3>
-                            <a href="https://www.facebook.com/dialog/share?app_id={{facebook_app_id}}&display=popup&href={{ request.build_absolute_uri|urlencode }}&redirect_uri={{ request.build_absolute_uri|urlencode }}"
-                             class="btn social-btn social-btn--facebook" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fa fa-facebook"></i></a>
-                            <a href="https://twitter.com/share?url={{ request.build_absolute_uri|urlencode }}&text={{ "Check out "|urlencode }}{{ event.title }}{{ " show on SmallsLIVE:"|urlencode }}&hashtags=SmallsLIVE"
-                              class="btn social-btn social-btn--twitter" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i class="fa fa-twitter"></i></a>
-                            <a href="https://plus.google.com/share?url={{ request.build_absolute_uri|urlencode }}" class="btn social-btn social-btn--google"
-                           onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i
-                                class="fa fa-google-plus"></i></a>
-                        </div>
-                    </div>
-                    {% if event.is_past %}
-                    <div class="col-xs-12 col-sm-4">
-                        {% if event.published_videos %}
-                            {% if user.can_watch_video %}
-                                <div class="event-view__header__video-link__container playable">
+  <div class="content-wrapper">
+    <section {% if not event.is_future %}{% if event.published_videos %}id="event-view-header"{% endif %}{% endif %}
+             class="event-view__header {% if event.is_future %}future-event{% endif %}
+                     {% if not event.published_videos %}{% if not event.published_audio %}no-media{% endif %}{% endif %} container">
+      <div class="event-view__header__info">
+        <div class="event-view__header__bg-photo">
+          {% if event.photo %}
+            {% if event.photo_crop_box %}
+              <img src="{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=980 %}" alt=""
+                   class="event__img img-responsive"/>
+            {% else %}
+              <img src="{% thumbor_url event.photo.url|urlencode height=640 width=980 %}" alt=""
+                   class="event__img img-responsive"/>
+            {% endif %}
+          {% else %}
+            <img src="{% static "image/no-event-image-placeholder.jpg" %}" alt="" class="event__img img-responsive"/>
+          {% endif %}
+        </div>
+        <div class="event-view__header__info__container {% if event.is_future %}no-track{% endif %}">
+          <div class="col-xs-12 col-sm-8 event-view__header__meta">
+            <span class="event-view__header__meta__time">{{ event.listing_date|date:"l, F j, Y" }}<span>|</span>{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</span>
+            <h1 class="event-view__header__meta__title">{{ event.title }}</h1>
+            <h3 class="event-view__header__meta__subtitle">{{ event.subtitle }}</h3>
+            {% if not event.is_future %}{% if not event.published_videos %}{% if not event.publiched_audio %}
+              <p class="event-view__header__meta__no-media visible-xs visible-sm">No media is currently available for
+                this event.</p>
+            {% endif %}{% endif %}{% endif %}
+            <div class="event-view__share-social">
+              <h3 class="event-view__share-social__title">Share this event on:</h3>
+              <a href="https://www.facebook.com/dialog/share?app_id={{ facebook_app_id }}&display=popup&href={{ request.build_absolute_uri|urlencode }}&redirect_uri={{ request.build_absolute_uri|urlencode }}"
+                 class="btn social-btn social-btn--facebook"
+                 onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i
+                      class="fa fa-facebook"></i></a>
+              <a href="https://twitter.com/share?url={{ request.build_absolute_uri|urlencode }}&text=
+                      {{ "Check out "|urlencode }}{{ event.title }}{{ " show on SmallsLIVE:"|urlencode }}&hashtags=SmallsLIVE"
+                 class="btn social-btn social-btn--twitter"
+                 onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i
+                      class="fa fa-twitter"></i></a>
+              <a href="https://plus.google.com/share?url={{ request.build_absolute_uri|urlencode }}"
+                 class="btn social-btn social-btn--google"
+                 onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><i
+                      class="fa fa-google-plus"></i></a>
+            </div>
+          </div>
+          {% if event.is_past %}
+            <div class="col-xs-12 col-sm-4">
+              {% if event.published_videos %}
+                {% if user.can_watch_video %}
+                  <div class="event-view__header__video-link__container playable">
                                     <span data-slickPosition="1" class="event-view__header__video-link playable">
                                         <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
                                         <p>Play event video</p>
                                     </span>
-                                </div>
-                            {% elif user.can_listen_to_audio %}
-                                <div class="event-view__header__video-link__container">
-                                    <div class="event-view__header__video-link">
-                                        <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                                        <p>Event video available</p>
-                                        <p class="smaller">Upgrade to a premium account to gain access to event video streaming.</p>
-                                        <a href="{% url "subscription_settings" %}" class="event-view__header__video-link__cta">Click to upgrade</a>
-                                    </div>
-                                </div>
-                            {% else %}
-                                <div class="event-view__header__video-link__container">
-                                    <div class="event-view__header__video-link">
-                                        <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                                        <p>Event video available</p>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endif %}
+                  </div>
+                {% elif user.can_listen_to_audio %}
+                  <div class="event-view__header__video-link__container">
+                    <div class="event-view__header__video-link">
+                      <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
+                      <p>Event video available</p>
+                      <p class="smaller">Upgrade to a premium account to gain access to event video streaming.</p>
+                      <a href="{% url "subscription_settings" %}" class="event-view__header__video-link__cta">Click to
+                        upgrade</a>
                     </div>
-                    {% endif %}
-                </div>
-                {% if event.is_past %}
-                    {% if event.published_audio %}
-                    {% if user.is_authenticated %}
-                        {% if user.can_listen_to_audio %}
-                                <div class="col-xs-12 event-view__header__track audio-available">
-                                    <div class="col-xs-12 col-sm-6 col-md-4 event-view__header__track__info">
-                                        {% if event.published_videos %}
-                                            <p>Listen to event audio recording:</p>
-                                        {% else %}
-                                            <p>Listen to event audio recording:</p>
-                                        {% endif %}
-                                    </div>
-                                    <div id="player-audio" class="col-xs-12 col-sm-6 col-md-5 event-view__header__track__player">
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-3 event-view__header__track__playlist">
-                                        <img class="player-control-icon" id="audio-control_prev" src="{% static 'image/player-control/controller-prev.svg' %}" alt="Previous set">
-                                        <span class="player-control-current" id="audio-control__current">Set</span>
-                                        <img class="player-control-icon" id="audio-control_next" src="{% static 'image/player-control/controller-next.svg' %}" alt="Next set">
-                                    </div>
-                                </div>
-                            {% else %}
-                                <div class="col-xs-12 event-view__header__track">
-                                    <div class="col-xs-12 event-view__header__track__info">
-                                        <p class="not-allowed">Event audio (and video) are available only to users with basic (and premium) memberships.</p><a href="{% url "subscription_settings" %}" class="event-view__header__track__info__cta">Click to upgrade</a>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% else %}
-                            <div class="col-xs-12 event-view__header__track">
-                                <div class="col-xs-12 event-view__header__track__info">
-                                    <p class="not-allowed">Become a member of SmallsLIVE for unlimited access to our audio/video archive.</p><a href="{% url "signup_landing" %}" class="event-view__header__track__info__cta">Subscribe</a>
-                                </div>
-                            </div>
-                        {% endif %}
-                    {% else %}
-                        <div class="col-xs-12 event-view__header__track hidden-xs hidden-sm">
-                            <div class="col-xs-12 event-view__header__track__info">
-                                <p class="no-media">No event audio recording available.</p>
-                            </div>
-                        </div>
-                    {% endif %}
-                  {% endif %}
-            </div>
-            {% if user.can_watch_video %}
-                {% if event.published_videos %}
-                    <div class="event-view__header__video">
-                        <div class="event-view__header__video__container">
-                            <div class="event-view__header__video__close">
-                                <i class="fa fa-chevron-circle-left event-view__header__video-link__icon"></i>
-                                <p>Close<br>video</p>
-                            </div>
-                            <div id="player-video"></div>
-                            <div class="col-xs-12 col-sm-6 col-md-3 event-view__header__video__playlist">
-                                <span class="event-view__header__video__playlist__heading">Event playlist</span>
-                                <ul id="video-sets-list">
-                                    <li class="event-view__header__video__playlist__item active">Set 1 <span class="duration">48:23</span></li>
-                                    <li class="event-view__header__video__playlist__item">Set 2 <span class="duration">48:23</span></li>
-                                    <li class="event-view__header__video__playlist__item">Set 3 <span class="duration">48:23</span></li>
-                                </ul>
-                            </div>
-                        </div>
+                  </div>
+                {% else %}
+                  <div class="event-view__header__video-link__container">
+                    <div class="event-view__header__video-link">
+                      <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
+                      <p>Event video available</p>
                     </div>
+                  </div>
                 {% endif %}
-            {% endif %}
-        </section>
-        {% if event.description or request.user.is_staff %}
-        <section class="event-view__details container">
-            <div class="row">
-                <div class="col-xs-12 event-view__details__description">
-                    {% if event.description %}
-                        <h3>Event description:</h3>
-                        <p>{{ event.description|safe }}</p>
+              {% else %}
+                <div class="event-view__header__video-link__container">
+                  <div class="event-view__header__video-link">
+                    <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
+                    <p>There is no video media for this event</p>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+        {% if event.is_past %}
+          {% if event.published_audio %}
+            {% if user.is_authenticated %}
+              {% if user.can_listen_to_audio %}
+                <div class="col-xs-12 event-view__header__track audio-available">
+                  <div class="col-xs-12 col-sm-6 col-md-4 event-view__header__track__info">
+                    {% if event.published_videos %}
+                      <p>Listen to event audio recording:</p>
+                    {% else %}
+                      <p>Listen to event audio recording:</p>
                     {% endif %}
-                    {% if request.user.is_staff %}
-                        <div class="event-view__details__admin">
-                            <a href="{% url "event_edit" pk=event.id slug=event.slug %}" class="event-view__details__admin__button button-edit">edit event</a>
-                            <form action="{% url "event_clone" pk=event.id slug=event.slug %}" method="post">
-                                {% csrf_token %}
-                                <input class="event-view__details__admin__button button-clone" type="submit" value="Clone">
-                            </form>
+                  </div>
+                  <div id="player-audio" class="col-xs-12 col-sm-6 col-md-5 event-view__header__track__player">
+                  </div>
+                  <div class="col-xs-12 col-sm-6 col-md-3 event-view__header__track__playlist">
+                    <img class="player-control-icon" id="audio-control_prev"
+                         src="{% static 'image/player-control/controller-prev.svg' %}" alt="Previous set">
+                    <span class="player-control-current" id="audio-control__current">Set</span>
+                    <img class="player-control-icon" id="audio-control_next"
+                         src="{% static 'image/player-control/controller-next.svg' %}" alt="Next set">
+                  </div>
+                </div>
+              {% else %}
+                <div class="col-xs-12 event-view__header__track">
+                  <div class="col-xs-12 event-view__header__track__info">
+                    <p class="not-allowed">Event audio (and video) are available only to users with basic (and premium)
+                      memberships.</p><a href="{% url "subscription_settings" %}"
+                                         class="event-view__header__track__info__cta">Click to upgrade</a>
+                  </div>
+                </div>
+              {% endif %}
+            {% else %}
+              <div class="col-xs-12 event-view__header__track">
+                <div class="col-xs-12 event-view__header__track__info">
+                  <p class="not-allowed">Become a subscribing member of SmallsLIVE for unlimited access to our
+                    audio/video archive.</p><a href="{% url "signup_landing" %}"
+                                               class="event-view__header__track__info__cta">Subscribe</a>
+                </div>
+              </div>
+            {% endif %}
+          {% else %}
+            <div class="col-xs-12 event-view__header__track hidden-xs hidden-sm">
+              <div class="col-xs-12 event-view__header__track__info">
+                <p class="no-media">No event audio recording available.</p>
+              </div>
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+      {% if user.can_watch_video %}
+        {% if event.published_videos %}
+          <div class="event-view__header__video">
+            <div class="event-view__header__video__container">
+              <div class="event-view__header__video__close">
+                <i class="fa fa-chevron-circle-left event-view__header__video-link__icon"></i>
+                <p>Close<br>video</p>
+              </div>
+              <div id="player-video"></div>
+              <div class="col-xs-12 col-sm-6 col-md-3 event-view__header__video__playlist">
+                <span class="event-view__header__video__playlist__heading">Event playlist</span>
+                <ul id="video-sets-list">
+                  <li class="event-view__header__video__playlist__item active">Set 1 <span class="duration">48:23</span>
+                  </li>
+                  <li class="event-view__header__video__playlist__item">Set 2 <span class="duration">48:23</span></li>
+                  <li class="event-view__header__video__playlist__item">Set 3 <span class="duration">48:23</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    </section>
+    {% if event.description or request.user.is_staff %}
+      <section class="event-view__details container">
+        <div class="row">
+          <div class="col-xs-12 event-view__details__description">
+            {% if event.description %}
+              <h3>Event description:</h3>
+              <p>{{ event.description|safe }}</p>
+            {% endif %}
+            {% if request.user.is_staff %}
+              <div class="event-view__details__admin">
+                <a href="{% url "event_edit" pk=event.id slug=event.slug %}"
+                   class="event-view__details__admin__button button-edit">edit event</a>
+                <form action="{% url "event_clone" pk=event.id slug=event.slug %}" method="post">
+                  {% csrf_token %}
+                  <input class="event-view__details__admin__button button-clone" type="submit" value="Clone">
+                </form>
                             <span class="event-view__details__admin__id">
                                 ID: {{ event.id }}
                             </span>
-                        </div>
-                    {% endif %}
-                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+    {% endif %}
+    <section class="event-view__artists container">
+      <h3>Event artists:</h3>
+      <div class="row event-view__artists__container">
+        {% for gig_info in event.get_performers %}
+          <div class="mini-artist col-xs-12 col-sm-6">
+            <div class="mini-artist__image">
+              {% if gig_info.artist.photo %}
+                <a href="{{ gig_info.artist.get_absolute_url }}"><img
+                        src="{% thumbor_url gig_info.artist.photo.url|urlencode height=80 width=80 smart=True %}"
+                        alt="{{ gig_info.artist.full_name }} photo"/></a>
+              {% else %}
+                <a href="{{ gig_info.artist.get_absolute_url }}"><img
+                        src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
+              {% endif %}
             </div>
-        </section>
-        {% endif %}
-        <section class="event-view__artists container">
-            <h3>Event artists:</h3>
-            <div class="row event-view__artists__container">
-            {% for gig_info in event.get_performers %}
-                <div class="mini-artist col-xs-12 col-sm-6">
-                    <div class="mini-artist__image">
-                        {% if gig_info.artist.photo %}
-                            <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% thumbor_url gig_info.artist.photo.url|urlencode height=80 width=80 smart=True %}" alt="{{ gig_info.artist.full_name }} photo"/></a>
-                        {% else %}
-                            <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
-                        {% endif %}
-                    </div>
-                    <div class="mini-artist-info">
-                        <h2 class="mini-artist-info__title"><a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }}</a></h2>
-                        <p class="mini-artist-info__instrument">{{ gig_info.role }}</p>
-                        {% if gig_info.artist.biography %}
-                            <p class="mini-artist-info__bio">{{ gig_info.artist.biography|striptags|truncatewords:28 }}</p>
-                        {% else %}
-                            <p class="mini-artist-info__bio unavailable">No artist biography available</p>
-                        {% endif %}
-                        <a class="mini-artist-info__button" href="{{ gig_info.artist.get_absolute_url }}">Artist profile</a><span class="arrow"></span>
-                    </div>
-                </div>
-            {% empty %}
-                <p class="artist-events__notice">There is no performer data available.</p>
-            {% endfor %}
+            <div class="mini-artist-info">
+              <h2 class="mini-artist-info__title"><a
+                      href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }}</a></h2>
+              <p class="mini-artist-info__instrument">{{ gig_info.role }}</p>
+              {% if gig_info.artist.biography %}
+                <p class="mini-artist-info__bio">{{ gig_info.artist.biography|striptags|truncatewords:28 }}</p>
+              {% else %}
+                <p class="mini-artist-info__bio unavailable">No artist biography available</p>
+              {% endif %}
+              <a class="mini-artist-info__button" href="{{ gig_info.artist.get_absolute_url }}">Artist profile</a><span
+                    class="arrow"></span>
             </div>
-        </section>
+          </div>
+        {% empty %}
+          <p class="artist-events__notice">There is no performer data available.</p>
+        {% endfor %}
+      </div>
+    </section>
     {% comment %}
         <section class="event-tracks container">
             <div class="row event-tracks-header vcenter">
@@ -401,7 +435,7 @@
             </div>
         </section>
     {% endcomment %}
-    </div>
+  </div>
 {% endblock content %}
 
 {% block extra_js %}
@@ -426,61 +460,61 @@
     }
 
     {% if user.can_listen_to_audio and event.published_audio %}
-    audioPlayer = jwplayer("player-audio").setup({
-      primary: 'html5',
-      playlist: [
-        {% for audio in event.published_audio %}
-          {
-            sources: [{
-              file: "{{ audio.get_redirect_url|safe }}",
-              type: "mp3"
-            }],
-            title: "{{ event.title }}: Set {{ audio.set_number }}",
-            mediaid: {{ audio.id }}
-          }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-      ],
-      skin: "{% static "jwplayer-skin/smalls.xml" %}",
-      width: "100%",
-      height: 30
-    });
-    audioPlayer.onPlay(function(){
-      videoPlayer.pause(true);
-      updateViewCount(this);
-    });
-    audioPlayer.onReady(function(){
-      var currentItem = audioPlayer.getPlaylistIndex() + 1;
-      var totalItems = audioPlayer.getPlaylist().length;
-      updateSetText('#audio-control__current', currentItem, totalItems);
-    });
+      audioPlayer = jwplayer("player-audio").setup({
+        primary: 'html5',
+        playlist: [
+          {% for audio in event.published_audio %}
+            {
+              sources: [{
+                file: "{{ audio.get_redirect_url|safe }}",
+                type: "mp3"
+              }],
+              title: "{{ event.title }}: Set {{ audio.set_number }}",
+              mediaid: {{ audio.id }}
+            }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ],
+        skin: "{% static "jwplayer-skin/smalls.xml" %}",
+        width: "100%",
+        height: 30
+      });
+      audioPlayer.onPlay(function () {
+        videoPlayer.pause(true);
+        updateViewCount(this);
+      });
+      audioPlayer.onReady(function () {
+        var currentItem = audioPlayer.getPlaylistIndex() + 1;
+        var totalItems = audioPlayer.getPlaylist().length;
+        updateSetText('#audio-control__current', currentItem, totalItems);
+      });
 
-    $('#audio-control_next').on('click', function(){
-      var playlistLength = audioPlayer.getPlaylist().length;
-      var currentIndex = audioPlayer.getPlaylistIndex();
-      // if current item is last, do nothing
-      if (currentIndex !== playlistLength - 1) {
-        var nextItemIndex = (currentIndex + 1) % playlistLength;
-        audioPlayer.playlistItem(nextItemIndex);
-        updateSetText('#audio-control__current', nextItemIndex+1, playlistLength);
-      }
-    });
+      $('#audio-control_next').on('click', function () {
+        var playlistLength = audioPlayer.getPlaylist().length;
+        var currentIndex = audioPlayer.getPlaylistIndex();
+        // if current item is last, do nothing
+        if (currentIndex !== playlistLength - 1) {
+          var nextItemIndex = (currentIndex + 1) % playlistLength;
+          audioPlayer.playlistItem(nextItemIndex);
+          updateSetText('#audio-control__current', nextItemIndex + 1, playlistLength);
+        }
+      });
 
-    $('#audio-control_prev').on('click', function(){
-      var playlistLength = audioPlayer.getPlaylist().length;
-      var currentIndex = audioPlayer.getPlaylistIndex();
-      if (currentIndex !== 0) {
-        var nextItemIndex = (currentIndex - 1);
-        audioPlayer.playlistItem(nextItemIndex);
-        updateSetText('#audio-control__current', nextItemIndex+1, playlistLength);
-      }
-    });
+      $('#audio-control_prev').on('click', function () {
+        var playlistLength = audioPlayer.getPlaylist().length;
+        var currentIndex = audioPlayer.getPlaylistIndex();
+        if (currentIndex !== 0) {
+          var nextItemIndex = (currentIndex - 1);
+          audioPlayer.playlistItem(nextItemIndex);
+          updateSetText('#audio-control__current', nextItemIndex + 1, playlistLength);
+        }
+      });
     {% endif %}
 
     {% if user.can_watch_video and event.published_videos %}
-    videoPlayer = jwplayer("player-video").setup({
-      primary: 'html5',
-      playlist: [
-        {% for video in event.published_videos %}{% if video.media_file.sd_video_file %}
+      videoPlayer = jwplayer("player-video").setup({
+        primary: 'html5',
+        playlist: [
+          {% for video in event.published_videos %}{% if video.media_file.sd_video_file %}
           {
             sources: [{
               file: "{{ video.get_redirect_url|safe }}",
@@ -489,31 +523,31 @@
             title: "{{ event.title }}: Set {{ video.set_number }}",
             mediaid: {{ video.id }}
           }{% if not forloop.last %},{% endif %}
-        {% endif %}{% endfor %}
-      ],
-      skin: "{% static "jwplayer-skin/smalls.xml" %}",
-      width: "100%",
-      height: 450
-    });
-    videoPlayer.onPlay(function(){
-      audioPlayer.pause(true);
-      updateViewCount(this);
-    });
-    videoPlayer.onReady(function(){
-      var playlist = videoPlayer.getPlaylist();
-      var playlistItems = "";
-      $.each(playlist, function(index, item) {
-        playlistItems += '<li class="event-view__header__video__playlist__item';
-        if (index === 0) {
-          playlistItems += ' active';
-        }
-        playlistItems += '" data-playlist-index="' + index + '">Set ' + (index+1) + '</li>';
+          {% endif %}{% endfor %}
+        ],
+        skin: "{% static "jwplayer-skin/smalls.xml" %}",
+        width: "100%",
+        height: 450
       });
-      $("#video-sets-list").html(playlistItems);
-    });
+      videoPlayer.onPlay(function () {
+        audioPlayer.pause(true);
+        updateViewCount(this);
+      });
+      videoPlayer.onReady(function () {
+        var playlist = videoPlayer.getPlaylist();
+        var playlistItems = "";
+        $.each(playlist, function (index, item) {
+          playlistItems += '<li class="event-view__header__video__playlist__item';
+          if (index === 0) {
+            playlistItems += ' active';
+          }
+          playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</li>';
+        });
+        $("#video-sets-list").html(playlistItems);
+      });
     {% endif %}
 
-    $('#video-sets-list').on('click', 'li', function(){
+    $('#video-sets-list').on('click', 'li', function () {
       var currentIndex = videoPlayer.getPlaylistIndex();
       var selectedIndex = $(this).data('playlist-index');
       videoPlayer.playlistItem(selectedIndex);

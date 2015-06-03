@@ -7,15 +7,15 @@
     <div class="content-wrapper">
       {% if request.user.is_authenticated %}
           <section class="archive-page-header">
-              <h1>Newest and most popular content</h1>
-              <p>This is a place for some optional text. Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt.</p>
+              <h1>New and Most Popular Video/Audio</h1>
+              <p>This is our most recently uploaded video and audio and our currently most popular.</p>
           </section>
       {% else %}
           <section class="home-membership container">
               <div class="home-membership__header vertical-align-parent">
                   <div class="vertical-align-child">
                       <h1 class="home-membership__header__title">Become a member of SmallsLIVE and access our live streamed shows nightly!</h1>
-                      <p class="home-membership__header__text">Become a subscribing member and gain unlimited access to our extensive audio/video archive of past shows. By becoming a subscribing member you are directly supporting the musicians and the SmallsLIVE Revenue Share Project.</p>
+                      <p class="home-membership__header__text">Become a member of SmallsLIVE to watch our live stream. Subscribing members get unlimited access to our audio/video archive. By becoming a subscribing member you are directly supporting the musicians and the venue.</p>
                       <a href="{% url "account_signup" %}" class="cto__button">Sign up!</a>
                   </div>
               </div>
