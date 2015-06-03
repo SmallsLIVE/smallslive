@@ -19,7 +19,7 @@ import events.views as event_views
 import users.forms as user_forms
 from users.models import LegalAgreementAcceptance
 from users.views import HasArtistAssignedMixin
-from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm, EditProfileForm
+from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm, EditProfileForm, ArtistResetPasswordForm
 
 
 class MyGigsView(HasArtistAssignedMixin, ListView):
@@ -233,6 +233,7 @@ login = DashboardLoginView.as_view()
 
 
 class ForgotPasswordView(allauth_views.PasswordResetView):
+    form_class = ArtistResetPasswordForm
     success_url = reverse_lazy("artist_dashboard:forgot_password_done")
     template_name = 'artist_dashboard/forgot_password.html'
 
@@ -243,3 +244,16 @@ class ForgotPasswordDoneView(allauth_views.PasswordResetDoneView):
     template_name = 'artist_dashboard/forgot_password_done.html'
 
 forgot_password_done = ForgotPasswordDoneView.as_view()
+
+
+class ResetPasswordFromKeyView(allauth_views.PasswordResetFromKeyView):
+    template_name = "artist_dashboard/change_password.html"
+    success_url = reverse_lazy("artist_dashboard:reset_password_from_key_done")
+
+password_reset_from_key = ResetPasswordFromKeyView.as_view()
+
+
+class ResetPasswordFromKeyDoneView(allauth_views.PasswordResetFromKeyDoneView):
+    template_name = 'artist_dashboard/change_password_done.html'
+
+password_reset_from_key_done = ResetPasswordFromKeyDoneView.as_view()

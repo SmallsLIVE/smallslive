@@ -1,7 +1,15 @@
+from allauth.account import app_settings
+from allauth.account.adapter import get_adapter
+from allauth.account.utils import user_pk_to_url_str, user_username
+from allauth.utils import build_absolute_uri
 from django import forms
 from django.contrib.auth import get_user_model
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.models import Site
+from django.core.urlresolvers import reverse
 from django_countries import countries
 import floppyforms
+import allauth.account.forms as allauth_forms
 from localflavor.us.forms import USStateField
 from localflavor.us.us_states import STATE_CHOICES
 from artists.forms import ArtistAddForm
@@ -90,3 +98,38 @@ class EditProfileForm(ArtistAddForm):
             self.fields[field].widget.attrs['class'] = self.fields[field].widget.attrs.get('class', '') + ' form-control'
         self.fields['salutation'].widget.attrs['class'] = 'form-control selectpicker'
         self.fields['website'].widget.attrs['placeholder'] = 'http://www.yourwebsite.com'
+
+
+class ArtistResetPasswordForm(allauth_forms.ResetPasswordForm):
+    def save(self, request, **kwargs):
+        # c/p from parent class, only needed to change the URL in the email
+        email = self.cleaned_data["email"]
+        token_generator = kwargs.get("token_generator",
+                                     default_token_generator)
+
+        for user in self.users:
+
+            temp_key = token_generator.make_token(user)
+
+            # save it to the password reset model
+            # password_reset = PasswordReset(user=user, temp_key=temp_key)
+            # password_reset.save()
+
+            current_site = Site.objects.get_current()
+
+            # send the password reset email
+            path = reverse("artist_dashboard:reset_password_from_key",
+                           kwargs=dict(uidb36=user_pk_to_url_str(user),
+                                       key=temp_key))
+            url = build_absolute_uri(request, path,
+                                     protocol=app_settings.DEFAULT_HTTP_PROTOCOL)
+            context = {"site": current_site,
+                       "user": user,
+                       "password_reset_url": url}
+            if app_settings.AUTHENTICATION_METHOD \
+                    != app_settings.AuthenticationMethod.EMAIL:
+                context['username'] = user_username(user)
+            get_adapter().send_mail('account/email/password_reset_key',
+                                    email,
+                                    context)
+        return self.cleaned_data["email"]
