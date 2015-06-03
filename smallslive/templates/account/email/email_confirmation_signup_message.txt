@@ -1,0 +1,14 @@
+{% load account %}{% user_display user as user_display %}{% load i18n %}{% autoescape off %}{% with current_site.name as site_name %}{%if not user.artist %}
+Hello {% if user.first_name %}{{user.first_name}}{% endif %}
+
+Welcome to SmallsLIVE and thank you for registering as a {{ user.get_subscription_plan.name }} Member. Please click the link below to complete the registration process and access your account.
+{% else %}Hello {{ user.artist.full_name }}
+
+Welcome to SmallsLIVE. Please click the link below to complete the registration process and access your account.{% endif %}
+
+{{ activate_url }}
+
+SmallsLIVE
+
+{% endwith %}
+{% endautoescape %}

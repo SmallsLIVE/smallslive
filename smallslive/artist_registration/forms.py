@@ -52,7 +52,7 @@ class InviteArtistForm(BaseSignupForm):
             self.custom_signup(request, user)
             # TODO: Move into adapter `save_user` ?
             setup_user_email(request, user, [])
-        send_email_confirmation(request, user, activate_view='artist_registration_confirm_email')
+        send_email_confirmation(request, user, signup=True, activate_view='artist_registration_confirm_email')
         return user
 
     def raise_duplicate_email_error(self):
