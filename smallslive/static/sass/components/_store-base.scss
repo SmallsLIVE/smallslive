@@ -206,6 +206,14 @@
         width: 100%;
         left: 0;
       }
+
+      & a {
+        color: #fff;
+
+        &:hover, &:focus {
+          color: rgba(#fff, 0.7);
+        }
+      }
     }
 
     &__description {
@@ -252,6 +260,14 @@
     font-size: 16px;
     color: #131313;
     margin: 0 0 5px;
+
+    & a {
+      color: #131313;
+
+      &:hover, &:focus {
+        color: rgba(#131313, 0.7);
+      }
+    }
   }
 
   &__price {
@@ -384,6 +400,7 @@
       @include lato-black;
       font-size: 24px;
       display: block;
+      margin-bottom: 10px;
     }
 
     & .store-add-large.negative {
@@ -398,6 +415,32 @@
         &__button {
           border: 1px solid #fff;
           border-right: none;
+          position: relative;
+
+          &:after, &:before {
+            left: 100%;
+            top: 50%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+          }
+
+          &:after {
+            border-color: rgba(136, 183, 213, 0);
+            border-left-color: $main-accent-color;
+            border-width: 15px;
+            margin-top: -15px;
+          }
+
+          &:before {
+            border-color: rgba(255, 255, 255, 0);
+            border-left-color: #fff;
+            border-width: 16px;
+            margin-top: -16px;
+          }
         }
       }
 
@@ -405,5 +448,174 @@
         
       }
     }
+
+    &__title {
+      @include lato-black;
+      font-size: 28px;
+      margin: 0 0 20px;
+
+      & a {
+        color: #fff;
+
+        &:hover, &:focus {
+          color: rgba(#fff, 0.7);
+        }
+      }
+    }
+
+    &__tracks-table {
+      padding: 0 10px;
+
+      &__title {
+        font-size: 18px;
+        margin: 0 0 20px -10px;
+      }
+
+      &__header {
+        padding: 10px 0;
+        border-top: 1px solid rgba(#000, 0.1);
+        border-bottom: 1px solid rgba(#000, 0.1);
+        @include display(flex);
+        @include align-items(center);
+        @include flex-wrap(wrap);
+
+        &:before, &:after {
+          display: none;
+        }
+      }
+
+      &__row {
+        padding: 7px 0;
+        border-bottom: 1px solid rgba(#000, 0.1);
+        @include display(flex);
+        @include align-items(center);
+        @include flex-wrap(wrap);
+
+        &:before, &:after {
+          display: none;
+        }
+
+        &:last-of-type {
+          border-bottom: none;
+        }
+      }
+
+      &__column {
+
+        &.preview {
+          text-align: center;
+        }
+
+        &.title, &.buy-track {
+          text-align: left;
+        }
+
+        &.buy-track {
+          padding-right: 20px;
+        }
+
+        &.duration, &.price {
+          text-align: right;
+        }
+      }
+
+      & a {
+        color: #fff;
+
+        &:hover, &:focus {
+          color: rgba(#fff, 0.7);
+        }
+      }
+
+      & .tracks-table__button {
+          border: 1px solid #fff;
+          border-right: none;
+          position: relative;
+          float: right;
+
+          &:after, &:before {
+            left: 100%;
+            top: 50%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+          }
+
+          &:after {
+            border-color: rgba(136, 183, 213, 0);
+            border-left-color: $main-accent-color;
+            border-width: 14px;
+            margin-top: -14px;
+          }
+
+          &:before {
+            border-color: rgba(255, 255, 255, 0);
+            border-left-color: #fff;
+            border-width: 15px;
+            margin-top: -15px;
+          }
+        }
+
+        & .arrow {
+          float: right;
+        }
+    }
   }
+
+  &__carousel {
+
+    &__controls {
+      @include display(flex);
+      @include align-items(center);
+      @include flex-wrap(wrap);
+      @include justify-content(space-between);
+      padding: 30px;
+      border-top: 2px solid rgba(#fff, 0.15);
+      margin-top: 30px;
+    }
+
+    &__indicators {
+      display: inline-block;
+      padding: 0 15px;
+      margin: 0;
+    }
+
+    &__indicator {
+      margin: 0 5px;
+      list-style-type: none;
+      display: inline-block;
+      height: 10px;
+      width: 10px;
+      border-radius: 100%;
+      background-color: #fff;
+      opacity: 0.5;
+      @include transition(all 0.3s ease-in-out);
+      cursor: pointer;
+
+      &.active, &:hover, &:focus {
+        opacity: 1;
+      }
+    }
+    
+    &__control {
+      font-size: 20px;
+      color: #fff;
+      cursor: pointer;
+      opacity: 0.5;
+      @include transition(all 0.3s ease-in-out);
+      
+      &:hover, &:focus {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.store-newest-music {
+  @include lato;
+  background-color: #fff;
+  padding: 40px 30px 50px;
 }
