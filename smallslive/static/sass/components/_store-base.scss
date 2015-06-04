@@ -199,19 +199,28 @@
       left: -50%;
       padding-left: 50%;
 
+      & a {
+        color: #fff;
+
+        &:hover, &:focus {
+          color: rgba(#fff, 0.7);
+        }
+      }
+
       @media (max-width: $screen-md-min) {
         padding: 0;
         background: none;
         color: $main-accent-color;
         width: 100%;
         left: 0;
-      }
+        margin-top: 20px;
 
-      & a {
-        color: #fff;
+        & a {
+          color: $main-accent-color;
 
-        &:hover, &:focus {
-          color: rgba(#fff, 0.7);
+          &:hover, &:focus {
+            color: rgba($main-accent-color, 0.7);
+          }
         }
       }
     }
@@ -241,6 +250,8 @@
 }
 
 .store-list-item {
+  margin-bottom: 20px;
+
   &__image {
     padding: 5px;
     border: 1px solid #ddd;
@@ -384,6 +395,11 @@
         opacity: 1;
       }
     }
+
+    @media (max-width: $screen-sm-max) {
+      padding-top: 50px;
+      text-align: left;
+    }
   }
 
   &__single {
@@ -521,6 +537,8 @@
 
         &.buy-track {
           padding-right: 20px;
+          @include display(flex);
+          @include align-items(center);
         }
 
         &.duration, &.price {
@@ -571,6 +589,10 @@
         & .arrow {
           float: right;
         }
+
+      @media (max-width: $screen-sm-max) {
+        margin-top: 30px;
+      }
     }
   }
 
