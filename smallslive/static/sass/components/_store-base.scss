@@ -67,6 +67,7 @@
       padding: 0 10px;
       @include transition(all 0.3s ease-in-out);
       color: #131313;
+      width: 100%;
 
       &:hover, &:focus {
         border: none;
@@ -113,6 +114,7 @@
     position: absolute;
     left: 0;
     top: -32px;
+    white-space: nowrap;
   }
 
   &__categories {
@@ -317,6 +319,7 @@
     padding: 5px;
     float: left;
     @include flex-shrink(1);
+    width: 100%;
 
     &:hover, &:focus {
       border: 1px solid $main-accent-color;
@@ -340,10 +343,15 @@
 }
 
 .store-add-small {
+  @include display(flex);
+  @include navbar-vertical-align(center);
+  @include flex-wrap(nowrap);
 
   &__options {
     padding: 3px 3px 4px;
     float: left;
+    @include flex-shrink(1);
+    width: 100%;
 
     &:hover, &:focus {
       border: 1px solid $main-accent-color;
@@ -356,6 +364,11 @@
     padding: 4px 2px 4px 6px;
     margin-left: 2px;
     @include transition(all 0.3s ease-in-out);
+    @include flex-shrink(0);
+  }
+
+  & .arrow {
+    @include flex-shrink(0);
   }
 }
 
@@ -376,6 +389,7 @@
     left: -30px;
     top: -32px;
     z-index: 11;
+    white-space: nowrap;
   }
 
   &__header {
