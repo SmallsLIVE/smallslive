@@ -2,13 +2,21 @@
 Hello {% if user.first_name %}{{user.first_name}}{% endif %}
 
 Welcome to SmallsLIVE and thank you for registering as a {{ user.get_subscription_plan.name }} Member. Please click the link below to complete the registration process and access your account.
-{% else %}Hello {{ user.artist.full_name }}
-
-Welcome to SmallsLIVE. Please click the link below to complete the registration process and access your account.{% endif %}
 
 {{ activate_url }}
 
 SmallsLIVE
+{% else %}Hello SmallsLIVE Artist:
 
+This email is to confirm that this is your correct email address.  Once you have confirmed the email you will be able to set your password and log into the Artist Page Manager of SmallsLIVE.  From the Page Manager you will have access to all of your recordings, personal and account information.
+
+Please click the following link to confirm your email address:
+
+{{ activate_url }}
+
+Thanks,
+
+Spike
+{% endif %}
 {% endwith %}
 {% endautoescape %}
