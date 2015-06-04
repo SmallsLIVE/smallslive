@@ -1,0 +1,213 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block store_nav_active %}active{% endblock %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+
+        <section class="store-header container">
+            <div class="store-header__content">
+                <h1 class="store-header__title">SmallsLIVE Store<span class="store-header__title__divider">|</span><span class="store-header__title__category">Merchandise</span></h1>
+            </div>
+        </section>
+    
+        <section class="store-listing container">
+            <div class="store-nav col-xs-12 col-sm-4 col-md-3">
+                <div class="store-search__container small">
+                    <i class="fa fa-search store-search__small__icon"></i>
+                    <input type="text" class="store-search__small__input" name="store-search" placeholder="Search the store...">
+                    <button type="submit" class="store-search__small__button"><i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+                <div class="store-nav__search-divider"></div>
+                <ul class="store-nav__categories">
+                    <li class="store-nav__category"><a href="#">Digital music</a></li>
+                    <li class="store-nav__category"><a href="#">CD's</a></li>
+                    <li class="store-nav__category active"><a href="#">Merchandise</a></li>
+                    <li class="store-nav__category"><a href="#">Something else</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-12 col-sm-8 col-md-9 store-listing__content">
+                <div class="store-subtle-heading">Featured</div>
+                <div class="store-listing__big-item row">
+                    <div class="col-xs-12 col-sm-6 store-listing__big-item__image">
+                        <a href="#"><img src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 store-listing__big-item__content">
+                        <h2 class="store-listing__big-item__name">
+                            <a href="#">The official SmallsLIVE Cotton T-Shirt</a>
+                        </h2>
+                        <p class="store-listing__big-item__description">
+                            This is our official 100% cotton SmallsLIVE T-Shirt! Available in 4 sizes, choose S, M, L or XL. <b>Shipping included.</b>
+                        </p>
+                        <p class="store-listing__big-item__details">
+                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                        </p>
+                        <span class="store-listing__big-item__price">
+                            $25.00
+                        </span>
+                        <form>
+                            <div class="store-add-large">
+                                <select class="store-add-large__options">
+                                    <option>Mens - XL -- $25.00</option>
+                                    <option>Woman - M -- $30.00</option>
+                                </select>
+                                <button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
+                        <div class="store-list-item__image">
+                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/01.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                        </div>
+                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <form>
+                            <div class="store-add-small">
+                                <select class="store-add-small__options">
+                                    <option>Mens - XL -- $25.00</option>
+                                    <option>Woman - M -- $30.00</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End of single store item -->
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
+                        <div class="store-list-item__image">
+                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/02.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                        </div>
+                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <form>
+                            <div class="store-add-small">
+                                <select class="store-add-small__options">
+                                    <option>Mens - XL -- $25.00</option>
+                                    <option>Woman - M -- $30.00</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End of single store item -->
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
+                        <div class="store-list-item__image">
+                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/03.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                        </div>
+                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <form>
+                            <div class="store-add-small">
+                                <select class="store-add-small__options">
+                                    <option>Mens - XL -- $25.00</option>
+                                    <option>Woman - M -- $30.00</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End of single store item -->
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
+                        <div class="store-list-item__image">
+                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/04.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                        </div>
+                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <form>
+                            <div class="store-add-small">
+                                <select class="store-add-small__options">
+                                    <option>Mens - XL -- $25.00</option>
+                                    <option>Woman - M -- $30.00</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End of single store item -->
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
+                        <div class="store-list-item__image">
+                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/05.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                        </div>
+                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <form>
+                            <div class="store-add-small">
+                                <select class="store-add-small__options">
+                                    <option>Mens - XL -- $25.00</option>
+                                    <option>Woman - M -- $30.00</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End of single store item -->
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
+                        <div class="store-list-item__image">
+                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/01.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                        </div>
+                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <form>
+                            <div class="store-add-small">
+                                <select class="store-add-small__options">
+                                    <option>Mens - XL -- $25.00</option>
+                                    <option>Woman - M -- $30.00</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End of single store item -->
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
+                        <div class="store-list-item__image">
+                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/02.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                        </div>
+                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <form>
+                            <div class="store-add-small">
+                                <select class="store-add-small__options">
+                                    <option>Mens - XL -- $25.00</option>
+                                    <option>Woman - M -- $30.00</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End of single store item -->
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
+                        <div class="store-list-item__image">
+                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/03.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                        </div>
+                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <form>
+                            <div class="store-add-small">
+                                <select class="store-add-small__options">
+                                    <option>Mens - XL -- $25.00</option>
+                                    <option>Woman - M -- $30.00</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- End of single store item -->
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+{% endblock content %}

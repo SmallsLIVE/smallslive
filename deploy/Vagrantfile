@@ -12,18 +12,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "ubuntu/trusty64"
 
-  config.vm.network :forwarded_port, guest: 8000, host: 8000
+  config.vm.network :forwarded_port, guest: 8000, host: 9000
   config.vm.network :forwarded_port, guest: 3000, host: 3000
-  config.vm.network :private_network, ip: "192.168.33.10"
+  config.vm.network :private_network, ip: "192.168.33.20"
+  config.vm.network "public_network"
   config.vm.hostname = "smallslive"
+
+  config.vm.synced_folder "..", "/opt/smallslive/"
 
   config.vm.provider :virtualbox do |vb|
       # Use VBoxManage to customize the VM. For example to change memory:
       vb.customize ["modifyvm", :id, "--memory", "1024"]
   end
-  config.vm.provision "ansible" do |ansible|
-      ansible.playbook = "site.yml"
-      ansible.inventory_path = "hosts/vagrant/inventory"
-      ansible.sudo = true
-  end
+# config.vm.provision "ansible" do |ansible|
+#     ansible.playbook = "site.yml"
+#     ansible.inventory_path = "hosts/vagrant/inventory"
+#     ansible.sudo = true
+# end
 end
