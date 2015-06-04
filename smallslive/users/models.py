@@ -122,7 +122,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         """
         Checks if a user has an artist model assigned
         """
-        return hasattr(self, "artist")
+        return self.artist is not None
 
     def subscribe_to_newsletter(self, request=None):
         if not self.newsletter:
