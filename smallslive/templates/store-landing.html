@@ -1,0 +1,405 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block store_nav_active %}active{% endblock %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+
+        <section class="store-header__expanded container">
+            <div class="store-header__expanded__content">
+                <h1 class="store-header__expanded__title">SmallsLIVE Store</h1>
+                <p>Search our store using the field below or scroll down and go through some of the items we featured.</p>
+                <p class="small">Please note that this is some more text that needs to be changed. Let’s say you can add some info about free shipping and stuff like that here. That’s nice.</p>
+                <div class="store-search__container">
+                    <i class="fa fa-search store-search__large__icon"></i>
+                    <input type="text" class="store-search__large__input" name="store-search" placeholder="Search the store...">
+                    <button type="submit" class="store-search__large__button"><i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="store-featured-merch container">
+            <div class="store-nav col-xs-12 col-sm-4 col-md-3">
+                <span class="store-nav__title">Store Categories</span>
+                <ul class="store-nav__categories">
+                    <li class="store-nav__category"><a href="#">Digital music</a></li>
+                    <li class="store-nav__category"><a href="#">CD's</a></li>
+                    <li class="store-nav__category"><a href="#">Merchandise</a></li>
+                    <li class="store-nav__category"><a href="#">Something else</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-12 col-sm-8 col-md-9 store-featured-merch__content">
+                <div class="store-subtle-heading">Featured merchandise</div>
+                <div class="store-featured-merch__big-item row">
+                    <div class="col-xs-12 col-sm-6 store-featured-merch__big-item__image">
+                        <img src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt">
+                    </div>
+                    <div class="col-xs-12 col-sm-6 store-featured-merch__big-item__content">
+                        <h2 class="store-featured-merch__big-item__name">
+                            The official SmallsLIVE Cotton T-Shirt
+                        </h2>
+                        <p class="store-featured-merch__big-item__description">
+                            This is our official 100% cotton SmallsLIVE T-Shirt! Available in 4 sizes, choose S, M, L or XL. <b>Shipping included.</b>
+                        </p>
+                        <p class="store-featured-merch__big-item__details">
+                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                        </p>
+                        <span class="store-featured-merch__big-item__price">
+                            $25.00
+                        </span>
+                        <div class="store-add-large">
+                            <form>
+                                <select class="store-add-large__options">
+                                    <option>Mens - XL -- $25.00</option>
+                                    <option>Woman - M -- $30.00</option>
+                                </select>
+                                <button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
+                        <div class="store-list-item__image">
+                            <img src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt">
+                        </div>
+                        <h4 class="store-list-item__name">Ut wisi enim ad minim veniam, quis nostrud exerc</h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <div class="store-add-small">
+                            <form>
+                                <select class="store-add-small__options">
+                                    <option>Mens - XL -- $25.00</option>
+                                    <option>Woman - M -- $30.00</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- End of single store item -->
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
+                        <div class="store-list-item__image">
+                            <img src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt">
+                        </div>
+                        <h4 class="store-list-item__name">Ut wisi enim ad minim veniam, quis nostrud exerc</h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <div class="store-add-small">
+                            <form>
+                                <select class="store-add-small__options">
+                                    <option>Mens - XL -- $25.00</option>
+                                    <option>Woman - M -- $30.00</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- End of single store item -->
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
+                        <div class="store-list-item__image">
+                            <img src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt">
+                        </div>
+                        <h4 class="store-list-item__name">Ut wisi enim ad minim veniam, quis nostrud exerc</h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <div class="store-add-small">
+                            <form>
+                                <select class="store-add-small__options">
+                                    <option>Mens - XL -- $25.00</option>
+                                    <option>Woman - M -- $30.00</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- End of single store item -->
+                </div>
+            </div>
+        </section>
+
+        <section class="store-featured-music">
+            <div class="store-featured-music__header">
+                <span class="store-featured-music__title">Featured recordings</span>
+                <a href="#">View all items in Music/CD's category <i class="fa fa-angle-double-right"></i></a>
+            </div>
+            <div class="store-featured-music__carousel" id="store-featured-music__carousel">
+                <!-- single featured item slide -->
+                <div class="store-featured-music__single">
+                    <form>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-5 col-md-3">
+                                <div class="store-featured-music__single__cover">
+                                    <img src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The Ari Hoenig Quartet">
+                                </div>
+                                <p class="store-featured-music__single__details">
+                                    This show recording is available both as a physical CD and a digital download.
+                                </p>
+                                <span class="store-featured-music__single__price">
+                                    $15.00
+                                </span>
+                                <div class="store-add-large negative">
+                                    <form>
+                                        <select class="store-add-large__options">
+                                            <option>Physical CD</option>
+                                            <option>Album digital download</option>
+                                        </select>
+                                        <button type="submit" class="store-add-large__button">Add to cart</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="hidden-xs col-sm-7 col-md-9">
+                                <h2 class="store-featured-music__single__title">
+                                    The Ari Hoenig Quartet
+                                </h2>
+                                <!-- tracks table -->
+                                <div class="store-featured-music__single__tracks-table">
+                                    <h4 class="store-featured-music__single__tracks-table__title">
+                                        Track listing:
+                                    </h4>
+                                    <!-- tracks table header -->
+                                    <div class="store-featured-music__single__tracks-table__header">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
+                                            Preview
+                                        </div>
+                                        <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-featured-music__single__tracks-table__column title">
+                                            Title
+                                        </div>
+                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
+                                            Duration
+                                        </div>
+                                        <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column price">
+                                            Price
+                                        </div>
+                                        <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
+
+                                        </div>
+                                    </div>
+                                    <!-- end of tracks table header -->
+                                    <!-- tracks table row -->
+                                    <div class="store-featured-music__single__tracks-table__row">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
+                                            <a href="#" class="playback-control"><i class="fa fa-pause"></i></a>
+                                        </div>
+                                        <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-featured-music__single__tracks-table__column title">
+                                            Wrap your troubles in dreams
+                                        </div>
+                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
+                                            14:23
+                                        </div>
+                                        <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column price">
+                                            $0.99
+                                        </div>
+                                        <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
+                                            <div class="buy-button-container">
+                                                <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of tracks table row -->
+                                    <!-- tracks table row -->
+                                    <div class="store-featured-music__single__tracks-table__row">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
+                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                        </div>
+                                        <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-featured-music__single__tracks-table__column title">
+                                            All too soon
+                                        </div>
+                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
+                                            14:23
+                                        </div>
+                                        <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column price">
+                                            $0.99
+                                        </div>
+                                        <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
+                                            <div class="buy-button-container">
+                                                <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of tracks table row -->
+                                    <!-- tracks table row -->
+                                    <div class="store-featured-music__single__tracks-table__row">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
+                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                        </div>
+                                        <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-featured-music__single__tracks-table__column title">
+                                            Lullaby of the leaves
+                                        </div>
+                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
+                                            14:23
+                                        </div>
+                                        <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column price">
+                                            $0.99
+                                        </div>
+                                        <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
+                                            <div class="buy-button-container">
+                                                <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of tracks table row -->
+                                    <!-- tracks table row -->
+                                    <div class="store-featured-music__single__tracks-table__row">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
+                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                        </div>
+                                        <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-featured-music__single__tracks-table__column title">
+                                            Bess, you is my woman now
+                                        </div>
+                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
+                                            14:23
+                                        </div>
+                                        <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column price">
+                                            $0.99
+                                        </div>
+                                        <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
+                                            <div class="buy-button-container">
+                                                <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of tracks table row -->
+                                    <!-- tracks table row -->
+                                    <div class="store-featured-music__single__tracks-table__row">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
+                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                        </div>
+                                        <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-featured-music__single__tracks-table__column title">
+                                            Gone with the wind
+                                        </div>
+                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
+                                            14:23
+                                        </div>
+                                        <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column price">
+                                            $0.99
+                                        </div>
+                                        <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
+                                            <div class="buy-button-container">
+                                                <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of tracks table row -->
+                                    <!-- tracks table row -->
+                                    <div class="store-featured-music__single__tracks-table__row">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
+                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                        </div>
+                                        <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-featured-music__single__tracks-table__column title">
+                                            I can’t get started
+                                        </div>
+                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
+                                            14:23
+                                        </div>
+                                        <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column price">
+                                            $0.99
+                                        </div>
+                                        <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
+                                            <div class="buy-button-container">
+                                                <a class="tracks-table__button" href="">Buy track</a><span class="arrow"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of tracks table row -->
+                                </div>
+                                <!-- end of tracks table -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- end of single featured item slide -->
+            </div>
+            <div class="store-featured-music__carousel__controls">
+                <i class="fa fa-caret-left store-featured-music__carousel__control" id="store-featured-music__carousel__control__left"></i>
+                <ul class="store-featured-music__carousel__indicators">
+                    <li class="store-featured-music__carousel__indicator"></li>
+                    <li class="store-featured-music__carousel__indicator"></li>
+                    <li class="store-featured-music__carousel__indicator"></li>
+                    <li class="store-featured-music__carousel__indicator"></li>
+                </ul>
+                <i class="fa fa-caret-left store-featured-music__carousel__control" id="store-featured-music__carousel__control__right"></i>
+            </div>
+        </section>
+
+        <section class="store-newest-music">
+            <div class="store-subtle-heading">Newest recordings in the store</div>
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-3 store-list-item">
+                        <div class="store-list-item__image">
+                            <img src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt">
+                        </div>
+                        <h4 class="store-list-item__name">Ut wisi enim ad minim veniam, quis nostrud exerc</h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <div class="store-add-small">
+                            <form>
+                                <select class="store-add-small__options">
+                                    <option>Physical CD</option>
+                                    <option>Album digital download</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- End of single store item -->
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-3 store-list-item">
+                        <div class="store-list-item__image">
+                            <img src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt">
+                        </div>
+                        <h4 class="store-list-item__name">Ut wisi enim ad minim veniam, quis nostrud exerc</h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <div class="store-add-small">
+                            <form>
+                                <select class="store-add-small__options">
+                                    <option>Physical CD</option>
+                                    <option>Album digital download</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- End of single store item -->
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-3 store-list-item">
+                        <div class="store-list-item__image">
+                            <img src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt">
+                        </div>
+                        <h4 class="store-list-item__name">Ut wisi enim ad minim veniam, quis nostrud exerc</h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <div class="store-add-small">
+                            <form>
+                                <select class="store-add-small__options">
+                                    <option>Physical CD</option>
+                                    <option>Album digital download</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- End of single store item -->
+                    <!-- Single store item -->
+                    <div class="col-xs-12 col-sm-6 col-md-3 store-list-item">
+                        <div class="store-list-item__image">
+                            <img src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt">
+                        </div>
+                        <h4 class="store-list-item__name">Ut wisi enim ad minim veniam, quis nostrud exerc</h4>
+                        <span class="store-list-item__price">$25.00</span>
+                        <div class="store-add-small">
+                            <form>
+                                <select class="store-add-small__options">
+                                    <option>Physical CD</option>
+                                    <option>Album digital download</option>
+                                </select>
+                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- End of single store item -->
+        </section>
+
+    </div>
+
+{% endblock content %}

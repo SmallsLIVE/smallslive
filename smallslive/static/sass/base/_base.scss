@@ -67,6 +67,7 @@ button, input[type="submit"] {
 
 a {
   color: $main-accent-color;
+  @include transition(all 0.3s ease-in-out);
 }
 
 a:focus {
