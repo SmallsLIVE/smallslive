@@ -782,6 +782,7 @@
       &__big-image {
         @include display(flex);
         @include align-items(center);
+        padding: 10px;
 
         & a {
           width: 100%;
@@ -896,6 +897,197 @@
       margin: 10px 0;
       font-size: 28px;
       color: $main-accent-color;
+    }
+  }
+
+  &__recording {
+
+    &__artists {
+      padding: 40px 0 0;
+      border-top: 1px solid #ddd;
+      margin-top: 30px;
+
+      &__heading {
+        @include lato-black;
+        font-size: 18px;
+        margin: 0 0 30px;
+      }
+
+      & .mini-artist:last-of-type {
+        padding-bottom: 0;
+      }
+    }
+
+    &__tracks {
+      padding: 40px 0 0;
+      border-top: 1px solid #ddd;
+      margin-top: 40px;
+    }
+
+    &__tracks-table {
+      padding: 0 10px;
+
+      &__header {
+        padding: 10px 0;
+        border-top: 1px solid rgba(#000, 0.1);
+        border-bottom: 1px solid rgba(#000, 0.1);
+        @include display(flex);
+        @include align-items(center);
+        @include flex-wrap(wrap);
+
+        &:before, &:after {
+          display: none;
+        }
+      }
+
+      &__row {
+        padding: 7px 0;
+        border-bottom: 1px solid rgba(#000, 0.1);
+        @include display(flex);
+        @include align-items(center);
+        @include flex-wrap(wrap);
+
+        &:before, &:after {
+          display: none;
+        }
+
+        &:last-of-type {
+          border-bottom: none;
+        }
+
+        & .title {
+          @include lato-bold;
+        }
+      }
+
+      &__column {
+
+        &.preview {
+          text-align: center;
+        }
+
+        &.title, &.buy-track {
+          text-align: left;
+        }
+
+        &.buy-track {
+          padding-right: 20px;
+          @include display(flex);
+          @include align-items(center);
+        }
+
+        &.duration, &.price {
+          text-align: right;
+        }
+      }
+
+      & a {
+        color: #131313;
+
+        &:hover, &:focus {
+          color: rgba(#131313, 0.7);
+        }
+      }
+
+      & .tracks-table__button {
+          border: 1px solid #fff;
+          border-right: none;
+          position: relative;
+          float: right;
+          color: #fff;
+
+          &:hover, &:focus {
+            color: rgba(#fff, 0.7);
+          }
+
+          &:after, &:before {
+            left: 100%;
+            top: 50%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+          }
+
+          &:after {
+            border-color: rgba(136, 183, 213, 0);
+            border-left-color: $main-accent-color;
+            border-width: 14px;
+            margin-top: -14px;
+          }
+
+          &:before {
+            border-color: rgba(255, 255, 255, 0);
+            border-left-color: #fff;
+            border-width: 15px;
+            margin-top: -15px;
+          }
+
+          & a {
+            color: #fff;
+
+            &:hover, &:focus {
+              color: rgba(#fff, 0.7);
+            }
+          }
+        }
+
+        & .arrow {
+          float: right;
+        }
+
+      @media (max-width: $screen-sm-max) {
+        margin-top: 30px;
+      }
+    }
+
+    &__photos {
+      padding: 40px 0 0;
+      border-top: 1px solid #ddd;
+      margin-top: 40px;
+
+      &__heading {
+        @include lato-black;
+        font-size: 18px;
+        margin: 0 0 25px;
+      }
+
+      &__container {
+        @include display(flex);
+        @include flex-wrap(wrap);
+
+        &:before, &:after {
+          display: none;
+        }
+      }
+    }
+
+    &__photo {
+      width: 25%;
+      padding: 5px;
+      float: left;
+
+      @media (max-width: $screen-sm-max) {
+        width: 33.33%;
+      }
+
+      @media (max-width: $screen-xs-max) {
+        width: 50%;
+      }
+
+      & a {
+        display: block;
+        border: 1px solid #ddd;
+        padding: 5px;
+      }
+
+      & img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
     }
   }
 }

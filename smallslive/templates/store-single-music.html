@@ -1,0 +1,343 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block store_nav_active %}active{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/fancybox/jquery.fancybox.css' %}">
+  <style type="text/css">
+    @media (max-width: 992px) {
+      .fancybox-next span {
+        left: auto;
+        right: -22px;
+      }
+
+      .fancybox-prev span {
+        left: -20px;
+      }
+
+      .fancybox-nav span {
+        visibility: visible;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+
+        <section class="store-header container">
+            <div class="store-header__content">
+                <h1 class="store-header__title">SmallsLIVE Store<span class="store-header__title__divider">|</span><span class="store-header__title__category">T-Shirts</span></h1>
+            </div>
+        </section>
+
+        <section class="store-listing container">
+            <div class="col-xs-12 col-sm-8 col-md-9 col-sm-push-4 col-md-push-3 store-single__content">
+                <div class="row">
+                    <div class="store-single__item row">
+                        <div class="col-xs-12 col-sm-6 store-single__item__images">
+                            <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
+                                <div class="store-single__item__images__big-image square-container">
+                                    <a href="{% static 'image/store/bopjuice-cover.jpg' %}" class="fancybox"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                                </div>
+                                <div class="store-single__item__images__big-image square-container">
+                                    <a href="{% static 'image/store/cd-mockup-bopjuice.jpg' %}" class="fancybox"><img class="defineImageRatio" src="{% static 'image/store/cd-mockup-bopjuice.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                                </div>
+                            </div>
+                            <span class="store-single__item__images__helper">(Click/tap on the image to zoom.)</span>
+                            <ul class="store-single__item__images__thumbnails">
+                                <li data-slickPosition="0" class="store-single__item__images__thumbnail square-container active"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></li>
+                                <li data-slickPosition="1" class="store-single__item__images__thumbnail square-container"><img class="defineImageRatio" src="{% static 'image/store/cd-mockup-bopjuice.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></li>
+                            </ul>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 store-single__item__content">
+                            <h2 class="store-single__item__name">
+                                <a href="#">Bopjuice by Ralph Lalama Live at Smalls</a>
+                            </h2>
+                            <p class="store-single__item__description">
+                                Recorded Live at Smalls Jazz Club<br>Executive Producer: Spike Wilner<br>Produced by: Spike Wilner<br>Mixed by: Ben Rubin at The House of Cha Cha<br>Engineered by: Jimmy Katz<br>Mastered by: Gene Paul and Jamie Polaski<br>Photography and Design by: Michelle Watt
+                            </p>
+                            <span class="store-single__item__price">
+                                $25.00
+                            </span>
+                            <form>
+                                <div class="store-add-large">
+                                    <select class="store-add-large__options">
+                                        <option>CD - full case with artwork -- $25.00</option>
+                                        <option>Album digital download -- $9.99</option>
+                                    </select>
+                                    <button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="store-single__recording__artists">
+                    <h3 class="store-single__recording__artists__heading">Event artists:</h3>
+                    <div class="row">
+                        <div class="mini-artist col-xs-12">
+                            <div class="mini-artist__image">
+                                <a href="#"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
+                            </div>
+                            <div class="mini-artist-info">
+                                <h2 class="mini-artist-info__title"><a href="#">Ralph Lalama</a></h2>
+                                <p class="mini-artist-info__instrument">Tenor Saxophone</p>
+                                <p class="mini-artist-info__bio">A solid fixture of the New York jazz scene and respected world-wide, Ralph Lalama embodies the best of the jazz sound ideal – great time, great swing, expressed through great melodic ideas. Everything he says and plays comes out of his deep connection and appreciation for...</p>
+                                <a class="mini-artist-info__button" href="#">Artist profile</a><span class="arrow"></span>
+                            </div>
+                        </div>
+                        <div class="mini-artist col-xs-12">
+                            <div class="mini-artist__image">
+                                <a href="#"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
+                            </div>
+                            <div class="mini-artist-info">
+                                <h2 class="mini-artist-info__title"><a href="#">JOEL FORBES</a></h2>
+                                <p class="mini-artist-info__instrument">trumpet</p>
+                                <p class="mini-artist-info__bio">Joel Forbes, an accomplished master of the acoustic bass was born in 1956. He has held a place on the NY jazz scene for 30 years. With tours throughout the US, Europe, Japan and Australia Joel has achieved international recognition. His Father, also Joel Forbes...</p>
+                                <a class="mini-artist-info__button" href="#">Artist profile</a><span class="arrow"></span>
+                            </div>
+                        </div>
+                        <div class="mini-artist col-xs-12">
+                            <div class="mini-artist__image">
+                                <a href="#"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
+                            </div>
+                            <div class="mini-artist-info">
+                                <h2 class="mini-artist-info__title"><a href="#">CLIFFORD BARBARO</a></h2>
+                                <p class="mini-artist-info__instrument">drums</p>
+                                <p class="mini-artist-info__bio">A veteran of the jazz scene, he has performed and recorded with numerous major artists over the years including Betty Carter, Charles Tolliver, Jon Hendricks, John Hicks, Lionel Hampton, Walter Bishop, Jr., the Sun Ra Arkestra, and James Carter. He is also a member of...</p>
+                                <a class="mini-artist-info__button" href="#">Artist profile</a><span class="arrow"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="store-single__recording__tracks">
+                    <h3 class="store-single__recording__artists__heading">Track listing:</h3>
+                    <!-- tracks table -->
+                    <div class="store-single__recording__tracks-table">
+                        <!-- tracks table header -->
+                        <div class="store-single__recording__tracks-table__header row">
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
+                                <div class="hidden-xs hidden-sm">Preview</div>
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-single__recording__tracks-table__column title">
+                                Title
+                            </div>
+                            <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-single__recording__tracks-table__column duration">
+                                Duration
+                            </div>
+                            <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column price">
+                                Price
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-single__recording__tracks-table__column buy-track">
+
+                            </div>
+                        </div>
+                        <!-- end of tracks table header -->
+                        <!-- tracks table row -->
+                        <div class="store-single__recording__tracks-table__row row">
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
+                                <a href="#" class="playback-control"><i class="fa fa-pause"></i></a>
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-single__recording__tracks-table__column title">
+                                Wrap your troubles in dreams
+                            </div>
+                            <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-single__recording__tracks-table__column duration">
+                                14:23
+                            </div>
+                            <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column price">
+                                $0.99
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-single__recording__tracks-table__column buy-track">
+                                <div class="buy-button-container">
+                                    <a class="tracks-table__button" href="">Buy track</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end of tracks table row -->
+                        <!-- tracks table row -->
+                        <div class="store-single__recording__tracks-table__row row">
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
+                                <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-single__recording__tracks-table__column title">
+                                All too soon
+                            </div>
+                            <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-single__recording__tracks-table__column duration">
+                                14:23
+                            </div>
+                            <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column price">
+                                $0.99
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-single__recording__tracks-table__column buy-track">
+                                <div class="buy-button-container">
+                                    <a class="tracks-table__button" href="">Buy track</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end of tracks table row -->
+                        <!-- tracks table row -->
+                        <div class="store-single__recording__tracks-table__row row">
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
+                                <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-single__recording__tracks-table__column title">
+                                Lullaby of the leaves
+                            </div>
+                            <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-single__recording__tracks-table__column duration">
+                                14:23
+                            </div>
+                            <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column price">
+                                $0.99
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-single__recording__tracks-table__column buy-track">
+                                <div class="buy-button-container">
+                                    <a class="tracks-table__button" href="">Buy track</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end of tracks table row -->
+                        <!-- tracks table row -->
+                        <div class="store-single__recording__tracks-table__row row">
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
+                                <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-single__recording__tracks-table__column title">
+                                Bess, you is my woman now
+                            </div>
+                            <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-single__recording__tracks-table__column duration">
+                                14:23
+                            </div>
+                            <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column price">
+                                $0.99
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-single__recording__tracks-table__column buy-track">
+                                <div class="buy-button-container">
+                                    <a class="tracks-table__button" href="">Buy track</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end of tracks table row -->
+                        <!-- tracks table row -->
+                        <div class="store-single__recording__tracks-table__row row">
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
+                                <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-single__recording__tracks-table__column title">
+                                Bess, you is my woman now
+                            </div>
+                            <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-single__recording__tracks-table__column duration">
+                                14:23
+                            </div>
+                            <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column price">
+                                $0.99
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-single__recording__tracks-table__column buy-track">
+                                <div class="buy-button-container">
+                                    <a class="tracks-table__button" href="">Buy track</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end of tracks table row -->
+                        <!-- tracks table row -->
+                        <div class="store-single__recording__tracks-table__row row">
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
+                                <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-single__recording__tracks-table__column title">
+                                Gone with the wind
+                            </div>
+                            <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-single__recording__tracks-table__column duration">
+                                14:23
+                            </div>
+                            <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column price">
+                                $0.99
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-single__recording__tracks-table__column buy-track">
+                                <div class="buy-button-container">
+                                    <a class="tracks-table__button" href="">Buy track</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end of tracks table row -->
+                        <!-- tracks table row -->
+                        <div class="store-single__recording__tracks-table__row row">
+                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
+                                <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-4 col-lg-7 store-single__recording__tracks-table__column title">
+                                I can’t get started
+                            </div>
+                            <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-single__recording__tracks-table__column duration">
+                                14:23
+                            </div>
+                            <div class="hidden-xs col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column price">
+                                $0.99
+                            </div>
+                            <div class="col-xs-5 col-sm-4 col-md-2 col-lg-2 store-single__recording__tracks-table__column buy-track">
+                                <div class="buy-button-container">
+                                    <a class="tracks-table__button" href="">Buy track</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end of tracks table row -->
+                    </div>
+                    <!-- end of tracks table -->
+                </div>
+                <div class="store-single__recording__photos">
+                    <h3 class="store-single__recording__photos__heading">Event photos:</h3>
+                    <div class="row store-single__recording__photos__container">
+                        <div class="store-single__recording__photo">
+                            <a href="{% static 'image/store/recording-photos/01.jpg' %}" class="fancybox"><img class="defineImageRatio" src="{% static 'image/store/recording-photos/01.jpg' %}" alt=""></a>
+                        </div>
+                        <div class="store-single__recording__photo">
+                            <a href="{% static 'image/store/recording-photos/02.jpg' %}" class="fancybox"><img class="defineImageRatio" src="{% static 'image/store/recording-photos/02.jpg' %}" alt=""></a>
+                        </div>
+                        <div class="store-single__recording__photo">
+                            <a href="{% static 'image/store/recording-photos/03.jpg' %}" class="fancybox"><img class="defineImageRatio" src="{% static 'image/store/recording-photos/03.jpg' %}" alt=""></a>
+                        </div>
+                        <div class="store-single__recording__photo">
+                            <a href="{% static 'image/store/recording-photos/04.jpg' %}" class="fancybox"><img class="defineImageRatio" src="{% static 'image/store/recording-photos/04.jpg' %}" alt=""></a>
+                        </div>
+                        <div class="store-single__recording__photo">
+                            <a href="{% static 'image/store/recording-photos/03.jpg' %}" class="fancybox"><img class="defineImageRatio" src="{% static 'image/store/recording-photos/03.jpg' %}" alt=""></a>
+                        </div>
+                        <div class="store-single__recording__photo">
+                            <a href="{% static 'image/store/recording-photos/04.jpg' %}" class="fancybox"><img class="defineImageRatio" src="{% static 'image/store/recording-photos/04.jpg' %}" alt=""></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="store-nav col-xs-12 col-sm-4 col-md-3 col-sm-pull-8 col-md-pull-9">
+                <div class="store-search__container small">
+                    <i class="fa fa-search store-search__small__icon"></i>
+                    <input type="text" class="store-search__small__input" name="store-search" placeholder="Search our store...">
+                    <button type="submit" class="store-search__small__button"><i class="fa fa-arrow-circle-right"></i></button>
+                </div>
+                <div class="store-nav__search-divider"></div>
+                <ul class="store-nav__categories">
+                    <li class="store-nav__category"><a href="#">Digital music</a></li>
+                    <li class="store-nav__category"><a href="#">CD's</a></li>
+                    <li class="store-nav__category"><a href="#">Merchandise</a></li>
+                    <li class="store-nav__category"><a href="#">Something else</a></li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+{% endblock content %}
+
+{% block extra_js %}
+  <script src="{% static 'js/store-base.js' %}"></script>
+  <script src="{% static 'js/jquery.fancybox.pack.js' %}"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".fancybox").fancybox({
+        preload: 2
+      });
+    });
+  </script>
+{% endblock %}

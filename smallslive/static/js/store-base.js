@@ -42,9 +42,7 @@ $(document).ready(function () {
         dots: false,
         slidesToShow: 1,
         slidesToScroll: 1,
-        arrows: false,
-        fade: true,
-        swipe: false
+        arrows: false
     });
 
     $(".store-single__item__images__thumbnails").on('click', 'li', function () {
