@@ -117,7 +117,7 @@
                 {% if not request.user.is_staff %}
                   <li><a href="{% url "subscription_settings" %}">Subscription Settings</a></li>
                 {% endif %}
-                <li><a href="{% url "account_logout" %}">Log out</a></li>
+                <li><a href="{% url "account_logout" %}">Sign out</a></li>
              {% else %}
                 <li><a href="#" data-toggle="modal" data-target="#logIn">Sign in</a></li>
                 <li><a href="{% url "signup_landing" %}">Sign up</a></li>
@@ -160,7 +160,7 @@
             {% if not request.user.is_staff %}
               <li><a href="{% url "subscription_settings" %}">Subscription Settings</a></li>
             {% endif %}
-            <li><a href="{% url "account_logout" %}">Log out</a></li>
+            <li><a href="{% url "account_logout" %}">Sign out</a></li>
         </ul>
       </li>
     {% else %}
