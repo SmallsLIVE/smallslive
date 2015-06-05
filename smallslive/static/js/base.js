@@ -267,55 +267,15 @@ $(document).ready(function () {
 })
 
 
-
-/* Initialize store landing page carousel */
-/* Initialize Slick responsive carousel */
+/* Square container maker */
 $(document).ready(function () {
-    $('#store-featured-music__carousel').slick({
-        dots: false,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: false,
-        prevArrow: "store-featured-music__carousel__control__left",
-        nextArrow: "store-featured-music__carousel__control__right"
-    });
-
-    $(".store-featured-music__carousel__indicators").on('click', 'li', function () {
-        slideIndex = $(this).attr("data-slickPosition");
-        console.log(this);
-        var slider = $('#store-featured-music__carousel');
-        slider[0].slick.slickGoTo(slideIndex);
-        $(".store-featured-music__carousel__indicators li.active").toggleClass("active");
-        $(this).toggleClass("active");
-    });
-})
-
-$('#store-featured-music__carousel').on('afterChange', function(event, slick, currentSlide){
-  $(".store-featured-music__carousel__indicator.active").toggleClass( "active" );
-    var indicator = $(".store-featured-music__carousel__indicators li");
-    console.log(currentSlide);
-    $(indicator[currentSlide]).toggleClass( "active" );
-});
-
-$('#store-featured-music__carousel__control__left').click(function(){
-  var slider = $('#store-featured-music__carousel');
-  slider[0].slick.slickPrev();
-})
-
-$('#store-featured-music__carousel__control__right').click(function(){
-  var slider = $('#store-featured-music__carousel');
-  slider[0].slick.slickNext();
-})
-
-/* Store items thumbnail size */
-$(document).ready(function () {
-    $(".store-list-item__image").each(function () {
+    $(".square-container").each(function () {
         $(this).height($(this).width());
     })
 })
 
 $(window).on('resize', function() {
-    $(".store-list-item__image").each(function () {
+    $(".square-container").each(function () {
         $(this).height($(this).width());
     })
 })

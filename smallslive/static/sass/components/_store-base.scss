@@ -285,6 +285,7 @@
       position: relative;
       left: -50%;
       padding-left: 50%;
+      line-height: 130%;
 
       & a {
         color: #fff;
@@ -756,4 +757,148 @@
   @include lato;
   background-color: #fff;
   padding: 40px 30px 50px;
+}
+
+
+.store-single {
+
+  &__content {
+    background-color: #fff;
+    padding: 40px 30px;
+  }
+
+  &__item {
+    @include display(flex);
+    @include align-items(flex-start);
+    @include flex-wrap(wrap);
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
+
+    &:before, &:after {
+      display: none;
+    }
+
+    &__images {
+      padding: 0 20px;
+
+      &__big-image {
+        @include display(flex);
+        @include align-items(center);
+
+        & a {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+
+        & img {
+          width: 100%;
+          height: auto;
+
+          &.tall {
+            height: 100%;
+            width: auto;
+            margin: 0 auto;
+          }
+        }
+      }
+
+      &__helper {
+        display: block;
+        font-size: 12px;
+        @include lato;
+        color: #999;
+        margin: 10px 0;
+      }
+
+      &__thumbnails {
+        display: block;
+        padding: 10px 0;
+        border-top: 1px solid #ddd;
+      }
+
+      &__thumbnail {
+        list-style-type: none;
+        width: 22.5%;
+        margin-right: 3.3%;
+        margin-bottom: 3.3%;
+        padding: 5px;
+        border: 1px solid #ddd;
+        @include display(flex);
+        @include align-items(center);
+        float: left;
+        cursor: pointer;
+        @include transition(all 0.3s ease-in-out);
+
+        &:hover, &:focus, &.active {
+          opacity: 0.7;
+        }
+
+        &:nth-child(4n) {
+          margin-right: 0;
+        }
+
+        & img {
+          width: 100%;
+          height: auto;
+
+          &.tall {
+            height: 100%;
+            width: auto;
+            margin: 0 auto;
+          }
+        }
+      }
+    }
+
+    &__content {
+      margin: 20px 0;
+    }
+
+    &__name {
+      @include lato-black;
+      font-size: 28px;
+      color: $main-accent-color;
+      margin: 0 0 20px;
+      line-height: 130%;
+
+      & a {
+        color: $main-accent-color;
+
+        &:hover, &:focus {
+          color: rgba($main-accent-color, 0.7);
+        }
+      }
+    }
+
+    &__description {
+
+      @include lato;
+      font-size: 14px;
+      margin-bottom: 15px;
+      padding-right: 20px;
+    }
+
+    &__details {
+      @include lato;
+      font-size: 12px;
+      margin-bottom: 15px;
+      padding-right: 20px;
+
+      &__title {
+        display: block;
+        margin: 0 0 2px;
+        @include lato-bold;
+      }
+    }
+
+    &__price {
+      display: block;
+      @include lato-black;
+      margin: 10px 0;
+      font-size: 28px;
+      color: $main-accent-color;
+    }
+  }
 }
