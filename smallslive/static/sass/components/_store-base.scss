@@ -771,9 +771,6 @@
     @include display(flex);
     @include align-items(flex-start);
     @include flex-wrap(wrap);
-    padding-bottom: 20px;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 20px;
 
     &:before, &:after {
       display: none;
@@ -809,12 +806,12 @@
         font-size: 12px;
         @include lato;
         color: #999;
-        margin: 10px 0;
+        margin: 15px 0;
       }
 
       &__thumbnails {
         display: block;
-        padding: 10px 0;
+        padding: 15px 0;
         border-top: 1px solid #ddd;
       }
 
