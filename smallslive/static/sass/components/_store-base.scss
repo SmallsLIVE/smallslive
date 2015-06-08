@@ -385,6 +385,14 @@
     }
   }
 
+  &__info {
+    font-size: 12px;
+    @include lato-bold;
+    text-transform: uppercase;
+    color: #9a9a9a;
+    margin: 0 0 5px;
+  }
+
   &__price {
     @include lato-black;
     font-size: 16px;
@@ -858,7 +866,7 @@
       @include lato-black;
       font-size: 28px;
       color: $main-accent-color;
-      margin: 0 0 20px;
+      margin: 0 0 15px;
       line-height: 130%;
 
       & a {
@@ -867,6 +875,22 @@
         &:hover, &:focus {
           color: rgba($main-accent-color, 0.7);
         }
+      }
+    }
+
+    &__event-link {
+      width: 100%;
+      float: left;
+      text-align: left;
+      margin-bottom: 15px;
+
+      & a {
+        @include red-button;
+        font-size: 14px;
+      }
+
+      & .arrow {
+        float: left;
       }
     }
 
