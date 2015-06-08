@@ -43,9 +43,9 @@ header {
     list-style-type: none;
     padding: 0 15px;
     @include flex-grow(0);
-    max-width: 130px;
 
     & span {
+      display: block;
       white-space: nowrap;
       @include transition(all 0.2s ease-in-out);
     }
@@ -101,8 +101,9 @@ header {
 
   &__icon {
     font-size: 22px;
-    margin-bottom: 12px;
     width: 100%;
+    display: block;
+    margin: 0 auto 12px;
   }
 }
 
@@ -153,6 +154,7 @@ header {
     padding-right: 10px;
     height: 25px;
     vertical-align: middle;
+    @include transition(all 0.3s ease-in-out);
 
     &:last-child {
       border-right: 0;
@@ -228,6 +230,7 @@ header {
 .search {
   width: 100%;
   margin-left: 10px;
+  @include transition(all 0.3s ease-in-out);
 
   & .form-group {
     margin-bottom: 0;
