@@ -18,15 +18,15 @@
 /*  Adds a img.wide or img.tall class to img element. */
 
 function defineImageRatio() {
-    $('.defineImageRatio').each(function () {
-        var imgClass = (this.width / this.height > 1) ? 'wide' : 'tall';
-        $(this).addClass(imgClass);
+    $('.defineImageRatio').each(function (index, element) {
+        var imgClass = (element.width / element.height > 1) ? 'wide' : 'tall';
+        $(element).addClass(imgClass);
     });
 }
 
-$(document).ready(function () {
+$('.defineImageRatio').on('load', function () {
     defineImageRatio();
-})
+});
 
 /* Initialize Slick responsive carousel */
 $(document).ready(function () {

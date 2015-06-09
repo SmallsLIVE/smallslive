@@ -130,11 +130,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'allauth.account.context_processors.account',
     'allauth.socialaccount.context_processors.socialaccount',
-    #'oscar.apps.search.context_processors.search_form',
-    #'oscar.apps.promotions.context_processors.promotions',
-    #'oscar.apps.checkout.context_processors.checkout',
-    #'oscar.apps.customer.notifications.context_processors.notifications',
-    #'oscar.core.context_processors.metadata',
+    'oscar.apps.search.context_processors.search_form',
+    'oscar.apps.promotions.context_processors.promotions',
+    'oscar.apps.checkout.context_processors.checkout',
+    'oscar.apps.customer.notifications.context_processors.notifications',
+    'oscar.core.context_processors.metadata',
 )
 
 ROOT_URLCONF = 'smallslive.urls'

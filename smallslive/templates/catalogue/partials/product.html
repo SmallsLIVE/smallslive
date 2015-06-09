@@ -1,0 +1,48 @@
+{% load reviews_tags %}
+{% load thumbnail %}
+{% load i18n %}
+{% load display_tags %}
+{% load staticfiles %}
+{% load purchase_info_tags %}
+{% load currency_filters %}
+{% load thumbor_tags %}
+
+
+
+{% block product %}
+    <!-- Single store item -->
+    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
+        <div class="store-list-item__image square-container">
+            {% with image=product.primary_image %}
+                {% if not image.is_missing %}
+                  <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=245 width=245 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                {% else %}
+                  <a href="{{ product.get_absolute_url }}"><img src="{% static "image/image_not_found.jpg" %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                {% endif %}
+            {% endwith %}
+        </div>
+        <h4 class="store-list-item__name"><a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title|truncatewords:4 }}</a></h4>
+        <span class="store-list-item__price">$25.00</span>
+        {% if session.price.exists %}
+            {% if session.price.excl_tax == 0 %}
+                <span class="store-list-item__price">{% trans "Free" %}</span>
+            {% elif session.price.is_tax_known %}
+                <span class="store-list-item__price">{{ session.price.incl_tax|currency:session.price.currency }}</span>
+            {% else %}
+                <span class="store-list-item__price">{{ session.price.excl_tax|currency:session.price.currency }}</span>
+            {% endif %}
+        {% else %}
+            <span class="store-list-item__price">&nbsp;</span>
+        {% endif %}
+        <form>
+            <div class="store-add-small">
+                <select class="store-add-small__options">
+                    <option>Mens - XL -- $25.00</option>
+                    <option>Woman - M -- $30.00</option>
+                </select>
+                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+            </div>
+        </form>
+    </div>
+    <!-- End of single store item -->
+{% endblock %}
