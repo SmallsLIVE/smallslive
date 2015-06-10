@@ -98,8 +98,10 @@ INSTALLED_APPS = [
     'utils',
 ] + get_core_apps([
     'oscar_apps.address',
+    'oscar_apps.catalogue',
     'oscar_apps.checkout',
     'oscar_apps.dashboard',
+    'oscar_apps.dashboard.catalogue',
     'oscar_apps.dashboard.files',
     'oscar_apps.partner',
     'oscar_apps.shipping',

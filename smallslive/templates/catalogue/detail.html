@@ -1,6 +1,10 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
+{% load thumbnail %}
+{% load currency_filters %}
+{% load i18n %}
+{% load purchase_info_tags %}
 
 {% block store_nav_active %}active{% endblock %}
 
@@ -39,49 +43,51 @@
                 <div class="row">
                     <div class="store-single__item row">
                     <div class="col-xs-12 col-sm-6 store-single__item__images">
+                      {% with all_images=product.images.all %}
+
                         <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
-                            <div class="store-single__item__images__big-image square-container">
-                                <a href="{% static 'image/store/tshirt-black.png' %}" class="fancybox"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                            </div>
-                            <div class="store-single__item__images__big-image square-container">
-                                <a href="{% static 'image/store/tshirt-examples/01.jpg' %}" class="fancybox"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/01.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                            </div>
-                            <div class="store-single__item__images__big-image square-container">
-                                <a href="{% static 'image/store/tshirt-examples/02.jpg' %}" class="fancybox"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/02.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                            </div>
-                            <div class="store-single__item__images__big-image square-container">
-                                <a href="{% static 'image/store/tshirt-examples/03.jpg' %}" class="fancybox"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/03.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                            </div>
-                            <div class="store-single__item__images__big-image square-container">
-                                <a href="{% static 'image/store/tshirt-examples/04.jpg' %}" class="fancybox"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/04.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                            </div>
-                            <div class="store-single__item__images__big-image square-container">
-                                <a href="{% static 'image/store/tshirt-examples/05.jpg' %}" class="fancybox"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/05.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                            </div>
+                          {% for image in all_images %}
+                              {% thumbnail image.original "x365" upscale=False as thumb %}
+                              <a href="{{ thumb.url }}" class="fancybox"><img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }}"></a>
+                              {% endthumbnail %}
+                          {% endfor %}
                         </div>
                         <span class="store-single__item__images__helper">(Click/tap on the image to zoom.)</span>
                         <ul class="store-single__item__images__thumbnails">
-                            <li data-slickPosition="0" class="store-single__item__images__thumbnail square-container active"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></li>
-                            <li data-slickPosition="1" class="store-single__item__images__thumbnail square-container"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/01.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></li>
-                            <li data-slickPosition="2" class="store-single__item__images__thumbnail square-container"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/02.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></li>
-                            <li data-slickPosition="3" class="store-single__item__images__thumbnail square-container"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/03.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></li>
-                            <li data-slickPosition="4" class="store-single__item__images__thumbnail square-container"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/04.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></li>
-                            <li data-slickPosition="5" class="store-single__item__images__thumbnail square-container"><img class="defineImageRatio" src="{% static 'image/store/tshirt-examples/05.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></li>
+                          {% for image in all_images %}
+                              {% thumbnail image.original "x75" upscale=False as thumb %}
+                              <li data-slickPosition="{{ forloop.counter0 }}" class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}"><img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }} thumbnail"></li>
+                              {% endthumbnail %}
+                          {% endfor %}
                         </ul>
+                      {% endwith %}
                     </div>
                     <div class="col-xs-12 col-sm-6 store-single__item__content">
                         <h2 class="store-single__item__name">
-                            <a href="#">The official SmallsLIVE Cotton T-Shirt</a>
+                            <a href="#">{{ product.title }}</a>
                         </h2>
                         <p class="store-single__item__description">
-                            This is our official 100% cotton SmallsLIVE T-Shirt! Available in 4 sizes, choose S, M, L or XL. <b>Shipping included.</b>
+                            {{ product.short_description|safe }}
                         </p>
                         <p class="store-single__item__details">
-                            <span class="store-single__item__details__title">Detailed description:</span>
-                            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
+                          {% if product.description %}
+                              <span class="store-single__item__details__title">Detailed description:</span>
+                              {{ product.description|safe }}
+                          {% endif %}
                         </p>
+                        {% purchase_info_for_product request product as session %}
                         <span class="store-single__item__price">
-                            $25.00
+                            {% if session.price.exists %}
+                                {% if session.price.excl_tax == 0 %}
+                                    {% trans "Free" %}
+                                {% elif session.price.is_tax_known %}
+                                    {{ session.price.incl_tax|currency:session.price.currency }}
+                                {% else %}
+                                    {{ session.price.excl_tax|currency:session.price.currency }}
+                                {% endif %}
+                            {% else %}
+                                &nbsp;
+                            {% endif %}
                         </span>
                         <form>
                             <div class="store-add-large">
