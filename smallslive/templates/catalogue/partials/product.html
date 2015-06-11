@@ -6,10 +6,12 @@
 {% load purchase_info_tags %}
 {% load currency_filters %}
 {% load thumbor_tags %}
+{% load basket_tags %}
 
 
 
 {% block product %}
+  {% purchase_info_for_product request product as session %}
     <!-- Single store item -->
     <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
         <div class="store-list-item__image square-container">
@@ -22,7 +24,6 @@
             {% endwith %}
         </div>
         <h4 class="store-list-item__name"><a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title|truncatewords:4 }}</a></h4>
-        <span class="store-list-item__price">$25.00</span>
         {% if session.price.exists %}
             {% if session.price.excl_tax == 0 %}
                 <span class="store-list-item__price">{% trans "Free" %}</span>
@@ -34,14 +35,20 @@
         {% else %}
             <span class="store-list-item__price">&nbsp;</span>
         {% endif %}
-        <form>
+        <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
+          {% if session.availability.is_available_to_buy %}
+            {% basket_form request product as basket_form %}
             <div class="store-add-small">
-                <select class="store-add-small__options">
-                    <option>Mens - XL -- $25.00</option>
-                    <option>Woman - M -- $30.00</option>
+                {% csrf_token %}
+                <select class="store-add-small__options" name="child_id">
+                    {% for item_value, item_name in basket_form.fields.child_id.choices %}
+                      <option value="{{ item_value }}">{{ item_name }}</option>
+                    {% endfor %}
                 </select>
+                {{ basket_form.quantity }}
                 <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
             </div>
+          {% endif %}
         </form>
     </div>
     <!-- End of single store item -->
