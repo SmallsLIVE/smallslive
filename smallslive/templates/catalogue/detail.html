@@ -5,6 +5,7 @@
 {% load currency_filters %}
 {% load i18n %}
 {% load purchase_info_tags %}
+{% load basket_tags %}
 
 {% block store_nav_active %}active{% endblock %}
 
@@ -89,13 +90,20 @@
                                 &nbsp;
                             {% endif %}
                         </span>
-                        <form>
+                        <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
                             <div class="store-add-large">
-                                <select class="store-add-large__options">
-                                    <option>Mens - XL -- $25.00</option>
-                                    <option>Woman - M -- $30.00</option>
-                                </select>
-                                <button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span>
+                              {% if session.availability.is_available_to_buy %}
+                                  {% basket_form request product as basket_form %}
+                                      {% csrf_token %}
+                                      <select class="store-add-large__options" name="child_id">
+                                        {% for item_value, item_name in basket_form.fields.child_id.choices %}
+                                          <option value="{{ item_value }}">{{ item_name }}</option>
+                                        {% endfor %}
+                                      </select>
+                                      {{ basket_form.quantity }}
+                                      {{ basket_form.errors }}
+                                      <button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span>
+                              {% endif %}
                             </div>
                         </form>
                     </div>
