@@ -15,7 +15,16 @@
 
 
 
+/*  Adds a img.wide or img.tall class to img element. */
 
+function defineImageRatio(element) {
+    var imgClass = (element.width / element.height > 1) ? 'wide' : 'tall';
+    $(element).addClass(imgClass);
+}
+
+$('.defineImageRatio').on('load', function () {
+    defineImageRatio(this);
+});
 
 /* Initialize Slick responsive carousel */
 $(document).ready(function () {
