@@ -655,6 +655,7 @@
           padding-right: 20px;
           @include display(flex);
           @include align-items(center);
+          @include justify-content(flex-end);
         }
 
         &.duration, &.price {
@@ -699,6 +700,10 @@
             border-left-color: #fff;
             border-width: 15px;
             margin-top: -15px;
+          }
+
+          & i {
+            margin-left: 5px;
           }
         }
 
@@ -998,6 +1003,7 @@
           padding-right: 20px;
           @include display(flex);
           @include align-items(center);
+          @include justify-content(flex-end);
         }
 
         &.duration, &.price {
@@ -1054,6 +1060,10 @@
 
             &:hover, &:focus {
               color: rgba(#fff, 0.7);
+            }
+
+            & i {
+              margin-left: 5px;
             }
           }
         }
