@@ -1,0 +1,25 @@
+{% extends "store_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load currency_filters %}
+{% load thumbnail %}
+{% load product_tags %}
+{% load i18n %}
+
+
+{% block store_nav_active %}active{% endblock %}
+
+{% block store_content %}
+    <div class="col-xs-12 col-sm-8 col-md-9 col-sm-push-4 col-md-push-3 store-listing__content">
+        <div class="row">
+            {% if page.object_list %}
+                <ol class="row-fluid">
+                    {% for result in page.object_list %}
+                        {% render_product result.object %}
+                    {% endfor %}
+                </ol>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock store_content %}

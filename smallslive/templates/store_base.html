@@ -23,13 +23,15 @@
             {% block store_content %}{% endblock %}
 
             <div class="store-nav col-xs-12 col-sm-4 col-md-3 col-sm-pull-8 col-md-pull-9">
-                <div class="store-search__container small">
-                    <i class="fa fa-search store-search__small__icon"></i>
-                    <input type="text" class="store-search__small__input" name="store-search"
-                           placeholder="Search the store...">
-                    <button type="submit" class="store-search__small__button"><i class="fa fa-arrow-circle-right"></i>
-                    </button>
-                </div>
+                <form method="get" action="{% url 'search:search' %}">
+                    <div class="store-search__container small">
+                        <i class="fa fa-search store-search__small__icon"></i>
+                        <input type="text" class="store-search__small__input" name="q"
+                               placeholder="Search the store...">
+                        <button type="submit" class="store-search__small__button"><i class="fa fa-arrow-circle-right"></i>
+                        </button>
+                    </div>
+                </form>
                 <div class="store-nav__search-divider"></div>
                 <ul class="store-nav__categories">
                     {% category_tree as tree_categories %}
