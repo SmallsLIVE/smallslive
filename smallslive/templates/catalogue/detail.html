@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "store_base.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 {% load thumbnail %}
@@ -10,73 +10,68 @@
 {% block store_nav_active %}active{% endblock %}
 
 {% block extra_head %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/fancybox/jquery.fancybox.css' %}">
-  <style type="text/css">
-    @media (max-width: 992px) {
-      .fancybox-next span {
-        left: auto;
-        right: -22px;
-      }
+    <link rel="stylesheet" type="text/css" href="{% static 'css/fancybox/jquery.fancybox.css' %}">
+    <style type="text/css">
+        @media (max-width: 992px) {
+            .fancybox-next span {
+                left: auto;
+                right: -22px;
+            }
 
-      .fancybox-prev span {
-        left: -20px;
-      }
+            .fancybox-prev span {
+                left: -20px;
+            }
 
-      .fancybox-nav span {
-        visibility: visible;
-      }
-    }
-  </style>
+            .fancybox-nav span {
+                visibility: visible;
+            }
+        }
+    </style>
 {% endblock %}
 
-{% block content %}
-
-    <div class="content-wrapper">
-
-        <section class="store-header container">
-            <div class="store-header__content">
-                <h1 class="store-header__title">SmallsLIVE Store<span class="store-header__title__divider">|</span><span class="store-header__title__category">{{ product.categories.all.0 }}</span></h1>
-            </div>
-        </section>
-
-        <section class="store-listing container">
-            <div class="col-xs-12 col-sm-8 col-md-9 col-sm-push-4 col-md-push-3 store-single__content">
-                <div class="row">
-                    <div class="store-single__item row">
-                    <div class="col-xs-12 col-sm-6 store-single__item__images">
-                      {% with all_images=product.images.all %}
+{% block store_content %}
+    <div class="col-xs-12 col-sm-8 col-md-9 col-sm-push-4 col-md-push-3 store-single__content">
+        <div class="row">
+            <div class="store-single__item row">
+                <div class="col-xs-12 col-sm-6 store-single__item__images">
+                    {% with all_images=product.images.all %}
 
                         <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
-                          {% for image in all_images %}
-                              {% thumbnail image.original "x365" upscale=False as thumb %}
-                              <a href="{{ thumb.url }}" class="fancybox"><img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }}"></a>
-                              {% endthumbnail %}
-                          {% endfor %}
+                            {% for image in all_images %}
+                                {% thumbnail image.original "x365" upscale=False as thumb %}
+                                    <a href="{{ thumb.url }}" class="fancybox"><img class="defineImageRatio"
+                                                                                    src="{{ thumb.url }}"
+                                                                                    alt="{{ product.get_title }}"></a>
+                                {% endthumbnail %}
+                            {% endfor %}
                         </div>
                         <span class="store-single__item__images__helper">(Click/tap on the image to zoom.)</span>
                         <ul class="store-single__item__images__thumbnails">
-                          {% for image in all_images %}
-                              {% thumbnail image.original "x75" upscale=False as thumb %}
-                              <li data-slickPosition="{{ forloop.counter0 }}" class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}"><img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }} thumbnail"></li>
-                              {% endthumbnail %}
-                          {% endfor %}
+                            {% for image in all_images %}
+                                {% thumbnail image.original "x75" upscale=False as thumb %}
+                                    <li data-slickPosition="{{ forloop.counter0 }}"
+                                        class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}">
+                                        <img class="defineImageRatio" src="{{ thumb.url }}"
+                                             alt="{{ product.get_title }} thumbnail"></li>
+                                {% endthumbnail %}
+                            {% endfor %}
                         </ul>
-                      {% endwith %}
-                    </div>
-                    <div class="col-xs-12 col-sm-6 store-single__item__content">
-                        <h2 class="store-single__item__name">
-                            <a href="#">{{ product.title }}</a>
-                        </h2>
-                        <p class="store-single__item__description">
-                            {{ product.short_description|safe }}
-                        </p>
-                        <p class="store-single__item__details">
-                          {% if product.description %}
-                              <span class="store-single__item__details__title">Detailed description:</span>
-                              {{ product.description|safe }}
-                          {% endif %}
-                        </p>
-                        {% purchase_info_for_product request product as session %}
+                    {% endwith %}
+                </div>
+                <div class="col-xs-12 col-sm-6 store-single__item__content">
+                    <h2 class="store-single__item__name">
+                        <a href="#">{{ product.title }}</a>
+                    </h2>
+                    <p class="store-single__item__description">
+                        {{ product.short_description|safe }}
+                    </p>
+                    <p class="store-single__item__details">
+                        {% if product.description %}
+                            <span class="store-single__item__details__title">Detailed description:</span>
+                            {{ product.description|safe }}
+                        {% endif %}
+                    </p>
+                    {% purchase_info_for_product request product as session %}
                         <span class="store-single__item__price">
                             {% if session.price.exists %}
                                 {% if session.price.excl_tax == 0 %}
@@ -90,53 +85,37 @@
                                 &nbsp;
                             {% endif %}
                         </span>
-                        <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
-                            <div class="store-add-large">
-                              {% if session.availability.is_available_to_buy %}
-                                  {% basket_form request product as basket_form %}
-                                      {% csrf_token %}
-                                      <select class="store-add-large__options" name="child_id">
-                                        {% for item_value, item_name in basket_form.fields.child_id.choices %}
-                                          <option value="{{ item_value }}">{{ item_name }}</option>
-                                        {% endfor %}
-                                      </select>
-                                      {{ basket_form.quantity }}
-                                      <button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span>
-                              {% endif %}
-                            </div>
-                        </form>
-                    </div>
+                    <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk %}" method="post"
+                          class="add-to-basket">
+                        <div class="store-add-large">
+                            {% if session.availability.is_available_to_buy %}
+                                {% basket_form request product as basket_form %}
+                                {% csrf_token %}
+                                <select class="store-add-large__options" name="child_id">
+                                    {% for item_value, item_name in basket_form.fields.child_id.choices %}
+                                        <option value="{{ item_value }}">{{ item_name }}</option>
+                                    {% endfor %}
+                                </select>
+                                {{ basket_form.quantity }}
+                                <button type="submit" class="store-add-large__button">Add to cart</button>
+                                <span class="arrow"></span>
+                            {% endif %}
+                        </div>
+                    </form>
                 </div>
             </div>
-            </div>
-            <div class="store-nav col-xs-12 col-sm-4 col-md-3 col-sm-pull-8 col-md-pull-9">
-                <div class="store-search__container small">
-                    <i class="fa fa-search store-search__small__icon"></i>
-                    <input type="text" class="store-search__small__input" name="store-search" placeholder="Search our store...">
-                    <button type="submit" class="store-search__small__button"><i class="fa fa-arrow-circle-right"></i></button>
-                </div>
-                <div class="store-nav__search-divider"></div>
-                <ul class="store-nav__categories">
-                    <li class="store-nav__category"><a href="#">Digital music</a></li>
-                    <li class="store-nav__category"><a href="#">CD's</a></li>
-                    <li class="store-nav__category active"><a href="#">Merchandise</a></li>
-                    <li class="store-nav__category"><a href="#">Something else</a></li>
-                </ul>
-            </div>
-        </section>
-
+        </div>
     </div>
-
-{% endblock content %}
+{% endblock store_content %}
 
 {% block extra_js %}
-  <script src="{% static 'js/store-base.js' %}"></script>
-  <script src="{% static 'js/jquery.fancybox.pack.js' %}"></script>
-  <script type="text/javascript">
-    $(document).ready(function () {
-      $(".fancybox").fancybox({
-        preload: 2
-      });
-    });
-  </script>
+    {{ block.super }}
+    <script src="{% static 'js/jquery.fancybox.pack.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".fancybox").fancybox({
+                preload: 2
+            });
+        });
+    </script>
 {% endblock %}
