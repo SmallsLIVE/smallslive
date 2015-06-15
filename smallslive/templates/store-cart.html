@@ -1,0 +1,339 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block store_nav_active %}active{% endblock %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+
+        <section class="store-header container">
+            <div class="store-header__content">
+                <h1 class="store-header__title">SmallsLIVE Store<span class="store-header__title__divider">|</span><span class="store-header__title__category">My Shopping Cart</span></h1>
+            </div>
+        </section>
+        <section class="store-cart__table container">
+            <div class="row">
+                <!-- Cart table header -->
+                <div class="store-cart__table__header clearfix">
+                    <div class="col-xs-12 store-cart__table__header__title">
+                        <span>Physical products</span>
+                    </div>
+                    <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-cart__table__cell image">
+                        Image
+                    </div>
+                    <div class="hidden-xs hidden-sm col-md-9 col-lg-10 no-padding">
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-5 store-cart__table__cell">
+                            Item name
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 store-cart__table__cell option">
+                            Option
+                        </div>
+                        <div class="store-cart__mobile-quantity col-md-6 col-lg-4">
+                            <div class="store-cart__mobile-quantity__half">
+                                <div class="col-xs-12 store-cart__table__cell quantity">
+                                    <div class="store-cart__quantity-control">
+                                        Quantity
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="store-cart__mobile-quantity__half">
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell price">
+                                    Price
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
+                                    Total
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden-xs hidden-sm col-md-1 store-cart__table__cell remove">
+
+                    </div>
+                </div>
+                <!-- End of cart table header -->
+                <!-- Cart table row -->
+                <div class="store-cart__table__row clearfix">
+                    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-1 store-cart__table__cell image">
+                        <a class="square-container" href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-9 col-lg-10 no-padding">
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-5 store-cart__table__cell name">
+                            <a href="#">The official SmallsLIVE Cotton T-Shirt</a>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 store-cart__table__cell option">
+                            Mens XL
+                        </div>
+                        <div class="store-cart__mobile-quantity col-md-6 col-lg-4">
+                            <div class="store-cart__mobile-quantity__half">
+                                <div class="col-xs-12 store-cart__table__cell quantity">
+                                    <div class="store-cart__quantity-control">
+                                        <button class="store-cart__quantity-control__button disabled"><i class="fa fa-minus-circle"></i></button>
+                                        <span class="store-cart__quantity-control__label">1</span>
+                                        <button class="store-cart__quantity-control__button"><i class="fa fa-plus-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="store-cart__mobile-quantity__half">
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell price">
+                                    $15.00
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
+                                    $45.00
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1 store-cart__table__cell remove">
+                        <button class="store-cart__table__remove-button"><i class="fa fa-remove"></i></button>
+                    </div>
+                </div>
+                <!-- End of cart table row -->
+                <!-- Cart table row -->
+                <div class="store-cart__table__row clearfix">
+                    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-1 store-cart__table__cell image">
+                        <a class="square-container" href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-9 col-lg-10 no-padding">
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-5 store-cart__table__cell name">
+                            <a href="#">The official SmallsLIVE Cotton T-Shirt</a>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 store-cart__table__cell option">
+                            Mens XL
+                        </div>
+                        <div class="store-cart__mobile-quantity col-md-6 col-lg-4">
+                            <div class="store-cart__mobile-quantity__half">
+                                <div class="col-xs-12 store-cart__table__cell quantity">
+                                    <div class="store-cart__quantity-control">
+                                        <button class="store-cart__quantity-control__button"><i class="fa fa-minus-circle"></i></button>
+                                        <span class="store-cart__quantity-control__label">3</span>
+                                        <button class="store-cart__quantity-control__button"><i class="fa fa-plus-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="store-cart__mobile-quantity__half">
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell price">
+                                    $15.00
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
+                                    $45.00
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1 store-cart__table__cell remove">
+                        <button class="store-cart__table__remove-button"><i class="fa fa-remove"></i></button>
+                    </div>
+                </div>
+                <!-- End of cart table row -->
+                <!-- Cart table row -->
+                <div class="store-cart__table__row clearfix">
+                    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-1 store-cart__table__cell image">
+                        <a class="square-container" href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-9 col-lg-10 no-padding">
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-5 store-cart__table__cell name">
+                            <a href="#">The official SmallsLIVE Cotton T-Shirt</a>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 store-cart__table__cell option">
+                            Mens XL
+                        </div>
+                        <div class="store-cart__mobile-quantity col-md-6 col-lg-4">
+                            <div class="store-cart__mobile-quantity__half">
+                                <div class="col-xs-12 store-cart__table__cell quantity">
+                                    <div class="store-cart__quantity-control">
+                                        <button class="store-cart__quantity-control__button"><i class="fa fa-minus-circle"></i></button>
+                                        <span class="store-cart__quantity-control__label">3</span>
+                                        <button class="store-cart__quantity-control__button"><i class="fa fa-plus-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="store-cart__mobile-quantity__half">
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell price">
+                                    $15.00
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
+                                    $45.00
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1 store-cart__table__cell remove">
+                        <button class="store-cart__table__remove-button"><i class="fa fa-remove"></i></button>
+                    </div>
+                </div>
+                <!-- End of cart table row -->
+                <!-- Cart table row -->
+                <div class="store-cart__table__row clearfix">
+                    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-1 store-cart__table__cell image">
+                        <a class="square-container" href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-9 col-lg-10 no-padding">
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-5 store-cart__table__cell name">
+                            <a href="#">The official SmallsLIVE Cotton T-Shirt</a>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 store-cart__table__cell option">
+                            Mens XL
+                        </div>
+                        <div class="store-cart__mobile-quantity col-md-6 col-lg-4">
+                            <div class="store-cart__mobile-quantity__half">
+                                <div class="col-xs-12 store-cart__table__cell quantity">
+                                    <div class="store-cart__quantity-control">
+                                        <button class="store-cart__quantity-control__button"><i class="fa fa-minus-circle"></i></button>
+                                        <span class="store-cart__quantity-control__label">3</span>
+                                        <button class="store-cart__quantity-control__button"><i class="fa fa-plus-circle"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="store-cart__mobile-quantity__half">
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell price">
+                                    $15.00
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
+                                    $45.00
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1 store-cart__table__cell remove">
+                        <button class="store-cart__table__remove-button"><i class="fa fa-remove"></i></button>
+                    </div>
+                </div>
+                <!-- End of cart table row -->
+                <!-- Cart table footer -->
+                <div class="store-cart__table__footer clearfix">
+                    <div class="col-xs-offset-4 col-xs-4 col-sm-offset-6 col-sm-3 col-md-offset-7 col-md-2 col-lg-offset-9 col-lg-1 store-cart__table__footer__cell">
+                        Sub-total:
+                    </div>
+                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 store-cart__table__footer__cell value">
+                        $1999.00
+                    </div>
+                </div>
+                <!-- End of cart table footer -->
+                <!-- Cart table header -->
+                <div class="store-cart__table__header clearfix">
+                    <div class="col-xs-12 store-cart__table__header__title">
+                        <span>Digital downloads</span> <span class="smaller">Upon purchase your Digital downloads will be available to you in your <a href="#">My downloads</a> section.</span>
+                    </div>
+                    <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-cart__table__cell image">
+                        Cover
+                    </div>
+                    <div class="hidden-xs hidden-sm col-md-9 col-lg-10 no-padding">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell">
+                            Title
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell album">
+                            Album
+                        </div>
+                        <div class="store-cart__mobile-quantity col-md-4 col-lg-2">
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell text-center">
+                                Option
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell price">
+                                Price
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden-xs hidden-sm col-md-1 store-cart__table__cell remove">
+
+                    </div>
+                </div>
+                <!-- End of cart table header -->
+                <!-- Cart table row -->
+                <div class="store-cart__table__row clearfix">
+                    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-1 store-cart__table__cell image">
+                        <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-9 col-lg-10 no-padding">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell name">
+                            <a href="#">Bopjuice by Ralph Lalama Live at Smalls</a>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell album">
+                            Bopjuice by Ralph Lalama Live at Smalls
+                        </div>
+                        <div class="store-cart__mobile-quantity col-md-4 col-lg-2">
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell text-center">
+                                HD
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
+                                $1.99
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1 store-cart__table__cell remove">
+                        <button class="store-cart__table__remove-button"><i class="fa fa-remove"></i></button>
+                    </div>
+                </div>
+                <!-- End of cart table row -->
+                <!-- Cart table row -->
+                <div class="store-cart__table__row clearfix">
+                    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-1 store-cart__table__cell image">
+                        <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-9 col-lg-10 no-padding">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell name">
+                            <a href="#">Bopjuice by Ralph Lalama Live at Smalls</a>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell album">
+                            Bopjuice by Ralph Lalama Live at Smalls
+                        </div>
+                        <div class="store-cart__mobile-quantity col-md-4 col-lg-2">
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell text-center">
+                                HD
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
+                                $1.99
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1 store-cart__table__cell remove">
+                        <button class="store-cart__table__remove-button"><i class="fa fa-remove"></i></button>
+                    </div>
+                </div>
+                <!-- End of cart table row -->
+                <!-- Cart table row -->
+                <div class="store-cart__table__row clearfix">
+                    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-1 store-cart__table__cell image">
+                        <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                    </div>
+                    <div class="col-xs-8 col-sm-8 col-md-9 col-lg-10 no-padding">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell name">
+                            <a href="#">Bopjuice by Ralph Lalama Live at Smalls</a>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell album">
+                            Bopjuice by Ralph Lalama Live at Smalls
+                        </div>
+                        <div class="store-cart__mobile-quantity col-md-4 col-lg-2">
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell text-center">
+                                HD
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
+                                $1.99
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-1 store-cart__table__cell remove">
+                        <button class="store-cart__table__remove-button"><i class="fa fa-remove"></i></button>
+                    </div>
+                </div>
+                <!-- End of cart table row -->
+                <!-- Cart table footer -->
+                <div class="store-cart__table__footer clearfix">
+                    <div class="col-xs-offset-4 col-xs-4 col-sm-offset-6 col-sm-3 col-md-offset-7 col-md-2 col-lg-offset-9 col-lg-1 store-cart__table__footer__cell">
+                        Sub-total:
+                    </div>
+                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 store-cart__table__footer__cell value">
+                        $1999.00
+                    </div>
+                </div>
+                <!-- End of cart table footer -->
+            </div>
+        </section>
+    </div>
+
+{% endblock content %}
+
+{% block extra_js %}
+  <script src="{% static 'js/store-base.js' %}"></script>
+{% endblock %}

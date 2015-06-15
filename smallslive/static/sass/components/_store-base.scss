@@ -1125,3 +1125,231 @@
     }
   }
 }
+
+.store-cart {
+
+  &__table {
+
+    &__header {
+      padding: 10px 20px;
+      background-color: $main-accent-color;
+      color: #fff;
+
+      &__title {
+        @include lato-bold;
+        font-size: 18px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(#fff, 0.2);
+        margin-bottom: 10px;
+
+        & span {
+          float: left;
+          display: block;
+          margin-right: 30px;
+        }
+
+        & span.smaller {
+          @include lato;
+          font-size: 12px;
+          opacity: 0.6;
+          float: right;
+          margin-top: 6px;
+          display: block;
+
+          & a {
+            @include lato-bold;
+            color: #fff;
+
+            &:hover, &:focus {
+              color: rgba(#fff, 0.8);
+            }
+          }
+
+          @media (max-width: $screen-sm-max) {
+            float: left;
+          }
+        }
+      }
+    }
+
+    &__row {
+      padding: 10px 20px;
+      background-color: #fff;
+      color: $base-text-color;
+      @include display(flex);
+      @include align-items(center);
+      border-bottom: 1px solid #eee;
+    }
+
+    & .no-padding {
+      padding: 0;
+      @include display(flex);
+      @include align-items(center);
+      @include flex-wrap(wrap);
+    }
+
+    &__cell {
+
+      &.image {
+        & a {
+          display: block;
+          padding: 5px;
+          border: 1px solid #ddd;
+        }
+
+        & img {
+          width: 100%;
+          height: auto;
+
+          &.tall {
+            height: 100%;
+            width: auto;
+            margin: 0 auto;
+          }
+        }
+      }
+
+      &.name {
+
+        & a {
+          @include lato-bold;
+          color: $base-text-color;
+
+          &:hover, &:focus {
+            color: rgba($base-text-color, 0.8);
+          }
+        }
+      }
+
+      &.remove {
+        text-align: center;
+      }
+
+      &.price, &.total {
+        text-align: right;
+
+        @media (max-width: $screen-sm-max) {
+          text-align: left;
+        }
+      }
+
+      &.price {
+
+        @media (max-width: $screen-sm-max) {
+          margin-left: 20px;
+
+          &:before {
+            content: "Price:";
+            margin-right: 5px;
+          }
+        }
+      }
+
+      &.total {
+
+        @media (max-width: $screen-sm-max) {
+          margin-left: 20px;
+
+          &:before {
+            content: "Total:";
+            margin-right: 5px;
+          }
+        }
+      }
+
+      &.quantity {
+        text-align: center;
+        width: 100%;
+        @include display(flex);
+        @include justify-content(center);
+
+        @media (max-width: $screen-sm-max) {
+          @include justify-content(flex-start);
+          padding-left: 5px;
+        }
+      }
+
+      @media (max-width: $screen-sm-max) {
+        padding-top: 1px;
+        padding-bottom: 1px;
+      }
+    }
+
+    &__remove-button {
+      background: none;
+      color: #d6d6d6;
+      @include transition(all 0.3s ease-in-out);
+      font-size: 18px;
+
+      &:hover, &:focus {
+        color: $main-accent-color;
+        font-size: 22px;
+      }
+    }
+
+    &__footer {
+      background-color: #FBFBFB;
+      border-top: 1px solid #eee;
+      padding: 15px 0;
+      @include lato-bold;
+
+      &__cell {
+        padding-right: 0;
+
+        &.value {
+          color: $main-accent-color;
+        }
+      }
+    }
+  }
+
+  &__quantity-control {
+    @include display(flex);
+    @include align-items(center);
+
+    &__label {
+      width: 30px;
+      display: block;
+      text-align: center;
+      margin: 0;
+      margin: 0 4px 2px;
+    }
+
+    &__button {
+      display: block;
+      background: none;
+      color: $main-accent-color;
+      @include transition(all 0.3s ease-in-out);
+
+      &:hover, &:focus {
+        color: $main-accent-color-darker;
+      }
+
+      &.disabled {
+        cursor: default;
+        color: #ddd;
+
+        &:hover, &:focus {
+          color: #ddd;
+        }
+      }
+    }
+  }
+
+  &__mobile-quantity {
+    float: left;
+    padding: 0;
+
+    @media (max-width: $screen-sm-max) {
+      @include display(flex);
+      @include flex-wrap(nowrap);
+      @include align-items(center);
+      margin-top: 10px;
+    }
+
+    &__half {
+      float: left;
+      width: 50%;
+    }
+  }
+}
