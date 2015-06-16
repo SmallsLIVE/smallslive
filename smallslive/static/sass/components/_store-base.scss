@@ -1155,6 +1155,7 @@
           float: right;
           margin-top: 6px;
           display: block;
+          margin-right: 0;
 
           & a {
             @include lato-bold;
@@ -1173,12 +1174,54 @@
     }
 
     &__row {
-      padding: 10px 20px;
+      padding: 0;
       background-color: #fff;
       color: $base-text-color;
       @include display(flex);
       @include align-items(center);
       border-bottom: 1px solid #eee;
+      width: 100%;
+      @include transition(all 0.3s ease-in-out);
+      position: relative;
+      overflow: hidden;
+
+      &__container {
+        padding: 10px 20px;
+        width: 100%;
+        position: relative;
+        @include display(flex);
+        @include align-items(center);
+        @include transition(all 0.3s ease-in-out);
+        z-index: 2;
+        left: 0;
+        background-color: #fff;
+      }
+
+      &__remove {
+        width: 50px;
+        position: absolute;
+        padding: 10px;
+        top: 0;
+        right: 0;
+        z-index: 1;
+        height: 100%;
+        background-color: #fbfbfb;
+        @include display(flex);
+        @include align-items(center);
+      }
+
+      @media (min-width: $screen-sm-max) {
+        &:hover, &:focus {
+
+          .store-cart__table__row__container {
+            left: -50px;
+          }
+          
+          & .image {
+            opacity: 0;
+          }
+        }
+      }
     }
 
     & .no-padding {
@@ -1191,6 +1234,8 @@
     &__cell {
 
       &.image {
+        @include transition(all 0.3s ease-in-out);
+
         & a {
           display: block;
           padding: 5px;
@@ -1280,10 +1325,10 @@
       color: #d6d6d6;
       @include transition(all 0.3s ease-in-out);
       font-size: 18px;
+      margin: 0 auto;
 
       &:hover, &:focus {
         color: $main-accent-color;
-        font-size: 22px;
       }
     }
 
@@ -1320,9 +1365,11 @@
       background: none;
       color: $main-accent-color;
       @include transition(all 0.3s ease-in-out);
+      outline: none;
 
       &:hover, &:focus {
         color: $main-accent-color-darker;
+        outline: none;
       }
 
       &.disabled {
@@ -1350,6 +1397,101 @@
     &__half {
       float: left;
       width: 50%;
+    }
+  }
+
+  &__footer {
+    @include lato;
+    background-color: #fbfbfb;
+    padding: 40px 20px;
+    @include display(flex);
+    @include flex-wrap(wrap);
+    @include align-items(center);
+    border-top: 2px solid #eee;
+
+    &:before, &:after {
+      display: none;
+    }
+
+    &__left {
+      text-align: left;
+
+      @media (max-width: $screen-xs-max) {
+          margin-bottom: 30px;
+        }
+
+      &__text {
+        font-size: 12px;
+        color: #4a4a4a;
+        margin-bottom: 5px;
+        display: block;
+      }
+    }
+
+    &__right {
+      text-align: right;
+    }
+
+    &__card-icons {
+      display: block;
+      float: left;
+
+      & img {
+        max-height: 28px;
+        width: auto;
+        margin-right: 3px;
+        border: 1px solid #ddd;
+      }
+    }
+    
+    &__price-container {
+      width: 100%;
+      @include lato-bold;
+
+      &__label, &__value {
+        float: right;
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      &__label {
+        margin-right: 10px;
+        font-size: 14px;
+        margin-top: 2px;
+      }
+
+      &__value {
+        clear: right;
+        font-size: 16px;
+        color: $main-accent-color;
+      }
+
+      &__total {
+        float: right;
+        clear: both;
+        padding-top: 4px;
+        border-top: 1px solid #ddd;
+        padding-left: 30px;
+      }
+    }
+
+    &__button-next {
+      clear: both;
+      display: block;
+      float: right;
+      padding: 10px 30px;
+      background-color: $main-accent-color;
+      color: #fff;
+      text-decoration: none;
+      @include transition(all 0.3s ease-in-out);
+      margin-top: 20px;
+
+      &:hover, &:focus {
+        outline: none;
+        text-decoration: none;
+        background-color: darken($main-accent-color, 7%);
+        color: #fff;
+      }
     }
   }
 }
