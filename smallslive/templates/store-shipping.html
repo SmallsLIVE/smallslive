@@ -14,32 +14,47 @@
             </div>
         </section>
         <section class="store-shipping container">
-            <h3 class="store-cart__form__heading">Shipping information:</h3>
+            <h3 class="store-shipping__heading">Shipping information:</h3>
             <div class="row">
                 <div class="col-xs-12 col-sm-6">
-                    <label for="name" class="store-cart__form__label">Name</label>
-                    <input type="text" name="name" class="store-cart__form__input" value="Matej">
-                    <label for="name" class="store-cart__form__label">Surname</label>
-                    <input type="text" name="surname" class="store-cart__form__input" value="Grozdanović">
-                    <label for="address1" class="store-cart__form__label">Address - line 1</label>
-                    <input type="text" name="address1" class="store-cart__form__input" value="Street Name 123">
-                    <label for="address2" class="store-cart__form__label">Address - line 2</label>
-                    <input type="text" name="address2" class="store-cart__form__input" value="">
+                    <label for="name" class="store-shipping__form__label">Name</label>
+                    <input type="text" name="name" class="store-shipping__form__input" value="Matej">
+                    <label for="name" class="store-shipping__form__label">Surname</label>
+                    <input type="text" name="surname" class="store-shipping__form__input" value="Grozdanović">
+                    <label for="address1" class="store-shipping__form__label">Address - line 1</label>
+                    <input type="text" name="address1" class="store-shipping__form__input" value="Street Name 123">
+                    <label for="address2" class="store-shipping__form__label">Address - line 2</label>
+                    <input type="text" name="address2" class="store-shipping__form__input" value="">
+                </div>
+                <div class="col-xs-12 col-sm-6">
                     <div class="row">
-                        <label for="city" class="store-cart__form__label">City</label>
-                        <input type="text" name="city" class="store-cart__form__input" value="Matej">
-                        <label for="name" class="store-cart__form__label">Name</label>
-                        <input type="text" name="name" class="store-cart__form__input" value="Matej">
+                        <div class="col-xs-6">
+                            <label for="city" class="store-shipping__form__label">City</label>
+                            <input type="text" name="city" class="store-shipping__form__input" value="Boston">
+                        </div>
+                        <div class="col-xs-6">
+                            <label for="state" class="store-shipping__form__label">State</label>
+                            <select name="state" class="store-shipping__form__select">
+                                <option>Massachusetts</option>
+                                <option>Michigan</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="store-cart__form__filler-separator"></div>
-                    <select class="store-cart__form__select">
+                    <label for="country" class="store-shipping__form__label">Country</label>
+                        <select name="country" class="store-shipping__form__select">
+                            <option>USA</option>
+                            <option>Croatia</option>
+                        </select>
+                    <div class="store-shipping__form__filler-separator"></div>
+                    <label for="shipping-option" class="store-shipping__form__label">Shipping option</label>
+                    <select name="shipping-option" class="store-shipping__form__select">
                         <option>Standard -- $5.00</option>
                         <option>Expedited -- $15.00</option>
                     </select>
                 </div>
             </div>
-            <h3 class="store-cart__form__heading">Digital downloads:</h3>
-            <p class="store-cart__form__text">Upon purchase your Digital downloads will be available to you in your <a href="#">My downloads</a> section. From there you’ll be able to download all digital tracks and albums you purchase on SmallsLIVE.</p>
+            <h3 class="store-shipping__heading">Digital downloads:</h3>
+            <p class="store-shipping__text">Upon purchase your Digital downloads will be available to you in your <a href="#">My downloads</a> section.<br>From there you’ll be able to download all digital tracks and albums you purchase on SmallsLIVE.</p>
         </section>
         <section class="store-cart__footer container">
             <div class="col-xs-12 col-sm-6 store-cart__footer__left">

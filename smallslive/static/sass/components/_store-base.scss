@@ -1495,3 +1495,57 @@
     }
   }
 }
+
+.store-shipping {
+  padding: 20px;
+  background-color: #fff;
+  @include lato;
+  color: $base-text-color;
+
+  &__heading {
+    font-size: 18px;
+    @include lato-black;
+    margin: 20px 0 15px;
+  }
+
+  &__form {
+
+    &__label {
+      font-size: 12px;
+      @include lato;
+      display: block;
+    }
+
+    &__input, &__select {
+      font-size: 16px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      outline: none;
+      width: 100%;
+      margin-bottom: 10px;
+
+      &:hover, &:focus {
+        outline: none;
+        border: 1px solid $main-accent-color;
+      }
+    }
+
+    &__filler-separator {
+      height: 1px;
+      width: 100%;
+      background-color: #ddd;
+      margin: 45px 0 32px;
+    }
+  }
+
+  &__text {
+    margin: 0 0 15px;
+    @include lato;
+    font-size: 14px;
+
+    & a {
+      @include lato-bold;
+      color: $base-text-color;
+    }
+  }
+}
