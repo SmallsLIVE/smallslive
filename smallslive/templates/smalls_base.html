@@ -151,11 +151,12 @@
   <ul class="header-login clearfix">
     {% if user.is_authenticated %}
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle header-login__user-name" data-toggle="dropdown" role="button" aria-expanded="false">{% user_display user %} <span class="caret"></span></a>
+        <a href="#" class="dropdown-toggle header-login__user-name" data-toggle="dropdown" role="button" aria-expanded="false">{% user_display user %}<span class="badge header-user">7</span> <span class="caret"></span></a>
         <ul class="dropdown-menu header-login__user-dropdown" role="menu">
             {% if request.user.artist %}
               <li><a href="{% url "artist_dashboard:home" %}">Artist Dashboard</a></li>
             {% endif %}
+            <li><a href="{% url "static_page" "store-cart" %}">Shopping Cart <span class="badge header-user">7</span></a></li>
             <li><a href="{% url "user_settings" %}">User Settings</a></li>
             {% if not request.user.is_staff %}
               <li><a href="{% url "subscription_settings" %}">Subscription Settings</a></li>
