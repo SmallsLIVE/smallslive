@@ -1496,8 +1496,8 @@
   }
 }
 
-.store-shipping {
-  padding: 20px;
+.store-shipping, .store-billing {
+  padding: 30px;
   background-color: #fff;
   @include lato;
   color: $base-text-color;
@@ -1508,36 +1508,6 @@
     margin: 20px 0 15px;
   }
 
-  &__form {
-
-    &__label {
-      font-size: 12px;
-      @include lato;
-      display: block;
-    }
-
-    &__input, &__select {
-      font-size: 16px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      outline: none;
-      width: 100%;
-      margin-bottom: 10px;
-
-      &:hover, &:focus {
-        outline: none;
-        border: 1px solid $main-accent-color;
-      }
-    }
-
-    &__filler-separator {
-      height: 1px;
-      width: 100%;
-      background-color: #ddd;
-      margin: 45px 0 32px;
-    }
-  }
-
   &__text {
     margin: 0 0 15px;
     @include lato;
@@ -1546,6 +1516,105 @@
     & a {
       @include lato-bold;
       color: $base-text-color;
+    }
+  }
+}
+
+.store__form {
+
+  &__heading {
+    font-size: 18px;
+    @include lato-black;
+    margin: 20px 0 15px;
+  }
+
+  &__label {
+    font-size: 12px;
+    @include lato;
+    display: block;
+    min-height: 17px;
+  }
+
+  &__group {
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+    float: left;
+    width: 100%;
+  }
+
+  &__input, &__select {
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    outline: none;
+    width: 100%;
+    margin-bottom: 10px;
+    @include transition(all 0.3s ease-in-out);
+
+    &:hover, &:focus {
+      outline: none;
+      border: 1px solid $main-accent-color;
+    }
+  }
+
+  &__filler-separator {
+    height: 1px;
+    width: 100%;
+    background-color: #ddd;
+    margin: 45px 0 32px;
+  }
+
+  &__selection {
+
+    &__container {
+      margin-bottom: 20px;
+    }
+
+    &__option {
+      margin-top: 5px;
+
+      & input[type="radio"] {
+        display: none;
+      }
+
+      & label {
+        cursor: pointer;
+        padding-left: 26px;
+        position: relative;
+
+        &:before {
+          content: "";
+          display: inline-block;
+          width: 18px;
+          height: 18px;
+          position: absolute;
+          left: 0;
+          background-color: #fff;
+          border-radius: 100%;
+          border: 1px solid #A4A4A4;
+        }
+      }
+
+      & input[type=radio]:checked + label:before {
+        content: "\2022";
+        color: #666;
+        font-size: 23px;
+        text-align: center;
+        line-height: 13px;
+        padding-left: 1px;
+      }
+
+      & span {
+        @include lato-bold;
+        font-size: 14px;
+        margin-left: 28px;
+
+        &.price {
+          @include lato;
+          color: $main-accent-color;
+          margin-left: 5px;
+        }
+      }
     }
   }
 }
