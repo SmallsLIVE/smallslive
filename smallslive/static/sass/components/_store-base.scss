@@ -1475,22 +1475,46 @@
       }
     }
 
-    &__button-next {
-      clear: both;
+    &__button-next, &__button-back {
       display: block;
-      float: right;
-      padding: 10px 30px;
-      background-color: $main-accent-color;
-      color: #fff;
       text-decoration: none;
       @include transition(all 0.3s ease-in-out);
       margin-top: 20px;
+      font-size: 16px;
+      text-align: center;
+
+      @media (max-width: $screen-xs-max) {
+        width: 100%;
+      }
 
       &:hover, &:focus {
         outline: none;
         text-decoration: none;
+      }
+    }
+
+    &__button-next {
+      padding: 10px 30px;
+      float: right;
+      background-color: $main-accent-color;
+      color: #fff;
+
+      &:hover, &:focus {
         background-color: darken($main-accent-color, 7%);
         color: #fff;
+      }
+    }
+
+    &__button-back {
+      padding: 10px 0;
+      @include lato-bold;
+      float: left;
+      color: lighten($base-text-color, 60%);
+      background: none;
+
+      &:hover, &:focus {
+        color: lighten($base-text-color, 50%);
+        background: none;
       }
     }
   }
