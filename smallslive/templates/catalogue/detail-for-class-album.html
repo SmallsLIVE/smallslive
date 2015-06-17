@@ -1,0 +1,249 @@
+{% extends "store_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load thumbnail %}
+{% load currency_filters %}
+{% load i18n %}
+{% load purchase_info_tags %}
+{% load basket_tags %}
+
+{% block store_nav_active %}active{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/fancybox/jquery.fancybox.css' %}">
+  <style type="text/css">
+    @media (max-width: 992px) {
+      .fancybox-next span {
+        left: auto;
+        right: -22px;
+      }
+
+      .fancybox-prev span {
+        left: -20px;
+      }
+
+      .fancybox-nav span {
+        visibility: visible;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block store_content %}
+  <div class="col-xs-12 col-sm-8 col-md-9 col-sm-push-4 col-md-push-3 store-single__content">
+    <div class="row">
+      <div class="store-single__item row">
+        <div class="col-xs-12 col-sm-6 store-single__item__images">
+          {% with all_images=product.images.all %}
+          <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
+            {% for image in all_images %}
+                {% thumbnail image.original "x365" upscale=False as thumb %}
+                <div class="store-single__item__images__big-image square-container">
+                    <a href="{{ thumb.url }}" class="fancybox"><img class="defineImageRatio"
+                                                                    src="{{ thumb.url }}"
+                                                                    alt="{{ product.get_title }}"></a>
+                </div>
+                {% endthumbnail %}
+            {% endfor %}
+          </div>
+          <span class="store-single__item__images__helper">(Click/tap on the image to zoom.)</span>
+          <ul class="store-single__item__images__thumbnails">
+            {% for image in all_images %}
+              {% thumbnail image.original "x75" upscale=False as thumb %}
+                  <li data-slickPosition="{{ forloop.counter0 }}"
+                      class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}">
+                      <img class="defineImageRatio" src="{{ thumb.url }}"
+                           alt="{{ product.get_title }} thumbnail"></li>
+              {% endthumbnail %}
+            {% endfor %}
+          </ul>
+          {% endwith %}
+        </div>
+        <div class="col-xs-12 col-sm-6 store-single__item__content">
+          <h2 class="store-single__item__name">
+            <a href="#">{{ product.title }}</a>
+          </h2>
+          {% if product.event %}
+          <div class="store-single__item__event-link">
+            <a href="{{ product.event.get_absolute_url }}">View event in our Archive</a>
+            <span class="arrow"></span>
+          </div>
+          {% endif %}
+          <p class="store-single__item__description">
+            {{ product.short_description|safe }}
+          </p>
+          {% purchase_info_for_product request product as session %}
+          <span class="store-single__item__price">
+              {% if session.price.exists %}
+                  {% if session.price.excl_tax == 0 %}
+                      {% trans "Free" %}
+                  {% elif session.price.is_tax_known %}
+                      {{ session.price.incl_tax|currency:session.price.currency }}
+                  {% else %}
+                      {{ session.price.excl_tax|currency:session.price.currency }}
+                  {% endif %}
+              {% else %}
+                  &nbsp;
+              {% endif %}
+          </span>
+          <form>
+            <div class="store-add-large">
+              <select class="store-add-large__options">
+                <option>CD - full case with artwork -- $25.00</option>
+                <option>Album digital download - Mp3 -- $9.99</option>
+                <option>Album digital download - HD -- $14.99</option>
+              </select>
+              <button type="submit" class="store-add-large__button">Add to cart</button>
+              <span class="arrow"></span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="store-single__recording__artists">
+      <h3 class="store-single__recording__artists__heading">Event artists:</h3>
+      <div class="row">
+        <div class="mini-artist col-xs-12">
+          <div class="mini-artist__image">
+            <a href="#"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
+          </div>
+          <div class="mini-artist-info">
+            <h2 class="mini-artist-info__title"><a href="#">Ralph Lalama</a></h2>
+            <p class="mini-artist-info__instrument">Tenor Saxophone</p>
+            <p class="mini-artist-info__bio">A solid fixture of the New York jazz scene and respected world-wide, Ralph
+              Lalama embodies the best of the jazz sound ideal – great time, great swing, expressed through great
+              melodic ideas. Everything he says and plays comes out of his deep connection and appreciation for...</p>
+            <a class="mini-artist-info__button" href="#">Artist profile</a><span class="arrow"></span>
+          </div>
+        </div>
+        <div class="mini-artist col-xs-12">
+          <div class="mini-artist__image">
+            <a href="#"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
+          </div>
+          <div class="mini-artist-info">
+            <h2 class="mini-artist-info__title"><a href="#">JOEL FORBES</a></h2>
+            <p class="mini-artist-info__instrument">trumpet</p>
+            <p class="mini-artist-info__bio">Joel Forbes, an accomplished master of the acoustic bass was born in 1956.
+              He has held a place on the NY jazz scene for 30 years. With tours throughout the US, Europe, Japan and
+              Australia Joel has achieved international recognition. His Father, also Joel Forbes...</p>
+            <a class="mini-artist-info__button" href="#">Artist profile</a><span class="arrow"></span>
+          </div>
+        </div>
+        <div class="mini-artist col-xs-12">
+          <div class="mini-artist__image">
+            <a href="#"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
+          </div>
+          <div class="mini-artist-info">
+            <h2 class="mini-artist-info__title"><a href="#">CLIFFORD BARBARO</a></h2>
+            <p class="mini-artist-info__instrument">drums</p>
+            <p class="mini-artist-info__bio">A veteran of the jazz scene, he has performed and recorded with numerous
+              major artists over the years including Betty Carter, Charles Tolliver, Jon Hendricks, John Hicks, Lionel
+              Hampton, Walter Bishop, Jr., the Sun Ra Arkestra, and James Carter. He is also a member of...</p>
+            <a class="mini-artist-info__button" href="#">Artist profile</a><span class="arrow"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="store-single__recording__tracks">
+      <h3 class="store-single__recording__artists__heading">Track listing:</h3>
+      <!-- tracks table -->
+      <div class="store-single__recording__tracks-table">
+        <!-- tracks table header -->
+        <div class="store-single__recording__tracks-table__header row">
+          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
+            <div class="hidden-xs hidden-sm">Preview</div>
+          </div>
+          <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-single__recording__tracks-table__column title">
+            Title
+          </div>
+          <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-single__recording__tracks-table__column duration">
+            Duration
+          </div>
+          <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-single__recording__tracks-table__column price">
+            Mp3 / HD
+          </div>
+          <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-single__recording__tracks-table__column buy-track">
+
+          </div>
+        </div>
+        <!-- end of tracks table header -->
+        {% for track in product.tracks.all %}
+          <!-- tracks table row -->
+          <div class="store-single__recording__tracks-table__row row">
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
+              <a href="#" class="playback-control"><i class="fa fa-pause"></i></a>
+            </div>
+            <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-single__recording__tracks-table__column title">
+              {{ track.title }}
+            </div>
+            <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-single__recording__tracks-table__column duration">
+              14:23
+            </div>
+            <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-single__recording__tracks-table__column price">
+              $0.99 / $1.49
+            </div>
+            <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-single__recording__tracks-table__column buy-track">
+              <div class="buy-button-container">
+                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i
+                        class="fa fa-caret-down"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Buy mp3 ($0.99)</a></li>
+                  <li><a href="#">Buy HD ($1.49)</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        <!-- end of tracks table row -->
+      </div>
+      <!-- end of tracks table -->
+    </div>
+    <div class="store-single__recording__photos">
+      <h3 class="store-single__recording__photos__heading">Event photos:</h3>
+      <div class="row store-single__recording__photos__container">
+        <div class="store-single__recording__photo">
+          <a href="{% static 'image/store/recording-photos/01.jpg' %}" class="fancybox"><img class="defineImageRatio"
+                                                                                             src="{% static 'image/store/recording-photos/01.jpg' %}"
+                                                                                             alt=""></a>
+        </div>
+        <div class="store-single__recording__photo">
+          <a href="{% static 'image/store/recording-photos/02.jpg' %}" class="fancybox"><img class="defineImageRatio"
+                                                                                             src="{% static 'image/store/recording-photos/02.jpg' %}"
+                                                                                             alt=""></a>
+        </div>
+        <div class="store-single__recording__photo">
+          <a href="{% static 'image/store/recording-photos/03.jpg' %}" class="fancybox"><img class="defineImageRatio"
+                                                                                             src="{% static 'image/store/recording-photos/03.jpg' %}"
+                                                                                             alt=""></a>
+        </div>
+        <div class="store-single__recording__photo">
+          <a href="{% static 'image/store/recording-photos/04.jpg' %}" class="fancybox"><img class="defineImageRatio"
+                                                                                             src="{% static 'image/store/recording-photos/04.jpg' %}"
+                                                                                             alt=""></a>
+        </div>
+        <div class="store-single__recording__photo">
+          <a href="{% static 'image/store/recording-photos/03.jpg' %}" class="fancybox"><img class="defineImageRatio"
+                                                                                             src="{% static 'image/store/recording-photos/03.jpg' %}"
+                                                                                             alt=""></a>
+        </div>
+        <div class="store-single__recording__photo">
+          <a href="{% static 'image/store/recording-photos/04.jpg' %}" class="fancybox"><img class="defineImageRatio"
+                                                                                             src="{% static 'image/store/recording-photos/04.jpg' %}"
+                                                                                             alt=""></a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock store_content %}
+
+{% block extra_js %}
+  {{ block.super }}
+  <script src="{% static 'js/jquery.fancybox.pack.js' %}"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $(".fancybox").fancybox({
+        preload: 2
+      });
+    });
+  </script>
+{% endblock %}
