@@ -1,0 +1,315 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block store_nav_active %}active{% endblock %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+
+        <section class="store-header container">
+            <div class="store-header__content">
+                <h1 class="store-header__title">SmallsLIVE Store<span class="store-header__title__divider">|</span><span class="store-header__title__category">Order overview</span></h1>
+            </div>
+        </section>
+        <section class="store-overview container">
+            <div class="col-xs-12 col-sm-8 store-overview__left-column">
+                <div class="store-overview__group">
+                    <h3 class="store-overview__group__heading">Ordered items:</h3>
+                    <h4 class="store-overview__group__table__heading">Physical items:</h4>
+                    <div class="store-overview__group__table">
+                        <!-- table header start -->
+                        <div class="store-overview__group__table__header clearfix">
+                            <div class="col-xs-2 image">
+                                Image
+                            </div>
+                            <div class="col-xs-7 details">
+                                Details
+                            </div>
+                            <div class="col-xs-3 total">
+                                Total
+                            </div>
+                        </div>
+                        <!-- end of table header -->
+                        <!-- table row start -->
+                        <div class="store-overview__group__table__row clearfix">
+                            <div class="col-xs-2 image">
+                                <a class="square-container" href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                            </div>
+                            <div class="col-xs-7 details">
+                                <p class="store-overview__group__table__product-name">
+                                    The official SmallsLIVE Cotton T-Shirt
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    Mens XL
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    3 x $15.00
+                                </p>
+                            </div>
+                            <div class="col-xs-3 total">
+                                $15.00
+                            </div>
+                        </div>
+                        <!-- end of table row -->
+                        <!-- table row start -->
+                        <div class="store-overview__group__table__row clearfix">
+                            <div class="col-xs-2 image">
+                                <a class="square-container" href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                            </div>
+                            <div class="col-xs-7 details">
+                                <p class="store-overview__group__table__product-name">
+                                    The official SmallsLIVE Cotton T-Shirt
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    Mens XL
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    3 x $15.00
+                                </p>
+                            </div>
+                            <div class="col-xs-3 total">
+                                $15.00
+                            </div>
+                        </div>
+                        <!-- end of table row -->
+                        <!-- table row start -->
+                        <div class="store-overview__group__table__row clearfix">
+                            <div class="col-xs-2 image">
+                                <a class="square-container" href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                            </div>
+                            <div class="col-xs-7 details">
+                                <p class="store-overview__group__table__product-name">
+                                    The official SmallsLIVE Cotton T-Shirt
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    Mens XL
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    3 x $15.00
+                                </p>
+                            </div>
+                            <div class="col-xs-3 total">
+                                $15.00
+                            </div>
+                        </div>
+                        <!-- end of table row -->
+                        <!-- table row start -->
+                        <div class="store-overview__group__table__row clearfix">
+                            <div class="col-xs-2 image">
+                                <a class="square-container" href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                            </div>
+                            <div class="col-xs-7 details">
+                                <p class="store-overview__group__table__product-name">
+                                    The official SmallsLIVE Cotton T-Shirt
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    Mens XL
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    3 x $15.00
+                                </p>
+                            </div>
+                            <div class="col-xs-3 total">
+                                $15.00
+                            </div>
+                        </div>
+                        <!-- end of table row -->
+                        <!-- group total -->
+                        <div class="store-overview__group__total clearfix">
+                            <div class="col-xs-9 store-overview__group__total__label">
+                                Sub-total:
+                            </div>
+                            <div class="col-xs-3 store-overview__group__total__value">
+                                $9218.83
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="store-overview__group">
+                    <h4 class="store-overview__group__table__heading">Digital downloads:</h4>
+                    <div class="store-overview__group__table">
+                        <!-- table header start -->
+                        <div class="store-overview__group__table__header clearfix">
+                            <div class="col-xs-2 image">
+                                Cover
+                            </div>
+                            <div class="col-xs-7 details">
+                                Details
+                            </div>
+                            <div class="col-xs-3 total">
+                                Total
+                            </div>
+                        </div>
+                        <!-- end of table header -->
+                        <!-- table row start -->
+                        <div class="store-overview__group__table__row clearfix">
+                            <div class="col-xs-2 image">
+                                <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                            </div>
+                            <div class="col-xs-7 details">
+                                <p class="store-overview__group__table__product-name">
+                                    Wrap your troubles in dreams
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    Bopjuice by Ralph Lalama Live at Smalls
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    HD
+                                </p>
+                            </div>
+                            <div class="col-xs-3 total">
+                                $1.99
+                            </div>
+                        </div>
+                        <!-- end of table row -->
+                        <!-- table row start -->
+                        <div class="store-overview__group__table__row clearfix">
+                            <div class="col-xs-2 image">
+                                <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                            </div>
+                            <div class="col-xs-7 details">
+                                <p class="store-overview__group__table__product-name">
+                                    All too soon
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    Bopjuice by Ralph Lalama Live at Smalls
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    HD
+                                </p>
+                            </div>
+                            <div class="col-xs-3 total">
+                                $1.99
+                            </div>
+                        </div>
+                        <!-- end of table row -->
+                        <!-- table row start -->
+                        <div class="store-overview__group__table__row clearfix">
+                            <div class="col-xs-2 image">
+                                <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                            </div>
+                            <div class="col-xs-7 details">
+                                <p class="store-overview__group__table__product-name">
+                                    Lullaby of the leaves
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    Bopjuice by Ralph Lalama Live at Smalls
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    HD
+                                </p>
+                            </div>
+                            <div class="col-xs-3 total">
+                                $1.99
+                            </div>
+                        </div>
+                        <!-- end of table row -->
+                        <!-- table row start -->
+                        <div class="store-overview__group__table__row clearfix">
+                            <div class="col-xs-2 image">
+                                <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                            </div>
+                            <div class="col-xs-7 details">
+                                <p class="store-overview__group__table__product-name">
+                                    Full album digital download
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    Bopjuice by Ralph Lalama Live at Smalls
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    Mp3
+                                </p>
+                            </div>
+                            <div class="col-xs-3 total">
+                                $9.99
+                            </div>
+                        </div>
+                        <!-- end of table row -->
+                        <!-- group total -->
+                        <div class="store-overview__group__total clearfix">
+                            <div class="col-xs-9 store-overview__group__total__label">
+                                Sub-total:
+                            </div>
+                            <div class="col-xs-3 store-overview__group__total__value">
+                                $15.96
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="store-overview__return-button__container">
+                    <a href="#" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to cart</a>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 store-overview__right-column">
+                <div class="store-overview__group">
+                    <h3 class="store-overview__group__heading">Shipping information:</h3>
+                    <div class="store-overview__group__textblock">
+                        <p>Matej Grozdanovic</p>
+                        <p>Street name 123</p>
+                        <p>Boston, MA</p>
+                        <p>United States</p>
+                    </div>
+                    <div class="store-overview__group__textblock">
+                        <p>Expedited shipping -- $15.00</p>
+                    </div>
+                </div>
+                <div class="store-overview__return-button__container">
+                    <a href="#" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to shipping</a>
+                </div>
+                <div class="store-overview__group">
+                    <h3 class="store-overview__group__heading">Billing information:</h3>
+                    <div class="store-overview__group__textblock">
+                        <p>Matej Grozdanovic</p>
+                        <p>Street name 123</p>
+                        <p>Boston, MA</p>
+                        <p>United States</p>
+                    </div>
+                    <div class="store-overview__group__textblock">
+                        <p class="small-heading">Credit card:</p>
+                        <p>xxxx xxxx xxxx 4567</p>
+                        <p>Valid thru 12/17</p>
+                        <p>Matej Grozdanovic</p>
+                    </div>
+                    <div class="store-overview__return-button__container">
+                    <a href="#" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to billing</a>
+                </div>
+                </div>
+            </div>
+        </section>
+        <section class="store-cart__footer container">
+            <div class="col-xs-12 col-sm-6 store-cart__footer__left">
+                <p class="store-cart__footer__left__text">We accept the following payment options:</p>
+                <div class="store-cart__footer__card-icons">
+                    <img src="{% static 'image/payment/visa.png' %}" alt="Visa">
+                    <img src="{% static 'image/payment/mastercard.png' %}" alt="MasterCard">
+                    <img src="{% static 'image/payment/amex.png' %}" alt="American Express">
+                    <img src="{% static 'image/payment/diners.png' %}" alt="Diners">
+                    <img src="{% static 'image/payment/paypal.png' %}" alt="Paypal">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 store-cart__footer__right">
+                <div class="store-cart__footer__price-container">
+                    <span class="store-cart__footer__price-container__value">$1999.99</span>
+                    <span class="store-cart__footer__price-container__label">Something:</span>
+                    <span class="store-cart__footer__price-container__value">$1999.99</span>
+                    <span class="store-cart__footer__price-container__label">Else:</span>
+                    <div class="store-cart__footer__price-container__total">
+                        <span class="store-cart__footer__price-container__value">$9875.99</span>
+                        <span class="store-cart__footer__price-container__label">Total:</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 store-cart__footer__buttons">
+                <a href="#" class="store-cart__footer__button-back"><i class="fa fa-angle-double-left"></i> Back to payment information</a>
+                <a href="#" class="store-cart__footer__button-next">Pay and order</a>
+            </div>
+        </section>
+    </div>
+
+{% endblock content %}
+
+{% block extra_js %}
+  <script src="{% static 'js/store-base.js' %}"></script>
+{% endblock %}
