@@ -25,6 +25,7 @@ DATABASES['heroku'] = dj_database_url.config()
 
 INSTALLED_APPS += (
     'debug_toolbar',
+    'devserver',
 )
 
 COMPRESS_ENABLED = False
