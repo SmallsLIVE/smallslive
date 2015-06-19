@@ -28,6 +28,7 @@ class TrackForm(forms.ModelForm):
         track = super(TrackForm, self).save(commit=False)
         track.attr.author = self.cleaned_data['author']
         track.save()
+        return track
 
 
 BaseTrackFormSet = inlineformset_factory(
