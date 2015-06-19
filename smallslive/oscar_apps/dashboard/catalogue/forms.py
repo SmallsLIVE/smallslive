@@ -1,6 +1,8 @@
 from django import forms
 from django.forms import inlineformset_factory
 from oscar.apps.dashboard.catalogue import forms as oscar_forms
+from multimedia.models import MediaFile
+from oscar_apps.partner.models import StockRecord, Partner
 from oscar_apps.catalogue.models import Product, ProductClass
 
 
@@ -14,7 +16,8 @@ class TrackForm(forms.ModelForm):
     track_no = forms.IntegerField(required=True)
     title = forms.CharField(max_length=100, required=True)
     author = forms.CharField(max_length=100, required=True)
-    price_excl_tax = forms.CharField(max_length=100, required=True)
+    price_excl_tax = forms.DecimalField(required=True)
+    track_file = forms.FileField(max_length=400)
 
     class Meta:
         model = Product
@@ -28,6 +31,16 @@ class TrackForm(forms.ModelForm):
         track = super(TrackForm, self).save(commit=False)
         track.attr.author = self.cleaned_data['author']
         track.save()
+        partner = Partner.objects.first()
+        stock_record, _ = StockRecord.objects.get_or_create(product=track,
+                                                            partner=partner,
+                                                            partner_sku=track.id
+                                                            )
+        stock_record.price_excl_tax = self.cleaned_data['price_excl_tax']
+        media_file, _ = MediaFile.objects.get_or_create(media_type='audio', format='mp3',
+                                                        file=self.cleaned_data['track_file'])
+        stock_record.digital_download = media_file
+        stock_record.save()
         return track
 
 

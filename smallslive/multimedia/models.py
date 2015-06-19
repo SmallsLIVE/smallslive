@@ -13,7 +13,7 @@ class MediaFile(models.Model):
 
     media_type = models.CharField(max_length=10, choices=MEDIA_TYPE, editable=False)
     format = models.CharField(max_length=4, choices=FORMATS, editable=False)
-    file = DynamicBucketFileField(upload_to='/')
+    file = DynamicBucketFileField(upload_to='tracks/')
     size = models.BigIntegerField(help_text="File size in bytes", default=0)
     sd_video_file = DynamicBucketFileField(blank=True)
 

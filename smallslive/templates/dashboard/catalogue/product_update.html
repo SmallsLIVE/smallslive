@@ -20,6 +20,7 @@
                     <th>{% trans "Title" %}</th>
                     <th>{% trans "Author" %}</th>
                     <th>{% trans "Price (excl tax)" %}</th>
+                    <th>{% trans "Mp3 file" %}</th>
                     <th>&nbsp;</th>
                 </tr>
             </thead>
@@ -39,6 +40,7 @@
                     <td>{% include "partials/form_field.html" with field=track_form.title nolabel=True %}</td>
                     <td>{% include "partials/form_field.html" with field=track_form.author nolabel=True %}</td>
                     <td>{% include "partials/form_field.html" with field=track_form.price_excl_tax nolabel=True %}</td>
+                    <td>{% include "partials/form_field.html" with field=track_form.track_file nolabel=True %}</td>
                     <td>
                         {% include "partials/form_field.html" with field=track_form.id nolabel=True %}
                         {% include "partials/form_field.html" with field=track_form.DELETE nolabel=True %}
