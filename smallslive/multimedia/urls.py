@@ -14,4 +14,6 @@ urlpatterns = patterns('multimedia.views',
         name="most_popular_audio"),
     url(r"^most-recent-audio/$", 'most_recent_audio',
         name="most_recent_audio"),
+    url(r"^upload_track/$", 'upload_track',
+        name="upload_track"),
 )

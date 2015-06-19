@@ -1,6 +1,11 @@
 {% extends "oscar/dashboard/catalogue/product_update.html" %}
 {% load i18n %}
+{% load static from staticfiles %}
 
+{% block extrastyles %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static "css/dropzone.min.css" %}" />
+{% endblock %}
 
 {% block tabs %}
     {{ block.super }}
@@ -40,7 +45,14 @@
                     <td>{% include "partials/form_field.html" with field=track_form.title nolabel=True %}</td>
                     <td>{% include "partials/form_field.html" with field=track_form.author nolabel=True %}</td>
                     <td>{% include "partials/form_field.html" with field=track_form.price_excl_tax nolabel=True %}</td>
-                    <td>{% include "partials/form_field.html" with field=track_form.track_file nolabel=True %}</td>
+                    <td>
+                      {% if not track_form.track_file_id.value %}
+                          <div class="dropzone_file" id="dropzone_file_{{ forloop.counter0 }}" data-track-form-id="{{ forloop.counter0 }}">Drop file here</div>
+                      {% else %}
+                        <strong>UPLOADED</strong>
+                      {% endif %}
+                      {% include "partials/form_field.html" with field=track_form.track_file_id nolabel=True %}
+                    </td>
                     <td>
                         {% include "partials/form_field.html" with field=track_form.id nolabel=True %}
                         {% include "partials/form_field.html" with field=track_form.DELETE nolabel=True %}
@@ -50,4 +62,49 @@
             </tbody>
         </table>
     </div>
+{% endblock %}
+
+{% block extrascripts %}
+  {{ block.super }}
+  <script src="{% static "js/dropzone.min.js" %}" type="text/javascript" charset="utf-8"></script>
+  <script>
+  // using jQuery
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+  $(function() {
+      $(".dropzone_file").dropzone({
+        url: "{% url "upload_track" %}",
+        headers: { "X-CSRFToken": csrftoken },
+        parallelUploads: 1,
+        autoProcessQueue: true,
+        addRemoveLinks: false,
+        init: function() {
+          this.on("addedfile", function(file, response) {
+            $(this.element).html("<strong>IN PROGRESS...</strong>");
+          });
+          this.on("success", function(file, response) {
+            $(this.element).html("<strong>UPLOADED</strong>");
+            this.disable();
+            var track_form_id = $(this.element).data('track-form-id');
+            $("#id_tracks-" + track_form_id + "-track_file_id").val(response);
+          });
+        }
+      });
+  })
+  </script>
 {% endblock %}
