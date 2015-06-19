@@ -1,0 +1,699 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+    <div class="content-wrapper">
+
+        <section class="my-downloads-header">
+            <h1 class="my-downloads-header__title container">My downloads</h1>
+        </section>
+        <section class="my-downloads-album__list container">
+            <ul>
+                <li class="my-downloads-album row">
+                    <div class="hidden-xs col-sm-4 col-md-3 my-downloads-album__cover">
+                        <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-9">
+                        <h2 class="my-downloads-album__name">
+                            <a href="#">Bopjuice by Ralph Lalama Live at Smalls</a>
+                        </h2>
+                        <div class="my-downloads-album__event-link">
+                            <a href="#">View event in our Archive</a>
+                            <span class="arrow"></span>
+                        </div>
+                        <div class="my-downloads-album__tracks-table">
+                            <h3 class="my-downloads-album__tracks-table__heading">Tracks bought:</h3>
+                            <!-- tracks table header -->
+                            <div class="my-downloads-album__tracks-table__header row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <div class="hidden-xs hidden-sm">Preview</div>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Title
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Composer
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    Duration
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+
+                                </div>
+                            </div>
+                            <!-- end of tracks table header -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-pause"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Wrap your troubles in dreams
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Ted Koehler
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    All too soon
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Duke Ellington
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Lullaby of the leaves
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Bernice Petkere
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Bess, you is my woman now
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    George Gershwin
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Bess, you is my woman now
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Allie Wrubel
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Gone with the wind
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Vernon Duke
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    I can’t get started
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Vernon Duke
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table download all row -->
+                            <div class="my-downloads-album__tracks-table__row download-all row">
+                                <div class="col-xs-offset-2 col-xs-5 col-sm-offset-2 col-sm-6 col-md-offset-2 col-md-7 col-lg-offset-1 col-lg-9 my-downloads-album__tracks-table__column title">
+                                    <i>Download all tracks</i>
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                        </div>
+                        <!-- end of tracks table -->
+                    </div>
+                </li>
+                <li class="my-downloads-album row">
+                    <div class="hidden-xs col-sm-4 col-md-3 my-downloads-album__cover">
+                        <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-9">
+                        <h2 class="my-downloads-album__name">
+                            <a href="#">Bopjuice by Ralph Lalama Live at Smalls</a>
+                        </h2>
+                        <div class="my-downloads-album__event-link">
+                            <a href="#">View event in our Archive</a>
+                            <span class="arrow"></span>
+                        </div>
+                        <div class="my-downloads-album__tracks-table">
+                            <h3 class="my-downloads-album__tracks-table__heading">Tracks bought:</h3>
+                            <!-- tracks table header -->
+                            <div class="my-downloads-album__tracks-table__header row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <div class="hidden-xs hidden-sm">Preview</div>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Title
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Composer
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    Duration
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+
+                                </div>
+                            </div>
+                            <!-- end of tracks table header -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-pause"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Wrap your troubles in dreams
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Ted Koehler
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    All too soon
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Duke Ellington
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Lullaby of the leaves
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Bernice Petkere
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Bess, you is my woman now
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    George Gershwin
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Bess, you is my woman now
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Allie Wrubel
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Gone with the wind
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Vernon Duke
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    I can’t get started
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Vernon Duke
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table download all row -->
+                            <div class="my-downloads-album__tracks-table__row download-all row">
+                                <div class="col-xs-offset-2 col-xs-5 col-sm-offset-2 col-sm-6 col-md-offset-2 col-md-7 col-lg-offset-1 col-lg-9 my-downloads-album__tracks-table__column title">
+                                    <i>Download all tracks</i>
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                        </div>
+                        <!-- end of tracks table -->
+                    </div>
+                </li><li class="my-downloads-album row">
+                    <div class="hidden-xs col-sm-4 col-md-3 my-downloads-album__cover">
+                        <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-9">
+                        <h2 class="my-downloads-album__name">
+                            <a href="#">Bopjuice by Ralph Lalama Live at Smalls</a>
+                        </h2>
+                        <div class="my-downloads-album__event-link">
+                            <a href="#">View event in our Archive</a>
+                            <span class="arrow"></span>
+                        </div>
+                        <div class="my-downloads-album__tracks-table">
+                            <h3 class="my-downloads-album__tracks-table__heading">Tracks bought:</h3>
+                            <!-- tracks table header -->
+                            <div class="my-downloads-album__tracks-table__header row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <div class="hidden-xs hidden-sm">Preview</div>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Title
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Composer
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    Duration
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+
+                                </div>
+                            </div>
+                            <!-- end of tracks table header -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-pause"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Wrap your troubles in dreams
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Ted Koehler
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    All too soon
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Duke Ellington
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Lullaby of the leaves
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Bernice Petkere
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Bess, you is my woman now
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    George Gershwin
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Bess, you is my woman now
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Allie Wrubel
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Gone with the wind
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Vernon Duke
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table row -->
+                            <div class="my-downloads-album__tracks-table__row row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    I can’t get started
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Vernon Duke
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    14:23
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                            <!-- tracks table download all row -->
+                            <div class="my-downloads-album__tracks-table__row download-all row">
+                                <div class="col-xs-offset-2 col-xs-5 col-sm-offset-2 col-sm-6 col-md-offset-2 col-md-7 col-lg-offset-1 col-lg-9 my-downloads-album__tracks-table__column title">
+                                    <i>Download all tracks</i>
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                    <div class="buy-button-container">
+                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">Download mp3</a></li>
+                                            <li><a href="#">Download HD</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end of tracks table row -->
+                        </div>
+                        <!-- end of tracks table -->
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+    </div>
+{% endblock content %}
