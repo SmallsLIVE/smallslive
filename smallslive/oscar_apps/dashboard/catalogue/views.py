@@ -8,6 +8,8 @@ class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
         self.formsets['track_formset'] = TrackFormSet
 
     def get_context_data(self, **kwargs):
+        if self.product_class.slug != 'album':
+            del self.formsets['track_formset']
         context = super(ProductCreateUpdateView, self).get_context_data(**kwargs)
         context['upload_track_form'] = TrackFileForm()
         return context
