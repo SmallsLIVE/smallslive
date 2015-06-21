@@ -31,7 +31,7 @@ class TrackForm(forms.ModelForm):
     title = forms.CharField(max_length=100, required=True)
     author = forms.CharField(max_length=100, required=True)
     price_excl_tax = forms.DecimalField(required=True)
-    track_file_id = forms.IntegerField(required=True, widget=forms.HiddenInput())
+    track_file_id = forms.IntegerField(widget=forms.HiddenInput())
 
     class Meta:
         model = Product
@@ -39,7 +39,17 @@ class TrackForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(TrackForm, self).__init__(*args, **kwargs)
-        self.instance.product_class = ProductClass.objects.get(slug='track')
+        # tracks need to have a correct product class
+        if not self.instance.product_class:
+            self.instance.product_class = ProductClass.objects.get(slug='track')
+
+        # show existing data correctly on the form
+        if self.instance.id:
+            self.fields['track_no'].initial = self.instance.attr.track_no
+            self.fields['author'].initial = self.instance.attr.author
+            if self.instance.stockrecords.exists():
+                self.fields['price_excl_tax'].initial = self.instance.stockrecords.first().price_excl_tax
+            self.fields['track_file_id'].initial = self.instance.stockrecords.first().digital_download_id
 
     def clean_track_file_id(self):
         track_file_id = self.cleaned_data['track_file_id']
@@ -50,6 +60,7 @@ class TrackForm(forms.ModelForm):
     def save(self, commit=True):
         track = super(TrackForm, self).save(commit=False)
         track.attr.author = self.cleaned_data['author']
+        track.attr.track_no = self.cleaned_data['track_no']
         track.save()
         partner = Partner.objects.first()
         stock_record, _ = StockRecord.objects.get_or_create(product=track,
@@ -64,7 +75,7 @@ class TrackForm(forms.ModelForm):
 
 
 BaseTrackFormSet = inlineformset_factory(
-    Product, Product, form=TrackForm, extra=2, fk_name='album')
+    Product, Product, form=TrackForm, extra=2, fk_name='album', can_order=True)
 
 
 class TrackFormSet(BaseTrackFormSet):
