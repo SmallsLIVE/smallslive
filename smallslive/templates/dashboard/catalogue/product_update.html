@@ -29,6 +29,8 @@
                         <th>{% trans "Author" %}</th>
                         <th>{% trans "Price (excl tax)" %}</th>
                         <th>{% trans "Mp3 file" %}</th>
+                        <th>{% trans "HD Price (excl tax)" %}</th>
+                        <th>{% trans "HD file" %}</th>
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
@@ -55,6 +57,15 @@
                             <strong>UPLOADED</strong>
                           {% endif %}
                           {% include "partials/form_field.html" with field=track_form.track_file_id nolabel=True %}
+                        </td>
+                        <td>{% include "partials/form_field.html" with field=track_form.hd_price_excl_tax nolabel=True %}</td>
+                        <td>
+                          {% if not track_form.hd_track_file_id.value %}
+                              <div class="dropzone_file" id="dropzone_hd_file_{{ forloop.counter0 }}" data-hd-track-form-id="{{ forloop.counter0 }}">Drop file here</div>
+                          {% else %}
+                            <strong>UPLOADED</strong>
+                          {% endif %}
+                          {% include "partials/form_field.html" with field=track_form.hd_track_file_id nolabel=True %}
                         </td>
                         <td>
                             {% include "partials/form_field.html" with field=track_form.id nolabel=True %}
@@ -106,7 +117,13 @@
                 $(this.element).html("<strong>UPLOADED</strong>");
                 this.disable();
                 var track_form_id = $(this.element).data('track-form-id');
-                $("#id_tracks-" + track_form_id + "-track_file_id").val(response);
+                if (typeof track_form_id !== 'undefined') {
+                  $("#id_tracks-" + track_form_id + "-track_file_id").val(response);
+                } else {
+                  track_form_id = $(this.element).data('hd-track-form-id');
+                  $("#id_tracks-" + track_form_id + "-hd_track_file_id").val(response);
+                }
+
               });
             }
           });

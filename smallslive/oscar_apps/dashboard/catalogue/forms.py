@@ -30,8 +30,10 @@ class TrackForm(forms.ModelForm):
     track_no = forms.IntegerField(required=True)
     title = forms.CharField(max_length=100, required=True)
     author = forms.CharField(max_length=100, required=True)
-    price_excl_tax = forms.DecimalField(required=True)
+    price_excl_tax = forms.DecimalField()
     track_file_id = forms.IntegerField(widget=forms.HiddenInput())
+    hd_price_excl_tax = forms.DecimalField()
+    hd_track_file_id = forms.IntegerField(widget=forms.HiddenInput())
 
     class Meta:
         model = Product
@@ -47,9 +49,18 @@ class TrackForm(forms.ModelForm):
         if self.instance.id:
             self.fields['track_no'].initial = self.instance.attr.track_no
             self.fields['author'].initial = self.instance.attr.author
-            if self.instance.stockrecords.exists():
-                self.fields['price_excl_tax'].initial = self.instance.stockrecords.first().price_excl_tax
-            self.fields['track_file_id'].initial = self.instance.stockrecords.first().digital_download_id
+            try:
+                file_stockrecord = self.instance.stockrecords.get(partner_sku=str(self.instance.id))
+                self.fields['price_excl_tax'].initial = file_stockrecord.price_excl_tax
+                self.fields['track_file_id'].initial = file_stockrecord.digital_download_id
+            except StockRecord.DoesNotExist:
+                pass
+            try:
+                file_stockrecord = self.instance.stockrecords.get(partner_sku=str(self.instance.id)+'_hd')
+                self.fields['hd_price_excl_tax'].initial = file_stockrecord.price_excl_tax
+                self.fields['hd_track_file_id'].initial = file_stockrecord.digital_download_id
+            except StockRecord.DoesNotExist:
+                pass
 
     def clean_track_file_id(self):
         track_file_id = self.cleaned_data['track_file_id']
@@ -57,20 +68,42 @@ class TrackForm(forms.ModelForm):
             raise ValidationError("The file must be uploaded already")
         return track_file_id
 
+    def clean(self):
+        data = super(TrackForm, self).clean()
+        if data.get('track_file_id') and not data.get('price_excl_tax'):
+            raise ValidationError('You need to enter the track price')
+
+        if data.get('hd_track_file_id') and not data.get('hd_price_excl_tax'):
+            raise ValidationError('You need to enter the HD track price')
+        return data
+
     def save(self, commit=True):
         track = super(TrackForm, self).save(commit=False)
         track.attr.author = self.cleaned_data['author']
         track.attr.track_no = self.cleaned_data['track_no']
+        track.ordering = self.cleaned_data['track_no']
         track.save()
         partner = Partner.objects.first()
-        stock_record, _ = StockRecord.objects.get_or_create(product=track,
-                                                            partner=partner,
-                                                            partner_sku=track.id
-                                                            )
-        stock_record.price_excl_tax = self.cleaned_data['price_excl_tax']
-        media_file = MediaFile.objects.get(id=self.cleaned_data['track_file_id'])
-        stock_record.digital_download = media_file
-        stock_record.save()
+        if self.cleaned_data['track_file_id']:
+            stock_record, _ = StockRecord.objects.get_or_create(product=track,
+                                                                partner=partner,
+                                                                partner_sku=str(track.id)
+                                                                )
+            stock_record.price_excl_tax = self.cleaned_data['price_excl_tax']
+            media_file = MediaFile.objects.get(id=self.cleaned_data['track_file_id'])
+            stock_record.digital_download = media_file
+            stock_record.save()
+
+        if self.cleaned_data['hd_track_file_id']:
+            stock_record, _ = StockRecord.objects.get_or_create(product=track,
+                                                                partner=partner,
+                                                                partner_sku=str(track.id) + "_hd"
+                                                                )
+            stock_record.price_excl_tax = self.cleaned_data['hd_price_excl_tax']
+            media_file = MediaFile.objects.get(id=self.cleaned_data['hd_track_file_id'])
+            stock_record.digital_download = media_file
+            stock_record.save()
+
         return track
 
 
@@ -82,3 +115,7 @@ class TrackFormSet(BaseTrackFormSet):
 
     def __init__(self, product_class, user, *args, **kwargs):
         super(TrackFormSet, self).__init__(*args, **kwargs)
+
+    def get_queryset(self):
+        qs = super(TrackFormSet, self).get_queryset()
+        return qs.order_by('ordering')
