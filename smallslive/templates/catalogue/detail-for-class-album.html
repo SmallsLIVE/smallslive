@@ -72,6 +72,12 @@
           <p class="store-single__item__description">
             {{ product.short_description|safe }}
           </p>
+          <p class="store-single__item__details">
+              {% if product.description %}
+                  <span class="store-single__item__details__title">Detailed description:</span>
+                  {{ product.description|safe }}
+              {% endif %}
+          </p>
           {% purchase_info_for_product request product as session %}
           <span class="store-single__item__price">
               {% if session.price.exists %}
@@ -100,50 +106,30 @@
         </div>
       </div>
     </div>
+    {% if product.event %}
     <div class="store-single__recording__artists">
       <h3 class="store-single__recording__artists__heading">Event artists:</h3>
       <div class="row">
-        <div class="mini-artist col-xs-12">
-          <div class="mini-artist__image">
-            <a href="#"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
+        {% for gig_info in product.event.get_performers %}
+          <div class="mini-artist col-xs-12">
+            <div class="mini-artist__image">
+              {% if gig_info.artist.photo %}
+                  <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% thumbor_url gig_info.artist.photo.url|urlencode height=80 width=80 smart=True %}" alt="{{ gig_info.artist.full_name }} photo"/></a>
+                {% else %}
+                  <a href="{{ gig_info.artist.get_absolute_url }}"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
+              {% endif %}
+            </div>
+            <div class="mini-artist-info">
+              <h2 class="mini-artist-info__title"><a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }}</a></h2>
+              <p class="mini-artist-info__instrument">{{ gig_info.role }}</p>
+              <p class="mini-artist-info__bio">{{ gig_info.artist.biography|striptags|truncatewords:28 }}</p>
+              <a class="mini-artist-info__button" href="{{ gig_info.artist.get_absolute_url }}">Artist profile</a><span class="arrow"></span>
+            </div>
           </div>
-          <div class="mini-artist-info">
-            <h2 class="mini-artist-info__title"><a href="#">Ralph Lalama</a></h2>
-            <p class="mini-artist-info__instrument">Tenor Saxophone</p>
-            <p class="mini-artist-info__bio">A solid fixture of the New York jazz scene and respected world-wide, Ralph
-              Lalama embodies the best of the jazz sound ideal – great time, great swing, expressed through great
-              melodic ideas. Everything he says and plays comes out of his deep connection and appreciation for...</p>
-            <a class="mini-artist-info__button" href="#">Artist profile</a><span class="arrow"></span>
-          </div>
-        </div>
-        <div class="mini-artist col-xs-12">
-          <div class="mini-artist__image">
-            <a href="#"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
-          </div>
-          <div class="mini-artist-info">
-            <h2 class="mini-artist-info__title"><a href="#">JOEL FORBES</a></h2>
-            <p class="mini-artist-info__instrument">trumpet</p>
-            <p class="mini-artist-info__bio">Joel Forbes, an accomplished master of the acoustic bass was born in 1956.
-              He has held a place on the NY jazz scene for 30 years. With tours throughout the US, Europe, Japan and
-              Australia Joel has achieved international recognition. His Father, also Joel Forbes...</p>
-            <a class="mini-artist-info__button" href="#">Artist profile</a><span class="arrow"></span>
-          </div>
-        </div>
-        <div class="mini-artist col-xs-12">
-          <div class="mini-artist__image">
-            <a href="#"><img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt=""/></a>
-          </div>
-          <div class="mini-artist-info">
-            <h2 class="mini-artist-info__title"><a href="#">CLIFFORD BARBARO</a></h2>
-            <p class="mini-artist-info__instrument">drums</p>
-            <p class="mini-artist-info__bio">A veteran of the jazz scene, he has performed and recorded with numerous
-              major artists over the years including Betty Carter, Charles Tolliver, Jon Hendricks, John Hicks, Lionel
-              Hampton, Walter Bishop, Jr., the Sun Ra Arkestra, and James Carter. He is also a member of...</p>
-            <a class="mini-artist-info__button" href="#">Artist profile</a><span class="arrow"></span>
-          </div>
-        </div>
+        {% endfor %}
       </div>
     </div>
+    {% endif %}
     <div class="store-single__recording__tracks">
       <h3 class="store-single__recording__artists__heading">Track listing:</h3>
       <!-- tracks table -->
@@ -167,7 +153,7 @@
           </div>
         </div>
         <!-- end of tracks table header -->
-        {% for track in product.tracks.all %}
+        {% for track in product.tracks.all|dictsort:"ordering" %}
           <!-- tracks table row -->
           <div class="store-single__recording__tracks-table__row row">
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
