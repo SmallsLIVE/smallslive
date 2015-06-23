@@ -39,7 +39,7 @@ class TrackForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ('title')
+        fields = ('title',)
     
     def __init__(self, *args, **kwargs):
         super(TrackForm, self).__init__(*args, **kwargs)
