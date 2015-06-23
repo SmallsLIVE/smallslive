@@ -52,7 +52,7 @@
                         <td>{% include "partials/form_field.html" with field=track_form.author nolabel=True %}</td>
                         <td>
                           {% if not track_form.track_preview_file_id.value %}
-                              <div class="dropzone_file" id="dropzone_preview-file_{{ forloop.counter0 }}" data-track-preview-form-id="{{ forloop.counter0 }}">Drop file here</div>
+                              <div class="dropzone_preview" id="dropzone_preview-file_{{ forloop.counter0 }}" data-track-preview-form-id="{{ forloop.counter0 }}">Drop file here</div>
 
                           {% else %}
                             <strong>UPLOADED</strong>
@@ -141,9 +141,10 @@
 
       $(function() {
           $(".dropzone_preview").dropzone({
+            url: "{% url "upload_track_preview" %}",
             headers: { "X-CSRFToken": csrftoken },
             parallelUploads: 1,
-            autoProcessQueue: false,
+            autoProcessQueue: true,
             addRemoveLinks: false,
             init: function() {
               this.on("addedfile", function(file, response) {
@@ -152,6 +153,8 @@
               this.on("success", function(file, response) {
                 $(this.element).html("<strong>UPLOADED</strong>");
                 this.disable();
+                var track_form_id = $(this.element).data('track-preview-form-id');
+                $("#id_tracks-" + track_form_id + "-track_preview_file_id").val(response);
               });
             }
           });

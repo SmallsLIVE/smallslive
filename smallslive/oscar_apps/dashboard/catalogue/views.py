@@ -1,5 +1,6 @@
 from oscar.apps.dashboard.catalogue import views as oscar_views
-from .forms import TrackFormSet, TrackFileForm
+from multimedia.forms import TrackFileForm
+from .forms import TrackFormSet
 
 
 class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
@@ -11,5 +12,4 @@ class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
         if self.product_class.slug != 'album':
             del self.formsets['track_formset']
         context = super(ProductCreateUpdateView, self).get_context_data(**kwargs)
-        context['upload_track_form'] = TrackFileForm()
         return context

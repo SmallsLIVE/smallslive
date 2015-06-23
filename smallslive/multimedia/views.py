@@ -4,7 +4,8 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, CreateView
 from events.models import Recording
-from multimedia.models import MediaFile
+from .forms import TrackFileForm
+from .models import MediaFile
 
 
 def json_error_response(error_message):
@@ -97,16 +98,17 @@ def media_redirect(request, recording_id):
 
 class UploadTrackView(CreateView):
     model = MediaFile
-    fields = ('file',)
+    form_class = TrackFileForm
 
     def post(self, request, *args, **kwargs):
         super(UploadTrackView, self).post(request, *args, **kwargs)
         return HttpResponse(self.object.id)
 
-    def get_initial(self):
-        data = super(UploadTrackView, self).get_initial()
-        data['category'] = self.kwargs.get('category')
-        return data
+    def get_form_kwargs(self):
+        kwargs = super(UploadTrackView, self).get_form_kwargs()
+        kwargs['category'] = self.kwargs.get('category')
+        print kwargs
+        return kwargs
 
     def get_success_url(self):
         return ""

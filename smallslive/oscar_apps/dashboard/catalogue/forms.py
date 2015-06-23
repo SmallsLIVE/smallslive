@@ -10,21 +10,7 @@ from oscar_apps.catalogue.models import Product, ProductClass
 class ProductForm(oscar_forms.ProductForm):
     class Meta(oscar_forms.ProductForm.Meta):
         fields = [
-            'title', 'upc', 'short_description', 'description', 'event', 'is_discountable', 'structure']
-
-
-class TrackFileForm(forms.ModelForm):
-    category = forms.ChoiceField(choices=MediaFile.CATEGORY)
-
-    class Meta:
-        model = MediaFile
-        fields = ('file',)
-
-    def save(self, commit=True):
-        file = super(TrackFileForm, self).save(commit=False)
-        file.media_type = 'audio'
-        file.save()
-        return file
+            'title', 'upc', 'short_description', 'description', 'is_discountable', 'structure']
 
 
 class TrackForm(forms.ModelForm):
@@ -64,6 +50,9 @@ class TrackForm(forms.ModelForm):
             except StockRecord.DoesNotExist:
                 pass
 
+            if self.instance.preview:
+                self.fields['track_preview_file_id'].initial = self.instance.preview_id
+
     def clean_track_file_id(self):
         track_file_id = self.cleaned_data['track_file_id']
         if not MediaFile.objects.filter(id=track_file_id).exists():
@@ -91,6 +80,11 @@ class TrackForm(forms.ModelForm):
         track.attr.author = self.cleaned_data['author']
         track.attr.track_no = self.cleaned_data['track_no']
         track.ordering = self.cleaned_data['track_no']
+
+        if self.cleaned_data['track_preview_file_id']:
+            media_file = MediaFile.objects.get(id=self.cleaned_data['track_preview_file_id'])
+            track.preview = media_file
+
         track.save()
         partner = Partner.objects.first()
         if self.cleaned_data['track_file_id']:
