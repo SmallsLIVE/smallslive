@@ -1,3 +1,4 @@
+from django.utils.deconstruct import deconstructible
 from storages.backends.s3boto import S3BotoStorage
 
 
@@ -10,6 +11,7 @@ class ProtectedS3Storage(S3BotoStorage):
         super(ProtectedS3Storage, self).__init__(*args, **kwargs)
 
 
+@deconstructible
 class AudioS3Storage(ProtectedS3Storage):
     def __init__(self, *args, **kwargs):
         kwargs['bucket'] = 'smallslivemp3'

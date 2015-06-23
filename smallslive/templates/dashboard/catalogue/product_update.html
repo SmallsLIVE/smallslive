@@ -27,10 +27,11 @@
                         <th>{% trans "Track no." %}</th>
                         <th>{% trans "Title" %}</th>
                         <th>{% trans "Author" %}</th>
-                        <th>{% trans "Price (excl tax)" %}</th>
+                        <th>{% trans "Track preview" %}</th>
                         <th>{% trans "Mp3 file" %}</th>
-                        <th>{% trans "HD Price (excl tax)" %}</th>
+                        <th>{% trans "Price (excl tax)" %}</th>
                         <th>{% trans "HD file" %}</th>
+                        <th>{% trans "HD Price (excl tax)" %}</th>
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
@@ -49,7 +50,15 @@
                         <td>{% include "partials/form_field.html" with field=track_form.track_no nolabel=True %}</td>
                         <td>{% include "partials/form_field.html" with field=track_form.title nolabel=True %}</td>
                         <td>{% include "partials/form_field.html" with field=track_form.author nolabel=True %}</td>
-                        <td>{% include "partials/form_field.html" with field=track_form.price_excl_tax nolabel=True %}</td>
+                        <td>
+                          {% if not track_form.track_preview_file_id.value %}
+                              <div class="dropzone_file" id="dropzone_preview-file_{{ forloop.counter0 }}" data-track-preview-form-id="{{ forloop.counter0 }}">Drop file here</div>
+
+                          {% else %}
+                            <strong>UPLOADED</strong>
+                          {% endif %}
+                          {% include "partials/form_field.html" with field=track_form.track_preview_file_id nolabel=True %}
+                        </td>
                         <td>
                           {% if not track_form.track_file_id.value %}
                               <div class="dropzone_file" id="dropzone_file_{{ forloop.counter0 }}" data-track-form-id="{{ forloop.counter0 }}">Drop file here</div>
@@ -58,7 +67,7 @@
                           {% endif %}
                           {% include "partials/form_field.html" with field=track_form.track_file_id nolabel=True %}
                         </td>
-                        <td>{% include "partials/form_field.html" with field=track_form.hd_price_excl_tax nolabel=True %}</td>
+                        <td>{% include "partials/form_field.html" with field=track_form.price_excl_tax nolabel=True %}</td>
                         <td>
                           {% if not track_form.hd_track_file_id.value %}
                               <div class="dropzone_file" id="dropzone_hd_file_{{ forloop.counter0 }}" data-hd-track-form-id="{{ forloop.counter0 }}">Drop file here</div>
@@ -67,6 +76,7 @@
                           {% endif %}
                           {% include "partials/form_field.html" with field=track_form.hd_track_file_id nolabel=True %}
                         </td>
+                        <td>{% include "partials/form_field.html" with field=track_form.hd_price_excl_tax nolabel=True %}</td>
                         <td>
                             {% include "partials/form_field.html" with field=track_form.id nolabel=True %}
                             {% include "partials/form_field.html" with field=track_form.DELETE nolabel=True %}
@@ -124,6 +134,24 @@
                   $("#id_tracks-" + track_form_id + "-hd_track_file_id").val(response);
                 }
 
+              });
+            }
+          });
+      });
+
+      $(function() {
+          $(".dropzone_preview").dropzone({
+            headers: { "X-CSRFToken": csrftoken },
+            parallelUploads: 1,
+            autoProcessQueue: false,
+            addRemoveLinks: false,
+            init: function() {
+              this.on("addedfile", function(file, response) {
+                $(this.element).html("<strong>IN PROGRESS...</strong>");
+              });
+              this.on("success", function(file, response) {
+                $(this.element).html("<strong>UPLOADED</strong>");
+                this.disable();
               });
             }
           });

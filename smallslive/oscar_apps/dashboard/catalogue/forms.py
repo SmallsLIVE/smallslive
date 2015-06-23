@@ -14,6 +14,8 @@ class ProductForm(oscar_forms.ProductForm):
 
 
 class TrackFileForm(forms.ModelForm):
+    category = forms.ChoiceField(choices=MediaFile.CATEGORY)
+
     class Meta:
         model = MediaFile
         fields = ('file',)
@@ -21,7 +23,6 @@ class TrackFileForm(forms.ModelForm):
     def save(self, commit=True):
         file = super(TrackFileForm, self).save(commit=False)
         file.media_type = 'audio'
-        file.format = 'mp3'
         file.save()
         return file
 
@@ -30,6 +31,7 @@ class TrackForm(forms.ModelForm):
     track_no = forms.IntegerField(required=True)
     title = forms.CharField(max_length=100, required=True)
     author = forms.CharField(max_length=100, required=True)
+    track_preview_file_id = forms.IntegerField(widget=forms.HiddenInput())
     price_excl_tax = forms.DecimalField()
     track_file_id = forms.IntegerField(widget=forms.HiddenInput())
     hd_price_excl_tax = forms.DecimalField()
@@ -37,7 +39,7 @@ class TrackForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ('title',)
+        fields = ('title')
     
     def __init__(self, *args, **kwargs):
         super(TrackForm, self).__init__(*args, **kwargs)
@@ -68,8 +70,15 @@ class TrackForm(forms.ModelForm):
             raise ValidationError("The file must be uploaded already")
         return track_file_id
 
+    def clean_hd_track_file_id(self):
+        hd_track_file_id = self.cleaned_data['hd_track_file_id']
+        if not MediaFile.objects.filter(id=hd_track_file_id).exists():
+            raise ValidationError("The file must be uploaded already")
+        return hd_track_file_id
+
     def clean(self):
         data = super(TrackForm, self).clean()
+        print data
         if data.get('track_file_id') and not data.get('price_excl_tax'):
             raise ValidationError('You need to enter the track price')
 

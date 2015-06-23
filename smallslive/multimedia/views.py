@@ -103,6 +103,11 @@ class UploadTrackView(CreateView):
         super(UploadTrackView, self).post(request, *args, **kwargs)
         return HttpResponse(self.object.id)
 
+    def get_initial(self):
+        data = super(UploadTrackView, self).get_initial()
+        data['category'] = self.kwargs.get('category')
+        return data
+
     def get_success_url(self):
         return ""
 

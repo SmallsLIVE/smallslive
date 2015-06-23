@@ -5,15 +5,26 @@ from .fields import DynamicBucketFileField
 from .s3_storages import AudioS3Storage, VideoS3Storage
 
 
+def media_file_path(instance, filename):
+    if instance.category == MediaFile.CATEGORY.set:
+        return '/'
+    elif instance.category == MediaFile.CATEGORY.track:
+        return 'tracks/'
+    else:
+        return 'track_previews/'
+
+
 class MediaFile(models.Model):
+    CATEGORY = Choices('set', 'track', 'preview')
     MEDIA_TYPE = Choices('video', 'audio')
-    AUDIO_FORMATS = Choices('mp3', 'flac', 'wav')
+    AUDIO_FORMATS = Choices('mp3', 'flac', 'wav', 'ogg')
     VIDEO_FORMATS = Choices('mp4', 'mpg', 'avi', 'mkv', 'mov', 'mpeg', 'flv', 'm4v')
     FORMATS = AUDIO_FORMATS + VIDEO_FORMATS
 
+    category = models.CharField(max_length=10, choices=CATEGORY, editable=False, blank=True)
     media_type = models.CharField(max_length=10, choices=MEDIA_TYPE, editable=False)
     format = models.CharField(max_length=4, choices=FORMATS, editable=False)
-    file = DynamicBucketFileField(upload_to='tracks/')
+    file = DynamicBucketFileField(upload_to=media_file_path)
     size = models.BigIntegerField(help_text="File size in bytes", default=0)
     sd_video_file = DynamicBucketFileField(blank=True)
 
