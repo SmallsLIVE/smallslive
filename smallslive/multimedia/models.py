@@ -1,4 +1,5 @@
 import os
+from django.conf import settings
 from django.db import models
 from model_utils import Choices
 from .fields import DynamicBucketFileField
@@ -7,11 +8,12 @@ from .s3_storages import AudioS3Storage, VideoS3Storage
 
 def media_file_path(instance, filename):
     if instance.category == MediaFile.CATEGORY.set:
-        return '/'
+        path = '/'
     elif instance.category == MediaFile.CATEGORY.track:
-        return 'tracks/'
+        path = 'tracks/'
     else:
-        return 'track_previews/'
+        path = 'track_previews/'
+    return os.path.join(path, filename)
 
 
 class MediaFile(models.Model):
@@ -39,17 +41,19 @@ class MediaFile(models.Model):
         super(MediaFile, self).save()
 
     def get_file_url(self):
-        if self.media_type == 'audio':
-            self.file.storage = AudioS3Storage()
-        else:
-            self.file.storage = VideoS3Storage()
+        if not settings.DEBUG:
+            if self.media_type == 'audio':
+                self.file.storage = AudioS3Storage()
+            else:
+                self.file.storage = VideoS3Storage()
         return self.file.url
 
     def get_sd_video_url(self):
-        if self.media_type == 'audio':
-            self.sd_video_file.storage = AudioS3Storage()
-        else:
-            self.sd_video_file.storage = VideoS3Storage()
+        if not settings.DEBUG:
+            if self.media_type == 'audio':
+                self.sd_video_file.storage = AudioS3Storage()
+            else:
+                self.sd_video_file.storage = VideoS3Storage()
         return self.sd_video_file.url
 
 

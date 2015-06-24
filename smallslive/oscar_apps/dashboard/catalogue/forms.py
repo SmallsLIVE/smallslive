@@ -17,11 +17,11 @@ class TrackForm(forms.ModelForm):
     track_no = forms.IntegerField(required=True)
     title = forms.CharField(max_length=100, required=True)
     author = forms.CharField(max_length=100, required=True)
-    track_preview_file_id = forms.IntegerField(widget=forms.HiddenInput())
-    price_excl_tax = forms.DecimalField()
-    track_file_id = forms.IntegerField(widget=forms.HiddenInput())
-    hd_price_excl_tax = forms.DecimalField()
-    hd_track_file_id = forms.IntegerField(widget=forms.HiddenInput())
+    track_preview_file_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+    price_excl_tax = forms.DecimalField(required=False)
+    track_file_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+    hd_price_excl_tax = forms.DecimalField(required=False)
+    hd_track_file_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
 
     class Meta:
         model = Product
@@ -55,13 +55,13 @@ class TrackForm(forms.ModelForm):
 
     def clean_track_file_id(self):
         track_file_id = self.cleaned_data['track_file_id']
-        if not MediaFile.objects.filter(id=track_file_id).exists():
+        if track_file_id and not MediaFile.objects.filter(id=track_file_id).exists():
             raise ValidationError("The file must be uploaded already")
         return track_file_id
 
     def clean_hd_track_file_id(self):
         hd_track_file_id = self.cleaned_data['hd_track_file_id']
-        if not MediaFile.objects.filter(id=hd_track_file_id).exists():
+        if hd_track_file_id and not MediaFile.objects.filter(id=hd_track_file_id).exists():
             raise ValidationError("The file must be uploaded already")
         return hd_track_file_id
 

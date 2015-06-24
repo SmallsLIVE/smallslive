@@ -10,4 +10,8 @@ class Product(AbstractProduct):
     ordering = models.PositiveIntegerField(default=0)  # explicit ordering, usually for tracks on an album
     preview = models.OneToOneField('multimedia.MediaFile', blank=True, null=True, related_name='product')
 
+    def get_track_preview_url(self):
+        if self.preview_id:
+            return self.preview.get_file_url()
+
 from oscar.apps.catalogue.models import *

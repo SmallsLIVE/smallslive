@@ -132,6 +132,9 @@
     {% endif %}
     <div class="store-single__recording__tracks">
       <h3 class="store-single__recording__artists__heading">Track listing:</h3>
+      <div style="width: 1px; height: 1px; position: absolute; top: -9999px; left: -9999px;">
+        <div id="player-audio"></div>
+      </div>
       <!-- tracks table -->
       <div class="store-single__recording__tracks-table">
         <!-- tracks table header -->
@@ -157,7 +160,7 @@
           <!-- tracks table row -->
           <div class="store-single__recording__tracks-table__row row">
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
-              <a href="#" class="playback-control"><i class="fa fa-pause"></i></a>
+              <a href="#" class="playback-control" data-playlist-id="{{ forloop.counter }}"><i class="fa fa-play"></i></a>
             </div>
             <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-single__recording__tracks-table__column title">
               {{ track.title }}
@@ -225,11 +228,40 @@
 {% block extra_js %}
   {{ block.super }}
   <script src="{% static 'js/jquery.fancybox.pack.js' %}"></script>
+  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   <script type="text/javascript">
     $(document).ready(function () {
       $(".fancybox").fancybox({
         preload: 2
       });
+
+      var audioPlayer = jwplayer("player-audio").setup({
+        primary: 'html5',
+        playlist: [
+          {% for track in product.tracks.all|dictsort:"ordering" %}
+            {
+              sources: [{
+                file: "{{ track.get_track_preview_url|safe }}",
+                type: "mp3"
+              }],
+              mediaid: {{ track.id }}
+            }{% if not forloop.last %},{% endif %}
+          {% endfor %}
+        ],
+        skin: "{% static "jwplayer-skin/smalls.xml" %}",
+        width: "100%",
+        height: 0
+      });
+      $(".playback-control").on('click', function(e) {
+          e.preventDefault();
+          if (audioPlayer.getPlaylistIndex() == $(this).data('playlist-id')) {
+            audioPlayer.pause();
+          } else {
+            audioPlayer.playlistItem($(this).data('playlist-id'));
+            $('.playback-control i').removeClass('fa-pause').addClass('fa-play');
+          }
+          $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
+      })
     });
   </script>
 {% endblock %}
