@@ -92,17 +92,26 @@
                   &nbsp;
               {% endif %}
           </span>
-          <form>
+        <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
+          {% if session.availability.is_available_to_buy %}
+            {% basket_form request product 'single' as basket_form %}
             <div class="store-add-large">
-              <select class="store-add-large__options">
-                <option>CD - full case with artwork -- $25.00</option>
-                <option>Album digital download - Mp3 -- $9.99</option>
-                <option>Album digital download - HD -- $14.99</option>
-              </select>
-              <button type="submit" class="store-add-large__button">Add to cart</button>
-              <span class="arrow"></span>
+                {% csrf_token %}
+                {{ basket_form.quantity }}
+                {% if basket_form.fields.child_id.choices %}
+                  <select class="store-add-large__options" name="child_id">
+                      {% for item_value, item_name in basket_form.fields.child_id.choices %}
+                        <option value="{{ item_value }}">{{ item_name }}</option>
+                      {% endfor %}
+                  </select>
+                  <button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span>
+                {% else %}
+                  {{ basket_form.child_id }}
+                  <button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span>
+                {% endif %}
             </div>
-          </form>
+          {% endif %}
+        </form>
         </div>
       </div>
     </div>
