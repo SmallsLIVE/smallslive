@@ -105,6 +105,7 @@ class TrackForm(forms.ModelForm):
             stock_record.price_excl_tax = self.cleaned_data['hd_price_excl_tax']
             media_file = MediaFile.objects.get(id=self.cleaned_data['hd_track_file_id'])
             stock_record.digital_download = media_file
+            stock_record.is_hd = True
             stock_record.save()
 
         return track
