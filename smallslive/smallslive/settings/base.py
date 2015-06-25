@@ -98,6 +98,7 @@ INSTALLED_APPS = [
     'utils',
 ] + get_core_apps([
     'oscar_apps.address',
+    'oscar_apps.basket',
     'oscar_apps.catalogue',
     'oscar_apps.checkout',
     'oscar_apps.dashboard',

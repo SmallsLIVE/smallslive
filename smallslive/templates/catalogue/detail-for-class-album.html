@@ -160,7 +160,9 @@
           <!-- tracks table row -->
           <div class="store-single__recording__tracks-table__row row">
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
-              <a href="#" class="playback-control" data-playlist-id="{{ forloop.counter }}"><i class="fa fa-play"></i></a>
+              {% if track.preview %}
+                <a href="#" class="playback-control" data-playlist-id="{{ forloop.counter0 }}"><i class="fa fa-play"></i></a>
+              {% endif %}
             </div>
             <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-single__recording__tracks-table__column title">
               {{ track.title }}
@@ -169,16 +171,41 @@
               14:23
             </div>
             <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-single__recording__tracks-table__column price">
-              $0.99 / $1.49
+              {% if track.get_track_stockrecord %}${{ track.get_track_stockrecord.price_excl_tax }}{% else %}-{% endif %} / {% if track.get_hd_track_stockrecord %}${{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}-{% endif %}
             </div>
             <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-single__recording__tracks-table__column buy-track">
               <div class="buy-button-container">
                 <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i
                         class="fa fa-caret-down"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Buy mp3 ($0.99)</a></li>
-                  <li><a href="#">Buy HD ($1.49)</a></li>
-                </ul>
+                {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
+                  <ul class="dropdown-menu" role="menu">
+                    {% if track.get_track_stockrecord %}
+                      <li>
+                        {% basket_form request track 'single' as basket_form %}
+                        <form id="add_to_basket_form" action="{% url 'basket:add' pk=track.pk  %}" method="post" class="add-to-basket">
+                          {% csrf_token %}
+                          {{ basket_form.quantity }}
+                          {{ basket_form.child_id }}
+                          <input type="hidden" name="stockrecord_id" value="{{ track.get_track_stockrecord.id }}"/>
+                          <input type="submit" value="Buy mp3 (${{ track.get_track_stockrecord.price_excl_tax }})">
+                        </form>
+                      </li>
+                    {% endif %}
+                    {% if track.get_hd_track_stockrecord %}
+                      <li>
+                        {% basket_form request track 'single' as basket_form %}
+                        <form id="add_to_basket_form" action="{% url 'basket:add' pk=track.pk  %}" method="post" class="add-to-basket">
+                          {% csrf_token %}
+                          {{ basket_form.quantity }}
+                          {{ basket_form.child_id }}
+                          <input type="hidden" name="stockrecord_id" value="{{ track.get_hd_track_stockrecord.id }}"/>
+                          <input type="submit" value="Buy HD (${{ track.get_hd_track_stockrecord.price_excl_tax }})">
+                        </form>
+                      </li>
+                    {% endif %}
+                  </ul>
+                {% endif %}
+
               </div>
             </div>
           </div>
@@ -239,6 +266,7 @@
         primary: 'html5',
         playlist: [
           {% for track in product.tracks.all|dictsort:"ordering" %}
+            {% if track.preview %}
             {
               sources: [{
                 file: "{{ track.get_track_preview_url|safe }}",
@@ -246,6 +274,7 @@
               }],
               mediaid: {{ track.id }}
             }{% if not forloop.last %},{% endif %}
+            {% endif %}
           {% endfor %}
         ],
         skin: "{% static "jwplayer-skin/smalls.xml" %}",
