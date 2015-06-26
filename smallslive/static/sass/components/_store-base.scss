@@ -1793,6 +1793,8 @@
 }
 
 img.defineImageRatio {
+  max-width: 100%;
+  max-height: 100%;
   width: 100%;
   height: auto;
 
@@ -1807,4 +1809,21 @@ img.defineImageRatio {
 .arrow-button-container {
   @include display(flex);
   @include align-items(center);
+}
+
+.buy-button-container {
+
+  & ul li {
+    padding: 5px;
+    
+    &:hover, &:focus {
+      color: $main-accent-color;
+    }
+
+    & input {
+      background-color: transparent;
+      border: none;
+      outline: none;
+    }
+  }
 }
