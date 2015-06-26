@@ -7,10 +7,6 @@
   background-position: center center;
   border-bottom: none;
 
-  & input, & textarea, & select {
-   -webkit-appearance: none;
-  }
-
   &__title {
     @include lato-black;
     font-size: 24px;
@@ -63,10 +59,6 @@
 
 .store-search {
   color: #131313;
-
-  & input, & textarea, & select {
-   -webkit-appearance: none;
-  }
 
   &__container {
     padding: 10px 15px;
@@ -186,10 +178,6 @@
   position: relative;
   z-index: 10;
 
-  & input, & textarea, & select {
-   -webkit-appearance: none;
-  }
-
   &.landing-nav {
     padding: 40px 30px;
   }
@@ -252,10 +240,6 @@
 
   &:before, &:after {
     display: none;
-  }
-
-  & input, & textarea, & select {
-   -webkit-appearance: none;
   }
 
   &__content {
@@ -356,10 +340,6 @@
 .store-list-item {
   margin-bottom: 20px;
 
-  & input, & textarea, & select {
-   -webkit-appearance: none;
-  }
-
   &__image {
     padding: 5px;
     border: 1px solid #ddd;
@@ -437,15 +417,12 @@
   @include display(flex);
   @include flex-wrap(nowrap);
 
-  & input, & textarea, & select {
-   -webkit-appearance: none;
-  }
-
   &__options {
     padding: 5px;
     float: left;
     @include flex-shrink(1);
     width: 100%;
+    border: 1px solid #888;
 
     &:hover, &:focus {
       border: 1px solid $main-accent-color;
@@ -472,15 +449,12 @@
   @include navbar-vertical-align(center);
   @include flex-wrap(nowrap);
 
-  & input, & textarea, & select {
-   -webkit-appearance: none;
-  }
-
   &__options {
     padding: 3px 3px 4px;
     float: left;
     @include flex-shrink(1);
     width: 100%;
+    border: 1px solid #888;
 
     &:hover, &:focus {
       border: 1px solid $main-accent-color;
@@ -506,10 +480,6 @@
   color: #fff;
   padding: 0;
   @include lato;
-
-  & input, & textarea, & select {
-   -webkit-appearance: none;
-  }
 
   &__title {
     padding: 15px 30px;
@@ -798,11 +768,6 @@
 }
 
 .store-featured-merch {
-
-  & input, & textarea, & select {
-   -webkit-appearance: none;
-  }
-
   @include lato;
   background-color: #fff;
   padding: 40px 30px 50px;
@@ -810,10 +775,6 @@
 
 
 .store-single {
-
-  & input, & textarea, & select {
-   -webkit-appearance: none;
-  }
 
   &__content {
     background-color: #fff;
@@ -1167,10 +1128,6 @@
 }
 
 .store-cart {
-
-  & input, & textarea, & select {
-   -webkit-appearance: none;
-  }
 
   &__table {
 
@@ -1578,10 +1535,6 @@
   @include lato;
   color: $base-text-color;
 
-  & input, & textarea, & select {
-   -webkit-appearance: none;
-  }
-
   &__heading {
     font-size: 18px;
     @include lato-black;
@@ -1601,10 +1554,6 @@
 }
 
 .store__form {
-
-  & input, & textarea, & select {
-   -webkit-appearance: none;
-  }
 
   &__heading {
     font-size: 18px;
