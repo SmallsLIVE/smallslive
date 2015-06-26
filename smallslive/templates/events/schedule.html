@@ -46,7 +46,7 @@
               <dl>
                 {% for event in events %}
                   <dt class="day__event-time">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</dt>
-                  <dd data-event-id="{{ event.id }}" class="day__event-title {% if event.is_cancelled %}cancelled{% endif %}">{{ event.title }} {% if request.user.is_staff %}(ID: {{ event.id }}){% endif %}</dd>
+                  <dd data-event-id="{{ event.id }}" class="day__event-title {% if event.is_cancelled %}cancelled{% endif %}"><a href="{{ event.get_absolute_url }}">{{ event.title }} {% if request.user.is_staff %}(ID: {{ event.id }}){% endif %}</a> <span class="day__event-features"><i class="fa fa-music"></i><i class="fa fa-video-camera"></i><i class="fa fa-shopping-cart"></i></span></dd>
                   {% if event.state == "Draft" %}<span class="day__event-cancelled">(Draft)</span>{% endif %}
                   {% if event.is_cancelled %}<span class="day__event-cancelled">(cancelled)</span>{% endif %}
                   {% if user.is_superuser %}

@@ -169,6 +169,31 @@
     &:hover {
       cursor: pointer;
       text-decoration: underline;
+
+      & .day__event-features {
+        color: $main-accent-color;
+      }
+    }
+
+    & a {
+      color: $base-text-color;
+
+      &:hover, &:focus {
+        color: lighten($base-text-color, 15%);
+      }
+    }
+  }
+
+  &__event-features {
+    margin-top: 4px;
+    margin-left: -5px;
+    display: block;
+    color: lighten($base-text-color, 70%);
+    font-size: 12px;
+    @include transition(all 0.5s ease-in-out);
+
+    & i {
+      margin: 0 5px;
     }
   }
 
