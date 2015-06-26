@@ -1,6 +1,6 @@
-import os
-from .base import *
 import dj_database_url
+from .local import *
+import os
 
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "herokudefault")
@@ -13,11 +13,21 @@ DATABASES['default'] = dj_database_url.config()
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
 
+# Thumbor
+THUMBOR_MEDIA_URL = 'http://127.0.0.1:8000/media/'
+THUMBOR_SECURITY_KEY = 'TEST'
+THUMBOR_SERVER = 'http://127.0.0.1:8888'
+
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
 
 # Static asset configuration
 PIPELINE_ENABLED = False
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'pipeline.finders.AppDirectoriesFinder',
+    'pipeline.finders.PipelineFinder',
+)
 PIPELINE_SASS_BINARY = '/opt/venv/smallslive/bin/sassc'
 PIPELINE_SASS_ARGUMENTS = ''
 
