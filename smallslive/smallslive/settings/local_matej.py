@@ -10,6 +10,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Parse database configuration from $DATABASE_URL
 DATABASES['default'] = dj_database_url.config()
 
+DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+
+
 # Allow all host headers
 ALLOWED_HOSTS = ['*']
 
