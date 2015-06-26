@@ -6,6 +6,7 @@ import os
 SECRET_KEY = os.environ.get("SECRET_KEY", "herokudefault")
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+THUMBNAIL_DEBUG = True
 
 # Parse database configuration from $DATABASE_URL
 DATABASES['default'] = dj_database_url.config()

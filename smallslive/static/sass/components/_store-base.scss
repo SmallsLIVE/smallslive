@@ -7,6 +7,10 @@
   background-position: center center;
   border-bottom: none;
 
+  & input, & textarea, & select {
+   -webkit-appearance: none;
+  }
+
   &__title {
     @include lato-black;
     font-size: 24px;
@@ -59,6 +63,10 @@
 
 .store-search {
   color: #131313;
+
+  & input, & textarea, & select {
+   -webkit-appearance: none;
+  }
 
   &__container {
     padding: 10px 15px;
@@ -178,6 +186,10 @@
   position: relative;
   z-index: 10;
 
+  & input, & textarea, & select {
+   -webkit-appearance: none;
+  }
+
   &.landing-nav {
     padding: 40px 30px;
   }
@@ -240,6 +252,10 @@
 
   &:before, &:after {
     display: none;
+  }
+
+  & input, & textarea, & select {
+   -webkit-appearance: none;
   }
 
   &__content {
@@ -340,6 +356,10 @@
 .store-list-item {
   margin-bottom: 20px;
 
+  & input, & textarea, & select {
+   -webkit-appearance: none;
+  }
+
   &__image {
     padding: 5px;
     border: 1px solid #ddd;
@@ -417,6 +437,10 @@
   @include display(flex);
   @include flex-wrap(nowrap);
 
+  & input, & textarea, & select {
+   -webkit-appearance: none;
+  }
+
   &__options {
     padding: 5px;
     float: left;
@@ -433,7 +457,6 @@
     @include red-button;
     font-size: 16px;
     padding: 5px 8px;
-    margin-left: 5px;
     @include transition(all 0.3s ease-in-out);
     @include flex-shrink(0);
   }
@@ -448,6 +471,10 @@
   @include display(flex);
   @include navbar-vertical-align(center);
   @include flex-wrap(nowrap);
+
+  & input, & textarea, & select {
+   -webkit-appearance: none;
+  }
 
   &__options {
     padding: 3px 3px 4px;
@@ -479,6 +506,10 @@
   color: #fff;
   padding: 0;
   @include lato;
+
+  & input, & textarea, & select {
+   -webkit-appearance: none;
+  }
 
   &__title {
     padding: 15px 30px;
@@ -767,6 +798,11 @@
 }
 
 .store-featured-merch {
+
+  & input, & textarea, & select {
+   -webkit-appearance: none;
+  }
+
   @include lato;
   background-color: #fff;
   padding: 40px 30px 50px;
@@ -774,6 +810,10 @@
 
 
 .store-single {
+
+  & input, & textarea, & select {
+   -webkit-appearance: none;
+  }
 
   &__content {
     background-color: #fff;
@@ -1127,6 +1167,10 @@
 }
 
 .store-cart {
+
+  & input, & textarea, & select {
+   -webkit-appearance: none;
+  }
 
   &__table {
 
@@ -1534,6 +1578,10 @@
   @include lato;
   color: $base-text-color;
 
+  & input, & textarea, & select {
+   -webkit-appearance: none;
+  }
+
   &__heading {
     font-size: 18px;
     @include lato-black;
@@ -1553,6 +1601,10 @@
 }
 
 .store__form {
+
+  & input, & textarea, & select {
+   -webkit-appearance: none;
+  }
 
   &__heading {
     font-size: 18px;
@@ -1800,4 +1852,10 @@ img.defineImageRatio {
     width: auto;
     margin: 0 auto;
   }
+}
+
+
+.arrow-button-container {
+  @include display(flex);
+  @include align-items(center);
 }

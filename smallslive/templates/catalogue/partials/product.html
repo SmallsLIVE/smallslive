@@ -47,10 +47,10 @@
                         <option value="{{ item_value }}">{{ item_name }}</option>
                       {% endfor %}
                   </select>
-                  <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
+                  <div class="arrow-button-container"><button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span></div>
                 {% else %}
                   {{ basket_form.child_id }}
-                  <button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span>
+                  <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
                 {% endif %}
             </div>
           {% endif %}
