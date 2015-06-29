@@ -17,13 +17,13 @@ class Command(NoArgsCommand):
         start_date = timezone.make_aware(timezone.datetime(2014, 6, 30), timezone.get_current_timezone())
         for event in Event.objects.filter(start__gte=start_date):
             for set_num in range(1, 7):
-                no_zero_padded = '{0.year}-{0.month:02}-{0.day:02}/{1}-{2}.mp3'.format(
+                no_zero_padded = '{0.year}-{0.month}-{0.day}/{1}-{2}.mp3'.format(
                     event.listing_date(), event.id, set_num)
                 zero_padded_month = '{0.year}-{0.month:02}-{0.day}/{1}-{2}.mp3'.format(
                     event.listing_date(), event.id, set_num)
                 zero_padded_day = '{0.year}-{0.month}-{0.day:02}/{1}-{2}.mp3'.format(
                     event.listing_date(), event.id, set_num)
-                zero_padded_everything = '{0.year}-{0.month:02}-{0.day}/{1}-{2}.mp3'.format(
+                zero_padded_everything = '{0.year}-{0.month:02}-{0.day:02}/{1}-{2}.mp3'.format(
                     event.listing_date(), event.id, set_num)
                 filenames = [no_zero_padded, zero_padded_month, zero_padded_day, zero_padded_everything]
                 for filename in filenames:
