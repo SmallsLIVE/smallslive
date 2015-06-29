@@ -1189,37 +1189,37 @@
       &__container {
         padding: 10px 20px;
         width: 100%;
-        position: relative;
         @include display(flex);
         @include align-items(center);
+        @include flex-shrink(1);
         @include transition(all 0.3s ease-in-out);
-        z-index: 2;
-        left: 0;
-        background-color: #fff;
       }
 
       &__remove {
-        width: 50px;
-        position: absolute;
-        padding: 10px;
-        top: 0;
-        right: 0;
-        z-index: 1;
+        width: 0px;
         height: 100%;
-        background-color: #fbfbfb;
         @include display(flex);
         @include align-items(center);
+        @include transition(0.3s ease-in-out);
+        @include flex-shrink(0);
+        opacity: 0;
       }
 
       @media (min-width: $screen-sm-max) {
+
         &:hover, &:focus {
+          .store-cart__table__row__remove {
+            width: 20px;
+            opacity: 1;
+            margin-left: 15px;
+            margin-right: -15px;
+          }
 
           .store-cart__table__row__container {
-            left: -50px;
           }
           
           & .image {
-            opacity: 0;
+
           }
         }
       }
@@ -1236,6 +1236,7 @@
 
       &.image {
         @include transition(all 0.3s ease-in-out);
+        @include flex-shrink(0);
 
         & a {
           display: block;
@@ -1256,6 +1257,7 @@
       }
 
       &.name {
+        @include flex-shrink(1);
 
         & a {
           @include lato-bold;
@@ -1271,6 +1273,10 @@
         text-align: center;
       }
 
+      &.option {
+        @include flex-shrink(1);
+      }
+
       &.price, &.total {
         text-align: right;
 
@@ -1280,6 +1286,7 @@
       }
 
       &.price {
+        @include flex-shrink(0);
 
         @media (max-width: $screen-sm-max) {
           margin-left: 20px;
@@ -1292,6 +1299,7 @@
       }
 
       &.total {
+        @include flex-shrink(0);
 
         @media (max-width: $screen-sm-max) {
           margin-left: 20px;
@@ -1308,6 +1316,7 @@
         width: 100%;
         @include display(flex);
         @include justify-content(center);
+        @include flex-shrink(0);
 
         @media (max-width: $screen-sm-max) {
           @include justify-content(flex-start);
@@ -1387,6 +1396,7 @@
   &__mobile-quantity {
     float: left;
     padding: 0;
+    @include flex-shrink(0);
 
     @media (max-width: $screen-sm-max) {
       @include display(flex);
