@@ -25,7 +25,9 @@ class Command(NoArgsCommand):
                 if key:
                     print "importing {0}".format(filename)
                     try:
-                        recording = Recording.objects.get(event_id=event.id, set_number=set_num, category='set',
+                        recording = Recording.objects.get(event_id=event.id,
+                                                          set_number=set_num,
+                                                          media_file__category='set',
                                                           media_file__media_type='video')
                     except Recording.DoesNotExist:
                         recording = Recording(event_id=event.id, set_number=set_num)
