@@ -132,11 +132,12 @@
     background-color: #fff;
     border: 1px solid #ccc;
     @include display(flex);
-    @include flex-wrap(wrap);
+    @include flex-direction(column);
   }
 
   &__arrow-separator {
     width: 100%;
+    @include flex-grow(0);
     border-bottom: 1px solid #d6d6d6;
     height: 1px;
     position: relative;
@@ -169,7 +170,9 @@
   }
 
   &__name {
+    @include align-self(flex-start);
     @include lato-black;
+    min-height: 50px;
     font-size: 18px;
     margin-top: 0;
     margin-bottom: 15px;
@@ -183,6 +186,9 @@
 
     &__container {
       width: 100%;
+      @include align-self(flex-start);
+      @include flex-grow(0);
+      min-height: 171px;
     }
 
     &__free {
@@ -269,6 +275,7 @@
   &__features {
     display: block;
     padding-left: 20px;
+    @include flex-grow(1);
 
     &__single {
       @include lato;
