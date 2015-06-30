@@ -1,7 +1,49 @@
+from decimal import Decimal as D
+from django.core.exceptions import ObjectDoesNotExist
 from oscar.apps.basket.abstract_models import AbstractBasket
 
 
 class Basket(AbstractBasket):
+    def digital_lines(self):
+        return self.all_lines().filter(product__product_class__requires_shipping=False)
+
+    def physical_lines(self):
+        return self.all_lines().filter(product__product_class__requires_shipping=True)
+
+    def _get_digital_total(self, property):
+        total = D('0.00')
+        for line in self.digital_lines():
+            try:
+                total += getattr(line, property)
+            except ObjectDoesNotExist:
+                # Handle situation where the product may have been deleted
+                pass
+        return total
+
+    def _get_physical_total(self, property):
+        total = D('0.00')
+        for line in self.physical_lines():
+            try:
+                total += getattr(line, property)
+            except ObjectDoesNotExist:
+                # Handle situation where the product may have been deleted
+                pass
+        return total
+
+    @property
+    def physical_total_excl_tax(self):
+        """
+        Return total line price excluding tax
+        """
+        return self._get_physical_total('line_price_excl_tax_incl_discounts')
+
+    @property
+    def digital_total_excl_tax(self):
+        """
+        Return total line price excluding tax
+        """
+        return self._get_digital_total('line_price_excl_tax_incl_discounts')
+
     def add_product(self, product, quantity=1, options=None, stockrecord=None):
         """
         Add a product to the basket
