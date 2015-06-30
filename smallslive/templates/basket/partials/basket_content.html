@@ -162,14 +162,14 @@
                                         <div class="col-xs-3 col-sm-3 col-md-2 col-lg-1 store-cart__table__cell image">
                                             {% with image=product.album.primary_image %}
                                                 {% thumbnail image.original "100x100" upscale=False as thumb %}
-                                                    <a href="{{ product.get_absolute_url }}"><img class="defineImageRatio" src="{{ thumb.url }}"
+                                                    <a href="{{ product.parent.get_absolute_url }}"><img class="defineImageRatio" src="{{ thumb.url }}"
                                                              alt="{{ product.get_title }}"></a>
                                                 {% endthumbnail %}
                                             {% endwith %}
                                         </div>
                                         <div class="col-xs-8 col-sm-8 col-md-10 col-lg-11 no-padding">
                                             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell name">
-                                                <a href="#">{{ product.get_title }}</a>
+                                                <a href="{{ product.parent.get_absolute_url }}">{{ product.get_title }}</a>
                                             </div>
                                             <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell album">
                                                 {% if product.album %}
