@@ -58,6 +58,9 @@
                                 {% purchase_info_for_line request line as session %}
                                 <!-- Cart table row -->
                                 <div class="store-cart__table__row clearfix">
+                                    <div class="store-cart__table__row__remove">
+                                        <button class="store-cart__table__remove-button" data-behaviours="remove" data-id="{{ forloop.counter0 }}"><i class="fa fa-remove"></i></button>
+                                    </div>
                                     <div class="store-cart__table__row__container">
                                         <div class="col-xs-3 col-sm-3 col-md-2 col-lg-1 store-cart__table__cell image">
                                             {{ form.id }}
@@ -100,11 +103,8 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-1 hidden-md hidden-lg store-cart__table__cell remove">
-                                            <button class="store-cart__table__remove-button"><i class="fa fa-remove"></i></button>
+                                            <button class="store-cart__table__remove-button" data-behaviours="remove" data-id="{{ forloop.counter0 }}"><i class="fa fa-remove"></i></button>
                                         </div>
-                                    </div>
-                                    <div class="store-cart__table__row__remove">
-                                        <button class="store-cart__table__remove-button" data-behaviours="remove" data-id="{{ forloop.counter0 }}"><i class="fa fa-remove"></i></button>
                                     </div>
                                 </div>
                             {% endif %}
@@ -154,6 +154,9 @@
                                 {% purchase_info_for_line request line as session %}
                                 <!-- Cart table row -->
                                 <div class="store-cart__table__row clearfix">
+                                    <div class="store-cart__table__row__remove">
+                                        <button class="store-cart__table__remove-button" data-behaviours="remove" data-id="{{ forloop.counter0 }}"><i class="fa fa-remove"></i></button>
+                                    </div>
                                     <div class="store-cart__table__row__container">
                                         {{ form.id }}
                                         <div class="col-xs-3 col-sm-3 col-md-2 col-lg-1 store-cart__table__cell image">
@@ -188,11 +191,8 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-1 hidden-md hidden-lg store-cart__table__cell remove">
-                                            <button class="store-cart__table__remove-button"><i class="fa fa-remove"></i></button>
+                                            <button class="store-cart__table__remove-button" data-behaviours="remove" data-id="{{ forloop.counter0 }}"><i class="fa fa-remove"></i></button>
                                         </div>
-                                    </div>
-                                    <div class="store-cart__table__row__remove">
-                                        <button class="store-cart__table__remove-button" data-behaviours="remove" data-id="{{ forloop.counter0 }}"><i class="fa fa-remove"></i></button>
                                     </div>
                                 </div>
                                 {% endif %}
