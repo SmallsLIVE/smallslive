@@ -4,6 +4,14 @@ from oscar.apps.basket.abstract_models import AbstractBasket
 
 
 class Basket(AbstractBasket):
+    def has_physical_products(self):
+        physical_count = self.all_lines().filter(product__product_class__requires_shipping=True).count()
+        return physical_count > 0
+
+    def has_digital_products(self):
+        digital_count = self.all_lines().filter(product__product_class__requires_shipping=False).count()
+        return digital_count > 0
+
     def digital_lines(self):
         return self.all_lines().filter(product__product_class__requires_shipping=False)
 

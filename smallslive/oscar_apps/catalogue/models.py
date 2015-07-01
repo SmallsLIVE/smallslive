@@ -25,4 +25,11 @@ class Product(AbstractProduct):
         if self.product_class.slug == "track":
             return self.stockrecords.filter(is_hd=True).first()
 
+    def get_product_class(self):
+        if self.is_child and self.parent.product_class.slug != "album":
+            return self.parent.product_class
+        else:
+            return self.product_class
+    get_product_class.short_description = "Product class"
+
 from oscar.apps.catalogue.models import *
