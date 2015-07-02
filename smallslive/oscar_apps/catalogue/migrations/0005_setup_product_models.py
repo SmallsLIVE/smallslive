@@ -7,8 +7,11 @@ from django.db import migrations
 def setup_product_models(apps, schema_editor):
     # We can't import the Person model directly as it may be a newer
     # version than this migration expects. We use the historical version.
+    Product = apps.get_model("catalogue", "Product")
     ProductClass = apps.get_model("catalogue", "ProductClass")
     ProductAttribute = apps.get_model("catalogue", "ProductAttribute")
+    Product.objects.all().delete()
+    ProductClass.objects.all().delete()
     album = ProductClass.objects.create(name='Album',
                                         slug='album',
                                         requires_shipping=False,
