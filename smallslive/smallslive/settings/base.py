@@ -79,7 +79,7 @@ INSTALLED_APPS = [
     'floppyforms',
     'image_cropping',
     'localflavor',
-    'oscar_stripe',
+    #'oscar_stripe',
     'pipeline',
     'sortedm2m',
     'storages',
