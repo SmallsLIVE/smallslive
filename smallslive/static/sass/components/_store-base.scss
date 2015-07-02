@@ -1129,6 +1129,18 @@
 
 .store-cart {
 
+  &__empty {
+    padding: 60px 30px;
+    background-color: #fff;
+    border-bottom: 8px solid $main-accent-color;
+
+    & h2 {
+      @include lato-italic;
+      opacity: 0.6;
+      font-size: 18px;
+    }
+  }
+
   &__table {
 
     &__header {
@@ -1345,7 +1357,7 @@
     &__footer {
       background-color: #FBFBFB;
       border-top: 1px solid #eee;
-      padding: 15px 0;
+      padding: 15px 30px;
       @include lato-bold;
 
       &__cell {
@@ -1353,6 +1365,7 @@
 
         &.value {
           color: $main-accent-color;
+          text-align: right;
         }
       }
     }
@@ -1598,6 +1611,10 @@
       outline: none;
       border: 1px solid $main-accent-color;
     }
+  }
+
+  &__select {
+    height: 44px;
   }
 
   &__filler-separator {

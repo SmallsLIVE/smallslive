@@ -13,6 +13,9 @@ DATABASES['default'] = dj_database_url.config()
 
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
+INSTALLED_APPS += (
+    'debug_toolbar',
+)
 
 # Thumbor
 THUMBOR_MEDIA_URL = 'http://127.0.0.1:8000/media/'
