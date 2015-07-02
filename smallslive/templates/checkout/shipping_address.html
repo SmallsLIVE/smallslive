@@ -1,6 +1,8 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
+{% load currency_filters %}
+{% load purchase_info_tags %}
 
 {% block store_nav_active %}active{% endblock %}
 
@@ -51,12 +53,12 @@
                                 <option value="{{ val }}" {% if val == user.country %}selected{% endif %}>{{ choice }}</option>
                             {% endfor %}
                         </select>
-                        <div class="store__form__filler-separator"></div>
-                        <label for="shipping-option" class="store__form__label">Shipping option</label>
-                        <select name="shipping-option" class="store__form__select">
-                            <option>Standard -- $5.00</option>
-                            <option>Expedited -- $15.00</option>
-                        </select>
+{#                        <div class="store__form__filler-separator"></div>#}
+{#                        <label for="shipping-option" class="store__form__label">Shipping option</label>#}
+{#                        <select name="shipping-option" class="store__form__select">#}
+{#                            <option>Standard -- $5.00</option>#}
+{#                            <option>Expedited -- $15.00</option>#}
+{#                        </select>#}
                     </div>
                 </div>
                 <h3 class="store__form__heading">Digital downloads:</h3>
@@ -75,12 +77,12 @@
                 </div>
                 <div class="col-xs-12 col-sm-6 store-cart__footer__right">
                     <div class="store-cart__footer__price-container">
-                        <span class="store-cart__footer__price-container__value">$1999.99</span>
-                        <span class="store-cart__footer__price-container__label">Something:</span>
-                        <span class="store-cart__footer__price-container__value">$1999.99</span>
-                        <span class="store-cart__footer__price-container__label">Else:</span>
+                        <span class="store-cart__footer__price-container__value">{{ basket.total_excl_tax|currency:basket.currency }}</span>
+                        <span class="store-cart__footer__price-container__label">Basket total:</span>
+                        <span class="store-cart__footer__price-container__value">{{ shipping_charge.excl_tax|currency:basket.currency }}</span>
+                        <span class="store-cart__footer__price-container__label">Shipping:</span>
                         <div class="store-cart__footer__price-container__total">
-                            <span class="store-cart__footer__price-container__value">$9875.99</span>
+                            <span class="store-cart__footer__price-container__value">{{ order_total.excl_tax|currency:basket.currency }}</span>
                             <span class="store-cart__footer__price-container__label">Total:</span>
                         </div>
                     </div>
