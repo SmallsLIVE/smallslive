@@ -5,8 +5,8 @@ from oscar.apps.basket.abstract_models import AbstractBasket
 
 class Basket(AbstractBasket):
     def has_physical_products(self):
-        physical_count = self.all_lines().filter(product__product_class__requires_shipping=True).count()
-        return physical_count > 0
+        physical_items = [item for item in self.all_lines() if item.product.is_shipping_required]
+        return len(physical_items) > 0
 
     def has_digital_products(self):
         digital_count = self.all_lines().filter(product__product_class__requires_shipping=False).count()
