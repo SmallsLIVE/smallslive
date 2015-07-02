@@ -1,35 +1,197 @@
-{% extends 'oscar/checkout/preview.html' %}
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
 {% load currency_filters %}
+{% load purchase_info_tags %}
 
-{% block payment_method %}
-  <div class="span6">
-    <div class="sub-header">
-      <h2>Payment</h2>
-    </div>
-    <div class="well well-success">
-      <p>{{ order_total.incl_tax|currency }} will be debited from your bankcard.</p>
+{% block store_nav_active %}active{% endblock %}
 
-      <div class="alert-actions">
-        <a href="{% url 'checkout:payment-details' %}" class="btn">Change payment details</a>
-      </div>
+{% block content %}
+
+    <div class="content-wrapper">
+
+        <section class="store-header container">
+            <div class="store-header__content">
+                <h1 class="store-header__title">SmallsLIVE Store<span class="store-header__title__divider">|</span><span class="store-header__title__category">Order overview</span></h1>
+            </div>
+        </section>
+        <section class="store-overview container">
+            <div class="col-xs-12 col-sm-8 store-overview__left-column">
+                <div class="store-overview__group">
+                    <h3 class="store-overview__group__heading">Ordered items:</h3>
+                    <h4 class="store-overview__group__table__heading">Physical items:</h4>
+                    <div class="store-overview__group__table">
+                        <!-- table header start -->
+                        <div class="store-overview__group__table__header clearfix">
+                            <div class="col-xs-2 image">
+                                Image
+                            </div>
+                            <div class="col-xs-7 details">
+                                Details
+                            </div>
+                            <div class="col-xs-3 total">
+                                Total
+                            </div>
+                        </div>
+                        <!-- end of table header -->
+                        <!-- table row start -->
+                        <div class="store-overview__group__table__row clearfix">
+                            <div class="col-xs-2 image">
+                                <a class="square-container" href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                            </div>
+                            <div class="col-xs-7 details">
+                                <p class="store-overview__group__table__product-name">
+                                    The official SmallsLIVE Cotton T-Shirt
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    Mens XL
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    3 x $15.00
+                                </p>
+                            </div>
+                            <div class="col-xs-3 total">
+                                $15.00
+                            </div>
+                        </div>
+                        <!-- end of table row -->
+                        <!-- group total -->
+                        <div class="store-overview__group__total clearfix">
+                            <div class="col-xs-9 store-overview__group__total__label">
+                                Sub-total:
+                            </div>
+                            <div class="col-xs-3 store-overview__group__total__value">
+                                {{ basket.physical_total_excl_tax|currency:basket.currency }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="store-overview__group">
+                    <h4 class="store-overview__group__table__heading">Digital downloads:</h4>
+                    <div class="store-overview__group__table">
+                        <!-- table header start -->
+                        <div class="store-overview__group__table__header clearfix">
+                            <div class="col-xs-2 image">
+                                Cover
+                            </div>
+                            <div class="col-xs-7 details">
+                                Details
+                            </div>
+                            <div class="col-xs-3 total">
+                                Total
+                            </div>
+                        </div>
+                        <!-- end of table header -->
+                        <!-- table row start -->
+                        <div class="store-overview__group__table__row clearfix">
+                            <div class="col-xs-2 image">
+                                <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                            </div>
+                            <div class="col-xs-7 details">
+                                <p class="store-overview__group__table__product-name">
+                                    Wrap your troubles in dreams
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    Bopjuice by Ralph Lalama Live at Smalls
+                                </p>
+                                <p class="store-overview__group__table__product-details">
+                                    HD
+                                </p>
+                            </div>
+                            <div class="col-xs-3 total">
+                                $1.99
+                            </div>
+                        </div>
+                        <!-- end of table row -->
+                        <!-- group total -->
+                        <div class="store-overview__group__total clearfix">
+                            <div class="col-xs-9 store-overview__group__total__label">
+                                Sub-total:
+                            </div>
+                            <div class="col-xs-3 store-overview__group__total__value">
+                                {{ basket.digital_total_excl_tax|currency:basket.currency }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="store-overview__return-button__container">
+                    <a href="#" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to cart</a>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 store-overview__right-column">
+                <div class="store-overview__group">
+                    <h3 class="store-overview__group__heading">Shipping information:</h3>
+                    <div class="store-overview__group__textblock">
+                        <p>Matej Grozdanovic</p>
+                        <p>Street name 123</p>
+                        <p>Boston, MA</p>
+                        <p>United States</p>
+                    </div>
+                    <div class="store-overview__group__textblock">
+                        <p>Expedited shipping -- $15.00</p>
+                    </div>
+                </div>
+                <div class="store-overview__return-button__container">
+                    <a href="#" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to shipping</a>
+                </div>
+                <div class="store-overview__group">
+                    <h3 class="store-overview__group__heading">Billing information:</h3>
+                    <div class="store-overview__group__textblock">
+                        <p>Matej Grozdanovic</p>
+                        <p>Street name 123</p>
+                        <p>Boston, MA</p>
+                        <p>United States</p>
+                    </div>
+                    <div class="store-overview__group__textblock">
+                        <p class="small-heading">Credit card:</p>
+                        <p>xxxx xxxx xxxx 4567</p>
+                        <p>Valid thru 12/17</p>
+                        <p>Matej Grozdanovic</p>
+                    </div>
+                    <div class="store-overview__return-button__container">
+                    <a href="#" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to billing</a>
+                </div>
+                </div>
+            </div>
+        </section>
+        <section class="store-cart__footer container">
+            <div class="col-xs-12 col-sm-6 store-cart__footer__left">
+                <p class="store-cart__footer__left__text">We accept the following payment options:</p>
+                <div class="store-cart__footer__card-icons">
+                    <img src="{% static 'image/payment/visa.png' %}" alt="Visa">
+                    <img src="{% static 'image/payment/mastercard.png' %}" alt="MasterCard">
+                    <img src="{% static 'image/payment/amex.png' %}" alt="American Express">
+                    <img src="{% static 'image/payment/diners.png' %}" alt="Diners">
+                    <img src="{% static 'image/payment/paypal.png' %}" alt="Paypal">
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 store-cart__footer__right">
+                <div class="store-cart__footer__price-container">
+                    <span class="store-cart__footer__price-container__value">{{ basket.total_excl_tax|currency:basket.currency }}</span>
+                    <span class="store-cart__footer__price-container__label">Basket total:</span>
+                    <span class="store-cart__footer__price-container__value">{{ shipping_charge.excl_tax|currency:basket.currency }}</span>
+                    <span class="store-cart__footer__price-container__label">Shipping:</span>
+                    <div class="store-cart__footer__price-container__total">
+                        <span class="store-cart__footer__price-container__value">{{ order_total.excl_tax|currency:basket.currency }}</span>
+                        <span class="store-cart__footer__price-container__label">Total:</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 store-cart__footer__buttons">
+              {% block place_order %}
+                <form action="{% url "checkout:preview" %}" method="post">
+                  <a href="#" class="store-cart__footer__button-back"><i class="fa fa-angle-double-left"></i> Back to
+                    payment information</a>
+                  <button class="store-cart__footer__button-next">Pay and order</button>
+                  <input type="hidden" value="place_order"/>
+                </form>
+              {% endblock %}
+            </div>
+        </section>
     </div>
-  </div>
+
+{% endblock content %}
+
+{% block extra_js %}
+  <script src="{% static 'js/store-base.js' %}"></script>
 {% endblock %}
-
-{% block place_order %}
-  <h3>Please review the information below, then click "Place Order"</h3>
-  <form method="post" action="{% url 'checkout:preview' %}">
-    {% csrf_token %}
-
-    <div style="display:none">
-      <input type="hidden" name="action" value="place_order"/>
-      {{ stripe_token_form.as_p }}
-    </div>
-
-    <div class="form-actions">
-      <button id='place-order' type="submit" value="Place order"
-              class="pull-right btn btn-primary btn-large js-disable-on-click">Place order
-      </button>
-    </div>
-  </form>
-{% endblock place_order %}

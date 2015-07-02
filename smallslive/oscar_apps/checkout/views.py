@@ -1,3 +1,5 @@
+from django import http
+from django.shortcuts import redirect
 from oscar.apps.checkout import views as checkout_views
 from oscar.core.loading import get_class
 
@@ -20,3 +22,22 @@ class ShippingAddressView(checkout_views.ShippingAddressView):
         return Repository().get_default_shipping_method(
             basket=self.request.basket, user=self.request.user,
             request=self.request)
+
+
+class PaymentDetailsView(checkout_views.PaymentDetailsView):
+    def post(self, request, *args, **kwargs):
+        # Posting to payment-details isn't the right thing to do.  Form
+        # submissions should use the preview URL.
+        if not self.preview:
+            return http.HttpResponseBadRequest()
+
+        if request.POST.get('payment-method') == 'paypal':
+            return redirect('paypal-direct-payment')
+
+        # We use a custom parameter to indicate if this is an attempt to place
+        # an order (normally from the preview page).  Without this, we assume a
+        # payment form is being submitted from the payment details view. In
+        # this case, the form needs validating and the order preview shown.
+        if request.POST.get('action', '') == 'place_order':
+            return self.handle_place_order_submission(request)
+        return self.handle_payment_details_submission(request)

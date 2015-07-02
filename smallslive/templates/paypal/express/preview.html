@@ -1,0 +1,16 @@
+{% extends "checkout/preview.html" %}
+{% load currency_filters %}
+{% load i18n %}
+{% load url from future %}
+{% load thumbnail %}
+
+{# Note, we submit to a different URL for placing an Express order #}
+{% block place_order %}
+    <form method="post" action="{% url 'paypal-place-order' basket.id %}">
+      {% csrf_token %}
+      <input type="hidden" name="payer_id" value="{{ payer_id }}" />
+      <input type="hidden" name="token" value="{{ token }}" />
+      <a href="#" class="store-cart__footer__button-back"><i class="fa fa-angle-double-left"></i> Back to payment information</a>
+      <button class="store-cart__footer__button-next">Pay and order</button>
+    </form>
+{% endblock place_order %}

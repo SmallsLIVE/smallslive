@@ -80,6 +80,7 @@ INSTALLED_APPS = [
     'image_cropping',
     'localflavor',
     #'oscar_stripe',
+    'paypal',
     'pipeline',
     'sortedm2m',
     'storages',
@@ -396,6 +397,11 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+PAYPAL_API_USERNAME = os.environ.get('PAYPAL_API_USERNAME')
+PAYPAL_API_PASSWORD = os.environ.get('PAYPAL_API_PASSWORD')
+PAYPAL_API_SIGNATURE = os.environ.get('PAYPAL_API_SIGNATURE')
+PAYPAL_CURRENCY = 'USD'
+
 STRIPE_PUBLISHABLE_KEY = STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 STRIPE_CURRENCY = 'USD'
@@ -504,6 +510,18 @@ OSCAR_DASHBOARD_NAVIGATION += [
          ],
     },
 ]
+
+OSCAR_DASHBOARD_NAVIGATION.append(
+    {
+        'label': 'PayPal',
+        'icon': 'icon-globe',
+        'children': [
+            {
+                'label': 'Express transactions',
+                'url_name': 'paypal-express-list',
+            },
+        ]
+    })
 
 ELASTICSEARCH_INDEX_SETTINGS = {
     'settings': {

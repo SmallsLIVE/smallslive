@@ -7,6 +7,7 @@ from django.http import Http404
 from django.shortcuts import render_to_response
 from django.views.generic.base import TemplateView
 from django.template import TemplateDoesNotExist
+from paypal.express.dashboard.app import application as paypal_application
 from oscar.app import application
 
 # uncomment these lines to enable the Djrill admin interface 
@@ -48,6 +49,8 @@ urlpatterns = patterns('',
     url(r'^search/artist/', 'artists.views.artist_search', name='artist_search'),
     url(r'^search/event/', 'events.views.event_search', name='event_search'),
     url(r'^search/instrument/', 'artists.views.instrument_search', name='instrument_search'),
+    (r'^checkout/paypal/', include('paypal.express.urls')),
+    (r'^dashboard/paypal/express/', include(paypal_application.urls)),
     url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
     url(r'^store/', include(application.urls)),
     url(r'^robots\.txt', robots_view),

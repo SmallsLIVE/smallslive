@@ -13,36 +13,37 @@
                 <h1 class="store-header__title">SmallsLIVE Store<span class="store-header__title__divider">|</span><span class="store-header__title__category">Order payment</span></h1>
             </div>
         </section>
-        <form id="payment-form">
-        <section class="store-billing container">
-            <h3 class="store__form__heading">Billing information:</h3>
-            <div class="row">
-                <div class="col-xs-12 store__form__selection__container">
-                    <div class="store__form__selection__option">
-                        <input type="radio" name="option-billing" id="same-address" value="same-address"><label for="same-address">My billing address is the same as the shipping address</label>
-                    </div>
-                    <div class="store__form__selection__option">
-                        <input type="radio" name="option-billing" id="different-address" value="different-address" checked><label for="different-address">My billing address is different than the shipping address</label>
-                    </div>
-                </div>
-                <div class="store__form__group clearfix" id="custom-billing-address">
-                    <div class="col-xs-12 col-sm-6">
-                        <label for="name" class="store__form__label">Name</label>
-                        <input type="text" name="name" class="store__form__input" value="Matej">
+        <form id="payment-form" method="post" action="{% url "checkout:preview" %}">
+          <section class="store-billing container">
+                <a href="{% url 'paypal-redirect' %}"><img src="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" align="left" style="margin-right:7px;"></a>
+              <h3 class="store__form__heading">Billing information:</h3>
+              <div class="row">
+                  <div class="col-xs-12 store__form__selection__container">
+                      <div class="store__form__selection__option">
+                          <input type="radio" name="option-billing" id="same-address" value="same-address"><label for="same-address">My billing address is the same as the shipping address</label>
+                      </div>
+                      <div class="store__form__selection__option">
+                          <input type="radio" name="option-billing" id="different-address" value="different-address" checked><label for="different-address">My billing address is different than the shipping address</label>
+                      </div>
+                  </div>
+                  <div class="store__form__group clearfix" id="custom-billing-address">
+                      <div class="col-xs-12 col-sm-6">
+                          <label for="name" class="store__form__label">Name</label>
+                          <input type="text" name="name" class="store__form__input" value="Matej">
                         <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
-                        <label for="name" class="store__form__label">Surname</label>
-                        <input type="text" name="surname" class="store__form__input" value="Grozdanović">
+                          <label for="name" class="store__form__label">Surname</label>
+                          <input type="text" name="surname" class="store__form__input" value="Grozdanović">
                         <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
-                        <label for="email" class="store__form__label">Name</label>
-                        <input type="email" name="email" class="store__form__input" value="grozdanowski@gmail.com">
+                          <label for="email" class="store__form__label">Name</label>
+                          <input type="email" name="email" class="store__form__input" value="grozdanowski@gmail.com">
                         <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
                         <label for="phone" class="store__form__label">Surname</label>
                         <input type="tel" name="phone" class="store__form__input" value="+385 91 6183 233">
                         <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
                     </div>
-                    <div class="col-xs-12 col-sm-6">
-                        <label for="address1" class="store__form__label">Address - line 1</label>
-                        <input type="text" name="address1" class="store__form__input" value="Street Name 123">
+                      <div class="col-xs-12 col-sm-6">
+                          <label for="address1" class="store__form__label">Address - line 1</label>
+                          <input type="text" name="address1" class="store__form__input" value="Street Name 123">
                         <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
                         <label for="address2" class="store__form__label">Address - line 2</label>
                         <input type="text" name="address2" class="store__form__input" value="">
@@ -53,105 +54,105 @@
                                 <input type="text" name="city" class="store__form__input" value="Boston">
                                 <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
                             </div>
-                            <div class="col-xs-6">
-                                <label for="state" class="store__form__label">State</label>
-                                <select name="state" class="store__form__select">
-                                    <option>Massachusetts</option>
-                                    <option>Michigan</option>
-                                </select>
+                              <div class="col-xs-6">
+                                  <label for="state" class="store__form__label">State</label>
+                                  <select name="state" class="store__form__select">
+                                      <option>Massachusetts</option>
+                                      <option>Michigan</option>
+                                  </select>
                                 <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
                             </div>
                         </div>
-                        <label for="country" class="store__form__label">Country</label>
-                            <select name="country" class="store__form__select">
-                                <option>USA</option>
-                                <option>Croatia</option>
+                          <label for="country" class="store__form__label">Country</label>
+                              <select name="country" class="store__form__select">
+                                  <option>USA</option>
+                                  <option>Croatia</option>
                             </select>
                             <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
                     </div>
                 </div>
             </div>
-            <h3 class="store__form__heading">Payment information:</h3>
-            <div class="row">
-                <div class="col-xs-12 store__form__selection__container">
-                    <div class="store__form__selection__option">
-                        <input type="radio" name="option-payment-method" id="pay-credit-card" value="pay-credit-card" checked><label for="pay-credit-card">Pay with credit card</label>
-                    </div>
-                    <div class="store__form__selection__option">
-                        <input type="radio" name="option-payment-method" id="pay-paypal" value="pay-paypal"><label for="pay-paypal">Pay with PayPal</label>
-                    </div>
-                </div>
-            </div>
-            <div class="store__form__group clearfix row" id="credit-card-form">
-                <div class="col-xs-12 col-sm-6">
-                    <p class="signup__payment__text">We accept the following credit cards:</p>
-                    <div class="signup__payment__card-icons">
-                        <img src="{% static 'image/payment/visa.png' %}" alt="Visa">
-                        <img src="{% static 'image/payment/mastercard.png' %}" alt="MasterCard">
-                        <img src="{% static 'image/payment/amex.png' %}" alt="American Express">
-                        <img src="{% static 'image/payment/diners.png' %}" alt="Diners">
-                    </div>
-                    <div class="signup__payment__card__info">
-                        {% csrf_token %}
-                        <label for="card-number" class="store__form__label">Credit card number</label>
-                        <input type="text" class="store__form__input"  id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*" autocomplete="off" data-stripe="number">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <label for="expiry" id="expiry-label" class="store__form__label">Valid thru:</label>
-                                <input type="text" class="store__form__input" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month">
-                            </div>
-                            <div class="col-xs-3">
-                                <label for="expiry" id="expiry-label" class="store__form__label"> </label>
-                                <input type="text" class="store__form__input" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-year">
-                            </div>
-                            <div class="col-xs-6">
-                                <label for="cvc" id="cvc-label" class="store__form__label">CVC</label>
-                                <input type="text" class="store__form__input" id="cvc" placeholder="xxx" size="4" pattern="\d*" autocomplete="off" data-stripe="cvc">
-                            </div>
-                        </div>
-                        <label for="name" class="store__form__label">Name on card</label>
-                        <input type="text" class="store__form__input" placeholder="Name on card" autocomplete="off" data-stripe="name">
-                        <div class="payment-errors"></div>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 signup__payment__card__image">
-                    <div class="card-wrapper"></div>
-                </div>
-            </div>
-            <div class="store__form__group clearfix row" id="paypal-form">
-                <div class="col-xs-12 col-sm-6">
-                    <p class="signup__payment__text">You'll be taken to a separate PayPal screen later on during the purchase process.</p>
-                </div>
-            </div>
-        </section>
-        <section class="store-cart__footer container">
-            <div class="col-xs-12 col-sm-6 store-cart__footer__left">
-                <p class="store-cart__footer__left__text">We accept the following payment options:</p>
-                <div class="store-cart__footer__card-icons">
-                    <img src="{% static 'image/payment/visa.png' %}" alt="Visa">
-                    <img src="{% static 'image/payment/mastercard.png' %}" alt="MasterCard">
-                    <img src="{% static 'image/payment/amex.png' %}" alt="American Express">
-                    <img src="{% static 'image/payment/diners.png' %}" alt="Diners">
-                    <img src="{% static 'image/payment/paypal.png' %}" alt="Paypal">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 store-cart__footer__right">
-                <div class="store-cart__footer__price-container">
-                    <span class="store-cart__footer__price-container__value">$1999.99</span>
-                    <span class="store-cart__footer__price-container__label">Something:</span>
-                    <span class="store-cart__footer__price-container__value">$1999.99</span>
-                    <span class="store-cart__footer__price-container__label">Else:</span>
-                    <div class="store-cart__footer__price-container__total">
-                        <span class="store-cart__footer__price-container__value">$9875.99</span>
-                        <span class="store-cart__footer__price-container__label">Total:</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 store-cart__footer__buttons">
-                <a href="#" class="store-cart__footer__button-back"><i class="fa fa-angle-double-left"></i> Back to something</a>
-                <a href="#" class="store-cart__footer__button-next">Continue checkout</a>
-            </div>
-        </section>
+              <h3 class="store__form__heading">Payment information:</h3>
+              <div class="row">
+                  <div class="col-xs-12 store__form__selection__container">
+                      <div class="store__form__selection__option">
+                          <input type="radio" name="payment-method" id="pay-credit-card" value="credit-card" checked><label for="pay-credit-card">Pay with credit card</label>
+                      </div>
+                      <div class="store__form__selection__option">
+                          <input type="radio" name="payment-method" id="pay-paypal" value="paypal"><label for="pay-paypal">Pay with PayPal</label>
+                      </div>
+                  </div>
+              </div>
+              <div class="store__form__group clearfix row" id="credit-card-form">
+                  <div class="col-xs-12 col-sm-6">
+                      <p class="signup__payment__text">We accept the following credit cards:</p>
+                      <div class="signup__payment__card-icons">
+                          <img src="{% static 'image/payment/visa.png' %}" alt="Visa">
+                          <img src="{% static 'image/payment/mastercard.png' %}" alt="MasterCard">
+                          <img src="{% static 'image/payment/amex.png' %}" alt="American Express">
+                          <img src="{% static 'image/payment/diners.png' %}" alt="Diners">
+                      </div>
+                      <div class="signup__payment__card__info">
+                          {% csrf_token %}
+                          <label for="card-number" class="store__form__label">Credit card number</label>
+                          <input type="text" class="store__form__input"  id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*" autocomplete="off" data-stripe="number">
+                          <div class="row">
+                              <div class="col-xs-3">
+                                  <label for="expiry" id="expiry-label" class="store__form__label">Valid thru:</label>
+                                  <input type="text" class="store__form__input" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month">
+                              </div>
+                              <div class="col-xs-3">
+                                  <label for="expiry" id="expiry-label" class="store__form__label"> </label>
+                                  <input type="text" class="store__form__input" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-year">
+                              </div>
+                              <div class="col-xs-6">
+                                  <label for="cvc" id="cvc-label" class="store__form__label">CVC</label>
+                                  <input type="text" class="store__form__input" id="cvc" placeholder="xxx" size="4" pattern="\d*" autocomplete="off" data-stripe="cvc">
+                              </div>
+                          </div>
+                          <label for="name" class="store__form__label">Name on card</label>
+                          <input type="text" class="store__form__input" placeholder="Name on card" autocomplete="off" data-stripe="name">
+                          <div class="payment-errors"></div>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-6 signup__payment__card__image">
+                      <div class="card-wrapper"></div>
+                  </div>
+              </div>
+              <div class="store__form__group clearfix row" id="paypal-form">
+                  <div class="col-xs-12 col-sm-6">
+                      <p class="signup__payment__text">You'll be taken to a separate PayPal screen later on during the purchase process.</p>
+                  </div>
+              </div>
+          </section>
+          <section class="store-cart__footer container">
+              <div class="col-xs-12 col-sm-6 store-cart__footer__left">
+                  <p class="store-cart__footer__left__text">We accept the following payment options:</p>
+                  <div class="store-cart__footer__card-icons">
+                      <img src="{% static 'image/payment/visa.png' %}" alt="Visa">
+                      <img src="{% static 'image/payment/mastercard.png' %}" alt="MasterCard">
+                      <img src="{% static 'image/payment/amex.png' %}" alt="American Express">
+                      <img src="{% static 'image/payment/diners.png' %}" alt="Diners">
+                      <img src="{% static 'image/payment/paypal.png' %}" alt="Paypal">
+                  </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 store-cart__footer__right">
+                  <div class="store-cart__footer__price-container">
+                      <span class="store-cart__footer__price-container__value">$1999.99</span>
+                      <span class="store-cart__footer__price-container__label">Something:</span>
+                      <span class="store-cart__footer__price-container__value">$1999.99</span>
+                      <span class="store-cart__footer__price-container__label">Else:</span>
+                      <div class="store-cart__footer__price-container__total">
+                          <span class="store-cart__footer__price-container__value">$9875.99</span>
+                          <span class="store-cart__footer__price-container__label">Total:</span>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-xs-12 store-cart__footer__buttons">
+                  <a href="#" class="store-cart__footer__button-back"><i class="fa fa-angle-double-left"></i> Back to something</a>
+                  <button href="#" class="store-cart__footer__button-next">Continue checkout</button>
+              </div>
+          </section>
         </form>
     </div>
 
@@ -208,13 +209,13 @@
                 }
             });
 
-            if ($('input[name=option-payment-method]:checked').val() === "pay-paypal") {
+            if ($('input[name=payment-method]:checked').val() === "paypal") {
                 $("#credit-card-form").css("display", "none");
             } else {
                 $("#paypal-form").css("display", "none");
             }
             $(".store__form__selection__option").click(function(){
-                if ($('input[name=option-payment-method]:checked').val() === "pay-credit-card") {
+                if ($('input[name=payment-method]:checked').val() === "credit-card") {
                     $("#paypal-form").slideUp("fast");
                     $("#credit-card-form").slideDown("fast"); //Slide Down Effect
                 } else {
