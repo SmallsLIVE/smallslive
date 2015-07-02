@@ -217,17 +217,19 @@
     & a {
       color: rgba(#131313, 0.5);
       @include transition(all 0.3s ease-in-out);
+
+      &:hover {
+        color: #131313;
+      }
+    }
+
+    & ul {
+      padding-left: 20px;
+      margin-top: 10px;
     }
 
     &:last-child {
       border-bottom: none;
-    }
-
-    &:hover, &:focus, &.active {
-
-      & a {
-        color: #131313;
-      }
     }
   }
 }
@@ -901,10 +903,9 @@
     }
 
     &__description {
-
       @include lato;
       font-size: 14px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       padding-right: 20px;
     }
 
@@ -916,8 +917,12 @@
 
       &__title {
         display: block;
-        margin: 0 0 2px;
+        margin: 0 0 5px;
         @include lato-bold;
+      }
+
+      & p {
+        margin-bottom: 5px;
       }
     }
 
@@ -1676,6 +1681,14 @@
         }
       }
     }
+  }
+
+  &__field-error {
+    display: block;
+    @include lato;
+    font-size: 12px;
+    color: #D21333;
+    margin: -5px 0 10px;
   }
 }
 

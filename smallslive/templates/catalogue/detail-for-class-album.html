@@ -69,15 +69,15 @@
             <span class="arrow"></span>
           </div>
           {% endif %}
-          <p class="store-single__item__description">
+          <div class="store-single__item__description">
             {{ product.short_description|safe }}
-          </p>
-          <p class="store-single__item__details">
+          </div>
+          <div class="store-single__item__details">
               {% if product.description %}
                   <span class="store-single__item__details__title">Detailed description:</span>
                   {{ product.description|safe }}
               {% endif %}
-          </p>
+          </div>
           {% purchase_info_for_product request product as session %}
           <span class="store-single__item__price">
               {% if session.price.exists %}
