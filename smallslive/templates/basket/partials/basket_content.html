@@ -84,7 +84,7 @@
                                                     <div class="store-cart__mobile-quantity__half">
                                                         <div class="col-xs-12 store-cart__table__cell quantity">
                                                             <div class="store-cart__quantity-control">
-                                                                <button class="store-cart__quantity-control__button control-decrease {% if form.quantity.value <= 1 %}disabled{% endif %}" data-behaviour="decrease"><i
+                                                                <button class="store-cart__quantity-control__button control-decrease {% if form.quantity.value <= 1 %}disabled{% endif %}" {% if form.quantity.value <= 1 %}disabled{% endif %} data-behaviour="decrease"><i
                                                                         class="fa fa-minus-circle"></i></button>
                                                                 <span class="store-cart__quantity-control__label">{{ form.quantity.value }}</span>
                                                                 <input type="hidden" name="form-{{ forloop.counter0 }}-quantity"  value="{{ form.quantity.value }}"/>

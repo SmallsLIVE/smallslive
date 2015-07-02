@@ -17,24 +17,27 @@
                 'basketURL': '{% url 'basket:summary' %}'
             };
             oscar.basket.init(options);
-            $(".store-cart__quantity-control__button").on('click', function(e) {
-                var $quantityInput = $(this).siblings('input[type=hidden]');
-                var $quantityLabel = $(this).siblings('.store-cart__quantity-control__label');
-                var quantity = parseInt($quantityInput.val(), 10);
-                var behaviour = $(this).data('behaviour');
-                if (behaviour === "increase") {
-                    quantity += 1;
-                } else if (behaviour === "decrease") {
-                    quantity -= 1;
-                }
+            $("#content_inner").on('click', '.store-cart__quantity-control__button', function(e) {
+                if (! $(this).attr('disabled')) {
+                    e.preventDefault();
+                    var $quantityInput = $(this).siblings('input[type=hidden]');
+                    var $quantityLabel = $(this).siblings('.store-cart__quantity-control__label');
+                    var quantity = parseInt($quantityInput.val(), 10);
+                    var behaviour = $(this).data('behaviour');
+                    if (behaviour === "increase") {
+                        quantity += 1;
+                    } else if (behaviour === "decrease") {
+                        quantity -= 1;
+                    }
 
-                $quantityLabel.text(quantity);
-                $quantityInput.val(quantity);
-
-                if (quantity <= 1 && $(this).hasClass('control-decrease')) {
-                    $(this).attr('disabled', true).addClass('disabled');
-                } else if (quantity >= 2 && $(this).hasClass('control-decrease')) {
-                    $(this).attr('disabled', false).removeClass('disabled');
+                    $quantityLabel.text(quantity);
+                    $quantityInput.val(quantity);
+                    oscar.basket.submitBasketForm(e);
+                    if (quantity <= 1 && $(this).hasClass('control-decrease')) {
+                        $(this).attr('disabled', true).addClass('disabled');
+                    } else if (quantity >= 2 && $(this).hasClass('control-decrease')) {
+                        $(this).attr('disabled', false).removeClass('disabled');
+                    }
                 }
             });
         });
