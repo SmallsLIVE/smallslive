@@ -30,7 +30,12 @@
 
                 $quantityLabel.text(quantity);
                 $quantityInput.val(quantity);
-                console.log(quantity);
+
+                if (quantity <= 1 && $(this).hasClass('control-decrease')) {
+                    $(this).attr('disabled', true).addClass('disabled');
+                } else if (quantity >= 2 && $(this).hasClass('control-decrease')) {
+                    $(this).attr('disabled', false).removeClass('disabled');
+                }
             });
         });
     </script>
