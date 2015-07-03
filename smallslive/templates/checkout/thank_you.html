@@ -1,0 +1,38 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block store_nav_active %}active{% endblock %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+
+        <section class="store-header container">
+            <div class="store-header__content">
+                <h1 class="store-header__title">SmallsLIVE Store<span class="store-header__title__divider">|</span><span class="store-header__title__category">Order complete!</span></h1>
+            </div>
+        </section>
+        <section class="store-done container">
+            <div class="row">
+                <div class="hidden-xs col-sm-5 col-md-5 store-done__graphic">
+                    <img src="{% static "logo-black.svg" %}" alt="SmallsLIVE logo"/>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 store-done__content">
+                    <h3 class="store-done__heading">Payment successful!</h3>
+                    <ul class="store-done__info-list">
+                        <li>your credit card has been charged for <b>$16.00</b></li>
+                        <li>we have sent <b>the receipt</b> to the email address you supplied</li>
+                        <li>we will attend to shipping your order as quickly as possible. It usually takes blahblahblab something something...</li>
+                        <li>if you have any questions or issues, please feel free to contact us via email on <a href="mailto:info@smallslive.com">info@smallslive.com</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock content %}
+
+{% block extra_js %}
+  <script src="{% static 'js/store-base.js' %}"></script>
+{% endblock %}
