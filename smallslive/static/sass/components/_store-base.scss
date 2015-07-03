@@ -1871,3 +1871,44 @@ img.defineImageRatio {
     }
   }
 }
+
+.store-done {
+  background-color: #fff;
+  padding: 60px 30px;
+
+  @media (max-width: $screen-xs-max) {
+    padding: 30px;
+  }
+
+  &>.row {
+    @include display(flex);
+    @include align-items(center);
+  }
+
+  &__graphic {
+
+    & img {
+      width: 60%;
+      margin: 0 20%;
+    }
+  }
+
+  &__content {
+
+  }
+
+  &__heading {
+    @include lato-black;
+    font-size: 24px;
+    margin: 0 0 20px;
+  }
+
+  &__info-list {
+    padding-left: 15px;
+    margin: 0;
+
+    & li {
+      margin: 5px 0;
+    }
+  }
+}
