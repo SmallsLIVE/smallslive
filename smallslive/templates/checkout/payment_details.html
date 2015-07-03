@@ -20,67 +20,78 @@
               <h3 class="store__form__heading">Billing information:</h3>
               <div class="row">
                   <div class="col-xs-12 store__form__selection__container">
-                      <div class="store__form__selection__option">
-                          <input type="radio" name="option-billing" id="same-address" value="same-address" checked><label for="same-address">My billing address is the same as the shipping address</label>
-                      </div>
-                      <div class="store__form__selection__option">
-                          <input type="radio" name="option-billing" id="different-address" value="different-address"><label for="different-address">My billing address is different than the shipping address</label>
-                      </div>
+                      {% if shipping_address %}
+                          <div class="store__form__selection__option">
+                              <input type="radio" name="billing_option" id="same-address" value="same-address"
+                                     checked><label for="same-address">My billing address is the same as the shipping
+                              address</label>
+                          </div>
+                          <div class="store__form__selection__option">
+                              <input type="radio" name="billing_option" id="different-address"
+                                     value="different-address"><label for="different-address">My billing address is
+                              different than the shipping address</label>
+                          </div>
+                      {% else %}
+                          <input type="hidden" name="option-billing" id="different-address" value="different-address">
+                      {% endif %}
+
                   </div>
                   <div class="store__form__group clearfix" id="custom-billing-address">
                       <div class="col-xs-12 col-sm-6">
                           <label for="name" class="store__form__label">Name</label>
-                          <input type="text" name="billing_first_name" class="store__form__input" value="Matej">
-                            {% for error in form.billing_first_name.errors %}
+                          <input type="text" name="billing_first_name" class="store__form__input" value="{{ billing_address_form.first_name.value }}">
+                            {% for error in billing_address_form.billing_first_name.errors %}
                                 <span class="store__form__field-error">{{ error }}</span>
                             {% endfor %}
                           <label for="name" class="store__form__label">Surname</label>
-                          <input type="text" name="billing_last_name" class="store__form__input" value="Grozdanović">
-                            {% for error in form.billing_last_name.errors %}
+                          <input type="text" name="billing_last_name" class="store__form__input" value="{{ billing_address_form.last_name.value }}">
+                            {% for error in billing_address_form.billing_last_name.errors %}
                                 <span class="store__form__field-error">{{ error }}</span>
                             {% endfor %}
                           <label for="phone" class="store__form__label">Phone</label>
-                          <input type="tel" name="phone" class="store__form__input" value="+385 91 6183 233">
-                            {% for error in form.billing_phone.errors %}
+                          <input type="tel" name="phone" class="store__form__input" value="{{ billing_address_form.phone.value }}">
+                            {% for error in billing_address_form.billing_phone.errors %}
                                 <span class="store__form__field-error">{{ error }}</span>
                             {% endfor %}
                     </div>
                       <div class="col-xs-12 col-sm-6">
                           <label for="address1" class="store__form__label">Address - line 1</label>
-                          <input type="text" name="address1" class="store__form__input" value="Street Name 123">
-                        {% for error in form.billing_address1.errors %}
+                          <input type="text" name="address1" class="store__form__input" value="{{ billing_address_form.line1.value }}">
+                        {% for error in billing_address_form.line1.errors %}
                                 <span class="store__form__field-error">{{ error }}</span>
                             {% endfor %}
                         <label for="address2" class="store__form__label">Address - line 2</label>
-                        <input type="text" name="address2" class="store__form__input" value="">
-                        {% for error in form.billing_address2.errors %}
+                        <input type="text" name="address2" class="store__form__input" value="{{ billing_address_form.line2.value }}">
+                        {% for error in billing_address_form.line2.errors %}
                                 <span class="store__form__field-error">{{ error }}</span>
                             {% endfor %}
                         <div class="row">
                             <div class="col-xs-6">
                                 <label for="city" class="store__form__label">City</label>
-                                <input type="text" name="city" class="store__form__input" value="Boston">
-                                {% for error in form.billing_city.errors %}
-                                <span class="store__form__field-error">{{ error }}</span>
-                            {% endfor %}
+                                <input type="text" name="city" class="store__form__input" value="{{ billing_address_form.line4.value }}">
+                                {% for error in billing_address_form.line4.errors %}
+                                    <span class="store__form__field-error">{{ error }}</span>
+                                {% endfor %}
                             </div>
                               <div class="col-xs-6">
                                   <label for="state" class="store__form__label">State</label>
                                   <select name="state" class="store__form__select">
-                                      <option>Massachusetts</option>
-                                      <option>Michigan</option>
+                                        {% for val, choice in billing_address_form.fields.state.widget.choices %}
+                                            <option value="{{ val }}" {% if val == user.state %}selected{% endif %}>{{ choice }}</option>
+                                        {% endfor %}
                                   </select>
-                                {% for error in form.billing_state.errors %}
-                                <span class="store__form__field-error">{{ error }}</span>
-                            {% endfor %}
+                                {% for error in billing_address_form.state.errors %}
+                                    <span class="store__form__field-error">{{ error }}</span>
+                                {% endfor %}
                             </div>
                         </div>
                           <label for="country" class="store__form__label">Country</label>
                               <select name="country" class="store__form__select">
-                                  <option>USA</option>
-                                  <option>Croatia</option>
+                                  {% for val, choice in billing_address_form.fields.country.choices %}
+                                    <option value="{{ val }}" {% if val == user.country %}selected{% endif %}>{{ choice }}</option>
+                                {% endfor %}
                             </select>
-                            {% for error in form.billing_country.errors %}
+                            {% for error in billing_address_form.country.errors %}
                                 <span class="store__form__field-error">{{ error }}</span>
                             {% endfor %}
                     </div>
@@ -176,7 +187,7 @@
               </div>
               <div class="col-xs-12 store-cart__footer__buttons">
                   <a href="#" class="store-cart__footer__button-back"><i class="fa fa-angle-double-left"></i> Back to something</a>
-                  <button href="#" class="store-cart__footer__button-next">Continue checkout</button>
+                  <button class="store-cart__footer__button-next">Continue checkout</button>
               </div>
           </section>
         </form>
@@ -223,11 +234,11 @@
     <script>
         /* Settings payment div reveal Paypal js */
         $(document).ready(function () {
-            if ($('input[name=option-billing]:checked').val() === "same-address") {
+            if ($('input[name=billing_option]:checked').val() === "same-address") {
                 $("#custom-billing-address").css("display", "none");
             }
             $(".store__form__selection__option").click(function(){
-                if ($('input[name=option-billing]:checked').val() === "different-address") {
+                if ($('input[name=billing_option]:checked').val() === "different-address") {
                     $("#custom-billing-address").slideDown("fast"); //Slide Down Effect
                 } else {
                     $("#custom-billing-address").slideUp("fast");

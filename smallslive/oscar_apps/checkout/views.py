@@ -5,7 +5,7 @@ from oscar.apps.checkout import views as checkout_views
 from oscar.apps.payment.models import SourceType, Source
 from oscar.core.loading import get_class
 from oscar_stripe.facade import Facade
-from .forms import PaymentForm
+from .forms import PaymentForm, BillingAddressForm
 
 OrderTotalCalculator = get_class(
     'checkout.calculators', 'OrderTotalCalculator')
@@ -48,12 +48,19 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
 
     def handle_payment_details_submission(self, request):
         form = PaymentForm(request.POST)
-        if form.is_valid():
-            print "je"
-            return self.render_preview(request, card_token=form.token, form=form)
+        shipping_address = self.get_shipping_address(self.request.basket)
+        billing_address_form = BillingAddressForm(shipping_address, request.POST)
+        if form.is_valid() and billing_address_form.is_valid():
+            if billing_address_form.cleaned_data.get('billing_option') == "same-address":
+                self.checkout_session.bill_to_shipping_address()
+            else:
+                address = billing_address_form.save()
+                self.checkout_session.bill_to_user_address(address)
+            return self.render_preview(request, card_token=form.token, form=form,
+                                       billing_address_form=billing_address_form)
         else:
             print "nije"
-            return self.render_payment_details(request, form=form)
+            return self.render_payment_details(request, form=form, billing_address_form=billing_address_form)
 
     def handle_payment(self, order_number, total, **kwargs):
         stripe_ref = Facade().charge(
