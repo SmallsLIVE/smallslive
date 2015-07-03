@@ -52,19 +52,19 @@
                     </div>
                       <div class="col-xs-12 col-sm-6">
                           <label for="address1" class="store__form__label">Address - line 1</label>
-                          <input type="text" name="address1" class="store__form__input" value="{{ billing_address_form.line1.value }}">
+                          <input type="text" name="line1" class="store__form__input" value="{{ billing_address_form.line1.value }}">
                         {% for error in billing_address_form.line1.errors %}
                                 <span class="store__form__field-error">{{ error }}</span>
                             {% endfor %}
                         <label for="address2" class="store__form__label">Address - line 2</label>
-                        <input type="text" name="address2" class="store__form__input" value="{{ billing_address_form.line2.value }}">
+                        <input type="text" name="line2" class="store__form__input" value="{{ billing_address_form.line2.value }}">
                         {% for error in billing_address_form.line2.errors %}
                                 <span class="store__form__field-error">{{ error }}</span>
                             {% endfor %}
                         <div class="row">
                             <div class="col-xs-6">
                                 <label for="city" class="store__form__label">City</label>
-                                <input type="text" name="city" class="store__form__input" value="{{ billing_address_form.line4.value }}">
+                                <input type="text" name="line4" class="store__form__input" value="{{ billing_address_form.line4.value }}">
                                 {% for error in billing_address_form.line4.errors %}
                                     <span class="store__form__field-error">{{ error }}</span>
                                 {% endfor %}

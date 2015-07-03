@@ -50,12 +50,12 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
         form = PaymentForm(request.POST)
         shipping_address = self.get_shipping_address(self.request.basket)
         billing_address_form = BillingAddressForm(shipping_address, request.POST)
-        if form.is_valid():
-            # if billing_address_form.cleaned_data.get('billing_option') == "same-address":
-            #     self.checkout_session.bill_to_shipping_address()
-            # else:
-            #     address = billing_address_form.save()
-            #     self.checkout_session.bill_to_user_address(address)
+        if form.is_valid() and billing_address_form.is_valid():
+            if billing_address_form.cleaned_data.get('billing_option') == "same-address":
+                self.checkout_session.bill_to_shipping_address()
+            else:
+                address = billing_address_form.save()
+                self.checkout_session.bill_to_user_address(address)
             return self.render_preview(request, card_token=form.token, form=form,
                                        billing_address_form=billing_address_form)
         else:
