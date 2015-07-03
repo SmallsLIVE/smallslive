@@ -53,7 +53,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
             return self.render_preview(request, card_token=form.token, form=form)
         else:
             print "nije"
-            return self.render_payment_details(request)
+            return self.render_payment_details(request, form=form)
 
     def handle_payment(self, order_number, total, **kwargs):
         stripe_ref = Facade().charge(

@@ -18,7 +18,7 @@ class ShippingAddressForm(checkout_forms.ShippingAddressForm):
 class PaymentForm(forms.Form):
     PAYMENT_CHOICES = Choices('paypal', 'credit-card')
     payment_method = forms.ChoiceField(required=True, choices=PAYMENT_CHOICES)
-    cc_number = forms.CharField(required=True, min_length=16, max_length=20)
+    number = forms.CharField(required=True, min_length=16, max_length=20)
     exp_month = forms.CharField(required=True, max_length=2)
     exp_year = forms.CharField(required=True, min_length=2, max_length=4)
     cvc = forms.CharField(required=True, min_length=3, max_length=4)
@@ -27,15 +27,18 @@ class PaymentForm(forms.Form):
     def clean(self):
         data = super(PaymentForm, self).clean()
         if not self.errors:
-            token = stripe.Token.create(
-                card={
-                    "number": data.get('cc_number'),
-                    "exp_month": data.get('exp_month'),
-                    "exp_year": data.get('exp_year'),
-                    "cvc": data.get('cvc'),
-                    "name": data.get('name'),
-                },
-            )
-            self.token = token.id
-            print self.token
+            try:
+                token = stripe.Token.create(
+                    card={
+                        "number": data.get('number'),
+                        "exp_month": data.get('exp_month'),
+                        "exp_year": data.get('exp_year'),
+                        "cvc": data.get('cvc'),
+                        "name": data.get('name'),
+                    },
+                )
+                self.token = token.id
+            except stripe.error.CardError, e:
+                error = e.json_body['error']
+                self.add_error(error['param'], error['message'])
         return data
