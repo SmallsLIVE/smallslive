@@ -11,6 +11,7 @@
 
 {% block store_content %}
     <div class="col-xs-12 col-sm-8 col-md-9 col-sm-push-4 col-md-push-3 store-listing__content">
+        {% comment %}
         <div class="store-subtle-heading">Featured</div>
         <div class="store-listing__big-item row">
             <div class="col-xs-12 col-sm-6 store-listing__big-item__image">
@@ -46,6 +47,7 @@
                 </form>
             </div>
         </div>
+        {% endcomment %}
         <div class="row">
             {% if products %}
                 {% for product in products %}

@@ -418,6 +418,7 @@
 .store-add-large {
   @include display(flex);
   @include flex-wrap(nowrap);
+  padding-right: 15px;
 
   &__options {
     padding: 5px;
@@ -450,6 +451,7 @@
   @include display(flex);
   @include navbar-vertical-align(center);
   @include flex-wrap(nowrap);
+  padding-right: 15px;
 
   &__options {
     padding: 3px 3px 4px;
@@ -1835,8 +1837,11 @@
 img.defineImageRatio {
   max-width: 100%;
   max-height: 100%;
-  width: 100%;
-  height: auto;
+
+  &.wide {
+    width: 100%;
+    height: auto;
+  }
 
   &.tall {
     height: 100%;
@@ -1844,7 +1849,6 @@ img.defineImageRatio {
     margin: 0 auto;
   }
 }
-
 
 .arrow-button-container {
   @include display(flex);
