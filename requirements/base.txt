@@ -26,7 +26,7 @@ django-localflavor==1.1
 django-model-utils==2.2
 django-mptt==0.6.1
 django-oscar==1.0.2
-git+https://github.com/labxio/django-oscar-stripe.git#egg=oscar_stripe
+git+https://github.com/britco/django-oscar-stripe.git#egg=oscar_stripe
 django-pipeline==1.5.0
 django-polymorphic==0.6.1
 django-sortedm2m==0.8.1

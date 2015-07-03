@@ -1,6 +1,8 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
+{% load currency_filters %}
+{% load purchase_info_tags %}
 
 {% block store_nav_active %}active{% endblock %}
 
@@ -15,7 +17,6 @@
         </section>
         <form id="payment-form" method="post" action="{% url "checkout:preview" %}">
           <section class="store-billing container">
-                <a href="{% url 'paypal-redirect' %}"><img src="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" align="left" style="margin-right:7px;"></a>
               <h3 class="store__form__heading">Billing information:</h3>
               <div class="row">
                   <div class="col-xs-12 store__form__selection__container">
@@ -29,16 +30,16 @@
                   <div class="store__form__group clearfix" id="custom-billing-address">
                       <div class="col-xs-12 col-sm-6">
                           <label for="name" class="store__form__label">Name</label>
-                          <input type="text" name="name" class="store__form__input" value="Matej">
+                          <input type="text" name="billing_first_name" class="store__form__input" value="Matej">
                         <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
                           <label for="name" class="store__form__label">Surname</label>
-                          <input type="text" name="surname" class="store__form__input" value="Grozdanović">
+                          <input type="text" name="billing_last_name" class="store__form__input" value="Grozdanović">
                         <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
-                          <label for="email" class="store__form__label">Name</label>
+                          <label for="email" class="store__form__label">E-mail</label>
                           <input type="email" name="email" class="store__form__input" value="grozdanowski@gmail.com">
                         <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
-                        <label for="phone" class="store__form__label">Surname</label>
-                        <input type="tel" name="phone" class="store__form__input" value="+385 91 6183 233">
+                          <label for="phone" class="store__form__label">Phone</label>
+                          <input type="tel" name="phone" class="store__form__input" value="+385 91 6183 233">
                         <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
                     </div>
                       <div class="col-xs-12 col-sm-6">
@@ -76,10 +77,10 @@
               <div class="row">
                   <div class="col-xs-12 store__form__selection__container">
                       <div class="store__form__selection__option">
-                          <input type="radio" name="payment-method" id="pay-credit-card" value="credit-card" checked><label for="pay-credit-card">Pay with credit card</label>
+                          <input type="radio" name="payment_method" id="pay-credit-card" value="credit-card" checked><label for="pay-credit-card">Pay with credit card</label>
                       </div>
                       <div class="store__form__selection__option">
-                          <input type="radio" name="payment-method" id="pay-paypal" value="paypal"><label for="pay-paypal">Pay with PayPal</label>
+                          <input type="radio" name="payment_method" id="pay-paypal" value="paypal"><label for="pay-paypal">Pay with PayPal</label>
                       </div>
                   </div>
               </div>
@@ -95,23 +96,23 @@
                       <div class="signup__payment__card__info">
                           {% csrf_token %}
                           <label for="card-number" class="store__form__label">Credit card number</label>
-                          <input type="text" class="store__form__input"  id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*" autocomplete="off" data-stripe="number">
+                          <input type="text" class="store__form__input"  id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*" autocomplete="off" name="cc_number" {% if form.cc_number.value %}value="{{ form.cc_number.value }}"{% endif %}>
                           <div class="row">
                               <div class="col-xs-3">
                                   <label for="expiry" id="expiry-label" class="store__form__label">Valid thru:</label>
-                                  <input type="text" class="store__form__input" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month">
+                                  <input type="text" class="store__form__input" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" name="exp_month">
                               </div>
                               <div class="col-xs-3">
                                   <label for="expiry" id="expiry-label" class="store__form__label"> </label>
-                                  <input type="text" class="store__form__input" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-year">
+                                  <input type="text" class="store__form__input" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" name="exp_year">
                               </div>
                               <div class="col-xs-6">
                                   <label for="cvc" id="cvc-label" class="store__form__label">CVC</label>
-                                  <input type="text" class="store__form__input" id="cvc" placeholder="xxx" size="4" pattern="\d*" autocomplete="off" data-stripe="cvc">
+                                  <input type="text" class="store__form__input" id="cvc" placeholder="xxx" size="4" pattern="\d*" autocomplete="off" name="cvc">
                               </div>
                           </div>
                           <label for="name" class="store__form__label">Name on card</label>
-                          <input type="text" class="store__form__input" placeholder="Name on card" autocomplete="off" data-stripe="name">
+                          <input type="text" class="store__form__input" placeholder="Name on card" autocomplete="off" name="name">
                           <div class="payment-errors"></div>
                       </div>
                   </div>
@@ -138,14 +139,14 @@
               </div>
               <div class="col-xs-12 col-sm-6 store-cart__footer__right">
                   <div class="store-cart__footer__price-container">
-                      <span class="store-cart__footer__price-container__value">$1999.99</span>
-                      <span class="store-cart__footer__price-container__label">Something:</span>
-                      <span class="store-cart__footer__price-container__value">$1999.99</span>
-                      <span class="store-cart__footer__price-container__label">Else:</span>
-                      <div class="store-cart__footer__price-container__total">
-                          <span class="store-cart__footer__price-container__value">$9875.99</span>
-                          <span class="store-cart__footer__price-container__label">Total:</span>
-                      </div>
+                    <span class="store-cart__footer__price-container__value">{{ basket.total_excl_tax|currency:basket.currency }}</span>
+                    <span class="store-cart__footer__price-container__label">Basket total:</span>
+                    <span class="store-cart__footer__price-container__value">{{ shipping_charge.excl_tax|currency:basket.currency }}</span>
+                    <span class="store-cart__footer__price-container__label">Shipping:</span>
+                    <div class="store-cart__footer__price-container__total">
+                        <span class="store-cart__footer__price-container__value">{{ order_total.excl_tax|currency:basket.currency }}</span>
+                        <span class="store-cart__footer__price-container__label">Total:</span>
+                    </div>
                   </div>
               </div>
               <div class="col-xs-12 store-cart__footer__buttons">
@@ -209,13 +210,13 @@
                 }
             });
 
-            if ($('input[name=payment-method]:checked').val() === "paypal") {
+            if ($('input[name=payment_method]:checked').val() === "paypal") {
                 $("#credit-card-form").css("display", "none");
             } else {
                 $("#paypal-form").css("display", "none");
             }
             $(".store__form__selection__option").click(function(){
-                if ($('input[name=payment-method]:checked').val() === "credit-card") {
+                if ($('input[name=payment_method]:checked').val() === "credit-card") {
                     $("#paypal-form").slideUp("fast");
                     $("#credit-card-form").slideDown("fast"); //Slide Down Effect
                 } else {

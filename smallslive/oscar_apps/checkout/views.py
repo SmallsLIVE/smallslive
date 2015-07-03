@@ -1,7 +1,11 @@
 from django import http
+from django.conf import settings
 from django.shortcuts import redirect
 from oscar.apps.checkout import views as checkout_views
+from oscar.apps.payment.models import SourceType, Source
 from oscar.core.loading import get_class
+from oscar_stripe.facade import Facade
+from .forms import PaymentForm
 
 OrderTotalCalculator = get_class(
     'checkout.calculators', 'OrderTotalCalculator')
@@ -31,7 +35,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
         if not self.preview:
             return http.HttpResponseBadRequest()
 
-        if request.POST.get('payment-method') == 'paypal':
+        if request.POST.get('payment_method') == 'paypal':
             return redirect('paypal-direct-payment')
 
         # We use a custom parameter to indicate if this is an attempt to place
@@ -41,3 +45,37 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
         if request.POST.get('action', '') == 'place_order':
             return self.handle_place_order_submission(request)
         return self.handle_payment_details_submission(request)
+
+    def handle_payment_details_submission(self, request):
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            print "je"
+            return self.render_preview(request, card_token=form.token, form=form)
+        else:
+            print "nije"
+            return self.render_payment_details(request)
+
+    def handle_payment(self, order_number, total, **kwargs):
+        stripe_ref = Facade().charge(
+            order_number,
+            total,
+            card=self.request.POST.get('card_token'),
+            description=self.payment_description(order_number, total, **kwargs),
+            metadata=self.payment_metadata(order_number, total, **kwargs))
+
+        source_type, __ = SourceType.objects.get_or_create(name='Credit Card')
+        source = Source(
+            source_type=source_type,
+            currency=settings.STRIPE_CURRENCY,
+            amount_allocated=total.incl_tax,
+            amount_debited=total.incl_tax,
+            reference=stripe_ref)
+        self.add_payment_source(source)
+
+        self.add_payment_event('Purchase', total.incl_tax)
+
+    def payment_description(self, order_number, total, **kwargs):
+        return self.request.user.email
+
+    def payment_metadata(self, order_number, total, **kwargs):
+        return {'order_number': order_number }

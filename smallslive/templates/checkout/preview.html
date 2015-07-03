@@ -180,10 +180,12 @@
             <div class="col-xs-12 store-cart__footer__buttons">
               {% block place_order %}
                 <form action="{% url "checkout:preview" %}" method="post">
+                  {% csrf_token %}
                   <a href="#" class="store-cart__footer__button-back"><i class="fa fa-angle-double-left"></i> Back to
                     payment information</a>
                   <button class="store-cart__footer__button-next">Pay and order</button>
-                  <input type="hidden" value="place_order"/>
+                  <input type="hidden" name="action" value="place_order"/>
+                  <input type="hidden" name="card_token" value="{{ card_token }}"/>
                 </form>
               {% endblock %}
             </div>
