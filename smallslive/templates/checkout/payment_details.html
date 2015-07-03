@@ -21,39 +21,48 @@
               <div class="row">
                   <div class="col-xs-12 store__form__selection__container">
                       <div class="store__form__selection__option">
-                          <input type="radio" name="option-billing" id="same-address" value="same-address"><label for="same-address">My billing address is the same as the shipping address</label>
+                          <input type="radio" name="option-billing" id="same-address" value="same-address" checked><label for="same-address">My billing address is the same as the shipping address</label>
                       </div>
                       <div class="store__form__selection__option">
-                          <input type="radio" name="option-billing" id="different-address" value="different-address" checked><label for="different-address">My billing address is different than the shipping address</label>
+                          <input type="radio" name="option-billing" id="different-address" value="different-address"><label for="different-address">My billing address is different than the shipping address</label>
                       </div>
                   </div>
                   <div class="store__form__group clearfix" id="custom-billing-address">
                       <div class="col-xs-12 col-sm-6">
                           <label for="name" class="store__form__label">Name</label>
                           <input type="text" name="billing_first_name" class="store__form__input" value="Matej">
-                        <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
+                            {% for error in form.billing_first_name.errors %}
+                                <span class="store__form__field-error">{{ error }}</span>
+                            {% endfor %}
                           <label for="name" class="store__form__label">Surname</label>
                           <input type="text" name="billing_last_name" class="store__form__input" value="Grozdanović">
-                        <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
-                          <label for="email" class="store__form__label">E-mail</label>
-                          <input type="email" name="email" class="store__form__input" value="grozdanowski@gmail.com">
-                        <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
+                            {% for error in form.billing_last_name.errors %}
+                                <span class="store__form__field-error">{{ error }}</span>
+                            {% endfor %}
                           <label for="phone" class="store__form__label">Phone</label>
                           <input type="tel" name="phone" class="store__form__input" value="+385 91 6183 233">
-                        <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
+                            {% for error in form.billing_phone.errors %}
+                                <span class="store__form__field-error">{{ error }}</span>
+                            {% endfor %}
                     </div>
                       <div class="col-xs-12 col-sm-6">
                           <label for="address1" class="store__form__label">Address - line 1</label>
                           <input type="text" name="address1" class="store__form__input" value="Street Name 123">
-                        <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
+                        {% for error in form.billing_address1.errors %}
+                                <span class="store__form__field-error">{{ error }}</span>
+                            {% endfor %}
                         <label for="address2" class="store__form__label">Address - line 2</label>
                         <input type="text" name="address2" class="store__form__input" value="">
-                        <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
+                        {% for error in form.billing_address2.errors %}
+                                <span class="store__form__field-error">{{ error }}</span>
+                            {% endfor %}
                         <div class="row">
                             <div class="col-xs-6">
                                 <label for="city" class="store__form__label">City</label>
                                 <input type="text" name="city" class="store__form__input" value="Boston">
-                                <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
+                                {% for error in form.billing_city.errors %}
+                                <span class="store__form__field-error">{{ error }}</span>
+                            {% endfor %}
                             </div>
                               <div class="col-xs-6">
                                   <label for="state" class="store__form__label">State</label>
@@ -61,7 +70,9 @@
                                       <option>Massachusetts</option>
                                       <option>Michigan</option>
                                   </select>
-                                <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
+                                {% for error in form.billing_state.errors %}
+                                <span class="store__form__field-error">{{ error }}</span>
+                            {% endfor %}
                             </div>
                         </div>
                           <label for="country" class="store__form__label">Country</label>
@@ -69,7 +80,9 @@
                                   <option>USA</option>
                                   <option>Croatia</option>
                             </select>
-                            <span class="store__form__field-error">Hi Filip. Error SRBIJA error error OMG!</span>
+                            {% for error in form.billing_country.errors %}
+                                <span class="store__form__field-error">{{ error }}</span>
+                            {% endfor %}
                     </div>
                 </div>
             </div>
@@ -97,18 +110,30 @@
                           {% csrf_token %}
                           <label for="card-number" class="store__form__label">Credit card number</label>
                           <input type="text" class="store__form__input"  id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*" autocomplete="off" name="cc_number" {% if form.cc_number.value %}value="{{ form.cc_number.value }}"{% endif %}>
+                        {% for error in form.cc_number.errors %}
+                                <span class="store__form__field-error">{{ error }}</span>
+                            {% endfor %}
                           <div class="row">
                               <div class="col-xs-3">
                                   <label for="expiry" id="expiry-label" class="store__form__label">Valid thru:</label>
                                   <input type="text" class="store__form__input" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" name="exp_month">
+                                  {% for error in form.exp_month.errors %}
+                                <span class="store__form__field-error">{{ error }}</span>
+                            {% endfor %}
                               </div>
                               <div class="col-xs-3">
                                   <label for="expiry" id="expiry-label" class="store__form__label"> </label>
                                   <input type="text" class="store__form__input" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" name="exp_year">
+                                  {% for error in form.exp_year.errors %}
+                                <span class="store__form__field-error">{{ error }}</span>
+                            {% endfor %}
                               </div>
                               <div class="col-xs-6">
                                   <label for="cvc" id="cvc-label" class="store__form__label">CVC</label>
                                   <input type="text" class="store__form__input" id="cvc" placeholder="xxx" size="4" pattern="\d*" autocomplete="off" name="cvc">
+                                  {% for error in form.cvc.errors %}
+                                <span class="store__form__field-error">{{ error }}</span>
+                            {% endfor %}
                               </div>
                           </div>
                           <label for="name" class="store__form__label">Name on card</label>
