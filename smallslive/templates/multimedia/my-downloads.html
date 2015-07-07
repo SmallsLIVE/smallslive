@@ -1,0 +1,99 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbnail %}
+{% load thumbor_tags %}
+
+{% block content %}
+    <div class="content-wrapper">
+
+        <section class="my-downloads-header">
+            <h1 class="my-downloads-header__title container">My downloads</h1>
+        </section>
+        <section class="my-downloads-album__list container">
+          {% if tracks %}
+            {% regroup tracks by product.album as album_list %}
+            <ul>
+              {% for album in album_list %}
+                  <li class="my-downloads-album row">
+                    <div class="hidden-xs col-sm-4 col-md-3 my-downloads-album__cover">
+                      {% with image=album.grouper.primary_image %}
+                          {% if not image.is_missing %}
+                            <a href="{{ album.grouper.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=245 width=245 smart=True %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio"></a>
+                          {% else %}
+                            <a href="{{ album.grouper.get_absolute_url }}"><img src="{% static "image/image_not_found.jpg" %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio"></a>
+                          {% endif %}
+                      {% endwith %}
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-9">
+                        <h2 class="my-downloads-album__name">
+                            <a href="{{ album.grouper.get_absolute_url }}">{{ album.grouper.title }}</a>
+                        </h2>
+                        {% if album.grouper.event %}
+                          <div class="my-downloads-album__event-link">
+                              <a href="{{ album.grouper.event.get_absolute_url }}">View event in our Archive</a>
+                              <span class="arrow"></span>
+                          </div>
+                        {% endif %}
+                        <div class="my-downloads-album__tracks-table">
+                            <h3 class="my-downloads-album__tracks-table__heading">Tracks bought:</h3>
+                            <!-- tracks table header -->
+                            <div class="my-downloads-album__tracks-table__header row">
+                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                    <div class="hidden-xs hidden-sm">Preview</div>
+                                </div>
+                                <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                    Title
+                                </div>
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                    Composer
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                    Duration
+                                </div>
+                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+
+                                </div>
+                            </div>
+                            {% regroup album.list by product as track_list %}
+                            <!-- end of tracks table header -->
+                            {% for track in track_list %}
+                              <!-- tracks table row -->
+                              <div class="my-downloads-album__tracks-table__row row">
+                                  <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+                                      <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                  </div>
+                                  <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+                                      {{ track.grouper.title }}
+                                  </div>
+                                  <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                      {{ track.grouper.attr.author }}
+                                  </div>
+                                  <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+                                      14:23
+                                  </div>
+                                  <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                      <div class="buy-button-container">
+                                          <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                          <ul class="dropdown-menu" role="menu">
+                                            {% for line in track.list %}
+                                              <li><a href="{{ line.stockrecord.digital_download.get_file_url }}">Download {% if line.stockrecord.is_hd %}HD{% else %}mp3{% endif %}</a></li>
+                                            {% endfor %}
+                                          </ul>
+                                      </div>
+                                  </div>
+                              </div>
+                              <!-- end of tracks table row -->
+                            {% endfor %}
+                        </div>
+                        <!-- end of tracks table -->
+                    </div>
+                </li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <h2>You haven't bought anything yet. Check out the <a href="{% url "promotion:home" %}">store</a> and buy some music!</h2>
+          {% endif %}
+        </section>
+
+    </div>
+{% endblock content %}

@@ -18,4 +18,5 @@ urlpatterns = patterns('multimedia.views',
         name="upload_track", kwargs={'category': 'track'}),
     url(r"^upload_track_preview/$", 'upload_track',
         name="upload_track_preview", kwargs={'category': 'preview'}),
+    url(r"^my-downloads/$", 'my_downloads', name="my-downloads"),
 )

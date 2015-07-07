@@ -1,8 +1,10 @@
 import json
+from braces.views import LoginRequiredMixin
 from django.db.models import F
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, CreateView
+from oscar.apps.order.models import Line
 from events.models import Recording
 from .forms import TrackFileForm
 from .models import MediaFile
@@ -114,3 +116,15 @@ class UploadTrackView(CreateView):
         return ""
 
 upload_track = UploadTrackView.as_view()
+
+
+class MyDownloadsView(LoginRequiredMixin, ListView):
+    context_object_name = 'tracks'
+    template_name = 'multimedia/my-downloads.html'
+
+    def get_queryset(self):
+        return Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter(
+            product__product_class__slug='track',
+            order__user=self.request.user).distinct('stockrecord')
+
+my_downloads = MyDownloadsView.as_view()
