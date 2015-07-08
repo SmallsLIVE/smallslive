@@ -4,50 +4,73 @@
 {% load category_tags %}
 {% load product_tags %}
 {% load i18n %}
+{% load purchase_info_tags %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
+{% load currency_filters %}
+
 
 {% block store_nav_active %}active{% endblock %}
 
 {% block store_content %}
     <div class="col-xs-12 col-sm-8 col-md-9 col-sm-push-4 col-md-push-3 store-listing__content">
-        {% comment %}
-        <div class="store-subtle-heading">Featured</div>
-        <div class="store-listing__big-item row">
-            <div class="col-xs-12 col-sm-6 store-listing__big-item__image">
-                <a href="#"><img src="{% static 'image/store/tshirt-black.png' %}"
-                                 alt="The official SmallsLIVE Cotton T-Shirt"></a>
+        {% if featured_product %}
+            {% purchase_info_for_product request featured_product as session %}
+            <div class="store-subtle-heading">Featured</div>
+            <div class="store-listing__big-item row">
+                <div class="col-xs-12 col-sm-6 store-listing__big-item__image">
+                    {% with image=featured_product.primary_image %}
+                        {% if not image.is_missing %}
+                          <a href="{{ featured_product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode width=400 smart=True %}" alt="{{ featured_product.get_title }}"></a>
+                        {% else %}
+                          <a href="{{ featured_product.get_absolute_url }}"><img src="{% static "image/image_not_found.jpg" %}" alt="{{ featured_product.get_title }}"></a>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="col-xs-12 col-sm-6 store-listing__big-item__content">
+                    <h2 class="store-listing__big-item__name">
+                        <a href="#">{{ featured_product.title }}</a>
+                    </h2>
+                    <p class="store-listing__big-item__description">
+                        {{ featured_product.short_description }}
+                    </p>
+                    <p class="store-listing__big-item__details">
+                        {{ featured_product.description }}
+                    </p>
+                        {% if session.price.exists %}
+                            {% if session.price.excl_tax == 0 %}
+                                <span class="store-listing__big-item__price">{% trans "Free" %}</span>
+                            {% elif session.price.is_tax_known %}
+                                <span class="store-listing__big-item__price">{{ session.price.incl_tax|currency:session.price.currency }}</span>
+                            {% else %}
+                                <span class="store-listing__big-item__price">{{ session.price.excl_tax|currency:session.price.currency }}</span>
+                            {% endif %}
+                        {% else %}
+                            <span class="store-listing__big-item__price">&nbsp;</span>
+                        {% endif %}
+                    <form id="add_to_basket_form" action="{% url 'basket:add' pk=featured_product.pk  %}" method="post" class="add-to-basket">
+                      {% if session.availability.is_available_to_buy %}
+                        {% basket_form request product 'single' as basket_form %}
+                        <div class="store-add-large">
+                            {% csrf_token %}
+                            {{ basket_form.quantity }}
+                            {% if basket_form.fields.child_id.choices %}
+                              <select class="store-add-large__options" name="child_id">
+                                  {% for item_value, item_name in basket_form.fields.child_id.choices %}
+                                    <option value="{{ item_value }}">{{ item_name }}</option>
+                                  {% endfor %}
+                              </select>
+                              <div class="arrow-button-container"><button type="submit" class="store-add-large__button"><i class="fa fa-plus"></i></button><span class="arrow"></span></div>
+                            {% else %}
+                              {{ basket_form.child_id }}
+                              <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
+                            {% endif %}
+                        </div>
+                      {% endif %}
+                    </form>
+                </div>
             </div>
-            <div class="col-xs-12 col-sm-6 store-listing__big-item__content">
-                <h2 class="store-listing__big-item__name">
-                    <a href="#">The official SmallsLIVE Cotton T-Shirt</a>
-                </h2>
-                <p class="store-listing__big-item__description">
-                    This is our official 100% cotton SmallsLIVE T-Shirt! Available in 4 sizes, choose S, M, L or XL. <b>Shipping
-                    included.</b>
-                </p>
-                <p class="store-listing__big-item__details">
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut
-                    laoreet
-                    dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation
-                    ullamcorper
-                    suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-                </p>
-                        <span class="store-listing__big-item__price">
-                            $25.00
-                        </span>
-                <form>
-                    <div class="store-add-large">
-                        <select class="store-add-large__options">
-                            <option>Mens - XL -- $25.00</option>
-                            <option>Woman - M -- $30.00</option>
-                        </select>
-                        <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        {% endcomment %}
+        {% endif %}
         <div class="row">
             {% if products %}
                 {% for product in products %}

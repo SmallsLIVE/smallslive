@@ -10,7 +10,7 @@ from oscar_apps.catalogue.models import Product, ProductClass
 class ProductForm(oscar_forms.ProductForm):
     class Meta(oscar_forms.ProductForm.Meta):
         fields = [
-            'title', 'upc', 'short_description', 'description', 'is_discountable', 'structure']
+            'title', 'upc', 'short_description', 'description', 'is_discountable', 'structure', 'featured']
 
 
 class TrackForm(forms.ModelForm):
