@@ -7,9 +7,10 @@
   @include align-items(center);
   @include transition(all 0.3s ease-in-out);
   width: 100%;
+  margin: 0;
 
   & p {
-    margin: 0 15px;
+    margin: 0;
   }
 
   & button.close {
@@ -29,7 +30,7 @@
     background-color: rgba(#222, 0.95);
 
     & p {
-      margin: 0 15px;
+      margin: 0;
     }
 
     & .btn-info {
@@ -38,7 +39,7 @@
       border: 2px solid rgba(#fff, 0.5);
       padding: 7px 10px;
       display: inline-block;
-      margin: 0 5px;
+      margin: 5px;
       font-size: 12px;
       @include lato-bold;
       text-transform: uppercase;
@@ -47,6 +48,10 @@
       &:hover, &:focus {
         border-color: #fff;
         color: #fff;
+      }
+
+      &:first-of-type {
+        margin-left: 20px;
       }
     }
   }
@@ -69,7 +74,7 @@
 
   & .close {
     background: none;
-    margin-right: 30px;
+    margin-right: 40px;
     vertical-align: middle;
   }
 }

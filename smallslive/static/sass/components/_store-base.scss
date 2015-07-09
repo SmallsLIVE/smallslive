@@ -1292,6 +1292,18 @@
         }
       }
 
+      &.album {
+
+        & a {
+          @include lato;
+          color: $base-text-color;
+
+          &:hover, &:focus {
+            color: rgba($base-text-color, 0.8);
+          }
+        }
+      }
+
       &.remove {
         text-align: center;
       }
