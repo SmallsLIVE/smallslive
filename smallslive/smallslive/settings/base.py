@@ -106,6 +106,7 @@ INSTALLED_APPS = [
     'oscar_apps.dashboard.catalogue',
     'oscar_apps.dashboard.files',
     'oscar_apps.partner',
+    'oscar_apps.promotions',
     'oscar_apps.shipping',
 ]) + [
     'easy_thumbnails',  # needs to go after the oscar import to avoid template tag clashes

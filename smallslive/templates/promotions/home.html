@@ -2,6 +2,8 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 {% load category_tags %}
+{% load product_tags %}
+
 
 {% block store_nav_active %}active{% endblock %}
 
@@ -50,66 +52,9 @@
             <div class="col-xs-12 col-sm-8 col-md-9 store-listing__content">
                 <div class="store-subtle-heading">Newest recordings in the store</div>
                 <div class="row">
-                    <!-- Single store item -->
-                    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
-                        <div class="store-list-item__image square-container">
-                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                        </div>
-                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
-                        <p class="store-list-item__info">CD / Digital download / Tracks</p>
-                        <span class="store-list-item__price">$25.00</span>
-                        <form>
-                            <div class="store-add-small">
-                                <select class="store-add-small__options">
-                                    <option>CD - full case with artwork -- $25.00</option>
-                                    <option>Album digital download - Mp3 -- $9.99</option>
-                                    <option>Album digital download - HD -- $14.99</option>
-                                </select>
-                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- End of single store item -->
-                    <!-- Single store item -->
-                    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
-                        <div class="store-list-item__image square-container">
-                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                        </div>
-                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
-                        <p class="store-list-item__info">CD / Digital download / Tracks</p>
-                        <span class="store-list-item__price">$25.00</span>
-                        <form>
-                            <div class="store-add-small">
-                                <select class="store-add-small__options">
-                                    <option>CD - full case with artwork -- $25.00</option>
-                                    <option>Album digital download - Mp3 -- $9.99</option>
-                                    <option>Album digital download - HD -- $14.99</option>
-                                </select>
-                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- End of single store item -->
-                    <!-- Single store item -->
-                    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
-                        <div class="store-list-item__image square-container">
-                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                        </div>
-                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
-                        <p class="store-list-item__info">CD / Digital download / Tracks</p>
-                        <span class="store-list-item__price">$25.00</span>
-                        <form>
-                            <div class="store-add-small">
-                                <select class="store-add-small__options">
-                                    <option>CD - full case with artwork -- $25.00</option>
-                                    <option>Album digital download - Mp3 -- $9.99</option>
-                                    <option>Album digital download - HD -- $14.99</option>
-                                </select>
-                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- End of single store item -->
+                    {% for product in newest_recordings %}
+                        {% include "catalogue/partials/product.html" with product=product %}
+                    {% endfor %}
                 </div>
             </div>
         </section>
@@ -992,78 +937,9 @@
         <section class="store-featured-merch container">
             <div class="store-subtle-heading">Featured merchandise</div>
                 <div class="row">
-                    <!-- Single store item -->
-                    <div class="col-xs-12 col-sm-6 col-md-3 store-list-item">
-                        <div class="store-list-item__image square-container">
-                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                        </div>
-                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
-                        <span class="store-list-item__price">$25.00</span>
-                        <form>
-                            <div class="store-add-small">
-                                <select class="store-add-small__options">
-                                    <option>Mens - XL -- $25.00</option>
-                                    <option>Woman - M -- $30.00</option>
-                                </select>
-                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- End of single store item -->
-                    <!-- Single store item -->
-                    <div class="col-xs-12 col-sm-6 col-md-3 store-list-item">
-                        <div class="store-list-item__image square-container">
-                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                        </div>
-                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
-                        <span class="store-list-item__price">$25.00</span>
-                        <form>
-                            <div class="store-add-small">
-                                <select class="store-add-small__options">
-                                    <option>Mens - XL -- $25.00</option>
-                                    <option>Woman - M -- $30.00</option>
-                                </select>
-                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- End of single store item -->
-                    <!-- Single store item -->
-                    <div class="col-xs-12 col-sm-6 col-md-3 store-list-item">
-                        <div class="store-list-item__image square-container">
-                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                        </div>
-                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
-                        <span class="store-list-item__price">$25.00</span>
-                        <form>
-                            <div class="store-add-small">
-                                <select class="store-add-small__options">
-                                    <option>Mens - XL -- $25.00</option>
-                                    <option>Woman - M -- $30.00</option>
-                                </select>
-                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- End of single store item -->
-                    <!-- Single store item -->
-                    <div class="col-xs-12 col-sm-6 col-md-3 store-list-item">
-                        <div class="store-list-item__image square-container">
-                            <a href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                        </div>
-                        <h4 class="store-list-item__name"><a href="#">Ut wisi enim ad minim veniam, quis nostrud exerc</a></h4>
-                        <span class="store-list-item__price">$25.00</span>
-                        <form>
-                            <div class="store-add-small">
-                                <select class="store-add-small__options">
-                                    <option>Mens - XL -- $25.00</option>
-                                    <option>Woman - M -- $30.00</option>
-                                </select>
-                                <button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- End of single store item -->
+                    {% for product in newest_physical_products %}
+                        {% include "catalogue/partials/product.html" with product=product full_width=True  %}
+                    {% endfor %}
                 </div>
         </section>
 

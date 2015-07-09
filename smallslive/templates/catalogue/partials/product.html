@@ -13,7 +13,7 @@
 {% block product %}
   {% purchase_info_for_product request product as session %}
     <!-- Single store item -->
-    <div class="col-xs-12 col-sm-6 col-md-4 store-list-item">
+    <div class="col-xs-12 col-sm-6 {% if full_width %}col-md-3{% else %}col-md-4{% endif %} store-list-item">
         <div class="store-list-item__image square-container">
             {% with image=product.primary_image %}
                 {% if not image.is_missing %}
@@ -24,6 +24,7 @@
             {% endwith %}
         </div>
         <h4 class="store-list-item__name"><a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title|truncatewords:4 }}</a></h4>
+        {% if product.product_class.slug == "album" %}<p class="store-list-item__info">CD / Digital download / Tracks</p>{% endif %}
         {% if session.price.exists %}
             {% if session.price.excl_tax == 0 %}
                 <span class="store-list-item__price">{% trans "Free" %}</span>
