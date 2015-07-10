@@ -11,11 +11,31 @@ class ProductForm(oscar_forms.ProductForm):
     class Meta(oscar_forms.ProductForm.Meta):
         fields = [
             'title', 'upc', 'short_description', 'description', 'is_discountable', 'structure', 'featured']
-        
-    def __init__(self, *args, **kwargs):
-        super(ProductForm, self).__init__(*args, **kwargs)
-        if self.instance and self.instance.parent_id and self.instance.parent.product_class.slug == "album":
-            self.fields['product_class'] = forms.ModelChoiceField(queryset=ProductClass.objects.all())
+
+    def __init__(self, product_class, data=None, parent=None, *args, **kwargs):
+        self.set_initial(product_class, parent, kwargs)
+        super(oscar_forms.ProductForm, self).__init__(data, *args, **kwargs)
+        if parent:
+            self.instance.parent = parent
+            # We need to set the correct product structures explicitly to pass
+            # attribute validation and child product validation. Note that
+            # those changes are not persisted.
+            self.instance.structure = Product.CHILD
+            self.instance.parent.structure = Product.PARENT
+
+            self.delete_non_child_fields()
+
+            # set the child product class as it's different from the parent
+            if parent.product_class.slug == "album":
+                self.instance.product_class = product_class
+        else:
+            # Only set product class for non-child products
+            self.instance.product_class = product_class
+        self.add_attribute_fields(product_class, self.instance.is_parent)
+
+        if 'title' in self.fields:
+            self.fields['title'].widget = forms.TextInput(
+                attrs={'autocomplete': 'off'})
 
 
 class TrackForm(forms.ModelForm):

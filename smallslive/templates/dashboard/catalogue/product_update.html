@@ -15,7 +15,69 @@
 {% endblock %}
 
 {% block child_products %}
-    {{ block.super }}
+    {% with children=product.children.all %}
+        <div class="tab-pane" id="child_products">
+            {% block child_products_content %}
+                <table class='table table-striped table-bordered'>
+                    <caption>
+                        {% trans "Variants" %}
+                        {% if product_class.slug == "album" %}
+                            <button class="btn btn-primary pull-right{% if not product.can_be_parent %} disabled{% endif %}" name="action" type="submit" value="create-physical-child">
+                                <i class="icon-plus"></i>
+                                {% trans "Add physical variant" %}
+                            </button>
+                            <button class="btn btn-primary pull-right{% if not product.can_be_parent %} disabled{% endif %}" name="action" type="submit" value="create-digital-child">
+                                <i class="icon-plus"></i>
+                                {% trans "Add digital variant" %}
+                            </button>
+                        {% else %}
+                            <button class="btn btn-primary pull-right{% if not product.can_be_parent %} disabled{% endif %}" name="action" type="submit" value="create-child">
+                                <i class="icon-plus"></i>
+                                {% trans "Add variant" %}
+                            </button>
+                        {% endif %}
+
+                    </caption>
+                    {% if children %}
+                        <tr>
+                            <th>{% trans "Title" %}</th>
+                            <th>{% trans "Attributes" %}</th>
+                            <th>{% trans "Stock records" %}</th>
+                            <th>&nbsp;</th>
+                        </tr>
+                        {% for child in children %}
+                            <tr>
+                                <td>{{ child.get_title }}</td>
+                                <td>{{ child.attribute_summary }}</td>
+                                <td>{{ child.stockrecords.count }}</td>
+                                <td>
+                                    <a href="{% url 'dashboard:catalogue-product' pk=child.id %}" class="btn btn-primary">
+                                        {% trans "Edit" %}
+                                    </a>
+                                    <a href="{% url 'dashboard:catalogue-product-delete' pk=child.id %}" class="btn btn-danger">
+                                        {% trans "Delete" %}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="3">
+                                {% if product.can_be_parent %}
+                                    {% trans 'This product does not have any variants.' %}
+                                {% else %}
+                                    {% trans "One can't add variants to this product at this point." %}
+                                    {% if product.has_stockrecords %}
+                                        {% trans 'This is likely because this product still has stock records.' %}
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                </table>
+            {% endblock child_products_content %}
+        </div>
+    {% endwith %}
     {% if track_formset %}
         <div class="tab-pane" id="tracks">
             <table class='table table-striped table-bordered'>
