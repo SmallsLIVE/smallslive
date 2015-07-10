@@ -89,15 +89,22 @@
                           class="add-to-basket">
                         <div class="store-add-large">
                             {% if session.availability.is_available_to_buy %}
-                                {% basket_form request product as basket_form %}
-                                {% csrf_token %}
-                                <select class="store-add-large__options" name="child_id">
-                                    {% for item_value, item_name in basket_form.fields.child_id.choices %}
-                                        <option value="{{ item_value }}">{{ item_name }}</option>
-                                    {% endfor %}
-                                </select>
-                                {{ basket_form.quantity }}
-                                <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
+                                {% basket_form request product 'single' as basket_form %}
+                                <div class="store-add-large">
+                                    {% csrf_token %}
+                                    {{ basket_form.quantity }}
+                                    {% if basket_form.fields.child_id.choices %}
+                                      <select class="store-add-large__options" name="child_id">
+                                          {% for item_value, item_name in basket_form.fields.child_id.choices %}
+                                            <option value="{{ item_value }}">{{ item_name }}</option>
+                                          {% endfor %}
+                                      </select>
+                                      <div class="arrow-button-container"><button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span></div>
+                                    {% else %}
+                                      {{ basket_form.child_id }}
+                                      <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
+                                    {% endif %}
+                                </div>
                             {% endif %}
                         </div>
                     </form>
