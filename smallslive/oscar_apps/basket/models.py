@@ -14,8 +14,7 @@ class Basket(AbstractBasket):
         return digital_count > 0
 
     def digital_lines(self):
-        return self.all_lines().select_related('product').filter(Q(product__product_class__requires_shipping=False) |
-                                                                 Q(product__parent__product_class__requires_shipping=False))
+        return self.all_lines().select_related('product').filter(product__product_class__requires_shipping=False)
 
     def physical_lines(self):
         return self.all_lines().select_related('product').filter(Q(product__product_class__requires_shipping=True) |
