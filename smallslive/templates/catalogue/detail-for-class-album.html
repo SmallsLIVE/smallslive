@@ -183,10 +183,10 @@
               {% if track.get_track_stockrecord %}${{ track.get_track_stockrecord.price_excl_tax }}{% else %}-{% endif %} / {% if track.get_hd_track_stockrecord %}${{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}-{% endif %}
             </div>
             <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-single__recording__tracks-table__column buy-track">
-              <div class="buy-button-container">
-                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i
-                        class="fa fa-caret-down"></i></a>
                 {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
+                    <div class="buy-button-container">
+                      <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i
+                            class="fa fa-caret-down"></i></a>
                   <ul class="dropdown-menu" role="menu">
                     {% if track.get_track_stockrecord %}
                       <li>
@@ -213,9 +213,9 @@
                       </li>
                     {% endif %}
                   </ul>
-                {% endif %}
 
               </div>
+                {% endif %}
             </div>
           </div>
         {% endfor %}
