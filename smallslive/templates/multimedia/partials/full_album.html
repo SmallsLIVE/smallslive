@@ -1,0 +1,96 @@
+{% load static from staticfiles %}
+
+{% load thumbnail %}
+{% load thumbor_tags %}
+
+<li class="my-downloads-album row">
+  <div class="hidden-xs col-sm-4 col-md-3 my-downloads-album__cover">
+    {% with image=album.primary_image %}
+      {% if album.parent_id %}
+          {% with image=album.parent.primary_image %}
+              {% thumbnail image.original "245x245" upscale=False as thumb %}
+                  <a href="{{ album.parent.get_absolute_url }}"><img class="defineImageRatio"
+                                                            src="{{ thumb.url }}"
+                                                            alt="{{ album.get_title }}"></a>
+              {% endthumbnail %}
+          {% endwith %}
+      {% else %}
+          {% with image=album.primary_image %}
+              {% thumbnail image.original "245x245" upscale=False as thumb %}
+                  <a href="{{ album.get_absolute_url }}"><img class="defineImageRatio"
+                                                            src="{{ thumb.url }}"
+                                                            alt="{{ album.get_title }}"></a>
+              {% endthumbnail %}
+          {% endwith %}
+      {% endif %}
+    {% endwith %}
+  </div>
+  <div class="col-xs-12 col-sm-8 col-md-9">
+    <h2 class="my-downloads-album__name">
+      <a href="{{ album.get_absolute_url }}">{% if album.parent %}{{ album.parent.title }} - {% endif %}{{ album.title }}</a>
+    </h2>
+    {% if album.event %}
+      <div class="my-downloads-album__event-link">
+        <a href="{{ album.grouper.event.get_absolute_url }}">View event in our Archive</a>
+        <span class="arrow"></span>
+      </div>
+    {% endif %}
+    <div class="my-downloads-album__tracks-table">
+      <h3 class="my-downloads-album__tracks-table__heading">Tracks bought:</h3>
+      <!-- tracks table header -->
+      <div class="my-downloads-album__tracks-table__header row">
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+          <div class="hidden-xs hidden-sm">Preview</div>
+        </div>
+        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+          Title
+        </div>
+        <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+          Composer
+        </div>
+        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+          Duration
+        </div>
+        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+
+        </div>
+      </div>
+      <!-- end of tracks table header -->
+      {% for track in album.parent.get_tracks %}
+        <!-- tracks table row -->
+        <div class="my-downloads-album__tracks-table__row row">
+          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
+            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+          </div>
+          <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+            {{ track.title }}
+          </div>
+          <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+            {{ track.attr.author }}
+          </div>
+          <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
+            14:23
+          </div>
+          <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+            <div class="buy-button-container">
+              <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i
+                      class="fa fa-caret-down"></i></a>
+              <ul class="dropdown-menu" role="menu">
+                {% if is_hd %}
+                  <li><a href="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}">Download
+                    HD</a></li>
+                {% else %}
+                  <li><a href="{{ track.get_track_stockrecord.digital_download.get_file_url }}">Download
+                    mp3</a></li>
+                {% endif %}
+
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- end of tracks table row -->
+      {% endfor %}
+    </div>
+    <!-- end of tracks table -->
+  </div>
+</li>

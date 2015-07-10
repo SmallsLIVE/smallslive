@@ -10,10 +10,15 @@
             <h1 class="my-downloads-header__title container">My downloads</h1>
         </section>
         <section class="my-downloads-album__list container">
-          {% if tracks %}
-            {% regroup tracks by product.album as album_list %}
+          {% if lines %}
+            {% regroup lines by product.album as album_list %}
             <ul>
               {% for album in album_list %}
+                {% if not album.grouper %}
+                  {% for record in album.list %}
+                    {% include "multimedia/partials/full_album.html" with album=record.product is_hd=record.stockrecord.is_hd %}
+                  {% endfor %}
+                {% else %}
                   <li class="my-downloads-album row">
                     <div class="hidden-xs col-sm-4 col-md-3 my-downloads-album__cover">
                       {% with image=album.grouper.primary_image %}
@@ -88,6 +93,7 @@
                         <!-- end of tracks table -->
                     </div>
                 </li>
+                {% endif %}
               {% endfor %}
             </ul>
           {% else %}

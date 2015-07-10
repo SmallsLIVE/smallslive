@@ -33,6 +33,10 @@ class Product(AbstractProduct):
             return self.product_class
     get_product_class.short_description = "Product class"
 
+    def get_tracks(self):
+        if self.product_class.slug == 'album':
+            return self.tracks.order_by('id')
+
     def _clean_child(self):
         """
         Validates a child product
