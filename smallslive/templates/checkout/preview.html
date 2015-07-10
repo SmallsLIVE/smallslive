@@ -185,10 +185,16 @@
                     </div>
                     {% endif %}
                     <div class="store-overview__group__textblock">
-                        <p class="small-heading">Credit card:</p>
-                        <p>xxxx xxxx xxxx 11111</p>
-                        <p>Valid thru 9/15</p>
-                        <p>Filip Jukić</p>
+                        {% if paypal_amount %}
+                            <p class="small-heading">PayPal</p>
+                            <p>{{paypal_user_email}}</p>
+                        {% else %}
+                            <p class="small-heading">Credit card:</p>
+                            <p>xxxx xxxx xxxx 11111</p>
+                            <p>Valid thru 9/15</p>
+                            <p>Filip Jukić</p>
+                        {% endif %}
+
                     </div>
                     <div class="store-overview__return-button__container">
                     <a href="{% url "checkout:payment-details" %}" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to billing</a>

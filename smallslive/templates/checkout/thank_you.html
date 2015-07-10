@@ -21,7 +21,9 @@
                 <div class="col-xs-12 col-sm-6 col-md-6 store-done__content">
                     <h3 class="store-done__heading">Payment successful!</h3>
                     <ul class="store-done__info-list">
-                        <li>your credit card has been charged for <b>$16.00</b></li>
+                        {% with source=order.sources.first %}
+                            <li>your {{ source.source_type|lower }} has been charged for <b>${{ order.total_excl_tax }}</b></li>
+                        {% endwith %}
                         <li>we have sent <b>the receipt</b> to the email address you supplied</li>
                         <li>we will attend to shipping your order as quickly as possible. It usually takes blahblahblab something something...</li>
                         <li>if you have any questions or issues, please feel free to contact us via email on <a href="mailto:info@smallslive.com">info@smallslive.com</a></li>
