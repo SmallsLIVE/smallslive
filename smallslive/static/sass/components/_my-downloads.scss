@@ -213,3 +213,13 @@
     }
   }
 }
+
+.my-downloads__nothing-bought {
+  background-color: #EFEFEF;
+  padding: 50px 30px;
+
+  & h3 {
+    @include lato-bold;
+    font-size: 18px;
+  }
+}

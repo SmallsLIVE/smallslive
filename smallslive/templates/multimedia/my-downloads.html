@@ -91,7 +91,9 @@
               {% endfor %}
             </ul>
           {% else %}
-            <h2>You haven't bought anything yet. Check out the <a href="{% url "promotions:home" %}">store</a> and buy some music!</h2>
+              <div class="my-downloads__nothing-bought row">
+                  <h3>You haven't bought any digital downloads yet. Check out the <a class="my-downloads__nothing-bought__store-link" href="{% url "promotions:home" %}">store</a> and buy some music!</h2>
+              </div>
           {% endif %}
         </section>
 
