@@ -19,7 +19,8 @@
         </section>
         <section class="store-overview container">
             <div class="col-xs-12 col-sm-8 store-overview__left-column">
-                <div class="store-overview__group">
+                {% if basket.has_physical_products %}
+                    <div class="store-overview__group">
                     <h3 class="store-overview__group__heading">Ordered items:</h3>
                     <h4 class="store-overview__group__table__heading">Physical items:</h4>
                     <div class="store-overview__group__table">
@@ -95,7 +96,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="store-overview__group">
+                {% endif %}
+                {% if basket.has_digital_products %}
+                    <div class="store-overview__group">
                     <h4 class="store-overview__group__table__heading">Digital downloads:</h4>
                     <div class="store-overview__group__table">
                         <!-- table header start -->
@@ -147,6 +150,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
                 <div class="store-overview__return-button__container">
                     <a href="{% url "basket:summary" %}" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to cart</a>
                 </div>
