@@ -119,11 +119,27 @@
                                 <!-- table row start -->
                                 <div class="store-overview__group__table__row clearfix">
                                     <div class="col-xs-2 image">
-                                        <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                                        {% if product.parent_id %}
+                                            {% with image=product.parent.primary_image %}
+                                                {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                                    <a class="square-container" href="{{ product.parent.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                              src="{{ thumb.url }}"
+                                                                                              alt="{{ product.get_title }}"></a>
+                                                {% endthumbnail %}
+                                            {% endwith %}
+                                        {% else %}
+                                            {% with image=product.primary_image %}
+                                                {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                                    <a class="square-container" href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                              src="{{ thumb.url }}"
+                                                                                              alt="{{ product.get_title }}"></a>
+                                                {% endthumbnail %}
+                                            {% endwith %}
+                                        {% endif %}
                                     </div>
                                     <div class="col-xs-7 details">
                                         <p class="store-overview__group__table__product-name">
-                                            {{ product.title }}
+                                            {% if product.parent %}{{ product.parent.title }} - {% endif %}{{ product.title }}
                                         </p>
                                         <p class="store-overview__group__table__product-details">
                                             {{ product.album.title }}
