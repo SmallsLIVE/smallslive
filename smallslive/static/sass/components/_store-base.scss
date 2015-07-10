@@ -546,6 +546,10 @@
       color: rgba(#fff, 0.7);
     }
 
+    &>.row {
+      width: 100%;
+    }
+
     &__price {
       @include lato-black;
       font-size: 24px;
