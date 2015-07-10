@@ -3,7 +3,10 @@
 {% load thumbor_tags %}
 {% load category_tags %}
 {% load product_tags %}
-
+{% load purchase_info_tags %}
+{% load i18n %}
+{% load currency_filters %}
+{% load basket_tags %}
 
 {% block store_nav_active %}active{% endblock %}
 
@@ -58,45 +61,69 @@
                 </div>
             </div>
         </section>
-
-        <section class="store-featured-music">
+        {% if featured_recordings %}
+            <section class="store-featured-music">
             <div class="store-featured-music__header">
                 <span class="store-featured-music__title">Featured recordings</span>
                 <a href="#">View all items in Music/CD's category <i class="fa fa-angle-double-right"></i></a>
             </div>
             <div class="store-featured-music__carousel" id="store-featured-music__carousel">
-                <!-- single featured item slide -->
-                <div class="store-featured-music__single">
-                    <form>
+                {% for album in featured_recordings %}
+                    <!-- single featured item slide -->
+                    {% purchase_info_for_product request album as session %}
+                    <div class="store-featured-music__single">
                         <div class="row">
                             <div class="col-xs-12 col-sm-5 col-md-3">
                                 <div class="store-featured-music__single__cover">
-                                    <img src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The Ari Hoenig Quartet">
+                                    {% with image=album.primary_image %}
+                                        {% if not image.is_missing %}
+                                          <img src="{% thumbor_url image.original.url|urlencode height=250 width=250 smart=True %}" alt="{{ album.get_title }}">
+                                        {% else %}
+                                          <img src="{% static "image/image_not_found.jpg" %}" alt="{{ album.get_title }}">
+                                        {% endif %}
+                                    {% endwith %}
                                 </div>
                                 <h2 class="store-featured-music__single__title hidden-sm hidden-md hidden-lg">
-                                    <a href="#">The Ari Hoenig Quartet 1</a>
+                                    <a href="{{ album.get_absolute_url }}">{{ album.title }}</a>
                                 </h2>
                                 <p class="store-featured-music__single__details">
                                     This show recording is available both as a physical CD and a digital download.
                                 </p>
-                                <span class="store-featured-music__single__price">
-                                    $15.00
-                                </span>
-                                <form>
+                                {% if session.price.exists %}
+                                    {% if session.price.excl_tax == 0 %}
+                                        <span class="store-featured-music__single__price">{% trans "Free" %}</span>
+                                    {% elif session.price.is_tax_known %}
+                                        <span class="store-featured-music__single__price">{{ session.price.incl_tax|currency:session.price.currency }}</span>
+                                    {% else %}
+                                        <span class="store-featured-music__single__price">{{ session.price.excl_tax|currency:session.price.currency }}</span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="store-featured-music__single__price">&nbsp; n/a</span>
+                                {% endif %}
+                                <form id="add_to_basket_form" action="{% url 'basket:add' pk=album.pk  %}" method="post" class="add-to-basket">
+                                  {% if session.availability.is_available_to_buy %}
+                                    {% basket_form request album 'single' as basket_form %}
                                     <div class="store-add-large negative">
-                                        <select class="store-add-large__options">
-                                            <option>CD - full case with artwork -- $25.00</option>
-                                            <option>Album digital download - Mp3 -- $9.99</option>
-                                            <option>Album digital download - HD -- $14.99</option>
-                                        </select>
-                                        <button type="submit" class="store-add-large__button">Add to cart</button>
-                                        <span class="arrow"></span>
+                                        {% csrf_token %}
+                                        {{ basket_form.quantity }}
+                                        {% if basket_form.fields.child_id.choices %}
+                                          <select class="store-add-large__options" name="child_id">
+                                              {% for item_value, item_name in basket_form.fields.child_id.choices %}
+                                                <option value="{{ item_value }}">{{ item_name }}</option>
+                                              {% endfor %}
+                                          </select>
+                                          <div class="arrow-button-container"><button type="submit" class="store-add-large__button"><i class="fa fa-plus"></i></button><span class="arrow"></span></div>
+                                        {% else %}
+                                          {{ basket_form.child_id }}
+                                          <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
+                                        {% endif %}
                                     </div>
+                                  {% endif %}
                                 </form>
                             </div>
                             <div class="col-xs-12 col-sm-7 col-md-9">
                                 <h2 class="store-featured-music__single__title hidden-xs">
-                                    <a href="#">The Ari Hoenig Quartet 1</a>
+                                    <a href="{{ album.get_absolute_url }}">{{ album.title }}</a>
                                 </h2>
                                 <!-- tracks table -->
                                 <div class="store-featured-music__single__tracks-table">
@@ -122,818 +149,76 @@
                                         </div>
                                     </div>
                                     <!-- end of tracks table header -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-pause"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Wrap your troubles in dreams
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
+                                    {% for track in album.tracks.all %}
+                                        <!-- tracks table row -->
+                                        <div class="store-featured-music__single__tracks-table__row row">
+                                            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
+                                                <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                            </div>
+                                            <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
+                                                {{ track.title }}
+                                            </div>
+                                            <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
+                                                14:23
+                                            </div>
+                                            <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
+                                                {% if track.get_track_stockrecord %}${{ track.get_track_stockrecord.price_excl_tax }}{% else %}-{% endif %} / {% if track.get_hd_track_stockrecord %}${{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}-{% endif %}
+                                            </div>
+                                            <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
+                                                {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
+                                                    <div class="buy-button-container">
+                                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
+                                                          <ul class="dropdown-menu" role="menu">
+                                                            {% if track.get_track_stockrecord %}
+                                                              <li>
+                                                                {% basket_form request track 'single' as basket_form %}
+                                                                <form id="add_to_basket_form" action="{% url 'basket:add' pk=track.pk  %}" method="post" class="add-to-basket">
+                                                                  {% csrf_token %}
+                                                                  {{ basket_form.quantity }}
+                                                                  {{ basket_form.child_id }}
+                                                                  <input type="hidden" name="stockrecord_id" value="{{ track.get_track_stockrecord.id }}"/>
+                                                                  <input type="submit" value="Buy mp3 (${{ track.get_track_stockrecord.price_excl_tax }})">
+                                                                </form>
+                                                              </li>
+                                                            {% endif %}
+                                                            {% if track.get_hd_track_stockrecord %}
+                                                              <li>
+                                                                {% basket_form request track 'single' as basket_form %}
+                                                                <form id="add_to_basket_form" action="{% url 'basket:add' pk=track.pk  %}" method="post" class="add-to-basket">
+                                                                  {% csrf_token %}
+                                                                  {{ basket_form.quantity }}
+                                                                  {{ basket_form.child_id }}
+                                                                  <input type="hidden" name="stockrecord_id" value="{{ track.get_hd_track_stockrecord.id }}"/>
+                                                                  <input type="submit" value="Buy HD (${{ track.get_hd_track_stockrecord.price_excl_tax }})">
+                                                                </form>
+                                                              </li>
+                                                            {% endif %}
+                                                          </ul>
+                                                    </div>
+                                                {% endif %}
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            All too soon
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Lullaby of the leaves
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Bess, you is my woman now
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Gone with the wind
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            I can’t get started
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
+                                        <!-- end of tracks table row -->
+                                    {% endfor %}
                                 </div>
                                 <!-- end of tracks table -->
                             </div>
                         </div>
-                    </form>
-                </div>
-                <!-- end of single featured item slide -->
-                <!-- single featured item slide -->
-                <div class="store-featured-music__single">
-                    <form>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-5 col-md-3">
-                                <div class="store-featured-music__single__cover">
-                                    <img src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The Ari Hoenig Quartet">
-                                </div>
-                                <h2 class="store-featured-music__single__title hidden-sm hidden-md hidden-lg">
-                                    <a href="#">The Ari Hoenig Quartet 2</a>
-                                </h2>
-                                <p class="store-featured-music__single__details">
-                                    This show recording is available both as a physical CD and a digital download.
-                                </p>
-                                <span class="store-featured-music__single__price">
-                                    $15.00
-                                </span>
-                                <form>
-                                    <div class="store-add-large negative">
-                                        <select class="store-add-large__options">
-                                            <option>CD - full case with artwork -- $25.00</option>
-                                            <option>Album digital download - Mp3 -- $9.99</option>
-                                            <option>Album digital download - HD -- $14.99</option>
-                                        </select>
-                                        <button type="submit" class="store-add-large__button">Add to cart</button>
-                                        <span class="arrow"></span>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="col-xs-12 col-sm-7 col-md-9">
-                                <h2 class="store-featured-music__single__title hidden-xs">
-                                    <a href="#">The Ari Hoenig Quartet 1</a>
-                                </h2>
-                                <!-- tracks table -->
-                                <div class="store-featured-music__single__tracks-table">
-                                    <h4 class="store-featured-music__single__tracks-table__title">
-                                        Track listing:
-                                    </h4>
-                                    <!-- tracks table header -->
-                                    <div class="store-featured-music__single__tracks-table__header row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <div class="hidden-xs hidden-sm">Preview</div>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Title
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            Duration
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            Mp3 / HD
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table header -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-pause"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Wrap your troubles in dreams
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            All too soon
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Lullaby of the leaves
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Bess, you is my woman now
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Gone with the wind
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            I can’t get started
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                </div>
-                                <!-- end of tracks table -->
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <!-- end of single featured item slide -->
-                <!-- single featured item slide -->
-                <div class="store-featured-music__single">
-                    <form>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-5 col-md-3">
-                                <div class="store-featured-music__single__cover">
-                                    <img src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The Ari Hoenig Quartet">
-                                </div>
-                                <h2 class="store-featured-music__single__title hidden-sm hidden-md hidden-lg">
-                                    <a href="#">The Ari Hoenig Quartet 3</a>
-                                </h2>
-                                <p class="store-featured-music__single__details">
-                                    This show recording is available both as a physical CD and a digital download.
-                                </p>
-                                <span class="store-featured-music__single__price">
-                                    $15.00
-                                </span>
-                                <form>
-                                    <div class="store-add-large negative">
-                                        <select class="store-add-large__options">
-                                            <option>CD - full case with artwork -- $25.00</option>
-                                            <option>Album digital download - Mp3 -- $9.99</option>
-                                            <option>Album digital download - HD -- $14.99</option>
-                                        </select>
-                                        <button type="submit" class="store-add-large__button">Add to cart</button>
-                                        <span class="arrow"></span>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="col-xs-12 col-sm-7 col-md-9">
-                                <h2 class="store-featured-music__single__title hidden-xs">
-                                    <a href="#">The Ari Hoenig Quartet 1</a>
-                                </h2>
-                                <!-- tracks table -->
-                                <div class="store-featured-music__single__tracks-table">
-                                    <h4 class="store-featured-music__single__tracks-table__title">
-                                        Track listing:
-                                    </h4>
-                                    <!-- tracks table header -->
-                                    <div class="store-featured-music__single__tracks-table__header row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <div class="hidden-xs hidden-sm">Preview</div>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Title
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            Duration
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            Mp3 / HD
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table header -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-pause"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Wrap your troubles in dreams
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            All too soon
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Lullaby of the leaves
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Bess, you is my woman now
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Gone with the wind
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            I can’t get started
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                </div>
-                                <!-- end of tracks table -->
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <!-- end of single featured item slide -->
-                <!-- single featured item slide -->
-                <div class="store-featured-music__single">
-                    <form>
-                        <div class="row">
-                            <div class="col-xs-12 col-sm-5 col-md-3">
-                                <div class="store-featured-music__single__cover">
-                                    <img src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The Ari Hoenig Quartet">
-                                </div>
-                                <h2 class="store-featured-music__single__title hidden-sm hidden-md hidden-lg">
-                                    <a href="#">The Ari Hoenig Quartet 4</a>
-                                </h2>
-                                <p class="store-featured-music__single__details">
-                                    This show recording is available both as a physical CD and a digital download.
-                                </p>
-                                <span class="store-featured-music__single__price">
-                                    $15.00
-                                </span>
-                                <form>
-                                    <div class="store-add-large negative">
-                                        <select class="store-add-large__options">
-                                            <option>CD - full case with artwork -- $25.00</option>
-                                            <option>Album digital download - Mp3 -- $9.99</option>
-                                            <option>Album digital download - HD -- $14.99</option>
-                                        </select>
-                                        <button type="submit" class="store-add-large__button">Add to cart</button>
-                                        <span class="arrow"></span>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="col-xs-12 col-sm-7 col-md-9">
-                                <h2 class="store-featured-music__single__title hidden-xs">
-                                    <a href="#">The Ari Hoenig Quartet 1</a>
-                                </h2>
-                                <!-- tracks table -->
-                                <div class="store-featured-music__single__tracks-table">
-                                    <h4 class="store-featured-music__single__tracks-table__title">
-                                        Track listing:
-                                    </h4>
-                                    <!-- tracks table header -->
-                                    <div class="store-featured-music__single__tracks-table__header row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <div class="hidden-xs hidden-sm">Preview</div>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Title
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            Duration
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            Mp3 / HD
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table header -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-pause"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Wrap your troubles in dreams
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            All too soon
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Lullaby of the leaves
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Bess, you is my woman now
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            Gone with the wind
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                    <!-- tracks table row -->
-                                    <div class="store-featured-music__single__tracks-table__row row">
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                                        </div>
-                                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
-                                            I can’t get started
-                                        </div>
-                                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                            14:23
-                                        </div>
-                                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
-                                            $0.99 / $1.49
-                                        </div>
-                                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-featured-music__single__tracks-table__column buy-track">
-                                            <div class="buy-button-container">
-                                                <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i class="fa fa-caret-down"></i></a>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">Buy mp3 ($0.99)</a></li>
-                                                    <li><a href="#">Buy HD ($1.49)</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end of tracks table row -->
-                                </div>
-                                <!-- end of tracks table -->
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                {% endfor %}
                 <!-- end of single featured item slide -->
             </div>
             <div class="store-featured-music__carousel__controls">
                 <i class="fa fa-caret-left store-featured-music__carousel__control" id="store-featured-music__carousel__control__left" data-slickPrev></i>
                 <ul class="store-featured-music__carousel__indicators" id="store-featured-music__carousel__indicators">
-                    <li class="store-featured-music__carousel__indicator active" data-slickPosition=0 ></li>
-                    <li class="store-featured-music__carousel__indicator" data-slickPosition=1></li>
-                    <li class="store-featured-music__carousel__indicator" data-slickPosition=2></li>
-                    <li class="store-featured-music__carousel__indicator" data-slickPosition=3></li>
+                    {% for album in featured_recordings %}
+                        <li class="store-featured-music__carousel__indicator {% if forloop.first %}active{% endif %}" data-slickPosition={{ forloop.counter0 }} ></li>
+                    {% endfor %}
                 </ul>
                 <i class="fa fa-caret-right store-featured-music__carousel__control" id="store-featured-music__carousel__control__right" data-slickNext></i>
             </div>
         </section>
-
+        {% endif %}
         <section class="store-featured-merch container">
             <div class="store-subtle-heading">Featured merchandise</div>
                 <div class="row">

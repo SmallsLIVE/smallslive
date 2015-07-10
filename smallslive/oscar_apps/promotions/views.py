@@ -9,4 +9,6 @@ class HomeView(promotions_views.HomeView):
             product_class__requires_shipping=True).order_by('-id')[:4]
         context['newest_recordings'] = Product.objects.filter(
             product_class__slug="album").order_by('-id')[:3]
+        context['featured_recordings'] = Product.objects.filter(
+            product_class__slug="album", featured=True).order_by('-id')[:4]
         return context
