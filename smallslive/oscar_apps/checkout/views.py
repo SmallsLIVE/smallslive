@@ -29,6 +29,14 @@ class ShippingAddressView(checkout_views.ShippingAddressView):
 
 
 class PaymentDetailsView(checkout_views.PaymentDetailsView):
+    def get_context_data(self, **kwargs):
+        if 'form' not in kwargs:
+            kwargs['form'] = PaymentForm()
+        if 'billing_address_form' not in kwargs:
+            shipping_address = self.get_shipping_address(self.request.basket)
+            kwargs['billing_address_form'] = BillingAddressForm(shipping_address)
+        return super(PaymentDetailsView, self).get_context_data(**kwargs)
+
     def post(self, request, *args, **kwargs):
         # Posting to payment-details isn't the right thing to do.  Form
         # submissions should use the preview URL.

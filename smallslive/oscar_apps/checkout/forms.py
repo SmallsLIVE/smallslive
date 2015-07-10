@@ -10,7 +10,6 @@ from oscar.apps.payment import forms as payment_forms
 from oscar.apps.order.models import BillingAddress
 
 
-
 STATE_CHOICES_WITH_EMPTY = (('', ''),) + STATE_CHOICES
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -60,6 +59,7 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
     )
     billing_option = forms.ChoiceField(
         widget=forms.RadioSelect, choices=CHOICES, initial=SAME_AS_SHIPPING)
+    state = us_forms.USStateField(widget=floppyforms.Select(choices=STATE_CHOICES_WITH_EMPTY), required=False)
 
     class Meta(payment_forms.BillingAddressForm):
         model = BillingAddress
