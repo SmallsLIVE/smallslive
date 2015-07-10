@@ -1,6 +1,8 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
+{% load thumbnail %}
+
 {% load currency_filters %}
 {% load purchase_info_tags %}
 
@@ -34,27 +36,54 @@
                             </div>
                         </div>
                         <!-- end of table header -->
-                        <!-- table row start -->
-                        <div class="store-overview__group__table__row clearfix">
-                            <div class="col-xs-2 image">
-                                <a class="square-container" href="#"><img class="defineImageRatio" src="{% static 'image/store/tshirt-black.png' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                            </div>
-                            <div class="col-xs-7 details">
-                                <p class="store-overview__group__table__product-name">
-                                    The official SmallsLIVE Cotton T-Shirt
-                                </p>
-                                <p class="store-overview__group__table__product-details">
-                                    Mens XL
-                                </p>
-                                <p class="store-overview__group__table__product-details">
-                                    3 x $15.00
-                                </p>
-                            </div>
-                            <div class="col-xs-3 total">
-                                $15.00
-                            </div>
-                        </div>
-                        <!-- end of table row -->
+                        {% for line in basket.physical_lines %}
+                            {% with product=line.product  %}
+                                <!-- table row start -->
+                                <div class="store-overview__group__table__row clearfix">
+                                    <div class="col-xs-2 image">
+                                        {% if product.parent_id %}
+                                            {% with image=product.parent.primary_image %}
+                                                {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                                    <a class="square-container" href="{{ product.parent.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                              src="{{ thumb.url }}"
+                                                                                              alt="{{ product.get_title }}"></a>
+                                                {% endthumbnail %}
+                                            {% endwith %}
+                                        {% else %}
+                                            {% with image=product.primary_image %}
+                                                {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                                    <a class="square-container" href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                              src="{{ thumb.url }}"
+                                                                                              alt="{{ product.get_title }}"></a>
+                                                {% endthumbnail %}
+                                            {% endwith %}
+                                        {% endif %}
+
+                                    </div>
+                                    <div class="col-xs-7 details">
+                                        <p class="store-overview__group__table__product-name">
+                                            {% if product.parent_id %}
+                                                {{ product.parent.title }}
+                                            {% else %}
+                                                {{ product.title }}
+                                            {% endif %}
+                                        </p>
+                                        <p class="store-overview__group__table__product-details">
+                                            {% if product.parent_id %}
+                                                {{ product.title }}
+                                            {% endif %}
+                                        </p>
+                                        <p class="store-overview__group__table__product-details">
+                                            {{ line.quantity }} x ${{ line.unit_price_excl_tax }}
+                                        </p>
+                                    </div>
+                                    <div class="col-xs-3 total">
+                                        ${{ line.price_excl_tax }}
+                                    </div>
+                                </div>
+                            {% endwith %}
+                            <!-- end of table row -->
+                        {% endfor %}
                         <!-- group total -->
                         <div class="store-overview__group__total clearfix">
                             <div class="col-xs-9 store-overview__group__total__label">
@@ -82,27 +111,31 @@
                             </div>
                         </div>
                         <!-- end of table header -->
-                        <!-- table row start -->
-                        <div class="store-overview__group__table__row clearfix">
-                            <div class="col-xs-2 image">
-                                <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
-                            </div>
-                            <div class="col-xs-7 details">
-                                <p class="store-overview__group__table__product-name">
-                                    Wrap your troubles in dreams
-                                </p>
-                                <p class="store-overview__group__table__product-details">
-                                    Bopjuice by Ralph Lalama Live at Smalls
-                                </p>
-                                <p class="store-overview__group__table__product-details">
-                                    HD
-                                </p>
-                            </div>
-                            <div class="col-xs-3 total">
-                                $1.99
-                            </div>
-                        </div>
-                        <!-- end of table row -->
+                        {% for line in basket.digital_lines %}
+                            {% with product=line.product  %}
+                                <!-- table row start -->
+                                <div class="store-overview__group__table__row clearfix">
+                                    <div class="col-xs-2 image">
+                                        <a href="#"><img class="defineImageRatio" src="{% static 'image/store/bopjuice-cover.jpg' %}" alt="The official SmallsLIVE Cotton T-Shirt"></a>
+                                    </div>
+                                    <div class="col-xs-7 details">
+                                        <p class="store-overview__group__table__product-name">
+                                            {{ product.title }}
+                                        </p>
+                                        <p class="store-overview__group__table__product-details">
+                                            {{ product.album.title }}
+                                        </p>
+                                        <p class="store-overview__group__table__product-details">
+                                            {% if line.stockrecord.is_hd %}HD{% else %}mp3{% endif %}
+                                        </p>
+                                    </div>
+                                    <div class="col-xs-3 total">
+                                        ${{ line.price_excl_tax }}
+                                    </div>
+                                </div>
+                                <!-- end of table row -->
+                            {% endwith %}
+                        {% endfor %}
                         <!-- group total -->
                         <div class="store-overview__group__total clearfix">
                             <div class="col-xs-9 store-overview__group__total__label">
@@ -115,7 +148,7 @@
                     </div>
                 </div>
                 <div class="store-overview__return-button__container">
-                    <a href="#" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to cart</a>
+                    <a href="{% url "basket:summary" %}" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to cart</a>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-4 store-overview__right-column">

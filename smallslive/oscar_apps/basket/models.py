@@ -1,4 +1,5 @@
 from decimal import Decimal as D
+from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from oscar.apps.basket.abstract_models import AbstractBasket
 
@@ -13,10 +14,12 @@ class Basket(AbstractBasket):
         return digital_count > 0
 
     def digital_lines(self):
-        return self.all_lines().filter(product__product_class__requires_shipping=False)
+        return self.all_lines().select_related('product').filter(Q(product__product_class__requires_shipping=False) |
+                                                                 Q(product__parent__product_class__requires_shipping=False))
 
     def physical_lines(self):
-        return self.all_lines().filter(product__product_class__requires_shipping=True)
+        return self.all_lines().select_related('product').filter(Q(product__product_class__requires_shipping=True) |
+                                                                 Q(product__parent__product_class__requires_shipping=True))
 
     def _get_digital_total(self, property):
         total = D('0.00')

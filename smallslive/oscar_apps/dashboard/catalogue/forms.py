@@ -11,6 +11,11 @@ class ProductForm(oscar_forms.ProductForm):
     class Meta(oscar_forms.ProductForm.Meta):
         fields = [
             'title', 'upc', 'short_description', 'description', 'is_discountable', 'structure', 'featured']
+        
+    def __init__(self, *args, **kwargs):
+        super(ProductForm, self).__init__(*args, **kwargs)
+        if self.instance and self.instance.parent_id and self.instance.parent.product_class.slug == "album":
+            self.fields['product_class'] = forms.ModelChoiceField(queryset=ProductClass.objects.all())
 
 
 class TrackForm(forms.ModelForm):
