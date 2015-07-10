@@ -32,10 +32,10 @@
                         <a href="#">{{ featured_product.title }}</a>
                     </h2>
                     <p class="store-listing__big-item__description">
-                        {{ featured_product.short_description }}
+                        {{ featured_product.short_description|safe }}
                     </p>
                     <p class="store-listing__big-item__details">
-                        {{ featured_product.description }}
+                        {{ featured_product.description|safe }}
                     </p>
                         {% if session.price.exists %}
                             {% if session.price.excl_tax == 0 %}
