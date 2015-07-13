@@ -102,3 +102,10 @@ class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
         else:
             url = reverse('dashboard:catalogue-product-list')
         return self.get_url_with_querystring(url)
+
+
+class ProductListView(oscar_views.ProductListView):
+    def get_queryset(self):
+        qs = super(ProductListView, self).get_queryset()
+        qs = qs.exclude(product_class__slug='track')
+        return qs
