@@ -4,6 +4,7 @@ from operator import itemgetter, attrgetter
 import calendar
 import hashlib
 from django.db import connection
+from django.db.models import Count
 import monthdelta
 import json
 import time
@@ -217,6 +218,19 @@ class ScheduleView(ListView):
         events = Event.objects.filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)
+
+        events = events.annotate(product_count=Count('products')).extra(select={
+            'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
+                           "events_recording.event_id = events_event. ID AND "
+                           "events_recording.media_file_id = multimedia_mediafile. ID AND "
+                           " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='video'"
+                           " GROUP BY events_event.id",
+            'audio_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
+                           "events_recording.event_id = events_event. ID AND "
+                           "events_recording.media_file_id = multimedia_mediafile. ID AND "
+                           " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='audio'"
+                           " GROUP BY events_event.id",
+        })
         for k, g in groupby(events, lambda e: e.listing_date()):
             dates[k] = list(g)
         for date in [(date_range_start + timedelta(days=d)).date() for d in range(14)]:
@@ -260,6 +274,18 @@ class MonthlyScheduleView(ListView):
         events = Event.objects.filter(start__range=(date_range_start, date_range_end)).order_by('start')
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)
+        events = events.annotate(product_count=Count('products')).extra(select={
+            'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
+                           "events_recording.event_id = events_event. ID AND "
+                           "events_recording.media_file_id = multimedia_mediafile. ID AND "
+                           " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='video'"
+                           " GROUP BY events_event.id",
+            'audio_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
+                           "events_recording.event_id = events_event. ID AND "
+                           "events_recording.media_file_id = multimedia_mediafile. ID AND "
+                           " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='audio'"
+                           " GROUP BY events_event.id",
+        })
         for k, g in groupby(events, lambda e: e.listing_date()):
             dates[k] = list(g)
         for date in [(date_range_start + timedelta(days=d)).date() for d in range(last_day_of_month)]:
