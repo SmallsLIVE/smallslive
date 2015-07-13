@@ -2,15 +2,18 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 from oscar.apps.dashboard.catalogue import forms as oscar_forms
+from events.models import Event
 from multimedia.models import MediaFile
 from oscar_apps.partner.models import StockRecord, Partner
 from oscar_apps.catalogue.models import Product, ProductClass
 
 
 class ProductForm(oscar_forms.ProductForm):
+    event = forms.IntegerField(min_value=1, required=False)
+
     class Meta(oscar_forms.ProductForm.Meta):
         fields = [
-            'title', 'upc', 'short_description', 'description', 'is_discountable', 'structure', 'featured']
+            'title', 'upc', 'short_description', 'description', 'is_discountable', 'structure', 'featured', 'event']
 
     def __init__(self, product_class, data=None, parent=None, *args, **kwargs):
         self.set_initial(product_class, parent, kwargs)
@@ -37,6 +40,14 @@ class ProductForm(oscar_forms.ProductForm):
             self.fields['title'].widget = forms.TextInput(
                 attrs={'autocomplete': 'off'})
 
+    def clean_event(self):
+        event_id = self.cleaned_data['event']
+        try:
+            event = Event.objects.get(id=event_id)
+        except Event.DoesNotExist:
+            raise ValidationError('Event with that ID does not exist')
+        return event
+    
 
 class TrackForm(forms.ModelForm):
     track_no = forms.IntegerField(required=True)
