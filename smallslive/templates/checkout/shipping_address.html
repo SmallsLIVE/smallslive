@@ -33,12 +33,12 @@
                         {% endfor %}
                         <label for="line1" class="store__form__label">Address - line 1</label>
                         <input type="text" name="line1" class="store__form__input" id="line1" value="{{ user.address_1 }}">
-                        {% for error in form.address1.errors %}
+                        {% for error in form.line1.errors %}
                             <span class="store__form__field-error">{{ error }}</span>
                         {% endfor %}
                         <label for="line2" class="store__form__label">Address - line 2</label>
                         <input type="text" name="line2" class="store__form__input" id="line2" value="{{ user.address_2 }}">
-                        {% for error in form.address2.errors %}
+                        {% for error in form.line2.errors %}
                             <span class="store__form__field-error">{{ error }}</span>
                         {% endfor %}
                     </div>
