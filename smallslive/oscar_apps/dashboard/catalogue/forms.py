@@ -71,8 +71,10 @@ class TrackForm(forms.ModelForm):
 
         # show existing data correctly on the form
         if self.instance.id:
-            self.fields['track_no'].initial = self.instance.attr.track_no
-            self.fields['composer'].initial = self.instance.attr.composer
+            if hasattr(self.instance.attr, 'track_no'):
+                self.fields['track_no'].initial = self.instance.attr.track_no
+            if hasattr(self.instance.attr, 'composer'):
+                self.fields['composer'].initial = self.instance.attr.composer
             try:
                 file_stockrecord = self.instance.stockrecords.get(partner_sku=str(self.instance.id))
                 self.fields['price_excl_tax'].initial = file_stockrecord.price_excl_tax
