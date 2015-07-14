@@ -490,6 +490,18 @@
   padding: 0;
   @include lato;
 
+  & .add-to-basket {
+
+    & input {
+      color: $base-text-color;
+      @include transition(all 0.3s ease-in-out);
+
+      &:hover, &:focus {
+        color: rgba($base-text-color, 0.7);
+      }
+    }
+  }
+
   &__title {
     padding: 15px 30px;
     background-color: #000;
