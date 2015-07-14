@@ -63,6 +63,9 @@
         </section>
         {% if featured_recordings %}
             <section class="store-featured-music">
+                <div style="width: 1px; height: 1px; position: absolute; top: -9999px; left: -9999px;">
+                    <div id="player-audio"></div>
+                </div>
             <div class="store-featured-music__header">
                 <span class="store-featured-music__title">Featured recordings</span>
                 <a href="http://smallslive.herokuapp.com/store/catalogue/category/music_1/">View all music in store <i class="fa fa-angle-double-right"></i></a>
@@ -149,11 +152,13 @@
                                         </div>
                                     </div>
                                     <!-- end of tracks table header -->
-                                    {% for track in album.tracks.all %}
+                                    {% for track in album.tracks.all|dictsort:"ordering" %}
                                         <!-- tracks table row -->
                                         <div class="store-featured-music__single__tracks-table__row row">
                                             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
-                                                <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
+                                                {% if track.preview %}
+                                                    <a href="#" class="playback-control" data-playlist-id="{{ forloop.parentloop.counter0|add:forloop.counter0 }}"><i class="fa fa-play"></i></a>
+                                                {% endif %}
                                             </div>
                                             <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
                                                 {{ track.title }}
@@ -233,5 +238,40 @@
 {% endblock content %}
 
 {% block extra_js %}
-  <script src="{% static 'js/store-base.js' %}"></script>
+    <script src="{% static 'js/store-base.js' %}"></script>
+    <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var audioPlayer = jwplayer("player-audio").setup({
+                primary: 'html5',
+                playlist: [
+                    {% for album in featured_recordings %}
+                        {% for track in album.tracks.all|dictsort:"ordering" %}
+                            {
+                                sources: [{
+                                    file: "{{ track.get_track_preview_url|safe }}",
+                                    type: "mp3"
+                                }],
+                                mediaid: {{ track.id }}
+                            }{% if not forloop.last %},{% endif %}
+                        {% endfor %}
+                        {% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                ],
+                skin: "{% static "jwplayer-skin/smalls.xml" %}",
+                width: "100%",
+                height: 0
+            });
+            $(".playback-control").on('click', function (e) {
+                e.preventDefault();
+                if (audioPlayer.getPlaylistIndex() == $(this).data('playlist-id')) {
+                    audioPlayer.pause();
+                } else {
+                    audioPlayer.playlistItem($(this).data('playlist-id'));
+                    $('.playback-control i').removeClass('fa-pause').addClass('fa-play');
+                }
+                $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
+            })
+        });
+    </script>
 {% endblock %}
