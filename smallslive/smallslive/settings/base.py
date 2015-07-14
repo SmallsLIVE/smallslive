@@ -415,8 +415,8 @@ DJSTRIPE_PLANS = {
         "stripe_plan_id": "basic_yearly",
         "name": "Basic",
         "type": 'basic',
-        "description": "Basic plan: livestream + audio",
-        "price": 9000,  # $9.00
+        "description": "Audio/Video Archive & Live Video Stream Access",
+        "price": 10000,  # $100.00
         "currency": "usd",
         "interval": "year"
     },
@@ -424,8 +424,8 @@ DJSTRIPE_PLANS = {
         "stripe_plan_id": "basic_monthly",
         "name": "Basic",
         "type": 'basic',
-        "description": "Basic plan: livestream + audio",
-        "price": 900,  # $9.00
+        "description": "Audio/Video Archive & Live Video Stream Access",
+        "price": 1000,  # $10.00
         "currency": "usd",
         "interval": "month"
     },
@@ -433,8 +433,8 @@ DJSTRIPE_PLANS = {
         "stripe_plan_id": "premium_yearly",
         "name": "Premium",
         "type": 'premium',
-        "description": "Premium plan: livestream + audio + video",
-        "price": 15000,  # $150.00
+        "description": "Benefactor Member",
+        "price": 100000,  # $1000.00
         "currency": "usd",
         "interval": "year"
     },
@@ -442,8 +442,8 @@ DJSTRIPE_PLANS = {
         "stripe_plan_id": "premium_monthly",
         "name": "Premium",
         "type": 'premium',
-        "description": "Premium plan: livestream + audio + video",
-        "price": 1500,  # $15.00
+        "description": "Benefactor Member",
+        "price": 10000,  # $100.00
         "currency": "usd",
         "interval": "month"
     },
@@ -451,19 +451,19 @@ DJSTRIPE_PLANS = {
 
 SUBSCRIPTION_PLANS = {
     'free': {
-        'name': 'Free',
+        'name': 'Live Video Stream Access',
         'id': 'free',
         'monthly': None,
         'yearly': None,
     },
     'basic': {
-        'name': 'Basic',
+        'name': 'Audio/Video Archive & Live Video Stream Access',
         'id': 'basic',
         'monthly': DJSTRIPE_PLANS['basic_monthly'],
         'yearly': DJSTRIPE_PLANS['basic_yearly'],
     },
     'premium': {
-        'name': 'Premium',
+        'name': 'Benefactor Member',
         'id': 'premium',
         'monthly': DJSTRIPE_PLANS['premium_monthly'],
         'yearly': DJSTRIPE_PLANS['premium_yearly'],

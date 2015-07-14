@@ -24,14 +24,21 @@
                         <p class="signup-plan__name">{{ active_plan.name }} Membership</p>
                         <div class="signup-plan__arrow-separator"></div>
                         <ul class="signup-plan__features">
-                            <li class="signup-plan__features__single">watch <b>all our shows live</b> via our live stream</li>
-                            {% if active_plan.type == "premium" %}
-                              <li class="signup-plan__features__single">access to <b>all video</b> recordings</li>
-                            {% endif %}
-                            {% if active_plan.type != "free" %}
-                              <li class="signup-plan__features__single">access to <b>all audio</b> recordings</li>
-                              <li class="signup-plan__features__single">new shows <b>added weekly</b> </li>
-                              <li class="signup-plan__features__single">revenue from subscriptions pooled and <b>directly distributed to artists</b> based on how much they get listened to</li>
+                            {% if active_plan.type == "free" %}
+                                <li class="signup-plan__features__single">Register with a valid email address to access our <b>Live-Video Stream</b>.</li>
+                                <li class="signup-plan__features__single">All of our shows are <b>broadcast live each evening</b> from Smalls Jazz Club.</li>
+                                <li class="signup-plan__features__single">Most live shows will be available in our Audio/Video Archive <b>within a week</b>.</li>
+                                <li class="signup-plan__features__single">There is <b>no cost to register</b> for our Live-Video Stream.</li>
+                            {% elif active_plan.type == "basic" %}
+                                <li class="signup-plan__features__single"><b>Unlimited access</b> to our Audio/Video Archive and Live Video Stream.</li>
+                                <li class="signup-plan__features__single">New content is <b>added weekly</b>.</li>
+                                <li class="signup-plan__features__single">Revenue from this subscription is <b>pooled and directly distributed to the artists</b> via the SmallsLIVE Artist Revenue Share Project.</li>
+                            {% elif active_plan.type == "premium" %}
+                                <li class="signup-plan__features__single"><b>Unlimited access</b> to our Audio/Video Archive and Live Video Stream.</li>
+                                <li class="signup-plan__features__single">Benefactor Members are <b>members who wish to support</b> SmallsLIVE and the Artists that perform there in a greater way.</li>
+                                <li class="signup-plan__features__single">Revenue from this subscription is <b>pooled and directly disturbed to the artists</b> via the SmallsLIVE Artist Revenue Share Project.</li>
+                                <li class="signup-plan__features__single">Your subscription <b>directly supports the artists and the venue</b>.</li>
+                                <li class="signup-plan__features__single">Benefactor Members are offered merchandise, club passes and exclusive content. <a href="#">Click here</a> for more information.</li>
                             {% endif %}
                         </ul>
                     </div>

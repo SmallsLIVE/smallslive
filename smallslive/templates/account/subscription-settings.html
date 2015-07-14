@@ -26,7 +26,8 @@
                         </div>
                         <div class="signup-plan__arrow-separator"></div>
                         <ul class="signup-plan__features">
-                            <li class="signup-plan__features__single">watch <b>all our shows live</b> via our live stream.</li>
+                            <li class="signup-plan__features__single">All of our shows are broadcast live each evening from Smalls Jazz Club.</li>
+                            <li class="signup-plan__features__single">Most live shows will be available in our Audio/Video Archive within a week.</li>
                         </ul>
                         {% if user.get_subscription_plan.type == "free" %}
                           <p class="signup-plan__active__expiry">Free plan never expires</p>
@@ -37,11 +38,11 @@
                 </div>
                 <div class="col-xs-12 col-sm-4 signup-plan {% if user.get_subscription_plan.type == "basic" %}plan-active{% endif %}">
                     <div class="signup-plan__content">
-                        <p class="signup-plan__name">Basic Membership</p>
+                        <p class="signup-plan__name">Audio/Video Archive & Live Video Stream Access</p>
                         <div class="signup-plan__price__container" id="signup-plan-price-master">
                             <div class="signup-plan__price__primary">
                                 <span class="signup-plan__price__primary__currency">$</span>
-                                <span class="signup-plan__price__primary__amount">9</span>
+                                <span class="signup-plan__price__primary__amount">10</span>
                                 <span class="signup-plan__price__primary__period">/ MO</span>
                             </div>
                             <div class="signup-plan__price__promo">
@@ -49,16 +50,15 @@
                             </div>
                             <div class="signup-plan__price__secondary">
                                 <span class="signup-plan__price__secondary__currency">$</span>
-                                <span class="signup-plan__price__secondary__amount">90</span>
+                                <span class="signup-plan__price__secondary__amount">100</span>
                                 <span class="signup-plan__price__secondary__period">/ year</span>
                             </div>
                         </div>
                         <div class="signup-plan__arrow-separator"></div>
                         <ul class="signup-plan__features">
-                            <li class="signup-plan__features__single">watch <b>all our shows live</b> via our live stream</li>
-                            <li class="signup-plan__features__single">access to <b>all audio</b> recordings</li>
-                            <li class="signup-plan__features__single">new shows <b>added weekly</b> </li>
-                            <li class="signup-plan__features__single">revenue from subscriptions are pooled and <b>directly distributed to the artists</b> based on how much they get listened to</li>
+                            <li class="signup-plan__features__single">Unlimited access to our <b>Audio/Video Archive</b> and <b>Live Video Stream</b>.</li>
+                            <li class="signup-plan__features__single">New content is added weekly.</li>
+                            <li class="signup-plan__features__single">Revenue from this subscription is pooled and directly disturbed to the artists via the SmallsLIVE Artist Revenue Share Project.</li>
                         </ul>
                         {% with active_plan=user.get_subscription_plan.type %}
                           {% if active_plan == "basic" %}
@@ -77,11 +77,11 @@
                 </div>
                 <div class="col-xs-12 col-sm-4 signup-plan  {% if user.get_subscription_plan.type == "premium" %}plan-active{% endif %}">
                     <div class="signup-plan__content">
-                        <p class="signup-plan__name">Premium Membership</p>
+                        <p class="signup-plan__name">Benefactor Member</p>
                         <div class="signup-plan__price__container">
                             <div class="signup-plan__price__primary">
                                 <span class="signup-plan__price__primary__currency">$</span>
-                                <span class="signup-plan__price__primary__amount">15</span>
+                                <span class="signup-plan__price__primary__amount">100</span>
                                 <span class="signup-plan__price__primary__period">/ MO</span>
                             </div>
                             <div class="signup-plan__price__promo">
@@ -89,17 +89,17 @@
                             </div>
                             <div class="signup-plan__price__secondary">
                                 <span class="signup-plan__price__secondary__currency">$</span>
-                                <span class="signup-plan__price__secondary__amount">150</span>
+                                <span class="signup-plan__price__secondary__amount">1000</span>
                                 <span class="signup-plan__price__secondary__period">/ year</span>
                             </div>
                         </div>
                         <div class="signup-plan__arrow-separator"></div>
                         <ul class="signup-plan__features">
-                            <li class="signup-plan__features__single">watch <b>all our shows live</b> via our live stream</li>
-                            <li class="signup-plan__features__single">access to <b>all audio</b> recordings</li>
-                            <li class="signup-plan__features__single">access to <b>all video</b> recordings</li>
-                            <li class="signup-plan__features__single">new shows <b>added weekly</b> </li>
-                            <li class="signup-plan__features__single">revenue from subscriptions are pooled and <b>directly distributed to the artists</b> based on how much they get listened to</li>
+                            <li class="signup-plan__features__single"><b>Unlimited access</b> to our Audio/Video Archive and Live Video Stream.</li>
+                            <li class="signup-plan__features__single">Benefactor Members are <b>members who wish to support</b> SmallsLIVE and the Artists that perform there in a greater way.</li>
+                            <li class="signup-plan__features__single">Revenue from this subscription is <b>pooled and directly disturbed to the artists</b> via the SmallsLIVE Artist Revenue Share Project.</li>
+                            <li class="signup-plan__features__single">Your subscription <b>directly supports the artists and the venue</b>.</li>
+                            <li class="signup-plan__features__single">Benefactor Members are offered merchandise, club passes and exclusive content. <a href="#">Click here</a> for more information.</li>
                         </ul>
                         {% with active_plan=user.get_subscription_plan.type %}
                           {% if active_plan == "premium" %}
