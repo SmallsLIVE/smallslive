@@ -20,26 +20,28 @@
               <h3 class="store__form__heading">Billing information:</h3>
               <div class="row">
                   <div class="col-xs-12 store__form__selection__container">
-                          <div class="store__form__selection__option">
-                              <input type="radio" name="billing_option" id="same-address" value="same-address"
-                                     {% if billing_address_form.billing_option.value != "different-address"%}checked{% endif %}><label for="same-address">My billing address is the same as the shipping
-                              address</label>
-                          </div>
+                          {% if shipping_address %}
+                            <div class="store__form__selection__option">
+                                <input type="radio" name="billing_option" id="same-address" value="same-address"
+                                       {% if billing_address_form.billing_option.value != "different-address"%}checked{% endif %}><label for="same-address">My billing address is the same as the shipping
+                                address</label>
+                            </div>
+                          {% endif %}
                           <div class="store__form__selection__option">
                               <input type="radio" name="billing_option" id="different-address"
-                                     {% if billing_address_form.billing_option.value == "different-address"%}checked{% endif %} value="different-address"><label for="different-address">My billing address is
-                              different than the shipping address</label>
+                                     {% if billing_address_form.billing_option.value == "different-address"%}checked{% endif %} value="different-address">
+                            <label for="different-address">{% if shipping_address %}My billing address is different than the shipping address{% else %}Enter billing address{% endif %}</label>
                           </div>
 
                   </div>
                   <div class="store__form__group clearfix" id="custom-billing-address">
                       <div class="col-xs-12 col-sm-6">
-                          <label for="first_name" class="store__form__label">Name</label>
+                          <label for="first_name" class="store__form__label">First name</label>
                           <input type="text" id="first_name" name="first_name" class="store__form__input" {% if billing_address_form.first_name.value %}value="{{ billing_address_form.first_name.value }}"{% endif %}>
                             {% for error in billing_address_form.first_name.errors %}
                                 <span class="store__form__field-error">{{ error }}</span>
                             {% endfor %}
-                          <label for="last_name" class="store__form__label">Surname</label>
+                          <label for="last_name" class="store__form__label">Last name</label>
                           <input type="text" id="last_name" name="last_name" class="store__form__input" {% if billing_address_form.last_name.value %}value="{{ billing_address_form.last_name.value }}"{% endif %}>
                             {% for error in billing_address_form.last_name.errors %}
                                 <span class="store__form__field-error">{{ error }}</span>
@@ -80,7 +82,7 @@
                         <label for="state" class="store__form__label">State</label>
                           <select name="state" class="store__form__select">
                                 {% for val, choice in billing_address_form.fields.state.widget.choices %}
-                                    <option value="{{ val }}" {% if val == user.state %}selected{% endif %}>{{ choice }}</option>
+                                    <option value="{{ val }}" {% if val == billing_address_form.state.value %}selected{% endif %}>{{ choice }}</option>
                                 {% endfor %}
                           </select>
                         {% for error in billing_address_form.state.errors %}
@@ -89,7 +91,7 @@
                           <label for="country" class="store__form__label">Country</label>
                               <select name="country" class="store__form__select">
                                   {% for val, choice in billing_address_form.fields.country.choices %}
-                                    <option value="{{ val }}" {% if val == user.country %}selected{% endif %}>{{ choice }}</option>
+                                    <option value="{{ val }}" {% if val == billing_address_form.country.value %}selected{% endif %}>{{ choice }}</option>
                                     {% endfor %}
                                 </select>
                             {% for error in billing_address_form.country.errors %}

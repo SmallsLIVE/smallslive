@@ -43,8 +43,17 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
             kwargs['form'] = PaymentForm()
         if 'billing_address_form' not in kwargs:
             shipping_address = self.get_shipping_address(self.request.basket)
-            kwargs['billing_address_form'] = BillingAddressForm(shipping_address, self.request.user)
+            kwargs['billing_address_form'] = BillingAddressForm(shipping_address, self.request.user,
+                                                                initial=self.get_billing_initial())
         return super(PaymentDetailsView, self).get_context_data(**kwargs)
+
+    def get_billing_initial(self):
+        address = self.get_default_billing_address()
+        if address:
+            initial = model_to_dict(address)
+            return initial
+        else:
+            return None
 
     def post(self, request, *args, **kwargs):
         # Posting to payment-details isn't the right thing to do.  Form
