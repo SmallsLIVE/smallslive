@@ -109,7 +109,6 @@ class TrackForm(forms.ModelForm):
 
     def clean(self):
         data = super(TrackForm, self).clean()
-        print data
         if data.get('track_file_id') and not data.get('price_excl_tax'):
             raise ValidationError('You need to enter the track price')
 
