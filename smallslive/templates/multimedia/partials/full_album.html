@@ -39,10 +39,7 @@
       <h3 class="my-downloads-album__tracks-table__heading">Tracks bought:</h3>
       <!-- tracks table header -->
       <div class="my-downloads-album__tracks-table__header row">
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
-          <div class="hidden-xs hidden-sm">Preview</div>
-        </div>
-        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+        <div class="col-xs-7 col-sm-5 col-md-5 col-lg-6 my-downloads-album__tracks-table__column title">
           Title
         </div>
         <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
@@ -59,10 +56,7 @@
       {% for track in album.parent.get_tracks %}
         <!-- tracks table row -->
         <div class="my-downloads-album__tracks-table__row row">
-          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 my-downloads-album__tracks-table__column preview">
-            <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-          </div>
-          <div class="col-xs-5 col-sm-3 col-md-3 col-lg-5 my-downloads-album__tracks-table__column title">
+          <div class="col-xs-7 col-sm-5 col-md-5 col-lg-6 my-downloads-album__tracks-table__column title">
             {{ track.title }}
           </div>
           <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
