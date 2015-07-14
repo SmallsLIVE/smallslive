@@ -17,6 +17,10 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 class ShippingAddressForm(checkout_forms.ShippingAddressForm):
     state = us_forms.USStateField(widget=floppyforms.Select(choices=STATE_CHOICES_WITH_EMPTY), required=False)
 
+    def __init__(self, *args, **kwargs):
+        super(ShippingAddressForm, self).__init__(*args, **kwargs)
+        self.fields['country'].empty_label = ""
+
 
 class PaymentForm(forms.Form):
     PAYMENT_CHOICES = Choices('paypal', 'credit-card')

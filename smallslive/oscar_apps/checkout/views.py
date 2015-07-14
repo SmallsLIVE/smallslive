@@ -1,5 +1,6 @@
 from django import http
 from django.conf import settings
+from django.forms.models import model_to_dict
 from django.shortcuts import redirect
 from oscar.apps.checkout import views as checkout_views
 from oscar.apps.payment.models import SourceType, Source
@@ -26,6 +27,14 @@ class ShippingAddressView(checkout_views.ShippingAddressView):
         return Repository().get_default_shipping_method(
             basket=self.request.basket, user=self.request.user,
             request=self.request)
+    
+    def get_initial(self):
+        initial = super(ShippingAddressView, self).get_initial()
+        if not initial:
+            address = self.get_available_addresses().first()
+            if address:
+                initial = model_to_dict(address)
+        return initial
 
 
 class PaymentDetailsView(checkout_views.PaymentDetailsView):
