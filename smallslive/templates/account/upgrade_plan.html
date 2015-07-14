@@ -33,7 +33,7 @@
             </div>
           {% endif %}
             <div class="signup__payment__type__selection__option">
-                <input type="radio" name="payment_option" id="enter-new-card" value="enter-new-card" ><label for="enter-new-card"><span>Enter a new credit card</span></label>
+                <input type="radio" name="payment_option" id="enter-new-card" {% if not stripe_token %}checked{% endif %} value="enter-new-card" ><label for="enter-new-card"><span>Enter a new credit card</span></label>
             </div>
         </div>
         <div class="credit-card-form">
