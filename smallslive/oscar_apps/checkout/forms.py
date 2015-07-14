@@ -8,6 +8,7 @@ from model_utils import Choices
 from oscar.apps.checkout import forms as checkout_forms
 from oscar.apps.payment import forms as payment_forms
 from oscar.apps.order.models import BillingAddress
+from oscar.apps.address.models import UserAddress
 
 
 STATE_CHOICES_WITH_EMPTY = (('', ''),) + STATE_CHOICES
@@ -66,14 +67,16 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
     state = us_forms.USStateField(widget=floppyforms.Select(choices=STATE_CHOICES_WITH_EMPTY), required=False)
 
     class Meta(payment_forms.BillingAddressForm):
-        model = BillingAddress
-        exclude = ('search_text',)
+        model = UserAddress
+        exclude = ('search_text', 'user', 'num_orders', 'hash', 'is_default_for_billing', 'is_default_for_shipping')
 
-    def __init__(self, shipping_address, data=None, *args, **kwargs):
+    def __init__(self, shipping_address, user, data=None, *args, **kwargs):
         # Store a reference to the shipping address
         self.shipping_address = shipping_address
 
         super(BillingAddressForm, self).__init__(data, *args, **kwargs)
+
+        self.instance.user = user
 
         # If no shipping address (eg a download), then force the
         # 'same_as_shipping' field to have a certain value.
@@ -103,4 +106,8 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
             if commit:
                 billing_addr.save()
             return billing_addr
-        return super(BillingAddressForm, self).save(commit)
+        else:
+            address = super(BillingAddressForm, self).save(commit=False)
+            address.is_default_for_billing = True
+            address.save()
+            return address

@@ -43,7 +43,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
             kwargs['form'] = PaymentForm()
         if 'billing_address_form' not in kwargs:
             shipping_address = self.get_shipping_address(self.request.basket)
-            kwargs['billing_address_form'] = BillingAddressForm(shipping_address)
+            kwargs['billing_address_form'] = BillingAddressForm(shipping_address, self.request.user)
         return super(PaymentDetailsView, self).get_context_data(**kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -66,7 +66,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
     def handle_payment_details_submission(self, request):
         form = PaymentForm(request.POST)
         shipping_address = self.get_shipping_address(self.request.basket)
-        billing_address_form = BillingAddressForm(shipping_address, request.POST)
+        billing_address_form = BillingAddressForm(shipping_address, self.request.user, request.POST)
         if form.is_valid() and billing_address_form.is_valid():
             if billing_address_form.cleaned_data.get('billing_option') == "same-address":
                 self.checkout_session.bill_to_shipping_address()
