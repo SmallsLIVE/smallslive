@@ -9,7 +9,7 @@ from oscar_apps.catalogue.models import Product, ProductClass
 
 
 class ProductForm(oscar_forms.ProductForm):
-    event = forms.IntegerField(min_value=1, required=False)
+    event = forms.IntegerField(required=False)
 
     class Meta(oscar_forms.ProductForm.Meta):
         fields = [
@@ -42,17 +42,19 @@ class ProductForm(oscar_forms.ProductForm):
 
     def clean_event(self):
         event_id = self.cleaned_data['event']
-        try:
-            event = Event.objects.get(id=event_id)
-        except Event.DoesNotExist:
-            raise ValidationError('Event with that ID does not exist')
-        return event
+        if event_id:
+            try:
+                event = Event.objects.get(id=event_id)
+            except Event.DoesNotExist:
+                raise ValidationError('Event with that ID does not exist')
+            return event
 
 
 class TrackForm(forms.ModelForm):
     track_no = forms.IntegerField(required=True)
     title = forms.CharField(max_length=100, required=True)
     composer = forms.CharField(max_length=100, required=True)
+    duration = forms.CharField(max_length=5, required=False)
     track_preview_file_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
     price_excl_tax = forms.DecimalField(required=False)
     track_file_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
@@ -75,6 +77,8 @@ class TrackForm(forms.ModelForm):
                 self.fields['track_no'].initial = self.instance.attr.track_no
             if hasattr(self.instance.attr, 'composer'):
                 self.fields['composer'].initial = self.instance.attr.composer
+            if hasattr(self.instance.attr, 'duration'):
+                self.fields['duration'].initial = self.instance.attr.duration
             try:
                 file_stockrecord = self.instance.stockrecords.get(partner_sku=str(self.instance.id))
                 self.fields['price_excl_tax'].initial = file_stockrecord.price_excl_tax
@@ -116,6 +120,7 @@ class TrackForm(forms.ModelForm):
     def save(self, commit=True):
         track = super(TrackForm, self).save(commit=False)
         track.attr.composer = self.cleaned_data['composer']
+        track.attr.duration = self.cleaned_data['duration']
         track.attr.track_no = self.cleaned_data['track_no']
         track.ordering = self.cleaned_data['track_no']
 
@@ -150,7 +155,7 @@ class TrackForm(forms.ModelForm):
 
 
 BaseTrackFormSet = inlineformset_factory(
-    Product, Product, form=TrackForm, extra=2, fk_name='album', can_order=True)
+    Product, Product, form=TrackForm, extra=15, max_num=25, fk_name='album', can_order=True)
 
 
 class TrackFormSet(BaseTrackFormSet):

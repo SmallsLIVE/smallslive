@@ -89,12 +89,13 @@
                         <th>{% trans "Track no." %}</th>
                         <th>{% trans "Title" %}</th>
                         <th>{% trans "Composer" %}</th>
+                        <th>{% trans "Duration" %}</th>
                         <th>{% trans "Track preview" %}</th>
                         <th>{% trans "Mp3 file" %}</th>
                         <th>{% trans "Price (excl tax)" %}</th>
                         <th>{% trans "HD file" %}</th>
                         <th>{% trans "HD Price (excl tax)" %}</th>
-                        <th>&nbsp;</th>
+                        <th>X</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -112,6 +113,7 @@
                         <td>{% include "partials/form_field.html" with field=track_form.track_no nolabel=True %}</td>
                         <td>{% include "partials/form_field.html" with field=track_form.title nolabel=True %}</td>
                         <td>{% include "partials/form_field.html" with field=track_form.composer nolabel=True %}</td>
+                        <td>{% include "partials/form_field.html" with field=track_form.duration nolabel=True %}</td>
                         <td>
                           {% if not track_form.track_preview_file_id.value %}
                               <div class="dropzone_preview" id="dropzone_preview-file_{{ forloop.counter0 }}" data-track-preview-form-id="{{ forloop.counter0 }}">Drop file here</div>

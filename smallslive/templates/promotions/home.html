@@ -159,7 +159,7 @@
                                                 {{ track.title }}
                                             </div>
                                             <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-featured-music__single__tracks-table__column duration">
-                                                14:23
+                                                {{ track.attr.duration }}
                                             </div>
                                             <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-featured-music__single__tracks-table__column price">
                                                 {% if track.get_track_stockrecord %}${{ track.get_track_stockrecord.price_excl_tax }}{% else %}-{% endif %} / {% if track.get_hd_track_stockrecord %}${{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}-{% endif %}
