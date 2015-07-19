@@ -117,7 +117,6 @@ class GigPlayedInlineFormSetHelper(FormHelper):
 
 
 class EventAddForm(forms.ModelForm):
-    id = forms.CharField()
     start = forms.DateTimeField(label="Start time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
     end = forms.DateTimeField(label="End time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
 
@@ -143,7 +142,6 @@ class EventAddForm(forms.ModelForm):
                 css_class='form-group slot-buttons'
             ),
             Formset('artists', template='form_widgets/formset_layout.html'),
-            'id',
             'title',
             'subtitle',
             'photo',
@@ -151,14 +149,8 @@ class EventAddForm(forms.ModelForm):
             'description',
             'state',
         )
-        self.fields['id'].label = "Event ID - MUST match the event ID in the old system"
         self.fields['state'].label = "Event status"
         self.fields['photo'].label = "Flyer or Band Photo (JPG, PNG)"
-
-    def save(self, commit=True, explicit_id=True):
-        if explicit_id:
-            self.instance.pk = self.cleaned_data.get('id')
-        return super(EventAddForm, self).save()
 
 
 class EventEditForm(EventAddForm):
