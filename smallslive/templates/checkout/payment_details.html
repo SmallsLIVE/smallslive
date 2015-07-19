@@ -47,8 +47,8 @@
                                 <span class="store__form__field-error">{{ error }}</span>
                             {% endfor %}
                           <label for="phone" class="store__form__label">Phone</label>
-                          <input type="tel" name="phone" id="phone" class="store__form__input" {% if billing_address_form.phone.value %}value="{{ billing_address_form.phone.value }}"{% endif %}>
-                            {% for error in billing_address_form.phone.errors %}
+                          <input type="tel" name="phone" id="phone" class="store__form__input" {% if billing_address_form.phone_number.value %}value="{{ billing_address_form.phone_number.value }}"{% endif %}>
+                            {% for error in billing_address_form.phone_number.errors %}
                                 <span class="store__form__field-error">{{ error }}</span>
                             {% endfor %}
                     </div>
@@ -103,11 +103,16 @@
               <h3 class="store__form__heading">Payment information:</h3>
               <div class="row">
                   <div class="col-xs-12 store__form__selection__container">
+                      {% if form.can_use_existing %}
+                        <div class="store__form__selection__option">
+                          <input type="radio" name="payment_method" id="pay-existing-credit-card" value="existing-credit-card" {% if form.payment_method.value == "existing-credit-card" %}checked{% endif %}><label for="pay-existing-credit-card">Pay with existing {{ user.customer.card_kind }} credit card ending in {{ user.customer.card_last_4 }}</label>
+                        </div>
+                      {% endif %}
                       <div class="store__form__selection__option">
-                          <input type="radio" name="payment_method" id="pay-credit-card" value="credit-card" checked><label for="pay-credit-card">Pay with credit card</label>
+                          <input type="radio" name="payment_method" id="pay-credit-card" value="credit-card" {% if form.payment_method.value == "credit-card" %}checked{% endif %}><label for="pay-credit-card">Pay with credit card</label>
                       </div>
                       <div class="store__form__selection__option">
-                          <input type="radio" name="payment_method" id="pay-paypal" value="paypal"><label for="pay-paypal">Pay with PayPal</label>
+                          <input type="radio" name="payment_method" id="pay-paypal" value="paypal" {% if form.payment_method.value == "paypal" %}checked{% endif %}><label for="pay-paypal">Pay with PayPal</label>
                       </div>
                   </div>
               </div>
@@ -250,16 +255,22 @@
 
             if ($('input[name=payment_method]:checked').val() === "paypal") {
                 $("#credit-card-form").css("display", "none");
+            } else if ($('input[name=payment_method]:checked').val() === "credit-card") {
+                $("#paypal-form").css("display", "none");
             } else {
                 $("#paypal-form").css("display", "none");
+                $("#credit-card-form").css("display", "none");
             }
             $(".store__form__selection__option").click(function(){
                 if ($('input[name=payment_method]:checked').val() === "credit-card") {
                     $("#paypal-form").slideUp("fast");
                     $("#credit-card-form").slideDown("fast"); //Slide Down Effect
-                } else {
+                } else if($('input[name=payment_method]:checked').val() === "paypal") {
                     $("#credit-card-form").slideUp("fast");
                     $("#paypal-form").slideDown("fast"); //Slide Down Effect
+                } else {
+                    $("#credit-card-form").slideUp("fast");
+                    $("#paypal-form").slideUp("fast"); //Slide Down Effect
                 }
             });
         });

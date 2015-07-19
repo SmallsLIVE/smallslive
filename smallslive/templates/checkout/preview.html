@@ -253,7 +253,7 @@
                     payment information</a>
                   <button class="store-cart__footer__button-next">Pay and order</button>
                   <input type="hidden" name="action" value="place_order"/>
-                  <input type="hidden" name="card_token" value="{{ card_token }}"/>
+                  <input type="hidden" name="card_token" value="{{ stripe_token }}"/>
                 </form>
               {% endblock %}
             </div>

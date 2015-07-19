@@ -40,11 +40,13 @@ class ShippingAddressView(checkout_views.ShippingAddressView):
 class PaymentDetailsView(checkout_views.PaymentDetailsView):
     def get_context_data(self, **kwargs):
         if 'form' not in kwargs:
-            kwargs['form'] = PaymentForm()
+            kwargs['form'] = PaymentForm(self.request.user)
         if 'billing_address_form' not in kwargs:
             shipping_address = self.get_shipping_address(self.request.basket)
             kwargs['billing_address_form'] = BillingAddressForm(shipping_address, self.request.user,
                                                                 initial=self.get_billing_initial())
+        if self.token:
+            kwargs['stripe_token'] = self.token
         return super(PaymentDetailsView, self).get_context_data(**kwargs)
 
     def get_billing_initial(self):
@@ -69,11 +71,12 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
         # payment form is being submitted from the payment details view. In
         # this case, the form needs validating and the order preview shown.
         if request.POST.get('action', '') == 'place_order':
+            self.token = self.request.POST.get('card_token')
             return self.handle_place_order_submission(request)
         return self.handle_payment_details_submission(request)
 
     def handle_payment_details_submission(self, request):
-        form = PaymentForm(request.POST)
+        form = PaymentForm(self.request.user, request.POST)
         shipping_address = self.get_shipping_address(self.request.basket)
         billing_address_form = BillingAddressForm(shipping_address, self.request.user, request.POST)
         if form.is_valid() and billing_address_form.is_valid():
@@ -82,19 +85,29 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
             else:
                 address = billing_address_form.save()
                 self.checkout_session.bill_to_user_address(address)
+                self.token = form.token
             return self.render_preview(request, card_token=form.token, form=form,
                                        billing_address_form=billing_address_form)
         else:
-            print "nije"
             return self.render_payment_details(request, form=form, billing_address_form=billing_address_form)
 
     def handle_payment(self, order_number, total, **kwargs):
-        stripe_ref = Facade().charge(
-            order_number,
-            total,
-            card=self.request.POST.get('card_token'),
-            description=self.payment_description(order_number, total, **kwargs),
-            metadata=self.payment_metadata(order_number, total, **kwargs))
+        card_token = self.request.POST.get('card_token')
+        if card_token.startswith('card_'):
+            stripe_ref = Facade().charge(
+                order_number,
+                total,
+                card=card_token,
+                description=self.payment_description(order_number, total, **kwargs),
+                metadata=self.payment_metadata(order_number, total, **kwargs),
+                customer=self.request.user.customer.stripe_id)
+        else:
+            stripe_ref = Facade().charge(
+                order_number,
+                total,
+                card=card_token,
+                description=self.payment_description(order_number, total, **kwargs),
+                metadata=self.payment_metadata(order_number, total, **kwargs))
 
         source_type, __ = SourceType.objects.get_or_create(name='Credit Card')
         source = Source(
@@ -111,4 +124,4 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
         return self.request.user.email
 
     def payment_metadata(self, order_number, total, **kwargs):
-        return {'order_number': order_number }
+        return {'order_number': order_number}

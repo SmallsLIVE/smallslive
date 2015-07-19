@@ -25,31 +25,53 @@ class ShippingAddressForm(checkout_forms.ShippingAddressForm):
 
 class PaymentForm(forms.Form):
     PAYMENT_CHOICES = Choices('paypal', 'credit-card')
-    payment_method = forms.ChoiceField(required=True, choices=PAYMENT_CHOICES)
-    number = forms.CharField(required=True, min_length=16, max_length=20)
-    exp_month = forms.CharField(required=True, max_length=2)
-    exp_year = forms.CharField(required=True, min_length=2, max_length=4)
-    cvc = forms.CharField(required=True, min_length=3, max_length=4)
-    name = forms.CharField(required=True)
+    payment_method = forms.ChoiceField(required=True, choices=PAYMENT_CHOICES, initial='credit-card')
+    number = forms.CharField(required=False, min_length=16, max_length=20)
+    exp_month = forms.CharField(required=False, max_length=2)
+    exp_year = forms.CharField(required=False, min_length=2, max_length=4)
+    cvc = forms.CharField(required=False, min_length=3, max_length=4)
+    name = forms.CharField(required=False)
+
+    def __init__(self, user, *args, **kwargs):
+        super(PaymentForm, self).__init__(*args, **kwargs)
+        self.user = user
+        if user.customer and user.customer.can_charge():
+            self.fields['payment_method'].choices.insert(1, ('existing-credit-card', 'existing-credit-card'))
+            self.fields['payment_method'].initial = 'existing-credit-card'
+            self.can_use_existing = True
 
     def clean(self):
+        existing_cc = self.data.get('payment_method', None) == 'existing-credit-card'
+        if self.data and not existing_cc:
+            for field in self.fields:
+                if field != 'payment_method':
+                    self.fields[field].required = True
         data = super(PaymentForm, self).clean()
         if not self.errors:
-            try:
-                token = stripe.Token.create(
-                    card={
-                        "number": data.get('number'),
-                        "exp_month": data.get('exp_month'),
-                        "exp_year": data.get('exp_year'),
-                        "cvc": data.get('cvc'),
-                        "name": data.get('name'),
-                    },
-                )
-                self.token = token.id
-            except stripe.error.CardError, e:
-                error = e.json_body['error']
-                self.add_error(error['param'], error['message'])
+            if existing_cc:
+                self.token = self.user.customer.stripe_customer.get('default_source')
+            else:
+                try:
+                    token = stripe.Token.create(
+                        card={
+                            "number": data.get('number'),
+                            "exp_month": data.get('exp_month'),
+                            "exp_year": data.get('exp_year'),
+                            "cvc": data.get('cvc'),
+                            "name": data.get('name'),
+                        },
+                    )
+                    self.token = token.id
+                except stripe.error.CardError, e:
+                    error = e.json_body['error']
+                    self.add_error(error['param'], error['message'])
         return data
+
+    def _post_clean(self):
+        # Don't run model validation if using shipping address
+        if self.data.get('payment_method', None) == 'existing-credit-card':
+            return
+        super(PaymentForm, self)._post_clean()
 
 
 class BillingAddressForm(payment_forms.BillingAddressForm):
@@ -108,6 +130,14 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
             return billing_addr
         else:
             address = super(BillingAddressForm, self).save(commit=False)
-            address.is_default_for_billing = True
-            address.save()
+            try:
+                address = UserAddress.objects.get(
+                    user=self.instance.user,
+                    hash=address.generate_hash())
+            except UserAddress.DoesNotExist:
+                address.is_default_for_billing = True
+                address.save()
             return address
+
+    def validate_unique(self):
+        pass
