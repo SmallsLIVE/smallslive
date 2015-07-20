@@ -155,14 +155,7 @@ class EventAddForm(forms.ModelForm):
 
 class EventEditForm(EventAddForm):
     class Meta(EventAddForm.Meta):
-        fields = ('start', 'end', 'id', 'title', 'subtitle', 'photo', 'cropping', 'description', 'state')
-
-    def __init__(self, *args, **kwargs):
-        super(EventEditForm, self).__init__(*args, **kwargs)
-        del self.fields['id']
-        
-    def save(self, commit=True, explicit_id=True):
-        return super(EventEditForm, self).save(commit, explicit_id=False)
+        fields = ('start', 'end', 'title', 'subtitle', 'photo', 'cropping', 'description', 'state')
 
 
 class EventSearchForm(SearchForm):
