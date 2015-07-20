@@ -7,7 +7,7 @@ $future-event-view_header-height: 300px;
     min-height: 380px;
     padding: 0;
 
-    &.future-event, &.no-media {
+    &.future-event, &.no-media, &.audio-only {
       position: relative;
       @include display(flex);
       @include align-items(center);

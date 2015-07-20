@@ -39,6 +39,10 @@
     float: none;
     margin: 0 auto;
   }
+
+  &__add {
+    max-width: 320px;
+  }
 }
 
 @media (max-width: 740px) {

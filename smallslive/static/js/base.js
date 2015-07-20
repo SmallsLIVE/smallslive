@@ -18,7 +18,7 @@
 /*  Adds a img.wide or img.tall class to img element. */
 
 function defineImageRatio(element) {
-    var imgClass = (element.height / element.width > 1) ? 'tall' : 'wide';
+    var imgClass = (element.height / element.width > 1) ? 'tall' : 'wide'   ;
     $(element).addClass(imgClass);
 }
 

@@ -31,7 +31,7 @@
   <div class="content-wrapper">
     <section {% if not event.is_future %}{% if event.published_videos %}id="event-view-header"{% endif %}{% endif %}
              class="event-view__header {% if event.is_future %}future-event{% endif %}
-                     {% if not event.published_videos %}{% if not event.published_audio %}no-media{% endif %}{% endif %} container">
+                     {% if not event.published_videos %}{% if not event.published_audio %}no-media{% endif %}{% endif %} {% if not event.published_videos %}{% if event.published_audio %}audio-only{% endif %}{% endif %} container">
       <div class="event-view__header__info">
         <div class="event-view__header__bg-photo">
           {% if event.photo %}
@@ -118,9 +118,9 @@
                 <div class="col-xs-12 event-view__header__track audio-available">
                   <div class="col-xs-12 col-sm-6 col-md-4 event-view__header__track__info">
                     {% if event.published_videos %}
-                      <p>Listen to event audio recording:</p>
+                      <p>Listen to event audio:</p>
                     {% else %}
-                      <p>Listen to event audio recording:</p>
+                      <p>Listen to event audio:</p>
                     {% endif %}
                   </div>
                   <div id="player-audio" class="col-xs-12 col-sm-6 col-md-5 event-view__header__track__player">
@@ -247,7 +247,7 @@
             <div class="row event-tracks-header vcenter">
               <div class="col-xs-12">
                 <h1 class="event-tracks-header__title">Buy tracks from this show</h1>
-                <p class="event-tracks-header__text">You can buy indivital tracks from this show as digital downloads, so you
+                <p class="event-tracks-header__text">You can buy individual tracks from this show as digital downloads, so you
                   can listen to it in high quality on your devices even when you’re not online.</p>
               </div>
             </div>
@@ -348,7 +348,7 @@
             <div class="row">
               <div class="col-sm-3 col-xs-12 text-center-xs vcenter">
                 <h2 class="buy-album__cto-title">Buy the entire album:</h2>
-                <p class="buy-album__description">{{ album.short_description }}</p>
+                <p class="buy-album__description">{{ album.short_description|safe }}</p>
               </div><!--
            --><div class="col-sm-3 col-xs-12 vcenter">
                 {% with image=album.primary_image %}
@@ -377,7 +377,7 @@
                 <form id="add_to_basket_form" action="{% url 'basket:add' pk=album.pk  %}" method="post" class="add-to-basket">
                   {% if session.availability.is_available_to_buy %}
                     {% basket_form request album 'single' as basket_form %}
-                    <div class="store-add-large">
+                    <div class="store-add-large buy-album__add">
                         {% csrf_token %}
                         {{ basket_form.quantity }}
                         {% if basket_form.fields.child_id.choices %}
