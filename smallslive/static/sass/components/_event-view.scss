@@ -48,6 +48,7 @@ $future-event-view_header-height: 300px;
     }
 
     &__info {
+      width: 100%;
 
       &__container {
         @include display(flex);
