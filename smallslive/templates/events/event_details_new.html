@@ -406,6 +406,7 @@
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   <script>
     var playsCountSent = [];
+    var activeTracker;
     function updateViewCount(player) {
       var id = player.getPlaylistItem(player.getPlaylistIndex()).mediaid;
       if (playsCountSent.indexOf(id) === -1) {
@@ -423,6 +424,19 @@
       $(textElement).text(setText);
     }
 
+    function setUpTimerForMedia(mediaId) {
+        activeTracker = window.setInterval(function() {
+            $.ajax({
+                url: "http://localhost:9000/metric/",
+                method: 'POST',
+                data: {
+                    media_id: mediaId,
+                    user_id: {{ user.id }}
+                }
+            })
+        }, 5*1000)
+    }
+
     {% if user.can_listen_to_audio and event.published_audio %}
       audioPlayer = jwplayer("player-audio").setup({
         primary: 'html5',
@@ -430,7 +444,7 @@
           {% for audio in event.published_audio %}
             {
               sources: [{
-                file: "{{ audio.get_redirect_url|safe }}",
+                file: "{{ audio.media_file.get_file_url|safe }}",
                 type: "mp3"
               }],
               title: "{{ event.title }}: Set {{ audio.set_number }}",
@@ -443,8 +457,13 @@
         height: 30
       });
       audioPlayer.onPlay(function () {
-        videoPlayer.pause(true);
+        {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
         updateViewCount(this);
+        setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);
+      });
+      audioPlayer.onPause(function() {
+          window.clearInterval(activeTracker);
+          activeTracker = null;
       });
       audioPlayer.onReady(function () {
         var currentItem = audioPlayer.getPlaylistIndex() + 1;
@@ -475,50 +494,51 @@
     {% endif %}
 
     {% if user.can_watch_video and event.published_videos %}
-      videoPlayer = jwplayer("player-video").setup({
-        primary: 'html5',
-        playlist: [
-          {% for video in event.published_videos %}{% if video.media_file.sd_video_file %}
-          {
-            sources: [{
-              file: "{{ video.get_redirect_url|safe }}",
-              type: "mp4"
-            }],
-            title: "{{ event.title }}: Set {{ video.set_number }}",
-            mediaid: {{ video.id }}
-          }{% if not forloop.last %},{% endif %}
-          {% endif %}{% endfor %}
-        ],
-        skin: "{% static "jwplayer-skin/smalls.xml" %}",
-        width: "100%",
-        height: 450
-      });
-      videoPlayer.onPlay(function () {
-        audioPlayer.pause(true);
-        updateViewCount(this);
-      });
-      videoPlayer.onReady(function () {
-        var playlist = videoPlayer.getPlaylist();
-        var playlistItems = "";
-        $.each(playlist, function (index, item) {
-          playlistItems += '<li class="event-view__header__video__playlist__item';
-          if (index === 0) {
-            playlistItems += ' active';
-          }
-          playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</li>';
+        videoPlayer = jwplayer("player-video").setup({
+            primary: 'html5',
+            playlist: [
+                {% for video in event.published_videos %}{% if video.media_file.sd_video_file %}
+                {
+                    sources: [{
+                        file: "{{ video.get_redirect_url|safe }}",
+                        type: "mp4"
+                    }],
+                    title: "{{ event.title }}: Set {{ video.set_number }}",
+                    mediaid: {{ video.id }}
+                }{% if not forloop.last %},{% endif %}
+                {% endif %}{% endfor %}
+            ],
+            skin: "{% static "jwplayer-skin/smalls.xml" %}",
+            width: "100%",
+            height: 450
         });
-        $("#video-sets-list").html(playlistItems);
-      });
+        videoPlayer.onPlay(function () {
+            audioPlayer.pause(true);
+            updateViewCount(this);
+        });
+        videoPlayer.onReady(function () {
+            var playlist = videoPlayer.getPlaylist();
+            var playlistItems = "";
+            $.each(playlist, function (index, item) {
+                playlistItems += '<li class="event-view__header__video__playlist__item';
+                if (index === 0) {
+                    playlistItems += ' active';
+                }
+                playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</li>';
+            });
+            $("#video-sets-list").html(playlistItems);
+        });
+
+        $('#video-sets-list').on('click', 'li', function () {
+            var currentIndex = videoPlayer.getPlaylistIndex();
+            var selectedIndex = $(this).data('playlist-index');
+            videoPlayer.playlistItem(selectedIndex);
+            $(this).toggleClass('active');
+            $('li[data-playlist-index=' + currentIndex + ']').toggleClass('active');
+        });
     {% endif %}
 
-    $('#video-sets-list').on('click', 'li', function () {
-      var currentIndex = videoPlayer.getPlaylistIndex();
-      var selectedIndex = $(this).data('playlist-index');
-      videoPlayer.playlistItem(selectedIndex);
-      $(this).toggleClass('active');
-      $('li[data-playlist-index=' + currentIndex + ']').toggleClass('active');
 
-    });
 
   </script>
 {% endblock %}
