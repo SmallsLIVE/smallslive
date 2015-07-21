@@ -45,7 +45,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
             shipping_address = self.get_shipping_address(self.request.basket)
             kwargs['billing_address_form'] = BillingAddressForm(shipping_address, self.request.user,
                                                                 initial=self.get_billing_initial())
-        if self.token:
+        if hasattr(self, 'token'):
             kwargs['stripe_token'] = self.token
         return super(PaymentDetailsView, self).get_context_data(**kwargs)
 
