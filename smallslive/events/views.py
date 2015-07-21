@@ -15,6 +15,7 @@ from django.template.defaulttags import regroup
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta
+from django.contrib.admin.views.decorators import staff_member_required
 from django.views.generic import DeleteView, TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView, BaseDetailView
@@ -87,7 +88,7 @@ class EventDetailView(DetailView):
 event_detail = EventDetailView.as_view()
 
 
-class EventEditView(StaffuserRequiredMixin, NamedFormsetsMixin, UpdateWithInlinesView):
+class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
     model = Event
     form_class = EventEditForm
     template_name = 'events/event_edit.html'
@@ -113,7 +114,7 @@ class EventEditView(StaffuserRequiredMixin, NamedFormsetsMixin, UpdateWithInline
     #         artist_id_match = False
     #     return (artist_id_match or user.is_superuser)
 
-event_edit = EventEditView.as_view()
+event_edit = staff_member_required(EventEditView.as_view())
 
 
 class EventDeleteView(StaffuserRequiredMixin, DeleteView):
