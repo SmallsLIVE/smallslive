@@ -58,21 +58,39 @@
           </div>
       </div>
       <!-- End of single metric -->
-      <!-- Single metric -->
-      <div class="col-xs-6 col-sm-3 featured-metrics__metric">
-          <div class="featured-metrics__metric__name">My income</div>
-          <div class="featured-metrics__metric__content">
-              <div class="featured-metrics__metric__content__primary">
-                  <h2 class="neutral">This month:</h2>
-                  <h1 class="positive"><i class="fa fa-arrow-up"></i> $1247.14</h1>
-              </div>
-              <div class="featured-metrics__metric__content__secondary">
-                  <h2 class="neutral">vs last month:</h2>
-                  <h1 class="negative"><i class="fa fa-arrow-down"></i> 1.9%</h1>
+      {% if not request.user.legal_agreement_acceptance %}
+          <!-- Single metric - if no contract signed -->
+          <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+              <div class="featured-metrics__metric__name">My income</div>
+              <div class="featured-metrics__metric__content">
+                  <div class="featured-metrics__metric__content__primary">
+                      <h2 class="neutral">This month:</h2>
+                      <h1 class="neutral">sign contract</h1>
+                  </div>
+                  <div class="featured-metrics__metric__content__secondary">
+                      <h2 class="neutral">vs last month:</h2>
+                      <h1 class="neutral">sign contract</h1>
+                  </div>
               </div>
           </div>
-      </div>
-      <!-- End of single metric -->
+          <!-- End of single metric -->
+      {% else %}
+          <!-- Single metric - if contract signed -->
+          <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+              <div class="featured-metrics__metric__name">My income</div>
+              <div class="featured-metrics__metric__content">
+                  <div class="featured-metrics__metric__content__primary">
+                      <h2 class="neutral">This month:</h2>
+                      <h1 class="positive"><i class="fa fa-arrow-up"></i> $1247.14</h1>
+                  </div>
+                  <div class="featured-metrics__metric__content__secondary">
+                      <h2 class="neutral">vs last month:</h2>
+                      <h1 class="negative"><i class="fa fa-arrow-down"></i> 1.9%</h1>
+                  </div>
+              </div>
+          </div>
+          <!-- End of single metric -->
+      {% endif %}
       <!-- Single metric -->
       <div class="col-xs-6 col-sm-3 featured-metrics__metric">
           <div class="featured-metrics__metric__name">All time</div>
@@ -224,9 +242,9 @@
 				},
 				{
 					label: "Audio",
-					fillColor : "rgba(3,187,197,0)",
-					strokeColor : "rgba(3,187,197,1)",
-					pointColor : "rgba(3,187,197,1)",
+					fillColor : "rgba(56,193,153,0)",
+					strokeColor : "rgba(56,193,153,1)",
+					pointColor : "rgba(56,193,153,1)",
 					pointStrokeColor : "#fff",
 					pointHighlightFill : "#fff",
 					pointHighlightStroke : "rgba(151,187,205,1)",
@@ -234,9 +252,9 @@
 				},
                 {
 					label: "Video",
-					fillColor : "rgba(235,148,9,0)",
-					strokeColor : "rgba(235,148,9,1)",
-					pointColor : "rgba(235,148,9,1)",
+					fillColor : "rgba(125,77,117,0)",
+					strokeColor : "rgba(125,77,117,1)",
+					pointColor : "rgba(125,77,117,1)",
 					pointStrokeColor : "#fff",
 					pointHighlightFill : "#fff",
 					pointHighlightStroke : "rgba(151,187,205,1)",
@@ -261,9 +279,9 @@
 				},
 				{
 					label: "Audio",
-					fillColor : "rgba(3,187,197,0)",
-					strokeColor : "rgba(3,187,197,1)",
-					pointColor : "rgba(3,187,197,1)",
+					fillColor : "rgba(56,193,153,0)",
+					strokeColor : "rgba(56,193,153,1)",
+					pointColor : "rgba(56,193,153,1)",
 					pointStrokeColor : "#fff",
 					pointHighlightFill : "#fff",
 					pointHighlightStroke : "rgba(151,187,205,1)",
@@ -271,9 +289,9 @@
 				},
                 {
 					label: "Video",
-					fillColor : "rgba(235,148,9,0)",
-					strokeColor : "rgba(235,148,9,1)",
-					pointColor : "rgba(235,148,9,1)",
+					fillColor : "rgba(125,77,117,0)",
+					strokeColor : "rgba(125,77,117,1)",
+					pointColor : "rgba(125,77,117,1)",
 					pointStrokeColor : "#fff",
 					pointHighlightFill : "#fff",
 					pointHighlightStroke : "rgba(151,187,205,1)",
