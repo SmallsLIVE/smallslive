@@ -321,6 +321,7 @@ PIPELINE_JS = {
           'js/raphael-min.js',
           'js/base.js',
           'js/imgCoverEffect.min.js',
+          'js/Chart.min.js',
           'js/dashboard-base.js'
         ),
         'output_filename': 'js/dashboard_main.js',
