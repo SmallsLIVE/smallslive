@@ -5,27 +5,28 @@
 {% block home-active %}active{% endblock %}
 
 {% block content %}
-  <section class="container cta cta--contract flexbox-equal-height" data-step="7" data-intro="Please note that, for your Artist Dashboard to be fully in function (and for you to get your rightfully deserved money :)), you need to sign the Artist Agreement.">
-      {% if not request.user.legal_agreement_acceptance %}
-      <div class="cta__content">
-          <h2>To gain access to Metrics, and to enter our Artists revenue sharing program, you need to review and sign The SmallsLIVE Artist Revenue Sharing Contract.</h2>
-          <h3>To do that please visit the “Legal” section in the menu above, or click the button below.</h3>
-          <a href="{% url "artist_dashboard:legal" %}" class="cta__button">Go to Legal</a>
-      </div>
-      {% endif %}
-  </section>
-  <section class="metric-graph graph-carousel container">
-    <div class="metric-graph__header">
-        <h3 class="metric-graph__title">This months performance:</h3>
-        <ul class="metric-graph__switch">
-            <li class="metric-graph__switch__option active" id="metric-graph__show-1">Plays</li>
-            <li class="metric-graph__switch__option" id="metric-graph__show-2">Minutes</li>
-        </ul>
-    </div>
-    <div class="metric-graph__instance" id="metric-graph__instance-1">
-        <canvas id="graph-canvas"></canvas>
-    </div>
-  </section>
+  {% if not request.user.legal_agreement_acceptance %}
+      <section class="container cta cta--contract flexbox-equal-height" data-step="7" data-intro="Please note that, for your Artist Dashboard to be fully in function (and for you to get your rightfully deserved money :)), you need to sign the Artist Agreement.">
+          <div class="cta__content">
+              <h2>To gain access to Metrics, and to enter our Artists revenue sharing program, you need to review and sign The SmallsLIVE Artist Revenue Sharing Contract.</h2>
+              <h3>To do that please visit the “Legal” section in the menu above, or click the button below.</h3>
+              <a href="{% url "artist_dashboard:legal" %}" class="cta__button">Go to Legal</a>
+          </div>
+      </section>
+  {% else %}
+      <section class="metric-graph graph-carousel container">
+        <div class="metric-graph__header">
+            <h3 class="metric-graph__title">This months performance:</h3>
+            <ul class="metric-graph__switch">
+                <li class="metric-graph__switch__option active" id="metric-graph__show-1">Plays</li>
+                <li class="metric-graph__switch__option" id="metric-graph__show-2">Minutes</li>
+            </ul>
+        </div>
+        <div class="metric-graph__instance" id="metric-graph__instance-1">
+            <canvas id="graph-canvas"></canvas>
+        </div>
+      </section>
+  {% endif %}
   <section class="container featured-metrics flexbox-equal-height">
       <!-- Single metric -->
       <div class="col-xs-6 col-sm-3 featured-metrics__metric">
