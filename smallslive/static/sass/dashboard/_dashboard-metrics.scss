@@ -4,6 +4,14 @@
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
 
+  &.slick-slider {
+    margin: 0;
+  }
+
+  & .slick-list {
+    width: 100%;
+  }
+
   .slick-prev, .slick-next {
     z-index: 101;
     bottom: 140px;
@@ -61,4 +69,65 @@
       }
     }
   }
+}
+
+
+.metric-graph {
+  background-color: #fff;
+  padding: 30px;
+
+  &__header {
+    @include display(flex);
+    @include flex-wrap(wrap);
+    @include align-items(center);
+    @include justify-content(space-between);
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  &__title {
+    @include lato-black;
+    font-size: 18px;
+    margin: 0 30px 0 0;
+  }
+
+  &__switch {
+    margin: 0;
+    padding: 0;
+
+    &__option {
+      list-style-type: none;
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 0;
+      font-size: 14px;
+      @include lato-bold;
+      @include transition(all 0.3s ease-in-out);
+      cursor: pointer;
+
+      &.active, &:hover, &:focus {
+        border-bottom: 4px solid $main-accent-color;
+      }
+
+      &:hover, &:focus {
+        color: rgba($base-text-color, 0.7);
+      }
+
+      & a {
+        text-decoration: none;
+        color: $base-text-color;
+
+        &:hover, &:focus {
+          text-decoration: none;
+          color: rgba($base-text-color, 0.7);
+        }
+      }
+    }
+  }
+}
+
+#graph-canvas {
+  width: 100%;
+  height: 350px;
 }
