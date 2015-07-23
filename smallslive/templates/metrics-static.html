@@ -5,28 +5,28 @@
 {% block home-active %}active{% endblock %}
 
 {% block content %}
-  {% if not request.user.legal_agreement_acceptance %}
-      <section class="container cta cta--contract flexbox-equal-height" data-step="7" data-intro="Please note that, for your Artist Dashboard to be fully in function (and for you to get your rightfully deserved money :)), you need to sign the Artist Agreement.">
-          <div class="cta__content">
-              <h2>To gain full access to Metrics, and to enter our Artists revenue sharing program, you need to review and sign The SmallsLIVE Artist Revenue Sharing Contract.</h2>
-              <h3>To do that please visit the “Legal” section in the menu above, or click the button below.</h3>
-              <a href="{% url "artist_dashboard:legal" %}" class="cta__button">Go to Legal</a>
-          </div>
-      </section>
-  {% else %}
-      <section class="metric-graph graph-carousel container">
-        <div class="metric-graph__header">
-            <h3 class="metric-graph__title">This months performance:</h3>
-            <ul class="metric-graph__switch">
-                <li class="metric-graph__switch__option data active" id="metric-graph__show__data-1">Plays</li>
-                <li class="metric-graph__switch__option data" id="metric-graph__show__data-2">Minutes</li>
-            </ul>
-        </div>
-        <div class="metric-graph__instance" id="metric-graph__instance-1">
-            <canvas class="graph-canvas" id="graph-canvas"></canvas>
-        </div>
-      </section>
-  {% endif %}
+  <section class="metric-graph container">
+    <div class="metric-graph__header">
+        <h3 class="metric-graph__title">Your events performance:</h3>
+        <ul class="metric-graph__switch-group">
+            <li class="metric-graph__switch-group__single">
+                <ul class="metric-graph__switch">
+                    <li class="metric-graph__switch__option source active" id="metric-graph__show__source-1">My Media</li>
+                    <li class="metric-graph__switch__option source" id="metric-graph__show__source-2">Entire SmallsLIVE Archive</li>
+                </ul>
+            </li>
+            <li class="metric-graph__switch-group__single">
+                <ul class="metric-graph__switch">
+                    <li class="metric-graph__switch__option data active" id="metric-graph__show__data-1">Plays</li>
+                    <li class="metric-graph__switch__option data" id="metric-graph__show__data-2">Minutes</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="metric-graph__instance" id="metric-graph__instance-1">
+        <canvas class="graph-canvas" id="graph-canvas"></canvas>
+    </div>
+  </section>
   <section class="container featured-metrics flexbox-equal-height">
       <!-- Single metric -->
       <div class="col-xs-6 col-sm-3 featured-metrics__metric">
@@ -283,6 +283,80 @@
 
 		}
 
+        var playsDataArchive = {
+			labels : ["07/01","07/02","07/03","07/04","07/05","07/06","07/07","07/08","07/09","07/10","07/11","07/12","07/13","07/14","07/15","07/16","07/17","07/18","07/19","07/20","07/21","07/22"],
+			datasets : [
+				{
+					label: "Total",
+					fillColor : "rgba(210,21,53,0)",
+					strokeColor : "rgba(210,21,53,1)",
+					pointColor : "rgba(210,21,53,1)",
+					pointStrokeColor : "#fff",
+					pointHighlightFill : "#fff",
+					pointHighlightStroke : "rgba(220,220,220,1)",
+					data : [25249, 32758, 12220, 33319, 30091, 29945, 25127, 5233, 15760, 22093, 9901, 6112, 20621, 32670, 5952, 10116, 7671, 31435, 23794, 24197, 32804, 10045]
+				},
+				{
+					label: "Audio",
+					fillColor : "rgba(56,193,153,0)",
+					strokeColor : "rgba(56,193,153,1)",
+					pointColor : "rgba(56,193,153,1)",
+					pointStrokeColor : "#fff",
+					pointHighlightFill : "#fff",
+					pointHighlightStroke : "rgba(151,187,205,1)",
+					data : [17598, 24681, 30742, 6290, 31984, 14450, 9332, 13754, 20069, 14511, 26636, 18844, 21691, 22089, 29797, 28612, 11001, 21364, 5041, 11611, 26411, 8042]
+				},
+                {
+					label: "Video",
+					fillColor : "rgba(125,77,117,0)",
+					strokeColor : "rgba(125,77,117,1)",
+					pointColor : "rgba(125,77,117,1)",
+					pointStrokeColor : "#fff",
+					pointHighlightFill : "#fff",
+					pointHighlightStroke : "rgba(151,187,205,1)",
+					data : [42847, 57439, 42962, 39609, 62075, 44395, 34459, 18987, 35829, 36604, 36537, 24956, 42312, 54759, 35749, 38728, 18672, 52799, 28835, 35808, 59215, 18087]
+				}
+			]
+
+		}
+
+        var minsDataArchive = {
+			labels : ["07/01","07/02","07/03","07/04","07/05","07/06","07/07","07/08","07/09","07/10","07/11","07/12","07/13","07/14","07/15","07/16","07/17","07/18","07/19","07/20","07/21","07/22"],
+			datasets : [
+				{
+					label: "Total",
+					fillColor : "rgba(210,21,53,0)",
+					strokeColor : "rgba(210,21,53,1)",
+					pointColor : "rgba(210,21,53,1)",
+					pointStrokeColor : "#fff",
+					pointHighlightFill : "#fff",
+					pointHighlightStroke : "rgba(220,220,220,1)",
+					data : [151.78, 96.22, 302.66, 318.6, 329.27, 144.88, 120.17, 184.07, 277.03, 157.61, 192.86, 100.34, 304.66, 145.84, 93.17, 105.53, 54.7, 61.27, 170.39, 53.29, 62.2, 48.58]
+				},
+				{
+					label: "Audio",
+					fillColor : "rgba(56,193,153,0)",
+					strokeColor : "rgba(56,193,153,1)",
+					pointColor : "rgba(56,193,153,1)",
+					pointStrokeColor : "#fff",
+					pointHighlightFill : "#fff",
+					pointHighlightStroke : "rgba(151,187,205,1)",
+					data : [207.91, 48.24, 136.77, 131.5, 193.18, 72.72, 246.94, 292.53, 69.53, 48.47, 88.05, 169.05, 320.82, 90.37, 163.55, 336, 264.78, 219.24, 210.26, 295.32, 139.15, 261.3]
+				},
+                {
+					label: "Video",
+					fillColor : "rgba(125,77,117,0)",
+					strokeColor : "rgba(125,77,117,1)",
+					pointColor : "rgba(125,77,117,1)",
+					pointStrokeColor : "#fff",
+					pointHighlightFill : "#fff",
+					pointHighlightStroke : "rgba(151,187,205,1)",
+					data : [359.69, 144.46, 439.43, 450.1, 522.45, 217.6, 367.11, 476.6, 346.56, 206.08, 280.91, 269.39, 625.48, 236.21, 256.72, 441.53, 319.48, 280.51, 380.65, 348.61, 201.35, 309.88]
+				}
+			]
+
+		}
+
         window.onload = function(){
             var ctx = document.getElementById("graph-canvas").getContext("2d");
             window.myLine = new Chart(ctx).Line(playsData, {
@@ -303,54 +377,180 @@
         }
 
 
-        /* Toggyling different data */
+        /* Toggling different data */
         $(document).ready(function () {
             $("#metric-graph__show__data-1").click(function() {
-                console.log("test");
                 if (!($(this).hasClass("active"))) {
                     $(".metric-graph__switch__option.data.active").toggleClass("active");
                     $(this).toggleClass("active");
                     $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
-                    var ctx = document.getElementById("graph-canvas").getContext("2d");
-                    window.myLine = new Chart(ctx).Line(playsData, {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        bezierCurve : false,
-                        bezierCurveTension : 0.25,
-                        scaleShowVerticalLines: false,
-                        scaleOverride: false,
-                        showScale: true,
-                        pointDotRadius : 6,
-                        datasetStrokeWidth : 4,
-                        scaleFontSize: 10,
-                        scaleFontStyle: "bold",
-                        scaleFontColor: "#999",
-                        multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                    });
+                    if ($("#metric-graph__show__source-1").hasClass("active")) {
+                        var ctx = document.getElementById("graph-canvas").getContext("2d");
+                        window.myLine = new Chart(ctx).Line(playsData, {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            bezierCurve : false,
+                            bezierCurveTension : 0.25,
+                            scaleShowVerticalLines: false,
+                            scaleOverride: false,
+                            showScale: true,
+                            pointDotRadius : 6,
+                            datasetStrokeWidth : 4,
+                            scaleFontSize: 10,
+                            scaleFontStyle: "bold",
+                            scaleFontColor: "#999",
+                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                        });
+                    }
+                    else {
+                        var ctx = document.getElementById("graph-canvas").getContext("2d");
+                        window.myLine = new Chart(ctx).Line(playsDataArchive, {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            bezierCurve : false,
+                            bezierCurveTension : 0.25,
+                            scaleShowVerticalLines: false,
+                            scaleOverride: false,
+                            showScale: true,
+                            pointDotRadius : 6,
+                            datasetStrokeWidth : 4,
+                            scaleFontSize: 10,
+                            scaleFontStyle: "bold",
+                            scaleFontColor: "#999",
+                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                        });
+                    }
                 }
             })
             $("#metric-graph__show__data-2").click(function() {
-                console.log("test2");
                 if (!($(this).hasClass("active"))) {
                     $(".metric-graph__switch__option.data.active").toggleClass("active");
                     $(this).toggleClass("active");
                     $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
-                    var ctx = document.getElementById("graph-canvas").getContext("2d");
-                    window.myLine = new Chart(ctx).Line(minsData, {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        bezierCurve : false,
-                        bezierCurveTension : 0.25,
-                        scaleShowVerticalLines: false,
-                        scaleOverride: false,
-                        showScale: true,
-                        pointDotRadius : 6,
-                        datasetStrokeWidth : 4,
-                        scaleFontSize: 10,
-                        scaleFontStyle: "bold",
-                        scaleFontColor: "#999",
-                        multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> hrs"
-                    });
+                    if ($("#metric-graph__show__source-1").hasClass("active")) {
+                        console.log("testtest");
+                        var ctx = document.getElementById("graph-canvas").getContext("2d");
+                        window.myLine = new Chart(ctx).Line(minsData, {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            bezierCurve : false,
+                            bezierCurveTension : 0.25,
+                            scaleShowVerticalLines: false,
+                            scaleOverride: false,
+                            showScale: true,
+                            pointDotRadius : 6,
+                            datasetStrokeWidth : 4,
+                            scaleFontSize: 10,
+                            scaleFontStyle: "bold",
+                            scaleFontColor: "#999",
+                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                        });
+                    }
+                    else {
+                        console.log("srbija");
+                        var ctx = document.getElementById("graph-canvas").getContext("2d");
+                        window.myLine = new Chart(ctx).Line(minsDataArchive, {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            bezierCurve : false,
+                            bezierCurveTension : 0.25,
+                            scaleShowVerticalLines: false,
+                            scaleOverride: false,
+                            showScale: true,
+                            pointDotRadius : 6,
+                            datasetStrokeWidth : 4,
+                            scaleFontSize: 10,
+                            scaleFontStyle: "bold",
+                            scaleFontColor: "#999",
+                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                        });
+                    }
+                }
+            })
+            $("#metric-graph__show__source-1").click(function() {
+                if (!($(this).hasClass("active"))) {
+                    $(".metric-graph__switch__option.source.active").toggleClass("active");
+                    $(this).toggleClass("active");
+                    $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
+                    if ($("#metric-graph__show__data-1").hasClass("active")) {
+                        var ctx = document.getElementById("graph-canvas").getContext("2d");
+                        window.myLine = new Chart(ctx).Line(playsData, {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            bezierCurve : false,
+                            bezierCurveTension : 0.25,
+                            scaleShowVerticalLines: false,
+                            scaleOverride: false,
+                            showScale: true,
+                            pointDotRadius : 6,
+                            datasetStrokeWidth : 4,
+                            scaleFontSize: 10,
+                            scaleFontStyle: "bold",
+                            scaleFontColor: "#999",
+                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                        });
+                    }
+                    else {
+                        var ctx = document.getElementById("graph-canvas").getContext("2d");
+                        window.myLine = new Chart(ctx).Line(minsData, {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            bezierCurve : false,
+                            bezierCurveTension : 0.25,
+                            scaleShowVerticalLines: false,
+                            scaleOverride: false,
+                            showScale: true,
+                            pointDotRadius : 6,
+                            datasetStrokeWidth : 4,
+                            scaleFontSize: 10,
+                            scaleFontStyle: "bold",
+                            scaleFontColor: "#999",
+                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                        });
+                    }
+                }
+            })
+            $("#metric-graph__show__source-2").click(function() {
+                if (!($(this).hasClass("active"))) {
+                    $(".metric-graph__switch__option.source.active").toggleClass("active");
+                    $(this).toggleClass("active");
+                    $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
+                    if ($("#metric-graph__show__data-1").hasClass("active")) {
+                        var ctx = document.getElementById("graph-canvas").getContext("2d");
+                        window.myLine = new Chart(ctx).Line(playsDataArchive, {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            bezierCurve : false,
+                            bezierCurveTension : 0.25,
+                            scaleShowVerticalLines: false,
+                            scaleOverride: false,
+                            showScale: true,
+                            pointDotRadius : 6,
+                            datasetStrokeWidth : 4,
+                            scaleFontSize: 10,
+                            scaleFontStyle: "bold",
+                            scaleFontColor: "#999",
+                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                        });
+                    }
+                    else {
+                        var ctx = document.getElementById("graph-canvas").getContext("2d");
+                        window.myLine = new Chart(ctx).Line(minsDataArchive, {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            bezierCurve : false,
+                            bezierCurveTension : 0.25,
+                            scaleShowVerticalLines: false,
+                            scaleOverride: false,
+                            showScale: true,
+                            pointDotRadius : 6,
+                            datasetStrokeWidth : 4,
+                            scaleFontSize: 10,
+                            scaleFontStyle: "bold",
+                            scaleFontColor: "#999",
+                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                        });
+                    }
                 }
             })
         })

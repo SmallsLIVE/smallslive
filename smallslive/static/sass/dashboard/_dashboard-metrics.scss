@@ -28,6 +28,10 @@
       color: $metric-neutral;
     }
 
+    & .normal {
+      color: $metric-normal;
+    }
+
     & .negative {
       color: $metric-negative;
     }
@@ -50,7 +54,7 @@
         }
 
         & h1 {
-          font-size: 36px;
+          font-size: 32px;
           @include lato-black;
         }
       }
@@ -99,7 +103,7 @@
     &__option {
       list-style-type: none;
       display: inline-block;
-      padding: 10px 20px;
+      padding: 10px 15px;
       margin: 0;
       font-size: 14px;
       @include lato-bold;
@@ -125,9 +129,26 @@
       }
     }
   }
+
+  &__switch-group {
+    margin: 0;
+    padding: 0;
+
+    &__single {
+      list-style-type: none;
+      display: inline-block;
+      padding: 5px 40px;
+      border-right: 1px solid #ddd;
+
+      &:last-child {
+        padding-right: 0;
+        border-right: none;
+      }
+    }
+  }
 }
 
-#graph-canvas {
+.graph-canvas {
   width: 100%;
   height: 350px;
 }

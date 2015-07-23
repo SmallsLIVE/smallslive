@@ -72,7 +72,7 @@
                       {% endif %}
                   {% endif %}
               </div>
-              <div class="col-xs-12 col-sm-8 col-md-7 event-row__description">
+              <div class="col-xs-12 col-sm-7 col-md-6 event-row__description">
                   <p class="event-row__description__date">{{ event.listing_date|date:"l, F d, Y" }}  |  {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</p>
                   {% if gig_info.is_leader %}
                     <a class="event-row__description__name" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">{{ event.full_title }} {% if gig_info.is_leader %}<span class="event-row__is-leader">leader</span>{% endif %}</a>
@@ -86,26 +86,37 @@
                     {% endfor %}
                   </p>
               </div>
-              <div class="col-xs-12 col-sm-4 col-md-3 event-row__info">
-                  <div class="col-xs-4 event-row__info__audio">
+              <div class="col-xs-12 col-sm-5 col-md-4 event-row__info">
+                  <div class="col-xs-3 event-row__info__audio">
                       <i class="fa fa-volume-down {{ event.audio_status }}"></i>
                       <p class="event-row__info__label">Event audio</p>
                       <p class="event-row__info__status {{ event.audio_status }}">{{ event.audio_status|capfirst }}</p>
                   </div>
-                  <div class="col-xs-4 event-row__info__video">
+                  <div class="col-xs-3 event-row__info__video">
                       <i class="fa fa-video-camera {{ event.video_status }}"></i>
                       <p class="event-row__info__label">Event video</p>
                       <p class="event-row__info__status {{ event.video_status }}">{{ event.video_status|capfirst }}</p>
                   </div>
                   {% if gig_info.is_leader %}
-                      <a class="col-xs-4 event-row__info__edit-button" href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
+                      <a class="col-xs-3 event-row__info__edit-button" href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
                           <i class="fa fa-edit"></i>
                           <p class="event-row__info__label">Event details / edit</p>
                       </a>
                   {% else %}
-                      <a class="col-xs-4 event-row__info__edit-button" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">
+                      <a class="col-xs-3 event-row__info__edit-button" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">
                           <i class="fa fa-align-center"></i>
                       <p class="event-row__info__label">Event details</p>
+                      </a>
+                  {% endif %}
+                  {% if not request.user.legal_agreement_acceptance %}
+                      <a class="col-xs-3 event-row__info__edit-button disabled" href="#" pk=event.id slug=event.slug %}">
+                        <i class="fa fa-bar-chart"></i>
+                        <p class="event-row__info__label">Event metrics</p>
+                      </a>
+                  {% else %}
+                      <a class="col-xs-3 event-row__info__edit-button" href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
+                        <i class="fa fa-bar-chart"></i>
+                        <p class="event-row__info__label">Event metrics</p>
                       </a>
                   {% endif %}
               </div>
