@@ -7,7 +7,7 @@
 {% block content %}
   <section class="metric-graph container">
     <div class="metric-graph__header">
-        <h3 class="metric-graph__title">Your events performance:</h3>
+        <h3 class="metric-graph__title">Monthly performance for: <span class="metric-graph__date-picker" id="metric-graph__date-picker"><input class="" type="text" readonly><i class="fa fa-caret-down"></i></span></h3>
         <ul class="metric-graph__switch-group">
             <li class="metric-graph__switch-group__single">
                 <ul class="metric-graph__switch">
@@ -203,6 +203,14 @@
           }
         })
       }
+  </script>
+
+  <!-- Bootstrap datepicker JavaScript -->
+  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+  <script src="{% static 'js/metrics_datepicker.js' %}"></script>
+  <script>
+      var date = new Date(2015, 7, 1);
+      $datePicker.datepicker("setDate", date);
   </script>
 
   <script>

@@ -96,6 +96,32 @@
     margin: 0 30px 0 0;
   }
 
+  &__date-picker {
+    padding: 10px 0 10px 10px;
+    background-color: #eee;
+    border: 1px solid #ddd;
+    margin-left: 10px;
+    font-size: 16px;
+
+    & input {
+      outline: none;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      width: auto;
+      padding: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    & i {
+      opacity: 0.5;
+      position: relative;
+      left: -20px;
+      z-index: 1;
+    }
+  }
+
   &__switch {
     margin: 0;
     padding: 0;
