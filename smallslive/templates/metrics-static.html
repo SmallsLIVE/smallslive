@@ -24,7 +24,7 @@
         </ul>
     </div>
     <div class="metric-graph__instance" id="metric-graph__instance-1">
-        <canvas class="graph-canvas" id="graph-canvas"></canvas>
+        <canvas class="graph-canvas larger" id="graph-canvas"></canvas>
     </div>
   </section>
   <section class="container featured-metrics flexbox-equal-height">
@@ -45,15 +45,64 @@
       <!-- End of single metric -->
       <!-- Single metric -->
       <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+          <div class="featured-metrics__metric__name">Trend:</div>
+          <div class="featured-metrics__metric__content">
+              <div class="featured-metrics__metric__content__primary">
+                  <h2 class="neutral">Vs last week:</h2>
+                  <h1 class="positive"><i class="fa fa-arrow-up"></i> 3.9%</h1>
+              </div>
+              <div class="featured-metrics__metric__content__secondary">
+                  <h2 class="neutral">Vs last month:</h2>
+                  <h1 class="negative"><i class="fa fa-arrow-down"></i> 6.4%</h1>
+              </div>
+          </div>
+      </div>
+      <!-- End of single metric -->
+      <!-- Single metric -->
+      <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+          <div class="featured-metrics__metric__name">Total SmallsLIVE Archive:</div>
+              <div class="featured-metrics__metric__content">
+                  <div class="featured-metrics__metric__content__primary">
+                  <div class="featured-metrics__metric__content__primary">
+                      <h2 class="neutral">This week:</h2>
+                      <h1 class="normal">16813</h1>
+                  </div>
+                  <div class="featured-metrics__metric__content__secondary">
+                      <h2 class="neutral">This month:</h2>
+                      <h1 class="normal">213161</h1>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- End of single metric -->
+      <!-- Single metric -->
+      <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+          <div class="featured-metrics__metric__name">My total:</div>
+              <div class="featured-metrics__metric__content">
+                  <div class="featured-metrics__metric__content__primary">
+                  <div class="featured-metrics__metric__content__primary">
+                      <h2 class="neutral">All time:</h2>
+                      <h1 class="normal">161813</h1>
+                  </div>
+                  <div class="featured-metrics__metric__content__secondary">
+                      <h2 class="neutral">My percentage:</h2>
+                      <h1 class="normal">1.4%</h1>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <!-- End of single metric -->
+      <!-- Single metric -->
+      <div class="col-xs-6 col-sm-3 featured-metrics__metric">
           <div class="featured-metrics__metric__name">Time played:</div>
           <div class="featured-metrics__metric__content">
               <div class="featured-metrics__metric__content__primary">
                   <h2 class="neutral">This week:</h2>
-                  <h1 class="positive">19h 32min</h1>
+                  <h1 class="positive">6h 54min</h1>
               </div>
               <div class="featured-metrics__metric__content__secondary">
                   <h2 class="neutral">This month:</h2>
-                  <h1 class="positive">6h 54min</h1>
+                  <h1 class="negative">19h 32min</h1>
               </div>
           </div>
       </div>
@@ -76,21 +125,39 @@
       <!-- Single metric -->
       <div class="col-xs-6 col-sm-3 featured-metrics__metric">
           <div class="featured-metrics__metric__name">Total SmallsLIVE Archive:</div>
-          <div class="featured-metrics__metric__content">
-              <div class="featured-metrics__metric__content__primary">
-              <div class="featured-metrics__metric__content__primary">
-                  <h2 class="neutral">This week:</h2>
-                  <h1 class="normal">284h 33min</h1>
-              </div>
-              <div class="featured-metrics__metric__content__secondary">
-                  <h2 class="neutral">This month:</h2>
-                  <h1 class="normal">585h 14min</h1>
+              <div class="featured-metrics__metric__content">
+                  <div class="featured-metrics__metric__content__primary">
+                  <div class="featured-metrics__metric__content__primary">
+                      <h2 class="neutral">This week:</h2>
+                      <h1 class="normal">284h 33min</h1>
+                  </div>
+                  <div class="featured-metrics__metric__content__secondary">
+                      <h2 class="neutral">This month:</h2>
+                      <h1 class="normal">585h 14min</h1>
+                  </div>
               </div>
           </div>
       </div>
-    </div>
+      <!-- End of single metric -->
+      <!-- Single metric -->
+      <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+          <div class="featured-metrics__metric__name">My total:</div>
+              <div class="featured-metrics__metric__content">
+                  <div class="featured-metrics__metric__content__primary">
+                  <div class="featured-metrics__metric__content__primary">
+                      <h2 class="neutral">All time:</h2>
+                      <h1 class="normal">148hrs 32min</h1>
+                  </div>
+                  <div class="featured-metrics__metric__content__secondary">
+                      <h2 class="neutral">My percentage:</h2>
+                      <h1 class="normal">1.5%</h1>
+                  </div>
+              </div>
+          </div>
+      </div>
       <!-- End of single metric -->
   </section>
+
   <section class="dashboard__best-list container">
       <div class="col-xs-12 col-sm-6">
           <p class="dashboard__section-title">My most viewed events:</p>
@@ -121,6 +188,35 @@
               </li>
               <!-- end of single mini event -->
             {% endfor %}
+          </ul>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+          <p class="dashboard__section-title">My top events this week:</p>
+          <ul class="mini-events__container">
+              <!-- single mini event -->
+              <li class="mini-event flexbox-equal-height flexbox-nowrap">
+                <a href="{{ recording.event.get_absolute_url }}" class="mini-event__image col-xs-3 col-lg-2">
+                  {% if recording.event.photo %}
+                    <img src="{% thumbor_url recording.event.photo.url|urlencode height=84 width=84 smart=True %}"
+                         alt=""/>
+                  {% else %}
+                    <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                  {% endif %}
+                </a>
+                <div class="mini-event__details col-xs-9 col-lg-10">
+                  <p class="mini-event__details__date">{{ recording.event.listing_date|date:"n/j/Y" }}</p>
+                  <a href="#" class="mini-event__details__title">{{ recording.event.title }}</a>
+                  <div class="mini-event__details__labels">
+                    <p>Plays:</p>
+                    <p>Hours:</p>
+                  </div>
+                  <div class="mini-event__details__values">
+                    <p>{{ recording.date_added|date:"n/j/Y" }}</p>
+                    <p>{{ recording.view_count }}</p>
+                  </div>
+                </div>
+              </li>
+              <!-- end of single mini event -->
           </ul>
       </div>
       <div class="col-xs-12 col-sm-6">

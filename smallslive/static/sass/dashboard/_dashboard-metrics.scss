@@ -1,4 +1,4 @@
-.featured-metrics {
+.featured-metrics, .detailed-metrics {
   padding: 40px 20px;
   background-color: #f7f7f7;
   border-top: 1px solid #ddd;
@@ -177,4 +177,8 @@
 .graph-canvas {
   width: 100%;
   height: 350px;
+
+  &.larger {
+    height: 450px;
+  }
 }
