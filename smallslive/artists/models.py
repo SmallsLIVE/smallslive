@@ -10,7 +10,7 @@ from model_utils import Choices
 from sortedm2m.fields import SortedManyToManyField
 from tinymce import models as tinymce_models
 
-from events.models import Event, GigPlayed
+from events.models import Event, GigPlayed, Recording
 from users.models import SmallsEmailAddress
 
 
@@ -86,6 +86,13 @@ class Artist(models.Model):
 
     def is_leader_for_event(self, event):
         return GigPlayed.objects.filter(artist=self, event=event, is_leader=True).exists()
+
+    def recording_id_list(self):
+        """
+        Returns a list of all the media IDs that "belong" to the artist, meaning that the artist
+        played on the event associated with the media object.
+        """
+        return Recording.objects.filter(event__performers=self.id).order_by('id').values_list('id', flat=True)
 
     @cached_property
     def is_invited(self):

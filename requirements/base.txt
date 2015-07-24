@@ -62,6 +62,7 @@ pytz==2015.2
 requests==2.6.2
 requests-oauthlib==0.4.2
 six==1.9.0
+git+https://github.com/SmallsLIVE/smallslive-metrics-djangoapp.git#egg=smallslive_metrics_app
 sorl-thumbnail==11.12.1b
 sqlparse==0.1.14
 static==1.1.1

@@ -79,6 +79,7 @@ INSTALLED_APPS = [
     'floppyforms',
     'image_cropping',
     'localflavor',
+    'metrics',
     #'oscar_stripe',
     'paypal',
     'pipeline',
@@ -176,6 +177,14 @@ DATABASES = {
         'PORT': '5432',
         'ATOMIC_REQUESTS': True,
     },
+    'metrics': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'smallslive-metrics',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    },
     'old': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'smallslive_old',
@@ -185,6 +194,9 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+DATABASE_ROUTERS = ['smallslive.db_router.MetricsRouter']
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
