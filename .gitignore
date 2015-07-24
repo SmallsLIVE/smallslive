@@ -76,3 +76,4 @@ smallslive/static/css/vendors/*
 smallslive/static/sass/main.css
 secret_vars.yml
 smalls_scraping/*.json
+gulpfile.js

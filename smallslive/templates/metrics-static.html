@@ -158,131 +158,79 @@
       <!-- End of single metric -->
   </section>
 
-  <section class="dashboard__best-list container">
-      <div class="col-xs-12 col-sm-6">
-          <p class="dashboard__section-title">My most viewed events:</p>
-          <ul class="mini-events__container">
-            {% for recording in most_viewed %}
-              <!-- single mini event -->
-              <li class="mini-event flexbox-equal-height flexbox-nowrap">
-                <a href="{{ recording.event.get_absolute_url }}" class="mini-event__image col-xs-3 col-lg-2">
-                  {% if recording.event.photo %}
-                    <img src="{% thumbor_url recording.event.photo.url|urlencode height=84 width=84 smart=True %}"
-                         alt=""/>
-                  {% else %}
-                    <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                  {% endif %}
-                </a>
-                <div class="mini-event__details col-xs-9 col-lg-10">
-                  <p class="mini-event__details__date">{{ recording.event.listing_date|date:"n/j/Y" }}</p>
-                  <a href="#" class="mini-event__details__title">{{ recording.event.title }}</a>
-                  <div class="mini-event__details__labels">
-                    <p>Added:</p>
-                    <p>Views:</p>
-                  </div>
-                  <div class="mini-event__details__values">
-                    <p>{{ recording.date_added|date:"n/j/Y" }}</p>
-                    <p>{{ recording.view_count }}</p>
-                  </div>
-                </div>
-              </li>
-              <!-- end of single mini event -->
-            {% endfor %}
-          </ul>
+  <section class="metrics__event-list__container container">
+      <div class="metrics__lists__header">
+        <h3 class="metrics__lists__title">My top 10 performing events:</h3>
+        <ul class="metrics__lists__switch-group">
+            <li class="metrics__lists__switch-group__single">
+                <ul class="metrics__lists__switch">
+                    <li class="metrics__lists__switch__option data active" id="metrics__lists__show__data-1">This week</li>
+                    <li class="metrics__lists__switch__option data" id="metrics__lists__show__data-2">All time</li>
+                </ul>
+            </li>
+        </ul>
       </div>
-      <div class="col-xs-12 col-sm-6">
-          <p class="dashboard__section-title">My top events this week:</p>
-          <ul class="mini-events__container">
-              <!-- single mini event -->
-              <li class="mini-event flexbox-equal-height flexbox-nowrap">
-                <a href="{{ recording.event.get_absolute_url }}" class="mini-event__image col-xs-3 col-lg-2">
-                  {% if recording.event.photo %}
-                    <img src="{% thumbor_url recording.event.photo.url|urlencode height=84 width=84 smart=True %}"
-                         alt=""/>
-                  {% else %}
-                    <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                  {% endif %}
-                </a>
-                <div class="mini-event__details col-xs-9 col-lg-10">
-                  <p class="mini-event__details__date">{{ recording.event.listing_date|date:"n/j/Y" }}</p>
-                  <a href="#" class="mini-event__details__title">{{ recording.event.title }}</a>
-                  <div class="mini-event__details__labels">
-                    <p>Plays:</p>
-                    <p>Hours:</p>
-                  </div>
-                  <div class="mini-event__details__values">
-                    <p>{{ recording.date_added|date:"n/j/Y" }}</p>
-                    <p>{{ recording.view_count }}</p>
-                  </div>
-                </div>
-              </li>
-              <!-- end of single mini event -->
-          </ul>
-      </div>
-      <div class="col-xs-12 col-sm-6">
-          <p class="dashboard__section-title">My most listened to events:</p>
-          <ul class="mini-events__container">
-            {% for recording in most_listened_to %}
-              <!-- single mini event -->
-              <li class="mini-event flexbox-equal-height flexbox-nowrap">
-                <a href="{{ recording.event.get_absolute_url }}" class="mini-event__image col-xs-3 col-lg-2">
-                  {% if recording.event.photo %}
-                    <img src="{% thumbor_url recording.event.photo.url|urlencode height=84 width=84 smart=True %}"
-                         alt=""/>
-                  {% else %}
-                    <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                  {% endif %}
-                </a>
-                <div class="mini-event__details col-xs-9 col-lg-10">
-                  <p class="mini-event__details__date">{{ recording.event.listing_date|date:"n/j/Y" }}</p>
-                  <a href="#" class="mini-event__details__title">{{ recording.event.title }}</a>
-                  <div class="mini-event__details__labels">
-                    <p>Added:</p>
-                    <p>Views:</p>
-                  </div>
-                  <div class="mini-event__details__values">
-                    <p>{{ recording.date_added|date:"n/j/Y" }}</p>
-                    <p>{{ recording.view_count }}</p>
-                  </div>
-                </div>
-              </li>
-              <!-- end of single mini event -->
-            {% endfor %}
-          </ul>
-      </div>
-  </section>
-  <section class="dashboard__upcoming-events container">
-      <p class="dashboard__section-title">My upcoming events at Smalls:</p>
-      <ul class="upcoming-events__container">
-        {% for gig_info in upcoming_events %}
-        {% with event=gig_info.event  %}
-          <li class="upcoming-event flexbox-equal-height flexbox-nowrap">
-              <div class="upcoming-event__image col-xs-12 col-sm-3 col-lg-2">
-                {% if event.photo %}
-                  <a href="#"><img src="{% thumbor_url event.photo.url|urlencode height=140 width=140 smart=True %}" alt=""/></a>
-                {% else %}
-                  <a href="#"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/></a>
-                {% endif %}
+      <ul class="metrics__event-list" id="week-events-list">
+          <li class="metrics__event-list__header row">
+              <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__image">
+                  Image
               </div>
-              <div class="upcoming-event__details col-xs-12 col-sm-9 col-lg-10">
-                  <p class="upcoming-event__details__date">{{ event.listing_date|date:"n/j/Y" }}</p>
-                  <a href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}" class="upcoming-event__details__title">{{ event.full_title }}</a>
-                  <p class="upcoming-event__details__label">With:</p>
-                  <p class="upcoming-event__details__artists">
-                    {% for gig_info in event.get_performers %}
-                      {{ gig_info.artist.full_name }} <span class="instrument">({{ gig_info.role }})</span>{% if not forloop.last %}  // {% endif %}
-                    {% endfor %}
-                  </p>
-                  {% if gig_info.is_leader %}
-                    <span class="is-leader">You are the leader.</span>
-                    <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}" class="red-arrow-button">Edit event</a><span class="arrow"></span>
-                  {% endif %}
+              <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
+                  <div class="metrics__event-list__header__label col-xs-12 visible-xs">Info</div>
+                  <div class="metrics__event-list__name col-xs-12 header col-sm-4 col-md-5 hidden-xs">Event name</div>
+                  <div class="metrics__event-list__metric col-xs-12 header col-sm-1 hidden-xs">Plays</div>
+                  <div class="metrics__event-list__metric col-xs-12 header col-sm-1 hidden-xs">Plays trend</div>
+                  <div class="metrics__event-list__metric col-xs-12 header col-sm-2 hidden-xs">Hours</div>
+                  <div class="metrics__event-list__metric col-xs-12 header col-sm-1 hidden-xs">Hours trend</div>
+                  <div class="metrics__event-list__more-link col-xs-12 col-sm-3 col-md-2 hidden-xs">Details</div>
               </div>
           </li>
-        {% endwith %}
-        {% empty %}
-          <p>No upcoming events.</p>
-        {% endfor %}
+          {% for i in "1234567890" %}
+          <li class="metrics__event-list__row row">
+              <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__image">
+                  <img src="{% static "image/no-event-photo-thumbnail.jpg" %}" alt=""/>
+              </div>
+              <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
+                  <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-5">"Round Midnight" Featuring Frank Lacy, Josh Evans & Theo Hill</div>
+                  <div class="metrics__event-list__metric col-xs-12 col-sm-1"><div class="visible-xs">Plays: </div>135</div>
+                  <div class="metrics__event-list__metric col-xs-12 col-sm-1 positive"><div class="visible-xs">Plays trend: </div><i class="fa fa-arrow-up"></i> 3.8%</div>
+                  <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Hours: </div>12hrs 28min</div>
+                  <div class="metrics__event-list__metric col-xs-12 col-sm-1 negative"><div class="visible-xs">Hours trend: </div><i class="fa fa-arrow-down"></i> 0.9%</div>
+                  <div class="metrics__event-list__more-link col-xs-12 col-sm-3 col-md-2"><a href="#">Detailed metrics</a></div>
+              </div>
+          </li>
+          {% endfor %}
+      </ul>
+      <ul class="metrics__event-list" id="all-time-events-list" style="display: none;">
+          <li class="metrics__event-list__header row">
+              <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__image">
+                  Image
+              </div>
+              <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
+                  <div class="metrics__event-list__header__label col-xs-12 visible-xs">Info</div>
+                  <div class="metrics__event-list__name header col-xs-12 col-sm-4 col-md-5 hidden-xs">Event name</div>
+                  <div class="metrics__event-list__metric header col-xs-12 col-sm-1 hidden-xs">Plays</div>
+                  <div class="metrics__event-list__metric header col-xs-12 col-sm-1 hidden-xs">Plays trend</div>
+                  <div class="metrics__event-list__metric header col-xs-12 col-sm-2 hidden-xs">Hours</div>
+                  <div class="metrics__event-list__metric header col-xs-12 col-sm-1 hidden-xs">Hours trend</div>
+                  <div class="metrics__event-list__more-link header col-xs-12 col-sm-3 col-md-2 hidden-xs">Details</div>
+              </div>
+          </li>
+          {% for i in "1234567890" %}
+          <li class="metrics__event-list__row row">
+              <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__image">
+                  <img src="{% static "image/no-event-photo-thumbnail.jpg" %}" alt=""/>
+              </div>
+              <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
+                  <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-5">Friday afternoon jam session with: The Corey Wallace DUBtet</div>
+                  <div class="metrics__event-list__metric col-xs-12 col-sm-1"><div class="visible-xs">Plays: </div>1415</div>
+                  <div class="metrics__event-list__metric col-xs-12 col-sm-1 positive"><div class="visible-xs">Plays trend: </div><i class="fa fa-arrow-up"></i> 2.4%</div>
+                  <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Hours: </div>15hrs 43min</div>
+                  <div class="metrics__event-list__metric col-xs-12 col-sm-1 negative"><div class="visible-xs">Hours trend: </div><i class="fa fa-arrow-down"></i> 1.4%</div>
+                  <div class="metrics__event-list__more-link col-xs-12 col-sm-3 col-md-2"><a href="#">Detailed metrics</a></div>
+              </div>
+          </li>
+          {% endfor %}
       </ul>
   </section>
 {% endblock content %}
@@ -655,6 +603,25 @@
                             multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
                         });
                     }
+                }
+            })
+
+            // lists toggle
+
+            $("#metrics__lists__show__data-1").click(function() {
+                if (!($(this).hasClass("active"))) {
+                    $(".metrics__lists__switch__option.data.active").toggleClass("active");
+                    $(this).toggleClass("active");
+                    $('#all-time-events-list').slideUp("fast");
+                    $('#week-events-list').slideDown();
+                }
+            })
+            $("#metrics__lists__show__data-2").click(function() {
+                if (!($(this).hasClass("active"))) {
+                    $(".metrics__lists__switch__option.data.active").toggleClass("active");
+                    $(this).toggleClass("active");
+                    $('#week-events-list').slideUp();
+                    $('#all-time-events-list').slideDown("fast");
                 }
             })
         })
