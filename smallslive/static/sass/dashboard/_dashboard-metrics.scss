@@ -335,6 +335,22 @@
     padding: 2px;
   }
 
+  &__media-icon {
+    text-align: center;
+
+    & i {
+      color: rgba($base-text-color, 0.65);
+
+      &.fa-volume-down {
+        font-size: 22px;
+      }
+
+      &.fa-video-camera {
+        font-size: 18px;
+      }
+    }
+  }
+
   &__name {
 
     @media (max-width: $screen-xs-max) {
