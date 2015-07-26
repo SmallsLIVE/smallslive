@@ -34,11 +34,11 @@
           <div class="featured-metrics__metric__content">
               <div class="featured-metrics__metric__content__primary">
                   <h2 class="neutral">This week:</h2>
-                  <h1 class="positive">1982</h1>
+                  <h1 class="{% if weekly_artist_stats.trend > 0 %}positive{% else %}negative{% endif %}">{{ weekly_artist_stats.play_count }}</h1>
               </div>
               <div class="featured-metrics__metric__content__secondary">
                   <h2 class="neutral">This month:</h2>
-                  <h1 class="negative">6184</h1>
+                  <h1 class="{% if monthly_artist_stats.trend > 0 %}positive{% else %}negative{% endif %}">{{ monthly_artist_stats.play_count }}</h1>
               </div>
           </div>
       </div>
@@ -49,11 +49,11 @@
           <div class="featured-metrics__metric__content">
               <div class="featured-metrics__metric__content__primary">
                   <h2 class="neutral">This week:</h2>
-                  <h1 class="positive">6h 54min</h1>
+                  <h1 class="{% if weekly_artist_stats.trend > 0 %}positive{% else %}negative{% endif %}">{{ weekly_artist_stats.time_played }}</h1>
               </div>
               <div class="featured-metrics__metric__content__secondary">
                   <h2 class="neutral">This month:</h2>
-                  <h1 class="positive">19h 32min</h1>
+                  <h1 class="{% if monthly_artist_stats.trend > 0 %}positive{% else %}negative{% endif %}">{{ monthly_artist_stats.time_played }}</h1>
               </div>
           </div>
       </div>
@@ -64,11 +64,24 @@
           <div class="featured-metrics__metric__content">
               <div class="featured-metrics__metric__content__primary">
                   <h2 class="neutral">Vs last week:</h2>
-                  <h1 class="positive"><i class="fa fa-arrow-up"></i> 4.2%</h1>
+                  {% if weekly_artist_stats.trend == 'n/a'%}
+                    <h1 class="normal">{{ monthly_artist_stats.trend }}</h1>
+                  {% elif weekly_artist_stats.trend > 0 %}
+                    <h1 class="positive"><i class="fa fa-arrow-up"></i> {{ weekly_artist_stats.trend }}%</h1>
+                  {% else %}
+                    <h1 class="negative"><i class="fa fa-arrow-down"></i> {{ weekly_artist_stats.trend }}%</h1>
+                  {% endif %}
               </div>
               <div class="featured-metrics__metric__content__secondary">
                   <h2 class="neutral">Vs last month:</h2>
-                  <h1 class="negative"><i class="fa fa-arrow-down"></i> 2.7%</h1>
+                  {% if monthly_artist_stats.trend == 'n/a'%}
+                    <h1 class="normal">{{ monthly_artist_stats.trend }}</h1>
+                  {% elif monthly_artist_stats.trend > 0 %}
+                    <h1 class="positive"><i class="fa fa-arrow-up"></i> {{ monthly_artist_stats.trend }}%</h1>
+                  {% else %}
+                    <h1 class="negative"><i class="fa fa-arrow-down"></i> {{ monthly_artist_stats.trend }}%</h1>
+                  {% endif %}
+
               </div>
           </div>
       </div>
@@ -80,11 +93,11 @@
               <div class="featured-metrics__metric__content__primary">
               <div class="featured-metrics__metric__content__primary">
                   <h2 class="neutral">This week:</h2>
-                  <h1 class="normal">284h 33min</h1>
+                  <h1 class="normal">{{ weekly_stats.time_played }}</h1>
               </div>
               <div class="featured-metrics__metric__content__secondary">
                   <h2 class="neutral">This month:</h2>
-                  <h1 class="normal">585h 14min</h1>
+                  <h1 class="normal">{{ monthly_stats.time_played }}</h1>
               </div>
           </div>
       </div>
