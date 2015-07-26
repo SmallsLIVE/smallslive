@@ -411,3 +411,90 @@
 
   }
 }
+
+.metrics-payouts {
+  padding: 40px 30px;
+  background-color: #F7F7F7;
+  border-top: 1px solid #ddd;
+
+  &__header {
+    margin-bottom: 30px;
+
+    & h2 {
+      @include lato-black;
+      font-size: 24px;
+      margin: 0;
+    }
+  }
+
+  &__current-period {
+    padding: 30px 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+
+    & p {
+      font-size: 16px;
+      @include lato;
+    }
+
+    &__dates {
+      margin: 15px 0 0;
+      @include lato-black;
+      color: $metric-positive;
+      font-size: 18px;
+    }
+  }
+
+  &__history {
+    padding: 30px 0;
+
+    &__list {
+      margin: 0;
+      padding: 0;
+    }
+
+    &__heading {
+      @include lato-black;
+      font-size: 18px;
+      margin: 0 0 30px;
+    }
+
+    &__header {
+      @include display(flex);
+      @include flex-wrap(wrap);
+      @include align-items(center);
+      padding-bottom: 20px;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #ddd;
+      list-style-type: none;
+
+      &:before, &:after {
+        display: none;
+      }
+    }
+
+    &__entry {
+      @include display(flex);
+      @include flex-wrap(wrap);
+      @include align-items(center);
+      border-bottom: 1px solid #eee;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      list-style-type: none;
+
+      &:before, &:after {
+        display: none;
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &__amount {
+        text-align: right;
+        @include lato-bold;
+        color: $metric-positive;
+      }
+    }
+  }
+}

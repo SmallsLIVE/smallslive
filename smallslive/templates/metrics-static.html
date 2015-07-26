@@ -233,6 +233,30 @@
           {% endfor %}
       </ul>
   </section>
+  <section class="metrics-payouts container">
+    <div class="metrics-payouts__header">
+        <h2>My payouts:</h2>
+    </div>
+    <div class="metrics-payouts__current-period">
+        <p>Current payout period is:</p>
+        <h2 class="metrics-payouts__current-period__dates">January 01, 2015 - April 01, 2015</h2>
+    </div>
+    <div class="metrics-payouts__history">
+        <h3 class="metrics-payouts__history__heading">My payout history:</h3>
+        <ul class="metrics-payouts__history__list">
+            <li class="metrics-payouts__history__header row">
+                <div class="col-xs-6">Time period:</div>
+                <div class="col-xs-6 text-right">Amount</div>
+            </li>
+            {% for i in "1234" %}
+            <li class="metrics-payouts__history__entry row">
+                <div class="col-xs-6 metrics-payouts__history__entry__period">January 01, 2015 - April 01, 2015</div>
+                <div class="col-xs-6 metrics-payouts__history__entry__amount">$1,348.58</div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+  </section>
 {% endblock content %}
 
 
