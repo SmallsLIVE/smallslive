@@ -103,6 +103,7 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
             artist_recording_ids, humanize=True)
         context['monthly_stats'] = UserVideoMetric.objects.this_month_counts(humanize=True)
         context['weekly_stats'] = UserVideoMetric.objects.this_week_counts(humanize=True)
+        context['date_counts'] = UserVideoMetric.objects.date_counts(7, 2015)
         first_login = self.request.user.is_first_login()
         context['first_login'] = first_login
         # don't show intro.js when user reloads the dashboard
