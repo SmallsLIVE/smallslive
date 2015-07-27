@@ -329,10 +329,10 @@ PIPELINE_JS = {
           'js/jquery-ui.js',
           'js/bootstrap.min.js',
           'js/slick/slick.min.js',
-          'js/bootstrap-select.js',
           'js/raphael-min.js',
           'js/base.js',
           'js/imgCoverEffect.min.js',
+          'js/bootstrap-select.js',
           'js/Chart.min.js',
           'js/dashboard-base.js'
         ),
