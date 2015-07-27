@@ -49,6 +49,7 @@
                   {% endif %}
                     <div class="event-object__info">
                       <h1 class="event-object__title">{{ recording.event.title }}</h1>
+                      <h3 class="event-object__date">{{ recording.event.start|date:"n/j/Y" }}</h3>
                       <ul class="event-object__artists">
                         {% for performer in recording.event.performers.all %}
                           <li>{{ performer.full_name }}</li>
@@ -76,6 +77,7 @@
                   {% endif %}
                     <div class="event-object__info">
                       <h1 class="event-object__title">{{ recording.event.title }}</h1>
+                      <h3 class="event-object__date">{{ recording.event.start|date:"n/j/Y" }}</h3>
                       <ul class="event-object__artists">
                         {% for performer in recording.event.performers.all %}
                           <li>{{ performer.full_name }}</li>

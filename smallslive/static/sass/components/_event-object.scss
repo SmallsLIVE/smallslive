@@ -7,6 +7,7 @@
   overflow: hidden;
   cursor: pointer;
   background-color: #000;
+  min-height: 280px;
 
   &__image {
     @include img-responsive;
@@ -38,6 +39,12 @@
     }
   }
 
+  &__date {
+    @include lato-bold;
+    font-size: 18px;
+    margin: -5px 0 5px;
+  }
+
   &__artists {
     @include lato;
     @include list-unstyled;
@@ -50,6 +57,7 @@
     overflow: hidden;
     font-size: 14px;
     margin-bottom: 0;
+    margin-top: 10px;
   }
 
   &:hover &__artists{
