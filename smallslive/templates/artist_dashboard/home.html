@@ -225,16 +225,6 @@
       labels: {{ date_counts.dates|safe }},
       datasets: [
         {
-          label: "Total",
-          fillColor: "rgba(210,21,53,0)",
-          strokeColor: "rgba(210,21,53,1)",
-          pointColor: "rgba(210,21,53,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(220,220,220,1)",
-          data: {{ date_counts.total_plays_list }}
-        },
-        {
           label: "Audio",
           fillColor: "rgba(56,193,153,0)",
           strokeColor: "rgba(56,193,153,1)",
@@ -253,14 +243,7 @@
           pointHighlightFill: "#fff",
           pointHighlightStroke: "rgba(151,187,205,1)",
           data: {{ date_counts.video_plays_list }}
-        }
-      ]
-
-    };
-
-    var minsData = {
-      labels: {{ date_counts.dates|safe }},
-      datasets: [
+        },
         {
           label: "Total",
           fillColor: "rgba(210,21,53,0)",
@@ -269,8 +252,15 @@
           pointStrokeColor: "#fff",
           pointHighlightFill: "#fff",
           pointHighlightStroke: "rgba(220,220,220,1)",
-          data: {{ date_counts.total_seconds_list }}
-        },
+          data: {{ date_counts.total_plays_list }}
+        }
+      ]
+
+    };
+
+    var minsData = {
+      labels: {{ date_counts.dates|safe }},
+      datasets: [
         {
           label: "Audio",
           fillColor: "rgba(56,193,153,0)",
@@ -289,7 +279,17 @@
           pointStrokeColor: "#fff",
           pointHighlightFill: "#fff",
           pointHighlightStroke: "rgba(151,187,205,1)",
-          data: {{ date_counts.video_plays_list }}
+          data: {{ date_counts.video_seconds_list }}
+        },
+        {
+          label: "Total",
+          fillColor: "rgba(210,21,53,0)",
+          strokeColor: "rgba(210,21,53,1)",
+          pointColor: "rgba(210,21,53,1)",
+          pointStrokeColor: "#fff",
+          pointHighlightFill: "#fff",
+          pointHighlightStroke: "rgba(220,220,220,1)",
+          data: {{ date_counts.total_seconds_list }}
         }
       ]
 
