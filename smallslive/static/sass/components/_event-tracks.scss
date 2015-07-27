@@ -28,54 +28,162 @@
 }
 
 .tracks-table {
-  border-bottom: 1px #EEEEEE solid;
-  margin: 0 -30px;
-
-  &__header {
-    color: white;
-    font-weight: bolder;
-    padding: 15px 10px;
-  }
-
-  th.tracks-table__header-cell {
-    border-bottom: 0;
-  }
-
-  &__row {
-    background-color: #FFFFFF;
-    padding: 10px;
-    border-bottom: 1px #eee solid;
-
-    .playback-control {
-      color: #333;
-      font-size: 16px;
-    }
-
-    .buy-button-container {
-      float: none;
-      margin: 0 auto;
-      display: inline-block;
-    }
-
-    .title {
-
-    }
-  }
-
-  // needed to write it like this to override aggressive specificity bootstrap styles
-  td.tracks-table__cell {
-    border-color: #EEEEEE;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    vertical-align: middle;
-
-    &:first-child {
-      text-align: center;
-    }
-  }
 
   &__button {
     @include lato-bold-italic;
     @include red-button;
+
+    &:after, &:before {
+      left: 100%;
+      top: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    &:after {
+      border-color: rgba(136, 183, 213, 0);
+      border-left-color: $main-accent-color;
+      border-width: 15px;
+      margin-top: -15px;
+    }
+
+    &:before {
+      border-color: rgba(255, 255, 255, 0);
+      border-left-color: #fff;
+      border-width: 16px;
+      margin-top: -16px;
+    }
   }
+}
+
+.event {
+
+  &__tracks-table {
+      padding: 0 10px;
+      margin-left: -30px;
+      margin-right: -30px;
+
+      &__title {
+        font-size: 18px;
+        margin: 0 0 20px -10px;
+      }
+
+      &__header {
+        padding: 20px 10px;
+        border-top: 1px solid rgba(#000, 0.1);
+        border-bottom: 1px solid rgba(#000, 0.1);
+        @include display(flex);
+        @include align-items(center);
+        @include flex-wrap(wrap);
+        color: #fff;
+
+        &:before, &:after {
+          display: none;
+        }
+      }
+
+      &__row {
+        padding: 7px 0;
+        background-color: #fff;
+        border-bottom: 1px solid rgba(#000, 0.1);
+        @include display(flex);
+        @include align-items(center);
+        @include flex-wrap(wrap);
+        padding: 10px 10px;
+
+        &:before, &:after {
+          display: none;
+        }
+
+        &:last-of-type {
+          border-bottom: 2px solid rgba(#000, 0.1);
+        }
+      }
+
+      &__column {
+
+        &.preview {
+          text-align: center;
+
+          & a {
+            color: $base-text-color;
+
+            &:hover, &:focus {
+              color: rgba($base-text-color, 0.7);
+            }
+          }
+        }
+
+        &.title, &.buy-track {
+          text-align: left;
+        }
+
+        &.buy-track {
+          padding-right: 30px;
+          @include display(flex);
+          @include align-items(center);
+          @include justify-content(flex-end);
+        }
+
+        &.duration, &.price {
+          text-align: right;
+        }
+      }
+
+      & a {
+        color: #fff;
+
+        &:hover, &:focus {
+          color: rgba(#fff, 0.7);
+        }
+      }
+
+      & .tracks-table__button {
+          border: 1px solid #fff;
+          border-right: none;
+          position: relative;
+          float: right;
+
+          &:after, &:before {
+            left: 100%;
+            top: 50%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+          }
+
+          &:after {
+            border-color: rgba(136, 183, 213, 0);
+            border-left-color: $main-accent-color;
+            border-width: 14px;
+            margin-top: -14px;
+          }
+
+          &:before {
+            border-color: rgba(255, 255, 255, 0);
+            border-left-color: #fff;
+            border-width: 15px;
+            margin-top: -15px;
+          }
+
+          & i {
+            margin-left: 5px;
+          }
+        }
+
+        & .arrow {
+          float: right;
+        }
+
+      @media (max-width: $screen-sm-max) {
+        margin-top: 30px;
+      }
+    }
 }

@@ -14,6 +14,14 @@
     font-size: 14px;
     color: #777777;
     margin-bottom: 0;
+
+    & a {
+      color: $main-accent-color;
+
+      &:hover, &:focus {
+        color: darken($main-accent-color, 10%);
+      }
+    }
   }
 
   &__title {

@@ -253,96 +253,92 @@
             </div>
             <div class="tracks-table-separator"></div>
             {% if album.tracks %}
-                <div class="row tracks-table">
-                    <!--table header-->
-                    <div class="col-xs-12 tracks-table__header">
-                        <div class="col-sm-1 col-xs-2 text-center">
-                            <div class="hidden-xs">Preview</div>
-                        </div>
-                        <div class="col-sm-3 col-xs-5">
-                            Title
-                        </div>
-                        <div class="col-sm-3 hidden-xs">
-                            Composer
-                        </div>
-                        <div class="col-sm-1 hidden-xs text-center">
-                            Duration
-                        </div>
-                        <div class="col-sm-2 hidden-xs text-center">
-                            Price
-                        </div>
-                        <div class="col-sm-2 col-xs-5 text-center">
+                <!-- tracks table -->
+                  <div class="event__tracks-table row">
+                    <!-- tracks table header -->
+                    <div class="event__tracks-table__header row">
+                      <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1 event__tracks-table__column preview">
+                        <div class="hidden-xs hidden-sm">Preview</div>
+                      </div>
+                      <div class="col-xs-5 col-sm-3 col-md-2 col-lg-4 event__tracks-table__column title">
+                        Title
+                      </div>
+                      <div class="hidden-xs hidden-sm col-md-2 col-lg-2 event__tracks-table__column composer">
+                          Composer
+                      </div>
+                      <div class="hidden-xs hidden-sm col-md-2 col-lg-1 event__tracks-table__column duration">
+                        Duration
+                      </div>
+                      <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 event__tracks-table__column price">
+                        Mp3 / HD
+                      </div>
+                      <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 event__tracks-table__column buy-track">
 
-                        </div>
+                      </div>
                     </div>
-                    <!--end of table header-->
+                    <!-- end of tracks table header -->
                     {% for track in album.tracks.all %}
-                        <!--single table row-->
-                        <div class="col-xs-12 tracks-table__row vcenter">
-                            <div class="col-sm-1 col-xs-2 text-center vcenter">
-                                <a href="#" class="playback-control"><i class="fa fa-play"></i></a>
-                            </div><!--
-                         --><div class="col-sm-3 col-xs-5 title vcenter">
-                                {{ track.title }}
-                            </div><!--
-                         --><div class="col-sm-3 hidden-xs composer vcenter">
-                                {{ track.attr.composer }}
-                            </div><!--
-                         --><div class="col-sm-1 hidden-xs text-center duration vcenter">
-                                {{ track.attr.duration }}
-                            </div><!--
-                         --><div class="col-sm-2 hidden-xs text-center price vcenter">
-                                {% if track.get_track_stockrecord %}${{ track.get_track_stockrecord.price_excl_tax }}{% else %}-{% endif %} / {% if track.get_hd_track_stockrecord %}${{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}-{% endif %}
-                            </div><!--
-                         --><div class="col-sm-2 col-xs-5 text-center vcenter">
-                                {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
-                                    <div class="buy-button-container">
-                                        <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false"
-                                           href="">Buy track <i
-                                                class="fa fa-caret-down"></i></a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            {% if track.get_track_stockrecord %}
-                                                <li>
-                                                    {% basket_form request track 'single' as basket_form %}
-                                                    <form id="add_to_basket_form"
-                                                          action="{% url 'basket:add' pk=track.pk %}" method="post"
-                                                          class="add-to-basket">
-                                                        {% csrf_token %}
-                                                        {{ basket_form.quantity }}
-                                                        {{ basket_form.child_id }}
-                                                        <input type="hidden" name="stockrecord_id"
-                                                               value="{{ track.get_track_stockrecord.id }}"/>
-                                                        <input type="submit"
-                                                               value="Buy mp3 (${{ track.get_track_stockrecord.price_excl_tax }})">
-                                                    </form>
-                                                </li>
-                                            {% endif %}
-                                            {% if track.get_hd_track_stockrecord %}
-                                                <li>
-                                                    {% basket_form request track 'single' as basket_form %}
-                                                    <form id="add_to_basket_form"
-                                                          action="{% url 'basket:add' pk=track.pk %}" method="post"
-                                                          class="add-to-basket">
-                                                        {% csrf_token %}
-                                                        {{ basket_form.quantity }}
-                                                        {{ basket_form.child_id }}
-                                                        <input type="hidden" name="stockrecord_id"
-                                                               value="{{ track.get_hd_track_stockrecord.id }}"/>
-                                                        <input type="submit"
-                                                               value="Buy HD (${{ track.get_hd_track_stockrecord.price_excl_tax }})">
-                                                    </form>
-                                                </li>
-                                            {% endif %}
-                                        </ul>
-
-                                    </div>
-                                {% endif %}
-                            </div>
+                      <!-- tracks table row -->
+                      <div class="event__tracks-table__row row">
+                        <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1 event__tracks-table__column preview">
+                          {% if track.preview %}
+                            <a href="#" class="playback-control" data-playlist-id="{{ forloop.counter0 }}"><i class="fa fa-play"></i></a>
+                          {% endif %}
                         </div>
-                        <!--end of single table row-->
+                        <div class="col-xs-5 col-sm-3 col-md-2 col-lg-4 event__tracks-table__column title">
+                          {{ track.title }}
+                        </div>
+                        <div class="hidden-xs hidden-sm col-md-2 col-lg-2 event__tracks-table__column composer">
+                          {{ track.attr.composer }}
+                        </div>
+                        <div class="hidden-xs hidden-sm col-md-2 col-lg-1 event__tracks-table__column duration">
+                          {{ track.attr.duration }}
+                        </div>
+                        <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 event__tracks-table__column price">
+                          {% if track.get_track_stockrecord %}${{ track.get_track_stockrecord.price_excl_tax }}{% else %}-{% endif %} / {% if track.get_hd_track_stockrecord %}${{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}-{% endif %}
+                        </div>
+                        <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 event__tracks-table__column buy-track">
+                            {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
+                                <div class="buy-button-container">
+                                  <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i
+                                        class="fa fa-caret-down"></i></a>
+                              <ul class="dropdown-menu" role="menu">
+                                {% if track.get_track_stockrecord %}
+                                  <li>
+                                    {% basket_form request track 'single' as basket_form %}
+                                    <form id="add_to_basket_form" action="{% url 'basket:add' pk=track.pk  %}" method="post" class="add-to-basket">
+                                      {% csrf_token %}
+                                      {{ basket_form.quantity }}
+                                      {{ basket_form.child_id }}
+                                      <input type="hidden" name="stockrecord_id" value="{{ track.get_track_stockrecord.id }}"/>
+                                      <input type="submit" value="Buy mp3 (${{ track.get_track_stockrecord.price_excl_tax }})">
+                                    </form>
+                                  </li>
+                                {% endif %}
+                                {% if track.get_hd_track_stockrecord %}
+                                  <li>
+                                    {% basket_form request track 'single' as basket_form %}
+                                    <form id="add_to_basket_form" action="{% url 'basket:add' pk=track.pk  %}" method="post" class="add-to-basket">
+                                      {% csrf_token %}
+                                      {{ basket_form.quantity }}
+                                      {{ basket_form.child_id }}
+                                      <input type="hidden" name="stockrecord_id" value="{{ track.get_hd_track_stockrecord.id }}"/>
+                                      <input type="submit" value="Buy HD (${{ track.get_hd_track_stockrecord.price_excl_tax }})">
+                                    </form>
+                                  </li>
+                                {% endif %}
+                              </ul>
+
+                          </div>
+                            {% endif %}
+                        </div>
+                      </div>
                     {% endfor %}
-                </div>
+                    <!-- end of tracks table row -->
+                  </div>
+                  <!-- end of tracks table -->
             {% endif %}
+
         </section>
         <section class="buy-album container">
             <div class="row">
