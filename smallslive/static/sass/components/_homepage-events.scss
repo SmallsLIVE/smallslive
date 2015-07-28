@@ -435,6 +435,7 @@
   width: 100%;
   padding: 60px 30px;
   position: relative;
+  overflow: hidden;
 
   &:after {
     content: " ";
@@ -454,10 +455,17 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6000000', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
   }
 
-
-  &__bg-image {
-    @include filter(grayscale(100%) blur(2px) brightness(0.4));
-    @include transform(scale(1.1));
+  &__bg-image-cover {
+    background-size: cover;
+    background-position: center center;
+    @include filter(grayscale(100%) blur(3px) brightness(0.4));
+    @include transform(scale(1.05));
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
   }
 
   &__info {
