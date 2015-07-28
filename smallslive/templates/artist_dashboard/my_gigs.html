@@ -109,12 +109,12 @@
                       </a>
                   {% endif %}
                   {% if not request.user.legal_agreement_acceptance %}
-                      <a class="col-xs-3 event-row__info__edit-button disabled" href="#" pk=event.id slug=event.slug %}">
+                      <a class="col-xs-3 event-row__info__edit-button disabled" href="#">
                         <i class="fa fa-bar-chart"></i>
                         <p class="event-row__info__label">Event metrics</p>
                       </a>
                   {% else %}
-                      <a class="col-xs-3 event-row__info__edit-button" href="{% url "static_page" "event-metrics-static" %}">
+                      <a class="col-xs-3 event-row__info__edit-button" href="{% url "artist_dashboard:event_metrics" pk=event.id slug=event.slug %}">
                         <i class="fa fa-bar-chart"></i>
                         <p class="event-row__info__label">Event metrics</p>
                       </a>

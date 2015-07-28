@@ -94,6 +94,12 @@ class Artist(models.Model):
         """
         return Recording.objects.filter(event__performers=self.id).order_by('id').values_list('id', flat=True)
 
+    def event_id_list(self):
+        """
+        Returns a list of all the event IDs that the artist played on.
+        """
+        return self.events.order_by('id').values_list('id', flat=True)
+
     @cached_property
     def is_invited(self):
         if hasattr(self, 'user'):

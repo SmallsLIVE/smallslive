@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 
@@ -15,7 +15,7 @@ from artists.models import Artist
 import artists.views as artist_views
 from metrics.models import UserVideoMetric
 
-from events.models import Recording
+from events.models import Recording, Event
 import events.views as event_views
 import users.forms as user_forms
 from users.models import LegalAgreementAcceptance
@@ -141,6 +141,26 @@ class EventDetailView(HasArtistAssignedMixin, event_views.EventDetailView):
         return context
 
 event_detail = EventDetailView.as_view()
+
+
+class EventMetricsView(HasArtistAssignedMixin, DetailView):
+    template_name = 'artist_dashboard/event_metrics.html'
+    model = Event
+
+    def get_context_data(self, **kwargs):
+        context = super(EventMetricsView, self).get_context_data(**kwargs)
+        print dir(self)
+        now = timezone.now().date()
+        context['weekly_stats'] = context['monthly_stats'] = UserVideoMetric.objects.this_week_counts(
+            artist_event_ids=[self.object.id], trends=True, humanize=True)
+        context['monthly_stats'] = UserVideoMetric.objects.this_month_counts(
+            artist_event_ids=[self.object.id], trends=True, humanize=True)
+        context['total_archive_counts'] = UserVideoMetric.objects.total_archive_counts(humanize=True)
+        context['event_counts'] = UserVideoMetric.objects.counts_for_event(event_id=self.object.id, humanize=True)
+        context['date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year, [self.object.id])
+        return context
+
+event_metrics = EventMetricsView.as_view()
 
 
 class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
