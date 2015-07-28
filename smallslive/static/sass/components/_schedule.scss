@@ -1,6 +1,6 @@
 .schedule-legend {
   display: inline-block;
-  padding: 20px 20px;
+  padding: 20px 20px 10px;
   border-top: 1px solid rgba(#fff, 0.5);
 
   & p {
@@ -10,10 +10,10 @@
   }
 
   &__icons {
-    margin-top: 15px;
+    margin-top: 10px;
     & span {
       display: inline-block;
-      margin: 0 10px;
+      margin: 5px 10px;
 
       & i {
         margin-right: 5px;
