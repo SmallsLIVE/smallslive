@@ -1,0 +1,23 @@
+.schedule-legend {
+  display: inline-block;
+  padding: 20px 20px;
+  border-top: 1px solid rgba(#fff, 0.5);
+
+  & p {
+    font-size: 14px;
+    @include lato-bold;
+    margin: 0;
+  }
+
+  &__icons {
+    margin-top: 15px;
+    & span {
+      display: inline-block;
+      margin: 0 10px;
+
+      & i {
+        margin-right: 5px;
+      }
+    }
+  }
+}

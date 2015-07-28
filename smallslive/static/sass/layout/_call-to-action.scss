@@ -98,12 +98,16 @@
   }
 
   &--schedule {
-    background-image: url('../image/video-not-available-cto.jpg');
+    background-image: url('../image/schedule-cto.jpg');
     background-position: center center;
 
     & .cto__button {
       margin-top: 20px;
       outline: none;
+    }
+
+    & .cto__text {
+      font-size: 16px;
     }
   }
 
