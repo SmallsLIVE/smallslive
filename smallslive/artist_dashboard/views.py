@@ -1,4 +1,5 @@
 from datetime import timedelta
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, reverse_lazy
@@ -8,13 +9,11 @@ from django.utils import timezone
 from django.views.generic import TemplateView, DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
-
 from allauth.account.forms import ChangePasswordForm
 import allauth.account.views as allauth_views
-from artists.models import Artist
-import artists.views as artist_views
 from metrics.models import UserVideoMetric
 
+from artists.models import Artist
 from events.models import Recording, Event
 import events.views as event_views
 import users.forms as user_forms
@@ -93,14 +92,14 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
         artist = self.request.user.artist
-        artist_recording_ids = list(self.request.user.artist.recording_id_list())
+        artist_event_ids = list(self.request.user.artist.event_id_list())
         context['upcoming_events'] = artist.gigs_played.upcoming().select_related('event', 'artist')[:5]
         context['most_viewed'] = Recording.objects.audio().most_popular().filter(event__performers=artist)[:3]
         context['most_listened_to'] = Recording.objects.video().most_popular().filter(event__performers=artist)[:3]
-        context['weekly_artist_stats'] = UserVideoMetric.objects.this_week_counts(
-            artist_recording_ids=artist_recording_ids, humanize=True)
+        context['weekly_artist_stats'] = UserVideoMetric.objects.this_week_counts(artist_event_ids=artist_event_ids,
+                                                                                  humanize=True)
         context['monthly_artist_stats'] = UserVideoMetric.objects.this_month_counts_for_artist(
-            artist_recording_ids, humanize=True)
+            artist_event_ids=artist_event_ids, humanize=True)
         context['monthly_stats'] = UserVideoMetric.objects.this_month_counts(humanize=True)
         context['weekly_stats'] = UserVideoMetric.objects.this_week_counts(humanize=True)
         context['date_counts'] = UserVideoMetric.objects.date_counts(7, 2015)
