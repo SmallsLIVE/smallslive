@@ -1,6 +1,44 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
+<section class="upcoming-events-mobile visible-xs visible-sm">
+    <div class="upcoming-events-mobile__header row">
+        <div class="col-xs-12 float-none">
+            <h2 class="upcoming-events-mobile__header__title">Today at SmallsLIVE</h2>
+            <a class="upcoming-events-mobile__header__archive-link" href="{% url "schedule" %}">Click for full SmallsLIVE schedule</a>
+        </div>
+    </div>
+
+    {% for event in events %}
+
+        <div class="upcoming-event-mobile">
+            {% if event.photo %}
+                {% if event.photo_crop_box %}
+                    <img src="{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=600 %}" alt="" class="upcoming-event-mobile__bg-image img img-responsive div-fill-img"/>
+                {% else %}
+                    <img src="{% thumbor_url event.photo.url|urlencode height=360 width=600 smart=True %}" alt="" class=upcoming-event-mobile__bg-image img img-responsive div-fill-img"/>
+                {% endif %}
+            {% else %}
+                <img src="{% static "image/no-event-image-placeholder.jpg" %}" class="upcoming-event-mobile__bg-image img img-responsive div-fill-img" alt="{{ event.title }} photo"/>
+            {% endif %}
+            <div class="upcoming-event-mobile__info">
+                {% if event.is_cancelled %}<span class="event-details__cancelled-ribbon">cancelled</span>{% endif %}
+                <span class="upcoming-event-mobile__timeslot">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</span>
+
+                <h1 class="upcoming-event-mobile__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h1>
+
+                <p class="upcoming-event-mobile__artists">{% for gig_info in event.get_performers %} <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist }} <span
+                class="upcoming-event-mobile__instrument">({{ gig_info.role.name }})</span></a> {% if not forloop.last %} // {% endif %}{% endfor %}
+                </p>
+                <a href="{{ event.get_absolute_url }}" class="upcoming-event-mobile__event-button">Full event page</a>
+            </div>
+        </div>
+
+    {% endfor %}
+
+</section>
+
+{% comment %}
 <section class="upcoming-events mobile container visible-xs visible-sm">
     <div class="event-select row" id="event-details-selector">
         <div class="col-xs-12 float-none">
@@ -39,3 +77,4 @@
     </div>
   {% endfor %}
 </section>
+{% endcomment %}
