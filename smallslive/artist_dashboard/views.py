@@ -148,7 +148,6 @@ class EventMetricsView(HasArtistAssignedMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(EventMetricsView, self).get_context_data(**kwargs)
-        print dir(self)
         now = timezone.now().date()
         context['weekly_stats'] = context['monthly_stats'] = UserVideoMetric.objects.this_week_counts(
             artist_event_ids=[self.object.id], trends=True, humanize=True)
@@ -157,6 +156,10 @@ class EventMetricsView(HasArtistAssignedMixin, DetailView):
         context['total_archive_counts'] = UserVideoMetric.objects.total_archive_counts(humanize=True)
         context['event_counts'] = UserVideoMetric.objects.counts_for_event(event_id=self.object.id, humanize=True)
         context['date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year, [self.object.id])
+        context['recordings'] = list(self.object.recordings.select_related('media_file').all().order_by(
+            'media_file__media_type', 'set_number'))
+        context['recordings'] = [(rec, UserVideoMetric.objects.counts_for_recording(rec.id, trends=True, humanize=True))
+                                 for rec in context['recordings']]
         return context
 
 event_metrics = EventMetricsView.as_view()

@@ -56,11 +56,11 @@
           <div class="featured-metrics__metric__content">
               <div class="featured-metrics__metric__content__primary">
                   <h2 class="neutral">Vs last week:</h2>
-                  <h1 class="{% if weekly_stats.play_count_trend > 0 %}positive{% else %}negative{% endif %}">{{ weekly_stats.play_count_trend }}%</h1>
+                  {% with trend=weekly_stats.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
               </div>
               <div class="featured-metrics__metric__content__secondary">
                   <h2 class="neutral">Vs last month:</h2>
-                  <h1 class="{% if monthly_stats.play_count_trend > 0 %}positive{% else %}negative{% endif %}">{{ monthly_stats.play_count_trend }}%</h1>
+                  {% with trend=monthly_stats.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
               </div>
           </div>
       </div>
@@ -120,11 +120,11 @@
           <div class="featured-metrics__metric__content">
               <div class="featured-metrics__metric__content__primary">
                   <h2 class="neutral">Vs last week:</h2>
-                  <h1 class="{% if weekly_stats.seconds_played_trend > 0 %}positive{% else %}negative{% endif %}">{{ weekly_stats.seconds_played_trend }}%</h1>
+                  {% with trend=weekly_stats.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
               </div>
               <div class="featured-metrics__metric__content__secondary">
                   <h2 class="neutral">Vs last month:</h2>
-                  <h1 class="{% if monthly_stats.seconds_played_trend > 0 %}positive{% else %}negative{% endif %}">{{ monthly_stats.seconds_played_trend }}%</h1>
+                  {% with trend=monthly_stats.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
               </div>
           </div>
       </div>
@@ -191,31 +191,21 @@
                   <div class="metrics__event-list__metric col-xs-12 header col-sm-2 hidden-xs">Hours trend</div>
               </div>
           </li>
-          {% for i in "123" %}
+          {% for recording, counts in recordings %}
           <li class="metrics__event-list__row row">
               <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__media-icon">
-                  <i class="fa fa-video-camera"></i>
+                  {% if recording.media_file.media_type == 'audio' %}
+                    <i class="fa fa-volume-down"></i>
+                  {% else %}
+                    <i class="fa fa-video-camera"></i>
+                  {% endif %}
               </div>
               <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
-                  <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-4">2015-02-19/9536-1.mp4</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Plays: </div>135</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2 positive"><div class="visible-xs">Plays trend: </div><i class="fa fa-arrow-up"></i> 3.8%</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Hours: </div>12hrs 28min</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2 negative"><div class="visible-xs">Hours trend: </div><i class="fa fa-arrow-down"></i> 0.9%</div>
-              </div>
-          </li>
-          {% endfor %}
-          {% for i in "123" %}
-          <li class="metrics__event-list__row row">
-              <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__media-icon">
-                  <i class="fa fa-volume-down"></i>
-              </div>
-              <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
-                  <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-4">2015-02-19/9536-1.mp3</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Plays: </div>135</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2 positive"><div class="visible-xs">Plays trend: </div><i class="fa fa-arrow-up"></i> 3.8%</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Hours: </div>12hrs 28min</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2 negative"><div class="visible-xs">Hours trend: </div><i class="fa fa-arrow-down"></i> 0.9%</div>
+                  <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-4">{{ recording.media_file.file }}</div>
+                  <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Plays: </div>{{ counts.week.play_count }}</div>
+                  {% with trend=counts.week.play_count_trend %}<div class="metrics__event-list__metric col-xs-12 col-sm-2 {% if trend and trend > 0 %}positive{% elif trend and trend < 0 %}negative{% endif %}"><div class="visible-xs">Plays trend: </div><i class="fa {% if trend and trend > 0 %}fa-arrow-up{% elif trend and trend < 0 %}fa-arrow-down{% endif %}"></i> {% if trend %}{{ trend }}%{% else %}n/a{% endif %}</div>{% endwith %}
+                  <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Hours: </div>{{ counts.week.time_played }}</div>
+                  {% with trend=counts.week.seconds_played_trend %}<div class="metrics__event-list__metric col-xs-12 col-sm-2 {% if trend and trend > 0 %}positive{% elif trend and trend < 0 %}negative{% endif %}"><div class="visible-xs">Plays trend: </div><i class="fa {% if trend and trend > 0 %}fa-arrow-up{% elif trend and trend < 0 %}fa-arrow-down{% endif %}"></i> {% if trend %}{{ trend }}%{% else %}n/a{% endif %}</div>{% endwith %}
               </div>
           </li>
           {% endfor %}
@@ -228,37 +218,23 @@
               <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
                   <div class="metrics__event-list__header__label col-xs-12 visible-xs">Info</div>
                   <div class="metrics__event-list__name col-xs-12 header col-sm-4 col-md-4 hidden-xs">Event name</div>
-                  <div class="metrics__event-list__metric col-xs-12 header col-sm-2 hidden-xs">Plays</div>
-                  <div class="metrics__event-list__metric col-xs-12 header col-sm-2 hidden-xs">Plays trend</div>
-                  <div class="metrics__event-list__metric col-xs-12 header col-sm-2 hidden-xs">Hours</div>
-                  <div class="metrics__event-list__metric col-xs-12 header col-sm-2 hidden-xs">Hours trend</div>
+                  <div class="metrics__event-list__metric col-xs-12 header col-sm-4 hidden-xs">Plays</div>
+                  <div class="metrics__event-list__metric col-xs-12 header col-sm-4 hidden-xs">Hours</div>
               </div>
           </li>
-          {% for i in "123" %}
+          {% for recording, counts in recordings %}
           <li class="metrics__event-list__row row">
               <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__media-icon">
-                  <i class="fa fa-volume-down"></i>
+                  {% if recording.media_file.media_type == 'audio' %}
+                    <i class="fa fa-volume-down"></i>
+                  {% else %}
+                    <i class="fa fa-video-camera"></i>
+                  {% endif %}
               </div>
               <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
-                  <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-4">2015-02-19/9536-1.mp3</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Plays: </div>135</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2 positive"><div class="visible-xs">Plays trend: </div><i class="fa fa-arrow-up"></i> 3.8%</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Hours: </div>12hrs 28min</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2 negative"><div class="visible-xs">Hours trend: </div><i class="fa fa-arrow-down"></i> 0.9%</div>
-              </div>
-          </li>
-          {% endfor %}
-          {% for i in "123" %}
-          <li class="metrics__event-list__row row">
-              <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__media-icon">
-                  <i class="fa fa-video-camera"></i>
-              </div>
-              <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
-                  <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-4">2015-02-19/9536-1.mp4</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Plays: </div>135</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2 positive"><div class="visible-xs">Plays trend: </div><i class="fa fa-arrow-up"></i> 3.8%</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Hours: </div>12hrs 28min</div>
-                  <div class="metrics__event-list__metric col-xs-12 col-sm-2 negative"><div class="visible-xs">Hours trend: </div><i class="fa fa-arrow-down"></i> 0.9%</div>
+                  <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-4">{{ recording.media_file.file }}</div>
+                  <div class="metrics__event-list__metric col-xs-12 col-sm-4"><div class="visible-xs">Plays: </div>{{ counts.all_time.play_count }}</div>
+                  <div class="metrics__event-list__metric col-xs-12 col-sm-4"><div class="visible-xs">Hours: </div>{{ counts.all_time.time_played }}</div>
               </div>
           </li>
           {% endfor %}
