@@ -6,6 +6,7 @@ $future-event-view_header-height: 300px;
   &__header {
     min-height: 380px;
     padding: 0;
+    overflow: hidden;
 
     &.future-event, &.no-media, &.audio-only {
       position: relative;
@@ -54,7 +55,6 @@ $future-event-view_header-height: 300px;
       right: 0;
       bottom: 0;
       left: 0;
-      z-index: -1;
       @include filter(grayscale(100%) blur(3px) brightness(0.4));
       @include transform(scale(1.05));
       background-size: cover;
@@ -63,6 +63,7 @@ $future-event-view_header-height: 300px;
 
     &__info {
       width: 100%;
+      overflow: hidden;
 
       &__container {
         @include display(flex);
