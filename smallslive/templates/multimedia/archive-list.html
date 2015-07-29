@@ -22,7 +22,17 @@
             </ul>
           </section>
           <section class="col-md-9 archive-list">
-            <h1 class="archive-list__section-title">Most popular videos in Archive:</h1>
+            <h1 class="archive-list__section-title">
+                {% if most_popular_videos %}
+                    Most popular videos in Archive:
+                {% elif most_recent_videos %}
+                    Most recent videos in Archive:
+                {% elif most_popular_audio %}
+                    Most popular audio recordings in Archive:
+                {% elif most_recent_audio %}
+                    Most recent audio recordings in Archive:
+                {% endif %}
+            </h1>
             <div class="archive-list__content">
                 {% for recording in recordings %}
                   <div class="archive-list__event">
