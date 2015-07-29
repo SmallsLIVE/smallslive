@@ -1,6 +1,8 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
+{% load i18n %}
+
 
 
 {% block homepage_nav_active %}active{% endblock %}
@@ -90,40 +92,26 @@
           {% endfor %}
         </div>
       </section>
-      <section class="home-store container">
-        <h1 class="home-store__section-title">Popular in our Store</h1>
-        <div class="row">
-          <div class="col-xs-6 col-md-3">
-            <a href="#"><img class="home-store__img"  src="{% static 'image/store-thumbs/01.jpg' %}" alt=""/></a>
-            <h2 class="home-store__title"><a href="#">Jesse Davis Quintet Live at Smalls</a></h2>
-            <p class="home-store__type">CD / Digital Download</p>
-            <p class="home-store__price">$15.00</p>
-            <a href="" class="home-store__buynow">Buy now</a><span class="arrow"></span>
-          </div>
-          <div class="col-xs-6 col-md-3">
-            <a href="#"><img class="home-store__img"  src="{% static 'image/store-thumbs/02.jpg' %}" alt=""/></a>
-            <h2 class="home-store__title"><a href="#">Bopjuice (Ralph Lalama, Joel Forbes, Clifford Barbaro)</a></h2>
-            <p class="home-store__type">CD / Digital Download</p>
-            <p class="home-store__price">$12.00</p>
-            <a href="" class="home-store__buynow">Buy now</a><span class="arrow"></span>
-          </div>
-          <div class="col-xs-6 col-md-3">
-            <a href="#"><img class="home-store__img"  src="{% static 'image/store-thumbs/03.jpg' %}" alt=""/></a>
-            <h2 class="home-store__title"><a href="#">Dezron Douglas Live at Smalls + a whole bunch of other dudes blah blah omg so long name</a></h2>
-            <p class="home-store__type">2CD / Digital Download</p>
-            <p class="home-store__price">$20.00</p>
-            <a href="" class="home-store__buynow">Buy now</a><span class="arrow"></span>
-          </div>
-          <div class="col-xs-6 col-md-3">
-            <a href="#"><img class="home-store__img"  src="{% static 'image/store-thumbs/04.jpg' %}" alt=""/></a>
-            <h2 class="home-store__title"><a href="#">Grant Stewart Live at Smalls</a></h2>
-            <p class="home-store__type">CD / Digital Download</p>
-            <p class="home-store__price">$15.00</p>
-            <a href="" class="home-store__buynow">Buy now</a><span class="arrow"></span>
-          </div>
-        </div>
-      </section>
-
+      {% if popular_in_store %}
+          <section class="home-store container">
+            <h1 class="home-store__section-title">Popular in our Store</h1>
+            <div class="row">
+              {% for product in popular_in_store %}
+                  <div class="col-xs-6 col-md-3">
+                    {% with image=product.primary_image %}
+                        {% if not image.is_missing %}
+                          <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=258 width=235 smart=True %}" alt="{{ product.get_title }}" class="home-store__img"</a>
+                        {% else %}
+                          <a href="{{ product.get_absolute_url }}"><img src="{% static "image/image_not_found.jpg" %}" alt="{{ product.get_title }}" class="home-store__img"></a>
+                        {% endif %}
+                    {% endwith %}
+                    <h2 class="home-store__title"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h2>
+                    <p class="home-store__type">CD / Digital Download</p>
+                  </div>
+              {% endfor %}
+            </div>
+          </section>
+      {% endif %}
       <section class="cto cto--visit container vertical-align-parent">
         <div class="vertical-align-child">
             <h1 class="cto__title">Visit us</h1>

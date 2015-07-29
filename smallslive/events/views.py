@@ -27,6 +27,7 @@ from haystack.query import SearchQuerySet, RelatedSearchQuerySet
 from haystack.views import SearchView
 
 from artists.models import Artist, Instrument
+from oscar_apps.catalogue.models import Product
 from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
     EventSearchForm, EventEditForm
@@ -53,6 +54,7 @@ class HomepageView(ListView):
         context['disabled_dates'] = ['{}/{}/{}'.format(start.month, x, start.year) for x in range(1, 30) if x not in days_with_events]
         context['new_in_archive'] = Recording.objects.most_recent()[:6]
         context['popular_in_archive'] = Recording.objects.most_popular()[:3]
+        context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:4]
         return context
 
 homepage = HomepageView.as_view()
