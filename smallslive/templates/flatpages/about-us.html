@@ -5,13 +5,13 @@
 {% block about-us-active %}static-nav__item--active{% endblock %}
 
 {% block static-content %}
-  <section class="static-content {% if files %}col-md-5{% else %}col-md-9{% endif %}">
+  <section class="static-content {% if files %}col-sm-6 col-md-5 col-lg-6{% else %}col-sm-9 col-md-9{% endif %}">
     <h1 class="static-content__main-title">{{ page.title }}</h1>
 
     {{ page.content|safe }}
   </section>
   {% if files %}
-  <aside class=" static-sidebar col-md-4 hidden-xs hidden-sm">
+  <aside class=" static-sidebar col-sm-3 col-md-4 col-lg-3 hidden-xs">
     {% for file in files %}
     <figure>
       <img src="{% thumbor_url file.file.url|urlencode width=365  %}" class="static-sidebar__image" alt="{{ file.name }}"/>

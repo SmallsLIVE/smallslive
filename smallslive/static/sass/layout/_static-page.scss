@@ -1,8 +1,13 @@
 .static-page {
   background-color: #FFFFFF;
 
-  & .row:before {
-    display: none;
+  &__content {
+    @include display(flex);
+    @include flex-wrap(wrap);
+
+    &:before, &:after {
+      display: none;
+    }
   }
 }
 
