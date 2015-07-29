@@ -23,6 +23,7 @@ $future-event-view_header-height: 300px;
     & .slick-slide {
       @include display(flex);
       @include flex-wrap(wrap);
+      position: relative;
     }
 
     &.slick-slider {
@@ -45,6 +46,19 @@ $future-event-view_header-height: 300px;
         @include filter(grayscale(100%) blur(3px) brightness(0.4));
         @include transform(scale(1.1));
       }
+    }
+
+    &__bg-photo-cover {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+      @include filter(grayscale(100%) blur(3px) brightness(0.4));
+      @include transform(scale(1.05));
+      background-size: cover;
+      background-position: center center;
     }
 
     &__info {
@@ -493,7 +507,7 @@ $future-event-view_header-height: 300px;
       display: inline-block;
       margin-right: 10px;
       position: relative;
-      top: 5px;
+      top: 3px;
     }
 
     & .social-btn {

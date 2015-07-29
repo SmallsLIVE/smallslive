@@ -33,19 +33,7 @@
              class="event-view__header {% if event.is_future %}future-event{% endif %}
                      {% if not event.published_videos %}{% if not event.published_audio %}no-media{% endif %}{% endif %} {% if not event.published_videos %}{% if event.published_audio %}audio-only{% endif %}{% endif %} container">
       <div class="event-view__header__info">
-        <div class="event-view__header__bg-photo">
-          {% if event.photo %}
-            {% if event.photo_crop_box %}
-              <img src="{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=980 %}" alt=""
-                   class="event__img img-responsive"/>
-            {% else %}
-              <img src="{% thumbor_url event.photo.url|urlencode height=640 width=980 %}" alt=""
-                   class="event__img img-responsive"/>
-            {% endif %}
-          {% else %}
-            <img src="{% static "image/no-event-image-placeholder.jpg" %}" alt="" class="event__img img-responsive"/>
-          {% endif %}
-        </div>
+        <div class="event-view__header__bg-photo-cover" style="background-image: url('{% if event.photo %}{% if event.photo_crop_box %}{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=600 %}{% else %}{% thumbor_url event.photo.url|urlencode height=360 width=600 smart=True %}{% endif %}{% else %}{% static "image/no-event-image-placeholder.jpg" %}{% endif %}');"></div>
         <div class="event-view__header__info__container {% if event.is_future %}no-track{% endif %}">
           <div class="col-xs-12 col-sm-8 event-view__header__meta">
             <span class="event-view__header__meta__time">{{ event.listing_date|date:"l, F j, Y" }}<span>|</span>{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</span>
