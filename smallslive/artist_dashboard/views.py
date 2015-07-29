@@ -206,7 +206,23 @@ class AdminMetricsView(HasArtistAssignedMixin, TemplateView):
         context['video_counts'] = UserVideoMetric.objects.total_archive_counts(trends=True, recording_type='video',
                                                                                humanize=True)
         context['date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year)
+        top_weekly_events = UserVideoMetric.objects.top_week_events(trends=True)
+        context['top_weekly_events'] = self._event_and_counts_from_ids(top_weekly_events)
+        top_all_time_events = UserVideoMetric.objects.top_all_time_events()
+        context['top_all_time_events'] = self._event_and_counts_from_ids(top_all_time_events)
         return context
+
+    def _event_and_counts_from_ids(self, top_events):
+        events = []
+        for event_data in top_events:
+            try:
+                event = Event.objects.get(id=event_data['event_id'])
+                counts = UserVideoMetric.objects.counts_for_event(event.id, humanize=True)
+                counts.update(event_data)
+                events.append((event, counts))
+            except Event.DoesNotExist:
+                pass
+        return events
 
 admin_metrics = AdminMetricsView.as_view()
 
