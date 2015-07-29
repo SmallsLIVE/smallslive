@@ -195,6 +195,22 @@ class ToggleRecordingStateView(HasArtistAssignedMixin, UpdateView):
 toggle_recording_state = ToggleRecordingStateView.as_view()
 
 
+class AdminMetricsView(HasArtistAssignedMixin, TemplateView):
+    template_name = 'artist_dashboard/admin-metrics.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(AdminMetricsView, self).get_context_data(**kwargs)
+        now = timezone.now().date()
+        context['audio_counts'] = UserVideoMetric.objects.total_archive_counts(trends=True, recording_type='audio',
+                                                                               humanize=True)
+        context['video_counts'] = UserVideoMetric.objects.total_archive_counts(trends=True, recording_type='video',
+                                                                               humanize=True)
+        context['date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year)
+        return context
+
+admin_metrics = AdminMetricsView.as_view()
+
+
 @login_required
 def legal(request):
     user_signed = LegalAgreementAcceptance.objects.filter(user=request.user).exists()

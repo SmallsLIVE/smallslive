@@ -7,3 +7,4 @@ class ProductCategoryView(catalogue_views.ProductCategoryView):
         context = super(ProductCategoryView, self).get_context_data(**kwargs)
         context['featured_product'] = Product.objects.filter(featured=True, categories__in=self.get_categories()).first()
         return context
+

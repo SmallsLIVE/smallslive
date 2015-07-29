@@ -1,0 +1,538 @@
+{% extends "smalls_base.html" %}
+{% load add_get_parameter %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <section class="page-heading container">
+            <h1>SmallsLIVE Metrics Admin:</h1>
+        </section>
+        <section class="metric-graph container">
+            <div class="metric-graph__header">
+                <h3 class="metric-graph__title">Monthly performance for: <span class="metric-graph__date-picker" id="metric-graph__date-picker"><input class="" type="text" readonly><i class="fa fa-caret-down"></i></span></h3>
+                <ul class="metric-graph__switch-group">
+                    <li class="metric-graph__switch-group__single">
+                        <ul class="metric-graph__switch">
+                            <li class="metric-graph__switch__option data active" id="metric-graph__show__data-1">Plays</li>
+                            <li class="metric-graph__switch__option data" id="metric-graph__show__data-2">Minutes</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="metric-graph__instance" id="metric-graph__instance-1">
+                <canvas class="graph-canvas larger" id="graph-canvas"></canvas>
+            </div>
+          </section>
+          <section class="container featured-metrics flexbox-equal-height">
+              <!-- Single metric -->
+              <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+                  <div class="featured-metrics__metric__name">Audio plays:</div>
+                  <div class="featured-metrics__metric__content">
+                      <div class="featured-metrics__metric__content__primary">
+                          <h2 class="neutral">This week:</h2>
+                          <h1 class="normal">{{ audio_counts.week.play_count }}</h1>
+                      </div>
+                      <div class="featured-metrics__metric__content__secondary">
+                          <h2 class="neutral">This month:</h2>
+                          <h1 class="normal">{{ audio_counts.month.play_count }}</h1>
+                      </div>
+                  </div>
+              </div>
+              <!-- End of single metric -->
+              <!-- Single metric -->
+              <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+                  <div class="featured-metrics__metric__name">Audio plays trend:</div>
+                  <div class="featured-metrics__metric__content">
+                      <div class="featured-metrics__metric__content__primary">
+                          <h2 class="neutral">Vs last week:</h2>
+                          {% with trend=audio_counts.week.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                      </div>
+                      <div class="featured-metrics__metric__content__secondary">
+                          <h2 class="neutral">Vs last month:</h2>
+                          {% with trend=audio_counts.month.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                      </div>
+                  </div>
+              </div>
+              <!-- End of single metric -->
+              <!-- Single metric -->
+              <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+                  <div class="featured-metrics__metric__name">Video plays:</div>
+                  <div class="featured-metrics__metric__content">
+                      <div class="featured-metrics__metric__content__primary">
+                          <h2 class="neutral">This week:</h2>
+                          <h1 class="normal">{{ video_counts.week.play_count }}</h1>
+                      </div>
+                      <div class="featured-metrics__metric__content__secondary">
+                          <h2 class="neutral">This month:</h2>
+                          <h1 class="normal">{{ video_counts.month.play_count }}</h1>
+                      </div>
+                  </div>
+              </div>
+              <!-- End of single metric -->
+              <!-- Single metric -->
+              <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+                  <div class="featured-metrics__metric__name">Video plays trend:</div>
+                  <div class="featured-metrics__metric__content">
+                      <div class="featured-metrics__metric__content__primary">
+                          <h2 class="neutral">Vs last week:</h2>
+                          {% with trend=video_counts.week.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                      </div>
+                      <div class="featured-metrics__metric__content__secondary">
+                          <h2 class="neutral">Vs last month:</h2>
+                          {% with trend=video_counts.month.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                      </div>
+                  </div>
+              </div>
+              <!-- End of single metric -->
+              <!-- Single metric -->
+              <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+                  <div class="featured-metrics__metric__name">Audio play time:</div>
+                  <div class="featured-metrics__metric__content">
+                      <div class="featured-metrics__metric__content__primary">
+                          <h2 class="neutral">This week:</h2>
+                          <h1 class="normal">{{ audio_counts.week.time_played }}</h1>
+                      </div>
+                      <div class="featured-metrics__metric__content__secondary">
+                          <h2 class="neutral">This month:</h2>
+                          <h1 class="normal">{{ audio_counts.month.time_played }}</h1>
+                      </div>
+                  </div>
+              </div>
+              <!-- End of single metric -->
+              <!-- Single metric -->
+              <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+                  <div class="featured-metrics__metric__name">Audio play time trend:</div>
+                  <div class="featured-metrics__metric__content">
+                      <div class="featured-metrics__metric__content__primary">
+                          <h2 class="neutral">Vs last week:</h2>
+                          {% with trend=audio_counts.week.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                      </div>
+                      <div class="featured-metrics__metric__content__secondary">
+                          <h2 class="neutral">Vs last month:</h2>
+                          {% with trend=audio_counts.month.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                      </div>
+                  </div>
+              </div>
+              <!-- End of single metric -->
+              <!-- Single metric -->
+              <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+                  <div class="featured-metrics__metric__name">Video play time:</div>
+                  <div class="featured-metrics__metric__content">
+                      <div class="featured-metrics__metric__content__primary">
+                          <h2 class="neutral">This week:</h2>
+                          <h1 class="normal">{{ video_counts.week.time_played }}</h1>
+                      </div>
+                      <div class="featured-metrics__metric__content__secondary">
+                          <h2 class="neutral">This month:</h2>
+                          <h1 class="normal">{{ video_counts.month.time_played }}</h1>
+                      </div>
+                  </div>
+              </div>
+              <!-- End of single metric -->
+              <!-- Single metric -->
+              <div class="col-xs-6 col-sm-3 featured-metrics__metric">
+                  <div class="featured-metrics__metric__name">Video play time trend:</div>
+                  <div class="featured-metrics__metric__content">
+                      <div class="featured-metrics__metric__content__primary">
+                          <h2 class="neutral">Vs last week:</h2>
+                          {% with trend=video_counts.week.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                      </div>
+                      <div class="featured-metrics__metric__content__secondary">
+                          <h2 class="neutral">Vs last month:</h2>
+                          {% with trend=video_counts.month.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                      </div>
+                  </div>
+              </div>
+              <!-- End of single metric -->
+              <!-- Single metric -->
+              <div class="col-xs-6 col-sm-6 featured-metrics__metric">
+                  <div class="featured-metrics__metric__name">Audio all time:</div>
+                  <div class="featured-metrics__metric__content">
+                      <div class="featured-metrics__metric__content__primary">
+                          <h2 class="neutral">Time played:</h2>
+                          <h1 class="normal">{{ audio_counts.all_time.time_played }}</h1>
+                      </div>
+                      <div class="featured-metrics__metric__content__secondary">
+                          <h2 class="neutral">Plays:</h2>
+                          <h1 class="normal">{{ audio_counts.all_time.play_count }}</h1>
+                      </div>
+                  </div>
+              </div>
+              <!-- End of single metric -->
+              <!-- Single metric -->
+              <div class="col-xs-6 col-sm-6 featured-metrics__metric">
+                  <div class="featured-metrics__metric__name">Video all time:</div>
+                  <div class="featured-metrics__metric__content">
+                      <div class="featured-metrics__metric__content__primary">
+                          <h2 class="neutral">Time played:</h2>
+                          <h1 class="normal">{{ video_counts.all_time.time_played }}</h1>
+                      </div>
+                      <div class="featured-metrics__metric__content__secondary">
+                          <h2 class="neutral">Plays:</h2>
+                          <h1 class="normal">{{ video_counts.all_time.play_count }}</h1>
+                      </div>
+                  </div>
+              </div>
+              <!-- End of single metric -->
+          </section>
+
+          <section class="metrics__event-list__container container">
+              <div class="metrics__lists__header">
+                <h3 class="metrics__lists__title">My top 10 performing events:</h3>
+                <ul class="metrics__lists__switch-group">
+                    <li class="metrics__lists__switch-group__single">
+                        <ul class="metrics__lists__switch">
+                            <li class="metrics__lists__switch__option data active" id="metrics__lists__show__data-1">This week</li>
+                            <li class="metrics__lists__switch__option data" id="metrics__lists__show__data-2">All time</li>
+                        </ul>
+                    </li>
+                </ul>
+              </div>
+              <ul class="metrics__event-list" id="week-events-list">
+                  <li class="metrics__event-list__header row">
+                      <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__image">
+                          Image
+                      </div>
+                      <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
+                          <div class="metrics__event-list__header__label col-xs-12 visible-xs">Info</div>
+                          <div class="metrics__event-list__name col-xs-12 header col-sm-4 col-md-5 hidden-xs">Event name</div>
+                          <div class="metrics__event-list__metric col-xs-12 header col-sm-1 hidden-xs">Plays</div>
+                          <div class="metrics__event-list__metric col-xs-12 header col-sm-1 hidden-xs">Plays trend</div>
+                          <div class="metrics__event-list__metric col-xs-12 header col-sm-2 hidden-xs">Hours</div>
+                          <div class="metrics__event-list__metric col-xs-12 header col-sm-1 hidden-xs">Hours trend</div>
+                          <div class="metrics__event-list__more-link col-xs-12 col-sm-3 col-md-2 hidden-xs">Details</div>
+                      </div>
+                  </li>
+                  {% for i in "1234567890" %}
+                  <li class="metrics__event-list__row row">
+                      <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__image">
+                          <img src="{% static "image/no-event-photo-thumbnail.jpg" %}" alt=""/>
+                      </div>
+                      <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
+                          <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-5">"Round Midnight" Featuring Frank Lacy, Josh Evans & Theo Hill</div>
+                          <div class="metrics__event-list__metric col-xs-12 col-sm-1"><div class="visible-xs">Plays: </div>135</div>
+                          <div class="metrics__event-list__metric col-xs-12 col-sm-1 positive"><div class="visible-xs">Plays trend: </div><i class="fa fa-arrow-up"></i> 3.8%</div>
+                          <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Hours: </div>12hrs 28min</div>
+                          <div class="metrics__event-list__metric col-xs-12 col-sm-1 negative"><div class="visible-xs">Hours trend: </div><i class="fa fa-arrow-down"></i> 0.9%</div>
+                          <div class="metrics__event-list__more-link col-xs-12 col-sm-3 col-md-2"><a href="{% url "static_page" "metrics-admin-single-event-static" %}">Detailed metrics</a></div>
+                      </div>
+                  </li>
+                  {% endfor %}
+              </ul>
+              <ul class="metrics__event-list" id="all-time-events-list" style="display: none;">
+                  <li class="metrics__event-list__header row">
+                      <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__image">
+                          Image
+                      </div>
+                      <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
+                          <div class="metrics__event-list__header__label col-xs-12 visible-xs">Info</div>
+                          <div class="metrics__event-list__name header col-xs-12 col-sm-4 col-md-5 hidden-xs">Event name</div>
+                          <div class="metrics__event-list__metric header col-xs-12 col-sm-1 hidden-xs">Plays</div>
+                          <div class="metrics__event-list__metric header col-xs-12 col-sm-1 hidden-xs">Plays trend</div>
+                          <div class="metrics__event-list__metric header col-xs-12 col-sm-2 hidden-xs">Hours</div>
+                          <div class="metrics__event-list__metric header col-xs-12 col-sm-1 hidden-xs">Hours trend</div>
+                          <div class="metrics__event-list__more-link header col-xs-12 col-sm-3 col-md-2 hidden-xs">Details</div>
+                      </div>
+                  </li>
+                  {% for i in "1234567890" %}
+                  <li class="metrics__event-list__row row">
+                      <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 metrics__event-list__image">
+                          <img src="{% static "image/no-event-photo-thumbnail.jpg" %}" alt=""/>
+                      </div>
+                      <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
+                          <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-5">Friday afternoon jam session with: The Corey Wallace DUBtet</div>
+                          <div class="metrics__event-list__metric col-xs-12 col-sm-1"><div class="visible-xs">Plays: </div>1415</div>
+                          <div class="metrics__event-list__metric col-xs-12 col-sm-1 positive"><div class="visible-xs">Plays trend: </div><i class="fa fa-arrow-up"></i> 2.4%</div>
+                          <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Hours: </div>15hrs 43min</div>
+                          <div class="metrics__event-list__metric col-xs-12 col-sm-1 negative"><div class="visible-xs">Hours trend: </div><i class="fa fa-arrow-down"></i> 1.4%</div>
+                          <div class="metrics__event-list__more-link col-xs-12 col-sm-3 col-md-2"><a href="{% url "static_page" "metrics-admin-single-event-static" %}">Detailed metrics</a></div>
+                      </div>
+                  </li>
+                  {% endfor %}
+              </ul>
+          </section>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+          <script src="{% static 'js/intro/intro.min.js' %}"></script>
+          <script src="{% static 'js/bootstrap-select.js' %}"></script>
+          <script src="{% static 'js/Chart.min.js' %}"></script>
+          <script src="{% static 'js/dashboard-base.js' %}"></script>
+          <script>
+              var firstLogin = {{ first_login|lower }};
+              if (firstLogin) {
+                $(document).ready(function () {
+                  if( $(window).width() > 1000) {
+                      introJs().start();
+                  }
+                })
+              }
+          </script>
+
+          <!-- Bootstrap datepicker JavaScript -->
+          <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+          <script src="{% static 'js/metrics_datepicker.js' %}"></script>
+          <script>
+              var date = new Date(2015, 7, 1);
+              $datePicker.datepicker("setDate", date);
+          </script>
+
+          <script>
+
+                var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+                var playsDataArchive = {
+                    labels : {{ date_counts.dates|safe }},
+                    datasets : [
+                        {
+                          label: "Audio",
+                          fillColor: "rgba(56,193,153,0)",
+                          strokeColor: "rgba(56,193,153,1)",
+                          pointColor: "rgba(56,193,153,1)",
+                          pointStrokeColor: "#fff",
+                          pointHighlightFill: "#fff",
+                          pointHighlightStroke: "rgba(151,187,205,1)",
+                          data: {{ date_counts.audio_plays_list }}
+                        },
+                        {
+                          label: "Video",
+                          fillColor: "rgba(125,77,117,0)",
+                          strokeColor: "rgba(125,77,117,1)",
+                          pointColor: "rgba(125,77,117,1)",
+                          pointStrokeColor: "#fff",
+                          pointHighlightFill: "#fff",
+                          pointHighlightStroke: "rgba(151,187,205,1)",
+                          data: {{ date_counts.video_plays_list }}
+                        },
+                        {
+                          label: "Total",
+                          fillColor: "rgba(210,21,53,0)",
+                          strokeColor: "rgba(210,21,53,1)",
+                          pointColor: "rgba(210,21,53,1)",
+                          pointStrokeColor: "#fff",
+                          pointHighlightFill: "#fff",
+                          pointHighlightStroke: "rgba(220,220,220,1)",
+                          data: {{ date_counts.total_plays_list }}
+                        }
+                    ]
+
+                }
+
+                var minsDataArchive = {
+                    labels : {{ date_counts.dates|safe }},
+                    datasets : [
+                        {
+                          label: "Audio",
+                          fillColor: "rgba(56,193,153,0)",
+                          strokeColor: "rgba(56,193,153,1)",
+                          pointColor: "rgba(56,193,153,1)",
+                          pointStrokeColor: "#fff",
+                          pointHighlightFill: "#fff",
+                          pointHighlightStroke: "rgba(151,187,205,1)",
+                          data: {{ date_counts.audio_seconds_list }}
+                        },
+                        {
+                          label: "Video",
+                          fillColor: "rgba(125,77,117,0)",
+                          strokeColor: "rgba(125,77,117,1)",
+                          pointColor: "rgba(125,77,117,1)",
+                          pointStrokeColor: "#fff",
+                          pointHighlightFill: "#fff",
+                          pointHighlightStroke: "rgba(151,187,205,1)",
+                          data: {{ date_counts.video_seconds_list }}
+                        },
+                        {
+                          label: "Total",
+                          fillColor: "rgba(210,21,53,0)",
+                          strokeColor: "rgba(210,21,53,1)",
+                          pointColor: "rgba(210,21,53,1)",
+                          pointStrokeColor: "#fff",
+                          pointHighlightFill: "#fff",
+                          pointHighlightStroke: "rgba(220,220,220,1)",
+                          data: {{ date_counts.total_seconds_list }}
+                        }
+                    ]
+
+                };
+
+            {% verbatim %}
+                window.onload = function(){
+                    var ctx = document.getElementById("graph-canvas").getContext("2d");
+                    window.myLine = new Chart(ctx).Line(playsDataArchive, {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        bezierCurve : false,
+                        bezierCurveTension : 0.25,
+                        scaleShowVerticalLines: false,
+                        scaleOverride: false,
+                        showScale: true,
+                        pointDotRadius : 6,
+                        datasetStrokeWidth : 4,
+                        scaleFontSize: 10,
+                        scaleFontStyle: "bold",
+                        scaleFontColor: "#999",
+                        multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                    });
+                }
+
+
+                /* Toggling different data */
+                $(document).ready(function () {
+                    $("#metric-graph__show__data-1").click(function() {
+                        if (!($(this).hasClass("active"))) {
+                            $(".metric-graph__switch__option.data.active").toggleClass("active");
+                            $(this).toggleClass("active");
+                            $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
+                            if ($("#metric-graph__show__source-1").hasClass("active")) {
+                                var ctx = document.getElementById("graph-canvas").getContext("2d");
+                                window.myLine = new Chart(ctx).Line(playsData, {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    bezierCurve : false,
+                                    bezierCurveTension : 0.25,
+                                    scaleShowVerticalLines: false,
+                                    scaleOverride: false,
+                                    showScale: true,
+                                    pointDotRadius : 6,
+                                    datasetStrokeWidth : 4,
+                                    scaleFontSize: 10,
+                                    scaleFontStyle: "bold",
+                                    scaleFontColor: "#999",
+                                    multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                                });
+                            }
+                            else {
+                                var ctx = document.getElementById("graph-canvas").getContext("2d");
+                                window.myLine = new Chart(ctx).Line(playsDataArchive, {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    bezierCurve : false,
+                                    bezierCurveTension : 0.25,
+                                    scaleShowVerticalLines: false,
+                                    scaleOverride: false,
+                                    showScale: true,
+                                    pointDotRadius : 6,
+                                    datasetStrokeWidth : 4,
+                                    scaleFontSize: 10,
+                                    scaleFontStyle: "bold",
+                                    scaleFontColor: "#999",
+                                    multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                                });
+                            }
+                        }
+                    })
+                    $("#metric-graph__show__data-2").click(function() {
+                        if (!($(this).hasClass("active"))) {
+                            $(".metric-graph__switch__option.data.active").toggleClass("active");
+                            $(this).toggleClass("active");
+                            $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
+                            if ($("#metric-graph__show__source-1").hasClass("active")) {
+                                console.log("testtest");
+                                var ctx = document.getElementById("graph-canvas").getContext("2d");
+                                window.myLine = new Chart(ctx).Line(minsData, {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    bezierCurve : false,
+                                    bezierCurveTension : 0.25,
+                                    scaleShowVerticalLines: false,
+                                    scaleOverride: false,
+                                    showScale: true,
+                                    pointDotRadius : 6,
+                                    datasetStrokeWidth : 4,
+                                    scaleFontSize: 10,
+                                    scaleFontStyle: "bold",
+                                    scaleFontColor: "#999",
+                                    multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                                });
+                            }
+                            else {
+                                console.log("srbija");
+                                var ctx = document.getElementById("graph-canvas").getContext("2d");
+                                window.myLine = new Chart(ctx).Line(minsDataArchive, {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    bezierCurve : false,
+                                    bezierCurveTension : 0.25,
+                                    scaleShowVerticalLines: false,
+                                    scaleOverride: false,
+                                    showScale: true,
+                                    pointDotRadius : 6,
+                                    datasetStrokeWidth : 4,
+                                    scaleFontSize: 10,
+                                    scaleFontStyle: "bold",
+                                    scaleFontColor: "#999",
+                                    multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                                });
+                            }
+                        }
+                    })
+                    $("#metric-graph__show__source-2").click(function() {
+                        if (!($(this).hasClass("active"))) {
+                            $(".metric-graph__switch__option.source.active").toggleClass("active");
+                            $(this).toggleClass("active");
+                            $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
+                            if ($("#metric-graph__show__data-1").hasClass("active")) {
+                                var ctx = document.getElementById("graph-canvas").getContext("2d");
+                                window.myLine = new Chart(ctx).Line(playsDataArchive, {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    bezierCurve : false,
+                                    bezierCurveTension : 0.25,
+                                    scaleShowVerticalLines: false,
+                                    scaleOverride: false,
+                                    showScale: true,
+                                    pointDotRadius : 6,
+                                    datasetStrokeWidth : 4,
+                                    scaleFontSize: 10,
+                                    scaleFontStyle: "bold",
+                                    scaleFontColor: "#999",
+                                    multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                                });
+                            }
+                            else {
+                                var ctx = document.getElementById("graph-canvas").getContext("2d");
+                                window.myLine = new Chart(ctx).Line(minsDataArchive, {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    bezierCurve : false,
+                                    bezierCurveTension : 0.25,
+                                    scaleShowVerticalLines: false,
+                                    scaleOverride: false,
+                                    showScale: true,
+                                    pointDotRadius : 6,
+                                    datasetStrokeWidth : 4,
+                                    scaleFontSize: 10,
+                                    scaleFontStyle: "bold",
+                                    scaleFontColor: "#999",
+                                    multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+                                });
+                            }
+                        }
+                    })
+
+                    // lists toggle
+
+                    $("#metrics__lists__show__data-1").click(function() {
+                        if (!($(this).hasClass("active"))) {
+                            $(".metrics__lists__switch__option.data.active").toggleClass("active");
+                            $(this).toggleClass("active");
+                            $('#all-time-events-list').slideUp("fast");
+                            $('#week-events-list').slideDown();
+                        }
+                    })
+                    $("#metrics__lists__show__data-2").click(function() {
+                        if (!($(this).hasClass("active"))) {
+                            $(".metrics__lists__switch__option.data.active").toggleClass("active");
+                            $(this).toggleClass("active");
+                            $('#week-events-list').slideUp();
+                            $('#all-time-events-list').slideDown("fast");
+                        }
+                    })
+                })
+
+
+              {% endverbatim %}
+            </script>
+{% endblock %}
