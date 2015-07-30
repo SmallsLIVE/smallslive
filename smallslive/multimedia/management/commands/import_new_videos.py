@@ -11,11 +11,12 @@ class Command(NoArgsCommand):
     help = 'Imports the newly added video files from S3 and assigns them to correct events'
 
     def handle_noargs(self, *args, **options):
+        month, year = args[0], args[1]
         conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
         self.bucket = conn.get_bucket("smallslivevid")
         self.files_imported = 0
 
-        start_date = timezone.make_aware(timezone.datetime(2015, 3, 1), timezone.get_current_timezone())
+        start_date = timezone.make_aware(timezone.datetime(year, month, 1), timezone.get_current_timezone())
         for event in Event.objects.filter(start__gte=start_date).order_by('start'):
             for set_num in range(1, 7):
                 filename = '{0.year}-{0.month:02}-{0.day:02}/360p/{1}-{2}_360p.mp4'.format(

@@ -7,14 +7,16 @@ from multimedia.models import MediaFile
 
 
 class Command(NoArgsCommand):
+    args = "<start_month> <start_year>"
     help = 'Imports the audio recordings from S3 and assigns them to correct events'
 
     def handle_noargs(self, *args, **options):
+        month, year = args[0], args[1]
         conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
         bucket = conn.get_bucket("smallslivemp3")
         new_files_imported = 0
         files_updated = 0
-        start_date = timezone.make_aware(timezone.datetime(2014, 6, 30), timezone.get_current_timezone())
+        start_date = timezone.make_aware(timezone.datetime(year, month, 1), timezone.get_current_timezone())
         for event in Event.objects.filter(start__gte=start_date):
             for set_num in range(1, 7):
                 no_zero_padded = '{0.year}-{0.month}-{0.day}/{1}-{2}.mp3'.format(
