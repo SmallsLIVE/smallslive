@@ -11,7 +11,7 @@ class Command(BaseCommand):
     help = 'Imports the audio recordings from S3 and assigns them to correct events'
 
     def handle(self, *args, **options):
-        month, year = args[0], args[1]
+        month, year = int(args[0]), int(args[1])
         conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
         bucket = conn.get_bucket("smallslivemp3")
         new_files_imported = 0
