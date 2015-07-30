@@ -17,7 +17,7 @@ class Command(BaseCommand):
         new_files_imported = 0
         files_updated = 0
         start_date = timezone.make_aware(timezone.datetime(year, month, 1), timezone.get_current_timezone())
-        for event in Event.objects.filter(start__gte=start_date):
+        for event in Event.objects.filter(start__gte=start_date).order_by('start'):
             for set_num in range(1, 7):
                 no_zero_padded = '{0.year}-{0.month}-{0.day}/{1}-{2}.mp3'.format(
                     event.listing_date(), event.id, set_num)
