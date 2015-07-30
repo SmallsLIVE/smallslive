@@ -1,13 +1,13 @@
 import os
 from django.conf import settings
-from django.core.management.base import NoArgsCommand
+from django.core.management.base import BaseCommand
 from boto.s3.connection import S3Connection
 from django.utils import timezone
 from events.models import Recording, Event
 from multimedia.models import MediaFile
 
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     help = 'Imports the newly added video files from S3 and assigns them to correct events'
 
     def handle_noargs(self, *args, **options):

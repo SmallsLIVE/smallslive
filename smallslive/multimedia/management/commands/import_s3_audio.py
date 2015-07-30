@@ -1,12 +1,12 @@
 from django.conf import settings
-from django.core.management.base import NoArgsCommand
+from django.core.management.base import BaseCommand
 from django.utils import timezone
 from boto.s3.connection import S3Connection
 from events.models import Event, Recording
 from multimedia.models import MediaFile
 
 
-class Command(NoArgsCommand):
+class Command(BaseCommand):
     args = "<start_month> <start_year>"
     help = 'Imports the audio recordings from S3 and assigns them to correct events'
 
