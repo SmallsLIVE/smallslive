@@ -78,3 +78,4 @@ secret_vars.yml
 smalls_scraping/*.json
 gulpfile.js
 .python-version
+smallslive/.env
