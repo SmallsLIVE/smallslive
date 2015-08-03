@@ -343,6 +343,11 @@ header {
     background-color: $main-accent-color-darker;
     padding-top: 10px;
     padding-bottom: 10px;
+
+    & li {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
   }
 }
 
