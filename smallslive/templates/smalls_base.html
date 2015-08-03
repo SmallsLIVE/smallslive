@@ -49,11 +49,8 @@
 {% if user.is_superuser %}
 <div class="container-fluid admin-nav">
     <div class="container">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#admin-navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+        <button type="button" class="navbar-toggle mobile-nav__button collapsed" data-toggle="collapse" data-target="#admin-navbar">
+            <i class="fa fa-bars"></i>
         </button>
         <span class="heading">Smalls admin</span>
         <div class="collapse navbar-collapse" id="admin-navbar">
@@ -76,18 +73,59 @@
   <div class="container mobile-menu">
     <!-- Grouping logo and toggle for mobile -->
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-              data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
+      <button type="button" class="navbar-toggle collapsed mobile-nav__button" data-toggle="collapse"
+              data-target="#smalls-menu-collapse">
+        <i class="fa fa-bars"></i>
+      </button>
+      <button type="button" class="navbar-toggle collapsed mobile-nav__button" data-toggle="collapse" data-target="#search-collapse">
+          <i class="fa fa-search"></i>
       </button>
       <a href="/" class="smalls-hor-logo"><img src="{% static 'smalls_live_horizontal_negative.svg' %}" alt=""/></a>
     </div>
 
     <!-- Collect the nav links, forms and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <div class="collapse navbar-collapse menu" id="smalls-menu-collapse">
+      <div class="header-top">
+        <div class="container">
+          <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="{% url "live-stream" %}">Live now!</a></li>
+            <li><a href="{% url "schedule" %}">Calendar/Archive</a></li>
+            <li><a href="{% url "archive" %}">New/Popular</a></li>
+            <li><a href="{% url "promotions:home" %}">SmallsLIVE Tracks</a></li>
+            <li><a role="button" data-toggle="collapse" href="#mobile-nav-info-links" aria-expanded="false" aria-controls="mobile-nav-info-links">Info <i class="fa fa-caret-down"></i> </a></li>
+            <li class="nopadding">
+                <ul class="mobile-navbar__submenu collapse" id="mobile-nav-info-links">
+                    <li class="hidden-sm"><a href="{% url "about-us" %}">About us</a></li>
+                    <li class="hidden-sm"><a href="{% url "mission-statement" %}">Mission Statement</a></li>
+                    <li class="hidden-sm"><a href="{% url "contact-and-info" %}">Contact & Info</a></li>
+                    <li class="hidden-sm"><a href="{% url "photo-gallery" %}">Photo Gallery</a></li>
+                    <li class="hidden-sm"><a href="{% url "newsletters" %}">Newsletters</a></li>
+                    <li class="hidden-sm"><a href="{% url "static_page" "press" %}">Press</a></li>
+                </ul>
+            </li>
+            <li role="presentation" class="divider"></li>
+            {% if user.is_authenticated %}
+                <li class="mobile-navbar__user-name">{% user_display user %}</li>
+                {% if request.user.artist %}
+                  <li><a href="{% url "artist_dashboard:home" %}">Artist Dashboard</a></li>
+                {% endif %}
+                <li><a href="{% url "my-downloads" %}">My Downloads</a></li>
+                <li><a href="{% url "user_settings" %}">User Settings</a></li>
+                {% if not request.user.is_staff %}
+                  <li><a href="{% url "subscription_settings" %}">Subscription Settings</a></li>
+                {% endif %}
+                <li><a href="{% url "account_logout" %}">Sign out</a></li>
+             {% else %}
+                <li><a href="#" data-toggle="modal" data-target="#logIn">Sign in</a></li>
+                <li><a class="mobile-nav__signup-button" href="{% url "signup_landing" %}">Sign up</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- Collapsed search -->
+    <div class="collapse navbar-collapse search-dropdown" id="search-collapse">
       <div class="header-top">
         <div class="container">
           <ul class="nav navbar-nav">
@@ -101,33 +139,6 @@
                   </form>
               </div>
             </li>
-            <li><a href="/">Home</a></li>
-            <li><a href="{% url "live-stream" %}">Live now!</a></li>
-            <li><a href="{% url "schedule" %}">Calendar/Archive</a></li>
-            <li><a href="{% url "archive" %}">New/Popular</a></li>
-            <li><a href="{% url "promotions:home" %}">SmallsLIVE Tracks</a></li>
-            <li class="hidden-sm"><a href="{% url "about-us" %}">About us</a></li>
-            <li class="hidden-sm"><a href="{% url "mission-statement" %}">Mission Statement</a></li>
-            <li class="hidden-sm"><a href="{% url "contact-and-info" %}">Contact & Info</a></li>
-            <li class="hidden-sm"><a href="{% url "photo-gallery" %}">Photo Gallery</a></li>
-            <li class="hidden-sm"><a href="{% url "newsletters" %}">Newsletters</a></li>
-            <li class="hidden-sm"><a href="{% url "static_page" "press" %}">Press</a></li>
-            <li role="presentation" class="divider"></li>
-            {% if user.is_authenticated %}
-                <li>{% user_display user %}</li>
-                {% if request.user.artist %}
-                  <li><a href="{% url "artist_dashboard:home" %}">Artist Dashboard</a></li>
-                {% endif %}
-                <li><a href="{% url "my-downloads" %}">My Downloads</a></li>
-                <li><a href="{% url "user_settings" %}">User Settings</a></li>
-                {% if not request.user.is_staff %}
-                  <li><a href="{% url "subscription_settings" %}">Subscription Settings</a></li>
-                {% endif %}
-                <li><a href="{% url "account_logout" %}">Sign out</a></li>
-             {% else %}
-                <li><a href="#" data-toggle="modal" data-target="#logIn">Sign in</a></li>
-                <li><a href="{% url "signup_landing" %}">Sign up</a></li>
-            {% endif %}
           </ul>
         </div>
       </div>
