@@ -436,6 +436,7 @@
   padding: 60px 30px;
   position: relative;
   overflow: hidden;
+  background-color: #000;
 
   &:after {
     content: " ";
@@ -458,8 +459,9 @@
   &__bg-image-cover {
     background-size: cover;
     background-position: center center;
-    @include filter(grayscale(100%) blur(3px) brightness(0.4));
+    @include filter(grayscale(100%) blur(3px));
     @include transform(scale(1.05));
+    opacity: 0.4;
     position: absolute;
     top: 0;
     right: 0;
