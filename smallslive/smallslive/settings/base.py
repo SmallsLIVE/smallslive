@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     #'oscar_stripe',
     'paypal',
     'pipeline',
+    'rest_framework.authtoken',
     'sortedm2m',
     'storages',
     'tinymce',

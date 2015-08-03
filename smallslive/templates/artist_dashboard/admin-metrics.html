@@ -280,11 +280,6 @@
           <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
           <script src="{% static 'js/metrics_datepicker.js' %}"></script>
           <script>
-              var date = new Date(2015, 7, 1);
-              $datePicker.datepicker("setDate", date);
-          </script>
-
-          <script>
 
                 var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
                 var playsDataArchive = {
@@ -361,25 +356,37 @@
 
                 };
 
-            {% verbatim %}
-                window.onload = function(){
-                    var ctx = document.getElementById("graph-canvas").getContext("2d");
-                    window.myLine = new Chart(ctx).Line(playsDataArchive, {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        bezierCurve : false,
-                        bezierCurveTension : 0.25,
-                        scaleShowVerticalLines: false,
-                        scaleOverride: false,
-                        showScale: true,
-                        pointDotRadius : 6,
-                        datasetStrokeWidth : 4,
-                        scaleFontSize: 10,
-                        scaleFontStyle: "bold",
-                        scaleFontColor: "#999",
-                        multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                    });
-                }
+                window.onload = drawGraph(playsDataArchive);
+                $datePicker.on('changeMonth', function (d) {
+                      var countsURL = "http://localhost:9000/event_counts/";
+                      var data = {
+                          month: d.date.getMonth() + 1,
+                          year: d.date.getFullYear()
+                      };
+                      $.ajax(countsURL, {
+                          data: data,
+                          headers: {
+                              "Authorization": "Token {{ user_token }}"
+                          },
+                          success: function (data, textStatus, jqXHR) {
+                              playsData.labels = data.dates;
+                              playsData.datasets[0].data = data.audio_plays_list;
+                              playsData.datasets[1].data = data.video_plays_list;
+                              playsData.datasets[2].data = data.total_plays_list;
+                              minsData.labels = data.dates;
+                              minsData.datasets[0].data = data.audio_seconds_list;
+                              minsData.datasets[1].data = data.video_seconds_list;
+                              minsData.datasets[2].data = data.total_seconds_list;
+                              var playsActive = $("#metric-graph__show__data-1").hasClass("active");
+                              if (playsActive) {
+                                  drawGraph(playsData);
+                              } else {
+                                  drawGraph(minsData);
+                              }
+                          },
+                          type: 'GET'
+                      });
+                  });
 
 
                 /* Toggling different data */
@@ -389,135 +396,19 @@
                             $(".metric-graph__switch__option.data.active").toggleClass("active");
                             $(this).toggleClass("active");
                             $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
-                            if ($("#metric-graph__show__source-1").hasClass("active")) {
-                                var ctx = document.getElementById("graph-canvas").getContext("2d");
-                                window.myLine = new Chart(ctx).Line(playsData, {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    bezierCurve : false,
-                                    bezierCurveTension : 0.25,
-                                    scaleShowVerticalLines: false,
-                                    scaleOverride: false,
-                                    showScale: true,
-                                    pointDotRadius : 6,
-                                    datasetStrokeWidth : 4,
-                                    scaleFontSize: 10,
-                                    scaleFontStyle: "bold",
-                                    scaleFontColor: "#999",
-                                    multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                                });
-                            }
-                            else {
-                                var ctx = document.getElementById("graph-canvas").getContext("2d");
-                                window.myLine = new Chart(ctx).Line(playsDataArchive, {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    bezierCurve : false,
-                                    bezierCurveTension : 0.25,
-                                    scaleShowVerticalLines: false,
-                                    scaleOverride: false,
-                                    showScale: true,
-                                    pointDotRadius : 6,
-                                    datasetStrokeWidth : 4,
-                                    scaleFontSize: 10,
-                                    scaleFontStyle: "bold",
-                                    scaleFontColor: "#999",
-                                    multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                                });
-                            }
+                            drawGraph(playsData);
                         }
-                    })
+                    });
                     $("#metric-graph__show__data-2").click(function() {
                         if (!($(this).hasClass("active"))) {
                             $(".metric-graph__switch__option.data.active").toggleClass("active");
                             $(this).toggleClass("active");
                             $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
-                            if ($("#metric-graph__show__source-1").hasClass("active")) {
-                                console.log("testtest");
-                                var ctx = document.getElementById("graph-canvas").getContext("2d");
-                                window.myLine = new Chart(ctx).Line(minsData, {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    bezierCurve : false,
-                                    bezierCurveTension : 0.25,
-                                    scaleShowVerticalLines: false,
-                                    scaleOverride: false,
-                                    showScale: true,
-                                    pointDotRadius : 6,
-                                    datasetStrokeWidth : 4,
-                                    scaleFontSize: 10,
-                                    scaleFontStyle: "bold",
-                                    scaleFontColor: "#999",
-                                    multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                                });
-                            }
-                            else {
-                                console.log("srbija");
-                                var ctx = document.getElementById("graph-canvas").getContext("2d");
-                                window.myLine = new Chart(ctx).Line(minsDataArchive, {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    bezierCurve : false,
-                                    bezierCurveTension : 0.25,
-                                    scaleShowVerticalLines: false,
-                                    scaleOverride: false,
-                                    showScale: true,
-                                    pointDotRadius : 6,
-                                    datasetStrokeWidth : 4,
-                                    scaleFontSize: 10,
-                                    scaleFontStyle: "bold",
-                                    scaleFontColor: "#999",
-                                    multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                                });
-                            }
+                            drawGraph(minsData);
                         }
-                    })
-                    $("#metric-graph__show__source-2").click(function() {
-                        if (!($(this).hasClass("active"))) {
-                            $(".metric-graph__switch__option.source.active").toggleClass("active");
-                            $(this).toggleClass("active");
-                            $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
-                            if ($("#metric-graph__show__data-1").hasClass("active")) {
-                                var ctx = document.getElementById("graph-canvas").getContext("2d");
-                                window.myLine = new Chart(ctx).Line(playsDataArchive, {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    bezierCurve : false,
-                                    bezierCurveTension : 0.25,
-                                    scaleShowVerticalLines: false,
-                                    scaleOverride: false,
-                                    showScale: true,
-                                    pointDotRadius : 6,
-                                    datasetStrokeWidth : 4,
-                                    scaleFontSize: 10,
-                                    scaleFontStyle: "bold",
-                                    scaleFontColor: "#999",
-                                    multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                                });
-                            }
-                            else {
-                                var ctx = document.getElementById("graph-canvas").getContext("2d");
-                                window.myLine = new Chart(ctx).Line(minsDataArchive, {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    bezierCurve : false,
-                                    bezierCurveTension : 0.25,
-                                    scaleShowVerticalLines: false,
-                                    scaleOverride: false,
-                                    showScale: true,
-                                    pointDotRadius : 6,
-                                    datasetStrokeWidth : 4,
-                                    scaleFontSize: 10,
-                                    scaleFontStyle: "bold",
-                                    scaleFontColor: "#999",
-                                    multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                                });
-                            }
-                        }
-                    })
+                    });
 
                     // lists toggle
-
                     $("#metrics__lists__show__data-1").click(function() {
                         if (!($(this).hasClass("active"))) {
                             $(".metrics__lists__switch__option.data.active").toggleClass("active");
@@ -525,7 +416,7 @@
                             $('#all-time-events-list').slideUp("fast");
                             $('#week-events-list').slideDown();
                         }
-                    })
+                    });
                     $("#metrics__lists__show__data-2").click(function() {
                         if (!($(this).hasClass("active"))) {
                             $(".metrics__lists__switch__option.data.active").toggleClass("active");
@@ -533,10 +424,7 @@
                             $('#week-events-list').slideUp();
                             $('#all-time-events-list').slideDown("fast");
                         }
-                    })
+                    });
                 })
-
-
-              {% endverbatim %}
             </script>
 {% endblock %}

@@ -91,3 +91,5 @@ PIPELINE_CSS = {
         'output_filename': 'css/dashboard.css',
     },
 }
+
+SESSION_COOKIE_DOMAIN = 'localhost'

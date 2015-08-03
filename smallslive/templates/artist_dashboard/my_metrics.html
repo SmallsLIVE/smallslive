@@ -433,41 +433,48 @@
         window.onload = drawGraph(playsData);
 
         $datePicker.on('changeMonth', function (d) {
-          var countsURL = "http://localhost:9000/artist_counts/";
-          var data = {
-              month: d.date.getMonth() + 1,
-              year: d.date.getFullYear(),
-              event_ids: {{ artist_event_ids|safe }}
-          };
-          $.post(countsURL, data, function (data, textStatus, jqXHR) {
-              playsData.labels = data.dates;
-              playsData.datasets[0].data = data.audio_plays_list;
-              playsData.datasets[1].data = data.video_plays_list;
-              playsData.datasets[2].data = data.total_plays_list;
-              minsData.labels = data.dates;
-              minsData.datasets[0].data = data.audio_seconds_list;
-              minsData.datasets[1].data = data.video_seconds_list;
-              minsData.datasets[2].data = data.total_seconds_list;
-              playsDataArchive.labels = data.dates;
-              playsDataArchive.datasets[0].data = data.archive_audio_plays_list;
-              playsDataArchive.datasets[1].data = data.archive_video_plays_list;
-              playsDataArchive.datasets[2].data = data.archive_total_plays_list;
-              minsDataArchive.labels = data.dates;
-              minsDataArchive.datasets[0].data = data.archive_audio_seconds_list;
-              minsDataArchive.datasets[1].data = data.archive_video_seconds_list;
-              minsDataArchive.datasets[2].data = data.archive_total_seconds_list;
-              var playsActive = $("#metric-graph__show__data-1").hasClass("active");
-              var myMetricsActive = $("#metric-graph__show__source-1").hasClass("active");
-              if (playsActive && myMetricsActive) {
-                  drawGraph(playsData);
-              } else if (playsActive && !myMetricsActive) {
-                  drawGraph(playsDataArchive);
-              } else if (!playsActive && myMetricsActive) {
-                  drawGraph(minsData)
-              } else {
-                  drawGraph(minsDataArchive)
-              }
-          });
+            var countsURL = "http://localhost:9000/artist_counts/";
+            var data = {
+                month: d.date.getMonth() + 1,
+                year: d.date.getFullYear(),
+                event_ids: {{ artist_event_ids|safe }}
+            };
+            $.ajax(countsURL, {
+                data: data,
+                type: "POST",
+                headers: {
+                  "Authorization": "Token {{ user_token }}"
+                },
+                success: function (data, textStatus, jqXHR) {
+                    playsData.labels = data.dates;
+                    playsData.datasets[0].data = data.audio_plays_list;
+                    playsData.datasets[1].data = data.video_plays_list;
+                    playsData.datasets[2].data = data.total_plays_list;
+                    minsData.labels = data.dates;
+                    minsData.datasets[0].data = data.audio_seconds_list;
+                    minsData.datasets[1].data = data.video_seconds_list;
+                    minsData.datasets[2].data = data.total_seconds_list;
+                    playsDataArchive.labels = data.dates;
+                    playsDataArchive.datasets[0].data = data.archive_audio_plays_list;
+                    playsDataArchive.datasets[1].data = data.archive_video_plays_list;
+                    playsDataArchive.datasets[2].data = data.archive_total_plays_list;
+                    minsDataArchive.labels = data.dates;
+                    minsDataArchive.datasets[0].data = data.archive_audio_seconds_list;
+                    minsDataArchive.datasets[1].data = data.archive_video_seconds_list;
+                    minsDataArchive.datasets[2].data = data.archive_total_seconds_list;
+                    var playsActive = $("#metric-graph__show__data-1").hasClass("active");
+                    var myMetricsActive = $("#metric-graph__show__source-1").hasClass("active");
+                    if (playsActive && myMetricsActive) {
+                        drawGraph(playsData);
+                    } else if (playsActive && !myMetricsActive) {
+                        drawGraph(playsDataArchive);
+                    } else if (!playsActive && myMetricsActive) {
+                        drawGraph(minsData)
+                    } else {
+                        drawGraph(minsDataArchive)
+                    }
+                }
+            })
         });
 
         /* Toggling different data */

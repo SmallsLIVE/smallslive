@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core import signing
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -12,6 +13,7 @@ from django.views.generic.list import ListView
 from allauth.account.forms import ChangePasswordForm
 import allauth.account.views as allauth_views
 from metrics.models import UserVideoMetric
+from rest_framework.authtoken.models import Token
 
 from artists.models import Artist
 from events.models import Recording, Event
@@ -149,6 +151,7 @@ class EventMetricsView(HasArtistAssignedMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(EventMetricsView, self).get_context_data(**kwargs)
         now = timezone.now().date()
+        context['user_token'] = Token.objects.get(user=self.request.user)
         context['weekly_stats'] = context['monthly_stats'] = UserVideoMetric.objects.this_week_counts(
             artist_event_ids=[self.object.id], trends=True, humanize=True)
         context['monthly_stats'] = UserVideoMetric.objects.this_month_counts(
@@ -201,6 +204,7 @@ class MyMetricsView(HasArtistAssignedMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(MyMetricsView, self).get_context_data(**kwargs)
         now = timezone.now().date()
+        context['user_token'] = Token.objects.get(user=self.request.user)
         artist_event_ids = list(self.request.user.artist.event_id_list())
         context['artist_event_ids'] = artist_event_ids
         context['monthly_stats'] = UserVideoMetric.objects.this_month_counts(humanize=True)
@@ -239,6 +243,7 @@ class AdminMetricsView(HasArtistAssignedMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(AdminMetricsView, self).get_context_data(**kwargs)
+        context['user_token'] = Token.objects.get(user=self.request.user)
         now = timezone.now().date()
         context['audio_counts'] = UserVideoMetric.objects.total_archive_counts(trends=True, recording_type='audio',
                                                                                humanize=True)
