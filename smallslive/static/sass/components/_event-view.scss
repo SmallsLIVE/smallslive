@@ -55,7 +55,8 @@ $future-event-view_header-height: 300px;
       right: 0;
       bottom: 0;
       left: 0;
-      @include filter(grayscale(100%) blur(3px) brightness(0.4));
+      opacity: 0.4;
+      @include filter(grayscale(100%) blur(3px));
       @include transform(scale(1.05));
       background-size: cover;
       background-position: center center;
@@ -64,6 +65,7 @@ $future-event-view_header-height: 300px;
     &__info {
       width: 100%;
       overflow: hidden;
+      background-color: #000;
 
       &__container {
         @include display(flex);
