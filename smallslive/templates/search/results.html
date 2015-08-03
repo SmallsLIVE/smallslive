@@ -18,6 +18,8 @@
                         {% render_product result.object %}
                     {% endfor %}
                 </ol>
+            {% else %}
+                <h2 class="store-search__no-results">No results found that match your search query.</h2>
             {% endif %}
         </div>
     </div>

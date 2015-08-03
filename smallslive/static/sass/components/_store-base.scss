@@ -1960,3 +1960,13 @@ img.defineImageRatio {
     }
   }
 }
+
+.store-search {
+
+  &__no-results {
+    margin: 0 0 0 10px;
+    @include lato-bold-italic;
+    opacity: 0.5;
+    font-size: 18px;
+  }
+}
