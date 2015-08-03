@@ -106,6 +106,10 @@ a:hover {
   display: table-cell;
   vertical-align: middle;
   padding: 50px 0;
+
+  @media(max-width:$screen-xs-max) {
+    padding: 30px 0;
+  }
 }
 
 .div-fill-img.wide {
