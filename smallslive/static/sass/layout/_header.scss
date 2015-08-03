@@ -267,41 +267,93 @@ header {
 }
 
 .mobile-navbar {
-  background-color: $main-accent-color;
   margin-bottom: 0;
 
-  .navbar-nav li a, .navbar-nav li {
+  .navbar-nav li {
     color: #ffffff !important;
     text-align: center;
     width: 100%;
     font-size: 16px;
-    padding: 10px 0;
+    padding: 8px 0;
+
+    &.nopadding {
+      padding: 0;
+    }
+
+    & a {
+      color: #fff;
+      padding: 8px 30px;
+      display: inline-block;
+
+      &:hover, &:focus {
+        color: rgba(#fff, 0.8);
+      }
+    }
   }
 
   .navbar-nav li {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &.divider {
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+      padding: 0;
+      margin: 15px 0;
+    }
+
+    & i {
+      margin-left: 5px;
+    }
+  }
+
+  &__submenu {
+    padding: 0;
+    background-color: $main-accent-color-darker;
+
+    & li {
+      list-style-type: none;
+    }
+  }
+
+  &__user-name {
+    @include lato-bold;
+    margin-bottom: 10px;
   }
 }
 
 .navbar-header {
   padding: 5px 0;
+  background-color: $main-accent-color;
+}
+
+.navbar-collapse {
+  padding-left: 0;
+  padding-right: 0;
+
+  &.menu {
+    border: none;
+    background-color: $main-accent-color;
+    padding-bottom: 20px;
+  }
+
+  &.search-dropdown {
+    border: none;
+    background-color: $main-accent-color-darker;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    & li {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+  }
 }
 
 .navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
   background: none;
   border: none1;
-}
-
-.navbar-default .navbar-collapse, .navbar-default .navbar-form {
-  border: none;
-}
-
-.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
-  background: none;
-}
-
-.navbar-default .navbar-toggle .icon-bar {
-  background-color: #fff;
 }
 
 .nav > li > a:hover, .nav > li > a:focus {
@@ -327,9 +379,12 @@ header {
 }
 
 .smalls-hor-logo {
-  height: 30px;
+  position: relative;
+  top: 4px;
+  height: 26px;
   display: block;
   margin: 10px;
+  float: left;
 
   img {
     height: 100%;
@@ -341,5 +396,32 @@ header {
 @media (max-width: $screen-sm-max) {
   .search {
     margin: 0;
+  }
+}
+
+.mobile-nav {
+
+  &__button.navbar-toggle {
+    border: none;
+    background: none;
+    color: #fff;
+
+    &:hover, &:focus {
+      background: none;
+    }
+
+    &.collapsed {
+      opacity: 0.75;
+      color: #000;
+    }
+
+    & i {
+      font-size: 20px;
+    }
+  }
+
+  &__signup-button {
+    padding: 8px 10px;
+    border: 2px solid rgba(#fff, 0.7);
   }
 }

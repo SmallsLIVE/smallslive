@@ -10,6 +10,10 @@
     font-size: 48px;
     margin-top: 0;
     margin-bottom: 11px;
+
+    @media(max-width:$screen-xs-max) {
+      font-size: 26px;
+    }
   }
 
   &__text {

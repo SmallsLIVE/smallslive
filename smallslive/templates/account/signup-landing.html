@@ -12,7 +12,7 @@
                     <p class="signup-membership__header__text">Become a subscribing member and gain unlimited access to our extensive audio/video archive of past shows. By becoming a subscribing member you are directly supporting the musicians and the SmallsLIVE Revenue Share Project.</p>
                 </div>
             </div>
-            <div class="signup-membership__points">
+            <div class="signup-membership__points" id="signup-membership-points-carousel">
                 <div class="col-xs-12 col-sm-6 col-md-3 signup-membership__points__single">
                     <i class="signup-membership__points__graphic livicon" data-name="albums" data-size="54" data-color="#D21535" data-hc="#D21535"></i>
                     <div class="signup-membership__points__text">
@@ -124,6 +124,40 @@
 
 {% block extra_js %}
     <script>
-
+        /* Initialize featured points carousel for mobile */
+        $(document).ready(function () {
+            $('#signup-membership-points-carousel').slick({
+                dots: true,
+                arrows: false,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                autoplay: true,
+                autoplaySpeed: 8000,
+                responsive: [
+                    {
+                        breakpoint: 6000,
+                        settings: {
+                            slidesToShow: 4,
+                            slidesToScroll: 4,
+                            dots: false
+                        }
+                    },
+                    {
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                        }
+                    },
+                    {
+                        breakpoint: 767,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            });
+        });
     </script>
 {% endblock %}
