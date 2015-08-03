@@ -905,7 +905,7 @@
       @include lato-black;
       font-size: 28px;
       color: $main-accent-color;
-      margin: 0 0 15px;
+      margin: 0 0 20px;
       line-height: 130%;
 
       & a {
@@ -917,11 +917,18 @@
       }
     }
 
+    &__subtitle {
+      @include lato-bold-italic;
+      font-size: 22px;
+      color: rgba($base-text-color, 0.6);
+      margin: -15px 0 20px;
+    }
+
     &__event-link {
       width: 100%;
       float: left;
       text-align: left;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
 
       & a {
         @include red-button;
