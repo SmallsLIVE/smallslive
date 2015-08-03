@@ -12,6 +12,14 @@
     font-size: 24px;
     margin: 0;
 
+    & a {
+      color: #fff;
+
+      &:hover, &:focus {
+        color: rgba(#fff, 0.7);
+      }
+    }
+
     &__divider {
       @include lato;
       margin: 0 15px;
