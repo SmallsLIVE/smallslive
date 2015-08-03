@@ -58,7 +58,7 @@
               <form role="form" method="post" action="{% url "artist_dashboard:settings" %}">
                   {% csrf_token %}
                   <h2 class="account-settings__form__heading">Payout information:</h2>
-                  <p class="account-settings__form__text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
+                  <p class="account-settings__form__text">Enter a mailing address where we can send a check. If you prefer to use Paypal for direct deposit please click that choice below.</p>
                   <div class="form-group {% if artist_info_form.first_name.errors  %}has-error{% endif %}">
                     {{ artist_info_form.first_name.label_tag }}
                     {{ artist_info_form.first_name }}
