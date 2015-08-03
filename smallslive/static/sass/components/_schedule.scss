@@ -3,6 +3,10 @@
   padding: 20px 20px 10px;
   border-top: 1px solid rgba(#fff, 0.5);
 
+  @media(max-width:$screen-xs-max) {
+    padding-bottom: 0;
+  }
+
   & p {
     font-size: 14px;
     @include lato-bold;
@@ -17,6 +21,14 @@
 
       & i {
         margin-right: 5px;
+      }
+    }
+
+    @media(max-width:$screen-xs-max) {
+      margin-top: 7px;
+
+      & span {
+        margin: 2px 10px;
       }
     }
   }
