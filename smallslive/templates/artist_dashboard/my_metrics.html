@@ -281,181 +281,194 @@
   <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
   <script src="{% static 'js/metrics_datepicker.js' %}"></script>
   <script>
-      var date = new Date(2015, 7, 1);
-      $datePicker.datepicker("setDate", date);
-  </script>
-
-  <script>
-    {% verbatim %}
-
 		var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
 		var playsData = {
-			labels : ["07/01","07/02","07/03","07/04","07/05","07/06","07/07","07/08","07/09","07/10","07/11","07/12","07/13","07/14","07/15","07/16","07/17","07/18","07/19","07/20","07/21","07/22"],
+			labels : {{ date_counts.dates|safe }},
 			datasets : [
-				{
-					label: "Total",
-					fillColor : "rgba(210,21,53,0)",
-					strokeColor : "rgba(210,21,53,1)",
-					pointColor : "rgba(210,21,53,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(220,220,220,1)",
-					data : [129,87,120,176,130,183,164,68,165,133,141,197,212,196,178,290,144,128,156,99,146,165]
-				},
-				{
-					label: "Audio",
-					fillColor : "rgba(56,193,153,0)",
-					strokeColor : "rgba(56,193,153,1)",
-					pointColor : "rgba(56,193,153,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(151,187,205,1)",
-					data : [42,31,56,88,108,135,87,35,77,68,99,98,105,108,101,150,88,64,68,77,98,88]
-				},
                 {
-					label: "Video",
-					fillColor : "rgba(125,77,117,0)",
-					strokeColor : "rgba(125,77,117,1)",
-					pointColor : "rgba(125,77,117,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(151,187,205,1)",
-					data : [87,56,64,88,22,48,77,33,88,65,42,99,107,88,77,140,56,64,88,22,48,77]
-				}
+                  label: "Audio",
+                  fillColor: "rgba(56,193,153,0)",
+                  strokeColor: "rgba(56,193,153,1)",
+                  pointColor: "rgba(56,193,153,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(151,187,205,1)",
+                  data: {{ date_counts.audio_plays_list }}
+                },
+                {
+                  label: "Video",
+                  fillColor: "rgba(125,77,117,0)",
+                  strokeColor: "rgba(125,77,117,1)",
+                  pointColor: "rgba(125,77,117,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(151,187,205,1)",
+                  data: {{ date_counts.video_plays_list }}
+                },
+                {
+                  label: "Total",
+                  fillColor: "rgba(210,21,53,0)",
+                  strokeColor: "rgba(210,21,53,1)",
+                  pointColor: "rgba(210,21,53,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(220,220,220,1)",
+                  data: {{ date_counts.total_plays_list }}
+                }
 			]
 
-		}
+		};
 
         var minsData = {
-			labels : ["07/01","07/02","07/03","07/04","07/05","07/06","07/07","07/08","07/09","07/10","07/11","07/12","07/13","07/14","07/15","07/16","07/17","07/18","07/19","07/20","07/21","07/22"],
+			labels : {{ date_counts.dates|safe }},
 			datasets : [
-				{
-					label: "Total",
-					fillColor : "rgba(210,21,53,0)",
-					strokeColor : "rgba(210,21,53,1)",
-					pointColor : "rgba(210,21,53,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(220,220,220,1)",
-					data : [12.81, 2.8, 8.81, 7.26, 1.36, 5.16, 9.52, 6.5, 4.38, 4.03, 11.15, 7.25, 4.91, 7.09, 2.09, 3.47, 3.85, 7.35, 8.48, 5.83, 5.24, 6.87]
-				},
-				{
-					label: "Audio",
-					fillColor : "rgba(56,193,153,0)",
-					strokeColor : "rgba(56,193,153,1)",
-					pointColor : "rgba(56,193,153,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(151,187,205,1)",
-					data : [6.25, 0.48, 2.01, 1.34, 0.14, 3.44, 2.67, 1.77, 1.93, 2.57, 5.1, 4.43, 2.3, 0.92, 1.92, 0.28, 1.24, 4.17, 1.64, 0.49, 0.22, 5.42]
-				},
                 {
-					label: "Video",
-					fillColor : "rgba(125,77,117,0)",
-					strokeColor : "rgba(125,77,117,1)",
-					pointColor : "rgba(125,77,117,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(151,187,205,1)",
-					data : [6.56, 2.32, 6.8, 5.92, 1.22, 1.72, 6.85, 4.73, 2.45, 1.46, 6.05, 2.82, 2.61, 6.17, 0.17, 3.19, 2.61, 3.18, 6.84, 5.34, 5.02, 1.45]
-				}
+                  label: "Audio",
+                  fillColor: "rgba(56,193,153,0)",
+                  strokeColor: "rgba(56,193,153,1)",
+                  pointColor: "rgba(56,193,153,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(151,187,205,1)",
+                  data: {{ date_counts.audio_seconds_list }}
+                },
+                {
+                  label: "Video",
+                  fillColor: "rgba(125,77,117,0)",
+                  strokeColor: "rgba(125,77,117,1)",
+                  pointColor: "rgba(125,77,117,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(151,187,205,1)",
+                  data: {{ date_counts.video_seconds_list }}
+                },
+                {
+                  label: "Total",
+                  fillColor: "rgba(210,21,53,0)",
+                  strokeColor: "rgba(210,21,53,1)",
+                  pointColor: "rgba(210,21,53,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(220,220,220,1)",
+                  data: {{ date_counts.total_seconds_list }}
+                }
 			]
 
-		}
+		};
 
         var playsDataArchive = {
-			labels : ["07/01","07/02","07/03","07/04","07/05","07/06","07/07","07/08","07/09","07/10","07/11","07/12","07/13","07/14","07/15","07/16","07/17","07/18","07/19","07/20","07/21","07/22"],
+			labels : {{ archive_date_counts.dates|safe }},
 			datasets : [
-				{
-					label: "Total",
-					fillColor : "rgba(210,21,53,0)",
-					strokeColor : "rgba(210,21,53,1)",
-					pointColor : "rgba(210,21,53,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(220,220,220,1)",
-					data : [25249, 32758, 12220, 33319, 30091, 29945, 25127, 5233, 15760, 22093, 9901, 6112, 20621, 32670, 5952, 10116, 7671, 31435, 23794, 24197, 32804, 10045]
-				},
-				{
-					label: "Audio",
-					fillColor : "rgba(56,193,153,0)",
-					strokeColor : "rgba(56,193,153,1)",
-					pointColor : "rgba(56,193,153,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(151,187,205,1)",
-					data : [17598, 24681, 30742, 6290, 31984, 14450, 9332, 13754, 20069, 14511, 26636, 18844, 21691, 22089, 29797, 28612, 11001, 21364, 5041, 11611, 26411, 8042]
-				},
                 {
-					label: "Video",
-					fillColor : "rgba(125,77,117,0)",
-					strokeColor : "rgba(125,77,117,1)",
-					pointColor : "rgba(125,77,117,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(151,187,205,1)",
-					data : [42847, 57439, 42962, 39609, 62075, 44395, 34459, 18987, 35829, 36604, 36537, 24956, 42312, 54759, 35749, 38728, 18672, 52799, 28835, 35808, 59215, 18087]
-				}
+                  label: "Audio",
+                  fillColor: "rgba(56,193,153,0)",
+                  strokeColor: "rgba(56,193,153,1)",
+                  pointColor: "rgba(56,193,153,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(151,187,205,1)",
+                  data: {{ archive_date_counts.audio_plays_list }}
+                },
+                {
+                  label: "Video",
+                  fillColor: "rgba(125,77,117,0)",
+                  strokeColor: "rgba(125,77,117,1)",
+                  pointColor: "rgba(125,77,117,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(151,187,205,1)",
+                  data: {{ archive_date_counts.video_plays_list }}
+                },
+                {
+                  label: "Total",
+                  fillColor: "rgba(210,21,53,0)",
+                  strokeColor: "rgba(210,21,53,1)",
+                  pointColor: "rgba(210,21,53,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(220,220,220,1)",
+                  data: {{ archive_date_counts.total_plays_list }}
+                }
 			]
 
-		}
+		};
 
         var minsDataArchive = {
-			labels : ["07/01","07/02","07/03","07/04","07/05","07/06","07/07","07/08","07/09","07/10","07/11","07/12","07/13","07/14","07/15","07/16","07/17","07/18","07/19","07/20","07/21","07/22"],
+			labels : {{ archive_date_counts.dates|safe }},
 			datasets : [
-				{
-					label: "Total",
-					fillColor : "rgba(210,21,53,0)",
-					strokeColor : "rgba(210,21,53,1)",
-					pointColor : "rgba(210,21,53,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(220,220,220,1)",
-					data : [151.78, 96.22, 302.66, 318.6, 329.27, 144.88, 120.17, 184.07, 277.03, 157.61, 192.86, 100.34, 304.66, 145.84, 93.17, 105.53, 54.7, 61.27, 170.39, 53.29, 62.2, 48.58]
-				},
-				{
-					label: "Audio",
-					fillColor : "rgba(56,193,153,0)",
-					strokeColor : "rgba(56,193,153,1)",
-					pointColor : "rgba(56,193,153,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(151,187,205,1)",
-					data : [207.91, 48.24, 136.77, 131.5, 193.18, 72.72, 246.94, 292.53, 69.53, 48.47, 88.05, 169.05, 320.82, 90.37, 163.55, 336, 264.78, 219.24, 210.26, 295.32, 139.15, 261.3]
-				},
                 {
-					label: "Video",
-					fillColor : "rgba(125,77,117,0)",
-					strokeColor : "rgba(125,77,117,1)",
-					pointColor : "rgba(125,77,117,1)",
-					pointStrokeColor : "#fff",
-					pointHighlightFill : "#fff",
-					pointHighlightStroke : "rgba(151,187,205,1)",
-					data : [359.69, 144.46, 439.43, 450.1, 522.45, 217.6, 367.11, 476.6, 346.56, 206.08, 280.91, 269.39, 625.48, 236.21, 256.72, 441.53, 319.48, 280.51, 380.65, 348.61, 201.35, 309.88]
-				}
+                  label: "Audio",
+                  fillColor: "rgba(56,193,153,0)",
+                  strokeColor: "rgba(56,193,153,1)",
+                  pointColor: "rgba(56,193,153,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(151,187,205,1)",
+                  data: {{ archive_date_counts.audio_seconds_list }}
+                },
+                {
+                  label: "Video",
+                  fillColor: "rgba(125,77,117,0)",
+                  strokeColor: "rgba(125,77,117,1)",
+                  pointColor: "rgba(125,77,117,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(151,187,205,1)",
+                  data: {{ archive_date_counts.video_seconds_list }}
+                },
+                {
+                  label: "Total",
+                  fillColor: "rgba(210,21,53,0)",
+                  strokeColor: "rgba(210,21,53,1)",
+                  pointColor: "rgba(210,21,53,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(220,220,220,1)",
+                  data: {{ archive_date_counts.total_seconds_list }}
+                }
 			]
 
-		}
+		};
 
-        window.onload = function(){
-            var ctx = document.getElementById("graph-canvas").getContext("2d");
-            window.myLine = new Chart(ctx).Line(playsData, {
-                responsive: true,
-                maintainAspectRatio: false,
-                bezierCurve : false,
-                bezierCurveTension : 0.25,
-                scaleShowVerticalLines: false,
-                scaleOverride: false,
-                showScale: true,
-                pointDotRadius : 6,
-                datasetStrokeWidth : 4,
-                scaleFontSize: 10,
-                scaleFontStyle: "bold",
-                scaleFontColor: "#999",
-                multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-            });
-        }
+        window.onload = drawGraph(playsData);
 
+        $datePicker.on('changeMonth', function (d) {
+          var countsURL = "http://localhost:9000/artist_counts/";
+          var data = {
+              month: d.date.getMonth() + 1,
+              year: d.date.getFullYear(),
+              event_ids: {{ artist_event_ids|safe }}
+          };
+          $.post(countsURL, data, function (data, textStatus, jqXHR) {
+              playsData.labels = data.dates;
+              playsData.datasets[0].data = data.audio_plays_list;
+              playsData.datasets[1].data = data.video_plays_list;
+              playsData.datasets[2].data = data.total_plays_list;
+              minsData.labels = data.dates;
+              minsData.datasets[0].data = data.audio_seconds_list;
+              minsData.datasets[1].data = data.video_seconds_list;
+              minsData.datasets[2].data = data.total_seconds_list;
+              playsDataArchive.labels = data.dates;
+              playsDataArchive.datasets[0].data = data.archive_audio_plays_list;
+              playsDataArchive.datasets[1].data = data.archive_video_plays_list;
+              playsDataArchive.datasets[2].data = data.archive_total_plays_list;
+              minsDataArchive.labels = data.dates;
+              minsDataArchive.datasets[0].data = data.archive_audio_seconds_list;
+              minsDataArchive.datasets[1].data = data.archive_video_seconds_list;
+              minsDataArchive.datasets[2].data = data.archive_total_seconds_list;
+              var playsActive = $("#metric-graph__show__data-1").hasClass("active");
+              var myMetricsActive = $("#metric-graph__show__source-1").hasClass("active");
+              if (playsActive && myMetricsActive) {
+                  drawGraph(playsData);
+              } else if (playsActive && !myMetricsActive) {
+                  drawGraph(playsDataArchive);
+              } else if (!playsActive && myMetricsActive) {
+                  drawGraph(minsData)
+              } else {
+                  drawGraph(minsDataArchive)
+              }
+          });
+        });
 
         /* Toggling different data */
         $(document).ready(function () {
@@ -465,174 +478,52 @@
                     $(this).toggleClass("active");
                     $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                     if ($("#metric-graph__show__source-1").hasClass("active")) {
-                        var ctx = document.getElementById("graph-canvas").getContext("2d");
-                        window.myLine = new Chart(ctx).Line(playsData, {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            bezierCurve : false,
-                            bezierCurveTension : 0.25,
-                            scaleShowVerticalLines: false,
-                            scaleOverride: false,
-                            showScale: true,
-                            pointDotRadius : 6,
-                            datasetStrokeWidth : 4,
-                            scaleFontSize: 10,
-                            scaleFontStyle: "bold",
-                            scaleFontColor: "#999",
-                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                        });
+                        drawGraph(playsData);
                     }
                     else {
-                        var ctx = document.getElementById("graph-canvas").getContext("2d");
-                        window.myLine = new Chart(ctx).Line(playsDataArchive, {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            bezierCurve : false,
-                            bezierCurveTension : 0.25,
-                            scaleShowVerticalLines: false,
-                            scaleOverride: false,
-                            showScale: true,
-                            pointDotRadius : 6,
-                            datasetStrokeWidth : 4,
-                            scaleFontSize: 10,
-                            scaleFontStyle: "bold",
-                            scaleFontColor: "#999",
-                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                        });
+                        drawGraph(playsDataArchive);
                     }
                 }
-            })
+            });
             $("#metric-graph__show__data-2").click(function() {
                 if (!($(this).hasClass("active"))) {
                     $(".metric-graph__switch__option.data.active").toggleClass("active");
                     $(this).toggleClass("active");
                     $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                     if ($("#metric-graph__show__source-1").hasClass("active")) {
-                        console.log("testtest");
-                        var ctx = document.getElementById("graph-canvas").getContext("2d");
-                        window.myLine = new Chart(ctx).Line(minsData, {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            bezierCurve : false,
-                            bezierCurveTension : 0.25,
-                            scaleShowVerticalLines: false,
-                            scaleOverride: false,
-                            showScale: true,
-                            pointDotRadius : 6,
-                            datasetStrokeWidth : 4,
-                            scaleFontSize: 10,
-                            scaleFontStyle: "bold",
-                            scaleFontColor: "#999",
-                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                        });
+                        drawGraph(minsData);
                     }
                     else {
-                        console.log("srbija");
-                        var ctx = document.getElementById("graph-canvas").getContext("2d");
-                        window.myLine = new Chart(ctx).Line(minsDataArchive, {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            bezierCurve : false,
-                            bezierCurveTension : 0.25,
-                            scaleShowVerticalLines: false,
-                            scaleOverride: false,
-                            showScale: true,
-                            pointDotRadius : 6,
-                            datasetStrokeWidth : 4,
-                            scaleFontSize: 10,
-                            scaleFontStyle: "bold",
-                            scaleFontColor: "#999",
-                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                        });
+                        drawGraph(minsDataArchive);
                     }
                 }
-            })
+            });
             $("#metric-graph__show__source-1").click(function() {
                 if (!($(this).hasClass("active"))) {
                     $(".metric-graph__switch__option.source.active").toggleClass("active");
                     $(this).toggleClass("active");
                     $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                     if ($("#metric-graph__show__data-1").hasClass("active")) {
-                        var ctx = document.getElementById("graph-canvas").getContext("2d");
-                        window.myLine = new Chart(ctx).Line(playsData, {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            bezierCurve : false,
-                            bezierCurveTension : 0.25,
-                            scaleShowVerticalLines: false,
-                            scaleOverride: false,
-                            showScale: true,
-                            pointDotRadius : 6,
-                            datasetStrokeWidth : 4,
-                            scaleFontSize: 10,
-                            scaleFontStyle: "bold",
-                            scaleFontColor: "#999",
-                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                        });
+                        drawGraph(playsData);
                     }
                     else {
-                        var ctx = document.getElementById("graph-canvas").getContext("2d");
-                        window.myLine = new Chart(ctx).Line(minsData, {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            bezierCurve : false,
-                            bezierCurveTension : 0.25,
-                            scaleShowVerticalLines: false,
-                            scaleOverride: false,
-                            showScale: true,
-                            pointDotRadius : 6,
-                            datasetStrokeWidth : 4,
-                            scaleFontSize: 10,
-                            scaleFontStyle: "bold",
-                            scaleFontColor: "#999",
-                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                        });
+                        drawGraph(minsData);
                     }
                 }
-            })
+            });
             $("#metric-graph__show__source-2").click(function() {
                 if (!($(this).hasClass("active"))) {
                     $(".metric-graph__switch__option.source.active").toggleClass("active");
                     $(this).toggleClass("active");
                     $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                     if ($("#metric-graph__show__data-1").hasClass("active")) {
-                        var ctx = document.getElementById("graph-canvas").getContext("2d");
-                        window.myLine = new Chart(ctx).Line(playsDataArchive, {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            bezierCurve : false,
-                            bezierCurveTension : 0.25,
-                            scaleShowVerticalLines: false,
-                            scaleOverride: false,
-                            showScale: true,
-                            pointDotRadius : 6,
-                            datasetStrokeWidth : 4,
-                            scaleFontSize: 10,
-                            scaleFontStyle: "bold",
-                            scaleFontColor: "#999",
-                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                        });
+                        drawGraph(playsDataArchive);
                     }
                     else {
-                        var ctx = document.getElementById("graph-canvas").getContext("2d");
-                        window.myLine = new Chart(ctx).Line(minsDataArchive, {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            bezierCurve : false,
-                            bezierCurveTension : 0.25,
-                            scaleShowVerticalLines: false,
-                            scaleOverride: false,
-                            showScale: true,
-                            pointDotRadius : 6,
-                            datasetStrokeWidth : 4,
-                            scaleFontSize: 10,
-                            scaleFontStyle: "bold",
-                            scaleFontColor: "#999",
-                            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
-                        });
+                        drawGraph(minsDataArchive);
                     }
                 }
-            })
+            });
 
             // lists toggle
 
@@ -643,7 +534,7 @@
                     $('#all-time-events-list').slideUp("fast");
                     $('#week-events-list').slideDown();
                 }
-            })
+            });
             $("#metrics__lists__show__data-2").click(function() {
                 if (!($(this).hasClass("active"))) {
                     $(".metrics__lists__switch__option.data.active").toggleClass("active");
@@ -652,9 +543,6 @@
                     $('#all-time-events-list').slideDown("fast");
                 }
             })
-        })
-
-
-      {% endverbatim %}
+        });
 	</script>
 {% endblock %}

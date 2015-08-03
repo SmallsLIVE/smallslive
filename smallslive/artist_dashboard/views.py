@@ -200,7 +200,9 @@ class MyMetricsView(HasArtistAssignedMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MyMetricsView, self).get_context_data(**kwargs)
+        now = timezone.now().date()
         artist_event_ids = list(self.request.user.artist.event_id_list())
+        context['artist_event_ids'] = artist_event_ids
         context['monthly_stats'] = UserVideoMetric.objects.this_month_counts(humanize=True)
         context['weekly_stats'] = UserVideoMetric.objects.this_week_counts(humanize=True)
         context['weekly_artist_stats'] = UserVideoMetric.objects.this_week_counts(artist_event_ids=artist_event_ids,
@@ -213,6 +215,8 @@ class MyMetricsView(HasArtistAssignedMixin, TemplateView):
         context['top_weekly_events'] = self._event_and_counts_from_ids(top_weekly_events)
         top_all_time_events = UserVideoMetric.objects.top_all_time_events(artist_event_ids=artist_event_ids)
         context['top_all_time_events'] = self._event_and_counts_from_ids(top_all_time_events)
+        context['date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year, artist_event_ids)
+        context['archive_date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year)
         return context
 
     def _event_and_counts_from_ids(self, top_events):
