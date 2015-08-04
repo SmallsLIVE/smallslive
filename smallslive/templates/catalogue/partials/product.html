@@ -14,10 +14,10 @@
   {% purchase_info_for_product request product as session %}
     <!-- Single store item -->
     <div class="col-xs-12 col-sm-6 {% if full_width %}col-md-3{% else %}col-md-4{% endif %} store-list-item">
-        <div class="store-list-item__image square-container">
+        <div class="store-list-item__image cd-ratio-container">
             {% with image=product.primary_image %}
                 {% if not image.is_missing %}
-                  <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=245 width=245 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                  <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=264 width=240 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
                 {% else %}
                   <a href="{{ product.get_absolute_url }}"><img src="{% static "image/image_not_found.jpg" %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
                 {% endif %}
