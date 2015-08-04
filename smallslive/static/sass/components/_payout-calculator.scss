@@ -1,0 +1,90 @@
+.payout-calculator {
+  background-color: #fff;
+  padding: 30px 30px 40px;
+
+  &__period {
+    @include lato-black;
+    font-size: 18px;
+    margin: 0 30px 15px 0;
+
+    &__label {
+      min-width: 160px;
+      display: inline-block;
+    }
+  }
+
+  &__instructions {
+    display: block;
+    margin: 30px 0;
+    color: rgba($base-text-color, 0.7);
+    max-width: 756px;
+
+      & p {
+        margin: 2px 0;
+      }
+
+      &.warning {
+        color: $main-accent-color;
+      }
+  }
+
+  &__date-picker {
+    padding: 10px 0 10px 10px;
+    background-color: #eee;
+    border: 1px solid #ddd;
+    margin-left: 10px;
+    font-size: 16px;
+
+    & input {
+      outline: none;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      width: auto;
+      padding: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    & i {
+      opacity: 0.5;
+      position: relative;
+      left: -20px;
+      z-index: 1;
+    }
+  }
+
+  &__set-final {
+
+    &__checkbox {
+      width: 20px;
+      height: 20px;
+      margin: 0;
+    }
+
+    &__checkbox-label {
+      font-size: 16px;
+      margin: 0 0 0 10px;
+      position: relative;
+      top: 2px;
+    }
+
+    &__checkbox-container {
+      @include display(flex);
+      @include align-items(center);
+    }
+
+    &__container {
+      margin-top: 40px;
+    }
+  }
+
+  &__submit-button {
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: $main-accent-color;
+    font-size: 18px;
+    color: #fff;
+    @include lato-bold;
+  }
+}
