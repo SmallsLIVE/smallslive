@@ -187,7 +187,7 @@
   z-index: 10;
 
   &.landing-nav {
-    padding: 40px 30px;
+    padding: 40px 30px 10px;
   }
 
   &__search-divider {
@@ -208,11 +208,30 @@
     left: 0;
     top: -32px;
     white-space: nowrap;
+
+    &.expand-toggle {
+
+      & i {
+        @include transition(all 0.3s ease-in-out);
+        margin-left: 15px;
+      }
+
+      &.active {
+
+        & i {
+          @include transform(rotate(180deg));
+        }
+      }
+    }
   }
 
   &__categories {
     padding: 0;
     width: 100%;
+
+    @media(max-width:$screen-xs-max) {
+      display: none;
+    }
   }
 
   &__category {

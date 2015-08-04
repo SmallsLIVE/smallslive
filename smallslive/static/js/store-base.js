@@ -60,3 +60,12 @@ $('#store-single__item__images__carousel').on('afterChange', function(event, sli
     var indicator = $(".store-single__item__images__thumbnails li");
     $(indicator[currentSlide]).toggleClass( "active" );
 });
+
+
+$(document).ready(function () {
+    $("#store-nav-cat-expand").click(function () {
+        console.log("test");
+        $(this).toggleClass("active");
+        $("#store-nav-cat").slideToggle();
+    })
+})
