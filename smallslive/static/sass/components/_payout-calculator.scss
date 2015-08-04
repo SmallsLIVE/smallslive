@@ -2,7 +2,7 @@
   background-color: #fff;
   padding: 30px 30px 40px;
 
-  &__period {
+  &__input {
     @include lato-black;
     font-size: 18px;
     margin: 0 30px 15px 0;
@@ -26,6 +26,16 @@
       &.warning {
         color: $main-accent-color;
       }
+  }
+
+  &__text-input {
+    display: inline-block;
+    padding: 10px 0 10px 10px;
+    background-color: #eee;
+    border: 1px solid #ddd;
+    margin-left: 10px;
+    font-size: 16px;
+    min-width: 230px;
   }
 
   &__date-picker {
