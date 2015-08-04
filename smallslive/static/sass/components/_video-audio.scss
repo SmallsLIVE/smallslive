@@ -34,3 +34,30 @@
     }
   }
 }
+
+
+.video-audio {
+
+  & .mini-video {
+
+    &:nth-child(odd) {
+      clear: left;
+    }
+
+    &__image {
+
+      @media(max-width:$screen-xs-max) {
+        display: block;
+      }
+    }
+
+    &-info {
+
+      @media(max-width:$screen-xs-max) {
+        display: block;
+        padding: 0;
+        margin-top: 10px;
+      }
+    }
+  }
+}

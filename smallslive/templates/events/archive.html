@@ -106,9 +106,9 @@
         <div class="row">
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Recently Added Video</h1>
-            <div class="videos">
+            <div class="videos row">
               {% for recording in recent_video %}
-                <div class="mini-video">
+                <div class="mini-video col-xs-6 col-sm-12">
                     <div class="mini-video__image">
                       <a href="{{ recording.event.get_absolute_url }}">
                       {% if recording.event.photo %}
@@ -138,9 +138,9 @@
           </div>
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Recently Added Audio</h1>
-            <div class="videos">
+            <div class="videos row">
               {% for recording in recent_audio %}
-                <div class="mini-video">
+                <div class="mini-video col-xs-6 col-sm-12">
                     <div class="mini-video__image">
                       <a href="{{ recording.event.get_absolute_url }}">
                       {% if recording.event.photo %}
@@ -313,9 +313,9 @@
         <div class="row">
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Most Popular Video</h1>
-            <div class="videos">
+            <div class="videos row">
               {% for recording in most_popular_video %}
-                <div class="mini-video">
+                <div class="mini-video col-xs-6 col-sm-12">
                     <div class="mini-video__image">
                       <a href="{{ recording.event.get_absolute_url }}">
                       {% if recording.event.photo %}
@@ -344,9 +344,9 @@
           </div>
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Most Popular Audio</h1>
-            <div class="videos">
+            <div class="videos row">
               {% for recording in most_popular_audio %}
-                <div class="mini-video">
+                <div class="mini-video col-xs-6 col-sm-12">
                     <div class="mini-video__image">
                       <a href="{{ recording.event.get_absolute_url }}">
                       {% if recording.event.photo %}
