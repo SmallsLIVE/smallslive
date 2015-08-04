@@ -31,9 +31,9 @@
                     <h2 class="store-listing__big-item__name">
                         <a href="#">{{ featured_product.title }}</a>
                     </h2>
-                    <p class="store-listing__big-item__description">
+                    <div class="store-listing__big-item__description">
                         {{ featured_product.short_description|safe }}
-                    </p>
+                    </div>
                         {% if session.price.exists %}
                             {% if session.price.excl_tax == 0 %}
                                 <span class="store-listing__big-item__price">{% trans "Free" %}</span>
