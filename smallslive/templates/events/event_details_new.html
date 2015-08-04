@@ -408,18 +408,31 @@
       $(textElement).text(setText);
     }
 
-    function setUpTimerForMedia(mediaId) {
-        activeTracker = window.setInterval(function() {
+    {% if count_metrics %}
+        var metricsSignedData = {{ metrics_signed_data|safe }};
+
+        var pingMetricsServer = function(mediaId) {
+            var data = {};
+            data.signed_data = metricsSignedData[mediaId];
+            data.csrfmiddlewaretoken = '{{ csrf_token }}';
             $.ajax({
                 url: "http://localhost:9000/metric/",
                 method: 'POST',
-                data: {
-                    media_id: mediaId,
-                    user_id: {{ user.id }}
-                }
+                headers: {
+                    "Authorization": "Token {{ user_token }}"
+                },
+                data: data
             })
-        }, 5*1000)
-    }
+        };
+
+
+        function setUpTimerForMedia(mediaId) {
+            pingMetricsServer(mediaId);
+            activeTracker = window.setInterval(function() {
+                pingMetricsServer(mediaId);
+            }, 5*1000)
+        }
+    {% endif %}
 
     {% if user.can_listen_to_audio and event.published_audio %}
       audioPlayer = jwplayer("player-audio").setup({
@@ -443,12 +456,14 @@
       audioPlayer.onPlay(function () {
         {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
         updateViewCount(this);
-        setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);
+        {% if count_metrics %}setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);{% endif %}
       });
-      audioPlayer.onPause(function() {
-          window.clearInterval(activeTracker);
-          activeTracker = null;
-      });
+      {% if count_metrics %}
+          audioPlayer.onPause(function() {
+              window.clearInterval(activeTracker);
+              activeTracker = null;
+          });
+      {% endif %}
       audioPlayer.onReady(function () {
         var currentItem = audioPlayer.getPlaylistIndex() + 1;
         var totalItems = audioPlayer.getPlaylist().length;
@@ -499,7 +514,14 @@
         videoPlayer.onPlay(function () {
             audioPlayer.pause(true);
             updateViewCount(this);
+            {% if count_metrics %}setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);{% endif %}
         });
+        {% if count_metrics %}
+          videoPlayer.onPause(function() {
+              window.clearInterval(activeTracker);
+              activeTracker = null;
+          });
+        {% endif %}
         videoPlayer.onReady(function () {
             var playlist = videoPlayer.getPlaylist();
             var playlistItems = "";

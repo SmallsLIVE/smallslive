@@ -3,6 +3,7 @@ from itertools import groupby
 from operator import itemgetter, attrgetter
 import calendar
 import hashlib
+from django.core import signing
 from django.db import connection
 from django.db.models import Count
 import monthdelta
@@ -25,6 +26,7 @@ from braces.views import LoginRequiredMixin, SuperuserRequiredMixin, StaffuserRe
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
 from haystack.query import SearchQuerySet, RelatedSearchQuerySet
 from haystack.views import SearchView
+from rest_framework.authtoken.models import Token
 
 from artists.models import Artist, Instrument
 from oscar_apps.catalogue.models import Product
@@ -77,15 +79,34 @@ event_add = EventAddView.as_view()
 
 
 class EventDetailView(DetailView):
-    model = Event
+    queryset = Event.objects.all().select_related('recording', 'recording__media_file')
     context_object_name = 'event'
     template_name = 'events/event_details_new.html'
 
     def get_context_data(self, **kwargs):
         context = super(EventDetailView, self).get_context_data(**kwargs)
+        context['user_token'] = Token.objects.get(user=self.request.user)
         context['performers'] = self.object.get_performers()
         context['facebook_app_id'] = settings.FACEBOOK_APP_ID
+        context['metrics_signed_data'] = self._generate_metrics_data()
+        if self.request.user.artist_id and self.request.user.artist in self.object.performers.all():
+            context['count_metrics'] = False
+        else:
+            context['count_metrics'] = True
         return context
+
+    def _generate_metrics_data(self):
+        data = {}
+        for rec in self.object.recordings.all():
+            rec_data = {
+                'recording_id': rec.id,
+                'recording_type': rec.media_file.media_type.upper()[0],
+                'event_id': self.object.id,
+                'user_id': self.request.user.id,
+            }
+            signed_value = signing.dumps(rec_data)
+            data[rec.id] = signed_value
+        return data
 
 event_detail = EventDetailView.as_view()
 
