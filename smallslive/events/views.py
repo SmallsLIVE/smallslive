@@ -89,7 +89,7 @@ class EventDetailView(DetailView):
         context['performers'] = self.object.get_performers()
         context['facebook_app_id'] = settings.FACEBOOK_APP_ID
         context['metrics_signed_data'] = self._generate_metrics_data()
-        if self.request.user.artist_id and self.request.user.artist in self.object.performers.all():
+        if self.request.user.is_authenticated() and self.request.user.artist_id and self.request.user.artist in self.object.performers.all():
             context['count_metrics'] = False
         else:
             context['count_metrics'] = True
