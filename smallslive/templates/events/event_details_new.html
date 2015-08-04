@@ -388,163 +388,162 @@
 
 {% block extra_js %}
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
-  <script>
-    var playsCountSent = [];
-    var activeTracker;
-    function updateViewCount(player) {
-      var id = player.getPlaylistItem(player.getPlaylistIndex()).mediaid;
-      if (playsCountSent.indexOf(id) === -1) {
-        playsCountSent.push(id);
-        $.post('/multimedia/update_media_viewcount/', {
-          recording_id: id,
-          csrfmiddlewaretoken: '{{ csrf_token }}'
+  {% if user.is_authenticated %}
+      <script>
+        var playsCountSent = [];
+        var activeTracker;
+        function updateViewCount(player) {
+          var id = player.getPlaylistItem(player.getPlaylistIndex()).mediaid;
+          if (playsCountSent.indexOf(id) === -1) {
+            playsCountSent.push(id);
+            $.post('/multimedia/update_media_viewcount/', {
+              recording_id: id,
+              csrfmiddlewaretoken: '{{ csrf_token }}'
 
-        });
-      }
-    }
+            });
+          }
+        }
 
-    function updateSetText(textElement, currentItem, totalSets) {
-      var setText = "Set " + currentItem + "/" + totalSets;
-      $(textElement).text(setText);
-    }
+        function updateSetText(textElement, currentItem, totalSets) {
+          var setText = "Set " + currentItem + "/" + totalSets;
+          $(textElement).text(setText);
+        }
 
-    {% if count_metrics %}
-        var metricsSignedData = {{ metrics_signed_data|safe }};
+        {% if count_metrics %}
+            var metricsSignedData = {{ metrics_signed_data|safe }};
 
-        var pingMetricsServer = function(mediaId) {
-            var data = {};
-            data.signed_data = metricsSignedData[mediaId];
-            data.csrfmiddlewaretoken = '{{ csrf_token }}';
-            $.ajax({
-                url: "http://localhost:9000/metric/",
-                method: 'POST',
-                headers: {
-                    "Authorization": "Token {{ user_token }}"
-                },
-                data: data
-            })
-        };
+            var pingMetricsServer = function(mediaId) {
+                var data = {};
+                data.signed_data = metricsSignedData[mediaId];
+                data.csrfmiddlewaretoken = '{{ csrf_token }}';
+                $.ajax({
+                    url: "http://localhost:9000/metric/",
+                    method: 'POST',
+                    headers: {
+                        "Authorization": "Token {{ user_token }}"
+                    },
+                    data: data
+                })
+            };
 
 
-        function setUpTimerForMedia(mediaId) {
-            pingMetricsServer(mediaId);
-            activeTracker = window.setInterval(function() {
+            function setUpTimerForMedia(mediaId) {
                 pingMetricsServer(mediaId);
-            }, 5*1000)
-        }
-    {% endif %}
+                activeTracker = window.setInterval(function() {
+                    pingMetricsServer(mediaId);
+                }, 5*1000)
+            }
+        {% endif %}
 
-    {% if user.can_listen_to_audio and event.published_audio %}
-      audioPlayer = jwplayer("player-audio").setup({
-        primary: 'html5',
-        playlist: [
-          {% for audio in event.published_audio %}
-            {
-              sources: [{
-                file: "{{ audio.media_file.get_file_url|safe }}",
-                type: "mp3"
-              }],
-              title: "{{ event.title }}: Set {{ audio.set_number }}",
-              mediaid: {{ audio.id }}
-            }{% if not forloop.last %},{% endif %}
-          {% endfor %}
-        ],
-        skin: "{% static "jwplayer-skin/smalls.xml" %}",
-        width: "100%",
-        height: 30
-      });
-      audioPlayer.onPlay(function () {
-        {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
-        updateViewCount(this);
-        {% if count_metrics %}setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);{% endif %}
-      });
-      {% if count_metrics %}
-          audioPlayer.onPause(function() {
-              window.clearInterval(activeTracker);
-              activeTracker = null;
-          });
-      {% endif %}
-      audioPlayer.onReady(function () {
-        var currentItem = audioPlayer.getPlaylistIndex() + 1;
-        var totalItems = audioPlayer.getPlaylist().length;
-        updateSetText('#audio-control__current', currentItem, totalItems);
-      });
-
-      $('#audio-control_next').on('click', function () {
-        var playlistLength = audioPlayer.getPlaylist().length;
-        var currentIndex = audioPlayer.getPlaylistIndex();
-        // if current item is last, do nothing
-        if (currentIndex !== playlistLength - 1) {
-          var nextItemIndex = (currentIndex + 1) % playlistLength;
-          audioPlayer.playlistItem(nextItemIndex);
-          updateSetText('#audio-control__current', nextItemIndex + 1, playlistLength);
-        }
-      });
-
-      $('#audio-control_prev').on('click', function () {
-        var playlistLength = audioPlayer.getPlaylist().length;
-        var currentIndex = audioPlayer.getPlaylistIndex();
-        if (currentIndex !== 0) {
-          var nextItemIndex = (currentIndex - 1);
-          audioPlayer.playlistItem(nextItemIndex);
-          updateSetText('#audio-control__current', nextItemIndex + 1, playlistLength);
-        }
-      });
-    {% endif %}
-
-    {% if user.can_watch_video and event.published_videos %}
-        videoPlayer = jwplayer("player-video").setup({
+        {% if user.can_listen_to_audio and event.published_audio %}
+          audioPlayer = jwplayer("player-audio").setup({
             primary: 'html5',
             playlist: [
-                {% for video in event.published_videos %}{% if video.media_file.sd_video_file %}
+              {% for audio in event.published_audio %}
                 {
-                    sources: [{
-                        file: "{{ video.get_redirect_url|safe }}",
-                        type: "mp4"
-                    }],
-                    title: "{{ event.title }}: Set {{ video.set_number }}",
-                    mediaid: {{ video.id }}
+                  sources: [{
+                    file: "{{ audio.media_file.get_file_url|safe }}",
+                    type: "mp3"
+                  }],
+                  title: "{{ event.title }}: Set {{ audio.set_number }}",
+                  mediaid: {{ audio.id }}
                 }{% if not forloop.last %},{% endif %}
-                {% endif %}{% endfor %}
+              {% endfor %}
             ],
             skin: "{% static "jwplayer-skin/smalls.xml" %}",
             width: "100%",
-            height: 450
-        });
-        videoPlayer.onPlay(function () {
-            audioPlayer.pause(true);
+            height: 30
+          });
+          audioPlayer.onPlay(function () {
+            {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
             updateViewCount(this);
             {% if count_metrics %}setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);{% endif %}
-        });
-        {% if count_metrics %}
-          videoPlayer.onPause(function() {
-              window.clearInterval(activeTracker);
-              activeTracker = null;
+          });
+          {% if count_metrics %}
+              audioPlayer.onPause(function() {
+                  window.clearInterval(activeTracker);
+                  activeTracker = null;
+              });
+          {% endif %}
+          audioPlayer.onReady(function () {
+            var currentItem = audioPlayer.getPlaylistIndex() + 1;
+            var totalItems = audioPlayer.getPlaylist().length;
+            updateSetText('#audio-control__current', currentItem, totalItems);
+          });
+
+          $('#audio-control_next').on('click', function () {
+            var playlistLength = audioPlayer.getPlaylist().length;
+            var currentIndex = audioPlayer.getPlaylistIndex();
+            // if current item is last, do nothing
+            if (currentIndex !== playlistLength - 1) {
+              var nextItemIndex = (currentIndex + 1) % playlistLength;
+              audioPlayer.playlistItem(nextItemIndex);
+              updateSetText('#audio-control__current', nextItemIndex + 1, playlistLength);
+            }
+          });
+
+          $('#audio-control_prev').on('click', function () {
+            var playlistLength = audioPlayer.getPlaylist().length;
+            var currentIndex = audioPlayer.getPlaylistIndex();
+            if (currentIndex !== 0) {
+              var nextItemIndex = (currentIndex - 1);
+              audioPlayer.playlistItem(nextItemIndex);
+              updateSetText('#audio-control__current', nextItemIndex + 1, playlistLength);
+            }
           });
         {% endif %}
-        videoPlayer.onReady(function () {
-            var playlist = videoPlayer.getPlaylist();
-            var playlistItems = "";
-            $.each(playlist, function (index, item) {
-                playlistItems += '<li class="event-view__header__video__playlist__item';
-                if (index === 0) {
-                    playlistItems += ' active';
-                }
-                playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</li>';
+
+        {% if user.can_watch_video and event.published_videos %}
+            videoPlayer = jwplayer("player-video").setup({
+                primary: 'html5',
+                playlist: [
+                    {% for video in event.published_videos %}{% if video.media_file.sd_video_file %}
+                    {
+                        sources: [{
+                            file: "{{ video.get_redirect_url|safe }}",
+                            type: "mp4"
+                        }],
+                        title: "{{ event.title }}: Set {{ video.set_number }}",
+                        mediaid: {{ video.id }}
+                    }{% if not forloop.last %},{% endif %}
+                    {% endif %}{% endfor %}
+                ],
+                skin: "{% static "jwplayer-skin/smalls.xml" %}",
+                width: "100%",
+                height: 450
             });
-            $("#video-sets-list").html(playlistItems);
-        });
+            videoPlayer.onPlay(function () {
+                audioPlayer.pause(true);
+                updateViewCount(this);
+                {% if count_metrics %}setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);{% endif %}
+            });
+            {% if count_metrics %}
+              videoPlayer.onPause(function() {
+                  window.clearInterval(activeTracker);
+                  activeTracker = null;
+              });
+            {% endif %}
+            videoPlayer.onReady(function () {
+                var playlist = videoPlayer.getPlaylist();
+                var playlistItems = "";
+                $.each(playlist, function (index, item) {
+                    playlistItems += '<li class="event-view__header__video__playlist__item';
+                    if (index === 0) {
+                        playlistItems += ' active';
+                    }
+                    playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</li>';
+                });
+                $("#video-sets-list").html(playlistItems);
+            });
 
-        $('#video-sets-list').on('click', 'li', function () {
-            var currentIndex = videoPlayer.getPlaylistIndex();
-            var selectedIndex = $(this).data('playlist-index');
-            videoPlayer.playlistItem(selectedIndex);
-            $(this).toggleClass('active');
-            $('li[data-playlist-index=' + currentIndex + ']').toggleClass('active');
-        });
-    {% endif %}
-
-
-
-  </script>
+            $('#video-sets-list').on('click', 'li', function () {
+                var currentIndex = videoPlayer.getPlaylistIndex();
+                var selectedIndex = $(this).data('playlist-index');
+                videoPlayer.playlistItem(selectedIndex);
+                $(this).toggleClass('active');
+                $('li[data-playlist-index=' + currentIndex + ']').toggleClass('active');
+            });
+        {% endif %}
+      </script>
+  {% endif %}
 {% endblock %}
