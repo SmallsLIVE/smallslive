@@ -14,7 +14,7 @@ class Product(AbstractProduct):
     featured = models.BooleanField(default=False, help_text="Make this product featured in the store")
 
     class Meta(AbstractProduct.Meta):
-        ordering = ['ordering', 'name']
+        ordering = ['ordering', 'title']
 
     def get_track_preview_url(self):
         if self.preview_id:
