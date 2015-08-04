@@ -13,7 +13,7 @@ class ProductForm(oscar_forms.ProductForm):
 
     class Meta(oscar_forms.ProductForm.Meta):
         fields = [
-            'title', 'upc', 'short_description', 'description', 'is_discountable', 'structure', 'featured', 'event']
+            'title', 'upc', 'short_description', 'description', 'is_discountable', 'structure', 'featured', 'event', 'ordering']
 
     def __init__(self, product_class, data=None, parent=None, *args, **kwargs):
         self.set_initial(product_class, parent, kwargs)

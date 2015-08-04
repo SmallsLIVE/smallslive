@@ -8,9 +8,13 @@ class Product(AbstractProduct):
     short_description = models.TextField(blank=True)
     event = models.ForeignKey('events.Event', blank=True, null=True, related_name='products')
     album = models.ForeignKey('self', blank=True, null=True, related_name='tracks')  # used for album/track
-    ordering = models.PositiveIntegerField(default=0)  # explicit ordering, usually for tracks on an album
+    ordering = models.PositiveIntegerField(help_text="Product ordering number, lower numbers come first when ordering",
+                                           default=1000)  # explicit ordering, usually for tracks on an album
     preview = models.OneToOneField('multimedia.MediaFile', blank=True, null=True, related_name='product')
     featured = models.BooleanField(default=False, help_text="Make this product featured in the store")
+
+    class Meta(AbstractProduct.Meta):
+        ordering = ['ordering', 'name']
 
     def get_track_preview_url(self):
         if self.preview_id:
