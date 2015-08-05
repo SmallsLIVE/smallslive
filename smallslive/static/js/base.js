@@ -81,17 +81,6 @@ $(function() {
     }, 10000);
 });
 
-/* Adds swipe ability to Bootstrap event carousel */
-$(document).ready(function () {
-    $carousel = $("#upcoming-carousel");
-    $carousel.swiperight(function () {
-        $(this).carousel('prev');
-    });
-    $carousel.swipeleft(function () {
-        $(this).carousel('next');
-    });
-});
-
 
 /* Header search autocomplete */
 
