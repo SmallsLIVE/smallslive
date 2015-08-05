@@ -79,3 +79,4 @@ smalls_scraping/*.json
 gulpfile.js
 .python-version
 smallslive/.env
+.DS_Store
