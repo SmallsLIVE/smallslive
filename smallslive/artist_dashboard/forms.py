@@ -2,6 +2,8 @@ from allauth.account import app_settings
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import user_pk_to_url_str, user_username
 from allauth.utils import build_absolute_uri
+import datetime
+from calendar import monthrange
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
@@ -133,3 +135,21 @@ class ArtistResetPasswordForm(allauth_forms.ResetPasswordForm):
                                     email,
                                     context)
         return self.cleaned_data["email"]
+
+
+class MetricsPayoutForm(forms.Form):
+    period_start = forms.DateField(required=True, input_formats=["%B // %Y"])
+    period_end = forms.DateField(required=True, input_formats=["%B // %Y"])
+    revenue = forms.DecimalField(required=True)
+    operating_cost = forms.DecimalField(required=True)
+    final_calculation = forms.BooleanField(required=False)
+
+    def clean_period_start(self):
+        start = self.cleaned_data['period_start']
+        start = start.replace(day=1)
+        return start
+
+    def clean_period_end(self):
+        end = self.cleaned_data['period_end']
+        end = end.replace(day=monthrange(end.year, end.month)[1])
+        return end

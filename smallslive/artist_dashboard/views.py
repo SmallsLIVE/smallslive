@@ -1,4 +1,8 @@
-from datetime import timedelta
+from datetime import timedelta, datetime, date
+try:
+    import cStringIO as StringIO
+except ImportError:
+    import StringIO
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -21,7 +25,9 @@ import events.views as event_views
 import users.forms as user_forms
 from users.models import LegalAgreementAcceptance
 from users.views import HasArtistAssignedMixin
-from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm, EditProfileForm, ArtistResetPasswordForm
+from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm,\
+    EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm
+from .utils import generate_payout_sheet
 
 
 class MyGigsView(HasArtistAssignedMixin, ListView):
@@ -269,6 +275,28 @@ class AdminMetricsView(HasArtistAssignedMixin, TemplateView):
         return events
 
 admin_metrics = AdminMetricsView.as_view()
+
+
+def metrics_payout(request):
+    if request.method == 'POST':
+        form = MetricsPayoutForm(request.POST)
+        if form.is_valid():
+            output = StringIO.StringIO()
+            start = form.cleaned_data.get('period_start')
+            end = form.cleaned_data.get('period_end')
+            revenue = form.cleaned_data.get('revenue')
+            operating_cost = form.cleaned_data.get('operating_cost')
+            generate_payout_sheet(output, start, end, revenue, operating_cost)
+            output.seek(0)
+            response = HttpResponse(output.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            filename = "payments-{0}_{1}-{2}_{3}.xlsx".format(start.month, start.year, end.month, end.year)
+            response['Content-Disposition'] = 'attachment; filename="{0}"'.format(filename)
+            return response
+    else:
+        form = MetricsPayoutForm()
+
+    return render(request, 'artist_dashboard/metrics_payout.html', {'form': form})
+
 
 
 @login_required

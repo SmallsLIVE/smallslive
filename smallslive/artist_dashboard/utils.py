@@ -9,8 +9,8 @@ from events.models import Event
 logger = logging.getLogger(__name__)
 
 
-def generate_payout_sheet(start_date, end_date, operating_expenses, revenue):
-    pool = Decimal((revenue - operating_expenses) / 2.0)
+def generate_payout_sheet(file, start_date, end_date, revenue, operating_expenses):
+    pool = Decimal((revenue - operating_expenses) / Decimal(2.0))
     events = UserVideoMetric.objects.seconds_played_for_all_events(start_date, end_date)
     artists = collections.OrderedDict()
     for artist in Artist.objects.values('id', 'first_name', 'last_name').order_by('last_name'):
@@ -31,7 +31,7 @@ def generate_payout_sheet(start_date, end_date, operating_expenses, revenue):
         except Event.DoesNotExist:
             logger.warn('Event {0} does not exist (generating payout)'.format(event.get('event_id')))
 
-    workbook = xlsxwriter.Workbook('payout.xlsx')
+    workbook = xlsxwriter.Workbook(file, {'in_memory': True})
     bold = workbook.add_format({'bold': True})
     sheet = workbook.add_worksheet('Payments')
     sheet.set_column(8, 8, 30)
@@ -44,7 +44,7 @@ def generate_payout_sheet(start_date, end_date, operating_expenses, revenue):
     sheet.write_row('A1', headers, bold)
 
     for idx, artist in enumerate(artists.items(), start=1):
-        ratio = Decimal(artist[1]['seconds_played'] / float(total_adjusted_seconds))
+        ratio = Decimal(artist[1]['seconds_played'] / float(total_adjusted_seconds)) if total_adjusted_seconds else 0
         payment = Decimal(ratio * pool)
         sheet.write(idx, 0, artist[0])
         sheet.write(idx, 1, artist[1]['last_name'])
