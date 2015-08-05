@@ -2,10 +2,10 @@
 {% load i18n %}
 
 {% if paginator.num_pages > 1 %}
-    <div class="col-xs-12">
+    <div class="col-xs-12 store-pagination">
         <div class="search-pagination">
             {% if page_obj.has_previous %}<a href="?{% get_parameters page %}page={{ page_obj.previous_page_number }}"><span class="search-pagination__previous fa fa-caret-left"></span></a>{% endif %}
-            <span class="search-pagination__page">Page {{ page_num }} of {{ total_pages }}</span>
+            <span class="search-pagination__page">Page {{ page_obj.number }} of {{ paginator.num_pages }}</span>
             {% if page_obj.has_next %}<a href="?{% get_parameters page %}page={{ page_obj.next_page_number }}"><span class="search-pagination__next fa fa-caret-right"></span></a>{% endif %}
         </div>
     </div>
