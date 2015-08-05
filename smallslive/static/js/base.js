@@ -142,11 +142,13 @@ $(document).ready(function () {
 /* Image cover effect emulation function */
 function FillDivImg() {
     $('.div-fill-img').each(function() {
-        var img = this;
-        imgCoverEffect(img, {
-            alignX: 'center',
-            alignY: 'middle'
-        });
+        if (this) {
+            var img = this;
+            imgCoverEffect(img, {
+                alignX: 'center',
+                alignY: 'middle'
+            });
+        }
     })
 }
 
