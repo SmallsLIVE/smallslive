@@ -29,7 +29,7 @@ $datePicker.on('changeDate', function(d){
             slot += '>' + $(this).text() + '</li>';
             $('.event-select__slots').append(slot);
         });
-        $carousel.unslick();
+        $carousel.slick("unslick");
         $carousel.replaceWith(template);
         $('#upcoming-carousel').slick({
             dots: false,

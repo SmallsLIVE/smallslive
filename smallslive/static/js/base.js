@@ -81,17 +81,6 @@ $(function() {
     }, 10000);
 });
 
-/* Adds swipe ability to Bootstrap event carousel */
-$(document).ready(function () {
-    $carousel = $("#upcoming-carousel");
-    $carousel.swiperight(function () {
-        $(this).carousel('prev');
-    });
-    $carousel.swipeleft(function () {
-        $(this).carousel('next');
-    });
-});
-
 
 /* Header search autocomplete */
 
@@ -153,11 +142,13 @@ $(document).ready(function () {
 /* Image cover effect emulation function */
 function FillDivImg() {
     $('.div-fill-img').each(function() {
-        var img = this;
-        imgCoverEffect(img, {
-            alignX: 'center',
-            alignY: 'middle'
-        });
+        if (this) {
+            var img = this;
+            imgCoverEffect(img, {
+                alignX: 'center',
+                alignY: 'middle'
+            });
+        }
     })
 }
 
