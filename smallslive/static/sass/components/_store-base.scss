@@ -384,30 +384,6 @@
     &:before, &:after {
       display: none;
     }
-
-    & .pager {
-      float: left;
-      width: 100%;
-      padding: 0;
-      margin-top: 30px;
-      font-size: 16px;
-      @include lato;
-
-      & li {
-        display: inline-block;
-        list-style-type: none;
-      }
-
-      & .previous {
-        @include lato-bold;
-        margin-right: 20px;
-      }
-
-      & .next {
-        @include lato-bold;
-        margin-left: 20px;
-      }
-    }
   }
 }
 
