@@ -13,7 +13,7 @@
     <div class="col-xs-12 col-sm-8 col-md-9 col-sm-push-4 col-md-push-3 store-listing__content">
         <div class="row">
             {% if page.object_list %}
-                <ol class="row-fluid">
+                <ol class="row-fluid store-results-grid">
                     {% for result in page.object_list %}
                         {% render_product result.object %}
                     {% endfor %}

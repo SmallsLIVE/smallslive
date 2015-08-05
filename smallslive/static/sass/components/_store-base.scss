@@ -2006,6 +2006,11 @@ img.defineImageRatio {
   }
 }
 
+.store-results-grid {
+  @include display(flex);
+  @include flex-wrap(wrap);
+}
+
 .store-pagination {
   margin-top: 30px;
 }

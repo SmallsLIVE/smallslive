@@ -21,6 +21,14 @@
         background-color: transparent;
         outline: none;
       }
+      
+      &.unavailable {
+        opacity: 0.4;
+        
+        &:hover, &:focus {
+          opacity: 0.7;
+        }
+      }
     }
 
     & .contract__pending {
