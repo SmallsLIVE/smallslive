@@ -597,9 +597,7 @@ $future-event-view_header-height: 300px;
       }
 
       &__video-link {
-        @include display(flex);
-        @include align-items(center);
-        @include flex-wrap(wrap);
+        display: block;
         margin: 0;
         margin-left: 10px;
 
@@ -614,8 +612,7 @@ $future-event-view_header-height: 300px;
           border: none;
           padding: 0;
           margin-bottom: 0;
-          @include align-self(flex-start);
-          @include display(flex);
+          display: block;
         }
 
         & p {
@@ -623,6 +620,11 @@ $future-event-view_header-height: 300px;
           float: left;
           text-align: left;
           margin-top: 10px;
+        }
+
+        &__cta {
+          float: left;
+          margin-bottom: 20px;
         }
       }
 
