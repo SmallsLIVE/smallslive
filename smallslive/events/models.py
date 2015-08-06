@@ -217,7 +217,9 @@ class Event(TimeStampedModel):
             status = "none"
         else:
             audio_published_count = self.recordings.all().audio().published().count()
-            if audio_published_count < audio_count:
+            if audio_published_count == 0:
+                status = "blocked"
+            elif audio_published_count < audio_count:
                 status = "partial"
             else:
                 status = "published"
@@ -233,8 +235,10 @@ class Event(TimeStampedModel):
         if video_count == 0:
             status = "none"
         else:
-            audio_published_count = self.recordings.all().video().published().count()
-            if audio_published_count < video_count:
+            video_published_count = self.recordings.all().video().published().count()
+            if video_published_count == 0:
+                status = "blocked"
+            elif video_published_count < video_count:
                 status = "partial"
             else:
                 status = "published"
