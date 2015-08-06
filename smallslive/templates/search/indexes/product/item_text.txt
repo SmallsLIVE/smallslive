@@ -2,3 +2,6 @@
 {{ object.title }}
 {{ object.short_description|default:"" }}
 {{ object.description|default:"" }}
+{% for track in object.tracks.all %}
+  {{ track.title }} - {{ track.attr.composer }}
+{% endfor %}
