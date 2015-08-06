@@ -213,7 +213,20 @@ class EventSearchView(SearchView):
 
     def get_results(self):
         self.sqs = super(EventSearchView, self).get_results().facet('model', order='term').order_by('-start')
-        return self.sqs.models(Event)
+        self.sqs = self.sqs.models(Event).load_all_queryset(Event, Event.objects.all().annotate(product_count=Count('products')).extra(select={
+            'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
+                           "events_recording.event_id = events_event. ID AND "
+                           "events_recording.media_file_id = multimedia_mediafile. ID AND "
+                           " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='video'"
+                           " GROUP BY events_event.id",
+            'audio_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
+                           "events_recording.event_id = events_event. ID AND "
+                           "events_recording.media_file_id = multimedia_mediafile. ID AND "
+                           " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='audio'"
+                           " GROUP BY events_event.id",
+        }))
+        return self.sqs
+
 
 event_search = EventSearchView(
     form_class=EventSearchForm,
