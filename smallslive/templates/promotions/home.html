@@ -227,7 +227,7 @@
         <section class="store-featured-merch container">
             <div class="store-subtle-heading">Featured merchandise</div>
                 <div class="row">
-                    {% for product in newest_physical_products %}
+                    {% for product in featured_physical_products %}
                         {% include "catalogue/partials/product.html" with product=product full_width=True  %}
                     {% endfor %}
                 </div>
