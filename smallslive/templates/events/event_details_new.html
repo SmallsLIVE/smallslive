@@ -64,20 +64,20 @@
                     <div class="col-xs-12 col-sm-4 event-view__header__video-link__container playable">
                       <span data-slickPosition="1" class="event-view__header__video-link playable">
                         <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                        <p>Play show video</p>
+                        <p>Play event video</p>
                       </span>
                     </div>
                   {% else %}
                       {% if event.video_status == 'blocked' %}
                         <div class="col-xs-12 col-sm-4 event-view__header__video-link__container">
                           <div class="event-view__header__video-link">
-                            <p>The artist has made this show video private.</p>
+                            <p>The artist has made this event video private.</p>
                           </div>
                         </div>
                       {% else %}
                         <div class="col-xs-12 col-sm-4 event-view__header__video-link__container">
                           <div class="event-view__header__video-link">
-                            <p>There is currently no video available for this show.</p>
+                            <p>There is currently no video available for this event.</p>
                           </div>
                         </div>
                       {% endif %}
@@ -86,8 +86,8 @@
                   <div class="col-xs-12 col-sm-4 event-view__header__video-link__container">
                     <div class="event-view__header__video-link">
                       <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                      <p>Show media available</p>
-                      <p class="smaller">Upgrade your SmallsLIVE membership to {% if event.published_audio %}listen to show audio{% endif %}{% if event.published_audio and event.published_videos %} and {% endif %}{% if event.published_videos %}view show video{% endif %}.</p>
+                      <p>Event media available</p>
+                      <p class="smaller">Upgrade your SmallsLIVE membership for unlimited access to our Audio/Video Archive.</p>
                       <a href="{% url "subscription_settings" %}" class="event-view__header__video-link__cta">Click to
                         upgrade</a>
                     </div>
@@ -97,8 +97,8 @@
                 <div class="col-xs-12 col-sm-4 event-view__header__video-link__container">
                   <div class="event-view__header__video-link">
                     <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                    <p>Show media available</p>
-                    <p class="smaller">Become a subscribing member of SmallsLIVE to {% if event.published_audio %}listen to show audio{% endif %}{% if event.published_audio and event.published_videos %} and {% endif %}{% if event.published_videos %}view show video{% endif %}.</p>
+                    <p>Event media available</p>
+                    <p class="smaller">Upgrade your SmallsLIVE membership for unlimited access to our Audio/Video Archive.</p>
                     <a href="{% url "signup_landing" %}" class="event-view__header__video-link__cta">Sign up</a>
                   </div>
                 </div>
@@ -107,13 +107,13 @@
               {% if event.audio_status == 'blocked' or event.video_status == 'blocked' %}
                 <div class="col-xs-12 col-sm-4 event-view__header__video-link__container">
                   <div class="event-view__header__video-link">
-                    <p>This show media is private at the request of the artist.</p>
+                    <p>This event media is private at the request of the artist.</p>
                   </div>
                 </div>
               {% else %}
                 <div class="col-xs-12 col-sm-4 event-view__header__video-link__container">
                   <div class="event-view__header__video-link">
-                    <p>There is currently no media available for this show.</p>
+                    <p>There is currently no media available for this event.</p>
                   </div>
                 </div>
               {% endif %}
@@ -125,7 +125,7 @@
             {% if event.published_audio %}
               <div class="col-xs-12 event-view__header__track audio-available">
                 <div class="col-xs-12 col-sm-6 col-md-4 event-view__header__track__info">
-                  <p>Listen to show audio:</p>
+                  <p>Listen to event audio:</p>
                 </div>
                 <div id="player-audio" class="col-xs-12 col-sm-6 col-md-5 event-view__header__track__player">
                 </div>
@@ -139,13 +139,13 @@
                 {% if event.audio_status == 'blocked' %}
                   <div class="col-xs-12 event-view__header__track audio-available">
                     <div class="col-xs-12 event-view__header__track__info">
-                      <p>Artist has made this show audio private.</p>
+                      <p>Artist has made this event audio private.</p>
                     </div>
                   </div>
                 {% elif event.published_videos %}
                   <div class="col-xs-12 event-view__header__track audio-available">
                     <div class="col-xs-12 event-view__header__track__info">
-                      <p>There is currently no audio available for this show.</p>
+                      <p>There is currently no audio available for this event.</p>
                     </div>
                   </div>
                 {% endif %}

@@ -81,7 +81,7 @@
                 {% for product in products %}
                     {% render_product product %}
                 {% endfor %}
-                {% include "partials/pagination.html" %}
+                {% include "partials/pagination-store-front.html" %}
             {% else %}
                 <p class="nonefound">{% trans "No products found." %}</p>
             {% endif %}
