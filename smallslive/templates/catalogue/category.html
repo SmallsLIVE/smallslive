@@ -12,6 +12,14 @@
 
 {% block store_nav_active %}active{% endblock %}
 
+{% block breadcrumbs %}
+    {% for category in category.get_ancestors %}
+        <span class="store-header__title__category"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></span>
+        <span class="store-header__title__divider">|</span>
+    {% endfor %}
+    <span class="store-header__title__category"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></span>
+{% endblock %}
+
 {% block store_content %}
     <div class="col-xs-12 col-sm-8 col-md-9 col-sm-push-4 col-md-push-3 store-listing__content">
         {% if featured_product %}

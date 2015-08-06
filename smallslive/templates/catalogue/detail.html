@@ -29,6 +29,21 @@
     </style>
 {% endblock %}
 
+{% block breadcrumbs %}
+    {% for category in category.get_ancestors %}
+        <span class="store-header__title__category"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></span>
+        <span class="store-header__title__divider">|</span>
+    {% endfor %}
+    <span class="store-header__title__category"><a href="{{ product.category.get_absolute_url }}">{{ category.name }}</a></span>
+    {% with category=product.categories.all.0 %}
+        {% for c in category.get_ancestors_and_self %}
+            <span class="store-header__title__category"><a href="{{ c.get_absolute_url }}">{{ c.name }}</a></span>
+            <span class="store-header__title__divider">|</span>
+        {% endfor %}
+        <span class="store-header__title__category"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></span>
+    {% endwith %}
+{% endblock %}
+
 {% block store_content %}
     <div class="col-xs-12 col-sm-8 col-md-9 col-sm-push-4 col-md-push-3 store-single__content">
         <div class="row">
