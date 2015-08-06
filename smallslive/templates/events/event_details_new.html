@@ -39,10 +39,6 @@
             <span class="event-view__header__meta__time">{{ event.listing_date|date:"l, F j, Y" }}<span>|</span>{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</span>
             <h1 class="event-view__header__meta__title">{{ event.title }}</h1>
             <h3 class="event-view__header__meta__subtitle">{{ event.subtitle }}</h3>
-            {% if not event.is_future %}{% if not event.published_videos %}{% if not event.publiched_audio %}
-              <p class="event-view__header__meta__no-media visible-xs visible-sm">No media is currently available for
-                this event.</p>
-            {% endif %}{% endif %}{% endif %}
             <div class="event-view__share-social">
               <h3 class="event-view__share-social__title">Share this event on:</h3>
               <a href="https://www.facebook.com/dialog/share?app_id={{ facebook_app_id }}&display=popup&href={{ request.build_absolute_uri|urlencode }}&redirect_uri={{ request.build_absolute_uri|urlencode }}"
