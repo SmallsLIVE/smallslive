@@ -598,6 +598,7 @@ $future-event-view_header-height: 300px;
       &__video-link {
         @include display(flex);
         @include align-items(center);
+        @include flex-wrap(wrap);
         margin: 0;
 
         &__icon {
@@ -619,7 +620,7 @@ $future-event-view_header-height: 300px;
           display: inline-block;
           float: left;
           text-align: left;
-          margin-left: 20px;
+          margin-top: 10px;
         }
       }
 

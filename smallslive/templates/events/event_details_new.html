@@ -91,7 +91,7 @@
                     <div class="event-view__header__video-link">
                       <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
                       <p>Show media available</p>
-                      <p>Upgrade your SmallsLIVE membership to {% if event.published_audio %}listen to show audio{% endif %}{% if event.published_audio and event.published_videos %} and {% endif %}{% if event.published_videos %}view show video{% endif %}.</p>
+                      <p class="smaller">Upgrade your SmallsLIVE membership to {% if event.published_audio %}listen to show audio{% endif %}{% if event.published_audio and event.published_videos %} and {% endif %}{% if event.published_videos %}view show video{% endif %}.</p>
                       <a href="{% url "subscription_settings" %}" class="event-view__header__video-link__cta">Click to
                         upgrade</a>
                     </div>
@@ -102,7 +102,7 @@
                   <div class="event-view__header__video-link">
                     <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
                     <p>Show media available</p>
-                    <p>Become a subscribing member of SmallsLIVE to {% if event.published_audio %}listen to show audio{% endif %}{% if event.published_audio and event.published_videos %} and {% endif %}{% if event.published_videos %}view show video{% endif %}.</p>
+                    <p class="smaller">Become a subscribing member of SmallsLIVE to {% if event.published_audio %}listen to show audio{% endif %}{% if event.published_audio and event.published_videos %} and {% endif %}{% if event.published_videos %}view show video{% endif %}.</p>
                     <a href="{% url "signup_landing" %}" class="event-view__header__video-link__cta">Sign up</a>
                   </div>
                 </div>
