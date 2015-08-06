@@ -9,6 +9,8 @@
 
 {% block store_nav_active %}active{% endblock %}
 
+{% block title %}{{ product.get_title }} - {{ block.super }}{% endblock %}
+
 {% block extra_head %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/fancybox/jquery.fancybox.css' %}">
     <style type="text/css">

@@ -4,6 +4,8 @@
 
 {% block schedule_nav_active %}active{% endblock %}
 
+{% block title %}{{ event.title }}{% endblock %}
+
 {% block extra_head %}
   <meta property="og:url" content="{{ request.build_absolute_uri }}" />
   <meta property="og:type" content="website" />

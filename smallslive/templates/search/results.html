@@ -9,6 +9,9 @@
 
 {% block store_nav_active %}active{% endblock %}
 
+{% block title %}Search for "{{ request.GET.q }}"{% endblock %}
+
+
 {% block breadcrumbs %}
 <span class="store-header__title__category">Search results for: "{{ request.GET.q }}"</span>
 {% endblock breadcrumbs %}

@@ -2,6 +2,7 @@
 {% load static from staticfiles %}
 {% load add_get_parameter %}
 
+{% block title %}Search for "{{ request.GET.q }}"{% endblock %}
 
 {% block content %}
    <div class="content-wrapper">

@@ -2,7 +2,7 @@
 {% load djstripe_tags %}
 {% load static from staticfiles %}
 
-
+{% block title %}Upgrade your plan{% endblock %}
 
 {% block form_url %}{% spaceless %}
   {% with active_plan=user.get_subscription_plan.type %}

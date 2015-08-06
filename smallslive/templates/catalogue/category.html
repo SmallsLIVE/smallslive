@@ -12,6 +12,8 @@
 
 {% block store_nav_active %}active{% endblock %}
 
+{% block title %}{{ category.name }} - {{ block.super }}{% endblock %}
+
 {% block breadcrumbs %}
     {% for category in category.get_ancestors %}
         <span class="store-header__title__category"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></span>

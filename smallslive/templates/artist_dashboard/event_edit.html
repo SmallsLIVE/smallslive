@@ -2,6 +2,8 @@
 {% load crispy_forms_tags static %}
 {% load thumbor_tags %}
 
+{% block title %}Edit event {{ event.title }}{% endblock %}
+
 {% block extra_head %}
   <script>
     var django = {jQuery: jQuery};
