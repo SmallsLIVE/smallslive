@@ -39,10 +39,6 @@
             <span class="event-view__header__meta__time">{{ event.listing_date|date:"l, F j, Y" }}<span>|</span>{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</span>
             <h1 class="event-view__header__meta__title">{{ event.title }}</h1>
             <h3 class="event-view__header__meta__subtitle">{{ event.subtitle }}</h3>
-            {% if not event.is_future %}{% if not event.published_videos %}{% if not event.publiched_audio %}
-              <p class="event-view__header__meta__no-media visible-xs visible-sm">No media is currently available for
-                this event.</p>
-            {% endif %}{% endif %}{% endif %}
             <div class="event-view__share-social">
               <h3 class="event-view__share-social__title">Share this event on:</h3>
               <a href="https://www.facebook.com/dialog/share?app_id={{ facebook_app_id }}&display=popup&href={{ request.build_absolute_uri|urlencode }}&redirect_uri={{ request.build_absolute_uri|urlencode }}"
@@ -61,90 +57,99 @@
             </div>
           </div>
           {% if event.is_past %}
-            <div class="col-xs-12 col-sm-4">
-              {% if event.published_videos %}
+            {% if event.published_videos or event.published_audio %}
+              {% if user.is_authenticated %}
                 {% if user.can_watch_video %}
-                  <div class="event-view__header__video-link__container playable">
-                                    <span data-slickPosition="1" class="event-view__header__video-link playable">
-                                        <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                                        <p>Play event video</p>
-                                    </span>
-                  </div>
-                {% elif user.can_listen_to_audio %}
-                  <div class="event-view__header__video-link__container">
+                  {% if event.published_videos %}
+                    <div class="col-xs-12 col-sm-4 event-view__header__video-link__container playable">
+                      <span data-slickPosition="1" class="event-view__header__video-link playable">
+                        <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
+                        <p>Play show video</p>
+                      </span>
+                    </div>
+                  {% else %}
+                      {% if event.video_status == 'blocked' %}
+                        <div class="col-xs-12 col-sm-4 event-view__header__video-link__container">
+                          <div class="event-view__header__video-link">
+                            <p>The artist has made this show video private.</p>
+                          </div>
+                        </div>
+                      {% else %}
+                        <div class="col-xs-12 col-sm-4 event-view__header__video-link__container">
+                          <div class="event-view__header__video-link">
+                            <p>There is currently no video available for this show.</p>
+                          </div>
+                        </div>
+                      {% endif %}
+                  {% endif %}
+                {% else %}
+                  <div class="col-xs-12 col-sm-4 event-view__header__video-link__container">
                     <div class="event-view__header__video-link">
                       <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                      <p>Event video available</p>
-                      <p class="smaller">Upgrade to a premium account to gain access to event video streaming.</p>
+                      <p>Show media available</p>
+                      <p class="smaller">Upgrade your SmallsLIVE membership to {% if event.published_audio %}listen to show audio{% endif %}{% if event.published_audio and event.published_videos %} and {% endif %}{% if event.published_videos %}view show video{% endif %}.</p>
                       <a href="{% url "subscription_settings" %}" class="event-view__header__video-link__cta">Click to
                         upgrade</a>
                     </div>
                   </div>
-                {% else %}
-                  <div class="event-view__header__video-link__container">
-                    <div class="event-view__header__video-link">
-                      <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                      <p>Event video available</p>
-                    </div>
-                  </div>
                 {% endif %}
               {% else %}
-                <div class="event-view__header__video-link__container">
+                <div class="col-xs-12 col-sm-4 event-view__header__video-link__container">
                   <div class="event-view__header__video-link">
                     <i class="fa fa-play-circle event-view__header__video-link__icon"></i>
-                    <p>There is no video media for this event</p>
-                  </div>
-                </div>
-              {% endif %}
-            </div>
-          {% endif %}
-        </div>
-        {% if event.is_past %}
-          {% if event.published_audio %}
-            {% if user.is_authenticated %}
-              {% if user.can_listen_to_audio %}
-                <div class="col-xs-12 event-view__header__track audio-available">
-                  <div class="col-xs-12 col-sm-6 col-md-4 event-view__header__track__info">
-                    {% if event.published_videos %}
-                      <p>Listen to event audio:</p>
-                    {% else %}
-                      <p>Listen to event audio:</p>
-                    {% endif %}
-                  </div>
-                  <div id="player-audio" class="col-xs-12 col-sm-6 col-md-5 event-view__header__track__player">
-                  </div>
-                  <div class="col-xs-12 col-sm-6 col-md-3 event-view__header__track__playlist">
-                    <img class="player-control-icon" id="audio-control_prev"
-                         src="{% static 'image/player-control/controller-prev.svg' %}" alt="Previous set">
-                    <span class="player-control-current" id="audio-control__current">Set</span>
-                    <img class="player-control-icon" id="audio-control_next"
-                         src="{% static 'image/player-control/controller-next.svg' %}" alt="Next set">
-                  </div>
-                </div>
-              {% else %}
-                <div class="col-xs-12 event-view__header__track">
-                  <div class="col-xs-12 event-view__header__track__info">
-                    <p class="not-allowed">Event audio (and video) are available only to users with basic (and premium)
-                      memberships.</p><a href="{% url "subscription_settings" %}"
-                                         class="event-view__header__track__info__cta">Click to upgrade</a>
+                    <p>Show media available</p>
+                    <p class="smaller">Become a subscribing member of SmallsLIVE to {% if event.published_audio %}listen to show audio{% endif %}{% if event.published_audio and event.published_videos %} and {% endif %}{% if event.published_videos %}view show video{% endif %}.</p>
+                    <a href="{% url "signup_landing" %}" class="event-view__header__video-link__cta">Sign up</a>
                   </div>
                 </div>
               {% endif %}
             {% else %}
-              <div class="col-xs-12 event-view__header__track">
-                <div class="col-xs-12 event-view__header__track__info">
-                  <p class="not-allowed">Become a subscribing member of SmallsLIVE for unlimited access to our
-                    audio/video archive.</p><a href="{% url "signup_landing" %}"
-                                               class="event-view__header__track__info__cta">Subscribe</a>
+              {% if event.audio_status == 'blocked' or event.video_status == 'blocked' %}
+                <div class="col-xs-12 col-sm-4 event-view__header__video-link__container">
+                  <div class="event-view__header__video-link">
+                    <p>This show media is private at the request of the artist.</p>
+                  </div>
+                </div>
+              {% else %}
+                <div class="col-xs-12 col-sm-4 event-view__header__video-link__container">
+                  <div class="event-view__header__video-link">
+                    <p>There is currently no media available for this show.</p>
+                  </div>
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endif %}
+        </div>
+        {% if event.is_past %}
+          {% if user.can_watch_video %}
+            {% if event.published_audio %}
+              <div class="col-xs-12 event-view__header__track audio-available">
+                <div class="col-xs-12 col-sm-6 col-md-4 event-view__header__track__info">
+                  <p>Listen to show audio:</p>
+                </div>
+                <div id="player-audio" class="col-xs-12 col-sm-6 col-md-5 event-view__header__track__player">
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3 event-view__header__track__playlist">
+                  <img class="player-control-icon" id="audio-control_prev" src="{% static 'image/player-control/controller-prev.svg' %}" alt="Previous set">
+                  <span class="player-control-current" id="audio-control__current">Set</span>
+                  <img class="player-control-icon" id="audio-control_next" src="{% static 'image/player-control/controller-next.svg' %}" alt="Next set">
                 </div>
               </div>
+            {% else %}
+                {% if event.audio_status == 'blocked' %}
+                  <div class="col-xs-12 event-view__header__track audio-available">
+                    <div class="col-xs-12 event-view__header__track__info">
+                      <p>Artist has made this show audio private.</p>
+                    </div>
+                  </div>
+                {% elif event.published_videos %}
+                  <div class="col-xs-12 event-view__header__track audio-available">
+                    <div class="col-xs-12 event-view__header__track__info">
+                      <p>There is currently no audio available for this show.</p>
+                    </div>
+                  </div>
+                {% endif %}
             {% endif %}
-          {% else %}
-            <div class="col-xs-12 event-view__header__track hidden-xs hidden-sm">
-              <div class="col-xs-12 event-view__header__track__info">
-                <p class="no-media">No event audio recording available.</p>
-              </div>
-            </div>
           {% endif %}
         {% endif %}
       </div>
