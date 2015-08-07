@@ -39,7 +39,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-6 store-listing__big-item__content">
                     <h2 class="store-listing__big-item__name">
-                        <a href="#">{{ featured_product.title }}</a>
+                        <a href="{{ featured_product.get_absolute_url }}">{{ featured_product.title }}</a>
                     </h2>
                     <div class="store-listing__big-item__description">
                         {{ featured_product.short_description|safe }}
