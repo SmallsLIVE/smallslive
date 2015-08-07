@@ -5,6 +5,7 @@ from oscar.apps.catalogue.abstract_models import AbstractProduct
 
 
 class Product(AbstractProduct):
+    subtitle = models.CharField(max_length=50, blank=True)
     short_description = models.TextField(blank=True)
     event = models.ForeignKey('events.Event', blank=True, null=True, related_name='products')
     album = models.ForeignKey('self', blank=True, null=True, related_name='tracks')  # used for album/track
@@ -19,6 +20,24 @@ class Product(AbstractProduct):
     def get_track_preview_url(self):
         if self.preview_id:
             return self.preview.get_file_url()
+
+    @cached_property
+    def has_physical_media(self):
+        is_album = self.product_class.slug == "album"
+        has_physical_child = self.children.filter(product_class__slug="physical-album").exists()
+        return is_album and has_physical_child
+
+    @cached_property
+    def has_digital_media(self):
+        is_album = self.product_class.slug == "album"
+        has_physical_child = self.children.filter(product_class__slug="digital-album").exists()
+        return is_album and has_physical_child
+
+    @cached_property
+    def has_tracks(self):
+        is_album = self.product_class.slug == "album"
+        has_physical_child = self.tracks.exists()
+        return is_album and has_physical_child
 
     @cached_property
     def get_track_stockrecord(self):
