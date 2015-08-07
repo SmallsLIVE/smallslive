@@ -444,8 +444,8 @@
   </section>
   <section class="legal-page__download container">
     <div>
-      <a href="#" class="legal-page__button secondary"><i class="fa fa-print"></i> Print out</a>
-      <a href="#" class="legal-page__button secondary"><i class="fa fa-download"></i> Download as PDF</a>
+      <a href="#" class="legal-page__button secondary print"><i class="fa fa-print"></i> Print out</a>
+      <a href="{% static "SmallsLIVE_artist_revenue_share_agreement.pdf" %}" class="legal-page__button secondary"><i class="fa fa-download"></i> Download as PDF</a>
     </div>
   </section>
   <section class="legal-page__bullets container">
@@ -504,3 +504,35 @@
 
 
 {% endblock content %}
+
+{% block extra_js %}
+    <script>
+        $('.print').click(function () {
+            window.print();
+            return false;
+        });
+    </script>
+    <style>
+        @media print {
+            body *{
+                visibility: hidden;
+            }
+
+            .page-heading, .page-heading *, .legal-page__full-contract,
+            .legal-page__full-contract *, .legal-page__bullets, .legal-page__bullets *,
+            .legal-page__sign__text, .legal-page__sign__text * {
+                visibility: visible;
+            }
+
+            .content-wrapper {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+
+            .legal-page__sign__text:first-child {
+                visibility: hidden;
+            }
+        }
+    </style>
+{% endblock %}
