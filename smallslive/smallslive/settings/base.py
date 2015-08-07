@@ -606,3 +606,6 @@ COUNTRIES_FIRST = [
     'US',
     'GB',
 ]
+
+METRICS_SERVER_URL = "" # no trailing slash
+PING_INTERVAL = 30

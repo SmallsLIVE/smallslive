@@ -424,7 +424,7 @@
                 data.signed_data = metricsSignedData[mediaId];
                 data.csrfmiddlewaretoken = '{{ csrf_token }}';
                 $.ajax({
-                    url: "http://localhost:9000/metric/",
+                    url: "{{ metrics_server_url }}/metric/",
                     method: 'POST',
                     headers: {
                         "Authorization": "Token {{ user_token }}"
@@ -438,7 +438,7 @@
                 pingMetricsServer(mediaId);
                 activeTracker = window.setInterval(function() {
                     pingMetricsServer(mediaId);
-                }, 5*1000)
+                }, {{ metrics_ping_interval }} * 1000)
             }
         {% endif %}
 
