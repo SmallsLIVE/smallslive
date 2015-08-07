@@ -1,4 +1,6 @@
 from datetime import timedelta, datetime, date
+from django.conf import settings
+
 try:
     import cStringIO as StringIO
 except ImportError:
@@ -157,6 +159,7 @@ class EventMetricsView(HasArtistAssignedMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super(EventMetricsView, self).get_context_data(**kwargs)
         now = timezone.now().date()
+        context['metrics_server_url'] = settings.METRICS_SERVER_URL
         context['user_token'] = Token.objects.get(user=self.request.user)
         context['weekly_stats'] = context['monthly_stats'] = UserVideoMetric.objects.this_week_counts(
             artist_event_ids=[self.object.id], trends=True, humanize=True)
@@ -210,6 +213,7 @@ class MyMetricsView(HasArtistAssignedMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super(MyMetricsView, self).get_context_data(**kwargs)
         now = timezone.now().date()
+        context['metrics_server_url'] = settings.METRICS_SERVER_URL
         context['user_token'] = Token.objects.get(user=self.request.user)
         artist_event_ids = list(self.request.user.artist.event_id_list())
         context['artist_event_ids'] = artist_event_ids
@@ -249,6 +253,7 @@ class AdminMetricsView(HasArtistAssignedMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(AdminMetricsView, self).get_context_data(**kwargs)
+        context['metrics_server_url'] = settings.METRICS_SERVER_URL
         context['user_token'] = Token.objects.get(user=self.request.user)
         now = timezone.now().date()
         context['audio_counts'] = UserVideoMetric.objects.total_archive_counts(trends=True, recording_type='audio',

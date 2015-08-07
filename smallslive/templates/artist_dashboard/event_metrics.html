@@ -331,7 +331,7 @@
     };
       window.onload = drawGraph(playsData);
       $datePicker.on('changeMonth', function (d) {
-          var countsURL = "http://localhost:9000/event_counts/";
+          var countsURL = "{{ metrics_server_url }}/event_counts/";
           var data = {
               month: d.date.getMonth() + 1,
               year: d.date.getFullYear(),
@@ -358,7 +358,10 @@
                       drawGraph(minsData);
                   }
               },
-              type: 'GET'
+              type: 'GET',
+              xhrFields: {
+                  withCredentials: true
+              }
           });
       });
 

@@ -429,7 +429,10 @@
                     headers: {
                         "Authorization": "Token {{ user_token }}"
                     },
-                    data: data
+                    data: data,
+                    xhrFields: {
+                        withCredentials: true
+                    }
                 })
             };
 

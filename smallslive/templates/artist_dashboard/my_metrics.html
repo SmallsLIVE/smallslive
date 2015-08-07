@@ -435,7 +435,7 @@
         window.onload = drawGraph(playsData);
 
         $datePicker.on('changeMonth', function (d) {
-            var countsURL = "http://localhost:9000/artist_counts/";
+            var countsURL = "{{ metrics_server_url }}/artist_counts/";
             var data = {
                 month: d.date.getMonth() + 1,
                 year: d.date.getFullYear(),
@@ -446,6 +446,9 @@
                 type: "POST",
                 headers: {
                   "Authorization": "Token {{ user_token }}"
+                },
+                xhrFields: {
+                    withCredentials: true
                 },
                 success: function (data, textStatus, jqXHR) {
                     playsData.labels = data.dates;
