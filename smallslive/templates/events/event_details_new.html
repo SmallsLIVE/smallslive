@@ -398,7 +398,7 @@
   {% if user.is_authenticated %}
       <script>
         var playsCountSent = [];
-        var activeTracker;
+        var activeTracker = null;
         function updateViewCount(player) {
           var id = player.getPlaylistItem(player.getPlaylistIndex()).mediaid;
           if (playsCountSent.indexOf(id) === -1) {
@@ -469,12 +469,12 @@
           });
           audioPlayer.onPlay(function () {
             {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
-            if(activeTracker) {
-                window.clearInterval(activeTracker);
-                activeTracker = null;
-            }
             updateViewCount(this);
-            {% if count_metrics %}setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);{% endif %}
+            {% if count_metrics %}
+                if (! activeTracker) {
+                    setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);
+                }
+            {% endif %}
           });
           {% if count_metrics %}
               audioPlayer.onPause(function() {
@@ -482,7 +482,7 @@
                   activeTracker = null;
               });
           {% endif %}
-          audioPlayer.onReady(function () {
+          audioPlayer.onReady(function (olds) {
             var currentItem = audioPlayer.getPlaylistIndex() + 1;
             var totalItems = audioPlayer.getPlaylist().length;
             updateSetText('#audio-control__current', currentItem, totalItems);
