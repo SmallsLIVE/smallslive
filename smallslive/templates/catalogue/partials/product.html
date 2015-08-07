@@ -24,7 +24,7 @@
             {% endwith %}
         </div>
         <h4 class="store-list-item__name"><a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title|truncatewords:4 }}</a></h4>
-        {% if product.product_class.slug == "album" %}<p class="store-list-item__info">CD / Digital download / Tracks</p>{% endif %}
+        {% if product.product_class.slug == "album" %}<p class="store-list-item__info">{% if product.has_physical_media %}CD / {% endif %}{% if product.has_digital_media %}Digital download / {% endif %}{% if product.has_tracks %}Tracks{% endif %}</p>{% endif %}
         {% if session.price.exists %}
             {% if session.price.excl_tax == 0 %}
                 <span class="store-list-item__price">{% trans "Free" %}</span>
