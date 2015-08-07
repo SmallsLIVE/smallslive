@@ -439,9 +439,12 @@
 
             function setUpTimerForMedia(mediaId) {
                 pingMetricsServer(mediaId);
-                activeTracker = window.setInterval(function() {
-                    pingMetricsServer(mediaId);
-                }, {{ metrics_ping_interval }} * 1000)
+                if (!activeTracker) {
+                    activeTracker = window.setInterval(function () {
+                                pingMetricsServer(mediaId);
+                            }, {{ metrics_ping_interval }} * 1000
+                    )
+                }
             }
         {% endif %}
 
@@ -466,6 +469,10 @@
           });
           audioPlayer.onPlay(function () {
             {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
+            if(activeTracker) {
+                window.clearInterval(activeTracker);
+                activeTracker = null;
+            }
             updateViewCount(this);
             {% if count_metrics %}setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);{% endif %}
           });
