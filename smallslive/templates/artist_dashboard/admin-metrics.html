@@ -379,6 +379,7 @@
                               minsData.datasets[0].data = data.audio_seconds_list;
                               minsData.datasets[1].data = data.video_seconds_list;
                               minsData.datasets[2].data = data.total_seconds_list;
+                              $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                               var playsActive = $("#metric-graph__show__data-1").hasClass("active");
                               if (playsActive) {
                                   drawGraph(playsData);

@@ -469,6 +469,7 @@
                     minsDataArchive.datasets[2].data = data.archive_total_seconds_list;
                     var playsActive = $("#metric-graph__show__data-1").hasClass("active");
                     var myMetricsActive = $("#metric-graph__show__source-1").hasClass("active");
+                    $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                     if (playsActive && myMetricsActive) {
                         drawGraph(playsData);
                     } else if (playsActive && !myMetricsActive) {
