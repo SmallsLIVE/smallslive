@@ -248,6 +248,9 @@
             </div>
             <div class="tracks-table-separator"></div>
             {% if album.tracks %}
+                <div style="width: 1px; height: 1px; position: absolute; top: -9999px; left: -9999px;">
+                    <div id="player-tracks"></div>
+                </div>
                 <!-- tracks table -->
                   <div class="event__tracks-table row">
                     <!-- tracks table header -->
@@ -290,7 +293,7 @@
                           {{ track.attr.duration }}
                         </div>
                         <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 event__tracks-table__column price">
-                          {% if track.get_track_stockrecord %}${{ track.get_track_stockrecord.price_excl_tax }}{% else %}-{% endif %} / {% if track.get_hd_track_stockrecord %}${{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}-{% endif %}
+                          {% if track.get_track_stockrecord and track.get_track_stockrecord.price_excl_tax %}${{ track.get_track_stockrecord.price_excl_tax }}{% else %}-{% endif %} / {% if track.get_hd_track_stockrecord and track.get_hd_track_stockrecord.price_excl_tax %}${{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}-{% endif %}
                         </div>
                         <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 event__tracks-table__column buy-track">
                             {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
@@ -565,4 +568,39 @@
         {% endif %}
       </script>
   {% endif %}
+    {% with album=event.products.first %}
+        {% if album and album.tracks %}
+            <script>
+                var tracksPlayer = jwplayer("player-tracks").setup({
+                    primary: 'html5',
+                    playlist: [
+                        {% for track in album.tracks.all %}
+                            {% if track.preview %}
+                                {
+                                    sources: [{
+                                        file: "{{ track.get_track_preview_url|safe }}",
+                                        type: "mp3"
+                                    }],
+                                    mediaid: {{ track.id }}
+                                }{% if not forloop.last %},{% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    ],
+                    skin: "{% static "jwplayer-skin/smalls.xml" %}",
+                    width: "100%",
+                    height: 0
+                });
+                $(".playback-control").on('click', function (e) {
+                    e.preventDefault();
+                    if (tracksPlayer.getPlaylistIndex() == $(this).data('playlist-id')) {
+                        tracksPlayer.pause();
+                    } else {
+                        tracksPlayer.playlistItem($(this).data('playlist-id'));
+                        $('.playback-control i').removeClass('fa-pause').addClass('fa-play');
+                    }
+                    $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
+                });
+            </script>
+        {% endif %}
+    {% endwith %}
 {% endblock %}

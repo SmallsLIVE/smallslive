@@ -360,20 +360,20 @@
                               "Authorization": "Token {{ user_token }}"
                           },
                           success: function (data, textStatus, jqXHR) {
-                              playsData.labels = data.dates;
-                              playsData.datasets[0].data = data.audio_plays_list;
-                              playsData.datasets[1].data = data.video_plays_list;
-                              playsData.datasets[2].data = data.total_plays_list;
-                              minsData.labels = data.dates;
-                              minsData.datasets[0].data = data.audio_seconds_list;
-                              minsData.datasets[1].data = data.video_seconds_list;
-                              minsData.datasets[2].data = data.total_seconds_list;
+                              playsDataArchive.labels = data.dates;
+                              playsDataArchive.datasets[0].data = data.audio_plays_list;
+                              playsDataArchive.datasets[1].data = data.video_plays_list;
+                              playsDataArchive.datasets[2].data = data.total_plays_list;
+                              minsDataArchive.labels = data.dates;
+                              minsDataArchive.datasets[0].data = data.audio_seconds_list;
+                              minsDataArchive.datasets[1].data = data.video_seconds_list;
+                              minsDataArchive.datasets[2].data = data.total_seconds_list;
                               $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                               var playsActive = $("#metric-graph__show__data-1").hasClass("active");
                               if (playsActive) {
-                                  drawGraph(playsData);
+                                  drawGraph(playsDataArchive);
                               } else {
-                                  drawGraph(minsData);
+                                  drawGraph(minsDataArchive);
                               }
                           },
                           type: 'GET',
@@ -391,7 +391,7 @@
                             $(".metric-graph__switch__option.data.active").toggleClass("active");
                             $(this).toggleClass("active");
                             $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
-                            drawGraph(playsData);
+                            drawGraph(playsDataArchive);
                         }
                     });
                     $("#metric-graph__show__data-2").click(function() {
@@ -399,7 +399,7 @@
                             $(".metric-graph__switch__option.data.active").toggleClass("active");
                             $(this).toggleClass("active");
                             $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
-                            drawGraph(minsData);
+                            drawGraph(minsDataArchive);
                         }
                     });
 
