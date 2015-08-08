@@ -49,6 +49,7 @@ MANAGERS = ADMINS
 
 DEFAULT_FROM_EMAIL = 'smallslive@appsembler.com'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
+DEFAULT_FROM_REGISTRATION_EMAIL = DEFAULT_FROM_EMAIL
 
 
 # Application definition
@@ -377,6 +378,7 @@ THUMBOR_SERVER = os.environ.get('THUMBOR_SERVER', "")
 AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN', "")
 
 # Allauth config
+ACCOUNT_ADAPTER = 'users.adapter.SmallsLiveAdapter'
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_VERIFICATION = "optional"

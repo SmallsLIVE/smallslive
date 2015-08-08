@@ -53,6 +53,8 @@ INSTALLED_APPS += (
 # Email settings
 EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
 MANDRILL_API_KEY = get_env_variable('MANDRILL_API_KEY')
+DEFAULT_FROM_EMAIL = 'smallslive@gmail.com'
+DEFAULT_FROM_REGISTRATION_EMAIL = "smallsliveusers@gmail.com"
 
 # Metrics
 METRICS_SERVER_URL = "http://metrics.smallslive.com" # no trailing slash

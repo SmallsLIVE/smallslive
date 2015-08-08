@@ -38,6 +38,8 @@ INSTALLED_APPS += (
 
 COMPRESS_ENABLED = False
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'smallslive@gmail.com'
+DEFAULT_FROM_REGISTRATION_EMAIL = "smallsliveusers@gmail.com"
 
 DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
