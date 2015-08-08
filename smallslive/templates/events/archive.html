@@ -108,27 +108,27 @@
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Recently Added Video</h1>
             <div class="videos row">
-              {% for recording in recent_video %}
+              {% for event in recent_video %}
                 <div class="mini-video col-xs-6 col-sm-12">
                     <div class="mini-video__image">
-                      <a href="{{ recording.event.get_absolute_url }}">
-                      {% if recording.event.photo %}
-                        <img src="{% thumbor_url recording.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      <a href="{{ event.get_absolute_url }}">
+                      {% if event.photo %}
+                        <img src="{% thumbor_url event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
                       {% else %}
                         <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                       {% endif %}
                       </a>
                     </div>
                     <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ recording.event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ recording.event.get_absolute_url }}">{{ recording.event.title }}</a></h2>
+                      <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
+                      <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
                       <div class="mini-video-info__stats">
                           <p>Added:</p>
                           <p>Plays:</p>
                       </div>
                       <div class="mini-video-info__stats">
-                          <p><span>{{ recording.date_added|date:"n/j/Y" }}</span></p>
-                          <p><span>{{ recording.view_count }}</span></p>
+                          <p><span>{{ event.added|date:"n/j/Y" }}</span></p>
+                          <p><span>{{ event.play_count }}</span></p>
                       </div>
                     </div>
                 </div>
@@ -140,27 +140,27 @@
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Recently Added Audio</h1>
             <div class="videos row">
-              {% for recording in recent_audio %}
+              {% for event in recent_audio %}
                 <div class="mini-video col-xs-6 col-sm-12">
                     <div class="mini-video__image">
-                      <a href="{{ recording.event.get_absolute_url }}">
-                      {% if recording.event.photo %}
-                        <img src="{% thumbor_url recording.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      <a href="{{ event.get_absolute_url }}">
+                      {% if event.photo %}
+                        <img src="{% thumbor_url event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
                       {% else %}
                         <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                       {% endif %}
                       </a>
                     </div>
                     <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ recording.event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ recording.event.get_absolute_url }}">{{ recording.event.title }}</a></h2>
+                      <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
+                      <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
                       <div class="mini-video-info__stats">
                           <p>Added:</p>
                           <p>Plays:</p>
                       </div>
                       <div class="mini-video-info__stats">
-                          <p><span>{{ recording.date_added|date:"n/j/Y" }}</span></p>
-                          <p><span>{{ recording.view_count }}</span></p>
+                          <p><span>{{ event.added|date:"n/j/Y" }}</span></p>
+                          <p><span>{{ event.play_count }}</span></p>
                       </div>
                     </div>
                 </div>
@@ -315,27 +315,27 @@
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Most Popular Video</h1>
             <div class="videos row">
-              {% for recording in most_popular_video %}
+              {% for event in most_popular_video %}
                 <div class="mini-video col-xs-6 col-sm-12">
                     <div class="mini-video__image">
-                      <a href="{{ recording.event.get_absolute_url }}">
-                      {% if recording.event.photo %}
-                        <img src="{% thumbor_url recording.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      <a href="{{ event.get_absolute_url }}">
+                      {% if event.photo %}
+                        <img src="{% thumbor_url event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
                       {% else %}
                         <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                       {% endif %}
                       </a>
                     </div>
                     <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ recording.event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ recording.event.get_absolute_url }}">{{ recording.event.title }}</a></h2>
+                      <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
+                      <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
                       <div class="mini-video-info__stats">
                           <p>Added:</p>
                           <p>Plays:</p>
                       </div>
                       <div class="mini-video-info__stats">
-                          <p><span>{{ recording.date_added|date:"n/j/Y" }}</span></p>
-                          <p><span>{{ recording.view_count }}</span></p>
+                          <p><span>{{ event.added|date:"n/j/Y" }}</span></p>
+                          <p><span>{{ event.play_count }}</span></p>
                       </div>
                     </div>
                 </div>
@@ -346,27 +346,27 @@
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Most Popular Audio</h1>
             <div class="videos row">
-              {% for recording in most_popular_audio %}
+              {% for event in most_popular_audio %}
                 <div class="mini-video col-xs-6 col-sm-12">
                     <div class="mini-video__image">
-                      <a href="{{ recording.event.get_absolute_url }}">
-                      {% if recording.event.photo %}
-                        <img src="{% thumbor_url recording.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      <a href="{{ event.get_absolute_url }}">
+                      {% if event.photo %}
+                        <img src="{% thumbor_url event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
                       {% else %}
                         <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                       {% endif %}
                       </a>
                     </div>
                     <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ recording.event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ recording.event.get_absolute_url }}">{{ recording.event.title }}</a></h2>
+                      <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
+                      <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
                       <div class="mini-video-info__stats">
                           <p>Added:</p>
                           <p>Plays:</p>
                       </div>
                       <div class="mini-video-info__stats">
-                          <p><span>{{ recording.date_added|date:"n/j/Y" }}</span></p>
-                          <p><span>{{ recording.view_count }}</span></p>
+                          <p><span>{{ event.added|date:"n/j/Y" }}</span></p>
+                          <p><span>{{ event.play_count }}</span></p>
                       </div>
                     </div>
                 </div>

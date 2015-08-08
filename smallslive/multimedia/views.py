@@ -5,7 +5,7 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, CreateView
 from oscar.apps.order.models import Line
-from events.models import Recording
+from events.models import Recording, Event
 from .forms import TrackFileForm
 from .models import MediaFile
 
@@ -37,8 +37,8 @@ def update_media_viewcount(request):
 
 
 class MostPopularVideos(ListView):
-    context_object_name = "recordings"
-    queryset = Recording.objects.video().most_popular()[:30]
+    context_object_name = "events"
+    queryset = Event.objects.most_popular_video()[:30]
     template_name = "multimedia/archive-list.html"
     
     def get_context_data(self, **kwargs):
@@ -50,8 +50,8 @@ most_popular_videos = MostPopularVideos.as_view()
 
 
 class MostRecentVideos(ListView):
-    context_object_name = "recordings"
-    queryset = Recording.objects.video().most_recent()[:30]
+    context_object_name = "events"
+    queryset = Event.objects.most_recent_video()[:30]
     template_name = "multimedia/archive-list.html"
 
     def get_context_data(self, **kwargs):
@@ -63,8 +63,8 @@ most_recent_videos = MostRecentVideos.as_view()
 
 
 class MostPopularAudio(ListView):
-    context_object_name = "recordings"
-    queryset = Recording.objects.audio().most_popular()[:30]
+    context_object_name = "events"
+    queryset = Event.objects.most_popular_audio()[:30]
     template_name = "multimedia/archive-list.html"
 
     def get_context_data(self, **kwargs):
@@ -76,8 +76,8 @@ most_popular_audio = MostPopularAudio.as_view()
 
 
 class MostRecentAudio(ListView):
-    context_object_name = "recordings"
-    queryset = Recording.objects.audio().most_recent()[:30]
+    context_object_name = "events"
+    queryset = Event.objects.most_recent_audio()[:30]
     template_name = "multimedia/archive-list.html"
 
     def get_context_data(self, **kwargs):

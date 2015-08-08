@@ -1,3 +1,4 @@
+from django.db.models import Count, Max
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta, get_default_timezone
 from django.utils import timezone
@@ -24,6 +25,26 @@ class EventQuerySet(models.QuerySet):
 
     def draft(self):
         return self.filter(state=Event.STATUS.Draft).order_by('-start')
+
+    def most_popular_audio(self):
+        return self.filter(
+            recordings__media_file__media_type='audio').annotate(
+            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-play_count')
+
+    def most_popular_video(self):
+        return self.filter(
+            recordings__media_file__media_type='video').annotate(
+            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-play_count')
+
+    def most_recent_audio(self):
+        return self.filter(
+            recordings__media_file__media_type='audio').annotate(
+            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-added')
+
+    def most_recent_video(self):
+        return self.filter(
+            recordings__media_file__media_type='video').annotate(
+            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-added')
 
 
 class Event(TimeStampedModel):
