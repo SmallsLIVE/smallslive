@@ -7,10 +7,13 @@ from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.functional import cached_property
 from djstripe.utils import subscriber_has_active_subscription
 from model_utils import Choices
+from rest_framework.authtoken.models import Token
 
 from newsletters.utils import subscribe_to_newsletter, unsubscribe_from_newsletter
 
@@ -229,3 +232,9 @@ class SmallsEmailAddress(EmailAddress):
 class LegalAgreementAcceptance(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='legal_agreement_acceptance')
     date = models.DateTimeField(auto_now_add=True)
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
