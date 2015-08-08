@@ -107,9 +107,9 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
         context['most_viewed'] = Recording.objects.audio().most_popular().filter(event__performers=artist)[:3]
         context['most_listened_to'] = Recording.objects.video().most_popular().filter(event__performers=artist)[:3]
         context['weekly_artist_stats'] = UserVideoMetric.objects.this_week_counts(artist_event_ids=artist_event_ids,
-                                                                                  humanize=True)
-        context['monthly_artist_stats'] = UserVideoMetric.objects.this_month_counts_for_artist(
-            artist_event_ids=artist_event_ids, humanize=True)
+                                                                                  trends=True, humanize=True)
+        context['monthly_artist_stats'] = UserVideoMetric.objects.this_month_counts(artist_event_ids=artist_event_ids,
+                                                                                    trends=True, humanize=True)
         context['monthly_stats'] = UserVideoMetric.objects.this_month_counts(humanize=True)
         context['weekly_stats'] = UserVideoMetric.objects.this_week_counts(humanize=True)
         context['date_counts'] = UserVideoMetric.objects.date_counts(7, 2015)
