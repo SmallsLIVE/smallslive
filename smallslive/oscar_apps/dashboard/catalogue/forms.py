@@ -1,3 +1,6 @@
+import urlparse
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
@@ -55,11 +58,14 @@ class TrackForm(forms.ModelForm):
     title = forms.CharField(max_length=100, required=True)
     composer = forms.CharField(max_length=100, required=True)
     duration = forms.CharField(max_length=5, required=False)
-    track_preview_file_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+    #track_preview_file_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+    track_preview_file = forms.CharField(max_length=300, required=False)
     price_excl_tax = forms.DecimalField(required=False)
-    track_file_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+    #track_file_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+    track_file = forms.CharField(max_length=300, required=False)
     hd_price_excl_tax = forms.DecimalField(required=False)
-    hd_track_file_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+    #hd_track_file_id = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+    hd_track_file = forms.CharField(max_length=300, required=False)
 
     class Meta:
         model = Product
@@ -82,30 +88,40 @@ class TrackForm(forms.ModelForm):
             try:
                 file_stockrecord = self.instance.stockrecords.get(partner_sku=str(self.instance.id))
                 self.fields['price_excl_tax'].initial = file_stockrecord.price_excl_tax
-                self.fields['track_file_id'].initial = file_stockrecord.digital_download_id
+                self.fields['track_file'].initial = file_stockrecord.digital_download.file
             except StockRecord.DoesNotExist:
                 pass
             try:
                 file_stockrecord = self.instance.stockrecords.get(partner_sku=str(self.instance.id)+'_hd')
                 self.fields['hd_price_excl_tax'].initial = file_stockrecord.price_excl_tax
-                self.fields['hd_track_file_id'].initial = file_stockrecord.digital_download_id
+                self.fields['hd_track_file'].initial = file_stockrecord.digital_download.file
             except StockRecord.DoesNotExist:
                 pass
 
             if self.instance.preview:
-                self.fields['track_preview_file_id'].initial = self.instance.preview_id
+                self.fields['track_preview_file'].initial = self.instance.preview.file
 
-    def clean_track_file_id(self):
-        track_file_id = self.cleaned_data['track_file_id']
-        if track_file_id and not MediaFile.objects.filter(id=track_file_id).exists():
-            raise ValidationError("The file must be uploaded already")
-        return track_file_id
 
-    def clean_hd_track_file_id(self):
-        hd_track_file_id = self.cleaned_data['hd_track_file_id']
-        if hd_track_file_id and not MediaFile.objects.filter(id=hd_track_file_id).exists():
-            raise ValidationError("The file must be uploaded already")
-        return hd_track_file_id
+    def clean_file(self, field_name):
+        val = self.cleaned_data[field_name]
+        validator = URLValidator()
+        # it it's a full URL, get only the path
+        try:
+            validator(val)
+            url = urlparse.urlparse(val)
+            val = url.path
+        except ValidationError:
+            pass
+        return val
+
+    def clean_track_preview_file(self):
+        return self.clean_file('track_preview_file')
+
+    def clean_track_file(self):
+        return self.clean_file('track_file')
+
+    def clean_hd_track_file(self):
+        return self.clean_file('hd_track_file')
 
     def clean(self):
         data = super(TrackForm, self).clean()
@@ -123,29 +139,44 @@ class TrackForm(forms.ModelForm):
         track.attr.track_no = self.cleaned_data['track_no']
         track.ordering = self.cleaned_data['track_no']
 
-        if self.cleaned_data['track_preview_file_id']:
-            media_file = MediaFile.objects.get(id=self.cleaned_data['track_preview_file_id'])
+        if self.cleaned_data['track_preview_file']:
+            media_file, created = MediaFile.objects.get_or_create(
+                file=self.cleaned_data['track_preview_file'], defaults={
+                    'category': 'preview',
+                    'media_type': 'audio',
+                    'format': 'mp3'
+                })
             track.preview = media_file
 
         track.save()
         partner = Partner.objects.first()
-        if self.cleaned_data['track_file_id']:
+        if self.cleaned_data['track_file']:
             stock_record, _ = StockRecord.objects.get_or_create(product=track,
                                                                 partner=partner,
                                                                 partner_sku=str(track.id)
                                                                 )
             stock_record.price_excl_tax = self.cleaned_data['price_excl_tax']
-            media_file = MediaFile.objects.get(id=self.cleaned_data['track_file_id'])
+            media_file, created = MediaFile.objects.get_or_create(
+                file=self.cleaned_data['track_file'], defaults={
+                    'category': 'track',
+                    'media_type': 'audio',
+                    'format': 'mp3'
+                })
             stock_record.digital_download = media_file
             stock_record.save()
 
-        if self.cleaned_data['hd_track_file_id']:
+        if self.cleaned_data['hd_track_file']:
             stock_record, _ = StockRecord.objects.get_or_create(product=track,
                                                                 partner=partner,
                                                                 partner_sku=str(track.id) + "_hd"
                                                                 )
             stock_record.price_excl_tax = self.cleaned_data['hd_price_excl_tax']
-            media_file = MediaFile.objects.get(id=self.cleaned_data['hd_track_file_id'])
+            media_file, created = MediaFile.objects.get_or_create(
+                file=self.cleaned_data['hd_track_file'], defaults={
+                    'category': 'track',
+                    'media_type': 'audio',
+                    'format': 'flac'
+                })
             stock_record.digital_download = media_file
             stock_record.is_hd = True
             stock_record.save()

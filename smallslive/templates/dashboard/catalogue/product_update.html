@@ -114,32 +114,10 @@
                         <td>{% include "partials/form_field.html" with field=track_form.title nolabel=True %}</td>
                         <td>{% include "partials/form_field.html" with field=track_form.composer nolabel=True %}</td>
                         <td>{% include "partials/form_field.html" with field=track_form.duration nolabel=True %}</td>
-                        <td>
-                          {% if not track_form.track_preview_file_id.value %}
-                              <div class="dropzone_preview" id="dropzone_preview-file_{{ forloop.counter0 }}" data-track-preview-form-id="{{ forloop.counter0 }}">Drop file here</div>
-
-                          {% else %}
-                            <strong>UPLOADED</strong>
-                          {% endif %}
-                          {% include "partials/form_field.html" with field=track_form.track_preview_file_id nolabel=True %}
-                        </td>
-                        <td>
-                          {% if not track_form.track_file_id.value %}
-                              <div class="dropzone_file" id="dropzone_file_{{ forloop.counter0 }}" data-track-form-id="{{ forloop.counter0 }}">Drop file here</div>
-                          {% else %}
-                            <strong>UPLOADED</strong>
-                          {% endif %}
-                          {% include "partials/form_field.html" with field=track_form.track_file_id nolabel=True %}
-                        </td>
+                        <td>{% include "partials/form_field.html" with field=track_form.track_preview_file nolabel=True %}</td>
+                        <td>{% include "partials/form_field.html" with field=track_form.track_file nolabel=True %}</td>
                         <td>{% include "partials/form_field.html" with field=track_form.price_excl_tax nolabel=True %}</td>
-                        <td>
-                          {% if not track_form.hd_track_file_id.value %}
-                              <div class="dropzone_file" id="dropzone_hd_file_{{ forloop.counter0 }}" data-hd-track-form-id="{{ forloop.counter0 }}">Drop file here</div>
-                          {% else %}
-                            <strong>UPLOADED</strong>
-                          {% endif %}
-                          {% include "partials/form_field.html" with field=track_form.hd_track_file_id nolabel=True %}
-                        </td>
+                        <td>{% include "partials/form_field.html" with field=track_form.hd_track_file nolabel=True %}</td>
                         <td>{% include "partials/form_field.html" with field=track_form.hd_price_excl_tax nolabel=True %}</td>
                         <td>
                             {% include "partials/form_field.html" with field=track_form.id nolabel=True %}
@@ -213,77 +191,3 @@
     </tbody>
   </table>
 {% endblock stockrecords_content %}
-
-{% block extrascripts %}
-  {{ block.super }}
-  <script src="{% static "js/dropzone.min.js" %}" type="text/javascript" charset="utf-8"></script>
-  {% if track_formset %}
-      <script>
-      // using jQuery
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie != '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = jQuery.trim(cookies[i]);
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-        var csrftoken = getCookie('csrftoken');
-
-      $(function() {
-          $(".dropzone_file").dropzone({
-            url: "{% url "upload_track" %}",
-            headers: { "X-CSRFToken": csrftoken },
-            parallelUploads: 1,
-            autoProcessQueue: true,
-            addRemoveLinks: false,
-            init: function() {
-              this.on("addedfile", function(file, response) {
-                $(this.element).html("<strong>IN PROGRESS...</strong>");
-              });
-              this.on("success", function(file, response) {
-                $(this.element).html("<strong>UPLOADED</strong>");
-                this.disable();
-                var track_form_id = $(this.element).data('track-form-id');
-                if (typeof track_form_id !== 'undefined') {
-                  $("#id_tracks-" + track_form_id + "-track_file_id").val(response);
-                } else {
-                  track_form_id = $(this.element).data('hd-track-form-id');
-                  $("#id_tracks-" + track_form_id + "-hd_track_file_id").val(response);
-                }
-
-              });
-            }
-          });
-      });
-
-      $(function() {
-          $(".dropzone_preview").dropzone({
-            url: "{% url "upload_track_preview" %}",
-            headers: { "X-CSRFToken": csrftoken },
-            parallelUploads: 1,
-            autoProcessQueue: true,
-            addRemoveLinks: false,
-            init: function() {
-              this.on("addedfile", function(file, response) {
-                $(this.element).html("<strong>IN PROGRESS...</strong>");
-              });
-              this.on("success", function(file, response) {
-                $(this.element).html("<strong>UPLOADED</strong>");
-                this.disable();
-                var track_form_id = $(this.element).data('track-preview-form-id');
-                $("#id_tracks-" + track_form_id + "-track_preview_file_id").val(response);
-              });
-            }
-          });
-      })
-      </script>
-  {% endif %}
-{% endblock %}
