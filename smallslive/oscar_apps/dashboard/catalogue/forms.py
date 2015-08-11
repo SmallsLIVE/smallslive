@@ -88,13 +88,15 @@ class TrackForm(forms.ModelForm):
             try:
                 file_stockrecord = self.instance.stockrecords.get(partner_sku=str(self.instance.id))
                 self.fields['price_excl_tax'].initial = file_stockrecord.price_excl_tax
-                self.fields['track_file'].initial = file_stockrecord.digital_download.file
+                if file_stockrecord.digital_download:
+                    self.fields['track_file'].initial = file_stockrecord.digital_download.file
             except StockRecord.DoesNotExist:
                 pass
             try:
                 file_stockrecord = self.instance.stockrecords.get(partner_sku=str(self.instance.id)+'_hd')
                 self.fields['hd_price_excl_tax'].initial = file_stockrecord.price_excl_tax
-                self.fields['hd_track_file'].initial = file_stockrecord.digital_download.file
+                if file_stockrecord.digital_download:
+                    self.fields['hd_track_file'].initial = file_stockrecord.digital_download.file
             except StockRecord.DoesNotExist:
                 pass
 
