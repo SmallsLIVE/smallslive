@@ -9,7 +9,7 @@ import multimedia.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('multimedia', '0007_20150629_1009'),
+        ('multimedia', '0007_auto_20150629_1009'),
     ]
 
     operations = [
