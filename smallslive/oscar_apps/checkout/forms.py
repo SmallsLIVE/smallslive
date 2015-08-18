@@ -1,4 +1,5 @@
 from django.conf import settings
+from djstripe.models import Customer
 import floppyforms
 import stripe
 from django import forms
@@ -35,10 +36,14 @@ class PaymentForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super(PaymentForm, self).__init__(*args, **kwargs)
         self.user = user
-        if user.customer and user.customer.can_charge():
-            self.fields['payment_method'].choices.insert(1, ('existing-credit-card', 'existing-credit-card'))
-            self.fields['payment_method'].initial = 'existing-credit-card'
-            self.can_use_existing = True
+        try:
+            customer = Customer.objects.get(subscriber=user)
+            if customer and customer.can_charge():
+                self.fields['payment_method'].choices.insert(1, ('existing-credit-card', 'existing-credit-card'))
+                self.fields['payment_method'].initial = 'existing-credit-card'
+                self.can_use_existing = True
+        except Customer.DoesNotExist:
+            pass
 
     def clean(self):
         existing_cc = self.data.get('payment_method', None) == 'existing-credit-card'
