@@ -77,7 +77,7 @@
                                           <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
                                           <ul class="dropdown-menu" role="menu">
                                             {% for line in track.list %}
-                                              <li><a href="{{ line.stockrecord.digital_download.get_file_url }}">Download {% if line.stockrecord.is_hd %}HD{% else %}mp3{% endif %}</a></li>
+                                              <li><a href="{{ line.stockrecord.digital_download.get_file_url }}" download>Download {% if line.stockrecord.is_hd %}HD{% else %}mp3{% endif %}</a></li>
                                             {% endfor %}
                                           </ul>
                                       </div>
