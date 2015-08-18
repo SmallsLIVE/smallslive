@@ -47,7 +47,7 @@
                       {% for variant in product.variants.all %}
                       {% purchase_info_for_product request variant as variant_session %}
                           {% if session.availability.is_available_to_buy %}
-                                <option value="{{ variant.id }}">{{ variant.title }} ({{ variant_session.price.excl_tax|currency:variant_session.price.currency }})</option>
+                                <option data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}" value="{{ variant.id }}">{{ variant.title }} ({{ variant_session.price.excl_tax|currency:variant_session.price.currency }})</option>
                           {% endif %}
                       {% endfor %}
                   </select>

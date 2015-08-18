@@ -53,7 +53,7 @@ $(document).ready(function () {
         $(".store-single__item__images__thumbnails li.active").toggleClass("active");
         $(this).toggleClass("active");
     });
-})
+});
 
 $('#store-single__item__images__carousel').on('afterChange', function(event, slick, currentSlide){
   $(".store-single__item__images__thumbnail.active").toggleClass( "active" );
@@ -64,8 +64,12 @@ $('#store-single__item__images__carousel').on('afterChange', function(event, sli
 
 $(document).ready(function () {
     $("#store-nav-cat-expand").click(function () {
-        console.log("test");
         $(this).toggleClass("active");
         $("#store-nav-cat").slideToggle();
+    });
+
+    $("select.store-add-small__options").on("change", function(val) {
+        var selectedPrice = $(this).find(":selected").data('price');
+        $(this).closest('.store-list-item').find('.store-list-item__price').text(selectedPrice);
     })
-})
+});
