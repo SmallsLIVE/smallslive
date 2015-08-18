@@ -1,5 +1,5 @@
 /* Bootstrap datepicker for Metrics */
-var drawGraph = function (data) {
+var drawGraph = function (data, label) {
     var ctx = document.getElementById("graph-canvas").getContext("2d");
     window.myLine = new Chart(ctx).Line(data, {
         responsive: true,
@@ -14,7 +14,7 @@ var drawGraph = function (data) {
         scaleFontSize: 10,
         scaleFontStyle: "bold",
         scaleFontColor: "#999",
-        multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> plays"
+        multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> " + label
     });
 };
 

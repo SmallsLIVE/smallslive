@@ -459,13 +459,13 @@
                     var myMetricsActive = $("#metric-graph__show__source-1").hasClass("active");
                     $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                     if (playsActive && myMetricsActive) {
-                        drawGraph(playsData);
+                        drawGraph(playsData, 'plays');
                     } else if (playsActive && !myMetricsActive) {
-                        drawGraph(playsDataArchive);
+                        drawGraph(playsDataArchive, 'plays');
                     } else if (!playsActive && myMetricsActive) {
-                        drawGraph(minsData)
+                        drawGraph(minsData, 'hrs')
                     } else {
-                        drawGraph(minsDataArchive)
+                        drawGraph(minsDataArchive, 'hrs')
                     }
                 }
             })
@@ -479,10 +479,10 @@
                     $(this).toggleClass("active");
                     $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                     if ($("#metric-graph__show__source-1").hasClass("active")) {
-                        drawGraph(playsData);
+                        drawGraph(playsData, 'plays');
                     }
                     else {
-                        drawGraph(playsDataArchive);
+                        drawGraph(playsDataArchive, 'plays');
                     }
                 }
             });
@@ -492,10 +492,10 @@
                     $(this).toggleClass("active");
                     $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                     if ($("#metric-graph__show__source-1").hasClass("active")) {
-                        drawGraph(minsData);
+                        drawGraph(minsData, 'hrs');
                     }
                     else {
-                        drawGraph(minsDataArchive);
+                        drawGraph(minsDataArchive, 'hrs');
                     }
                 }
             });
@@ -505,10 +505,10 @@
                     $(this).toggleClass("active");
                     $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                     if ($("#metric-graph__show__data-1").hasClass("active")) {
-                        drawGraph(playsData);
+                        drawGraph(playsData, 'plays');
                     }
                     else {
-                        drawGraph(minsData);
+                        drawGraph(minsData, 'hrs');
                     }
                 }
             });
@@ -518,10 +518,10 @@
                     $(this).toggleClass("active");
                     $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                     if ($("#metric-graph__show__data-1").hasClass("active")) {
-                        drawGraph(playsDataArchive);
+                        drawGraph(playsDataArchive, 'plays');
                     }
                     else {
-                        drawGraph(minsDataArchive);
+                        drawGraph(minsDataArchive, 'hrs');
                     }
                 }
             });
