@@ -17,7 +17,8 @@ class Command(BaseCommand):
         self.files_imported = 0
 
         start_date = timezone.make_aware(timezone.datetime(year, month, 1), timezone.get_current_timezone())
-        for event in Event.objects.filter(start__gte=start_date).order_by('start'):
+        now = timezone.now()
+        for event in Event.objects.filter(start__gte=start_date, start__lte=now).order_by('start'):
             for set_num in range(1, 7):
                 filename = '{0.year}-{0.month:02}-{0.day:02}/360p/{1}-{2}_360p.mp4'.format(
                     event.listing_date(), event.id, set_num)
