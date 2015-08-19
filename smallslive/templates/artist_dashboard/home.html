@@ -197,6 +197,7 @@
 
 {% block extra_js %}
   <script src="{% static 'js/intro/intro.min.js' %}"></script>
+  <script src="{% static 'js/metrics_datepicker.js' %}"></script>
   <script>
       var firstLogin = {{ first_login|lower }};
       if (firstLogin) {
