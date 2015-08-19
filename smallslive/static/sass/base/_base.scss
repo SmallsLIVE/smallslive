@@ -134,6 +134,10 @@ a:hover {
   z-index: 100000;
 }
 
+.modal-backdrop.fade.in {
+  z-index: 101;
+}
+
 .alert {
   margin-bottom: 0;
   padding: 10px;
