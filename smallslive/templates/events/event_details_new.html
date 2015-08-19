@@ -183,7 +183,7 @@
         <div class="row">
           <div class="col-xs-12 event-view__details__description">
             {% if event.description %}
-              <h3>Event description:</h3>
+              {% comment %}<h3>Event description:</h3>{% endcomment %}
               <p>{{ event.description|safe }}</p>
             {% endif %}
             {% if request.user.is_staff %}
@@ -204,7 +204,7 @@
       </section>
     {% endif %}
     <section class="event-view__artists container">
-      <h3>Event artists:</h3>
+      {% comment %}<h3>Event artists:</h3>{% endcomment %}
       <div class="row event-view__artists__container">
         {% for gig_info in event.get_performers %}
           <div class="mini-artist col-xs-12 col-sm-6">
