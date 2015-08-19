@@ -24,9 +24,10 @@
       
       &.unavailable {
         opacity: 0.4;
+        cursor: default;
         
         &:hover, &:focus {
-          opacity: 0.7;
+          opacity: 0.4;
         }
       }
     }
