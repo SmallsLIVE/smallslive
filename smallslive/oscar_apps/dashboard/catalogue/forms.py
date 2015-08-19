@@ -1,3 +1,4 @@
+import urllib
 import urlparse
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
@@ -114,6 +115,9 @@ class TrackForm(forms.ModelForm):
             val = url.path
         except ValidationError:
             pass
+
+        # don't save URL encoded values in the DB
+        val = urllib.unquote(val)
         return val
 
     def clean_track_preview_file(self):
