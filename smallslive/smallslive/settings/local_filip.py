@@ -93,3 +93,6 @@ PIPELINE_CSS = {
         'output_filename': 'css/dashboard.css',
     },
 }
+
+# Metrics
+METRICS_SERVER_URL = "http://localhost:9000"  # no trailing slash
