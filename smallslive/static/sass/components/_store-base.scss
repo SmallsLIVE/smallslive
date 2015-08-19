@@ -788,6 +788,10 @@
 
   &__carousel {
 
+    &.slick-initialized.slick-slider .slick-list {
+      overflow-y: visible;
+    }
+
     &__controls {
       @include display(flex);
       @include align-items(center);
