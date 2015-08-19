@@ -26,6 +26,10 @@ class EventQuerySet(models.QuerySet):
     def draft(self):
         return self.filter(state=Event.STATUS.Draft).order_by('-start')
 
+    def most_popular(self):
+        return self.exclude(recordings=None).annotate(
+            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-play_count')
+
     def most_popular_audio(self):
         return self.filter(
             recordings__media_file__media_type='audio').annotate(
@@ -35,6 +39,10 @@ class EventQuerySet(models.QuerySet):
         return self.filter(
             recordings__media_file__media_type='video').annotate(
             play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-play_count')
+
+    def most_recent(self):
+        return self.exclude(recordings=None).annotate(play_count=Count('recordings__view_count'),
+                                                      added=Max('recordings__date_added')).order_by('-added')
 
     def most_recent_audio(self):
         return self.filter(

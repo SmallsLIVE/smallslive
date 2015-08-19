@@ -54,8 +54,8 @@ class HomepageView(ListView):
         days_with_events = cursor.fetchall()
         days_with_events = [int(x[0]) for x in days_with_events]
         context['disabled_dates'] = ['{}/{}/{}'.format(start.month, x, start.year) for x in range(1, 30) if x not in days_with_events]
-        context['new_in_archive'] = Recording.objects.most_recent()[:6]
-        context['popular_in_archive'] = Recording.objects.most_popular()[:3]
+        context['new_in_archive'] = Event.objects.most_recent()[:6]
+        context['popular_in_archive'] = Event.objects.most_popular()[:3]
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:4]
         return context
 

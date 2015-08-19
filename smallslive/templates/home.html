@@ -38,20 +38,20 @@
         <h1 class="from-our-archive__section-title"><a href="{% url "most_recent_videos" %}">New in our Archive</a></h1>
 
         <div class="row">
-          {% for recording in new_in_archive %}
+          {% for event in new_in_archive %}
             <div class="col-xs-12 col-sm-6 col-md-4 {% if forloop.counter > 3 %}hidden-xs{% endif %}">
-              <a href="{{ recording.event.get_absolute_url }}">
+              <a href="{{ event.get_absolute_url }}">
                 <div class="event-object event-object--{% cycle "green" "blue" "yellow" "gold" "red" "purple" %}">
-                  {% if recording.event.photo %}
-                    <img class="event-object__image" src="{% thumbor_url recording.event.photo.url|urlencode width=360 height=309 smart=True %}" alt=""/>
+                  {% if event.photo %}
+                    <img class="event-object__image" src="{% thumbor_url event.photo.url|urlencode width=360 height=309 smart=True %}" alt=""/>
                   {% else %}
                     <img class="event-object__image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                   {% endif %}
                     <div class="event-object__info">
-                      <h1 class="event-object__title">{{ recording.event.title }}</h1>
-                      <h3 class="event-object__date">{{ recording.event.start|date:"n/j/Y" }}</h3>
+                      <h1 class="event-object__title">{{ event.title }}</h1>
+                      <h3 class="event-object__date">{{ event.start|date:"n/j/Y" }}</h3>
                       <ul class="event-object__artists">
-                        {% for performer in recording.event.performers.all %}
+                        {% for performer in event.performers.all %}
                           <li>{{ performer.full_name }}</li>
                         {% endfor %}
                       </ul>
@@ -66,20 +66,20 @@
         <h1 class="from-our-archive__section-title"><a href="{% url "most_popular_videos" %}">Most Popular from the Archive</a></h1>
 
         <div class="row">
-          {% for recording in popular_in_archive %}
+          {% for event in popular_in_archive %}
             <div class="col-xs-12 col-sm-6 col-md-4">
               <a href="{{ recording.event.get_absolute_url }}">
                 <div class="event-object event-object--{% cycle "darkblue" "orange" "blue"%}">
-                  {% if recording.event.photo %}
-                    <img class="event-object__image" src="{% thumbor_url recording.event.photo.url|urlencode width=360 height=309 smart=True %}" alt=""/>
+                  {% if event.photo %}
+                    <img class="event-object__image" src="{% thumbor_url event.photo.url|urlencode width=360 height=309 smart=True %}" alt=""/>
                   {% else %}
                     <img class="event-object__image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                   {% endif %}
                     <div class="event-object__info">
-                      <h1 class="event-object__title">{{ recording.event.title }}</h1>
-                      <h3 class="event-object__date">{{ recording.event.start|date:"n/j/Y" }}</h3>
+                      <h1 class="event-object__title">{{ event.title }}</h1>
+                      <h3 class="event-object__date">{{ event.start|date:"n/j/Y" }}</h3>
                       <ul class="event-object__artists">
-                        {% for performer in recording.event.performers.all %}
+                        {% for performer in event.performers.all %}
                           <li>{{ performer.full_name }}</li>
                         {% endfor %}
                       </ul>
