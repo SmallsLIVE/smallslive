@@ -132,7 +132,7 @@
                 </div>
               {% endif %}
               <div class="artist-bio__text-block">
-                <h1 class="artist-bio__title">Artist biography:</h1>
+                {% comment %}<h1 class="artist-bio__title">Artist biography:</h1>{% endcomment %}
                 {% if artist.biography %}
                   {{ artist.biography|safe }}
                 {% else %}
