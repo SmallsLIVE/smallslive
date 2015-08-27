@@ -163,7 +163,7 @@ class TrackForm(forms.ModelForm):
                                                                 )
             stock_record.price_excl_tax = self.cleaned_data['price_excl_tax']
             media_file, created = MediaFile.objects.get_or_create(
-                file=self.cleaned_data['track_file'], defaults={
+                file=self.cleaned_data['track_file'], stock_record=stock_record, defaults={
                     'category': 'track',
                     'media_type': 'audio',
                     'format': 'mp3'
@@ -178,7 +178,7 @@ class TrackForm(forms.ModelForm):
                                                                 )
             stock_record.price_excl_tax = self.cleaned_data['hd_price_excl_tax']
             media_file, created = MediaFile.objects.get_or_create(
-                file=self.cleaned_data['hd_track_file'], defaults={
+                file=self.cleaned_data['hd_track_file'], stock_record=stock_record, defaults={
                     'category': 'track',
                     'media_type': 'audio',
                     'format': 'flac'
