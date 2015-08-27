@@ -162,12 +162,19 @@ class TrackForm(forms.ModelForm):
                                                                 partner_sku=str(track.id)
                                                                 )
             stock_record.price_excl_tax = self.cleaned_data['price_excl_tax']
-            media_file, created = MediaFile.objects.get_or_create(
-                file=self.cleaned_data['track_file'], stock_record=stock_record, defaults={
-                    'category': 'track',
-                    'media_type': 'audio',
-                    'format': 'mp3'
-                })
+            try:
+                media_file = MediaFile.objects.get(
+                    file=self.cleaned_data['track_file'],
+                    stock_record=stock_record,
+                )
+            except MediaFile.DoesNotExist:
+                media_file = MediaFile.objects.create(
+                    file=self.cleaned_data['track_file'],
+                    category='track',
+                    media_type='audio',
+                    format='mp3'
+                )
+
             stock_record.digital_download = media_file
             stock_record.save()
 
@@ -177,12 +184,18 @@ class TrackForm(forms.ModelForm):
                                                                 partner_sku=str(track.id) + "_hd"
                                                                 )
             stock_record.price_excl_tax = self.cleaned_data['hd_price_excl_tax']
-            media_file, created = MediaFile.objects.get_or_create(
-                file=self.cleaned_data['hd_track_file'], stock_record=stock_record, defaults={
-                    'category': 'track',
-                    'media_type': 'audio',
-                    'format': 'flac'
-                })
+            try:
+                media_file = MediaFile.objects.get(
+                    file=self.cleaned_data['hd_track_file'],
+                    stock_record=stock_record,
+                )
+            except MediaFile.DoesNotExist:
+                media_file = MediaFile.objects.create(
+                    file=self.cleaned_data['hd_track_file'],
+                    category='track',
+                    media_type='audio',
+                    format='mp3'
+                )
             stock_record.digital_download = media_file
             stock_record.is_hd = True
             stock_record.save()
