@@ -94,29 +94,8 @@
 
     &.publish {
 
-      &:hover, &:focus {
+      &:hover {
         color: #3F9E52;
-      }
-
-      & span:before {
-        display: inline-block;
-        font: normal normal normal 14px/1 FontAwesome;
-        font-size: 26px;
-        content: "\f058";
-        position: relative;
-        top: 6px;
-        margin-right: 8px;
-      }
-
-      & span:after {
-        content: "Publish"
-      }
-    }
-
-    &.make-private {
-
-      &:hover, &:focus {
-        color: #D21333;
       }
 
       & span:before {
@@ -130,6 +109,43 @@
       }
 
       & span:after {
+        content: "Private"
+      }
+
+      &:hover span:before {
+        content: "\f058";
+      }
+
+      &:hover span:after {
+        content: "Publish";
+      }
+    }
+
+    &.make-private {
+
+      &:hover {
+        color: #D21333;
+      }
+
+      & span:before {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: 26px;
+        content: "\f058";
+        position: relative;
+        top: 6px;
+        margin-right: 8px;
+      }
+
+      & span:after {
+        content: "Published";
+      }
+
+      &:hover span:before {
+        content: "\f056";
+      }
+
+      &:hover span:after {
         content: "Make private";
       }
     }
