@@ -131,10 +131,21 @@ class TrackForm(forms.ModelForm):
 
     def clean(self):
         data = super(TrackForm, self).clean()
-        if data.get('track_file_id') and not data.get('price_excl_tax'):
+
+        preview_file = data.get('track_preview_file')
+        track_file = data.get('track_file')
+        hd_track_file = data.get('hd_track_file')
+
+        if preview_file and track_file and preview_file == track_file:
+            raise ValidationError("Preview and track can't be the same file")
+
+        if preview_file and hd_track_file and preview_file == hd_track_file:
+            raise ValidationError("Preview and HD track can't be the same file")
+
+        if track_file and not data.get('price_excl_tax'):
             raise ValidationError('You need to enter the track price')
 
-        if data.get('hd_track_file_id') and not data.get('hd_price_excl_tax'):
+        if hd_track_file and not data.get('hd_price_excl_tax'):
             raise ValidationError('You need to enter the HD track price')
         return data
 
@@ -146,13 +157,22 @@ class TrackForm(forms.ModelForm):
         track.ordering = self.cleaned_data['track_no']
 
         if self.cleaned_data['track_preview_file']:
-            media_file, created = MediaFile.objects.get_or_create(
-                file=self.cleaned_data['track_preview_file'], defaults={
-                    'category': 'preview',
-                    'media_type': 'audio',
-                    'format': 'mp3'
-                })
-            track.preview = media_file
+            try:
+                preview = MediaFile.objects.get(
+                    file=self.cleaned_data['track_preview_file'],
+                    product=track,
+                    category='preview',
+                    media_type='audio',
+                    format='mp3'
+                )
+            except MediaFile.DoesNotExist:
+                preview = MediaFile.objects.create(
+                    file=self.cleaned_data['track_preview_file'],
+                    category='preview',
+                    media_type='audio',
+                    format='mp3'
+                )
+            track.preview = preview
 
         track.save()
         partner = Partner.objects.first()

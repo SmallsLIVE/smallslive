@@ -102,7 +102,7 @@
                 {% for track_form in track_formset %}
                     {% if track_form.non_field_errors %}
                     <tr>
-                        <td colspan="{% if product_class.track_stock %}10{% else %}7{% endif %}">
+                        <td colspan="10">
                             {% for error in track_form.non_field_errors  %}
                                 <span class="error-block errorlist"><i class="icon-exclamation-sign"></i> {{ error }}</span>
                             {% endfor %}
