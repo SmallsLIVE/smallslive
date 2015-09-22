@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath smallslive smallslive.wsgi --workers 2
+web: newrelic-admin run-program gunicorn --workers $WEB_CONCURRENCY --preload --max requests 500 --timeout 30 --pythonpath smallslive smallslive.wsgi
