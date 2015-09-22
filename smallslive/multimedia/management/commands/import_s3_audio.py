@@ -1,4 +1,5 @@
 import datetime
+import os
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -12,12 +13,18 @@ class Command(BaseCommand):
     help = 'Imports the audio recordings from S3 and assigns them to correct events'
 
     def handle(self, *args, **options):
+        env = os.environ.get('CRON_ENV')
+        now = timezone.now()
+        # heroku scheduler launches the task every day, we make sure it only really does the import
+        # once a week
+        if env == "heroku" and now.weekday() != 6:
+            return
+
         conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
         bucket = conn.get_bucket("smallslivemp3")
         new_files_imported = 0
         files_updated = 0
 
-        now = timezone.now()
         if len(args) == 2:
             month, year = int(args[0]), int(args[1])
             start_date = timezone.make_aware(timezone.datetime(year, month, 1), timezone.get_current_timezone())
