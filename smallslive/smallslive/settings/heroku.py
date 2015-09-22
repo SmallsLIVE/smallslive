@@ -93,3 +93,4 @@ CACHEOPS = {
     # And since ops is empty by default you can rewrite last line as:
     '*.*': {'timeout': 60*60},
 }
+CACHEOPS_LRU = True
