@@ -12,6 +12,7 @@ djangoajax==2.2.15
 django-allauth==0.19.1
 django-appconf==1.0.1
 django-braces==1.8.0
+django-cacheops==2.4.1
 django-compressor==1.4
 django-countries==3.3
 django-crispy-forms==1.4.0
