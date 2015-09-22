@@ -6,17 +6,18 @@ Welcome to SmallsLIVE and thank you for registering as a {{ user.get_subscriptio
 {{ activate_url }}
 
 SmallsLIVE
-{% else %}Hello SmallsLIVE Artist:
+{% else %}Hello SmallsLIVE Musicians:
 
-This email is to confirm that this is your correct email address.  Once you have confirmed the email you will be able to set your password and log into the Artist Page Manager of SmallsLIVE.  From the Page Manager you will have access to all of your recordings, personal and account information.
+You are receiving this email to confirm your correct email address that will be used for your login to SmallsLIVE.  Once you have confirmed the email you'll be able to set your password and log into the Artist Page Manager section of SmallsLIVE.  From the Artist Page Manager you will have access to your recorded content, personal bio, photos, band information and account information.   Please be sure to read our SmallsLIVE Legal Agreement and to click to approve.  Royalties can only be paid to those who have approved the agreement.
 
-Please click the following link to confirm your email address:
+Please click the following link to confirm your email and gain access to your account.
 
 {{ activate_url }}
 
-Thanks,
+Thanks!
 
 Spike
+SmallsLIVE
 {% endif %}
 {% endwith %}
 {% endautoescape %}
