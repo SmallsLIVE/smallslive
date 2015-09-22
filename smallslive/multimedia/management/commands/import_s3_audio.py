@@ -1,3 +1,4 @@
+import datetime
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -11,13 +12,18 @@ class Command(BaseCommand):
     help = 'Imports the audio recordings from S3 and assigns them to correct events'
 
     def handle(self, *args, **options):
-        month, year = int(args[0]), int(args[1])
         conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
         bucket = conn.get_bucket("smallslivemp3")
         new_files_imported = 0
         files_updated = 0
-        start_date = timezone.make_aware(timezone.datetime(year, month, 1), timezone.get_current_timezone())
+
         now = timezone.now()
+        if len(args) == 2:
+            month, year = int(args[0]), int(args[1])
+            start_date = timezone.make_aware(timezone.datetime(year, month, 1), timezone.get_current_timezone())
+        else:
+            start_date = now - datetime.timedelta(days=14)
+
         for event in Event.objects.filter(start__gte=start_date, start__lte=now).order_by('start'):
             for set_num in range(1, 7):
                 no_zero_padded = '{0.year}-{0.month}-{0.day}/{1}-{2}.mp3'.format(
