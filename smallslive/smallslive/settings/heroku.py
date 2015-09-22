@@ -33,11 +33,11 @@ PIPELINE_SASS_BINARY = 'sassc'
 PIPELINE_SASS_ARGUMENTS = '--precision 8 -s compressed'
 
 # Haystack elasticsearch backend
-ELASTICSEARCH_IP = get_env_variable('ELASTICSEARCH_IP')
+ELASTICSEARCH_URL = get_env_variable('SEARCHBOX_SSL_URL')
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'search.backends.ConfigurableElasticSearchEngine',
-        'URL': 'http://{0}:9200/'.format(ELASTICSEARCH_IP),
+        'URL': ELASTICSEARCH_URL,
         'INDEX_NAME': 'haystack',
     },
 }
