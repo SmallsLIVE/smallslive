@@ -95,3 +95,4 @@ CACHEOPS = {
     '*.*': {'timeout': 60*60},
 }
 CACHEOPS_LRU = True
+CACHEOPS_DEGRADE_ON_FAILURE = True
