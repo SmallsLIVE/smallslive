@@ -100,8 +100,8 @@ METRICS_SERVER_URL = "http://localhost:9000"  # no trailing slash
 
 # Cache
 CACHEOPS_REDIS = {
-    'host': '192.168.59.103', # redis-server is on same machine
-    'port': 32768,        # default redis port
+    'host': os.environ.get("REDIS_IP"),  # redis-server is on same machine
+    'port': os.environ.get("REDIS_PORT"),        # default redis port
     'db': 1,             # SELECT non-default redis database
                          # using separate redis db or redis instance
                          # is highly recommended
