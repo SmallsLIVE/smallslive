@@ -49,7 +49,13 @@ COMPRESS_ENABLED = False
 
 INSTALLED_APPS += (
     'djrill',
+    'raven.contrib.django.raven_compat',
 )
+
+# Sentry
+RAVEN_CONFIG = {
+    'dsn': get_env_variable('SENTRY_DSN'),
+}
 
 # Email settings
 EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
