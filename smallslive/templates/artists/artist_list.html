@@ -111,7 +111,7 @@
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="{% url "artist_edit" pk=artist.id slug=artist.slug %}">Edit</a></li>
-                                    <li><a href="#" data-toggle="modal" data-target="#inviteArtist" data-url="{% url "invite_artist" artist=artist.id %}" class="invite-artist-button">Invite</a></li>
+                                    {% if not artist.is_invited %}<li><a href="#" data-toggle="modal" data-target="#inviteArtist" data-url="{% url "invite_artist" artist=artist.id %}" class="invite-artist-button">Invite</a></li>{% endif %}
                                     {% comment %}<li class="divider"></li>
                                     <li class="warning"><a href="#">Delete artist</a></li>{% endcomment %}
                                 </ul>
