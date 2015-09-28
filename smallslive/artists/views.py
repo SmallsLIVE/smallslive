@@ -94,6 +94,18 @@ class ArtistFilterView(StaffuserRequiredMixin, FilterView):
 artist_list = ArtistFilterView.as_view()
 
 
+class ArtistEmailsFilterView(ArtistFilterView):
+    content_type = 'text/plain'
+    paginate_by = 1000
+    template_name = "artists/artist_list_emails.html"
+
+    def get_queryset(self):
+        qs = super(ArtistEmailsFilterView, self).get_queryset()
+        return qs.exclude(user=None)
+
+artist_list_emails = ArtistEmailsFilterView.as_view()
+
+
 class ArtistSearchView(SearchView):
     template = 'search/artist_search.html'
 

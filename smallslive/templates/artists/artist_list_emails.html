@@ -1,0 +1,4 @@
+{% spaceless %}
+{% for artist in artists %}{{ artist.user.email }}
+{% empty %}No artists found.{% endfor %}
+{% endspaceless %}

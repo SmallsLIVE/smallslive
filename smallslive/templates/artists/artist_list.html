@@ -148,6 +148,7 @@
 
             </div>
           {% endif %}
+            <p><a href="{% url "artist_list_emails" %}?is_invited={{request.GET.is_invited}}&has_registered={{ request.GET.has_registered }}&signed_legal_agreement={{ request.GET.signed_legal_agreement }}&has_photo={{ request.GET.has_photo }}">Email list</a></p>
         </section>
     </div>
 
