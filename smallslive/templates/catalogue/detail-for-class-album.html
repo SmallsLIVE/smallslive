@@ -274,14 +274,21 @@
         playlist: [
           {% for track in product.tracks.all|dictsort:"ordering" %}
             {% if track.preview %}
-            {
-              sources: [{
-                file: "{{ track.get_track_preview_url|safe }}",
-                type: "mp3"
-              }],
-              mediaid: {{ track.id }}
-            }{% if not forloop.last %},{% endif %}
-            {% endif %}
+                {
+                  sources: [{
+                    file: "{{ track.get_track_preview_url|safe }}",
+                    type: "mp3"
+                  }],
+                  mediaid: {{ track.id }}
+                }
+            {% else %}{
+                  sources: [{
+                    file: "blank.mp3",
+                    type: "mp3"
+                  }],
+                  mediaid: {{ track.id }}
+              }
+            {% endif %}{% if not forloop.last %},{% endif %}
           {% endfor %}
         ],
         skin: "{% static "jwplayer-skin/smalls.xml" %}",
