@@ -9,6 +9,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, FormView
@@ -179,6 +180,7 @@ class UpgradePlanView(ChangePlanView):
 upgrade_plan = UpgradePlanView.as_view()
 
 
+@login_required
 def user_settings_view(request):
     # if this is a POST request we need to process the form data
     if 'edit_profile' in request.POST:
