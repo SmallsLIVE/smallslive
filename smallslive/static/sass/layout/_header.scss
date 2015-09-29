@@ -423,5 +423,15 @@ header {
   &__signup-button {
     padding: 8px 10px;
     border: 2px solid rgba(#fff, 0.7);
+    min-width: 70%;
+    background-color: #fff;
+    color: $main-accent-color !important;
+    @include lato-bold;
+  }
+
+  &__signin-button {
+    padding: 8px 10px;
+    border: 2px solid rgba(#fff, 0.7);
+    min-width: 70%;
   }
 }

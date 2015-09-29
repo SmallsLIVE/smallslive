@@ -18,9 +18,9 @@ INSTALLED_APPS += (
 )
 
 # Thumbor
-THUMBOR_MEDIA_URL = 'http://127.0.0.1:8000/media/'
+THUMBOR_MEDIA_URL = 'http://192.168.1.13:9000/media/'
 THUMBOR_SECURITY_KEY = 'TEST'
-THUMBOR_SERVER = 'http://127.0.0.1:8888'
+THUMBOR_SERVER = 'http://192.168.1.18:8888'
 
 # Allow all host headers
 ALLOWED_HOSTS = ['*']

@@ -9,17 +9,33 @@
   background-color: #000;
   min-height: 280px;
 
+  @media (max-width:$screen-xs-max) {
+    background-color: transparent;
+    min-height: 0;
+    border-bottom: none;
+    margin-bottom: 20px;
+  }
+
   &__image {
     @include img-responsive;
     width: 100%;
     opacity: 0.6;
     @include transition(opacity 0.2s ease-in-out);
     @include filter(grayscale(100%));
+    
+    @media (max-width:$screen-xs-max) {
+      opacity: 1;
+      border-bottom: 8px solid;
+      @include filter(grayscale(0));
+    }
   }
 
   &:hover &__image {
-    opacity: 0.3;
-    @include filter(grayscale(0%) blur(3px));
+
+    @media (min-width:$screen-xs-max) {
+      opacity: 0.3;
+      @include filter(grayscale(0%) blur(3px));
+    }
   }
 
   &__info {
@@ -27,6 +43,14 @@
     bottom: 20px;
     left: 18px;
     width: 65%;
+
+    @media (max-width:$screen-xs-max) {
+      position: relative;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      margin-top: 0;
+    }
   }
 
   &__title {
@@ -37,12 +61,26 @@
     &:hover {
       text-decoration: underline;
     }
+
+    @media (max-width:$screen-xs-max) {
+      font-size: 16px;
+      text-transform: none;
+      color: $base-text-color;
+      @include lato-bold;
+      margin-top: 10px;
+    }
   }
 
   &__date {
     @include lato-bold;
     font-size: 18px;
     margin: -5px 0 5px;
+
+    @media (max-width:$screen-xs-max) {
+      font-size: 14px;
+      color: #777;
+      margin: 0;
+    }
   }
 
   &__artists {
@@ -58,6 +96,10 @@
     font-size: 14px;
     margin-bottom: 0;
     margin-top: 10px;
+
+    @media (max-width:$screen-xs-max) {
+      display: none;
+    }
   }
 
   &:hover &__artists{
@@ -70,67 +112,97 @@
 
   &--green {
     border-bottom-color: #5FA051;
+
     &:hover {
       color: #5FA051;
+    }
+
+    .event-object__image {
+        border-bottom-color: #5FA051;
     }
   }
 
   &--blue {
     border-bottom-color: #68ACE3;
+
     &:hover {
       color: #68ACE3;
+    }
+
+    .event-object__image {
+        border-bottom-color: #68ACE3;
     }
   }
 
   &--yellow {
     border-bottom-color: #E5DA33;
+
     &:hover {
       color: #E5DA33;
+    }
+
+    .event-object__image {
+        border-bottom-color: #E5DA33;
     }
   }
 
   &--gold {
     border-bottom-color: #f39c12;
+
     &:hover {
       color: #f39c12;
+    }
+
+    .event-object__image {
+        border-bottom-color: #f39c12;
     }
   }
 
   &--red {
     border-bottom-color: #e74c3c;
+
     &:hover {
       color: shade(#e74c3c, 20%);
+    }
+
+    .event-object__image {
+        border-bottom-color: #e74c3c;
     }
   }
 
   &--purple {
     border-bottom-color: #9b59b6;
+
     &:hover {
       color: #9b59b6;
+    }
+
+    .event-object__image {
+        border-bottom-color: #9b59b6;
     }
   }
 
   &--darkblue {
     border-bottom-color: #1abc9c;
+
     &:hover {
       color: shade(#1abc9c, 20%);
+    }
+
+    .event-object__image {
+        border-bottom-color: #1abc9c;
     }
   }
 
   &--orange {
     border-bottom-color: #DC9231;
+
     &:hover {
       color: #DC9231;
     }
-  }
-}
 
-
-@media (max-width: 700px) {
-  .event-object {
-
-    &__title {
-      font-size: 18px;
+    .event-object__image {
+        border-bottom-color: #DC9231;
     }
   }
 }

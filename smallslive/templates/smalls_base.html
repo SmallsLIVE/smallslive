@@ -117,7 +117,7 @@
                 {% endif %}
                 <li><a href="{% url "account_logout" %}">Sign out</a></li>
              {% else %}
-                <li><a href="#" data-toggle="modal" data-target="#logIn">Sign in</a></li>
+                <li><a class="mobile-nav__signin-button" href="#" data-toggle="modal" data-target="#logIn">Sign in</a></li>
                 <li><a class="mobile-nav__signup-button" href="{% url "signup_landing" %}">Sign up</a></li>
             {% endif %}
           </ul>

@@ -200,3 +200,11 @@ p.unavailable {
   margin-left: 5px;
   font-size: 10px;
 }
+
+.equal-heights-xs {
+
+  @media(max-width:$screen-xs-max) {
+    @include display(flex);
+    @include flex-wrap(wrap);
+  }
+}
