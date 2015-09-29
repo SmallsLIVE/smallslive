@@ -22,87 +22,6 @@
               </div>
           </section>
       {% endif %}
-{% comment %}
-      <section class="your-requested-videos container">
-        <h1 class="your-requested-videos__section-title">Your requested videos</h1>
-
-        <div class="row archive-carousel">
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/02.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">The Ari Hoenig Trio</h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">66</span> requests</p>
-                </div>
-            </div>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/03.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">Siren Dan an experimental sound salon </h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">38</span> requests</p>
-                </div>
-            </div>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/06.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">Mike DiRubbo Quintet</h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">28</span> requests</p>
-                </div>
-            </div>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/08.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">The David Gibson Quinte</h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">22</span> requests</p>
-                </div>
-            </div>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/10.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">The Tyler Mitchell Trio</h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">17</span> requests</p>
-                </div>
-            </div>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/11.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">Josh Evans Big Band</h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">8</span> requests</p>
-                </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-{% endcomment %}
       <section class="video-audio container">
         <div class="row">
           <div class="col-md-6">
@@ -123,11 +42,9 @@
                       <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
                       <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
                       <div class="mini-video-info__stats">
-                          <p>Added:</p>
                           <p>Plays:</p>
                       </div>
                       <div class="mini-video-info__stats">
-                          <p><span>{{ event.added|date:"n/j/Y" }}</span></p>
                           <p><span>{{ event.play_count }}</span></p>
                       </div>
                     </div>
@@ -155,11 +72,9 @@
                       <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
                       <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
                       <div class="mini-video-info__stats">
-                          <p>Added:</p>
                           <p>Plays:</p>
                       </div>
                       <div class="mini-video-info__stats">
-                          <p><span>{{ event.added|date:"n/j/Y" }}</span></p>
                           <p><span>{{ event.play_count }}</span></p>
                       </div>
                     </div>
@@ -170,145 +85,6 @@
           </div>
         </div>
       </section>
-      {% comment %}
-      <section class="your-requested-videos container">
-        <h1 class="your-requested-videos__section-title">Most requested videos</h1>
-
-        <div class="row archive-carousel">
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/01.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title"><a href="#">Jill McCarron Trio</a></h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">87</span> requests</p>
-                </div>
-                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
-            </div>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/02.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">The Ari Hoenig Trio</h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">66</span> requests</p>
-                </div>
-                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
-            </div>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/03.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">Siren Dan an experimental sound salon </h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">45</span> requests</p>
-                </div>
-                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
-            </div>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/04.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">Saturday afternoon Open Jam Session with: Jonathan Thomas Trio </h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">42</span> requests</p>
-                </div>
-                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
-            </div>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/05.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">Sylvia Cuenca Organ Quartet</h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">38</span> requests</p>
-                </div>
-                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
-            </div>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/06.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">Mike DiRubbo Quintet </h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">28</span> requests</p>
-                </div>
-                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
-            </div>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/07.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">The Chuck Redd Quartet </h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">25</span> requests</p>
-                </div>
-                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
-            </div>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/08.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">The David Gibson Quintet</h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">22</span> requests</p>
-                </div>
-                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
-            </div>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/09.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">Amos Hoffman Quintet</h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">18</span> requests</p>
-                </div>
-                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
-            </div>
-          </div>
-
-          <div class="col-xs-6 col-md-3">
-            <div class="requested-video event-object--gold">
-                <img class="requested-video__image"
-                     src="{% static 'image/archive-temp/10.jpg' %}" alt=""/>
-                <div class="requested-video__info">
-                  <p class="requested-video__date">01/30/2015</p>
-                  <h1 class="requested-video__title">The Tyler Mitchell Trio</h1>
-                  <p class="requested-video__requests"><span class="requested-video__requests--number">17</span> requests</p>
-                </div>
-                <a href="" class="requested-video__request">Request</a><span class="arrow"></span>
-            </div>
-          </div>
-
-        </div>
-      </section>
-      {% endcomment %}
 
       <section class="video-audio container">
         <div class="row">
@@ -330,11 +106,9 @@
                       <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
                       <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
                       <div class="mini-video-info__stats">
-                          <p>Added:</p>
                           <p>Plays:</p>
                       </div>
                       <div class="mini-video-info__stats">
-                          <p><span>{{ event.added|date:"n/j/Y" }}</span></p>
                           <p><span>{{ event.play_count }}</span></p>
                       </div>
                     </div>
@@ -361,11 +135,9 @@
                       <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
                       <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
                       <div class="mini-video-info__stats">
-                          <p>Added:</p>
                           <p>Plays:</p>
                       </div>
                       <div class="mini-video-info__stats">
-                          <p><span>{{ event.added|date:"n/j/Y" }}</span></p>
                           <p><span>{{ event.play_count }}</span></p>
                       </div>
                     </div>

@@ -18,12 +18,20 @@
     padding: 10px 30px;
     position: relative;
 
+    @media(max-width:$screen-xs-max) {
+      padding: 0 15px;
+    }
+
     &__title {
       @include lato-black;
       font-size: 32px;
       max-width: 640px;
       margin: 0 auto 15px;
       line-height: 130%;
+
+      @media(max-width:$screen-xs-max) {
+        font-size: 20px;
+      }
     }
     
     &__text {
