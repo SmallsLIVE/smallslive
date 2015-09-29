@@ -7,10 +7,19 @@
   background-position: center center;
   border-bottom: none;
 
+  @media(max-width:$screen-xs-max) {
+    padding: 15px 20px;
+  }
+
   &__title {
     @include lato-black;
     font-size: 24px;
     margin: 0;
+
+    @media(max-width:$screen-xs-max) {
+      font-size: 16px;
+      line-height: 140%;
+    }
 
     & a {
       color: #fff;
@@ -24,6 +33,10 @@
       @include lato;
       margin: 0 15px;
       display: inline-block;
+
+      @media(max-width:$screen-xs-max) {
+        margin: 0 8px;
+      }
     }
 
     &__category {
@@ -50,6 +63,10 @@
       margin: 0 0 15px;
       @include lato-black;
       font-size: 48px;
+
+      @media(max-width:$screen-xs-max) {
+        font-size: 30px;
+      }
     }
 
     & p {
@@ -59,6 +76,10 @@
 
       &.small {
         @include lato;
+        font-size: 14px;
+      }
+
+      @media(max-width:$screen-xs-max) {
         font-size: 14px;
       }
     }
@@ -190,6 +211,13 @@
     padding: 40px 30px 10px;
   }
 
+  &--category.landing-nav {
+    padding: 0 15px;
+    float: none;
+    border-bottom: 3px solid darken($main-accent-color, 10%);
+    border-top: 1px solid darken($main-accent-color, 3%);
+  }
+
   &__search-divider {
     margin: 25px 0 5px;
     width: 100%;
@@ -209,6 +237,10 @@
     top: -32px;
     white-space: nowrap;
 
+    @media(max-width:$screen-xs-max) {
+      font-size: 18px;
+    }
+
     &.expand-toggle {
 
       & i {
@@ -222,6 +254,15 @@
           @include transform(rotate(180deg));
         }
       }
+    }
+
+    &--category {
+      position: relative;
+      top: 0;
+      display: block;
+      margin-left: -15px;
+      margin-right: -15px;
+      padding: 15px 20px;
     }
   }
 
@@ -241,6 +282,11 @@
     font-size: 18px;
     border-bottom: 1px solid #ddd;
 
+    @media(max-width:$screen-xs-max) {
+      font-size: 16px;
+      padding: 10px 0;
+    }
+
     & a {
       color: rgba(#131313, 0.5);
       @include transition(all 0.3s ease-in-out);
@@ -256,6 +302,10 @@
 
       & li {
         font-size: 16px;
+
+        @media(max-width:$screen-xs-max) {
+          font-size: 14px;
+        }
       }
     }
 
@@ -278,6 +328,10 @@
   &__content {
     padding: 40px 30px;
     background-color: #fff;
+
+    @media(max-width: $screen-xs-max) {
+      min-height: 300px;
+    }
   }
 
   &__big-item {
