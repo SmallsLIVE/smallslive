@@ -20,6 +20,8 @@ class Product(AbstractProduct):
     def get_track_preview_url(self):
         if self.preview_id:
             return self.preview.get_file_url()
+        else:
+            return "blank.mp3"
 
     @cached_property
     def has_physical_media(self):

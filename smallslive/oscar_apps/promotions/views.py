@@ -1,3 +1,4 @@
+import itertools
 from oscar.apps.promotions import views as promotions_views
 from oscar_apps.catalogue.models import Product
 
@@ -11,4 +12,5 @@ class HomeView(promotions_views.HomeView):
             product_class__slug="album", featured=True)[:4]
         context['featured_physical_products'] = Product.objects.filter(
             product_class__slug="merchandise", featured=True)[:4]
+        context['preview_track_id_counter'] = itertools.count()
         return context

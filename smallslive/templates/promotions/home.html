@@ -167,7 +167,9 @@
                                         <div class="store-featured-music__single__tracks-table__row row">
                                             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-featured-music__single__tracks-table__column preview">
                                                 {% if track.preview %}
-                                                    <a href="#" class="playback-control" data-playlist-id="{{ forloop.parentloop.counter0|add:forloop.counter0 }}"><i class="fa fa-play"></i></a>
+                                                    <a href="#" class="playback-control" data-playlist-id="{{ preview_track_id_counter.next }}"><i class="fa fa-play"></i></a>
+                                                {% else %}
+                                                    <!-- {{ preview_track_id_counter.next }} -->
                                                 {% endif %}
                                             </div>
                                             <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-featured-music__single__tracks-table__column title">
