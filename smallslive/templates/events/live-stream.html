@@ -14,11 +14,11 @@
         <div class="vertical-align-child">
             <h1 class="cto__title">SmallsLIVE Members Only</h1>
 
-            <p class="cto__text">You must sign in to view our live stream. <br/>Not yet a member of SmallsLIVE? Membership to watch our live stream is free!
+            <p class="cto__text">You must sign in to view our live stream. <br/>Not yet a member of SmallsLIVE? Membership to watch our live stream is <u>free</u>!
             </p>
-            <a href="#" data-toggle="modal" data-target="#logIn" class="cto__button">Sign in</a>
-            <span>or</span>
-            <a href="{% url "account_signup" %}" class="cto__button">Sign up!</a>
+            <a href="#" data-toggle="modal" data-target="#logIn" class="cto__button cto__button--block">Sign in</a>
+            <span class="cto__span--block">or</span>
+            <a href="{% url "account_signup" %}" class="cto__button cto__button--block">Sign up!</a>
         </div>
       </section>
     {% elif not user.has_activated_account %}
