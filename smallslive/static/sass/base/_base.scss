@@ -206,5 +206,9 @@ p.unavailable {
   @media(max-width:$screen-xs-max) {
     @include display(flex);
     @include flex-wrap(wrap);
+
+    &:before, &:after {
+      display: none;
+    }
   }
 }

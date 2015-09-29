@@ -39,7 +39,7 @@
 
         <div class="row equal-heights-xs">
           {% for event in new_in_archive %}
-            <div class="col-xs-6 col-sm-6 col-md-4 {% if forloop.counter > 3 %}hidden-xs{% endif %}">
+            <div class="col-xs-6 col-sm-6 col-md-4 {% if forloop.counter > 4 %}hidden-xs{% endif %}">
               <a href="{{ event.get_absolute_url }}">
                 <div class="event-object event-object--{% cycle "green" "blue" "yellow" "gold" "red" "purple" %}">
                   {% if event.photo %}
