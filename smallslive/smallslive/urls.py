@@ -3,9 +3,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.core.urlresolvers import reverse_lazy
 from django.http import Http404
 from django.shortcuts import render_to_response
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, RedirectView
 from django.template import TemplateDoesNotExist
 from paypal.express.dashboard.app import application as paypal_application
 from oscar.app import application
@@ -52,6 +53,7 @@ urlpatterns = patterns('',
     (r'^checkout/paypal/', include('paypal.express.urls')),
     (r'^dashboard/paypal/express/', include(paypal_application.urls)),
     url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
+    url(r'^store/accounts/login/$', RedirectView.as_view(url=reverse_lazy('accounts_login'))),
     url(r'^store/', include(application.urls)),
     url(r'^robots\.txt', robots_view),
     url(r'^$', 'events.views.homepage', name="home"),

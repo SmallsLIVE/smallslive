@@ -304,7 +304,6 @@ def metrics_payout(request):
     return render(request, 'artist_dashboard/metrics_payout.html', {'form': form})
 
 
-
 @login_required
 def legal(request):
     user_signed = LegalAgreementAcceptance.objects.filter(user=request.user).exists()
