@@ -398,6 +398,11 @@
           }
         }
       }
+
+      @media (max-width:$screen-xs-max) {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
     }
 
     &__description {
@@ -428,6 +433,10 @@
       margin: 10px 0;
       font-size: 28px;
       color: $main-accent-color;
+
+      @media (max-width:$screen-xs-max) {
+        font-size: 18px;
+      }
     }
   }
 
@@ -444,6 +453,10 @@
 .store-list-item {
   margin-bottom: 20px;
 
+  @media(max-width:$screen-xs-max) {
+    margin-bottom: 30px;
+  }
+
   &__image {
     padding: 5px;
     border: 1px solid #ddd;
@@ -451,6 +464,10 @@
     height: 250px;
     @include display(flex);
     @include align-items(center);
+
+    @media(max-width:$screen-xs-max) {
+      width: 50%;
+    }
 
     & a {
       display: block;
@@ -482,6 +499,11 @@
 
     & a {
       color: #131313;
+      white-space: nowrap;
+      width: 100%;
+      overflow: hidden;
+      display: block;
+      text-overflow: ellipsis;
 
       &:hover, &:focus {
         color: rgba(#131313, 0.7);
@@ -611,6 +633,10 @@
     top: -32px;
     z-index: 11;
     white-space: nowrap;
+
+    @media(max-width:$screen-xs-max) {
+      font-size: 18px
+    }
   }
 
   &__header {
@@ -634,6 +660,10 @@
     @media (max-width: $screen-sm-max) {
       padding-top: 50px;
       text-align: left;
+    }
+
+    @media(max-width:$screen-xs-max) {
+      padding-top: 30px;
     }
   }
 
@@ -724,6 +754,10 @@
         &:hover, &:focus {
           color: rgba(#fff, 0.7);
         }
+      }
+
+      @media(max-width:$screen-xs-max) {
+        margin: 0 0 10px;
       }
     }
 
