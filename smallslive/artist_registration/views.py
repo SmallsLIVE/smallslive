@@ -2,6 +2,7 @@ from allauth.account import views as allauth_views
 from allauth.account import app_settings
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import perform_login
+from braces.views import LoginRequiredMixin
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse_lazy, reverse
@@ -37,7 +38,7 @@ class InviteArtistView(FormView):
         return reverse('artist_edit', kwargs={'pk': self.artist.id, 'slug': self.artist.slug})
 
 
-class ConfirmEmailView(allauth_views.ConfirmEmailView):
+class ConfirmEmailView(LoginRequiredMixin, allauth_views.ConfirmEmailView):
     def get(self, *args, **kwargs):
         try:
             self.object = self.get_object()
@@ -87,11 +88,12 @@ class ConfirmEmailView(allauth_views.ConfirmEmailView):
         user.last_login = date
         user.save()
         confirmation.delete()
-        if self.request.user.is_anonymous():
-            return perform_login(self.request,
-                                 user,
-                                 app_settings.EmailVerificationMethod.NONE,
-                                 redirect_url=self.get_redirect_url())
+        if not self.request.user.is_anonymous():
+            logout(self.request)
+        return perform_login(self.request,
+                             user,
+                             app_settings.EmailVerificationMethod.NONE,
+                             redirect_url=self.get_redirect_url())
 
 confirm_email = ConfirmEmailView.as_view()
 
