@@ -227,3 +227,31 @@
     }
   }
 }
+
+.artists-list__pagination {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  background-color: #eee;
+  border-top: 2px solid #ddd;
+}
+
+.artist-list__email-button {
+  display: inline-block;
+  background-color: $main-accent-color;
+  color: #fff;
+  padding: 10px 45px;
+  @include lato-bold;
+
+  &:hover, &:focus {
+    color: rgba(#fff, 0.75);
+    padding: 10px 60px;
+  }
+
+  &__container {
+    max-width: 640px;
+    margin: 20px auto 20px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+  }
+}
