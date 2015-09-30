@@ -34,19 +34,39 @@ def has_registered(qs, val):
             tables=['users_smallsuser', 'account_emailaddress']
         )
     elif val == 'false':
-        qs = qs.exclude(user__isnull=True)
+        qs = qs.exclude(user__isnull=True).extra(
+            where=[
+                'artists_artist.id=users_smallsuser.artist_id',
+                'users_smallsuser.id=account_emailaddress.user_id',
+                'account_emailaddress.verified = FALSE'
+            ],
+            tables=['users_smallsuser', 'account_emailaddress']
+        )
     return qs
 
+
+def is_invited(qs, val):
+    if val == 'true':
+        qs = qs.exclude(user=None)
+    elif val == 'false':
+        qs = qs.filter(user=None)
+    return qs
+
+
+def has_signed(qs, val):
+    if val == 'true':
+        qs = qs.exclude(user__legal_agreement_acceptance=None)
+    elif val == 'false':
+        qs = qs.filter(user__legal_agreement_acceptance=None)
+    return qs
 
 class ArtistFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(action=search_name)
     instruments = django_filters.ModelChoiceFilter(queryset=Instrument.objects.all())
-    is_invited = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, coerce=strtobool,
-                                                      name="user", lookup_type='isnull', exclude=True)
+    is_invited = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, action=is_invited)
     has_registered = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, action=has_registered)
     has_photo = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, name="photo", action=has_photo)
-    signed_legal_agreement = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, coerce=strtobool,
-                                                      name="user__legal_agreement_acceptance", lookup_type='isnull', exclude=True)
+    signed_legal_agreement = django_filters.TypedChoiceFilter(choices=BOOLEAN_CHOICES, action=has_signed)
 
     class Meta:
         fields = ['name', 'is_invited', 'has_registered', 'has_photo', 'signed_legal_agreement', 'instruments']
