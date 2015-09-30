@@ -123,7 +123,7 @@
                 {% endfor %}
             </ul>
         </section>
-        <section class="page-pagination container">
+        <section class="page-pagination artists-list__pagination container">
           <p class="search-pagination-info">Showing results {{ page_obj.start_index }}-{{ page_obj.end_index }}
             of {{ paginator.count }}</p>
           {% if page_obj.has_previous or page_obj.has_next %}
@@ -148,7 +148,9 @@
 
             </div>
           {% endif %}
-            <p><a href="{% url "artist_list_emails" %}?is_invited={{request.GET.is_invited}}&has_registered={{ request.GET.has_registered }}&signed_legal_agreement={{ request.GET.signed_legal_agreement }}&has_photo={{ request.GET.has_photo }}">Email list</a></p>
+            <div class="artist-list__email-button__container">
+                <a class="artist-list__email-button" href="{% url "artist_list_emails" %}?is_invited={{request.GET.is_invited}}&has_registered={{ request.GET.has_registered }}&signed_legal_agreement={{ request.GET.signed_legal_agreement }}&has_photo={{ request.GET.has_photo }}">Email list</a>
+            </div>
         </section>
     </div>
 
