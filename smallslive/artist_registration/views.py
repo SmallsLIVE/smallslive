@@ -38,7 +38,7 @@ class InviteArtistView(FormView):
         return reverse('artist_edit', kwargs={'pk': self.artist.id, 'slug': self.artist.slug})
 
 
-class ConfirmEmailView(LoginRequiredMixin, allauth_views.ConfirmEmailView):
+class ConfirmEmailView(allauth_views.ConfirmEmailView):
     def get(self, *args, **kwargs):
         try:
             self.object = self.get_object()
