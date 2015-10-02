@@ -92,6 +92,8 @@ class ArtistAccountActivateView(allauth_views.PasswordSetView):
                                   'account/messages/email_confirmed.txt',
                                   {'email': confirmation.email_address.email})
         form.save()
+        # get the confirmation object again so it reloads the user model that has the new password
+        self.object = confirmation = self.get_object()
         resp = self.login_on_confirm(confirmation)
         if resp:
             return resp
