@@ -121,7 +121,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
         self.add_payment_event('Purchase', total.incl_tax)
 
     def payment_description(self, order_number, total, **kwargs):
-        return self.request.user.email
+        return "Order #{0} at SmallsLIVE".format(order_number)
 
     def payment_metadata(self, order_number, total, **kwargs):
         return {'order_number': order_number}
