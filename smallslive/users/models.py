@@ -178,7 +178,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     @cached_property
     def can_watch_video(self):
         return self.is_staff or self.is_artist or (
-            self.has_activated_account and self.get_subscription_plan['type'] == 'premium')
+            self.has_activated_account and self.get_subscription_plan['type'] != 'free')
 
     @cached_property
     def can_listen_to_audio(self):
