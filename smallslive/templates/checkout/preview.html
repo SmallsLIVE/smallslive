@@ -212,9 +212,8 @@
                             <p>{{paypal_user_email}}</p>
                         {% else %}
                             <p class="small-heading">Credit card:</p>
-                            <p>xxxx xxxx xxxx 11111</p>
-                            <p>Valid thru 9/15</p>
-                            <p>Filip Jukić</p>
+                            <p>{{ card_info.name }}</p>
+                            <p>xxxx xxxx xxxx {{ card_info.last_4 }}</p>
                         {% endif %}
 
                     </div>

@@ -47,6 +47,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
                                                                 initial=self.get_billing_initial())
         if hasattr(self, 'token'):
             kwargs['stripe_token'] = self.token
+
+        kwargs['card_info'] = self.checkout_session._get('payment', 'card_info')
         return super(PaymentDetailsView, self).get_context_data(**kwargs)
 
     def get_billing_initial(self):
@@ -86,6 +88,10 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
                 address = billing_address_form.save()
                 self.checkout_session.bill_to_user_address(address)
                 self.token = form.token
+            self.checkout_session._set('payment', 'card_info', {
+                'name': form.cleaned_data['name'],
+                'last_4': form.cleaned_data['number'][-4:],
+            })
             return self.render_preview(request, card_token=form.token, form=form,
                                        billing_address_form=billing_address_form)
         else:
