@@ -65,7 +65,7 @@ DEFAULT_FROM_REGISTRATION_EMAIL = "smallsliveusers@gmail.com"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 
 # Metrics
-METRICS_SERVER_URL = "http://metrics.smallslive.com"  # no trailing slash
+METRICS_SERVER_URL = "https://ssltestmetrics.smallslive.com"  # no trailing slash
 
 # Cache
 redis_url = urlparse.urlparse(get_env_variable('REDIS_URL'))
