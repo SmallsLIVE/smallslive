@@ -211,11 +211,7 @@
   margin-bottom: 0;
 }
 
-.slick-slide {
-  display: none;
-}
-
-.slick-initialized .slick-slide:first-child {
+.slick-initialized .slick-slide {
   @include display(flex);
 }
 
