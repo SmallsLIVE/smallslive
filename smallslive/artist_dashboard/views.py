@@ -16,6 +16,7 @@ from django.utils import timezone
 from django.views.generic import TemplateView, DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
+from braces.views import SuperuserRequiredMixin
 from allauth.account.forms import ChangePasswordForm
 import allauth.account.views as allauth_views
 from metrics.models import UserVideoMetric
@@ -249,7 +250,7 @@ class MyMetricsView(HasArtistAssignedMixin, TemplateView):
 my_metrics = MyMetricsView.as_view()
 
 
-class AdminMetricsView(HasArtistAssignedMixin, TemplateView):
+class AdminMetricsView(SuperuserRequiredMixin, TemplateView):
     template_name = 'artist_dashboard/admin-metrics.html'
 
     def get_context_data(self, **kwargs):
