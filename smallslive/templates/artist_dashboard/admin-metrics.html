@@ -49,11 +49,11 @@
                   <div class="featured-metrics__metric__content">
                       <div class="featured-metrics__metric__content__primary">
                           <h2 class="neutral">Vs last week:</h2>
-                          {% with trend=audio_counts.week.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                          {% with trend=audio_counts.week.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
                       </div>
                       <div class="featured-metrics__metric__content__secondary">
                           <h2 class="neutral">Vs last month:</h2>
-                          {% with trend=audio_counts.month.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                          {% with trend=audio_counts.month.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
                       </div>
                   </div>
               </div>
@@ -79,11 +79,11 @@
                   <div class="featured-metrics__metric__content">
                       <div class="featured-metrics__metric__content__primary">
                           <h2 class="neutral">Vs last week:</h2>
-                          {% with trend=video_counts.week.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                          {% with trend=video_counts.week.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
                       </div>
                       <div class="featured-metrics__metric__content__secondary">
                           <h2 class="neutral">Vs last month:</h2>
-                          {% with trend=video_counts.month.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                          {% with trend=video_counts.month.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
                       </div>
                   </div>
               </div>
@@ -109,11 +109,11 @@
                   <div class="featured-metrics__metric__content">
                       <div class="featured-metrics__metric__content__primary">
                           <h2 class="neutral">Vs last week:</h2>
-                          {% with trend=audio_counts.week.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                          {% with trend=audio_counts.week.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
                       </div>
                       <div class="featured-metrics__metric__content__secondary">
                           <h2 class="neutral">Vs last month:</h2>
-                          {% with trend=audio_counts.month.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                          {% with trend=audio_counts.month.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
                       </div>
                   </div>
               </div>
@@ -139,11 +139,11 @@
                   <div class="featured-metrics__metric__content">
                       <div class="featured-metrics__metric__content__primary">
                           <h2 class="neutral">Vs last week:</h2>
-                          {% with trend=video_counts.week.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                          {% with trend=video_counts.week.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
                       </div>
                       <div class="featured-metrics__metric__content__secondary">
                           <h2 class="neutral">Vs last month:</h2>
-                          {% with trend=video_counts.month.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                          {% with trend=video_counts.month.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
                       </div>
                   </div>
               </div>
@@ -347,7 +347,7 @@
 
                 };
 
-                window.onload = drawGraph(playsDataArchive);
+                window.onload = drawGraph(playsDataArchive, 'plays');
                 $datePicker.on('changeMonth', function (d) {
                       var countsURL = "{{ metrics_server_url }}/event_counts/";
                       var data = {
@@ -373,7 +373,7 @@
                               if (playsActive) {
                                   drawGraph(playsDataArchive, "plays");
                               } else {
-                                  drawGraph(minsDataArchive, "hrs");
+                                  drawGraph(minsDataArchive, "mins");
                               }
                           },
                           type: 'GET',
@@ -399,7 +399,7 @@
                             $(".metric-graph__switch__option.data.active").toggleClass("active");
                             $(this).toggleClass("active");
                             $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
-                            drawGraph(minsDataArchive, 'hrs');
+                            drawGraph(minsDataArchive, 'mins');
                         }
                     });
 
