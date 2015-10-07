@@ -411,7 +411,7 @@ class LiveStreamView(ListView):
         if context['events'] and context['events'][0].has_started():
             context['currently_playing'] = context['events'].pop(0)
         context['first_future_show'] = Event.objects.filter(start__gte=timezone.now()).order_by('start').first()
-        context['stream_expire'] = int(time.time()) + 10  # 10 seconds - required just to start the stream
+        context['stream_expire'] = int(time.time()) + 120  # 10 seconds - required just to start the stream
         context['stream_hash'] = hashlib.md5("{0}{1}?e={2}".format(settings.BITGRAVITY_SECRET, "/smallslive/secure/",
                                                                    context['stream_expire'])).hexdigest()
         return context
