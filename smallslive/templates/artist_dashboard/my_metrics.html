@@ -51,11 +51,11 @@
           <div class="featured-metrics__metric__content">
               <div class="featured-metrics__metric__content__primary">
                   <h2 class="neutral">Vs last week:</h2>
-                  {% with trend=weekly_artist_stats.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                  {% with trend=weekly_artist_stats.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
               </div>
               <div class="featured-metrics__metric__content__secondary">
                   <h2 class="neutral">Vs last month:</h2>
-                  {% with trend=monthly_artist_stats.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                  {% with trend=monthly_artist_stats.play_count_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
               </div>
           </div>
       </div>
@@ -88,7 +88,7 @@
                   </div>
                   <div class="featured-metrics__metric__content__secondary">
                       <h2 class="neutral">My percentage:</h2>
-                      <h1 class="normal">{% if all_time_for_artist.play_count_percentage %}{{ all_time_for_artist.play_count_percentage|floatformat:5 }}%{% else %}n/a{% endif %} </h1>
+                      <h1 class="normal">{% if all_time_for_artist.play_count_percentage %}{{ all_time_for_artist.play_count_percentage|floatformat:-4 }}%{% else %}n/a{% endif %} </h1>
                   </div>
               </div>
           </div>
@@ -115,11 +115,11 @@
           <div class="featured-metrics__metric__content">
               <div class="featured-metrics__metric__content__primary">
                   <h2 class="neutral">Vs last week:</h2>
-                  {% with trend=weekly_artist_stats.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                  {% with trend=weekly_artist_stats.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
               </div>
               <div class="featured-metrics__metric__content__secondary">
                   <h2 class="neutral">Vs last month:</h2>
-                  {% with trend=monthly_artist_stats.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                  {% with trend=monthly_artist_stats.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
               </div>
           </div>
       </div>
@@ -152,7 +152,7 @@
                   </div>
                   <div class="featured-metrics__metric__content__secondary">
                       <h2 class="neutral">My percentage:</h2>
-                      <h1 class="normal">{% if all_time_for_artist.seconds_played_percentage %}{{ all_time_for_artist.seconds_played_percentage|floatformat:5 }}%{% else %}n/a{% endif %} </h1>
+                      <h1 class="normal">{% if all_time_for_artist.seconds_played_percentage %}{{ all_time_for_artist.seconds_played_percentage|floatformat:-4 }}%{% else %}n/a{% endif %} </h1>
                   </div>
               </div>
           </div>
@@ -199,9 +199,9 @@
                       <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
                           <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-5">{{ event.title }}</div>
                           <div class="metrics__event-list__metric col-xs-12 col-sm-1"><div class="visible-xs">Plays: </div>{{ counts.week.play_count }}</div>
-                          {% with trend=counts.play_count_trend %}<div class="metrics__event-list__metric col-xs-12 col-sm-1 {% if trend and trend > 0 %}positive{% elif trend and trend < 0 %}negative{% endif %}"><div class="visible-xs">Plays trend: </div><i class="fa {% if trend and trend > 0 %}fa-arrow-up{% elif trend and trend < 0 %}fa-arrow-down{% endif %}"></i> {% if trend %}{{ trend }}%{% else %}n/a{% endif %}</div>{% endwith %}
+                          {% with trend=counts.play_count_trend %}<div class="metrics__event-list__metric col-xs-12 col-sm-1 {% if trend and trend > 0 %}positive{% elif trend and trend < 0 %}negative{% endif %}"><div class="visible-xs">Plays trend: </div><i class="fa {% if trend and trend > 0 %}fa-arrow-up{% elif trend and trend < 0 %}fa-arrow-down{% endif %}"></i> {% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</div>{% endwith %}
                           <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Hours: </div>{{ counts.week.time_played }}</div>
-                          {% with trend=counts.seconds_played_trend %}<div class="metrics__event-list__metric col-xs-12 col-sm-1 {% if trend and trend > 0 %}positive{% elif trend and trend < 0 %}negative{% endif %}"><div class="visible-xs">Plays trend: </div><i class="fa {% if trend and trend > 0 %}fa-arrow-up{% elif trend and trend < 0 %}fa-arrow-down{% endif %}"></i> {% if trend %}{{ trend }}%{% else %}n/a{% endif %}</div>{% endwith %}
+                          {% with trend=counts.seconds_played_trend %}<div class="metrics__event-list__metric col-xs-12 col-sm-1 {% if trend and trend > 0 %}positive{% elif trend and trend < 0 %}negative{% endif %}"><div class="visible-xs">Plays trend: </div><i class="fa {% if trend and trend > 0 %}fa-arrow-up{% elif trend and trend < 0 %}fa-arrow-down{% endif %}"></i> {% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</div>{% endwith %}
                           <div class="metrics__event-list__more-link col-xs-12 col-sm-3 col-md-2"><a href="{% url "static_page" "metrics-admin-single-event-static" %}">Detailed metrics</a></div>
                       </div>
                   </li>
@@ -432,8 +432,10 @@
                 event_ids: {{ artist_event_ids|safe }}
             };
             $.ajax(countsURL, {
-                data: data,
+                data: JSON.stringify(data),
                 type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
                 headers: {
                   "Authorization": "Token {{ user_token }}"
                 },
@@ -441,6 +443,7 @@
                     withCredentials: true
                 },
                 success: function (data, textStatus, jqXHR) {
+                    console.log(data)
                     playsData.labels = data.dates;
                     playsData.datasets[0].data = data.audio_plays_list;
                     playsData.datasets[1].data = data.video_plays_list;
