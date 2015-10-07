@@ -66,11 +66,11 @@
           <div class="featured-metrics__metric__content">
               <div class="featured-metrics__metric__content__primary">
                   <h2 class="neutral">Vs last week:</h2>
-                  {% with trend=weekly_artist_stats.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                  {% with trend=weekly_artist_stats.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
               </div>
               <div class="featured-metrics__metric__content__secondary">
                   <h2 class="neutral">Vs last month:</h2>
-                  {% with trend=monthly_artist_stats.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend }}%{% else %}n/a{% endif %}</h1>{% endwith %}
+                  {% with trend=monthly_artist_stats.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
 
               </div>
           </div>
@@ -286,7 +286,7 @@
 
     };
 
-        window.onload = drawGraph(playsData);
+        window.onload = drawGraph(playsData, 'plays');
 
 
         /* Toggyling different data */
@@ -306,7 +306,7 @@
                     $(this).toggleClass("active");
                     $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                     var ctx = document.getElementById("graph-canvas").getContext("2d");
-                    drawGraph(minsData, 'hrs');
+                    drawGraph(minsData, 'mins');
                 }
             })
         });
