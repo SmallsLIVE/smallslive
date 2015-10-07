@@ -182,7 +182,7 @@
 
           <section class="metrics__event-list__container container">
               <div class="metrics__lists__header">
-                <h3 class="metrics__lists__title">My top 10 performing events:</h3>
+                <h3 class="metrics__lists__title">Top 10 performing events:</h3>
                 <ul class="metrics__lists__switch-group">
                     <li class="metrics__lists__switch-group__single">
                         <ul class="metrics__lists__switch">
@@ -222,7 +222,7 @@
                           {% with trend=counts.play_count_trend %}<div class="metrics__event-list__metric col-xs-12 col-sm-1 {% if trend and trend > 0 %}positive{% elif trend and trend < 0 %}negative{% endif %}"><div class="visible-xs">Plays trend: </div><i class="fa {% if trend and trend > 0 %}fa-arrow-up{% elif trend and trend < 0 %}fa-arrow-down{% endif %}"></i> {% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</div>{% endwith %}
                           <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Hours: </div>{{ counts.week.time_played }}</div>
                           {% with trend=counts.seconds_played_trend %}<div class="metrics__event-list__metric col-xs-12 col-sm-1 {% if trend and trend > 0 %}positive{% elif trend and trend < 0 %}negative{% endif %}"><div class="visible-xs">Plays trend: </div><i class="fa {% if trend and trend > 0 %}fa-arrow-up{% elif trend and trend < 0 %}fa-arrow-down{% endif %}"></i> {% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</div>{% endwith %}
-                          <div class="metrics__event-list__more-link col-xs-12 col-sm-3 col-md-2"><a href="{% url "static_page" "metrics-admin-single-event-static" %}">Detailed metrics</a></div>
+                          <div class="metrics__event-list__more-link col-xs-12 col-sm-3 col-md-2"><a href="{% url "artist_dashboard:event_metrics" pk=event.id slug=event.slug %}">Detailed metrics</a></div>
                       </div>
                   </li>
                   {% endfor %}
@@ -321,7 +321,7 @@
                           pointStrokeColor: "#fff",
                           pointHighlightFill: "#fff",
                           pointHighlightStroke: "rgba(151,187,205,1)",
-                          data: {{ date_counts.audio_seconds_list }}
+                          data: {{ date_counts.audio_minutes_list }}
                         },
                         {
                           label: "Video",
@@ -331,7 +331,7 @@
                           pointStrokeColor: "#fff",
                           pointHighlightFill: "#fff",
                           pointHighlightStroke: "rgba(151,187,205,1)",
-                          data: {{ date_counts.video_seconds_list }}
+                          data: {{ date_counts.video_minutes_list }}
                         },
                         {
                           label: "Total",
@@ -341,7 +341,7 @@
                           pointStrokeColor: "#fff",
                           pointHighlightFill: "#fff",
                           pointHighlightStroke: "rgba(220,220,220,1)",
-                          data: {{ date_counts.total_seconds_list }}
+                          data: {{ date_counts.total_minutes_list }}
                         }
                     ]
 
@@ -365,9 +365,9 @@
                               playsDataArchive.datasets[1].data = data.video_plays_list;
                               playsDataArchive.datasets[2].data = data.total_plays_list;
                               minsDataArchive.labels = data.dates;
-                              minsDataArchive.datasets[0].data = data.audio_seconds_list;
-                              minsDataArchive.datasets[1].data = data.video_seconds_list;
-                              minsDataArchive.datasets[2].data = data.total_seconds_list;
+                              minsDataArchive.datasets[0].data = data.audio_minutes_list;
+                              minsDataArchive.datasets[1].data = data.video_minutes_list;
+                              minsDataArchive.datasets[2].data = data.total_minutes_list;
                               $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                               var playsActive = $("#metric-graph__show__data-1").hasClass("active");
                               if (playsActive) {
