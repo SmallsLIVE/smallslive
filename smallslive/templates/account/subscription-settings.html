@@ -143,7 +143,10 @@
                 ${{ user.get_subscription_plan.price|djdiv:100|floatformat:"2" }}</b> to renew your selected plan.
               </div>
               <div class="col-xs-12 col-sm-3">
+              <form action="{% url 'cancel_subscription' %}" method="post" id="cancel-form">
+                {% csrf_token %}
                 <button class="setting-toggle-button">Disable Auto renewal</button>
+              </form>
               </div>
             {% endif %}
           </div>

@@ -16,7 +16,8 @@ from django.views.generic import TemplateView, FormView
 from djstripe.mixins import SubscriptionMixin
 from djstripe.models import Customer
 from djstripe.settings import subscriber_request_callback
-from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView
+from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView,\
+    CancelSubscriptionView as BaseCancelSubscriptionView
 from allauth.account.app_settings import EmailVerificationMethod
 import stripe
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm
@@ -243,6 +244,12 @@ class LoginView(CoreLoginView):
             return ["account/login.html"]
 
 login_view = LoginView.as_view()
+
+
+class CancelSubscriptionView(BaseCancelSubscriptionView):
+    success_url = reverse_lazy("subscription_settings")
+
+cancel_subscription = CancelSubscriptionView.as_view()
 
 
 class HasArtistAssignedMixin(braces.views.UserPassesTestMixin):
