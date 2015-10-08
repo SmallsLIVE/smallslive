@@ -58,8 +58,14 @@ RAVEN_CONFIG = {
 }
 
 # Email settings
-EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
-MANDRILL_API_KEY = get_env_variable('MANDRILL_API_KEY')
+# EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
+# MANDRILL_API_KEY = get_env_variable('MANDRILL_API_KEY')
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = "smtp.mandrilapp.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "smallslive@appsembler.com"
+EMAIL_HOST_PASSWORD = get_env_variable('MANDRILL_API_KEY')
 DEFAULT_FROM_EMAIL = 'smallslive@gmail.com'
 DEFAULT_FROM_REGISTRATION_EMAIL = "smallsliveusers@gmail.com"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
