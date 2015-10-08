@@ -162,7 +162,13 @@ class EventSearchForm(SearchForm):
     artist = forms.IntegerField(required=False)
 
     def search(self):
-        sqs = super(EventSearchForm, self).search()
+        if not self.is_valid():
+            return self.no_query_found()
+
+        if not self.cleaned_data.get('q'):
+            return self.no_query_found()
+
+        sqs = self.searchqueryset.filter(text__exact=self.cleaned_data['q'])
 
         if self.is_valid() and self.cleaned_data.get('artist'):
             sqs = sqs.filter(performers=self.cleaned_data.get('artist'))

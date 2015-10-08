@@ -81,7 +81,7 @@ class ArtistSearchForm(SearchForm):
         sqs = super(ArtistSearchForm, self).search()
 
         if self.cleaned_data.get('q'):
-            sqs = self.searchqueryset.filter(content__contains=self.cleaned_data.get('q'))
+            sqs = self.searchqueryset.filter(content__exact=self.cleaned_data.get('q'))
         elif self.cleaned_data.get('instrument'):
             sqs = self.searchqueryset.filter(instruments=self.cleaned_data.get('instrument'))
         else:
