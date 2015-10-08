@@ -156,8 +156,11 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     @cached_property
     def get_subscription_plan(self):
         if self.has_active_subscription:
-            plan_id = self.customer.current_subscription.plan
-            return settings.DJSTRIPE_PLANS[plan_id]
+            if self.is_staff:
+                return {'name': 'Admin', 'type': 'premium'}
+            else:
+                plan_id = self.customer.current_subscription.plan
+                return settings.DJSTRIPE_PLANS[plan_id]
         else:
             return {'name': 'Live Video Stream Access', 'type': 'free'}
 
