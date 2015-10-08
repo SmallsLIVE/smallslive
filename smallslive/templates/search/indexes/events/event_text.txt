@@ -1,2 +1,4 @@
 {{ object.title }}
-{{ object.performers_string }}
+{% for performer in object.performers.all %}
+{{ performer.full_name }}
+{% endfor %}
