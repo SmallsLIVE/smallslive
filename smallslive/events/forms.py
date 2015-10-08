@@ -164,7 +164,7 @@ class EventSearchForm(SearchForm):
     def search(self):
         sqs = super(EventSearchForm, self).search()
 
-        if self.cleaned_data.get('artist'):
+        if self.is_valid() and self.cleaned_data.get('artist'):
             sqs = sqs.filter(performers=self.cleaned_data.get('artist'))
 
         return sqs.load_all()
