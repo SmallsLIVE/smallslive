@@ -41,7 +41,7 @@ dj-stripe==0.4.0
 django-treebeard==2.0
 docopt==0.4.0
 easy-thumbnails==2.2
-elasticsearch==1.4.0
+elasticsearch==1.7.0
 gnureadline==6.3.3
 gunicorn==19.3.0
 html5lib==0.999
@@ -57,7 +57,7 @@ phonenumbers==6.3.0
 psycopg2==2.6
 pycountry==1.10
 pycurl==7.19.3.1
-pyelasticsearch==1.2.3
+pyelasticsearch==1.4
 purl==1.0.3
 pycrypto==2.6.1
 pystache==0.5.4
@@ -65,7 +65,7 @@ pytz==2015.2
 raven==5.7.2
 requests==2.6.2
 requests-oauthlib==0.4.2
-six==1.9.0
+six==1.10.0
 git+https://github.com/SmallsLIVE/smallslive-metrics-djangoapp.git@8be5f15cc9f96c46ac2724713428d5862fbc65a8#egg=smallslive_metrics_app-0.1.26
 sorl-thumbnail==11.12.1b
 sqlparse==0.1.14
