@@ -68,7 +68,7 @@
         <div class="row equal-heights-xs">
           {% for event in popular_in_archive %}
             <div class="col-xs-6 col-sm-6 col-md-4">
-              <a href="{{ recording.event.get_absolute_url }}">
+              <a href="{{ event.get_absolute_url }}">
                 <div class="event-object event-object--{% cycle "darkblue" "orange" "blue"%}">
                   {% if event.photo %}
                     <img class="event-object__image" src="{% thumbor_url event.photo.url|urlencode width=360 height=309 smart=True %}" alt=""/>
