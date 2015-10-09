@@ -59,12 +59,37 @@ urlpatterns = patterns('',
     url(r'^$', 'events.views.homepage', name="home"),
 )
 
+
 urlpatterns += patterns('django.contrib.flatpages.views',
     url(r'^terms-and-conditions/$', 'flatpage', {'url': '/terms-and-conditions/'}, name='terms-and-conditions'),
     url(r'^revenue-share/$', 'flatpage', {'url': '/revenue-share/'}, name='revenue-share'),
     url(r'^benefactors/$', 'flatpage', {'url': '/benefactors/'}, name='benefactors'),
     url(r'^contact-and-info/$', 'flatpage', {'url': '/contact-and-info/'}, name='contact-and-info'),
 )
+
+
+# URL redirects from old site
+class OldSiteRedirectView(RedirectView):
+    permanent = True
+
+    def get_redirect_url(self, *args, **kwargs):
+        if self.request.GET.get('itemCategory') == '43178':
+            return reverse_lazy('contact-and-info')
+        elif self.request.GET.get('itemCategory') == '43179':
+            return reverse_lazy('live-stream')
+        elif self.request.GET.get('itemCategory') == '32321':
+            return reverse_lazy('live-stream')
+        return reverse_lazy('home')
+
+
+urlpatterns += patterns('',
+    url(r'^join\.cfm$', RedirectView.as_view(url=reverse_lazy('signup_landing'), permanent=True)),
+    url(r'^joinaudio\.cfm$', RedirectView.as_view(url=reverse_lazy('signup_landing'), permanent=True)),
+    url(r'^musiccatalog\.cfm$', RedirectView.as_view(url=reverse_lazy('promotions:home'), permanent=True)),
+    url(r'^indexnew\.cfm$', OldSiteRedirectView.as_view()),
+    url(r'^innerclearback\.cfm$', OldSiteRedirectView.as_view()),
+)
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
