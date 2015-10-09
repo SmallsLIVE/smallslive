@@ -41,8 +41,8 @@ ALLOWED_HOSTS = []
 
 
 ADMINS = (
-    ('Nate Aune', 'nate@appsembler.com'),
-    ('Filip Jukic', 'filip@appsembler.com'),
+    # ('Nate Aune', 'nate@appsembler.com'),
+    # ('Filip Jukic', 'filip@appsembler.com'),
 )
 
 MANAGERS = ADMINS
