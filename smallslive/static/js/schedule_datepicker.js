@@ -10,5 +10,5 @@ $datePicker.datepicker({
 $datePicker.on('changeMonth', function(d){
     var month = d.date.getMonth() + 1;
     var year = d.date.getFullYear();
-    window.location = '/events/schedule/' + year + '/' + month + '/';
+    window.location = '/events/calendar/' + year + '/' + month + '/';
 });
