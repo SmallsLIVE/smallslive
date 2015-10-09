@@ -59,7 +59,7 @@ urlpatterns = patterns('',
     url(r'^store/accounts/login/$', RedirectView.as_view(url=reverse_lazy('accounts_login'))),
     url(r'^store/', include(application.urls)),
     url(r'^robots\.txt', robots_view),
-    url(r'^sitemap.xml', include('static_sitemaps.urls')),
+    url(r'^sitemap\.xml', include('static_sitemaps.urls')),
     #url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     url(r'^$', 'events.views.homepage', name="home"),
 )
