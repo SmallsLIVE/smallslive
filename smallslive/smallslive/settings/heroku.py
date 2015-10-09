@@ -58,8 +58,9 @@ RAVEN_CONFIG = {
 }
 
 # Static files
-STATIC_HOST = os.environ.get('STATIC_HOST', '')
-STATIC_URL = STATIC_HOST + '/static/'
+if env_var('CLOUDFRONT_ENABLE', False):
+    STATIC_HOST = os.environ.get('STATIC_HOST', '')
+    STATIC_URL = STATIC_HOST + '/static/'
 
 # Email settings
 # EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
