@@ -26,7 +26,10 @@ DATABASES['metrics'] = dj_database_url.config('METRICS_DB_URL')
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Allow all host headers
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    '.smallslive.com',
+    '.smallslive.com.',
+]
 
 # Static asset configuration
 STATICFILES_STORAGE = "utils.storages.GzipManifestPipelineStorage"
