@@ -131,9 +131,12 @@
                           {% csrf_token %}
                           <label for="card-number" class="store__form__label">Credit card number</label>
                           <input type="text" class="store__form__input"  id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*" autocomplete="off" name="number" {% if form.number.value %}value="{{ form.number.value }}"{% endif %}>
-                        {% for error in form.number.errors %}
+                            {% for error in form.number.errors %}
                                 <span class="store__form__field-error">{{ error }}</span>
                             {% endfor %}
+                            {% if error %}
+                                <span class="store__form__field-error">{{ error }}</span>
+                            {% endif %}
                           <div class="row">
                               <div class="col-xs-3">
                                   <label for="expiry" id="expiry-label" class="store__form__label">Valid thru:</label>
