@@ -94,3 +94,7 @@ class PlanForm(forms.Form):
             plans = [(monthly_plan.get('stripe_plan_id'), monthly_plan),
                      (yearly_plan.get('stripe_plan_id'), yearly_plan)]
             self.fields['plan'] = forms.ChoiceField(choices=plans)
+
+
+class ReactivateSubscriptionForm(forms.Form):
+    pass

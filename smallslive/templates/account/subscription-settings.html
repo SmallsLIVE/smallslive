@@ -136,6 +136,12 @@
                 <b>{{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}</b>, you'll be downgraded to the
                 <b>Free</b> plan and will have to subscribe once again manually.
               </div>
+                <div class="col-xs-12 col-sm-3">
+                    <form action="{% url 'reactivate_subscription' %}" method="post" id="cancel-form">
+                        {% csrf_token %}
+                        <button class="setting-toggle-button">Enable Auto renewal</button>
+                    </form>
+                </div>
             {% else %}
               <div class="col-xs-12 col-sm-9 subscription-settings__auto-renewal__text">
                 Auto renewal is activated on your Subscription, so your credit card will be charged again for the next

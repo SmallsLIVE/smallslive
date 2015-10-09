@@ -20,7 +20,7 @@ from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView,\
     CancelSubscriptionView as BaseCancelSubscriptionView
 from allauth.account.app_settings import EmailVerificationMethod
 import stripe
-from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm
+from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
 
 
 class SignupLandingView(TemplateView):
@@ -250,6 +250,25 @@ class CancelSubscriptionView(BaseCancelSubscriptionView):
     success_url = reverse_lazy("subscription_settings")
 
 cancel_subscription = CancelSubscriptionView.as_view()
+
+
+class ReactivateSubscriptionView(FormView):
+    success_url = reverse_lazy("subscription_settings")
+    form_class = ReactivateSubscriptionForm
+
+    def form_valid(self, form):
+        customer, created = Customer.get_or_create(
+            subscriber=subscriber_request_callback(self.request))
+
+        if customer.has_active_subscription() and customer.current_subscription.cancel_at_period_end:
+            customer.subscribe(customer.current_subscription.plan)
+
+            messages.info(self.request, "You have reactivated your subscription. It expires at '{period_end}'.".format(
+                period_end=customer.current_subscription.current_period_end))
+
+        return super(ReactivateSubscriptionView, self).form_valid(form)
+
+reactivate_subscription = ReactivateSubscriptionView.as_view()
 
 
 class HasArtistAssignedMixin(braces.views.UserPassesTestMixin):
