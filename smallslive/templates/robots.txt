@@ -1,3 +1,4 @@
 User-agent: *
-Disallow: /admin/
+Disallow: /
+#Disallow: /admin/
 Sitemap: http://www.smallslive.com/sitemap.xml
