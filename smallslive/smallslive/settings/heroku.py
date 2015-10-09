@@ -29,6 +29,8 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 ALLOWED_HOSTS = [
     '.smallslive.com',
     '.smallslive.com.',
+    'smallslive.herokuapp.com',
+    'smallslive.herokuapp.com.'
 ]
 
 # Static asset configuration
