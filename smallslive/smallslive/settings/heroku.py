@@ -130,11 +130,11 @@ CACHEOPS = {
     # 'all' is just an alias for ('get', 'fetch', 'count', 'exists')
     'auth.permission': {'ops': 'all', 'timeout': 60*60},
 
-    'artists.*': {'ops': 'all', 'timeout': 5*60},
-    'events.*': {'ops': 'all', 'timeout': 5*60},
-    'multimedia.*': {'ops': 'all', 'timeout': 5*60},
-
-    'catalogue.*': {'ops': 'all', 'timeout': 5*60},
+    # 'artists.*': {'ops': 'all', 'timeout': 5*60},
+    # 'events.*': {'ops': 'all', 'timeout': 5*60},
+    # 'multimedia.*': {'ops': 'all', 'timeout': 5*60},
+    #
+    # 'catalogue.*': {'ops': 'all', 'timeout': 5*60},
 
     # And since ops is empty by default you can rewrite last line as:
     '*.*': {'timeout': 60*60},
