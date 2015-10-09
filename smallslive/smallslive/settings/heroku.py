@@ -85,7 +85,21 @@ ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 METRICS_SERVER_URL = "https://ssltestmetrics.smallslive.com"  # no trailing slash
 
 # Cache
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+
 redis_url = urlparse.urlparse(get_env_variable('REDIS_URL'))
+
+CACHES = {
+    "default": {
+         "BACKEND": "redis_cache.RedisCache",
+         "LOCATION": "{0}:{1}".format(redis_url.hostname, redis_url.port),
+         "OPTIONS": {
+             "PASSWORD": redis_url.password,
+             "DB": 0,
+         }
+    }
+}
+
 CACHEOPS_REDIS = {
     'host': redis_url.hostname ,
     'port': redis_url.port,
