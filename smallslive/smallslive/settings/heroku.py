@@ -57,6 +57,10 @@ RAVEN_CONFIG = {
     'dsn': get_env_variable('SENTRY_DSN'),
 }
 
+# Static files
+STATIC_HOST = os.environ.get('STATIC_HOST', '')
+STATIC_URL = STATIC_HOST + '/static/'
+
 # Email settings
 # EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
 # MANDRILL_API_KEY = get_env_variable('MANDRILL_API_KEY')
