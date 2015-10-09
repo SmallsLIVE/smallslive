@@ -7,7 +7,6 @@ from oscar_apps.catalogue.models import Product
 
 artist_dict = {
     'queryset': Artist.objects.all(),
-    'date_field': 'modified',
     'changefreq': 'weekly'
 }
 
