@@ -54,6 +54,7 @@ COMPRESS_ENABLED = False
 
 
 INSTALLED_APPS += (
+    'cacheops',
     'djrill',
     'raven.contrib.django.raven_compat',
 )
