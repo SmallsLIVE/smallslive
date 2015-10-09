@@ -31,6 +31,7 @@ django-oscar-paypal==0.9.5
 git+https://github.com/britco/django-oscar-stripe.git#egg=oscar_stripe
 django-pipeline==1.5.0
 django-polymorphic==0.6.1
+django-redis-cache==1.6.3
 django-sortedm2m==0.8.1
 django-storages==1.1.8
 django-tables2==0.15.0
