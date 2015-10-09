@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.humanize',
     'django.contrib.messages',
+    'django.contrib.sitemaps',
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'django.contrib.flatpages',
@@ -86,6 +87,7 @@ INSTALLED_APPS = [
     'pipeline',
     'rest_framework.authtoken',
     'sortedm2m',
+    'static_sitemaps',
     'storages',
     'tinymce',
 
@@ -613,3 +615,6 @@ COUNTRIES_FIRST = [
 
 METRICS_SERVER_URL = "" # no trailing slash
 PING_INTERVAL = 30
+
+# Sitemaps
+STATICSITEMAPS_ROOT_SITEMAP = 'smallslive.sitemaps.sitemaps'

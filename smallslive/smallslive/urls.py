@@ -10,6 +10,9 @@ from django.views.generic.base import TemplateView, RedirectView
 from django.template import TemplateDoesNotExist
 from paypal.express.dashboard.app import application as paypal_application
 from oscar.app import application
+from django.contrib.sitemaps.views import sitemap
+from .sitemaps import sitemaps
+
 
 # uncomment these lines to enable the Djrill admin interface 
 #from djrill import DjrillAdminSite
@@ -56,6 +59,8 @@ urlpatterns = patterns('',
     url(r'^store/accounts/login/$', RedirectView.as_view(url=reverse_lazy('accounts_login'))),
     url(r'^store/', include(application.urls)),
     url(r'^robots\.txt', robots_view),
+    url(r'^sitemap.xml', include('static_sitemaps.urls')),
+    #url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     url(r'^$', 'events.views.homepage', name="home"),
 )
 
