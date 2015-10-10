@@ -19,8 +19,8 @@
   <meta property="og:description"
         content="{{ event.listing_date|date:"l, F j, Y" }} {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}"/>
   {% if event.photo %}
-    <meta property="og:image" content="{% thumbor_url event.photo.url|urlencode height=315 width=600 smart=True %}"/>
-    <meta itemprop="image" content="{% thumbor_url event.photo.url|urlencode height=315 width=600 smart=True %}">
+    <meta property="og:image" content="https:{% thumbor_url event.photo.url|urlencode height=315 width=600 smart=True %}"/>
+    <meta itemprop="image" content="https:{% thumbor_url event.photo.url|urlencode height=315 width=600 smart=True %}">
   {% endif %}
   <meta property="fb:app_id" content="{{ facebook_app_id }}"/>
   <meta itemprop="name" content="{{ event.full_title }}">
