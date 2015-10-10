@@ -1530,6 +1530,9 @@
       @include transition(all 0.3s ease-in-out);
       font-size: 18px;
       margin: 0 auto;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
 
       &:hover, &:focus {
         color: $main-accent-color;
