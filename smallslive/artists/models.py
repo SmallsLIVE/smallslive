@@ -1,3 +1,4 @@
+import os
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -13,6 +14,10 @@ from tinymce import models as tinymce_models
 from events.models import Event, GigPlayed, Recording
 from users.models import SmallsEmailAddress
 
+def artist_image_path(instance, filename):
+    ext = os.path.splitext(filename)[1]
+    path = os.path.join("artist_images/", slugify(instance.full_name()) + ext)
+    return path
 
 class Artist(models.Model):
     SALUTATIONS = Choices('Mr.', 'Mrs.', 'Ms.')
@@ -23,7 +28,7 @@ class Artist(models.Model):
     instruments = SortedManyToManyField('Instrument', blank=True, related_name='artists')
     biography = tinymce_models.HTMLField(blank=True)
     website = models.URLField(max_length=255, blank=True)
-    photo = models.ImageField(upload_to='artist_images', max_length=150, blank=True)
+    photo = models.ImageField(upload_to=artist_image_path, max_length=150, blank=True)
     cropping = ImageRatioField('photo', '580x400', help_text="Enable cropping", allow_fullsize=True)
     slug = models.SlugField(blank=True, max_length=100)
 
