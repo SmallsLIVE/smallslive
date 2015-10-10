@@ -322,7 +322,7 @@
                   pointStrokeColor: "#fff",
                   pointHighlightFill: "#fff",
                   pointHighlightStroke: "rgba(151,187,205,1)",
-                  data: {{ date_counts.audio_seconds_list }}
+                  data: {{ date_counts.audio_minutes_list }}
                 },
                 {
                   label: "Video",
@@ -332,7 +332,7 @@
                   pointStrokeColor: "#fff",
                   pointHighlightFill: "#fff",
                   pointHighlightStroke: "rgba(151,187,205,1)",
-                  data: {{ date_counts.video_seconds_list }}
+                  data: {{ date_counts.video_minutes_list }}
                 },
                 {
                   label: "Total",
@@ -342,7 +342,7 @@
                   pointStrokeColor: "#fff",
                   pointHighlightFill: "#fff",
                   pointHighlightStroke: "rgba(220,220,220,1)",
-                  data: {{ date_counts.total_seconds_list }}
+                  data: {{ date_counts.total_minutes_list }}
                 }
 			]
 
@@ -396,7 +396,7 @@
                   pointStrokeColor: "#fff",
                   pointHighlightFill: "#fff",
                   pointHighlightStroke: "rgba(151,187,205,1)",
-                  data: {{ archive_date_counts.audio_seconds_list }}
+                  data: {{ archive_date_counts.audio_minutes_list }}
                 },
                 {
                   label: "Video",
@@ -406,7 +406,7 @@
                   pointStrokeColor: "#fff",
                   pointHighlightFill: "#fff",
                   pointHighlightStroke: "rgba(151,187,205,1)",
-                  data: {{ archive_date_counts.video_seconds_list }}
+                  data: {{ archive_date_counts.video_minutes_list }}
                 },
                 {
                   label: "Total",
@@ -416,7 +416,7 @@
                   pointStrokeColor: "#fff",
                   pointHighlightFill: "#fff",
                   pointHighlightStroke: "rgba(220,220,220,1)",
-                  data: {{ archive_date_counts.total_seconds_list }}
+                  data: {{ archive_date_counts.total_minutes_list }}
                 }
 			]
 
@@ -449,17 +449,17 @@
                     playsData.datasets[1].data = data.video_plays_list;
                     playsData.datasets[2].data = data.total_plays_list;
                     minsData.labels = data.dates;
-                    minsData.datasets[0].data = data.audio_seconds_list;
-                    minsData.datasets[1].data = data.video_seconds_list;
-                    minsData.datasets[2].data = data.total_seconds_list;
+                    minsData.datasets[0].data = data.audio_minutes_list;
+                    minsData.datasets[1].data = data.video_minutes_list;
+                    minsData.datasets[2].data = data.total_minutes_list;
                     playsDataArchive.labels = data.dates;
                     playsDataArchive.datasets[0].data = data.archive_audio_plays_list;
                     playsDataArchive.datasets[1].data = data.archive_video_plays_list;
                     playsDataArchive.datasets[2].data = data.archive_total_plays_list;
                     minsDataArchive.labels = data.dates;
-                    minsDataArchive.datasets[0].data = data.archive_audio_seconds_list;
-                    minsDataArchive.datasets[1].data = data.archive_video_seconds_list;
-                    minsDataArchive.datasets[2].data = data.archive_total_seconds_list;
+                    minsDataArchive.datasets[0].data = data.archive_audio_minutes_list;
+                    minsDataArchive.datasets[1].data = data.archive_video_minutes_list;
+                    minsDataArchive.datasets[2].data = data.archive_total_minutes_list;
                     var playsActive = $("#metric-graph__show__data-1").hasClass("active");
                     var myMetricsActive = $("#metric-graph__show__source-1").hasClass("active");
                     $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
@@ -468,9 +468,9 @@
                     } else if (playsActive && !myMetricsActive) {
                         drawGraph(playsDataArchive, 'plays');
                     } else if (!playsActive && myMetricsActive) {
-                        drawGraph(minsData, 'hrs')
+                        drawGraph(minsData, 'mins')
                     } else {
-                        drawGraph(minsDataArchive, 'hrs')
+                        drawGraph(minsDataArchive, 'mins')
                     }
                 }
             })
@@ -497,10 +497,10 @@
                     $(this).toggleClass("active");
                     $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                     if ($("#metric-graph__show__source-1").hasClass("active")) {
-                        drawGraph(minsData, 'hrs');
+                        drawGraph(minsData, 'mins');
                     }
                     else {
-                        drawGraph(minsDataArchive, 'hrs');
+                        drawGraph(minsDataArchive, 'mins');
                     }
                 }
             });
@@ -513,7 +513,7 @@
                         drawGraph(playsData, 'plays');
                     }
                     else {
-                        drawGraph(minsData, 'hrs');
+                        drawGraph(minsData, 'mins');
                     }
                 }
             });
@@ -526,7 +526,7 @@
                         drawGraph(playsDataArchive, 'plays');
                     }
                     else {
-                        drawGraph(minsDataArchive, 'hrs');
+                        drawGraph(minsDataArchive, 'mins');
                     }
                 }
             });

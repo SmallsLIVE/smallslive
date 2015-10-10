@@ -304,7 +304,7 @@
           pointStrokeColor: "#fff",
           pointHighlightFill: "#fff",
           pointHighlightStroke: "rgba(151,187,205,1)",
-          data: {{ date_counts.audio_seconds_list }}
+          data: {{ date_counts.audio_minutes_list }}
         },
         {
           label: "Video",
@@ -314,7 +314,7 @@
           pointStrokeColor: "#fff",
           pointHighlightFill: "#fff",
           pointHighlightStroke: "rgba(151,187,205,1)",
-          data: {{ date_counts.video_seconds_list }}
+          data: {{ date_counts.video_minutes_list }}
         },
         {
           label: "Total",
@@ -324,7 +324,7 @@
           pointStrokeColor: "#fff",
           pointHighlightFill: "#fff",
           pointHighlightStroke: "rgba(220,220,220,1)",
-          data: {{ date_counts.total_seconds_list }}
+          data: {{ date_counts.total_minutes_list }}
         }
       ]
 
@@ -348,9 +348,9 @@
                   playsData.datasets[1].data = data.video_plays_list;
                   playsData.datasets[2].data = data.total_plays_list;
                   minsData.labels = data.dates;
-                  minsData.datasets[0].data = data.audio_seconds_list;
-                  minsData.datasets[1].data = data.video_seconds_list;
-                  minsData.datasets[2].data = data.total_seconds_list;
+                  minsData.datasets[0].data = data.audio_minutes_list;
+                  minsData.datasets[1].data = data.video_minutes_list;
+                  minsData.datasets[2].data = data.total_minutes_list;
                   $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
                   var playsActive = $("#metric-graph__show__data-1").hasClass("active");
                   if (playsActive) {
