@@ -165,7 +165,7 @@ class EventSearchForm(SearchForm):
         if not self.is_valid():
             return self.no_query_found()
 
-        if not self.cleaned_data.get('q'):
+        if not self.cleaned_data.get('q') and not self.cleaned_data.get('artist'):
             return self.no_query_found()
 
         sqs = self.searchqueryset.filter(text__exact=self.cleaned_data['q'])
