@@ -12,6 +12,7 @@ from paypal.express.dashboard.app import application as paypal_application
 from oscar.app import application
 from django.contrib.sitemaps import views as sitemaps_views
 from django.views.decorators.cache import cache_page
+from utils.views import OldSiteRedirectView
 from .sitemaps import sitemaps
 
 
@@ -74,27 +75,13 @@ urlpatterns += patterns('django.contrib.flatpages.views',
     url(r'^contact-and-info/$', 'flatpage', {'url': '/contact-and-info/'}, name='contact-and-info'),
 )
 
-
-# URL redirects from old site
-class OldSiteRedirectView(RedirectView):
-    permanent = True
-
-    def get_redirect_url(self, *args, **kwargs):
-        if self.request.GET.get('itemCategory') == '43178':
-            return reverse_lazy('contact-and-info')
-        elif self.request.GET.get('itemCategory') == '43179':
-            return reverse_lazy('live-stream')
-        elif self.request.GET.get('itemCategory') == '32321':
-            return reverse_lazy('live-stream')
-        return reverse_lazy('home')
-
-
 urlpatterns += patterns('',
     url(r'^join\.cfm$', RedirectView.as_view(url=reverse_lazy('signup_landing'), permanent=True)),
     url(r'^joinaudio\.cfm$', RedirectView.as_view(url=reverse_lazy('signup_landing'), permanent=True)),
     url(r'^musiccatalog\.cfm$', RedirectView.as_view(url=reverse_lazy('promotions:home'), permanent=True)),
     url(r'^indexnew\.cfm$', OldSiteRedirectView.as_view()),
     url(r'^innerclearback\.cfm$', OldSiteRedirectView.as_view()),
+    url(r'^.*\.cfm$', OldSiteRedirectView.as_view()),
 )
 
 
