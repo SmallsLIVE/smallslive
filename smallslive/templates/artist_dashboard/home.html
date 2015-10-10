@@ -94,6 +94,7 @@
     </div>
       <!-- End of single metric -->
   </section>
+  {% if  most_viewed or most_popular %}
   <section class="dashboard__best-list container">
       <div class="col-xs-12 col-sm-6">
           <p class="dashboard__section-title">My most viewed events:</p>
@@ -158,6 +159,7 @@
           </ul>
       </div>
   </section>
+  {% endif %}
   <section class="dashboard__upcoming-events container">
       <p class="dashboard__section-title">My upcoming events at Smalls:</p>
       <ul class="upcoming-events__container">
