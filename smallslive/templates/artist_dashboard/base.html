@@ -55,7 +55,7 @@
               {% if request.user.artist.photo %}
                 <img class="navbar__user__image" src="{% thumbor_url request.user.artist.photo.url|urlencode height=40 width=40 smart=True %}" alt=""/>
               {% else %}
-                <img class="navbar__user__image" src="{% static 'image/dashboard/user-image.jpg' %}">
+                <img class="navbar__user__image" src="{% static 'image/dashboard/user-image.png' %}">
               {% endif %}
               <span><i class="fa fa-caret-down"></i></span>
             </button>
