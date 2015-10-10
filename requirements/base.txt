@@ -68,7 +68,7 @@ raven==5.7.2
 requests==2.6.2
 requests-oauthlib==0.4.2
 six==1.10.0
-git+https://github.com/SmallsLIVE/smallslive-metrics-djangoapp.git@570b10b912d6769d6e9969585cd0e96773f8c1c4#egg=smallslive_metrics_app-0.1.27
+git+https://github.com/SmallsLIVE/smallslive-metrics-djangoapp.git@859c141ea82809331e67d9a6c7aa4a5e296cea0d#egg=smallslive_metrics_app-0.1.28
 sorl-thumbnail==11.12.1b
 sqlparse==0.1.14
 static==1.1.1
