@@ -186,7 +186,7 @@
               </div>
               <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
                   <div class="metrics__event-list__header__label col-xs-12 visible-xs">Info</div>
-                  <div class="metrics__event-list__name col-xs-12 header col-sm-4 col-md-4 hidden-xs">Event name</div>
+                  <div class="metrics__event-list__name col-xs-12 header col-sm-4 col-md-4 hidden-xs">Media file</div>
                   <div class="metrics__event-list__metric col-xs-12 header col-sm-2 hidden-xs">Plays</div>
                   <div class="metrics__event-list__metric col-xs-12 header col-sm-2 hidden-xs">Plays trend</div>
                   <div class="metrics__event-list__metric col-xs-12 header col-sm-2 hidden-xs">Hours</div>
@@ -203,7 +203,7 @@
                   {% endif %}
               </div>
               <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
-                  <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-4">{{ recording.media_file.file }}</div>
+                  <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-4">{% if recording.media_file.media_type == "video" %}{{ recording.media_file.sd_video_file }}{% else %}{{ recording.media_file.file }}{% endif %}</div>
                   <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Plays: </div>{{ counts.week.play_count }}</div>
                   {% with trend=counts.week.play_count_trend %}<div class="metrics__event-list__metric col-xs-12 col-sm-2 {% if trend and trend > 0 %}positive{% elif trend and trend < 0 %}negative{% endif %}"><div class="visible-xs">Plays trend: </div><i class="fa {% if trend and trend > 0 %}fa-arrow-up{% elif trend and trend < 0 %}fa-arrow-down{% endif %}"></i> {% if trend %}{{ trend }}%{% else %}n/a{% endif %}</div>{% endwith %}
                   <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Hours: </div>{{ counts.week.time_played }}</div>
@@ -219,7 +219,7 @@
               </div>
               <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
                   <div class="metrics__event-list__header__label col-xs-12 visible-xs">Info</div>
-                  <div class="metrics__event-list__name col-xs-12 header col-sm-4 col-md-4 hidden-xs">Event name</div>
+                  <div class="metrics__event-list__name col-xs-12 header col-sm-4 col-md-4 hidden-xs">Media file</div>
                   <div class="metrics__event-list__metric col-xs-12 header col-sm-4 hidden-xs">Plays</div>
                   <div class="metrics__event-list__metric col-xs-12 header col-sm-4 hidden-xs">Hours</div>
               </div>
@@ -234,7 +234,7 @@
                   {% endif %}
               </div>
               <div class="col-xs-8 col-sm-9 col-md-10 col-lg-11 metrics__event-list__info">
-                  <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-4">{{ recording.media_file.file }}</div>
+                  <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-4">{% if recording.media_file.media_type == "video" %}{{ recording.media_file.sd_video_file }}{% else %}{{ recording.media_file.file }}{% endif %}</div>
                   <div class="metrics__event-list__metric col-xs-12 col-sm-4"><div class="visible-xs">Plays: </div>{{ counts.all_time.play_count }}</div>
                   <div class="metrics__event-list__metric col-xs-12 col-sm-4"><div class="visible-xs">Hours: </div>{{ counts.all_time.time_played }}</div>
               </div>
