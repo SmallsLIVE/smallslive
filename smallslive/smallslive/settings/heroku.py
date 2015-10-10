@@ -83,7 +83,7 @@ DEFAULT_FROM_REGISTRATION_EMAIL = "smallsliveusers@gmail.com"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 
 # Metrics
-METRICS_SERVER_URL = "https://ssltestmetrics.smallslive.com"  # no trailing slash
+METRICS_SERVER_URL = "https://metrics.smallslive.com"  # no trailing slash
 
 # Cache
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
