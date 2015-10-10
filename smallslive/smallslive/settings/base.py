@@ -618,3 +618,4 @@ PING_INTERVAL = 30
 
 # Sitemaps
 STATICSITEMAPS_ROOT_SITEMAP = 'smallslive.sitemaps.sitemaps'
+STATICSITEMAPS_URL = '/'
