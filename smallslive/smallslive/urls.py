@@ -10,7 +10,8 @@ from django.views.generic.base import TemplateView, RedirectView
 from django.template import TemplateDoesNotExist
 from paypal.express.dashboard.app import application as paypal_application
 from oscar.app import application
-from django.contrib.sitemaps.views import sitemap
+from django.contrib.sitemaps import views as sitemaps_views
+from django.views.decorators.cache import cache_page
 from .sitemaps import sitemaps
 
 
@@ -58,12 +59,13 @@ urlpatterns = patterns('',
     url(r'^payments/', include('djstripe.urls', namespace="djstripe")),
     url(r'^store/accounts/login/$', RedirectView.as_view(url=reverse_lazy('accounts_login'))),
     url(r'^store/', include(application.urls)),
+    url(r'^sitemap\.xml$', cache_page(86400)(sitemaps_views.index),
+        {'sitemaps': sitemaps, 'sitemap_url_name': 'sitemaps'}),
+    url(r'^sitemap-(?P<section>.+)\.xml$', cache_page(86400)(sitemaps_views.sitemap),
+        {'sitemaps': sitemaps}, name='sitemaps'),
     url(r'^robots\.txt', robots_view),
-    url(r'^sitemap\.xml', include('static_sitemaps.urls')),
-    #url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     url(r'^$', 'events.views.homepage', name="home"),
 )
-
 
 urlpatterns += patterns('django.contrib.flatpages.views',
     url(r'^terms-and-conditions/$', 'flatpage', {'url': '/terms-and-conditions/'}, name='terms-and-conditions'),

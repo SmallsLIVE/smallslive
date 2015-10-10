@@ -87,7 +87,6 @@ INSTALLED_APPS = [
     'pipeline',
     'rest_framework.authtoken',
     'sortedm2m',
-    'static_sitemaps',
     'storages',
     'tinymce',
 
@@ -615,8 +614,3 @@ COUNTRIES_FIRST = [
 
 METRICS_SERVER_URL = "" # no trailing slash
 PING_INTERVAL = 30
-
-# Sitemaps
-STATICSITEMAPS_ROOT_SITEMAP = 'smallslive.sitemaps.sitemaps'
-STATICSITEMAPS_URL = MEDIA_URL
-STATICSITEMAPS_ROOT_DIR = MEDIA_ROOT
