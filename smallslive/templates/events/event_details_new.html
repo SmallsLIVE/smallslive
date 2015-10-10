@@ -520,7 +520,7 @@
                     {% for video in event.published_videos %}{% if video.media_file.sd_video_file %}
                     {
                         sources: [{
-                            file: "{{ video.get_redirect_url|safe }}",
+                            file: "{{ video.media_file.get_sd_video_url|safe }}",
                             type: "mp4"
                         }],
                         title: "{{ event.title }}: Set {{ video.set_number }}",
