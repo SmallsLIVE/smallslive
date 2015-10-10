@@ -131,7 +131,7 @@ CACHEOPS = {
     'auth.permission': {'ops': 'all', 'timeout': 60*60},
 
     'artists.*': {'ops': ('fetch', 'get'), 'timeout': 5*60},
-    'events.*': {'ops': ('fetch', 'get'), 'timeout': 5*60},
+    'events.event': {'ops': ('fetch', 'get'), 'timeout': 5*60},
     # 'multimedia.*': {'ops': 'all', 'timeout': 5*60},
     #
     # 'catalogue.*': {'ops': 'all', 'timeout': 5*60},
