@@ -92,7 +92,9 @@ class EventDetailView(DetailView):
         context['metrics_signed_data'] = self._generate_metrics_data()
         if self.request.user.is_authenticated():
             context['user_token'] = Token.objects.get(user=self.request.user)
-            if self.request.user.artist_id and self.request.user.artist in self.object.performers.all():
+            user_is_artist = self.request.user.is_artist and self.request.user.artist in self.object.performers.all()
+            user_is_staff = not self.request.user.is_staff
+            if user_is_artist or user_is_staff:
                 context['count_metrics'] = False
             else:
                 context['count_metrics'] = True
