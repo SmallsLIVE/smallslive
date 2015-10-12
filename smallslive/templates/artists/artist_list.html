@@ -84,7 +84,7 @@
                             {% endif %}
                         </div>
                         <div class="col-xs-5 col-sm-4 col-md-3 artists-list__list__name">
-                            {{ artist.full_name }}
+                            <span title="{{artist.user.email}}">{{ artist.full_name }}</span>
                         </div>
                         <div class="col-xs-4 col-sm-3 col-md-2 artists-list__list__instrument">
                             {{ artist.instruments.all|join:" , " }}

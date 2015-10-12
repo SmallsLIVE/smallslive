@@ -44,7 +44,7 @@
             <div class="from-group">
               <h2 class="invite-artist__heading">Artist already invited!</h2>
               <p class="invite-artist__text">{{ artist.full_name }} has already been invited to SmallsLIVE on
-                {{ artist.email_invitation.sent|date:"F j, Y g:i A" }}</p>
+                {{ artist.email_invitation.sent|date:"F j, Y g:i A" }} with e-mail address <strong>{{ artist.user.email }}</strong></p>
             </div>
             <input type="hidden" class="form-control" name="email" value="{{ artist.user.email }}">
             <input type="submit" value="Resend invite">
@@ -53,7 +53,7 @@
           <div class="from-group">
             <h2 class="invite-artist__heading">Artist already registered!</h2>
             <p class="invite-artist__text">{{ artist.full_name }} has registered to SmallsLIVE on
-              {{ artist.user.date_joined|date:"F j, Y g:i A" }}</p>
+              {{ artist.user.date_joined|date:"F j, Y g:i A" }} with e-mail address <strong>{{ artist.user.email }}</strong></p>
           </div>
         {% endif %}
       </section>
