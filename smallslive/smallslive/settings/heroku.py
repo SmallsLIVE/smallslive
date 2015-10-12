@@ -84,6 +84,7 @@ EMAIL_HOST_PASSWORD = get_env_variable('MANDRILL_API_KEY')
 DEFAULT_FROM_EMAIL = 'smallslive@gmail.com'
 DEFAULT_FROM_REGISTRATION_EMAIL = "smallsliveusers@gmail.com"
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 
 # Metrics
 METRICS_SERVER_URL = "https://metrics.smallslive.com"  # no trailing slash
