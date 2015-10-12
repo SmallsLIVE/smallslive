@@ -21,7 +21,7 @@ class OldSiteRedirectView(RedirectView):
                 and self.request.GET.get('personDetailId'):
             try:
                 artist = Artist.objects.get(id=int(self.request.GET.get('personDetailId')))
-                return artist.get_absolute_url()
-            except TypeError, Artist.DoesNotExist:
+            except (TypeError, Artist.DoesNotExist) as e:
                 raise Http404("Can't find the artist")
+            return artist.get_absolute_url()
         return reverse('home')
