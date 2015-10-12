@@ -80,3 +80,4 @@ gulpfile.js
 .python-version
 smallslive/.env
 .DS_Store
+misc
