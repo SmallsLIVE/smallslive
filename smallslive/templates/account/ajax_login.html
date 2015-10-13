@@ -45,10 +45,14 @@
           <div class="col-xs-12 modal-separator"></div>
           <div class="col-xs-12">
             <h2 class="login-modal__subtitle">Not a member of SmallsLIVE?</h2>
-            <p class="login-modal__text">Become a member of SmallsLIVE to watch our live stream.
-              Subscribing members get unlimited access to our audio/video archive.
-              By becoming a subscribing member you are directly supporting the musicians and the venue.</p>
             <a href="{% url "account_signup" %}" class="login-modal__cta-signup">Click here to become a member</a>
+              <p class="login-modal__text attention">Attention: Users from the old site must re-enroll for the new site. Please <a href="{% url "account_signup" %}">click here</a> to enroll.</p>
+              <p class="login-modal__text">Smalls Musicians - if you have not yet been registered please <a href="{% url "contact-and-info" %}">contact us</a> to set up the artist account.</p>
+              {% comment %}
+                  <p class="login-modal__text">Become a member of SmallsLIVE to watch our live stream.
+              Subscribing members get unlimited access to our audio/video archive.
+                  By becoming a subscribing member you are directly supporting the musicians and the venue.</p>
+              {% endcomment %}
           </div>
         </form>
       </div>
