@@ -570,7 +570,7 @@
         {% if album and album.tracks %}
             <script>
                 var tracksPlayer = jwplayer("player-tracks").setup({
-                    primary: 'html5',
+                    primary: 'flash',
                     playlist: [
                         {% for track in album.tracks.all %}
                             {% if track.preview %}
