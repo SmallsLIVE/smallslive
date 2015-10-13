@@ -453,7 +453,7 @@
 
         {% if user.can_listen_to_audio and event.published_audio %}
           audioPlayer = jwplayer("player-audio").setup({
-            primary: 'flash',
+            primary: 'html5',
             playlist: [
               {% for audio in event.published_audio %}
                 {
