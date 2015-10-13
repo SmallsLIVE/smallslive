@@ -13,7 +13,7 @@ def search_autocomplete(request):
     suggestions = [{'label': result.object.autocomplete_label(),
                     'sublabel': result.object.autocomplete_sublabel(),
                     'category': result.model_exact,
-                    'url': result.object.get_absolute_url()} for result in chain(artists, events, instruments)]
+                    'url': result.object.get_absolute_url()} for result in chain(artists, events, instruments) if result]
 
     # Make sure you return a JSON object, not a bare list.
     # Otherwise, you could be vulnerable to an XSS attack.
