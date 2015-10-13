@@ -253,7 +253,7 @@
                           <div class="metrics__event-list__name col-xs-12 col-sm-4 col-md-5">{{ event.title }}</div>
                           <div class="metrics__event-list__metric col-xs-12 col-sm-2"><div class="visible-xs">Plays: </div>{{ counts.all_time.play_count }}</div>
                           <div class="metrics__event-list__metric col-xs-12 col-sm-3"><div class="visible-xs">Hours: </div>{{ counts.all_time.time_played }}</div>
-                          <div class="metrics__event-list__more-link col-xs-12 col-sm-3 col-md-2"><a href="{% url "static_page" "metrics-admin-single-event-static" %}">Detailed metrics</a></div>
+                          <div class="metrics__event-list__more-link col-xs-12 col-sm-3 col-md-2"><a href="{% url "artist_dashboard:event_metrics" pk=event.id slug=event.slug %}">Detailed metrics</a></div>
                       </div>
                   </li>
                   {% endfor %}
