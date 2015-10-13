@@ -32,8 +32,15 @@ class StaticPageView(TemplateView):
 
 
 def static_file_view(request, **kwargs):
-    return render_to_response(kwargs.get("file_name"), content_type="text/plain")
-
+    file_name = kwargs.get("file_name")
+    if file_name.endswith('xml'):
+        content_type = 'application/xml'
+    else:
+        content_type = 'text/plain'
+    response = render_to_response(file_name, content_type=content_type)
+    response['Access-Control-Allow-Origin'] = '*'
+    response['Cache-Control'] = 'public, max-age=3600'
+    return response
 
 urlpatterns = patterns('',
     url(r'^dashboard/', include('artist_dashboard.urls', app_name="artist_dashboard", namespace="artist_dashboard")),
