@@ -31,8 +31,8 @@ class StaticPageView(TemplateView):
         return [template_name]
 
 
-def robots_view(request):
-    return render_to_response("robots.txt", content_type="text/plain")
+def static_file_view(request, **kwargs):
+    return render_to_response(kwargs.get("file_name"), content_type="text/plain")
 
 
 urlpatterns = patterns('',
@@ -64,7 +64,8 @@ urlpatterns = patterns('',
         {'sitemaps': sitemaps, 'sitemap_url_name': 'sitemaps'}),
     url(r'^sitemap-(?P<section>.+)\.xml$', cache_page(86400)(sitemaps_views.sitemap),
         {'sitemaps': sitemaps}, name='sitemaps'),
-    url(r'^robots\.txt', robots_view),
+    url(r'^robots\.txt', static_file_view, kwargs={'file_name': 'robots.txt'}),
+    url(r'^crossdomain\.xml', static_file_view, kwargs={'file_name': 'crossdomain.xml'}),
     url(r'^$', 'events.views.homepage', name="home"),
 )
 
