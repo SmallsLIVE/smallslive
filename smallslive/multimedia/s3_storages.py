@@ -6,7 +6,7 @@ class ProtectedS3Storage(S3BotoStorage):
     def __init__(self, *args, **kwargs):
         kwargs['bucket_acl'] = 'private'
         kwargs['querystring_auth'] = True
-        kwargs['querystring_expire'] = 300
+        kwargs['querystring_expire'] = 60 * 120 # 2 hours
         kwargs['custom_domain'] = None
         super(ProtectedS3Storage, self).__init__(*args, **kwargs)
 
