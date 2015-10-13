@@ -37,6 +37,8 @@ class EventEditForm(event_forms.EventEditForm):
 
     def __init__(self, *args, **kwargs):
         super(EventEditForm, self).__init__(*args, **kwargs)
+        del self.fields['title']
+        del self.fields['subtitle']
         del self.fields['state']
         del self.fields['start']
         del self.fields['end']

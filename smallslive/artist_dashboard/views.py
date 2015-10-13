@@ -181,6 +181,7 @@ event_metrics = EventMetricsView.as_view()
 
 class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
     form_class = EventEditForm
+    success_url = reverse_lazy("artist_dashboard:my_gigs")
     template_name = 'artist_dashboard/event_edit.html'
 
     def get_context_data(self, **kwargs):
