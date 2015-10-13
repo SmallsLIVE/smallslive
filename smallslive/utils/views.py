@@ -20,8 +20,11 @@ class OldSiteRedirectView(RedirectView):
         elif (self.request.GET.get('itemCategory') == '61473' or self.request.GET.get('itemcategory') == '61473') \
                 and self.request.GET.get('personDetailId'):
             try:
-                artist = Artist.objects.get(id=int(self.request.GET.get('personDetailId')))
-            except (TypeError, Artist.DoesNotExist) as e:
+                artist_id = self.request.GET.get('personDetailId')
+                if "'" in  artist_id:
+                    artist_id = artist_id.split('')[0]
+                artist = Artist.objects.get(id=int(artist_id))
+            except (TypeError, ValueError, Artist.DoesNotExist) as e:
                 raise Http404("Can't find the artist")
             return artist.get_absolute_url()
         return reverse('home')
