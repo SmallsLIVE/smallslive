@@ -139,9 +139,6 @@ CACHEOPS = {
     # 'multimedia.*': {'ops': 'all', 'timeout': 5*60},
     #
     # 'catalogue.*': {'ops': 'all', 'timeout': 5*60},
-
-    # And since ops is empty by default you can rewrite last line as:
-    '*.*': {'timeout': 60*60},
 }
 CACHEOPS_LRU = True
 CACHEOPS_DEGRADE_ON_FAILURE = True
