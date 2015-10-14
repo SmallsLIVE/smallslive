@@ -621,5 +621,10 @@ COUNTRIES_FIRST = [
     'GB',
 ]
 
+# Metrics
 METRICS_SERVER_URL = "" # no trailing slash
 PING_INTERVAL = 30
+
+# Hijack
+ENABLE_HIJACK = False
+SHOW_HIJACKUSER_IN_ADMIN = False
