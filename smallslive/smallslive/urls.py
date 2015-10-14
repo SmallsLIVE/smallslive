@@ -92,6 +92,9 @@ urlpatterns += patterns('',
     url(r'^.*\.cfm$', OldSiteRedirectView.as_view()),
 )
 
+if settings.ENABLE_HIJACK:
+    urlpatterns += url(r'^hijack/', include('hijack.urls')),
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

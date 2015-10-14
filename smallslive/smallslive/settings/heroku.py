@@ -62,6 +62,13 @@ INSTALLED_APPS += (
     'raven.contrib.django.raven_compat',
 )
 
+ENABLE_HIJACK = env_var('ENABLE_HIJACK')
+if ENABLE_HIJACK:
+    INSTALLED_APPS += (
+        'hijack',
+        'compat',
+    )
+
 # Sentry
 RAVEN_CONFIG = {
     'dsn': get_env_variable('SENTRY_DSN'),
