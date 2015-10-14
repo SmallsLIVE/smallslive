@@ -99,7 +99,7 @@ METRICS_SERVER_URL = "https://metrics.smallslive.com"  # no trailing slash
 # Cache
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
-redis_url = urlparse.urlparse(get_env_variable('REDIS_URL'))
+redis_url = urlparse.urlparse(get_env_variable('REDISCLOUD_URL'))
 
 CACHES = {
     "default": {
