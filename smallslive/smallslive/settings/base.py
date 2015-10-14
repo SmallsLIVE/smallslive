@@ -109,6 +109,7 @@ INSTALLED_APPS = [
     'oscar_apps.dashboard',
     'oscar_apps.dashboard.catalogue',
     'oscar_apps.dashboard.files',
+    'oscar_apps.order',
     'oscar_apps.partner',
     'oscar_apps.promotions',
     'oscar_apps.search',
@@ -546,13 +547,13 @@ OSCAR_DASHBOARD_NAVIGATION.append(
         ]
     })
 
-# OSCAR_INITIAL_ORDER_STATUS = 'Pending'
-# OSCAR_INITIAL_LINE_STATUS = 'Pending'
-# OSCAR_ORDER_STATUS_PIPELINE = {
-#     'Pending': ('Being processed', 'Cancelled',),
-#     'Being processed': ('Processed', 'Cancelled',),
-#     'Cancelled': (),
-# }
+OSCAR_INITIAL_ORDER_STATUS = 'Pending'
+OSCAR_INITIAL_LINE_STATUS = 'Pending'
+OSCAR_ORDER_STATUS_PIPELINE = {
+    'Pending': ('Being processed', 'Shipped',),
+    'Being processed': ('Shipped',),
+    'Shipped': (),
+}
 
 ELASTICSEARCH_INDEX_SETTINGS = {
     'settings': {
