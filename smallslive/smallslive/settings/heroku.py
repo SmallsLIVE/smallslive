@@ -99,7 +99,8 @@ METRICS_SERVER_URL = "https://metrics.smallslive.com"  # no trailing slash
 # Cache
 SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
 
-redis_url = urlparse.urlparse(get_env_variable('REDIS_URL'))
+redis_url = urlparse.urlparse(get_env_variable('REDISCLOUD_URL'))
+redis_cacheops_url = urlparse.urlparse(get_env_variable('REDISCLOUD_CACHEOPS_URL'))
 
 CACHES = {
     "default": {
@@ -120,10 +121,10 @@ TEMPLATE_LOADERS = (
 )
 
 CACHEOPS_REDIS = {
-    'host': redis_url.hostname ,
-    'port': redis_url.port,
-    'db': 1,
-    'password': redis_url.password,
+    'host': redis_cacheops_url.hostname ,
+    'port': redis_cacheops_url.port,
+    'db': 0,
+    'password': redis_cacheops_url.password,
     'socket_timeout': 5,   # connection timeout in seconds, optional
 }
 
