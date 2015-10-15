@@ -409,9 +409,32 @@ class LiveStreamView(ListView):
         return events
 
     def get_context_data(self, **kwargs):
+        now = timezone.localtime(timezone.now())
         context = super(LiveStreamView, self).get_context_data(**kwargs)
+        TRESHOLD = 15
+        # also include todays events that have finished
+        if now.hour < 6:
+            start_range = (now - timedelta(days=1)).replace(hour=6)
+            end_range = now.replace(hour=6)
+
+        else:
+            start_range = now.replace(hour=6)
+            end_range = (now + timedelta(days=1)).replace(hour=6)
+        todays_events = Event.objects.public().filter(start__gte=start_range,
+                                                    start__lte=end_range).order_by('start')
+        # currently playing or future events, showed for displaying "coming up"
         if context['events'] and context['events'][0].has_started():
             context['currently_playing'] = context['events'].pop(0)
+
+        # all events for that day, used for figuring out whether to show the stream
+        if todays_events:
+            # less than 15mins to first show start
+            stream_turn_on_time = (todays_events.first().start - timedelta(minutes=TRESHOLD))
+            # less than 15mins from last show env
+            stream_turn_off_time = (todays_events.last().end + timedelta(minutes=TRESHOLD))
+            context['show_stream'] = stream_turn_on_time <= now <= stream_turn_off_time
+        else:
+            context['show_stream'] = False
         context['first_future_show'] = Event.objects.filter(start__gte=timezone.now()).order_by('start').first()
         context['stream_expire'] = int(time.time()) + 120  # 10 seconds - required just to start the stream
         context['stream_hash'] = hashlib.md5("{0}{1}?e={2}".format(settings.BITGRAVITY_SECRET, "/smallslive/secure/",

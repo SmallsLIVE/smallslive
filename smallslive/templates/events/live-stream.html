@@ -102,42 +102,44 @@
   {% endblock %}
 
 {% block extra_js %}
-  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
-  <script src="{% static "js/live-stream.js" %}"></script>
-  <script>
-    {% if currently_playing and events %}
-        LiveStream.init("{{ currently_playing.end.isoformat }}", "{{ events.0.start.isoformat }}");
-    {% elif events %}
-        LiveStream.init(false, "{{ events.0.start.isoformat }}");
-    {% elif currently_playing %}
-        LiveStream.init("{{ events.0.start.isoformat }}", false);
-    {% endif %}
-  </script>
+    <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+    <script src="{% static "js/live-stream.js" %}"></script>
     <script>
-    /* Emulate image cover css effect on event image */
-    $(document).ready(function () {
-        jwplayer('jwplayer-placeholder').setup({
-          playlist: [{
-              sources: [
-                  {
-                      file: "rtsp://smallslive.live-s.cdn.bitgravity.com/cdn-live/_definst_/smallslive/secure/live/feed02?e={{ stream_expire }}&h={{ stream_hash }}&bgsecuredir=1"
-                  },
-                  {
-                      file: "http://smallslive.live-s.cdn.bitgravity.com/cdn-live/_definst_/smallslive/secure/live/smallslive_new.smil/playlist.m3u8?e={{ stream_expire }}&h={{ stream_hash }}&bgsecuredir=1"
-                  }
-              ]
-          }],
-          width: "80%",
-          aspectratio: "16:9",
-          androidhls: true,
-          stretching: "uniform",
-          hlslabels: {
-            "64": "Audio",
-            "323": "Low",
-            "628": "Medium",
-            "1128": "High"
-          }
-        });
-    })
-  </script>
+        {% if currently_playing and events %}
+            LiveStream.init("{{ currently_playing.end.isoformat }}", "{{ events.0.start.isoformat }}");
+        {% elif events %}
+            LiveStream.init(false, "{{ events.0.start.isoformat }}");
+        {% elif currently_playing %}
+            LiveStream.init("{{ events.0.start.isoformat }}", false);
+        {% endif %}
+    </script>
+    {% if show_stream %}
+        <script>
+            /* Emulate image cover css effect on event image */
+            $(document).ready(function () {
+                jwplayer('jwplayer-placeholder').setup({
+                    playlist: [{
+                        sources: [
+                            {
+                                file: "rtsp://smallslive.live-s.cdn.bitgravity.com/cdn-live/_definst_/smallslive/secure/live/feed02?e={{ stream_expire }}&h={{ stream_hash }}&bgsecuredir=1"
+                            },
+                            {
+                                file: "http://smallslive.live-s.cdn.bitgravity.com/cdn-live/_definst_/smallslive/secure/live/smallslive_new.smil/playlist.m3u8?e={{ stream_expire }}&h={{ stream_hash }}&bgsecuredir=1"
+                            }
+                        ]
+                    }],
+                    width: "80%",
+                    aspectratio: "16:9",
+                    androidhls: true,
+                    stretching: "uniform",
+                    hlslabels: {
+                        "64": "Audio",
+                        "323": "Low",
+                        "628": "Medium",
+                        "1128": "High"
+                    }
+                });
+            })
+        </script>
+    {% endif %}
 {% endblock %}
