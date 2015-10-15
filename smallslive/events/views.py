@@ -402,7 +402,9 @@ class LiveStreamView(ListView):
 
     def get_queryset(self):
         now = timezone.localtime(timezone.now())
-        tomorrow = now + timedelta(days=1)
+        tomorrow = now
+        if not now.hour < 6:
+            tomorrow = now + timedelta(days=1)
         tomorrow = tomorrow.replace(hour=6)
         events = list(Event.objects.public().filter(end__gte=now,
                                                     start__lte=tomorrow).order_by('start'))

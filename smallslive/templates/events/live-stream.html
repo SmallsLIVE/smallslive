@@ -42,14 +42,16 @@
           <div class="live-stream__header col-xs-12">
             {% if currently_playing %}
               <p class="live-stream__title">Live now:</p>
+            {% elif events %}
+                <p class="live-stream__title--no-show">Next live show broadcast is on {{ events.0.start|naturalday:"n/j/Y" }} at {{ first_future_show.start|date:"g:i A" }} EST.</p>
             {% else %}
               <p class="live-stream__title--no-show">There is currently no live show being broadcast, next live broadcast is on {{ first_future_show.start|naturalday:"n/j/Y" }} at {{ first_future_show.start|date:"g:i A" }} EST.</p>
             {% endif %}
           </div>
         </div>
         <div class="live-stream-info equal-heights row">
+          {% if currently_playing %}
           <div class="live-stream-current col-xs-12 col-md-6">
-              {% if currently_playing %}
                 <h1 class="live-stream-current__title"><a
                         href="{{ currently_playing.get_absolute_url }}">{{ currently_playing.title }}</a></h1>
                 <p class="live-stream-current__date">{{ currently_playing.start|date:"g:i A" }}
@@ -63,11 +65,9 @@
                 </p>
                 <a href="{{ currently_playing.get_absolute_url }}" class="live-stream-current__button">Full event page</a>
                 <span class="arrow"></span>
-              {% else %}
-                <p>No event is happening right now.</p>
-              {% endif %}
           </div>
-          <div class="coming-up col-xs-12 col-md-6">
+          {% endif %}
+          <div class="coming-up col-xs-12 {% if currently_playing %}col-md-6{% else %}col-md-12{% endif %}">
             <h2 class="coming-up__title">Coming up:</h2>
             <div class="events">
               {% for upcoming_event in events %}
