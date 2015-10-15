@@ -413,7 +413,7 @@ class LiveStreamView(ListView):
     def get_context_data(self, **kwargs):
         now = timezone.localtime(timezone.now())
         context = super(LiveStreamView, self).get_context_data(**kwargs)
-        TRESHOLD = 15
+        TRESHOLD = 30
         # also include todays events that have finished
         if now.hour < 6:
             start_range = (now - timedelta(days=1)).replace(hour=6)
