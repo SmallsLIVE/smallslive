@@ -41,7 +41,7 @@ class MediaFile(models.Model):
         super(MediaFile, self).save()
 
     def get_file_url(self):
-        if settings.DEBUG:
+        if not settings.DEBUG:
             if self.media_type == 'audio':
                 self.file.storage = AudioS3Storage()
             else:
@@ -62,7 +62,7 @@ class MediaFile(models.Model):
         return self.file.url
 
     def get_sd_video_url(self):
-        if settings.DEBUG:
+        if not settings.DEBUG:
             if self.media_type == 'audio':
                 self.sd_video_file.storage = AudioS3Storage()
             else:
