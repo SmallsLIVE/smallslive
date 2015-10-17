@@ -41,19 +41,45 @@ class MediaFile(models.Model):
         super(MediaFile, self).save()
 
     def get_file_url(self):
-        if not settings.DEBUG:
+        if settings.DEBUG:
             if self.media_type == 'audio':
                 self.file.storage = AudioS3Storage()
             else:
                 self.file.storage = VideoS3Storage()
         return self.file.url
 
-    def get_sd_video_url(self):
+    def get_downloadable_file_url(self):
+        response_headers = {
+            'response-content-type': 'application/force-download',
+            'response-content-disposition':'attachment;filename="%s"'%self.file.name.split('/')[-1]
+        }
         if not settings.DEBUG:
+            if self.media_type == 'audio':
+                storage = AudioS3Storage()
+            else:
+                storage = VideoS3Storage()
+            return storage.url(self.file.name, response_headers=response_headers)
+        return self.file.url
+
+    def get_sd_video_url(self):
+        if settings.DEBUG:
             if self.media_type == 'audio':
                 self.sd_video_file.storage = AudioS3Storage()
             else:
                 self.sd_video_file.storage = VideoS3Storage()
+        return self.sd_video_file.url
+
+    def get_downloadable_sd_video_url(self):
+        response_headers = {
+            'response-content-type': 'application/force-download',
+            'response-content-disposition':'attachment;filename="%s"'%self.sd_video_file.name.split('/')[-1]
+        }
+        if not settings.DEBUG:
+            if self.media_type == 'audio':
+                storage = AudioS3Storage()
+            else:
+                storage = VideoS3Storage()
+            return storage.url(self.sd_video_file.name, response_headers=response_headers)
         return self.sd_video_file.url
 
 
