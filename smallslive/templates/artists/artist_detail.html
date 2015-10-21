@@ -46,8 +46,7 @@
                     <h1 class="artist-details__name">{{ artist.full_name }}</h1>
 
                     <p class="artist-details__instruments">{{ artist.instruments.all|join:" // " }}</p>
-                    <p class="artist-details__stats"><a href="{% url "event_search" %}?artist={{ artist.id }}">{{ artist.events.count }} live
-                      shows</a>{% comment %} //  2 albums in store{% endcomment %}</p>
+                    <p class="artist-details__stats"><a href="{% url "event_search" %}?artist={{ artist.id }}">{{ artist.events.count }} archived shows</a>{% comment %} //  2 albums in store{% endcomment %}</p>
                     {% if artist.website %}<a href="{{ artist.website }}" rel="nofollow" class="artist-details__website">{{ artist.website|schemaless_url }}</a>{% endif %}
               </div>
             </div>
