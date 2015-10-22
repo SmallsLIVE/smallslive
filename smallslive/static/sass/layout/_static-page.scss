@@ -95,20 +95,13 @@
 
 .map-wrapper {
   margin-top: 100px;
-  margin-bottom: 40px;
-  margin-right: 20px;
   @include filter(grayscale(60%));
-  position: relative;
-  padding-bottom: 75%; // This is the aspect ratio
-  height: 0;
-  overflow: hidden;
+  padding-bottom: 40px;
+  padding-right: 20px;
 
   &__map {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
+    margin-bottom: 20px;
+    width: 100%;
   }
 }
 
@@ -118,6 +111,7 @@
     margin-bottom: 20px;
     margin-left: -10px;
     margin-right: -10px;
+    padding-right: 0;
   }
 }
 

@@ -108,6 +108,7 @@
   background-color: #F7F7F7;
   border-left: 1px #DDDDDD solid;
   padding: 52px 20px 40px;
+  min-height: 250px;
 
   @media(max-width:$screen-xs-max) {
     padding-top: 10px;
@@ -132,3 +133,28 @@
 #jwplayer-placeholder_wrapper {
     margin: 0 10%;
   }
+
+.live-stream__android {
+  padding: 40px 20px;
+  background-color: $main-accent-color;
+
+  &__cta {
+    color: #fff;
+    font-size: 16px;
+    padding: 20px 30px;
+    display: block;
+    text-align: center;
+    border: 2px solid rgba(#fff, 0.8);
+    @include lato-bold;
+
+    &:hover, &:focus {
+      color: rgba(#fff, 0.7);
+      border-color: rgba(#fff, 0.5);
+    }
+
+    i {
+      font-size: 24px;
+      margin-right: 10px;
+    }
+  }
+}
