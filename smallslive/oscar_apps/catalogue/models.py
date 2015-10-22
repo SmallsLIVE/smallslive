@@ -62,6 +62,18 @@ class Product(AbstractProduct):
         if self.product_class.slug == 'album':
             return self.tracks.order_by('id')
 
+    def get_title(self):
+        """
+        Return a product's title or it's parent's title if it has no title
+        """
+        title = self.title
+        if self.parent_id:
+            if not self.title:
+                title = self.parent.title
+            else:
+                title = "{0} ({1})".format(self.parent.title, self.title)
+        return title
+
     def _clean_child(self):
         """
         Validates a child product
