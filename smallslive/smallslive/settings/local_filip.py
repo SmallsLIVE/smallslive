@@ -35,7 +35,11 @@ INSTALLED_APPS += (
     'cacheops',
     'debug_toolbar',
     'devserver',
+    'hijack',
+    'compat',
 )
+
+ENABLE_HIJACK = True
 
 COMPRESS_ENABLED = False
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -129,4 +133,4 @@ CACHEOPS = {
     # And since ops is empty by default you can rewrite last line as:
     '*.*': {'timeout': 60*60},
 }
-CACHEOPS_FAKE = True
+CACHEOPS_FAKE = False
