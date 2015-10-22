@@ -12,8 +12,8 @@ class Command(NoArgsCommand):
         print artists
         req = HttpRequest()
         req.session = {}
-        req.META['SERVER_NAME'] = 'beta.smallslive.com'
-        req.META['SERVER_PORT'] = '80'
+        req.META['SERVER_NAME'] = 'www.smallslive.com'
+        req.META['SERVER_PORT'] = '443'
         for user in artists:
             print "Sending {0}".format(user.email)
             email = SmallsEmailAddress.objects.get(user=user, email=user.email)
