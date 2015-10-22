@@ -1,10 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "multimedia/archive-list.html" %}
+{% load static from staticfiles %}
+{% load add_get_parameter %}
+{% load thumbor_tags %}
 
-</body>
-</html>
+
+{% block list_content %}
+    {% for object in events %}
+        <div class="archive-list__event">
+            <div class="archive-list__event__image">
+                {% if object.event.photo %}
+                    <a href="{{ object.event.get_absolute_url }}"><img
+                            src="{% thumbor_url object.event.photo.url|urlencode height=140 width=140 smart=True %}"
+                            alt=""/></a>
+                {% else %}
+                    <a href="{{ object.event.get_absolute_url }}"><img
+                            src="{% static 'image/no-event-photo-thumbnail.jpg' %}"
+                            alt=""/></a>
+                {% endif %}
+            </div>
+            <div class="archive-list__event__info">
+                <p class="archive-list__event__date">{{ object.event.listing_date|date:"n/j/Y" }}</p>
+
+                <h2 class="archive-list__event__title"><a
+                        href="{{ object.event.get_absolute_url }}">{{ object.event.title }}</a></h2>
+
+                <div class="archive-list__event__meta">
+                    <div class="archive-list__event__meta__labels">
+                        <p>Added:</p>
+
+                        {#                        <p>Plays:</p>#}
+                    </div>
+                    <div class="archive-list__event__meta__values">
+                        <p>{{ object.event.added|date:"n/j/Y" }}</p>
+
+                        {#                        <p>{{ object.event.play_count }}</p>#}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock list_content %}

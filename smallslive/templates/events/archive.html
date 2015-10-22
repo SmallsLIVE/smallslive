@@ -41,12 +41,12 @@
                     <div class="mini-video-info">
                       <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
                       <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
-                      <div class="mini-video-info__stats">
-                          <p>Plays:</p>
-                      </div>
-                      <div class="mini-video-info__stats">
-                          <p><span>{{ event.play_count }}</span></p>
-                      </div>
+{#                      <div class="mini-video-info__stats">#}
+{#                          <p>Plays:</p>#}
+{#                      </div>#}
+{#                      <div class="mini-video-info__stats">#}
+{#                          <p><span>{{ event.play_count }}</span></p>#}
+{#                      </div>#}
                     </div>
                 </div>
               {% endfor %}
@@ -71,12 +71,12 @@
                     <div class="mini-video-info">
                       <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
                       <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
-                      <div class="mini-video-info__stats">
-                          <p>Plays:</p>
-                      </div>
-                      <div class="mini-video-info__stats">
-                          <p><span>{{ event.play_count }}</span></p>
-                      </div>
+{#                      <div class="mini-video-info__stats">#}
+{#                          <p>Plays:</p>#}
+{#                      </div>#}
+{#                      <div class="mini-video-info__stats">#}
+{#                          <p><span>{{ event.play_count }}</span></p>#}
+{#                      </div>#}
                     </div>
                 </div>
               {% endfor %}
@@ -91,26 +91,26 @@
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Most Popular Video</h1>
             <div class="videos row">
-              {% for event in most_popular_video %}
+              {% for object in most_popular_video %}
                 <div class="mini-video col-xs-6 col-sm-12">
                     <div class="mini-video__image">
-                      <a href="{{ event.get_absolute_url }}">
-                      {% if event.photo %}
-                        <img src="{% thumbor_url event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      <a href="{{ object.event.get_absolute_url }}">
+                      {% if object.event.photo %}
+                        <img src="{% thumbor_url object.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
                       {% else %}
                         <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                       {% endif %}
                       </a>
                     </div>
                     <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
-                      <div class="mini-video-info__stats">
-                          <p>Plays:</p>
-                      </div>
-                      <div class="mini-video-info__stats">
-                          <p><span>{{ event.play_count }}</span></p>
-                      </div>
+                      <p class="mini-video-info__date">{{ object.event.start|date:"n/j/Y" }}</p>
+                      <h2 class="mini-video-info__title"><a href="{{ object.event.get_absolute_url }}">{{ object.event.title }}</a></h2>
+{#                      <div class="mini-video-info__stats">#}
+{#                          <p>Plays:</p>#}
+{#                      </div>#}
+{#                      <div class="mini-video-info__stats">#}
+{#                          <p><span>{{ object.play_count }}</span></p>#}
+{#                      </div>#}
                     </div>
                 </div>
               {% endfor %}
@@ -120,26 +120,26 @@
           <div class="col-md-6">
             <h1 class="video-audio__section-title">Most Popular Audio</h1>
             <div class="videos row">
-              {% for event in most_popular_audio %}
+              {% for object in most_popular_audio %}
                 <div class="mini-video col-xs-6 col-sm-12">
                     <div class="mini-video__image">
                       <a href="{{ event.get_absolute_url }}">
-                      {% if event.photo %}
-                        <img src="{% thumbor_url event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      {% if object.event.photo %}
+                        <img src="{% thumbor_url object.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
                       {% else %}
                         <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                       {% endif %}
                       </a>
                     </div>
                     <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
-                      <div class="mini-video-info__stats">
-                          <p>Plays:</p>
-                      </div>
-                      <div class="mini-video-info__stats">
-                          <p><span>{{ event.play_count }}</span></p>
-                      </div>
+                      <p class="mini-video-info__date">{{ object.event.start|date:"n/j/Y" }}</p>
+                      <h2 class="mini-video-info__title"><a href="{{ object.event.get_absolute_url }}">{{ object.event.title }}</a></h2>
+{#                      <div class="mini-video-info__stats">#}
+{#                          <p>Plays:</p>#}
+{#                      </div>#}
+{#                      <div class="mini-video-info__stats">#}
+{#                          <p><span>{{ object.play_count }}</span></p>#}
+{#                      </div>#}
                     </div>
                 </div>
               {% endfor %}

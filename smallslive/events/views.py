@@ -3,6 +3,7 @@ from itertools import groupby
 from operator import itemgetter, attrgetter
 import calendar
 import hashlib
+from cacheops import cached
 from django.core import signing
 from django.db import connection
 from django.db.models import Count, Max
@@ -29,6 +30,7 @@ from haystack.views import SearchView
 from rest_framework.authtoken.models import Token
 
 from artists.models import Artist, Instrument
+from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import Product
 from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
@@ -451,10 +453,34 @@ class ArchiveView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super(ArchiveView, self).get_context_data(**kwargs)
-        context['recent_audio'] = Event.objects.most_recent_audio()[:4]
-        context['most_popular_audio'] = Event.objects.most_popular_audio()[:4]
-        context['recent_video'] = Event.objects.most_recent_video()[:4]
-        context['most_popular_video'] = Event.objects.most_popular_video()[:4]
+
+        @cached(timeout=6*60*60)
+        def _get_most_popular():
+            context = {}
+            context['recent_audio'] = Event.objects.most_recent_audio()[:4]
+            most_popular_audio_ids = UserVideoMetric.objects.most_popular_audio()
+            most_popular_audio = []
+            for event_data in most_popular_audio_ids:
+                print event_data
+                try:
+                    event = Event.objects.get(id=event_data['event_id'])
+                    most_popular_audio.append({'event': event, 'play_count': event_data['count']})
+                except Event.DoesNotExist:
+                    pass
+            context['most_popular_audio'] = most_popular_audio
+            context['recent_video'] = Event.objects.most_recent_video()[:4]
+            most_popular_video_ids = UserVideoMetric.objects.most_popular_video()
+            most_popular_video = []
+            for event_data in most_popular_video_ids:
+                print event_data
+                try:
+                    event = Event.objects.get(id=event_data['event_id'])
+                    most_popular_video.append({'event': event, 'play_count': event_data['count']})
+                except Event.DoesNotExist:
+                    pass
+            context['most_popular_video'] = most_popular_video
+            return context
+        context.update(_get_most_popular())
         return context
 
 archive = ArchiveView.as_view()
