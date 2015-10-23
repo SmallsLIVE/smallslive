@@ -71,8 +71,8 @@ class Product(AbstractProduct):
             if not self.title:
                 title = self.parent.title
             else:
-                title = "{0} ({1})".format(self.parent.title, self.title)
-        return title
+                title = u"{0} ({1})".format(self.parent.title, self.title)
+        return unicode(title)
 
     def _clean_child(self):
         """
