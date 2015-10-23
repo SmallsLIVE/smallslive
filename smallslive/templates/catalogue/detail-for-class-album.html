@@ -120,8 +120,11 @@
                 {{ basket_form.quantity }}
                 {% if basket_form.fields.child_id.choices %}
                   <select class="store-add-large__options" name="child_id">
-                      {% for item_value, item_name in basket_form.fields.child_id.choices %}
-                        <option value="{{ item_value }}">{{ item_name }}</option>
+                      {% for variant in product.variants.all %}
+                      {% purchase_info_for_product request variant as variant_session %}
+                          {% if session.availability.is_available_to_buy %}
+                                <option data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}" value="{{ variant.id }}">{{ variant.title }} ({{ variant_session.price.excl_tax|currency:variant_session.price.currency }})</option>
+                          {% endif %}
                       {% endfor %}
                   </select>
                   {% if user.is_authenticated %}
@@ -304,7 +307,13 @@
             $('.playback-control i').removeClass('fa-pause').addClass('fa-play');
           }
           $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
+      });
+
+      $("select.store-add-large__options").on("change", function(val) {
+        var selectedPrice = $(this).find(":selected").data('price');
+        $(this).closest('.store-single__item__content').find('.store-single__item__price').text(selectedPrice);
       })
+
     });
   </script>
 {% endblock %}

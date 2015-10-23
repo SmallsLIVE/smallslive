@@ -71,5 +71,10 @@ $(document).ready(function () {
     $("select.store-add-small__options").on("change", function(val) {
         var selectedPrice = $(this).find(":selected").data('price');
         $(this).closest('.store-list-item').find('.store-list-item__price').text(selectedPrice);
+    });
+
+    $("select.store-add-large__options").on("change", function(val) {
+        var selectedPrice = $(this).find(":selected").data('price');
+        $(this).closest('.store-featured-music__single').find('.store-featured-music__single__price').text(selectedPrice);
     })
 });
