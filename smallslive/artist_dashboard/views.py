@@ -1,5 +1,7 @@
 from datetime import timedelta, datetime, date
+from cacheops import cached
 from django.conf import settings
+from django.db.models import Max
 
 try:
     import cStringIO as StringIO
@@ -106,8 +108,38 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
         artist = self.request.user.artist
         artist_event_ids = list(self.request.user.artist.event_id_list())
         context['upcoming_events'] = artist.gigs_played.upcoming().select_related('event', 'artist')[:5]
-        context['most_viewed'] = Recording.objects.audio().most_popular().filter(event__performers=artist)[:3]
-        context['most_listened_to'] = Recording.objects.video().most_popular().filter(event__performers=artist)[:3]
+
+        @cached(timeout=6*60*60)
+        def _most_popular_events():
+            context = {}
+            most_popular_audio_ids = UserVideoMetric.objects.filter(
+                event_id__in=artist_event_ids).most_popular_audio()[:4]
+            most_popular_audio = []
+            for event_data in most_popular_audio_ids:
+                print event_data
+                try:
+                    event = Event.objects.filter(id=event_data['event_id']).annotate(
+                        added=Max('recordings__date_added')).first()
+                    most_popular_audio.append(event)
+                except Event.DoesNotExist:
+                    pass
+            context['most_listened_to'] = most_popular_audio
+            
+            most_popular_video_ids = UserVideoMetric.objects.filter(
+                event_id__in=artist_event_ids).most_popular_video()[:4]
+            most_popular_video = []
+            for event_data in most_popular_video_ids:
+                print event_data
+                try:
+                    event = Event.objects.filter(id=event_data['event_id']).annotate(
+                        added=Max('recordings__date_added')).first()
+                    most_popular_video.append(event)
+                except Event.DoesNotExist:
+                    pass
+            context['most_viewed'] = most_popular_video
+            return context
+
+        context.update(_most_popular_events())
         context['weekly_artist_stats'] = UserVideoMetric.objects.this_week_counts(artist_event_ids=artist_event_ids,
                                                                                   trends=True, humanize=True)
         context['monthly_artist_stats'] = UserVideoMetric.objects.this_month_counts(artist_event_ids=artist_event_ids,

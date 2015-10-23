@@ -99,28 +99,20 @@
       <div class="col-xs-12 col-sm-6">
           <p class="dashboard__section-title">My most viewed events:</p>
           <ul class="mini-events__container">
-            {% for recording in most_viewed %}
+            {% for event in most_viewed %}
               <!-- single mini event -->
               <li class="mini-event flexbox-equal-height flexbox-nowrap">
-                <a href="{{ recording.event.get_absolute_url }}" class="mini-event__image col-xs-3 col-lg-2">
-                  {% if recording.event.photo %}
-                    <img src="{% thumbor_url recording.event.photo.url|urlencode height=84 width=84 smart=True %}"
+                <a href="{{ event.get_absolute_url }}" class="mini-event__image col-xs-3 col-lg-2">
+                  {% if event.photo %}
+                    <img src="{% thumbor_url event.photo.url|urlencode height=84 width=84 smart=True %}"
                          alt=""/>
                   {% else %}
                     <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                   {% endif %}
                 </a>
                 <div class="mini-event__details col-xs-9 col-lg-10">
-                  <p class="mini-event__details__date">{{ recording.event.listing_date|date:"n/j/Y" }}</p>
-                  <a href="#" class="mini-event__details__title">{{ recording.event.title }}</a>
-                  <div class="mini-event__details__labels">
-                    <p>Added:</p>
-                    <p>Views:</p>
-                  </div>
-                  <div class="mini-event__details__values">
-                    <p>{{ recording.date_added|date:"n/j/Y" }}</p>
-                    <p>{{ recording.view_count }}</p>
-                  </div>
+                  <p class="mini-event__details__date">{{ event.listing_date|date:"n/j/Y" }}</p>
+                  <a href="#" class="mini-event__details__title">{{ event.title }}</a>
                 </div>
               </li>
               <!-- end of single mini event -->
@@ -130,28 +122,20 @@
       <div class="col-xs-12 col-sm-6">
           <p class="dashboard__section-title">My most listened to events:</p>
           <ul class="mini-events__container">
-            {% for recording in most_listened_to %}
+            {% for event in most_listened_to %}
               <!-- single mini event -->
               <li class="mini-event flexbox-equal-height flexbox-nowrap">
-                <a href="{{ recording.event.get_absolute_url }}" class="mini-event__image col-xs-3 col-lg-2">
-                  {% if recording.event.photo %}
-                    <img src="{% thumbor_url recording.event.photo.url|urlencode height=84 width=84 smart=True %}"
+                <a href="{{ event.get_absolute_url }}" class="mini-event__image col-xs-3 col-lg-2">
+                  {% if event.photo %}
+                    <img src="{% thumbor_url event.photo.url|urlencode height=84 width=84 smart=True %}"
                          alt=""/>
                   {% else %}
                     <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                   {% endif %}
                 </a>
                 <div class="mini-event__details col-xs-9 col-lg-10">
-                  <p class="mini-event__details__date">{{ recording.event.listing_date|date:"n/j/Y" }}</p>
-                  <a href="#" class="mini-event__details__title">{{ recording.event.title }}</a>
-                  <div class="mini-event__details__labels">
-                    <p>Added:</p>
-                    <p>Views:</p>
-                  </div>
-                  <div class="mini-event__details__values">
-                    <p>{{ recording.date_added|date:"n/j/Y" }}</p>
-                    <p>{{ recording.view_count }}</p>
-                  </div>
+                  <p class="mini-event__details__date">{{ event.listing_date|date:"n/j/Y" }}</p>
+                  <a href="#" class="mini-event__details__title">{{ event.title }}</a>
                 </div>
               </li>
               <!-- end of single mini event -->
