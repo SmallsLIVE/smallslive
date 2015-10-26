@@ -16,7 +16,7 @@ class Command(BaseCommand):
         now = timezone.now()
         # heroku scheduler launches the task every day, we make sure it only really does the import
         # once a week
-        if env == "heroku" and now.weekday() != 6:
+        if env == "heroku" and (now.weekday() != 6 or now.weekday() != 3):
             return
 
         conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
@@ -27,7 +27,7 @@ class Command(BaseCommand):
             month, year = int(args[0]), int(args[1])
             start_date = timezone.make_aware(timezone.datetime(year, month, 1), timezone.get_current_timezone())
         else:
-            start_date = now - datetime.timedelta(days=14)
+            start_date = now - datetime.timedelta(days=30)
         for event in Event.objects.filter(start__gte=start_date, start__lte=now).order_by('start'):
             for set_num in range(1, 7):
                 filename = '{0.year}-{0.month:02}-{0.day:02}/360p/{1}-{2}_360p.mp4'.format(
