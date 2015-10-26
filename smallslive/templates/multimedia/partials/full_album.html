@@ -71,10 +71,10 @@
                       class="fa fa-caret-down"></i></a>
               <ul class="dropdown-menu" role="menu">
                 {% if is_hd %}
-                  <li><a href="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}">Download
+                  <li><a href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}">Download
                     HD</a></li>
                 {% else %}
-                  <li><a href="{{ track.get_track_stockrecord.digital_download.get_file_url }}">Download
+                  <li><a href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}">Download
                     mp3</a></li>
                 {% endif %}
 
