@@ -18,9 +18,11 @@
             </div>
         </section>
         <form id="payment-form" method="post" action="{% url "checkout:preview" %}">
-<!--          <section class="store-error container">
-              <span class="store-error__message">Filip nije dobro napravio store i sad moramo imati errore. Errori nisu simpatični :(</span>
-          </section> -->
+          {% if error %}
+            <section class="store-error container">
+              <span class="store-error__message">{{ error|safe }}</span>
+            </section>
+          {% endif %}
           <section class="store-billing container">
               <h3 class="store__form__heading">Billing information:</h3>
               <div class="row">
@@ -137,9 +139,6 @@
                             {% for error in form.number.errors %}
                                 <span class="store__form__field-error">{{ error }}</span>
                             {% endfor %}
-                            {% if error %}
-                                <span class="store__form__field-error">{{ error|safe }}</span>
-                            {% endif %}
                           <div class="row">
                               <div class="col-xs-3">
                                   <label for="expiry" id="expiry-label" class="store__form__label">Valid thru:</label>

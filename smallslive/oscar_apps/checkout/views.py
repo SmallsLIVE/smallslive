@@ -177,7 +177,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
             # their bankcard has expired, wrong card number - that kind of
             # thing. This type of exception is supposed to set a friendly error
             # message that makes sense to the customer.
-            msg = six.text_type(e)
+            msg = six.text_type(e) + "."
             error_msg = error_msg.format(msg)
             logger.warning(
                 "Order #%s: unable to take payment (%s) - restoring basket",
@@ -195,7 +195,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
             # It makes sense to configure the checkout logger to
             # mail admins on an error as this issue warrants some further
             # investigation.
-            msg = six.text_type(e)
+            msg = six.text_type(e) + "."
             logger.error("Order #%s: payment error (%s)", order_number, msg,
                          exc_info=True)
             self.restore_frozen_basket()
