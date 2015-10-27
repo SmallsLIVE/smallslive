@@ -2109,3 +2109,20 @@ img.defineImageRatio {
 .store-pagination {
   margin-top: 30px;
 }
+
+
+.store-error {
+  background-color: #eee;
+  border-bottom: 1px solid #ddd;
+  padding: 0 20px;
+
+  &__message {
+    display: inline-block;
+    padding: 8px 15px;
+    font-size: 14px;
+    color: #fff;
+    background-color: $main-accent-color;
+    @include lato-bold;
+    margin: 20px 10px;
+  }
+}
