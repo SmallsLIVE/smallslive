@@ -161,9 +161,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
 
         # We define a general error message for when an unanticipated payment
         # error occurs.
-        error_msg = _("A problem occurred while processing payment for this "
-                      "order - no payment has been taken.  Please "
-                      "<a href='mailto:smallslive@gmail.com' tabindex='-1'>contact customer service</a> if this problem persists")
+        error_msg = "{0} No payment has been taken. Please " \
+                    "<a href='mailto:smallslive@gmail.com' tabindex='-1'>contact customer service</a> if this problem persists"
 
         signals.pre_payment.send_robust(sender=self, view=self)
         basket_lines = basket.lines.all()
@@ -179,6 +178,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
             # thing. This type of exception is supposed to set a friendly error
             # message that makes sense to the customer.
             msg = six.text_type(e)
+            error_msg = error_msg.format(msg)
             logger.warning(
                 "Order #%s: unable to take payment (%s) - restoring basket",
                 order_number, msg)
@@ -187,7 +187,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
             # We assume that the details submitted on the payment details view
             # were invalid (eg expired bankcard).
             return self.render_payment_details(
-                self.request, error=msg, **payment_kwargs)
+                self.request, error=error_msg, **payment_kwargs)
         except PaymentError as e:
             # A general payment error - Something went wrong which wasn't
             # anticipated.  Eg, the payment gateway is down (it happens), your
@@ -199,6 +199,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
             logger.error("Order #%s: payment error (%s)", order_number, msg,
                          exc_info=True)
             self.restore_frozen_basket()
+            error_msg = error_msg.format(msg)
             return self.render_payment_details(
                 self.request, error=error_msg, **payment_kwargs)
         except Exception as e:
@@ -208,6 +209,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
                 "Order #%s: unhandled exception while taking payment (%s)",
                 order_number, e, exc_info=True)
             self.restore_frozen_basket()
+            error_msg = error_msg.format("")
             return self.render_preview(
                 self.request, error=error_msg, **payment_kwargs)
 
@@ -267,7 +269,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
     def payment_metadata(self, order_number, total, basket_lines, **kwargs):
         items = {}
         for idx, item in enumerate(basket_lines, start=1):
-            item_key = "item{0}".format(idx)
-            items[item_key] = "{0}, qty: {1}".format(item.product.get_title(), item.quantity)
+            item_key = u"item{0}".format(idx)
+            items[item_key] = u"{0}, qty: {1}".format(item.product.get_title(), item.quantity)
         items['order_number'] = order_number
         return items
