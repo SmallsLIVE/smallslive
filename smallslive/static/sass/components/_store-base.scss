@@ -2124,5 +2124,15 @@ img.defineImageRatio {
     background-color: $main-accent-color;
     @include lato-bold;
     margin: 20px 10px;
+
+    a {
+      @include lato-black;
+      color: #fff;
+      text-decoration: underline;
+
+      &:hover, &:focus {
+        opacity: 0.8;
+      }
+    }
   }
 }
