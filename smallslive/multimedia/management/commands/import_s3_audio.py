@@ -1,4 +1,5 @@
 import datetime
+import logging
 import os
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -6,6 +7,8 @@ from django.utils import timezone
 from boto.s3.connection import S3Connection
 from events.models import Event, Recording
 from multimedia.models import MediaFile
+
+logger = logging.getLogger('cron')
 
 
 class Command(BaseCommand):
@@ -18,12 +21,12 @@ class Command(BaseCommand):
         # heroku scheduler launches the task every day, we make sure it only really does the import
         # once a week
         if env == "heroku" and (now.weekday() != 6 or now.weekday() != 3):
+            logger.info('Today is not importing day')
             return
 
         conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
         bucket = conn.get_bucket("smallslivemp3")
         new_files_imported = 0
-        files_updated = 0
 
         if len(args) == 2:
             month, year = int(args[0]), int(args[1])
@@ -31,6 +34,7 @@ class Command(BaseCommand):
         else:
             start_date = now - datetime.timedelta(days=30)
 
+        logger.info('Starting audio import')
         for event in Event.objects.filter(start__gte=start_date, start__lte=now).order_by('start'):
             for set_num in range(1, 7):
                 no_zero_padded = '{0.year}-{0.month}-{0.day}/{1}-{2}.mp3'.format(
@@ -61,5 +65,4 @@ class Command(BaseCommand):
                             recording.media_file.size = key.size
                             recording.media_file.save()
 
-        self.stdout.write("{0} new files imported".format(new_files_imported))
-        self.stdout.write("{0} files updated".format(files_updated))
+        logger.info("{0} new files imported".format(new_files_imported))
