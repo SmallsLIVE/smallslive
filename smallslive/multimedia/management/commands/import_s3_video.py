@@ -7,6 +7,8 @@ from django.utils import timezone
 from events.models import Recording, Event
 from multimedia.models import MediaFile
 
+logger = logging.getLogger('cron')
+
 
 class Command(BaseCommand):
     help = 'Imports the newly added video files from S3 and assigns them to correct events'
@@ -15,8 +17,9 @@ class Command(BaseCommand):
         env = os.environ.get('CRON_ENV')
         now = timezone.now()
         # heroku scheduler launches the task every day, we make sure it only really does the import
-        # once a week
-        if env == "heroku" and (now.weekday() != 6 or now.weekday() != 3):
+        # twice a week
+        if env == "heroku" and now.weekday() in (0,1,3,4,5):
+            logger.info('Today is not importing day')
             return
 
         conn = S3Connection(settings.AWS_ACCESS_KEY_ID, settings.AWS_SECRET_ACCESS_KEY)
