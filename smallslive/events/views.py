@@ -61,7 +61,7 @@ class HomepageView(ListView):
         @cached(timeout=6*60*60)
         def _get_most_popular():
             context = {}
-            most_popular_ids = UserVideoMetric.objects.most_popular(count=3)
+            most_popular_ids = UserVideoMetric.objects.most_popular(count=3, weekly=True)
             most_popular = []
             for event_data in most_popular_ids:
                 try:
