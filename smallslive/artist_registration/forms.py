@@ -47,11 +47,11 @@ class InviteArtistForm(BaseSignupForm):
         except ObjectDoesNotExist:
             user = adapter.new_user(request)
             user = adapter.save_user(request, user, self)
-            user.artist = self.artist
-            user.save()
-            self.custom_signup(request, user)
-            # TODO: Move into adapter `save_user` ?
-            setup_user_email(request, user, [])
+        user.artist = self.artist
+        user.save()
+        self.custom_signup(request, user)
+        # TODO: Move into adapter `save_user` ?
+        setup_user_email(request, user, [])
         send_email_confirmation(request, user, signup=True, activate_view='artist_registration_confirm_email')
         return user
 
