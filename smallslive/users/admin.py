@@ -91,7 +91,7 @@ class SmallsUserAdmin(UserAdmin, HijackUserAdminMixin):
                                       'zip', 'country', 'phone_1', 'website', 'photo')}),
         ('Site info', {'fields': ('access_level', 'login_count', 'accept_agreement', 'renewal_date',
                                   'subscription_price', 'company_name', 'newsletter')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser',
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'is_vip',
                                     'groups', 'user_permissions')}),
         ('Important dates', {'fields': ('last_login', 'date_joined')}),
     )
