@@ -116,9 +116,9 @@
             <li><a role="button" data-toggle="collapse" href="#mobile-nav-info-links" aria-expanded="false" aria-controls="mobile-nav-info-links">Info <i class="fa fa-caret-down"></i> </a></li>
             <li class="nopadding">
                 <ul class="mobile-navbar__submenu collapse" id="mobile-nav-info-links">
+                    <li class="hidden-sm"><a href="{% url "contact-and-info" %}">Contact & Info</a></li>
                     <li class="hidden-sm"><a href="{% url "about-us" %}">About us</a></li>
                     <li class="hidden-sm"><a href="{% url "revenue-share" %}">Revenue Share</a></li>
-                    <li class="hidden-sm"><a href="{% url "contact-and-info" %}">Contact & Info</a></li>
                     <li class="hidden-sm"><a href="{% url "photo-gallery" %}">Photo Gallery</a></li>
                     <li class="hidden-sm"><a href="{% url "newsletters" %}">Newsletters</a></li>
                     <li class="hidden-sm"><a href="{% url "static_page" "press" %}">Press</a></li>
@@ -218,7 +218,7 @@
           <li class="navigation__item"><a href="{% url "archive" %}"><i
                   class="navigation__icon fa fa-video-camera"></i><span class="menu-label">New/Popular</span></a></li>
           <li class="navigation__item {% block store_nav_active %}{% endblock %}"><a href="{% url "promotions:home" %}"><i class="navigation__icon fa fa-shopping-cart"></i><span class="menu-label">SmallsLIVE Tracks</span></a></li>
-          <li class="navigation__item {% block info_nav_active %}{% endblock %}"><a href="{% url "about-us" %}"><i class="navigation__icon fa fa-info-circle"></i>
+          <li class="navigation__item {% block info_nav_active %}{% endblock %}"><a href="{% url "contact-and-info" %}"><i class="navigation__icon fa fa-info-circle"></i>
            <span class="menu-label">Info</span></a></li>
           <li class="navigation__item">
               <div class="search">
