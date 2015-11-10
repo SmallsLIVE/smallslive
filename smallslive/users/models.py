@@ -57,6 +57,11 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         default=False,
         help_text='Designates whether the user can log into this admin ''site.'
     )
+    is_vip = models.BooleanField(
+        default=False,
+        help_text='Designates whether this user is a VIP and has access to audio and video'
+                  ' without paying for a subscription'
+    )
     is_active = models.BooleanField(
         default=True,
         help_text='Designates whether this user should be treated as active. '
@@ -180,12 +185,12 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
     @cached_property
     def can_watch_video(self):
-        return self.is_staff or self.is_artist or (
+        return self.is_staff or self.is_artist or self.is_vip or (
             self.has_activated_account and self.get_subscription_plan['type'] != 'free')
 
     @cached_property
     def can_listen_to_audio(self):
-        return self.is_staff or self.is_artist or (
+        return self.is_staff or self.is_artist or self.is_vip or (
             self.has_activated_account and self.get_subscription_plan['type'] != 'free')
 
 
