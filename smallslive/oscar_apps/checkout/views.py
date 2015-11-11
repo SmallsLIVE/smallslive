@@ -242,7 +242,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
                 total,
                 card=card_token,
                 description=self.payment_description(order_number, total, **kwargs),
-                metadata=self.payment_metadata(order_number, total, **kwargs),
+                metadata=self.payment_metadata(order_number, total, basket_lines, **kwargs),
                 customer=self.request.user.customer.stripe_id)
         else:
             stripe_ref = Facade().charge(

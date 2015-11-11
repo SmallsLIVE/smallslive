@@ -54,7 +54,14 @@ class PaymentForm(forms.Form):
         data = super(PaymentForm, self).clean()
         if not self.errors:
             if existing_cc:
-                self.token = self.user.customer.stripe_customer.get('default_source')
+                stripe_customer = self.user.customer.stripe_customer
+                self.token = stripe_customer.get('default_source')
+                try:
+                    card_info = stripe_customer.get('sources', {}).get('data', {})[0]
+                    data['name'] = card_info.get('name')
+                    data['number'] = card_info.get('last4')
+                except IndexError:
+                    pass
             else:
                 try:
                     token = stripe.Token.create(
