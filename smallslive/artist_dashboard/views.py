@@ -29,7 +29,7 @@ from events.models import Recording, Event
 import events.views as event_views
 import users.forms as user_forms
 from users.models import LegalAgreementAcceptance
-from users.views import HasArtistAssignedMixin
+from users.views import HasArtistAssignedMixin, HasArtistAssignedOrIsSuperuserMixin
 from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm,\
     EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm
 from .utils import generate_payout_sheet
@@ -186,7 +186,7 @@ class EventDetailView(HasArtistAssignedMixin, event_views.EventDetailView):
 event_detail = EventDetailView.as_view()
 
 
-class EventMetricsView(HasArtistAssignedMixin, DetailView):
+class EventMetricsView(HasArtistAssignedOrIsSuperuserMixin, DetailView):
     template_name = 'artist_dashboard/event_metrics.html'
     model = Event
 

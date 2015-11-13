@@ -285,3 +285,12 @@ class HasArtistAssignedMixin(braces.views.UserPassesTestMixin):
         else:
             messages.error(self.request, 'You need to be an artist to access that part of the site.')
             return reverse('home')
+
+
+class HasArtistAssignedOrIsSuperuserMixin(HasArtistAssignedMixin):
+    def test_func(self, user):
+        self.logged_in = user.is_authenticated()
+        if not self.logged_in:
+            return False
+        self.has_artist = user.artist_id is not None
+        return self.has_artist or user.is_superuser
