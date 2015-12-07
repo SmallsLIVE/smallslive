@@ -1,8 +1,9 @@
+from braces.views import StaffuserRequiredMixin
 from django.views.generic.list import ListView
 from .models import Institution
 
 
-class InstitutionsListView(ListView):
+class InstitutionsListView(StaffuserRequiredMixin, ListView):
     model = Institution
     template_name = "institutional_subscriptions/institution_list.html"
     context_object_name = "institutions"
