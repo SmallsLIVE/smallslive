@@ -95,6 +95,7 @@ INSTALLED_APPS = [
     'artist_registration',
     'artists',
     'events',
+    'institutional_subscriptions',
     'multimedia',
     'newsletters',
     'old_site',

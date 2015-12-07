@@ -88,6 +88,8 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     payout_method = models.CharField(max_length=10, choices=PAYOUT_CHOICES, default=PAYOUT_CHOICES.Check)
     paypal_email = models.EmailField(max_length=100, blank=True)
     taxpayer_id = models.CharField(max_length=15, blank=True)
+    institution = models.ForeignKey('institutional_subscriptions.Institution',
+                                    blank=True, null=True, related_name='members')
 
     objects = SmallsUserManager()
 
