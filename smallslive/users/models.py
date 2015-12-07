@@ -156,15 +156,21 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         return self.date_joined == self.last_login
 
     @cached_property
+    def has_institutional_subscription(self):
+        return self.institution is not None and self.institution.is_subscription_active()
+
+    @cached_property
     def has_active_subscription(self):
         """Checks if a user has an active subscription."""
-        return subscriber_has_active_subscription(self)
+        return self.has_institutional_subscription or subscriber_has_active_subscription(self)
 
     @cached_property
     def get_subscription_plan(self):
         if self.has_active_subscription:
             if self.is_staff:
                 return {'name': 'Admin', 'type': 'premium'}
+            elif self.has_institutional_subscription:
+                return {'name': 'Institutional', 'type': 'premium'}
             else:
                 plan_id = self.customer.current_subscription.plan
                 return settings.DJSTRIPE_PLANS[plan_id]
