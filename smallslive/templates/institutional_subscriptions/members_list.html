@@ -3,7 +3,7 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
-{% block title %}Institution list{% endblock %}
+{% block title %}Institution members list{% endblock %}
 
 {% block schedule_nav_active %}active{% endblock %}
 
@@ -11,37 +11,30 @@
 
     <div class="content-wrapper">
         <section class="page-heading container">
-            <h1>Institution list:</h1>
+            <h1>Institution members list:</h1>
         </section>
         <section class="artists-list__list container">
             <div class="artists-list__list__header row">
-                <div class="col-xs-6">
+                <div class="col-xs-5">
                     Name
                 </div>
-                <div class="col-xs-2">
-                    Start
+                <div class="col-xs-5">
+                    Email
                 </div>
                 <div class="col-xs-2">
-                    End
-                </div>
-                <div class="col-xs-2">
-                    # users
                 </div>
             </div>
             <ul>
-                {% for institution in institutions %}
+                {% for member in members %}
                     <li class="artists-list__list__row row">
-                        <div class="col-xs-6 artists-list__list__name">
-                            <a href="{% url "institution_members" pk=institution.id %}">{{ institution.name }}</a>
+                        <div class="col-xs-5 artists-list__list__name">
+                            {{ member.full_name }}
+                        </div>
+                        <div class="col-xs-5 artists-list__list__instrument">
+                            {{ member.email }}
                         </div>
                         <div class="col-xs-2 artists-list__list__instrument">
-                            {{ institution.subscription_start }}
-                        </div>
-                        <div class="col-xs-2 artists-list__list__instrument">
-                            {{ institution.subscription_end }}
-                        </div>
-                        <div class="col-xs-2 artists-list__list__instrument">
-                            {{ institution.members.count }}
+
                         </div>
                     </li>
                 {% empty %}
