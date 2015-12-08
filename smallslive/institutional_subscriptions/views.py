@@ -1,6 +1,8 @@
 from braces.views import StaffuserRequiredMixin
 from django.core.urlresolvers import reverse_lazy
-from django.shortcuts import get_object_or_404
+from django.contrib.admin.views.decorators import staff_member_required
+from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView, FormView, ListView
 
 from users.models import SmallsUser
@@ -22,16 +24,13 @@ class InstitutionMembersList(StaffuserRequiredMixin, ListView):
     context_object_name = "members"
     paginate_by = 50
 
-    def __init__(self):
-        super(InstitutionMembersList, self).__init__()
-        self.institution = get_object_or_404(Institution, pk=self.kwargs.get('pk'))
-
     def get_queryset(self):
         institution = get_object_or_404(Institution, pk=self.kwargs.get('pk'))
         return SmallsUser.objects.filter(institution=institution)
 
     def get_context_data(self, **kwargs):
         context = super(InstitutionMembersList, self).get_context_data(**kwargs)
+        self.institution = get_object_or_404(Institution, pk=self.kwargs.get('pk'))
         context['institution'] = self.institution
         return context
 
@@ -45,6 +44,15 @@ class InstitutionAddView(StaffuserRequiredMixin, CreateView):
     form_class = InstitutionAddForm
 
 institution_add = InstitutionAddView.as_view()
+
+
+@staff_member_required
+@require_POST
+def institution_member_delete(request, institution_id, member_id):
+    user = get_object_or_404(SmallsUser, pk=member_id)
+    user.institution = None
+    user.save()
+    return redirect('institution_members', pk=institution_id)
 
 
 class InstitutionInviteMembersView(StaffuserRequiredMixin, FormView):

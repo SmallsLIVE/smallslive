@@ -16,26 +16,36 @@
         </section>
         <section class="artists-list__list container">
             <div class="artists-list__list__header row">
-                <div class="col-xs-5">
-                    Name
-                </div>
-                <div class="col-xs-5">
+                <div class="col-xs-4">
                     Email
                 </div>
+                <div class="col-xs-4">
+                    Name
+                </div>
                 <div class="col-xs-2">
+                    Activated
+                </div>
+                <div class="col-xs-2">
+                    Actions
                 </div>
             </div>
             <ul>
                 {% for member in members %}
                     <li class="artists-list__list__row row">
-                        <div class="col-xs-5 artists-list__list__name">
-                            {{ member.full_name }}
-                        </div>
-                        <div class="col-xs-5 artists-list__list__instrument">
+                        <div class="col-xs-4 artists-list__list__name">
                             {{ member.email }}
                         </div>
+                        <div class="col-xs-4 artists-list__list__instrument">
+                            {{ member.full_name }}
+                        </div>
                         <div class="col-xs-2 artists-list__list__instrument">
-
+                            <div class="artists-list__list__state"><i class="fa {% if member.has_registered %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
+                        </div>
+                        <div class="col-xs-2 artists-list__list__instrument">
+                            <form action="{% url "institution_uninvite_member" institution_id=institution.id member_id=member.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit">Delete</button>
+                            </form>
                         </div>
                     </li>
                 {% empty %}
