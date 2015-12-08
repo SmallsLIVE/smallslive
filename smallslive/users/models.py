@@ -157,23 +157,32 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
     @cached_property
     def has_institutional_subscription(self):
+        return self.institution is not None
+
+    @cached_property
+    def has_active_institutional_subscription(self):
         return self.institution is not None and self.institution.is_subscription_active()
 
     @cached_property
     def has_active_subscription(self):
         """Checks if a user has an active subscription."""
-        return self.has_institutional_subscription or subscriber_has_active_subscription(self)
+        return subscriber_has_active_subscription(self)
 
     @cached_property
     def get_subscription_plan(self):
-        if self.has_active_subscription:
-            if self.is_staff:
-                return {'name': 'Admin', 'type': 'premium'}
-            elif self.has_institutional_subscription:
-                return {'name': 'Institutional', 'type': 'premium'}
-            else:
-                plan_id = self.customer.current_subscription.plan
-                return settings.DJSTRIPE_PLANS[plan_id]
+        if self.is_staff:
+            return {'name': 'Admin', 'type': 'premium'}
+        elif self.is_vip:
+            return {'name': 'VIP', 'type': 'premium'}
+        elif self.is_artist:
+            return {'name': 'Artist', 'type': 'premium'}
+        elif self.has_active_institutional_subscription:
+            return {'name': 'Institutional', 'type': 'premium'}
+        elif self.has_institutional_subscription:
+            return {'name': 'Institutional (inactive)', 'type': 'free'}
+        elif self.has_active_subscription:
+            plan_id = self.customer.current_subscription.plan
+            return settings.DJSTRIPE_PLANS[plan_id]
         else:
             return {'name': 'Live Video Stream Access', 'type': 'free'}
 
@@ -193,13 +202,11 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
     @cached_property
     def can_watch_video(self):
-        return self.is_staff or self.is_artist or self.is_vip or (
-            self.has_activated_account and self.get_subscription_plan['type'] != 'free')
+        return self.has_activated_account and self.get_subscription_plan['type'] != 'free'
 
     @cached_property
     def can_listen_to_audio(self):
-        return self.is_staff or self.is_artist or self.is_vip or (
-            self.has_activated_account and self.get_subscription_plan['type'] != 'free')
+        return self.has_activated_account and self.get_subscription_plan['type'] != 'free'
 
 
 class SmallsEmailConfirmation(EmailConfirmation):
