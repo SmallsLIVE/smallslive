@@ -4,6 +4,7 @@ from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field
 from django import forms
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from multi_email_field.forms import MultiEmailField
@@ -67,6 +68,9 @@ class InstitutionMembersInviteForm(forms.Form):
                 setup_user_email(request, user, [])
                 members.append(user)
             send_email_confirmation(request, user, signup=True, activate_view='account_confirm_email')
+            storage = messages.get_messages(request)
+            storage.used = True
+            messages.success(request, 'Members successfully invited')
         return members
 
     def raise_duplicate_email_error(self):
