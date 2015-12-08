@@ -1,11 +1,10 @@
 from braces.views import StaffuserRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
-from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic import CreateView, FormView, ListView
 
 from users.models import SmallsUser
-from .forms import InstitutionAddForm
+from .forms import InstitutionAddForm, InstitutionMembersInviteForm
 from .models import Institution
 
 
@@ -23,9 +22,18 @@ class InstitutionMembersList(StaffuserRequiredMixin, ListView):
     context_object_name = "members"
     paginate_by = 50
 
+    def __init__(self):
+        super(InstitutionMembersList, self).__init__()
+        self.institution = get_object_or_404(Institution, pk=self.kwargs.get('pk'))
+
     def get_queryset(self):
         institution = get_object_or_404(Institution, pk=self.kwargs.get('pk'))
         return SmallsUser.objects.filter(institution=institution)
+
+    def get_context_data(self, **kwargs):
+        context = super(InstitutionMembersList, self).get_context_data(**kwargs)
+        context['institution'] = self.institution
+        return context
 
 institution_members = InstitutionMembersList.as_view()
 
@@ -37,3 +45,28 @@ class InstitutionAddView(StaffuserRequiredMixin, CreateView):
     form_class = InstitutionAddForm
 
 institution_add = InstitutionAddView.as_view()
+
+
+class InstitutionInviteMembersView(StaffuserRequiredMixin, FormView):
+    form_class = InstitutionMembersInviteForm
+    template_name = 'institutional_subscriptions/institution_invite_members.html'
+
+    def form_valid(self, form):
+        form.invite_members(self.request)
+        return super(InstitutionInviteMembersView, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(InstitutionInviteMembersView, self).get_form_kwargs()
+        self.institution = get_object_or_404(Institution, pk=self.kwargs.get('pk'))
+        kwargs['institution'] = self.institution
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy('institution_members', kwargs={'pk': self.kwargs['pk']})
+
+    def get_context_data(self, **kwargs):
+        context = super(InstitutionInviteMembersView, self).get_context_data(**kwargs)
+        context['institution'] = self.institution
+        return context
+
+institution_invite_members = InstitutionInviteMembersView.as_view()

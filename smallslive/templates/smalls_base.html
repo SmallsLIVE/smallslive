@@ -79,6 +79,13 @@
                 <li><a href="{% url "event_add" %}">Add events</a></li>
                 <li><a href="{% url "artist_add" %}">Add artists</a></li>
                 <li><a href="{% url "artist_list" %}">Artist list</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Institutions <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url "institutions" %}">Institution list</a></li>
+                    <li><a href="{% url "institution_add" %}">Add institution</a></li>
+                  </ul>
+                </li>
                 <li><a href="{% url "dashboard:index" %}">Store dashboard</a></li>
                 <li><a href="{% url "artist_dashboard:admin_metrics" %}">Metrics admin</a></li>
             </ul>
