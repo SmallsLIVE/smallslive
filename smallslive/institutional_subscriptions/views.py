@@ -1,8 +1,11 @@
 from braces.views import StaffuserRequiredMixin
+from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView
 
 from users.models import SmallsUser
+from .forms import InstitutionAddForm
 from .models import Institution
 
 
@@ -25,3 +28,12 @@ class InstitutionMembersList(StaffuserRequiredMixin, ListView):
         return SmallsUser.objects.filter(institution=institution)
 
 institution_members = InstitutionMembersList.as_view()
+
+
+class InstitutionAddView(StaffuserRequiredMixin, CreateView):
+    model = Institution
+    template_name = "institutional_subscriptions/institution_add.html"
+    success_url = reverse_lazy('institutions')
+    form_class = InstitutionAddForm
+
+institution_add = InstitutionAddView.as_view()

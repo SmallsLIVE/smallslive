@@ -1,0 +1,48 @@
+{% extends "smalls_base.html" %}
+{% load crispy_forms_tags %}
+{% load static from staticfiles %}
+
+{% block title %}Add institution{% endblock title %}
+
+{% block extra_head %}
+    <script>
+        var django = {jQuery: jQuery};
+    </script>
+    {{ form.media }}
+    <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+{% endblock extra_head %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <section class="admin-interface container">
+            <h1 class="admin-interface__main-title">Add institution</h1>
+            <form method="post" action="." class="admin-interface__form" role="form">
+                {% csrf_token %}
+                {% crispy form %}
+                <button type="submit" name="submit" class="admin-interface__form__button">
+                    Add
+                </button>
+            </form>
+        </section>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
+    <script>
+        var $start = $('#id_subscription_start');
+        var $end = $('#id_subscription_end');
+        var date_format = "MM/DD/YYYY H:mm A";
+        $start.datetimepicker({
+            sideBySide: true,
+            minuteStepping: 5,
+            defaultDate: moment()
+        });
+        $end.datetimepicker({
+            sideBySide: true,
+            minuteStepping: 5,
+            defaultDate: moment().add(1, 'y')
+        });
+    </script>
+{% endblock %}

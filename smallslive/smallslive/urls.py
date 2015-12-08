@@ -57,7 +57,7 @@ urlpatterns = patterns('',
 
     url(r'^accounts/', include('users.urls')),
     url(r'^multimedia/', include('multimedia.urls')),
-    url(r'^institutional-subscriptions/', include('institutional_subscriptions.urls', app_name="institutional_subscriptions")),
+    url(r'^institutions/', include('institutional_subscriptions.urls', app_name="institutional_subscriptions")),
 
 
     url(r'^tinymce/', include('tinymce.urls')),
