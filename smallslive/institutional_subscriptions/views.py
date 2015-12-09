@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView, FormView, ListView
 
 from users.models import SmallsUser
+from artist_registration.views import ArtistAccountActivateView
 from .forms import InstitutionAddForm, InstitutionMembersInviteForm
 from .models import Institution
 
@@ -87,3 +88,14 @@ class InstitutionInviteMembersView(StaffuserRequiredMixin, FormView):
         return context
 
 institution_invite_members = InstitutionInviteMembersView.as_view()
+
+
+class InstitutionMemberActivateView(ArtistAccountActivateView):
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, **kwargs):
+        context = super(InstitutionMemberActivateView, self).get_context_data(**kwargs)
+        context['institution_signup'] = True
+        return context
+
+institution_member_activate = InstitutionMemberActivateView.as_view()

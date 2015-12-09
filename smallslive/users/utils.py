@@ -54,3 +54,35 @@ def send_email_confirmation(request, user, signup=False, **kwargs):
                                       {'email': email})
     if signup:
         request.session['account_user'] = user.pk
+
+
+def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
+    """
+    Customized send confirmation function that doesn't set (notification) messages and other
+    things that depend on the request object since we're passing a mock request object to it.
+    """
+    from .models import SmallsEmailAddress, SmallsEmailConfirmation
+
+    COOLDOWN_PERIOD = timedelta(minutes=3)
+    email = user_email(user)
+    if email:
+        try:
+            email_address = SmallsEmailAddress.objects.get(user=user, email__iexact=email)
+            if not email_address.verified:
+                send_email = not SmallsEmailConfirmation.objects \
+                    .filter(sent__gt=now() - COOLDOWN_PERIOD,
+                            email_address=email_address) \
+                    .exists()
+                if send_email:
+                    email_address.send_confirmation(request,
+                                                    signup=signup, activate_view=kwargs.get('activate_view'))
+            else:
+                send_email = False
+        except SmallsEmailAddress.DoesNotExist:
+            send_email = True
+            email_address = SmallsEmailAddress.objects.add_email(request,
+                                                           user,
+                                                           email,
+                                                           signup=signup,
+                                                           confirm=True)
+            assert email_address

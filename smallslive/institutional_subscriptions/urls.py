@@ -12,6 +12,8 @@ urlpatterns = patterns('institutional_subscriptions.views',
         name="institution_delete"),
     url(r"^add/$", 'institution_add',
         name="institution_add"),
+    url(r'^activate-account/(?P<key>\w+)/$', 'institution_member_activate',
+        name='institution_member_confirm_email'),
     url(r"^$", 'institution_list',
         name="institutions"),
 )

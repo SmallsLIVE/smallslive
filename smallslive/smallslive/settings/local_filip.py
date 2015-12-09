@@ -37,6 +37,7 @@ INSTALLED_APPS += (
     'devserver',
     'hijack',
     'compat',
+    'kombu.transport.django',
 )
 
 ENABLE_HIJACK = True
@@ -136,4 +137,6 @@ CACHEOPS = {
 CACHEOPS_FAKE = True
 
 # Celery
-CELERY_ALWAYS_EAGER = True
+#CELERY_ALWAYS_EAGER = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+BROKER_URL = 'django://'
