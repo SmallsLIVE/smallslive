@@ -76,6 +76,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'django_extensions',
     'django_thumbor',
+    'djcelery',
     'djstripe',
     'filer',
     'floppyforms',
@@ -660,3 +661,6 @@ PING_INTERVAL = 30
 # Hijack
 ENABLE_HIJACK = False
 SHOW_HIJACKUSER_IN_ADMIN = False
+
+# Celery
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'

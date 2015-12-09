@@ -134,3 +134,6 @@ CACHEOPS = {
     '*.*': {'timeout': 60*60},
 }
 CACHEOPS_FAKE = True
+
+# Celery
+CELERY_ALWAYS_EAGER = True

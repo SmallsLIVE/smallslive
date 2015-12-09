@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from multi_email_field.forms import MultiEmailField
 from allauth.account.utils import user_username, user_email
-from users.utils import send_email_confirmation
+from institutional_subscriptions.tasks import send_email_confirmation
 from .models import Institution
 
 User = get_user_model()
@@ -67,7 +67,7 @@ class InstitutionMembersInviteForm(forms.Form):
                 user.save()
                 setup_user_email(request, user, [])
                 members.append(user)
-            send_email_confirmation(request, user, signup=True, activate_view='account_confirm_email')
+            send_email_confirmation.delay(request, user, signup=True, activate_view='account_confirm_email')
             storage = messages.get_messages(request)
             storage.used = True
             messages.success(request, 'Members successfully invited')
