@@ -55,6 +55,15 @@ def institution_member_delete(request, institution_id, member_id):
     return redirect('institution_members', pk=institution_id)
 
 
+@staff_member_required
+@require_POST
+def institution_delete(request, institution_id):
+    institution = get_object_or_404(Institution, pk=institution_id)
+    institution.members.update(institution=None)
+    institution.delete()
+    return redirect('institutions')
+
+
 class InstitutionInviteMembersView(StaffuserRequiredMixin, FormView):
     form_class = InstitutionMembersInviteForm
     template_name = 'institutional_subscriptions/institution_invite_members.html'
