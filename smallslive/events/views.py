@@ -463,6 +463,20 @@ class LiveStreamView(ListView):
 live_stream = LiveStreamView.as_view()
 
 
+class MezzrowLiveStreamView(TemplateView):
+    template_name = 'events/live-stream-mezzrow.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MezzrowLiveStreamView, self).get_context_data(**kwargs)
+        context['stream_expire'] = int(time.time()) + 120  # 10 seconds - required just to start the stream
+        print context
+        context['stream_hash'] = hashlib.md5("{0}{1}?e={2}".format(settings.BITGRAVITY_SECRET, "/smallslive/secure/",
+                                                                   context['stream_expire'])).hexdigest()
+        return context
+
+live_stream_mezzrow = MezzrowLiveStreamView.as_view()
+
+
 class ArchiveView(TemplateView):
     template_name = "events/archive.html"
     
