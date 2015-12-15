@@ -100,7 +100,7 @@ class ArtistEmailsFilterView(ArtistFilterView):
     template_name = "artists/artist_list_emails.html"
 
     def get_queryset(self):
-        return Artist.objects.exclude(user=None).select_related('user').values_list('user__email', flat=True)
+        return Artist.objects.exclude(user=None).select_related('user').values_list('user__email', flat=True).nocache()
 
 
 artist_list_emails = ArtistEmailsFilterView.as_view()

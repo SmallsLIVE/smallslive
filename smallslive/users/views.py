@@ -280,7 +280,7 @@ class SubscriberEmailsFilterView(StaffuserRequiredMixin, ListView):
     context_object_name = 'subscribers'
 
     def get_queryset(self):
-        return SmallsUser.objects.filter(artist=None).values_list('email', flat=True)
+        return SmallsUser.objects.filter(artist=None).values_list('email', flat=True).nocache()
 
 subscriber_list_emails = SubscriberEmailsFilterView.as_view()
 
