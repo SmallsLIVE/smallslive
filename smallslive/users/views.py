@@ -4,7 +4,7 @@ from allauth.account.utils import complete_signup
 from allauth.account.views import SignupView as AllauthSignupView, ConfirmEmailView as CoreConfirmEmailView,\
     LoginView as CoreLoginView
 import braces.views
-from braces.views import FormValidMessageMixin, LoginRequiredMixin
+from braces.views import FormValidMessageMixin, LoginRequiredMixin, StaffuserRequiredMixin
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
@@ -12,7 +12,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView
 from djstripe.mixins import SubscriptionMixin
 from djstripe.models import Customer
 from djstripe.settings import subscriber_request_callback
@@ -20,6 +20,8 @@ from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView,\
     CancelSubscriptionView as BaseCancelSubscriptionView
 from allauth.account.app_settings import EmailVerificationMethod
 import stripe
+
+from users.models import SmallsUser
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
 
 
@@ -269,6 +271,18 @@ class ReactivateSubscriptionView(FormView):
         return super(ReactivateSubscriptionView, self).form_valid(form)
 
 reactivate_subscription = ReactivateSubscriptionView.as_view()
+
+
+class SubscriberEmailsFilterView(StaffuserRequiredMixin, ListView):
+    content_type = 'text/plain'
+    paginate_by = 3000
+    template_name = "account/subscriber_list_emails.html"
+    context_object_name = 'subscribers'
+
+    def get_queryset(self):
+        return SmallsUser.objects.filter(artist=None).values_list('email', flat=True)
+
+subscriber_list_emails = SubscriberEmailsFilterView.as_view()
 
 
 class HasArtistAssignedMixin(braces.views.UserPassesTestMixin):
