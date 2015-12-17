@@ -28,6 +28,7 @@ class Event(TimeStampedModel):
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed', related_name='events')
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField(default=STATUS.Draft)
+    streamable = models.BooleanField(default=True)
 
     objects = models.Manager()
     past = QueryManager(start__lt=datetime.now()).order_by('-start')

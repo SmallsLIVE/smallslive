@@ -124,7 +124,7 @@ class EventAddForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        fields = ('start', 'end', 'title', 'subtitle', 'photo', 'suggested_images', 'description', 'link', 'state')
+        fields = ('start', 'end', 'title', 'subtitle', 'photo', 'suggested_images', 'description', 'link', 'streamable', 'state')
         widgets = {
             'state': EventStatusWidget,
             'link': floppyforms.URLInput,
@@ -150,6 +150,7 @@ class EventAddForm(forms.ModelForm):
             Field('suggested_images', css_class='imagepicker'),
             'description',
             'link',
+            'streamable',
             'state',
         )
         self.fields['state'].label = "Event status"
