@@ -51,7 +51,7 @@
     <strong>Your account is not active yet!</strong> Please confirm it by clicking the link in the account activation email.
   </p>
   </div>
-{% endif %} 
+{% endif %}
 <!-- ALERT TEST -->
 {% if messages %}
     <div class="messages" id="messages">
@@ -77,8 +77,13 @@
             <ul class="nav navbar-nav">
                 <li><a href="{% url "home" %}">Homepage</a></li>
                 <li><a href="{% url "event_add" %}">Add events</a></li>
-                <li><a href="{% url "artist_add" %}">Add artists</a></li>
-                <li><a href="{% url "artist_list" %}">Artist list</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Artists <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url "artist_add" %}">Add artists</a></li>
+                    <li><a href="{% url "artist_list" %}">Artist list</a></li>
+                  </ul>
+                </li>
                 <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Institutions <span class="caret"></span></a>
                   <ul class="dropdown-menu">

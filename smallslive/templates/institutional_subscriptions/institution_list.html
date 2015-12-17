@@ -13,52 +13,77 @@
         <section class="page-heading container">
             <h1>Institution list:</h1>
         </section>
-        <section class="artists-list__list container">
-            <div class="artists-list__list__header row">
-                <div class="col-xs-4">
+        <section class="institutions-list__search">
+            <form method="get" action="{% url "artist_list" %}">
+                <span class="artists-list__search__heading">Search:</span>
+                <input class="form-control search" id="id_name" name="name" placeholder="Search by name" type="text">
+                <input type="submit" value="Search">
+            </form>
+        </section>
+        <section class="institutions-list__breadcrumbs">
+            <span>All institutions</span>
+        </section>
+        <section class="institutions-list__list container">
+            <div class="institutions-list__list__header row">
+                <div class="col-xs-8 col-sm-5 col-md-3">
                     Name
                 </div>
-                <div class="col-xs-2">
-                    Start
+                <div class="hidden-xs hidden-sm col-md-3">
+                    Contact
                 </div>
-                <div class="col-xs-2">
-                    End
+                <div class="hidden-xs hidden-sm col-md-1 text-center">
+                    User Quota
                 </div>
-                <div class="col-xs-2">
-                    # users
+                <div class="hidden-xs hidden-sm col-md-1 text-center">
+                    Users Used
                 </div>
-                <div class="col-xs-2">
-                    Actions
+                <div class="hidden-xs col-sm-4 col-md-2 text-center">
+                    Expiry date
+                </div>
+                <div class="col-xs-4 col-sm-3 col-md-2 text-right">
+
                 </div>
             </div>
             <ul>
                 {% for institution in institutions %}
-                    <li class="artists-list__list__row row">
-                        <div class="col-xs-4 artists-list__list__name">
+                    <li class="institutions-list__list__row row">
+                        <div class="col-xs-8 col-sm-5 col-md-3 institution-name">
                             <a href="{% url "institution_members" pk=institution.id %}">{{ institution.name }}</a>
                         </div>
-                        <div class="col-xs-2 artists-list__list__instrument">
-                            {{ institution.subscription_start }}
+                        <div class="hidden-xs hidden-sm col-md-3">
+                            John Cleese
                         </div>
-                        <div class="col-xs-2 artists-list__list__instrument">
-                            {{ institution.subscription_end }}
+                        <div class="hidden-xs hidden-sm col-md-1 text-center">
+                            15
                         </div>
-                        <div class="col-xs-2 artists-list__list__instrument">
+                        <div class="hidden-xs hidden-sm col-md-1 text-center">
                             {{ institution.members.count }}
                         </div>
-                        <div class="col-xs-2 artists-list__list__instrument">
-                            <form action="{% url "institution_delete" pk=institution.id %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit">Delete</button>
-                            </form>
+                        <div class="hidden-xs col-sm-4 col-md-2 text-center">
+                            {{ institution.subscription_end|date:"n/j/Y" }}
+                        </div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 text-right">
+                            <div class="btn-group">
+                                <a href="#"><button type="button" class="btn">View users</button></a>
+                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">Edit institution</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </li>
                 {% empty %}
-                    <li class="artists-list__list__row--empty row">No institutions found</li>
+                    <li class="institutions-list__list__row--empty row">No institutions found</li>
                 {% endfor %}
+                    <li class="institutions-list__list__row add-institution-button__row row">
+                        <a href="#" class="add-institution-button">Add a new institution</a>
+                    </li>
             </ul>
         </section>
-        <section class="page-pagination artists-list__pagination container">
+        <section class="page-pagination institutions-list__pagination container">
           <p class="search-pagination-info">Showing results {{ page_obj.start_index }}-{{ page_obj.end_index }}
             of {{ paginator.count }}</p>
           {% if page_obj.has_previous or page_obj.has_next %}

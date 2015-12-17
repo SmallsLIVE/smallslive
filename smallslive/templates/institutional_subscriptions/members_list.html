@@ -12,48 +12,82 @@
     <div class="content-wrapper">
         <section class="page-heading container">
             <h1>Institution members list:</h1>
-            <a href="{% url "institution_invite_members" pk=institution.id %}">Invite members</a>
         </section>
-        <section class="artists-list__list container">
-            <div class="artists-list__list__header row">
-                <div class="col-xs-4">
-                    Email
+        <section class="institutions-list__search">
+            <form method="get" action="{% url "artist_list" %}">
+                <span class="artists-list__search__heading">Search:</span>
+                <input class="form-control search" id="id_name" name="name" placeholder="Search by name" type="text">
+                <input type="submit" value="Search">
+            </form>
+        </section>
+        <section class="institutions-list__breadcrumbs">
+            <a href="{% url "institutions" %}">All institutions</a><span class="divider">></span><span>{{ institution.name }}</span>
+        </section>
+        <section class="institutions-list__list container">
+            <div class="institutions-list__list__header single-institution__header row">
+                <div class="col-xs-12">
+                    <h1 class="single-institution__header__title"><strong>{{ institution.name }}</strong> users list - {{ institution.members.count }}/15 allowed users</h1>
                 </div>
-                <div class="col-xs-4">
+            </div>
+            <div class="institutions-list__list__header single-institution__header row">
+                <div class="ol-xs-4 col-sm-5 col-md-5">
                     Name
                 </div>
-                <div class="col-xs-2">
-                    Activated
+                <div class="col-xs-4 col-sm-5 col-md-4">
+                    Email address
                 </div>
-                <div class="col-xs-2">
-                    Actions
+                <div class="hidden-xs hidden-sm col-md-1 text-center">
+                    Registered
+                </div>
+                <div class="col-xs-4 col-sm-3 col-md-2 text-right">
+
                 </div>
             </div>
             <ul>
                 {% for member in members %}
-                    <li class="artists-list__list__row row">
-                        <div class="col-xs-4 artists-list__list__name">
-                            {{ member.email }}
+                    <li class="institutions-list__list__row row">
+                        <div class="col-xs-4 col-sm-5 col-md-5">
+                            Spike Wilner
                         </div>
-                        <div class="col-xs-4 artists-list__list__instrument">
-                            {{ member.full_name }}
+                        <div class="col-xs-4 col-sm-5 col-md-4">
+                            spikittyspike@smaills.com
                         </div>
-                        <div class="col-xs-2 artists-list__list__instrument">
-                            <div class="artists-list__list__state"><i class="fa {% if member.has_activated_account %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
+                        <div class="hidden-xs hidden-sm col-md-1 text-center">
+                            <div class="institutions-list__list__state"><i class="fa {% if member.has_activated_account %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
                         </div>
-                        <div class="col-xs-2 artists-list__list__instrument">
-                            <form action="{% url "institution_uninvite_member" institution_id=institution.id member_id=member.id %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit">Delete</button>
-                            </form>
+                        <div class="col-xs-4 col-sm-3 col-md-2 text-right">
+                            <button type="button" class="list-row-button" data-toggle="modal" data-target="#user123modal">Remove user</button>
                         </div>
+                        <!-- specific user removal modal -->
+                        <!-- Modal -->
+                        <div class="modal fade user-remove-modal" id="user123modal" tabindex="-1" role="dialog">
+                          <div class="modal-dialog" role="document">
+                            <div class="user-remove-modal__content modal-content">
+                              <div class="user-remove-modal__header">
+                                <h4 class="user-remove-modal__title">Remove user</h4>
+                                <button type="button" class="user-remove-modal__close" data-dismiss="modal" aria-label="Close"><i class="fa fa-remove"></i></button>
+                              </div>
+                              <div class="user-remove-modal__body">
+                                Are you sure you want to remove <strong>spikittyspike@smaills.com</strong> from <strong>{{ institution.name }}</strong> list? The user will not be completely deleted from the SmallsLIVE system, but only degraded to a regular user.
+                              </div>
+                              <div class="user-remove-modal__footer">
+                                <form action="{% url "institution_uninvite_member" institution_id=institution.id member_id=member.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="user-remove-modal__button confirm">Remove</button>
+                                </form>
+                                <button type="button" class="user-remove-modal__button cancel" data-dismiss="modal">Cancel</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- end of modal -->
                     </li>
                 {% empty %}
-                    <li class="artists-list__list__row--empty row">No members found</li>
+                    <li class="institutions-list__list__row--empty row">No members found</li>
                 {% endfor %}
             </ul>
         </section>
-        <section class="page-pagination artists-list__pagination container">
+        <section class="page-pagination institutions-list__pagination container">
           <p class="search-pagination-info">Showing results {{ page_obj.start_index }}-{{ page_obj.end_index }}
             of {{ paginator.count }}</p>
           {% if page_obj.has_previous or page_obj.has_next %}
@@ -79,7 +113,19 @@
             </div>
           {% endif %}
         </section>
+        <section class="institutions-list__add-user">
+            <div class="institutions-list__add-user__form-container quota-full">
+                <h3 class="helper-text">Add a new user (or multiple users, delimiting emails using “,”):</h3>
+                <form method="post" action="." class="admin-interface__form" role="form">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="R4ALV7Oz20sQbTj9q7KVsEkYK23ZTd0K"><input type="hidden" name="csrfmiddlewaretoken" value="R4ALV7Oz20sQbTj9q7KVsEkYK23ZTd0K"> <div id="div_id_member_emails" class="form-group"><div class="controls "><textarea class="multiemailwidget form-control" cols="40" id="id_member_emails" name="member_emails" rows="10" disabled></textarea></div></div>
+
+                    <button type="submit" name="submit" class="admin-interface__form__button" disabled>Invite</button>
+                </form>
+            </div>
+            <p class="quota-warning">
+                Can't add new users - quota is full.
+            </p>
+        </section>
     </div>
 
 {% endblock content %}
-
