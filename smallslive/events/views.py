@@ -56,12 +56,12 @@ class HomepageView(ListView):
         days_with_events = cursor.fetchall()
         days_with_events = [int(x[0]) for x in days_with_events]
         context['disabled_dates'] = ['{}/{}/{}'.format(start.month, x, start.year) for x in range(1, 30) if x not in days_with_events]
-        context['new_in_archive'] = Event.objects.most_recent()[:6]
+        context['new_in_archive'] = Event.objects.most_recent()[:8]
 
         @cached(timeout=6*60*60)
         def _get_most_popular():
             context = {}
-            most_popular_ids = UserVideoMetric.objects.most_popular(count=3, weekly=True)
+            most_popular_ids = UserVideoMetric.objects.most_popular(count=4, weekly=True)
             most_popular = []
             for event_data in most_popular_ids:
                 try:
