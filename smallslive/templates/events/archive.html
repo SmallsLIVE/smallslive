@@ -24,9 +24,45 @@
             </div>
         </div>
 
-        <!-- newly added video -->
+        <!-- recently added carousel-->
         <div class="row archive-carousel" id="newly-added--carousel">
 
+        </div>
+
+        <!-- hidden video slides-->
+        <div style="display: none;" id="js-recent-video">
+            {% for event in recent_video %}
+                <div class="col-xs-6 col-md-3">
+                    <div class="newly-added event-object--gold">
+                        {% if event.photo %}
+                            <img src="{% thumbor_url object.event.photo.url|urlencode height=300 width=350 smart=True %}" class="newly-added__image"
+                                 alt=""/>
+                        {% else %}
+                            <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                        {% endif %}
+                        <div class="newly-added__info"><p class="newly-added__date">{{ event.start|date:"n/j/Y" }}</p><h1
+                                class="newly-added__title">{{ event.title }}</h1></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+      <!-- hidden video slides-->
+        <div style="display: none;" id="js-recent-audio">
+            {% for event in recent_audio %}
+                <div class="col-xs-6 col-md-3">
+                    <div class="newly-added event-object--gold">
+                        {% if event.photo %}
+                            <img src="{% thumbor_url object.event.photo.url|urlencode height=300 width=350 smart=True %}" class="newly-added__image"
+                                 alt=""/>
+                        {% else %}
+                            <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                        {% endif %}
+                        <div class="newly-added__info"><p class="newly-added__date">{{ event.start|date:"n/j/Y" }}</p><h1
+                                class="newly-added__title">{{ event.title }}</h1></div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
       </section>
 
@@ -62,20 +98,20 @@
               <div class="col-xs-12">
                 <h3 class="video-audio__heading">Videos:</h3>
               </div>
-              {% for event in recent_video %}
+              {% for object in weekly_most_popular_video %}
                 <div class="mini-video col-xs-6 col-sm-12">
                     <div class="mini-video__image">
-                      <a href="{{ event.get_absolute_url }}">
-                      {% if event.photo %}
-                        <img src="{% thumbor_url event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      <a href="{{ object.event.get_absolute_url }}">
+                      {% if object.event.photo %}
+                        <img src="{% thumbor_url object.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
                       {% else %}
                         <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                       {% endif %}
                       </a>
                     </div>
                     <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
+                      <p class="mini-video-info__date">{{ object.event.start|date:"n/j/Y" }}</p>
+                      <h2 class="mini-video-info__title"><a href="{{ object.event.get_absolute_url }}">{{ object.event.title }}</a></h2>
 {#                      <div class="mini-video-info__stats">#}
 {#                          <p>Plays:</p>#}
 {#                      </div>#}
@@ -94,20 +130,20 @@
             <div class="col-xs-12">
               <h3 class="video-audio__heading">Audio:</h3>
             </div>
-              {% for event in recent_audio %}
+              {% for object in weekly_most_popular_audio %}
                 <div class="mini-video col-xs-6 col-sm-12">
                     <div class="mini-video__image">
-                      <a href="{{ event.get_absolute_url }}">
-                      {% if event.photo %}
-                        <img src="{% thumbor_url event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      <a href="{{ object.event.get_absolute_url }}">
+                      {% if object.event.photo %}
+                        <img src="{% thumbor_url object.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
                       {% else %}
                         <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                       {% endif %}
                       </a>
                     </div>
                     <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
+                      <p class="mini-video-info__date">{{ object.event.start|date:"n/j/Y" }}</p>
+                      <h2 class="mini-video-info__title"><a href="{{ object.event.get_absolute_url }}">{{ object.event.title }}</a></h2>
 {#                      <div class="mini-video-info__stats">#}
 {#                          <p>Plays:</p>#}
 {#                      </div>#}
@@ -128,20 +164,20 @@
               <div class="col-xs-12">
                 <h3 class="video-audio__heading">Videos:</h3>
               </div>
-              {% for event in recent_video %}
+              {% for object in alltime_most_popular_video %}
                 <div class="mini-video col-xs-6 col-sm-12">
                     <div class="mini-video__image">
-                      <a href="{{ event.get_absolute_url }}">
-                      {% if event.photo %}
-                        <img src="{% thumbor_url event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      <a href="{{ object.event.get_absolute_url }}">
+                      {% if object.event.photo %}
+                        <img src="{% thumbor_url object.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
                       {% else %}
                         <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                       {% endif %}
                       </a>
                     </div>
                     <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
+                      <p class="mini-video-info__date">{{ object.event.start|date:"n/j/Y" }}</p>
+                      <h2 class="mini-video-info__title"><a href="{{ object.event.get_absolute_url }}">{{ object.event.title }}</a></h2>
 {#                      <div class="mini-video-info__stats">#}
 {#                          <p>Plays:</p>#}
 {#                      </div>#}
@@ -160,20 +196,20 @@
             <div class="col-xs-12">
               <h3 class="video-audio__heading">Audio:</h3>
             </div>
-              {% for event in recent_audio %}
+              {% for object in alltime_most_popular_audio %}
                 <div class="mini-video col-xs-6 col-sm-12">
                     <div class="mini-video__image">
-                      <a href="{{ event.get_absolute_url }}">
-                      {% if event.photo %}
-                        <img src="{% thumbor_url event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+                      <a href="{{ object.event.get_absolute_url }}">
+                      {% if object.event.photo %}
+                        <img src="{% thumbor_url object.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
                       {% else %}
                         <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
                       {% endif %}
                       </a>
                     </div>
                     <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h2>
+                      <p class="mini-video-info__date">{{ object.event.start|date:"n/j/Y" }}</p>
+                      <h2 class="mini-video-info__title"><a href="{{ object.event.get_absolute_url }}">{{ object.event.title }}</a></h2>
 {#                      <div class="mini-video-info__stats">#}
 {#                          <p>Plays:</p>#}
 {#                      </div>#}
@@ -193,9 +229,8 @@
 
 {% block extra_js %}
     <script>
-        /* Toggling different streams */
-        $(document).ready(function () {
-            $('#newly-added--carousel').slick({
+        function initSlick(selector) {
+          $(selector).slick({
                 dots: true,
                 slidesToShow: 4,
                 slidesToScroll: 1,
@@ -224,21 +259,25 @@
                         }
                     }
                 ]
+            })
+        };
+        /* Toggling different streams */
+        $(document).ready(function () {
+            initSlick('#newly-added--carousel');
+            $("#js-recent-video").each(function(index, element) {
+                $('#newly-added--carousel').slick('slickAdd', $(element).html());
             });
-            for (i = 0; i < 7; i++) {
-                $('#newly-added--carousel').slick('slickAdd','<div class="col-xs-6 col-md-3"><div class="newly-added event-object--gold"><img class="newly-added__image" src="{% static 'image/archive-temp/02.jpg' %}" alt=""/><div class="newly-added__info"><p class="newly-added__date">01/30/2015</p><h1 class="newly-added__title">The Ari Hoenig Trio</h1></div></div></div>');
-            }
 
             $("#newly-added-switch--video").click(function() {
                 if (!($(this).hasClass("active"))) {
                     $(".newest-switch.archive-section-header__switch.active").toggleClass("active");
                     $(this).toggleClass("active");
-                    for (i = 0; i < 7; i++) {
-                        $('#newly-added--carousel').slick('slickRemove',0);
-                    }
-                    for (i = 0; i < 7; i++) {
-                        $('#newly-added--carousel').slick('slickAdd','<div class="col-xs-6 col-md-3"><div class="newly-added event-object--gold"><img class="newly-added__image" src="{% static 'image/archive-temp/02.jpg' %}" alt=""/><div class="newly-added__info"><p class="newly-added__date">01/30/2015</p><h1 class="newly-added__title">The Ari Hoenig Trio</h1></div></div></div>');
-                    }
+                    $('#newly-added--carousel').slick('unslick');
+                    $('#newly-added--carousel').empty();
+                    initSlick('#newly-added--carousel');
+                    $("#js-recent-video").each(function(index, element) {
+                        $('#newly-added--carousel').slick('slickAdd', $(element).html());
+                    });
 
                 }
             });
@@ -246,12 +285,12 @@
                 if (!($(this).hasClass("active"))) {
                     $(".newest-switch.archive-section-header__switch.active").toggleClass("active");
                     $(this).toggleClass("active");
-                    for (i = 0; i < 7; i++) {
-                        $('#newly-added--carousel').slick('slickRemove',0);
-                    }
-                    for (i = 0; i < 7; i++) {
-                        $('#newly-added--carousel').slick('slickAdd','<div class="col-xs-6 col-md-3"><div class="newly-added event-object--gold"><img class="newly-added__image" src="{% static 'image/archive-temp/11.jpg' %}" alt=""/><div class="newly-added__info"><p class="newly-added__date">01/30/2015</p><h1 class="newly-added__title">Josh Evans Big Band</h1></div></div></div>');
-                    }
+                    $('#newly-added--carousel').slick('unslick');
+                    $('#newly-added--carousel').empty();
+                    initSlick('#newly-added--carousel');
+                    $("#js-recent-audio").each(function(index, element) {
+                        $('#newly-added--carousel').slick('slickAdd', $(element).html());
+                    });
                 }
             });
             $("#most-popular-switch--week").click(function() {
