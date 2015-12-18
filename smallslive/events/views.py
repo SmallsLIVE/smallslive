@@ -394,9 +394,7 @@ class HomepageEventCarouselAjaxView(AJAXMixin, ListView):
         if date and date != "undefined":
             date = timezone.make_aware(datetime.strptime(date, "%m/%d/%Y").replace(hour=6, minute=0),
                                        timezone.get_current_timezone())
-            print date
             end_range_date = date + timedelta(days=1)
-            print end_range_date
             events = Event.objects.filter(start__range=(date, end_range_date)).order_by('start')
             if not self.request.user.is_staff:
                 events = events.exclude(state=Event.STATUS.Draft)
@@ -469,7 +467,6 @@ class MezzrowLiveStreamView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(MezzrowLiveStreamView, self).get_context_data(**kwargs)
         context['stream_expire'] = int(time.time()) + 120  # 10 seconds - required just to start the stream
-        print context
         context['stream_hash'] = hashlib.md5("{0}{1}?e={2}".format(settings.BITGRAVITY_SECRET, "/smallslive/secure/",
                                                                    context['stream_expire'])).hexdigest()
         return context
