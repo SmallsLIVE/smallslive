@@ -17,6 +17,12 @@ class InstitutionsListView(StaffuserRequiredMixin, ListView):
     context_object_name = "institutions"
     paginate_by = 30
 
+    def get_queryset(self):
+        qs = super(InstitutionsListView, self).get_queryset()
+        if self.request.GET.get('q'):
+            qs = qs.filter(name__icontains=self.request.GET.get('q'))
+        return qs
+
 institution_list = InstitutionsListView.as_view()
 
 
