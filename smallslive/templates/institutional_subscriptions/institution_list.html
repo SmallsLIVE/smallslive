@@ -64,7 +64,7 @@
                         </div>
                         <div class="col-xs-4 col-sm-3 col-md-2 text-right">
                             <div class="btn-group">
-                                <a href="#"><button type="button" class="btn">View users</button></a>
+                                <a href="{% url "institution_members" pk=institution.id %}"><button type="button" class="btn">View users</button></a>
                                 <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     <span class="caret"></span>
                                     <span class="sr-only">Toggle Dropdown</span>
@@ -79,7 +79,7 @@
                     <li class="institutions-list__list__row--empty row">No institutions found</li>
                 {% endfor %}
                     <li class="institutions-list__list__row add-institution-button__row row">
-                        <a href="#" class="add-institution-button">Add a new institution</a>
+                        <a href="{% url "institution_add" %}" class="add-institution-button">Add a new institution</a>
                     </li>
             </ul>
         </section>
