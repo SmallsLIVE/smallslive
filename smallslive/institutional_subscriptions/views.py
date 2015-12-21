@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse_lazy
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import CreateView, FormView, ListView
+from django.views.generic import CreateView, FormView, ListView, UpdateView
 
 from users.models import SmallsUser
 from artist_registration.views import ArtistAccountActivateView
@@ -51,6 +51,15 @@ class InstitutionAddView(StaffuserRequiredMixin, CreateView):
     form_class = InstitutionAddForm
 
 institution_add = InstitutionAddView.as_view()
+
+
+class InstitutionAddView(StaffuserRequiredMixin, UpdateView):
+    model = Institution
+    template_name = "institutional_subscriptions/institution_add.html"
+    success_url = reverse_lazy('institutions')
+    form_class = InstitutionAddForm
+
+institution_edit = InstitutionAddView.as_view()
 
 
 @staff_member_required
