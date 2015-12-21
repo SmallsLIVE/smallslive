@@ -223,20 +223,26 @@
       <nav class="navigation navbar-collapse">
         <ul class="navigation__menu">
           <li class="navigation__item {% block homepage_nav_active %}{% endblock %}"><a href="/"><i class="navigation__icon fa fa-2x fa-home "></i><span class="menu-label">Home</span></a></li>
+          <li class="navigation__separator"></li>
           <li class="navigation__item {% block livestream_nav_active %}{% endblock %}"><a href="{% url "live-stream" %}"><i
                   class="navigation__icon fa fa-play-circle"></i><span class="menu-label">Live now!</span></a></li>
+                  <li class="navigation__separator"></li>
           <li class="navigation__item {% block schedule_nav_active %}{% endblock %}"><a href="{% url "schedule" %}"><i
                   class="navigation__icon fa fa-calendar"></i><span class="menu-label">Calendar/Archive</span></a></li>
+                  <li class="navigation__separator"></li>
           <li class="navigation__item"><a href="{% url "archive" %}"><i
                   class="navigation__icon fa fa-video-camera"></i><span class="menu-label">New/Popular</span></a></li>
+                  <li class="navigation__separator"></li>
           <li class="navigation__item {% block store_nav_active %}{% endblock %}"><a href="{% url "promotions:home" %}"><i class="navigation__icon fa fa-shopping-cart"></i><span class="menu-label">SmallsLIVE Tracks</span></a></li>
+          <li class="navigation__separator"></li>
           <li class="navigation__item {% block info_nav_active %}{% endblock %}"><a href="{% url "contact-and-info" %}"><i class="navigation__icon fa fa-info-circle"></i>
            <span class="menu-label">Info</span></a></li>
-          <li class="navigation__item">
+           <li class="navigation__separator"></li>
+          <li class="navigation__item nav-search">
               <div class="search">
                   <form action="{% url "artist_search" %}" method="get">
                     <div class="form-group has-feedback" id="header-search-container">
-                      <input id="header--search" type="text" name="q" class="form-control search__input" placeholder="Search by Name, Instrument or Event Title"/>
+                      <input id="header--search" type="text" name="q" class="form-control search__input" placeholder="Search SmallsLIVE"/>
                       <i class="fa fa-search form-control-feedback"></i>
                     </div>
                   </form>

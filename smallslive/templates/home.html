@@ -41,6 +41,7 @@
               </div>
           </section>
       {% endif %}
+
       <section class="from-our-archive container">
         <h1 class="from-our-archive__section-title"><a href="{% url "most_recent_videos" %}">New in our Archive</a></h1>
 
@@ -97,6 +98,26 @@
           {% endfor %}
         </div>
       </section>
+
+      <section class="smalls-mezzrow-crosspromo">
+        <div class="smalls-mezzrow-crosspromo__overlay">
+
+        </div>
+        <div class="smalls-mezzrow-crosspromo__content">
+          <p class="smalls-mezzrow-crosspromo__main-copy">
+            <strong>New!</strong> Now you can follow live streams of shows from both of our clubs - Smalls and Mezzrow! The live stream is available to all of our users, so if you don't have an account yet, head over and <a href="{% url "account_signup" %}">sign up!</a>
+          </p>
+          <div class="smalls-mezzrow-crosspromo__logo-container">
+            <a href="{% url "live-stream" %}"><img class="smalls-mezzrow-crosspromo__logo smalls" src="{% static 'logo.svg' %}" alt="Smalls"/></a>
+            <a href="{% url "live-stream-mezzrow" %}"><img class="smalls-mezzrow-crosspromo__logo mezzrow" src="{% static 'image/mezzrow-logo-negative.svg' %}" alt="Mezzrow"/></a>
+          </div>
+          <p class="smalls-mezzrow-crosspromo__small-copy">
+            Please note that only select shows will be streamed from Mezzrow. For more information about club Mezzrow, please head to <a href="http://www.mezzrow.com" target="_blank">www.mezzrow.com</a>.
+          </p>
+        </div>
+      </section>
+
+
       {% if popular_in_store %}
           <section class="home-store container">
             <h1 class="home-store__section-title">Popular in our Store</h1>

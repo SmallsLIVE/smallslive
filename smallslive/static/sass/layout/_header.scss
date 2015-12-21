@@ -1,6 +1,6 @@
 header {
   @include bottom-section-border;
-
+  margin-top: 15px;
 }
 
 .smalls-logo {
@@ -30,7 +30,16 @@ header {
     @include display(flex);
     @include align-items(center);
     @include flex-wrap(nowrap);
+    @include justify-content(space-between);
     width: 100%;
+    position: relative;
+    top: 15px;
+  }
+
+  &__separator {
+    height: 50px;
+    width: 1px;
+    background-color: #3c3b3c;
   }
 
 
@@ -38,11 +47,11 @@ header {
     @include lato;
     font-size: 16px;
     text-align: center;
-    border-right: 1px #3C3B3C solid;
     @include transition(all 0.3s ease-in-out);
     list-style-type: none;
-    padding: 0 15px;
+    padding: 0 20px;
     @include flex-grow(0);
+    min-width: 60px;
 
     & span {
       display: block;
@@ -51,7 +60,7 @@ header {
     }
 
     @media (max-width: $screen-md-max) {
-      padding: 0 8px;
+      padding: 0 15px;
     }
 
     a {
@@ -59,6 +68,10 @@ header {
       color: #929292;
       display: block;
       text-decoration: none;
+    }
+
+    &.nav-search {
+      width: 72px;
     }
 
     a:hover {
@@ -76,9 +89,7 @@ header {
     &:last-child {
       border-right: none;
       padding-right: 0;
-      @include flex-grow(1);
       max-width: none !important;
-      @include flex-grow(1);
 
       & i {
         margin-top: 0 !important;
@@ -96,6 +107,21 @@ header {
         margin-bottom: 0;
         margin-top: 24px;
       }
+
+      &.nav-search {
+        @include flex-grow(1);
+      }
+
+      .search {
+        width: 100%;
+        padding-right: 10px;
+      }
+
+      .search i {
+        font-size: 16px;
+        padding-top: 12px;
+        margin-left: 7px;
+      }
     }
   }
 
@@ -109,7 +135,7 @@ header {
 
 .header-login {
   float: right;
-  margin-top: 17px;
+  margin-top: 7px;
   list-style: none;
 
   &__user-name {
@@ -174,7 +200,7 @@ header {
 
 .header-social {
   float: right;
-  margin-top: 17px;
+  margin-top: 7px;
   list-style: none;
   padding-left: 20px;
 
@@ -228,8 +254,9 @@ header {
 }
 
 .search {
-  width: 100%;
+  width: 54px;
   margin-left: 10px;
+  padding-right: 20px;
   @include transition(all 0.3s ease-in-out);
 
   & .form-group {
@@ -237,23 +264,40 @@ header {
   }
 
   i {
-    padding-top: 12px;
+    padding-top: 8px;
+    margin-right: 5px;
     left: 0;
     right: inherit;
     pointer-events: none;
+    color: #929292;
+    font-size: 22px;
   }
 
   &__input {
     @include lato-italic;
     height: 40px;
-    width: 100%;
+    width: auto;
     font-size: 14px;
-    background: rgba(255,255,255, 0.2);
-    padding-left: 35px;
-    color: white;
+    background: rgba(255,255,255, 0);
+    border: none;
+    padding-left: 0;
+    opacity: 0.4;
     border-color: #828181;
     @include transition(all 0.1s ease-in-out);
     @include transition(width 1s ease-in-out);
+
+      &::-webkit-input-placeholder {
+        color: rgba(#fff,0);
+      }
+      &:-moz-placeholder {
+        color: rgba(#fff,0);
+      }
+      &::-moz-placeholder {
+        color: rgba(#fff,0);
+      }
+      &:-ms-input-placeholder {
+        color: rgba(#fff,0);
+      }
 
     &:focus {
       background: rgba(255,255,255,0.8);
@@ -262,6 +306,24 @@ header {
       -webkit-box-shadow: none;
       -moz-box-shadow: none;
       box-shadow: none;
+      opacity: 1;
+      border-radius: 20px;
+      padding-left: 40px;
+      padding-right: 30px;
+      width: 100%;
+
+      &::-webkit-input-placeholder {
+        color: rgba($base-text-color,0.5);
+      }
+      &:-moz-placeholder {
+        color: rgba($base-text-color,0.5);
+      }
+      &::-moz-placeholder {
+        color: rgba($base-text-color,0.5);
+      }
+      &:-ms-input-placeholder {
+        color: rgba($base-text-color,0.5);
+      }
     }
   }
 }
