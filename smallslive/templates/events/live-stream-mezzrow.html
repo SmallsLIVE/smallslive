@@ -117,9 +117,7 @@
                 document.getElementById("jwplayer-placeholder").innerHTML = html;
             };
 
-          $.get("https://www.mezzrow.com/api/todays-events/", function(data) {
-            $(".events").html(data);
-          })
+          $('.events').load("https://www.mezzrow.com/api/todays-events/");
         })
     </script>
 {% endblock %}
