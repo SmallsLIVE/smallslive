@@ -31,10 +31,10 @@
             </div>
             <div class="institutions-list__list__header single-institution__header row">
                 <div class="ol-xs-4 col-sm-5 col-md-5">
-                    Name
+                    Email address
                 </div>
                 <div class="col-xs-4 col-sm-5 col-md-4">
-                    Email address
+                    Name
                 </div>
                 <div class="hidden-xs hidden-sm col-md-1 text-center">
                     Registered
@@ -47,10 +47,10 @@
                 {% for member in members %}
                     <li class="institutions-list__list__row row">
                         <div class="col-xs-4 col-sm-5 col-md-5">
-                            Spike Wilner
+                            {{ member.email }}
                         </div>
                         <div class="col-xs-4 col-sm-5 col-md-4">
-                            spikittyspike@smaills.com
+                            {{ member.full_name }}
                         </div>
                         <div class="hidden-xs hidden-sm col-md-1 text-center">
                             <div class="institutions-list__list__state"><i class="fa {% if member.has_activated_account %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
@@ -114,17 +114,20 @@
           {% endif %}
         </section>
         <section class="institutions-list__add-user">
-            <div class="institutions-list__add-user__form-container quota-full">
-                <h3 class="helper-text">Add a new user (or multiple users, delimiting emails using “,”):</h3>
-                <form method="post" action="." class="admin-interface__form" role="form">
-                    <input type="hidden" name="csrfmiddlewaretoken" value="R4ALV7Oz20sQbTj9q7KVsEkYK23ZTd0K"><input type="hidden" name="csrfmiddlewaretoken" value="R4ALV7Oz20sQbTj9q7KVsEkYK23ZTd0K"> <div id="div_id_member_emails" class="form-group"><div class="controls "><textarea class="multiemailwidget form-control" cols="40" id="id_member_emails" name="member_emails" rows="10" disabled></textarea></div></div>
-
-                    <button type="submit" name="submit" class="admin-interface__form__button" disabled>Invite</button>
+            <div class="institutions-list__add-user__form-container">
+                <h3 class="helper-text">Add a new user (or multiple users, with each e-mail address in a new line):</h3>
+                <form method="post" action="{% url "institution_invite_members" pk=institution.id %}" class="admin-interface__form" role="form">
+                  {% csrf_token %}
+                  <div id="div_id_member_emails" class="form-group">
+                    <div class="controls "><textarea class="multiemailwidget form-control" cols="40"
+                                                     id="id_member_emails" name="member_emails" rows="10"></textarea></div>
+                  </div>
+                  <button type="submit" name="submit" class="admin-interface__form__button">Invite</button>
                 </form>
             </div>
-            <p class="quota-warning">
-                Can't add new users - quota is full.
-            </p>
+{#            <p class="quota-warning">#}
+{#                Can't add new users - quota is full.#}
+{#            </p>#}
         </section>
     </div>
 
