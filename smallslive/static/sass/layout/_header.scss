@@ -103,6 +103,14 @@ header {
         opacity: 0;
       }
 
+      #mezzrow-logo-header {
+        opacity: 0;
+      }
+
+      &.hide-on-search {
+        display: none;
+      }
+
       & i {
         margin-bottom: 0;
         margin-top: 24px;
@@ -497,5 +505,17 @@ header {
     padding: 8px 10px;
     border: 2px solid rgba(#fff, 0.7);
     min-width: 70%;
+  }
+}
+
+#mezzrow-logo-header {
+  height: 18px;
+  position: relative;
+  top: -2px;
+  opacity: 0.7;
+  @include transition(opacity 0.3s ease-in-out);
+
+  &:hover, &:focus {
+    opacity: 1;
   }
 }

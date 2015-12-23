@@ -92,7 +92,13 @@
                   </ul>
                 </li>
                 <li><a href="{% url "dashboard:index" %}">Store dashboard</a></li>
-                <li><a href="{% url "artist_dashboard:admin_metrics" %}">Metrics admin</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Metrics admin <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url "artist_dashboard:admin_metrics" %}">Metrics admin</a></li>
+                    <li><a href="{% url "artist_dashboard:metrics_payout" %}">Payout calculator</a></li>
+                  </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -136,6 +142,8 @@
                     <li class="hidden-sm"><a href="{% url "static_page" "press" %}">Press</a></li>
                 </ul>
             </li>
+            <li role="presentation" class="divider"></li>
+            <li><a href="https://www.mezzrow.com" target="_blank">Mezzrow</a></li>
             <li role="presentation" class="divider"></li>
             {% if user.is_authenticated %}
                 <li class="mobile-navbar__user-name">{% user_display user %}</li>
@@ -237,7 +245,9 @@
           <li class="navigation__separator"></li>
           <li class="navigation__item {% block info_nav_active %}{% endblock %}"><a href="{% url "contact-and-info" %}"><i class="navigation__icon fa fa-info-circle"></i>
            <span class="menu-label">Info</span></a></li>
-           <li class="navigation__separator"></li>
+          <li class="navigation__separator"></li>
+          <li class="navigation__item hide-on-search"><a href="https://www.mezzrow.com" target="_blank"><img id="mezzrow-logo-header" src="{% static 'image/mezzrow-logo-negative.svg' %}"></a></li>
+          <li class="navigation__separator hide-on-search"></li>
           <li class="navigation__item nav-search">
               <div class="search">
                   <form action="{% url "artist_search" %}" method="get">
