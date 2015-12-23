@@ -15,12 +15,48 @@
 {% block content %}
     <div class="content-wrapper">
         <section class="admin-interface container">
-            <h1 class="admin-interface__main-title">Add institution</h1>
+            <h1 class="admin-interface__main-title">Add/edit institution</h1>
             <form method="post" action="." class="admin-interface__form" role="form">
                 {% csrf_token %}
-                {% crispy form %}
+                <h3 class="admin-interface__form__heading">Basic information</h3>
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" placeholder="Name" class="form-control" required>
+                <div class="admin-interface__group-separator"></div>
+                <h3 class="admin-interface__form__heading">Quota</h3>
+                <label for="max-users">Max number of users:</label>
+                <input type="number" name="max-users" id="max-users" placeholder="0" class="form-control" required>
+                <div class="admin-interface__group-separator"></div>
+                <h3 class="admin-interface__form__heading">Accounts validity</h3>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <label for="end-date">Date until Institution binded accounts have Institutional permissions:</label>
+                        <input type="text" name="end-date" id="end-date" class="form-control" required>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <label for="extend-subscription">Extend the Institutional subscription validity time for:</label>
+                        <div class="inline-field-button-group">
+                            <select class="form-control selectpicker" name="select_country" title="Choose your country">
+                               <option>1 month</option>
+                               <option>6 months</option>
+                               <option>12 months</option>
+                            </select>
+                            <button class="in-form-button">Extend</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-interface__group-separator"></div>
+                <h3 class="admin-interface__form__heading">Contact information</h3>
+                <label for="contact-name">Contact name:</label>
+                <input type="text" name="contact-name" id="contact-name" placeholder="Name Surname" class="form-control">
+                <label for="contact-phone">Contact phone:</label>
+                <input type="text" name="contact-phone" id="contact-phone" placeholder="00000000000" class="form-control">
+                <label for="contact-name">Contact email:</label>
+                <input type="email" name="contact-email" id="contact-email" placeholder="name.surname@example.com" class="form-control">
+                <div class="admin-interface__group-separator"></div>
+                <h3 class="admin-interface__form__heading">Notes</h3>
+                <textarea class="form-control textarea"></textarea>
                 <button type="submit" name="submit" class="admin-interface__form__button">
-                    Add
+                    Save
                 </button>
             </form>
         </section>
