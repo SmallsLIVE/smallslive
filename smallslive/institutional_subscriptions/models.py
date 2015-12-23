@@ -15,7 +15,7 @@ class Institution(models.Model):
         return u"Institution: {0}".format(self.name)
 
     def is_subscription_active(self):
-        if not self.subscription_start or not self.subscription_end:
+        if not self.subscription_end:
             return False
         else:
-            return self.subscription_start <= timezone.now() <= self.subscription_end
+            return timezone.now() <= self.subscription_end
