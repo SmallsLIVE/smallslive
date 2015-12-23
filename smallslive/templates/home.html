@@ -22,6 +22,7 @@
       {% include "blocks/homepage-upcoming-events-carousel.html" %}
 
       {% if request.user.is_authenticated %}
+        {% if user.can_watch_video %}
           <section class="cto cto--archive container vertical-align-parent">
             <div class="vertical-align-child">
                 <h1 class="cto__title">SmallsLIVE Audio/Video Archive</h1>
@@ -30,6 +31,16 @@
                 <a href="{% url "schedule" %}" class="cto__button">Go to the full Archive</a>
             </div>
           </section>
+        {% else %}
+          <section class="cto cto--archive container vertical-align-parent">
+            <div class="vertical-align-child">
+                <h1 class="cto__title">SmallsLIVE Audio/Video Archive</h1>
+                <p class="cto__text">Upgrade to a paid membership for access to the Audio/Video archive.
+                </p>
+                <a href="{% url "subscription_settings" %}" class="cto__button">Upgrade subscription</a>
+            </div>
+          </section>
+        {% endif %}
       {% else %}
           <section class="home-membership container">
               <div class="home-membership__header vertical-align-parent">

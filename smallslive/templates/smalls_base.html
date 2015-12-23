@@ -145,7 +145,7 @@
                 <li><a href="{% url "my-downloads" %}">My Downloads</a></li>
                 <li><a href="{% url "user_settings" %}">User Settings</a></li>
                 {% if not request.user.is_staff %}
-                  <li><a href="{% url "subscription_settings" %}">Subscription Settings</a></li>
+                  <li><a href="{% url "subscription_settings" %}">My Subscription / Upgrade</a></li>
                 {% endif %}
                 <li><a href="{% url "account_logout" %}">Sign out</a></li>
              {% else %}
