@@ -51,10 +51,10 @@
                             <a href="{% url "institution_members" pk=institution.id %}">{{ institution.name }}</a>
                         </div>
                         <div class="hidden-xs hidden-sm col-md-3">
-                            John Cleese
+                            {{ institution.contact_name }}
                         </div>
                         <div class="hidden-xs hidden-sm col-md-1 text-center">
-                            15
+                            {{ institution.user_quota }}
                         </div>
                         <div class="hidden-xs hidden-sm col-md-1 text-center">
                             {{ institution.members.count }}

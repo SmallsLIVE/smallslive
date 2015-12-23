@@ -26,7 +26,7 @@
         <section class="institutions-list__list container">
             <div class="institutions-list__list__header single-institution__header row">
                 <div class="col-xs-12">
-                    <h1 class="single-institution__header__title"><strong>{{ institution.name }}</strong> users list - {{ institution.members.count }}/15 allowed users</h1>
+                    <h1 class="single-institution__header__title"><strong>{{ institution.name }}</strong> users list - {{ institution.members.count }}/{{ institution.user_quota }} allowed users</h1>
                 </div>
             </div>
             <div class="institutions-list__list__header single-institution__header row">

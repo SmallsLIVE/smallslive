@@ -24,18 +24,18 @@
                 <div class="admin-interface__group-separator"></div>
                 <h3 class="admin-interface__form__heading">Quota</h3>
                 <label for="max-users">Max number of users:</label>
-                <input type="number" name="max-users" id="max-users" placeholder="0" class="form-control" required>
+                <input type="number" name="user_quota" id="max-users" placeholder="0" class="form-control" required>
                 <div class="admin-interface__group-separator"></div>
                 <h3 class="admin-interface__form__heading">Accounts validity</h3>
                 <div class="row">
                     <div class="col-xs-12 col-sm-6">
                         <label for="end-date">Date until Institution binded accounts have Institutional permissions:</label>
-                        <input type="text" name="end-date" id="end-date" class="form-control" required>
+                        <input type="text" name="subscription_end" id="end-date" class="form-control" required>
                     </div>
                     <div class="col-xs-12 col-sm-6">
                         <label for="extend-subscription">Extend the Institutional subscription validity time for:</label>
                         <div class="inline-field-button-group">
-                            <select class="form-control selectpicker" name="select_country" title="Choose your country">
+                            <select class="form-control selectpicker">
                                <option>1 month</option>
                                <option>6 months</option>
                                <option>12 months</option>
@@ -47,14 +47,14 @@
                 <div class="admin-interface__group-separator"></div>
                 <h3 class="admin-interface__form__heading">Contact information</h3>
                 <label for="contact-name">Contact name:</label>
-                <input type="text" name="contact-name" id="contact-name" placeholder="Name Surname" class="form-control">
+                <input type="text" name="contact_name" id="contact-name" placeholder="Name Surname" class="form-control">
                 <label for="contact-phone">Contact phone:</label>
-                <input type="text" name="contact-phone" id="contact-phone" placeholder="00000000000" class="form-control">
+                <input type="text" name="contact_phone" id="contact-phone" placeholder="00000000000" class="form-control">
                 <label for="contact-name">Contact email:</label>
-                <input type="email" name="contact-email" id="contact-email" placeholder="name.surname@example.com" class="form-control">
+                <input type="email" name="contact_email" id="contact-email" placeholder="name.surname@example.com" class="form-control">
                 <div class="admin-interface__group-separator"></div>
                 <h3 class="admin-interface__form__heading">Notes</h3>
-                <textarea class="form-control textarea"></textarea>
+                <textarea class="form-control textarea" name="notes"></textarea>
                 <button type="submit" name="submit" class="admin-interface__form__button">
                     Save
                 </button>
@@ -67,14 +67,8 @@
     <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
     <script>
-        var $start = $('#id_subscription_start');
-        var $end = $('#id_subscription_end');
+        var $end = $('#end-date');
         var date_format = "MM/DD/YYYY H:mm A";
-        $start.datetimepicker({
-            sideBySide: true,
-            minuteStepping: 5,
-            defaultDate: moment()
-        });
         $end.datetimepicker({
             sideBySide: true,
             minuteStepping: 5,
