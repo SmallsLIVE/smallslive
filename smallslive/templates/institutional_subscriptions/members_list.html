@@ -56,11 +56,11 @@
                             <div class="institutions-list__list__state"><i class="fa {% if member.has_activated_account %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
                         </div>
                         <div class="col-xs-4 col-sm-3 col-md-2 text-right">
-                            <button type="button" class="list-row-button" data-toggle="modal" data-target="#user123modal">Remove user</button>
+                            <button type="button" class="list-row-button" data-toggle="modal" data-target="#{{ member.id }}-modal">Remove user</button>
                         </div>
                         <!-- specific user removal modal -->
                         <!-- Modal -->
-                        <div class="modal fade user-remove-modal" id="user123modal" tabindex="-1" role="dialog">
+                        <div class="modal fade user-remove-modal" id="{{ member.id }}-modal" tabindex="-1" role="dialog">
                           <div class="modal-dialog" role="document">
                             <div class="user-remove-modal__content modal-content">
                               <div class="user-remove-modal__header">
@@ -68,14 +68,14 @@
                                 <button type="button" class="user-remove-modal__close" data-dismiss="modal" aria-label="Close"><i class="fa fa-remove"></i></button>
                               </div>
                               <div class="user-remove-modal__body">
-                                Are you sure you want to remove <strong>spikittyspike@smaills.com</strong> from <strong>{{ institution.name }}</strong> list? The user will not be completely deleted from the SmallsLIVE system, but only degraded to a regular user.
+                                Are you sure you want to remove <strong>{{ member.email }}</strong> from <strong>{{ institution.name }}</strong> list? The user will not be completely deleted from the SmallsLIVE system, but only degraded to a regular user.
                               </div>
                               <div class="user-remove-modal__footer">
                                 <form action="{% url "institution_uninvite_member" institution_id=institution.id member_id=member.id %}" method="post">
                                     {% csrf_token %}
                                     <button type="submit" class="user-remove-modal__button confirm">Remove</button>
+                                    <button type="button" class="user-remove-modal__button cancel" data-dismiss="modal">Cancel</button>
                                 </form>
-                                <button type="button" class="user-remove-modal__button cancel" data-dismiss="modal">Cancel</button>
                               </div>
                             </div>
                           </div>

@@ -367,7 +367,7 @@
     margin-bottom: 30px;
   }
 
-  &__button {
+  &__button, button[type="submit"] {
     padding: 15px 25px;
     margin-right: 10px;
     color: #fff;

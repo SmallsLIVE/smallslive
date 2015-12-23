@@ -225,6 +225,14 @@
       @include lato-bold;
       cursor: pointer;
 
+      a {
+        color: rgba(#fff, 0.7);
+
+        &:hover, &:focus {
+          color: #fff;
+        }
+      }
+
       &:hover, &:focus {
         color: #fff;
       }
@@ -232,6 +240,10 @@
       &.active {
         border-bottom: 2px solid #fff;
         color: #fff;
+
+        a {
+          color: #fff;
+        }
       }
     }
   }
