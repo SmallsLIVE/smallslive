@@ -72,6 +72,7 @@ header {
 
     &.nav-search {
       width: 72px;
+      cursor: pointer;
     }
 
     a:hover {
@@ -285,6 +286,7 @@ header {
     border-color: #828181;
     @include transition(all 0.1s ease-in-out);
     @include transition(width 1s ease-in-out);
+    cursor: pointer;
 
       &::-webkit-input-placeholder {
         color: rgba(#fff,0);
