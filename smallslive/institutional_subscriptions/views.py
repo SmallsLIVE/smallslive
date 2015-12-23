@@ -1,6 +1,7 @@
 from braces.views import StaffuserRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.admin.views.decorators import staff_member_required
+from django.db.models import Q
 from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView, FormView, ListView, UpdateView
@@ -33,7 +34,12 @@ class InstitutionMembersList(StaffuserRequiredMixin, ListView):
 
     def get_queryset(self):
         institution = get_object_or_404(Institution, pk=self.kwargs.get('pk'))
-        return SmallsUser.objects.filter(institution=institution)
+        qs = SmallsUser.objects.filter(institution=institution)
+        search_query = self.request.GET.get('q')
+        if search_query:
+            qs = qs.filter(Q(first_name__icontains=search_query) | Q(last_name__icontains=search_query) |
+                           Q(email__icontains=search_query))
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super(InstitutionMembersList, self).get_context_data(**kwargs)
