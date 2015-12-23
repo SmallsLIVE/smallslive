@@ -100,7 +100,7 @@
                         </div>
                         <div class="mini-event-info" data-end-time="{{ current_event.end }}">
                           <p class="mini-event-info__date">{{ upcoming_event.start|date:"g:i A" }} - {{ upcoming_event.end|date:"g:i A" }}</p>
-                          <a href="{{ upcoming_event.get_absolute_url }}"><h2 class="mini-event-info__title">{{ upcoming_event.title }} {{ upcoming_event.subtitle }}</h2></a>
+                          <a href="{{ upcoming_event.get_absolute_url }}"><h2 class="mini-event-info__title">{{ upcoming_event.title }} {{ upcoming_event.subtitle }} <span class=“stream-available”>STREAM</span></h2></a>
                            <p class="mini-event-info__sidemen">
                             {% for gig_info in upcoming_event.get_performers %}
                               <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span class="mini-event-info__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}  // {% endif %}
