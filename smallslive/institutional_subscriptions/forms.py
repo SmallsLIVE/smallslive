@@ -16,12 +16,11 @@ User = get_user_model()
 
 
 class InstitutionAddForm(forms.ModelForm):
-    subscription_start = forms.DateTimeField(label="Start time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
     subscription_end = forms.DateTimeField(label="End time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
 
     class Meta:
         model = Institution
-        fields = ('name', 'subscription_start', 'subscription_end')
+        fields = ('name', 'user_quota', 'subscription_end', 'contact_name', 'contact_phone', 'contact_email', 'notes')
 
     def __init__(self, *args, **kwargs):
         super(InstitutionAddForm, self).__init__(*args, **kwargs)
