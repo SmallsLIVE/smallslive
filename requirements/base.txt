@@ -3,9 +3,13 @@ Django>=1.7,<1.8
 MonthDelta==1.0b
 Pillow==2.4.0
 Unidecode==0.04.17
+amqp==1.4.8
+anyjson==0.3.3
 beautifulsoup4==4.3.2
+billiard==3.3.0.22
 bleach==1.4
 boto==2.38.0
+celery==3.1.19
 certifi==2015.04.28
 cffi==1.2.1
 cryptography==1.0.2
@@ -16,6 +20,7 @@ django-allauth==0.19.1
 django-appconf==1.0.1
 django-braces==1.8.0
 django-cacheops==2.4.1
+django-celery==3.1.17
 django-compat==1.0.7
 django-compressor==1.4
 django-countries==3.3
@@ -31,6 +36,7 @@ django-image-cropping==1.0.1
 django-localflavor==1.1
 django-model-utils==2.2
 django-mptt==0.6.1
+django-multi-email-field==0.3.1
 django-oscar==1.0.2
 django-oscar-paypal==0.9.5
 git+https://github.com/britco/django-oscar-stripe.git#egg=oscar_stripe
@@ -53,6 +59,7 @@ gnureadline==6.3.3
 gunicorn==19.3.0
 html5lib==0.999
 ipython==3.1.0
+kombu==3.0.30
 libsass==0.7.0
 libthumbor==1.0.1
 lxml==3.3.4

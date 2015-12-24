@@ -1,25 +1,84 @@
 .archive-page-header {
-  padding: 20px 30px 30px;
+  padding: 15px 30px 25px;
   border-bottom: 1px solid #ddd;
-  text-align: center;
-  background-color: #fff;
+  text-align: left;
+  background-color: $main-accent-color;
 
   & h1 {
     @include lato-black;
-    font-size: 42px;
-    color: $main-accent-color;
+    font-size: 32px;
+    color: #fff;
+    margin: 0;
 
     @media(max-width:$screen-xs-max) {
-      font-size: 26px;
+      font-size: 24px;
+    }
+  }
+}
+
+.archive-section-header {
+  @include display(flex);
+  @include align-items(center);
+  @include flex-wrap(wrap);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 30px;
+
+  &:before, &:after {
+    display: none;
+  }
+
+  &__title {
+    @include lato-black;
+    color: #9e9d9d;
+    margin: 5px 0;
+    width: 50%;
+    display: inline-block;
+    font-size: 24px;
+
+    @media(max-width:$screen-xs-max) {
+      width: 100%;
     }
   }
 
-  & p {
+  &__switches-container {
+    display: inline-block;
+    width: 50%;
+    margin: 10px 0;
+    font-size: 18px;
     @include lato-bold;
-    font-size: 16px;
 
-    @media(max-width:$screen-xs-min) {
-      font-size: 14px;
+    ul {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      @include display(flex);
+      @include align-items(center);
+      @include justify-content(flex-end);
+    }
+
+    @media(max-width:$screen-xs-max) {
+      width: 100%;
+    }
+  }
+
+  &__switch {
+    display: inline-block;
+    padding: 5px 0;
+    margin: 0 10px;
+    border-bottom: 4px solid transparent;
+    color: rgba($base-text-color, 0.7);
+    @include transition(all 0.3s ease-in-out);
+    cursor: pointer;
+
+    &.active {
+      color: $base-text-color;
+      border-bottom: 4px solid $main-accent-color;
+    }
+
+    &:hover, &:focus {
+      color: $base-text-color;
     }
   }
 }
@@ -192,4 +251,12 @@
       }
     }
   }
+}
+
+.archive-membership {
+  border-top: 8px solid $main-accent-color;
+}
+
+#most-popular--alltime {
+  display: none;
 }

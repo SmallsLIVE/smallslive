@@ -7,7 +7,7 @@
   overflow: hidden;
   cursor: pointer;
   background-color: #000;
-  min-height: 280px;
+  height: 300px;
 
   @media (max-width:$screen-xs-max) {
     background-color: transparent;
@@ -22,7 +22,7 @@
     opacity: 0.6;
     @include transition(opacity 0.2s ease-in-out);
     @include filter(grayscale(100%));
-    
+
     @media (max-width:$screen-xs-max) {
       opacity: 1;
       border-bottom: 8px solid;

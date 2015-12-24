@@ -1,0 +1,134 @@
+{% extends "smalls_base.html" %}
+{% load add_get_parameter %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block title %}Institution members list{% endblock %}
+
+{% block schedule_nav_active %}active{% endblock %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <section class="page-heading container">
+            <h1>Institution members list:</h1>
+        </section>
+        <section class="institutions-list__search">
+            <form method="get" action=".">
+                <span class="artists-list__search__heading">Search:</span>
+                <input class="form-control search" id="id_name" name="q" placeholder="Search by name" type="text" {% if request.GET.q %}value="{{ request.GET.q }}"{% endif %}>
+                <input type="submit" value="Search">
+            </form>
+        </section>
+        <section class="institutions-list__breadcrumbs">
+            <a href="{% url "institutions" %}">All institutions</a><span class="divider">></span><span>{{ institution.name }}</span>
+        </section>
+        <section class="institutions-list__list container">
+            <div class="institutions-list__list__header single-institution__header row">
+                <div class="col-xs-12">
+                    <h1 class="single-institution__header__title"><strong>{{ institution.name }}</strong> users list - {{ institution.members.count }}/{{ institution.user_quota }} allowed users</h1>
+                </div>
+            </div>
+            <div class="institutions-list__list__header single-institution__header row">
+                <div class="ol-xs-4 col-sm-5 col-md-5">
+                    Email address
+                </div>
+                <div class="col-xs-4 col-sm-5 col-md-4">
+                    Name
+                </div>
+                <div class="hidden-xs hidden-sm col-md-1 text-center">
+                    Registered
+                </div>
+                <div class="col-xs-4 col-sm-3 col-md-2 text-right">
+
+                </div>
+            </div>
+            <ul>
+                {% for member in members %}
+                    <li class="institutions-list__list__row row">
+                        <div class="col-xs-4 col-sm-5 col-md-5">
+                            {{ member.email }}
+                        </div>
+                        <div class="col-xs-4 col-sm-5 col-md-4">
+                            {{ member.full_name }}
+                        </div>
+                        <div class="hidden-xs hidden-sm col-md-1 text-center">
+                            <div class="institutions-list__list__state"><i class="fa {% if member.has_activated_account %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
+                        </div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 text-right">
+                            <button type="button" class="list-row-button" data-toggle="modal" data-target="#{{ member.id }}-modal">Remove user</button>
+                        </div>
+                        <!-- specific user removal modal -->
+                        <!-- Modal -->
+                        <div class="modal fade user-remove-modal" id="{{ member.id }}-modal" tabindex="-1" role="dialog">
+                          <div class="modal-dialog" role="document">
+                            <div class="user-remove-modal__content modal-content">
+                              <div class="user-remove-modal__header">
+                                <h4 class="user-remove-modal__title">Remove user</h4>
+                                <button type="button" class="user-remove-modal__close" data-dismiss="modal" aria-label="Close"><i class="fa fa-remove"></i></button>
+                              </div>
+                              <div class="user-remove-modal__body">
+                                Are you sure you want to remove <strong>{{ member.email }}</strong> from <strong>{{ institution.name }}</strong> list? The user will not be completely deleted from the SmallsLIVE system, but only degraded to a regular user.
+                              </div>
+                              <div class="user-remove-modal__footer">
+                                <form action="{% url "institution_uninvite_member" institution_id=institution.id member_id=member.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="user-remove-modal__button confirm">Remove</button>
+                                    <button type="button" class="user-remove-modal__button cancel" data-dismiss="modal">Cancel</button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- end of modal -->
+                    </li>
+                {% empty %}
+                    <li class="institutions-list__list__row--empty row">No members found</li>
+                {% endfor %}
+            </ul>
+        </section>
+        <section class="page-pagination institutions-list__pagination container">
+          <p class="search-pagination-info">Showing results {{ page_obj.start_index }}-{{ page_obj.end_index }}
+            of {{ paginator.count }}</p>
+          {% if page_obj.has_previous or page_obj.has_next %}
+            <div class="search-pagination">
+              {% if page_obj.has_previous %}<a href="{% add_get page=page_obj.previous_page_number %}"><span
+                      class="search-pagination__previous fa fa-caret-left"></span></a>{% endif %}
+              {% if show_first %}
+                <a href="{% add_get page=1 %}"><span class="search-pagination__page">1</span></a>
+                ...
+              {% endif %}
+              {% for page in page_numbers %}
+                <a href="{% add_get page=page %}"><span
+                        class="search-pagination__page {% if page == page_obj.number %}active{% endif %}">{{ page }}</span></a>
+              {% endfor %}
+              {% if show_last %}
+                ...
+                <a href="{% add_get page=paginator.num_pages %}"><span
+                        class="search-pagination__page">{{ paginator.num_pages }}</span></a>
+              {% endif %}
+              {% if page_obj.has_next %}<a href="{% add_get page=page_obj.next_page_number %}"><span
+                      class="search-pagination__next fa fa-caret-right"></span></a>{% endif %}
+
+            </div>
+          {% endif %}
+        </section>
+        <section class="institutions-list__add-user">
+            <div class="institutions-list__add-user__form-container">
+                <h3 class="helper-text">Add a new user (or multiple users, with each e-mail address in a new line):</h3>
+                <form method="post" action="{% url "institution_invite_members" pk=institution.id %}" class="admin-interface__form" role="form">
+                  {% csrf_token %}
+                  <div id="div_id_member_emails" class="form-group">
+                    <div class="controls "><textarea class="multiemailwidget form-control" cols="40"
+                                                     id="id_member_emails" name="member_emails" rows="10"></textarea></div>
+                  </div>
+                  <button type="submit" name="submit" class="admin-interface__form__button">Invite</button>
+                </form>
+            </div>
+{#            <p class="quota-warning">#}
+{#                Can't add new users - quota is full.#}
+{#            </p>#}
+        </section>
+    </div>
+
+{% endblock content %}

@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 
 
 urlpatterns = patterns('events.views',
+    url(r'^live-stream-mezzrow/$', 'live_stream_mezzrow', name='live-stream-mezzrow'),
     url(r'^live-stream/$', 'live_stream', name='live-stream'),
     url(r'^new-popular/$', 'archive', name='archive'),
     url(r'^calendar/(?P<year>\d+)/(?P<month>\d+)/$', 'monthly_schedule', name='monthly_schedule'),

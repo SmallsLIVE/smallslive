@@ -1,13 +1,16 @@
 .video-audio {
   background-color: #FFFFFF;
   border-top: 1px #DDDDDD solid;
-  padding: 20px 30px 40px;
+  padding: 30px 30px 60px;
 
-  &__section-title {
+  &__heading {
     @include lato-black;
+    color: #9e9d9d;
     font-size: 20px;
-    color: #131313;
-    margin-bottom: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+    margin-right: 10px;
   }
 
   &__more-link {

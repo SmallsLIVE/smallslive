@@ -21,6 +21,10 @@
     }
   }
 
+  .navbar-toggle i {
+    color: #fff;
+  }
+
   & .navbar-collapse {
     float: right;
 
@@ -39,9 +43,30 @@
         padding: 10px 20px;
 
         &:hover {
-          color: rgba(255, 255, 255, 0.7);
+          color: rgba(255, 255, 255, 0.6);
           text-decoration: none;
         }
+      }
+    }
+
+    .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+      background: none;
+      color: rgba(#fff, 0.5);
+    }
+
+    .dropdown-menu li a {
+      color: $base-text-color;
+
+      @media(max-width: $screen-sm-max) {
+        color: #fff;
+
+        &:hover, &:focus {
+          color: rgba(#fff, 0.7);
+        }
+      }
+
+      &:hover, &:focus {
+        color: rgba($base-text-color, 0.7);
       }
     }
   }

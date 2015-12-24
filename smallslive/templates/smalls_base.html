@@ -51,7 +51,7 @@
     <strong>Your account is not active yet!</strong> Please confirm it by clicking the link in the account activation email.
   </p>
   </div>
-{% endif %} 
+{% endif %}
 <!-- ALERT TEST -->
 {% if messages %}
     <div class="messages" id="messages">
@@ -77,10 +77,28 @@
             <ul class="nav navbar-nav">
                 <li><a href="{% url "home" %}">Homepage</a></li>
                 <li><a href="{% url "event_add" %}">Add events</a></li>
-                <li><a href="{% url "artist_add" %}">Add artists</a></li>
-                <li><a href="{% url "artist_list" %}">Artist list</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Artists <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url "artist_add" %}">Add artists</a></li>
+                    <li><a href="{% url "artist_list" %}">Artist list</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Institutions <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url "institutions" %}">Institution list</a></li>
+                    <li><a href="{% url "institution_add" %}">Add institution</a></li>
+                  </ul>
+                </li>
                 <li><a href="{% url "dashboard:index" %}">Store dashboard</a></li>
-                <li><a href="{% url "artist_dashboard:admin_metrics" %}">Metrics admin</a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Metrics admin <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="{% url "artist_dashboard:admin_metrics" %}">Metrics admin</a></li>
+                    <li><a href="{% url "artist_dashboard:metrics_payout" %}">Payout calculator</a></li>
+                  </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -125,6 +143,8 @@
                 </ul>
             </li>
             <li role="presentation" class="divider"></li>
+            <li><a href="https://www.mezzrow.com" target="_blank">Mezzrow</a></li>
+            <li role="presentation" class="divider"></li>
             {% if user.is_authenticated %}
                 <li class="mobile-navbar__user-name">{% user_display user %}</li>
                 {% if request.user.artist %}
@@ -133,7 +153,7 @@
                 <li><a href="{% url "my-downloads" %}">My Downloads</a></li>
                 <li><a href="{% url "user_settings" %}">User Settings</a></li>
                 {% if not request.user.is_staff %}
-                  <li><a href="{% url "subscription_settings" %}">Subscription Settings</a></li>
+                  <li><a href="{% url "subscription_settings" %}">My Subscription / Upgrade</a></li>
                 {% endif %}
                 <li><a href="{% url "account_logout" %}">Sign out</a></li>
              {% else %}
@@ -211,20 +231,28 @@
       <nav class="navigation navbar-collapse">
         <ul class="navigation__menu">
           <li class="navigation__item {% block homepage_nav_active %}{% endblock %}"><a href="/"><i class="navigation__icon fa fa-2x fa-home "></i><span class="menu-label">Home</span></a></li>
+          <li class="navigation__separator"></li>
           <li class="navigation__item {% block livestream_nav_active %}{% endblock %}"><a href="{% url "live-stream" %}"><i
                   class="navigation__icon fa fa-play-circle"></i><span class="menu-label">Live now!</span></a></li>
+                  <li class="navigation__separator"></li>
           <li class="navigation__item {% block schedule_nav_active %}{% endblock %}"><a href="{% url "schedule" %}"><i
                   class="navigation__icon fa fa-calendar"></i><span class="menu-label">Calendar/Archive</span></a></li>
+                  <li class="navigation__separator"></li>
           <li class="navigation__item"><a href="{% url "archive" %}"><i
                   class="navigation__icon fa fa-video-camera"></i><span class="menu-label">New/Popular</span></a></li>
+                  <li class="navigation__separator"></li>
           <li class="navigation__item {% block store_nav_active %}{% endblock %}"><a href="{% url "promotions:home" %}"><i class="navigation__icon fa fa-shopping-cart"></i><span class="menu-label">SmallsLIVE Tracks</span></a></li>
+          <li class="navigation__separator"></li>
           <li class="navigation__item {% block info_nav_active %}{% endblock %}"><a href="{% url "contact-and-info" %}"><i class="navigation__icon fa fa-info-circle"></i>
            <span class="menu-label">Info</span></a></li>
-          <li class="navigation__item">
+          <li class="navigation__separator"></li>
+          <li class="navigation__item hide-on-search"><a href="https://www.mezzrow.com" target="_blank"><img id="mezzrow-logo-header" src="{% static 'image/mezzrow-logo-negative.svg' %}"></a></li>
+          <li class="navigation__separator hide-on-search"></li>
+          <li class="navigation__item nav-search">
               <div class="search">
                   <form action="{% url "artist_search" %}" method="get">
                     <div class="form-group has-feedback" id="header-search-container">
-                      <input id="header--search" type="text" name="q" class="form-control search__input" placeholder="Search by Name, Instrument or Event Title"/>
+                      <input id="header--search" type="text" name="q" class="form-control search__input" placeholder="Search SmallsLIVE"/>
                       <i class="fa fa-search form-control-feedback"></i>
                     </div>
                   </form>

@@ -17,10 +17,10 @@
               <span>Current stream:</span>
               <ul class="live-stream-header__switch__options">
                   <li class="live-stream-header__switch__option active" id="stream-switch--smalls">
-                      Smalls
+                      <a href="{% url "live-stream" %}">Smalls</a>
                   </li>
                   <li class="live-stream-header__switch__option" id="stream-switch--mezzrow">
-                      Mezzrow
+                      <a href="{% url "live-stream-mezzrow" %}">Mezzrow</a>
                   </li>
               </ul>
           </div>
@@ -62,7 +62,7 @@
                 {% if currently_playing %}
                   <p class="live-stream__title">Live now:</p>
                 {% elif events %}
-                    <p class="live-stream__title--no-show">The next live show is at: {{ first_future_show.start|date:"g:i A" }} EST.</p>
+                    <p class="live-stream__title--no-show">The next Smalls live show is at: {{ first_future_show.start|date:"g:i A" }} EST.</p>
                 {% else %}
                   <p class="live-stream__title--no-show">There is currently no live show being broadcast, next live broadcast is on {{ first_future_show.start|naturalday:"n/j/Y" }} at {{ first_future_show.start|date:"g:i A" }} EST.</p>
                 {% endif %}
@@ -100,87 +100,7 @@
                         </div>
                         <div class="mini-event-info" data-end-time="{{ current_event.end }}">
                           <p class="mini-event-info__date">{{ upcoming_event.start|date:"g:i A" }} - {{ upcoming_event.end|date:"g:i A" }}</p>
-                          <a href="{{ upcoming_event.get_absolute_url }}"><h2 class="mini-event-info__title">{{ upcoming_event.title }} {{ upcoming_event.subtitle }}</h2></a>
-                           <p class="mini-event-info__sidemen">
-                            {% for gig_info in upcoming_event.get_performers %}
-                              <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span class="mini-event-info__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}  // {% endif %}
-                            {% endfor %}
-                          </p>
-                          <a class="mini-event-info__button" href="{{ upcoming_event.get_absolute_url }}">Go to event</a><span
-                                class="arrow"></span>
-                        </div>
-                      </div>
-                  {% empty %}
-                    <p class="coming-up__no-events">No upcoming events for today.</p>
-                  {% endfor %}
-                </div>
-              </div>
-            </div>
-          </section>
-      </div>
-      <!-- Mezzrow stream -->
-      <div class="live-stream__single-stream-container" id="live-stream--mezzrow">
-        {% if not user.is_authenticated %}
-          <section class="cto cto--schedule-not-authenticated container vertical-align-parent">
-            <div class="vertical-align-child">
-                <h1 class="cto__title">SmallsLIVE Members Only</h1>
-
-                <p class="cto__text">You must sign in to view our live stream. <br/>Not yet a member of SmallsLIVE? Membership to watch our live stream is <u>free</u>!
-                </p>
-                <a href="#" data-toggle="modal" data-target="#logIn" class="cto__button cto__button--block">Sign in</a>
-                <span class="cto__span--block">or</span>
-                <a href="{% url "account_signup" %}" class="cto__button cto__button--block">Sign up!</a>
-            </div>
-          </section>
-        {% elif not user.has_activated_account %}
-          <section class="cto cto--schedule-not-authenticated container vertical-align-parent">
-            <div class="vertical-align-child">
-                <h1 class="cto__title">Activated users only</h1>
-
-                <p class="cto__text">To view our live stream you need to confirm your email address.<br/>
-                  Open your email inbox and click on the link inside the SmallsLIVE confirmation email you should've received.
-                </p>
-            </div>
-          </section>
-        {% endif %}
-
-          <section class="container">
-            <div class="live-stream row">
-            {% if user.is_authenticated and user.has_activated_account %}
-                <div class="jwplayer_wrapper">
-                    <div id="jwplayer-placeholder"></div>
-                </div>
-            {% endif %}
-              <div class="live-stream__header col-xs-12">
-                  <p class="live-stream__title--no-show">About Mezzrow</p>
-              </div>
-            </div>
-            <div class="live-stream-info equal-heights row">
-              <div class="live-stream-current col-xs-12 col-md-6">
-                <div class="live-stream-info__about-mezzrow">
-                    <p>
-                        MEZZROW is a listening room and lounge in the heart of the historic district of Greenwich Village. Mezzrow is a jazz piano room. Mezzrow, recently endorsed by the Steinway Piano Company, has a gorgeous new model “A” (6’3”) on which we feature the very best jazz pianists in New York City. Our lounge is a place for adults to enjoy the relaxed social atmosphere of a jazz club. Our Music room is a place for music lovers to have an intimate experience with the artists who are performing. Mezzrow is owned and operated by the folks from Smalls Jazz Club (next door at 183 west 10th street) – a musical environment run by musicians for musicians.
-                    </p>
-                    <div class="website-button">
-                        <a href="https://www.mezzrow.com/" class="live-stream-current__button">More on Mezzrow site</a><span class="arrow"></span>
-                    </div>
-                </div>
-              </div>
-              <div class="coming-up col-xs-12 col-md-6">
-                <h2 class="coming-up__title">Today at Mezzrow:</h2>
-                <div class="events">
-                  {% for upcoming_event in events %}
-                      <div class="mini-event" data-end-time="{{ upcoming_event.end.isoformat }}">
-                        <div class="mini-event__image">
-                          {% if upcoming_event.photo %}
-                            <a href="{{ upcoming_event.get_absolute_url }}"><img src="{% thumbor_url upcoming_event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/></a>
-                          {% else %}
-                            <a href="{{ upcoming_event.get_absolute_url }}"><img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/></a>
-                          {% endif %}
-                        </div>
-                        <div class="mini-event-info" data-end-time="{{ current_event.end }}">
-                          <p class="mini-event-info__date">{{ upcoming_event.start|date:"g:i A" }} - {{ upcoming_event.end|date:"g:i A" }}</p>
-                          <a href="{{ upcoming_event.get_absolute_url }}"><h2 class="mini-event-info__title">{{ upcoming_event.title }} {{ upcoming_event.subtitle }}</h2></a>
+                          <a href="{{ upcoming_event.get_absolute_url }}"><h2 class="mini-event-info__title">{{ upcoming_event.title }} {{ upcoming_event.subtitle }} <span class=“stream-available”>STREAM</span></h2></a>
                            <p class="mini-event-info__sidemen">
                             {% for gig_info in upcoming_event.get_performers %}
                               <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span class="mini-event-info__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}  // {% endif %}
@@ -248,28 +168,4 @@
             })
         </script>
     {% endif %}
-
-    <script>
-        /* Toggling different streams */
-        $(document).ready(function () {
-            $("#stream-switch--smalls").click(function() {
-                if (!($(this).hasClass("active"))) {
-                    $(".live-stream-header__switch__option.active").toggleClass("active");
-                    $(this).toggleClass("active");
-                    $(".live-stream-header").toggleClass("mezzrow");
-                    $("#live-stream--mezzrow").slideUp();
-                    $("#live-stream--smalls").slideDown();
-                }
-            });
-            $("#stream-switch--mezzrow").click(function() {
-                if (!($(this).hasClass("active"))) {
-                    $(".live-stream-header__switch__option.active").toggleClass("active");
-                    $(this).toggleClass("active");
-                    $(".live-stream-header").toggleClass("mezzrow");
-                    $("#live-stream--smalls").slideUp();
-                    $("#live-stream--mezzrow").slideDown();
-                }
-            });
-        })
-    </script>
 {% endblock %}

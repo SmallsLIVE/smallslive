@@ -44,7 +44,7 @@
 @import 'components/mini-gallery';
 @import 'components/mini-video-object';
 @import 'components/photo-gallery';
-@import 'components/requested-video';
+@import 'components/newly-added';
 @import 'components/schedule';
 @import 'components/schedule-event-details';
 @import 'components/schedule-object';
@@ -68,6 +68,7 @@
 @import 'components/admin-nav';
 @import 'components/password-reset';
 @import 'components/admin-artists-list';
+@import 'components/admin-institutions-list';
 @import 'components/invite-artist-module';
 @import 'components/home-membership';
 @import 'components/signup';
@@ -80,3 +81,4 @@
 @import 'components/admin-metrics';
 @import 'components/payout-calculator';
 @import 'base/screen-md-specific';
+@import 'components/smalls-mezzrow-crosspromo';
