@@ -9,96 +9,115 @@
 
 {% block content %}
     <div class="content-wrapper">
-    {% if not user.is_authenticated %}
-      <section class="cto cto--schedule-not-authenticated container vertical-align-parent">
-        <div class="vertical-align-child">
-            <h1 class="cto__title">SmallsLIVE Members Only</h1>
-
-            <p class="cto__text">You must sign in to view our live stream. <br/>Not yet a member of SmallsLIVE? Membership to watch our live stream is <u>free</u>!
-            </p>
-            <a href="#" data-toggle="modal" data-target="#logIn" class="cto__button cto__button--block">Sign in</a>
-            <span class="cto__span--block">or</span>
-            <a href="{% url "account_signup" %}" class="cto__button cto__button--block">Sign up!</a>
-        </div>
-      </section>
-    {% elif not user.has_activated_account %}
-      <section class="cto cto--schedule-not-authenticated container vertical-align-parent">
-        <div class="vertical-align-child">
-            <h1 class="cto__title">Activated users only</h1>
-
-            <p class="cto__text">To view our live stream you need to confirm your email address.<br/>
-              Open your email inbox and click on the link inside the SmallsLIVE confirmation email you should've received.
-            </p>
-        </div>
-      </section>
-    {% endif %}
-
-      <section class="container">
-        <div class="live-stream row">
-        {% if user.is_authenticated and user.has_activated_account %}
-            <div class="jwplayer_wrapper">
-                <div id="jwplayer-placeholder"></div>
-            </div>
-        {% endif %}
-          <div class="live-stream__header col-xs-12">
-            {% if currently_playing %}
-              <p class="live-stream__title">Live now:</p>
-            {% elif events %}
-                <p class="live-stream__title--no-show">The next live show is at: {{ first_future_show.start|date:"g:i A" }} EST.</p>
-            {% else %}
-              <p class="live-stream__title--no-show">There is currently no live show being broadcast, next live broadcast is on {{ first_future_show.start|naturalday:"n/j/Y" }} at {{ first_future_show.start|date:"g:i A" }} EST.</p>
-            {% endif %}
+      <section class="live-stream-header container">
+          <div class="live-stream-header__upsell hidden-xs">
+              <strong>New!</strong> All our members can now watch live streams from Smalls and select shows streams <strong>from Mezzrow</strong> for free! <a href="{% url "account_signup" %}">Sign up</a> if you haven't already!
           </div>
-        </div>
-        <div class="live-stream-info equal-heights row">
-          {% if currently_playing %}
-          <div class="live-stream-current col-xs-12 col-md-6">
-                <h1 class="live-stream-current__title"><a
-                        href="{{ currently_playing.get_absolute_url }}">{{ currently_playing.title }}</a></h1>
-                <p class="live-stream-current__date">{{ currently_playing.start|date:"g:i A" }}
-                  - {{ currently_playing.end|date:"g:i A" }}</p>
-                <p class="live-stream-current__sidemen">
-                  {% for gig_info in currently_playing.get_performers %}
-                    <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span
-                            class="event-details__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}
-                    // {% endif %}
-                  {% endfor %}
+          <div class="live-stream-header__switch">
+              <span>Current stream:</span>
+              <ul class="live-stream-header__switch__options">
+                  <li class="live-stream-header__switch__option active" id="stream-switch--smalls">
+                      <a href="{% url "live-stream" %}">Smalls</a>
+                  </li>
+                  <li class="live-stream-header__switch__option" id="stream-switch--mezzrow">
+                      <a href="{% url "live-stream-mezzrow" %}">Mezzrow</a>
+                  </li>
+              </ul>
+          </div>
+      </section>
+      <!-- Smalls stream -->
+      <div class="live-stream__single-stream-container" id="live-stream--smalls">
+        {% if not user.is_authenticated %}
+          <section class="cto cto--schedule-not-authenticated container vertical-align-parent">
+            <div class="vertical-align-child">
+                <h1 class="cto__title">SmallsLIVE Members Only</h1>
+
+                <p class="cto__text">You must sign in to view our live stream. <br/>Not yet a member of SmallsLIVE? Membership to watch our live stream is <u>free</u>!
                 </p>
-                <a href="{{ currently_playing.get_absolute_url }}" class="live-stream-current__button">Full event page</a>
-                <span class="arrow"></span>
-          </div>
-          {% endif %}
-          <div class="coming-up col-xs-12 {% if currently_playing %}col-md-6{% else %}col-md-12{% endif %}">
-            <h2 class="coming-up__title">Coming up:</h2>
-            <div class="events">
-              {% for upcoming_event in events %}
-                  <div class="mini-event" data-end-time="{{ upcoming_event.end.isoformat }}">
-                    <div class="mini-event__image">
-                      {% if upcoming_event.photo %}
-                        <a href="{{ upcoming_event.get_absolute_url }}"><img src="{% thumbor_url upcoming_event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/></a>
-                      {% else %}
-                        <a href="{{ upcoming_event.get_absolute_url }}"><img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/></a>
-                      {% endif %}
-                    </div>
-                    <div class="mini-event-info" data-end-time="{{ current_event.end }}">
-                      <p class="mini-event-info__date">{{ upcoming_event.start|date:"g:i A" }} - {{ upcoming_event.end|date:"g:i A" }}</p>
-                      <a href="{{ upcoming_event.get_absolute_url }}"><h2 class="mini-event-info__title">{{ upcoming_event.title }} {{ upcoming_event.subtitle }}</h2></a>
-                       <p class="mini-event-info__sidemen">
-                        {% for gig_info in upcoming_event.get_performers %}
-                          <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span class="mini-event-info__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}  // {% endif %}
-                        {% endfor %}
-                      </p>
-                      <a class="mini-event-info__button" href="{{ upcoming_event.get_absolute_url }}">Go to event</a><span
-                            class="arrow"></span>
-                    </div>
-                  </div>
-              {% empty %}
-                <p class="coming-up__no-events">No upcoming events for today.</p>
-              {% endfor %}
+                <a href="#" data-toggle="modal" data-target="#logIn" class="cto__button cto__button--block">Sign in</a>
+                <span class="cto__span--block">or</span>
+                <a href="{% url "account_signup" %}" class="cto__button cto__button--block">Sign up!</a>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        {% elif not user.has_activated_account %}
+          <section class="cto cto--schedule-not-authenticated container vertical-align-parent">
+            <div class="vertical-align-child">
+                <h1 class="cto__title">Activated users only</h1>
+
+                <p class="cto__text">To view our live stream you need to confirm your email address.<br/>
+                  Open your email inbox and click on the link inside the SmallsLIVE confirmation email you should've received.
+                </p>
+            </div>
+          </section>
+        {% endif %}
+
+          <section class="container">
+            <div class="live-stream row">
+            {% if user.is_authenticated and user.has_activated_account %}
+                <div class="jwplayer_wrapper">
+                    <div id="jwplayer-placeholder"></div>
+                </div>
+            {% endif %}
+              <div class="live-stream__header col-xs-12">
+                {% if currently_playing %}
+                  <p class="live-stream__title">Live now:</p>
+                {% elif events %}
+                    <p class="live-stream__title--no-show">The next Smalls live show is at: {{ first_future_show.start|date:"g:i A" }} EST.</p>
+                {% else %}
+                  <p class="live-stream__title--no-show">There is currently no live show being broadcast, next live broadcast is on {{ first_future_show.start|naturalday:"n/j/Y" }} at {{ first_future_show.start|date:"g:i A" }} EST.</p>
+                {% endif %}
+              </div>
+            </div>
+            <div class="live-stream-info equal-heights row">
+              {% if currently_playing %}
+              <div class="live-stream-current col-xs-12 col-md-6">
+                    <h1 class="live-stream-current__title"><a
+                            href="{{ currently_playing.get_absolute_url }}">{{ currently_playing.title }}</a></h1>
+                    <p class="live-stream-current__date">{{ currently_playing.start|date:"g:i A" }}
+                      - {{ currently_playing.end|date:"g:i A" }}</p>
+                    <p class="live-stream-current__sidemen">
+                      {% for gig_info in currently_playing.get_performers %}
+                        <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span
+                                class="event-details__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}
+                        // {% endif %}
+                      {% endfor %}
+                    </p>
+                    <a href="{{ currently_playing.get_absolute_url }}" class="live-stream-current__button">Full event page</a>
+                    <span class="arrow"></span>
+              </div>
+              {% endif %}
+              <div class="coming-up col-xs-12 {% if currently_playing %}col-md-6{% else %}col-md-12{% endif %}">
+                <h2 class="coming-up__title">Coming up:</h2>
+                <div class="events">
+                  {% for upcoming_event in events %}
+                      <div class="mini-event" data-end-time="{{ upcoming_event.end.isoformat }}">
+                        <div class="mini-event__image">
+                          {% if upcoming_event.photo %}
+                            <a href="{{ upcoming_event.get_absolute_url }}"><img src="{% thumbor_url upcoming_event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/></a>
+                          {% else %}
+                            <a href="{{ upcoming_event.get_absolute_url }}"><img src="http://placehold.it/80x80/232323/232323&text=Event%20image" alt=""/></a>
+                          {% endif %}
+                        </div>
+                        <div class="mini-event-info" data-end-time="{{ current_event.end }}">
+                          <p class="mini-event-info__date">{{ upcoming_event.start|date:"g:i A" }} - {{ upcoming_event.end|date:"g:i A" }}</p>
+                          <a href="{{ upcoming_event.get_absolute_url }}"><h2 class="mini-event-info__title">{{ upcoming_event.title }} {{ upcoming_event.subtitle }} <span class=“stream-available”>STREAM</span></h2></a>
+                           <p class="mini-event-info__sidemen">
+                            {% for gig_info in upcoming_event.get_performers %}
+                              <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist.full_name }} <span class="mini-event-info__instrument">({{ gig_info.role }})</span></a>{% if not forloop.last %}  // {% endif %}
+                            {% endfor %}
+                          </p>
+                          <a class="mini-event-info__button" href="{{ upcoming_event.get_absolute_url }}">Go to event</a><span
+                                class="arrow"></span>
+                        </div>
+                      </div>
+                  {% empty %}
+                    <p class="coming-up__no-events">No upcoming events for today.</p>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </section>
+      </div>
     </div>
   {% endblock %}
 

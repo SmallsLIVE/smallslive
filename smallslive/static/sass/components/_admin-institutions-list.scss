@@ -1,0 +1,384 @@
+.institutions-list__filters, .institutions-list__search {
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+  color: #999;
+
+  &:last-child {
+    border-bottom: 1px solid #ddd;
+  }
+
+  &__heading {
+    @include lato;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+
+  & .search {
+    margin: 0;
+    width: 50%;
+    padding: 6px 12px;
+    line-height: 23px;
+    display: inline-block;
+  }
+
+  & input[type="submit"] {
+      font-size: 14px;
+      padding: 8px 20px;
+      color: #fff;
+      background-color: $main-accent-color;
+    }
+
+  & ul {
+      padding: 0;
+      margin: 0;
+
+      li {
+        @include list-unstyled;
+        padding: 5px 20px;
+        border-right: 1px solid #ddd;
+        display: inline-block;
+
+        &:first-child {
+          padding-left: 0;
+        }
+
+        &:last-child {
+          padding-right: 0;
+          border-right: 0;
+        }
+      }
+  }
+
+  &__heading {
+    @include lato;
+    color: #999;
+    font-size: 18px;
+  }
+
+  &__group {
+    @include lato-bold;
+    font-size: 12px;
+
+    & span {
+      display: inline-block;
+      margin-right: 10px;
+    }
+
+    & select {
+      display: inline-block;
+      width: auto;
+      padding: 4px;
+
+      & .disabled {
+        color: #cccccc;
+      }
+    }
+
+    & input[type="submit"] {
+      font-size: 12px;
+      padding: 6px 14px;
+      color: #fff;
+      background-color: $main-accent-color;
+    }
+  }
+}
+
+.institutions-list__list {
+  @include lato;
+  font-size: 14px;
+
+  & ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  &__header {
+    padding: 40px 10px 20px;
+    background-color: $main-accent-color;
+    color: #fff;
+    @include lato;
+    font-size: 14px;
+
+    & .sort-column {
+      cursor: pointer;
+
+      &:hover {
+        color: shade(#fff, 20%);
+      }
+
+      & i {
+        margin-left: 8px;
+      }
+    }
+  }
+
+  &__states {
+    @include display(flex);
+  }
+
+  &__state {
+    width: 20%;
+    text-align: center;
+    margin: 0 auto;
+
+    &.sort-column i {
+      font-size: 14px;
+      color: #fff;
+    }
+
+    & i {
+      font-size: 18px;
+      color: #aaa;
+    }
+
+    & i.true  {
+      color: #3F9E52;
+    }
+  }
+
+  &__row {
+    @include list-unstyled;
+    @include display(flex);
+    @include align-items(center);
+    border-bottom: 1px solid #eee;
+    background-color: #fff;
+    padding: 10px;
+
+    &--empty {
+      @include list-unstyled;
+      background-color: #fff;
+      padding: 10px 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .institution-name a {
+      color: $base-text-color;
+      @include lato-bold;
+
+      &:hover, &:focus {
+        color: rgba($base-text-color, 0.7);
+      }
+    }
+  }
+
+  &__image {
+
+    & img {
+      width: 40px;
+      height: 40px;
+      margin: 2px;
+      border: 1px solid #ddd;
+    }
+  }
+
+  &__name {
+    @include lato-bold;
+  }
+
+  &__actions {
+    text-align: right;
+  }
+
+  button[type="submit"], .list-row-button {
+    @include lato;
+    border-radius: 4px;
+    color: #666;
+    background-color: #ccc;
+    border: 1px solid rgba(0,0,0,0.1);
+    padding: 7px 10px;
+    font-size: 14px;
+
+    &:hover, &:focus {
+      outline: none;
+    }
+  }
+
+  & .btn-group {
+    float: right;
+
+    & .btn {
+      @include lato;
+      border-radius: 0;
+      color: #666;
+      background-color: #ccc;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-right: none;
+
+//      &:first-child {
+//        border-radius: 4px 0 0 4px;
+//        margin-right: -3px;
+//      }
+
+      &:last-of-type {
+        border-radius: 0 4px 4px 0;
+        border-right: 1px solid rgba(0,0,0,0.1);
+      }
+    }
+
+    & a .btn {
+      border-radius: 4px 0 0 4px !important;
+      margin-right: -3px;
+
+      &.no-dropdown {
+        border-radius: 4px !important;
+      }
+    }
+
+    & .dropdown-menu {
+      padding: 5px 0;
+
+      & li {
+        padding: 5px 0;
+        @include lato;
+
+        &.warning a {
+          color: #D21535;
+        }
+      }
+
+      & .divider {
+        padding: 0;
+      }
+    }
+  }
+}
+
+.institutions-list__pagination {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  background-color: #eee;
+  border-top: 2px solid #ddd;
+}
+
+.add-institution-button {
+  display: inline-block;
+  font-size: 16px;
+  @include lato;
+  color: #fff;
+  background-color: $main-accent-color;
+  padding: 10px 40px;
+  margin: 0 auto;
+
+  &:hover, &:focus {
+    color: rgba(#fff, 0.7);
+  }
+
+  &__row {
+    text-align: center;
+    padding: 40px 30px;
+  }
+}
+
+.institutions-list__breadcrumbs {
+  padding: 30px 20px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+  color: #999;
+
+  span {
+    color: #999;
+    @include lato;
+    display: inline-block;
+    line-height: 150%;
+  }
+
+  a {
+    color: #999;
+    @include lato-bold;
+    display: inline-block;
+    line-height: 150%;
+  }
+
+  .divider {
+    margin: 0 7px;
+  }
+}
+
+.institutions-list__add-user {
+  background-color: #eee;
+  padding: 40px 20px;
+  border-top: 1px solid #ddd;
+  color: #999;
+
+  &__form-container {
+    max-width: 640px;
+
+    textarea {
+      height: 140px;
+    }
+
+    h3 {
+      font-size: 16px;
+      margin: 0 0 20px;
+    }
+
+    &.quota-full {
+      opacity: 0.5;
+    }
+  }
+
+  .quota-warning {
+    @include lato-bold;
+    color: $main-accent-color;
+    margin: 15px 0;
+    font-size: 16px;
+  }
+}
+
+.single-institution__header {
+  padding-top: 20px;
+
+  &__title {
+    font-size: 22px;
+    @include lato;
+    color: #fff;
+    margin: 5px 0 0;
+  }
+}
+
+.user-remove-modal {
+
+  &__content {
+    padding: 40px 30px;
+  }
+
+  &__header {
+    @include display(flex);
+    @include align-items(center);
+    @include justify-content(space-between);
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    @include lato-black;
+    font-size: 24px;
+    margin: 0 30px 0 0;
+  }
+
+  &__close {
+    font-size: 24px;
+    background: none;
+    color: rgba($base-text-color, 0.2);
+  }
+
+  &__body {
+    margin-bottom: 30px;
+  }
+
+  &__button, button[type="submit"] {
+    padding: 15px 25px;
+    margin-right: 10px;
+    color: #fff;
+    border-radius: 5px;
+
+    &.confirm {
+      background-color: $main-accent-color;
+    }
+
+    &.cancel {
+      background-color: #a9a9a9;
+    }
+  }
+}

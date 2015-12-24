@@ -27,10 +27,22 @@
 
 .live-stream-info {
   background-color: white;
+
+  &__about-mezzrow {
+    padding: 20px 0;
+
+    p {
+      margin: 0 0 10px;
+    }
+
+    .website-button {
+      margin-top: 20px;
+    }
+  }
 }
 
 .live-stream-current {
-  padding: 40px 20px;
+  padding: 30px 20px;
 
   @media(max-width:$screen-xs-max) {
     padding-top: 25px;
@@ -69,10 +81,10 @@
     padding-right: 50px;
     letter-spacing: 0.04em;
     margin-bottom: 18px;
-    
+
     & a {
       color: #131313;
-      
+
       &:hover {
         opacity: 0.7;
         text-decoration: none;
@@ -107,7 +119,7 @@
 .coming-up {
   background-color: #F7F7F7;
   border-left: 1px #DDDDDD solid;
-  padding: 52px 20px 40px;
+  padding: 32px 20px 40px;
   min-height: 250px;
 
   @media(max-width:$screen-xs-max) {
@@ -156,5 +168,97 @@
       font-size: 24px;
       margin-right: 10px;
     }
+  }
+}
+
+.live-stream-header {
+  background-color: $main-accent-color;
+  padding: 15px 20px 15px;;
+  @include display(flex);
+  @include align-items(center);
+  @include justify-content(space-between);
+  color: #fff;
+  margin-top: -8px;
+  @include transition(all 0.3s ease-in-out);
+
+  &:before, &:after {
+    display: none;
+  }
+
+  &__upsell {
+    font-size: 14px;
+    max-width: 50%;
+
+    a {
+      color: #fff;
+      @include lato-bold;
+
+      &:hover, &:focus {
+        color: rgba(#fff, 0.7);
+      }
+    }
+  }
+
+  &.mezzrow {
+    background-color: $mezzrow-color;
+  }
+
+  &__switch {
+    font-size: 18px;
+    color: rgba(#fff, 0.7);
+
+    span {
+      margin-right: 10px;
+    }
+
+    &__options {
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+    }
+
+    &__option {
+      display: inline-block;
+      list-style-type: none;
+      padding: 5px 0;
+      margin: 0 10px;
+      @include lato-bold;
+      cursor: pointer;
+
+      a {
+        color: rgba(#fff, 0.7);
+
+        &:hover, &:focus {
+          color: #fff;
+        }
+      }
+
+      &:hover, &:focus {
+        color: #fff;
+      }
+
+      &.active {
+        border-bottom: 2px solid #fff;
+        color: #fff;
+
+        a {
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+#live-stream--mezzrow {
+  .cto, .cto__button {
+    border-color: $mezzrow-color;
+  }
+
+  .live-stream__header, .mini-event-info__button, .live-stream-current__button {
+    background-color: $mezzrow-color;
+  }
+
+  .arrow {
+    border-left-color: $mezzrow-color;
   }
 }

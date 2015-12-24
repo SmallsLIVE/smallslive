@@ -57,6 +57,8 @@ urlpatterns = patterns('',
 
     url(r'^accounts/', include('users.urls')),
     url(r'^multimedia/', include('multimedia.urls')),
+    url(r'^institutions/', include('institutional_subscriptions.urls', app_name="institutional_subscriptions")),
+
 
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^search/artist/', 'artists.views.artist_search', name='artist_search'),
@@ -80,6 +82,7 @@ urlpatterns += patterns('django.contrib.flatpages.views',
     url(r'^terms-and-conditions/$', 'flatpage', {'url': '/terms-and-conditions/'}, name='terms-and-conditions'),
     url(r'^revenue-share/$', 'flatpage', {'url': '/revenue-share/'}, name='revenue-share'),
     url(r'^benefactors/$', 'flatpage', {'url': '/benefactors/'}, name='benefactors'),
+    url(r'^mezzrow/$', 'flatpage', {'url': '/mezzrow/'}, name='mezzrow'),
     url(r'^contact-and-info/$', 'flatpage', {'url': '/contact-and-info/'}, name='contact-and-info'),
 )
 

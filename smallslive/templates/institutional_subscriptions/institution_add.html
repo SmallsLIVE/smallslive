@@ -1,0 +1,89 @@
+{% extends "smalls_base.html" %}
+{% load crispy_forms_tags %}
+{% load static from staticfiles %}
+
+{% block title %}Add institution{% endblock title %}
+
+{% block extra_head %}
+    <script>
+        var django = {jQuery: jQuery};
+    </script>
+    {{ form.media }}
+    <link href="{% static 'css/bootstrap-datetimepicker.min.css' %}" rel="stylesheet">
+{% endblock extra_head %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <section class="admin-interface container">
+            <h1 class="admin-interface__main-title">Add/edit institution</h1>
+            <form method="post" action="." class="admin-interface__form" role="form">
+                {% csrf_token %}
+                <h3 class="admin-interface__form__heading">Basic information</h3>
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" placeholder="Name" class="form-control" {% if form.name.value %}value="{{ form.name.value }}"{% endif %} required>
+                <div class="admin-interface__group-separator"></div>
+                <h3 class="admin-interface__form__heading">Quota</h3>
+                <label for="max-users">Max number of users:</label>
+                <input type="number" name="user_quota" id="max-users" placeholder="0" class="form-control" {% if form.user_quota.value %}value="{{ form.user_quota.value }}"{% endif %} required>
+                <div class="admin-interface__group-separator"></div>
+                <h3 class="admin-interface__form__heading">Accounts validity</h3>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <label for="end-date">Date until Institution binded accounts have Institutional permissions:</label>
+                        <input type="text" name="subscription_end" id="end-date" class="form-control" {% if form.subscription_end.value %}value="{{ form.subscription_end.value|date:"m/d/Y h:i A" }}"{% endif %} required>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <label for="extend-subscription">Extend the Institutional subscription validity time for:</label>
+                        <div class="inline-field-button-group">
+                            <select class="form-control selectpicker" id="extend-subscription">
+                               <option value="1">1 month</option>
+                               <option value="6">6 months</option>
+                               <option value="12">12 months</option>
+                            </select>
+                            <button class="in-form-button extend-subscription-button">Extend</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-interface__group-separator"></div>
+                <h3 class="admin-interface__form__heading">Contact information</h3>
+                <label for="contact-name">Contact name:</label>
+                <input type="text" name="contact_name" id="contact-name" placeholder="Name Surname" class="form-control" {% if form.contact_name.value %}value="{{ form.contact_name.value }}"{% endif %}>
+                <label for="contact-phone">Contact phone:</label>
+                <input type="text" name="contact_phone" id="contact-phone" placeholder="00000000000" class="form-control" {% if form.contact_phone.value %}value="{{ form.contact_phone.value }}"{% endif %}>
+                <label for="contact-name">Contact email:</label>
+                <input type="email" name="contact_email" id="contact-email" placeholder="name.surname@example.com" class="form-control" {% if form.contact_email.value %}value="{{ form.contact_email.value }}"{% endif %}>
+                <div class="admin-interface__group-separator"></div>
+                <h3 class="admin-interface__form__heading">Notes</h3>
+                <textarea class="form-control textarea" name="notes">{% if form.notes.value %}{{ form.notes.value }}{% endif %}</textarea>
+                <button type="submit" name="submit" class="admin-interface__form__button">
+                    Save
+                </button>
+            </form>
+        </section>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
+    <script>
+      $(document).ready(function() {
+        var $end = $('#end-date');
+        var date_format = "MM/DD/YYYY H:mm A";
+        $end.datetimepicker({
+            sideBySide: true,
+            minuteStepping: 5,
+            defaultDate: moment().add(1, 'y')
+        });
+
+        $(".extend-subscription-button").on('click', function(e) {
+          e.preventDefault();
+          var extendMonths = parseInt($("#extend-subscription").val(), 10);
+          var subscriptionEnd = $end.data("DateTimePicker").getDate();
+          var newSubscriptionEnd = subscriptionEnd.add(extendMonths, 'M').format(date_format);
+          $end.data("DateTimePicker").setDate(newSubscriptionEnd);
+        })
+      })
+
+    </script>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "smalls_base.html" %}
+{% load crispy_forms_tags %}
+{% load static from staticfiles %}
+
+{% block title %}Invite members{% endblock title %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <section class="admin-interface container">
+            <h1 class="admin-interface__main-title">Invite members</h1>
+            <form method="post" action="." class="admin-interface__form" role="form">
+                {% csrf_token %}
+                {% crispy form %}
+                <button type="submit" name="submit" class="admin-interface__form__button">
+                    Invite
+                </button>
+            </form>
+        </section>
+    </div>
+{% endblock content %}

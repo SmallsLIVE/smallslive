@@ -9,6 +9,10 @@ body {
 
 button, input[type="submit"] {
   border: none;
+
+  &:hover, &:focus {
+    outline: none;
+  }
 }
 
 .form-control {

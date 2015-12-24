@@ -5,10 +5,10 @@
   "main": "gulpfile.js",
   "dependencies": {},
   "devDependencies": {
-    "browser-sync": "^2.4.0",
+    "browser-sync": "^2.10.0",
     "gulp": "^3.8.11",
     "gulp-changed": "^1.2.1",
-    "gulp-sass": "^2.0.4",
+    "gulp-sass": "^2.1.0",
     "gulp-sourcemaps": "^1.5.1",
     "gulp-watch": "^4.2.0"
   },

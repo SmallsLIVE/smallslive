@@ -1,0 +1,4 @@
+{% spaceless %}
+{% for subscriber_email in subscribers %}{{ subscriber_email }}
+{% empty %}No artists found.{% endfor %}
+{% endspaceless %}

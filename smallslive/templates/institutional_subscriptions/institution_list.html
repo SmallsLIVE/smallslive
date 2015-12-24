@@ -1,0 +1,114 @@
+{% extends "smalls_base.html" %}
+{% load add_get_parameter %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block title %}Institution list{% endblock %}
+
+{% block schedule_nav_active %}active{% endblock %}
+
+{% block content %}
+
+    <div class="content-wrapper">
+        <section class="page-heading container">
+            <h1>Institution list:</h1>
+        </section>
+        <section class="institutions-list__search">
+            <form method="get" action="{% url "institutions" %}">
+                <span class="artists-list__search__heading">Search:</span>
+                <input class="form-control search" id="id_name" name="q" placeholder="Search by name" type="text" {% if request.GET.q %}value="{{ request.GET.q }}"{% endif %}>
+                <input type="submit" value="Search">
+            </form>
+        </section>
+        <section class="institutions-list__breadcrumbs">
+            <span>All institutions</span>
+        </section>
+        <section class="institutions-list__list container">
+            <div class="institutions-list__list__header row">
+                <div class="col-xs-8 col-sm-5 col-md-3">
+                    Name
+                </div>
+                <div class="hidden-xs hidden-sm col-md-3">
+                    Contact
+                </div>
+                <div class="hidden-xs hidden-sm col-md-1 text-center">
+                    User Quota
+                </div>
+                <div class="hidden-xs hidden-sm col-md-1 text-center">
+                    Users Used
+                </div>
+                <div class="hidden-xs col-sm-4 col-md-2 text-center">
+                    Expiry date
+                </div>
+                <div class="col-xs-4 col-sm-3 col-md-2 text-right">
+
+                </div>
+            </div>
+            <ul>
+                {% for institution in institutions %}
+                    <li class="institutions-list__list__row row">
+                        <div class="col-xs-8 col-sm-5 col-md-3 institution-name">
+                            <a href="{% url "institution_members" pk=institution.id %}">{{ institution.name }}</a>
+                        </div>
+                        <div class="hidden-xs hidden-sm col-md-3">
+                            {{ institution.contact_name }}
+                        </div>
+                        <div class="hidden-xs hidden-sm col-md-1 text-center">
+                            {{ institution.user_quota }}
+                        </div>
+                        <div class="hidden-xs hidden-sm col-md-1 text-center">
+                            {{ institution.members.count }}
+                        </div>
+                        <div class="hidden-xs col-sm-4 col-md-2 text-center">
+                            {{ institution.subscription_end|date:"n/j/Y" }}
+                        </div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 text-right">
+                            <div class="btn-group">
+                                <a href="{% url "institution_members" pk=institution.id %}"><button type="button" class="btn">View users</button></a>
+                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="{% url "institution_edit" pk=institution.id %}">Edit institution</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="institutions-list__list__row--empty row">No institutions found</li>
+                {% endfor %}
+                    <li class="institutions-list__list__row add-institution-button__row row">
+                        <a href="{% url "institution_add" %}" class="add-institution-button">Add a new institution</a>
+                    </li>
+            </ul>
+        </section>
+        <section class="page-pagination institutions-list__pagination container">
+          <p class="search-pagination-info">Showing results {{ page_obj.start_index }}-{{ page_obj.end_index }}
+            of {{ paginator.count }}</p>
+          {% if page_obj.has_previous or page_obj.has_next %}
+            <div class="search-pagination">
+              {% if page_obj.has_previous %}<a href="{% add_get page=page_obj.previous_page_number %}"><span
+                      class="search-pagination__previous fa fa-caret-left"></span></a>{% endif %}
+              {% if show_first %}
+                <a href="{% add_get page=1 %}"><span class="search-pagination__page">1</span></a>
+                ...
+              {% endif %}
+              {% for page in page_numbers %}
+                <a href="{% add_get page=page %}"><span
+                        class="search-pagination__page {% if page == page_obj.number %}active{% endif %}">{{ page }}</span></a>
+              {% endfor %}
+              {% if show_last %}
+                ...
+                <a href="{% add_get page=paginator.num_pages %}"><span
+                        class="search-pagination__page">{{ paginator.num_pages }}</span></a>
+              {% endif %}
+              {% if page_obj.has_next %}<a href="{% add_get page=page_obj.next_page_number %}"><span
+                      class="search-pagination__next fa fa-caret-right"></span></a>{% endif %}
+
+            </div>
+          {% endif %}
+        </section>
+    </div>
+
+{% endblock content %}

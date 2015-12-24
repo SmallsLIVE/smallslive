@@ -22,6 +22,7 @@
       {% include "blocks/homepage-upcoming-events-carousel.html" %}
 
       {% if request.user.is_authenticated %}
+        {% if user.can_watch_video %}
           <section class="cto cto--archive container vertical-align-parent">
             <div class="vertical-align-child">
                 <h1 class="cto__title">SmallsLIVE Audio/Video Archive</h1>
@@ -30,6 +31,16 @@
                 <a href="{% url "schedule" %}" class="cto__button">Go to the full Archive</a>
             </div>
           </section>
+        {% else %}
+          <section class="cto cto--archive container vertical-align-parent">
+            <div class="vertical-align-child">
+                <h1 class="cto__title">SmallsLIVE Audio/Video Archive</h1>
+                <p class="cto__text">Upgrade to a paid membership for access to the Audio/Video archive.
+                </p>
+                <a href="{% url "subscription_settings" %}" class="cto__button">Upgrade subscription</a>
+            </div>
+          </section>
+        {% endif %}
       {% else %}
           <section class="home-membership container">
               <div class="home-membership__header vertical-align-parent">
@@ -41,12 +52,13 @@
               </div>
           </section>
       {% endif %}
+
       <section class="from-our-archive container">
         <h1 class="from-our-archive__section-title"><a href="{% url "most_recent_videos" %}">New in our Archive</a></h1>
 
         <div class="row equal-heights-xs">
           {% for event in new_in_archive %}
-            <div class="col-xs-6 col-sm-6 col-md-4 {% if forloop.counter > 4 %}hidden-xs{% endif %}">
+            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 {% if forloop.counter > 4 %}hidden-xs{% endif %}">
               <a href="{{ event.get_absolute_url }}">
                 <div class="event-object event-object--{% cycle "green" "blue" "yellow" "gold" "red" "purple" %}">
                   {% if event.photo %}
@@ -74,7 +86,7 @@
 
         <div class="row equal-heights-xs">
           {% for event in popular_in_archive %}
-            <div class="col-xs-6 col-sm-6 col-md-4">
+            <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3">
               <a href="{{ event.get_absolute_url }}">
                 <div class="event-object event-object--{% cycle "darkblue" "orange" "blue"%}">
                   {% if event.photo %}
@@ -97,6 +109,26 @@
           {% endfor %}
         </div>
       </section>
+
+      <section class="smalls-mezzrow-crosspromo">
+        <div class="smalls-mezzrow-crosspromo__overlay">
+
+        </div>
+        <div class="smalls-mezzrow-crosspromo__content">
+          <p class="smalls-mezzrow-crosspromo__main-copy">
+            <strong>New!</strong> Now you can follow live streams of shows from both of our clubs - Smalls and Mezzrow! The live stream is available to all of our users, so if you don't have an account yet, head over and <a href="{% url "account_signup" %}">sign up!</a>
+          </p>
+          <div class="smalls-mezzrow-crosspromo__logo-container">
+            <a href="{% url "live-stream" %}"><img class="smalls-mezzrow-crosspromo__logo smalls" src="{% static 'logo.svg' %}" alt="Smalls"/></a>
+            <a href="{% url "live-stream-mezzrow" %}"><img class="smalls-mezzrow-crosspromo__logo mezzrow" src="{% static 'image/mezzrow-logo-negative.svg' %}" alt="Mezzrow"/></a>
+          </div>
+          <p class="smalls-mezzrow-crosspromo__small-copy">
+            Please note that only select shows will be streamed from Mezzrow. For more information about club Mezzrow, please head to <a href="http://www.mezzrow.com" target="_blank">www.mezzrow.com</a>.
+          </p>
+        </div>
+      </section>
+
+
       {% if popular_in_store %}
           <section class="home-store container">
             <h1 class="home-store__section-title">Popular in our Store</h1>
@@ -105,7 +137,7 @@
                   <div class="col-xs-6 col-md-3">
                     {% with image=product.primary_image %}
                         {% if not image.is_missing %}
-                          <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=258 width=235 smart=True %}" alt="{{ product.get_title }}" class="home-store__img"</a>
+                          <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=258 width=235 smart=True %}" alt="{{ product.get_title }}" class="home-store__img"></a>
                         {% else %}
                           <a href="{{ product.get_absolute_url }}"><img src="{% static "image/image_not_found.jpg" %}" alt="{{ product.get_title }}" class="home-store__img"></a>
                         {% endif %}
