@@ -66,6 +66,34 @@ class MostPopularVideos(ListView):
 most_popular_videos = MostPopularVideos.as_view()
 
 
+class MostPopularWeeklyVideos(ListView):
+    context_object_name = "events"
+    template_name = "multimedia/most_popular_list.html"
+
+    def get_queryset(self):
+        @cached(timeout=6*60*60)
+        def _get_most_popular_videos():
+            most_popular_video_ids = UserVideoMetric.objects.most_popular_video(count=20, weekly=True)
+            most_popular_video = []
+            for event_data in most_popular_video_ids:
+                try:
+                    event = Event.objects.filter(id=event_data['event_id']).annotate(
+                        added=Max('recordings__date_added')).first()
+                    most_popular_video.append({'event': event, 'play_count': event_data['count']})
+                except Event.DoesNotExist:
+                    pass
+            return most_popular_video
+        return _get_most_popular_videos()
+
+    def get_context_data(self, **kwargs):
+        context = super(MostPopularWeeklyVideos, self).get_context_data(**kwargs)
+        context['most_popular_weekly_videos'] = True
+        context['cache_name'] = 'most_popular_videos'
+        return context
+
+most_popular_weekly_videos = MostPopularWeeklyVideos.as_view()
+
+
 class MostRecentVideos(ListView):
     context_object_name = "events"
     queryset = Event.objects.most_recent_video()[:30]
@@ -106,6 +134,35 @@ class MostPopularAudio(ListView):
         return context
 
 most_popular_audio = MostPopularAudio.as_view()
+
+
+class MostPopularWeeklyAudio(ListView):
+    context_object_name = "events"
+    template_name = "multimedia/most_popular_list.html"
+
+    def get_queryset(self):
+        @cached(timeout=6*60*60)
+        def _get_most_popular_audio():
+            most_popular_audio_ids = UserVideoMetric.objects.most_popular_audio(count=20, weekly=True)
+            most_popular_audio = []
+            for event_data in most_popular_audio_ids:
+                print event_data
+                try:
+                    event = Event.objects.filter(id=event_data['event_id']).annotate(
+                        added=Max('recordings__date_added')).first()
+                    most_popular_audio.append({'event': event, 'play_count': event_data['count']})
+                except Event.DoesNotExist:
+                    pass
+            return most_popular_audio
+        return _get_most_popular_audio()
+
+    def get_context_data(self, **kwargs):
+        context = super(MostPopularWeeklyAudio, self).get_context_data(**kwargs)
+        context['most_popular_weekly_audio'] = True
+        context['cache_name'] = 'most_popular_audio'
+        return context
+
+most_popular_weekly_audio = MostPopularWeeklyAudio.as_view()
 
 
 class MostRecentAudio(ListView):

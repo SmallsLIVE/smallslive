@@ -34,14 +34,16 @@
             {% for event in recent_video %}
                 <div class="col-xs-6 col-md-3">
                     <div class="newly-added event-object--gold">
-                        {% if event.photo %}
-                            <img src="{% thumbor_url object.event.photo.url|urlencode height=300 width=350 smart=True %}" class="newly-added__image"
-                                 alt=""/>
-                        {% else %}
-                            <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                        {% endif %}
+                        <a href="{{ event.get_absolute_url }}">
+                            {% if event.photo %}
+                                <img src="{% thumbor_url object.event.photo.url|urlencode height=300 width=350 smart=True %}" class="newly-added__image"
+                                     alt=""/>
+                            {% else %}
+                                <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                            {% endif %}
+                        </a>
                         <div class="newly-added__info"><p class="newly-added__date">{{ event.start|date:"n/j/Y" }}</p><h1
-                                class="newly-added__title">{{ event.title }}</h1></div>
+                                class="newly-added__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h1></div>
                     </div>
                 </div>
             {% endfor %}
@@ -52,14 +54,16 @@
             {% for event in recent_audio %}
                 <div class="col-xs-6 col-md-3">
                     <div class="newly-added event-object--gold">
-                        {% if event.photo %}
-                            <img src="{% thumbor_url object.event.photo.url|urlencode height=300 width=350 smart=True %}" class="newly-added__image"
-                                 alt=""/>
-                        {% else %}
-                            <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                        {% endif %}
+                        <a href="{{ event.get_absolute_url }}">
+                            {% if event.photo %}
+                                <img src="{% thumbor_url object.event.photo.url|urlencode height=300 width=350 smart=True %}" class="newly-added__image"
+                                     alt=""/>
+                            {% else %}
+                                <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                            {% endif %}
+                        </a>
                         <div class="newly-added__info"><p class="newly-added__date">{{ event.start|date:"n/j/Y" }}</p><h1
-                                class="newly-added__title">{{ event.title }}</h1></div>
+                                class="newly-added__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h1></div>
                     </div>
                 </div>
             {% endfor %}
@@ -123,7 +127,7 @@
               {% endfor %}
 
             </div>
-            <a href="{% url "most_recent_videos" %}" class="video-audio__more-link">Full list of 30 recently added videos</a>
+            <a href="{% url "most_popular_weekly_videos" %}" class="video-audio__more-link">Full list of 20 most popular weekly videos</a>
           </div>
           <div class="col-md-6">
             <div class="videos row">
@@ -154,7 +158,7 @@
                 </div>
               {% endfor %}
             </div>
-            <a href="{% url "most_recent_audio" %}" class="video-audio__more-link">Full list of 30 recently added audio recordings</a>
+            <a href="{% url "most_popular_weekly_audio" %}" class="video-audio__more-link">Full list of 20 most popular weekly audio recordings</a>
           </div>
         </div>
 
@@ -189,7 +193,7 @@
               {% endfor %}
 
             </div>
-            <a href="{% url "most_recent_videos" %}" class="video-audio__more-link">Full list of 30 recently added videos</a>
+            <a href="{% url "most_popular_videos" %}" class="video-audio__more-link">Full list of 20 most popular alltime videos</a>
           </div>
           <div class="col-md-6">
             <div class="videos row">
@@ -220,7 +224,7 @@
                 </div>
               {% endfor %}
             </div>
-            <a href="{% url "most_recent_audio" %}" class="video-audio__more-link">Full list of 30 recently added audio recordings</a>
+            <a href="{% url "most_popular_audio" %}" class="video-audio__more-link">Full list of 20 most popular alltime audio recordings</a>
           </div>
         </div>
       </section>
