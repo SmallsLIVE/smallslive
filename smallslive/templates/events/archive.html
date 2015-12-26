@@ -36,10 +36,9 @@
                     <div class="newly-added event-object--gold">
                         <a href="{{ event.get_absolute_url }}">
                             {% if event.photo %}
-                                <img src="{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}" class="newly-added__image"
-                                     alt=""/>
+                                <div class="newly-added__image-container" style="background-image:url('{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}')"></div>
                             {% else %}
-                                <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                                <div class="newly-added__image-container" style="background-image:url('{% static 'image/no-event-photo-thumbnail.jpg' %}')"></div>
                             {% endif %}
                         </a>
                         <div class="newly-added__info"><p class="newly-added__date">{{ event.start|date:"n/j/Y" }}</p><h1
@@ -56,10 +55,9 @@
                     <div class="newly-added event-object--gold">
                         <a href="{{ event.get_absolute_url }}">
                             {% if event.photo %}
-                                <img src="{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}" class="newly-added__image"
-                                     alt=""/>
+                                <div class="newly-added__image-container" style="background-image:url('{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}')"></div>
                             {% else %}
-                                <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                                <div class="newly-added__image-container" style="background-image:url('{% static 'image/no-event-photo-thumbnail.jpg' %}')"></div>
                             {% endif %}
                         </a>
                         <div class="newly-added__info"><p class="newly-added__date">{{ event.start|date:"n/j/Y" }}</p><h1

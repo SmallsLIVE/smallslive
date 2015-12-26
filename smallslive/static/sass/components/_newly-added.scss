@@ -13,11 +13,20 @@
   @include center-block;
   color: white;
   position: relative;
+  width: 100%;
 
   &__image {
     @include img-responsive;
     width: 100%;
     margin-bottom: 10px;
+  }
+
+  &__image-container {
+    height: 220px;
+    width: 100%;
+    background-size: cover;
+    background-position: center center;
+    margin-bottom: 20px;
   }
 
   &__date {
@@ -27,7 +36,7 @@
     margin-bottom: 4px;
   }
 
-  &__title {
+  &__title, &__title a {
     @include lato-bold;
     font-size: 16px;
     color: #131313;
