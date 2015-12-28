@@ -16,12 +16,12 @@
         <div class="equal-heights row">
           <section class="col-md-3 archive-lists__sidebar">
             <ul class="archive-lists__nav">
-                <li class="archive-lists__nav__item {% if most_popular_videos %}active{% endif %}"><a href="{% url "most_popular_videos" %}">Most popular videos</a></li>
-                <li class="archive-lists__nav__item {% if most_popular_weekly_videos %}active{% endif %}"><a href="{% url "most_popular_weekly_videos" %}">Most popular weekly videos</a></li>
-                <li class="archive-lists__nav__item {% if most_recent_videos %}active{% endif %}"><a href="{% url "most_recent_videos" %}">Most recent videos</a></li>
-                <li class="archive-lists__nav__item {% if most_popular_audio %}active{% endif %}"><a href="{% url "most_popular_audio" %}">Most popular audio</a></li>
-                <li class="archive-lists__nav__item {% if most_popular_weekly_audio %}active{% endif %}"><a href="{% url "most_popular_weekly_audio" %}">Most popular weekly audio</a></li>
-                <li class="archive-lists__nav__item {% if most_recent_audio %}active{% endif %}"><a href="{% url "most_recent_audio" %}">Most recent audio</a></li>
+                <li class="archive-lists__nav__item {% if most_popular_videos %}active{% endif %}"><a href="{% url "most_popular_videos" %}">All Time Most Popular Videos</a></li>
+                <li class="archive-lists__nav__item {% if most_popular_weekly_videos %}active{% endif %}"><a href="{% url "most_popular_weekly_videos" %}">Most Popular Videos This Week</a></li>
+                <li class="archive-lists__nav__item {% if most_recent_videos %}active{% endif %}"><a href="{% url "most_recent_videos" %}">Recently Added Videos</a></li>
+                <li class="archive-lists__nav__item {% if most_popular_audio %}active{% endif %}"><a href="{% url "most_popular_audio" %}">All Time Most Popular Audio</a></li>
+                <li class="archive-lists__nav__item {% if most_popular_weekly_audio %}active{% endif %}"><a href="{% url "most_popular_weekly_audio" %}">Most Popular Audio This Week</a></li>
+                <li class="archive-lists__nav__item {% if most_recent_audio %}active{% endif %}"><a href="{% url "most_recent_audio" %}">Recently Added Audio</a></li>
             </ul>
           </section>
           <section class="col-md-9 archive-list">
