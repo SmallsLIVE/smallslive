@@ -11,7 +11,7 @@
     <div class="content-wrapper">
       <section class="live-stream-header mezzrow container">
           <div class="live-stream-header__upsell hidden-xs">
-              <strong>New!</strong> All our members can now watch live streams from Smalls and select shows streams <strong>from Mezzrow</strong> for free! <a href="{% url "account_signup" %}">Sign up</a> if you haven't already!
+              Registered members of SmallsLIVE can watch the Smalls Jazz Club or Mezzrow Live Video Streams at no cost. {% if not user.is_authenticated %}<a href="{% url "account_signup" %}">Sign up here!</a>{% endif %}
           </div>
           <div class="live-stream-header__switch">
               <span>Current stream:</span>
