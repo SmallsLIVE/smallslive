@@ -466,9 +466,13 @@ class MezzrowLiveStreamView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(MezzrowLiveStreamView, self).get_context_data(**kwargs)
+        now = timezone.localtime(timezone.now())
         context['stream_expire'] = int(time.time()) + 120  # 10 seconds - required just to start the stream
         context['stream_hash'] = hashlib.md5("{0}{1}?e={2}".format(settings.BITGRAVITY_SECRET, "/smallslive/secure/",
                                                                    context['stream_expire'])).hexdigest()
+        stream_turn_off_hour = 2
+        stream_turn_on_hour = 17
+        context['hide_stream'] = stream_turn_off_hour <= now.hour <= stream_turn_on_hour
         return context
 
 live_stream_mezzrow = MezzrowLiveStreamView.as_view()
