@@ -87,7 +87,7 @@
               </div>
               {% endif %}
               <div class="coming-up col-xs-12 {% if currently_playing %}col-md-6{% else %}col-md-12{% endif %}">
-                <h2 class="coming-up__title">Coming up:</h2>
+                <h2 class="coming-up__title">Tonight At Smalls:</h2>
                 <div class="events">
                   {% for upcoming_event in events %}
                       <div class="mini-event" data-end-time="{{ upcoming_event.end.isoformat }}">
