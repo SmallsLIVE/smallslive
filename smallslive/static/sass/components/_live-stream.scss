@@ -150,6 +150,10 @@
   padding: 40px 20px;
   background-color: $main-accent-color;
 
+  &--mezzrow {
+    background-color: $mezzrow-color;
+  }
+
   &__cta {
     color: #fff;
     font-size: 16px;
