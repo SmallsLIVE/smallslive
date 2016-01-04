@@ -144,7 +144,7 @@ class MetricsPayoutForm(forms.Form):
     period_end = forms.DateField(required=True, input_formats=["%B // %Y"])
     revenue = forms.DecimalField(required=True)
     operating_cost = forms.DecimalField(required=True)
-    final_calculation = forms.BooleanField(required=False)
+    save_earnings = forms.BooleanField(required=False)
 
     def clean_period_start(self):
         start = self.cleaned_data['period_start']

@@ -2,14 +2,14 @@ import collections
 import logging
 from decimal import Decimal
 import xlsxwriter
-from artists.models import Artist
+from artists.models import Artist, ArtistEarnings
 from metrics.models import UserVideoMetric
 from events.models import Event
 
 logger = logging.getLogger(__name__)
 
 
-def generate_payout_sheet(file, start_date, end_date, revenue, operating_expenses):
+def generate_payout_sheet(file, start_date, end_date, revenue, operating_expenses, save_earnings=False):
     pool = Decimal((revenue - operating_expenses) / Decimal(2.0))
     events = UserVideoMetric.objects.seconds_played_for_all_events(start_date, end_date)
     artists = collections.OrderedDict()
@@ -52,4 +52,11 @@ def generate_payout_sheet(file, start_date, end_date, revenue, operating_expense
         sheet.write(idx, 3, artist[1]['seconds_played'])
         sheet.write(idx, 4, ratio)
         sheet.write(idx, 5, payment)
+        if save_earnings:
+            earnings = ArtistEarnings.objects.get_or_create(
+                artist_id = artist[0],
+                period_start=start_date,
+                period_end=end_date,
+                amount=payment
+            )
     workbook.close()

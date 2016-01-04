@@ -161,3 +161,16 @@ class Instrument(models.Model):
 
     def autocomplete_sublabel(self):
         return u""
+
+
+class ArtistEarnings(models.Model):
+    artist = models.ForeignKey(Artist, related_name='earnings')
+    period_start = models.DateField()
+    period_end = models.DateField()
+    amount = models.DecimalField(max_digits=10, decimal_places=4, default=0)
+
+    class Meta:
+        ordering = ['-period_start']
+
+    def __unicode__(self):
+        return u"{0}: ${1}".format(self.artist.full_name(), self.amount)

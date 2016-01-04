@@ -245,9 +245,8 @@
     </div>
     <div class="metrics-payouts__current-period">
         <p>Current payout period is:</p>
-        <h2 class="metrics-payouts__current-period__dates">October 05, 2015 - December 31, 2015</h2>
+        <h2 class="metrics-payouts__current-period__dates">{{ new_payment_period_start }} - {{ new_payment_period_end }}</h2>
     </div>
-    {% comment %}
     <div class="metrics-payouts__history">
         <h3 class="metrics-payouts__history__heading">My payout history:</h3>
         <ul class="metrics-payouts__history__list">
@@ -255,15 +254,14 @@
                 <div class="col-xs-6">Time period:</div>
                 <div class="col-xs-6 text-right">Amount</div>
             </li>
-            {% for i in "1234" %}
+            {% for earnings in user.artist.earnings.all %}
             <li class="metrics-payouts__history__entry row">
-                <div class="col-xs-6 metrics-payouts__history__entry__period">January 01, 2015 - April 01, 2015</div>
-                <div class="col-xs-6 metrics-payouts__history__entry__amount">$1,348.58</div>
+                <div class="col-xs-6 metrics-payouts__history__entry__period">{{ earnings.period_start|date:"F d, Y" }} - {{ earnings.period_end|date:"F d, Y" }}</div>
+                <div class="col-xs-6 metrics-payouts__history__entry__amount">${{ earnings.amount|floatformat:2 }}</div>
             </li>
             {% endfor %}
         </ul>
     </div>
-    {% endcomment %}
   </section>
 {% endblock content %}
 

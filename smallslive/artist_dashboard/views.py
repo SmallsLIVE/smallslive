@@ -1,3 +1,4 @@
+from calendar import monthrange
 from datetime import timedelta, datetime, date
 from cacheops import cached
 from django.conf import settings
@@ -24,7 +25,7 @@ import allauth.account.views as allauth_views
 from metrics.models import UserVideoMetric
 from rest_framework.authtoken.models import Token
 
-from artists.models import Artist
+from artists.models import Artist, ArtistEarnings
 from events.models import Recording, Event
 import events.views as event_views
 import users.forms as user_forms
@@ -32,7 +33,7 @@ from users.models import LegalAgreementAcceptance
 from users.views import HasArtistAssignedMixin, HasArtistAssignedOrIsSuperuserMixin
 from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm,\
     EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm
-from .utils import generate_payout_sheet
+from artist_dashboard.tasks import generate_payout_sheet_task
 
 
 class MyGigsView(HasArtistAssignedMixin, ListView):
@@ -266,6 +267,11 @@ class MyMetricsView(HasArtistAssignedMixin, TemplateView):
         context['top_all_time_events'] = self._event_and_counts_from_ids(top_all_time_events)
         context['date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year, artist_event_ids)
         context['archive_date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year)
+        last_payment_period = ArtistEarnings.objects.first()
+        context["new_payment_period_start"] = last_payment_period.period_end + timedelta(days=1)
+        new_payment_period_end = context["new_payment_period_start"] + timedelta(weeks=12)
+        context["new_payment_period_end"] = new_payment_period_end.replace(
+                day=monthrange(new_payment_period_end.year, new_payment_period_end.month)[1])
         return context
 
     def _event_and_counts_from_ids(self, top_events):
@@ -321,17 +327,16 @@ def metrics_payout(request):
     if request.method == 'POST':
         form = MetricsPayoutForm(request.POST)
         if form.is_valid():
-            output = StringIO.StringIO()
             start = form.cleaned_data.get('period_start')
             end = form.cleaned_data.get('period_end')
             revenue = form.cleaned_data.get('revenue')
             operating_cost = form.cleaned_data.get('operating_cost')
-            generate_payout_sheet(output, start, end, revenue, operating_cost)
-            output.seek(0)
-            response = HttpResponse(output.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-            filename = "payments-{0}_{1}-{2}_{3}.xlsx".format(start.month, start.year, end.month, end.year)
-            response['Content-Disposition'] = 'attachment; filename="{0}"'.format(filename)
-            return response
+            save_earnings = form.cleaned_data.get('save_earnings')
+            messages.success(request, "Payout calculation started.")
+            generate_payout_sheet_task.delay(start, end, revenue, operating_cost, save_earnings)
+        else:
+            messages.error(request, "Payout calculation failed. {}".format(form.errors))
+        return redirect("artist_dashboard:metrics_payout")
     else:
         form = MetricsPayoutForm()
 
