@@ -267,11 +267,11 @@ class MyMetricsView(HasArtistAssignedMixin, TemplateView):
         context['top_all_time_events'] = self._event_and_counts_from_ids(top_all_time_events)
         context['date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year, artist_event_ids)
         context['archive_date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year)
-        last_payment_period = ArtistEarnings.objects.first()
-        context["new_payment_period_start"] = last_payment_period.period_end + timedelta(days=1)
-        new_payment_period_end = context["new_payment_period_start"] + timedelta(weeks=12)
-        context["new_payment_period_end"] = new_payment_period_end.replace(
-                day=monthrange(new_payment_period_end.year, new_payment_period_end.month)[1])
+        # last_payment_period = ArtistEarnings.objects.first()
+        # context["new_payment_period_start"] = last_payment_period.period_end + timedelta(days=1)
+        # new_payment_period_end = context["new_payment_period_start"] + timedelta(weeks=12)
+        # context["new_payment_period_end"] = new_payment_period_end.replace(
+        #         day=monthrange(new_payment_period_end.year, new_payment_period_end.month)[1])
         return context
 
     def _event_and_counts_from_ids(self, top_events):
