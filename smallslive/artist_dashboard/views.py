@@ -110,9 +110,9 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
         artist_event_ids = list(self.request.user.artist.event_id_list())
         context['upcoming_events'] = artist.gigs_played.upcoming().select_related('event', 'artist')[:5]
 
-        # need to pass the artist to cached function so it caches a different result for each artist
+        # need to pass the artist ID to cached function so it caches a different result for each artist
         @cached(timeout=6*60*60)
-        def _most_popular_events(artist):
+        def _most_popular_events(artist_id):
             context = {}
             most_popular_audio_ids = UserVideoMetric.objects.filter(
                 event_id__in=artist_event_ids).most_popular_audio()[:4]
@@ -141,7 +141,7 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
             context['most_viewed'] = most_popular_video
             return context
 
-        context.update(_most_popular_events())
+        context.update(_most_popular_events(artist.id))
         context['weekly_artist_stats'] = UserVideoMetric.objects.this_week_counts(artist_event_ids=artist_event_ids,
                                                                                   trends=True, humanize=True)
         context['monthly_artist_stats'] = UserVideoMetric.objects.this_month_counts(artist_event_ids=artist_event_ids,
