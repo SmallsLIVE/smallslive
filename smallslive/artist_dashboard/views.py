@@ -110,8 +110,9 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
         artist_event_ids = list(self.request.user.artist.event_id_list())
         context['upcoming_events'] = artist.gigs_played.upcoming().select_related('event', 'artist')[:5]
 
+        # need to pass the artist to cached function so it caches a different result for each artist
         @cached(timeout=6*60*60)
-        def _most_popular_events():
+        def _most_popular_events(artist):
             context = {}
             most_popular_audio_ids = UserVideoMetric.objects.filter(
                 event_id__in=artist_event_ids).most_popular_audio()[:4]
