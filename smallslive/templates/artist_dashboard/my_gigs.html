@@ -9,8 +9,16 @@
 
 
 {% block content %}
-  <section class="page-heading container">
+  <section class="page-heading page-heading-selector container">
       <h1>My events:</h1>
+      <ul class="page-heading-selector__selector">
+        <li class="active">
+          <a href="#">Past events</a>
+        </li>
+        <li>
+          <a href="#">Future events</a>
+        </li>
+      </ul>
   </section>
   <section class="events__filters container">
       <ul class="flexbox-equal-height">
@@ -102,12 +110,12 @@
                   {% if gig_info.is_leader %}
                       <a class="col-xs-3 event-row__info__edit-button" href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
                           <i class="fa fa-edit"></i>
-                          <p class="event-row__info__label">Event details / edit</p>
+                          <p class="event-row__info__label">Edit / download</p>
                       </a>
                   {% else %}
                       <a class="col-xs-3 event-row__info__edit-button" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">
                           <i class="fa fa-align-center"></i>
-                      <p class="event-row__info__label">Event details</p>
+                      <p class="event-row__info__label">Details / download</p>
                       </a>
                   {% endif %}
                   {% if event.audio_status != 'none' or event.video_status != 'none' %}

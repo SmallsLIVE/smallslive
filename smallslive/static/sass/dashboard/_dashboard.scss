@@ -19,3 +19,51 @@
     border-bottom: 1px solid #ddd;
   }
 }
+
+.page-heading-selector {
+
+  h1 {
+    margin: 10px 0;
+  }
+
+  @media (min-width: $screen-sm-min) {
+    @include display(flex);
+    @include align-items(center);
+    @include justify-content(space-between);
+  }
+
+  &:before, &:after {
+    display: none;
+  }
+
+  &__selector {
+    @include display(flex);
+    @include align-items(center);
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: inline-block;
+      list-style-type: none;
+      padding: 10px 0;
+      margin: 0 10px;
+      border-bottom: 3px solid #fff;
+      @include transition(all 0.3s ease-in-out);
+
+      &.active, &:hover {
+        border-color: $main-accent-color;
+      }
+
+      a {
+        font-size: 16px;
+        @include lato-bold;
+        color: rgba($base-text-color, 0.6);
+
+        &:hover, &:focus {
+          text-decoration: none;
+          color: $base-text-color;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,255 @@
+.dashboard-home {
+  background-color: #fff;
+  padding: 40px 0 0;
+  overflow: hidden;
+
+  &__container {
+    padding: 0;
+
+    @media(min-width:$screen-sm-min) {
+      @include display(flex);
+    }
+  }
+
+  &__left-column {
+    padding: 40px 30px;
+  }
+
+  &__right-column {
+    padding: 40px 30px;
+    background-color: #f3f3f3;
+  }
+
+  &__artist-name {
+    @include lato-black;
+    font-size: 32px;
+    color: $main-accent-color;
+    padding: 0 30px 40px;
+    margin: 0;
+    display: block;
+    border-bottom: 1px solid #ddd;
+  }
+
+  &__cta {
+    display: inline-block;
+    border: 2px solid $main-accent-color;
+    color: $main-accent-color;
+    @include lato-bold;
+    position: relative;
+    @include transition(all 0.3s ease-in-out);
+
+    span {
+      position: relative;
+      z-index: 2;
+    }
+
+    i {
+      margin-right: 10px;
+    }
+
+    &:after {
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      content: "";
+      background-color: $main-accent-color;
+      @include transition(all 0.1s ease-in-out);
+    }
+
+    &:hover, &:focus {
+      color: #fff;
+      text-decoration: none;
+
+      &:after {
+        width: 100%;
+        background-color: $main-accent-color;
+      }
+    }
+  }
+
+  .payout-period {
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #ddd;
+
+    &.previous-period {
+      border-bottom: none;
+    }
+
+    &__heading {
+      @include lato-black;
+      color: rgba($base-text-color, 0.55);
+      font-size: 22px;
+      margin: 0 0 20px;
+    }
+
+    &__heading-group {
+      @include display(flex);
+      @include align-items(center);
+      margin-bottom: 20px;
+
+      h2 {
+        margin: 0;
+      }
+    }
+
+    &__heading-cta {
+      display: block;
+      margin-left: 30px;
+      padding: 5px 15px;
+      @include lato-bold;
+      font-size: 12px;
+      color: rgba($base-text-color, 0.7);
+      border: 2px solid rgba($base-text-color, 0.7);
+      @include transition(all 0.2s ease-in-out);
+
+      &:hover, &:focus {
+        text-decoration: none;
+        color: #fff;
+        background-color: rgba($base-text-color, 0.7);
+      }
+    }
+
+    &__table {
+      padding: 0;
+      margin: 0;
+      display: block;
+
+      &__row {
+        list-style-type: none;
+        @include display(flex);
+        @include align-items(center);
+        padding: 5px 0;
+      }
+
+      &__label {
+        margin-right: 30px;
+        width: 200px;
+        padding: 6px 0;
+        color: rgba($base-text-color, 0.7);
+        @include flex-shrink(0);
+
+        @media (max-width: $screen-xs-max) {
+          width: 40%;
+        }
+      }
+
+      &__value {
+        @include lato-bold;
+        word-wrap: break-word;
+
+        p {
+          margin: 6px 0;
+        }
+      }
+    }
+
+    &__download-xls {
+      padding: 10px 20px;
+      margin-top: 15px;
+    }
+  }
+
+  &__artist-info {
+    padding-bottom: 40px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #ddd;
+
+    &__heading {
+      @include lato-black;
+      color: rgba($base-text-color, 0.55);
+      font-size: 22px;
+      margin: 0 0 20px;
+    }
+
+    &__table {
+      padding: 0;
+      margin: 0;
+      display: block;
+
+      &__row {
+        list-style-type: none;
+        @include display(flex);
+        @include align-items(flex-start);
+        padding: 5px 0;
+      }
+
+      &__label {
+        margin-right: 30px;
+        width: 200px;
+        padding: 6px 0;
+        color: rgba($base-text-color, 0.7);
+        @include flex-shrink(0);
+
+        @media (max-width: $screen-xs-max) {
+          width: 40%;
+        }
+      }
+
+      &__value {
+        @include lato-bold;
+        word-wrap: break-word;
+
+        p {
+          margin: 6px 0;
+        }
+      }
+    }
+
+    &__cta {
+      padding: 10px 20px;
+      margin-top: 15px;
+    }
+  }
+
+  &__top-performing {
+
+    &__heading {
+      @include lato-black;
+      color: rgba($base-text-color, 0.55);
+      font-size: 18px;
+      margin: 0;
+    }
+
+    &__heading-group {
+      @include display(flex);
+      @include align-items(center);
+      margin-bottom: 20px;
+
+      h2 {
+        margin: 0;
+      }
+    }
+
+    &__heading-cta {
+      display: block;
+      margin-left: 30px;
+      padding: 5px 15px;
+      @include lato-bold;
+      font-size: 12px;
+      color: rgba($base-text-color, 0.7);
+      border: 2px solid rgba($base-text-color, 0.7);
+      @include transition(all 0.2s ease-in-out);
+
+      &:hover, &:focus {
+        text-decoration: none;
+        color: #fff;
+        background-color: rgba($base-text-color, 0.7);
+      }
+    }
+
+    .mini-event {
+
+      .mini-event__details__title {
+        margin-bottom: 10px;
+      }
+
+      .red-arrow-button {
+        font-size: 12px;
+      }
+    }
+  }
+}

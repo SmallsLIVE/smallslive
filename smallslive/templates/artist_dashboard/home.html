@@ -7,183 +7,196 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-  {% if not request.user.legal_agreement_acceptance %}
-      <section class="container cta cta--contract flexbox-equal-height" data-step="7" data-intro="Please note that, for your Artist Dashboard to be fully in function (and for you to get your rightfully deserved money :)), you need to sign the Artist Agreement.">
-          <div class="cta__content">
-              <h2>To gain full access to Metrics, and to enter our Artists revenue sharing program, you need to review and sign The SmallsLIVE Artist Revenue Sharing Contract.</h2>
-              <h3>To do that please visit the “Legal” section in the menu above, or click the button below.</h3>
-              <a href="{% url "artist_dashboard:legal" %}" class="cta__button">Go to Legal</a>
-          </div>
-      </section>
-  {% else %}
-      <section class="metric-graph graph-carousel container">
-        <div class="metric-graph__header">
-            <h3 class="metric-graph__title">This months performance:</h3>
-            <ul class="metric-graph__switch">
-                <li class="metric-graph__switch__option data active" id="metric-graph__show__data-1">Plays</li>
-                <li class="metric-graph__switch__option data" id="metric-graph__show__data-2">Minutes</li>
-            </ul>
-        </div>
-        <div class="metric-graph__instance" id="metric-graph__instance-1">
-            <canvas class="graph-canvas" id="graph-canvas"></canvas>
-        </div>
-      </section>
-  {% endif %}
-  <section class="container featured-metrics flexbox-equal-height">
-      <!-- Single metric -->
-      <div class="col-xs-6 col-sm-3 featured-metrics__metric">
-          <div class="featured-metrics__metric__name">Plays count:</div>
-          <div class="featured-metrics__metric__content">
-              <div class="featured-metrics__metric__content__primary">
-                  <h2 class="neutral">This week:</h2>
-                  <h1 class="normal">{{ weekly_artist_stats.play_count }}</h1>
-              </div>
-              <div class="featured-metrics__metric__content__secondary">
-                  <h2 class="neutral">This month:</h2>
-                  <h1 class="normal">{{ monthly_artist_stats.play_count }}</h1>
-              </div>
-          </div>
-      </div>
-      <!-- End of single metric -->
-      <!-- Single metric -->
-      <div class="col-xs-6 col-sm-3 featured-metrics__metric">
-          <div class="featured-metrics__metric__name">Time played:</div>
-          <div class="featured-metrics__metric__content">
-              <div class="featured-metrics__metric__content__primary">
-                  <h2 class="neutral">This week:</h2>
-                  <h1 class="normal">{{ weekly_artist_stats.time_played }}</h1>
-              </div>
-              <div class="featured-metrics__metric__content__secondary">
-                  <h2 class="neutral">This month:</h2>
-                  <h1 class="normal">{{ monthly_artist_stats.time_played }}</h1>
-              </div>
-          </div>
-      </div>
-      <!-- End of single metric -->
-      <!-- Single metric -->
-      <div class="col-xs-6 col-sm-3 featured-metrics__metric">
-          <div class="featured-metrics__metric__name">Trend:</div>
-          <div class="featured-metrics__metric__content">
-              <div class="featured-metrics__metric__content__primary">
-                  <h2 class="neutral">Vs last week:</h2>
-                  {% with trend=weekly_artist_stats.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
-              </div>
-              <div class="featured-metrics__metric__content__secondary">
-                  <h2 class="neutral">Vs last month:</h2>
-                  {% with trend=monthly_artist_stats.seconds_played_trend %}<h1 class="{% if trend and trend > 0 %}positive{% elif trend and trend < 0%}negative{% endif %}">{% if trend %}{{ trend|floatformat:-2 }}%{% else %}n/a{% endif %}</h1>{% endwith %}
 
+  <section class="container dashboard-home">
+    <h2 class="dashboard-home__artist-name">{{ user.artist.first_name }} {{ user.artist.last_name }}</h2>
+    <div class="dashboard-home__container">
+      <div class="col-xs-12 col-sm-6 col-md-7 dashboard-home__left-column">
+        <div class="payout-period">
+          <h2 class="payout-period__heading">Current pay period</h2>
+          <ul class="payout-period__table">
+            <li class="payout-period__table__row">
+              <div class="payout-period__table__label">
+                Period dates:
               </div>
+              <div class="payout-period__table__value">
+                1/16 - 4/16
+              </div>
+            </li>
+            <li class="payout-period__table__row">
+              <div class="payout-period__table__label">
+                Current period archive total:
+              </div>
+              <div class="payout-period__table__value">
+                39074370 seconds
+              </div>
+            </li>
+            <li class="payout-period__table__row">
+              <div class="payout-period__table__label">
+                Current period my total:
+              </div>
+              <div class="payout-period__table__value">
+                202110 seconds
+              </div>
+            </li>
+            <li class="payout-period__table__row">
+              <div class="payout-period__table__label">
+                My current period ratio:
+              </div>
+              <div class="payout-period__table__value">
+                0.517%
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="dashboard-home__artist-info">
+          <h2 class="dashboard-home__artist-info__heading">My information</h2>
+          <ul class="dashboard-home__artist-info__table">
+            <li class="dashboard-home__artist-info__table__row">
+              <div class="dashboard-home__artist-info__table__label">
+                Address:
+              </div>
+              <div class="dashboard-home__artist-info__table__value">
+                <p>
+                  {{ user.address_1 }}
+                </p>
+                <p>
+                  {{ user.address_2 }}
+                </p>
+                <p>
+                  {{ user.city }}, {{ user.state }}
+                </p>
+                <p>
+                  {{ user.zip }}
+                </p>
+                <p>
+                  {{ user.country }}
+                </p>
+              </div>
+            </li>
+            <li class="dashboard-home__artist-info__table__row">
+              <div class="dashboard-home__artist-info__table__label">
+                Email:
+              </div>
+              <div class="dashboard-home__artist-info__table__value">
+                <p>
+                  {{ user.email }}
+                </p>
+              </div>
+            </li>
+            <li class="dashboard-home__artist-info__table__row">
+              <div class="dashboard-home__artist-info__table__label">
+                Selected payout method:
+              </div>
+              <div class="dashboard-home__artist-info__table__value">
+                <p>
+                  {{ user.payout_method }}
+                </p>
+              </div>
+            </li>
+          </ul>
+          <a href="{% url "artist_dashboard:settings" %}" class="dashboard-home__cta  dashboard-home__artist-info__cta"><span><i class="fa fa-gear"></i>Change information</span></a>
+        </div>
+        <div class="payout-period previous-period">
+          <div class="payout-period__heading-group">
+            <h2 class="payout-period__heading">Previous pay out</h2>
+            <a href="#" class="payout-period__heading-cta">All payouts</a>
           </div>
+          <ul class="payout-period__table">
+            <li class="payout-period__table__row">
+              <div class="payout-period__table__label">
+                Period dates:
+              </div>
+              <div class="payout-period__table__value">
+                10/15 - 12/15
+              </div>
+            </li>
+            <li class="payout-period__table__row">
+              <div class="payout-period__table__label">
+                Archive total:
+              </div>
+              <div class="payout-period__table__value">
+                39074370 seconds
+              </div>
+            </li>
+            <li class="payout-period__table__row">
+              <div class="payout-period__table__label">
+                My total:
+              </div>
+              <div class="payout-period__table__value">
+                202110 seconds
+              </div>
+            </li>
+            <li class="payout-period__table__row">
+              <div class="payout-period__table__label">
+                My period ratio:
+              </div>
+              <div class="payout-period__table__value">
+                0.517%
+              </div>
+            </li>
+            <li class="payout-period__table__row">
+              <div class="payout-period__table__label">
+                Total archive payout:
+              </div>
+              <div class="payout-period__table__value">
+                $6594.00
+              </div>
+            </li>
+            <li class="payout-period__table__row">
+              <div class="payout-period__table__label">
+                My payout:
+              </div>
+              <div class="payout-period__table__value">
+                $34.10
+              </div>
+            </li>
+            <li class="payout-period__table__row">
+              <div class="payout-period__table__label">
+                My ledger balance:
+              </div>
+              <div class="payout-period__table__value">
+                $0
+              </div>
+            </li>
+          </ul>
+          <a href="#" class="dashboard-home__cta payout-period__download-xls"><span><i class="fa fa-file-excel-o"></i>Download Excel file for this period</span></a>
+        </div>
       </div>
-      <!-- End of single metric -->
-      <!-- Single metric -->
-      <div class="col-xs-6 col-sm-3 featured-metrics__metric">
-          <div class="featured-metrics__metric__name">Total SmallsLIVE Archive:</div>
-          <div class="featured-metrics__metric__content">
-              <div class="featured-metrics__metric__content__primary">
-              <div class="featured-metrics__metric__content__primary">
-                  <h2 class="neutral">This week:</h2>
-                  <h1 class="normal">{{ weekly_stats.time_played }}</h1>
+      <div class="col-xs-12 col-sm-6 col-md-5 dashboard-home__right-column dashboard-home__top-performing">
+        <div class="dashboard-home__top-performing__heading-group">
+          <p class="dashboard-home__top-performing__heading">My top 10 performing events:</p>
+          <a href="#" class="dashboard-home__top-performing__heading-cta">All events</a>
+        </div>
+        <ul class="mini-events__container">
+          {% for event in most_viewed %}
+            <!-- single mini event -->
+            <li class="mini-event flexbox-equal-height flexbox-nowrap">
+              <a href="{{ event.get_absolute_url }}" class="mini-event__image col-xs-3 col-lg-2">
+                {% if event.photo %}
+                  <img src="{% thumbor_url event.photo.url|urlencode height=84 width=84 smart=True %}"
+                       alt=""/>
+                {% else %}
+                  <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                {% endif %}
+              </a>
+              <div class="mini-event__details col-xs-9 col-lg-10">
+                <p class="mini-event__details__date">{{ event.listing_date|date:"n/j/Y" }}</p>
+                <a href="#" class="mini-event__details__title">{{ event.title }}</a>
+                <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}" class="red-arrow-button">Edit / download</a><span class="arrow"></span>
               </div>
-              <div class="featured-metrics__metric__content__secondary">
-                  <h2 class="neutral">This month:</h2>
-                  <h1 class="normal">{{ monthly_stats.time_played }}</h1>
-              </div>
-          </div>
+            </li>
+            <!-- end of single mini event -->
+          {% endfor %}
+        </ul>
       </div>
     </div>
-      <!-- End of single metric -->
-  </section>
-  {% if  most_viewed or most_popular %}
-  <section class="dashboard__best-list container">
-      <div class="col-xs-12 col-sm-6">
-          <p class="dashboard__section-title">My most viewed events:</p>
-          <ul class="mini-events__container">
-            {% for event in most_viewed %}
-              <!-- single mini event -->
-              <li class="mini-event flexbox-equal-height flexbox-nowrap">
-                <a href="{{ event.get_absolute_url }}" class="mini-event__image col-xs-3 col-lg-2">
-                  {% if event.photo %}
-                    <img src="{% thumbor_url event.photo.url|urlencode height=84 width=84 smart=True %}"
-                         alt=""/>
-                  {% else %}
-                    <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                  {% endif %}
-                </a>
-                <div class="mini-event__details col-xs-9 col-lg-10">
-                  <p class="mini-event__details__date">{{ event.listing_date|date:"n/j/Y" }}</p>
-                  <a href="#" class="mini-event__details__title">{{ event.title }}</a>
-                </div>
-              </li>
-              <!-- end of single mini event -->
-            {% endfor %}
-          </ul>
-      </div>
-      <div class="col-xs-12 col-sm-6">
-          <p class="dashboard__section-title">My most listened to events:</p>
-          <ul class="mini-events__container">
-            {% for event in most_listened_to %}
-              <!-- single mini event -->
-              <li class="mini-event flexbox-equal-height flexbox-nowrap">
-                <a href="{{ event.get_absolute_url }}" class="mini-event__image col-xs-3 col-lg-2">
-                  {% if event.photo %}
-                    <img src="{% thumbor_url event.photo.url|urlencode height=84 width=84 smart=True %}"
-                         alt=""/>
-                  {% else %}
-                    <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                  {% endif %}
-                </a>
-                <div class="mini-event__details col-xs-9 col-lg-10">
-                  <p class="mini-event__details__date">{{ event.listing_date|date:"n/j/Y" }}</p>
-                  <a href="#" class="mini-event__details__title">{{ event.title }}</a>
-                </div>
-              </li>
-              <!-- end of single mini event -->
-            {% endfor %}
-          </ul>
-      </div>
-  </section>
-  {% endif %}
-  <section class="dashboard__upcoming-events container">
-      <p class="dashboard__section-title">My upcoming events at Smalls:</p>
-      <ul class="upcoming-events__container">
-        {% for gig_info in upcoming_events %}
-        {% with event=gig_info.event  %}
-          <li class="upcoming-event flexbox-equal-height flexbox-nowrap">
-              <div class="upcoming-event__image col-xs-12 col-sm-3 col-lg-2">
-                {% if event.photo %}
-                  <a href="#"><img src="{% thumbor_url event.photo.url|urlencode height=140 width=140 smart=True %}" alt=""/></a>
-                {% else %}
-                  <a href="#"><img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/></a>
-                {% endif %}
-              </div>
-              <div class="upcoming-event__details col-xs-12 col-sm-9 col-lg-10">
-                  <p class="upcoming-event__details__date">{{ event.listing_date|date:"n/j/Y" }}</p>
-                  <a href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}" class="upcoming-event__details__title">{{ event.full_title }}</a>
-                  <p class="upcoming-event__details__label">With:</p>
-                  <p class="upcoming-event__details__artists">
-                    {% for gig_info in event.get_performers %}
-                      {{ gig_info.artist.full_name }} <span class="instrument">({{ gig_info.role }})</span>{% if not forloop.last %}  // {% endif %}
-                    {% endfor %}
-                  </p>
-                  {% if gig_info.is_leader %}
-                    <span class="is-leader">You are the leader.</span>
-                    <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}" class="red-arrow-button">Edit event</a><span class="arrow"></span>
-                  {% endif %}
-              </div>
-          </li>
-        {% endwith %}
-        {% empty %}
-          <p>No upcoming events.</p>
-        {% endfor %}
-      </ul>
   </section>
 {% endblock content %}
 
 
 {% block extra_js %}
   <script src="{% static 'js/intro/intro.min.js' %}"></script>
-  <script src="{% static 'js/metrics_datepicker.js' %}"></script>
   <script>
       var firstLogin = {{ first_login|lower }};
       if (firstLogin) {
@@ -194,108 +207,4 @@
         })
       }
   </script>
-
-  <script>
-
-		var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
-    var playsData = {
-      labels: {{ date_counts.dates|safe }},
-      datasets: [
-        {
-          label: "Audio",
-          fillColor: "rgba(56,193,153,0)",
-          strokeColor: "rgba(56,193,153,1)",
-          pointColor: "rgba(56,193,153,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(151,187,205,1)",
-          data: {{ date_counts.audio_plays_list }}
-        },
-        {
-          label: "Video",
-          fillColor: "rgba(125,77,117,0)",
-          strokeColor: "rgba(125,77,117,1)",
-          pointColor: "rgba(125,77,117,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(151,187,205,1)",
-          data: {{ date_counts.video_plays_list }}
-        },
-        {
-          label: "Total",
-          fillColor: "rgba(210,21,53,0)",
-          strokeColor: "rgba(210,21,53,1)",
-          pointColor: "rgba(210,21,53,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(220,220,220,1)",
-          data: {{ date_counts.total_plays_list }}
-        }
-      ]
-
-    };
-
-    var minsData = {
-      labels: {{ date_counts.dates|safe }},
-      datasets: [
-        {
-          label: "Audio",
-          fillColor: "rgba(56,193,153,0)",
-          strokeColor: "rgba(56,193,153,1)",
-          pointColor: "rgba(56,193,153,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(151,187,205,1)",
-          data: {{ date_counts.audio_minutes_list }}
-        },
-        {
-          label: "Video",
-          fillColor: "rgba(125,77,117,0)",
-          strokeColor: "rgba(125,77,117,1)",
-          pointColor: "rgba(125,77,117,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(151,187,205,1)",
-          data: {{ date_counts.video_minutes_list }}
-        },
-        {
-          label: "Total",
-          fillColor: "rgba(210,21,53,0)",
-          strokeColor: "rgba(210,21,53,1)",
-          pointColor: "rgba(210,21,53,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(220,220,220,1)",
-          data: {{ date_counts.total_minutes_list }}
-        }
-      ]
-
-    };
-
-        window.onload = drawGraph(playsData, 'plays');
-
-
-        /* Toggyling different data */
-        $(document).ready(function () {
-            $("#metric-graph__show__data-1").click(function () {
-                if (!($(this).hasClass("active"))) {
-                    $(".metric-graph__switch__option.data.active").toggleClass("active");
-                    $(this).toggleClass("active");
-                    $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
-                    var ctx = document.getElementById("graph-canvas").getContext("2d");
-                    drawGraph(playsData, 'plays');
-                }
-            });
-            $("#metric-graph__show__data-2").click(function () {
-                if (!($(this).hasClass("active"))) {
-                    $(".metric-graph__switch__option.data.active").toggleClass("active");
-                    $(this).toggleClass("active");
-                    $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
-                    var ctx = document.getElementById("graph-canvas").getContext("2d");
-                    drawGraph(minsData, 'mins');
-                }
-            })
-        });
-
-	</script>
 {% endblock %}
