@@ -31,6 +31,8 @@ class Artist(models.Model):
     photo = models.ImageField(upload_to=artist_image_path, max_length=150, blank=True)
     cropping = ImageRatioField('photo', '580x400', help_text="Enable cropping", allow_fullsize=True)
     slug = models.SlugField(blank=True, max_length=100)
+    current_period_seconds_played = models.BigIntegerField(default=0)
+    current_period_ratio = models.DecimalField(max_digits=11, decimal_places=10, default=0)
 
     class Meta:
         ordering = ['last_name']
@@ -174,3 +176,11 @@ class ArtistEarnings(models.Model):
 
     def __unicode__(self):
         return u"{0}: ${1}".format(self.artist.full_name(), self.amount)
+
+
+class CurrentPayoutPeriod(models.Model):
+    period_start = models.DateField()
+    period_end = models.DateField()
+
+    def __unicode__(self):
+        return u"{0}-{1}".format(self.period_start, self.period_end)
