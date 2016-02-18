@@ -25,7 +25,7 @@ import allauth.account.views as allauth_views
 from metrics.models import UserVideoMetric
 from rest_framework.authtoken.models import Token
 
-from artists.models import Artist, ArtistEarnings
+from artists.models import Artist, ArtistEarnings, CurrentPayoutPeriod
 from events.models import Recording, Event
 import events.views as event_views
 import users.forms as user_forms
@@ -328,6 +328,34 @@ class AdminMetricsView(SuperuserRequiredMixin, TemplateView):
         return events
 
 admin_metrics = AdminMetricsView.as_view()
+
+
+class ChangePayoutPeriodView(SuperuserRequiredMixin, UpdateView):
+    success_url = reverse_lazy('artist_dashboard:change_payout_period')
+    template_name = "artist_dashboard/change_payout_period.html"
+
+    def get_object(self, queryset=None):
+        current_period = CurrentPayoutPeriod.objects.first()
+        if not current_period:
+            start = timezone.now()
+            end = start + timedelta(days=90)
+            current_period = CurrentPayoutPeriod.objects.create(
+                period_start=start,
+                period_end=end
+            )
+        return current_period
+
+    def form_valid(self, form):
+        messages.success(self.request, "Payout period dates successfully changed")
+        return super(ChangePayoutPeriodView, self).form_valid(form)
+
+change_payout_period = ChangePayoutPeriodView.as_view()
+
+
+class PreviousPayoutsView(TemplateView):
+    template_name = 'artist_dashboard/previous_payouts.html'
+
+previous_payouts = PreviousPayoutsView.as_view()
 
 
 def metrics_payout(request):
