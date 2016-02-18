@@ -19,7 +19,7 @@ def generate_payout_sheet_task(start, end, revenue, operating_expenses, save_ear
             "Spreadsheet for the period {}/{}/{} - {}/{}/{} is attached.".format(
                     start.year, start.month, start.day, end.year, end.month, end.day),
             "smallslive@gmail.com",
-            ["smallsjazzclub@gmail.com", "spikewilner@gmail.com"]
+            ["smallsjazzclub@gmail.com", "spikewilner@gmail.com", "nate@appsembler.com"]
     )
     email.attach(filename, output.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     email.send()
