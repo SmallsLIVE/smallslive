@@ -33,6 +33,6 @@ class MetricsRouter(object):
         Make sure the auth app only appears in the 'auth_db'
         database.
         """
-        if app_label == 'metrics':
+        if app_label._meta.app_label == 'metrics':
             return db == 'metrics'
         return None
