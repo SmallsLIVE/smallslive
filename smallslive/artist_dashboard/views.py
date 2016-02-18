@@ -220,50 +220,50 @@ class ToggleRecordingStateView(HasArtistAssignedMixin, UpdateView):
 toggle_recording_state = ToggleRecordingStateView.as_view()
 
 
-class MyMetricsView(HasArtistAssignedMixin, TemplateView):
-    template_name = 'artist_dashboard/my_metrics.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(MyMetricsView, self).get_context_data(**kwargs)
-        now = timezone.now().date()
-        context['metrics_server_url'] = settings.METRICS_SERVER_URL
-        context['user_token'] = Token.objects.get(user=self.request.user)
-        artist_event_ids = list(self.request.user.artist.event_id_list())
-        context['artist_event_ids'] = artist_event_ids
-        context['monthly_stats'] = UserVideoMetric.objects.this_month_counts(humanize=True)
-        context['weekly_stats'] = UserVideoMetric.objects.this_week_counts(humanize=True)
-        context['weekly_artist_stats'] = UserVideoMetric.objects.this_week_counts(artist_event_ids=artist_event_ids,
-                                                                                  trends=True, humanize=True)
-        context['monthly_artist_stats'] = UserVideoMetric.objects.this_month_counts(artist_event_ids=artist_event_ids,
-                                                                                    trends=True, humanize=True)
-        context['all_time_for_artist'] = UserVideoMetric.objects.all_time_for_artist(artist_event_ids=artist_event_ids,
-                                                                                     humanize=True)
-        top_weekly_events = UserVideoMetric.objects.top_week_events(artist_event_ids=artist_event_ids, trends=True)
-        context['top_weekly_events'] = self._event_and_counts_from_ids(top_weekly_events)
-        top_all_time_events = UserVideoMetric.objects.top_all_time_events(artist_event_ids=artist_event_ids)
-        context['top_all_time_events'] = self._event_and_counts_from_ids(top_all_time_events)
-        context['date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year, artist_event_ids)
-        context['archive_date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year)
-        # last_payment_period = ArtistEarnings.objects.first()
-        # context["new_payment_period_start"] = last_payment_period.period_end + timedelta(days=1)
-        # new_payment_period_end = context["new_payment_period_start"] + timedelta(weeks=12)
-        # context["new_payment_period_end"] = new_payment_period_end.replace(
-        #         day=monthrange(new_payment_period_end.year, new_payment_period_end.month)[1])
-        return context
-
-    def _event_and_counts_from_ids(self, top_events):
-        events = []
-        for event_data in top_events:
-            try:
-                event = Event.objects.get(id=event_data['event_id'])
-                counts = UserVideoMetric.objects.counts_for_event(event.id, humanize=True)
-                counts.update(event_data)
-                events.append((event, counts))
-            except Event.DoesNotExist:
-                pass
-        return events
-
-my_metrics = MyMetricsView.as_view()
+# class MyMetricsView(HasArtistAssignedMixin, TemplateView):
+#     template_name = 'artist_dashboard/my_metrics.html'
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(MyMetricsView, self).get_context_data(**kwargs)
+#         now = timezone.now().date()
+#         context['metrics_server_url'] = settings.METRICS_SERVER_URL
+#         context['user_token'] = Token.objects.get(user=self.request.user)
+#         artist_event_ids = list(self.request.user.artist.event_id_list())
+#         context['artist_event_ids'] = artist_event_ids
+#         context['monthly_stats'] = UserVideoMetric.objects.this_month_counts(humanize=True)
+#         context['weekly_stats'] = UserVideoMetric.objects.this_week_counts(humanize=True)
+#         context['weekly_artist_stats'] = UserVideoMetric.objects.this_week_counts(artist_event_ids=artist_event_ids,
+#                                                                                   trends=True, humanize=True)
+#         context['monthly_artist_stats'] = UserVideoMetric.objects.this_month_counts(artist_event_ids=artist_event_ids,
+#                                                                                     trends=True, humanize=True)
+#         context['all_time_for_artist'] = UserVideoMetric.objects.all_time_for_artist(artist_event_ids=artist_event_ids,
+#                                                                                      humanize=True)
+#         top_weekly_events = UserVideoMetric.objects.top_week_events(artist_event_ids=artist_event_ids, trends=True)
+#         context['top_weekly_events'] = self._event_and_counts_from_ids(top_weekly_events)
+#         top_all_time_events = UserVideoMetric.objects.top_all_time_events(artist_event_ids=artist_event_ids)
+#         context['top_all_time_events'] = self._event_and_counts_from_ids(top_all_time_events)
+#         context['date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year, artist_event_ids)
+#         context['archive_date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year)
+#         # last_payment_period = ArtistEarnings.objects.first()
+#         # context["new_payment_period_start"] = last_payment_period.period_end + timedelta(days=1)
+#         # new_payment_period_end = context["new_payment_period_start"] + timedelta(weeks=12)
+#         # context["new_payment_period_end"] = new_payment_period_end.replace(
+#         #         day=monthrange(new_payment_period_end.year, new_payment_period_end.month)[1])
+#         return context
+#
+#     def _event_and_counts_from_ids(self, top_events):
+#         events = []
+#         for event_data in top_events:
+#             try:
+#                 event = Event.objects.get(id=event_data['event_id'])
+#                 counts = UserVideoMetric.objects.counts_for_event(event.id, humanize=True)
+#                 counts.update(event_data)
+#                 events.append((event, counts))
+#             except Event.DoesNotExist:
+#                 pass
+#         return events
+#
+# my_metrics = MyMetricsView.as_view()
 
 
 class AdminMetricsView(SuperuserRequiredMixin, TemplateView):
