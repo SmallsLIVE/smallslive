@@ -36,13 +36,13 @@ from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm,\
 from artist_dashboard.tasks import generate_payout_sheet_task
 
 
-class MyGigsView(HasArtistAssignedMixin, ListView):
+class MyEventsView(HasArtistAssignedMixin, ListView):
     context_object_name = 'gigs'
     paginate_by = 15
     template_name = 'artist_dashboard/my_gigs.html'
 
     def get_context_data(self, **kwargs):
-        context = super(MyGigsView, self).get_context_data(**kwargs)
+        context = super(MyEventsView, self).get_context_data(**kwargs)
         paginator = context['paginator']
         current_page_number = context['page_obj'].number
         adjacent_pages = 2
@@ -97,7 +97,37 @@ class MyGigsView(HasArtistAssignedMixin, ListView):
 
         return queryset.distinct()
 
-my_gigs = MyGigsView.as_view()
+
+class MyFutureEventsView(MyEventsView):
+    def get_queryset(self):
+        artist = self.request.user.artist
+        now = timezone.now()
+        queryset = artist.gigs_played.select_related('event').filter(event__start__gte=now)
+        queryset = self.apply_filters(queryset).order_by('event__start')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(MyFutureEventsView, self).get_context_data(**kwargs)
+        context['future_active'] = True
+        return context
+
+my_future_events = MyFutureEventsView.as_view()
+
+
+class MyPastEventsView(MyEventsView):
+    def get_queryset(self):
+        artist = self.request.user.artist
+        now = timezone.now()
+        queryset = artist.gigs_played.select_related('event').filter(event__start__lt=now)
+        queryset = self.apply_filters(queryset).order_by('-event__start')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(MyPastEventsView, self).get_context_data(**kwargs)
+        context['past_active'] = True
+        return context
+
+my_past_events = MyPastEventsView.as_view()
 
 
 class DashboardView(HasArtistAssignedMixin, TemplateView):

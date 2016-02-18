@@ -12,11 +12,11 @@
   <section class="page-heading page-heading-selector container">
       <h1>My events:</h1>
       <ul class="page-heading-selector__selector">
-        <li class="active">
-          <a href="#">Past events</a>
+        <li {% if past_active %}class="active"{% endif %}>
+          <a href="{% url "artist_dashboard:my_past_events" %}">Past events</a>
         </li>
-        <li>
-          <a href="#">Future events</a>
+        <li {% if future_active %}class="active"{% endif %}>
+          <a href="{% url "artist_dashboard:my_future_events" %}">Future events</a>
         </li>
       </ul>
   </section>
@@ -49,7 +49,7 @@
               </ul>
           </li>
           <li class="events__filters__group">
-              <a class="clear-toggle" href="{% url "artist_dashboard:my_gigs" %}"><i class="fa fa-remove"></i> Clear filters</a>
+              <a class="clear-toggle" href="{% add_get audio_filter=None video_filter=None leader_filter=None page=None%}"><i class="fa fa-remove"></i> Clear filters</a>
           </li>
       </ul>
   </section>
