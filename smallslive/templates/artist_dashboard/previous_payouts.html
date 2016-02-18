@@ -34,84 +34,36 @@
           Paid out
         </div>
       </li>
+      {% for payout in past_payouts %}
       <li class="previous-payouts__table__row">
         <div class="period-dates">
-          10/15 - 12/15
+          {{ payout.payout_period.period_start|date:"n/j/Y" }} - {{ payout.payout_period.period_end|date:"n/j/Y" }}
         </div>
         <div class="archive-total">
-          39074370 seconds
+          {{ payout.payout_period.total_seconds }} seconds
         </div>
         <div class="my-total">
-          202110 seconds
+          {{ payout.artist_seconds }} seconds
         </div>
         <div class="my-period-ratio">
-          0.517%
+          {{ payout.artist_percentage_ratio|floatformat:"-5" }}%
         </div>
         <div class="total-archive-payout">
-          $6594.00
+          ${{ payout.payout_period.total_amount|floatformat:"-2" }}
         </div>
         <div class="my-payout">
-          $34.10
+          ${{ payout.amount|floatformat:"-2" }}
         </div>
         <div class="my-ledger-balance">
-          $0
+          ${{ payout.ledger_balance|floatformat:"-2" }}
         </div>
         <div class="paid-out">
-          <i class="fa fa-check-circle"></i>
+          {% if payout.ledger_balance > 20 %}
+            <i class="fa fa-check-circle"></i>
+          {% endif %}
         </div>
       </li>
-      <li class="previous-payouts__table__row">
-        <div class="period-dates">
-          10/15 - 12/15
-        </div>
-        <div class="archive-total">
-          39074370 seconds
-        </div>
-        <div class="my-total">
-          202110 seconds
-        </div>
-        <div class="my-period-ratio">
-          0.517%
-        </div>
-        <div class="total-archive-payout">
-          $6594.00
-        </div>
-        <div class="my-payout">
-          $34.10
-        </div>
-        <div class="my-ledger-balance">
-          $0
-        </div>
-        <div class="paid-out">
-          <i class="fa fa-check-circle"></i>
-        </div>
-      </li>
-      <li class="previous-payouts__table__row">
-        <div class="period-dates">
-          10/15 - 12/15
-        </div>
-        <div class="archive-total">
-          39074370 seconds
-        </div>
-        <div class="my-total">
-          202110 seconds
-        </div>
-        <div class="my-period-ratio">
-          0.517%
-        </div>
-        <div class="total-archive-payout">
-          $6594.00
-        </div>
-        <div class="my-payout">
-          $34.10
-        </div>
-        <div class="my-ledger-balance">
-          $0
-        </div>
-        <div class="paid-out">
-          <i class="fa fa-check-circle"></i>
-        </div>
-      </li>
+      {% endfor %}
     </ul>
   </section>
 {% endblock %}

@@ -156,6 +156,7 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
         first_login = self.request.user.is_first_login()
         context['first_login'] = first_login
         context['current_payout_period'] = CurrentPayoutPeriod.objects.first()
+        context['previous_payout_period'] = artist.earnings.first()
         # don't show intro.js when user reloads the dashboard
         if first_login:
             self.request.user.last_login += timedelta(seconds=1)
@@ -353,8 +354,12 @@ class ChangePayoutPeriodView(SuperuserRequiredMixin, UpdateView):
 change_payout_period = ChangePayoutPeriodView.as_view()
 
 
-class PreviousPayoutsView(TemplateView):
+class PreviousPayoutsView(ListView):
+    context_object_name = 'past_payouts'
     template_name = 'artist_dashboard/previous_payouts.html'
+
+    def get_queryset(self):
+        return self.request.user.artist.earnings.select_related('payout_period').all()
 
 previous_payouts = PreviousPayoutsView.as_view()
 

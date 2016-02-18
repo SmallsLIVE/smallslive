@@ -45,10 +45,10 @@ def update_current_period_metrics():
     current_period = CurrentPayoutPeriod.objects.first()
     metrics = metrics_data_for_date_period(current_period.period_start, current_period.period_end)
     for artist_id, info in metrics['metrics_info'].iteritems():
-        artist = Artist.objects.get(id=artist_id)
-        artist.current_period_seconds_played = info['seconds_played']
-        artist.current_period_ratio = info['ratio']
-        artist.save()
+        Artist.objects.filter(id=artist_id).update(
+            current_period_seconds_played=info['seconds_played'],
+            current_period_ratio=info['ratio']
+        )
     current_period.current_total_seconds = metrics['total_adjusted_seconds']
     current_period.save()
     return True
@@ -82,7 +82,7 @@ def generate_payout_sheet(file, start_date, end_date, revenue, operating_expense
         )
         current_period = CurrentPayoutPeriod.objects.first()
         current_period.period_start = current_period.period_end + relativedelta(days=1)
-        current_period.period_end += relativedelta(month=3)
+        current_period.period_end = current_period.period_start + relativedelta(month=3)
         current_period.save()
 
     for idx, artist in enumerate(metrics['metrics_info'].items(), start=1):
@@ -95,11 +95,23 @@ def generate_payout_sheet(file, start_date, end_date, revenue, operating_expense
         sheet.write(idx, 4, ratio)
         sheet.write(idx, 5, payment)
         if save_earnings:
+            previous_payout = ArtistEarnings.objects.filter(artist_id=artist[0]).first()
+            if previous_payout:
+                ledger_balance = previous_payout.ledger_balance
+            else:
+                ledger_balance = 0
+
+            if ledger_balance < 20:
+                new_ledger_balance = payment + ledger_balance
+            else:
+                new_ledger_balance = 0
+
             earnings = ArtistEarnings.objects.get_or_create(
                 payout_period=payout_period,
                 artist_id = artist[0],
                 artist_seconds=artist[1]['seconds_played'],
                 artist_ratio=ratio,
-                amount=payment
+                amount=payment,
+                ledger_balance=new_ledger_balance
             )
     workbook.close()

@@ -20,7 +20,7 @@
                 Period dates:
               </div>
               <div class="payout-period__table__value">
-                {{ current_payout_period.period_start }} - {{ current_payout_period.period_end }}
+                {{ current_payout_period.period_start|date:"n/j/Y" }} - {{ current_payout_period.period_end|date:"n/j/Y" }}
               </div>
             </li>
             <li class="payout-period__table__row">
@@ -100,7 +100,7 @@
         <div class="payout-period previous-period">
           <div class="payout-period__heading-group">
             <h2 class="payout-period__heading">Previous pay out</h2>
-            <a href="#" class="payout-period__heading-cta">All payouts</a>
+            <a href="{% url "artist_dashboard:previous_payouts" %}" class="payout-period__heading-cta">All payouts</a>
           </div>
           <ul class="payout-period__table">
             <li class="payout-period__table__row">
@@ -108,7 +108,7 @@
                 Period dates:
               </div>
               <div class="payout-period__table__value">
-                10/15 - 12/15
+                {{ previous_payout_period.payout_period.period_start|date:"n/j/Y" }} - {{ previous_payout_period.payout_period.period_end|date:"n/j/Y" }}
               </div>
             </li>
             <li class="payout-period__table__row">
@@ -116,7 +116,7 @@
                 Archive total:
               </div>
               <div class="payout-period__table__value">
-                39074370 seconds
+                {{ previous_payout_period.payout_period.total_seconds }} seconds
               </div>
             </li>
             <li class="payout-period__table__row">
@@ -124,7 +124,7 @@
                 My total:
               </div>
               <div class="payout-period__table__value">
-                202110 seconds
+                {{ previous_payout_period.artist_seconds }} seconds
               </div>
             </li>
             <li class="payout-period__table__row">
@@ -132,7 +132,7 @@
                 My period ratio:
               </div>
               <div class="payout-period__table__value">
-                0.517%
+                {{ previous_payout_period.artist_percentage_ratio|floatformat:"-5" }}%
               </div>
             </li>
             <li class="payout-period__table__row">
@@ -140,7 +140,7 @@
                 Total archive payout:
               </div>
               <div class="payout-period__table__value">
-                $6594.00
+                ${{ previous_payout_period.payout_period.total_amount|floatformat:"-2" }}
               </div>
             </li>
             <li class="payout-period__table__row">
@@ -148,7 +148,7 @@
                 My payout:
               </div>
               <div class="payout-period__table__value">
-                $34.10
+                ${{ previous_payout_period.amount|floatformat:"-2" }}
               </div>
             </li>
             <li class="payout-period__table__row">
@@ -156,7 +156,7 @@
                 My ledger balance:
               </div>
               <div class="payout-period__table__value">
-                $0
+                ${{ previous_payout_period.ledger_balance|floatformat:"-2" }}
               </div>
             </li>
           </ul>

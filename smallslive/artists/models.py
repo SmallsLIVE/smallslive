@@ -174,6 +174,9 @@ class PastPayoutPeriod(models.Model):
     total_seconds = models.BigIntegerField(default=0)
     total_amount = models.DecimalField(max_digits=10, decimal_places=4, default=0)
 
+    class Meta:
+        ordering = ['-period_end']
+
 
 class ArtistEarnings(models.Model):
     artist = models.ForeignKey(Artist, related_name='earnings')
@@ -181,12 +184,16 @@ class ArtistEarnings(models.Model):
     artist_seconds = models.BigIntegerField(default=0)
     artist_ratio = models.DecimalField(max_digits=11, decimal_places=10, default=0)
     amount = models.DecimalField(max_digits=10, decimal_places=4, default=0)
+    ledger_balance = models.DecimalField(max_digits=10, decimal_places=4, default=0)
 
     class Meta:
-        ordering = ['-payout_period']
+        ordering = ['-payout_period__period_end']
 
     def __unicode__(self):
         return u"{0}: ${1}".format(self.artist.full_name(), self.amount)
+
+    def artist_percentage_ratio(self):
+        return self.artist_ratio* 100
 
 
 class CurrentPayoutPeriod(models.Model):
