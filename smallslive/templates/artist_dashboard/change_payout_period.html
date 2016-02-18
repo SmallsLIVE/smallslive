@@ -17,7 +17,8 @@
                 {{ form.errors }}
                 <div class="payout-calculator__input"><span class="payout-calculator__input__label">Period start date:</span><span class="payout-calculator__date-picker" id="payout-calculator__date-picker-start"><input class="" type="text" name="period_start" readonly><i class="fa fa-caret-down"></i></span></div>
                 <div class="payout-calculator__input"><span class="payout-calculator__input__label">Period end date:</span><span class="payout-calculator__date-picker" id="payout-calculator__date-picker-end"><input class="" type="text" name="period_end" readonly><i class="fa fa-caret-down"></i></span></div>
-                <button type="submit" class="payout-calculator__submit-button">Calculate</button>
+                <input type="hidden" name="current_total_seconds" value="0">
+                <button type="submit" class="payout-calculator__submit-button">Change</button>
             </section>
         </form>
     </div>

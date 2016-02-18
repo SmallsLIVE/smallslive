@@ -2,7 +2,10 @@ import collections
 import logging
 from decimal import Decimal
 import xlsxwriter
-from artists.models import Artist, ArtistEarnings, CurrentPayoutPeriod
+from datetime import timedelta
+from dateutil.relativedelta import relativedelta
+
+from artists.models import Artist, ArtistEarnings, CurrentPayoutPeriod, PastPayoutPeriod
 from metrics.models import UserVideoMetric
 from events.models import Event
 
@@ -33,7 +36,8 @@ def metrics_data_for_date_period(start_date, end_date):
         artist['ratio'] = Decimal(artist['seconds_played'] / float(total_adjusted_seconds)) if total_adjusted_seconds else 0
     return {
         'metrics_info': artists,
-        'total_archive_seconds': total_adjusted_seconds
+        'total_adjusted_seconds': total_adjusted_seconds,
+        'total_event_seconds': total_event_seconds
     }
 
 
@@ -45,7 +49,7 @@ def update_current_period_metrics():
         artist.current_period_seconds_played = info['seconds_played']
         artist.current_period_ratio = info['ratio']
         artist.save()
-    current_period.current_total_seconds = metrics['total_archive_seconds']
+    current_period.current_total_seconds = metrics['total_adjusted_seconds']
     current_period.save()
     return True
 
@@ -57,13 +61,29 @@ def generate_payout_sheet(file, start_date, end_date, revenue, operating_expense
     bold = workbook.add_format({'bold': True})
     sheet = workbook.add_worksheet('Payments')
     sheet.set_column(8, 8, 30)
-    sheet.write_row('I1', ('Total event seconds', total_event_seconds), bold)
-    sheet.write_row('I2', ('Total adjusted seconds', total_adjusted_seconds), bold)
+    sheet.write_row('I1', ('Total event seconds', metrics['total_event_seconds']), bold)
+    sheet.write_row('I2', ('Total adjusted seconds', metrics['total_adjusted_seconds']), bold)
     sheet.write_row('I3', ('Revenue', revenue), bold)
     sheet.write_row('I4', ('Operating costs', operating_expenses), bold)
     sheet.write_row('I5', ('Artist money pool', pool), bold)
     headers = ('Artist ID', 'Last name', 'First name', 'Seconds watched', 'Ratio', 'Payment')
     sheet.write_row('A1', headers, bold)
+
+    if save_earnings:
+        payout_period = PastPayoutPeriod.objects.create(
+            period_start=start_date,
+            period_end=end_date,
+            total_seconds=metrics['total_adjusted_seconds'],
+            total_amount=pool
+        )
+        Artist.objects.all().update(
+            current_period_seconds_played=0,
+            current_period_ratio=0
+        )
+        current_period = CurrentPayoutPeriod.objects.first()
+        current_period.period_start = current_period.period_end + relativedelta(days=1)
+        current_period.period_end += relativedelta(month=3)
+        current_period.save()
 
     for idx, artist in enumerate(metrics['metrics_info'].items(), start=1):
         ratio = artist[1]['ratio']
@@ -76,9 +96,10 @@ def generate_payout_sheet(file, start_date, end_date, revenue, operating_expense
         sheet.write(idx, 5, payment)
         if save_earnings:
             earnings = ArtistEarnings.objects.get_or_create(
+                payout_period=payout_period,
                 artist_id = artist[0],
-                period_start=start_date,
-                period_end=end_date,
+                artist_seconds=artist[1]['seconds_played'],
+                artist_ratio=ratio,
                 amount=payment
             )
     workbook.close()

@@ -48,24 +48,24 @@
           <script>
             var $datePickerStart = $('#payout-calculator__date-picker-start input');
             $datePickerStart.datepicker({
-                format: 'MM // yyyy',
-                minViewMode: "months",
+                format: 'yyyy-mm-dd',
+                minViewMode: "days",
                 orientation: "top auto",
-                startDate: new Date(2015, 7-1, 1),
+                startDate: new Date(2015, 11-1, 1),
                 autoclose: true
             });
 
             var $datePickerEnd = $('#payout-calculator__date-picker-end input');
             $datePickerEnd.datepicker({
-                format: 'MM // yyyy',
-                minViewMode: "months",
+                format: 'yyyy-mm-dd',
+                minViewMode: "days",
                 orientation: "top auto",
-                startDate: new Date(2015, 7-1, 1),
                 autoclose: true
             });
 
-            var date = new Date(2015, 7, 1);
-            $datePickerStart.datepicker("setDate", date);
-            $datePickerEnd.datepicker("setDate", date);
+            var start_date = new Date({{ form.fields.period_start.initial.year }}, {{ form.fields.period_start.initial.month }}-1, {{ form.fields.period_start.initial.day}});
+            var end_date = new Date({{ form.fields.period_end.initial.year }}, {{ form.fields.period_end.initial.month }}-1, {{ form.fields.period_end.initial.day}});
+            $datePickerStart.datepicker("setDate", start_date);
+            $datePickerEnd.datepicker("setDate", end_date);
           </script>
 {% endblock %}

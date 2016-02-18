@@ -15,6 +15,7 @@ import allauth.account.forms as allauth_forms
 from localflavor.us.forms import USStateField
 from localflavor.us.us_states import STATE_CHOICES
 from artists.forms import ArtistAddForm
+from artists.models import CurrentPayoutPeriod
 from events import forms as event_forms
 from events.forms import Formset
 from events.models import Recording
@@ -140,18 +141,14 @@ class ArtistResetPasswordForm(allauth_forms.ResetPasswordForm):
 
 
 class MetricsPayoutForm(forms.Form):
-    period_start = forms.DateField(required=True, input_formats=["%B // %Y"])
-    period_end = forms.DateField(required=True, input_formats=["%B // %Y"])
+    period_start = forms.DateField(required=True)
+    period_end = forms.DateField(required=True)
     revenue = forms.DecimalField(required=True)
     operating_cost = forms.DecimalField(required=True)
     save_earnings = forms.BooleanField(required=False)
-
-    def clean_period_start(self):
-        start = self.cleaned_data['period_start']
-        start = start.replace(day=1)
-        return start
-
-    def clean_period_end(self):
-        end = self.cleaned_data['period_end']
-        end = end.replace(day=monthrange(end.year, end.month)[1])
-        return end
+    
+    def __init__(self, *args, **kwargs):
+        super(MetricsPayoutForm, self).__init__(*args, **kwargs)
+        current_period = CurrentPayoutPeriod.objects.first()
+        self.fields['period_start'].initial = current_period.period_start
+        self.fields['period_end'].initial = current_period.period_end

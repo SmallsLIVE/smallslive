@@ -43,7 +43,8 @@ INSTALLED_APPS += (
 ENABLE_HIJACK = True
 
 COMPRESS_ENABLED = False
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_PORT = 1025
 DEFAULT_FROM_EMAIL = 'smallslive@gmail.com'
 DEFAULT_FROM_REGISTRATION_EMAIL = "smallsliveusers@gmail.com"
 

@@ -1,5 +1,4 @@
-from calendar import monthrange
-from datetime import timedelta, datetime, date
+from datetime import timedelta
 from cacheops import cached
 from django.conf import settings
 from django.db.models import Max
@@ -11,7 +10,6 @@ except ImportError:
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core import signing
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -33,7 +31,7 @@ from users.models import LegalAgreementAcceptance
 from users.views import HasArtistAssignedMixin, HasArtistAssignedOrIsSuperuserMixin
 from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm,\
     EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm
-from artist_dashboard.tasks import generate_payout_sheet_task
+from artist_dashboard.tasks import generate_payout_sheet_task, update_current_period_metrics_task
 
 
 class MyEventsView(HasArtistAssignedMixin, ListView):
@@ -348,7 +346,9 @@ class ChangePayoutPeriodView(SuperuserRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         messages.success(self.request, "Payout period dates successfully changed")
-        return super(ChangePayoutPeriodView, self).form_valid(form)
+        response = super(ChangePayoutPeriodView, self).form_valid(form)
+        update_current_period_metrics_task.delay()
+        return response
 
 change_payout_period = ChangePayoutPeriodView.as_view()
 
