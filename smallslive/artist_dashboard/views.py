@@ -112,29 +112,16 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
         @cached(timeout=6*60*60)
         def _most_popular_events(artist_id):
             context = {}
-            most_popular_audio_ids = UserVideoMetric.objects.filter(
-                event_id__in=artist_event_ids).most_popular_audio()[:4]
-            most_popular_audio = []
-            for event_data in most_popular_audio_ids:
+            most_popular_event_ids = UserVideoMetric.objects.top_all_time_events(artist_event_ids=artist_event_ids)
+            most_popular_events = []
+            for event_data in most_popular_event_ids:
                 try:
                     event = Event.objects.filter(id=event_data['event_id']).annotate(
                         added=Max('recordings__date_added')).first()
-                    most_popular_audio.append(event)
+                    most_popular_events.append(event)
                 except Event.DoesNotExist:
                     pass
-            context['most_listened_to'] = most_popular_audio
-            
-            most_popular_video_ids = UserVideoMetric.objects.filter(
-                event_id__in=artist_event_ids).most_popular_video()[:4]
-            most_popular_video = []
-            for event_data in most_popular_video_ids:
-                try:
-                    event = Event.objects.filter(id=event_data['event_id']).annotate(
-                        added=Max('recordings__date_added')).first()
-                    most_popular_video.append(event)
-                except Event.DoesNotExist:
-                    pass
-            context['most_viewed'] = most_popular_video
+            context['most_popular_events'] = most_popular_events
             return context
 
         context.update(_most_popular_events(artist.id))

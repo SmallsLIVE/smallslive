@@ -169,7 +169,7 @@
           <a href="#" class="dashboard-home__top-performing__heading-cta">All events</a>
         </div>
         <ul class="mini-events__container">
-          {% for event in most_viewed %}
+          {% for event in most_popular_events %}
             <!-- single mini event -->
             <li class="mini-event flexbox-equal-height flexbox-nowrap">
               <a href="{{ event.get_absolute_url }}" class="mini-event__image col-xs-3 col-lg-2">
