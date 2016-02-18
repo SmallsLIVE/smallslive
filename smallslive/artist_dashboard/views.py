@@ -157,6 +157,7 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
         context.update(_most_popular_events(artist.id))
         first_login = self.request.user.is_first_login()
         context['first_login'] = first_login
+        context['current_payout_period'] = CurrentPayoutPeriod.objects.first()
         # don't show intro.js when user reloads the dashboard
         if first_login:
             self.request.user.last_login += timedelta(seconds=1)

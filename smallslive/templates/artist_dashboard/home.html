@@ -20,7 +20,7 @@
                 Period dates:
               </div>
               <div class="payout-period__table__value">
-                1/16 - 4/16
+                {{ current_payout_period.period_start }} - {{ current_payout_period.period_end }}
               </div>
             </li>
             <li class="payout-period__table__row">
@@ -28,7 +28,7 @@
                 Current period archive total:
               </div>
               <div class="payout-period__table__value">
-                39074370 seconds
+                {{ current_payout_period.current_total_seconds }} seconds
               </div>
             </li>
             <li class="payout-period__table__row">
@@ -36,7 +36,7 @@
                 Current period my total:
               </div>
               <div class="payout-period__table__value">
-                202110 seconds
+                {{ user.artist.current_period_seconds_played }} seconds
               </div>
             </li>
             <li class="payout-period__table__row">
@@ -44,7 +44,7 @@
                 My current period ratio:
               </div>
               <div class="payout-period__table__value">
-                0.517%
+                {{ user.artist.current_period_percentage_ratio|floatformat:"-5" }}%
               </div>
             </li>
           </ul>

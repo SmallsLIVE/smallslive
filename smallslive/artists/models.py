@@ -144,6 +144,9 @@ class Artist(models.Model):
         top_x, top_y, bottom_x, bottom_y = self.cropping.split(',')
         return ((top_x, top_y), (bottom_x, bottom_y))
 
+    def current_period_percentage_ratio(self):
+        return self.current_period_ratio * 100
+
 
 class Instrument(models.Model):
     name = models.CharField(max_length=255)
@@ -181,6 +184,7 @@ class ArtistEarnings(models.Model):
 class CurrentPayoutPeriod(models.Model):
     period_start = models.DateField()
     period_end = models.DateField()
+    current_total_seconds = models.BigIntegerField(default=0)
 
     def __unicode__(self):
         return u"{0}-{1}".format(self.period_start, self.period_end)

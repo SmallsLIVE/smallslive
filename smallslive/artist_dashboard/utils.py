@@ -31,22 +31,28 @@ def metrics_data_for_date_period(start_date, end_date):
 
     for artist_id, artist in artists.items():
         artist['ratio'] = Decimal(artist['seconds_played'] / float(total_adjusted_seconds)) if total_adjusted_seconds else 0
-    return artists
+    return {
+        'metrics_info': artists,
+        'total_archive_seconds': total_adjusted_seconds
+    }
 
 
 def update_current_period_metrics():
     current_period = CurrentPayoutPeriod.objects.first()
-    metrics_info = metrics_data_for_date_period(current_period.period_start, current_period.period_end)
-    for artist_id, info in metrics_info.iteritems():
+    metrics = metrics_data_for_date_period(current_period.period_start, current_period.period_end)
+    for artist_id, info in metrics['metrics_info'].iteritems():
         artist = Artist.objects.get(id=artist_id)
         artist.current_period_seconds_played = info['seconds_played']
         artist.current_period_ratio = info['ratio']
         artist.save()
+    current_period.current_total_seconds = metrics['total_archive_seconds']
+    current_period.save()
     return True
+
 
 def generate_payout_sheet(file, start_date, end_date, revenue, operating_expenses, save_earnings=False):
     pool = Decimal((revenue - operating_expenses) / Decimal(2.0))
-    artists = metrics_data_for_date_period(start_date, end_date)
+    metrics = metrics_data_for_date_period(start_date, end_date)
     workbook = xlsxwriter.Workbook(file, {'in_memory': True})
     bold = workbook.add_format({'bold': True})
     sheet = workbook.add_worksheet('Payments')
@@ -59,7 +65,7 @@ def generate_payout_sheet(file, start_date, end_date, revenue, operating_expense
     headers = ('Artist ID', 'Last name', 'First name', 'Seconds watched', 'Ratio', 'Payment')
     sheet.write_row('A1', headers, bold)
 
-    for idx, artist in enumerate(artists.items(), start=1):
+    for idx, artist in enumerate(metrics['metrics_info'].items(), start=1):
         ratio = artist[1]['ratio']
         payment = Decimal(ratio * pool)
         sheet.write(idx, 0, artist[0])
