@@ -83,6 +83,7 @@ def generate_payout_sheet(file, start_date, end_date, revenue, operating_expense
         current_period = CurrentPayoutPeriod.objects.first()
         current_period.period_start = current_period.period_end + relativedelta(days=1)
         current_period.period_end = current_period.period_start + relativedelta(month=3)
+        current_period.current_total_seconds = 0
         current_period.save()
 
     for idx, artist in enumerate(metrics['metrics_info'].items(), start=1):

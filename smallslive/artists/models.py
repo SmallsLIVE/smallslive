@@ -12,6 +12,7 @@ from sortedm2m.fields import SortedManyToManyField
 from tinymce import models as tinymce_models
 
 from events.models import Event, GigPlayed, Recording
+from multimedia.s3_storages import get_payouts_storage_object
 from users.models import SmallsEmailAddress
 
 def artist_image_path(instance, filename):
@@ -173,6 +174,7 @@ class PastPayoutPeriod(models.Model):
     period_end = models.DateField()
     total_seconds = models.BigIntegerField(default=0)
     total_amount = models.DecimalField(max_digits=10, decimal_places=4, default=0)
+    payout_spreadsheet = models.FileField(upload_to='payouts/', storage=get_payouts_storage_object(), blank=True)
 
     class Meta:
         ordering = ['-period_end']
