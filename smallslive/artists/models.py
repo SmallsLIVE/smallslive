@@ -168,14 +168,22 @@ class Instrument(models.Model):
         return u""
 
 
-class ArtistEarnings(models.Model):
-    artist = models.ForeignKey(Artist, related_name='earnings')
+class PastPayoutPeriod(models.Model):
     period_start = models.DateField()
     period_end = models.DateField()
+    total_seconds = models.BigIntegerField(default=0)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=4, default=0)
+
+
+class ArtistEarnings(models.Model):
+    artist = models.ForeignKey(Artist, related_name='earnings')
+    payout_period = models.ForeignKey(PastPayoutPeriod, related_name='artist_earnings')
+    artist_seconds = models.BigIntegerField(default=0)
+    artist_ratio = models.DecimalField(max_digits=11, decimal_places=10, default=0)
     amount = models.DecimalField(max_digits=10, decimal_places=4, default=0)
 
     class Meta:
-        ordering = ['-period_start']
+        ordering = ['-payout_period']
 
     def __unicode__(self):
         return u"{0}: ${1}".format(self.artist.full_name(), self.amount)
