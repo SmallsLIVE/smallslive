@@ -118,7 +118,6 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
                 event_id__in=artist_event_ids).most_popular_audio()[:4]
             most_popular_audio = []
             for event_data in most_popular_audio_ids:
-                print event_data
                 try:
                     event = Event.objects.filter(id=event_data['event_id']).annotate(
                         added=Max('recordings__date_added')).first()
@@ -131,7 +130,6 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
                 event_id__in=artist_event_ids).most_popular_video()[:4]
             most_popular_video = []
             for event_data in most_popular_video_ids:
-                print event_data
                 try:
                     event = Event.objects.filter(id=event_data['event_id']).annotate(
                         added=Max('recordings__date_added')).first()

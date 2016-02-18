@@ -50,7 +50,6 @@ class InstitutionMembersInviteForm(forms.Form):
         adapter = get_adapter()
         members = []
         for email in self.cleaned_data.get('member_emails'):
-            print email
             try:
                 user = User.objects.get(email=email)
                 if not user.institution:
