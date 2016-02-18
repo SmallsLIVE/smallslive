@@ -105,10 +105,8 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data(**kwargs)
-        now = timezone.now().date()
         artist = self.request.user.artist
         artist_event_ids = list(self.request.user.artist.event_id_list())
-        context['upcoming_events'] = artist.gigs_played.upcoming().select_related('event', 'artist')[:5]
 
         # need to pass the artist ID to cached function so it caches a different result for each artist
         @cached(timeout=6*60*60)
@@ -140,13 +138,6 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
             return context
 
         context.update(_most_popular_events(artist.id))
-        context['weekly_artist_stats'] = UserVideoMetric.objects.this_week_counts(artist_event_ids=artist_event_ids,
-                                                                                  trends=True, humanize=True)
-        context['monthly_artist_stats'] = UserVideoMetric.objects.this_month_counts(artist_event_ids=artist_event_ids,
-                                                                                    trends=True, humanize=True)
-        context['monthly_stats'] = UserVideoMetric.objects.this_month_counts(humanize=True)
-        context['weekly_stats'] = UserVideoMetric.objects.this_week_counts(humanize=True)
-        context['date_counts'] = UserVideoMetric.objects.date_counts(now.month, now.year)
         first_login = self.request.user.is_first_login()
         context['first_login'] = first_login
         # don't show intro.js when user reloads the dashboard
