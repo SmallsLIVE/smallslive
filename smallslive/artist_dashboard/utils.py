@@ -2,15 +2,13 @@ import collections
 import logging
 from decimal import Decimal
 import xlsxwriter
-from artists.models import Artist, ArtistEarnings
+from artists.models import Artist, ArtistEarnings, CurrentPayoutPeriod
 from metrics.models import UserVideoMetric
 from events.models import Event
 
 logger = logging.getLogger(__name__)
 
-
-def generate_payout_sheet(file, start_date, end_date, revenue, operating_expenses, save_earnings=False):
-    pool = Decimal((revenue - operating_expenses) / Decimal(2.0))
+def metrics_data_for_date_period(start_date, end_date):
     events = UserVideoMetric.objects.seconds_played_for_all_events(start_date, end_date)
     artists = collections.OrderedDict()
     for artist in Artist.objects.values('id', 'first_name', 'last_name').order_by('last_name'):
@@ -31,6 +29,24 @@ def generate_payout_sheet(file, start_date, end_date, revenue, operating_expense
         except Event.DoesNotExist:
             logger.warn('Event {0} does not exist (generating payout)'.format(event.get('event_id')))
 
+    for artist_id, artist in artists.items():
+        artist['ratio'] = Decimal(artist['seconds_played'] / float(total_adjusted_seconds)) if total_adjusted_seconds else 0
+    return artists
+
+
+def update_current_period_metrics():
+    current_period = CurrentPayoutPeriod.objects.first()
+    metrics_info = metrics_data_for_date_period(current_period.period_start, current_period.period_end)
+    for artist_id, info in metrics_info.iteritems():
+        artist = Artist.objects.get(id=artist_id)
+        artist.current_period_seconds_played = info['seconds_played']
+        artist.current_period_ratio = info['ratio']
+        artist.save()
+    return True
+
+def generate_payout_sheet(file, start_date, end_date, revenue, operating_expenses, save_earnings=False):
+    pool = Decimal((revenue - operating_expenses) / Decimal(2.0))
+    artists = metrics_data_for_date_period(start_date, end_date)
     workbook = xlsxwriter.Workbook(file, {'in_memory': True})
     bold = workbook.add_format({'bold': True})
     sheet = workbook.add_worksheet('Payments')
@@ -44,7 +60,7 @@ def generate_payout_sheet(file, start_date, end_date, revenue, operating_expense
     sheet.write_row('A1', headers, bold)
 
     for idx, artist in enumerate(artists.items(), start=1):
-        ratio = Decimal(artist[1]['seconds_played'] / float(total_adjusted_seconds)) if total_adjusted_seconds else 0
+        ratio = artist[1]['ratio']
         payment = Decimal(ratio * pool)
         sheet.write(idx, 0, artist[0])
         sheet.write(idx, 1, artist[1]['last_name'])
