@@ -44,7 +44,7 @@
 
         <section class="signup-plans">
             <div class="container">
-                <div class="col-xs-12 col-sm-4 signup-plan">
+                <div class="col-xs-12 col-sm-3 signup-plan">
                     <div class="signup-plan__content">
                         <p class="signup-plan__name">Live Video Stream Access</p>
                         <div class="signup-plan__price__container" id="signup-plan-price-slave">
@@ -62,7 +62,7 @@
                         <a class="signup-plan__button" href="{% url "accounts_signup" plan_name="free" %}">Sign up</a>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-4 signup-plan">
+                <div class="col-xs-12 col-sm-3 signup-plan">
                     <div class="signup-plan__content">
                         <p class="signup-plan__name">Audio/Video Archive & Live Video Stream Access</p>
                         <div class="signup-plan__price__container" id="signup-plan-price-master">
@@ -86,11 +86,12 @@
                             <li class="signup-plan__features__single"><b>Unlimited access</b>  to our Audio/Video Archive.</li>
                             <li class="signup-plan__features__single">New content is <b>added weekly</b>.</li>
                             <li class="signup-plan__features__single">Revenue from this subscription is <b>pooled and directly distributed to the artists</b> via the SmallsLIVE Artist Revenue Share Project. <a href="{% url "revenue-share" %}">Click here</a> for more information.</li>
+                            <li class="signup-plan__features__single"><a href="https://www.smallslive.com/store/catalogue/category/merch/gift-certificates_15/">Click here</a> for gift certificates.</li>
                         </ul>
                         <a class="signup-plan__button" href="{% url "accounts_signup" plan_name="basic" %}">Sign up</a>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-4 signup-plan">
+                <div class="col-xs-12 col-sm-3 signup-plan">
                     <div class="signup-plan__content">
                         <p class="signup-plan__name">Benefactor Member</p>
                         <div class="signup-plan__price__container">
@@ -115,9 +116,25 @@
                             <li class="signup-plan__features__single">Benefactor Members are <b>members who wish to support</b> SmallsLIVE and the Artists that perform there in a greater way.</li>
                             <li class="signup-plan__features__single">Revenue from this subscription is <b>pooled and directly distributed to the artists</b> via the SmallsLIVE Artist Revenue Share Project. <a href="{% url "revenue-share" %}">Click here</a> for more information.</li>
                             <li class="signup-plan__features__single">Your subscription <b>directly supports the artists and the venue</b>.</li>
-                            <li class="signup-plan__features__single">Benefactor Members are offered merchandise, club passes and exclusive content. <a href="{% url "benefactors" %}">Click here</a> for more information.</li>
                         </ul>
                         <a class="signup-plan__button" href="{% url "accounts_signup" plan_name="premium" %}">Sign up</a>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-3 signup-plan">
+                    <div class="signup-plan__content">
+                        <p class="signup-plan__name">Institutional Membership</p>
+                        <div class="signup-plan__price__container" id="signup-plan-price-slave">
+                            <div class="signup-plan__price__free more-info">
+                                Click here for more info
+                            </div>
+                        </div>
+                        <div class="signup-plan__arrow-separator"></div>
+                        <ul class="signup-plan__features">
+                            <li class="signup-plan__features__single">SmallsLIVE is offering special packages to universities and conservatories for their students. Offers are negotiable and packages can be custom tailored to suit the needs of specific programs.</li>
+                            <li class="signup-plan__features__single">Large or small groups of students are welcome.</li>
+                            <li class="signup-plan__features__single">Generally 3 to 4 month subscriptions are offered which can be renewed on semester-by-semester basis.</li>
+                        </ul>
+                        <a class="signup-plan__button" href="{% url "contact-and-info" %}">Contact us</a>
                     </div>
                 </div>
             </div>

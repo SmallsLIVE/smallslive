@@ -118,7 +118,7 @@
   background-color: #efefef;
 
   @media(max-width:$screen-xs-max) {
-    padding: 0;
+    padding: 30px 0;
   }
 
   & .container {
@@ -147,16 +147,17 @@
 }
 
 .signup-plan {
-  padding: 0 20px;
+  padding: 0 10px;
   @include display(flex);
   @include align-items(stretch);
 
   @media(max-width:$screen-xs-max) {
     padding: 0;
-    margin: 0 !important;
+    margin: 20px;
   }
 
   &__content {
+    width: 100%;
     padding: 30px;
     background-color: #fff;
     border: 1px solid #ccc;
@@ -208,7 +209,7 @@
   &__name {
     @include align-self(flex-start);
     @include lato-black;
-    min-height: 50px;
+    min-height: 70px;
     font-size: 18px;
     margin-top: 0;
     margin-bottom: 15px;
@@ -249,6 +250,10 @@
 
       @media(max-width:$screen-xs-max) {
         padding: 0;
+      }
+
+      &.more-info {
+        font-size: 24px;
       }
     }
 
