@@ -166,7 +166,7 @@
       <div class="col-xs-12 col-sm-6 col-md-5 dashboard-home__right-column dashboard-home__top-performing">
         <div class="dashboard-home__top-performing__heading-group">
           <p class="dashboard-home__top-performing__heading">My top 10 performing events:</p>
-          <a href="#" class="dashboard-home__top-performing__heading-cta">All events</a>
+          <a href="{% url "artist_dashboard:my_past_events" %}" class="dashboard-home__top-performing__heading-cta">All events</a>
         </div>
         <ul class="mini-events__container">
           {% for event in most_popular_events %}
