@@ -97,15 +97,12 @@ def generate_payout_sheet(file, start_date, end_date, revenue, operating_expense
         sheet.write(idx, 5, payment)
         if save_earnings:
             previous_payout = ArtistEarnings.objects.filter(artist_id=artist[0]).first()
-            if previous_payout:
+            # balance from previous payout periods carry over only if they exist and they're less than $20
+            ledger_balance = 0
+            if previous_payout and previous_payout.ledger_balance < 20:
                 ledger_balance = previous_payout.ledger_balance
-            else:
-                ledger_balance = 0
 
-            if ledger_balance < 20:
-                new_ledger_balance = payment + ledger_balance
-            else:
-                new_ledger_balance = 0
+            new_ledger_balance = ledger_balance + payment
 
             earnings = ArtistEarnings.objects.get_or_create(
                 payout_period=payout_period,
