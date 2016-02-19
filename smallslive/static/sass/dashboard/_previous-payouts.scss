@@ -34,7 +34,7 @@
       }
 
       .period-dates, .archive-total, .my-total, .my-period-ratio {
-        width: 15%;
+        width: 12.5%;
         text-align: center;
       }
 
@@ -42,7 +42,7 @@
         text-align: left;
       }
 
-      .total-archive-payout, .my-payout, .my-ledger-balance, .paid-out {
+      .total-archive-payout, .my-payout, .my-ledger-balance, .paid-out, .download-xls {
         width: 10%;
         text-align: center;
       }
@@ -51,7 +51,19 @@
         color: $metric-positive;
       }
 
-      .archive-total, .my-total, .total-archive-payout {
+      .download-xls {
+
+        a {
+          color: #666;
+          font-size: 18px;
+
+          &:hover, &:focus {
+            color: #333;
+          }
+        }
+      }
+
+      .archive-total, .my-total, .total-archive-payout, .download-xls {
         @media (max-width: $screen-sm-max) {
           display: none;
         }

@@ -33,6 +33,9 @@
         <div class="paid-out">
           Paid out
         </div>
+        <div class="download-xls">
+          Download xls
+        </div>
       </li>
       {% for payout in past_payouts %}
       <li class="previous-payouts__table__row">
@@ -61,6 +64,9 @@
           {% if payout.ledger_balance > 20 %}
             <i class="fa fa-check-circle"></i>
           {% endif %}
+        </div>
+        <div class="download-xls">
+          <a href="#"><i class="fa fa-arrow-down"></i></a>
         </div>
       </li>
       {% endfor %}
