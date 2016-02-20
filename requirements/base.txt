@@ -76,6 +76,7 @@ pyOpenSSL==0.15.1
 purl==1.0.3
 pycrypto==2.6.1
 pystache==0.5.4
+python-dateutil==2.4.2
 pytz==2015.2
 raven==5.7.2
 requests==2.8.1
