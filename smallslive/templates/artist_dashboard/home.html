@@ -183,7 +183,7 @@
               <div class="mini-event__details col-xs-9 col-lg-10">
                 <p class="mini-event__details__date">{{ event.listing_date|date:"n/j/Y" }}</p>
                 <a href="#" class="mini-event__details__title">{{ event.title }}</a>
-                <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}" class="red-arrow-button">Download</a><span class="arrow"></span>
+                <a href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}" class="red-arrow-button">Download</a><span class="arrow"></span>
               </div>
             </li>
             <!-- end of single mini event -->
