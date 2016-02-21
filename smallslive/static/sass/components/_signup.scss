@@ -59,12 +59,12 @@
   }
 
   &__points {
-    padding: 20px 10px 40px;
+    padding: 40px 10px 40px;
     text-align: center;
     float: left;
     @include display(flex);
     @include flex-wrap(wrap);
-    border-bottom: 2px solid #eeeeee;
+    border-top: 8px solid $main-accent-color;
     position: relative;
     margin-bottom: 0;
     width: 100%;
@@ -96,8 +96,8 @@
       }
     }
 
-    &:after {
-      top: 100%;
+    &:before {
+      top: 0;
       left: 50%;
       border: solid transparent;
       content: " ";
@@ -106,15 +106,15 @@
       position: absolute;
       pointer-events: none;
       border-color: rgba(136, 183, 213, 0);
-      border-top-color: #fff;
-      border-width: 24px;
-      margin-left: -24px;
+      border-top-color: $main-accent-color;
+      border-width: 20px;
+      margin-left: -20px;
     }
   }
 }
 
 .signup-plans {
-  padding: 60px 0;
+  padding: 40px 0;
   background-color: #efefef;
 
   @media(max-width:$screen-xs-max) {
