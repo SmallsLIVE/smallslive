@@ -17,5 +17,5 @@ urlpatterns = patterns('institutional_subscriptions.views',
     url(r'^activate-account/(?P<key>\w+)/$', 'institution_member_activate',
         name='institution_member_confirm_email'),
     url(r"^$", 'institution_list',
-        name="institutions"),
+        name="institution_list"),
 )

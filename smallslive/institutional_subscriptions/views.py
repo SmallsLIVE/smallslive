@@ -53,7 +53,7 @@ institution_members = InstitutionMembersList.as_view()
 class InstitutionAddView(StaffuserRequiredMixin, CreateView):
     model = Institution
     template_name = "institutional_subscriptions/institution_add.html"
-    success_url = reverse_lazy('institutions')
+    success_url = reverse_lazy('institution_list')
     form_class = InstitutionAddForm
 
 institution_add = InstitutionAddView.as_view()
@@ -62,7 +62,7 @@ institution_add = InstitutionAddView.as_view()
 class InstitutionAddView(StaffuserRequiredMixin, UpdateView):
     model = Institution
     template_name = "institutional_subscriptions/institution_add.html"
-    success_url = reverse_lazy('institutions')
+    success_url = reverse_lazy('institution_list')
     form_class = InstitutionAddForm
 
 institution_edit = InstitutionAddView.as_view()
@@ -83,7 +83,7 @@ def institution_delete(request, institution_id):
     institution = get_object_or_404(Institution, pk=institution_id)
     institution.members.update(institution=None)
     institution.delete()
-    return redirect('institutions')
+    return redirect('institution_list')
 
 
 class InstitutionInviteMembersView(StaffuserRequiredMixin, FormView):
