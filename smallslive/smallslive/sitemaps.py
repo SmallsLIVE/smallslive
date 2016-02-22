@@ -28,7 +28,7 @@ class StaticSitemap(Sitemap):
 
     def items(self):
         return [
-            'benefactors',
+            'institutions',
             'contact-and-info',
             'revenue-share',
             'terms-and-conditions',
