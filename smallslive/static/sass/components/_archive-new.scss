@@ -1,0 +1,288 @@
+.archive-new {
+
+  &__header-search {
+    background-image: url('../image/archive-new-head-bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    padding: 50px 30px;
+    text-align: center;
+    color: #fff;
+
+    h1 {
+      font-size: 42px;
+      @include lato-black;
+      margin: 0 0 20px;
+    }
+
+    p {
+      display: block;
+      margin: 0 auto 10px;
+    }
+
+    &__search-container {
+      margin: 30px auto;
+      max-width: 560px;
+      @include display(flex);
+      @include align-items(center);
+      border-bottom: 2px solid $main-accent-color;
+      padding-bottom: 5px;
+
+      .form-control.search-input {
+        width: 100%;
+        @include flex-shrink(1);
+        padding: 10px 5px;
+        border-radius: 0;
+        border: none;
+        background: none;
+        color: #fff;
+        font-size: 16px;
+
+        &:hover, &:focus {
+          box-shadow: none;
+          outline: none;
+        }
+      }
+
+      i {
+        @include flex-shrink(0);
+        font-size: 20px;
+        color: rgba(#fff, 0.4);
+        height: auto;
+        position: relative;
+      }
+    }
+
+    &__instructable {
+      color: rgba(#fff, 0.6);
+      @include lato-bold;
+    }
+  }
+
+  &__header-cta {
+    background-image: url('../image/archive-new-head-bg.jpg');
+    background-size: cover;
+    background-position: center center;
+    padding: 50px 30px;
+    text-align: center;
+    color: #fff;
+    line-height: 140%;
+
+    h1 {
+      font-size: 32px;
+      @include lato-black;
+      margin: 0 0 20px;
+    }
+
+    p {
+      display: block;
+      margin: 0 auto 10px;
+      max-width: 800px;
+
+      a {
+        @include lato-bold;
+        color: #fff;
+
+        &:hover, &:focus {
+          color: rgba(#fff, 0.8);
+        }
+      }
+    }
+
+    &__cta {
+      display: inline-block;
+      font-size: 18px;
+      padding: 15px 25px;
+      margin-top: 20px;
+      background-color: rgba(#000, 0.4);
+      border: 2px solid $main-accent-color;
+      border-radius: 2px;
+      @include lato-bold-italic;
+      color: #fff;
+
+      &:hover, &:focus {
+        color: rgba(#fff, 0.8);
+      }
+    }
+  }
+
+  &__carousel {
+    background-color: #f6f6f6;
+    padding: 50px 15px;
+
+    &__switches {
+      padding: 0 15px;
+      margin: 0;
+    }
+
+    &__switch {
+      font-size: 20px;
+      @include lato-black;
+      margin-right: 20px;
+      color: rgba($base-text-color, 0.5);
+      @include transition(all 0.3s ease-in-out);
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+      list-style-type: none;
+      display: inline-block;
+      cursor: pointer;
+
+      &:hover, &:focus {
+        color: $base-text-color;
+      }
+
+      &.active {
+        color: $base-text-color;
+        border-bottom: 4px solid $main-accent-color;
+      }
+
+      @media (max-width: $screen-xs-max) {
+        font-size: 16px;
+      }
+    }
+
+    &__container, &__container .slick-track {
+      @include display(flex);
+      padding: 0;
+      margin: 0 0 40px;
+
+      .slick-dots {
+        left: 0;
+        bottom: -38px;
+      }
+    }
+
+    &__item {
+      width: 100%;
+      padding: 15px;
+      list-style-type: none;
+
+      &__container {
+        width: 100%;
+
+        &:hover, &:focus {
+          opacity: 0.5;
+        }
+      }
+
+      .event-image {
+        width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+      }
+
+      .event-date {
+        font-size: 14px;
+        @include lato-bold;
+        color: #767676;
+        margin: 0 0 5px;
+      }
+
+      .event-name {
+        font-size: 16px;
+        @include lato-bold;
+        margin: 0;
+        color: $base-text-color;
+      }
+    }
+  }
+
+  &__date-browser {
+    border-top: 4px solid $main-accent-color;
+    padding: 40px 15px 10px;
+    background: #fff;
+
+    &__header {
+      @include display(flex);
+      @include align-items(center);
+      @include justify-content(space-between);
+
+      h1 {
+        margin: 15px;
+        @include lato-black;
+        font-size: 32px;
+        color: $main-accent-color;
+      }
+
+      &__date-picker {
+        margin: 15px;
+      }
+    }
+
+    &__date-picker {
+      margin: 15px;
+      @include display(flex);
+      @include align-items(center);
+      border: 2px solid $main-accent-color;
+
+      input {
+        padding: 8px;
+        font-size: 16px;
+        @include lato-black;
+        color: $main-accent-color;
+        width: 150px;
+        background: none;
+        margin-right: 5px;
+        margin-left: 2px;
+        border: none;
+        outline: none;
+
+        &::-webkit-input-placeholder {
+           color: $main-accent-color;
+        }
+
+        &:-moz-placeholder { /* Firefox 18- */
+           color: $main-accent-color;
+        }
+
+        &::-moz-placeholder {  /* Firefox 19+ */
+           color: $main-accent-color;
+        }
+
+        &:-ms-input-placeholder {
+           color: $main-accent-color;
+        }
+      }
+
+      i {
+        font-size: 18px;
+        color: $main-accent-color;
+        margin-right: 10px;
+      }
+    }
+  }
+
+  &__bottom-promo {
+    padding: 15px 15px;
+    background-color: #1f1f1f;
+    color: #fff;
+    border-top: 4px solid $main-accent-color;
+    @include display(flex);
+    @include align-items(center);
+
+    @media (max-width: $screen-xs-max) {
+      @include flex-wrap(wrap);
+    }
+
+    p {
+      width: 100%;
+      @include flex-shrink(1);
+      margin: 15px;
+      @include lato-bold;
+    }
+
+    &__cta {
+      @include flex-shrink(0);
+      margin: 15px;
+      padding: 10px 20px;
+      color: #fff;
+      background-color: $main-accent-color;
+      border-radius: 5px;
+      @include lato-bold;
+
+      &:hover, &:focus {
+        color: rgba(#fff, 0.8);
+        background-color: darken($main-accent-color, 5%);
+      }
+    }
+  }
+}

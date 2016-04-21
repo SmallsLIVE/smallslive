@@ -1,0 +1,572 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block title %}SmallsLIVE Audio/Video Archive{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+
+      {% if request.user.is_authenticated %}
+        <section class="archive-new__header-search">
+          <h1>SmallsLIVE Audio/Video Archive</h1>
+          <p>The SmallsLIVE Archive was started in September of 2007 and represents nearly all the shows performed at the club to the current date.</p>
+          <form action="{% url "artist_search" %}" method="get">
+            <div class="form-group has-feedback archive-new__header-search__search-container">
+              <input id="header--search" type="text" name="q" class="form-control search-input" placeholder="Search by artist name, event name or instrument..."/>
+              <i class="fa fa-search form-control-feedback"></i>
+            </div>
+          </form>
+          <span class="archive-new__header-search__instructable">or browse below...</span>
+        </section>
+      {% else %}
+        <section class="archive-new__header-cta">
+          <h1>Not yet a member of SmallsLIVE?</h1>
+          <p>Become a Member of SmallsLIVE and watch our live streams at no charge. Become a Subscribing Member and get unlimited access to the SmallsLIVE Audio/Video Archive of all shows performed at Smalls Jazz Club since 2007.</p>
+          <p>Subscribing Members directly support the Artists and the Clubs through our unique SmallsLIVE Revenue Share Project.<br><a href="{% url "revenue-share" %}">CLICK HERE</a> for more information.</p>
+          <a href="{% url "signup_landing" %}" class="archive-new__header-cta__cta">Membership options</a>
+        </section>
+      {% endif %}
+
+      <section class="archive-new__carousel container">
+        <ul class="archive-new__carousel__switches">
+          <li class="archive-new__carousel__switch active" id="archive-carousel-switch--new">
+            Newly added
+          </li>
+          <li class="archive-new__carousel__switch" id="archive-carousel-switch--popular">
+            Most popular
+          </li>
+        </ul>
+        <!-- carousel -->
+        <div class="" id="archive--carousel">
+
+        </div>
+        <!-- new items -->
+        <div class="archive-new__carousel__container" id="js--archive--carousel--new" style="display: none;">
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">Friday afternoon Open Jam Session with: Ai Murakami</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">David Schnitter Quartet</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">Afterhours with: The Anthony Wonsey Trio</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">Afterhours with: Spencer Murphy</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">David Schnitter Quartet</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">Afterhours with: The Anthony Wonsey Trio</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">David Schnitter Quartet</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">Afterhours with: The Anthony Wonsey Trio</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">Afterhours with: Spencer Murphy</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">David Schnitter Quartet</h4>
+            </a>
+          </div>
+        </div>
+        <!-- /new items -->
+        <!-- popular items -->
+        <div class="archive-new__carousel__container" id="js--archive--carousel--popular" style="display: none;">
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">Popular afternoon Open Jam Session with: Ai Murakami</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">David Schnitter Quartet</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">Afterhours with: The Anthony Wonsey Trio</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">Afterhours with: Spencer Murphy</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">David Schnitter Quartet</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">Afterhours with: The Anthony Wonsey Trio</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">David Schnitter Quartet</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">Afterhours with: The Anthony Wonsey Trio</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">Afterhours with: Spencer Murphy</h4>
+            </a>
+          </div>
+          <div class="archive-new__carousel__item">
+            <a href="#" class="archive-new__carousel__item__container">
+              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+              <span class="event-date">01/30/2015</span>
+              <h4 class="event-name">David Schnitter Quartet</h4>
+            </a>
+          </div>
+        </div>
+        <!-- /popular items -->
+      </section>
+
+      <section class="archive-new__date-browser container">
+        <div class="archive-new__date-browser__header">
+          <h1>Browse archive by date</h1>
+          <div class="archive-new__date-browser__date-picker" id="archive__date-picker">
+              <input type="text" placeholder="Select a month" readonly>
+              <i class="fa fa-caret-down"></i>
+          </div>
+        </div>
+        <ul class="bg-image-calendar__container">
+          <!-- single day -->
+          <li class="bg-image-calendar__day">
+            <h2 class="bg-image-calendar__day__date">
+              Friday // 01/30/2015
+            </h2>
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/I_9TB3fcfc3u6DYjI3oKGoavwO0=/6x0:593x353/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/Jeremy-Manasia_ygDL2S3.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Jeremy Manasia Trio</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-video-camera"></i>
+                  <i class="fa fa-music"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+          </li>
+          <!-- /single day -->
+          <!-- single day -->
+          <li class="bg-image-calendar__day">
+            <h2 class="bg-image-calendar__day__date">
+              Friday // 01/30/2015
+            </h2>
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/KqlgIJZhUdqEpbECHNtZq1YHbvM=/0x166:432x425/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/SL0030_abrahamburton_wattphoto.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Abraham Burton Quartet</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-video-camera"></i>
+                  <i class="fa fa-music"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/EHxVs6qTpbgWSl0a0_k2nn1H6-8=/0x0:960x576/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/IMG_0373_cIfRoDG.JPG')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Corey Wallace DUBtet - After-hours Jam Session</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-video-camera"></i>
+                  <i class="fa fa-music"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/emXzizeC3Pek3CjMWOEGVpbd3hc=/17x59:344x255/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/MyronWalden.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Myron Walden Group</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-video-camera"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+          </li>
+          <!-- /single day -->
+          <!-- single day -->
+          <li class="bg-image-calendar__day">
+            <h2 class="bg-image-calendar__day__date">
+              Friday // 01/30/2015
+            </h2>
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/k_mnRjfr7uLC8wfpzE8E3WGRsUY=/0x29:877x555/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/Harold_Mabern_Trio_HOUt877.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Harold Mabern Trio</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-video-camera"></i>
+                  <i class="fa fa-music"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/J6vd07dyP_EgEKb4h1Tv4rzdYkw=/0x15:1157x709/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/2015-08-22_13.34.23.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">Sanah Kadoura - After-hours Jam Session</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-music"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/IE0pGTVn2zbNC2nxWKWNGaFXnK4=/0x5:800x486/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/Sussman-Richard.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Richard Sussman Quintet</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-video-camera"></i>
+                  <i class="fa fa-music"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+          </li>
+          <!-- /single day -->
+          <!-- single day -->
+          <li class="bg-image-calendar__day">
+            <h2 class="bg-image-calendar__day__date">
+              Friday // 01/30/2015
+            </h2>
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/gif0ZoKRScfhGUqhM4zEfYlodp8=/0x30:900x570/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/JCStylles_pD6jq9Q.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The JC Stylles Quartet</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-video-camera"></i>
+                  <i class="fa fa-music"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/0YMCPoQUI7BeiNlM7AYNBxfycX0=/0x0:500x301/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/jam.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">After-hours Jam Session</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-video-camera"></i>
+                  <i class="fa fa-music"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+          </li>
+          <!-- /single day -->
+          <!-- single day -->
+          <li class="bg-image-calendar__day">
+            <h2 class="bg-image-calendar__day__date">
+              Friday // 01/30/2015
+            </h2>
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/Mnm2jUpCr12acujzx0mtlTSk9Rk=/0x10:720x442/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/10386272_10204296927602351_6951851612623741118_n_UpWJAIo.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">Tuomo Uusitalo - Afternoon Jam Session</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-video-camera"></i>
+                  <i class="fa fa-music"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/ZY47nFwY92Jfa3eezx2s2v4Xj5Q=/0x74:960x650/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/Bobdemeo_NwToBci.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Bob DeMeo Quartet</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-video-camera"></i>
+                  <i class="fa fa-music"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/T4oFr4y9iaRrI-mhGHtEQC0lxJk=/0x0:786x472/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/melissa_IMG_5978_2Wmj5ji.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Melissa Aldana Quartet</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-video-camera"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+          </li>
+          <!-- /single day -->
+          <!-- single day -->
+          <li class="bg-image-calendar__day">
+            <h2 class="bg-image-calendar__day__date">
+              Friday // 01/30/2015
+            </h2>
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/iPgeZC08huOsmAd2hwpFD3xMfk4=/0x1166:2592x2722/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/Joe_Farnsworth_wq9YlVw.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">Joe Farnsworth "after-hours"</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-video-camera"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+          </li>
+          <!-- /single day -->
+          <!-- single day -->
+          <li class="bg-image-calendar__day">
+            <h2 class="bg-image-calendar__day__date">
+              Friday // 01/30/2015
+            </h2>
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://dzycyuuhttkib.cloudfront.net/static/image/no-event-image-placeholder.5df92bac312b.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">Robert Edwards - Afternoon Jam Session</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-video-camera"></i>
+                  <i class="fa fa-music"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/6V82tWcuAJcVyPenJ7omxl70XcQ=/0x26:972x608/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/michael-cochrane1.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name"> Lines Of Reason</h3>
+                </div>
+              </div>
+              <div class="bg-image-calendar__event__media-indicators-container">
+                <div>
+                  <i class="fa fa-music"></i>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+          </li>
+          <!-- /single day -->
+          <!-- calendar control -->
+          <li class="bg-image-calendar__control">
+            <a class="bg-image-calendar__control__content-container">
+              <i class="fa fa-angle-left"></i>
+              <h3><span>Display </span>14 previous dates</h3>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section class="archive-new__bottom-promo container">
+        <p>Subscribing Members directly support the Artists and the Clubs through our unique SmallsLIVE Revenue Share Project.</p>
+        <a href="{% url "revenue-share" %}" class="archive-new__bottom-promo__cta">Learn more</a>
+      </section>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script>
+        function initSlick(selector) {
+          $(selector).slick({
+                dots: true,
+                slidesToShow: 4,
+                slidesToScroll: 1,
+                autoplay: false,
+                autoplaySpeed: 8000,
+                responsive: [
+                    {
+                        breakpoint: 6000,
+                        settings: {
+                            slidesToShow: 6,
+                            slidesToScroll: 6
+                        }
+                    },
+                    {
+                        breakpoint: 992,
+                        settings: {
+                            slidesToShow: 2,
+                            slidesToScroll: 2
+                        }
+                    },
+                    {
+                        breakpoint: 767,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1
+                        }
+                    }
+                ]
+            })
+        };
+        /* Toggling different streams */
+        $(document).ready(function () {
+            initSlick('#archive--carousel');
+            $("#js--archive--carousel--new").each(function(index, element) {
+                $('#archive--carousel').slick('slickAdd', $(element).html());
+            });
+
+            $("#archive-carousel-switch--new").click(function() {
+                if (!($(this).hasClass("active"))) {
+                    $(".archive-new__carousel__switch.active").toggleClass("active");
+                    $(this).toggleClass("active");
+                    $('#archive--carousel').slick('unslick');
+                    $('#archive--carousel').empty();
+                    initSlick('#archive--carousel');
+                    $("#js--archive--carousel--new").each(function(index, element) {
+                        $('#archive--carousel').slick('slickAdd', $(element).html());
+                    });
+                }
+            });
+
+            $("#archive-carousel-switch--popular").click(function() {
+                if (!($(this).hasClass("active"))) {
+                    $(".archive-new__carousel__switch.active").toggleClass("active");
+                    $(this).toggleClass("active");
+                    $('#archive--carousel').slick('unslick');
+                    $('#archive--carousel').empty();
+                    initSlick('#archive--carousel');
+                    $("#js--archive--carousel--popular").each(function(index, element) {
+                        $('#archive--carousel').slick('slickAdd', $(element).html());
+                    });
+                }
+            });
+        })
+    </script>
+{% endblock %}
