@@ -129,8 +129,8 @@
           <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
             <li><a href="{% url "live-stream" %}">Live now!</a></li>
-            <li><a href="{% url "schedule" %}">Calendar/Archive</a></li>
-            <li><a href="{% url "archive" %}">New/Popular</a></li>
+            <li><a href="{% url "schedule" %}">Calendar</a></li>
+            <li><a href="{% url "archive" %}">Archive</a></li>
             <li><a href="{% url "promotions:home" %}">SmallsLIVE Store</a></li>
             <li><a role="button" data-toggle="collapse" href="#mobile-nav-info-links" aria-expanded="false" aria-controls="mobile-nav-info-links">Info <i class="fa fa-caret-down"></i> </a></li>
             <li class="nopadding">
@@ -237,10 +237,10 @@
                   class="navigation__icon fa fa-play-circle"></i><span class="menu-label">Live now!</span></a></li>
                   <li class="navigation__separator"></li>
           <li class="navigation__item {% block schedule_nav_active %}{% endblock %}"><a href="{% url "schedule" %}"><i
-                  class="navigation__icon fa fa-calendar"></i><span class="menu-label">Calendar/Archive</span></a></li>
+                  class="navigation__icon fa fa-calendar"></i><span class="menu-label">Calendar</span></a></li>
                   <li class="navigation__separator"></li>
           <li class="navigation__item"><a href="{% url "archive" %}"><i
-                  class="navigation__icon fa fa-video-camera"></i><span class="menu-label">New/Popular</span></a></li>
+                  class="navigation__icon fa fa-video-camera"></i><span class="menu-label">Archive</span></a></li>
                   <li class="navigation__separator"></li>
           <li class="navigation__item {% block store_nav_active %}{% endblock %}"><a href="{% url "promotions:home" %}"><i class="navigation__icon fa fa-shopping-cart"></i><span class="menu-label">SmallsLIVE Store</span></a></li>
           <li class="navigation__separator"></li>
