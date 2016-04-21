@@ -37,14 +37,13 @@ $(document).ready(function () {
 
     $(".carousel-indicators").on('click', 'li', function(){
         slideIndex = $(this).attr("data-slickPosition");
-        console.log(this);
-        var slider = $( '.upcoming-carousel' );
+        var slider = $( '#upcoming-carousel' );
         slider[0].slick.slickGoTo(slideIndex);
         $(".carousel-indicators li.active").toggleClass( "active" );
         $(this).toggleClass( "active" );
     });
 
-    $('#upcoming-events-fullsize').on('afterChange', '.upcoming-carousel', function(slick, currentSlide){
+    $('#upcoming-carousel').on('afterChange', this, function(slick, currentSlide){
         var currentSlide = $(this).slick('slickCurrentSlide');
         $(".carousel-indicators li.active").toggleClass( "active" );
         var indicator = $('.carousel-indicators li');
