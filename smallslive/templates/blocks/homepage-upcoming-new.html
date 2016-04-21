@@ -1,0 +1,59 @@
+{% load static from staticfiles %}
+{% load humanize %}
+{% load thumbor_tags %}
+
+<section id="upcoming-events-fullsize" class="homepage-upcoming container">
+  <div class="row homepage-upcoming__carousel" id="upcoming-carousel">
+    <!-- single slide -->
+    <div class="homepage-upcoming__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/I_9TB3fcfc3u6DYjI3oKGoavwO0=/6x0:593x353/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/Jeremy-Manasia_ygDL2S3.jpg')">
+      <div class="homepage-upcoming__event__content">
+        <div class="homepage-upcoming__event__content-container">
+          <h1 class="event-title"><a href="#">The Jeremy Manasia Trio</a></h1>
+          <h3 class="event-timeslot">Today | 7:30 PM - 10:00 PM</h3>
+          <p class="event-artists">
+            <a href="#">Jeremy Manasia <span class="event-artist-instrument">(piano)</span></a> <span class="event-artists-divider">//</span> <a href="#">Mike Karn <span class="event-artist-instrument">(bass)</span></a> <span class="event-artists-divider">//</span> <a href="#">Charles Ruggiero <span class="event-artist-instrument">(drums)</span></a>
+          </p>
+          <a href="#" class="event-details-cta">Full event page</a>
+        </div>
+      </div>
+    </div>
+    <!-- /single slide -->
+    <!-- single slide -->
+    <div class="homepage-upcoming__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/KqlgIJZhUdqEpbECHNtZq1YHbvM=/0x166:432x425/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/SL0030_abrahamburton_wattphoto.jpg')">
+      <div class="homepage-upcoming__event__content">
+        <div class="homepage-upcoming__event__content-container">
+          <h1 class="event-title"><a href="#">The Abraham Burton Quartet</a></h1>
+          <h3 class="event-timeslot">Today | 10:30 PM - 1:00 AM</h3>
+          <p class="event-artists">
+            <a href="#">Abraham Burton <span class="event-artist-instrument">(tenor sax)</span></a> <span class="event-artists-divider">//</span> <a href="#">Eric McPherson <span class="event-artist-instrument">(drums)</span></a> <span class="event-artists-divider">//</span> <a href="#">Dezron Douglas <span class="event-artist-instrument">(bass)</span></a>
+          </p>
+          <a href="#" class="event-details-cta">Full event page</a>
+        </div>
+      </div>
+    </div>
+    <!-- /single slide -->
+    <!-- single slide -->
+    <div class="homepage-upcoming__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/EHxVs6qTpbgWSl0a0_k2nn1H6-8=/0x0:960x576/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/IMG_0373_cIfRoDG.JPG')">
+      <div class="homepage-upcoming__event__content">
+        <div class="homepage-upcoming__event__content-container">
+          <h1 class="event-title"><a href="#">The Corey Wallace DUBtet - After-hours Jam Session</a></h1>
+          <h3 class="event-timeslot">Today | 1:30 AM - 4:00 AM</h3>
+          <p class="event-artists">
+            <a href="#">Corey Wallace  <span class="event-artist-instrument">(trombone)</span></a> <span class="event-artists-divider">//</span> <a href="#">Brent Birckhead <span class="event-artist-instrument">(alto sax)</span></a> <span class="event-artists-divider">//</span> <a href="#">Willerm Delisfort <span class="event-artist-instrument">(piano)</span></a> <span class="event-artists-divider">//</span> <a href="#">Noah Jackson <span class="event-artist-instrument">(bass)</span></a> <span class="event-artists-divider">//</span> <a href="#">Curtis Nowosad <span class="event-artist-instrument">(drums)</span></a>
+          </p>
+          <a href="#" class="event-details-cta">Full event page</a>
+        </div>
+      </div>
+    </div>
+    <!-- /single slide -->
+  </div>
+  <!-- timeslotslot selector -->
+  <div class="homepage-upcoming__footer row">
+    <h2>Today at Smalls:</h2>
+    <ol class="homepage-upcoming__footer__timeslots carousel-indicators">
+        <li data-slickPosition="0" class="timeslot active">7:30 PM - 10:00 PM</li>
+        <li data-slickPosition="1" class="timeslot">10:30 PM - 1:00 AM</li>
+        <li data-slickPosition="2" class="timeslot">1:30 AM - 4:00 AM</li>
+    </ol>
+  </div>
+</section>
