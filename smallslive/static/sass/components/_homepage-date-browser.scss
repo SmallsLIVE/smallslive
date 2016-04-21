@@ -1,0 +1,77 @@
+.homepage-date-browser {
+  border-top: 4px solid $main-accent-color;
+  padding: 40px 15px 10px;
+  background: #fff;
+
+  &__header {
+    @include display(flex);
+    @include align-items(center);
+    @include justify-content(space-between);
+
+    @media(max-width: $screen-xs-max) {
+      @include flex-wrap(wrap);
+    }
+
+    h1 {
+      margin: 15px;
+      @include lato-black;
+      font-size: 32px;
+      color: $main-accent-color;
+    }
+
+    &__date-picker {
+      margin: 15px;
+    }
+  }
+
+  &__cta {
+    margin: 15px;
+    padding: 10px 20px;
+    border: 3px solid $main-accent-color;
+    font-size: 16px;
+    @include lato-black;
+
+  }
+
+  &__date-picker {
+    margin: 15px;
+    @include display(flex);
+    @include align-items(center);
+    border: 2px solid $main-accent-color;
+
+    input {
+      padding: 8px;
+      font-size: 16px;
+      @include lato-black;
+      color: $main-accent-color;
+      width: 150px;
+      background: none;
+      margin-right: 5px;
+      margin-left: 2px;
+      border: none;
+      outline: none;
+
+      &::-webkit-input-placeholder {
+         color: $main-accent-color;
+      }
+
+      &:-moz-placeholder { /* Firefox 18- */
+         color: $main-accent-color;
+      }
+
+      &::-moz-placeholder {  /* Firefox 19+ */
+         color: $main-accent-color;
+      }
+
+      &:-ms-input-placeholder {
+         color: $main-accent-color;
+      }
+    }
+
+    i {
+      font-size: 18px;
+      color: $main-accent-color;
+      margin-right: 10px;
+    }
+  }
+}

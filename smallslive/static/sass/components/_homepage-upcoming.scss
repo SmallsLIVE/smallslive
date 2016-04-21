@@ -1,0 +1,146 @@
+.homepage-upcoming {
+
+  .slick-slider {
+    margin-bottom: 0;
+  }
+
+  &__event {
+    min-height: 400px;
+    background-size: cover;
+    background-position: center center;
+    @include display(flex);
+    height: auto;
+
+    &__content {
+      @include display(flex);
+      @include align-items(center);
+      width: 100%;
+      background-color: rgba(#000, 0.7);
+      padding: 50px 30px;
+    }
+
+    &__content-container {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 1);
+    }
+
+    .event-title {
+      @include lato-black;
+      font-size: 42px;
+      color: $main-accent-color;
+      text-transform: uppercase;
+      margin: 0 0 15px;
+
+      @media(max-width: $screen-xs-max) {
+        font-size: 32px;
+      }
+    }
+
+    .event-timeslot {
+      @include lato-black;
+      color: #fff;
+      font-size: 18px;
+      margin: 0 0 20px;
+      padding: 0 0 20px;
+      border-bottom: 2px solid rgba(#fff, 0.5);
+    }
+
+    .event-artists {
+      @include lato-black;
+      font-size: 16px;
+      background: none;
+      color: #fff;
+      line-height: 160%;
+      padding: 0;
+
+      a {
+        color: #fff;
+        text-transform: uppercase;
+        display: inline-block;
+
+        &:hover, &:focus {
+          opacity: 0.8;
+          color: #fff;
+        }
+      }
+    }
+
+    .event-artists-divider {
+      display: inline-block;
+      margin: 0 8px;
+    }
+
+    .event-artist-instrument {
+      @include lato-bold;
+      text-transform: none;
+    }
+
+    .event-details-cta {
+      @include lato-bold;
+      font-size: 16px;
+      padding: 10px 20px;
+      color: #fff;
+      border: 2px solid $main-accent-color;
+      display: inline-block;
+      margin: 30px 0 0;
+      border-radius: 2px;
+    }
+  }
+
+  &__footer {
+    background-color: $main-accent-color;
+    @include display(flex);
+    @include align-items(center);
+    padding: 20px 0;
+    position: relative;
+
+    &:after {
+      bottom: 100%;
+      left: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      border-color: rgba(210, 21, 253, 0);
+      border-bottom-color: $main-accent-color;
+      border-width: 20px;
+      margin-left: -20px;
+      z-index: 10001;
+    }
+
+    h2 {
+      font-size: 24px;
+      color: #fff;
+      @include lato-black;
+      margin: 0 30px;
+    }
+
+    &__timeslots {
+      font-size: 14px;
+      @include lato-black;
+      padding: 0;
+      margin: 8px 15px 0;
+    }
+
+    li.timeslot {
+      color: rgba(#fff, 0.7);
+      margin: 10px 15px;
+      @include transition(all 0.3s ease-in-out);
+      cursor: pointer;
+      list-style-type: none;
+      display: inline-block;
+
+      &:hover, &:focus {
+        color: #fff;
+      }
+
+      &.active {
+        color: #fff;
+      }
+    }
+  }
+}

@@ -7,6 +7,10 @@
     display: none;
   }
 
+  @media(max-width: $screen-xs-max) {
+    display: none;
+  }
+
   &__header {
     background-image: url('../image/home-membership-cta.jpg');
     background-position: center center;
@@ -33,7 +37,7 @@
         font-size: 20px;
       }
     }
-    
+
     &__text {
       @include lato-bold;
       font-size: 14px;

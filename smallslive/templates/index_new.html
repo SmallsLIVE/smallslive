@@ -1,0 +1,341 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load i18n %}
+
+{% block homepage_nav_active %}active{% endblock %}
+
+{% block title %}Smalls Jazz Club{% endblock %}
+
+{% block extra_head %}
+  <meta name="description"
+        content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
+{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+      <section class="mobile-intro container hidden">
+          <a href="/" class="smalls-logo"><img src="{% static 'logo.svg' %}" alt=""/></a>
+      </section>
+
+      {% include "blocks/homepage-upcoming-new.html" %}
+
+      {% if not request.user.is_authenticated %}
+          <section class="home-membership container">
+              <div class="home-membership__header vertical-align-parent">
+                  <div class="vertical-align-child">
+                      <h1 class="home-membership__header__title">Not a member of SmallsLIVE?</h1>
+                      <p class="home-membership__header__text">Become a member of SmallsLIVE to watch our live stream. Subscribing members get unlimited access to our audio/video archive. By becoming a subscribing member you are directly supporting the musicians and the venue.</p>
+                      <a href="{% url "account_signup" %}" class="cto__button">Sign up!</a>
+                  </div>
+              </div>
+          </section>
+      {% endif %}
+
+      <section class="homepage-date-browser container">
+        <div class="homepage-date-browser__header">
+          <h1>Upcoming at Smalls:</h1>
+          <a href="{% url "schedule" %}" class="homepage-date-browser__cta">Browse our full calendar</a>
+        </div>
+        <ul class="bg-image-calendar__container">
+          <!-- single day -->
+          <li class="bg-image-calendar__day">
+            <h2 class="bg-image-calendar__day__date">
+              Friday // 01/30/2015
+            </h2>
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/I_9TB3fcfc3u6DYjI3oKGoavwO0=/6x0:593x353/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/Jeremy-Manasia_ygDL2S3.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Jeremy Manasia Trio</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+          </li>
+          <!-- /single day -->
+          <!-- single day -->
+          <li class="bg-image-calendar__day">
+            <h2 class="bg-image-calendar__day__date">
+              Friday // 01/30/2015
+            </h2>
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/KqlgIJZhUdqEpbECHNtZq1YHbvM=/0x166:432x425/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/SL0030_abrahamburton_wattphoto.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Abraham Burton Quartet</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/EHxVs6qTpbgWSl0a0_k2nn1H6-8=/0x0:960x576/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/IMG_0373_cIfRoDG.JPG')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Corey Wallace DUBtet - After-hours Jam Session</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/emXzizeC3Pek3CjMWOEGVpbd3hc=/17x59:344x255/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/MyronWalden.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Myron Walden Group</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+          </li>
+          <!-- /single day -->
+          <!-- single day -->
+          <li class="bg-image-calendar__day">
+            <h2 class="bg-image-calendar__day__date">
+              Friday // 01/30/2015
+            </h2>
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/k_mnRjfr7uLC8wfpzE8E3WGRsUY=/0x29:877x555/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/Harold_Mabern_Trio_HOUt877.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Harold Mabern Trio</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/J6vd07dyP_EgEKb4h1Tv4rzdYkw=/0x15:1157x709/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/2015-08-22_13.34.23.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">Sanah Kadoura - After-hours Jam Session</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/IE0pGTVn2zbNC2nxWKWNGaFXnK4=/0x5:800x486/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/Sussman-Richard.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Richard Sussman Quintet</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+          </li>
+          <!-- /single day -->
+          <!-- single day -->
+          <li class="bg-image-calendar__day">
+            <h2 class="bg-image-calendar__day__date">
+              Friday // 01/30/2015
+            </h2>
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/gif0ZoKRScfhGUqhM4zEfYlodp8=/0x30:900x570/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/JCStylles_pD6jq9Q.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The JC Stylles Quartet</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/0YMCPoQUI7BeiNlM7AYNBxfycX0=/0x0:500x301/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/jam.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">After-hours Jam Session</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+          </li>
+          <!-- /single day -->
+          <!-- single day -->
+          <li class="bg-image-calendar__day">
+            <h2 class="bg-image-calendar__day__date">
+              Friday // 01/30/2015
+            </h2>
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/Mnm2jUpCr12acujzx0mtlTSk9Rk=/0x10:720x442/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/10386272_10204296927602351_6951851612623741118_n_UpWJAIo.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">Tuomo Uusitalo - Afternoon Jam Session</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/ZY47nFwY92Jfa3eezx2s2v4Xj5Q=/0x74:960x650/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/Bobdemeo_NwToBci.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Bob DeMeo Quartet</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/T4oFr4y9iaRrI-mhGHtEQC0lxJk=/0x0:786x472/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/melissa_IMG_5978_2Wmj5ji.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">The Melissa Aldana Quartet</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+          </li>
+          <!-- /single day -->
+          <!-- single day -->
+          <li class="bg-image-calendar__day">
+            <h2 class="bg-image-calendar__day__date">
+              Friday // 01/30/2015
+            </h2>
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/iPgeZC08huOsmAd2hwpFD3xMfk4=/0x1166:2592x2722/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/Joe_Farnsworth_wq9YlVw.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">Joe Farnsworth "after-hours"</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+          </li>
+          <!-- /single day -->
+          <!-- single day -->
+          <li class="bg-image-calendar__day">
+            <h2 class="bg-image-calendar__day__date">
+              Friday // 01/30/2015
+            </h2>
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://dzycyuuhttkib.cloudfront.net/static/image/no-event-image-placeholder.5df92bac312b.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name">Robert Edwards - Afternoon Jam Session</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+            <!-- single event -->
+            <a class="bg-image-calendar__event" style="background-image: url('https://d95vll9kevyvb.cloudfront.net/6V82tWcuAJcVyPenJ7omxl70XcQ=/0x26:972x608/600x0/https%3A//smallslivestatic.s3.amazonaws.com/event_images/michael-cochrane1.jpg')">
+              <div class="bg-image-calendar__event__content-container">
+                <div>
+                  <span class="event-time">1:30 AM to 4:00 AM</span>
+                  <h3 class="event-name"> Lines Of Reason</h3>
+                </div>
+              </div>
+            </a>
+            <!-- /single event -->
+          </li>
+          <!-- /single day -->
+          <!-- calendar control -->
+          <li class="bg-image-calendar__control">
+            <a class="bg-image-calendar__control__content-container">
+              <i class="fa fa-angle-right"></i>
+              <h3><span>View </span>next <br>6 days</h3>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section class="smalls-mezzrow-crosspromo">
+        <div class="smalls-mezzrow-crosspromo__overlay">
+
+        </div>
+        <div class="smalls-mezzrow-crosspromo__content">
+          <p class="smalls-mezzrow-crosspromo__main-copy">
+            Become a registered member of SmallsLIVE to watch our Live Stream from either Smalls Jazz Club or Mezzrow at no cost.
+          </p>
+          <div class="smalls-mezzrow-crosspromo__logo-container">
+            <a href="{% url "live-stream" %}"><img class="smalls-mezzrow-crosspromo__logo smalls" src="{% static 'logo.svg' %}" alt="Smalls"/></a>
+            <a href="{% url "live-stream-mezzrow" %}"><img class="smalls-mezzrow-crosspromo__logo mezzrow" src="{% static 'image/mezzrow-logo-negative.svg' %}" alt="Mezzrow"/></a>
+          </div>
+          <p class="smalls-mezzrow-crosspromo__small-copy">
+            Please note that only select shows will be streamed from Mezzrow. For more information about club Mezzrow, please head to <a href="http://www.mezzrow.com" target="_blank">www.mezzrow.com</a>.
+          </p>
+        </div>
+      </section>
+
+
+      {% if popular_in_store %}
+          <section class="home-store container">
+            <h1 class="home-store__section-title">Popular in our Store</h1>
+            <div class="row">
+              {% for product in popular_in_store %}
+                  <div class="col-xs-6 col-md-3">
+                    {% with image=product.primary_image %}
+                        {% if not image.is_missing %}
+                          <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=258 width=235 smart=True %}" alt="{{ product.get_title }}" class="home-store__img"></a>
+                        {% else %}
+                          <a href="{{ product.get_absolute_url }}"><img src="{% static "image/image_not_found.jpg" %}" alt="{{ product.get_title }}" class="home-store__img"></a>
+                        {% endif %}
+                    {% endwith %}
+                    <h2 class="home-store__title"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h2>
+                    <p class="home-store__type">CD / Digital Download</p>
+                  </div>
+              {% endfor %}
+            </div>
+          </section>
+      {% endif %}
+      <section class="cto cto--visit container vertical-align-parent">
+        <div class="vertical-align-child">
+            <h1 class="cto__title">Visit us</h1>
+
+            <p class="cto__text">Smalls Jazz Club, 183 West 10th Street, basement, Greenwich Village, NYC, 10014</p>
+            <a href="{% url "contact-and-info" %}" class="cto__button">Get Directions</a>
+        </div>
+      </section>
+      <section class="about-smalls container">
+        <div class="row">
+          <div class="col-md-6 hidden-xs hidden-sm about-smalls__img"></div>
+          <div class="col-xs-12 col-md-6 about-smalls__info">
+            <h1 class="about-smalls__title">About SmallsLIVE</h1>
+
+            <p class="about-smalls__text">Smalls Jazz Club was created in 1994.  Founded by Mitchell Borden, a former Navy submariner, registered nurse, philosopher & jazz violinist, his initiative was to create an environment that was conducive to Jazz Music and Jazz culture. Borden, who booked and managed the club, approached business from a stance of generosity rather than profit. Borden’s concern was only with the music and the musicians who created it. Under his generous care, a culture of vibrant and newly energized young musicians claimed Smalls as their home base and began to develop their individuality in the music.</p>
+            <p class="about-smalls__text">Since 2007 every show at Smalls has been meticulously recorded (with video since 2011), cataloged and archived.  We consider this audio/video archive to be of historical importance. Now with more than 9000 recordings and over 1000 musicians in the archive and growing each week, we have made this archive available to the public for enjoyment study.</p>
+            <p class="about-smalls__text">By becoming a subscribing member of SmallsLIVE you are directly supporting the artists and the club.  Each artist is represented as a partner in our unique revenue sharing system and benefits each time their music is listened to in the archive. </p>
+          </div>
+        </div>
+      </section>
+      <section class="mini-gallery visible-md visible-lg container">
+        <div class="row no-gutters">
+            <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img1.jpg' %}" class="mini-gallery__img"/></div>
+            <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img2.jpg' %}" class="mini-gallery__img"/></div>
+            <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img3.jpg' %}" class="mini-gallery__img"/></div>
+            <div class="col-sm-3"><img src="{% static 'image/homepage_gallery/img4.jpg' %}" class="mini-gallery__img"/></div>
+        </div>
+      </section>
+      <section class="homepage-news container">
+        <div class="row">
+          <div class="col-xs-12 col-md-6 vcenter">
+            <h1 class="homepage-news__title">SmallsLIVE Newsletter</h1>
+            <p class="homepage-news__text">Sign up for our weekly newsletter!</p>
+          </div><!--
+       --><div class="col-xs-12 col-md-6 vcenter">
+            {% if not user.newsletter %}
+              <form action="{% url "newsletters" %}" method="post">
+                  {% csrf_token %}
+                  <input type="email" required class="homepage-news__input" name="email" placeholder="Your email address" value="{% if user.is_authenticated %}{{ user.email }}{% endif %}"/>
+                  <input type="submit" value="SUBSCRIBE" class="homepage-news__button"/>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+  <!-- Bootstrap datepicker JavaScript -->
+  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+  <script src="{% static 'js/header_datepicker.js' %}"></script>
+{% endblock extra_js %}
