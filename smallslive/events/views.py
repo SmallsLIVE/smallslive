@@ -1,19 +1,16 @@
 from collections import OrderedDict
 from itertools import groupby
-from operator import itemgetter, attrgetter
 import calendar
 import hashlib
 from cacheops import cached
 from django.core import signing
-from django.db import connection
-from django.db.models import Count, Max
+from django.db.models import Count
 import monthdelta
 import json
 import time
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.http import HttpResponseRedirect, HttpResponse
-from django.template.defaulttags import regroup
+from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta
@@ -39,8 +36,8 @@ from .models import Event, Recording
 
 
 class HomepageView(ListView):
-    template_name = 'home.html'
-    context_object_name = 'events'
+    template_name = 'index_new.html'
+    context_object_name = 'events_today'
 
     def get_queryset(self):
         date_range_start = timezone.localtime(timezone.now()).replace(hour=5, minute=0)
@@ -49,14 +46,24 @@ class HomepageView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
-        start = timezone.localtime(timezone.now()) - timedelta(hours=4)
-        context['dates'] = [start + timedelta(days=d) for d in range(5)]
-        cursor = connection.cursor()
-        cursor.execute("SELECT DISTINCT EXTRACT( DAY FROM start) from events_event WHERE EXTRACT(MONTH FROM start) = %s AND EXTRACT(YEAR FROM start) = %s AND state='Published'", [start.month, start.year])
-        days_with_events = cursor.fetchall()
-        days_with_events = [int(x[0]) for x in days_with_events]
-        context['disabled_dates'] = ['{}/{}/{}'.format(start.month, x, start.year) for x in range(1, 30) if x not in days_with_events]
+        date_range_start = timezone.localtime(timezone.now())
+        # if it's not night when events are still hapenning, show next day
+        if date_range_start.hour > 6:
+            date_range_start += timedelta(days=1)
+        # don't show last nights events that are technically today
+        date_range_start = date_range_start.replace(hour=10)
+        events = Event.objects.filter(start__gte=date_range_start).order_by('start')
+        if not self.request.user.is_staff:
+            events = events.exclude(state=Event.STATUS.Draft)
+        # 30 events should be enough to show next 7 days with events
+        events = events[:30]
+        dates = {}
+        for k, g in groupby(events, lambda e: e.listing_date()):
+            dates[k] = list(g)
+        # next 7 days
+        sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0])).items()[:7]
         context['new_in_archive'] = Event.objects.most_recent()[:8]
+        context['next_7_days'] = sorted_dates
 
         @cached(timeout=6*60*60)
         def _get_most_popular():
