@@ -486,7 +486,7 @@ live_stream_mezzrow = MezzrowLiveStreamView.as_view()
 
 
 class ArchiveView(TemplateView):
-    template_name = "events/archive.html"
+    template_name = "archive_new_auth.html"
     
     def get_context_data(self, **kwargs):
         context = super(ArchiveView, self).get_context_data(**kwargs)
@@ -494,48 +494,17 @@ class ArchiveView(TemplateView):
         @cached(timeout=6*60*60)
         def _get_most_popular():
             context = {}
-            context['recent_audio'] = Event.objects.most_recent_audio()[:8]
-            context['recent_video'] = Event.objects.most_recent_video()[:8]
+            context['most_recent'] = Event.objects.most_recent()[:8]
 
-            weekly_most_popular_audio_ids = UserVideoMetric.objects.most_popular_audio(count=6, weekly=True)
-            weekly_most_popular_audio = []
-            for event_data in weekly_most_popular_audio_ids:
+            weekly_most_popular_ids = UserVideoMetric.objects.most_popular(count=8, weekly=False)
+            weekly_most_popular = []
+            for event_data in weekly_most_popular_ids:
                 try:
                     event = Event.objects.get(id=event_data['event_id'])
-                    weekly_most_popular_audio.append({'event': event, 'play_count': event_data['count']})
+                    weekly_most_popular.append(event)
                 except Event.DoesNotExist:
                     pass
-            context['weekly_most_popular_audio'] = weekly_most_popular_audio
-
-            alltime_most_popular_audio_ids = UserVideoMetric.objects.most_popular_audio(count=6)
-            alltime_most_popular_audio = []
-            for event_data in alltime_most_popular_audio_ids:
-                try:
-                    event = Event.objects.get(id=event_data['event_id'])
-                    alltime_most_popular_audio.append({'event': event, 'play_count': event_data['count']})
-                except Event.DoesNotExist:
-                    pass
-            context['alltime_most_popular_audio'] = alltime_most_popular_audio
-
-            weekly_most_popular_video_ids = UserVideoMetric.objects.most_popular_video(count=6, weekly=True)
-            weekly_most_popular_video = []
-            for event_data in weekly_most_popular_video_ids:
-                try:
-                    event = Event.objects.get(id=event_data['event_id'])
-                    weekly_most_popular_video.append({'event': event, 'play_count': event_data['count']})
-                except Event.DoesNotExist:
-                    pass
-            context['weekly_most_popular_video'] = weekly_most_popular_video
-
-            alltime_most_popular_video_ids = UserVideoMetric.objects.most_popular_video(count=6)
-            alltime_most_popular_video = []
-            for event_data in alltime_most_popular_video_ids:
-                try:
-                    event = Event.objects.get(id=event_data['event_id'])
-                    alltime_most_popular_video.append({'event': event, 'play_count': event_data['count']})
-                except Event.DoesNotExist:
-                    pass
-            context['alltime_most_popular_video'] = alltime_most_popular_video
+            context['most_popular'] = weekly_most_popular
 
             return context
         context.update(_get_most_popular())

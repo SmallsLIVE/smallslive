@@ -43,150 +43,38 @@
         </div>
         <!-- new items -->
         <div class="archive-new__carousel__container" id="js--archive--carousel--new" style="display: none;">
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">Friday afternoon Open Jam Session with: Ai Murakami</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">David Schnitter Quartet</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">Afterhours with: The Anthony Wonsey Trio</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">Afterhours with: Spencer Murphy</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">David Schnitter Quartet</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">Afterhours with: The Anthony Wonsey Trio</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">David Schnitter Quartet</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">Afterhours with: The Anthony Wonsey Trio</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">Afterhours with: Spencer Murphy</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">David Schnitter Quartet</h4>
-            </a>
-          </div>
+          {% for event in most_recent %}
+            <div class="archive-new__carousel__item">
+              <a href="#" class="archive-new__carousel__item__container">
+                {% if event.photo %}
+                  <img class="event-image"
+                       src="{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}">
+                {% else %}
+                  <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+                {% endif %}
+                <span class="event-date">{{ event.start|date:"n/j/Y" }}</span>
+                <h4 class="event-name">{{ event.title }}</h4>
+              </a>
+            </div>
+          {% endfor %}
         </div>
         <!-- /new items -->
         <!-- popular items -->
         <div class="archive-new__carousel__container" id="js--archive--carousel--popular" style="display: none;">
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">Popular afternoon Open Jam Session with: Ai Murakami</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">David Schnitter Quartet</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">Afterhours with: The Anthony Wonsey Trio</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">Afterhours with: Spencer Murphy</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">David Schnitter Quartet</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">Afterhours with: The Anthony Wonsey Trio</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">David Schnitter Quartet</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">Afterhours with: The Anthony Wonsey Trio</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">Afterhours with: Spencer Murphy</h4>
-            </a>
-          </div>
-          <div class="archive-new__carousel__item">
-            <a href="#" class="archive-new__carousel__item__container">
-              <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
-              <span class="event-date">01/30/2015</span>
-              <h4 class="event-name">David Schnitter Quartet</h4>
-            </a>
-          </div>
+          {% for event in most_popular %}
+            <div class="archive-new__carousel__item">
+              <a href="#" class="archive-new__carousel__item__container">
+                {% if event.photo %}
+                  <img class="event-image"
+                       src="{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}">
+                {% else %}
+                  <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+                {% endif %}
+                <span class="event-date">{{ event.start|date:"n/j/Y" }}</span>
+                <h4 class="event-name">{{ event.title }}</h4>
+              </a>
+            </div>
+          {% endfor %}
         </div>
         <!-- /popular items -->
       </section>
