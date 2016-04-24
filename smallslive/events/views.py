@@ -36,7 +36,7 @@ from .models import Event, Recording
 
 
 class HomepageView(ListView):
-    template_name = 'index_new.html'
+    template_name = 'home.html'
     context_object_name = 'events_today'
 
     def get_queryset(self):
