@@ -2,229 +2,152 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
-{% block title %}New/Popular{% endblock %}
+{% block title %}SmallsLIVE Audio/Video Archive{% endblock %}
 
 {% block content %}
     <div class="content-wrapper">
-      <section class="archive-page-header">
-        <h1>New and Most Popular Video/Audio</h1>
-      </section>
-      <section class="newly-added-list container">
-        <div class="archive-section-header">
-            <h1 class="archive-section-header__title">Newly added:</h1>
-            <div class="archive-section-header__switches-container">
-                <ul>
-                    <li class="newest-switch archive-section-header__switch active" id="newly-added-switch--video">
-                        Video
-                    </li>
-                    <li class="newest-switch archive-section-header__switch" id="newly-added-switch--audio">
-                        Audio
-                    </li>
-                </ul>
+
+      {% if request.user.is_authenticated %}
+        <section class="archive-new__header-search">
+          <h1>SmallsLIVE Audio/Video Archive</h1>
+          <p>The SmallsLIVE Archive was started in September of 2007 and represents nearly all the shows performed at the club to the current date.</p>
+          <form action="{% url "artist_search" %}" method="get">
+            <div class="form-group has-feedback archive-new__header-search__search-container">
+              <input id="header--search" type="text" name="q" class="form-control search-input" placeholder="Search by artist name, event name or instrument..."/>
+              <i class="fa fa-search form-control-feedback"></i>
             </div>
-        </div>
-
-        <!-- recently added carousel-->
-        <div class="row archive-carousel" id="newly-added--carousel">
-
-        </div>
-
-        <!-- hidden video slides-->
-        <div style="display: none;" id="js-recent-video">
-            {% for event in recent_video %}
-                <div class="col-xs-6 col-md-3">
-                    <div class="newly-added event-object--gold">
-                        <a href="{{ event.get_absolute_url }}">
-                            {% if event.photo %}
-                                <div class="newly-added__image-container" style="background-image:url('{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}')"></div>
-                            {% else %}
-                                <div class="newly-added__image-container" style="background-image:url('{% static 'image/no-event-photo-thumbnail.jpg' %}')"></div>
-                            {% endif %}
-                        </a>
-                        <div class="newly-added__info"><p class="newly-added__date">{{ event.start|date:"n/j/Y" }}</p><h1
-                                class="newly-added__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h1></div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-
-      <!-- hidden video slides-->
-        <div style="display: none;" id="js-recent-audio">
-            {% for event in recent_audio %}
-                <div class="col-xs-6 col-md-3">
-                    <div class="newly-added event-object--gold">
-                        <a href="{{ event.get_absolute_url }}">
-                            {% if event.photo %}
-                                <div class="newly-added__image-container" style="background-image:url('{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}')"></div>
-                            {% else %}
-                                <div class="newly-added__image-container" style="background-image:url('{% static 'image/no-event-photo-thumbnail.jpg' %}')"></div>
-                            {% endif %}
-                        </a>
-                        <div class="newly-added__info"><p class="newly-added__date">{{ event.start|date:"n/j/Y" }}</p><h1
-                                class="newly-added__title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h1></div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-      </section>
-
-      {% if not request.user.is_authenticated %}
-          <section class="home-membership archive-membership container">
-              <div class="home-membership__header vertical-align-parent">
-                  <div class="vertical-align-child">
-                      <h1 class="home-membership__header__title">Become a member of SmallsLIVE and access our live streamed shows nightly!</h1>
-                      <p class="home-membership__header__text">Become a member of SmallsLIVE to watch our live stream. Subscribing members get unlimited access to our audio/video archive. By becoming a subscribing member you are directly supporting the musicians and the venue.</p>
-                      <a href="{% url "account_signup" %}" class="cto__button">Sign up!</a>
-                  </div>
-              </div>
-          </section>
+          </form>
+          <span class="archive-new__header-search__instructable">or browse below...</span>
+        </section>
+      {% else %}
+        <section class="archive-new__header-cta">
+          <h1>Not yet a member of SmallsLIVE?</h1>
+          <p>Become a Member of SmallsLIVE and watch our live streams at no charge. Become a Subscribing Member and get unlimited access to the SmallsLIVE Audio/Video Archive of all shows performed at Smalls Jazz Club since 2007.</p>
+          <p>Subscribing Members directly support the Artists and the Clubs through our unique SmallsLIVE Revenue Share Project.<br><a href="{% url "revenue-share" %}">CLICK HERE</a> for more information.</p>
+          <a href="{% url "signup_landing" %}" class="archive-new__header-cta__cta">Membership options</a>
+        </section>
       {% endif %}
 
-      <section class="video-audio container">
-          <div class="archive-section-header">
-              <h1 class="archive-section-header__title">Most popular:</h1>
-              <div class="archive-section-header__switches-container">
-                  <ul>
-                      <li class="most-popular-switch archive-section-header__switch active" id="most-popular-switch--week">
-                          This week
-                      </li>
-                      <li class="most-popular-switch archive-section-header__switch" id="most-popular-switch--alltime">
-                          All time
-                      </li>
-                  </ul>
-              </div>
-          </div>
-        <div class="row" id="most-popular--week">
-          <div class="col-md-6">
-            <div class="videos row">
-              <div class="col-xs-12">
-                <h3 class="video-audio__heading">Videos:</h3>
-              </div>
-              {% for object in weekly_most_popular_video %}
-                <div class="mini-video col-xs-6 col-sm-12">
-                    <div class="mini-video__image">
-                      <a href="{{ object.event.get_absolute_url }}">
-                      {% if object.event.photo %}
-                        <img src="{% thumbor_url object.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
-                      {% else %}
-                        <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                      {% endif %}
-                      </a>
-                    </div>
-                    <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ object.event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ object.event.get_absolute_url }}">{{ object.event.title }}</a></h2>
-{#                      <div class="mini-video-info__stats">#}
-{#                          <p>Plays:</p>#}
-{#                      </div>#}
-{#                      <div class="mini-video-info__stats">#}
-{#                          <p><span>{{ event.play_count }}</span></p>#}
-{#                      </div>#}
-                    </div>
-                </div>
-              {% endfor %}
+      <section class="archive-new__carousel container">
+        <ul class="archive-new__carousel__switches">
+          <li class="archive-new__carousel__switch active" id="archive-carousel-switch--new">
+            Newly added
+          </li>
+          <li class="archive-new__carousel__switch" id="archive-carousel-switch--popular">
+            Most popular
+          </li>
+        </ul>
+        <!-- carousel -->
+        <div class="" id="archive--carousel">
 
+        </div>
+        <!-- new items -->
+        <div class="archive-new__carousel__container" id="js--archive--carousel--new" style="display: none;">
+          {% for event in most_recent %}
+            <div class="archive-new__carousel__item">
+              <a href="#" class="archive-new__carousel__item__container">
+                {% if event.photo %}
+                  <img class="event-image"
+                       src="{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}">
+                {% else %}
+                  <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+                {% endif %}
+                <span class="event-date">{{ event.start|date:"n/j/Y" }}</span>
+                <h4 class="event-name">{{ event.title }}</h4>
+              </a>
             </div>
-            <a href="{% url "most_popular_weekly_videos" %}" class="video-audio__more-link">Full list of 20 most popular weekly videos</a>
-          </div>
-          <div class="col-md-6">
-            <div class="videos row">
-            <div class="col-xs-12">
-              <h3 class="video-audio__heading">Audio:</h3>
+          {% endfor %}
+        </div>
+        <!-- /new items -->
+        <!-- popular items -->
+        <div class="archive-new__carousel__container" id="js--archive--carousel--popular" style="display: none;">
+          {% for event in most_popular %}
+            <div class="archive-new__carousel__item">
+              <a href="#" class="archive-new__carousel__item__container">
+                {% if event.photo %}
+                  <img class="event-image"
+                       src="{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}">
+                {% else %}
+                  <img class="event-image" src="{% static 'image/no-event-photo-thumbnail.jpg' %}">
+                {% endif %}
+                <span class="event-date">{{ event.start|date:"n/j/Y" }}</span>
+                <h4 class="event-name">{{ event.title }}</h4>
+              </a>
             </div>
-              {% for object in weekly_most_popular_audio %}
-                <div class="mini-video col-xs-6 col-sm-12">
-                    <div class="mini-video__image">
-                      <a href="{{ object.event.get_absolute_url }}">
-                      {% if object.event.photo %}
-                        <img src="{% thumbor_url object.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
-                      {% else %}
-                        <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                      {% endif %}
-                      </a>
-                    </div>
-                    <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ object.event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ object.event.get_absolute_url }}">{{ object.event.title }}</a></h2>
-{#                      <div class="mini-video-info__stats">#}
-{#                          <p>Plays:</p>#}
-{#                      </div>#}
-{#                      <div class="mini-video-info__stats">#}
-{#                          <p><span>{{ event.play_count }}</span></p>#}
-{#                      </div>#}
-                    </div>
-                </div>
-              {% endfor %}
-            </div>
-            <a href="{% url "most_popular_weekly_audio" %}" class="video-audio__more-link">Full list of 20 most popular weekly audio recordings</a>
+          {% endfor %}
+        </div>
+        <!-- /popular items -->
+      </section>
+
+      <section class="archive-new__date-browser container">
+        <div class="archive-new__date-browser__header">
+          <h1>Browse archive by date</h1>
+          <div class="archive-new__date-browser__date-picker" id="archive__date-picker">
+              <input type="text" placeholder="Select a month" readonly>
+              <i class="fa fa-caret-down"></i>
           </div>
         </div>
-
-        <div class="row" id="most-popular--alltime">
-          <div class="col-md-6">
-            <div class="videos row">
-              <div class="col-xs-12">
-                <h3 class="video-audio__heading">Videos:</h3>
-              </div>
-              {% for object in alltime_most_popular_video %}
-                <div class="mini-video col-xs-6 col-sm-12">
-                    <div class="mini-video__image">
-                      <a href="{{ object.event.get_absolute_url }}">
-                      {% if object.event.photo %}
-                        <img src="{% thumbor_url object.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
+        <ul class="bg-image-calendar__container">
+          <!-- calendar control -->
+          <li class="bg-image-calendar__control">
+            <a class="bg-image-calendar__control__content-container" href="{{ prev_url }}">
+              <i class="fa fa-angle-left"></i>
+              <h3><span>Display </span>14 previous dates</h3>
+            </a>
+          </li>
+          {% for date, events in date_events %}
+            <!-- single day -->
+            <li class="bg-image-calendar__day">
+              <h2 class="bg-image-calendar__day__date">
+                {{ date|date:"l" }} // {{ date|date:"n/j/Y" }}
+              </h2>
+              {% for event in events %}
+                <!-- single event -->
+                <a class="bg-image-calendar__event" href="{{ event.get_absolute_url }}"
+                   {% if event.photo %}
+                      {% if event.photo_crop_box %}
+                        style="background-image: url('{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=360 %}')"
                       {% else %}
-                        <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
+                        style="background-image: url('{% thumbor_url event.photo.url|urlencode height=360 width=360 smart=True %}')"
                       {% endif %}
-                      </a>
+                   {% else %}
+                      style="background-image: url('{% static "image/no-event-image-placeholder.jpg" %}')"
+                   {% endif %}
+                >
+                  <div class="bg-image-calendar__event__content-container">
+                    <div>
+                      <span class="event-time">{{ event.start|date:"g:i A" }} to {{ event.end|date:"g:i A" }}</span>
+                      <h3 class="event-name">{{ event.title }}</h3>
                     </div>
-                    <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ object.event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ object.event.get_absolute_url }}">{{ object.event.title }}</a></h2>
-{#                      <div class="mini-video-info__stats">#}
-{#                          <p>Plays:</p>#}
-{#                      </div>#}
-{#                      <div class="mini-video-info__stats">#}
-{#                          <p><span>{{ event.play_count }}</span></p>#}
-{#                      </div>#}
+                  </div>
+                  <div class="bg-image-calendar__event__media-indicators-container">
+                    <div>
+                      {% if event.video_count %}<i class="fa fa-video-camera"></i>{% endif %}
+                      {% if event.audio_count %}<i class="fa fa-music"></i>{% endif %}
+                      {% if event.product_count %}<i class="fa fa-shopping-cart"></i>{% endif %}
                     </div>
-                </div>
+                  </div>
+                </a>
+                <!-- /single event -->
               {% endfor %}
+            </li>
+            <!-- /single day -->
+          {% endfor %}
+          <!-- calendar control -->
+          <li class="bg-image-calendar__control">
+            <a class="bg-image-calendar__control__content-container" href="{{ next_url }}">
+              {% if request.GET.week > 0 %}
+              <i class="fa fa-angle-right"></i>
+              <h3><span>Display </span>14 next dates</h3>
+              {% endif %}
+            </a>
+          </li>
+        </ul>
+      </section>
 
-            </div>
-            <a href="{% url "most_popular_videos" %}" class="video-audio__more-link">Full list of 20 most popular alltime videos</a>
-          </div>
-          <div class="col-md-6">
-            <div class="videos row">
-            <div class="col-xs-12">
-              <h3 class="video-audio__heading">Audio:</h3>
-            </div>
-              {% for object in alltime_most_popular_audio %}
-                <div class="mini-video col-xs-6 col-sm-12">
-                    <div class="mini-video__image">
-                      <a href="{{ object.event.get_absolute_url }}">
-                      {% if object.event.photo %}
-                        <img src="{% thumbor_url object.event.photo.url|urlencode height=80 width=80 smart=True %}" alt=""/>
-                      {% else %}
-                        <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                      {% endif %}
-                      </a>
-                    </div>
-                    <div class="mini-video-info">
-                      <p class="mini-video-info__date">{{ object.event.start|date:"n/j/Y" }}</p>
-                      <h2 class="mini-video-info__title"><a href="{{ object.event.get_absolute_url }}">{{ object.event.title }}</a></h2>
-{#                      <div class="mini-video-info__stats">#}
-{#                          <p>Plays:</p>#}
-{#                      </div>#}
-{#                      <div class="mini-video-info__stats">#}
-{#                          <p><span>{{ event.play_count }}</span></p>#}
-{#                      </div>#}
-                    </div>
-                </div>
-              {% endfor %}
-            </div>
-            <a href="{% url "most_popular_audio" %}" class="video-audio__more-link">Full list of 20 most popular alltime audio recordings</a>
-          </div>
-        </div>
+      <section class="archive-new__bottom-promo container">
+        <p>Subscribing Members directly support the Artists and the Clubs through our unique SmallsLIVE Revenue Share Project.</p>
+        <a href="{% url "revenue-share" %}" class="archive-new__bottom-promo__cta">Learn more</a>
       </section>
     </div>
 {% endblock content %}
@@ -242,8 +165,8 @@
                     {
                         breakpoint: 6000,
                         settings: {
-                            slidesToShow: 4,
-                            slidesToScroll: 4
+                            slidesToShow: 6,
+                            slidesToScroll: 6
                         }
                     },
                     {
@@ -265,50 +188,34 @@
         };
         /* Toggling different streams */
         $(document).ready(function () {
-            initSlick('#newly-added--carousel');
-            $("#js-recent-video").each(function(index, element) {
-                $('#newly-added--carousel').slick('slickAdd', $(element).html());
+            initSlick('#archive--carousel');
+            $("#js--archive--carousel--new").each(function(index, element) {
+                $('#archive--carousel').slick('slickAdd', $(element).html());
             });
 
-            $("#newly-added-switch--video").click(function() {
+            $("#archive-carousel-switch--new").click(function() {
                 if (!($(this).hasClass("active"))) {
-                    $(".newest-switch.archive-section-header__switch.active").toggleClass("active");
+                    $(".archive-new__carousel__switch.active").toggleClass("active");
                     $(this).toggleClass("active");
-                    $('#newly-added--carousel').slick('unslick');
-                    $('#newly-added--carousel').empty();
-                    initSlick('#newly-added--carousel');
-                    $("#js-recent-video").each(function(index, element) {
-                        $('#newly-added--carousel').slick('slickAdd', $(element).html());
-                    });
-
-                }
-            });
-            $("#newly-added-switch--audio").click(function() {
-                if (!($(this).hasClass("active"))) {
-                    $(".newest-switch.archive-section-header__switch.active").toggleClass("active");
-                    $(this).toggleClass("active");
-                    $('#newly-added--carousel').slick('unslick');
-                    $('#newly-added--carousel').empty();
-                    initSlick('#newly-added--carousel');
-                    $("#js-recent-audio").each(function(index, element) {
-                        $('#newly-added--carousel').slick('slickAdd', $(element).html());
+                    $('#archive--carousel').slick('unslick');
+                    $('#archive--carousel').empty();
+                    initSlick('#archive--carousel');
+                    $("#js--archive--carousel--new").each(function(index, element) {
+                        $('#archive--carousel').slick('slickAdd', $(element).html());
                     });
                 }
             });
-            $("#most-popular-switch--week").click(function() {
+
+            $("#archive-carousel-switch--popular").click(function() {
                 if (!($(this).hasClass("active"))) {
-                    $(".most-popular-switch.archive-section-header__switch.active").toggleClass("active");
+                    $(".archive-new__carousel__switch.active").toggleClass("active");
                     $(this).toggleClass("active");
-                    $("#most-popular--alltime").slideUp();
-                    $("#most-popular--week").slideDown();
-                }
-            });
-            $("#most-popular-switch--alltime").click(function() {
-                if (!($(this).hasClass("active"))) {
-                    $(".most-popular-switch.archive-section-header__switch.active").toggleClass("active");
-                    $(this).toggleClass("active");
-                    $("#most-popular--week").slideUp();
-                    $("#most-popular--alltime").slideDown();
+                    $('#archive--carousel').slick('unslick');
+                    $('#archive--carousel').empty();
+                    initSlick('#archive--carousel');
+                    $("#js--archive--carousel--popular").each(function(index, element) {
+                        $('#archive--carousel').slick('slickAdd', $(element).html());
+                    });
                 }
             });
         })

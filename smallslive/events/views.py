@@ -2,6 +2,7 @@ from collections import OrderedDict
 from itertools import groupby
 import calendar
 import hashlib
+from datetime import time as std_time
 from cacheops import cached
 from django.core import signing
 from django.db.models import Count
@@ -10,6 +11,7 @@ import json
 import time
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
+from django.db import connection
 from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.utils.text import slugify
@@ -485,8 +487,42 @@ class MezzrowLiveStreamView(TemplateView):
 live_stream_mezzrow = MezzrowLiveStreamView.as_view()
 
 
-class ArchiveView(TemplateView):
-    template_name = "archive_new_auth.html"
+class ArchiveView(ListView):
+    template_name = "events/archive.html"
+    context_object_name = 'date_events'
+
+    def get_queryset(self):
+        dates = {}
+        two_week_interval = int(self.request.GET.get('week', 0)) * 14
+
+        cursor = connection.cursor()
+        cursor.execute('SELECT DISTINCT(e.start::date) FROM "events_event" AS e INNER JOIN "events_recording" AS rec'
+                       ' ON e.id=rec.event_id WHERE date_part(\'hour\', e.start) > 12 ORDER BY start DESC LIMIT 14 OFFSET %s', [two_week_interval])
+        dates = [d[0] for d in cursor.fetchall()]
+        date_range_start = datetime.combine(dates[-1], std_time(10, 0))
+        date_range_end = dates[0] + timedelta(days=1)
+        date_range_end = datetime.combine(date_range_end, std_time(4, 0))
+        events = Event.objects.exclude(recordings=None).filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
+        if not self.request.user.is_staff:
+            events = events.exclude(state=Event.STATUS.Draft)
+
+        events = events.annotate(product_count=Count('products')).extra(select={
+            'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
+                           "events_recording.event_id = events_event. ID AND "
+                           "events_recording.media_file_id = multimedia_mediafile. ID AND "
+                           " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='video'"
+                           " GROUP BY events_event.id",
+            'audio_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
+                           "events_recording.event_id = events_event. ID AND "
+                           "events_recording.media_file_id = multimedia_mediafile. ID AND "
+                           " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='audio'"
+                           " GROUP BY events_event.id",
+        })
+        dates = {}
+        for k, g in groupby(events, lambda e: e.listing_date()):
+            dates[k] = list(g)
+        sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0])).items()
+        return sorted_dates
     
     def get_context_data(self, **kwargs):
         context = super(ArchiveView, self).get_context_data(**kwargs)
@@ -508,6 +544,12 @@ class ArchiveView(TemplateView):
 
             return context
         context.update(_get_most_popular())
+
+        week = int(self.request.GET.get('week', 0))
+        context['prev_url'] = "{0}?week={1}".format(reverse('archive'), week + 1)
+        if week > 0:
+            context['next_url'] = "{0}?week={1}".format(reverse('archive'), week - 1)
+
         return context
 
 archive = ArchiveView.as_view()
