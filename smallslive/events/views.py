@@ -500,6 +500,7 @@ class ArchiveView(ListView):
                        ' ON e.id=rec.event_id WHERE date_part(\'hour\', e.start) > 12 ORDER BY start DESC LIMIT 14 OFFSET %s', [two_week_interval])
         dates = [d[0] for d in cursor.fetchall()]
         date_range_start = datetime.combine(dates[-1], std_time(10, 0))
+        self.date_start = date_range_start
         date_range_end = dates[0] + timedelta(days=1)
         date_range_end = datetime.combine(date_range_end, std_time(4, 0))
         events = Event.objects.exclude(recordings=None).filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
@@ -543,6 +544,9 @@ class ArchiveView(ListView):
             context['most_popular'] = weekly_most_popular
 
             return context
+
+        context['month'] = self.date_start.month - 1
+        context['year'] = self.date_start.year
         context.update(_get_most_popular())
         context.update(self.get_pagination())
         return context
