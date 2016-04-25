@@ -213,18 +213,22 @@
       @include display(flex);
       @include align-items(center);
       border: 2px solid $main-accent-color;
+      width: 180px;
 
       input {
         padding: 8px;
         font-size: 16px;
         @include lato-black;
         color: $main-accent-color;
-        width: 150px;
         background: none;
         margin-right: 5px;
         margin-left: 2px;
         border: none;
         outline: none;
+        width: 100%;
+        position: relative;
+        z-index: 2;
+        @include flex-shrink(0);
 
         &::-webkit-input-placeholder {
            color: $main-accent-color;
@@ -247,6 +251,9 @@
         font-size: 18px;
         color: $main-accent-color;
         margin-right: 10px;
+        position: relative;
+        z-index: 1;
+        right: 25px;
       }
     }
   }
