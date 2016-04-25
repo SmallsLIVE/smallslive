@@ -92,7 +92,11 @@
           <li class="bg-image-calendar__control">
             <a class="bg-image-calendar__control__content-container" href="{{ prev_url }}">
               <i class="fa fa-angle-left"></i>
-              <h3><span>Display </span>14 previous dates</h3>
+              {% if month_view %}
+                <h3><span>Display </span>previous month</h3>
+              {% else %}
+                <h3><span>Display </span>14 previous dates</h3>
+              {% endif %}
             </a>
           </li>
           {% for date, events in date_events %}
@@ -139,6 +143,10 @@
               {% if request.GET.week > 0 %}
               <i class="fa fa-angle-right"></i>
               <h3><span>Display </span>14 next dates</h3>
+              {% endif %}
+              {% if month_view %}
+                <i class="fa fa-angle-right"></i>
+                <h3><span>Display </span>next month</h3>
               {% endif %}
             </a>
           </li>
@@ -219,5 +227,22 @@
                 }
             });
         })
+    </script>
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script>
+      var $datePicker = $('#archive__date-picker input');
+      $datePicker.datepicker({
+          format: 'MM // yyyy',
+          minViewMode: "months",
+          orientation: "top auto",
+          autoclose: true
+      });
+      $datePicker.on('changeMonth', function(d){
+          var month = d.date.getMonth() + 1;
+          var year = d.date.getFullYear();
+          window.location = '/events/new-popular/' + year + '/' + month + '/';
+      });
+      var date = new Date({{ year}}, {{ month }}, 1);
+      $datePicker.datepicker("setDate", date);
     </script>
 {% endblock %}

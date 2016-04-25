@@ -544,12 +544,65 @@ class ArchiveView(ListView):
 
             return context
         context.update(_get_most_popular())
+        context.update(self.get_pagination())
+        return context
 
+    def get_pagination(self):
+        context = {}
         week = int(self.request.GET.get('week', 0))
         context['prev_url'] = "{0}?week={1}".format(reverse('archive'), week + 1)
         if week > 0:
             context['next_url'] = "{0}?week={1}".format(reverse('archive'), week - 1)
-
         return context
 
+
 archive = ArchiveView.as_view()
+
+
+class MonthlyArchiveView(ArchiveView):
+    def get_queryset(self):
+        dates = {}
+        month = int(self.kwargs.get('month', timezone.now().month))
+        year = int(self.kwargs.get('year', timezone.now().year))
+        # don't show last nights events that are technically today
+        date_range_start = timezone.make_aware(timezone.datetime(year, month, 1, hour=10),
+                                               timezone.get_default_timezone())
+        date_range_end = date_range_start + monthdelta.MonthDelta(1)
+        last_day_of_month = calendar.monthrange(year, month)[1]
+        events = Event.objects.exclude(recordings=None).filter(start__range=(date_range_start, date_range_end)).order_by('start')
+        if not self.request.user.is_staff:
+            events = events.exclude(state=Event.STATUS.Draft)
+        events = events.annotate(product_count=Count('products')).extra(select={
+            'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
+                           "events_recording.event_id = events_event. ID AND "
+                           "events_recording.media_file_id = multimedia_mediafile. ID AND "
+                           " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='video'"
+                           " GROUP BY events_event.id",
+            'audio_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
+                           "events_recording.event_id = events_event. ID AND "
+                           "events_recording.media_file_id = multimedia_mediafile. ID AND "
+                           " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='audio'"
+                           " GROUP BY events_event.id",
+        })
+        for k, g in groupby(events, lambda e: e.listing_date()):
+            dates[k] = list(g)
+        sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0])).items()
+        return sorted_dates
+
+    def get_pagination(self):
+        context = {}
+        # js months are zero indexed
+        month = int(self.kwargs.get('month', timezone.now().month))
+        year = int(self.kwargs.get('year', timezone.now().year))
+        context['month'] = month - 1
+        context['year'] = year
+        context['month_view'] = True
+        # position of the "NEXT" box, after all the dates and the "PREV" box
+        current_month = timezone.datetime(year=year, month=month, day=1)
+        next_month = current_month + timezone.timedelta(days=31)
+        prev_month = current_month - timezone.timedelta(days=1)
+        context['prev_url'] = reverse('monthly_schedule', kwargs={'year': prev_month.year, 'month': prev_month.month})
+        context['next_url'] = reverse('monthly_schedule', kwargs={'year': next_month.year, 'month': next_month.month})
+        return context
+
+monthly_archive = MonthlyArchiveView.as_view()
