@@ -1,0 +1,49 @@
+{% load static from staticfiles %}
+{% load humanize %}
+{% load thumbor_tags %}
+
+<section id="upcoming-events-fullsize" class="homepage-upcoming container">
+  <div class="row homepage-upcoming__carousel" id="upcoming-carousel">
+    {% for event in events_today %}
+    <!-- single slide -->
+    <div class="homepage-upcoming__event">
+      <div class="homepage-upcoming__event__image-container"
+           {% if event.photo %}
+              {% if event.photo_crop_box %}
+                style="background-image: url('{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=600 %}')"
+              {% else %}
+                style="background-image: url('{% thumbor_url event.photo.url|urlencode height=360 width=600 smart=True %}')"
+              {% endif %}
+           {% else %}
+              style="background-image: url('{% static "image/no-event-image-placeholder.jpg" %}')"
+           {% endif %}
+      >
+      </div>
+      <div class="homepage-upcoming__event__gradient">
+      </div>
+      <div class="homepage-upcoming__event__info">
+        <h1 class="event-title"><a href="{{ event.get_absolute_url }}">{{ event.title }}</a></h1>
+        <h3 class="event-timeslot">Today | {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</h3>
+        <p class="event-artists">
+          {% for gig_info in event.get_performers %} <a href="{{ gig_info.artist.get_absolute_url }}">{{ gig_info.artist }} <span
+              class="event-artist-instrument">({{ gig_info.role.name }})</span></a> {% if not forloop.last %} <span class="event-artists-divider">//</span> {% endif %}
+          {% endfor %}
+        </p>
+        <div>
+          <a href="{{ event.get_absolute_url }}" class="event-cta-button">Full event page</a><span class="arrow"></span>
+        </div>
+      </div>
+    </div>
+    <!-- /single slide -->
+    {% endfor %}
+  </div>
+  <!-- timeslotslot selector -->
+  <div class="homepage-upcoming__footer row">
+    <h2>Today at Smalls:</h2>
+    <ol class="homepage-upcoming__footer__timeslots carousel-indicators">
+        {% for event in events_today %}
+          <li data-slickPosition="{{ forloop.counter0 }}" class="timeslot {% if forloop.first %}active{% endif %}">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</li>
+        {% endfor %}
+    </ol>
+  </div>
+</section>
