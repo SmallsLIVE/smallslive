@@ -48,7 +48,7 @@
         <div class="archive-new__carousel__container" id="js--archive--carousel--new" style="display: none;">
           {% for event in most_recent %}
             <div class="archive-new__carousel__item">
-              <a href="#" class="archive-new__carousel__item__container">
+              <a href="{{ event.get_absolute_url }}" class="archive-new__carousel__item__container">
                 {% if event.photo %}
                   <img class="event-image"
                        src="{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}">
@@ -66,7 +66,7 @@
         <div class="archive-new__carousel__container" id="js--archive--carousel--popular" style="display: none;">
           {% for event in most_popular %}
             <div class="archive-new__carousel__item">
-              <a href="#" class="archive-new__carousel__item__container">
+              <a href="{{ event.get_absolute_url }}" class="archive-new__carousel__item__container">
                 {% if event.photo %}
                   <img class="event-image"
                        src="{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}">
