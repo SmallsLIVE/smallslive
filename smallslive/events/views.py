@@ -492,7 +492,6 @@ class ArchiveView(ListView):
     context_object_name = 'date_events'
 
     def get_queryset(self):
-        dates = {}
         two_week_interval = int(self.request.GET.get('week', 0)) * 14
 
         cursor = connection.cursor()
@@ -571,8 +570,8 @@ class MonthlyArchiveView(ArchiveView):
         # don't show last nights events that are technically today
         date_range_start = timezone.make_aware(timezone.datetime(year, month, 1, hour=10),
                                                timezone.get_default_timezone())
+        self.date_start = date_range_start
         date_range_end = date_range_start + monthdelta.MonthDelta(1)
-        last_day_of_month = calendar.monthrange(year, month)[1]
         events = Event.objects.exclude(recordings=None).filter(start__range=(date_range_start, date_range_end)).order_by('start')
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)
