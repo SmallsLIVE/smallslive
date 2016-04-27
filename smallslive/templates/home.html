@@ -21,15 +21,12 @@
       {% include "blocks/homepage-upcoming-final.html" %}
 
       {% if not request.user.is_authenticated %}
-          <section class="home-membership container">
-              <div class="home-membership__header vertical-align-parent">
-                  <div class="vertical-align-child">
-                      <h1 class="home-membership__header__title">Not a member of SmallsLIVE?</h1>
-                      <p class="home-membership__header__text">Become a member of SmallsLIVE to watch our live stream. Subscribing members get unlimited access to our audio/video archive. By becoming a subscribing member you are directly supporting the musicians and the venue.</p>
-                      <a href="{% url "account_signup" %}" class="cto__button">Sign up!</a>
-                  </div>
-              </div>
-          </section>
+        <section class="archive-new__header-cta">
+          <h1>Not yet a member of SmallsLIVE?</h1>
+          <p>Become a Member of SmallsLIVE and watch our live streams at no charge. Become a Subscribing Member and get unlimited access to the SmallsLIVE Audio/Video Archive of all shows performed at Smalls Jazz Club since 2007.</p>
+          <p>Subscribing Members directly support the Artists and the Clubs through our unique SmallsLIVE Revenue Share Project.<br><a href="{% url "revenue-share" %}">CLICK HERE</a> for more information.</p>
+          <a href="{% url "signup_landing" %}" class="archive-new__header-cta__cta">Membership options</a>
+        </section>
       {% endif %}
 
       <section class="homepage-date-browser container">
