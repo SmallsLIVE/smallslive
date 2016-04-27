@@ -530,9 +530,9 @@ class ArchiveView(ListView):
         @cached(timeout=6*60*60)
         def _get_most_popular():
             context = {}
-            context['most_recent'] = Event.objects.most_recent()[:8]
+            context['most_recent'] = Event.objects.most_recent()[:12]
 
-            weekly_most_popular_ids = UserVideoMetric.objects.most_popular(count=8, weekly=False)
+            weekly_most_popular_ids = UserVideoMetric.objects.most_popular(count=12, weekly=False)
             weekly_most_popular = []
             for event_data in weekly_most_popular_ids:
                 try:
