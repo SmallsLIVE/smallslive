@@ -87,16 +87,21 @@
 
       <section class="archive-new__date-browser container" id="archive-dates-browser">
         <div class="archive-new__date-browser__header">
-          <h1>Browse archive by date</h1>
+          <div class="archive-new__date-browser__header-left">
+            <h1>Browse archive by date</h1>
+            <div class="icons-legend">
+              <span class="helper">Icons legend:</span><i class="fa fa-music"></i><span class="icon-meaning">Audio available</span><i class="fa fa-video-camera"></i><span class="icon-meaning">Video available</span><i class="fa fa-shopping-cart"></i><span class="icon-meaning">Tracks / CD available</span>
+            </div>
+          </div>
           <div class="archive-new__date-browser__date-picker" id="archive__date-picker">
               <input type="text" placeholder="Select a month" readonly>
               <i class="fa fa-caret-down"></i>
           </div>
         </div>
-        <ul class="bg-image-calendar__container">
+        <ul class="no-bg-calendar__container">
           <!-- calendar control -->
-          <li class="bg-image-calendar__control">
-            <a class="bg-image-calendar__control__content-container" href="{{ prev_url }}">
+          <li class="no-bg-calendar__control">
+            <a class="no-bg-calendar__control__content-container" href="{{ prev_url }}">
               <i class="fa fa-angle-left"></i>
               {% if month_view %}
                 <h3><span>Display </span>previous month</h3>
@@ -107,30 +112,20 @@
           </li>
           {% for date, events in date_events %}
             <!-- single day -->
-            <li class="bg-image-calendar__day">
-              <h2 class="bg-image-calendar__day__date">
+            <li class="no-bg-calendar__day">
+              <h2 class="no-bg-calendar__day__date">
                 {{ date|date:"l" }} // {{ date|date:"n/j/Y" }}
               </h2>
               {% for event in events %}
                 <!-- single event -->
-                <a class="bg-image-calendar__event" href="{{ event.get_absolute_url }}"
-                   {% if event.photo %}
-                      {% if event.photo_crop_box %}
-                        style="background-image: url('{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=360 %}')"
-                      {% else %}
-                        style="background-image: url('{% thumbor_url event.photo.url|urlencode height=360 width=360 smart=True %}')"
-                      {% endif %}
-                   {% else %}
-                      style="background-image: url('{% static "image/no-event-image-placeholder.jpg" %}')"
-                   {% endif %}
-                >
-                  <div class="bg-image-calendar__event__content-container">
+                <a class="no-bg-calendar__event" href="{{ event.get_absolute_url }}">
+                  <div class="no-bg-calendar__event__content-container">
                     <div>
                       <span class="event-time">{{ event.start|date:"g:i A" }} to {{ event.end|date:"g:i A" }}</span>
                       <h3 class="event-name">{{ event.title }}</h3>
                     </div>
                   </div>
-                  <div class="bg-image-calendar__event__media-indicators-container">
+                  <div class="no-bg-calendar__event__media-indicators-container">
                     <div>
                       {% if event.video_count %}<i class="fa fa-video-camera"></i>{% endif %}
                       {% if event.audio_count %}<i class="fa fa-music"></i>{% endif %}
@@ -144,8 +139,8 @@
             <!-- /single day -->
           {% endfor %}
           <!-- calendar control -->
-          <li class="bg-image-calendar__control">
-            <a class="bg-image-calendar__control__content-container" href="{{ next_url }}">
+          <li class="no-bg-calendar__control">
+            <a class="no-bg-calendar__control__content-container" href="{{ next_url }}">
               {% if request.GET.week > 0 %}
               <i class="fa fa-angle-right"></i>
               <h3><span>Display </span>14 next dates</h3>

@@ -1,0 +1,141 @@
+.no-bg-calendar {
+
+  &__container {
+    padding: 15px 0;
+    @include display(flex);
+    @include flex-wrap(wrap);
+  }
+
+  &__day, &__control {
+    list-style-type: none;
+    width: 100%;
+    @include display(flex);
+    @include flex-direction(column);
+
+    @media (min-width: $screen-sm-min) {
+      width: 50%;
+    }
+
+    @media (min-width: $screen-md-min) {
+      width: 33.3%;
+    }
+
+    @media (min-width: $screen-lg-min) {
+      width: 25%;
+    }
+
+    &__date {
+      padding: 15px;
+      font-size: 16px;
+      @include lato-black;
+      color: $main-accent-color;
+      margin: 0;
+      @include flex-grow(0);
+    }
+  }
+
+  &__day {
+    border: 1px solid #ddd;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  &__event {
+    @include display(flex);
+    @include flex-grow(1);
+    background-size: cover;
+    background-position: center center;
+    position: relative;
+    cursor: pointer;
+    @include transition(all 0.3s ease-in-out);
+    position: relative;
+
+    &:hover, &:focus {
+      background: #eee;
+    }
+
+    &__content-container {
+      @include display(flex);
+      @include align-items(center);
+      width: 100%;
+      position: relative;
+      z-index: 2;
+      padding: 15px 50px 15px 15px;
+    }
+
+    .event-time {
+      display: block;
+      font-size: 12px;
+      @include lato;
+      color: $main-accent-color;
+      margin: 0 0 2px;
+    }
+
+    .event-name {
+      font-size: 14px;
+      @include lato-bold;
+      color: $base-text-color;
+      margin: 0;
+      line-height: 150%;
+    }
+
+    &__media-indicators-container {
+      width: 50px;
+      padding-left: 7px;
+      position: absolute;
+      top: 15px;
+      bottom: 15px;
+      right: 0;
+      border-left: 1px solid #ddd;
+      z-index: 3;
+      @include display(flex);
+      @include align-items(center);
+      @include flex-direction(row);
+      @include flex-wrap(wrap);
+
+      i {
+        font-size: 14px;
+        color: $main-accent-color;
+        display: block;
+        margin: 10px;
+      }
+    }
+  }
+
+  &__control {
+
+    &__content-container {
+      @include display(flex);
+      @include align-items(center);
+      @include flex-grow(1);
+      background-color: $main-accent-color;
+      color: #fff;
+      padding: 30px;
+      cursor: pointer;
+
+      i {
+        font-size: 64px;
+        margin-right: 15px;
+        @include flex-shrink(0);
+      }
+
+      h3 {
+        text-transform: uppercase;
+        font-size: 24px;
+        @include lato;
+        line-height: 130%;
+
+        span {
+          font-size: 18px;
+          display: block;
+          line-height: 130%;
+        }
+      }
+
+      &:hover, &:focus {
+        color: rgba(#fff, 0.8);
+        background-color: darken($main-accent-color, 5%);
+      }
+    }
+  }
+}

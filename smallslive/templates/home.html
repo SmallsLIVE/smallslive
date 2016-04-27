@@ -34,16 +34,16 @@
           <h1>Upcoming at Smalls:</h1>
           <a href="{% url "schedule" %}" class="homepage-date-browser__cta">Browse our full calendar</a>
         </div>
-        <ul class="bg-image-calendar__container">
+        <ul class="no-bg-calendar__container">
           {% for date, date_events in next_7_days %}
             <!-- single day -->
-            <li class="bg-image-calendar__day">
-              <h2 class="bg-image-calendar__day__date">
+            <li class="no-bg-calendar__day">
+              <h2 class="no-bg-calendar__day__date">
                 {{ date|date:"l" }} // {{ date|date:"n/j/Y" }}
               </h2>
               {% for event in date_events %}
                 <!-- single event -->
-                <a class="bg-image-calendar__event" href="{{ event.get_absolute_url }}"
+                <a class="no-bg-calendar__event" href="{{ event.get_absolute_url }}"
                    {% if event.photo %}
                       {% if event.photo_crop_box %}
                         style="background-image: url('{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=360 %}')"
@@ -54,7 +54,7 @@
                       style="background-image: url('{% static "image/no-event-image-placeholder.jpg" %}')"
                    {% endif %}
                 >
-                  <div class="bg-image-calendar__event__content-container">
+                  <div class="no-bg-calendar__event__content-container">
                     <div>
                       <span class="event-time">{{ event.start|date:"g:i A" }} to {{ event.end|date:"g:i A" }}</span>
                       <h3 class="event-name">{{ event.title }}</h3>
@@ -67,8 +67,8 @@
             <!-- /single day -->
           {% endfor %}
           <!-- calendar control -->
-          <li class="bg-image-calendar__control">
-            <a class="bg-image-calendar__control__content-container" href="{% url "schedule" %}">
+          <li class="no-bg-calendar__control">
+            <a class="no-bg-calendar__control__content-container" href="{% url "schedule" %}">
               <i class="fa fa-calendar"></i>
               <h3><span>View </span>full calendar</h3>
             </a>

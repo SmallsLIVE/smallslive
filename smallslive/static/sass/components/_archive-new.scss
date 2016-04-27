@@ -215,12 +215,32 @@
       @include display(flex);
       @include align-items(center);
       @include justify-content(space-between);
+      margin-bottom: 20px;
 
       h1 {
         margin: 15px;
         @include lato-black;
         font-size: 32px;
         color: $main-accent-color;
+      }
+
+      .icons-legend {
+        margin: 10px 15px 0;
+        font-size: 1.4rem;
+
+        .helper {
+          color: rgba($base-text-color, 0.75);
+        }
+
+        i {
+          margin: 0 10px 0 15px;
+          color: $main-accent-color;
+        }
+
+        .icon-meaning {
+          color: $base-text-color;
+          @include lato-bold;
+        }
       }
 
       &__date-picker {
