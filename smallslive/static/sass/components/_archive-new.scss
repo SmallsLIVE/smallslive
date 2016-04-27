@@ -24,8 +24,21 @@
       max-width: 560px;
       @include display(flex);
       @include align-items(center);
-      border-bottom: 2px solid $main-accent-color;
-      padding-bottom: 5px;
+      background-color: #fff;
+      padding: 6px 15px;
+      border-radius: 5px;
+
+      .search--control {
+        background: none;
+        padding: 4px;
+
+        &:hover, &:focus {
+
+          i {
+            color: $base-text-color;
+          }
+        }
+      }
 
       .form-control.search-input {
         width: 100%;
@@ -33,8 +46,10 @@
         padding: 10px 5px;
         border-radius: 0;
         border: none;
+        outline: none;
+        box-shadow: none;
         background: none;
-        color: #fff;
+        color: $base-text-color;
         font-size: 16px;
 
         &:hover, &:focus {
@@ -46,9 +61,14 @@
       i {
         @include flex-shrink(0);
         font-size: 20px;
-        color: rgba(#fff, 0.4);
+        color: rgba($base-text-color, 0.4);
         height: auto;
         position: relative;
+        @include transition(all 0.3s ease-in-out);
+      }
+
+      .legend-icon {
+        margin-right: 5px;
       }
     }
 

@@ -16,8 +16,11 @@
           <p>The SmallsLIVE Archive was started in September of 2007 and represents nearly all the shows performed at the club to the current date.</p>
           <form action="{% url "artist_search" %}" method="get">
             <div class="form-group has-feedback archive-new__header-search__search-container">
+              <i class="fa fa-search legend-icon"></i>
               <input id="header--search" type="text" name="q" class="form-control search-input" placeholder="Search by artist name, event name or instrument..."/>
-              <i class="fa fa-search form-control-feedback"></i>
+              <button type="submit" class="search--control">
+                <i class="fa fa-arrow-circle-right form-control-feedback"></i>
+              </button>
             </div>
           </form>
           <span class="archive-new__header-search__instructable">or browse below...</span>
