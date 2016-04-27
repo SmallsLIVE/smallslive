@@ -101,7 +101,7 @@
         <ul class="no-bg-calendar__container">
           <!-- calendar control -->
           <li class="no-bg-calendar__control">
-            <a class="no-bg-calendar__control__content-container" href="{{ prev_url }}">
+            <a class="no-bg-calendar__control__content-container" href="{{ prev_url }}#archive-dates-browser">
               <i class="fa fa-angle-left"></i>
               {% if month_view %}
                 <h3><span>Display </span>previous month</h3>
@@ -141,7 +141,7 @@
           <!-- calendar control -->
           {% if request.GET.week > 0 or month_view %}
             <li class="no-bg-calendar__control">
-              <a class="no-bg-calendar__control__content-container" href="{{ next_url }}">
+              <a class="no-bg-calendar__control__content-container" href="{{ next_url }}#archive-dates-browser">
                 {% if request.GET.week > 0 %}
                 <i class="fa fa-angle-right"></i>
                 <h3><span>Display </span>14 next dates</h3>
@@ -250,7 +250,7 @@
       $datePicker.on('changeMonth', function(d){
           var month = d.date.getMonth() + 1;
           var year = d.date.getFullYear();
-          window.location = '/events/new-popular/' + year + '/' + month + '/';
+          window.location = '/events/new-popular/' + year + '/' + month + '/#archive-dates-browser';
       });
       var date = new Date({{ year}}, {{ month }}, 1);
       $datePicker.datepicker("setDate", date);
