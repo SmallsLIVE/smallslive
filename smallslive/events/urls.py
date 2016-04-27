@@ -1,11 +1,14 @@
 from django.conf.urls import patterns, include, url
-
+from django.views.generic import RedirectView
 
 urlpatterns = patterns('events.views',
     url(r'^live-stream-mezzrow/$', 'live_stream_mezzrow', name='live-stream-mezzrow'),
     url(r'^live-stream/$', 'live_stream', name='live-stream'),
-    url(r'^new-popular/(?P<year>\d+)/(?P<month>\d+)/$', 'monthly_archive', name='monthly_archive'),
-    url(r'^new-popular/$', 'archive', name='archive'),
+    url(r'^new-popular/(?P<year>\d+)/(?P<month>\d+)/$',
+        RedirectView.as_view(permanent=True, pattern_name='monthly_archive', query_string=True),
+        name='monthly_archive_old'),
+    url(r'^new-popular/$', RedirectView.as_view(permanent=True, pattern_name='archive', query_string=True),
+        name='archive_old'),
     url(r'^calendar/(?P<year>\d+)/(?P<month>\d+)/$', 'monthly_schedule', name='monthly_schedule'),
     url(r'^calendar/$', 'schedule', name='schedule'),
     url(r'^schedule_carousel_ajax/(?P<pk>\d+)/$', 'schedule_carousel_ajax', name='schedule_carousel_ajax'),
