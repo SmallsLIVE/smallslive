@@ -140,6 +140,16 @@
         color: rgba(#fff, 0.8);
         background-color: darken($main-accent-color, 5%);
       }
+
+      &.disabled {
+        background-color: #ccc;
+        color: #fff;
+
+        &:hover, &:focus {
+          background-color: #ccc;
+          color: #fff;
+        }
+      }
     }
   }
 }

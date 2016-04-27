@@ -139,18 +139,27 @@
             <!-- /single day -->
           {% endfor %}
           <!-- calendar control -->
-          <li class="no-bg-calendar__control">
-            <a class="no-bg-calendar__control__content-container" href="{{ next_url }}">
-              {% if request.GET.week > 0 %}
-              <i class="fa fa-angle-right"></i>
-              <h3><span>Display </span>14 next dates</h3>
-              {% endif %}
-              {% if month_view %}
+          {% if request.GET.week > 0 or month_view %}
+            <li class="no-bg-calendar__control">
+              <a class="no-bg-calendar__control__content-container" href="{{ next_url }}">
+                {% if request.GET.week > 0 %}
                 <i class="fa fa-angle-right"></i>
-                <h3><span>Display </span>next month</h3>
-              {% endif %}
-            </a>
-          </li>
+                <h3><span>Display </span>14 next dates</h3>
+                {% endif %}
+                {% if month_view %}
+                  <i class="fa fa-angle-right"></i>
+                  <h3><span>Display </span>next month</h3>
+                {% endif %}
+              </a>
+            </li>
+          {% else %}
+            <li class="no-bg-calendar__control disabled">
+              <div class="no-bg-calendar__control__content-container disabled">
+                <i class="fa fa-remove"></i>
+                <h3><span>Sorry, no newer dates available in the archive at this point.</span></h3>
+              </div>
+            </li>
+          {% endif %}
         </ul>
       </section>
 
