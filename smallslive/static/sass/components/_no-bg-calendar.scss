@@ -27,7 +27,7 @@
     &__date {
       padding: 15px;
       font-size: 16px;
-      @include lato-black;
+      @include lato;
       color: $main-accent-color;
       margin: 0;
       @include flex-grow(0);

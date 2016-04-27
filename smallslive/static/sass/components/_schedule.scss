@@ -33,3 +33,95 @@
     }
   }
 }
+
+.schedule-header {
+  border-bottom: 1px solid #ccc;
+  padding: 30px 10px;
+  background: #fff;
+
+  &__header {
+    @include display(flex);
+    @include align-items(center);
+    @include justify-content(space-between);
+    margin-bottom: 20px;
+
+    h1 {
+      margin: 15px;
+      @include lato-black;
+      font-size: 32px;
+      color: $main-accent-color;
+    }
+
+    .icons-legend {
+      margin: 10px 15px 0;
+      font-size: 1.4rem;
+
+      .helper {
+        color: rgba($base-text-color, 0.75);
+      }
+
+      i {
+        margin: 0 10px 0 15px;
+        color: $main-accent-color;
+      }
+
+      .icon-meaning {
+        color: $base-text-color;
+        @include lato-bold;
+      }
+    }
+
+    &__date-picker {
+      margin: 15px;
+    }
+  }
+
+  &__date-picker {
+    margin: 15px;
+    @include display(flex);
+    @include align-items(center);
+    border: 2px solid $main-accent-color;
+    width: 180px;
+
+    input {
+      padding: 8px;
+      font-size: 16px;
+      @include lato-black;
+      color: $main-accent-color;
+      background: none;
+      margin-right: 5px;
+      margin-left: 2px;
+      border: none;
+      outline: none;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+      @include flex-shrink(0);
+
+      &::-webkit-input-placeholder {
+         color: $main-accent-color;
+      }
+
+      &:-moz-placeholder { /* Firefox 18- */
+         color: $main-accent-color;
+      }
+
+      &::-moz-placeholder {  /* Firefox 19+ */
+         color: $main-accent-color;
+      }
+
+      &:-ms-input-placeholder {
+         color: $main-accent-color;
+      }
+    }
+
+    i {
+      font-size: 18px;
+      color: $main-accent-color;
+      margin-right: 10px;
+      position: relative;
+      z-index: 1;
+      right: 25px;
+    }
+  }
+}
