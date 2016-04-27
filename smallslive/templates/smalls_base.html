@@ -129,7 +129,6 @@
           <ul class="nav navbar-nav">
             <li><a href="/">Home</a></li>
             <li><a href="{% url "live-stream" %}">Live now!</a></li>
-            <li><a href="{% url "schedule" %}">Calendar</a></li>
             <li><a href="{% url "archive" %}">Archive</a></li>
             <li><a href="{% url "promotions:home" %}">SmallsLIVE Store</a></li>
             <li><a role="button" data-toggle="collapse" href="#mobile-nav-info-links" aria-expanded="false" aria-controls="mobile-nav-info-links">Info <i class="fa fa-caret-down"></i> </a></li>
@@ -235,9 +234,6 @@
           <li class="navigation__separator"></li>
           <li class="navigation__item {% block livestream_nav_active %}{% endblock %}"><a href="{% url "live-stream" %}"><i
                   class="navigation__icon fa fa-play-circle"></i><span class="menu-label">Live now!</span></a></li>
-                  <li class="navigation__separator"></li>
-          <li class="navigation__item {% block schedule_nav_active %}{% endblock %}"><a href="{% url "schedule" %}"><i
-                  class="navigation__icon fa fa-calendar"></i><span class="menu-label">Calendar</span></a></li>
                   <li class="navigation__separator"></li>
           <li class="navigation__item {% block archive_nav_active %}{% endblock %}"><a href="{% url "archive" %}"><i
                   class="navigation__icon fa fa-video-camera"></i><span class="menu-label">Archive</span></a></li>
