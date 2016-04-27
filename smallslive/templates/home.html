@@ -43,17 +43,7 @@
               </h2>
               {% for event in date_events %}
                 <!-- single event -->
-                <a class="no-bg-calendar__event" href="{{ event.get_absolute_url }}"
-                   {% if event.photo %}
-                      {% if event.photo_crop_box %}
-                        style="background-image: url('{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=360 %}')"
-                      {% else %}
-                        style="background-image: url('{% thumbor_url event.photo.url|urlencode height=360 width=360 smart=True %}')"
-                      {% endif %}
-                   {% else %}
-                      style="background-image: url('{% static "image/no-event-image-placeholder.jpg" %}')"
-                   {% endif %}
-                >
+                <a class="no-bg-calendar__event" href="{{ event.get_absolute_url }}">
                   <div class="no-bg-calendar__event__content-container">
                     <div>
                       <span class="event-time">{{ event.start|date:"g:i A" }} to {{ event.end|date:"g:i A" }}</span>
