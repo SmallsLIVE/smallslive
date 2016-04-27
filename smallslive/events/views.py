@@ -554,8 +554,10 @@ class ArchiveView(ListView):
         context = {}
         week = int(self.request.GET.get('week', 0))
         context['prev_url'] = "{0}?week={1}".format(reverse('archive'), week + 1)
-        if week > 0:
+        if week > 1:
             context['next_url'] = "{0}?week={1}".format(reverse('archive'), week - 1)
+        else:
+            context['next_url'] = reverse('archive')
         return context
 
 
