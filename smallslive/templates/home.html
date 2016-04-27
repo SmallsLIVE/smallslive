@@ -80,9 +80,9 @@
       {% if popular_in_store %}
           <section class="home-store container">
             <h1 class="home-store__section-title">Popular in our Store</h1>
-            <div class="row">
+            <ul class="home-store__products row">
               {% for product in popular_in_store %}
-                  <div class="col-xs-6 col-md-3">
+                  <li class="col-xs-6 col-sm-4 col-md-3 col-lg-2 home-store__product">
                     {% with image=product.primary_image %}
                         {% if not image.is_missing %}
                           <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=258 width=235 smart=True %}" alt="{{ product.get_title }}" class="home-store__img"></a>
@@ -92,9 +92,9 @@
                     {% endwith %}
                     <h2 class="home-store__title"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></h2>
                     <p class="home-store__type">CD / Digital Download</p>
-                  </div>
+                  </li>
               {% endfor %}
-            </div>
+            </ul>
           </section>
       {% endif %}
       <section class="cto cto--visit container vertical-align-parent">
