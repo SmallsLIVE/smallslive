@@ -1,9 +1,12 @@
 .no-bg-calendar {
 
   &__container {
-    padding: 15px 0;
+    padding: 0;
     @include display(flex);
     @include flex-wrap(wrap);
+    border: 1px solid #ccc;
+    border-bottom: none;
+    border-left: none;
   }
 
   &__day, &__control {
@@ -35,7 +38,8 @@
   }
 
   &__day {
-    border: 1px solid #ddd;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
     padding-top: 15px;
     padding-bottom: 15px;
   }
