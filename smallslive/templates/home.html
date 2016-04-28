@@ -39,7 +39,7 @@
             <!-- single day -->
             <li class="no-bg-calendar__day">
               <h2 class="no-bg-calendar__day__date">
-                {{ date|date:"l" }} // {{ date|date:"n/j/Y" }}
+                {{ date|date:"l" }} {{ date|date:"n/j/Y" }}
               </h2>
               {% for event in date_events %}
                 <!-- single event -->
