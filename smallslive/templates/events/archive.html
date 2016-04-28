@@ -15,9 +15,9 @@
           <h1>SmallsLIVE Audio/Video Archive</h1>
           <p>The SmallsLIVE Archive was started in September of 2007 and represents nearly all the shows performed at the club to the current date.</p>
           <form action="{% url "artist_search" %}" method="get">
-            <div class="form-group has-feedback archive-new__header-search__search-container">
+            <div class="form-group has-feedback archive-new__header-search__search-container" id="archive-search-container">
               <i class="fa fa-search legend-icon"></i>
-              <input id="header--search" type="text" name="q" class="form-control search-input" placeholder="Search by artist name, event name or instrument..."/>
+              <input id="archive--search" type="text" name="q" class="form-control search-input" placeholder="Search by artist name, event name or instrument..."/>
               <button type="submit" class="search--control">
                 <i class="fa fa-arrow-circle-right form-control-feedback"></i>
               </button>
@@ -254,5 +254,15 @@
       });
       var date = new Date({{ year}}, {{ month }}, 1);
       $datePicker.datepicker("setDate", date);
+
+      $(function() {
+        $("#archive--search").catcomplete({
+          delay: 500,
+          source: '/search/autocomplete/',
+          minLength: 3,
+          appendTo: '#archive-search-container'
+        });
+      });
+
     </script>
 {% endblock %}
