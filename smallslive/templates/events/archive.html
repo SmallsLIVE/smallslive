@@ -52,7 +52,7 @@
           {% for event in most_recent %}
             <div class="archive-new__carousel__item">
               <a href="{{ event.get_absolute_url }}" class="archive-new__carousel__item__container">
-                {% if not event.photo %}
+                {% if event.photo %}
                   <img class="event-image"
                        src="{% thumbor_url event.photo.url|urlencode height=300 width=350 smart=True %}">
                 {% else %}
