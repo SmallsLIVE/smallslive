@@ -47,23 +47,6 @@ PIPELINE_SASS_ARGUMENTS = ''
 # disable oscar django compressor
 COMPRESS_ENABLED = False
 
-# Pipeline doesn't touch this, SASS compiled manually by gulp
-PIPELINE_CSS = {
-    'css': {
-        'source_filenames': (
-            'css/main.css',
-        ),
-        'output_filename': 'css/main.css',
-    },
-    'dashboard_css': {
-        'source_filenames': (
-            'css/dashboard.css',
-        ),
-        'output_filename': 'css/dashboard.css',
-    },
-}
-
-
 # Cache
 CACHEOPS_REDIS = {
     'host': os.environ.get("REDIS_IP"),  # redis-server is on same machine
