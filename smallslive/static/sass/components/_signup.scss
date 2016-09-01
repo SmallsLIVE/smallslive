@@ -114,6 +114,7 @@
 }
 
 .signup-plans {
+  width: 100%;
   padding: 40px 0;
   background-color: #efefef;
 
@@ -147,7 +148,10 @@
 }
 
 .signup-plan {
-  padding: 0 10px;
+  border: 1px solid #858585;
+  background-color: #fff;
+  margin-bottom: 30px;
+
   @include display(flex);
   @include align-items(stretch);
 
@@ -156,11 +160,23 @@
     margin: 20px;
   }
 
+  ul {
+    // This will have to change to a picture of that hollow square.
+    list-style-image: url('/static/image/arrow-right-black.png');
+    margin: 10px 0;
+  }
+
+  &__picture {
+    text-align: center;
+    background-color: #000000;
+    border-right: 10px solid $main-accent-color;
+  }
+
   &__content {
-    width: 100%;
-    padding: 30px;
     background-color: #fff;
-    border: 1px solid #ccc;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
     @include display(flex);
     @include flex-direction(column);
 
@@ -172,55 +188,14 @@
     }
   }
 
-  &__arrow-separator {
-    width: 100%;
-    @include flex-grow(0);
-    border-bottom: 1px solid #d6d6d6;
-    height: 1px;
-    position: relative;
-    margin: 15px 0 25px;
 
-    &:after, &:before {
-      top: 100%;
-      left: 50%;
-      border: solid transparent;
-      content: " ";
-      height: 0;
-      width: 0;
-      position: absolute;
-      pointer-events: none;
-    }
-
-    &:after {
-      border-color: rgba(255, 255, 255, 0);
-      border-top-color: #fff;
-      border-width: 15px;
-      margin-left: -15px;
-    }
-
-    &:before {
-      border-color: rgba(214, 214, 214, 0);
-      border-top-color: #d6d6d6;
-      border-width: 16px;
-      margin-left: -16px;
-    }
+  &__jump {
+    background-color: #fff !important;
   }
 
-  &__name {
-    @include align-self(flex-start);
-    @include lato-black;
-    min-height: 70px;
-    font-size: 18px;
-    margin-top: 0;
-    margin-bottom: 15px;
-    text-align: center;
-    text-transform: uppercase;
-    width: 100%;
-    display: block;
-
-    @media(max-width:$screen-xs-max) {
-      min-height: 0;
-    }
+  &__level {
+    color: $main-accent-color;
+    font-size: 20px;
   }
 
   &__price {
@@ -237,16 +212,10 @@
     }
 
     &__free {
-      @include lato-black;
-      font-size: 64px;
+      font-size: 35px;
       color: $main-accent-color;
-      width: 100%;
-      padding: 10px 0;
-      border-top: 1px solid #d6d6d6;
-      border-bottom: 1px solid #d6d6d6;
-      margin: 6px 0;
       text-transform: uppercase;
-      text-align: center;
+      text-align: left;
 
       @media(max-width:$screen-xs-max) {
         padding: 0;
@@ -258,58 +227,12 @@
     }
 
     &__primary {
-      text-align: center;
+      font-size: 35px;
+      color: $main-accent-color;
       text-transform: uppercase;
+      text-align: left;
       width: 100%;
       margin-top: -10px;
-
-      &__currency {
-        @include lato-black;
-        font-size: 24px;
-        color: $main-accent-color;
-        opacity: 0.7;
-        position: relative;
-        top: -28px;
-      }
-
-      &__amount {
-        @include lato-black;
-        font-size: 64px;
-        color: $main-accent-color;
-      }
-
-      &__period {
-        @include lato-black;
-        font-size: 18px;
-        color: $main-accent-color;
-        opacity: 0.7;
-      }
-    }
-
-    &__secondary {
-      text-align: center;
-      text-transform: uppercase;
-      width: 100%;
-      margin-top: 10px;
-
-      &__currency {
-        @include lato-black;
-        font-size: 28px;
-        color: $main-accent-color;
-      }
-
-      &__amount {
-        @include lato-black;
-        font-size: 28px;
-        color: $main-accent-color;
-      }
-
-      &__period {
-        @include lato-black;
-        font-size: 18px;
-        color: $main-accent-color;
-        opacity: 0.7;
-      }
     }
 
     &__promo {
@@ -334,16 +257,21 @@
       @include lato;
       margin-bottom: 2px;
     }
+
+    &__revenue {
+      color: $main-accent-color;
+      font-weight: bold;
+    }
   }
 
   &__button {
     @include align-self(flex-end);
-    margin: 20px 0 0;
+    max-width: 85%;
+    margin: 20px auto;
     display: block;
-    width: 100%;
     background-color: $main-accent-color;
     color: #fff;
-    @include lato-bold-italic;
+    @include lato-bold;
     font-size: 16px;
     text-align: center;
     padding: 10px;
