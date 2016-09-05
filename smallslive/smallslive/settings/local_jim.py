@@ -24,7 +24,10 @@ DATABASES = {
 INSTALLED_APPS += (
     'cacheops',
     'debug_toolbar',
+    'hijack'
 )
+
+ENABLE_HIJACK = True
 
 # Thumbor
 THUMBOR_MEDIA_URL = 'http://127.0.0.1:8000/media/'
@@ -82,4 +85,4 @@ CACHEOPS_DEGRADE_ON_FAILURE = True
 CACHEOPS_FAKE = True
 
 # All Auth
-SITE_ID = 2
+SITE_ID = 1
