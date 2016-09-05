@@ -206,7 +206,8 @@
           <li class="header-social__item"><a target="_blank" href="https://instagram.com/smallsjazzclub/"><i class="fa fa-instagram"></i></a></li>
   </ul>
 
-  {% if user.email == 'jsam.audio@gmail.com' %}
+  {% with active_plan=user.get_subscription_plan.type %}
+  {% if active_plan == "free" %}
   <ul class="header-login">
     <li class="header-login__upgrade">
       <a href="{% url "upgrade_plan" plan_name="basic" %}">
@@ -214,7 +215,9 @@
       </a>
     </li>
   </ul>
-  {% endif%}
+  {% endif %}
+  {% endwith %}
+
 
   <ul class="header-login clearfix">
     {% if user.is_authenticated %}
