@@ -101,11 +101,8 @@
     }
   },
   "addons": [
-    "newrelic",
-    "papertrail",
     "heroku-postgresql",
     "rediscloud",
-    "scheduler",
     "searchbox"
   ],
   "buildpacks": [
