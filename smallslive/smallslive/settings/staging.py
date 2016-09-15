@@ -21,10 +21,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "herokudefault")
 # Parse database configuration from $DATABASE_URL
 DATABASES['default'] = dj_database_url.config()
 DATABASES['default']['CONN_MAX_AGE'] = 60
-DATABASES['metrics'] = {
-    'ENGINE': 'django.db.backends.sqlite3',
-    'NAME': 'metrics',
-}
+DATABASES['metrics'] = dj_database_url.config('METRICS_DB_URL')
 
 REDIS_URL = urlparse.urlparse(get_env_variable('REDISCLOUD_URL'))
 
