@@ -21,8 +21,41 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "herokudefault")
 # Parse database configuration from $DATABASE_URL
 DATABASES['default'] = dj_database_url.config()
 DATABASES['default']['CONN_MAX_AGE'] = 60
-#DATABASES['metrics'] = dj_database_url.config('METRICS_DB_URL')
+DATABASES['metrics'] = {
+    'ENGINE': 'django.db.backends.sqlite3',
+    'NAME': 'metrics',
+}
 
+REDIS_URL = urlparse.urlparse(get_env_variable('REDISCLOUD_URL'))
+
+CACHEOPS_REDIS = {
+    'host': REDIS_URL.hostname ,
+    'port': REDIS_URL.port,
+    'db': 0,
+    'password': REDIS_URL.password,
+    'socket_timeout': 5,   # connection timeout in seconds, optional
+}
+
+CACHEOPS = {
+    # Automatically cache any User.objects.get() calls for 15 minutes
+    # This includes request.user or post.author access,
+    # where Post.author is a foreign key to auth.User
+    'auth.user': {'ops': 'get', 'timeout': 60*15},
+
+    # Automatically cache all gets and queryset fetches
+    # to other django.contrib.auth models for an hour
+    'auth.*': {'ops': ('fetch', 'get'), 'timeout': 60*60},
+
+    # Cache gets, fetches, counts and exists to Permission
+    # 'all' is just an alias for ('get', 'fetch', 'count', 'exists')
+    'auth.permission': {'ops': 'all', 'timeout': 60*60},
+
+    'artists.*': {'ops': ('fetch', 'get'), 'timeout': 5*60},
+    'events.event': {'ops': ('fetch', 'get'), 'timeout': 5*60},
+    # 'multimedia.*': {'ops': 'all', 'timeout': 5*60},
+    #
+    # 'catalogue.*': {'ops': 'all', 'timeout': 5*60},
+}
 CACHEOPS_DEGRADE_ON_FAILURE = True
 CACHEOPS_FAKE = True
 
