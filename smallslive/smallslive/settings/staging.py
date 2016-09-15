@@ -24,7 +24,7 @@ DATABASES['default']['CONN_MAX_AGE'] = 60
 #DATABASES['metrics'] = dj_database_url.config('METRICS_DB_URL')
 
 CACHEOPS_DEGRADE_ON_FAILURE = True
-CACHEOPS_ENABLED = False
+CACHEOPS_FAKE = True
 
 # Allow all host headers
 ALLOWED_HOSTS = [
