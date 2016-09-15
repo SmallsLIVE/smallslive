@@ -1,0 +1,114 @@
+{
+  "name": "smallslive",
+  "scripts": {},
+  "env": {
+    "BITGRAVITY_SECRET": {
+      "required": true
+    },
+    "BUILDPACK_URL": {
+      "required": true
+    },
+    "CLOUDFRONT_ENABLE": {
+      "required": true
+    },
+    "CRON_ENV": {
+      "required": true
+    },
+    "DEBUG": {
+      "required": true
+    },
+    "DJANGO_SETTINGS_MODULE": {
+      "required": true
+    },
+    "ELASTICSEARCH_IP": {
+      "required": true
+    },
+    "ENABLE_HIJACK": {
+      "required": true
+    },
+    "FACEBOOK_APP_ID": {
+      "required": true
+    },
+    "HEROKU_APP_ID": {
+      "required": true
+    },
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
+    "HEROKU_RELEASE_VERSION": {
+      "required": true
+    },
+    "HEROKU_SLUG_COMMIT": {
+      "required": true
+    },
+    "HEROKU_SLUG_DESCRIPTION": {
+      "required": true
+    },
+    "MAILCHIMP_API_KEY": {
+      "required": true
+    },
+    "MAILCHIMP_LIST_ID": {
+      "required": true
+    },
+    "MANDRILL_API_KEY": {
+      "required": true
+    },
+    "METRICS_DB_URL": {
+      "required": true
+    },
+    "PAYPAL_API_PASSWORD": {
+      "required": true
+    },
+    "PAYPAL_API_SIGNATURE": {
+      "required": true
+    },
+    "PAYPAL_API_USERNAME": {
+      "required": true
+    },
+    "PAYPAL_SANDBOX_MODE": {
+      "required": true
+    },
+    "SECRET_KEY": {
+      "required": true
+    },
+    "SENTRY_DSN": {
+      "required": true
+    },
+    "STATIC_HOST": {
+      "required": true
+    },
+    "STRIPE_PUBLIC_KEY": {
+      "required": true
+    },
+    "STRIPE_PUBLISHABLE_KEY": {
+      "required": true
+    },
+    "STRIPE_SECRET_KEY": {
+      "required": true
+    },
+    "WEB_CONCURRENCY": {
+      "required": true
+    }
+  },
+  "formation": {
+    "worker": {
+      "quantity": 1
+    },
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "newrelic",
+    "papertrail",
+    "heroku-postgresql",
+    "rediscloud",
+    "scheduler",
+    "searchbox"
+  ],
+  "buildpacks": [
+    {
+      "url": "git://github.com/heroku/heroku-buildpack-python.git"
+    }
+  ]
+}
