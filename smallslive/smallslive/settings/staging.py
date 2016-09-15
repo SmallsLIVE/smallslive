@@ -23,6 +23,9 @@ DATABASES['default'] = dj_database_url.config()
 DATABASES['default']['CONN_MAX_AGE'] = 60
 #DATABASES['metrics'] = dj_database_url.config('METRICS_DB_URL')
 
+CACHEOPS_DEGRADE_ON_FAILURE = True
+CACHEOPS_ENABLED = False
+
 # Allow all host headers
 ALLOWED_HOSTS = [
     'smallslive-staging.herokuapp.com',
@@ -49,6 +52,7 @@ COMPRESS_ENABLED = False
 
 
 INSTALLED_APPS += (
+    'cacheops',
     'djrill',
     'raven.contrib.django.raven_compat',
 )
