@@ -1,6 +1,8 @@
 {
   "name": "smallslive",
-  "scripts": {},
+  "scripts": {
+    "postdeploy": "pg_dump $STAGING_DATABASE_URL | psql $DATABASE_URL && python smallslive/manage.py migrate"
+  },
   "env": {
     "BITGRAVITY_SECRET": {
       "required": true
@@ -72,6 +74,9 @@
       "required": true
     },
     "SENTRY_DSN": {
+      "required": true
+    },
+    "STAGING_DATABASE_URL": {
       "required": true
     },
     "STATIC_HOST": {
