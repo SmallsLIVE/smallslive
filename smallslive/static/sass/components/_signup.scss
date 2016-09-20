@@ -212,7 +212,7 @@
     }
 
     &__free {
-      font-size: 35px;
+      font-size: 28px;
       color: $main-accent-color;
       text-transform: uppercase;
       text-align: left;
@@ -227,7 +227,7 @@
     }
 
     &__primary {
-      font-size: 35px;
+      font-size: 28px;
       color: $main-accent-color;
       text-transform: uppercase;
       text-align: left;
@@ -285,6 +285,11 @@
 
     &.disabled {
       background-color: #dfdfdf;
+    }
+
+    @media(max-width:$screen-xs-max) {
+      min-height: 0;
+      max-width: 75px;
     }
   }
 }
