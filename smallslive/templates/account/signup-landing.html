@@ -13,7 +13,7 @@
                     <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm">
                         <img src="{% static 'image/signup_svg/Smalls_SubPg_Basic_Icon.svg' %}" alt="Basic level"/>
                     </div>
-                    <div class="col-xs-9 col-md-6">
+                    <div class="col-xs-12 col-sm-9 col-md-6">
                         <div class="signup-plan__content">
                             <div class="signup-plan__price__free"><b>Basic |</b> Free</div>
                             <div class="signup-plan__level">Live Streaming</div>
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-xs-3 button-wrapper">
+                    <div class="col-xs-12 col-sm-3 button-wrapper">
                           <a class="signup-plan__button" href="{% url "accounts_signup" plan_name="free" %}">Join</a>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                   <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm">
                       <img src="{% static 'image/signup_svg/Smalls_SubPg_Supporter_Icon.svg' %}" alt="Supporter level"/>
                   </div>
-                  <div class="col-xs-9 col-md-6">
+                  <div class="col-xs-12 col-sm-9 col-md-6">
                       <div class="signup-plan__content">
                           <div class="signup-plan__price__primary"><b>Supporter |</b> $10/month</div>
                           <div class="signup-plan__level">Archive Access</div>
@@ -49,7 +49,7 @@
                           </div>
                       </div>
                   </div>
-                  <div class="col-xs-3 button-wrapper">
+                  <div class="col-xs-12 col-sm-3 button-wrapper">
                         <a class="signup-plan__button" href="{% url "accounts_signup" plan_name="basic" %}">Join</a>
                   </div>
                 </div>
@@ -59,7 +59,7 @@
                   <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm">
                       <img src="{% static 'image/signup_svg/Smalls_SubPg_Benefactor_Icon.svg' %}" alt="Benefactor level"/>
                   </div>
-                  <div class="col-xs-9 col-md-6">
+                  <div class="col-xs-12 col-sm-9 col-md-6">
                       <div class="signup-plan__content">
                           <div class="signup-plan__price__primary"><b>Benefactor</b></div>
                           <div>
@@ -73,8 +73,8 @@
                           </div>
                       </div>
                   </div>
-                  <div class="col-xs-3 button-wrapper">
-                      <div class="signup-plan__button" id="toggler">Levels</div>
+                  <div class="col-xs-12 col-sm-3 button-wrapper">
+                      <div class="signup-plan__button" id="toggler">Benefactor Levels</div>
                       <div id="levels">
                         <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="premium" %}">$1,000 / year</a>
                         <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="premium" %}">$2,500 / year</a>
@@ -88,7 +88,7 @@
                   <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm">
                       <img src="{% static 'image/signup_svg/Smalls_SubPg_Institutional_Icon.svg' %}" alt="Institutional level"/>
                   </div>
-                  <div class="col-xs-9 col-md-6">
+                  <div class="col-xs-12 col-sm-9 col-md-6">
                       <div class="signup-plan__content">
                           <div class="signup-plan__price__primary"><b>Institutional</b></div>
                           <div>
@@ -100,7 +100,7 @@
                           </div>
                       </div>
                   </div>
-                  <div class="col-xs-3 button-wrapper">
+                  <div class="col-xs-12 col-sm-3 button-wrapper">
                         <a class="signup-plan__button" href="{% url "institutions" %}">More Info</a>
                   </div>
                 </div>

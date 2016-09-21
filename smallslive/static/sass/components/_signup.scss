@@ -151,8 +151,9 @@
   border: 1px solid #858585;
   background-color: #fff;
   margin-bottom: 30px;
+  width: 100%;
 
-  @include display(flex);
+  // @include display(inline-flex);
   @include align-items(stretch);
 
   @media(max-width:$screen-xs-max) {
@@ -176,7 +177,9 @@
     background-color: #fff;
     width: 100%;
     height: 100%;
-    padding: 20px;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
     @include display(flex);
     @include flex-direction(column);
 
@@ -289,13 +292,12 @@
 
     @media(max-width:$screen-xs-max) {
       min-height: 0;
-      max-width: 75px;
     }
   }
 }
 
 .button-wrapper {
-  padding-top: 20px;
+  padding: 20px 0;
 }
 
 .signup-premium {
