@@ -163,8 +163,7 @@
   }
 
   ul {
-    // This will have to change to a picture of that hollow square.
-    list-style-image: url('/static/image/arrow-right-black.png');
+    list-style-type: square;
     margin: 10px 0;
   }
 
