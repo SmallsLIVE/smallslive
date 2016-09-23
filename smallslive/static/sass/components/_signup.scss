@@ -153,12 +153,13 @@
   margin-bottom: 30px;
   width: 100%;
 
-  // @include display(inline-flex);
+  @include display(inline-flex);
   @include align-items(stretch);
 
   @media(max-width:$screen-xs-max) {
     padding: 0;
     margin: 20px;
+    @include flex-wrap(wrap);
   }
 
   ul {
@@ -170,7 +171,9 @@
   &__picture {
     text-align: center;
     background-color: #000000;
-    border-right: 10px solid $main-accent-color;
+    border-right: 5px solid $main-accent-color;
+    min-width: 270px;
+    @include align-self(flex-end);
   }
 
   &__content {
