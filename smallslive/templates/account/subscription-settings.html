@@ -13,116 +13,85 @@
     <div class="content-wrapper">
 
         <section class="subscription-settings__header">
-            <h1>Subscription settings</h1>
+            <h1>Your current subscription setting</h1>
         </section>
 
         <section class="subscription-settings signup-plans">
             <div class="container">
-                <div class="col-xs-12 col-sm-4 signup-plan  {% if user.get_subscription_plan.type == "free" %}plan-active{% endif %}">
-                    <div class="signup-plan__content">
-                        <p class="signup-plan__name">Free Plan</p>
-                        <div class="signup-plan__price__container" id="signup-plan-price-slave">
-                            <div class="signup-plan__price__free">
-                                Free
+                <!-- Basic -->
+                <div class="signup-plan {% if user.get_subscription_plan.type == "free" %}plan-active{% endif %}">
+                    <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm">
+                        <img src="{% static 'image/signup_svg/Smalls_SubPg_Basic_Icon.svg' %}" alt="Basic level"/>
+                    </div>
+                    <div class="col-xs-12 col-sm-9 col-md-6">
+                        <div class="signup-plan__content">
+                            <div class="signup-plan__price__free"><b>Basic |</b> Free</div>
+                            <div class="signup-plan__level">Live Streaming</div>
+                            <div>
+                              <ul class="signup-plan__features">
+                                  <li class="signup-plan__features__single">Every performance at Smalls and Mezzrow Jazz Clubs are streamed every night.</li>
+                                  <li class="signup-plan__features__single">Join our jazz community by registering with a valid e-mail address. Access our Live-Video stream where you may be for that evening's performance.</li>
+                              </ul>
                             </div>
                         </div>
-                        <div class="signup-plan__arrow-separator"></div>
-                        <ul class="signup-plan__features">
-                            <li class="signup-plan__features__single">All of our shows are broadcast live each evening from Smalls Jazz Club.</li>
-                            <li class="signup-plan__features__single">Most live shows will be available in our Audio/Video Archive within a week.</li>
-                        </ul>
-                        {% if user.get_subscription_plan.type == "free" %}
-                          <p class="signup-plan__active__expiry">Free plan never expires</p>
-                        {% else %}
-                          <p class="signup-plan__button disabled" href="#">Can’t downgrade*</p>
-                        {% endif %}
+                    </div>
+                    <div class="col-xs-12 col-sm-3 button-wrapper">
+                          <a class="signup-plan__button {% if user.get_subscription_plan.type == "free" %}selected{% endif %}" href="{% url "accounts_signup" plan_name="free" %}">Join</a>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-4 signup-plan {% if user.get_subscription_plan.type == "basic" %}plan-active{% endif %}">
-                    <div class="signup-plan__content">
-                        <p class="signup-plan__name">Audio/Video Archive & Live Video Stream Access</p>
-                        <div class="signup-plan__price__container" id="signup-plan-price-master">
-                            <div class="signup-plan__price__primary">
-                                <span class="signup-plan__price__primary__currency">$</span>
-                                <span class="signup-plan__price__primary__amount">10</span>
-                                <span class="signup-plan__price__primary__period">/ MO</span>
-                            </div>
-                            <div class="signup-plan__price__promo">
-                                Or get 2 months for free
-                            </div>
-                            <div class="signup-plan__price__secondary">
-                                <span class="signup-plan__price__secondary__currency">$</span>
-                                <span class="signup-plan__price__secondary__amount">100</span>
-                                <span class="signup-plan__price__secondary__period">/ year</span>
-                            </div>
-                        </div>
-                        <div class="signup-plan__arrow-separator"></div>
-                        <ul class="signup-plan__features">
-                            <li class="signup-plan__features__single"><b>Unlimited access</b> to our Live-Video Stream.</li>
-                            <li class="signup-plan__features__single"><b>Unlimited access</b>  to our Audio/Video Archive.</li>
-                            <li class="signup-plan__features__single">New content is <b>added weekly</b>.</li>
-                            <li class="signup-plan__features__single">Revenue from this subscription is <b>pooled and directly distributed to the artists</b> via the SmallsLIVE Artist Revenue Share Project. <a href="{% url "revenue-share" %}">Click here</a> for more information.</li>
-                        </ul>
-                        {% with active_plan=user.get_subscription_plan.type %}
-                          {% if active_plan == "basic" %}
-                            {% if user.customer.current_subscription.cancel_at_period_end %}
-                                <p class="signup-plan__active__expiry">Plan expires on {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}</p>
-                            {% else %}
-                                <p class="signup-plan__active__expiry">Plan will renew on {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}</p>
-                            {% endif %}
-                          {% elif active_plan == "premium" %}
-                            <p class="signup-plan__button disabled" href="#">Can’t downgrade*</p>
-                          {% elif active_plan == "free" %}
-                            <a class="signup-plan__button" href="{% url "upgrade_plan" plan_name="basic" %}">Upgrade (+ $9/mo)</a>
-                          {% endif %}
-                        {% endwith %}
-                    </div>
+
+                <!-- Supporter -->
+                <div class="signup-plan {% if user.get_subscription_plan.type == "basic" %}plan-active{% endif %}">
+                  <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm">
+                      <img src="{% static 'image/signup_svg/Smalls_SubPg_Supporter_Icon.svg' %}" alt="Supporter level"/>
+                  </div>
+                  <div class="col-xs-12 col-sm-9 col-md-6">
+                      <div class="signup-plan__content">
+                          <div class="signup-plan__price__primary"><b>Supporter |</b> $10/month</div>
+                          <div class="signup-plan__level">Archive Access</div>
+                          <div>
+                            <ul class="signup-plan__features">
+                                <li class="signup-plan__features__single">Gain exclusive access to our Audio/Video archive of every live perfornace since 2007.</li>
+                                <li class="signup-plan__features__single">Your Supporter membership revenue is pooled and directly distributed to the artists via the <a href="{% url 'revenue-share' %}" class="signup-plan__features__revenue">SmallsLIVE Revenue Share Project.</a></li>
+                                <li class="signup-plan__features__single">Approximately 30 new live performances added to the archive weekly.</li>
+                                <li class="signup-plan__features__single">Access to our Live-Video stream from both Smalls and Mezzrow Jazz Clubs every night.</li>
+                            </ul>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-3 button-wrapper">
+                        <a class="signup-plan__button {% if user.get_subscription_plan.type == "basic" %}selected{% endif %}" href="{% url "accounts_signup" plan_name="basic" %}">Join</a>
+                  </div>
                 </div>
-                <div class="col-xs-12 col-sm-4 signup-plan  {% if user.get_subscription_plan.type == "premium" %}plan-active{% endif %}">
-                    <div class="signup-plan__content">
-                        <p class="signup-plan__name">Benefactor Member</p>
-                        <div class="signup-plan__price__container">
-                            <div class="signup-plan__price__primary">
-                                <span class="signup-plan__price__primary__currency">$</span>
-                                <span class="signup-plan__price__primary__amount">100</span>
-                                <span class="signup-plan__price__primary__period">/ MO</span>
-                            </div>
-                            <div class="signup-plan__price__promo">
-                                Or get 2 months for free
-                            </div>
-                            <div class="signup-plan__price__secondary">
-                                <span class="signup-plan__price__secondary__currency">$</span>
-                                <span class="signup-plan__price__secondary__amount">1000</span>
-                                <span class="signup-plan__price__secondary__period">/ year</span>
-                            </div>
-                        </div>
-                        <div class="signup-plan__arrow-separator"></div>
-                        <ul class="signup-plan__features">
-                            <li class="signup-plan__features__signle"><b>Unlimited access</b> to our Live-Video Stream.</li>
-                            <li class="signup-plan__features__single"><b>Unlimited access</b> to our Audio/Video Archive.</li>
-                            <li class="signup-plan__features__single">Benefactor Members are <b>members who wish to support</b> SmallsLIVE and the Artists that perform there in a greater way.</li>
-                            <li class="signup-plan__features__single">Revenue from this subscription is <b>pooled and directly distributed to the artists</b> via the SmallsLIVE Artist Revenue Share Project. <a href="{% url "revenue-share" %}">Click here</a> for more information.</li>
-                            <li class="signup-plan__features__single">Your subscription <b>directly supports the artists and the venue</b>.</li>
-                            <li class="signup-plan__features__single">Benefactor Members are offered merchandise, club passes and exclusive content.</li>
-                        </ul>
-                        {% with active_plan=user.get_subscription_plan.type %}
-                          {% if active_plan == "premium" %}
-                            {% if user.customer.current_subscription.cancel_at_period_end %}
-                                <p class="signup-plan__active__expiry">Plan expires on {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}</p>
-                            {% else %}
-                                <p class="signup-plan__active__expiry">Plan will renew on {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}</p>
-                            {% endif %}
-                          {% elif active_plan == "basic" %}
-                            <a class="signup-plan__button" href="{% url "upgrade_plan" plan_name="premium" %}">Upgrade (+ $6/mo)</a>
-                          {% elif active_plan == "free" %}
-                            <a class="signup-plan__button" href="{% url "upgrade_plan" plan_name="premium" %}">Upgrade (+ $15/mo)</a>
-                          {% endif %}
-                        {% endwith %}
-                    </div>
+
+                <!-- Benefactor -->
+                <div class="signup-plan {% if "benefactor" in user.get_subscription_plan.type %}plan-active{% endif %}">
+                  <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm">
+                      <img src="{% static 'image/signup_svg/Smalls_SubPg_Benefactor_Icon.svg' %}" alt="Benefactor level"/>
+                  </div>
+                  <div class="col-xs-12 col-sm-9 col-md-6">
+                      <div class="signup-plan__content">
+                          <div class="signup-plan__price__primary"><b>Benefactor</b></div>
+                          <div>
+                              <ul class="signup-plan__features">
+                                  <li class="signup-plan__features__single">Benefactors are SmallsLIVE supporters who believe in the mission of SmallsLIVE and want to support us with a greater contribution. SmallsLIVE Benefactors have a direct impact on the lives of the artists and the club through our <a href="{% url 'revenue-share' %}" class="signup-plan__features__revenue">Revenue Share Project.</a></li>
+                                  <li class="signup-plan__features__single">Benefactors receive all benefits of a Supporter Membership Plus:</li>
+                                  <li class="signup-plan__features__single">A "Benefactor Card" for unlimited admission to both clubs throughout the year</li>
+                                  <li class="signup-plan__features__single">A SmallsLIVE T-shirt</li>
+                                  <li class="signup-plan__features__single">A SmallsLIVE USB drive with the complete SmallsLIVE Catalogue</li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-3 button-wrapper">
+                      <div class="signup-plan__button" id="toggler">Benefactor Levels <span class="caret"></span></div>
+                      <div id="levels">
+                        <a class="signup-plan__button drop {% if user.get_subscription_plan.type == "benefactor_1" %}selected{% endif %}" href="{% url "accounts_signup" plan_name="benefactor_1" %}">$1000</a>
+                        <a class="signup-plan__button drop {% if user.get_subscription_plan.type == "benefactor_2" %}selected{% endif %}" href="{% url "accounts_signup" plan_name="benefactor_2" %}">$2500</a>
+                        <a class="signup-plan__button drop {% if user.get_subscription_plan.type == "benefactor_3" %}selected{% endif %}" href="{% url "accounts_signup" plan_name="benefactor_3" %}">$5000</a>
+                      </div>
+                  </div>
                 </div>
-                {% if user.get_subscription_plan.type != "free" %}
-                  <p class="signup-plans__downgrade-notice">* your account gets downgraded to a Free Plan automatically upon not extending your subscription in time.</p>
-                {% endif %}
             </div>
         </section>
 
@@ -302,6 +271,21 @@
             $form.get(0).submit();
           }
         };
+      });
+
+      // Benefactor Dropdown
+      var hidden = false;
+      $( "#levels" ).show();
+      var toggler = document.getElementById("toggler");
+      toggler.addEventListener("click", function() {
+        if (hidden == true) {
+          $( "#levels" ).show( "blind", {});
+          hidden = false;
+        }
+        else {
+          $( "#levels" ).hide( "blind", {});
+          hidden = true;
+        }
       });
     </script>
 {% endblock %}

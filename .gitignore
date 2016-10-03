@@ -82,4 +82,4 @@ smallslive/.env
 .DS_Store
 misc
 
-smallslive/settings/yo.py
+smallslive/smallslive/settings/yo.py

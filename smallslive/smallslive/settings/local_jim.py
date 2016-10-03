@@ -24,7 +24,7 @@ DATABASES = {
 INSTALLED_APPS += (
     'cacheops',
     'debug_toolbar',
-    'hijack'
+    'hijack',
 )
 
 ENABLE_HIJACK = True
@@ -86,3 +86,5 @@ CACHEOPS_FAKE = True
 
 # All Auth
 SITE_ID = 1
+
+from .yo import *
