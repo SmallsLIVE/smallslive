@@ -79,9 +79,6 @@
     "STAGING_DATABASE_URL": {
       "required": true
     },
-    "STATIC_HOST": {
-      "required": true
-    },
     "STRIPE_PUBLIC_KEY": {
       "required": true
     },
