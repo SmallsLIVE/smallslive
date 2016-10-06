@@ -20,9 +20,15 @@
             <div class="container">
                 <!-- Basic -->
                 <div class="signup-plan {% if user.get_subscription_plan.type == "free" %}plan-active{% endif %}">
-                    <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm">
-                        <img src="{% static 'image/signup_svg/Smalls_SubPg_Basic_Icon.svg' %}" alt="Basic level" class="{% if user.get_subscription_plan.type == "free" %}selected_image{% endif %}"/>
+                    {% if user.get_subscription_plan.type == "free" %}
+                    <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm" id="selected-image">
+                        <img src="{% static 'image/signup_svg/Smalls_SubPg_Bsic_Red.svg' %}" alt="Basic level" />
                     </div>
+                    {% else %}
+                    <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm">
+                        <img src="{% static 'image/signup_svg/Smalls_SubPg_Basic_Icon.svg' %}" alt="Basic level" />
+                    </div>
+                    {% endif %}
                     <div class="col-xs-12 col-sm-9 col-md-6">
                         <div class="signup-plan__content">
                             <div class="signup-plan__price__free"><b>Basic |</b> Free</div>
@@ -42,9 +48,15 @@
 
                 <!-- Supporter -->
                 <div class="signup-plan {% if user.get_subscription_plan.type == "basic" %}plan-active{% endif %}">
-                  <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm">
-                      <img src="{% static 'image/signup_svg/Smalls_SubPg_Supporter_Icon.svg' %}" alt="Supporter level"  class="{% if user.get_subscription_plan.type == "basic" %}selected_image{% endif %}"/>
+                  {% if user.get_subscription_plan.type == "basic" %}
+                  <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm" id="selected-image">
+                        <img src="{% static 'image/signup_svg/Smalls_SubPg_Spprtr_Red.svg' %}" alt="Basic level" />
                   </div>
+                  {% else %}
+                  <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm">
+                        <img src="{% static 'image/signup_svg/Smalls_SubPg_Supporter_Icon.svg' %}" alt="Basic level" />
+                  </div>
+                  {% endif %}
                   <div class="col-xs-12 col-sm-9 col-md-6">
                       <div class="signup-plan__content">
                           <div class="signup-plan__price__primary"><b>Supporter |</b> $10/month</div>
@@ -65,10 +77,16 @@
                 </div>
 
                 <!-- Benefactor -->
-                <div class="signup-plan {% if user.get_subscription_plan.type == "premium" or "benefactor" in user.get_subscription_plan.type%}plan-active{% endif %}">
-                  <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm">
-                      <img src="{% static 'image/signup_svg/Smalls_SubPg_Benefactor_Icon.svg' %}" alt="Benefactor level"  class="{% if user.get_subscription_plan.type == "premium" %}selected_image{% endif %}"/>
+                <div class="signup-plan {% if user.get_subscription_plan.type == "premium" or "benefactor" in user.get_subscription_plan.type %}plan-active{% endif %}">
+                  {% if user.get_subscription_plan.type == "premium" or "benefactor" in user.get_subscription_plan.type %}
+                  <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm" id="selected-image">
+                      <img src="{% static 'image/signup_svg/Smalls_SubPg_Bnfctr_Rd.svg' %}" alt="Benefactor level" />
                   </div>
+                  {% else %}
+                  <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm">
+                      <img src="{% static 'image/signup_svg/Smalls_SubPg_Benefactor_Icon.svg' %}" alt="Benefactor level" />
+                  </div>
+                  {% endif %}
                   <div class="col-xs-12 col-sm-9 col-md-6">
                       <div class="signup-plan__content">
                           <div class="signup-plan__price__primary"><b>Benefactor</b></div>
@@ -84,11 +102,11 @@
                       </div>
                   </div>
                   <div class="col-xs-12 col-sm-3 button-wrapper">
-                      <div class="signup-plan__button {% if user.get_subscription_plan.type == "premium" %}selected{% endif %}" id="toggler">Benefactor Levels <span class="caret"></span></div>
+                      <div class="signup-plan__button {% if user.get_subscription_plan.type == "premium" %}selected{% endif %}" id="toggler">Benefactor Levels <span class="caret"></span>{% if user.get_subscription_plan.type == "premium" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</div>
                       <div id="levels">
-                        <a class="signup-plan__button drop {% if user.get_subscription_plan.type == "benefactor_1" %}selected{% endif %}" href="{% url "accounts_signup" plan_name="benefactor_1" %}">$1000</a>
-                        <a class="signup-plan__button drop {% if user.get_subscription_plan.type == "benefactor_2" %}selected{% endif %}" href="{% url "accounts_signup" plan_name="benefactor_2" %}">$2500</a>
-                        <a class="signup-plan__button drop {% if user.get_subscription_plan.type == "benefactor_3" %}selected{% endif %}" href="{% url "accounts_signup" plan_name="benefactor_3" %}">$5000</a>
+                        <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="benefactor_1" %}">$1000{% if user.get_subscription_plan.type == "benefactor_1" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
+                        <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="benefactor_2" %}">$2500{% if user.get_subscription_plan.type == "benefactor_2" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
+                        <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="benefactor_3" %}">$5000{% if user.get_subscription_plan.type == "benefactor_3" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
                       </div>
                   </div>
                 </div>

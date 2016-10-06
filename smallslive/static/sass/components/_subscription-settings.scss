@@ -1,21 +1,11 @@
-.selected {
-    &:after {
-      content: "\f137";
-      font: normal normal normal 14px/1 FontAwesome;
-      padding: 5px;
-      border-radius: 100%;
-      color: #fff;
-      background-color: $main-accent-color;
-      position: absolute;
-      font-size: 22px;
-      right: -16px;
-    }
+#selected {
+    position: absolute;
+    margin-top: -7px;
+    right: -20px;
 }
 
-.selected_image {
+#selected-image {
   background-color: $main-accent-color;
-  fill: $main-accent-color;
-  // #D21535
 }
 
 .subscription-settings {
