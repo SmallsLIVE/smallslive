@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-3 button-wrapper">
-                          <a class="signup-plan__button" href="{% url "accounts_signup" plan_name="free" %}">Join{% if user.get_subscription_plan.type == "basic" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
+                          <a class="signup-plan__button" href="{% url "accounts_signup" plan_name="free" %}">Join{% if user.get_subscription_plan.type == "free" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
                     </div>
                 </div>
 
