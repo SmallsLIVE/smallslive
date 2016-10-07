@@ -327,7 +327,7 @@
 
   &__button {
     @include align-self(flex-end);
-    max-width: 85%;
+    max-width: 75%;
     margin: 0 auto;
     display: block;
     background-color: $main-accent-color;
