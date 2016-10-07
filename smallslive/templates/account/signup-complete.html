@@ -21,26 +21,25 @@
 
         <section class="signup__done container">
             <div class="col-xs-12 col-sm-6 signup__done__plan vertical-align-parent">
-                <div class="col-xs-12 col-sm-8 col-sm-offset-2 signup-plan vertical-align-child">
+                <div class="col-xs-12 col-sm-8 col-sm-offset-2 signup-plan__complete vertical-align-child">
                     <div class="signup-plan__content">
                         <p class="signup-plan__name">{{ active_plan.name }} Membership</p>
                         <div class="signup-plan__arrow-separator"></div>
                         <ul class="signup-plan__features">
                             {% if active_plan.type == "free" %}
-                                <li class="signup-plan__features__single">Register with a valid email address to access our <b>Live-Video Stream</b>.</li>
-                                <li class="signup-plan__features__single">All of our shows are <b>broadcast live each evening</b> from Smalls Jazz Club.</li>
-                                <li class="signup-plan__features__single">Most live shows will be available in our Audio/Video Archive <b>within a week</b>.</li>
-                                <li class="signup-plan__features__single">There is <b>no cost to register</b> for our Live-Video Stream.</li>
+                                <li class="signup-plan__features__single">Every performance at Smalls and Mezzrow Jazz Clubs are streamed every night.</li>
+                                <li class="signup-plan__features__single">Join our jazz community by registering with a valid e-mail address. Access our Live-Video stream where you may be for that evening's performance.</li>
                             {% elif active_plan.type == "basic" %}
-                                <li class="signup-plan__features__single"><b>Unlimited access</b> to our Audio/Video Archive and Live Video Stream.</li>
-                                <li class="signup-plan__features__single">New content is <b>added weekly</b>.</li>
-                                <li class="signup-plan__features__single">Revenue from this subscription is <b>pooled and directly distributed to the artists</b> via the SmallsLIVE Artist Revenue Share Project.</li>
-                            {% elif active_plan.type == "premium" %}
-                                <li class="signup-plan__features__single"><b>Unlimited access</b> to our Audio/Video Archive and Live Video Stream.</li>
-                                <li class="signup-plan__features__single">Benefactor Members are <b>members who wish to support</b> SmallsLIVE and the Artists that perform there in a greater way.</li>
-                                <li class="signup-plan__features__single">Revenue from this subscription is <b>pooled and directly disturbed to the artists</b> via the SmallsLIVE Artist Revenue Share Project.</li>
-                                <li class="signup-plan__features__single">Your subscription <b>directly supports the artists and the venue</b>.</li>
-                                <li class="signup-plan__features__single">Benefactor Members are offered merchandise, club passes and exclusive content. <a href="#">Click here</a> for more information.</li>
+                                <li class="signup-plan__features__single">Gain exclusive access to our Audio/Video archive of every live perfornace since 2007.</li>
+                                <li class="signup-plan__features__single">Your Supporter membership revenue is pooled and directly distributed to the artists via the <a href="{% url 'revenue-share' %}" class="signup-plan__features__revenue">SmallsLIVE Revenue Share Project.</a></li>
+                                <li class="signup-plan__features__single">Approximately 30 new live performances added to the archive weekly.</li>
+                                <li class="signup-plan__features__single">Access to our Live-Video stream from both Smalls and Mezzrow Jazz Clubs every night.</li>
+                            {% elif user.get_subscription_plan.type == "premium" or "benefactor" in user.get_subscription_plan.type %}
+                                <li class="signup-plan__features__single">Benefactors are SmallsLIVE supporters who believe in the mission of SmallsLIVE and want to support us with a greater contribution. SmallsLIVE Benefactors have a direct impact on the lives of the artists and the club through our <a href="{% url 'revenue-share' %}" class="signup-plan__features__revenue">Revenue Share Project.</a></li>
+                                <li class="signup-plan__features__single">Benefactors receive all benefits of a Supporter Membership Plus:</li>
+                                <li class="signup-plan__features__single">A "Benefactor Card" for unlimited admission to both clubs throughout the year</li>
+                                <li class="signup-plan__features__single">A SmallsLIVE T-shirt</li>
+                                <li class="signup-plan__features__single">A SmallsLIVE USB drive with the complete SmallsLIVE Catalogue</li>
                             {% endif %}
                         </ul>
                     </div>
