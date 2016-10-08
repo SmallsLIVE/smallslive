@@ -106,7 +106,7 @@
                       <div id="levels">
                         <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="benefactor_1" %}">$1000 / year{% if user.get_subscription_plan.type == "benefactor_1" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
                         <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="benefactor_2" %}">$2500 / year{% if user.get_subscription_plan.type == "benefactor_2" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
-                        <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="benefactor_3s" %}">$5000 / year{% if user.get_subscription_plan.type == "benefactor_3" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
+                        <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="benefactor_3" %}">$5000 / year{% if user.get_subscription_plan.type == "benefactor_3" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
                       </div>
                   </div>
                 </div>
