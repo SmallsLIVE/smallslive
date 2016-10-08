@@ -500,6 +500,33 @@ DJSTRIPE_PLANS = {
         "currency": "usd",
         "interval": "month"
     },
+    "benefactor_1": {
+        "stripe_plan_id": "benefactor_1",
+        "name": "Benefactor 1",
+        "type": 'benefactor_1',
+        "description": "Benefactor Member",
+        "price": 100000,  # $1000.00
+        "currency": "usd",
+        "interval": "yearly"
+    },
+    "benefactor_2": {
+        "stripe_plan_id": "benefactor_2",
+        "name": "Benefactor 2",
+        "type": 'benefactor_2',
+        "description": "Benefactor Member",
+        "price": 250000,  # $1000.00
+        "currency": "usd",
+        "interval": "yearly"
+    },
+    "benefactor_3": {
+        "stripe_plan_id": "benefactor_3",
+        "name": "Benefactor 3",
+        "type": 'benefactor_3',
+        "description": "Benefactor Member",
+        "price": 500000,  # $1000.00
+        "currency": "usd",
+        "interval": "yearly"
+    },
 }
 
 SUBSCRIPTION_PLANS = {
@@ -520,6 +547,21 @@ SUBSCRIPTION_PLANS = {
         'id': 'premium',
         'monthly': DJSTRIPE_PLANS['premium_monthly'],
         'yearly': DJSTRIPE_PLANS['premium_yearly'],
+    },
+    'benefactor_1': {
+        'name': 'Benefactor Member',
+        'id': 'benefactor_1',
+        'yearly': DJSTRIPE_PLANS['benefactor_1'],
+    },
+    'benefactor_2': {
+        'name': 'Benefactor Member',
+        'id': 'benefactor_2',
+        'yearly': DJSTRIPE_PLANS['benefactor_2'],
+    },
+    'benefactor_3': {
+        'name': 'Benefactor Member',
+        'id': 'benefactor_3',
+        'yearly': DJSTRIPE_PLANS['benefactor_3'],
     },
 }
 

@@ -12,8 +12,14 @@
             <div class="vertical-align-child">
                 <h2>Sign up for a</h2>
                 <h1>SmallsLIVE {{ plan.name }} Plan</h1>
-                {% if plan.id != "free" %}
+                {% if plan.id == "basic" %}
                   <h3>Just <b>${{ plan.monthly.price|djdiv:100|floatformat:"-1" }}/month or ${{ plan.yearly.price|djdiv:100|floatformat:"-1" }}/year</b> (you get two months for free).</h3>
+                {% elif plan.id == "benefactor_1" %}
+                  <h3>$1,000 / year level</h3>
+                {% elif plan.id == "benefactor_2" %}
+                  <h3>$2,500 / year level</h3>
+                {% elif plan.id == "benefactor_3" %}
+                  <h3>$5,000 / year level</h3>
                 {% endif %}
                 <div class="signup-step__header__info">Step 1/2 - create an account</div>
             </div>

@@ -104,9 +104,9 @@
                   <div class="col-xs-12 col-sm-3 button-wrapper">
                       <div class="signup-plan__button {% if user.get_subscription_plan.type == "premium" %}selected{% endif %}" id="toggler">Benefactor Levels <span class="caret"></span>{% if user.get_subscription_plan.type == "premium" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</div>
                       <div id="levels">
-                        <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="benefactor_1" %}">$1000{% if user.get_subscription_plan.type == "benefactor_1" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
-                        <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="benefactor_2" %}">$2500{% if user.get_subscription_plan.type == "benefactor_2" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
-                        <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="benefactor_3" %}">$5000{% if user.get_subscription_plan.type == "benefactor_3" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
+                        <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="benefactor_1" %}">$1000 / year{% if user.get_subscription_plan.type == "benefactor_1" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
+                        <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="benefactor_2" %}">$2500 / year{% if user.get_subscription_plan.type == "benefactor_2" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
+                        <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="benefactor_3s" %}">$5000 / year{% if user.get_subscription_plan.type == "benefactor_3" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
                       </div>
                   </div>
                 </div>
@@ -292,8 +292,13 @@
       });
 
       // Benefactor Dropdown
+      {% if "benefactor" in plan.id %}
       var hidden = false;
       $( "#levels" ).show();
+      {% else %}
+      var hidden = true;
+      $( "#levels" ).hide();
+      {% endif %}
       var toggler = document.getElementById("toggler");
       toggler.addEventListener("click", function() {
         if (hidden == true) {

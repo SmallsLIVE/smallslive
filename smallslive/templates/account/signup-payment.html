@@ -17,7 +17,11 @@
               {% block page_header %}
                 <h2>Sign up for a</h2>
                 <h1>SmallsLIVE {{ plan.name }} Plan</h1>
+                {% if plan.id == "basic" %}
                 <h3>Just <b>${{ plan.monthly.price|djdiv:100|floatformat:"-1" }}/month or ${{ plan.yearly.price|djdiv:100|floatformat:"-1" }}/year</b> (you get two months for free).</h3>
+                {% elif "benefactor" in plan.id or plan.id == "premium" %}
+                <br />
+                {% endif %}
                 <div class="signup-step__header__info">Step 2/2 - please provide the payment information</div>
               {% endblock %}
             </div>
@@ -26,6 +30,7 @@
         <section class="signup__payment">
             <form class="payment-form" id="payment-form" method="post" action="{% block form_url %}{% url "accounts_signup_payment" plan_name=plan.id %}{% endblock form_url %}">
             <div class="signup__payment__type">
+                {% if plan.id == "basic" %}
                 <h3 class="signup__payment__heading">Do you want to pay monthly or annually?</h3>
                 <p class="signup__payment__text">If you choose to pay for the full year in advance, you get <b>2 months for free</b>. Once you sign up for a plan, you’ll have auto renewal set up meaning that once the plan runs out we’ll automatically bill your credit card for the next month or year (depending on how you paid initially) and extend your plan. You can always deactivate this option in your Account settings and extend your membership manually.</p>
                 <div class="signup__payment__type__selection__container">
@@ -39,6 +44,20 @@
                     </div>
                   {% endfor %}
                 </div>
+                {% elif plan.id == "benefactor_1" %}
+                <h3 class="signup__payment__heading">Thank you for being a benefactor at the $1,000 / year level!</h3>
+                <p class="signup__payment__text">Once you sign up, you’ll have auto renewal set up meaning that once the plan runs out we’ll automatically bill your credit card for the next year and extend your plan. You can always deactivate this option in your Account settings and extend your membership manually.</p>
+                {% elif plan.id == "benefactor_2" %}
+                <h3 class="signup__payment__heading">Thank you for being a benefactor at the $2,500 / year level!</h3>
+                <p class="signup__payment__text">Once you sign up, you’ll have auto renewal set up meaning that once the plan runs out we’ll automatically bill your credit card for the next year and extend your plan. You can always deactivate this option in your Account settings and extend your membership manually.</p>
+                {% elif plan.id == "benefactor_3" %}
+                <h3 class="signup__payment__heading">Thank you for being a benefactor at the $5,000 / year level!</h3>
+                <p class="signup__payment__text">Once you sign up, you’ll have auto renewal set up meaning that once the plan runs out we’ll automatically bill your credit card for the next year and extend your plan. You can always deactivate this option in your Account settings and extend your membership manually.</p>
+                {% elif plan.id == "premium" %}
+                <h3 class="signup__payment__heading">Thank you for being a benefactor!</h3>
+                <p class="signup__payment__text">Once you sign up, you’ll have auto renewal set up meaning that once the plan runs out we’ll automatically bill your credit card for the next year and extend your plan. You can always deactivate this option in your Account settings and extend your membership manually.</p>
+
+                {% endif %}
             </div>
             {% block payment_info %}
             <div class="signup__payment__information row">
