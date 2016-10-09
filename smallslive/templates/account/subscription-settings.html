@@ -44,7 +44,7 @@
                     <div class="col-xs-12 col-sm-3 button-wrapper">
                           {% with active_plan=user.get_subscription_plan.type %}
                           {% if active_plan == "free" %}
-                            <a class="signup-plan__button" href="{% url "accounts_signup" plan_name="free" %}">Free plan never expires{% if user.get_subscription_plan.type == "free" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
+                            <a class="signup-plan__button" href="#">Free plan never expires{% if user.get_subscription_plan.type == "free" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
                           {% else %}
                             <a class="signup-plan__button disabled" href="#">Can’t downgrade*</a>
                           {% endif %}
