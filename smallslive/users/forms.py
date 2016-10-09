@@ -90,14 +90,11 @@ class PlanForm(forms.Form):
         super(PlanForm, self).__init__(*args, **kwargs)
         if selected_plan_type == 'basic':
             monthly_plan = settings.SUBSCRIPTION_PLANS[selected_plan_type]['monthly']
-            yearly_plan = settings.SUBSCRIPTION_PLANS[selected_plan_type]['yearly']
-            plans = [(monthly_plan.get('stripe_plan_id'), monthly_plan),
-                     (yearly_plan.get('stripe_plan_id'), yearly_plan)]
-            self.fields['plan'] = forms.ChoiceField(choices=plans)
+            plans = [(monthly_plan.get('stripe_plan_id'), monthly_plan)]
         else:
             yearly_plan = settings.SUBSCRIPTION_PLANS[selected_plan_type]['yearly']
             plans = [(yearly_plan.get('stripe_plan_id'), yearly_plan)]
-            self.fields['plan'] = forms.ChoiceField(choices=plans)
+        self.fields['plan'] = forms.ChoiceField(choices=plans)
 
 
 class ReactivateSubscriptionForm(forms.Form):

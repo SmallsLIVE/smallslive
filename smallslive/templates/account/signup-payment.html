@@ -18,7 +18,7 @@
                 <h2>Sign up for a</h2>
                 <h1>SmallsLIVE {{ plan.name }} Plan</h1>
                 {% if plan.id == "basic" %}
-                <h3>Just <b>${{ plan.monthly.price|djdiv:100|floatformat:"-1" }}/month or ${{ plan.yearly.price|djdiv:100|floatformat:"-1" }}/year</b> (you get two months for free).</h3>
+                <h3>Just <b>${{ plan.monthly.price|djdiv:100|floatformat:"-1" }}/month</h3>
                 {% elif "benefactor" in plan.id or plan.id == "premium" %}
                 <br />
                 {% endif %}
@@ -31,17 +31,11 @@
             <form class="payment-form" id="payment-form" method="post" action="{% block form_url %}{% url "accounts_signup_payment" plan_name=plan.id %}{% endblock form_url %}">
             <div class="signup__payment__type">
                 {% if plan.id == "basic" %}
-                <h3 class="signup__payment__heading">Do you want to pay monthly or annually?</h3>
-                <p class="signup__payment__text">If you choose to pay for the full year in advance, you get <b>2 months for free</b>. Once you sign up for a plan, you’ll have auto renewal set up meaning that once the plan runs out we’ll automatically bill your credit card for the next month or year (depending on how you paid initially) and extend your plan. You can always deactivate this option in your Account settings and extend your membership manually.</p>
+                <h3 class="signup__payment__heading">Thanks for being a supporter at $10/month!</h3>
+                <p class="signup__payment__text">Once you sign up, you’ll have auto renewal set up meaning that once the plan runs out we’ll automatically bill your credit card for the next year and extend your plan. You can always deactivate this option in your Account settings and extend your membership manually.</p>
                 <div class="signup__payment__type__selection__container">
                   {% for plan_name, plan_details in form.fields.plan.choices %}
-                    <div class="signup__payment__type__selection__option">
-                      {% if plan_details.interval == 'year' %}
-                        <input type="radio" name="plan" id="{{ plan_name }}" value="{{ plan_name }}"><label for="{{ plan_name }}"><span>Pay annually</span><span class="price">(${{ plan_details.price|djdiv:100|floatformat:"-1" }} per year - get two months for free)</span></label>
-                      {% else %}
-                        <input type="radio" name="plan" id="{{ plan_name }}" value="{{ plan_name }}" checked><label for="{{ plan_name }}"><span>Pay monthly</span><span class="price">(${{ plan_details.price|djdiv:100|floatformat:"-1" }} per month)</span></label>
-                      {% endif %}
-                    </div>
+                  <input type="hidden" name="plan" id="{{ plan_name }}" value="{{ plan_name }}" >
                   {% endfor %}
                 </div>
                 {% elif plan.id == "benefactor_1" %}

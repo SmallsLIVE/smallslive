@@ -540,7 +540,6 @@ SUBSCRIPTION_PLANS = {
         'name': 'Audio/Video Archive & Live Video Stream Access',
         'id': 'basic',
         'monthly': DJSTRIPE_PLANS['basic_monthly'],
-        'yearly': DJSTRIPE_PLANS['basic_yearly'],
     },
     'premium': {
         'name': 'Benefactor Member',
