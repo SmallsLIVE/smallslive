@@ -47,12 +47,15 @@
                 {% elif plan.id == "benefactor_1" %}
                 <h3 class="signup__payment__heading">Thank you for being a benefactor at the $1,000 / year level!</h3>
                 <p class="signup__payment__text">Once you sign up, you’ll have auto renewal set up meaning that once the plan runs out we’ll automatically bill your credit card for the next year and extend your plan. You can always deactivate this option in your Account settings and extend your membership manually.</p>
+                <input type="hidden" name="plan" id="{{ plan.id }}" value="{{ plan.id }}" >
                 {% elif plan.id == "benefactor_2" %}
                 <h3 class="signup__payment__heading">Thank you for being a benefactor at the $2,500 / year level!</h3>
                 <p class="signup__payment__text">Once you sign up, you’ll have auto renewal set up meaning that once the plan runs out we’ll automatically bill your credit card for the next year and extend your plan. You can always deactivate this option in your Account settings and extend your membership manually.</p>
+                <input type="hidden" name="plan" id="{{ plan.id }}" value="{{ plan.id }}" >
                 {% elif plan.id == "benefactor_3" %}
                 <h3 class="signup__payment__heading">Thank you for being a benefactor at the $5,000 / year level!</h3>
                 <p class="signup__payment__text">Once you sign up, you’ll have auto renewal set up meaning that once the plan runs out we’ll automatically bill your credit card for the next year and extend your plan. You can always deactivate this option in your Account settings and extend your membership manually.</p>
+                <input type="hidden" name="plan" id="{{ plan.id }}" value="{{ plan.id }}" >
                 {% elif plan.id == "premium" %}
                 <h3 class="signup__payment__heading">Thank you for being a benefactor!</h3>
                 <p class="signup__payment__text">Once you sign up, you’ll have auto renewal set up meaning that once the plan runs out we’ll automatically bill your credit card for the next year and extend your plan. You can always deactivate this option in your Account settings and extend your membership manually.</p>

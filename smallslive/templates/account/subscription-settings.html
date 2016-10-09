@@ -111,6 +111,9 @@
                   </div>
                 </div>
             </div>
+            {% if user.get_subscription_plan.type != "free" %}
+              <p class="signup-plans__downgrade-notice">* your account gets downgraded to a Free Plan automatically upon not extending your subscription in time.</p>
+            {% endif %}
         </section>
 
       {% if user.has_active_subscription %}
@@ -292,12 +295,12 @@
       });
 
       // Benefactor Dropdown
-      {% if "benefactor" in plan.id %}
-      var hidden = false;
-      $( "#levels" ).show();
+      {% if user.get_subscription_plan.type == "free" or user.get_subscription_plan.type == "basic" %}
+        var hidden = true;
+        $( "#levels" ).hide();
       {% else %}
-      var hidden = true;
-      $( "#levels" ).hide();
+        var hidden = false;
+        $( "#levels" ).show( "blind", {});
       {% endif %}
       var toggler = document.getElementById("toggler");
       toggler.addEventListener("click", function() {
