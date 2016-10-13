@@ -27,15 +27,14 @@
                         <div class="signup-plan__arrow-separator"></div>
                         <ul class="signup-plan__features">
                             {% if active_plan.type == "free" %}
-                                <li class="signup-plan__features__single">Every performance at Smalls and Mezzrow Jazz Clubs are streamed every night.</li>
-                                <li class="signup-plan__features__single">Join our jazz community by registering with a valid e-mail address. Access our Live-Video stream where you may be for that evening's performance.</li>
+                                <li class="signup-plan__features__single">Every performance at Smalls and Mezzrow is streamed live directly each night.</li>
+                                <li class="signup-plan__features__single">Register with a valid email address and access our live-video stream for no charge.</li>
                             {% elif active_plan.type == "basic" %}
-                                <li class="signup-plan__features__single">Gain exclusive access to our Audio/Video archive of every live perfornace since 2007.</li>
-                                <li class="signup-plan__features__single">Your Supporter membership revenue is pooled and directly distributed to the artists via the <a href="{% url 'revenue-share' %}" class="signup-plan__features__revenue">SmallsLIVE Revenue Share Project.</a></li>
-                                <li class="signup-plan__features__single">Approximately 30 new live performances added to the archive weekly.</li>
-                                <li class="signup-plan__features__single">Access to our Live-Video stream from both Smalls and Mezzrow Jazz Clubs every night.</li>
+                                <li class="signup-plan__features__single">Access our extensive Audio/Video archive of more than 11,000 performances dating back to 2007.</li>
+                                <li class="signup-plan__features__single">Supporter Memberships directly support the artists and clubs through our <a href="{% url 'revenue-share' %}" class="signup-plan__features__revenue">SmallsLIVE Revenue Share Royalty System.</a></li>
+                                <li class="signup-plan__features__single">About 30 new shows are added to the archive weekly.</li>
                             {% elif user.get_subscription_plan.type == "premium" or "benefactor" in user.get_subscription_plan.type %}
-                                <li class="signup-plan__features__single">Benefactors are SmallsLIVE supporters who believe in the mission of SmallsLIVE and want to support us with a greater contribution. SmallsLIVE Benefactors have a direct impact on the lives of the artists and the club through our <a href="{% url 'revenue-share' %}" class="signup-plan__features__revenue">Revenue Share Project.</a></li>
+                                <li class="signup-plan__features__single">Benefactors are SmallsLIVE supporters who believe in the mission of SmallsLIVE and want to support us with a great contribution.</li>
                                 <li class="signup-plan__features__single">Benefactors receive all benefits of a Supporter Membership Plus:</li>
                                 <li class="signup-plan__features__single">A "Benefactor Card" for unlimited admission to both clubs throughout the year</li>
                                 <li class="signup-plan__features__single">A SmallsLIVE T-shirt</li>
