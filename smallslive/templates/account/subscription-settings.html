@@ -119,7 +119,7 @@
                       </div>
                   </div>
                   <div class="col-xs-12 col-sm-3 button-wrapper">
-                      <div class="signup-plan__button {% if user.get_subscription_plan.type == "premium" %}selected{% endif %}" id="toggler">Benefactor Levels <span class="caret"></span>{% if user.get_subscription_plan.type == "premium" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</div>
+                      <div class="signup-plan__button {% if user.get_subscription_plan.type == "premium" %}selected{% endif %} {% if "benefactor" in user.get_subscription_plan.type %}disabled{% endif %}" id="toggler">Benefactor Levels <span class="caret"></span>{% if user.get_subscription_plan.type == "premium" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</div>
                       <div id="levels">
                       {% with active_plan=user.get_subscription_plan.type %}
                         {% if active_plan == "benefactor_2" or active_plan == "benefactor_3" %}

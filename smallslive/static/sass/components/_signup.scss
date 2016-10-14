@@ -171,6 +171,8 @@
     text-align: center;
     background-color: #000000;
     border-right: 5px solid $main-accent-color;
+    padding-left: 0px;
+    padding-right: 0px;
     min-width: 270px;
     @include align-self(flex-end);
   }
