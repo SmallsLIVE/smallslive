@@ -464,6 +464,10 @@ STRIPE_CHARGE_AND_CAPTURE_IN_ONE_STEP = True
 DJSTRIPE_PRORATION_POLICY_FOR_UPGRADES = True
 
 DJSTRIPE_PLANS = {
+    # Please note that the plan names the users see are different than the
+    # Stripe plans listed here. This is to ensure backwards compatibility.
+    # Please find the comments in the SUBSCRIPTION_PLANS section as all of this
+    # changed with the October 2016 revisions.
     "basic_yearly": {
         "stripe_plan_id": "basic_yearly",
         "name": "Basic",
@@ -537,11 +541,23 @@ SUBSCRIPTION_PLANS = {
         'yearly': None,
     },
     'basic': {
+        # 'basic' in SUBSCRIPTION_PLANS context refers to a plan that will not
+        # be selected going forward as of Oct 2016. It was left in to allow for
+        # backwards compatibility.
         'name': 'Audio/Video Archive & Live Video Stream Access',
         'id': 'basic',
         'monthly': DJSTRIPE_PLANS['basic_monthly'],
+        'yearly': DJSTRIPE_PLANS['basic_yearly'],
+    },
+    'supporter': {
+        'name': 'Audio/Video Archive & Live Video Stream Access',
+        'id': 'supporter',
+        'monthly': DJSTRIPE_PLANS['basic_monthly'],
     },
     'premium': {
+        # 'premium' in SUBSCRIPTION_PLANS context refers to a plan that will not
+        # be selected going forward as of Oct 2016. It was left in to allow for
+        # backwards compatibility.
         'name': 'Benefactor Member',
         'id': 'premium',
         'monthly': DJSTRIPE_PLANS['premium_monthly'],

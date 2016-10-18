@@ -14,52 +14,11 @@
 
         <section class="signup-step__header container vertical-align-parent">
             <div class="vertical-align-child">
-                <h1>All done!</h1>
-                <div class="signup-step__header__info">You have registered as a <b>{{ active_plan.name }}</b> SmallsLIVE Member.  You will receive an email at your email address.  Please click the link to confirm your email and complete the registration process</div>
+                <h1>Please confirm your email</h1>
+                <div class="signup-step__header__info">Watch for an email with a confirmation link.  Please click the link to complete your registration.  If you do not receive the email please check your SPAM folder first.  Otherwise, contact us at <a href="mailto:smallslive@gmail.com">smallslive@gmail.com</a></div>
             </div>
         </section>
 
-        <section class="signup__done container">
-            <div class="col-xs-12 col-sm-6 signup__done__plan vertical-align-parent">
-                <div class="col-xs-12 col-sm-8 col-sm-offset-2 signup-plan__complete vertical-align-child">
-                    <div class="signup-plan__content">
-                        <p class="signup-plan__name">{{ active_plan.name }} Membership</p>
-                        <div class="signup-plan__arrow-separator"></div>
-                        <ul class="signup-plan__features">
-                            {% if active_plan.type == "free" %}
-                                <li class="signup-plan__features__single">Every performance at Smalls and Mezzrow is streamed live directly each night.</li>
-                                <li class="signup-plan__features__single">Register with a valid email address and access our live-video stream for no charge.</li>
-                            {% elif active_plan.type == "basic" %}
-                                <li class="signup-plan__features__single">Access our extensive Audio/Video archive of more than 11,000 performances dating back to 2007.</li>
-                                <li class="signup-plan__features__single">Supporter Memberships directly support the artists and clubs through our <a href="{% url 'revenue-share' %}" class="signup-plan__features__revenue">SmallsLIVE Revenue Share Royalty System.</a></li>
-                                <li class="signup-plan__features__single">About 30 new shows are added to the archive weekly.</li>
-                            {% elif user.get_subscription_plan.type == "premium" or "benefactor" in user.get_subscription_plan.type %}
-                                <li class="signup-plan__features__single">Benefactors are SmallsLIVE supporters who believe in the mission of SmallsLIVE and want to support us with a great contribution.</li>
-                                <li class="signup-plan__features__single">Benefactors receive all benefits of a Supporter Membership Plus:</li>
-                                <li class="signup-plan__features__single">A "Benefactor Card" for unlimited admission to both clubs throughout the year</li>
-                                <li class="signup-plan__features__single">A SmallsLIVE T-shirt</li>
-                                <li class="signup-plan__features__single">A SmallsLIVE USB drive with the complete SmallsLIVE Catalogue</li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 signup__done__content vertical-align-parent">
-                <div class="vertical-align-child">
-                    <h2 class="signup__done__content__heading">{% if active_plan.type == "free" %}Signup{% else %}Payment{% endif %} successful!</h2>
-                    <ul>
-                        <li>you are now subscribed to our <b>{{ active_plan.name }} membership plan</b></li>
-                        {% if request.user.has_active_subscription %}
-                          <li>your credit card has been charged for <b>${{ active_plan.price|djdiv:100|floatformat:"2" }}</b></li>
-                          {% with subscription=request.user.get_current_subscription %}
-                            <li>auto renewal is activated on your Subscription, so your credit card will be charged again for the next {% if active_plan.interval == "month" %}month{% else %}year{% endif %} on <b>{{ subscription.current_period_end|date:"n/j/Y" }}</b> for <b>${{ active_plan.price|djdiv:100|floatformat:"2" }}</b> to renew your selected plan.</li>
-                          {% endwith %}
-                          <li>you can disable auto renewal under your <a href="{% url "subscription_settings" %}">Subscription settings</a>. In that case, after your subscription plan expires, you’ll need to <b>manually renew it</b> to continue using its perks (until that time you’ll be <b>reverted to the Free plan</b>).</li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-        </section>
         {% if active_plan.type != "free" %}
           <section class="signup__what-next">
               <h1>What’s next?</h1>

@@ -18,7 +18,7 @@
 
         <section class="subscription-settings signup-plans">
             <div class="container">
-                <!-- Basic -->
+                <!-- Free -->
                 <div class="signup-plan {% if user.get_subscription_plan.type == "free" %}plan-active{% endif %}">
                     {% if user.get_subscription_plan.type == "free" %}
                     <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm" id="selected-image">
@@ -46,21 +46,21 @@
                           {% if active_plan == "free" %}
                             <a class="signup-plan__button" href="#">Free plan never expires{% if user.get_subscription_plan.type == "free" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
                           {% else %}
-                            <a class="signup-plan__button disabled" href="#">Can’t downgrade*</a>
+                            <a class="signup-plan__button disabled" href="#">Can’t downgrade *</a>
                           {% endif %}
                           {% endwith %}
                     </div>
                 </div>
 
                 <!-- Supporter -->
-                <div class="signup-plan {% if user.get_subscription_plan.type == "basic" %}plan-active{% endif %}">
-                  {% if user.get_subscription_plan.type == "basic" %}
+                <div class="signup-plan {% if user.get_subscription_plan.type == "supporter" or user.get_subscription_plan.type == "basic" %}plan-active{% endif %}">
+                  {% if user.get_subscription_plan.type == "supporter" or user.get_subscription_plan.type == "basic" %}
                   <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm" id="selected-image">
-                        <img src="{% static 'image/signup_svg/Smalls_SubPg_Spprtr_Red.svg' %}" alt="Basic level" />
+                        <img src="{% static 'image/signup_svg/Smalls_SubPg_Spprtr_Red.svg' %}" alt="Supporter level" />
                   </div>
                   {% else %}
                   <div class="signup-plan__picture col-md-3 hidden-xs hidden-sm">
-                        <img src="{% static 'image/signup_svg/Smalls_SubPg_Supporter_Icon.svg' %}" alt="Basic level" />
+                        <img src="{% static 'image/signup_svg/Smalls_SubPg_Supporter_Icon.svg' %}" alt="Supporter level" />
                   </div>
                   {% endif %}
                   <div class="col-xs-12 col-sm-9 col-md-6">
@@ -78,16 +78,16 @@
                   </div>
                   <div class="col-xs-12 col-sm-3 button-wrapper">
                       {% with active_plan=user.get_subscription_plan.type %}
-                        {% if active_plan == "basic" %}
+                        {% if active_plan == "supporter" or active_plan == "basic" %}
                           {% if user.customer.current_subscription.cancel_at_period_end %}
-                              <p class="signup-plan__button">Plan expires on {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}{% if user.get_subscription_plan.type == "basic" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</p>
+                              <p class="signup-plan__button">Plan expires on {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}{% if user.get_subscription_plan.type == "supporter" or user.get_subscription_plan.type == "basic" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</p>
                           {% else %}
-                              <p class="signup-plan__button">Plan will renew on {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}{% if user.get_subscription_plan.type == "basic" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</p>
+                              <p class="signup-plan__button">Plan will renew on {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}{% if user.get_subscription_plan.type == "supporter" or user.get_subscription_plan.type == "basic" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</p>
                           {% endif %}
                         {% elif "benefactor" in user.get_subscription_plan.type %}
-                          <a class="signup-plan__button disabled" href="#">Can’t downgrade*</a>
+                          <a class="signup-plan__button disabled" href="#">Can’t downgrade *</a>
                         {% elif active_plan == "free" %}
-                          <a class="signup-plan__button" href="{% url "accounts_signup" plan_name="basic" %}">Join{% if user.get_subscription_plan.type == "basic" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
+                          <a class="signup-plan__button" href="{% url "accounts_signup" plan_name="supporter" %}">Join</a>
                         {% endif %}
                       {% endwith %}
                   </div>
@@ -123,7 +123,7 @@
                       <div id="levels">
                       {% with active_plan=user.get_subscription_plan.type %}
                         {% if active_plan == "benefactor_2" or active_plan == "benefactor_3" %}
-                          <a class="signup-plan__button drop disabled" href="#">Can’t downgrade*</a>
+                          <a class="signup-plan__button drop disabled" href="#">Can’t downgrade *</a>
                         {% elif active_plan == "benefactor_1" %}
                           {% if user.customer.current_subscription.cancel_at_period_end %}
                               <a class="signup-plan__button drop" href="#">Plan expires on {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}{% if user.get_subscription_plan.type == "benefactor_1" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
@@ -134,7 +134,7 @@
                           <a class="signup-plan__button drop" href="{% url "accounts_signup" plan_name="benefactor_1" %}">$1000 / year{% if user.get_subscription_plan.type == "benefactor_1" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
                         {% endif %}
                         {% if active_plan == "benefactor_3" %}
-                          <a class="signup-plan__button drop disabled" href="#">Can’t downgrade*</a>
+                          <a class="signup-plan__button drop disabled" href="#">Can’t downgrade *</a>
                         {% elif active_plan == "benefactor_2" %}
                           {% if user.customer.current_subscription.cancel_at_period_end %}
                               <a class="signup-plan__button drop" href="#">Plan expires on {{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}{% if user.get_subscription_plan.type == "benefactor_2" %}<span><img id="selected" src="{% static 'image/signup_svg/Smalls_SubPg_Red_Circle_Arrow.svg' %}" alt="selected plan" /></span>{% endif %}</a>
@@ -342,7 +342,7 @@
       });
 
       // Benefactor Dropdown
-      {% if user.get_subscription_plan.type == "free" or user.get_subscription_plan.type == "basic" %}
+      {% if user.get_subscription_plan.type == "free" or user.get_subscription_plan.type == "supporter" or user.get_subscription_plan.type == "basic" %}
         var hidden = true;
         $( "#levels" ).hide();
       {% else %}
