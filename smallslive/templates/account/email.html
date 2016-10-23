@@ -1,0 +1,21 @@
+{% extends "smalls_base.html" %}
+{% load djstripe_tags %}
+{% load static from staticfiles %}
+{% load socialaccount %}
+
+{% block extra_head %}
+    {% providers_media_js %}
+{% endblock %}
+
+{% block title %}Verification email sent!{% endblock %}
+
+{% block content %}
+    <div class="content-wrapper">
+        <section class="signup-step__header container vertical-align-parent">
+            <div class="vertical-align-child">
+                <h1>Please confirm your email</h1>
+                <div class="signup-step__header__info">Watch for an email with a confirmation link.  Please click the link to complete your registration.  If you do not receive the email please check your SPAM folder first.  Otherwise, contact us at <a href="mailto:smallslive@gmail.com">smallslive@gmail.com</a></div>
+            </div>
+        </section>
+    </div>
+{% endblock content %}
