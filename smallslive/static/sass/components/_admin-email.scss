@@ -1,0 +1,151 @@
+.admin-email__list {
+  background-color: #FFFFFF;
+  min-height: 200px;
+
+  @include lato;
+  font-size: 14px;
+
+  & ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  &__header {
+    padding: 40px 10px 20px;
+    background-color: $main-accent-color;
+    color: #fff;
+    @include lato;
+    font-size: 14px;
+
+    & .sort-column {
+      cursor: pointer;
+
+      &:hover {
+        color: shade(#fff, 20%);
+      }
+
+      & i {
+        margin-left: 8px;
+      }
+    }
+
+    @media(max-width:$screen-xs-max) {
+      font-size: 11px;
+    }
+  }
+
+  &__states {
+    @include display(flex);
+  }
+
+  &__state {
+    width: 20%;
+    text-align: center;
+
+    &.sort-column i {
+      font-size: 14px;
+      color: #fff;
+    }
+
+    & i {
+      font-size: 18px;
+      color: #aaa;
+    }
+
+    & i.true  {
+      color: #3F9E52;
+    }
+  }
+
+  &__row {
+    @include list-unstyled;
+    @include display(flex);
+    @include align-items(center);
+    border-bottom: 1px solid #eee;
+    background-color: #fff;
+    padding: 10px;
+
+    &--empty {
+      @include list-unstyled;
+      background-color: #fff;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+  }
+
+  &__name {
+    @include lato-bold;
+  }
+
+  &__actions {
+    text-align: right;
+  }
+
+  & .btn-group {
+    float: right;
+
+    & .btn {
+      @include lato;
+      border-radius: 0;
+      color: #666;
+      background-color: #ccc;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-right: none;
+
+      &:last-of-type {
+        border-radius: 0 4px 4px 0;
+        border-right: 1px solid rgba(0,0,0,0.1);
+      }
+    }
+
+    & a .btn {
+      border-radius: 4px 0 0 4px !important;
+      margin-right: -3px;
+    }
+
+    & .dropdown-menu {
+      padding: 5px 0;
+
+      & li {
+        padding: 5px 0;
+        @include lato;
+
+        &.warning a {
+          color: #D21535;
+        }
+      }
+
+      & .divider {
+        padding: 0;
+      }
+    }
+  }
+
+  @media(max-width:$screen-xs-max) {
+    font-size: 11px;
+    word-wrap: break-word;
+  }
+}
+
+.admin-email-list__email-button {
+  @include align-self(flex-end);
+  @include lato-bold;
+
+  display: inline-block;
+  background-color: $main-accent-color;
+  color: #fff;
+  padding: 10px 45px;
+  width: 140px;
+
+  @media(max-width:$screen-sm-max) {
+    min-width: 110px;
+    max-width: 130px;
+  }
+
+  @media(max-width:$screen-xs-max) {
+    min-height: 0;
+    min-width: 110px;
+    padding: 10px 15px;
+    text-align: center;
+  }
+}
