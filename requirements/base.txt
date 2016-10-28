@@ -53,11 +53,14 @@ django-widget-tweaks==1.4.1
 dj-stripe==0.4.0
 django-treebeard==2.0
 docopt==0.4.0
+dnspython==1.15.0
 easy-thumbnails==2.2
 elasticsearch==1.7.0
+email-validator==1.0.1
 gnureadline==6.3.3
 gunicorn==19.3.0
 html5lib==0.999
+idna==2.1
 ipython==3.1.0
 kombu==3.0.30
 libsass==0.7.0

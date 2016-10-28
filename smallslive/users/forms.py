@@ -3,6 +3,7 @@ from django.conf import settings
 from djstripe.settings import PAYMENTS_PLANS
 import floppyforms as forms
 from allauth.account.forms import SignupForm, AddEmailForm
+from email_validator import validate_email, EmailNotValidError
 
 
 class UserSignupForm(SignupForm):
@@ -33,6 +34,16 @@ class UserSignupForm(SignupForm):
         user.save()
         if self.cleaned_data.get('newsletter'):
             user.subscribe_to_newsletter(request)
+
+    def clean(self):
+        cleaned_data = super(UserSignupForm, self).clean()
+        em = cleaned_data.get("email")
+
+        try:
+            v = validate_email(em)
+            em = v["email"]
+        except EmailNotValidError as e:
+            raise forms.ValidationError("The email address is invalid. Perhaps there was a typo? Please try again.")
 
 
 class EditProfileForm(forms.Form):
