@@ -7,7 +7,7 @@ class TestUserSignupPriorToPayment(TestCase):
     # Email
     def test_user_signup_mispelled_email(self):
         form = UserSignupForm(data = {
-            'email' : 'jsam.audio@gmail.con',
+            'email' : 'test@example.con',
             'password1' : 'testing',
             'password2' : 'testing',
             'terms_of_service' : True,
@@ -28,7 +28,7 @@ class TestUserSignupPriorToPayment(TestCase):
     # Passwords
     def test_user_signup_mismatched_passwords(self):
         form = UserSignupForm(data = {
-            'email' : 'jsam.audio@gmail.com',
+            'email' : 'test@example.com',
             'password1' : 'testing',
             'password2' : 'testng',
             'terms_of_service' : True,
@@ -39,7 +39,7 @@ class TestUserSignupPriorToPayment(TestCase):
     # Checkboxes
     def test_user_signup_forgot_checkboxes(self):
         form = UserSignupForm(data = {
-            'email' : 'jsam.audio@gmail.com',
+            'email' : 'test@example.com',
             'password1' : 'testing',
             'password2' : 'testing',
             'terms_of_service' : False,
@@ -50,7 +50,7 @@ class TestUserSignupPriorToPayment(TestCase):
     # Names
     def test_user_signup_overly_long_first_name(self):
         form = UserSignupForm(data = {
-            'email' : 'jsam.audio@gmail.com',
+            'email' : 'test@example.com',
             'password1' : 'testing',
             'password2' : 'testing',
             'terms_of_service' : True,
@@ -62,7 +62,7 @@ class TestUserSignupPriorToPayment(TestCase):
 
     def test_user_signup_overly_long_last_name(self):
         form = UserSignupForm(data = {
-            'email' : 'jsam.audio@gmail.com',
+            'email' : 'test@example.com',
             'password1' : 'testing',
             'password2' : 'testing',
             'terms_of_service' : True,
@@ -75,7 +75,7 @@ class TestUserSignupPriorToPayment(TestCase):
     # Correct
     def test_user_signup_min_correct_info(self):
         form = UserSignupForm(data = {
-            'email' : 'jsam.audio@gmail.com',
+            'email' : 'test@example.com',
             'password1' : 'testing',
             'password2' : 'testing',
             'terms_of_service' : True,
@@ -85,7 +85,7 @@ class TestUserSignupPriorToPayment(TestCase):
 
     def test_user_signup_correct_info(self):
         form = UserSignupForm(data = {
-            'email' : 'jsam.audio@gmail.com',
+            'email' : 'test@example.com',
             'password1' : 'testing',
             'password2' : 'testing',
             'terms_of_service' : True,
