@@ -83,3 +83,4 @@ smallslive/.env
 misc
 
 smallslive/smallslive/settings/yo.py
+smallslive/smallslive/settings/jim_testing.py
