@@ -2,9 +2,7 @@ from django.test import TestCase
 from .models import SmallsUser
 from .forms import UserSignupForm
 
-class TestForms(TestCase):
-
-    # FREE USERS
+class TestUserSignupPriorToPayment(TestCase):
 
     # Email
     def test_user_signup_mispelled_email(self):
@@ -97,7 +95,8 @@ class TestForms(TestCase):
         })
         self.assertTrue(form.is_valid())
 
+# class TestSupporterSignup(TestCase):
+#     # code goes here
 
-    # SUPPORTER USERS
-
-    # BENEFACTOR USERS
+# class TestBenefactorSignup(TestCase):
+#     # code goes here
