@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 
 
 urlpatterns = patterns('users.views',
+    url(r'^admin_email/$', 'admin_email_confirmation', name="admin_email_confirmation"),
     url(r"^confirm-email/(?P<key>\w+)/$", 'confirm_email',
         name="account_confirm_email"),
     url(r'^login/', 'login_view', name="accounts_login"),

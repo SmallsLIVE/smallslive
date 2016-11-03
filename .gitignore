@@ -81,3 +81,6 @@ gulpfile.js
 smallslive/.env
 .DS_Store
 misc
+
+smallslive/smallslive/settings/yo.py
+smallslive/smallslive/settings/jim_testing.py

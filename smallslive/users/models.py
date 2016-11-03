@@ -47,7 +47,8 @@ class SmallsUserManager(UserManager):
 
 class SmallsUser(AbstractBaseUser, PermissionsMixin):
     ACCESS_LEVELS = Choices('48-hour pass', 'Half Year Membership', 'Monthly Pass', 'Three Month Membership',
-                            'admin', 'basic membership', 'member', 'musician', 'smallslive membership', 'trialMember')
+                            'admin', 'basic membership', 'benefactor_1', 'benefactor_2', 'benefactor_3',
+                            'member', 'musician', 'smallslive membership', 'supporter', 'trialMember')
     PAYOUT_CHOICES = Choices('Check', 'PayPal')
 
     email = models.EmailField(unique=True)

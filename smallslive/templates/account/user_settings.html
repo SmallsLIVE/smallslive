@@ -26,6 +26,18 @@
                     <input type="submit" class="user-settings__form__button disabled" name="change_email" value="Save">
                 </form>
 
+                <hr>
+                <h2 class="user-settings__form__heading">Resend verification email:</h2>
+                <form action="/accounts/email/" method="post">
+                  {% csrf_token %}
+                  <div class="ctrlHolder">
+                        <input id="email_radio_1" type="hidden" name="email" value="{{ current_user.email }}" >
+                  </div>
+                  <input type="submit" class="user-settings__form__button disabled" name="action_send" value="Re-send Verification">
+                </form>
+
+                <hr>
+
                 <form role="form" id="change-password-form" method="post" action="{% url "user_settings" %}">
                     {% csrf_token %}
                     <h2 class="user-settings__form__heading">Change password:</h2>

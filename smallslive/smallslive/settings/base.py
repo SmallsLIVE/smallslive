@@ -464,6 +464,10 @@ STRIPE_CHARGE_AND_CAPTURE_IN_ONE_STEP = True
 DJSTRIPE_PRORATION_POLICY_FOR_UPGRADES = True
 
 DJSTRIPE_PLANS = {
+    # Please note that the plan names the users see are different than the
+    # Stripe plans listed here. This is to ensure backwards compatibility.
+    # Please find the comments in the SUBSCRIPTION_PLANS section as all of this
+    # changed with the October 2016 revisions.
     "basic_yearly": {
         "stripe_plan_id": "basic_yearly",
         "name": "Basic",
@@ -500,6 +504,33 @@ DJSTRIPE_PLANS = {
         "currency": "usd",
         "interval": "month"
     },
+    "benefactor_1": {
+        "stripe_plan_id": "benefactor_1",
+        "name": "Benefactor 1",
+        "type": 'benefactor_1',
+        "description": "Benefactor Member",
+        "price": 100000,  # $1000.00
+        "currency": "usd",
+        "interval": "yearly"
+    },
+    "benefactor_2": {
+        "stripe_plan_id": "benefactor_2",
+        "name": "Benefactor 2",
+        "type": 'benefactor_2',
+        "description": "Benefactor Member",
+        "price": 250000,  # $1000.00
+        "currency": "usd",
+        "interval": "yearly"
+    },
+    "benefactor_3": {
+        "stripe_plan_id": "benefactor_3",
+        "name": "Benefactor 3",
+        "type": 'benefactor_3',
+        "description": "Benefactor Member",
+        "price": 500000,  # $1000.00
+        "currency": "usd",
+        "interval": "yearly"
+    },
 }
 
 SUBSCRIPTION_PLANS = {
@@ -510,16 +541,42 @@ SUBSCRIPTION_PLANS = {
         'yearly': None,
     },
     'basic': {
+        # 'basic' in SUBSCRIPTION_PLANS context refers to a plan that will not
+        # be selected going forward as of Oct 2016. It was left in to allow for
+        # backwards compatibility.
         'name': 'Audio/Video Archive & Live Video Stream Access',
         'id': 'basic',
         'monthly': DJSTRIPE_PLANS['basic_monthly'],
         'yearly': DJSTRIPE_PLANS['basic_yearly'],
     },
+    'supporter': {
+        'name': 'Audio/Video Archive & Live Video Stream Access',
+        'id': 'supporter',
+        'monthly': DJSTRIPE_PLANS['basic_monthly'],
+    },
     'premium': {
+        # 'premium' in SUBSCRIPTION_PLANS context refers to a plan that will not
+        # be selected going forward as of Oct 2016. It was left in to allow for
+        # backwards compatibility.
         'name': 'Benefactor Member',
         'id': 'premium',
         'monthly': DJSTRIPE_PLANS['premium_monthly'],
         'yearly': DJSTRIPE_PLANS['premium_yearly'],
+    },
+    'benefactor_1': {
+        'name': 'Benefactor Member',
+        'id': 'benefactor_1',
+        'yearly': DJSTRIPE_PLANS['benefactor_1'],
+    },
+    'benefactor_2': {
+        'name': 'Benefactor Member',
+        'id': 'benefactor_2',
+        'yearly': DJSTRIPE_PLANS['benefactor_2'],
+    },
+    'benefactor_3': {
+        'name': 'Benefactor Member',
+        'id': 'benefactor_3',
+        'yearly': DJSTRIPE_PLANS['benefactor_3'],
     },
 }
 

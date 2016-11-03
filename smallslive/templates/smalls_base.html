@@ -100,6 +100,7 @@
                     <li><a href="{% url "artist_dashboard:change_payout_period" %}">Change payout period</a></li>
                   </ul>
                 </li>
+                <!-- <li><a href="#">Email User</a></li> -->
             </ul>
         </div>
     </div>
@@ -205,6 +206,20 @@
           <li class="header-social__item"><a target="_blank" href="https://twitter.com/smallsjazzclub"><i class="fa fa-twitter"></i></a></li>
           <li class="header-social__item"><a target="_blank" href="https://instagram.com/smallsjazzclub/"><i class="fa fa-instagram"></i></a></li>
   </ul>
+
+  {% with active_plan=user.get_subscription_plan.type %}
+  {% if active_plan == "free" %}
+  <ul class="header-login">
+    <li class="header-login__upgrade">
+      <a href="{% url "subscription_settings" %}">
+        <div class="btn-group btn-group-xs">Upgrade</div>
+      </a>
+    </li>
+  </ul>
+  {% endif %}
+  {% endwith %}
+
+
   <ul class="header-login clearfix">
     {% if user.is_authenticated %}
       <li class="dropdown">
