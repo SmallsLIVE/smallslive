@@ -1,0 +1,40 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+
+{% block title %}User settings{% endblock %}
+
+{% block content %}
+<div class="content-wrapper">
+  <section class="page-heading container">
+      <h1>User Email Addresses</h1>
+  </section>
+  <section class="admin-email__list container">
+      <div class="admin-email__list__header row">
+          <div class="col-xs-6 col-md-7">Email Address</div>
+          <div class="col-xs-3 col-md-3 admin-email__list__state">Email Verified</div>
+          <div class="col-xs-3 col-md-2">Resend Verification</div>
+      </div>
+      <ul>
+          {% for address in object_list %}
+              <li class="admin-email__list__row row">
+                  <div class="col-xs-6 col-md-7 admin-email__list__name">{{ address.email }}</div>
+                  <div class="col-xs-3 col-md-3 admin-email__list__state"><i class="fa {% if address.verified %}fa-check-circle true{% else %}fa-times-circle{% endif %}"></i></div>
+                  <form action="{% url 'admin_email_confirmation' %}" method="post">
+                      {% csrf_token %}
+                      <button class="col-xs-3 col-md-2 admin-email-list__email-button">Resend</button>
+                  </form>
+              </li>
+          {% empty %}
+              <li class="admin-email__list__row--empty row">No emails found.</li>
+          {% endfor %}
+      </ul>
+  </section>
+  <section class="admin_email container">
+
+  </section>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+{% endblock %}

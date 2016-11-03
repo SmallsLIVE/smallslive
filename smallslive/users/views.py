@@ -1,5 +1,6 @@
 from allauth.account import app_settings
 from allauth.account.forms import ChangePasswordForm
+from allauth.account.models import EmailAddress, EmailConfirmation
 from allauth.account.utils import complete_signup
 from allauth.account.views import SignupView as AllauthSignupView, ConfirmEmailView as CoreConfirmEmailView,\
     LoginView as CoreLoginView
@@ -220,6 +221,7 @@ def user_settings_view(request):
         'change_email_form': change_email_form,
         'change_profile_form': edit_profile_form,
         'change_password_form': change_password_form,
+        'current_user' : request.user,
     })
 
 
@@ -308,3 +310,25 @@ class HasArtistAssignedOrIsSuperuserMixin(HasArtistAssignedMixin):
             return False
         self.has_artist = user.artist_id is not None
         return self.has_artist or user.is_superuser
+
+
+class ResendEmailConfirmationView(StaffuserRequiredMixin, ListView):
+    template_name = 'account/admin_email.html'
+    queryset = EmailAddress.objects.order_by('email')
+
+    def get_context_data(self, **kwargs):
+        context = super(ResendEmailConfirmationView, self).get_context_data(**kwargs)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        context = { 'object_list' : {}, }
+        print("yo")
+        # if form.is_valid():
+        #     return self.form_valid(form)
+        # else:
+        #     return self.form_invalid(form)
+        return context
+
+
+
+admin_email_confirmation = ResendEmailConfirmationView.as_view()

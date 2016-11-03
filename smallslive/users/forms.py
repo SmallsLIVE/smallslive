@@ -3,6 +3,7 @@ from django.conf import settings
 from djstripe.settings import PAYMENTS_PLANS
 import floppyforms as forms
 from allauth.account.forms import SignupForm, AddEmailForm
+from email_validator import validate_email, EmailNotValidError
 
 
 class UserSignupForm(SignupForm):
@@ -33,6 +34,16 @@ class UserSignupForm(SignupForm):
         user.save()
         if self.cleaned_data.get('newsletter'):
             user.subscribe_to_newsletter(request)
+
+    def clean_email(self):
+        em = self.cleaned_data['email']
+        try:
+            v = validate_email(em)
+            em = v["email"]
+        except EmailNotValidError as e:
+            raise forms.ValidationError("The email address is invalid. Perhaps there was a typo? Please try again.")
+
+        return em
 
 
 class EditProfileForm(forms.Form):
@@ -88,12 +99,13 @@ class PlanForm(forms.Form):
     def __init__(self, *args, **kwargs):
         selected_plan_type = kwargs.pop('selected_plan_type')
         super(PlanForm, self).__init__(*args, **kwargs)
-        if selected_plan_type:
+        if selected_plan_type == 'basic' or selected_plan_type == 'supporter':
             monthly_plan = settings.SUBSCRIPTION_PLANS[selected_plan_type]['monthly']
+            plans = [(monthly_plan.get('stripe_plan_id'), monthly_plan)]
+        else:
             yearly_plan = settings.SUBSCRIPTION_PLANS[selected_plan_type]['yearly']
-            plans = [(monthly_plan.get('stripe_plan_id'), monthly_plan),
-                     (yearly_plan.get('stripe_plan_id'), yearly_plan)]
-            self.fields['plan'] = forms.ChoiceField(choices=plans)
+            plans = [(yearly_plan.get('stripe_plan_id'), yearly_plan)]
+        self.fields['plan'] = forms.ChoiceField(choices=plans)
 
 
 class ReactivateSubscriptionForm(forms.Form):

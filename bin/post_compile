@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 
 # Run Django migrations.
-python smallslive/manage.py migrate --noinput
+if [ "$HEROKU_APP_NAME" = "smallslive" ]
+then
+  python smallslive/manage.py migrate --noinput
+fi
