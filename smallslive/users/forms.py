@@ -35,15 +35,15 @@ class UserSignupForm(SignupForm):
         if self.cleaned_data.get('newsletter'):
             user.subscribe_to_newsletter(request)
 
-    def clean_email(self):
-        em = self.cleaned_data['email']
-        try:
-            v = validate_email(em)
-            em = v["email"]
-        except EmailNotValidError as e:
-            raise forms.ValidationError("The email address is invalid. Perhaps there was a typo? Please try again.")
-
-        return em
+    # def clean_malformed_email(self):
+    #     em = self.cleaned_data['email']
+    #     try:
+    #         v = validate_email(em)
+    #         em = v["email"]
+    #     except EmailNotValidError as e:
+    #         raise forms.ValidationError("The email address is invalid. Perhaps there was a typo? Please try again.")
+    #
+    #     return em
 
 
 class EditProfileForm(forms.Form):
