@@ -4,10 +4,26 @@ from .forms import UserSignupForm
 
 class TestUserSignupPriorToPayment(TestCase):
 
+    def setUp(self):
+        self.u = SmallsUser.objects.create_user(
+            email       = 'test@email.com',
+            password    = 'testing',
+        )
+
     # Email
     def test_user_signup_mispelled_email(self):
         form = UserSignupForm(data = {
             'email' : 'test@example.con',
+            'password1' : 'testing',
+            'password2' : 'testing',
+            'terms_of_service' : True,
+            'newsletter' : False,
+        })
+        self.assertFalse(form.is_valid())
+
+    def test_user_signs_up_twice_with_same_email(self):
+        form = UserSignupForm(data = {
+            'email' : 'test@email.con',
             'password1' : 'testing',
             'password2' : 'testing',
             'terms_of_service' : True,
