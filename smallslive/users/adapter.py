@@ -3,9 +3,20 @@ from django.conf import settings
 from django.core.mail import EmailMultiAlternatives, EmailMessage
 from django.template import TemplateDoesNotExist
 from django.template.loader import render_to_string
+from email_validator import validate_email, EmailNotValidError
+import floppyforms as forms
 
 
 class SmallsLiveAdapter(DefaultAccountAdapter):
+    def clean_email(self, email):
+        try:
+            v = validate_email(email)
+            email = v["email"]
+        except EmailNotValidError as e:
+            raise forms.ValidationError("The email address is invalid. Perhaps there was a typo? Please try again.")
+
+        return email
+
     def render_mail(self, template_prefix, email, context):
         """
         Renders an e-mail to `email`.  `template_prefix` identifies the
