@@ -1,0 +1,41 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load currency_filters %}
+{% load purchase_info_tags %}
+
+{% block store_nav_active %}active{% endblock store_nav_active %}
+
+{% block title %}Guest checkout{% endblock title %}
+
+{% block content %}
+    <div class="content-wrapper">
+{{ form.errors }}
+        <section class="store-header container">
+            <div class="store-header__content">
+                <h1 class="store-header__title">SmallsLIVE Store<span class="store-header__title__divider">|</span><span class="store-header__title__category">Guest checkout</span></h1>
+            </div>
+        </section>
+        <form action="." method="post">
+            {% csrf_token %}
+            <section class="store-shipping container">
+                <h3 class="store__form__heading">Guest information:</h3>
+                <p>Please provide an email address for this order or <a href="#">sign in</a> to your SmallsLIVE account.</p>
+                <div class="row">
+                  <div class="col-xs-12 col-sm-6">
+                      <label for="email" class="store__form__label">Email</label>
+                      <input type="email" name="email" class="store__form__input" id="email">
+                      {% for error in form.email.errors %}
+                          <span class="store__form__field-error">{{ error }}</span>
+                      {% endfor %}
+                  </div>
+                </div>
+                <div class="col-xs-12 store-cart__footer__buttons">
+                    <button type="submit" class="store-cart__footer__button-guest">Continue checkout</button>
+                    <br>
+                    <a href="{% url 'basket:summary' %}" class="store-cart__footer__button-back"><i class="fa fa-angle-double-left"></i> Back to basket</a>
+                </div>
+            </section>
+        </form>
+    </div>
+{% endblock content %}
