@@ -10,8 +10,8 @@
 {% block content %}
     <div class="content-wrapper">
       <section class="live-stream-header container">
-          <div class="live-stream-header__upsell hidden-xs">
-              {% if user.is_authenticated %}Live From Smalls Jazz Club{% else %}Registered members of SmallsLIVE can watch the Smalls Jazz Club or Mezzrow Live Video Streams at no cost. <a href="{% url "account_signup" %}">Sign up here!</a>{% endif %}
+          <div class="live-stream-header__upsell hidden-xs" id="out-of-date-flash">
+              {% if user.is_authenticated %}Live From Smalls Jazz Club{% else %}Registered members of SmallsLIVE can watch the Smalls Jazz Club or Mezzrow Live Video Streams at no cost. <a href="{% url "account_signup" %}">Sign up here!</a>{% endif %}<br />
           </div>
           <div class="live-stream-header__switch">
               <span>Current stream:</span>
@@ -122,6 +122,15 @@
   {% endblock %}
 
 {% block extra_js %}
+    <script type="text/javascript" src="{% static 'js/swfobject.js' %}"></script>
+    <script type="text/javascript">
+      // Detect a Flash version between 1 and 24, warn about upgrading.
+      var playerVersion = swfobject.getFlashPlayerVersion();
+      if (playerVersion.major > 0) && (playerVersion.major < 25) {
+        var wrongFlash = document.getElementById('out-of-date-flash');
+        wrongFlash.innerHTML += '<br /><span type="hidden" id="out-of-date-flash">Your Flash Player is out of date. You may experience problems with the stream.</span>';
+      }
+    </script>
     <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
     <script src="{% static "js/live-stream.js" %}"></script>
     <script>
