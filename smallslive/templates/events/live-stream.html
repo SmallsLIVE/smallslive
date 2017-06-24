@@ -60,6 +60,9 @@
             {% endif %}
               <div class="live-stream__header col-xs-12">
                 {% if currently_playing %}
+                  {% if not browser %}
+                  <div id="check-for-flash"></div>
+                  {% endif %}
                   <p class="live-stream__title">Live now:</p>
                 {% elif events %}
                     <p class="live-stream__title--no-show">The next Smalls live show is at: {{ first_future_show.start|date:"g:i A" }} EST.</p>
@@ -122,6 +125,20 @@
   {% endblock %}
 
 {% block extra_js %}
+    <script type="text/javascript" src="{% static 'js/swfobject.js' %}"></script>
+    <script type="text/javascript">
+      var playerVersion = swfobject.getFlashPlayerVersion();
+      // Detect if Flash is off or not installed.
+      if (playerVersion.major == 0) {
+        var flashCheck = document.getElementById('check-for-flash');
+        flashCheck.innerHTML = '<p id="check-for-flash">Please install or turn on Adobe Flash. You may experience problems with the stream.</p>';
+      };
+      // Detect a Flash version between 1 and 24, warn about upgrading.
+      if (playerVersion.major > 0 && playerVersion.major < 25) {
+        var wrongFlash = document.getElementById('check-for-flash');
+        flashCheck.innerHTML = '<p id="check-for-flash">Your Flash Player is out of date. You may experience problems with the stream.</p>';
+      }
+    </script>
     <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
     <script src="{% static "js/live-stream.js" %}"></script>
     <script>
