@@ -467,9 +467,11 @@ class LiveStreamView(ListView):
                                                                    context['stream_expire'])).hexdigest()
         browser = self.request.META['HTTP_USER_AGENT']
         if 'Safari' in browser and 'Chrome' not in browser:
-            context['safari'] = 'Safari'
+            context['browser'] = 'Safari'
+        elif 'Android' in browser:
+            context['browser'] = 'Android'
         else:
-            context['safari'] = None
+            context['browser'] = None
         return context
 
 live_stream = LiveStreamView.as_view()
@@ -489,9 +491,11 @@ class MezzrowLiveStreamView(TemplateView):
         context['hide_stream'] = stream_turn_off_hour <= now.hour <= stream_turn_on_hour
         browser = self.request.META['HTTP_USER_AGENT']
         if 'Safari' in browser and 'Chrome' not in browser:
-            context['safari'] = 'Safari'
+            context['browser'] = 'Safari'
+        elif 'Android' in browser:
+            context['browser'] = 'Android'
         else:
-            context['safari'] = None
+            context['browser'] = None
         return context
 
 live_stream_mezzrow = MezzrowLiveStreamView.as_view()
