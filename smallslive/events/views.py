@@ -465,6 +465,11 @@ class LiveStreamView(ListView):
         context['stream_expire'] = int(time.time()) + 120  # 10 seconds - required just to start the stream
         context['stream_hash'] = hashlib.md5("{0}{1}?e={2}".format(settings.BITGRAVITY_SECRET, "/smallslive/secure/",
                                                                    context['stream_expire'])).hexdigest()
+        browser = self.request.META['HTTP_USER_AGENT']
+        if 'Safari' in browser and 'Chrome' not in browser:
+            context['safari'] = 'Safari'
+        else:
+            context['safari'] = None
         return context
 
 live_stream = LiveStreamView.as_view()
@@ -482,6 +487,11 @@ class MezzrowLiveStreamView(TemplateView):
         stream_turn_off_hour = 2
         stream_turn_on_hour = 17
         context['hide_stream'] = stream_turn_off_hour <= now.hour <= stream_turn_on_hour
+        browser = self.request.META['HTTP_USER_AGENT']
+        if 'Safari' in browser and 'Chrome' not in browser:
+            context['safari'] = 'Safari'
+        else:
+            context['safari'] = None
         return context
 
 live_stream_mezzrow = MezzrowLiveStreamView.as_view()
@@ -523,7 +533,7 @@ class ArchiveView(ListView):
             dates[k] = list(g)
         sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0])).items()
         return sorted_dates
-    
+
     def get_context_data(self, **kwargs):
         context = super(ArchiveView, self).get_context_data(**kwargs)
 

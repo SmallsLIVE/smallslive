@@ -10,7 +10,7 @@
 {% block content %}
     <div class="content-wrapper">
       <section class="live-stream-header mezzrow container">
-          <div class="live-stream-header__upsell hidden-xs" id="out-of-date-flash">
+          <div class="live-stream-header__upsell hidden-xs">
               {% if user.is_authenticated %}Live From Mezzrow Jazz Club{% else %}Registered members of SmallsLIVE can watch the Smalls Jazz Club or Mezzrow Live Video Streams at no cost. <a href="{% url "account_signup" %}">Sign up here!</a>{% endif %}
           </div>
           <div class="live-stream-header__switch">
@@ -59,7 +59,10 @@
                 </div>
             {% endif %}
               <div class="live-stream__header col-xs-12">
-                  <p class="live-stream__title--no-show">About Mezzrow</p>
+                {% if not safari %}
+                <div id="check-for-flash"></div>
+                {% endif %}
+                <p class="live-stream__title--no-show">About Mezzrow</p>
               </div>
             </div>
             <div class="live-stream-info equal-heights row">
@@ -87,12 +90,17 @@
 {% block extra_js %}
     <script type="text/javascript" src="{% static 'js/swfobject.js' %}"></script>
     <script type="text/javascript">
-      // Detect a Flash version between 1 and 24, warn about upgrading.
-      var playerVersion = swfobject.getFlashPlayerVersion();
-      if (playerVersion.major > 0) && (playerVersion.major < 25) {
-        var wrongFlash = document.getElementById('out-of-date-flash');
-        wrongFlash.innerHTML += '<br /><span type="hidden" id="out-of-date-flash">Your Flash Player is out of date. You may experience problems with the stream.</span>';
-      }
+    var playerVersion = swfobject.getFlashPlayerVersion();
+    // Detect if Flash is off or not installed.
+    if (playerVersion.major == 0) {
+      var flashCheck = document.getElementById('check-for-flash');
+      flashCheck.innerHTML = '<p id="check-for-flash">Please install or turn on Adobe Flash. You may experience problems with the stream.</p>';
+    };
+    // Detect a Flash version between 1 and 24, warn about upgrading.
+    if (playerVersion.major > 0 && playerVersion.major < 25) {
+      var wrongFlash = document.getElementById('check-for-flash');
+      flashCheck.innerHTML = '<p id="check-for-flash">Your Flash Player is out of date. You may experience problems with the stream.</p>';
+    }
     </script>
     <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
     <script>
