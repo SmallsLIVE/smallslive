@@ -59,7 +59,9 @@ CACHEOPS_FAKE = True
 # Allow all host headers
 ALLOWED_HOSTS = [
     'smallslive-staging.herokuapp.com',
-    'smallslive-staging.herokuapp.com.'
+    'smallslive-staging.herokuapp.com.',
+    '.herokuapp.com',
+    '.herokuapp.com.'
 ]
 
 # Static asset configuration
