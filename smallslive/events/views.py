@@ -452,15 +452,6 @@ class LiveStreamView(ListView):
         if context['events'] and context['events'][0].has_started():
             context['currently_playing'] = context['events'].pop(0)
 
-        # all events for that day, used for figuring out whether to show the stream
-        if todays_events:
-            # less than 15mins to first show start
-            stream_turn_on_time = (todays_events.first().start - timedelta(minutes=TRESHOLD))
-            # less than 15mins from last show env
-            stream_turn_off_time = (todays_events.last().end + timedelta(minutes=TRESHOLD))
-            context['show_stream'] = stream_turn_on_time <= now <= stream_turn_off_time
-        else:
-            context['show_stream'] = False
         context['first_future_show'] = Event.objects.filter(start__gte=timezone.now()).order_by('start').first()
 
         return context
