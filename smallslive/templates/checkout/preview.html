@@ -207,15 +207,9 @@
                     </div>
                     {% endif %}
                     <div class="store-overview__group__textblock">
-                        {% if paypal_amount %}
-                            <p class="small-heading">PayPal</p>
-                            <p>{{paypal_user_email}}</p>
-                        {% else %}
-                            <p class="small-heading">Credit card:</p>
-                            <p>{{ card_info.name }}</p>
-                            <p>xxxx xxxx xxxx {{ card_info.last_4 }}</p>
-                        {% endif %}
-
+                        <p class="small-heading">Credit card:</p>
+                        <p>{{ card_info.name }}</p>
+                        <p>xxxx xxxx xxxx {{ card_info.last_4 }}</p>
                     </div>
                     <div class="store-overview__return-button__container">
                     <a href="{% url "checkout:payment-details" %}" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to billing</a>
@@ -231,7 +225,6 @@
                     <img src="{% static 'image/payment/mastercard.png' %}" alt="MasterCard">
                     <img src="{% static 'image/payment/amex.png' %}" alt="American Express">
                     <img src="{% static 'image/payment/diners.png' %}" alt="Diners">
-                    <img src="{% static 'image/payment/paypal.png' %}" alt="Paypal">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-6 store-cart__footer__right">
