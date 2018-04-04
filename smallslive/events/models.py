@@ -75,6 +75,8 @@ class Event(TimeStampedModel):
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField(default=STATUS.Draft)
     slug = models.SlugField(blank=True, max_length=500)
+    venue = models.ForeignKey('Venue', on_delete=models.CASCADE, blank=True,
+                              null=True)
 
     objects = EventQuerySet.as_manager()
     #past = QueryManager(start__lt=datetime.now()).order_by('-start')
@@ -367,3 +369,7 @@ class GigPlayed(models.Model):
 
     class Meta:
         ordering = ['event', 'sort_order', 'is_leader']
+
+
+class Venue(models.Model):
+    name = models.CharField(max_length=100, unique=True)
