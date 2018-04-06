@@ -60,6 +60,8 @@ class Event(TimeStampedModel):
     STATUS = Choices('Published', 'Draft', 'Cancelled')
 
     title = models.CharField(max_length=500)
+    venue = models.ForeignKey('Venue', on_delete=models.CASCADE, blank=True,
+                              null=True)
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
     set = models.CharField(choices=SETS, blank=True, max_length=10)
@@ -75,8 +77,6 @@ class Event(TimeStampedModel):
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField(default=STATUS.Draft)
     slug = models.SlugField(blank=True, max_length=500)
-    venue = models.ForeignKey('Venue', on_delete=models.CASCADE, blank=True,
-                              null=True)
 
     objects = EventQuerySet.as_manager()
     #past = QueryManager(start__lt=datetime.now()).order_by('-start')
