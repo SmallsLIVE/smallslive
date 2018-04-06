@@ -175,10 +175,17 @@ EventForm = {
         //    }
         //});
     },
+    initVenueSelectFunctionality: function () {
+        console.log('Hola');
+        $('#div_id_venue select').selectize({
+            create: false
+        });
+    },
     init: function (datepicker) {
         if (datepicker) {
             this.initDateTimeFunctionality();
         }
+        this.initVenueSelectFunctionality();
         this.initInlineArtistsFunctionality();
     }
 };

@@ -122,7 +122,7 @@ class EventAddForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        fields = ('start', 'end', 'id', 'title', 'subtitle', 'photo', 'description', 'state')
+        fields = ('venue', 'start', 'end', 'id', 'title', 'subtitle', 'photo', 'description', 'state')
         widgets = {
             'state': EventStatusWidget,
             'link': floppyforms.URLInput,
@@ -136,6 +136,7 @@ class EventAddForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_tag = False
         self.helper.layout = Layout(
+            'venue',
             Field('start', css_class='datepicker'),
             Field('end', css_class='datepicker'),
             FormActions(
@@ -155,7 +156,7 @@ class EventAddForm(forms.ModelForm):
 
 class EventEditForm(EventAddForm):
     class Meta(EventAddForm.Meta):
-        fields = ('start', 'end', 'title', 'subtitle', 'photo', 'cropping', 'description', 'state')
+        fields = ('venue', 'start', 'end', 'title', 'subtitle', 'photo', 'cropping', 'description', 'state')
 
 
 class EventSearchForm(SearchForm):
