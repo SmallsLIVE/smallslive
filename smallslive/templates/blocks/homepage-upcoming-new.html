@@ -35,7 +35,7 @@
   </div>
   <!-- timeslotslot selector -->
   <div class="homepage-upcoming__footer row">
-    <h2>Today at Smalls:</h2>
+    <h2>Today's shows:</h2>
     <ol class="homepage-upcoming__footer__timeslots carousel-indicators">
         {% for event in events_today %}
           <li data-slickPosition="{{ forloop.counter0 }}" class="timeslot {% if forloop.first %}active{% endif %}">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</li>
