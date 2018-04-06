@@ -373,3 +373,6 @@ class GigPlayed(models.Model):
 
 class Venue(models.Model):
     name = models.CharField(max_length=100, unique=True)
+
+    def __unicode__(self):
+        return self.name
