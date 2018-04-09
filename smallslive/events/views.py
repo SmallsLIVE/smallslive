@@ -34,7 +34,7 @@ from oscar_apps.catalogue.models import Product
 from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
     EventSearchForm, EventEditForm
-from .models import Event, Recording
+from .models import Event, Recording, Venue
 
 
 class HomepageView(ListView):
@@ -44,7 +44,15 @@ class HomepageView(ListView):
     def get_queryset(self):
         date_range_start = timezone.localtime(timezone.now()).replace(hour=5, minute=0)
         date_range_end = date_range_start + timedelta(days=1)
-        return Event.objects.filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
+        qs = Event.objects.filter(start__gte=date_range_start,
+                                  start__lte=date_range_end)
+
+        # Uncomment to filter todays events by venue
+        # venue = self.request.GET.get('venue')
+        # if venue is not None:
+        #     qs = qs.filter(venue__id=int(venue))
+
+        return qs.order_by('start')
 
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
@@ -57,6 +65,14 @@ class HomepageView(ListView):
         events = Event.objects.filter(start__gte=date_range_start).order_by('start')
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)
+
+        venue = self.request.GET.get('venue')
+        if venue is not None:
+            venue_id = int(venue)
+            events = events.filter(venue__id=venue_id)
+            context['venue_selected'] = venue_id
+
+
         # 30 events should be enough to show next 7 days with events
         events = events[:30]
         dates = {}
@@ -66,6 +82,7 @@ class HomepageView(ListView):
         sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0])).items()[:7]
         context['new_in_archive'] = Event.objects.most_recent()[:8]
         context['next_7_days'] = sorted_dates
+        context['venues'] = Venue.objects.all()
 
         @cached(timeout=6*60*60)
         def _get_most_popular():

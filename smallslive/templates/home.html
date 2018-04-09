@@ -34,6 +34,15 @@
           <h1>Upcoming shows:</h1>
           <a href="{% url "schedule" %}" class="homepage-date-browser__cta">Browse our full calendar</a>
         </div>
+        <div class="homepage-date-browser__venue_filter">
+          <h2>Filter by venue:</h2>
+          <div class="homepage-date-browser__venue_filter__venues">
+            {% for venue in venues %}
+              <a href="{% url "home" %}?venue={{ venue.id }}" {% if venue.id == venue_selected %}class="active"{% endif %}>{{ venue.name }}</a>
+            {% endfor %}
+            <a href="{% url "home" %}" {% if not venue_selected %}class="active"{% endif %}>All</a>
+          </div>
+        </div>
         <ul class="no-bg-calendar__container">
           {% for date, date_events in next_7_days %}
             <!-- single day -->
