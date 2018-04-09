@@ -300,9 +300,16 @@ class ScheduleView(ListView):
         date_range_start = date_range_start.replace(hour=10)
         self.date_start = date_range_start
         date_range_end = date_range_start + timezone.timedelta(days=14)
-        events = Event.objects.filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
+        events = Event.objects.select_related('venue').filter(
+            start__gte=date_range_start, start__lte=date_range_end
+        ).order_by('start')
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)
+
+        venue = self.request.GET.get('venue')
+        if venue is not None:
+            events = events.filter(venue__id=int(venue))
+
 
         events = events.annotate(product_count=Count('products')).extra(select={
             'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
@@ -338,6 +345,13 @@ class ScheduleView(ListView):
             context['next_url'] = reverse('schedule')
         else:
             context['next_url'] = "{0}?week={1}".format(reverse('schedule'), week+1)
+
+        context['venues'] = Venue.objects.all()
+        venue = self.request.GET.get('venue')
+        if venue is not None:
+            venue_id = int(venue)
+            context['venue_selected'] = venue_id
+
         return context
 
 schedule = ScheduleView.as_view()
@@ -356,9 +370,16 @@ class MonthlyScheduleView(ListView):
                                                timezone.get_default_timezone())
         date_range_end = date_range_start + monthdelta.MonthDelta(1)
         last_day_of_month = calendar.monthrange(year, month)[1]
-        events = Event.objects.filter(start__range=(date_range_start, date_range_end)).order_by('start')
+        events = Event.objects.select_related(
+            'venue'
+        ).filter(start__range=(date_range_start, date_range_end)).order_by('start')
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)
+
+        venue = self.request.GET.get('venue')
+        if venue is not None:
+            events = events.filter(venue__id=int(venue))
+
         events = events.annotate(product_count=Count('products')).extra(select={
             'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
                            "events_recording.event_id = events_event. ID AND "
@@ -398,6 +419,12 @@ class MonthlyScheduleView(ListView):
         prev_month = current_month - timezone.timedelta(days=1)
         context['prev_url'] = reverse('monthly_schedule', kwargs={'year': prev_month.year, 'month': prev_month.month})
         context['next_url'] = reverse('monthly_schedule', kwargs={'year': next_month.year, 'month': next_month.month})
+        context['venues'] = Venue.objects.all()
+        venue = self.request.GET.get('venue')
+        if venue is not None:
+            venue_id = int(venue)
+            context['venue_selected'] = venue_id
+
         return context
 
 monthly_schedule = MonthlyScheduleView.as_view()
