@@ -13,6 +13,10 @@ def fill_smalls_venue(apps, schema_editor):
     Event.objects.all().update(venue=smallsvenue)
 
 
+def noop(apps, schema_editor):
+    pass
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -36,5 +40,5 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(blank=True, to='events.Venue', null=True),
             preserve_default=True,
         ),
-        migrations.RunPython(fill_smalls_venue)
+        migrations.RunPython(fill_smalls_venue, noop)
     ]
