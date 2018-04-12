@@ -14,6 +14,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import connection
 from django.http import HttpResponseRedirect
 from django.utils import timezone
+from django.utils.http import urlencode
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta
 from django.contrib.admin.views.decorators import staff_member_required
@@ -336,21 +337,37 @@ class ScheduleView(ListView):
         # js months are zero indexed
         context['month'] = self.date_start.month - 1
         context['year'] = self.date_start.year
-        week = int(self.request.GET.get('week', 0))
-        if week != 1:
-            context['prev_url'] = "{0}?week={1}".format(reverse('schedule'), week-1)
-        else:
-            context['prev_url'] = reverse('schedule')
-        if week == -1:
-            context['next_url'] = reverse('schedule')
-        else:
-            context['next_url'] = "{0}?week={1}".format(reverse('schedule'), week+1)
-
         context['venues'] = Venue.objects.all()
+
         venue = self.request.GET.get('venue')
+        base_url = reverse('schedule')
+        params_next = {}
+        params_prev = {}
+
         if venue is not None:
             venue_id = int(venue)
             context['venue_selected'] = venue_id
+            params_next['venue'] = venue_id
+            params_prev['venue'] = venue_id
+
+        week = int(self.request.GET.get('week', 0))
+
+        if week != 1:
+            params_prev['week'] = week - 1
+
+        prev_url = base_url
+        if len(params_prev):
+            prev_url = '{}?{}'.format(base_url, urlencode(params_prev))
+
+        if week != -1:
+            params_next['week'] = week + 1
+
+        next_url = base_url
+        if len(params_next):
+            next_url = '{}?{}'.format(base_url, urlencode(params_next))
+
+        context['prev_url'] = prev_url
+        context['next_url'] = next_url
 
         return context
 
@@ -417,14 +434,25 @@ class MonthlyScheduleView(ListView):
         current_month = timezone.datetime(year=year, month=month, day=1)
         next_month = current_month + timezone.timedelta(days=31)
         prev_month = current_month - timezone.timedelta(days=1)
-        context['prev_url'] = reverse('monthly_schedule', kwargs={'year': prev_month.year, 'month': prev_month.month})
-        context['next_url'] = reverse('monthly_schedule', kwargs={'year': next_month.year, 'month': next_month.month})
-        context['venues'] = Venue.objects.all()
+
+        prev_url = reverse('monthly_schedule',
+                           kwargs={'year': prev_month.year,
+                                   'month': prev_month.month})
+
+        next_url = reverse('monthly_schedule',
+                           kwargs={'year': next_month.year,
+                                   'month': next_month.month})
         venue = self.request.GET.get('venue')
         if venue is not None:
             venue_id = int(venue)
             context['venue_selected'] = venue_id
+            next_url = '{}?venue={}'.format(next_url, venue_id)
+            prev_url = '{}?venue={}'.format(prev_url, venue_id)
 
+        context['next_url'] = next_url
+        context['prev_url'] = prev_url
+
+        context['venues'] = Venue.objects.all()
         return context
 
 monthly_schedule = MonthlyScheduleView.as_view()

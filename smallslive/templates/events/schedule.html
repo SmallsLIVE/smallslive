@@ -1,5 +1,6 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
+{% load addurlparameter %}
 
 {% block schedule_nav_active %}active{% endblock %}
 
@@ -25,9 +26,9 @@
           <h2>Filter by venue:</h2>
           <div class="homepage-date-browser__venue_filter__venues">
             {% for venue in venues %}
-              <a href="{% url "schedule" %}?venue={{ venue.id }}" {% if venue.id == venue_selected %}class="active"{% endif %}>{{ venue.name }}</a>
+              <a href="{% addurlparameter 'venue' venue.id %}" {% if venue.id == venue_selected %}class="active"{% endif %}>{{ venue.name }}</a>
             {% endfor %}
-            <a href="{% url "schedule" %}" {% if not venue_selected %}class="active"{% endif %}>All</a>
+            <a href="{% addurlparameter 'venue' None %}" {% if not venue_selected %}class="active"{% endif %}>All</a>
           </div>
         </div>
     </section>
