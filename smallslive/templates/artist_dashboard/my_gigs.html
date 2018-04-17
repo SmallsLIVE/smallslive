@@ -84,8 +84,11 @@
               </div>
               <div class="col-xs-12 col-sm-7 col-md-6 event-row__description">
                   <p class="event-row__description__date">{{ event.listing_date|date:"l, F d, Y" }}  |  {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</p>
+                  <p class="event-row__venue">{{ event.venue.name }}</p>
                   {% if gig_info.is_leader %}
-                    <a class="event-row__description__name" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">{{ event.full_title }} {% if gig_info.is_leader %}<span class="event-row__is-leader">leader</span>{% endif %}</a>
+                    <a class="event-row__description__name" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">
+                      {{ event.full_title }} {% if gig_info.is_leader %}<span class="event-row__is-leader">leader</span>{% endif %}
+                    </a>
                   {% else %}
                     <a class="event-row__description__name" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">{{ event.full_title }} {% if gig_info.is_leader %}<span class="event-row__is-leader">leader</span>{% endif %}</a>
                   {% endif %}
