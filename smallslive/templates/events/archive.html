@@ -1,6 +1,7 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
+{% load addurlparameter %}
 
 {% block title %}SmallsLIVE Audio/Video Archive{% endblock %}
 
@@ -33,6 +34,18 @@
           <a href="{% url "signup_landing" %}" class="archive-new__header-cta__cta">Membership options</a>
         </section>
       {% endif %}
+      <section class="archive__venue_filter">
+        <div class="homepage-date-browser__venue_filter">
+          <h2>Filter by venue:</h2>
+          <div class="homepage-date-browser__venue_filter__venues">
+            {% for venue in venues %}
+              <a href="{% addurlparameter 'venue' venue.id %}"
+                 {% if venue.id == venue_selected %}class="active"{% endif %}>{{ venue.name }}</a>
+            {% endfor %}
+            <a href="{% addurlparameter 'venue' None %}" {% if not venue_selected %}class="active"{% endif %}>All</a>
+          </div>
+        </div>
+      </section>
 
       <section class="archive-new__carousel container">
         <ul class="archive-new__carousel__switches">

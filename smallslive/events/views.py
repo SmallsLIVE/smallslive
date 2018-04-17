@@ -561,6 +561,11 @@ class ArchiveView(ListView):
         date_range_end = dates[0] + timedelta(days=1)
         date_range_end = datetime.combine(date_range_end, std_time(4, 0))
         events = Event.objects.exclude(recordings=None).filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
+
+        venue = self.request.GET.get('venue')
+        if venue is not None:
+            events = events.filter(venue__id=int(venue))
+
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)
 
@@ -606,6 +611,13 @@ class ArchiveView(ListView):
         context['year'] = self.date_start.year
         context.update(_get_most_popular())
         context.update(self.get_pagination())
+
+        venue = self.request.GET.get('venue')
+        if venue is not None:
+            venue_id = int(venue)
+            context['venue_selected'] = venue_id
+
+        context['venues'] = Venue.objects.all()
         return context
 
     def get_pagination(self):
@@ -621,7 +633,6 @@ class ArchiveView(ListView):
 
 archive = ArchiveView.as_view()
 
-
 class MonthlyArchiveView(ArchiveView):
     def get_queryset(self):
         dates = {}
@@ -632,6 +643,7 @@ class MonthlyArchiveView(ArchiveView):
                                                timezone.get_default_timezone())
         self.date_start = date_range_start
         date_range_end = date_range_start + monthdelta.MonthDelta(1)
+
         events = Event.objects.exclude(recordings=None).filter(start__range=(date_range_start, date_range_end)).order_by('start')
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)
