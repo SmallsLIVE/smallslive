@@ -60,6 +60,8 @@ class Event(TimeStampedModel):
     STATUS = Choices('Published', 'Draft', 'Cancelled')
 
     title = models.CharField(max_length=500)
+    venue = models.ForeignKey('Venue', on_delete=models.CASCADE, blank=True,
+                              null=True)
     start = models.DateTimeField(blank=True, null=True)
     end = models.DateTimeField(blank=True, null=True)
     set = models.CharField(choices=SETS, blank=True, max_length=10)
@@ -367,3 +369,10 @@ class GigPlayed(models.Model):
 
     class Meta:
         ordering = ['event', 'sort_order', 'is_leader']
+
+
+class Venue(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __unicode__(self):
+        return self.name

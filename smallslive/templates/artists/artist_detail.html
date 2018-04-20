@@ -56,8 +56,7 @@
         <div class="equal-heights row">
           <section class="artist-events col-md-6">
             {% with upcoming_events=artist.upcoming_events|slice:":4" upcoming_count=artist.upcoming_events.count %}
-              <h2 class="artist-events__title">Upcoming shows {% if upcoming_events %} ({{ upcoming_count }}
-                ):{% endif %}</h2>
+              <h2 class="artist-events__title">Upcoming shows {% if upcoming_events %} ({{ upcoming_count }}):{% endif %}</h2>
               <div class="events">
                 {% for upcoming_event in upcoming_events %}
                   <div class="mini-event">
@@ -69,7 +68,7 @@
                       {% endif %}
                     </div>
                     <div class="mini-event-info">
-                      <p class="mini-event-info__date">{{ upcoming_event.listing_date|date:"n/j/Y" }}</p>
+                      <p class="mini-event-info__date">{{ upcoming_event.listing_date|date:"n/j/Y" }} @ {{ upcoming_event.venue.name }}</p>
                       <h2 class="mini-event-info__title"><a href="{{ upcoming_event.get_absolute_url }}">{{ upcoming_event.title }} {{ upcoming_event.subtitle }}</a></h2>
                        <p class="mini-event-info__sidemen">
                         {% for gig_info in upcoming_event.get_performers %}
@@ -90,8 +89,7 @@
               </div>
             {% endwith %}
             {% with past_events=artist.past_events|slice:":4" past_count=artist.past_events.count %}
-              <h2 class="artist-events__title">Previous shows {% if past_events %} ({{ past_count }}
-                ):{% endif %}</h2>
+              <h2 class="artist-events__title">Previous shows {% if past_events %} ({{ past_count }}):{% endif %}</h2>
               <div class="events">
                 {% for past_event in past_events %}
                   <div class="mini-event">
@@ -104,7 +102,7 @@
 
                     </div>
                     <div class="mini-event-info">
-                      <p class="mini-event-info__date">{{ past_event.listing_date|date:"n/j/Y" }}</p>
+                      <p class="mini-event-info__date">{{ past_event.listing_date|date:"n/j/Y" }} @ {{ past_event.venue.name }}</p>
                       <h2 class="mini-event-info__title"><a href="{{ past_event.get_absolute_url }}">{{ past_event.title }} {{ past_event.subtitle }}</a></h2>
                       <p class="mini-event-info__sidemen">
                         {% for gig_info in past_event.get_performers %}

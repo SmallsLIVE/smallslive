@@ -22,6 +22,14 @@
     margin-bottom: 2px;
   }
 
+  &__venue {
+    @include lato-black;
+    font-size: 15px;
+    color: #777777;
+    margin-top: 0;
+    margin-bottom: 2px;
+  }
+
   &__sidemen-section-title, &__features-section-title {
     @include lato-bold;
     margin-top: 8px;

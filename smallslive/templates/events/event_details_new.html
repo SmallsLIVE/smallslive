@@ -39,6 +39,7 @@
         <div class="event-view__header__info__container {% if event.is_future %}no-track{% endif %}">
           <div class="col-xs-12 col-sm-8 event-view__header__meta">
             <span class="event-view__header__meta__time">{{ event.listing_date|date:"l, F j, Y" }}<span>|</span>{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</span>
+            <h2 class="event-view__header__meta__venue">{{ event.venue.name }}</h2>
             <h1 class="event-view__header__meta__title">{{ event.title }}</h1>
             <h3 class="event-view__header__meta__subtitle">{{ event.subtitle }}</h3>
             <div class="event-view__share-social">

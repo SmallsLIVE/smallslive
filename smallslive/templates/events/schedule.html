@@ -1,5 +1,6 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
+{% load addurlparameter %}
 
 {% block schedule_nav_active %}active{% endblock %}
 
@@ -19,6 +20,16 @@
         <div class="archive-new__date-browser__date-picker" id="schedule__date-picker">
             <input type="text" placeholder="Select a month" readonly>
             <i class="fa fa-caret-down"></i>
+        </div>
+      </div>
+      <div class="homepage-date-browser__venue_filter">
+        <h2>Filter by venue:</h2>
+        <div class="homepage-date-browser__venue_filter__venues">
+          {% for venue in venues %}
+            <a href="{% addurlparameter 'venue' venue.id %}"
+               {% if venue.id == venue_selected %}class="active"{% endif %}>{{ venue.name }}</a>
+          {% endfor %}
+          <a href="{% addurlparameter 'venue' None %}" {% if not venue_selected %}class="active"{% endif %}>All</a>
         </div>
       </div>
     </section>
@@ -53,6 +64,7 @@
               <dl>
                 {% for event in events %}
                   <dt class="day__event-time">{{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</dt>
+                  <dd class="day__event-venue">{{ event.venue.name }}</dd>
                   <dd data-event-id="{{ event.id }}" class="day__event-title {% if event.is_cancelled %}cancelled{% endif %}"><a href="{{ event.get_absolute_url }}">{{ event.title }} {% if request.user.is_staff %}(ID: {{ event.id }}){% endif %}</a> <span class="day__event-features">{% if event.audio_count %}<i class="fa fa-music"></i>{% endif %}{% if event.video_count %}<i class="fa fa-video-camera"></i>{% endif %}{% if event.product_count %}<i class="fa fa-shopping-cart"></i>{% endif %}</span></dd>
                   {% if event.state == "Draft" %}<span class="day__event-cancelled">(Draft)</span>{% endif %}
                   {% if event.is_cancelled %}<span class="day__event-cancelled">(cancelled)</span>{% endif %}

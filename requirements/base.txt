@@ -11,8 +11,8 @@ bleach==1.4
 boto==2.38.0
 celery==3.1.19
 certifi==2015.04.28
-cffi==1.2.1
-cryptography==1.0.2
+cffi==1.11.5
+cryptography==2.2.2
 dj-database-url==0.3.0
 djrill==1.4.0
 djangoajax==2.2.15
@@ -71,7 +71,7 @@ mock==1.0.1
 newrelic==2.54.0.41
 oauthlib==0.7.2
 phonenumbers==6.3.0
-psycopg2==2.6
+psycopg2==2.7.4
 pycountry==1.10
 pycurl==7.19.3.1
 pyelasticsearch==1.4

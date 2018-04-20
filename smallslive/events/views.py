@@ -14,6 +14,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import connection
 from django.http import HttpResponseRedirect
 from django.utils import timezone
+from django.utils.http import urlencode
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta
 from django.contrib.admin.views.decorators import staff_member_required
@@ -34,7 +35,7 @@ from oscar_apps.catalogue.models import Product
 from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
     EventSearchForm, EventEditForm
-from .models import Event, Recording
+from .models import Event, Recording, Venue
 
 
 class HomepageView(ListView):
@@ -44,7 +45,15 @@ class HomepageView(ListView):
     def get_queryset(self):
         date_range_start = timezone.localtime(timezone.now()).replace(hour=5, minute=0)
         date_range_end = date_range_start + timedelta(days=1)
-        return Event.objects.filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
+        qs = Event.objects.filter(start__gte=date_range_start,
+                                  start__lte=date_range_end)
+
+        # Uncomment to filter todays events by venue
+        # venue = self.request.GET.get('venue')
+        # if venue is not None:
+        #     qs = qs.filter(venue__id=int(venue))
+
+        return qs.order_by('start')
 
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
@@ -57,6 +66,14 @@ class HomepageView(ListView):
         events = Event.objects.filter(start__gte=date_range_start).order_by('start')
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)
+
+        venue = self.request.GET.get('venue')
+        if venue is not None:
+            venue_id = int(venue)
+            events = events.filter(venue__id=venue_id)
+            context['venue_selected'] = venue_id
+
+
         # 30 events should be enough to show next 7 days with events
         events = events[:30]
         dates = {}
@@ -66,6 +83,7 @@ class HomepageView(ListView):
         sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0])).items()[:7]
         context['new_in_archive'] = Event.objects.most_recent()[:8]
         context['next_7_days'] = sorted_dates
+        context['venues'] = Venue.objects.all()
 
         @cached(timeout=6*60*60)
         def _get_most_popular():
@@ -283,9 +301,16 @@ class ScheduleView(ListView):
         date_range_start = date_range_start.replace(hour=10)
         self.date_start = date_range_start
         date_range_end = date_range_start + timezone.timedelta(days=14)
-        events = Event.objects.filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
+        events = Event.objects.select_related('venue').filter(
+            start__gte=date_range_start, start__lte=date_range_end
+        ).order_by('start')
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)
+
+        venue = self.request.GET.get('venue')
+        if venue is not None:
+            events = events.filter(venue__id=int(venue))
+
 
         events = events.annotate(product_count=Count('products')).extra(select={
             'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
@@ -312,15 +337,38 @@ class ScheduleView(ListView):
         # js months are zero indexed
         context['month'] = self.date_start.month - 1
         context['year'] = self.date_start.year
+        context['venues'] = Venue.objects.all()
+
+        venue = self.request.GET.get('venue')
+        base_url = reverse('schedule')
+        params_next = {}
+        params_prev = {}
+
+        if venue is not None:
+            venue_id = int(venue)
+            context['venue_selected'] = venue_id
+            params_next['venue'] = venue_id
+            params_prev['venue'] = venue_id
+
         week = int(self.request.GET.get('week', 0))
+
         if week != 1:
-            context['prev_url'] = "{0}?week={1}".format(reverse('schedule'), week-1)
-        else:
-            context['prev_url'] = reverse('schedule')
-        if week == -1:
-            context['next_url'] = reverse('schedule')
-        else:
-            context['next_url'] = "{0}?week={1}".format(reverse('schedule'), week+1)
+            params_prev['week'] = week - 1
+
+        prev_url = base_url
+        if len(params_prev):
+            prev_url = '{}?{}'.format(base_url, urlencode(params_prev))
+
+        if week != -1:
+            params_next['week'] = week + 1
+
+        next_url = base_url
+        if len(params_next):
+            next_url = '{}?{}'.format(base_url, urlencode(params_next))
+
+        context['prev_url'] = prev_url
+        context['next_url'] = next_url
+
         return context
 
 schedule = ScheduleView.as_view()
@@ -339,9 +387,16 @@ class MonthlyScheduleView(ListView):
                                                timezone.get_default_timezone())
         date_range_end = date_range_start + monthdelta.MonthDelta(1)
         last_day_of_month = calendar.monthrange(year, month)[1]
-        events = Event.objects.filter(start__range=(date_range_start, date_range_end)).order_by('start')
+        events = Event.objects.select_related(
+            'venue'
+        ).filter(start__range=(date_range_start, date_range_end)).order_by('start')
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)
+
+        venue = self.request.GET.get('venue')
+        if venue is not None:
+            events = events.filter(venue__id=int(venue))
+
         events = events.annotate(product_count=Count('products')).extra(select={
             'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
                            "events_recording.event_id = events_event. ID AND "
@@ -379,8 +434,25 @@ class MonthlyScheduleView(ListView):
         current_month = timezone.datetime(year=year, month=month, day=1)
         next_month = current_month + timezone.timedelta(days=31)
         prev_month = current_month - timezone.timedelta(days=1)
-        context['prev_url'] = reverse('monthly_schedule', kwargs={'year': prev_month.year, 'month': prev_month.month})
-        context['next_url'] = reverse('monthly_schedule', kwargs={'year': next_month.year, 'month': next_month.month})
+
+        prev_url = reverse('monthly_schedule',
+                           kwargs={'year': prev_month.year,
+                                   'month': prev_month.month})
+
+        next_url = reverse('monthly_schedule',
+                           kwargs={'year': next_month.year,
+                                   'month': next_month.month})
+        venue = self.request.GET.get('venue')
+        if venue is not None:
+            venue_id = int(venue)
+            context['venue_selected'] = venue_id
+            next_url = '{}?venue={}'.format(next_url, venue_id)
+            prev_url = '{}?venue={}'.format(prev_url, venue_id)
+
+        context['next_url'] = next_url
+        context['prev_url'] = prev_url
+
+        context['venues'] = Venue.objects.all()
         return context
 
 monthly_schedule = MonthlyScheduleView.as_view()
@@ -489,6 +561,11 @@ class ArchiveView(ListView):
         date_range_end = dates[0] + timedelta(days=1)
         date_range_end = datetime.combine(date_range_end, std_time(4, 0))
         events = Event.objects.exclude(recordings=None).filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
+
+        venue = self.request.GET.get('venue')
+        if venue is not None:
+            events = events.filter(venue__id=int(venue))
+
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)
 
@@ -534,6 +611,13 @@ class ArchiveView(ListView):
         context['year'] = self.date_start.year
         context.update(_get_most_popular())
         context.update(self.get_pagination())
+
+        venue = self.request.GET.get('venue')
+        if venue is not None:
+            venue_id = int(venue)
+            context['venue_selected'] = venue_id
+
+        context['venues'] = Venue.objects.all()
         return context
 
     def get_pagination(self):
@@ -549,7 +633,6 @@ class ArchiveView(ListView):
 
 archive = ArchiveView.as_view()
 
-
 class MonthlyArchiveView(ArchiveView):
     def get_queryset(self):
         dates = {}
@@ -560,6 +643,7 @@ class MonthlyArchiveView(ArchiveView):
                                                timezone.get_default_timezone())
         self.date_start = date_range_start
         date_range_end = date_range_start + monthdelta.MonthDelta(1)
+
         events = Event.objects.exclude(recordings=None).filter(start__range=(date_range_start, date_range_end)).order_by('start')
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)

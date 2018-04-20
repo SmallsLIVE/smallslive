@@ -100,6 +100,12 @@ $future-event-view_header-height: 300px;
         margin: 0 0 8px;
       }
 
+      &__venue {
+        @include lato-black;
+        color: #858585;
+        text-transform: uppercase;
+      }
+
       &__subtitle {
         @include lato-italic;
         font-size: 22px;
