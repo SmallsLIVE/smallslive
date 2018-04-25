@@ -1,4 +1,5 @@
 {% load static from staticfiles %}
+{% load thumbor_tags %}
 
 <div class="event-row">
   {% for event in events %}
@@ -8,7 +9,15 @@
       <div class="event-picture-container">
         <div class="picture-border">
           <div class="event-picture"
-               style="background-image: url('{% static "image/no-event-image-placeholder.jpg" %}')"
+           {% if event.photo %}
+              {% if event.photo_crop_box %}
+                style="background-image: url('{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=600 %}')"
+              {% else %}
+                style="background-image: url('{% thumbor_url event.photo.url|urlencode height=360 width=600 smart=True %}')"
+              {% endif %}
+           {% else %}
+              style="background-image: url('{% static "image/no-event-image-placeholder.jpg" %}')"
+           {% endif %}
           >
           </div>
           <div class="icon-overlay">
