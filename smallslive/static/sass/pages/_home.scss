@@ -1,6 +1,10 @@
+html {
+}
+
 body {
   // TODO Remove
   &.home {
+    font-size: 10px;
     background: $background-color;
   }
 }

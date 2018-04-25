@@ -81,14 +81,18 @@ $text-font-size-big: 1.4em;
   @include title1;
 }
 
-.title2 {
+@mixin title2 {
   @include reen-kufi-normal;
   font-size: 1.4em;
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
 
-.title3 {
+.title2 {
+  @include title2;
+}
+
+@mixin title3 {
   @include oswald-semi-bold;
   font-size: 3.35em;
   letter-spacing: 0;
@@ -96,12 +100,21 @@ $text-font-size-big: 1.4em;
   //font-stretch: expanded;
 }
 
-.title4 {
+.title3 {
+  @include title3;
+}
+
+
+@mixin title4 {
   @include oswald-semi-bold;
   font-size: 10.37em;
   letter-spacing: 0;
   text-transform: uppercase;
   //font-stretch: expanded;
+}
+
+.title4 {
+  @include title4;
 }
 
 .title5 {
@@ -121,7 +134,7 @@ $text-font-size-big: 1.4em;
   //font-stretch: expanded;
 }
 
-.title7 {
+@mixin title7 {
   @include oswald-regular;
   font-size: 3.35em;
   letter-spacing: 0.02em;

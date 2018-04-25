@@ -13,21 +13,25 @@
   border: 2px solid $border-color;
 }
 
+@mixin white-border-button {
+  @include button1;
+  height: $input-height;
+  padding: 0 20px;
+  border-radius: 2px;
+  background-color: $background-color;
+
+  &.active {
+    background-color: $white-transparent;
+  }
+
+  &.button-bordered {
+    @include input-border;
+  }
+}
+
 .button-row {
   button {
-    @include button1;
-    height: $input-height;
-    padding: 0 20px;
-    border-radius: 2px;
-    background-color: $background-color;
-
-    &.active {
-      background-color: $white-transparent;
-    }
-
-    &.button-bordered {
-      @include input-border;
-    }
+    @include white-border-button;
   }
 }
 

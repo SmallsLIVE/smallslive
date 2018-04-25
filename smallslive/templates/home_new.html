@@ -42,30 +42,33 @@
       </div>
     </header>
     <main>
-      <section class="event-stripe">
-        <div class="section-title">
-          <span class="title1">Streaming Tonight <span class="date-separator">/</span></span>
-          <span class="header-sub title2">{% now "l F j, o" %}</span>
-        </div>
-        <main>
-          {% include 'events/event_row.html' with events=events_today show_time='True' %}
-        </main>
-      </section>
-      <section class="event-stripe">
-        <div class="section-title title1">Recently Added</div>
-        <main>
-          {% include 'events/event_row.html' with events=new_in_archive %}
-        </main>
-      </section>
-      <section class="event-stripe">
-        <div class="section-title title1">Most Popular</div>
-        <main>
-          {% include 'events/event_row.html' with events=popular_in_archive %}
-        </main>
-      </section>
-      <section class="event-stripe">
-        <div class="section-title title1">Staff Picks</div>
-      </section>
+      {% include 'home_banners.html' %}
+      <div>
+        <section class="event-stripe">
+          <div class="section-title">
+            <span class="title1">Streaming Tonight <span class="date-separator">/</span></span>
+            <span class="header-sub title2">{% now "l F j, o" %}</span>
+          </div>
+          <main>
+            {% include 'events/event_row.html' with events=events_today show_time='True' %}
+          </main>
+        </section>
+        <section class="event-stripe">
+          <div class="section-title title1">Recently Added</div>
+          <main>
+            {% include 'events/event_row.html' with events=new_in_archive %}
+          </main>
+        </section>
+        <section class="event-stripe">
+          <div class="section-title title1">Most Popular</div>
+          <main>
+            {% include 'events/event_row.html' with events=popular_in_archive %}
+          </main>
+        </section>
+        <section class="event-stripe">
+          <div class="section-title title1">Staff Picks</div>
+        </section>
+      </div>
     </main>
   </div>
 {% endblock%}
