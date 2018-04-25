@@ -1,0 +1,58 @@
+.main-header {
+  padding: 26px;
+
+  //TODO Based on start of banners on doc
+  height: 160px;
+
+  .search-input {
+    margin-left: 26px;
+  }
+}
+
+@mixin input-border {
+  border: 2px solid $border-color;
+}
+
+.button-row {
+  button {
+    @include button1;
+    height: $input-height;
+    padding: 0 20px;
+    border-radius: 2px;
+    background-color: $background-color;
+
+    &.active {
+      background-color: $white-transparent;
+    }
+
+    &.button-bordered {
+      @include input-border;
+    }
+  }
+}
+
+.search-input {
+  &:before {
+    content: '\f002';
+    font-family: 'FontAwesome', serif;
+    color: $accent-color;
+    position: relative;
+    left: 30px;
+  }
+
+  input {
+    @include input-border;
+    width: 500px;
+    background-color: $background-color;
+    border-radius: $input-border;
+    padding: 8px 8px 8px 30px;
+
+    height: $input-height;
+
+    // TODO Global
+    &:focus {
+      outline: none;
+    }
+
+  }
+}

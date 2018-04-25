@@ -1,0 +1,39 @@
+{% load static from staticfiles %}
+
+<div class="event-row">
+  {% for event in events %}
+  <article class="event-display">
+{#    TODO Move to component #}
+    <div class="event-card">
+      <div class="event-picture-container">
+        <div class="picture-border">
+          <div class="event-picture"
+               style="background-image: url('{% static "image/no-event-image-placeholder.jpg" %}')"
+          >
+          </div>
+          <div class="icon-overlay">
+            <i class="fa fa-play-circle-o"></i>
+          </div>
+        </div>
+      </div>
+      {% if show_time %}
+      <div class="event-dates links1">
+        {% if event.is_live %}
+          <span class="accent-box">Live Now</span>
+        {% else %}
+          <span>
+            {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}
+          </span>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+    <div class="event-info">
+      <div>
+        <div>{{ event.title }}</div>
+        <div class="accent-color">{{ event.venue.name }}</div>
+      </div>
+    </div>
+  </article>
+  {% endfor %}
+</div>

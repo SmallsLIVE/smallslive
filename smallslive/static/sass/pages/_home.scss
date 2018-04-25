@@ -1,0 +1,30 @@
+body {
+  // TODO Remove
+  &.home {
+    background: $background-color;
+  }
+}
+
+//TODO Component?
+.main-fixed-container {
+  width: 1680px;
+  margin: auto;
+}
+
+.section-title {
+  $underline-length: 750px;
+
+  line-height: 1.1;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  display: inline-block;
+  width: $underline-length;
+  text-decoration: none;
+  background: linear-gradient(to right, $white-transparent, $white-transparent) no-repeat bottom left;
+  background-size: $underline-length 4px;
+
+  .date-separator {
+    color: $accent-color;
+  }
+}
+

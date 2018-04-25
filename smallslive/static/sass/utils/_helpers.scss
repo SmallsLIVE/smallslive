@@ -1,0 +1,13 @@
+//TODO Layout
+.flex-row {
+  display: flex;
+  align-items: center;
+
+  &.content-space-around {
+    justify-content: space-around;
+  }
+
+  &.wrap {
+    flex-wrap: wrap;
+  }
+}

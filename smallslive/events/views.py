@@ -39,7 +39,7 @@ from .models import Event, Recording, Venue
 
 
 class HomepageView(ListView):
-    template_name = 'home.html'
+    template_name = 'home_new.html'
     context_object_name = 'events_today'
 
     def get_queryset(self):
@@ -73,7 +73,6 @@ class HomepageView(ListView):
             events = events.filter(venue__id=venue_id)
             context['venue_selected'] = venue_id
 
-
         # 30 events should be enough to show next 7 days with events
         events = events[:30]
         dates = {}
@@ -105,6 +104,12 @@ class HomepageView(ListView):
 
 homepage = HomepageView.as_view()
 
+
+class StyleGuideView(TemplateView):
+    template_name = 'style_guide.html'
+
+
+styleguide = StyleGuideView.as_view()
 
 class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlinesView):
     template_name = 'events/event_add.html'

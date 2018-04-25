@@ -42,7 +42,7 @@
   {% block extra_head %}
   {% endblock %}
 </head>
-<body>
+<body class="{% block body_class %}default{% endblock %}">
 {% include "account/ajax_login.html" %}
 
 {% if user.is_authenticated and not user.has_activated_account %}
@@ -107,7 +107,7 @@
 </div>
 {% endif %}
 
-
+{% block header %}
 <!-- mobile devices header -->
 <nav class="navbar navbar-default mobile-navbar visible-xs visible-sm" role="navigation">
   <div class="container mobile-menu">
@@ -275,11 +275,12 @@
   </div>
 </header>
 <!-- end of regular header -->
-
+{% endblock %}
 
 
 {% block content %}{% endblock content %}
 
+{% block footer %}
 <footer class="container">
   <div class="footer-content">
     <img class="footer-logo" src="{% static "logo-black.svg" %}" alt=""/>
@@ -294,6 +295,7 @@
     </address>
   </div>
 </footer>
+{% endblock %}
 
 {% javascript 'js' %}
 <script>

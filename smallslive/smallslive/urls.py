@@ -79,6 +79,7 @@ urlpatterns = patterns('',
     url(r'^robots\.txt', static_file_view, kwargs={'file_name': 'robots.txt'}),
     url(r'^crossdomain\.xml', static_file_view, kwargs={'file_name': 'crossdomain.xml'}),
     url(r'^$', 'events.views.homepage', name="home"),
+    url(r'^styles/$', 'events.views.styleguide', name="home"),
 )
 
 urlpatterns += patterns('django.contrib.flatpages.views',

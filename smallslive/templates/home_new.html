@@ -1,0 +1,80 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load i18n %}
+
+{% block homepage_nav_active %}active{% endblock %}
+
+{% block title %}Smalls Jazz Club{% endblock %}
+
+{# TODO Shouldn't be needed here #}
+{% block body_class %}home{% endblock %}
+
+{% block extra_head %}
+  <meta name="description"
+        content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+  <div class="main-fixed-container">
+    <header class="main-header">
+      <div class="flex-row wrap content-space-around">
+        <div class="flex-row">
+          <a href="/" class="smalls-logo">
+            <img src="{% static 'logo-black.svg' %}" alt=""/>
+          </a>
+          <div class="search-input">
+            <input type="text">
+          </div>
+        </div>
+
+        <div class="button-row">
+          <button class="active">Calendar</button>
+          <button>Archive</button>
+          <button>Info</button>
+          <button>Education</button>
+          <button>Store</button>
+          <button class="button-bordered">Sign In</button>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="event-stripe">
+        <div class="section-title">
+          <span class="title1">Streaming Tonight <span class="date-separator">/</span></span>
+          <span class="header-sub title2">{% now "l F j, o" %}</span>
+        </div>
+        <main>
+          {% include 'events/event_row.html' with events=events_today show_time='True' %}
+        </main>
+      </section>
+      <section class="event-stripe">
+        <div class="section-title title1">Recently Added</div>
+        <main>
+          {% include 'events/event_row.html' with events=new_in_archive %}
+        </main>
+      </section>
+      <section class="event-stripe">
+        <div class="section-title title1">Most Popular</div>
+        <main>
+          {% include 'events/event_row.html' with events=popular_in_archive %}
+        </main>
+      </section>
+      <section class="event-stripe">
+        <div class="section-title title1">Staff Picks</div>
+      </section>
+    </main>
+  </div>
+{% endblock%}
+
+{% block footer %}
+{% endblock %}
+
+{% block extra_js %}
+  <!-- Bootstrap datepicker JavaScript -->
+  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+  <script src="{% static 'js/header_datepicker.js' %}"></script>
+{% endblock extra_js %}

@@ -185,6 +185,10 @@ class Event(TimeStampedModel):
         """
         return self.start > timezone.now()
 
+    @property
+    def is_live(self):
+        return not self.is_past and not self.is_future
+
     def get_performers(self):
         return self.artists_gig_info.select_related('artist', 'role')
 
