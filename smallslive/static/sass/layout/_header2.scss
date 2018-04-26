@@ -2,7 +2,7 @@
   padding: 26px;
 
   //TODO Based on start of banners on doc
-  height: 160px;
+  //height: 160px;
 
   .search-input {
     margin-left: 26px;
@@ -42,11 +42,11 @@
     color: $accent-color;
     position: relative;
     left: 30px;
+    font-size: 1.8em;
   }
 
   input {
     @include input-border;
-    width: 500px;
     background-color: $background-color;
     border-radius: $input-border;
     padding: 8px 8px 8px 30px;
