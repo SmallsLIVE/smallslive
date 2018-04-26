@@ -14,11 +14,11 @@ body {
 }
 
 .section-title {
+  position: relative;
   $underline-length: 750px;
   @media(min-width: $screen-sm-max) {
     width: $underline-length;
   }
-
 
   width: 100%;
   line-height: 1.1;
@@ -31,6 +31,17 @@ body {
 
   .date-separator {
     color: $accent-color;
+  }
+}
+
+.event-stripe {
+  position: relative;
+  margin-top: 40px;
+
+  .select-container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
   }
 }
 
