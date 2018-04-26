@@ -67,6 +67,9 @@
         </section>
         <section class="event-stripe">
           <div class="section-title title1">Staff Picks</div>
+          <main>
+            {% include 'events/event_row.html' with events=events_today %}
+          </main>
         </section>
       </div>
     </main>
