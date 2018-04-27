@@ -67,16 +67,16 @@
             <div class="select-container">
               <div class="white-border-select" style="width:150px;">
                 <select id="most-popular-filter">
-                  <option value="last-week">Last week</option>
-                  <option value="last-month">Last month</option>
-                  <option value="this-year">This Year</option>
+                  <option value="week">Last week</option>
+                  <option value="month">Last month</option>
+                  <option value="year">This Year</option>
                   <option value="alltime">All Time</option>
                 </select>
               </div>
             </div>
 
           </div>
-          <main>
+          <main id="most-popular-container">
             {% include 'events/event_row.html' with events=popular_in_archive %}
           </main>
         </section>
@@ -100,8 +100,12 @@
   <script>
     $(document).ready(function(){
       var filter = $('#most-popular-filter');
-      console.log(filter);
+      var mostPopularFilter = $('#most-popular-container');
       filter.on('change', function () {
+        $.get("{% url 'event_popular_ajax' %}?range=" + filter.val(),
+          function (data) {
+            mostPopularFilter.html(data.content);
+          });
       })
     });
   </script>
