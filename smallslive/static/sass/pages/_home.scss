@@ -45,3 +45,35 @@ body {
   }
 }
 
+.floating-dialog-background {
+  position: fixed;
+  height: calc(100vh);
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba($background-color, 0.6);
+  z-index: 1;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .floating-dialog {
+    padding: 40px 60px;
+    max-width: 550px;
+    background-color: $background-color;
+    border: 5px solid $white-transparent;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    > div {
+      margin-bottom: 20px;
+    }
+  }
+}
+

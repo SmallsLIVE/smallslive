@@ -258,3 +258,8 @@ $text-font-size-big: 1.4em;
   letter-spacing: 0.2em;
   font-size: 1em;
 }
+
+.text-justified {
+  text-align: justify;
+  text-justify: inter-word;
+}
