@@ -1,6 +1,9 @@
 header {
-  @include bottom-section-border;
   margin-top: 15px;
+
+  &.container {
+    @include bottom-section-border;
+  }
 }
 
 .smalls-logo {

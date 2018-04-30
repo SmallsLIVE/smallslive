@@ -107,6 +107,13 @@ class HomepageView(ListView):
 homepage = HomepageView.as_view()
 
 
+class OldHomeView(HomepageView):
+    template_name = 'home.html'
+
+
+old_home = OldHomeView.as_view()
+
+
 class MostPopularEventsAjaxView(AJAXMixin, ListView):
     context_object_name = 'events'
     model = Event
