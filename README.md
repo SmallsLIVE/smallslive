@@ -12,3 +12,4 @@
 7. Install the project requirements: `pip install -r requirements.txt`
 8. Edit the `smallslive/smallslive/settings.py` with the correct DB settings for local development
 9. Run the django server: `python smallslive/manage.py runserver` and access it at [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+
