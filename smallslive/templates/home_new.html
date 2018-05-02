@@ -42,7 +42,13 @@
           {% if not request.user.is_authenticated %}
           <button class="button-bordered">Sign In</button>
           {% else %}
-          <button class="button-bordered">{{ request.user.email }}</button>
+            <button class="button-bordered">
+              {% if request.user.first_name %}
+                {{ request.user.first_name }}
+              {% else %}
+                {{ request.user.email }}
+              {% endif %}
+            </button>
           {% endif %}
         </div>
       </div>
