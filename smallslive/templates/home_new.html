@@ -54,7 +54,11 @@
       </div>
     </header>
     <main>
-      {% include 'home_banners.html' %}
+      {% if not request.user.is_authenticated %}
+        {% include 'home_banners.html' %}
+      {% elif not request.user.has_active_subscription %}
+        {% include 'home_banners.html' with active='supporter' %}
+      {% endif %}
       <div>
         <section class="event-stripe">
           <div class="section-title">
