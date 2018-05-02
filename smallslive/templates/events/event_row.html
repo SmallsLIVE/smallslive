@@ -8,17 +8,17 @@
     <div class="event-card">
       <div class="event-picture-container">
         <div class="picture-border">
-          <div class="event-picture"
-           {% if event.photo %}
-              {% if event.photo_crop_box %}
-                style="background-image: url('{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=600 %}')"
-              {% else %}
-                style="background-image: url('{% thumbor_url event.photo.url|urlencode height=360 width=600 smart=True %}')"
-              {% endif %}
-           {% else %}
-              style="background-image: url('{% static "image/no-event-image-placeholder.jpg" %}')"
-           {% endif %}
-          >
+          <div class="event-picture">
+            <img
+             {% if event.photo %}
+                {% if event.photo_crop_box %}
+                  src="{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=600 %}"
+                {% else %}
+                  src="{% thumbor_url event.photo.url|urlencode height=360 width=600 smart=True %}"
+                {% endif %}
+             {% else %}
+                src="{% static "image/no-event-image-placeholder.jpg" %}"
+             {% endif %} alt="">
           </div>
           <div class="icon-overlay">
             <i class="fa fa-play-circle-o"></i>

@@ -12,15 +12,31 @@
 
       .event-picture-container {
         position: relative;
-      $picture-border-radius: 10px;
-      border-radius: $picture-border-radius;
-      overflow: hidden;
+        $picture-border-radius: 10px;
+        border-radius: $picture-border-radius;
+        overflow: hidden;
 
         .event-picture {
           @include cross-browser-grayscale;
-          background-size: cover;
           height: $event-card-height;
           width: $event-card-width;
+          position: relative;
+
+          img {
+            width: 100%;
+
+            &:before {
+              content: ' ';
+              display: block;
+              position: absolute;
+              top: 0;
+              left: 0;
+              height: $event-card-height;
+              width: $event-card-width;
+              background-image: url('../image/no-event-image-placeholder.jpg');
+              background-size: cover;
+            }
+          }
         }
 
         .icon-overlay {
