@@ -13,11 +13,13 @@
       </div>
     </div>
   </div>
+  {% if not active %}
   <div id="banner-options" class="banner-options">
     <div id="banner-archive-box" class="banner-option">Archive</div>
     <div id="banner-live-box" class="banner-option shadow-text">Live</div>
     <div id="banner-mission-box" class="banner-option">Mission</div>
   </div>
+  {% endif %}
 </div>
 <script>
   $(document).ready(function(){
@@ -34,6 +36,11 @@
       mission: {
         text: 'We belive <span class="accent-color">world peace</span> is possible through music and musical community. Our goal is to <span class="accent-color">broadcast and document the music</span> performed in our venues each night. Our initiative is to create a <span class="accent-color">fair reveneue share model</span>, giving the jazz community means to directly benefit musicians and supporting venues',
         button: 'Become a member'
+      },
+      supporter: {
+        text: 'Your supporting pledge goes <span class="accent-color">directly to your favourite artists</span> & helps make smallsville possible through our <span class="accent-color">smallslive revenue share</span>. Supporting members have unlimited access to our archive of <span class="accent-color">every concert</span> performed at smalls + mezzrow',
+        button: 'Become a supporter',
+        title: 'Why become a supporter'
       }
     };
 
@@ -51,10 +58,6 @@
       setContainerBanner('mission');
     });
 
-    bannerContainer.on('click', function () {
-      bannerOptions.show();
-      bannerContainer.hide();
-    });
 
     function setContainerBanner(src) {
       var banner = bannerText[src];
@@ -64,5 +67,14 @@
       bannerContainer.show();
       bannerOptions.hide();
     }
+
+    {% if active %}
+      setContainerBanner('{{ active }}');
+    {% else %}
+      bannerContainer.on('click', function () {
+        bannerOptions.show();
+        bannerContainer.hide();
+      });
+    {% endif %}
   });
 </script>
