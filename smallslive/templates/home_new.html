@@ -66,7 +66,7 @@
             <span class="header-sub title2">{% now "l F j, o" %}</span>
           </div>
           <main>
-            {% include 'events/event_row.html' with events=events_today show_time='True' %}
+            {% include 'events/event_row.html' with events=events_today show_time='True' hidde_event_date='True' %}
           </main>
         </section>
         <section class="event-stripe">
@@ -115,12 +115,22 @@
     $(document).ready(function(){
       var filter = $('#most-popular-filter');
       var mostPopularFilter = $('#most-popular-container');
-      filter.on('change', function () {
-        $.get("{% url 'event_popular_ajax' %}?range=" + filter.val(),
+
+      var setMostPopular = function (value) {
+        $.get("{% url 'event_popular_ajax' %}?range=" + value,
           function (data) {
             mostPopularFilter.html(data.content);
           });
-      })
+      };
+      filter.on('change', function () {
+        setMostPopular(filter.val());
+      });
+
+      {% if popular_select %}
+      filter.val('{{ popular_select }}');
+      filter.trigger( "change" );
+      {% endif %}
+
     });
   </script>
 {% endblock extra_js %}

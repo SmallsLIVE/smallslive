@@ -74,6 +74,7 @@ $text-font-size-big: 1.4em;
   font-size: 2.34em;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  transform: scaleY(1.3);
 }
 
 // Titles
@@ -97,7 +98,7 @@ $text-font-size-big: 1.4em;
   font-size: 3.35em;
   letter-spacing: 0;
   text-transform: uppercase;
-  //font-stretch: expanded;
+  transform: scaleY(1.2);
 }
 
 .title3 {
@@ -110,7 +111,7 @@ $text-font-size-big: 1.4em;
   font-size: 10.37em;
   letter-spacing: 0;
   text-transform: uppercase;
-  //font-stretch: expanded;
+  transform: scaleY(1.2);
 }
 
 .title4 {
@@ -122,7 +123,7 @@ $text-font-size-big: 1.4em;
   font-size: $line-height-small;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  //font-stretch: expanded;
+  transform: scaleY(1.3);
   line-height: $line-height-big;
 }
 
@@ -131,7 +132,7 @@ $text-font-size-big: 1.4em;
   font-size: 1.4em;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  //font-stretch: expanded;
+  transform: scaleY(1.3);
 }
 
 @mixin title7 {
@@ -139,7 +140,7 @@ $text-font-size-big: 1.4em;
   font-size: 3.35em;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  //font-stretch: expanded;
+  transform: scaleY(1.3);
   line-height: 4.68em;
 }
 
