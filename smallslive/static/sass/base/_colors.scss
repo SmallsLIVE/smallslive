@@ -3,6 +3,12 @@ $white-transparent: rgba(255, 255, 255, 0.9);
 $accent-color: #ed1c24;
 $border-color: $white-transparent;
 
+$text-grey: #808080;
+
 .accent-color {
   color: $accent-color;
+}
+
+.text-grey {
+  color: $text-grey;
 }

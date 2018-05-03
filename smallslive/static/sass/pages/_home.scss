@@ -14,23 +14,32 @@ body {
 }
 
 .section-title {
-  position: relative;
+  $underline-height: 4px;
   $underline-length: 750px;
-  @media(min-width: $screen-sm-max) {
+
+  position: relative;
+  @media(min-width: $screen-md-max) {
     width: $underline-length;
   }
 
   width: 100%;
-  line-height: 1.1;
   margin-bottom: 20px;
   padding-left: 20px;
   display: inline-block;
   text-decoration: none;
   background: linear-gradient(to right, $white-transparent, $white-transparent) no-repeat bottom left;
-  background-size: $underline-length 4px;
+  background-size: $underline-length $underline-height;
+  padding-bottom: $underline-height / 2;
 
   .date-separator {
     color: $accent-color;
+  }
+
+  > div {
+    &.title1, &.title2 {
+      display: inline-block;
+      line-height: 1.1;
+    }
   }
 }
 

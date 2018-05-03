@@ -62,15 +62,19 @@
       <div>
         <section class="event-stripe">
           <div class="section-title">
-            <span class="title1">Streaming Tonight <span class="date-separator">/</span></span>
-            <span class="header-sub title2">{% now "l F j, o" %}</span>
+            <div class="title1">
+              Streaming Tonight <span class="date-separator">/</span>
+            </div>
+            <div class="header-sub title2">{% now "l F j, o" %}</div>
           </div>
           <main>
-            {% include 'events/event_row.html' with events=events_today show_time='True' hidde_event_date='True' %}
+            {% include 'events/event_row.html' with events=events_today show_time='True' hidde_event_date='True' show_event_venue='True' %}
           </main>
         </section>
         <section class="event-stripe">
-          <div class="section-title title1">Recently Added</div>
+          <div class="section-title">
+            <div class="title1">Recently Added</div>
+          </div>
           <main>
             {% include 'events/event_row.html' with events=new_in_archive %}
           </main>
@@ -78,7 +82,7 @@
         <section class="event-stripe">
           <div class="section-title">
             <div class="title1">Most Popular</div>
-            <div class="select-container">
+            <span class="select-container">
               <div class="white-border-select" style="width:150px;">
                 <select id="most-popular-filter">
                   <option value="week">Last week</option>
@@ -87,15 +91,16 @@
                   <option value="alltime">All Time</option>
                 </select>
               </div>
-            </div>
-
+            </span>
           </div>
           <main id="most-popular-container">
             {% include 'events/event_row.html' with events=popular_in_archive %}
           </main>
         </section>
         <section class="event-stripe">
-          <div class="section-title title1">Staff Picks</div>
+          <div class="section-title">
+            <div class="title1">Staff Picks</div>
+          </div>
           <main>
             {% include 'events/event_row.html' with events=events_today %}
           </main>
