@@ -39,10 +39,10 @@ from .models import Event, Recording, Venue
 
 
 @cached(timeout=6*60*60)
-def _get_most_popular(range=RANGE_WEEK):
+def _get_most_popular(range=None):
     context = {}
     most_popular_ids = UserVideoMetric.objects.most_popular(
-        range_size=range
+        range_size=range, count=10
     )
     most_popular = []
     for event_data in most_popular_ids:
@@ -97,10 +97,23 @@ class HomepageView(ListView):
             dates[k] = list(g)
         # next 7 days
         sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0])).items()[:7]
-        context['new_in_archive'] = Event.objects.most_recent()[:8]
+        most_recent = Event.objects.most_recent()[:8]
+        if len(most_recent):
+            context['new_in_archive'] = most_recent
+        else:
+            context['new_in_archive'] = Event.objects.exclude(
+                state=Event.STATUS.Draft
+            ).order_by('-start')[:8]
+
         context['next_7_days'] = sorted_dates
         context['venues'] = Venue.objects.all()
-        context.update(_get_most_popular())
+        week_popular = _get_most_popular(RANGE_WEEK)
+        if len(week_popular['popular_in_archive']):
+            context.update(week_popular)
+        else:
+            context.update(_get_most_popular())
+            context['popular_select'] = 'alltime'
+
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
         return context
 
