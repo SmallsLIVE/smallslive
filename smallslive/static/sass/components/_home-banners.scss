@@ -1,7 +1,9 @@
+$banners-height: 270px;
+
 .banners {
   width: 100%;
-  height: 300px;
 
+  height: $banners-height;
   margin-bottom: 60px;
 
   #banner-container {
@@ -14,17 +16,13 @@
       width: 100%;
 
       display: flex;
-      justify-content: stretch;
-      align-items: stretch;
       border: 1px solid red;
       border-radius: 20px;
 
       .banner-title-button {
-        padding: 40px;
+        padding: 20px 30px;
         display: flex;
         flex-direction: column;
-        align-items: stretch;
-        justify-content: space-between;
 
         #banner-title {
           @include title4;
@@ -33,38 +31,31 @@
         #banner-button {
           @include white-border-button;
           width: 100%;
-
         }
       }
 
       .banner-text-container {
-        @include title1;
         flex: 1;
         display: flex;
         align-items: center;
         align-content: center;
 
-        font-size: 3em;
-
         #banner-text {
+          @include title1;
           margin: 0;
           border-left: 2px solid black;
-          padding-left: 50px;
+          padding-left: 30px;
         }
       }
     }
   }
 
   .banner-options {
-    height: 100%;
+    height: $banners-height;
     width: 100%;
     display: flex;
-    justify-content: stretch;
-    align-items: stretch;
 
     .banner-option {
-      @include title4;
-      border: 1px solid black;
       flex: 1;
       display: flex;
       align-items: center;

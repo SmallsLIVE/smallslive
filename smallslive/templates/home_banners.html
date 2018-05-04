@@ -7,7 +7,7 @@
           <button id="banner-button" class="button-bordered"></button>
         </div>
       </div>
-{#          TODO Use flex helpers#}
+      {# TODO Use flex helpers#}
       <div class="banner-text-container">
         <p id="banner-text">El texto</p>
       </div>
@@ -15,9 +15,15 @@
   </div>
   {% if not active %}
   <div id="banner-options" class="banner-options">
-    <div id="banner-archive-box" class="banner-option">Archive</div>
-    <div id="banner-live-box" class="banner-option shadow-text">Live</div>
-    <div id="banner-mission-box" class="banner-option">Mission</div>
+    <div id="banner-archive-box" class="banner-option">
+      <div class="title4">Archive</div>
+    </div>
+    <div id="banner-live-box" class="banner-option shadow-text">
+      <div class="title4">Live</div>
+    </div>
+    <div id="banner-mission-box" class="banner-option">
+      <div class="title4">Mission</div>
+    </div>
   </div>
   {% endif %}
 </div>
