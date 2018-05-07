@@ -6,10 +6,13 @@ from django import forms
 from django.conf import settings
 from django.template import Context
 from django.template.loader import render_to_string
+from django.utils import timezone
 from extra_views import InlineFormSet
 import floppyforms
 from haystack.forms import SearchForm
 from model_utils import Choices
+
+from events.models import StaffPick
 from .models import Event, GigPlayed
 
 from django.core.files import File
@@ -119,10 +122,14 @@ class GigPlayedInlineFormSetHelper(FormHelper):
 class EventAddForm(forms.ModelForm):
     start = forms.DateTimeField(label="Start time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
     end = forms.DateTimeField(label="End time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
+    staff_pick = forms.BooleanField(label="Staff Pick", required=False)
 
     class Meta:
         model = Event
-        fields = ('venue', 'start', 'end', 'id', 'title', 'subtitle', 'photo', 'description', 'state')
+        fields = (
+            'venue', 'start', 'end', 'id', 'title', 'subtitle', 'photo',
+            'description', 'state', 'staff_pick'
+        )
         widgets = {
             'state': EventStatusWidget,
             'link': floppyforms.URLInput,
@@ -149,14 +156,30 @@ class EventAddForm(forms.ModelForm):
             'cropping',
             'description',
             'state',
+            'staff_pick',
         )
         self.fields['state'].label = "Event status"
         self.fields['photo'].label = "Flyer or Band Photo (JPG, PNG)"
 
+    def save(self, commit=True):
+        instance = super(EventAddForm, self).save(commit)
+        if self.cleaned_data.get('staff_pick'):
+            if not hasattr(instance, 'staff_picked'):
+                StaffPick.objects.create(event=instance,
+                                         date_picked=timezone.now())
+        else:
+            if hasattr(instance, 'staff_picked'):
+                instance.staff_picked.delete()
+
+        return instance
+
+
 
 class EventEditForm(EventAddForm):
     class Meta(EventAddForm.Meta):
-        fields = ('venue', 'start', 'end', 'title', 'subtitle', 'photo', 'cropping', 'description', 'state')
+        fields = (
+            'venue', 'start', 'end', 'title', 'subtitle', 'photo', 'cropping',
+            'description', 'state', 'staff_pick')
 
 
 class EventSearchForm(SearchForm):

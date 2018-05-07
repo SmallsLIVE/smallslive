@@ -231,6 +231,13 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
         context['show_times'] = json.dumps(settings.SHOW_TIMES)
         return context
 
+    def get_form(self, form_class):
+        form = super(EventEditView, self).get_form(form_class)
+        if hasattr(self.object, 'staff_picked'):
+            form.initial['staff_pick'] = True
+
+        return form
+
 
     # def test_func(self, user):
     #     """
