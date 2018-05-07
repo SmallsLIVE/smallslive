@@ -1,0 +1,89 @@
+.event-row {
+  display: flex;
+  overflow: auto;
+
+  .event-display {
+    margin: 5px;
+    max-width: $event-card-width;
+    min-height: $event-card-height * 1.5;
+
+    .event-card {
+      position: relative;
+
+      .event-picture-container {
+        position: relative;
+        $picture-border-radius: 10px;
+        border-radius: $picture-border-radius;
+        overflow: hidden;
+
+        .event-picture {
+          @include cross-browser-grayscale;
+          height: $event-card-height;
+          width: $event-card-width;
+          position: relative;
+
+          img {
+            width: 100%;
+
+            &:before {
+              content: ' ';
+              display: block;
+              position: absolute;
+              top: 0;
+              left: 0;
+              height: $event-card-height;
+              width: $event-card-width;
+              background-image: url('../image/no-event-image-placeholder.jpg');
+              background-size: cover;
+            }
+          }
+        }
+
+        .icon-overlay {
+          color: $accent-color;
+          background-color: rgba(0,0,0,0.6);
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          left: 0;
+          top: 0;
+          font-size: 60px;
+          opacity: 0;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      &:hover {
+        .icon-overlay {
+          opacity: 1;
+        }
+      }
+
+      .event-dates {
+        position: absolute;
+
+        left: 0;
+        bottom: -1px;
+
+        > span {
+          color: $white-transparent;
+          background-color: black;
+          padding: 0 8px;
+
+          &.accent-box {
+            background-color: $accent-color;
+            color: $white-transparent
+          }
+        }
+      }
+    }
+
+    .event-info {
+      @include links1;
+      margin-top: 10px;
+    }
+  }
+}

@@ -12,16 +12,24 @@
 @import 'utils/helpers';
 @import 'utils/mixins';
 
+@import 'base/fonts';
+@import 'base/colors';
 @import 'base/typography';
 @import 'base/base';
 
 @import 'layout/header';
+@import 'layout/header2';
+
 @import 'layout/footer';
 @import 'layout/static-page';
 @import 'layout/call-to-action';
 @import 'layout/pages';
 @import 'layout/generic-text-page';
 @import 'layout/alerts';
+
+@import 'pages/style-guide';
+@import 'pages/home';
+
 
 @import 'components/about-smalls';
 @import 'components/admin-email';
@@ -88,3 +96,8 @@
 @import 'components/no-bg-calendar';
 @import 'components/homepage-upcoming';
 @import 'components/homepage-date-browser';
+
+
+@import 'components/event-row';
+@import 'components/home-banners';
+@import 'components/white-border-select';

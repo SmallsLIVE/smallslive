@@ -1,0 +1,37 @@
+{% if user.is_authenticated and not user.has_activated_account %}
+  <div id="inactive-dialog" class="floating-dialog-background">
+    <div class="floating-dialog">
+      <div>
+        <p class="title2 accent-color">Confirmation</p>
+        <p class="title1">Your membership is not yet confirmed</p>
+      </div>
+      <div>
+        <p class="text4 text-justified">You have been sent a confirmation
+          e-mail to <span class="accent-color">{{ user.email }}</span>.
+          Please check yout email and confirm your membership by clicking the
+          link
+          you receive. If you do not received this in the next 10 min, please
+          click
+          the link below to re-send the confirmation e-mail. Be sure to check
+          your
+          spam folder as well.</p>
+      </div>
+      <div class="text4">
+        <p><span>Didn't get an email?</span> <a class="accent-color" href="">Resend
+          confirmation email</a></p>
+        <p><span>Or contact support at</span>
+          <a class="accent-color" href="mailto:accountsupport@smallslive.com">
+            accountsupport@smallslive.com
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.addEventListener('click', function () {
+      $('#inactive-dialog').hide();
+    })
+  </script>
+{% endif %}
+
+

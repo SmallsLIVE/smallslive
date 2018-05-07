@@ -1,0 +1,25 @@
+//TODO Layout
+.flex-row {
+  display: flex;
+  align-items: center;
+
+  &.content-space-around {
+    justify-content: space-around;
+  }
+
+  &.wrap {
+    flex-wrap: wrap;
+  }
+}
+
+// Helpers
+@mixin shadow-text {
+  color: black;
+  text-shadow:
+    //-0.05rem -0.05rem 1px #ed2b12,
+    //0.05rem -0.05rem 5px #ed2b12,
+    -0.05rem 0.05rem 5px #ed2b12,
+    0.05rem 0.05rem 5px #ed2b12,
+    0 0 25px #630100,
+    0 0 40px #450100;
+}

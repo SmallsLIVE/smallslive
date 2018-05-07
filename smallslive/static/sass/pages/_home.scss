@@ -1,0 +1,88 @@
+body {
+  // TODO Remove
+  &.home {
+    font-size: 10px;
+    background: $background-color;
+  }
+}
+
+.main-container {
+  margin: auto;
+  max-width: 1680px;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-title {
+  $underline-height: 4px;
+  $underline-length: 750px;
+
+  position: relative;
+  @media(min-width: $screen-md-max) {
+    width: $underline-length;
+  }
+
+  width: 100%;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  display: inline-block;
+  text-decoration: none;
+  background: linear-gradient(to right, $white-transparent, $white-transparent) no-repeat bottom left;
+  background-size: $underline-length $underline-height;
+  padding-bottom: $underline-height / 2;
+
+  .date-separator {
+    color: $accent-color;
+  }
+
+  > div {
+    &.title1, &.title2 {
+      display: inline-block;
+      line-height: 1.1;
+    }
+  }
+}
+
+.event-stripe {
+  position: relative;
+  margin-top: 40px;
+
+  .select-container {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.floating-dialog-background {
+  position: fixed;
+  height: calc(100vh);
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba($background-color, 0.6);
+  z-index: 1;
+  overflow: hidden;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .floating-dialog {
+    padding: 40px 60px;
+    max-width: 550px;
+    background-color: $background-color;
+    border: 5px solid $white-transparent;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    > div {
+      margin-bottom: 20px;
+    }
+  }
+}
+

@@ -1,0 +1,86 @@
+<div class="banners visible-lg">
+  <div id="banner-container">
+    <div class="banner-border">
+      <div class="banner-title-button">
+        <div id="banner-title">Archive</div>
+        <div>
+          <button id="banner-button" class="button-bordered"></button>
+        </div>
+      </div>
+      {# TODO Use flex helpers#}
+      <div class="banner-text-container">
+        <p id="banner-text">El texto</p>
+      </div>
+    </div>
+  </div>
+  {% if not active %}
+  <div id="banner-options" class="banner-options">
+    <div id="banner-archive-box" class="banner-option">
+      <div class="title4">Archive</div>
+    </div>
+    <div id="banner-live-box" class="banner-option shadow-text">
+      <div class="title4">Live</div>
+    </div>
+    <div id="banner-mission-box" class="banner-option">
+      <div class="title4">Mission</div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+<script>
+  $(document).ready(function(){
+    var bannerText = {
+      archive: {
+        text: '<span class="accent-color">Every show</span> at smalls + mezzrow has been recorded and archived since 2007. Supporting members enjoy <span class="accent-color">unlimited access</span> to our archive. Our musicians are paid royalties through our unique <span class="accent-color">revenue share system.</span>',
+        button: 'Learn More'
+      },
+      'live stream': {
+        text: 'Our <span class="accent-color">live stream</span> has expanded our 60 seat clubs into a worlwide community of jazz fans and supporters. <span class="accent-color">Sign up for free</span> to watch our live stram every night.',
+        button: 'Become a member'
+
+      },
+      mission: {
+        text: 'We belive <span class="accent-color">world peace</span> is possible through music and musical community. Our goal is to <span class="accent-color">broadcast and document the music</span> performed in our venues each night. Our initiative is to create a <span class="accent-color">fair reveneue share model</span>, giving the jazz community means to directly benefit musicians and supporting venues',
+        button: 'Become a member'
+      },
+      supporter: {
+        text: 'Your supporting pledge goes <span class="accent-color">directly to your favourite artists</span> & helps make smallsville possible through our <span class="accent-color">smallslive revenue share</span>. Supporting members have unlimited access to our archive of <span class="accent-color">every concert</span> performed at smalls + mezzrow',
+        button: 'Become a supporter',
+        title: 'Why become a supporter'
+      }
+    };
+
+    var bannerContainer = $('#banner-container');
+    var bannerOptions = $('#banner-options');
+    $('#banner-archive-box').on('click', function () {
+      setContainerBanner('archive');
+    });
+
+    $('#banner-live-box').on('click', function () {
+      setContainerBanner('live stream');
+    });
+
+    $('#banner-mission-box').on('click', function () {
+      setContainerBanner('mission');
+    });
+
+
+    function setContainerBanner(src) {
+      var banner = bannerText[src];
+      bannerContainer.find('#banner-text').html(banner.text);
+      bannerContainer.find('#banner-title').text(src);
+      bannerContainer.find('#banner-button').text(banner.button);
+      bannerContainer.show();
+      bannerOptions.hide();
+    }
+
+    {% if active %}
+      setContainerBanner('{{ active }}');
+    {% else %}
+      bannerContainer.on('click', function () {
+        bannerOptions.show();
+        bannerContainer.hide();
+      });
+    {% endif %}
+  });
+</script>

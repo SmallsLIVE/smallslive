@@ -30,7 +30,7 @@ from haystack.views import SearchView
 from rest_framework.authtoken.models import Token
 
 from artists.models import Artist, Instrument
-from metrics.models import UserVideoMetric
+from metrics.models import UserVideoMetric, RANGE_WEEK, RANGE_MONTH, RANGE_YEAR
 from oscar_apps.catalogue.models import Product
 from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
@@ -38,8 +38,25 @@ from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormS
 from .models import Event, Recording, Venue
 
 
+@cached(timeout=6*60*60)
+def _get_most_popular(range=None):
+    context = {}
+    most_popular_ids = UserVideoMetric.objects.most_popular(
+        range_size=range, count=10
+    )
+    most_popular = []
+    for event_data in most_popular_ids:
+        try:
+            event = Event.objects.get(id=event_data['event_id'])
+            most_popular.append(event)
+        except Event.DoesNotExist:
+            pass
+    context['popular_in_archive'] = most_popular
+    return context
+
+
 class HomepageView(ListView):
-    template_name = 'home.html'
+    template_name = 'home_new.html'
     context_object_name = 'events_today'
 
     def get_queryset(self):
@@ -73,7 +90,6 @@ class HomepageView(ListView):
             events = events.filter(venue__id=venue_id)
             context['venue_selected'] = venue_id
 
-
         # 30 events should be enough to show next 7 days with events
         events = events[:30]
         dates = {}
@@ -81,29 +97,69 @@ class HomepageView(ListView):
             dates[k] = list(g)
         # next 7 days
         sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0])).items()[:7]
-        context['new_in_archive'] = Event.objects.most_recent()[:8]
+        most_recent = Event.objects.most_recent()[:8]
+        if len(most_recent):
+            context['new_in_archive'] = most_recent
+        else:
+            context['new_in_archive'] = Event.objects.exclude(
+                state=Event.STATUS.Draft
+            ).order_by('-start')[:8]
+
         context['next_7_days'] = sorted_dates
         context['venues'] = Venue.objects.all()
+        week_popular = _get_most_popular(RANGE_WEEK)
+        if len(week_popular['popular_in_archive']):
+            context.update(week_popular)
+        else:
+            context.update(_get_most_popular())
+            context['popular_select'] = 'alltime'
 
-        @cached(timeout=6*60*60)
-        def _get_most_popular():
-            context = {}
-            most_popular_ids = UserVideoMetric.objects.most_popular(count=4, weekly=True)
-            most_popular = []
-            for event_data in most_popular_ids:
-                try:
-                    event = Event.objects.get(id=event_data['event_id'])
-                    most_popular.append(event)
-                except Event.DoesNotExist:
-                    pass
-            context['popular_in_archive'] = most_popular
-            return context
-
-        context.update(_get_most_popular())
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
         return context
 
 homepage = HomepageView.as_view()
+
+
+class OldHomeView(HomepageView):
+    template_name = 'home.html'
+
+
+old_home = OldHomeView.as_view()
+
+
+class MostPopularEventsAjaxView(AJAXMixin, ListView):
+    context_object_name = 'events'
+    model = Event
+    template_name = "events/event_row.html"
+
+    def __init__(self, **kwargs):
+        super(MostPopularEventsAjaxView, self).__init__()
+        self.ajax_mandatory = False
+
+    def get_queryset(self):
+        metrics_range = RANGE_WEEK
+        received_range = self.request.GET.get('range', 'weekly')
+        if received_range:
+            if received_range == 'month':
+                metrics_range = RANGE_WEEK
+            if received_range == 'month':
+                metrics_range = RANGE_MONTH
+            if received_range == 'year':
+                metrics_range = RANGE_YEAR
+            if received_range == 'alltime':
+                metrics_range = None
+
+        return _get_most_popular(metrics_range)['popular_in_archive']
+
+
+event_popular_ajax = MostPopularEventsAjaxView.as_view()
+
+
+class StyleGuideView(TemplateView):
+    template_name = 'style_guide.html'
+
+
+styleguide = StyleGuideView.as_view()
 
 
 class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlinesView):
@@ -595,7 +651,8 @@ class ArchiveView(ListView):
             context = {}
             context['most_recent'] = Event.objects.most_recent()[:12]
 
-            weekly_most_popular_ids = UserVideoMetric.objects.most_popular(count=12, weekly=False)
+            weekly_most_popular_ids = UserVideoMetric.objects.most_popular(
+                weekly=False)
             weekly_most_popular = []
             for event_data in weekly_most_popular_ids:
                 try:

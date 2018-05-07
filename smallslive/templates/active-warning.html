@@ -1,0 +1,9 @@
+{% if user.is_authenticated and not user.has_activated_account %}
+  <div class="alert alert-danger" role="alert">
+    <p class="container">
+      <strong>Your account is not active yet!</strong> Please confirm it by
+      clicking the link in the account activation email.
+    </p>
+  </div>
+{% endif %}
+

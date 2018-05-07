@@ -1,3 +1,14 @@
+$line-height-smaller: 1.67em;
+$line-height-small: 1.84em;
+$line-height-medium: 2.17em;
+$line-height-big: 2.51em;
+$line-height-bigger: 2.68em;
+
+$text-font-size-small: 1em;
+$text-font-size-medium: 1.2em;
+$text-font-size-big: 1.4em;
+
+
 @mixin lato-light {
   font-family: 'Lato', $helvetica;
   font-weight: 300;
@@ -28,4 +39,228 @@
 @mixin lato-black {
   font-family: 'Lato', $helvetica;
   font-weight: 900;
+}
+
+
+// New Look and feel
+
+// Font families mixins
+@mixin semi-bold {
+  font-weight: 600;
+}
+
+@mixin regular {
+  font-weight: 400;
+}
+
+@mixin oswald-regular {
+  font-family: 'Oswald', sans-serif;
+  @include regular;
+}
+
+@mixin oswald-semi-bold {
+  font-family: 'Oswald', sans-serif;
+  @include semi-bold;
+}
+
+@mixin reen-kufi-normal {
+  font-family: 'Reem Kufi', sans-serif;
+  @include regular;
+}
+
+// Font sizes
+@mixin title1 {
+  @include oswald-regular();
+  font-size: 2.34em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transform: scaleY(1.3);
+}
+
+// Titles
+.title1 {
+  @include title1;
+}
+
+@mixin title2 {
+  @include reen-kufi-normal;
+  font-size: 1.4em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.title2 {
+  @include title2;
+}
+
+@mixin title3 {
+  @include oswald-semi-bold;
+  font-size: 3.35em;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  transform: scaleY(1.2);
+}
+
+.title3 {
+  @include title3;
+}
+
+
+@mixin title4 {
+  @include oswald-semi-bold;
+  font-size: 10.37em;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  transform: scaleY(1.2);
+}
+
+.title4 {
+  @include title4;
+}
+
+.title5 {
+  @include oswald-regular;
+  font-size: $line-height-small;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transform: scaleY(1.3);
+  line-height: $line-height-big;
+}
+
+.title6 {
+  @include reen-kufi-normal;
+  font-size: 1.4em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transform: scaleY(1.3);
+}
+
+@mixin title7 {
+  @include oswald-regular;
+  font-size: 3.35em;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transform: scaleY(1.3);
+  line-height: 4.68em;
+}
+
+// Texts
+.text1 {
+  @include reen-kufi-normal;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: $text-font-size-medium;
+}
+
+.text2 {
+  @include reen-kufi-normal;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: $text-font-size-big;
+  line-height: $line-height-bigger;
+}
+
+.text3 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-size: $text-font-size-small;
+  line-height: $line-height-medium;
+}
+
+.text4 {
+  @include reen-kufi-normal;
+  font-size: $text-font-size-medium;
+  letter-spacing: 0.04em;
+}
+
+.text5 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-size: $text-font-size-medium;
+  line-height: $line-height-medium;
+}
+
+.text6 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-size: $text-font-size-big;
+  line-height: $line-height-small;
+}
+
+.text7 {
+  @include reen-kufi-normal;
+  letter-spacing: 0.02em;
+  font-size: $text-font-size-big;
+  line-height: $line-height-big;
+}
+
+.text8 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  font-size: $text-font-size-small;
+  line-height: $line-height-smaller;
+}
+
+// Links
+@mixin links1 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  font-size: $text-font-size-small;
+  line-height: $line-height-smaller;
+  text-transform: uppercase;
+}
+
+.links1 {
+  @include links1;
+}
+
+.links2 {
+  @include reen-kufi-normal;
+  letter-spacing: 0.04em;
+  font-size: $text-font-size-big;
+  line-height: $line-height-smaller;
+}
+
+.links3 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  font-size: $text-font-size-small;
+  line-height: 1.2em;
+}
+
+.links4 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  font-size: $text-font-size-big;
+  line-height: 2.34em;
+}
+
+.links5 {
+  @include reen-kufi-normal;
+  font-size: $text-font-size-small;
+}
+
+// Header text
+.header {
+  @include reen-kufi-normal;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  line-height: 1.2em;
+  font-size: $text-font-size-small;
+}
+
+// Buttons
+@mixin button1 {
+  @include reen-kufi-normal;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 1em;
+}
+
+.text-justified {
+  text-align: justify;
+  text-justify: inter-word;
 }
