@@ -380,3 +380,8 @@ class Venue(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class StaffPick(models.Model):
+    event = models.OneToOneField('events.Event', related_name='staff_picked')
+    date_picked = models.DateTimeField()
