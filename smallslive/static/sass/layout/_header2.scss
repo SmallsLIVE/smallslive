@@ -1,8 +1,6 @@
 .main-header {
   padding: 26px;
 
-  //TODO Based on start of banners on doc
-  //height: 160px;
   .logo-container {
     flex: 1;
     display: flex;
@@ -33,6 +31,10 @@
   &.button-bordered {
     @include input-border;
   }
+
+  a {
+    color: inherit;
+  }
 }
 
 .button-row {
@@ -41,9 +43,26 @@
   }
 }
 
+
+@mixin bordered-input {
+  @include input-border;
+  @include text4;
+  box-shadow: none;
+  width: 100%;
+  border-radius: $input-border / 2;
+  height: $input-height;
+  font-size: 1.2em;
+
+  // TODO Global
+  &:focus {
+    outline: none;
+  }
+}
+
 .search-input {
   position: relative;
-  &:before {
+
+  &::before {
     content: '\f002';
     font-family: 'FontAwesome', serif;
     color: $accent-color;
@@ -54,18 +73,8 @@
   }
 
   input {
-    @include input-border;
-    width: 100%;
+    @include bordered-input;
     background-color: $background-color;
-    border-radius: $input-border;
     padding: 8px 8px 8px 30px;
-    height: $input-height;
-    font-size: 1.2em;
-
-    // TODO Global
-    &:focus {
-      outline: none;
-    }
-
   }
 }

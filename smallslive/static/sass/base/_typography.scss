@@ -168,10 +168,14 @@ $text-font-size-big: 1.4em;
   line-height: $line-height-medium;
 }
 
-.text4 {
+@mixin text4 {
   @include reen-kufi-normal;
   font-size: $text-font-size-medium;
   letter-spacing: 0.04em;
+}
+
+.text4 {
+  @include text4;
 }
 
 .text5 {
@@ -263,4 +267,8 @@ $text-font-size-big: 1.4em;
 .text-justified {
   text-align: justify;
   text-justify: inter-word;
+}
+
+.underline {
+  text-decoration: underline;
 }
