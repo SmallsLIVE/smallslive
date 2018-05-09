@@ -1,0 +1,58 @@
+<div class="modal fade" id="becomeMemberDialog"
+     tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+
+    <div class="modal-content login-modal">
+      <div class="modal-body">
+        <p class="title2 accent-color">Welcome</p>
+        <p class="title3">Become a member</p>
+        <p class="text4 text-grey">
+          Already a Member?
+          <a class="accent-color underline" id="showSignIn"
+             href="#">Sign In</a>
+        </p>
+        <form role="form" id="form-become-member" method="post"
+              action="{% url "accounts_signup" plan_name="free" %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <input type="text" class="form-control" name="first_name" placeholder="First Name">
+            <p class="form-error-text hidden" id="first_name-error"></p>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" name="last_name" placeholder="Last Name">
+            <p class="form-error-text hidden" id="last_name-error"></p>
+          </div>
+          <div class="form-group">
+            <input type="email" class="form-control" name="email" placeholder="Email">
+            <p class="form-error-text hidden" id="email-error"></p>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" name="password1" placeholder="Password">
+            <p class="form-error-text hidden" id="password1-error"></p>
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" name="password2" placeholder="Confirm Password">
+            <p class="form-error-text hidden" id="password2-error"></p>
+          </div>
+          <div class="form-group">
+            <div class="checkbox">
+              <label class="text4 text-grey">
+                <input type="checkbox" name="newsletter" id="memberSubscribeCheck">
+                <span class="checkbox-text">Subscribe to our newsletter</span>
+              </label>
+            </div>
+            <div class="checkbox">
+              <label class="text4 text-grey">
+                <input type="checkbox" name="terms_of_service" id="memberSubscribeTerms">
+                <span class="checkbox-text">I accept the Terms & Conditions</span>
+                <p class="form-error-text hidden" id="terms_of_service-error"></p>
+              </label>
+            </div>
+          </div>
+          <input class="login-button" value="Sign in" type="submit">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
