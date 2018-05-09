@@ -11,7 +11,55 @@
   overflow: hidden;
 }
 
-.login-modal {
+.login-modal.new {
+  border: 8px solid $white-transparent;
+  border-radius: 0;
+  background-color: $background-color;
+  background-clip: unset;
+
+  padding: 35px;
+
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    > * {
+      margin-bottom: 15px;
+    }
+
+    form {
+      width: 70%;
+
+      margin-top: 10px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+
+      align-items: center;
+
+      .form-group {
+        width: 100%;
+
+        input {
+          @include bordered-input;
+        }
+      }
+
+      .login-button {
+        @include white-border-button;
+        @include input-border;
+
+        margin-top: 40px;
+        padding: 0 40px;
+      }
+    }
+  }
+}
+
+
+.login-modal:not(.new) {
   padding: 30px 80px;
   background-image: url('../image/login-modal-bg.jpg');
   background-size: cover;
@@ -88,7 +136,7 @@
     @include lato-black;
     color: $main-accent-color;
     text-decoration: none;
-    
+
     &:hover {
       color: $main-accent-color;
       text-decoration: none;
@@ -140,7 +188,7 @@
       color: rgba(255, 255, 255, 0.6);
     }
   }
-  
+
   &__cta-signup {
     @include lato-black;
     font-size: 18px;
@@ -150,7 +198,7 @@
     display: block;
     width: 100%;
 
-    
+
     &:hover {
       opacity: 0.8;
       color: $main-accent-color;

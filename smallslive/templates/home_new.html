@@ -43,7 +43,12 @@
           <button>Education</button>
           <button>Store</button>
           {% if not request.user.is_authenticated %}
-          <button class="button-bordered">Sign In</button>
+          <button class="button-bordered">
+            <a id="loginButton" href="#" data-toggle="modal" data-target="#logIn">
+              Sign In
+            </a>
+          </button>
+
           {% else %}
             <button class="button-bordered">
               {% if request.user.first_name %}
