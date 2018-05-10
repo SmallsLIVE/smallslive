@@ -56,18 +56,15 @@ class SignupView(AllauthSignupView):
         # else:
         #     verification_method = EmailVerificationMethod.OPTIONAL
         verification_method = EmailVerificationMethod.OPTIONAL
-        complete_signup(self.request, user,
-                        verification_method,
-                        self.get_success_url())
-        plan_name = self.kwargs.get('plan_name')
-        self.selected_plan = plan_name
+        complete_signup(
+            self.request, user, verification_method, self.get_success_url()
+        )
+
         return redirect(self.get_success_url())
 
     def get_success_url(self):
-        if self.kwargs['plan_name'] == 'free':
-            return reverse('accounts_signup_complete')
-        else:
-            return reverse('accounts_signup_payment', kwargs={'plan_name': self.kwargs['plan_name']})
+        return reverse('home')
+
 
 signup_view = SignupView.as_view()
 
