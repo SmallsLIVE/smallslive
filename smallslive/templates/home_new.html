@@ -37,11 +37,11 @@
         </div>
 
         <div class="button-row">
-          <button  class="active no-border">Calendar</button>
-          <button class="no-border">Archive</button>
-          <button class="no-border">Info</button>
-          <button class="no-border">Education</button>
-          <button class="no-border">Store</button>
+          <a href="{% url 'schedule' %}"><button class="no-border">Calendar</button></a>
+          <a href="{% url 'archive' %}"><button class="no-border">Archive</button></a>
+          <a href="{% url 'contact-and-info' %}"><button class="no-border">Info</button></a>
+          <a href=""><button class="no-border">Education</button></a>
+          <a href="{% url "promotions:home" %}"><button class="no-border">Store</button></a>
           {% if not request.user.is_authenticated %}
           <button href="#logIn" data-toggle="modal">
               Sign In
