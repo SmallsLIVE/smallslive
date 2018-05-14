@@ -53,5 +53,6 @@ gulp.task('bs-reload', function () {
 // Default task to be run with `gulp`
 gulp.task('default', ['browser-sync', 'sass'], function () {
     gulp.watch("smallslive/templates/**/*.html", ['bs-reload']);
+    gulp.watch("smallslive/static/js/**/*.js", ['bs-reload']);
     gulp.watch("smallslive/static/sass/**/*.scss", ['sass']);
 });
