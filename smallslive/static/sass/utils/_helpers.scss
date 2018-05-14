@@ -1,5 +1,5 @@
 //TODO Layout
-.flex-row {
+.flex-row, .flex-column {
   display: flex;
   align-items: center;
 
@@ -7,10 +7,27 @@
     justify-content: space-around;
   }
 
+  &.content-space-between {
+    justify-content: space-between;
+  }
+
   &.wrap {
     flex-wrap: wrap;
   }
 }
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-column{
+  flex-direction: column;
+}
+
 
 // Helpers
 @mixin shadow-text {
@@ -22,4 +39,14 @@
     0.05rem 0.05rem 5px #ed2b12,
     0 0 25px #630100,
     0 0 40px #450100;
+}
+
+.no-spinners {
+  -moz-appearance:textfield;
+}
+
+.no-spinners::-webkit-outer-spin-button,
+.no-spinners::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

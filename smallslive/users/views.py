@@ -2,8 +2,9 @@ from allauth.account import app_settings
 from allauth.account.forms import ChangePasswordForm
 from allauth.account.models import EmailAddress, EmailConfirmation
 from allauth.account.utils import complete_signup
-from allauth.account.views import SignupView as AllauthSignupView, ConfirmEmailView as CoreConfirmEmailView,\
-    LoginView as CoreLoginView
+from allauth.account.views import SignupView as AllauthSignupView, \
+    ConfirmEmailView as CoreConfirmEmailView, \
+    LoginView as CoreLoginView, _ajax_response
 import braces.views
 from braces.views import FormValidMessageMixin, LoginRequiredMixin, StaffuserRequiredMixin
 from django.conf import settings
@@ -26,12 +27,33 @@ from users.models import SmallsUser
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
 
 
+class BecomeSupporterView(TemplateView):
+    template_name = 'account/become-supporter.html'
+
+
+become_supporter = BecomeSupporterView.as_view()
+
+
+# FIXME Temporary view to mock become supporter completion
+class BecomeSupporterCompleteView(BecomeSupporterView):
+    def get_context_data(self, **kwargs):
+        context = super(
+            BecomeSupporterCompleteView, self
+        ).get_context_data(**kwargs)
+        context['completed'] = True
+        return context
+
+
+become_supporter_complete = BecomeSupporterCompleteView.as_view()
+
+
 class SignupLandingView(TemplateView):
     template_name = 'account/signup-landing.html'
 
 signup_landing = SignupLandingView.as_view()
 
 
+# FIXME Using this view to mock become support post
 class SignupView(AllauthSignupView):
     form_class = UserSignupForm
 
@@ -64,6 +86,13 @@ class SignupView(AllauthSignupView):
 
     def get_success_url(self):
         return reverse('home')
+
+    # FIXME Dont mock up response
+    def post(self, request, *args, **kwargs):
+        return _ajax_response(
+            request, redirect(reverse('become_supporter_complete'))
+
+        )
 
 
 signup_view = SignupView.as_view()

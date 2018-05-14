@@ -18,11 +18,21 @@ body {
   $underline-length: 750px;
 
   position: relative;
-  @media(min-width: $screen-md-max) {
-    width: $underline-length;
+
+  &:not(.section-title-padded) {
+    width: 100%;
+    @media(min-width: $screen-md-max) {
+      width: $underline-length;
+    }
   }
 
-  width: 100%;
+  &.section-title-padded {
+    $padding: 40px;
+    margin-top: 40px;
+    padding-left: $padding;
+    padding-right: $padding;
+  }
+
   margin-bottom: 20px;
   padding-left: 20px;
   display: inline-block;
@@ -35,10 +45,18 @@ body {
     color: $accent-color;
   }
 
+  // Adjust titles
   > div {
-    &.title1, &.title2 {
+    &.title1, &.title2, &.title7 {
       display: inline-block;
-      line-height: 1.1;
+    }
+
+    &.title1, &.title2 {
+      line-height: 1.1em;
+    }
+
+    &.title7 {
+      line-height: 1.2em;
     }
   }
 }
@@ -54,6 +72,7 @@ body {
   }
 }
 
+// TODO Use bootstrap modal
 .floating-dialog-background {
   position: fixed;
   height: calc(100vh);

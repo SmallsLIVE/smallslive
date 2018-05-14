@@ -1,0 +1,49 @@
+.supporter-main-container {
+  width: 100%;
+  padding: 20px;
+  align-items: center;
+
+  .confirm-button {
+    margin-top: 40px;
+  }
+
+  .supporter-card-data {
+    width: 100%;
+    input {
+      @include bordered-input;
+      margin: 3px;
+    }
+
+    .flex-row {
+      width: 100%;
+    }
+  }
+
+  .processing-message {
+    margin-top: 40px;
+  }
+}
+
+
+.supporter-text {
+  padding: 40px 200px;
+
+  h1 {
+    margin-bottom: 60px;
+  }
+
+  @media(max-width:$screen-xs-max) {
+    margin: 120px 0;
+  }
+
+  p {
+    line-height: 1.1em;
+  }
+
+  .big-letter {
+    position: relative;
+    left: 5px;
+    font-size: 3em;
+    transform: none;
+  }
+}

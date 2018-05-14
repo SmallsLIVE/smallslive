@@ -59,6 +59,8 @@
         </div>
       </div>
     </header>
+
+  {% block home_content %}
     <main>
       {% if not request.user.is_authenticated %}
         {% include 'home_banners.html' %}
@@ -113,6 +115,7 @@
         </section>
       </div>
     </main>
+    {% endblock %}
   </div>
 {% endblock%}
 

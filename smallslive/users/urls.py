@@ -19,4 +19,6 @@ urlpatterns = patterns('users.views',
     url(r'^signup/(?P<plan_name>\w+)/', 'signup_view', name="accounts_signup"),
     url(r'^signup/', 'signup_landing', name="signup_landing"),
     url(r'^', include('allauth.urls', app_name="allauth")),
+    url(r'^supporter/$', 'become_supporter', name="become_supporter"),
+    url(r'^supporter/completed/$', 'become_supporter_complete', name="become_supporter_complete"),
 )
