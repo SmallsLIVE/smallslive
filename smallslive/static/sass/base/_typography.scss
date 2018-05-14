@@ -115,6 +115,7 @@ $text-font-size-big: 1.4em;
 }
 
 .title4 {
+  font-size: 10px;
   @include title4;
 }
 
@@ -142,6 +143,10 @@ $text-font-size-big: 1.4em;
   text-transform: uppercase;
   transform: scaleY(1.3);
   line-height: 4.68em;
+}
+
+.title7 {
+  @include title7;
 }
 
 // Texts

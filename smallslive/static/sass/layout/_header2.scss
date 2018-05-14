@@ -18,7 +18,6 @@
 }
 
 @mixin white-border-button {
-  @include button1;
   height: $input-height;
   padding: 0 20px;
   border-radius: 2px;
@@ -28,7 +27,7 @@
     background-color: $white-transparent;
   }
 
-  &.button-bordered {
+  &:not(.no-border) {
     @include input-border;
   }
 
@@ -36,13 +35,6 @@
     color: inherit;
   }
 }
-
-.button-row {
-  button {
-    @include white-border-button;
-  }
-}
-
 
 @mixin bordered-input {
   @include input-border;
@@ -53,9 +45,48 @@
   height: $input-height;
   font-size: 1.2em;
 
+  background-color: $background-color;
+  padding: 8px;
   // TODO Global
   &:focus {
     outline: none;
+  }
+}
+
+.button-row {
+  input {
+    @include bordered-input;
+    @include button1;
+    width: auto;
+    min-width: 150px;
+    text-align: center;
+  }
+
+  a,
+  button {
+    color: black;
+  }
+
+  button,
+  p {
+    @include white-border-button;
+  }
+
+  &:not(.button-row-big) {
+    button,
+    p {
+      @include button1;
+    }
+  }
+
+  &.button-row-big {
+
+  }
+
+  &.button-row-margin {
+    * {
+      margin: 10px
+    }
   }
 }
 
@@ -74,7 +105,6 @@
 
   input {
     @include bordered-input;
-    background-color: $background-color;
-    padding: 8px 8px 8px 30px;
+    padding-left: 30px;
   }
 }
