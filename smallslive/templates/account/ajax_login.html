@@ -21,6 +21,10 @@
             <input type="password" class="form-control" name="password" placeholder="Password">
             <p class="form-error-text hidden" id="password-error"></p>
           </div>
+          <div class="form-group">
+            <p class="form-error-text hidden" id="all-errors"></p>
+          </div>
+
           <a class="forgot-password text4 text-grey"
              href="{% url "account_reset_password" %}">
             Forgot your Password?

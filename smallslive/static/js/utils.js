@@ -2,7 +2,7 @@ function getAjaxSubmitForForm(form, formFields) {
   return function ajaxSubmit(e) {
     e.preventDefault();
     formFields.forEach(function (fieldName) {
-      $("#" + fieldName + "-error").addClass('hidden');
+      form.find("#" + fieldName + "-error").addClass('hidden');
     });
     $.ajax({
       type: "POST",
@@ -18,14 +18,17 @@ function getAjaxSubmitForForm(form, formFields) {
         var response = jqXHR.responseJSON;
         formFields.forEach(function (fieldName) {
           if (response.form_errors[fieldName]) {
-            $("input[name=" + fieldName + "]").parent().addClass('has-error');
-            $("#" + fieldName + "-error").removeClass('hidden').text(response.form_errors[fieldName][0]);
+            $(form).find("input[name=" + fieldName + "]").parent().addClass('has-error');
+            $(form).find("#" + fieldName + "-error")
+              .removeClass('hidden')
+              .text(response.form_errors[fieldName][0]);
           }
         });
 
         if (response.form_errors.__all__) {
-          $("input[name=password1]").parent().addClass('has-error');
-          $("#password1-error").removeClass('hidden').text(response.form_errors.__all__[0]);
+          $(form).find("#all-errors").parent().addClass('has-error');
+          $(form).find("#all-errors")
+            .removeClass('hidden').text(response.form_errors.__all__[0]);
         }
       }
     });

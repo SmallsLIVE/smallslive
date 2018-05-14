@@ -26,6 +26,10 @@ $banners-height: 270px;
 
         #banner-title {
           @include title4;
+          position: relative;
+          top: -16px;
+          padding: 24px 0;
+          line-height: 1em;
         }
 
         #banner-button {
