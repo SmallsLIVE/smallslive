@@ -40,7 +40,6 @@
   @include input-border;
   @include text4;
   box-shadow: none;
-  width: 100%;
   border-radius: $input-border / 2;
   height: $input-height;
   font-size: 1.2em;
@@ -54,10 +53,13 @@
 }
 
 .button-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
   input {
     @include bordered-input;
     @include button1;
-    width: auto;
     min-width: 150px;
     text-align: center;
   }
@@ -80,12 +82,34 @@
   }
 
   &.button-row-big {
+    button,
+    p, input {
+      @include title7;
+      line-height: 1em;
+      min-height: 50px;
 
+      &.active {
+        border: 1px solid $accent-color;
+      }
+    }
+
+    input {
+      width: 50px;
+      &::placeholder {
+        @include reen-kufi-normal;
+        padding-bottom: -50px;
+        // Compensate text transform
+        transform: scaleY(0.7);
+        position: relative;
+        top: -10px;
+        font-size: 10px;
+      }
+    }
   }
 
   &.button-row-margin {
     * {
-      margin: 10px
+      margin: 0 10px
     }
   }
 }
@@ -105,6 +129,7 @@
 
   input {
     @include bordered-input;
+    width: 60%;
     padding-left: 30px;
   }
 }
