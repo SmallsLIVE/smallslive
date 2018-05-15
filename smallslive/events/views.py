@@ -114,8 +114,10 @@ class HomepageView(ListView):
             context.update(_get_most_popular())
             context['popular_select'] = 'alltime'
 
+        context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
         return context
+
 
 homepage = HomepageView.as_view()
 
@@ -228,6 +230,13 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
         context['artists'].helper = GigPlayedInlineFormSetHelper()
         context['show_times'] = json.dumps(settings.SHOW_TIMES)
         return context
+
+    def get_form(self, form_class):
+        form = super(EventEditView, self).get_form(form_class)
+        if hasattr(self.object, 'staff_picked'):
+            form.initial['staff_pick'] = True
+
+        return form
 
 
     # def test_func(self, user):
