@@ -11,6 +11,14 @@
     justify-content: space-between;
   }
 
+  &.items-flex-start {
+    align-items: flex-start;
+  }
+
+  &.items-flex-stretch {
+    align-items: stretch;
+  }
+
   &.wrap {
     flex-wrap: wrap;
   }
@@ -27,7 +35,6 @@
 .flex-column{
   flex-direction: column;
 }
-
 
 // Helpers
 @mixin shadow-text {
@@ -50,3 +57,4 @@
   -webkit-appearance: none;
   margin: 0;
 }
+

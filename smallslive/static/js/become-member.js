@@ -48,7 +48,9 @@ $(document).ready(function(){
 
   var resetCustom = function () {
     $(yearlyCustom).val('');
+    $(yearlyCustom).removeClass('active');
     $(montlyCustom).val('');
+    $(montlyCustom).removeClass('active');
   };
 
   var setSelected = function (type, quantity) {
@@ -57,7 +59,10 @@ $(document).ready(function(){
 
     if (quantity > 0) {
       updatePaymentInfo();
+    } else {
+      resetCustom();
     }
+
     checkConfirmButton()
   };
 
@@ -91,8 +96,11 @@ $(document).ready(function(){
       resetButtons();
       $(yearlyCustom).val('');
       setSelected('month', value);
+      $(montlyCustom).addClass('active');
+      $(yearlyCustom).removeClass('active');
     } else {
       setSelected('', 0);
+      $(montlyCustom).removeClass('active');
     }
   });
 
@@ -102,7 +110,10 @@ $(document).ready(function(){
       resetButtons();
       $(montlyCustom).val('');
       setSelected('year', value);
+      $(yearlyCustom).addClass('active');
+      $(montlyCustom).removeClass('active');
     } else {
+      $(yearlyCustom).removeClass('active');
       setSelected('', 0);
     }
   });
@@ -119,7 +130,10 @@ $(document).ready(function(){
 
   var checkConfirmButton = function () {
     if (currentStep === 1) {
-      if (selectedData.quantity > 0) {
+      if (
+        selectedData.type === 'month' && selectedData.quantity >= 10 ||
+        selectedData.type === 'year' && selectedData.quantity >= 1000
+      ) {
         $(confirmButton).prop('disabled', false);
       } else {
         $(confirmButton).prop('disabled', true);
@@ -132,8 +146,16 @@ $(document).ready(function(){
 
     if (currentStep === 2) {
       $(confirmButton).text('Confirm Payment');
+    } else if (currentStep === 0) {
+      $(confirmButton).text('Continue');
     } else {
       $(confirmButton).text('Confirm');
+    }
+
+    if (currentStep === 0) {
+      $(backButton).hide();
+    } else {
+      $(backButton).show();
     }
   };
   var showPanel = function (step) {

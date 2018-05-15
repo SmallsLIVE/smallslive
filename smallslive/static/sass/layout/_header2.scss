@@ -61,8 +61,12 @@
   input {
     @include bordered-input;
     @include button1;
-    min-width: 150px;
+    min-width: 125px;
     text-align: center;
+
+    &.bigger {
+      min-width: 200px;
+    }
   }
 
   a,
@@ -84,7 +88,8 @@
 
   &.button-row-big {
     button,
-    p, input {
+    p,
+    input {
       @include title7;
       line-height: 1em;
       min-height: 50px;
@@ -95,7 +100,6 @@
     }
 
     input {
-      width: 50px;
       &::placeholder {
         @include reen-kufi-normal;
         padding-bottom: -50px;
@@ -110,23 +114,29 @@
 
   &.button-row-margin {
     * {
-      margin: 0 10px
+      margin: 0 10px;
     }
   }
 }
 
-.search-input {
+
+@mixin input-icon($content, $color) {
   position: relative;
 
   &::before {
-    content: '\f002';
+    content: $content;
     font-family: 'FontAwesome', serif;
-    color: $accent-color;
+    color: $color;
     position: absolute;
     left: 11px;
     font-size: 1.8em;
     top: 7px;
-  }
+    z-index: 1;
+  };
+}
+
+.search-input {
+  @include input-icon('\f002', $accent-color);
 
   input {
     @include bordered-input;
