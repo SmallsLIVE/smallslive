@@ -33,11 +33,15 @@
   }
 
   @media(max-width:$screen-xs-max) {
-    margin: 120px 0;
+    padding: 0;
+    h1 {
+      margin-bottom: 150px;
+    }
   }
 
   p {
     line-height: 1.1em;
+    margin-bottom: 80px;
   }
 
   .big-letter {
