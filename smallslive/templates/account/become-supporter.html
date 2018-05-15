@@ -63,7 +63,7 @@
           </div>
           <div class="supporter-card-data">
             <form method="POST" role="form" id="formSupporter"
-                  action="{% url 'accounts_signup' plan_name='free' %}">
+                  action="{% url 'become_supporter' %}">
               {% csrf_token %}
               <input type="text" id="hiddenTypeInput" name="type" hidden>
               <input type="number" id="hiddenQuantityInput" name="quantity" hidden>

@@ -30,6 +30,13 @@ from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, R
 class BecomeSupporterView(TemplateView):
     template_name = 'account/become-supporter.html'
 
+    # FIXME Dont mock up response
+    def post(self, request, *args, **kwargs):
+        return _ajax_response(
+            request, redirect(reverse('become_supporter_complete'))
+
+        )
+
 
 become_supporter = BecomeSupporterView.as_view()
 
@@ -53,7 +60,6 @@ class SignupLandingView(TemplateView):
 signup_landing = SignupLandingView.as_view()
 
 
-# FIXME Using this view to mock become support post
 class SignupView(AllauthSignupView):
     form_class = UserSignupForm
 
@@ -86,13 +92,6 @@ class SignupView(AllauthSignupView):
 
     def get_success_url(self):
         return reverse('home')
-
-    # FIXME Dont mock up response
-    def post(self, request, *args, **kwargs):
-        return _ajax_response(
-            request, redirect(reverse('become_supporter_complete'))
-
-        )
 
 
 signup_view = SignupView.as_view()
