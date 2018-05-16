@@ -127,13 +127,10 @@
 {% endblock %}
 
 {% block extra_js %}
-  <!-- Bootstrap datepicker JavaScript -->
-  <script src="{% static 'js/white-border-select.js' %}"></script>
   <script>
     $(document).ready(function(){
       var filter = $('#most-popular-filter');
       var mostPopularFilter = $('#most-popular-container');
-      var userMenu = $('#userMenu');
 
       var setMostPopular = function (value) {
         $.get("{% url 'event_popular_ajax' %}?range=" + value,
@@ -145,8 +142,10 @@
         setMostPopular(filter.val());
       });
 
+      var userMenu = $('#userMenu');
       userMenu.on('change', function () {
         if (userMenu.val() === 'logout') {
+          console.log('Logging out');
           window.location = "{% url 'account_logout' %}";
         }
       });
@@ -155,9 +154,6 @@
         filter.val('{{ popular_select }}');
         filter.trigger("change");
       {% endif %}
-
-      userMenu.val('current');
-      userMenu.trigger('change');
 
       var signInModal = $('#logIn');
       var becomeMemberModal = $('#becomeMemberDialog');

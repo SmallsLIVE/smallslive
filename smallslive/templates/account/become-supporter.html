@@ -3,7 +3,11 @@
 
 {% block home_content %}
   <div class="flex-column supporter-main-container">
-    <p class="title2 accent-color">Become a supporting member</p>
+    {% if not completed %}
+      <p class="title2 accent-color">Become a supporting member</p>
+    {% else %}
+      <p class="title2 accent-color">You are now a supporting member</p>
+    {% endif %}
     <div class="flex-column">
       <div id="supporterSteps" class="button-row button-row-margin">
         <button disabled {% if not completed %}class="active"{% endif %}>Step 1</button>
@@ -100,9 +104,9 @@
         </div>
       </div>
       {% else %}
-        <div id="supporterStep4">
-          <div class="supporter-text flex-column">
-            <h1 class="title3">Welcome</h1>
+        <div id="supporterStep4" class="flex-column supporter-text-container">
+          <h1 class="title3">Welcome</h1>
+          <div class="supporter-text">
             <p class="title7"><span class="big-letter">T</span>hank you for becoming a supporting member.
               You now have unlimited access to the <span
                       class="accent-color">live stream</span> and the <span
@@ -129,11 +133,5 @@
       </div>
     {% endif %}
   </div>
-{% endblock %}
-
-{% block extra_js %}
-  <script type="text/javascript" src="{% static 'js/utils.js' %}"></script>
-  {% if not completed %}
-    <script src="{% static 'js/become-member.js' %}"></script>
-  {% endif %}
+  <script src="{% static 'js/become-member.js' %}"></script>
 {% endblock %}

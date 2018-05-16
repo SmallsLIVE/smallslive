@@ -326,7 +326,9 @@ PIPELINE_JS = {
           'js/raphael-min.js',
           'js/imgCoverEffect.min.js',
           'js/base.js',
-          'js/signup_form.js'
+          'js/utils.js',
+          'js/signup_form.js',
+          'js/white-border-select.js',
         ),
         'output_filename': 'js/main.js',
     },

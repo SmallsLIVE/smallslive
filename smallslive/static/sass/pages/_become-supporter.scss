@@ -3,6 +3,10 @@
   padding: 20px;
   align-items: center;
 
+  > p {
+    margin-bottom: 25px;
+  }
+
   .confirm-button {
     margin-top: 70px;
   }
@@ -24,16 +28,19 @@
   }
 }
 
+.supporter-text-container {
+  h1 {
+    margin-bottom: -30px;
+    margin-top: 80px;
+  }
+}
 
 .supporter-text {
-  padding: 40px 200px;
-
-  h1 {
-    margin-bottom: 60px;
-  }
+  padding: 130px 200px 20px;
 
   @media(max-width:$screen-xs-max) {
     padding: 0;
+
     h1 {
       margin-bottom: 150px;
     }
@@ -46,9 +53,10 @@
 
   .big-letter {
     position: relative;
-    left: 5px;
+    left: -10px;
     font-size: 3em;
     transform: none;
+    margin-right: -15px;
   }
 }
 
