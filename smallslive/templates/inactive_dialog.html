@@ -17,8 +17,18 @@
           spam folder as well.</p>
       </div>
       <div class="text4">
-        <p><span>Didn't get an email?</span> <a class="accent-color" href="">Resend
-          confirmation email</a></p>
+        <span><span>Didn't get an email?</span></span>
+        <form id="resendConfirmationForm"
+              action="{% url 'account_email' %}"
+              method="post" style="display: inline-block">
+          {% csrf_token %}
+          <input id="user_email_hidden" type="hidden" name="email" value="{{ user.email }}" >
+          <a class="accent-color"
+             href="javascript:{}"
+             onclick="document.getElementById('resendConfirmationForm').submit(); return false;">
+            Resend confirmation email
+          </a>
+        </form>
         <p><span>Or contact support at</span>
           <a class="accent-color" href="mailto:accountsupport@smallslive.com">
             accountsupport@smallslive.com
