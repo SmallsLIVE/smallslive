@@ -42,21 +42,25 @@
           <a href="{% url 'contact-and-info' %}"><button class="no-border">Info</button></a>
           <a href=""><button class="no-border">Education</button></a>
           <a href="{% url "promotions:home" %}"><button class="no-border">Store</button></a>
-          {% if not request.user.is_authenticated %}
-          <button href="#logIn" data-toggle="modal">
-              Sign In
-          </button>
-
-          {% else %}
-            <button>
-              {% if request.user.first_name %}
-                {{ request.user.first_name }}
-              {% else %}
-                {{ request.user.email }}
-              {% endif %}
-            </button>
-          {% endif %}
         </div>
+        {% if not request.user.is_authenticated %}
+          <button class="white-border-button" href="#logIn" data-toggle="modal">
+            Sign In
+          </button>
+        {% else %}
+          <div class="white-border-select" style="width:150px;">
+            <select id="userMenu">
+              <option value="current" noSelect="1" selected="selected">
+                {% if request.user.first_name %}
+                  {{ request.user.first_name }}
+                {% else %}
+                  {{ request.user.email }}
+                {% endif %}
+              </option>
+              <option value="logout">Sign Out</option>
+            </select>
+          </div>
+        {% endif %}
       </div>
     </header>
 
@@ -125,11 +129,11 @@
 {% block extra_js %}
   <!-- Bootstrap datepicker JavaScript -->
   <script src="{% static 'js/white-border-select.js' %}"></script>
-  <script src="{% static 'js/utils.js' %}"></script>
   <script>
     $(document).ready(function(){
       var filter = $('#most-popular-filter');
       var mostPopularFilter = $('#most-popular-container');
+      var userMenu = $('#userMenu');
 
       var setMostPopular = function (value) {
         $.get("{% url 'event_popular_ajax' %}?range=" + value,
@@ -141,10 +145,19 @@
         setMostPopular(filter.val());
       });
 
+      userMenu.on('change', function () {
+        if (userMenu.val() === 'logout') {
+          window.location = "{% url 'account_logout' %}";
+        }
+      });
+
       {% if popular_select %}
         filter.val('{{ popular_select }}');
         filter.trigger("change");
       {% endif %}
+
+      userMenu.val('current');
+      userMenu.trigger('change');
 
       var signInModal = $('#logIn');
       var becomeMemberModal = $('#becomeMemberDialog');

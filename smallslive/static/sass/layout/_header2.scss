@@ -37,6 +37,10 @@
   }
 }
 
+.white-border-button {
+  @include white-border-button;
+}
+
 @mixin bordered-input {
   @include input-border;
   @include text4;
