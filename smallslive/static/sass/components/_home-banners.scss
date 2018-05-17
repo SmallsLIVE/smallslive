@@ -20,7 +20,7 @@ $banners-height: 270px;
       border-radius: 20px;
 
       .banner-title-button {
-        padding: 20px 30px;
+        padding: 25px 40px;
         display: flex;
         flex-direction: column;
 
@@ -30,6 +30,12 @@ $banners-height: 270px;
           top: -16px;
           padding: 24px 0;
           line-height: 1em;
+          text-wrap: normal;
+
+          &.custom-banner-text {
+            font-size: 5em;
+            max-width: 355px;
+          }
         }
 
         #banner-button {

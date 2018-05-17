@@ -57,7 +57,7 @@
       supporter: {
         text: 'Your supporting pledge goes <span class="accent-color">directly to your favourite artists</span> & helps make smallsville possible through our <span class="accent-color">smallslive revenue share</span>. Supporting members have unlimited access to our archive of <span class="accent-color">every concert</span> performed at smalls + mezzrow',
         button: 'Become a supporter',
-        title: 'Why become a supporter',
+        title: 'Why become a supporter?',
         click: function() {
           window.location = '{% url 'become_supporter' %}';
         }
@@ -66,30 +66,39 @@
 
     var bannerContainer = $('#banner-container');
     var bannerOptions = $('#banner-options');
-    $('#banner-archive-box').on('click', function () {
+    $('#banner-archive-box').on('mouseenter', function () {
       setContainerBanner('archive');
     });
 
-    $('#banner-live-box').on('click', function () {
+    $('#banner-live-box').on('mouseenter', function () {
       setContainerBanner('live stream');
     });
 
-    $('#banner-mission-box').on('click', function () {
+    $('#banner-mission-box').on('mouseenter', function () {
       setContainerBanner('mission');
     });
 
+    bannerContainer.on('mouseleave', function () {
+
+    });
 
     function setContainerBanner(src) {
       var banner = bannerText[src];
       bannerContainer.find('#banner-text').html(banner.text);
-      bannerContainer.find('#banner-title').text(src);
+      var find = bannerContainer.find('#banner-title');
+      if (banner.title) {
+        find.text(banner.title);
+        find.addClass('custom-banner-text');
+      } else {
+        find.text(src);
+        find.removeClass('custom-banner-text');
+      }
       var bannerButton = bannerContainer.find('#banner-button');
       bannerButton.text(banner.button);
       bannerButton.on('click', function ($event) {
         $event.stopPropagation();
         banner.click();
       });
-
 
       bannerContainer.show();
       bannerOptions.hide();
@@ -98,7 +107,7 @@
     {% if active %}
       setContainerBanner('{{ active }}');
     {% else %}
-      bannerContainer.on('click', function () {
+      bannerContainer.on('mouseleave', function () {
         bannerOptions.show();
         bannerContainer.hide();
       });
