@@ -8,6 +8,40 @@ $text-font-size-small: 1em;
 $text-font-size-medium: 1.2em;
 $text-font-size-big: 1.4em;
 
+@font-face {
+  font-family: 'Oswald';
+  src: url('/static/fonts/Oswald/Oswald-ExtraLight.ttf');
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/static/fonts/Oswald/Oswald-Light.ttf');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/static/fonts/Oswald/Oswald-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/static/fonts/Oswald/Oswald-Medium.ttf');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/static/fonts/Oswald/Oswald-SemiBold.ttf');
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Oswald';
+  src: url('/static/fonts/Oswald/Oswald-Bold.ttf');
+  font-weight: bold;
+}
 
 @mixin lato-light {
   font-family: 'Lato', $helvetica;
@@ -41,7 +75,6 @@ $text-font-size-big: 1.4em;
   font-weight: 900;
 }
 
-
 // New Look and feel
 
 // Font families mixins
@@ -53,6 +86,15 @@ $text-font-size-big: 1.4em;
   font-weight: 400;
 }
 
+@mixin extra-light {
+  font-weight: 100;
+}
+
+@mixin light {
+  font-weight: 300;
+}
+
+
 @mixin oswald-regular {
   font-family: 'Oswald', sans-serif;
   @include regular;
@@ -61,6 +103,16 @@ $text-font-size-big: 1.4em;
 @mixin oswald-semi-bold {
   font-family: 'Oswald', sans-serif;
   @include semi-bold;
+}
+
+@mixin oswald-extra-light {
+  font-family: 'Oswald', sans-serif;
+  @include extra-light;
+}
+
+@mixin oswald-light {
+  font-family: 'Oswald', sans-serif;
+  @include light;
 }
 
 @mixin reen-kufi-normal {
@@ -105,7 +157,6 @@ $text-font-size-big: 1.4em;
   @include title3;
 }
 
-
 @mixin title4 {
   @include oswald-semi-bold;
   font-size: 10.37em;
@@ -138,6 +189,7 @@ $text-font-size-big: 1.4em;
 
 @mixin title7 {
   @include oswald-regular;
+  @include oswald-light;
   font-size: 3.35em;
   letter-spacing: 0.02em;
   text-transform: uppercase;
