@@ -47,12 +47,29 @@
           width: 100%;
           left: 0;
           top: 0;
-          font-size: 60px;
+          font-size: 25px;
           opacity: 0;
-
           display: flex;
           justify-content: center;
           align-items: center;
+
+          .fa-thin-circle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            $circle-size: 60px;
+
+            height: $circle-size;
+            width: $circle-size;
+
+            border-radius: $circle-size / 2;
+            border: 1px solid $accent-color;
+
+            &:before {
+              left: 3px;
+              position: relative;
+            }
+          }
         }
       }
 
