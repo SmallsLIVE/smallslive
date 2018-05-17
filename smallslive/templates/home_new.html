@@ -32,7 +32,7 @@
             </a>
           </div>
           <div class="search-input">
-            <input type="text">
+            <input type="text" placeholder="Search">
           </div>
         </div>
 
@@ -51,8 +51,9 @@
           <div class="white-border-select">
             <select id="userMenu">
               <option value="current" noSelect="1" selected="selected">
-                {% if request.user.first_name %}
-                  {{ request.user.first_name }}
+                {% if request.user.first_name or request.user.last_name%}
+                  {% if request.user.first_name %}{{ request.user.first_name }}{% endif %}
+                  {% if request.user.last_name %} {{ request.user.last_name }}{% endif %}
                 {% else %}
                   {{ request.user.email }}
                 {% endif %}
