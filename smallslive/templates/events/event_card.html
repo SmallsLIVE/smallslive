@@ -5,16 +5,7 @@
   <div class="event-picture-container">
     <div class="picture-border">
       <div class="event-picture">
-        <img
-          {% if event.photo %}
-            {% if event.photo_crop_box %}
-              src="{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=600 %}"
-            {% else %}
-              src="{% thumbor_url event.photo.url|urlencode height=360 width=600 smart=True %}"
-            {% endif %}
-          {% else %}
-              src="{% static "image/no-event-image-placeholder.jpg" %}"
-          {% endif %} alt="">
+        {% include 'partials/thumbored_picture.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
       </div>
       <div class="icon-overlay">
         <a href="{{ event.get_absolute_url }}"><i
