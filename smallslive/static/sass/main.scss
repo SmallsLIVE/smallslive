@@ -30,6 +30,7 @@
 @import 'pages/style-guide';
 @import 'pages/home';
 @import 'pages/become-supporter';
+@import 'pages/event';
 
 
 @import 'components/about-smalls';
@@ -39,7 +40,7 @@
 @import 'components/artist-events';
 @import 'components/buy-album';
 @import 'components/event-description';
-@import 'components/event-details';
+//@import 'components/event-details';
 @import 'components/event-object';
 @import 'components/event-tracks';
 @import 'components/event-video';
@@ -63,6 +64,7 @@
 @import 'components/search-instrument-object';
 @import 'components/search-nav';
 @import 'components/search-store-object';
+@import 'components/section-title';
 @import 'components/social-media-btn';
 @import 'components/video-audio';
 @import 'components/login-modal';
@@ -85,7 +87,7 @@
 @import 'components/subscription-settings';
 @import 'components/archive-lists';
 @import 'components/audio-player';
-@import 'components/event-view';
+//@import 'components/event-view';
 @import 'components/store-base';
 @import 'components/my-downloads';
 @import 'components/admin-metrics';
