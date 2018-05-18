@@ -54,6 +54,11 @@ class EventQuerySet(models.QuerySet):
             recordings__media_file__media_type='video').annotate(
             play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-added')
 
+    def last_staff_picks(self):
+        return self.filter(
+            staff_picked__isnull=False
+        ).order_by('-staff_picked__date_picked')
+
 
 class Event(TimeStampedModel):
     SETS = Choices(('22:00-23:00', '10-11pm'), ('23:00-0:00', '11-12pm'), ('0:00-1:00', '12-1am'))
@@ -380,3 +385,8 @@ class Venue(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class StaffPick(models.Model):
+    event = models.OneToOneField('events.Event', related_name='staff_picked')
+    date_picked = models.DateTimeField()

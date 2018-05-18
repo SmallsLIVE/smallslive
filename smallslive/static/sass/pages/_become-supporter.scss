@@ -1,0 +1,88 @@
+.supporter-main-container {
+  padding: 20px;
+  align-items: center;
+  position: relative;
+
+  overflow: hidden;
+  margin: 0 200px;
+  min-height: 800px;
+
+  > p {
+    margin-bottom: 25px;
+  }
+
+  .confirm-button {
+    margin-top: 70px;
+  }
+
+  .supporter-card-data {
+    width: 100%;
+    input {
+      @include bordered-input;
+      margin: 3px;
+    }
+
+    .flex-row {
+      width: 100%;
+    }
+  }
+
+  .processing-message {
+    margin-top: 40px;
+  }
+}
+
+.supporter-text-container {
+  h1 {
+    margin-bottom: -30px;
+    margin-top: 80px;
+  }
+}
+
+.supporter-text {
+  padding: 130px 200px 20px;
+
+  @media(max-width:$screen-xs-max) {
+    padding: 0;
+
+    h1 {
+      margin-bottom: 150px;
+    }
+  }
+
+  p {
+    line-height: 1.1em;
+    margin-bottom: 80px;
+  }
+
+  .big-letter {
+    position: relative;
+    left: -10px;
+    font-size: 3em;
+    font-weight: 600;
+    transform: none;
+    margin-right: -15px;
+  }
+}
+
+.button-row {
+  .custom-input {
+    @include input-icon('$', black);
+
+    &:before {
+      top: 2px;
+      left: 20px;
+      @include oswald-regular;
+      font-size: 3.35em;
+      transform: scaleY(1.3);
+
+    }
+  }
+
+  input {
+    &.active {
+      border: 1px solid $accent-color;
+      background-color: white;
+    }
+  }
+}

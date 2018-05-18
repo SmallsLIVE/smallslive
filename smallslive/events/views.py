@@ -114,8 +114,10 @@ class HomepageView(ListView):
             context.update(_get_most_popular())
             context['popular_select'] = 'alltime'
 
+        context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
         return context
+
 
 homepage = HomepageView.as_view()
 
@@ -228,6 +230,13 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
         context['artists'].helper = GigPlayedInlineFormSetHelper()
         context['show_times'] = json.dumps(settings.SHOW_TIMES)
         return context
+
+    def get_form(self, form_class):
+        form = super(EventEditView, self).get_form(form_class)
+        if hasattr(self.object, 'staff_picked'):
+            form.initial['staff_pick'] = True
+
+        return form
 
 
     # def test_func(self, user):
@@ -612,11 +621,14 @@ class ArchiveView(ListView):
         cursor.execute('SELECT DISTINCT(e.start::date) FROM "events_event" AS e INNER JOIN "events_recording" AS rec'
                        ' ON e.id=rec.event_id WHERE date_part(\'hour\', e.start) > 12 ORDER BY start DESC LIMIT 14 OFFSET %s', [two_week_interval])
         dates = [d[0] for d in cursor.fetchall()]
-        date_range_start = datetime.combine(dates[-1], std_time(10, 0))
-        self.date_start = date_range_start
-        date_range_end = dates[0] + timedelta(days=1)
-        date_range_end = datetime.combine(date_range_end, std_time(4, 0))
-        events = Event.objects.exclude(recordings=None).filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
+        events = Event.objects.exclude(recordings=None)
+        self.date_start = timezone.now()
+        if dates:
+            date_range_start = datetime.combine(dates[-1], std_time(10, 0))
+            self.date_start = date_range_start
+            date_range_end = dates[0] + timedelta(days=1)
+            date_range_end = datetime.combine(date_range_end, std_time(4, 0))
+            events = events.filter(start__gte=date_range_start, start__lte=date_range_end).order_by('start')
 
         venue = self.request.GET.get('venue')
         if venue is not None:

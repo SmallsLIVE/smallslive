@@ -44,8 +44,8 @@
 </head>
 <body class="{% block body_class %}default{% endblock %}">
 {% include "account/ajax_login.html" %}
+{% include "account/ajax_become_member.html" %}
 
-{% include 'inactive_dialog.html' %}
 
 <!-- ALERT TEST -->
 {% if messages %}
@@ -98,6 +98,7 @@
   ga('create', 'UA-68202880-1', 'auto');
   ga('send', 'pageview');
 </script>
+<script src="{% static 'js/utils.js' %}"></script>
 {% block extra_js %}{% endblock %}
 </body>
 </html>

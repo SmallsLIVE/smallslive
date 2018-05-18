@@ -1,10 +1,16 @@
+{% load full_static %}
+
 <div class="banners visible-lg">
   <div id="banner-container">
+    {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
+    <div class="lighten-image">
+      {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url crop_box=event.photo_crop_box %}
+    </div>
     <div class="banner-border">
       <div class="banner-title-button">
         <div id="banner-title">Archive</div>
         <div>
-          <button id="banner-button" class="button-bordered"></button>
+          <button id="banner-button"></button>
         </div>
       </div>
       {# TODO Use flex helpers#}
@@ -16,12 +22,24 @@
   {% if not active %}
   <div id="banner-options" class="banner-options">
     <div id="banner-archive-box" class="banner-option">
+      {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
+      <div class="darked-image">
+        {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url crop_box=event.photo_crop_box %}
+      </div>
       <div class="title4">Archive</div>
     </div>
     <div id="banner-live-box" class="banner-option shadow-text">
+      {% fullstatic 'image/banners/live.jpg' as banner_picture_url %}
+      <div class="darked-image">
+        {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url crop_box=event.photo_crop_box %}
+      </div>
       <div class="title4">Live</div>
     </div>
     <div id="banner-mission-box" class="banner-option">
+      {% fullstatic 'image/banners/mission.jpg' as banner_picture_url %}
+      <div class="darked-image">
+        {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url crop_box=event.photo_crop_box %}
+      </div>
       <div class="title4">Mission</div>
     </div>
   </div>
@@ -29,47 +47,76 @@
 </div>
 <script>
   $(document).ready(function(){
+
+    var showBecomeMemberModal = function() {
+      var becomeMember = $('#becomeMemberButton');
+      becomeMember.click();
+    };
+
     var bannerText = {
       archive: {
         text: '<span class="accent-color">Every show</span> at smalls + mezzrow has been recorded and archived since 2007. Supporting members enjoy <span class="accent-color">unlimited access</span> to our archive. Our musicians are paid royalties through our unique <span class="accent-color">revenue share system.</span>',
-        button: 'Learn More'
+        button: 'Learn More',
+        click: function() {
+          window.location = '{% url 'archive' %}';
+        }
       },
       'live stream': {
         text: 'Our <span class="accent-color">live stream</span> has expanded our 60 seat clubs into a worlwide community of jazz fans and supporters. <span class="accent-color">Sign up for free</span> to watch our live stram every night.',
-        button: 'Become a member'
+        button: 'Become a member',
+        click: showBecomeMemberModal
 
       },
       mission: {
         text: 'We belive <span class="accent-color">world peace</span> is possible through music and musical community. Our goal is to <span class="accent-color">broadcast and document the music</span> performed in our venues each night. Our initiative is to create a <span class="accent-color">fair reveneue share model</span>, giving the jazz community means to directly benefit musicians and supporting venues',
-        button: 'Become a member'
+        button: 'Become a member',
+        click: showBecomeMemberModal
       },
       supporter: {
         text: 'Your supporting pledge goes <span class="accent-color">directly to your favourite artists</span> & helps make smallsville possible through our <span class="accent-color">smallslive revenue share</span>. Supporting members have unlimited access to our archive of <span class="accent-color">every concert</span> performed at smalls + mezzrow',
         button: 'Become a supporter',
-        title: 'Why become a supporter'
+        title: 'Why become a supporter?',
+        click: function() {
+          window.location = '{% url 'become_supporter' %}';
+        }
       }
     };
 
     var bannerContainer = $('#banner-container');
     var bannerOptions = $('#banner-options');
-    $('#banner-archive-box').on('click', function () {
+    $('#banner-archive-box').on('mouseenter', function () {
       setContainerBanner('archive');
     });
 
-    $('#banner-live-box').on('click', function () {
+    $('#banner-live-box').on('mouseenter', function () {
       setContainerBanner('live stream');
     });
 
-    $('#banner-mission-box').on('click', function () {
+    $('#banner-mission-box').on('mouseenter', function () {
       setContainerBanner('mission');
     });
 
+    bannerContainer.on('mouseleave', function () {
+    });
 
     function setContainerBanner(src) {
       var banner = bannerText[src];
       bannerContainer.find('#banner-text').html(banner.text);
-      bannerContainer.find('#banner-title').text(src);
-      bannerContainer.find('#banner-button').text(banner.button);
+      var find = bannerContainer.find('#banner-title');
+      if (banner.title) {
+        find.text(banner.title);
+        find.addClass('custom-banner-text');
+      } else {
+        find.text(src);
+        find.removeClass('custom-banner-text');
+      }
+      var bannerButton = bannerContainer.find('#banner-button');
+      bannerButton.text(banner.button);
+      bannerButton.on('click', function ($event) {
+        $event.stopPropagation();
+        banner.click();
+      });
+
       bannerContainer.show();
       bannerOptions.hide();
     }
@@ -77,7 +124,7 @@
     {% if active %}
       setContainerBanner('{{ active }}');
     {% else %}
-      bannerContainer.on('click', function () {
+      bannerContainer.on('mouseleave', function () {
         bannerOptions.show();
         bannerContainer.hide();
       });

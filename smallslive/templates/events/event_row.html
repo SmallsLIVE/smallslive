@@ -9,19 +9,10 @@
       <div class="event-picture-container">
         <div class="picture-border">
           <div class="event-picture">
-            <img
-             {% if event.photo %}
-                {% if event.photo_crop_box %}
-                  src="{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=600 %}"
-                {% else %}
-                  src="{% thumbor_url event.photo.url|urlencode height=360 width=600 smart=True %}"
-                {% endif %}
-             {% else %}
-                src="{% static "image/no-event-image-placeholder.jpg" %}"
-             {% endif %} alt="">
+            {% include 'partials/thumbored_picture.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
           </div>
           <div class="icon-overlay">
-            <i class="fa fa-play-circle-o"></i>
+            <i class="fa fa-play fa-thin-circle"></i>
           </div>
         </div>
       </div>
@@ -31,7 +22,7 @@
           <span class="accent-box">Live Now</span>
         {% else %}
           <span>
-            {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}
+            {{ event.start|date:"g:i A" }} & {{ event.end|date:"g:i A" }}
           </span>
         {% endif %}
       </div>

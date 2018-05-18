@@ -1,0 +1,142 @@
+{% extends "home_new.html" %}
+{% load static from staticfiles %}
+{% load full_static %}
+
+{% block home_content %}
+  <div class="flex-column supporter-main-container">
+    {% fullstatic 'image/banners/supporter.jpg' as banner_picture_url %}
+    <div class="lighten-image">
+      {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url crop_box=event.photo_crop_box %}
+    </div>
+    {% if not completed %}
+      <p class="title2 accent-color">Become a supporting member</p>
+    {% else %}
+      <p class="title2 accent-color">You are now a supporting member</p>
+    {% endif %}
+    <div class="flex-column">
+      <div id="supporterSteps" class="button-row button-row-margin">
+        <button disabled {% if not completed %}class="active"{% endif %}>Step 1</button>
+        <button disabled>Step 2</button>
+        <button disabled>Step 3</button>
+        <button disabled {% if completed %}class="active"{% endif %}>Step 4</button>
+      </div>
+      {% if not completed %}
+      <div id="supporterStep1">
+        <div class="supporter-text flex-column">
+          <p class="title7"><span class="big-letter">T</span>hank you for your consideration in becoming a smallslive supporting member. Supporting members make <span class="accent-color">monthly pledges</span> or <span class="accent-color">yearly donations</span>.
+            <br>
+            <br>
+          The revenue is distributed to our musicians based on the <span class="accent-color">Smallslive revenue share aggreement</span>. Your support directly pays the musicians and subsidizes the club's expenses.
+          </p>
+        </div>
+      </div>
+      <div id="supporterStep2" style="display: none">
+        <div class="flex-column">
+          <div class="section-title section-title-padded">
+            <div class="title7">Monthly Pledge</div>
+          </div>
+          <p class="text4">Includes Monthly Access To Archive</p>
+          <div id="monthlyPledge" class="button-row button-row-big button-row-margin">
+            <button>$ 10</button>
+            <button>$ 20</button>
+            <button>$ 50</button>
+            <div class="custom-input">
+              <input type="number" class="no-spinners" placeholder="Set your own">
+            </div>
+          </div>
+        </div>
+        <div class="flex-column">
+          <div class="section-title section-title-padded">
+            <div class="title7">Yearly Donation</div>
+          </div>
+          <p class="text4">Includes One Year Access To Archive</p>
+          <div id="yearlyPledge" class="button-row button-row-big button-row-margin">
+            <button>$ 1000</button>
+            <button>$ 2000</button>
+            <button>$ 5000</button>
+            <div class="custom-input">
+              <input type="number" class="no-spinners bigger"
+                     placeholder="Enter amount (Min. $1000)">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="supporterStep3" style="display: none">
+        <div class="flex-column flex-grow">
+          <div class="flex-column">
+            <div class="section-title section-title-padded">
+              <div class="title7">Payment Information</div>
+            </div>
+          </div>
+          <div class="text4 flex-column">
+            <p>You've selected a <span class="supporterType"></span>ly Membership for <span
+                    class="accent-color">$<span id="supporterQuantity"></span>/<span class="supporterType"></span></span>.</p>
+            <p>Your credit card will be charged monthly for full access to our
+              Archive.</p>
+          </div>
+          <div class="supporter-card-data">
+            <form method="POST" role="form" id="formSupporter"
+                  action="{% url 'become_supporter' %}">
+              {% csrf_token %}
+              <input type="text" id="hiddenTypeInput" name="type" hidden>
+              <input type="number" id="hiddenQuantityInput" name="quantity" hidden>
+              <div class="flex-column content-space-between flex-grow">
+                <div class="flex-row content-space-between">
+                  <input type="text" class="form-control" name="card_name"
+                         placeholder="Full Name on Credit Card">
+                  <input type="text" class="form-control" name="expiration_date"
+                         placeholder="Expiration Date (XX/XX)">
+                </div>
+                <div class="flex-row content-space-between">
+                  <input type="text" class="form-control"
+                         name="credit_card_number"
+                         placeholder="Credit Card Number">
+                  <input type="number" class="form-control"
+                         name="credit_card_cvc" placeholder="CVC">
+                </div>
+                <div class="form-group">
+                  <p class="form-error-text hidden" id="type-error"></p>
+                  <p class="form-error-text hidden" id="quantity-error"></p>
+                  <p class="form-error-text hidden" id="card_name-error"></p>
+                  <p class="form-error-text hidden" id="expiration_date-error"></p>
+                  <p class="form-error-text hidden" id="credit_card_number-error"></p>
+                  <p class="form-error-text hidden" id="credit_card_cvc-error"></p>
+                  <p class="form-error-text hidden" id="all-errors"></p>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% else %}
+        <div id="supporterStep4" class="flex-column items-center supporter-text-container">
+          <h1 class="title3">Welcome</h1>
+          <div class="supporter-text">
+            <p class="title7"><span class="big-letter">T</span>hank you for becoming a supporting member.
+              You now have unlimited access to the <span
+                      class="accent-color">live stream</span> and the <span
+                      class="accent-color">smallslive archive</span>. Feel free to browse our videos of nearly every concert performed at smalls + mezzrow with new concerts added weekly. By listening to your favorite artist you are getting them paid.
+            </p>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    <div class="button-row button-row-margin confirm-button">
+      {% if not completed %}
+        <button id="backButton" class="button-bordered">Back</button>
+        <button id="confirmButton" class="button-bordered">Confirm</button>
+      {% else %}
+        <a href="{% url 'archive' %}">
+          <button>Access the archive</button>
+        </a>
+      {% endif %}
+
+    </div>
+    {% if not completed %}
+      <div id="sentHint" class="processing-message" hidden>
+        <p class="text4 text-grey">Processing...Do not close window.</p>
+      </div>
+    {% endif %}
+  </div>
+  <script src="{% static 'js/become-member.js' %}"></script>
+{% endblock %}

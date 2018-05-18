@@ -2,8 +2,9 @@ from allauth.account import app_settings
 from allauth.account.forms import ChangePasswordForm
 from allauth.account.models import EmailAddress, EmailConfirmation
 from allauth.account.utils import complete_signup
-from allauth.account.views import SignupView as AllauthSignupView, ConfirmEmailView as CoreConfirmEmailView,\
-    LoginView as CoreLoginView
+from allauth.account.views import SignupView as AllauthSignupView, \
+    ConfirmEmailView as CoreConfirmEmailView, \
+    LoginView as CoreLoginView, _ajax_response
 import braces.views
 from braces.views import FormValidMessageMixin, LoginRequiredMixin, StaffuserRequiredMixin
 from django.conf import settings
@@ -24,6 +25,33 @@ import stripe
 
 from users.models import SmallsUser
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
+
+
+class BecomeSupporterView(TemplateView):
+    template_name = 'account/become-supporter.html'
+
+    # FIXME Dont mock up response
+    def post(self, request, *args, **kwargs):
+        return _ajax_response(
+            request, redirect(reverse('become_supporter_complete'))
+
+        )
+
+
+become_supporter = BecomeSupporterView.as_view()
+
+
+# FIXME Temporary view to mock become supporter completion
+class BecomeSupporterCompleteView(BecomeSupporterView):
+    def get_context_data(self, **kwargs):
+        context = super(
+            BecomeSupporterCompleteView, self
+        ).get_context_data(**kwargs)
+        context['completed'] = True
+        return context
+
+
+become_supporter_complete = BecomeSupporterCompleteView.as_view()
 
 
 class SignupLandingView(TemplateView):
@@ -56,18 +84,15 @@ class SignupView(AllauthSignupView):
         # else:
         #     verification_method = EmailVerificationMethod.OPTIONAL
         verification_method = EmailVerificationMethod.OPTIONAL
-        complete_signup(self.request, user,
-                        verification_method,
-                        self.get_success_url())
-        plan_name = self.kwargs.get('plan_name')
-        self.selected_plan = plan_name
+        complete_signup(
+            self.request, user, verification_method, self.get_success_url()
+        )
+
         return redirect(self.get_success_url())
 
     def get_success_url(self):
-        if self.kwargs['plan_name'] == 'free':
-            return reverse('accounts_signup_complete')
-        else:
-            return reverse('accounts_signup_payment', kwargs={'plan_name': self.kwargs['plan_name']})
+        return reverse('home')
+
 
 signup_view = SignupView.as_view()
 

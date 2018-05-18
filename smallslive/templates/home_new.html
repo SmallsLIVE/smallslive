@@ -19,40 +19,53 @@
 {% endblock %}
 
 {% block content %}
+
+  {% include 'inactive_dialog.html' %}
+
   <div class="main-container">
     <header class="main-header">
-      <div class="flex-row wrap content-space-around">
-        <div class="flex-row wrap logo-container">
+      <div class="flex-row items-center wrap content-space-around">
+        <div class="flex-row items-center wrap logo-container">
           <div>
             <a href="/" class="smalls-logo">
               <img src="{% static 'logo-black.svg' %}" alt=""/>
             </a>
           </div>
           <div class="search-input">
-            <input type="text">
+            <input type="text" placeholder="Search">
           </div>
         </div>
 
         <div class="button-row">
-          <button class="active">Calendar</button>
-          <button>Archive</button>
-          <button>Info</button>
-          <button>Education</button>
-          <button>Store</button>
-          {% if not request.user.is_authenticated %}
-          <button class="button-bordered">Sign In</button>
-          {% else %}
-            <button class="button-bordered">
-              {% if request.user.first_name %}
-                {{ request.user.first_name }}
-              {% else %}
-                {{ request.user.email }}
-              {% endif %}
-            </button>
-          {% endif %}
+          <a href="{% url 'schedule' %}"><button class="no-border">Calendar</button></a>
+          <a href="{% url 'archive' %}"><button class="no-border">Archive</button></a>
+          <a href="{% url 'contact-and-info' %}"><button class="no-border">Info</button></a>
+          <a href=""><button class="no-border">Education</button></a>
+          <a href="{% url "promotions:home" %}"><button class="no-border">Store</button></a>
         </div>
+        {% if not request.user.is_authenticated %}
+          <button class="white-border-button" href="#logIn" data-toggle="modal">
+            Sign In
+          </button>
+        {% else %}
+          <div class="white-border-select">
+            <select id="userMenu">
+              <option value="current" noSelect="1" selected="selected">
+                {% if request.user.first_name or request.user.last_name%}
+                  {% if request.user.first_name %}{{ request.user.first_name }}{% endif %}
+                  {% if request.user.last_name %} {{ request.user.last_name }}{% endif %}
+                {% else %}
+                  {{ request.user.email }}
+                {% endif %}
+              </option>
+              <option value="logout">Sign Out</option>
+            </select>
+          </div>
+        {% endif %}
       </div>
     </header>
+
+  {% block home_content %}
     <main>
       {% if not request.user.is_authenticated %}
         {% include 'home_banners.html' %}
@@ -102,11 +115,12 @@
             <div class="title1">Staff Picks</div>
           </div>
           <main>
-            {% include 'events/event_row.html' with events=events_today %}
+            {% include 'events/event_row.html' with events=staff_picks %}
           </main>
         </section>
       </div>
     </main>
+    {% endblock %}
   </div>
 {% endblock%}
 
@@ -114,8 +128,6 @@
 {% endblock %}
 
 {% block extra_js %}
-  <!-- Bootstrap datepicker JavaScript -->
-  <script src="{% static 'js/white-border-select.js' %}"></script>
   <script>
     $(document).ready(function(){
       var filter = $('#most-popular-filter');
@@ -131,10 +143,35 @@
         setMostPopular(filter.val());
       });
 
+      var userMenu = $('#userMenu');
+      userMenu.on('change', function () {
+        if (userMenu.val() === 'logout') {
+          console.log('Logging out');
+          window.location = "{% url 'account_logout' %}";
+        }
+      });
+
       {% if popular_select %}
-      filter.val('{{ popular_select }}');
-      filter.trigger( "change" );
+        filter.val('{{ popular_select }}');
+        filter.trigger("change");
       {% endif %}
+
+      var signInModal = $('#logIn');
+      var becomeMemberModal = $('#becomeMemberDialog');
+
+      var becomeMember = $('#becomeMemberButton');
+      becomeMember.on('click', function () {
+        console.log('Become member Clicked');
+        signInModal.modal('hide');
+        becomeMemberModal.modal('show');
+      });
+
+      var showSignIn = $('#showSignIn');
+      showSignIn.on('click', function () {
+        console.log('Go to sign in clicked');
+        becomeMemberModal.modal('hide');
+        signInModal.modal('show');
+      })
 
     });
   </script>

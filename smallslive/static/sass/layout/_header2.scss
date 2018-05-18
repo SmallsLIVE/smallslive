@@ -1,8 +1,6 @@
 .main-header {
   padding: 26px;
 
-  //TODO Based on start of banners on doc
-  //height: 160px;
   .logo-container {
     flex: 1;
     display: flex;
@@ -30,42 +28,123 @@
     background-color: $white-transparent;
   }
 
-  &.button-bordered {
+  &:not(.no-border) {
     @include input-border;
+  }
+
+  a {
+    color: inherit;
+  }
+}
+
+.white-border-button {
+  @include white-border-button;
+}
+
+@mixin bordered-input {
+  @include input-border;
+  @include text4;
+  box-shadow: none;
+  border-radius: 10px;
+  height: $input-height;
+  font-size: 1.2em;
+
+  background-color: $background-color;
+  padding: 8px;
+  // TODO Global
+  &:focus {
+    outline: none;
   }
 }
 
 .button-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  input {
+    @include bordered-input;
+    @include button1;
+    min-width: 125px;
+    text-align: center;
+
+    &.bigger {
+      min-width: 200px;
+    }
+  }
+
+  a,
   button {
+    color: black;
+  }
+
+  button,
+  p {
     @include white-border-button;
+  }
+
+  &:not(.button-row-big) {
+    button,
+    p {
+      @include button1;
+    }
+  }
+
+  &.button-row-big {
+    button,
+    p,
+    input {
+      @include title7;
+      line-height: 1em;
+      min-height: 50px;
+
+      &.active {
+        border: 1px solid $accent-color;
+      }
+    }
+
+    input {
+      &::placeholder {
+        @include reen-kufi-normal;
+        padding-bottom: -50px;
+        // Compensate text transform
+        transform: scaleY(0.7);
+        position: relative;
+        top: -10px;
+        font-size: 10px;
+      }
+    }
+  }
+
+  &.button-row-margin {
+    * {
+      margin: 0 10px;
+    }
   }
 }
 
-.search-input {
+
+@mixin input-icon($content, $color) {
   position: relative;
-  &:before {
-    content: '\f002';
+
+  &::before {
+    content: $content;
     font-family: 'FontAwesome', serif;
-    color: $accent-color;
+    color: $color;
     position: absolute;
     left: 11px;
     font-size: 1.8em;
     top: 7px;
-  }
+    z-index: 1;
+  };
+}
+
+.search-input {
+  @include input-icon('\f002', $accent-color);
 
   input {
-    @include input-border;
-    width: 100%;
-    background-color: $background-color;
-    border-radius: $input-border;
-    padding: 8px 8px 8px 30px;
-    height: $input-height;
-    font-size: 1.2em;
-
-    // TODO Global
-    &:focus {
-      outline: none;
-    }
-
+    @include bordered-input;
+    width: 60%;
+    padding-left: 30px;
   }
 }

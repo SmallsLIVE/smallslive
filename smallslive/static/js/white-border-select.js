@@ -1,4 +1,4 @@
-var x, i, j, selElmnt, a, b, c;
+var x, i, j, selElmnt, a, b, c, option;
 /*look for any elements with the class "white-border-select":*/
 x = document.getElementsByClassName("white-border-select");
 for (i = 0; i < x.length; i++) {
@@ -15,8 +15,13 @@ for (i = 0; i < x.length; i++) {
     /*for each option in the original select element,
     create a new DIV that will act as an option item:*/
     c = document.createElement("DIV");
-    c.innerHTML = selElmnt.options[j].innerHTML;
-    c.setAttribute('value', selElmnt.options[j].getAttribute('value'));
+    option = selElmnt.options[j];
+    c.innerHTML = option.innerHTML;
+    if (option.getAttribute('noSelect') === "1") {
+      continue;
+    }
+
+    c.setAttribute('value', option.getAttribute('value'));
     c.addEventListener("click", function(e) {
         /*when an item is clicked, update the original select box,
         and the selected item:*/
