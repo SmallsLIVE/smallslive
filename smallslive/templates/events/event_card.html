@@ -1,0 +1,36 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+<div class="{% if not mini%}event-card{% else %}event-card-small{% endif %}">
+  <div class="event-picture-container">
+    <div class="picture-border">
+      <div class="event-picture">
+        <img
+          {% if event.photo %}
+            {% if event.photo_crop_box %}
+              src="{% thumbor_url event.photo.url|urlencode crop=event.photo_crop_box width=600 %}"
+            {% else %}
+              src="{% thumbor_url event.photo.url|urlencode height=360 width=600 smart=True %}"
+            {% endif %}
+          {% else %}
+              src="{% static "image/no-event-image-placeholder.jpg" %}"
+          {% endif %} alt="">
+      </div>
+      <div class="icon-overlay">
+        <a href="{{ event.get_absolute_url }}"><i
+                class="fa fa-play fa-thin-circle"></i></a>
+      </div>
+    </div>
+  </div>
+  {% if show_time %}
+    <div class="event-dates links1">
+      {% if event.is_live %}
+        <span class="accent-box">Live Now</span>
+      {% else %}
+        <span>
+            {{ event.start|date:"g:i A" }} & {{ event.end|date:"g:i A" }}
+          </span>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
