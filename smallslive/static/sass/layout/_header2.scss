@@ -45,7 +45,7 @@
   @include input-border;
   @include text4;
   box-shadow: none;
-  border-radius: $input-border / 2;
+  border-radius: 10px;
   height: $input-height;
   font-size: 1.2em;
 
