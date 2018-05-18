@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 {% load thumbnail %}
@@ -28,9 +28,70 @@
         content="{{ event.listing_date|date:"l, F j, Y" }} {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}">
 {% endblock %}
 
-{% block content %}
+{% block home_content %}
 
-  <div class="content-wrapper">
+  <div class="flex-row wrap content-centered event-page-container">
+    <div class="flex-column">
+      <div class="player-container">
+        <div class="darked-image">
+          {% include 'partials/thumbored_picture.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+        </div>
+        <div class="player-info">
+          <div class="accent-color text2">{{ event.start|date:'m/d/Y' }}</div>
+          <div class="title1">{{ event.title }}</div>
+        </div>
+
+      </div>
+      <div class="flex-row content-space-between">
+        <div class="event-info flex-column">
+          <div class="event-title title1">{{ event.title }}</div>
+          <div class="event-set-info">
+            <div class="accent-color text2">Set 1</div>
+            <div class="accent-color text2">{{ event.start|date:'m/d/Y' }}</div>
+          </div>
+          <div class="flex-column event-band">
+            {% for gig_info in event.get_performers %}
+              <div class="event-info-artist">
+                <a href="{{ gig_info.artist.get_absolute_url }}"
+                   class="artist-link">
+                  {{ gig_info.artist.full_name }} / {{ gig_info.role }}
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="event-player-buttons flex-column items-flex-stretch">
+          <button class="white-border-button">Audio only player</button>
+          <button class="white-border-button">Download for $9.99</button>
+        </div>
+      </div>
+      <div class="flex-row event-set-selector"></div>
+    </div>
+    <div class="flex-column event-side">
+      <div class="event-streaming-tonigth">
+      </div>
+      <div class="event-related-videos">
+        <div class="section-title section-flex">
+          <div class="title1">Related videos</div>
+        </div>
+        <div>
+          {% for related in related_videos%}
+            <div class="flex-row related-video">
+              {% include 'events/event_card.html' with event=related mini=True %}
+              <div class="related-info flex-column content-centered items-center">
+                <div class="flex-column">
+                  <div class="text2 related-title">{{ related.title }}</div>
+                  <div class="text2 text-grey">{{ related.start|date:'m/d/Y' }}</div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-wrapper" style="display: none;">
     <section {% if not event.is_future %}{% if event.published_videos %}id="event-view-header"{% endif %}{% endif %}
              class="event-view__header {% if event.is_future %}future-event{% endif %}
                      {% if not event.published_videos %}{% if not event.published_audio %}no-media{% endif %}{% endif %} {% if not event.published_videos %}{% if event.published_audio %}audio-only{% endif %}{% endif %} container">
@@ -392,7 +453,7 @@
     {% endif %}
     {% endwith %}
   </div>
-{% endblock content %}
+{% endblock %}
 
 {% block extra_js %}
   <script>

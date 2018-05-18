@@ -1,0 +1,86 @@
+.event-page-container {
+  @media(min-width: $screen-md-max) {
+    margin: 0 200px;
+  }
+
+  .white-border-button {
+    margin-bottom: 20px;
+  }
+
+  .event-side {
+    @media(min-width: $screen-md-max) {
+      padding-left: 30px;
+    }
+  }
+
+  //FIXME
+  .text2 {
+    line-height: 1em;
+  }
+}
+
+.event-info {
+  @media(max-width: $screen-md-max) {
+    .event-title {
+      line-height: 1em;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.event-band {
+  margin: 2em 0;
+}
+
+.player-container {
+  margin-bottom: 30px;
+  color: $white-transparent;
+
+  position: relative;
+  overflow: hidden;
+
+  .player-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px 30px;
+  }
+
+  .darked-image {
+    @include cross-browser-grayscale;
+    position: inherit;
+  }
+}
+
+.event-related-videos {
+  .section-title {
+    width: 100%;
+  }
+
+  .related-video {
+    margin-bottom: 1em;
+
+    .related-info {
+      width: $event-card-width / 1.5;
+      background-color: $white-transparent;
+      padding: 1em;
+
+      //TODO Show ellipsis
+      .related-title {
+        max-height: 3em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+}
+
+.artist-link {
+  @include text4;
+  color: $text-grey;
+
+  &:hover {
+    color: black;
+  }
+}
