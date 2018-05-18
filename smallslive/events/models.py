@@ -59,6 +59,12 @@ class EventQuerySet(models.QuerySet):
             staff_picked__isnull=False
         ).order_by('-staff_picked__date_picked')
 
+    # TODO Select properly
+    def event_related_videos(self, event):
+        return self.exclude(
+                state=Event.STATUS.Draft
+            ).order_by('-start')[:8]
+
 
 class Event(TimeStampedModel):
     SETS = Choices(('22:00-23:00', '10-11pm'), ('23:00-0:00', '11-12pm'), ('0:00-1:00', '12-1am'))

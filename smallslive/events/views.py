@@ -187,19 +187,25 @@ class EventDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(EventDetailView, self).get_context_data(**kwargs)
-        context['performers'] = self.object.get_performers()
+        event = self.object
+        context['performers'] = event.get_performers()
         context['facebook_app_id'] = settings.FACEBOOK_APP_ID
         context['metrics_ping_interval'] = settings.PING_INTERVAL
         context['metrics_server_url'] = settings.METRICS_SERVER_URL
         context['metrics_signed_data'] = self._generate_metrics_data()
         if self.request.user.is_authenticated():
             context['user_token'] = Token.objects.get(user=self.request.user)
-            user_is_artist = self.request.user.is_artist and self.request.user.artist in self.object.performers.all()
+            user_is_artist = (
+                self.request.user.is_artist and
+                self.request.user.artist in event.performers.all()
+            )
             user_is_staff = self.request.user.is_staff
             if user_is_artist or user_is_staff:
                 context['count_metrics'] = False
             else:
                 context['count_metrics'] = True
+
+        context['related_videos'] = Event.objects.event_related_videos(event)
         return context
 
     def _generate_metrics_data(self):
