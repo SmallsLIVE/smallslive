@@ -1,5 +1,11 @@
+{% load full_static %}
+
 <div class="banners visible-lg">
   <div id="banner-container">
+    {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
+    <div class="lighten-image">
+      {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url crop_box=event.photo_crop_box %}
+    </div>
     <div class="banner-border">
       <div class="banner-title-button">
         <div id="banner-title">Archive</div>
@@ -16,12 +22,24 @@
   {% if not active %}
   <div id="banner-options" class="banner-options">
     <div id="banner-archive-box" class="banner-option">
+      {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
+      <div class="darked-image">
+        {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url crop_box=event.photo_crop_box %}
+      </div>
       <div class="title4">Archive</div>
     </div>
     <div id="banner-live-box" class="banner-option shadow-text">
+      {% fullstatic 'image/banners/live.jpg' as banner_picture_url %}
+      <div class="darked-image">
+        {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url crop_box=event.photo_crop_box %}
+      </div>
       <div class="title4">Live</div>
     </div>
     <div id="banner-mission-box" class="banner-option">
+      {% fullstatic 'image/banners/mission.jpg' as banner_picture_url %}
+      <div class="darked-image">
+        {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url crop_box=event.photo_crop_box %}
+      </div>
       <div class="title4">Mission</div>
     </div>
   </div>
@@ -79,7 +97,6 @@
     });
 
     bannerContainer.on('mouseleave', function () {
-
     });
 
     function setContainerBanner(src) {

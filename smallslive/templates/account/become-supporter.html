@@ -1,8 +1,13 @@
 {% extends "home_new.html" %}
 {% load static from staticfiles %}
+{% load full_static %}
 
 {% block home_content %}
   <div class="flex-column supporter-main-container">
+    {% fullstatic 'image/banners/supporter.jpg' as banner_picture_url %}
+    <div class="lighten-image">
+      {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url crop_box=event.photo_crop_box %}
+    </div>
     {% if not completed %}
       <p class="title2 accent-color">Become a supporting member</p>
     {% else %}
@@ -104,7 +109,7 @@
         </div>
       </div>
       {% else %}
-        <div id="supporterStep4" class="flex-column supporter-text-container">
+        <div id="supporterStep4" class="flex-column items-center supporter-text-container">
           <h1 class="title3">Welcome</h1>
           <div class="supporter-text">
             <p class="title7"><span class="big-letter">T</span>hank you for becoming a supporting member.

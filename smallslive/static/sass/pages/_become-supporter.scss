@@ -1,7 +1,11 @@
 .supporter-main-container {
-  width: 100%;
   padding: 20px;
   align-items: center;
+  position: relative;
+
+  overflow: hidden;
+  margin: 0 200px;
+  min-height: 800px;
 
   > p {
     margin-bottom: 25px;

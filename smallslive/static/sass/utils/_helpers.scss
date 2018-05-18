@@ -1,7 +1,6 @@
 //TODO Layout
 .flex-row, .flex-column {
   display: flex;
-  align-items: center;
 
   &.content-space-around {
     justify-content: space-around;
@@ -11,12 +10,20 @@
     justify-content: space-between;
   }
 
+  &.content-centered {
+    justify-content: center;
+  }
+
   &.items-flex-start {
     align-items: flex-start;
   }
 
   &.items-flex-stretch {
     align-items: stretch;
+  }
+
+  &.items-center {
+    align-items: center;
   }
 
   &.wrap {
