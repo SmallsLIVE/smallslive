@@ -38,6 +38,7 @@
 
   position: relative;
   overflow: hidden;
+  min-width: 800px;
 
   .player-info {
     position: absolute;
@@ -46,9 +47,11 @@
     padding: 20px 30px;
   }
 
-  .darked-image {
-    @include cross-browser-grayscale;
-    position: inherit;
+  .jwplayer {
+    .jw-preview {
+      background-size: cover;
+      @include cross-browser-grayscale;
+    }
   }
 }
 
