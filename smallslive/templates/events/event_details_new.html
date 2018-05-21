@@ -32,19 +32,28 @@
 
   <div class="flex-row wrap content-centered event-page-container">
     <div class="flex-column">
-      <div class="player-container">
-        <div id="player-video"></div>
-        <div class="player-info">
-          <div class="accent-color text2">{{ event.start|date:'m/d/Y' }}</div>
-          <div class="title1">{{ event.title }}</div>
+      {% if user.can_watch_video %}
+        <div id="videoContainer" class="player-container">
+          <div id="player-video"></div>
+          <div class="player-info">
+            <div class="accent-color text2">
+              {{ event.start|date:'m/d/Y' }}</div>
+            <div class="title1">{{ event.title }}</div>
+          </div>
         </div>
-      </div>
+      {% endif %}
+      {% if event.published_audio %}
+        <div id="audioContainer" style="display:none;">
+          <div id="player-audio"></div>
+        </div>
+      {% endif %}
       <div class="flex-row content-space-between">
         <div class="event-info flex-column">
           <div class="event-title title1">{{ event.title }}</div>
           <div class="event-set-info">
             <div class="accent-color text2">Set 1</div>
-            <div class="accent-color text2">{{ event.start|date:'m/d/Y' }}</div>
+            <div class="accent-color text2">
+              {{ event.start|date:'m/d/Y' }}</div>
           </div>
           <div class="flex-column event-band">
             {% for gig_info in event.get_performers %}
@@ -58,7 +67,9 @@
           </div>
         </div>
         <div class="event-player-buttons flex-column items-flex-stretch">
-          <button class="white-border-button">Audio only player</button>
+          <button class="white-border-button" id="togglePlayer">
+            Audio only player
+          </button>
           <button class="white-border-button">Download for $9.99</button>
         </div>
       </div>
@@ -87,22 +98,9 @@
       </div>
     </div>
   </div>
-  <div style="display:none;">
-    <div id="player-audio"></div>
-  </div>
 {% endblock %}
 
 {% block extra_js %}
-  <script>
-    // Facebook sharing
-    document.getElementById('shareBtn').onclick = function() {
-      FB.ui({
-        method: 'share',
-        display: 'popup',
-        href: '{{ request.build_absolute_uri }}',
-      }, function(response){});
-    }
-  </script>
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   {% if user.is_authenticated %}
       <script>
@@ -270,6 +268,15 @@
                 $('li[data-playlist-index=' + currentIndex + ']').toggleClass('active');
             });
         {% endif %}
+
+        var togglePlayerButton = $("#togglePlayer");
+        var audioContainer = $("#audioContainer");
+        var videoContainer = $("#videoContainer");
+
+        togglePlayerButton.on('click', function () {
+          $(videoContainer).toggle();
+          $(audioContainer).toggle();
+        });
       </script>
   {% endif %}
     {% with album=event.products.first %}
