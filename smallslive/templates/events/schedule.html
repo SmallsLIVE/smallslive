@@ -20,9 +20,21 @@
         {% include 'events/event_row.html' with events=events_today show_time='True' hidde_event_date='True' show_event_venue='True' %}
       </main>
     </section>
+  <div class="flex flex-row content-space-between" style="align-items: flex-start">
     <div class="section-title">
       <div class="title1">Upcoming shows</div>
     </div>
+    <div class="select-container">
+      <div class="white-border-select" style="width:150px;">
+        <select id="venueSelect">
+          <option value="">All</option>
+         {% for venue in venues %}
+           <option value="{{venue.id}}">{{venue.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  </div>
     <main class="schedule-dates-conatainer">
       <div class="flex flex-row content-space-around items-flex-start wrap">
         <a href="{{ prev_url }}">
@@ -43,7 +55,22 @@
   <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
   <script src="{% static 'js/schedule_datepicker.js' %}"></script>
   <script>
-  var date = new Date({{ year}}, {{ month }}, 1);
-  $datePicker.datepicker("setDate", date);
+    var date = new Date({{ year}}, {{ month }}, 1);
+    $datePicker.datepicker("setDate", date);
+
+    $(document).ready(function () {
+      {#TODO Select using url param#}
+      var venueSelect = $('#venueSelect');
+      venueSelect.on('change', function () {
+        var selected = venueSelect.val();
+        var newLocation;
+        if (selected) {
+          newLocation = "{% addurlparameter 'venue' "-1" %}".replace('venue=-1', 'venue='+selected);
+        } else {
+          newLocation = "{% addurlparameter 'venue' None %}";
+        }
+        window.location = newLocation;
+      });
+    });
   </script>
 {% endblock extra_js %}
