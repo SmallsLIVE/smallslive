@@ -5,7 +5,11 @@
   <div class="event-picture-container">
     <div class="picture-border">
       <div class="event-picture">
-        {% include 'partials/thumbored_picture.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+        {% if event.photo %}
+          {% include 'partials/thumbored_picture.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+        {% else %}
+          {% include 'partials/thumbored_picture.html' %}
+        {% endif %}
       </div>
       <div class="icon-overlay">
         <a href="{{ event.get_absolute_url }}"><i

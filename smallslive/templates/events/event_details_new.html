@@ -34,7 +34,11 @@
     <div class="flex-column">
       <div class="player-container">
         <div class="darked-image">
-          {% include 'partials/thumbored_picture.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+          {% if event.photo %}
+            {% include 'partials/thumbored_picture.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+          {% else %}
+            {% include 'partials/thumbored_picture.html' %}
+          {% endif %}
         </div>
         <div class="player-info">
           <div class="accent-color text2">{{ event.start|date:'m/d/Y' }}</div>
