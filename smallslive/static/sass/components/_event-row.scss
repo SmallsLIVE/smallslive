@@ -49,8 +49,8 @@
     }
 
     .icon-overlay {
+      @include animated;
       color: $accent-color;
-      background-color: rgba(0, 0, 0, 0.6);
       position: absolute;
       height: 100%;
       width: 100%;
@@ -83,6 +83,10 @@
   }
 
   &:hover {
+    .event-picture {
+      filter: grayscale(100%) brightness(50%) sepia() saturate(20%) hue-rotate(335deg);
+    }
+
     .icon-overlay {
       opacity: 1;
     }
