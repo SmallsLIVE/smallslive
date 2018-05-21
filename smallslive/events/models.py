@@ -63,7 +63,7 @@ class EventQuerySet(models.QuerySet):
     def event_related_videos(self, event):
         return self.exclude(
                 state=Event.STATUS.Draft
-            ).order_by('-start')[:8]
+            ).exclude(recordings__isnull=True).order_by('-start')[:8]
 
 
 class Event(TimeStampedModel):
