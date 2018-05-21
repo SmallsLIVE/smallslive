@@ -55,22 +55,28 @@ def _get_most_popular(range=None):
     return context
 
 
+def get_today_events():
+    date_range_start = timezone.localtime(timezone.now()).replace(hour=5,
+                                                                  minute=0)
+    date_range_end = date_range_start + timedelta(days=1)
+    qs = Event.objects.filter(start__gte=date_range_start,
+                              start__lte=date_range_end)
+    qs = qs.order_by('start')
+    return qs
+
+
 class HomepageView(ListView):
     template_name = 'home_new.html'
     context_object_name = 'events_today'
 
     def get_queryset(self):
-        date_range_start = timezone.localtime(timezone.now()).replace(hour=5, minute=0)
-        date_range_end = date_range_start + timedelta(days=1)
-        qs = Event.objects.filter(start__gte=date_range_start,
-                                  start__lte=date_range_end)
-
+        qs = get_today_events()
         # Uncomment to filter todays events by venue
         # venue = self.request.GET.get('venue')
         # if venue is not None:
         #     qs = qs.filter(venue__id=int(venue))
 
-        return qs.order_by('start')
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
@@ -366,15 +372,27 @@ class ScheduleView(ListView):
         """
         dates = {}
         two_week_interval = int(self.request.GET.get('week', 0))
-        start_days = two_week_interval * 14
-        date_range_start = timezone.localtime(timezone.now()) + timezone.timedelta(days=start_days)
+        # start_days = two_week_interval * 14
+        start_days = two_week_interval * 7
+        number_of_days = 7
+
+        date_range_start = (
+            timezone.localtime(timezone.now()) +
+            timezone.timedelta(days=start_days)
+        )
         # don't show last nights events that are technically today
         date_range_start = date_range_start.replace(hour=10)
+
         self.date_start = date_range_start
-        date_range_end = date_range_start + timezone.timedelta(days=14)
+        date_range_end = (
+            date_range_start +
+            timezone.timedelta(days=number_of_days)
+        )
         events = Event.objects.select_related('venue').filter(
-            start__gte=date_range_start, start__lte=date_range_end
+            start__gte=date_range_start,
+            start__lte=date_range_end
         ).order_by('start')
+
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)
 
@@ -397,7 +415,10 @@ class ScheduleView(ListView):
         })
         for k, g in groupby(events, lambda e: e.listing_date()):
             dates[k] = list(g)
-        for date in [(date_range_start + timedelta(days=d)).date() for d in range(14)]:
+        for date in [
+            (date_range_start + timedelta(days=d)).date()
+            for d in range(number_of_days)
+        ]:
             if date not in dates:
                 dates[date] = []
         sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0]))
@@ -406,6 +427,9 @@ class ScheduleView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ScheduleView, self).get_context_data(**kwargs)
         # js months are zero indexed
+
+        context['events_today'] = get_today_events()
+
         context['month'] = self.date_start.month - 1
         context['year'] = self.date_start.year
         context['venues'] = Venue.objects.all()
