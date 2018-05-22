@@ -27,9 +27,9 @@
     <div class="select-container flex-row">
       <div class="white-border-select" style="width:150px;">
         <select id="venueSelect">
-          <option value="">All</option>
+          <option value=""{% if not venue_selected %} selected{% endif %}>All</option>
           {% for venue in venues %}
-            <option value="{{ venue.id }}">{{ venue.name }}</option>
+            <option value="{{ venue.id }}"{% if venue_selected == venue.id %} selected{% endif %}>{{ venue.name }}</option>
           {% endfor %}
         </select>
       </div>
