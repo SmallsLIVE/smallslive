@@ -18,6 +18,10 @@
     align-items: flex-start;
   }
 
+  &.items-flex-end {
+    align-items: flex-end;
+  }
+
   &.items-flex-stretch {
     align-items: stretch;
   }

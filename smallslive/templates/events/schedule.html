@@ -20,18 +20,23 @@
         {% include 'events/event_row.html' with events=events_today show_time='True' hidde_event_date='True' show_event_venue='True' %}
       </main>
     </section>
-  <div class="flex flex-row content-space-between" style="align-items: flex-start">
-    <div class="section-title">
+  <div class="flex flex-row content-space-between items-flex-end">
+    <div class="section-title calendar-section">
       <div class="title1">Upcoming shows</div>
     </div>
-    <div class="select-container">
+    <div class="select-container flex-row">
       <div class="white-border-select" style="width:150px;">
         <select id="venueSelect">
           <option value="">All</option>
-         {% for venue in venues %}
-           <option value="{{venue.id}}">{{venue.name}}</option>
+          {% for venue in venues %}
+            <option value="{{ venue.id }}">{{ venue.name }}</option>
           {% endfor %}
         </select>
+      </div>
+      <div class="date-picker"
+           id="schedule__date-picker">
+        <input type="text" placeholder="Select a month" readonly>
+        <i class="fa fa-caret-down"></i>
       </div>
     </div>
   </div>
