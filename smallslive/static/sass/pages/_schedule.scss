@@ -5,3 +5,8 @@
     color: $black;
   }
 };
+.schedule-day-column {
+  .event-info > div {
+    max-width: 100px;
+  }
+}
