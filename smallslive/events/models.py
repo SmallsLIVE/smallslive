@@ -1,4 +1,4 @@
-from django.db.models import Count, Max
+from django.db.models import Count, Max, Q
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta, get_default_timezone
 from django.utils import timezone
@@ -61,9 +61,60 @@ class EventQuerySet(models.QuerySet):
 
     # TODO Select properly
     def event_related_videos(self, event):
-        return self.exclude(
-                state=Event.STATUS.Draft
-            ).exclude(recordings__isnull=True).order_by('-start')[:8]
+        query = self.exclude(state=Event.STATUS.Draft).exclude(
+            recordings__isnull=True
+        ).exclude(pk=event.pk)
+
+        leader = event.leader
+        total_results = 8
+        if leader:
+            leader_is_leader = (
+                Q(artists_gig_info__is_leader=True) &
+                Q(artists_gig_info__artist=leader)
+            )
+
+            events = list(
+                query.filter(
+                    leader_is_leader
+                ).order_by('-start')[:total_results]
+            )
+            total_found = len(events)
+            if total_found >= total_results:
+                return events
+
+            leader_is_performer = (
+                Q(artists_gig_info__is_leader=False) &
+                Q(artists_gig_info__artist=leader)
+            )
+            events += list(
+                query.filter(
+                    leader_is_performer
+                ).exclude(
+                    pk__in=[event.id for event in events]
+                ).order_by('-start')[:(total_results - total_found)]
+            )
+
+            total_found = len(events)
+            if total_found >= total_results:
+                return events
+
+            sideman_is_leader = (
+                Q(artists_gig_info__is_leader=True) &
+                Q(artists_gig_info__artist__in=event.performers.exclude(
+                    pk=leader.pk
+                ))
+            )
+            events += list(
+                query.filter(
+                    sideman_is_leader
+                ).exclude(
+                    pk__in=[event.id for event in events]
+                ).order_by('-start')[:(total_results - total_found)]
+            )
+
+            return events
+
+        return query.order_by('-start')[:total_results]
 
 
 class Event(TimeStampedModel):
@@ -203,6 +254,7 @@ class Event(TimeStampedModel):
     def get_performers(self):
         return self.artists_gig_info.select_related('artist', 'role')
 
+    @property
     def leader(self):
         try:
             gig_info = self.artists_gig_info.filter(is_leader=True).first()
