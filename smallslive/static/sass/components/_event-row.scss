@@ -26,7 +26,6 @@
     overflow: hidden;
 
     .event-picture {
-      @include animated;
       @include cross-browser-grayscale;
       height: $event-card-height;
       width: $event-card-width;
