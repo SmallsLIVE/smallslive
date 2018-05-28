@@ -1,15 +1,17 @@
 import json
 from itertools import chain
-from django.http import HttpResponse
-from django.views.generic.base import TemplateView
-from haystack.query import SearchQuerySet
-from .utils import facets_by_model_name
-from events.models import Event
+
 from artists.models import Artist
 from django.core.paginator import Paginator
-from django.http import JsonResponse
-from django.template.loader import render_to_string
+from django.http import HttpResponse, JsonResponse, Http404
 from django.template import RequestContext
+from django.template.loader import render_to_string
+from django.views.generic import View
+from django.views.generic.base import TemplateView
+from events.models import Event
+from haystack.query import SearchQuerySet
+
+from .utils import facets_by_model_name
 
 
 def search_autocomplete(request):
@@ -31,89 +33,103 @@ def search_autocomplete(request):
     resp = HttpResponse(the_data, content_type='application/json')
     return resp
 
-class GlobalSearchView(TemplateView):
+
+class MainSearchView(View):
+
+    def search(self, entity, text, page=1, order=None):
+        
+        if entity == Artist:
+            results_per_page = 48
+        elif entity == Event:
+            results_per_page = 15
+
+        if order:
+            sqs = SearchQuerySet().models(entity).filter(content=text).order_by(order)
+        else:
+            sqs = SearchQuerySet().models(entity).filter(content=text)
+
+        blocks = []
+        block = []
+
+        paginator = Paginator(sqs, results_per_page)
+
+        paginator.page(1).object_list  # if this line is removed the paginator.page() returns the same items. Bug?
+
+        for item in paginator.page(page).object_list:
+            item = entity.objects.filter(pk=item.pk).first()
+            block.append(item)
+
+            if len(block) == 8 and entity == Artist:
+                blocks.append(block)
+                block = []
+
+        if block:
+            blocks.append(block)
+            block = []
+
+        showing_results = 'SHOWING {} - {} OF {} RESULTS'.format(1 + ((page - 1) * results_per_page),
+                                                                 results_per_page  + ((page - 1) * results_per_page),
+                                                                 paginator.count)
+        
+        #if entity == Event:
+        #    page_numbers_footer = ''
+        #    pages = []
+
+
+        return blocks, showing_results, paginator.num_pages
+
+    def get(self, request, *args, **kwargs):
+        q = request.GET.get('q', None)
+        page = int(request.GET.get('page', 1))
+        entity = self.kwargs.get('entity', None)
+        
+        if entity == 'artist':
+            artists_blocks, showing_results, num_pages = self.search(Artist, q, page)
+
+            context={'artists_blocks': artists_blocks}
+            template = 'search/artist_results.html'
+            
+        elif entity == 'event':
+            events, showing_results, num_pages = self.search(Event, q, page)
+
+            context={'events': events[0]}
+            template = 'search/event_results.html'
+        else:
+            return Http404('entity does not exist')
+        
+        temp = render_to_string(template,
+            context,
+            context_instance=RequestContext(request)
+        )
+
+        data = {
+            'template': temp,
+            'showingResults': showing_results,
+            'numPages': num_pages
+        }
+
+        return JsonResponse(data)
+
+
+class TemplateSearchView(TemplateView, MainSearchView):
     template_name = 'search/search.html'
 
     def get_context_data(self, **kwargs):
-        context = super(GlobalSearchView, self).get_context_data(**kwargs)
-        
+        context = super(TemplateSearchView, self).get_context_data(**kwargs)
         q = self.request.GET.get('q', '')
-        artist_sqs = SearchQuerySet().models(Artist).filter(content=q)
-        artists_blocks = []
-        artist_block = []
 
-        paginator = Paginator(artist_sqs, 48)
+        artists_blocks, showing_artist_results, num_pages = self.search(Artist, q)
 
-        for item in paginator.page(1):
-            item = Artist.objects.filter(pk=item.pk).first()
-            artist_block.append(item)
-
-            if len(artist_block) == 8:
-                artists_blocks.append(artist_block)
-                artist_block = []
-
-        if artist_block:
-            artists_blocks.append(artist_block)
-            artist_block = []
-        
-        #context['artist_subheader'] = artist_subheader
+        context['showing_artist_results'] = showing_artist_results
         context['artists_blocks'] = artists_blocks
         
-        
-        
-        
-        #print(Artist.objects.filter(pk=item.pk).first().__dict__)
+        event_blocks, showing_event_results, num_pages = self.search(Event, q, order='title')
 
-        event_sqs = SearchQuerySet().models(Event).filter(content=q).order_by('title')
-        events = []
-        paginator = Paginator(event_sqs, 15)
-        for item in paginator.page(1):
-            item = Event.objects.filter(pk=item.pk).first()
-            events.append(item)
+        context['showing_event_results'] = showing_event_results
+        context['event_results'] = event_blocks[0] if event_blocks else []
 
-        context['event_results'] = events
-
-        #context['event_results'] = Event.objects.exclude(
-        #        state=Event.STATUS.Draft
-        #   ).order_by('-start')[:15]
+        context['actual_page'] = 1
+        context['last_page'] = num_pages
+        context['range'] = range(1, num_pages)  # WORK IN PROGRESS
 
         return context
-
-# heredar de view y hacer un mixin
-def get_artists(request):
-    q = request.GET.get('q', None)
-    artist_page = int(request.GET.get('artist-page', 1))
-
-    artist_sqs = SearchQuerySet().models(Artist).filter(content=q)
-    artists_blocks = []
-    artist_block = []
-
-    paginator = Paginator(artist_sqs, 48)
-
-    paginator.page(1).object_list  # if this line is removed the paginator.page() returns the same items. Bug?
-
-    for item in paginator.page(artist_page).object_list:
-        item = Artist.objects.filter(pk=item.pk).first()
-        artist_block.append(item)
-
-        if len(artist_block) == 8:
-            artists_blocks.append(artist_block)
-            artist_block = []
-
-    if artist_block:
-        artists_blocks.append(artist_block)
-        artist_block = []
-    
-    context={'artists_blocks': artists_blocks}
-    template = 'search/artist_results.html'
-    temp = render_to_string(template,
-        context,
-        context_instance=RequestContext(request)
-    )
-
-    data = {
-        'artists': temp
-    }
-    
-    return JsonResponse(data)
-    

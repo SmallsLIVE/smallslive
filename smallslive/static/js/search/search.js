@@ -1,4 +1,4 @@
-var search_term, artist_page_num, event_page_num;
+var searchTerm, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum;
 
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -17,30 +17,54 @@ var getUrlParameter = function getUrlParameter(sParam) {
 
 function sendArtistRequest() {
     $.ajax({
-        url: '/search/get-artists/',
+        url: '/search/ajax/artist/',
         data: {
-            'q': search_term,
-            'artist-page': artist_page_num
+            'q': searchTerm,
+            'page': artistPageNum
         },
         dataType: 'json',
         success: function (data) {
-            if (data.artists) {
-                $("#artists").html(data.artists);
+            if (data.template) {
+                $("#artist-subheader").html(data.showingResults)
+                $("#artists").html(data.template);
                 $("#artists").show();
                 $(".loading-image").css("display", "none");
                 $(".container-list-article").css("height", "auto");
+                artistMaxPageNum = data.numPages;
+            }
+        }
+    });
+}
+
+function sendEventRequest() {
+    $.ajax({
+        url: '/search/ajax/event/',
+        data: {
+            'q': searchTerm,
+            'page': eventPageNum
+        },
+        dataType: 'json',
+        success: function (data) {
+            if (data.template) {
+                $("#event-subheader").html(data.showingResults)
+                $("#event-subheader-footer").html(data.showingResults)
+                $("#events").html(data.template);
+                //$("#events").show();
+                
+                eventMaxPageNum = data.numPages;
             }
         }
     });
 }
 
 $(document).ready(function () {
-    search_term = getUrlParameter("q");
-    artist_page_num = event_page_num = 1;
+    searchTerm = getUrlParameter("q");
+    artistPageNum = eventPageNum = 1;
+    artistMaxPageNum = eventMaxPageNum = 2;
 
     $("#left_arrow").click(function () {
-        if (artist_page_num != 1) {
-            artist_page_num -= 1;
+        if (artistPageNum != 1) {
+            artistPageNum -= 1;
             $("#artists").hide();
             $(".loading-image").css("display", "block");
             $(".container-list-article").css("height", height);
@@ -50,12 +74,22 @@ $(document).ready(function () {
     });
 
     $("#right_arrow").click(function () {
-        artist_page_num += 1;
-        height = $("#artists").height();
-        $("#artists").hide();
-        $(".loading-image").css("display", "block");
-        $(".container-list-article").css("height", height);
-        
-        sendArtistRequest();
+        if (artistPageNum != artistMaxPageNum) {
+            artistPageNum += 1;
+            height = $("#artists").height();
+            $("#artists").hide();
+            $(".loading-image").css("display", "block");
+            $(".container-list-article").css("height", height);
+            
+            sendArtistRequest();
+        }
+    });
+
+    $("#next-page-btn").click(function () {
+        if (eventPageNum != eventMaxPageNum) {
+            eventPageNum += 1;
+            
+            sendEventRequest();
+        }
     });
 });

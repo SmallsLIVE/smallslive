@@ -1,0 +1,10 @@
+<ul class="page-numbers-list">
+{% for n in range %}
+{% if n == 1 and actual_page > 4 %}
+<li class="page-numbers-list-item">{{n}}</li>
+<li class="page-numbers-list-item">...</li>
+{% else %}
+<li class="page-numbers-list-item">{{n}}</li>
+{% endif %}
+{% endfor %}
+</ul>
