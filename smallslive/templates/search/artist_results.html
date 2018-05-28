@@ -1,0 +1,12 @@
+<div class="artists-container">
+        
+    {% for artist_block in artists_blocks %}
+    <div class="artist-column">
+        {% for artist in artist_block %}
+            <span class="artist-search-text artist-row">{{ artist.last_name }} {{ artist.first_name }} / {{ artist.instruments.all.first }}</span>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    
+
+</div>

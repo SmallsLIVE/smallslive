@@ -1,0 +1,167 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load i18n %}
+
+{% block homepage_nav_active %}active{% endblock %}
+
+{% block title %}Smalls Jazz Club{% endblock %}
+
+{# TODO Shouldn't be needed here #}
+{% block body_class %}home{% endblock %}
+
+{% block extra_head %}
+  <meta name="description"
+        content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
+    
+        <script src="/static/js/search/search.js"></script>
+
+<style>
+    .select-arrow {}
+
+    .select-arrow:after {
+        content: " ";
+        height: 0;
+        width: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid black;
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        transition: all 0.3s linear;
+    }
+
+    .artists-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    .artist-column {
+        margin: 20px;
+    }
+
+    .artist-row {
+        display: block;
+        margin-bottom: 2px;
+    }
+
+    .artist-search-text {
+        font-family: 'Reem Kufi', sans-serif;
+        font-weight: normal;
+        text-transform: uppercase;
+        font-size: 1em;
+        color: #a6a6a6;
+    }
+
+    .artist-arrow-search {
+        font-size: 62px;
+        cursor: pointer;
+    }
+
+    .events-results {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        padding-left: 60px;
+        padding-right: 60px;
+    }
+
+    .event-display {
+        margin: 5px;
+    }
+
+    .loading-image {
+        width: 50px;
+        height: 50px;
+        margin-left: auto;
+        margin-right: auto;
+        display: none;
+    }
+
+    .container-list-article {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 40px;
+    }
+</style>
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+  {% include 'inactive_dialog.html' %}
+
+<div class="main-container">
+
+    {% include 'partials/header.html' %}
+
+    <div class="flex-row items-center wrap content-space-around" style="width: 500px; margin: 0 auto;">
+        <div class="select-arrow white-border-select" style="width:120px;">
+            <select id="artist-filter">
+                <option value="week">ARTIST</option>
+                <option value="month">Last month</option>
+                <option value="year">This Year</option>
+                <option value="alltime">All Time</option>
+            </select>
+        </div>
+
+        <div class="select-arrow white-border-select" style="width:150px;">
+            <select id="instrument-filter">
+                <option value="week">INSTRUMENT</option>
+                <option value="month">Last month</option>
+                <option value="year">This Year</option>
+                <option value="alltime">All Time</option>
+            </select>
+        </div>
+
+        <div class="select-arrow white-border-select" style="width:100px;">
+            <select id="date-filter">
+                <option value="week">DATE</option>
+                <option value="month">Last month</option>
+                <option value="year">This Year</option>
+                <option value="alltime">All Time</option>
+            </select>
+        </div>
+    </div>
+
+<section class="event-stripe">
+    <div class="section-title">
+        <div class="title1">Artists</div>
+        <div id="artist-subheader" class="header-sub title2">asdasdsda</div>
+    </div>
+    <div class="container-list-article">
+        <div id="left_arrow" class="artist-arrow-search">
+            <i class="fa fa-angle-left"></i>
+        </div>
+
+        <img class="loading-image" src="{% static 'image/loading.gif' %}" alt="">
+        
+        <main id="artists">
+            {% include 'search/artist_results.html' %}
+        </main>
+        <div id="right_arrow" class="artist-arrow-search">
+            <i class="fa fa-angle-right"></i>
+        </div>
+    </div>
+</section>
+
+    <section class="event-stripe">
+        <div class="section-title">
+            <div class="title1">Concerts</div>
+        </div>
+        <main>
+            {% include 'search/event_results.html' with events=event_results %}
+        </main>
+    </section>
+</div>
+{% endblock%}
+
+{% block footer %}
+{% endblock %}
+
