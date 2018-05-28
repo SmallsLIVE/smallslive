@@ -1,31 +1,32 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
-<div class="{% if not mini%}event-card{% else %}event-card-small{% endif %}">
-  <div class="event-picture-container">
-    <div class="picture-border">
-      <div class="event-picture">
-        {% if event.photo %}
-          {% include 'partials/thumbored_picture.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+<a href="{{ event.get_absolute_url }}">
+  <div class="{% if not mini%}event-card{% else %}event-card-small{% endif %}">
+    <div class="event-picture-container">
+      <div class="picture-border">
+        <div class="event-picture">
+          {% if event.photo %}
+            {% include 'partials/thumbored_picture.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+          {% else %}
+            {% include 'partials/thumbored_picture.html' %}
+          {% endif %}
+        </div>
+        <div class="icon-overlay">
+          <i class="fa fa-play fa-thin-circle"></i>
+        </div>
+      </div>
+    </div>
+    {% if show_time %}
+      <div class="event-dates links1">
+        {% if event.is_live %}
+          <span class="accent-box">Live Now</span>
         {% else %}
-          {% include 'partials/thumbored_picture.html' %}
+          <span>
+              {{ event.start|date:"g:i A" }} & {{ event.end|date:"g:i A" }}
+            </span>
         {% endif %}
       </div>
-      <div class="icon-overlay">
-        <a href="{{ event.get_absolute_url }}"><i
-                class="fa fa-play fa-thin-circle"></i></a>
-      </div>
-    </div>
+    {% endif %}
   </div>
-  {% if show_time %}
-    <div class="event-dates links1">
-      {% if event.is_live %}
-        <span class="accent-box">Live Now</span>
-      {% else %}
-        <span>
-            {{ event.start|date:"g:i A" }} & {{ event.end|date:"g:i A" }}
-          </span>
-      {% endif %}
-    </div>
-  {% endif %}
-</div>
+</a>

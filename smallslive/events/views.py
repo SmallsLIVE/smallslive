@@ -110,6 +110,7 @@ class HomepageView(ListView):
         week_popular = _get_most_popular(RANGE_WEEK)
         if len(week_popular['popular_in_archive']):
             context.update(week_popular)
+            context['popular_select'] = 'week'
         else:
             context.update(_get_most_popular())
             context['popular_select'] = 'alltime'

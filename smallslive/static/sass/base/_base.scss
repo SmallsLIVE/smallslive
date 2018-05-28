@@ -70,8 +70,8 @@ button, input[type="submit"] {
 }
 
 a {
-  color: $main-accent-color;
-  @include transition(all 0.3s ease-in-out);
+  color: $accent-color;
+  @include transition(all 0.5s ease-in-out);
 }
 
 a:focus {
@@ -82,7 +82,7 @@ a:focus {
 }
 
 a:hover {
-  color: $main-accent-color-darker;
+  color: $accent-color-dark;
   text-decoration: none;
 }
 
