@@ -58,12 +58,40 @@
 {% block extra_js %}
   <!-- Bootstrap datepicker JavaScript -->
   <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-  <script src="{% static 'js/schedule_datepicker.js' %}"></script>
   <script>
-    var date = new Date({{ year}}, {{ month }}, 1);
-    $datePicker.datepicker("setDate", date);
-
     $(document).ready(function () {
+      var initialDate = new Date({{ year}}, {{ month }}, {% if day %}{{ day }}{% else %}1{% endif %});
+      console.log('Initial date', initialDate);
+
+      var $datePicker = $('#schedule__date-picker input');
+      $datePicker.datepicker({
+        format: 'MM // yyyy',
+        orientation: "top auto",
+        autoclose: true,
+        startDate: new Date()
+      });
+
+      $datePicker.datepicker("setDate", initialDate);
+
+      $datePicker.on('changeDate', function(newDate) {
+        var month = newDate.date.getMonth();
+        var year = newDate.date.getFullYear();
+        var day = newDate.date.getDate();
+
+        var selectedDay = new Date(year, month, day + 1);
+
+        var weekDiff = calculateWeeksBetween(selectedDay, new Date());
+        console.log('Week diff:', weekDiff);
+
+        if (weekDiff === 0) {
+          window.location = "{% addurlparameter 'week' None %}";
+        } else {
+          window.location = "{% addurlparameter 'week' "1" %}".replace(
+            'week=1', 'week='+weekDiff
+          );
+        }
+      });
+
       {#TODO Select using url param#}
       var venueSelect = $('#venueSelect');
       venueSelect.on('change', function () {

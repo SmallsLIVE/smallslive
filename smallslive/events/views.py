@@ -360,6 +360,9 @@ event_search = EventSearchView(
 
 
 class GenericScheduleView(ListView):
+    context_object_name = 'dates'
+    template_name = 'events/schedule.html'
+
     def get_queryset(self):
         dates = {}
         date_range_end, date_range_start, number_of_days = self.get_dates_interval()
@@ -413,33 +416,31 @@ class GenericScheduleView(ListView):
         raise NotImplementedError()
 
 
-class ScheduleView(GenericScheduleView):
-    context_object_name = 'dates'
-    template_name = 'events/schedule.html'
-
+class WeeklyScheduleView(GenericScheduleView):
     def get_dates_interval(self):
         received_week = int(self.request.GET.get('week', 0))
         number_of_days = 7
         # Range from now to
         date_range_start = (
-                timezone.localtime(timezone.now()) +
-                timezone.timedelta(days=(received_week * 7))
+            timezone.localtime(timezone.now()) +
+            timezone.timedelta(days=(received_week * 7))
         )
         # don't show last nights events that are technically today
         date_range_start = date_range_start.replace(hour=10)
         # Set end one week later
         date_range_end = (
-                date_range_start +
-                timezone.timedelta(days=number_of_days)
+            date_range_start +
+            timezone.timedelta(days=number_of_days)
         )
         return date_range_end, date_range_start, number_of_days
 
     def get_context_data(self, **kwargs):
-        context = super(ScheduleView, self).get_context_data(**kwargs)
+        context = super(WeeklyScheduleView, self).get_context_data(**kwargs)
         context['events_today'] = get_today_events()
 
         context['month'] = self.date_start.month - 1
         context['year'] = self.date_start.year
+        context['day'] = self.date_start.day
 
         base_url = reverse('schedule')
         params_next = {}
@@ -463,7 +464,7 @@ class ScheduleView(GenericScheduleView):
         return context
 
 
-schedule = ScheduleView.as_view()
+schedule = WeeklyScheduleView.as_view()
 
 
 def annotate_events(events):
@@ -482,9 +483,6 @@ def annotate_events(events):
 
 
 class MonthlyScheduleView(GenericScheduleView):
-    context_object_name = 'dates'
-    template_name = 'events/schedule.html'
-
     def get_dates_interval(self):
         month = int(self.kwargs.get('month', timezone.now().month))
         year = int(self.kwargs.get('year', timezone.now().year))

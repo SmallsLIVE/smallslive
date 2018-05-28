@@ -35,3 +35,19 @@ function getAjaxSubmitForForm(form, formFields) {
     return false;
   }
 }
+
+
+function calculateWeeksBetween(date1, date2) {
+  var ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+  var date1_ms = date1.getTime();
+  var date2_ms = date2.getTime();
+  var difference_ms = Math.abs(date1_ms - date2_ms);
+  var total_weeks = Math.floor(difference_ms / ONE_WEEK);
+
+  if (date1_ms >= date1_ms) {
+    return total_weeks
+  } else {
+    return -total_weeks
+  }
+}
+
