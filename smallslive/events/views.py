@@ -359,39 +359,16 @@ event_search = EventSearchView(
 )
 
 
-class ScheduleView(ListView):
-    context_object_name = 'dates'
-    template_name = 'events/schedule.html'
-
+class GenericScheduleView(ListView):
     def get_queryset(self):
-        """
-        The view returns a list of events in two week intervals, for both the home page
-        and the "next" links. The correct two week interval is set through the URL or by
-        default it's a two week interval from the current date. The admin user sees all future
-        events immediately, regardless of date intervals and event status.
-        """
         dates = {}
-        two_week_interval = int(self.request.GET.get('week', 0))
-        # start_days = two_week_interval * 14
-        start_days = two_week_interval * 7
-        number_of_days = 7
-
-        date_range_start = (
-            timezone.localtime(timezone.now()) +
-            timezone.timedelta(days=start_days)
-        )
-        # don't show last nights events that are technically today
-        date_range_start = date_range_start.replace(hour=10)
-
+        date_range_end, date_range_start, number_of_days = self.get_dates_interval()
         self.date_start = date_range_start
-        date_range_end = (
-            date_range_start +
-            timezone.timedelta(days=number_of_days)
-        )
-        events = Event.objects.select_related('venue').filter(
-            start__gte=date_range_start,
-            start__lte=date_range_end
-        ).order_by('start')
+
+        events = Event.objects.select_related(
+            'venue'
+        ).filter(
+            start__range=(date_range_start, date_range_end)).order_by('start')
 
         if not self.request.user.is_staff:
             events = events.exclude(state=Event.STATUS.Draft)
@@ -400,117 +377,125 @@ class ScheduleView(ListView):
         if venue is not None:
             events = events.filter(venue__id=int(venue))
 
+        events = annotate_events(events)
 
-        events = events.annotate(product_count=Count('products')).extra(select={
-            'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
-                           "events_recording.event_id = events_event. ID AND "
-                           "events_recording.media_file_id = multimedia_mediafile. ID AND "
-                           " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='video'"
-                           " GROUP BY events_event.id",
-            'audio_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
-                           "events_recording.event_id = events_event. ID AND "
-                           "events_recording.media_file_id = multimedia_mediafile. ID AND "
-                           " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='audio'"
-                           " GROUP BY events_event.id",
-        })
         for k, g in groupby(events, lambda e: e.listing_date()):
             dates[k] = list(g)
+
         for date in [
-            (date_range_start + timedelta(days=d)).date()
-            for d in range(number_of_days)
+            (date_range_start + timedelta(days=days_after)).date()
+            for days_after in range(number_of_days)
         ]:
             if date not in dates:
                 dates[date] = []
+
         sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0]))
         return sorted_dates
 
-    def get_context_data(self, **kwargs):
-        context = super(ScheduleView, self).get_context_data(**kwargs)
-        # js months are zero indexed
-
-        context['events_today'] = get_today_events()
-
-        context['month'] = self.date_start.month - 1
-        context['year'] = self.date_start.year
-        context['venues'] = Venue.objects.all()
-
+    def add_venue_next_prev(self, context, next_url, params_next, prev_url,
+                            params_prev):
         venue = self.request.GET.get('venue')
-        base_url = reverse('schedule')
-        params_next = {}
-        params_prev = {}
-
+        context['venues'] = Venue.objects.all()
         if venue is not None:
             venue_id = int(venue)
             context['venue_selected'] = venue_id
             params_next['venue'] = venue_id
             params_prev['venue'] = venue_id
 
+        if len(params_prev):
+            prev_url = '{}?{}'.format(prev_url, urlencode(params_prev))
+        if len(params_next):
+            next_url = '{}?{}'.format(next_url, urlencode(params_next))
+        context['prev_url'] = prev_url
+        context['next_url'] = next_url
+
+    def get_dates_interval(self):
+        raise NotImplementedError()
+
+
+class ScheduleView(GenericScheduleView):
+    context_object_name = 'dates'
+    template_name = 'events/schedule.html'
+
+    def get_dates_interval(self):
+        received_week = int(self.request.GET.get('week', 0))
+        number_of_days = 7
+        # Range from now to
+        date_range_start = (
+                timezone.localtime(timezone.now()) +
+                timezone.timedelta(days=(received_week * 7))
+        )
+        # don't show last nights events that are technically today
+        date_range_start = date_range_start.replace(hour=10)
+        # Set end one week later
+        date_range_end = (
+                date_range_start +
+                timezone.timedelta(days=number_of_days)
+        )
+        return date_range_end, date_range_start, number_of_days
+
+    def get_context_data(self, **kwargs):
+        context = super(ScheduleView, self).get_context_data(**kwargs)
+        context['events_today'] = get_today_events()
+
+        context['month'] = self.date_start.month - 1
+        context['year'] = self.date_start.year
+
+        base_url = reverse('schedule')
+        params_next = {}
+        params_prev = {}
+
         week = int(self.request.GET.get('week', 0))
 
         if week != 1:
             params_prev['week'] = week - 1
 
-        prev_url = base_url
-        if len(params_prev):
-            prev_url = '{}?{}'.format(base_url, urlencode(params_prev))
-
         if week != -1:
             params_next['week'] = week + 1
 
+        prev_url = base_url
         next_url = base_url
-        if len(params_next):
-            next_url = '{}?{}'.format(base_url, urlencode(params_next))
 
-        context['prev_url'] = prev_url
-        context['next_url'] = next_url
+        self.add_venue_next_prev(
+            context, next_url, params_next, prev_url, params_prev
+        )
 
         return context
+
 
 schedule = ScheduleView.as_view()
 
 
-class MonthlyScheduleView(ListView):
+def annotate_events(events):
+    return events.annotate(product_count=Count('products')).extra(select={
+        'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
+                       "events_recording.event_id = events_event. ID AND "
+                       "events_recording.media_file_id = multimedia_mediafile. ID AND "
+                       " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='video'"
+                       " GROUP BY events_event.id",
+        'audio_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
+                       "events_recording.event_id = events_event. ID AND "
+                       "events_recording.media_file_id = multimedia_mediafile. ID AND "
+                       " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='audio'"
+                       " GROUP BY events_event.id",
+    })
+
+
+class MonthlyScheduleView(GenericScheduleView):
     context_object_name = 'dates'
     template_name = 'events/schedule.html'
 
-    def get_queryset(self):
-        dates = {}
+    def get_dates_interval(self):
         month = int(self.kwargs.get('month', timezone.now().month))
         year = int(self.kwargs.get('year', timezone.now().year))
         # don't show last nights events that are technically today
-        date_range_start = timezone.make_aware(timezone.datetime(year, month, 1, hour=10),
-                                               timezone.get_default_timezone())
+        date_range_start = timezone.make_aware(
+            timezone.datetime(year, month, 1, hour=10),
+            timezone.get_default_timezone()
+        )
         date_range_end = date_range_start + monthdelta.MonthDelta(1)
-        last_day_of_month = calendar.monthrange(year, month)[1]
-        events = Event.objects.select_related(
-            'venue'
-        ).filter(start__range=(date_range_start, date_range_end)).order_by('start')
-        if not self.request.user.is_staff:
-            events = events.exclude(state=Event.STATUS.Draft)
-
-        venue = self.request.GET.get('venue')
-        if venue is not None:
-            events = events.filter(venue__id=int(venue))
-
-        events = events.annotate(product_count=Count('products')).extra(select={
-            'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
-                           "events_recording.event_id = events_event. ID AND "
-                           "events_recording.media_file_id = multimedia_mediafile. ID AND "
-                           " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='video'"
-                           " GROUP BY events_event.id",
-            'audio_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
-                           "events_recording.event_id = events_event. ID AND "
-                           "events_recording.media_file_id = multimedia_mediafile. ID AND "
-                           " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='audio'"
-                           " GROUP BY events_event.id",
-        })
-        for k, g in groupby(events, lambda e: e.listing_date()):
-            dates[k] = list(g)
-        for date in [(date_range_start + timedelta(days=d)).date() for d in range(last_day_of_month)]:
-            if date not in dates:
-                dates[date] = []
-        sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0]))
-        return sorted_dates
+        number_of_days = calendar.monthrange(year, month)[1]
+        return date_range_end, date_range_start, number_of_days
 
     def get_context_data(self, **kwargs):
         """
@@ -518,12 +503,12 @@ class MonthlyScheduleView(ListView):
         next month, and a min one (1 day) for the previous month.
         """
         context = super(MonthlyScheduleView, self).get_context_data(**kwargs)
-        # js months are zero indexed
         month = int(self.kwargs.get('month', timezone.now().month))
         year = int(self.kwargs.get('year', timezone.now().year))
         context['month'] = month - 1
         context['year'] = year
         context['month_view'] = True
+
         # position of the "NEXT" box, after all the dates and the "PREV" box
         context['next_month_position'] = len(context['dates']) + 2
         current_month = timezone.datetime(year=year, month=month, day=1)
@@ -537,18 +522,13 @@ class MonthlyScheduleView(ListView):
         next_url = reverse('monthly_schedule',
                            kwargs={'year': next_month.year,
                                    'month': next_month.month})
-        venue = self.request.GET.get('venue')
-        if venue is not None:
-            venue_id = int(venue)
-            context['venue_selected'] = venue_id
-            next_url = '{}?venue={}'.format(next_url, venue_id)
-            prev_url = '{}?venue={}'.format(prev_url, venue_id)
 
-        context['next_url'] = next_url
-        context['prev_url'] = prev_url
+        self.add_venue_next_prev(
+            context, next_url, {}, prev_url, {}
+        )
 
-        context['venues'] = Venue.objects.all()
         return context
+
 
 monthly_schedule = MonthlyScheduleView.as_view()
 
