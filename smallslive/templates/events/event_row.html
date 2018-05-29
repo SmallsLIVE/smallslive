@@ -2,17 +2,19 @@
   {% for event in events %}
   <article class="event-display">
     {% include 'events/event_card.html' with event=event %}
-    <div class="event-info">
-      <div>
-        <div>{{ event.title }}</div>
-        {% if show_event_venue %}
-          <div class="accent-color">{{ event.venue.name }}</div>
-        {% endif %}
-        {% if not hidde_event_date %}
-        <div class="text-grey">{{ event.start|date:'m/d.Y' }}</div>
-        {% endif %}
+    <a href="{{ event.get_absolute_url }}">
+      <div class="event-info">
+        <div>
+          <div class="event-info-title">{{ event.title }}</div>
+          {% if show_event_venue %}
+            <div class="accent-color">{{ event.venue.name }}</div>
+          {% endif %}
+          {% if not hidde_event_date %}
+          <div class="text-grey">{{ event.start|date:'m/d.Y' }}</div>
+          {% endif %}
+        </div>
       </div>
-    </div>
+    </a>
   </article>
   {% endfor %}
 </div>

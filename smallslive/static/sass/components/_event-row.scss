@@ -5,6 +5,16 @@
 
   .event-display {
     margin: 5px;
+    a {
+      color: $black;
+    }
+
+    &:hover {
+      .event-info-title {
+        color: $accent-color;
+        text-decoration: underline;
+      }
+    }
 
   }
 }
