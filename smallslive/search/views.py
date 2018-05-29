@@ -92,7 +92,7 @@ class MainSearchView(View):
         elif entity == 'event':
             events, showing_results, num_pages = self.search(Event, q, page)
 
-            context={'events': events[0]}
+            context={'events': events[0] if events else []}
             template = 'search/event_results.html'
         else:
             return Http404('entity does not exist')
@@ -107,6 +107,19 @@ class MainSearchView(View):
             'showingResults': showing_results,
             'numPages': num_pages
         }
+
+        if entity == 'event':
+            context={'actual_page': page,
+                     'last_page': num_pages,
+                     'range': range(1, num_pages + 1)[:page][-3:]+range(1, num_pages + 1)[page:][:2],
+                     'has_last_page': (num_pages - page) >= 3}
+            template = 'search/page_numbers_footer.html'
+            temp = render_to_string(template,
+                context,
+                context_instance=RequestContext(request)
+            )
+
+            data['pageNumbersFooter'] = temp
 
         return JsonResponse(data)
 
@@ -128,8 +141,9 @@ class TemplateSearchView(TemplateView, MainSearchView):
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []
 
-        context['actual_page'] = 1
+        context['actual_page'] = page = 1
         context['last_page'] = num_pages
-        context['range'] = range(1, num_pages)  # WORK IN PROGRESS
-
+        context['range'] = range(1, num_pages + 1)[:page][-3:]+range(1, num_pages + 1)[page:][:2]
+        context['has_last_page'] = (num_pages - page) >= 3
+        
         return context

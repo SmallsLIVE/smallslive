@@ -1,3 +1,4 @@
+{% if events %}
 <div class="events-results">
     {% for event in events %}
     <article class="event-display">
@@ -15,3 +16,8 @@
     </article>
     {% endfor %}
 </div>
+{% else %}
+<div class="no-result-container">
+NO RESULTS
+</div>
+{% endif %}

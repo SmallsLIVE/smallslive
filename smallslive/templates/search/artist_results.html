@@ -1,5 +1,5 @@
+{% if artists_blocks %}
 <div class="artists-container">
-        
     {% for artist_block in artists_blocks %}
     <div class="artist-column">
         {% for artist in artist_block %}
@@ -7,6 +7,9 @@
         {% endfor %}
     </div>
     {% endfor %}
-    
-
 </div>
+{% else %}
+<div class="no-result-container">
+NO RESULTS
+</div>
+{% endif %}

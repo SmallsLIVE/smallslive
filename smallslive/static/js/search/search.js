@@ -49,7 +49,7 @@ function sendEventRequest() {
                 $("#event-subheader").html(data.showingResults)
                 $("#event-subheader-footer").html(data.showingResults)
                 $("#events").html(data.template);
-                //$("#events").show();
+                $("#page-numbers-footer").html(data.pageNumbersFooter);
                 
                 eventMaxPageNum = data.numPages;
             }
