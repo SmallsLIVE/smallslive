@@ -51,6 +51,7 @@
   overflow: hidden;
 
   .player-info {
+    @include animated;
     position: absolute;
     top: 0;
     left: 0;
