@@ -2,6 +2,7 @@
 .white-border-select {
   position: relative;
   color: black;
+  float: right;
   @include button1;
 
   select {
