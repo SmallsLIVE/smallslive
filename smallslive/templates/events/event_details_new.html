@@ -67,8 +67,12 @@
           </div>
         </div>
         <div class="event-player-buttons flex-column items-flex-stretch">
-          <button class="white-border-button" id="togglePlayer">
+          <button class="white-border-button" id="togglePlayerAudio">
             Audio only player
+          </button>
+          <button class="white-border-button" id="togglePlayerVideo"
+                  style="display: none">
+            Video player
           </button>
           <button class="white-border-button">Download for $9.99</button>
         </div>
@@ -269,14 +273,19 @@
             });
         {% endif %}
 
-        var togglePlayerButton = $("#togglePlayer");
+        var togglePlayerAudio = $("#togglePlayerAudio");
+        var togglePlayerVideo = $("#togglePlayerVideo");
         var audioContainer = $("#audioContainer");
         var videoContainer = $("#videoContainer");
 
-        togglePlayerButton.on('click', function () {
+        var togglePlayer = function () {
           $(videoContainer).toggle();
           $(audioContainer).toggle();
-        });
+          $(togglePlayerAudio).toggle();
+          $(togglePlayerVideo).toggle();
+        };
+        togglePlayerAudio.on('click', togglePlayer);
+        togglePlayerVideo.on('click', togglePlayer);
       </script>
   {% endif %}
     {% with album=event.products.first %}
