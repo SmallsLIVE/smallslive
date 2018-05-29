@@ -438,7 +438,7 @@ class WeeklyScheduleView(GenericScheduleView):
         context = super(WeeklyScheduleView, self).get_context_data(**kwargs)
         context['events_today'] = get_today_events()
 
-        context['month'] = self.date_start.month - 1
+        context['month'] = self.date_start.month
         context['year'] = self.date_start.year
         context['day'] = self.date_start.day
 
@@ -486,13 +486,31 @@ class MonthlyScheduleView(GenericScheduleView):
     def get_dates_interval(self):
         month = int(self.kwargs.get('month', timezone.now().month))
         year = int(self.kwargs.get('year', timezone.now().year))
+        received_day = self.kwargs.get('day')
+
+        day = 1
+        if received_day:
+            day = int(received_day)
+
         # don't show last nights events that are technically today
         date_range_start = timezone.make_aware(
-            timezone.datetime(year, month, 1, hour=10),
+            timezone.datetime(year, month, day, hour=10),
             timezone.get_default_timezone()
         )
-        date_range_end = date_range_start + monthdelta.MonthDelta(1)
-        number_of_days = calendar.monthrange(year, month)[1]
+
+        # Adjust to first day of week
+        date_range_start = date_range_start - timedelta(
+            days=date_range_start.isoweekday() % 7
+        )
+        # self.date_start = date_range_start
+
+        if not received_day:
+            number_of_days = calendar.monthrange(year, month)[1]
+            date_range_end = date_range_start + monthdelta.MonthDelta(1)
+        else:
+            number_of_days = 7
+            date_range_end = date_range_start + timedelta(days=number_of_days)
+
         return date_range_end, date_range_start, number_of_days
 
     def get_context_data(self, **kwargs):
@@ -501,25 +519,33 @@ class MonthlyScheduleView(GenericScheduleView):
         next month, and a min one (1 day) for the previous month.
         """
         context = super(MonthlyScheduleView, self).get_context_data(**kwargs)
-        month = int(self.kwargs.get('month', timezone.now().month))
-        year = int(self.kwargs.get('year', timezone.now().year))
+        context['events_today'] = get_today_events()
+
+        month = self.date_start.month
+        year = self.date_start.year
+        day = self.date_start.day
+
         context['month'] = month - 1
         context['year'] = year
+        context['day'] = day
         context['month_view'] = True
 
         # position of the "NEXT" box, after all the dates and the "PREV" box
         context['next_month_position'] = len(context['dates']) + 2
-        current_month = timezone.datetime(year=year, month=month, day=1)
-        next_month = current_month + timezone.timedelta(days=31)
-        prev_month = current_month - timezone.timedelta(days=1)
+        current_date = timezone.datetime(year=year, month=month, day=day)
+
+        next_day = current_date + timezone.timedelta(days=7)
+        prev_day = current_date - timezone.timedelta(days=7)
 
         prev_url = reverse('monthly_schedule',
-                           kwargs={'year': prev_month.year,
-                                   'month': prev_month.month})
+                           kwargs={'year': prev_day.year,
+                                   'month': prev_day.month,
+                                   'day': prev_day.day})
 
         next_url = reverse('monthly_schedule',
-                           kwargs={'year': next_month.year,
-                                   'month': next_month.month})
+                           kwargs={'year': next_day.year,
+                                   'month': next_day.month,
+                                   'day': next_day.day})
 
         self.add_venue_next_prev(
             context, next_url, {}, prev_url, {}

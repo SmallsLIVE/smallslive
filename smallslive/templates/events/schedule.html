@@ -61,39 +61,33 @@
   <script>
     $(document).ready(function () {
       var initialDate = new Date({{ year}}, {{ month }}, {% if day %}{{ day }}{% else %}1{% endif %});
-      console.log('Initial date', initialDate);
 
       var $datePicker = $('#schedule__date-picker input');
+      var now = new Date();
       $datePicker.datepicker({
         format: 'MM // yyyy',
         orientation: "top auto",
         autoclose: true,
-        startDate: new Date()
+        startDate: initialDate.getTime() >= now.getTime() ? now : initialDate
       });
 
       $datePicker.datepicker("setDate", initialDate);
+      var venueSelect = $('#venueSelect');
 
       $datePicker.on('changeDate', function(newDate) {
         var month = newDate.date.getMonth();
         var year = newDate.date.getFullYear();
         var day = newDate.date.getDate();
 
-        var selectedDay = new Date(year, month, day + 1);
-
-        var weekDiff = calculateWeeksBetween(selectedDay, new Date());
-        console.log('Week diff:', weekDiff);
-
-        if (weekDiff === 0) {
-          window.location = "{% addurlparameter 'week' None %}";
-        } else {
-          window.location = "{% addurlparameter 'week' "1" %}".replace(
-            'week=1', 'week='+weekDiff
-          );
+        var location = '/events/calendar/' + year + '/' + (month + 1) + '/' + day + '/';
+        var selected = venueSelect.val();
+        if (selected) {
+          location += '?venue='+selected;
         }
+        window.location = location;
       });
 
       {#TODO Select using url param#}
-      var venueSelect = $('#venueSelect');
       venueSelect.on('change', function () {
         var selected = venueSelect.val();
         var newLocation;
