@@ -18,6 +18,12 @@
     padding-top: 5px;
     border-top: $underline-height solid $white-transparent;
   }
+
+  div {
+   div:first-child {
+   width: 50%;
+  }
+ }
 }
 
 
@@ -103,12 +109,12 @@
     position: absolute;
 
     left: 0;
-    bottom: -1px;
+    bottom: 4px;
 
     > span {
       color: $white-transparent;
       background-color: black;
-      padding: 0 8px;
+      padding: 2px 10px;
 
       &.accent-box {
         background-color: $accent-color;
