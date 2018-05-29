@@ -438,7 +438,7 @@ class WeeklyScheduleView(GenericScheduleView):
         context = super(WeeklyScheduleView, self).get_context_data(**kwargs)
         context['events_today'] = get_today_events()
 
-        context['month'] = self.date_start.month
+        context['month'] = self.date_start.month - 1
         context['year'] = self.date_start.year
         context['day'] = self.date_start.day
 
