@@ -269,9 +269,9 @@ $text-font-size-big: 1.4em;
   @include reen-kufi-normal;
   letter-spacing: 0;
   font-size: $text-font-size-small;
-  font-weight: bold;
   line-height: $line-height-smaller;
   text-transform: uppercase;
+  text-shadow: 0.001em 0.001em;
 }
 
 .links1 {
@@ -319,6 +319,7 @@ $text-font-size-big: 1.4em;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-size: 1em;
+  text-shadow: 0.001em 0.001em;
 }
 
 .text-justified {
