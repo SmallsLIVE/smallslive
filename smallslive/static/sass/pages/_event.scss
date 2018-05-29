@@ -32,8 +32,14 @@
   margin: 2em 0;
 }
 
-.player-container {
+#videoContainer, #audioContainer {
   margin-bottom: 30px;
+  @media(min-width: $screen-md-min) {
+    min-width: 800px;
+  }
+}
+
+.player-container {
   color: $white-transparent;
 
   position: relative;
@@ -46,9 +52,11 @@
     padding: 20px 30px;
   }
 
-  .darked-image {
-    @include cross-browser-grayscale;
-    position: inherit;
+  .jwplayer {
+    .jw-preview {
+      background-size: cover;
+      @include cross-browser-grayscale;
+    }
   }
 }
 
