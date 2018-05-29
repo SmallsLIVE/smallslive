@@ -1,10 +1,21 @@
+$events-top-margin: 40px;
+
 .schedule-dates-container {
-  margin-top: 40px;
+  margin-top: $events-top-margin;
+  position: relative;
+  top: -$events-top-margin;
 
   .big-icon {
     color: $black;
   }
-};
+
+  .dropdowns-container {
+    position: relative;
+    top: -$events-top-margin;
+  }
+
+}
+
 .schedule-day-column {
   .event-info > div {
     max-width: 100px;
