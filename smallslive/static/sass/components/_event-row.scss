@@ -6,10 +6,17 @@
   .event-display {
     margin: 5px;
 
-    .event-info {
-      @include links1;
-      margin-top: 10px;
-    }
+  }
+}
+
+.event-info {
+  @include links1;
+  margin-top: 10px;
+
+  &.top-border {
+    padding-bottom: 30px;
+    padding-top: 5px;
+    border-top: $underline-height solid $white-transparent;
   }
 }
 

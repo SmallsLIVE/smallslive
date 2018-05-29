@@ -18,6 +18,10 @@
     align-items: flex-start;
   }
 
+  &.items-flex-end {
+    align-items: flex-end;
+  }
+
   &.items-flex-stretch {
     align-items: stretch;
   }
@@ -65,3 +69,8 @@
   margin: 0;
 }
 
+.big-icon {
+  padding: 0 40px;
+  font-size: 8em;
+  transform: scaleY(1.4);
+};

@@ -188,7 +188,6 @@ $text-font-size-big: 1.4em;
 }
 
 @mixin title7 {
-  @include oswald-regular;
   @include oswald-light;
   font-size: 3.35em;
   letter-spacing: 0.02em;

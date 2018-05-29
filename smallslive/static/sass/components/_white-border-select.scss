@@ -2,6 +2,7 @@
 .white-border-select {
   position: relative;
   color: black;
+  float: right;
   @include button1;
 
   select {
@@ -40,6 +41,9 @@
   justify-content: center;
 
   padding: 1em;
+
+  height: 40px;
+  align-items: center;
 }
 /*style items (options):*/
 .select-items {

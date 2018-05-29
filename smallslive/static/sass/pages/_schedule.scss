@@ -1,0 +1,12 @@
+.schedule-dates-conatainer {
+  margin-top: 40px;
+
+  .big-icon {
+    color: $black;
+  }
+};
+.schedule-day-column {
+  .event-info > div {
+    max-width: 100px;
+  }
+}
