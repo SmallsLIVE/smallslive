@@ -1,6 +1,6 @@
 {% for date, events in dates.iteritems %}
   <div class="schedule-day-column">
-    <p class="title1">{{ date|date:"D n/j/Y" }}</p>
+    <p class="title1">{{ date|date:"D n/j" }}</p>
     <div>
       {% if events %}
         <div class="flex flex-column items-flex-stretch">
