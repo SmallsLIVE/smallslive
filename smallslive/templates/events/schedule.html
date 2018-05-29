@@ -42,13 +42,15 @@
   </div>
     <main class="schedule-dates-conatainer">
       <div class="flex flex-row content-space-around items-flex-start wrap">
-        <a href="{{ prev_url }}">
-          <i class="fa fa-angle-left big-icon"></i>
+        <a href="{{ prev_url }}" class="schedule-move-icon">
+          {% if prev_url %}
+            <i class="fa fa-angle-left big-icon"></i>
+          {% endif %}
         </a>
         <div class="flex flex-row flex-grow content-space-around items-flex-start wrap ">
           {% include 'events/calendar_week.html' with dates=dates %}
         </div>
-        <a href="{{ next_url }}"><i class="fa fa-angle-right big-icon"></i></a>
+        <a class="schedule-move-icon" href="{{ next_url }}"><i class="fa fa-angle-right big-icon"></i></a>
       </div>
     </main>
   </div>

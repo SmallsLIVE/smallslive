@@ -359,6 +359,20 @@ event_search = EventSearchView(
     searchqueryset=RelatedSearchQuerySet()
 )
 
+def annotate_events(events):
+    return events.annotate(product_count=Count('products')).extra(select={
+        'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
+                       "events_recording.event_id = events_event. ID AND "
+                       "events_recording.media_file_id = multimedia_mediafile. ID AND "
+                       " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='video'"
+                       " GROUP BY events_event.id",
+        'audio_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
+                       "events_recording.event_id = events_event. ID AND "
+                       "events_recording.media_file_id = multimedia_mediafile. ID AND "
+                       " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='audio'"
+                       " GROUP BY events_event.id",
+    })
+
 
 class GenericScheduleView(ListView):
     context_object_name = 'dates'
@@ -406,9 +420,9 @@ class GenericScheduleView(ListView):
             params_next['venue'] = venue_id
             params_prev['venue'] = venue_id
 
-        if len(params_prev):
+        if prev_url and len(params_prev):
             prev_url = '{}?{}'.format(prev_url, urlencode(params_prev))
-        if len(params_next):
+        if next_url and len(params_next):
             next_url = '{}?{}'.format(next_url, urlencode(params_next))
         context['prev_url'] = prev_url
         context['next_url'] = next_url
@@ -455,7 +469,9 @@ class WeeklyScheduleView(GenericScheduleView):
         if week != -1:
             params_next['week'] = week + 1
 
-        prev_url = base_url
+        prev_url = None
+        if week:
+            prev_url = base_url
         next_url = base_url
 
         self.add_venue_next_prev(
@@ -466,21 +482,6 @@ class WeeklyScheduleView(GenericScheduleView):
 
 
 schedule = WeeklyScheduleView.as_view()
-
-
-def annotate_events(events):
-    return events.annotate(product_count=Count('products')).extra(select={
-        'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
-                       "events_recording.event_id = events_event. ID AND "
-                       "events_recording.media_file_id = multimedia_mediafile. ID AND "
-                       " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='video'"
-                       " GROUP BY events_event.id",
-        'audio_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
-                       "events_recording.event_id = events_event. ID AND "
-                       "events_recording.media_file_id = multimedia_mediafile. ID AND "
-                       " events_recording. STATE = 'Published' AND multimedia_mediafile.media_type='audio'"
-                       " GROUP BY events_event.id",
-    })
 
 
 class MonthlyScheduleView(GenericScheduleView):
@@ -498,12 +499,6 @@ class MonthlyScheduleView(GenericScheduleView):
             timezone.datetime(year, month, day, hour=10),
             timezone.get_default_timezone()
         )
-
-        # Adjust to first day of week
-        date_range_start = date_range_start - timedelta(
-            days=date_range_start.isoweekday() % 7
-        )
-        # self.date_start = date_range_start
 
         if not received_day:
             number_of_days = calendar.monthrange(year, month)[1]
@@ -538,10 +533,12 @@ class MonthlyScheduleView(GenericScheduleView):
         next_day = current_date + timezone.timedelta(days=7)
         prev_day = current_date - timezone.timedelta(days=7)
 
-        prev_url = reverse('monthly_schedule',
-                           kwargs={'year': prev_day.year,
-                                   'month': prev_day.month,
-                                   'day': prev_day.day})
+        prev_url = None
+        if current_date.date() > timezone.now().date():
+            prev_url = reverse('monthly_schedule',
+                               kwargs={'year': prev_day.year,
+                                       'month': prev_day.month,
+                                       'day': prev_day.day})
 
         next_url = reverse('monthly_schedule',
                            kwargs={'year': next_day.year,
