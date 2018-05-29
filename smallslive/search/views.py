@@ -8,8 +8,9 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.views.generic import View
 from django.views.generic.base import TemplateView
+from django.db.models import Q
 from events.models import Event
-from haystack.query import SearchQuerySet
+from haystack.query import SearchQuerySet, SQ
 
 from .utils import facets_by_model_name
 
@@ -37,16 +38,32 @@ def search_autocomplete(request):
 class MainSearchView(View):
 
     def search(self, entity, text, page=1, order=None):
-        
+
         if entity == Artist:
             results_per_page = 48
+            if order:
+                sqs = entity.objects.filter(Q(last_name__icontains=text) | Q(first_name__icontains=text) | Q(instruments__name__icontains=text)).order_by(order)
+            else:
+                sqs = entity.objects.filter(Q(last_name__icontains=text) | Q(first_name__icontains=text) | Q(instruments__name__icontains=text))
         elif entity == Event:
             results_per_page = 15
-
-        if order:
-            sqs = SearchQuerySet().models(entity).filter(content=text).order_by(order)
-        else:
-            sqs = SearchQuerySet().models(entity).filter(content=text)
+            if order:
+                sqs = entity.objects.filter(Q(title__icontains=text) | Q(description__icontains=text) | Q(performers__first_name__icontains=text) | Q(performers__last_name__icontains=text)).order_by(order)
+            else:
+                sqs = entity.objects.filter(Q(title__icontains=text) | Q(description__icontains=text) | Q(performers__first_name__icontains=text) | Q(performers__last_name__icontains=text))
+        
+        #if entity == Artist:
+        #    results_per_page = 48
+        #    if order:
+        #        sqs = SearchQuerySet().models(entity).filter(SQ(last_name=text) | SQ(instrument=text)).order_by(order)
+        #    else:
+        #        sqs = SearchQuerySet().models(entity).filter(SQ(last_name=text) | SQ(instrument=text))
+        #elif entity == Event:
+        #    results_per_page = 15
+        #    if order:
+        #        sqs = SearchQuerySet().models(entity).filter(SQ(title=text) | SQ(performers=text)).order_by(order)
+        #    else:
+        #        sqs = SearchQuerySet().models(entity).filter(SQ(title=text) | SQ(performers=text))
 
         blocks = []
         block = []
@@ -57,6 +74,8 @@ class MainSearchView(View):
 
         for item in paginator.page(page).object_list:
             item = entity.objects.filter(pk=item.pk).first()
+            if entity == Artist:
+                print(item.pk, ' ', item.first_name, ' ', item.last_name)
             block.append(item)
 
             if len(block) == 8 and entity == Artist:
@@ -70,11 +89,6 @@ class MainSearchView(View):
         showing_results = 'SHOWING {} - {} OF {} RESULTS'.format(1 + ((page - 1) * results_per_page),
                                                                  results_per_page  + ((page - 1) * results_per_page),
                                                                  paginator.count)
-        
-        #if entity == Event:
-        #    page_numbers_footer = ''
-        #    pages = []
-
 
         return blocks, showing_results, paginator.num_pages
 
