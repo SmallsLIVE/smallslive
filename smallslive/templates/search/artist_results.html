@@ -3,7 +3,7 @@
     {% for artist_block in artists_blocks %}
     <div class="artist-column">
         {% for artist in artist_block %}
-        <a href="{{ artist.get_absolute_url }}"><span class="artist-search-text artist-row">{{ artist.last_name }} {{ artist.first_name }} / {{ artist.instruments.all.first }}</span></a>
+        <a href="{{ artist.get_absolute_url }}"><span class="artist-search-text artist-row">{{ artist.last_name }}, {{ artist.first_name }} / {{ artist.instruments.all.first }}</span></a>
         {% endfor %}
     </div>
     {% endfor %}
