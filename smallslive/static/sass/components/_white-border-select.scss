@@ -8,27 +8,32 @@
   select {
     display: none;
   }
+
+  &:not(.no-arrow) {
+    .select-selected {
+      &:after {
+        content: " ";
+        height: 0;
+        width: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid black;
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        transition: all 0.3s linear;
+        cursor: pointer;
+        pointer-events: inherit;
+        z-index: -1;
+      }
+    }
+  }
 }
+
 .select-selected {
   padding-left: -20px;
   background-color: transparent;
   border: 2px solid $white-transparent;
-
-  &:after {
-    content: " ";
-    height: 0;
-    width: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid black;
-    position: absolute;
-    right: 16px;
-    top: 16px;
-    transition: all 0.3s linear;
-    cursor: pointer;
-    pointer-events: inherit;
-    z-index: -1;
-  }
 }
 /*style the arrow inside the select element:*/
 /*point the arrow upwards when the select box is open (active):*/
