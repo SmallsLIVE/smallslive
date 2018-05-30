@@ -2,18 +2,18 @@
 
 {% if actual_page >= 4 %}
     {% if actual_page == 1 %}
-        <li class="page-numbers-list-item active-page">1</li>
+        <a class="change-page" onclick="changePage(this)" data-page-number="1"> <li class="page-numbers-list-item active-page">1</li></a>
     {% else %}
-        <li class="page-numbers-list-item">1</li>
+        <a class="change-page" onclick="changePage(this)" data-page-number="1"> <li class="page-numbers-list-item">1</li></a>
     {% endif %}
     <li class="page-numbers-list-item">...</li>
 {% endif %}
 
 {% for n in range %}
     {% if actual_page == n %}
-        <li class="page-numbers-list-item active-page">{{n}}</li>
+        <a class="change-page" onclick="changePage(this)" data-page-number="{{n}}"> <li class="page-numbers-list-item active-page">{{n}}</li></a>
     {% else %}
-        <li class="page-numbers-list-item">{{n}}</li>
+        <a class="change-page" onclick="changePage(this)" data-page-number="{{n}}"> <li class="page-numbers-list-item">{{n}}</li></a>
     {% endif %}
 {% endfor %}
 
@@ -22,8 +22,8 @@
 {% endif %}
 
 {% if actual_page == last_page %}
-    <li class="page-numbers-list-item active-page">{{last_page}}</li>
+    <a class="change-page" onclick="changePage(this)" data-page-number="{{last_page}}"> <li class="page-numbers-list-item active-page">{{last_page}}</li></a>
 {% else %}
-    <li class="page-numbers-list-item">{{last_page}}</li>
+    <a class="change-page" onclick="changePage(this)" data-page-number="{{last_page}}"> <li class="page-numbers-list-item">{{last_page}}</li></a>
 {% endif %}
 </ul>

@@ -36,6 +36,12 @@ function sendArtistRequest() {
     });
 }
 
+function changePage(param) {
+    page = param.getAttribute("data-page-number");
+    eventPageNum = page;
+    sendEventRequest();
+}
+
 function sendEventRequest() {
     $.ajax({
         url: '/search/ajax/event/',
