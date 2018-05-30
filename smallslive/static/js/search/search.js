@@ -31,7 +31,25 @@ function sendArtistRequest() {
                 $(".loading-image").css("display", "none");
                 $(".container-list-article").css("height", "auto");
                 artistMaxPageNum = data.numPages;
+
+                if(artistPageNum == 1) {
+                    $("#left_arrow").css('visibility', 'hidden');
+                } else {
+                    $("#left_arrow").css('visibility', 'visible');
+                }
+
+                if(artistPageNum == artistMaxPageNum) {
+                    $("#right_arrow").css('visibility', 'hidden');
+                } else {
+                    $("#right_arrow").css('visibility', 'visible');
+                }
             }
+        },
+        error: function (data) {
+            $("#artists").show();
+            $(".loading-image").css("display", "none");
+            $(".container-list-article").css("height", "auto");
+            $("#right_arrow").css('visibility', 'hidden');
         }
     });
 }
@@ -69,9 +87,11 @@ $(document).ready(function () {
     artistMaxPageNum = eventMaxPageNum = 2;
 
     $("[name='q']").val(searchTerm);
+    $("#left_arrow").css('visibility', 'hidden');
 
     $("#left_arrow").click(function () {
         if (artistPageNum != 1) {
+            
             artistPageNum -= 1;
             $("#artists").hide();
             $(".loading-image").css("display", "block");
