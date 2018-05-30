@@ -35,42 +35,42 @@ def search_autocomplete(request):
     return resp
 
 
-class MainSearchView(View):
+class SearchMixin(object):
 
     def search(self, entity, text, page=1, order=None):
 
         if entity == Artist:
             results_per_page = 48
             if order:
-                sqs = entity.objects.filter(Q(last_name__icontains=text) | Q(first_name__icontains=text) | Q(instruments__name__icontains=text)).order_by(order)
+                sqs = entity.objects.filter(Q(
+                    last_name__icontains=text) | Q(
+                    first_name__icontains=text) | Q(
+                    instruments__name__icontains=text)
+                    ).distinct().order_by(order)
             else:
-                sqs = entity.objects.filter(Q(last_name__icontains=text) | Q(first_name__icontains=text) | Q(instruments__name__icontains=text))
+                sqs = entity.objects.filter(Q(
+                    last_name__icontains=text) | Q(
+                    first_name__icontains=text) | Q(
+                    instruments__name__icontains=text)).distinct()
         elif entity == Event:
             results_per_page = 15
             if order:
-                sqs = entity.objects.filter(Q(title__icontains=text) | Q(description__icontains=text) | Q(performers__first_name__icontains=text) | Q(performers__last_name__icontains=text)).order_by(order)
+                sqs = entity.objects.filter(Q(
+                    title__icontains=text) | Q(
+                    description__icontains=text) | Q(
+                    performers__first_name__icontains=text) | Q(
+                    performers__last_name__icontains=text)).distinct().order_by(order)
             else:
-                sqs = entity.objects.filter(Q(title__icontains=text) | Q(description__icontains=text) | Q(performers__first_name__icontains=text) | Q(performers__last_name__icontains=text))
-        
-        #if entity == Artist:
-        #    results_per_page = 48
-        #    if order:
-        #        sqs = SearchQuerySet().models(entity).filter(SQ(last_name=text) | SQ(instrument=text)).order_by(order)
-        #    else:
-        #        sqs = SearchQuerySet().models(entity).filter(SQ(last_name=text) | SQ(instrument=text))
-        #elif entity == Event:
-        #    results_per_page = 15
-        #    if order:
-        #        sqs = SearchQuerySet().models(entity).filter(SQ(title=text) | SQ(performers=text)).order_by(order)
-        #    else:
-        #        sqs = SearchQuerySet().models(entity).filter(SQ(title=text) | SQ(performers=text))
+                sqs = entity.objects.filter(Q(
+                    title__icontains=text) | Q(
+                    description__icontains=text) | Q(
+                    performers__first_name__icontains=text) | Q(
+                    performers__last_name__icontains=text)).distinct()
 
         blocks = []
         block = []
 
         paginator = Paginator(sqs, results_per_page)
-
-        paginator.page(1).object_list  # if this line is removed the paginator.page() returns the same items. Bug?
 
         for item in paginator.page(page).object_list:
             item = entity.objects.filter(pk=item.pk).first()
@@ -86,11 +86,14 @@ class MainSearchView(View):
             blocks.append(block)
             block = []
 
-        showing_results = 'SHOWING {} - {} OF {} RESULTS'.format(1 + ((page - 1) * results_per_page),
-                                                                 results_per_page  + ((page - 1) * results_per_page),
-                                                                 paginator.count)
+        showing_results = 'SHOWING {} - {} OF {} RESULTS'.format(
+            1 + ((page - 1) * results_per_page),
+            results_per_page  + ((page - 1) * results_per_page),
+            paginator.count)
 
         return blocks, showing_results, paginator.num_pages
+
+class MainSearchView(View, SearchMixin):
 
     def get(self, request, *args, **kwargs):
         q = request.GET.get('q', None)
@@ -125,7 +128,7 @@ class MainSearchView(View):
         if entity == 'event':
             context={'actual_page': page,
                      'last_page': num_pages,
-                     'range': range(1, num_pages + 1)[:page][-3:]+range(1, num_pages + 1)[page:][:2],
+                     'range': range(1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2],
                      'has_last_page': (num_pages - page) >= 3}
             template = 'search/page_numbers_footer.html'
             temp = render_to_string(template,
@@ -138,7 +141,7 @@ class MainSearchView(View):
         return JsonResponse(data)
 
 
-class TemplateSearchView(TemplateView, MainSearchView):
+class TemplateSearchView(TemplateView, SearchMixin):
     template_name = 'search/search.html'
 
     def get_context_data(self, **kwargs):
@@ -157,7 +160,7 @@ class TemplateSearchView(TemplateView, MainSearchView):
 
         context['actual_page'] = page = 1
         context['last_page'] = num_pages
-        context['range'] = range(1, num_pages + 1)[:page][-3:]+range(1, num_pages + 1)[page:][:2]
+        context['range'] = range(1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2]
         context['has_last_page'] = (num_pages - page) >= 3
         
         return context

@@ -62,6 +62,8 @@ $(document).ready(function () {
     artistPageNum = eventPageNum = 1;
     artistMaxPageNum = eventMaxPageNum = 2;
 
+    $("[name='q']").val(searchTerm);
+
     $("#left_arrow").click(function () {
         if (artistPageNum != 1) {
             artistPageNum -= 1;
