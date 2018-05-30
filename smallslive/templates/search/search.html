@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 {% load i18n %}
@@ -147,17 +147,11 @@
 </style>
 {% endblock %}
 
-{% block header %}
-{% endblock %}
-
 {% block content %}
 
   {% include 'inactive_dialog.html' %}
 
 <div class="main-container">
-
-    {% include 'partials/header.html' %}
-
     <div class="flex-row items-center wrap content-space-around" style="width: 500px; margin: 0 auto;">
         <div class="select-arrow white-border-select" style="width:120px;">
             <select id="artist-filter">

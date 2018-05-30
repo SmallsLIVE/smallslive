@@ -16,6 +16,7 @@
 {% endblock %}
 
 {% block header %}
+{% include 'partials/header.html' %}
 {% endblock %}
 
 {% block content %}
@@ -23,7 +24,6 @@
   {% include 'inactive_dialog.html' %}
 
   <div class="main-container">
-  {% include 'partials/header.html' %}
 
   {% block home_content %}
     <main>
