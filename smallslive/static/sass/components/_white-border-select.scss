@@ -10,24 +10,24 @@
   }
 }
 .select-selected {
+  padding-left: -20px;
   background-color: transparent;
   border: 2px solid $white-transparent;
 
   &:after {
-    color: red;
-    position: absolute;
-    content: "";
-    top: 14px;
-    right: 10px;
-    width: 0;
+    content: " ";
     height: 0;
-    //border: 6px solid transparent;
-    //border-color: #fff transparent transparent transparent;
-  }
-
-  &.select-arrow-active:after {
-    border-color: red;
-    top: 7px;
+    width: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    transition: all 0.3s linear;
+    cursor: pointer;
+    pointer-events: inherit;
+    z-index: -1;
   }
 }
 /*style the arrow inside the select element:*/
@@ -35,7 +35,6 @@
 /*style the items (options), including the selected item:*/
 .select-items div,.select-selected {
   color: black;
-  //border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
   cursor: pointer;
   display: flex;
   justify-content: center;
@@ -49,7 +48,6 @@
 .select-items {
   border: 2px solid $white-transparent;
   position: absolute;
-  //background-color: DodgerBlue;
   background-color: $background-color;
   top: 100%;
   left: 0;
