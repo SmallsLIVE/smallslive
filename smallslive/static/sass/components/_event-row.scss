@@ -5,10 +5,33 @@
 
   .event-display {
     margin: 5px;
+    a {
+      color: $black;
+    }
 
-    .event-info {
-      @include links1;
-      margin-top: 10px;
+    &:hover {
+      .event-info-title {
+        color: $accent-color;
+        text-decoration: underline;
+      }
+    }
+
+  }
+}
+
+.event-info {
+  @include links1;
+  margin-top: 10px;
+
+  &.top-border {
+    padding-bottom: 30px;
+    padding-top: 5px;
+    border-top: $underline-height solid $white-transparent;
+  }
+
+  div {
+    div:first-child {
+      width: 50%;
     }
   }
 }
@@ -49,8 +72,8 @@
     }
 
     .icon-overlay {
+      @include animated;
       color: $accent-color;
-      background-color: rgba(0, 0, 0, 0.6);
       position: absolute;
       height: 100%;
       width: 100%;
@@ -83,6 +106,10 @@
   }
 
   &:hover {
+    .event-picture {
+      filter: grayscale(100%) brightness(50%) sepia(100%) saturate(20%) hue-rotate(335deg);
+    }
+
     .icon-overlay {
       opacity: 1;
     }
@@ -92,12 +119,12 @@
     position: absolute;
 
     left: 0;
-    bottom: -1px;
+    bottom: 4px;
 
     > span {
       color: $white-transparent;
       background-color: black;
-      padding: 0 8px;
+      padding: 2px 10px;
 
       &.accent-box {
         background-color: $accent-color;

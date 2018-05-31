@@ -1,10 +1,10 @@
-$line-height-smaller: 1.67em;
+$line-height-smaller: 1.25em;
 $line-height-small: 1.84em;
 $line-height-medium: 2.17em;
 $line-height-big: 2.51em;
 $line-height-bigger: 2.68em;
 
-$text-font-size-small: 1em;
+$text-font-size-small: 1.25em;
 $text-font-size-medium: 1.2em;
 $text-font-size-big: 1.4em;
 
@@ -188,7 +188,6 @@ $text-font-size-big: 1.4em;
 }
 
 @mixin title7 {
-  @include oswald-regular;
   @include oswald-light;
   font-size: 3.35em;
   letter-spacing: 0.02em;
@@ -272,6 +271,7 @@ $text-font-size-big: 1.4em;
   font-size: $text-font-size-small;
   line-height: $line-height-smaller;
   text-transform: uppercase;
+  text-shadow: 0.001em 0.001em;
 }
 
 .links1 {
@@ -319,6 +319,7 @@ $text-font-size-big: 1.4em;
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-size: 1em;
+  text-shadow: 0.001em 0.001em;
 }
 
 .text-justified {

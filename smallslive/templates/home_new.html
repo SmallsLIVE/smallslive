@@ -16,6 +16,7 @@
 {% endblock %}
 
 {% block header %}
+{% include 'partials/header.html' %}
 {% endblock %}
 
 {% block content %}
@@ -23,47 +24,6 @@
   {% include 'inactive_dialog.html' %}
 
   <div class="main-container">
-    <header class="main-header">
-      <div class="flex-row items-center wrap content-space-around">
-        <div class="flex-row items-center wrap logo-container">
-          <div>
-            <a href="/" class="smalls-logo">
-              <img src="{% static 'logo-black.svg' %}" alt=""/>
-            </a>
-          </div>
-          <div class="search-input">
-            <input type="text" placeholder="Search">
-          </div>
-        </div>
-
-        <div class="button-row">
-          <a href="{% url 'schedule' %}"><button class="no-border">Calendar</button></a>
-          <a href="{% url 'archive' %}"><button class="no-border">Archive</button></a>
-          <a href="{% url 'contact-and-info' %}"><button class="no-border">Info</button></a>
-          <a href=""><button class="no-border">Education</button></a>
-          <a href="{% url "promotions:home" %}"><button class="no-border">Store</button></a>
-        </div>
-        {% if not request.user.is_authenticated %}
-          <button class="white-border-button" href="#logIn" data-toggle="modal">
-            Sign In
-          </button>
-        {% else %}
-          <div class="white-border-select">
-            <select id="userMenu">
-              <option value="current" noSelect="1" selected="selected">
-                {% if request.user.first_name or request.user.last_name%}
-                  {% if request.user.first_name %}{{ request.user.first_name }}{% endif %}
-                  {% if request.user.last_name %} {{ request.user.last_name }}{% endif %}
-                {% else %}
-                  {{ request.user.email }}
-                {% endif %}
-              </option>
-              <option value="logout">Sign Out</option>
-            </select>
-          </div>
-        {% endif %}
-      </div>
-    </header>
 
   {% block home_content %}
     <main>
@@ -98,10 +58,10 @@
             <span class="select-container">
               <div class="white-border-select" style="width:150px;">
                 <select id="most-popular-filter">
-                  <option value="week">Last week</option>
-                  <option value="month">Last month</option>
-                  <option value="year">This Year</option>
-                  <option value="alltime">All Time</option>
+                  <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
+                  <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
+                  <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
+                  <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
                 </select>
               </div>
             </span>

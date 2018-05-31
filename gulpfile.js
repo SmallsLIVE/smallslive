@@ -8,7 +8,7 @@ var sourcemaps  = require('gulp-sourcemaps');
 // browser-sync task for starting the server.
 gulp.task('browser-sync', function() {
     browserSync({
-      proxy: "127.0.0.1:8000",
+      proxy: process.env.PROXY || "127.0.0.1:8000",
       watchOptions: {
         reloadDelay: 300,
         reloadDebounce: 500

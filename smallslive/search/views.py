@@ -1,7 +1,17 @@
 import json
 from itertools import chain
-from django.http import HttpResponse
-from haystack.query import SearchQuerySet
+
+from artists.models import Artist
+from django.core.paginator import Paginator
+from django.http import HttpResponse, JsonResponse, Http404
+from django.template import RequestContext
+from django.template.loader import render_to_string
+from django.views.generic import View
+from django.views.generic.base import TemplateView
+from django.db.models import Q
+from events.models import Event
+from haystack.query import SearchQuerySet, SQ
+
 from .utils import facets_by_model_name
 
 
@@ -23,3 +33,134 @@ def search_autocomplete(request):
     }, sort_keys=True)
     resp = HttpResponse(the_data, content_type='application/json')
     return resp
+
+
+class SearchMixin(object):
+
+    def search(self, entity, text, page=1, order=None):
+
+        if entity == Artist:
+            results_per_page = 48
+            if order:
+                sqs = entity.objects.filter(Q(
+                    last_name__icontains=text) | Q(
+                    first_name__icontains=text) | Q(
+                    instruments__name__icontains=text)
+                    ).distinct().order_by(order)
+            else:
+                sqs = entity.objects.filter(Q(
+                    last_name__icontains=text) | Q(
+                    first_name__icontains=text) | Q(
+                    instruments__name__icontains=text)).distinct()
+        elif entity == Event:
+            results_per_page = 15
+            if order:
+                sqs = entity.objects.filter(Q(
+                    title__icontains=text) | Q(
+                    description__icontains=text) | Q(
+                    performers__first_name__icontains=text) | Q(
+                    performers__last_name__icontains=text)).distinct().order_by(order)
+            else:
+                sqs = entity.objects.filter(Q(
+                    title__icontains=text) | Q(
+                    description__icontains=text) | Q(
+                    performers__first_name__icontains=text) | Q(
+                    performers__last_name__icontains=text)).distinct()
+
+        blocks = []
+        block = []
+
+        paginator = Paginator(sqs, results_per_page)
+
+        for item in paginator.page(page).object_list:
+            item = entity.objects.filter(pk=item.pk).first()
+            if entity == Artist:
+                print(item.pk, ' ', item.first_name, ' ', item.last_name)
+            block.append(item)
+
+            if len(block) == 8 and entity == Artist:
+                blocks.append(block)
+                block = []
+
+        if block:
+            blocks.append(block)
+            block = []
+
+        showing_results = 'SHOWING {} - {} OF {} RESULTS'.format(
+            1 + ((page - 1) * results_per_page),
+            results_per_page  + ((page - 1) * results_per_page),
+            paginator.count)
+
+        return blocks, showing_results, paginator.num_pages
+
+class MainSearchView(View, SearchMixin):
+
+    def get(self, request, *args, **kwargs):
+        q = request.GET.get('q', None)
+        page = int(request.GET.get('page', 1))
+        entity = self.kwargs.get('entity', None)
+        
+        if entity == 'artist':
+            artists_blocks, showing_results, num_pages = self.search(Artist, q, page)
+
+            context={'artists_blocks': artists_blocks}
+            template = 'search/artist_results.html'
+            
+        elif entity == 'event':
+            events, showing_results, num_pages = self.search(Event, q, page)
+
+            context={'events': events[0] if events else []}
+            template = 'search/event_results.html'
+        else:
+            return Http404('entity does not exist')
+        
+        temp = render_to_string(template,
+            context,
+            context_instance=RequestContext(request)
+        )
+
+        data = {
+            'template': temp,
+            'showingResults': showing_results,
+            'numPages': num_pages
+        }
+
+        if entity == 'event':
+            context={'actual_page': page,
+                     'last_page': num_pages,
+                     'range': range(1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2],
+                     'has_last_page': (num_pages - page) >= 3}
+            template = 'search/page_numbers_footer.html'
+            temp = render_to_string(template,
+                context,
+                context_instance=RequestContext(request)
+            )
+
+            data['pageNumbersFooter'] = temp
+
+        return JsonResponse(data)
+
+
+class TemplateSearchView(TemplateView, SearchMixin):
+    template_name = 'search/search.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(TemplateSearchView, self).get_context_data(**kwargs)
+        q = self.request.GET.get('q', '')
+
+        artists_blocks, showing_artist_results, num_pages = self.search(Artist, q)
+
+        context['showing_artist_results'] = showing_artist_results
+        context['artists_blocks'] = artists_blocks
+        
+        event_blocks, showing_event_results, num_pages = self.search(Event, q, order='title')
+
+        context['showing_event_results'] = showing_event_results
+        context['event_results'] = event_blocks[0] if event_blocks else []
+
+        context['actual_page'] = page = 1
+        context['last_page'] = num_pages
+        context['range'] = range(1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2]
+        context['has_last_page'] = (num_pages - page) >= 3
+        
+        return context
