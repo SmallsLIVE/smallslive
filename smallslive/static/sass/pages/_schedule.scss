@@ -17,9 +17,19 @@ $events-top-margin: 40px;
 }
 
 .schedule-day-column {
-  .event-info > div {
+  .event-title {
     max-width: 100px;
   }
+
+  a {
+    color: $black;
+
+    &:hover {
+      color: $accent-color;
+      text-decoration: underline;
+    }
+  }
+
 }
 
 .schedule-move-icon {

@@ -6,7 +6,11 @@
         <div class="flex flex-column items-flex-stretch">
           {% for event in events %}
             <div class="event-info top-border">
-              <div>{{ event.title }}</div>
+              <div class="event-title">
+                <a href="{{ event.get_absolute_url }}">
+                  {{ event.title }}
+                </a>
+              </div>
               <div class="accent-color">{{ event.venue.name }}</div>
               <div class="text-grey">{{ event.start|date:"g:i A" }} &
                 {{ event.end|date:"g:i A" }}</div>
