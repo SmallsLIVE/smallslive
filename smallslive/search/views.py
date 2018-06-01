@@ -74,8 +74,6 @@ class SearchMixin(object):
 
         for item in paginator.page(page).object_list:
             item = entity.objects.filter(pk=item.pk).first()
-            if entity == Artist:
-                print(item.pk, ' ', item.first_name, ' ', item.last_name)
             block.append(item)
 
             if len(block) == 8 and entity == Artist:
