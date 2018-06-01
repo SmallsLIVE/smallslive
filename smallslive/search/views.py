@@ -74,8 +74,6 @@ class SearchMixin(object):
 
         for item in paginator.page(page).object_list:
             item = entity.objects.filter(pk=item.pk).first()
-            if entity == Artist:
-                print(item.pk, ' ', item.first_name, ' ', item.last_name)
             block.append(item)
 
             if len(block) == 8 and entity == Artist:
@@ -88,7 +86,7 @@ class SearchMixin(object):
 
         showing_results = 'SHOWING {} - {} OF {} RESULTS'.format(
             1 + ((page - 1) * results_per_page),
-            results_per_page  + ((page - 1) * results_per_page),
+            results_per_page  + ((page - 1) * results_per_page) if page != paginator.num_pages else len(paginator.page(page).object_list) + ((page - 1) * results_per_page),
             paginator.count)
 
         return blocks, showing_results, paginator.num_pages
