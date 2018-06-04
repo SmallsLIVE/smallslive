@@ -32,6 +32,7 @@
 
   <div class="flex-row wrap content-centered event-page-container">
     <div class="flex-column">
+    {% if user.is_authenticated %}
       {% if user.can_watch_video %}
         <div id="videoContainer" class="player-container">
           <div id="player-video"></div>
@@ -47,6 +48,15 @@
           <div id="player-audio"></div>
         </div>
       {% endif %}
+    {% else %}
+      <div class="event-video-banner flex-column content-space-between items-center">
+        <span class="event-banner-background"></span>
+        <p class="text1 accent-color">Live Stream Access</p>
+        <p class="title3">Sign up</p>
+        <p class="text7">Our live stream has expanded our 60 seat clubs into a worldwide community of jazz fans and supporters. Sign up for free to watch our live streams each night.</p>
+        <button class="white-border-button">Become a Supporter</button>
+      </div>
+    {% endif %}
       <div class="flex-row content-space-between">
         <div class="event-video-info flex-column">
           <div class="event-title title1">{{ event.title }}</div>

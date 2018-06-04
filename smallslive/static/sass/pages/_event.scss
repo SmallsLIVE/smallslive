@@ -98,3 +98,24 @@
     color: black;
   }
 }
+
+.event-video-banner {
+  position: relative;
+  width: 700px;
+  height: 420px;
+
+  padding: 60px 100px;
+  margin-bottom: 30px;
+
+  .event-banner-background {
+    @include background-image-with-overlay(rgba(255, 255, 255, 0.8));
+    background: url("/static/image/banners/live.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  .white-border-button {
+    background-color: transparent;
+  }
+}
