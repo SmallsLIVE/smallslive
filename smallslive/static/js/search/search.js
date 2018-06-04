@@ -32,13 +32,13 @@ function sendArtistRequest() {
                 $(".container-list-article").css("height", "auto");
                 artistMaxPageNum = data.numPages;
 
-                if(artistPageNum == 1) {
+                if(artistPageNum === 1) {
                     $("#left_arrow").css('visibility', 'hidden');
                 } else {
                     $("#left_arrow").css('visibility', 'visible');
                 }
 
-                if(artistPageNum == artistMaxPageNum) {
+                if(artistPageNum === artistMaxPageNum) {
                     $("#right_arrow").css('visibility', 'hidden');
                 } else {
                     $("#right_arrow").css('visibility', 'visible');
@@ -55,9 +55,8 @@ function sendArtistRequest() {
 }
 
 function changePage(param) {
-    page = param.getAttribute("data-page-number");
-    eventPageNum = page;
-    sendEventRequest();
+  eventPageNum = parseInt(param.getAttribute("data-page-number"));
+  sendEventRequest();
 }
 
 function sendEventRequest() {
@@ -90,7 +89,7 @@ $(document).ready(function () {
     $("#left_arrow").css('visibility', 'hidden');
 
     $("#left_arrow").click(function () {
-        if (artistPageNum != 1) {
+        if (artistPageNum !== 1) {
             
             artistPageNum -= 1;
             $("#artists").hide();
@@ -102,19 +101,18 @@ $(document).ready(function () {
     });
 
     $("#right_arrow").click(function () {
-        if (artistPageNum != artistMaxPageNum) {
+        if (artistPageNum !== artistMaxPageNum) {
             artistPageNum += 1;
-            height = $("#artists").height();
-            $("#artists").hide();
+          $("#artists").hide();
             $(".loading-image").css("display", "block");
-            $(".container-list-article").css("height", height);
+            $(".container-list-article").css("height", $("#artists").height());
             
             sendArtistRequest();
         }
     });
 
     $("#next-page-btn").click(function () {
-        if (eventPageNum != eventMaxPageNum) {
+        if (eventPageNum !== eventMaxPageNum) {
             eventPageNum += 1;
             
             sendEventRequest();
