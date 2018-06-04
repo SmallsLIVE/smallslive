@@ -52,8 +52,13 @@
       </div>
       {% endif %}
       {% if event.published_audio %}
-        <div id="audioContainer" style="display:none;">
+        <div id="audioContainer" class="player-container" style="display:none;">
           <div id="player-audio"></div>
+          <div class="player-info" id="playerTextOveraly">
+            <div class="accent-color text2">
+              {{ event.start|date:'m/d/Y' }}</div>
+            <div class="title1">{{ event.title }}</div>
+          </div>
         </div>
       {% endif %}
     {% else %}
@@ -187,14 +192,13 @@
                     file: "{{ audio.media_file.get_file_url|safe }}",
                     type: "mp3"
                   }],
-                  title: "{{ event.title }}: Set {{ audio.set_number }}",
                   image: "{{ event.photo.url }}",
                   mediaid: {{ audio.id }}
                 }{% if not forloop.last %},{% endif %}
               {% endfor %}
             ],
             width: "100%",
-            height: 30
+            height: 200
           });
           audioPlayer.on('play', function () {
             {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
