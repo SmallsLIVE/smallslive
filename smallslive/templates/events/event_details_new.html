@@ -42,6 +42,14 @@
             <div class="title1">{{ event.title }}</div>
           </div>
         </div>
+      {% else %}
+        <div class="event-video-banner flex-column content-space-between items-center">
+        <span class="event-banner-background"></span>
+        <p class="text1 accent-color">Archive Access</p>
+        <p class="title3">Become a supporter</p>
+        <p class="text7">Access archive videos by becoming a Supporting Member. Your supporting pledge goes directly to your favorite artists and helps make SmallsLIVE possible through our SmallsLIVE Revenue Share. Supporting Members have unlimited access to our archive of nearly every concert performed at Smalls & Mezzrow with new concerts added weekly. By listening to your favorite artists in the archive you are getting them paid.</p>
+        <button class="white-border-button">Become a Supporter</button>
+      </div>
       {% endif %}
       {% if event.published_audio %}
         <div id="audioContainer" style="display:none;">
