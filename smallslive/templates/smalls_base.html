@@ -99,6 +99,33 @@
   ga('send', 'pageview');
 </script>
 <script src="{% static 'js/utils.js' %}"></script>
-{% block extra_js %}{% endblock %}
+<script>
+  $(document).ready(function() {
+    var signInModal = $('#logIn');
+    var becomeMemberModal = $('#becomeMemberDialog');
+
+    var becomeMember = $('#becomeMemberButton');
+    becomeMember.on('click', function () {
+      signInModal.modal('hide');
+      becomeMemberModal.modal('show');
+    });
+
+    var showSignIn = $('#showSignIn');
+    showSignIn.on('click', function () {
+      becomeMemberModal.modal('hide');
+      signInModal.modal('show');
+    });
+
+    var userMenu = $('#userMenu');
+    userMenu.on('change', function () {
+      if (userMenu.val() === 'logout') {
+        console.log('Logging out');
+        window.location = "{% url 'account_logout' %}";
+      }
+    });
+  });
+</script>
+{% block extra_js %}
+{% endblock %}
 </body>
 </html>
