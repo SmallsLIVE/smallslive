@@ -44,6 +44,9 @@
 
         input[type="text"], input[type="password"], input[type="email"] {
           @include bordered-input;
+          @include place-holder-color($black);
+          background-color: $white-transparent;
+          border-radius: 0;
         }
 
         //TODO Custom check box
