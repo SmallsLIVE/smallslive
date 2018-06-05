@@ -21,7 +21,7 @@
       <a href="{% url "promotions:home" %}"><button class="no-border">Store</button></a>
     </div>
     {% if not request.user.is_authenticated %}
-      <button class="white-border-button" href="#logIn" data-toggle="modal">
+      <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
         Sign In
       </button>
     {% else %}
