@@ -33,33 +33,46 @@
   <div class="flex-row wrap content-centered event-page-container">
     <div class="flex-column">
     {% if user.is_authenticated %}
-      {% if user.can_watch_video %}
-        <div id="videoContainer" class="player-container">
-          <div id="player-video"></div>
-          <div class="player-info" id="playerTextOveraly">
-            <div class="accent-color text2">
-              {{ event.start|date:'m/d/Y' }}</div>
-            <div class="title1">{{ event.title }}</div>
-          </div>
-        </div>
+      {% if event.is_live %}
+         <div class="player-container">
+           <div style="padding-bottom:56.25%; position:relative; display:block; width: 800px; height: 450px">
+             <iframe id="UstreamIframe"
+                     width="100%" height="100%"
+                     src="https://www.ustream.tv/embed/23240575?html5ui"
+                     frameborder="0"
+                     style="position:absolute; top:0; left: 0" allowfullscreen
+                     webkitallowfullscreen></iframe>
+           </div>
+         </div>
       {% else %}
-        <div class="event-video-banner flex-column content-space-between items-center">
-        <span class="event-banner-background"></span>
-        <p class="text1 accent-color">Archive Access</p>
-        <p class="title3">Become a supporter</p>
-        <p class="text7">Access archive videos by becoming a Supporting Member. Your supporting pledge goes directly to your favorite artists and helps make SmallsLIVE possible through our SmallsLIVE Revenue Share. Supporting Members have unlimited access to our archive of nearly every concert performed at Smalls & Mezzrow with new concerts added weekly. By listening to your favorite artists in the archive you are getting them paid.</p>
-        <button class="white-border-button">Become a Supporter</button>
-      </div>
-      {% endif %}
-      {% if event.published_audio %}
-        <div id="audioContainer" class="player-container" style="display:none;">
-          <div id="player-audio"></div>
-          <div class="player-info" id="playerTextOveraly">
-            <div class="accent-color text2">
-              {{ event.start|date:'m/d/Y' }}</div>
-            <div class="title1">{{ event.title }}</div>
+        {% if user.can_watch_video %}
+          <div id="videoContainer" class="player-container">
+            <div id="player-video"></div>
+            <div class="player-info" id="playerTextOveraly">
+              <div class="accent-color text2">
+                {{ event.start|date:'m/d/Y' }}</div>
+              <div class="title1">{{ event.title }}</div>
+            </div>
           </div>
+        {% else %}
+          <div class="event-video-banner flex-column content-space-between items-center">
+          <span class="event-banner-background"></span>
+          <p class="text1 accent-color">Archive Access</p>
+          <p class="title3">Become a supporter</p>
+          <p class="text7">Access archive videos by becoming a Supporting Member. Your supporting pledge goes directly to your favorite artists and helps make SmallsLIVE possible through our SmallsLIVE Revenue Share. Supporting Members have unlimited access to our archive of nearly every concert performed at Smalls & Mezzrow with new concerts added weekly. By listening to your favorite artists in the archive you are getting them paid.</p>
+          <button class="white-border-button">Become a Supporter</button>
         </div>
+        {% endif %}
+        {% if event.published_audio %}
+          <div id="audioContainer" class="player-container" style="display:none;">
+            <div id="player-audio"></div>
+            <div class="player-info" id="playerTextOveraly">
+              <div class="accent-color text2">
+                {{ event.start|date:'m/d/Y' }}</div>
+              <div class="title1">{{ event.title }}</div>
+            </div>
+          </div>
+        {% endif %}
       {% endif %}
     {% else %}
       <div class="event-video-banner flex-column content-space-between items-center">

@@ -38,7 +38,6 @@
 }
 
 #videoContainer, #audioContainer {
-  margin-bottom: 30px;
   @media(min-width: $screen-md-min) {
     min-width: 800px;
   }
@@ -46,6 +45,7 @@
 
 .player-container {
   color: $white-transparent;
+  margin-bottom: 30px;
 
   position: relative;
   overflow: hidden;
