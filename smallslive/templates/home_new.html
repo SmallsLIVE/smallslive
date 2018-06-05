@@ -103,36 +103,10 @@
         setMostPopular(filter.val());
       });
 
-      var userMenu = $('#userMenu');
-      userMenu.on('change', function () {
-        if (userMenu.val() === 'logout') {
-          console.log('Logging out');
-          window.location = "{% url 'account_logout' %}";
-        }
-      });
-
       {% if popular_select %}
         filter.val('{{ popular_select }}');
         filter.trigger("change");
       {% endif %}
-
-      var signInModal = $('#logIn');
-      var becomeMemberModal = $('#becomeMemberDialog');
-
-      var becomeMember = $('#becomeMemberButton');
-      becomeMember.on('click', function () {
-        console.log('Become member Clicked');
-        signInModal.modal('hide');
-        becomeMemberModal.modal('show');
-      });
-
-      var showSignIn = $('#showSignIn');
-      showSignIn.on('click', function () {
-        console.log('Go to sign in clicked');
-        becomeMemberModal.modal('hide');
-        signInModal.modal('show');
-      })
-
     });
   </script>
 {% endblock extra_js %}
