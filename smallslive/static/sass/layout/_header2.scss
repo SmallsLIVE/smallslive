@@ -76,6 +76,10 @@
   a,
   button {
     color: black;
+
+    &:hover {
+      background-color: $white-transparent;
+    }
   }
 
   button,
