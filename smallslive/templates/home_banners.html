@@ -3,8 +3,8 @@
 <div class="banners visible-lg">
   <div id="banner-container">
     {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
-    <div class="lighten-image">
-      {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url crop_box=event.photo_crop_box %}
+    <div class="lighten-image banner-background">
+      {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url %}
     </div>
     <div class="banner-border">
       <div class="banner-title-button">
