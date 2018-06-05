@@ -50,19 +50,26 @@
   position: relative;
   overflow: hidden;
 
-  .player-info {
-    @include animated;
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 20px 30px;
-  }
 
   .jwplayer {
     .jw-preview {
       background-size: cover;
-      @include cross-browser-grayscale;
+      filter: $sepia-filter
     }
+  }
+}
+
+.player-info {
+  @include animated;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 20px 30px;
+  height: 100%;
+  width: 100%;
+
+  @at-root .event-video-placeholder {
+    color: $white-transparent;
   }
 }
 
@@ -99,16 +106,28 @@
   }
 }
 
-.event-video-banner {
+.event-video-placeholder {
+  .event-video-placeholder-picture {
+    filter: $sepia-filter;
+  }
+}
+
+.event-video-banner, .event-video-placeholder {
   position: relative;
   width: 850px;
   height: 500px;
 
-  padding: 60px 100px;
   margin-bottom: 30px;
 
   .event-banner-background {
-    @include background-image-with-overlay(rgba(255, 255, 255, 0.8));
+    &:not(.dark) {
+      @include background-image-with-overlay(rgba(255, 255, 255, 0.8));
+    }
+
+    &.dark {
+      @include background-image-with-overlay(rgba(0, 0, 0, 0.8));
+    }
+
     background: url("/static/image/banners/live.jpg");
     background-size: cover;
     width: 100%;
@@ -119,3 +138,8 @@
     background-color: transparent;
   }
 }
+
+.event-video-banner {
+  padding: 60px 100px;
+}
+
