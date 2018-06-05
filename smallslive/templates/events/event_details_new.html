@@ -124,7 +124,7 @@
           {% endif %}
           {% if event.is_past %}
             <div class="event-set-info">
-              <div class="accent-color text2">Set 1</div>
+              <div class="accent-color text2">Set <span id="set-number">1</span></div>
               <div class="accent-color text2">
                 {{ event.start|date:'m/d/Y' }}</div>
             </div>
@@ -138,6 +138,14 @@
                 </a>
               </div>
             {% endfor %}
+          </div>
+          <div id="video-set-buttons">
+            <div class="button-row set-buttons" id="video-sets-list">
+            </div>
+          </div>
+          <div id="audio-set-buttons" style="display: none;">
+            <div class="button-row set-buttons" id="audio-sets-list">
+            </div>
           </div>
         </div>
         <div class="event-player-buttons flex-column items-flex-stretch">
@@ -221,7 +229,6 @@
                 })
             };
 
-
             function setUpTimerForMedia(mediaId) {
                 pingMetricsServer(mediaId);
                 if (!activeTracker) {
@@ -266,31 +273,26 @@
                   activeTracker = null;
               });
           {% endif %}
-          audioPlayer.on('ready', function (olds) {
-            var currentItem = audioPlayer.getPlaylistIndex() + 1;
-            var totalItems = audioPlayer.getPlaylist().length;
-            updateSetText('#audio-control__current', currentItem, totalItems);
+          audioPlayer.on('ready', function () {
+            var playlist = audioPlayer.getPlaylist();
+            var playlistItems = "";
+            $.each(playlist, function (index, item) {
+              playlistItems += '<button class="';
+              if (index === 0) {
+                playlistItems += ' active';
+              }
+              playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</button>';
+            });
+            $("#audio-sets-list").html(playlistItems);
           });
 
-          $('#audio-control_next').on('click', function () {
-            var playlistLength = audioPlayer.getPlaylist().length;
+          $('#audio-sets-list').on('click', 'button', function () {
             var currentIndex = audioPlayer.getPlaylistIndex();
-            // if current item is last, do nothing
-            if (currentIndex !== playlistLength - 1) {
-              var nextItemIndex = (currentIndex + 1) % playlistLength;
-              audioPlayer.playlistItem(nextItemIndex);
-              updateSetText('#audio-control__current', nextItemIndex + 1, playlistLength);
-            }
-          });
-
-          $('#audio-control_prev').on('click', function () {
-            var playlistLength = audioPlayer.getPlaylist().length;
-            var currentIndex = audioPlayer.getPlaylistIndex();
-            if (currentIndex !== 0) {
-              var nextItemIndex = (currentIndex - 1);
-              audioPlayer.playlistItem(nextItemIndex);
-              updateSetText('#audio-control__current', nextItemIndex + 1, playlistLength);
-            }
+            var selectedIndex = $(this).data('playlist-index');
+            audioPlayer.playlistItem(selectedIndex);
+            $('#set-number').html(selectedIndex + 1);
+            $(this).toggleClass('active');
+            $('#audio-sets-list button[data-playlist-index=' + currentIndex + ']').toggleClass('active');
           });
         {% endif %}
 
@@ -326,25 +328,27 @@
                 {% endif %}
                   $('#playerTextOveraly').css('opacity', 1);
               });
-            videoPlayer.on('ready', function () {
+
+              videoPlayer.on('ready', function () {
                 var playlist = videoPlayer.getPlaylist();
                 var playlistItems = "";
                 $.each(playlist, function (index, item) {
-                    playlistItems += '<li class="event-view__header__video__playlist__item';
+                    playlistItems += '<button class="';
                     if (index === 0) {
                         playlistItems += ' active';
                     }
-                    playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</li>';
+                    playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</button>';
                 });
                 $("#video-sets-list").html(playlistItems);
             });
 
-            $('#video-sets-list').on('click', 'li', function () {
+            $('#video-sets-list').on('click', 'button', function () {
                 var currentIndex = videoPlayer.getPlaylistIndex();
                 var selectedIndex = $(this).data('playlist-index');
                 videoPlayer.playlistItem(selectedIndex);
+                $('#set-number').html(selectedIndex + 1);
                 $(this).toggleClass('active');
-                $('li[data-playlist-index=' + currentIndex + ']').toggleClass('active');
+                $('#video-sets-list button[data-playlist-index=' + currentIndex + ']').toggleClass('active');
             });
         {% endif %}
 
@@ -358,6 +362,8 @@
           $(audioContainer).toggle();
           $(togglePlayerAudio).toggle();
           $(togglePlayerVideo).toggle();
+          $('#video-set-buttons').toggle();
+          $('#audio-set-buttons').toggle();
         };
         togglePlayerAudio.on('click', togglePlayer);
         togglePlayerVideo.on('click', togglePlayer);
