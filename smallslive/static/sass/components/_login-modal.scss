@@ -1,5 +1,11 @@
 .modal {
-  top:10%;
+  top: 10%;
+  max-height: 95vh;
+
+  .modal-dialog {
+    max-height: 100%;
+    overflow: scroll;
+  }
 }
 
 .modal-backdrop {
@@ -87,7 +93,7 @@
 
 .modal-dialog .close {
   background: none;
-  border: none;
+  border: 0;
   font-size: 40px;
   position: absolute;
   top: 10px;
