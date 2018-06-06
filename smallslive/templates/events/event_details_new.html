@@ -105,9 +105,11 @@
         <div class="event-video-info flex-column">
           <div class="event-set-info">
             <div class="event-title title1">{{ event.title }}</div>
-            <div class="accent-color text2">Set <span id="set-number">1</span></div>
-            <div class="accent-color text2">
-              {{ event.start|date:'m/d/Y' }}</div>
+            {% if event.is_past %}
+              <div class="accent-color text2">Set <span id="set-number">1</span></div>
+              <div class="accent-color text2">
+                {{ event.start|date:'m/d/Y' }}</div>
+            {% endif %}
           </div>
           <div class="flex-column event-band">
             {% for gig_info in event.get_performers %}
