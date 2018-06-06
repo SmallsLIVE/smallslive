@@ -29,6 +29,7 @@
 {% endblock %}
 
 {% block home_content %}
+  {% include 'events/tickets_dialog.html' %}
 
   <div class="flex-row wrap content-centered event-page-container">
     <div class="flex-column">
@@ -131,14 +132,21 @@
           </div>
         </div>
         <div class="event-player-buttons flex-column items-flex-stretch">
-          <button class="white-border-button" id="togglePlayerAudio">
-            Audio only player
-          </button>
-          <button class="white-border-button" id="togglePlayerVideo"
-                  style="display: none">
-            Video player
-          </button>
-          <button class="white-border-button">Download for $9.99</button>
+
+          {% if event.is_past %}
+            <button class="white-border-button" id="togglePlayerAudio">
+              Audio only player
+            </button>
+            <button class="white-border-button" id="togglePlayerVideo"
+                    style="display: none">
+              Video player
+            </button>
+          {% endif %}
+          {% if not event.is_live and event.is_past %}
+            <button class="white-border-button">Download for $9.99</button>
+          {% elif not event.is_live and event.is_future %}
+            <button class="white-border-button" onclick="showTickets()">Tickets</button>
+          {% endif %}
         </div>
       </div>
       <div class="flex-row event-set-selector"></div>
@@ -172,6 +180,10 @@
   <script>
   var showRegister = function() {
     $('#becomeMemberDialog').modal('show');
+  };
+
+  var showTickets = function () {
+    $('#ticketsDialog').modal('show');
   };
 
   var goToSupporter = function() {
