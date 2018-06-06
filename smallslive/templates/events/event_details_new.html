@@ -54,27 +54,12 @@
          "></span>
           <div class="player-info flex-column content-space-between">
             <div>
-              <div>
-                <div class="accent-color text2">{{ event.start|date:'m/d/Y' }}</div>
-                <div class="title1">{{ event.title }}</div>
-              </div>
-              <div>
-                <div class="accent-color text2">{{ event.venue }}</div>
-                <div class="text4">Set 1: {{ event.start|date:'h:i A' }}</div>
-                <div class="text4">Set 2: {{ event.end|date:'h:i A' }}</div>
-              </div>
+              <div class="accent-color text2">{{ event.start|date:'m/d/Y' }}</div>
+              <div class="title1">{{ event.title }}</div>
             </div>
             <div>
-              <div class="flex-column event-band">
-            {% for gig_info in event.get_performers %}
-              <div class="event-info-artist">
-                <a href="{{ gig_info.artist.get_absolute_url }}"
-                   class="artist-link">
-                  {{ gig_info.artist.full_name }} / {{ gig_info.role }}
-                </a>
-              </div>
-            {% endfor %}
-          </div>
+              <div class="accent-color text2">{{ event.venue }}</div>
+              <div class="text4">Sets at {{ event.start|date:'h:i A' }} {% if event.end %}& {{ event.end|date:'h:i A' }}{% endif %}</div>
             </div>
           </div>
         </div>
@@ -118,16 +103,12 @@
     {% endif %}
       <div class="flex-row content-space-between">
         <div class="event-video-info flex-column">
-          {% if not event.is_future %}
+          <div class="event-set-info">
             <div class="event-title title1">{{ event.title }}</div>
-          {% endif %}
-          {% if event.is_past %}
-            <div class="event-set-info">
-              <div class="accent-color text2">Set <span id="set-number">1</span></div>
-              <div class="accent-color text2">
-                {{ event.start|date:'m/d/Y' }}</div>
-            </div>
-          {% endif %}
+            <div class="accent-color text2">Set <span id="set-number">1</span></div>
+            <div class="accent-color text2">
+              {{ event.start|date:'m/d/Y' }}</div>
+          </div>
           <div class="flex-column event-band">
             {% for gig_info in event.get_performers %}
               <div class="event-info-artist">
