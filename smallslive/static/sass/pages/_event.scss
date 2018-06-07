@@ -55,6 +55,12 @@
   }
 }
 
+.event-video-placeholder {
+  .player-info {
+    color: $white-transparent;
+  }
+}
+
 .player-info {
   @include animated;
   position: absolute;
@@ -62,10 +68,6 @@
   left: 0;
   padding: 20px 30px;
   height: 40%;
-
-  @at-root .event-video-placeholder {
-    color: $white-transparent;
-  }
 }
 
 .event-related-videos {
