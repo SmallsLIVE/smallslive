@@ -20,12 +20,12 @@ $(document).ready(function(){
   var monthlyButtons = $("#monthlyPledge > button");
 
   var $supporterForm = $('#formSupporter');
-  $supporterForm.submit(getAjaxSubmitForForm(
-    $supporterForm, [
-      "type", "quantity", "card_name", "expiration_date", "credit_card_number",
-      "credit_card_cvc"
-    ]
-  ));
+  // $supporterForm.submit(getAjaxSubmitForForm(
+  //   $supporterForm, [
+  //     "type", "quantity", "card_name", "expiration_date", "credit_card_number",
+  //     "credit_card_cvc"
+  //   ]
+  // ));
 
   var resetButtons = function () {
     [monthlyButtons, yearlyButtons].forEach(function (buttons) {
@@ -128,10 +128,10 @@ $(document).ready(function(){
     $(buttons[currentStep]).removeClass('active');
   };
 
-  var submitForm = function () {
-    sentHint.show();
-    $supporterForm.trigger('submit');
-  };
+  // var submitForm = function () {
+  //   sentHint.show();
+  //   $supporterForm.trigger('submit');
+  // };
 
   var checkConfirmButton = function () {
     if (currentStep === 1) {
@@ -173,7 +173,11 @@ $(document).ready(function(){
 
   confirmButton.on('click', function () {
     if (currentStep === panels.length - 1) {
-      submitForm();
+      // submitForm();
+      // TODO Disable the submit button to prevent repeated clicks
+      // $form.find('#confirmButton').prop('disabled', true).addClass('disabled');
+      sentHint.show();
+      startStripePayment($supporterForm);
     } else {
       showPanel(currentStep + 1);
     }
