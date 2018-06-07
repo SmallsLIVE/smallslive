@@ -60,7 +60,7 @@
             </div>
             <div>
               <div class="accent-color text2">{{ event.venue }}</div>
-              <div class="text4">Sets at {{ event.start|date:'h:i A' }} {% if event.end %}& {{ event.end|date:'h:i A' }}{% endif %}</div>
+              <div class="text4">Sets at {{ event.start|date:'g:i A' }} {% if event.end %}& {{ event.end|date:'g:i A' }}{% endif %}</div>
             </div>
           </div>
         </div>
