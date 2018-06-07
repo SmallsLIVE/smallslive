@@ -54,18 +54,25 @@ class SearchMixin(object):
                     instruments__name__icontains=text)).distinct()
         elif entity == Event:
             results_per_page = 15
+            
             if order:
-                sqs = entity.objects.filter(Q(
-                    title__icontains=text) | Q(
-                    description__icontains=text) | Q(
-                    performers__first_name__icontains=text) | Q(
-                    performers__last_name__icontains=text)).distinct().order_by(order)
+                if order == 'newest':
+                    order = '-start'
+                elif order == 'oldest':
+                    order = 'start'
             else:
-                sqs = entity.objects.filter(Q(
-                    title__icontains=text) | Q(
-                    description__icontains=text) | Q(
-                    performers__first_name__icontains=text) | Q(
-                    performers__last_name__icontains=text)).distinct()
+                order = '-start'
+           
+            sqs = entity.objects.filter(Q(
+                title__icontains=text) | Q(
+                description__icontains=text) | Q(
+                performers__first_name__icontains=text) | Q(
+                performers__last_name__icontains=text)).distinct()
+            
+            if order == 'popular':
+                sqs = sqs.most_popular()
+            else:
+                sqs = sqs.order_by(order)
 
         blocks = []
         block = []
@@ -97,6 +104,7 @@ class MainSearchView(View, SearchMixin):
         q = request.GET.get('q', None)
         page = int(request.GET.get('page', 1))
         entity = self.kwargs.get('entity', None)
+        order = request.GET.get('order', None)
         
         if entity == 'artist':
             artists_blocks, showing_results, num_pages = self.search(Artist, q, page)
@@ -105,7 +113,7 @@ class MainSearchView(View, SearchMixin):
             template = 'search/artist_results.html'
             
         elif entity == 'event':
-            events, showing_results, num_pages = self.search(Event, q, page)
+            events, showing_results, num_pages = self.search(Event, q, page, order=order)
 
             context={'events': events[0] if events else []}
             template = 'search/event_results.html'
@@ -151,7 +159,7 @@ class TemplateSearchView(TemplateView, SearchMixin):
         context['showing_artist_results'] = showing_artist_results
         context['artists_blocks'] = artists_blocks
         
-        event_blocks, showing_event_results, num_pages = self.search(Event, q, order='title')
+        event_blocks, showing_event_results, num_pages = self.search(Event, q)
 
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []

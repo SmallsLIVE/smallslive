@@ -73,10 +73,20 @@
 </section>
 
     <section class="event-stripe">
-        <div class="section-title">
-            <div class="title1">Concerts</div>
-            <div id="event-subheader" class="header-sub title2 subheader-results results-text">{{showing_event_results}}</div>
+        <div class="event-section">
+            <div class="section-title">
+                <div class="title1">Concerts</div>
+                <div id="event-subheader" class="header-sub title2 subheader-results results-text">{{showing_event_results}}</div>
+            </div>
+            <div class="white-border-select event-filter-select" style="width:250px;">
+                <select id="events-filter">
+                    <option value="newest">NEWEST TO OLDEST</option>
+                    <option value="oldest">OLDEST TO NEWEST</option>
+                    <option value="popular">MOST POPULAR</option>
+                </select>
+            </div>
         </div>
+        
         <main id="events">
             {% include 'search/event_results.html' with events=event_results %}
         </main>

@@ -1,4 +1,4 @@
-var searchTerm, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum;
+var searchTerm, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter;
 
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -65,7 +65,8 @@ function sendEventRequest() {
         url: '/search/ajax/event/',
         data: {
             'q': searchTerm,
-            'page': eventPageNum
+            'page': eventPageNum,
+            'order': eventOrderFilter
         },
         dataType: 'json',
         success: function (data) {
@@ -85,6 +86,7 @@ $(document).ready(function () {
     searchTerm = getUrlParameter("q");
     artistPageNum = eventPageNum = 1;
     artistMaxPageNum = eventMaxPageNum = 2;
+    eventOrderFilter = "newest";
 
     $("[name='q']").val(searchTerm);
     $("#left_arrow").css('visibility', 'hidden');
@@ -120,4 +122,11 @@ $(document).ready(function () {
             sendEventRequest();
         }
     });
+
+    $('#events-filter').change(function(){
+        eventOrderFilter = $(this).val();
+        eventPageNum = 1;
+
+        sendEventRequest();
+      });
 });

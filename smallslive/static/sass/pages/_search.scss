@@ -37,6 +37,7 @@
 
 .event-display {
   margin: 5px;
+  max-width: 250px;
 }
 
 .loading-image {
@@ -120,4 +121,13 @@
 .change-page > li:hover {
   font-weight: 900;
   color: black;
+}
+
+.event-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.event-filter-select {
+  margin-right: 86px;
 }
