@@ -24,6 +24,10 @@
   border-radius: 2px;
   background-color: transparent;
 
+  &:hover {
+    background-color: $white-transparent;
+  }
+
   &.active {
     background-color: $white-transparent;
   }

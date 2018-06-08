@@ -24,11 +24,12 @@
           <div class="form-group">
             <p class="form-error-text hidden" id="all-errors"></p>
           </div>
-
-          <a class="forgot-password text4 text-grey"
-             href="{% url "account_reset_password" %}">
-            Forgot your Password?
-          </a>
+          <div class="form-group flex-column items-center">
+            <a class="text4 text-grey"
+               href="{% url "account_reset_password" %}">
+              Forgot your Password?
+            </a>
+          </div>
           <input class="login-button" value="Sign in" type="submit">
         </form>
       </div>
