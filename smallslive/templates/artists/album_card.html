@@ -1,13 +1,13 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
-<a href="{{ event.get_absolute_url }}">
+<a href="{{ album.get_absolute_url }}">
   <div class="{% if not mini%}event-card{% else %}event-card-small{% endif %}">
     <div class="event-picture-container">
       <div class="picture-border">
         <div class="event-picture">
-          {% if event.photo %}
-            {% include 'partials/thumbored_picture.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+          {% if album.primary_image %}
+            {% include 'partials/thumbored_picture.html' with photo_url=album.primary_image.original.url height=photo_height width=photo_width %}
           {% else %}
             {% include 'partials/thumbored_picture.html' %}
           {% endif %}
@@ -19,11 +19,11 @@
     </div>
     {% if show_time %}
       <div class="event-dates links1">
-        {% if event.is_live %}
+        {% if album.is_live %}
           <span class="accent-box">Live Now</span>
         {% else %}
           <span>
-            {{ event.start|date:"g:i A" }} & {{ event.end|date:"g:i A" }}
+            {{ album.start|date:"g:i A" }} & {{ album.end|date:"g:i A" }}
           </span>
         {% endif %}
       </div>

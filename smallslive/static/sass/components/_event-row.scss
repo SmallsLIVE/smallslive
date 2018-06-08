@@ -1,4 +1,4 @@
-.event-row {
+.event-row, .album-row {
   display: flex;
   overflow: auto;
   padding-left: 40px;
@@ -132,5 +132,20 @@
 
   .event-picture-container {
     border-radius: 0;
+  }
+}
+
+//TODO Move
+
+.album-row {
+  .event-display {
+    .event-card {
+      @include event-card(300px, 300px);
+      .event-picture-container {
+        .event-picture {
+          filter: none
+        }
+      }
+    }
   }
 }

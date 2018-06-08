@@ -1,0 +1,46 @@
+$artist-picture-size: 350px;
+
+.artist-header {
+  margin-left: 80px;
+  margin-top: 40px;
+
+  .artist-info {
+    margin-left: 40px;
+
+    p:first-child {
+      line-height: 1;
+      margin-bottom: 30px;
+    }
+  }
+
+  .artist-picture {
+    height: $artist-picture-size;
+    width: $artist-picture-size;
+
+    border: 4px solid $border-color;
+    @include cross-browser-grayscale;
+
+    img {
+      width: 100%
+    }
+  }
+}
+
+.artist-biography {
+  max-width: 50%;
+}
+
+.artist-tabs {
+  margin-top: 8em;
+
+  .artist-contact {
+    & > div {
+      margin-bottom: 40px;
+
+      a {
+        color: black;
+      }
+    }
+  }
+}
+
