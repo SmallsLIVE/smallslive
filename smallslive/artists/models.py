@@ -45,7 +45,7 @@ class Artist(models.Model):
         return reverse('artist_detail', kwargs={'pk': self.pk, 'slug': self.slug})
 
     def full_name(self):
-        return u"{0} {1}".format(self.first_name, self.last_name)
+        return u" ".join(filter(None, [self.first_name, self.last_name]))
 
     def upcoming_events(self):
         return Event.objects.upcoming().filter(performers=self)
