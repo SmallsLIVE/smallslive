@@ -59,7 +59,6 @@
 
 .button-row {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
 
   input {
@@ -117,8 +116,16 @@
   }
 
   &.button-row-margin {
-    * {
+    & > button {
       margin: 0 10px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 }
