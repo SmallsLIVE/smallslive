@@ -22,7 +22,11 @@
   height: $input-height;
   padding: 0 20px;
   border-radius: 2px;
-  background-color: $background-color;
+  background-color: transparent;
+
+  &:hover {
+    background-color: $white-transparent;
+  }
 
   &.active {
     background-color: $white-transparent;
@@ -49,7 +53,7 @@
   height: $input-height;
   font-size: 1.2em;
 
-  background-color: $background-color;
+  background-color: transparent;
   padding: 8px;
   // TODO Global
   &:focus {
@@ -80,6 +84,10 @@
   a,
   button {
     color: black;
+
+    &:hover {
+      background-color: $white-transparent;
+    }
   }
 
   button,

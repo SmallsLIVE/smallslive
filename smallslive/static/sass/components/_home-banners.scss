@@ -12,6 +12,10 @@ $banners-height: 270px;
     position: relative;
     overflow: hidden;
 
+    .banner-background {
+      top: -240px
+    }
+
     .banner-border {
       height: 100%;
       width: 100%;
@@ -54,6 +58,7 @@ $banners-height: 270px;
 
         #banner-text {
           @include title1;
+          font-weight: 500;
           margin: 0;
           border-left: 2px solid black;
           padding-left: 30px;

@@ -299,36 +299,11 @@
   width: 180px;
   input {
     @include white-border-button;
+    @include place-holder-color($main-accent-color);
     cursor: pointer;
-    //padding: 8px;
-    //font-size: 16px;
-    //@include lato-black;
-    //color: $main-accent-color;
-    //background: none;
-    //margin-right: 5px;
-    //margin-left: 2px;
-    //border: none;
-    //outline: none;
     width: 100%;
-    //position: relative;
     z-index: 2;
-    //@include flex-shrink(0);
 
-    &::-webkit-input-placeholder {
-      color: $main-accent-color;
-    }
-
-    &:-moz-placeholder { /* Firefox 18- */
-      color: $main-accent-color;
-    }
-
-    &::-moz-placeholder { /* Firefox 19+ */
-      color: $main-accent-color;
-    }
-
-    &:-ms-input-placeholder {
-      color: $main-accent-color;
-    }
   }
 
   i {
