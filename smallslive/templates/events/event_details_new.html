@@ -165,10 +165,10 @@
           {% for related in related_videos%}
             <div class="flex-row related-video">
               {% include 'events/event_card.html' with event=related mini=True %}
-              <div class="related-info flex-column content-centered items-center">
+              <div class="related-info flex-column content-centered">
                 <div class="flex-column">
-                  <div class="text2 related-title">{{ related.title }}</div>
-                  <div class="text2 text-grey">{{ related.start|date:'m/d/Y' }}</div>
+                  <div class="text1 related-title">{{ related.title }}</div>
+                  <div class="text1 text-grey">{{ related.start|date:'m/d/Y' }}</div>
                 </div>
               </div>
             </div>
