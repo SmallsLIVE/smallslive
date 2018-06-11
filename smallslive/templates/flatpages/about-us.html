@@ -2,25 +2,28 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
-{% block about-us-active %}static-nav__item--active{% endblock %}
+{% block about-us-active %}active{% endblock %}
 
 {% block title %}About us{% endblock %}
 
 {% block static-content %}
-  <section class="static-content {% if files %}col-sm-6 col-md-5 col-lg-6{% else %}col-sm-9 col-md-9{% endif %}">
-    <h1 class="static-content__main-title">{{ page.title }}</h1>
-
-    {{ page.content|safe }}
+  <section class="static-content">
+    <h1 class="main-title">About <span class="white-text">us</span></h1>
+    <div class="flex-row">
+      <div class="flatpage-content">{{ page.content|safe }}</div>
+      {% if files %}
+        <div class="flex-column">
+          {% for file in files %}
+            <figure>
+              <img src="{% thumbor_url file.file.url|urlencode width=365 %}"
+                   class="static-sidebar__image" alt="{{ file.name }}"/>
+              <figcaption
+                      class="static-content__caption">{{ file.name }}</figcaption>
+            </figure>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
   </section>
-  {% if files %}
-  <aside class=" static-sidebar col-sm-3 col-md-4 col-lg-3 hidden-xs">
-    {% for file in files %}
-    <figure>
-      <img src="{% thumbor_url file.file.url|urlencode width=365  %}" class="static-sidebar__image" alt="{{ file.name }}"/>
-      <figcaption class="static-content__caption">{{ file.name }}</figcaption>
-    </figure>
-    {% endfor %}
-  </aside>
-{% endif %}
 
 {% endblock static-content %}
