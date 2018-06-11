@@ -147,3 +147,15 @@
     width: 200px;
   }
 }
+
+.jw-display .jw-reset .jw-display-icon-container.jw-display-icon-display.jw-reset > div {
+  border-radius: 44px;
+  border: 1px solid $accent-color;
+
+  .jw-svg-icon {
+    height: 44px;
+    width: 44px;
+    color: $accent-color;
+  }
+}
+
