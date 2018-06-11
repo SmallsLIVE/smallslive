@@ -6,9 +6,9 @@
         <p class="title3">Sign in</p>
         <p class="text4 text-grey">
           Not Yet a Member?
-          <a class="accent-color underline text-capitalize"
+          <a class="accent-color underline"
              href="#" id="becomeMemberButton">
-            Become A member
+            Become a Member
           </a>
         </p>
         <form role="form" id="form-login" method="post" action="{% url "accounts_login" %}?next={{ request.path }}">
@@ -27,10 +27,12 @@
           <div class="form-group flex-column items-center">
             <a class="text4 text-grey"
                href="{% url "account_reset_password" %}">
-              Forgot your Password?
+              Forgot Your Password?
             </a>
           </div>
-          <input class="login-button" value="Sign in" type="submit">
+          <div class="form-group flex-column items-center">
+            <input class="login-button" value="Sign in" type="submit">
+          </div>
         </form>
       </div>
     </div>

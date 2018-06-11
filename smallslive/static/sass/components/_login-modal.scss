@@ -27,19 +27,12 @@
     align-items: center;
     justify-content: center;
 
-    > * {
-      margin-bottom: 15px;
-    }
-
     form {
       width: 70%;
 
       margin-top: 10px;
-      flex-grow: 1;
-      display: flex;
       flex-direction: column;
-
-      align-items: center;
+      justify-content: flex-start;
 
       .form-group {
         width: 100%;
