@@ -25,6 +25,7 @@
 
   <div class="main-container">
 
+  {# FIXME Needed?#}
   {% block home_content %}
     <main>
       {% if not request.user.is_authenticated %}
@@ -41,7 +42,7 @@
             <div class="header-sub title2">{% now "l F j, o" %}</div>
           </div>
           <main>
-            {% include 'events/event_row.html' with events=events_today show_time='True' hidde_event_date='True' show_event_venue='True' %}
+            {% include 'events/event_row.html' with events=events_today show_time=True hidde_event_date=True show_event_venue=True %}
           </main>
         </section>
         <section class="event-stripe">

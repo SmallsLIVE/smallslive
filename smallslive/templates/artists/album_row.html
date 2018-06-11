@@ -1,0 +1,12 @@
+<div class="album-row">
+  {% for album in events|slice:":10" %}
+    <article class="event-display">
+      {% include 'artists/album_card.html' with album=album photo_height=300 photo_width=300%}
+      <div class="event-info">
+        <div>
+          <div class="event-info-title">{{ album.title }}</div>
+        </div>
+      </div>
+    </article>
+  {% endfor %}
+</div>
