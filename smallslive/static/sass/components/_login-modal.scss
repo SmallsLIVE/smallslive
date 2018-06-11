@@ -52,17 +52,17 @@
         }
       }
 
-      .login-button {
-        @include white-border-button;
-        @include input-border;
-
-        margin-top: 40px;
-        padding: 0 40px;
-      }
     }
   }
 }
 
+.form-button {
+  @include white-border-button;
+  @include input-border;
+
+  margin-top: 40px;
+  padding: 0 40px;
+}
 
 .modal-separator {
   width: 100%;

@@ -23,6 +23,7 @@
               method="post" style="display: inline-block">
           {% csrf_token %}
           <input id="user_email_hidden" type="hidden" name="email" value="{{ user.email }}" >
+          <input id="action_send" type="hidden" name="action_send" value="" >
           <a class="accent-color"
              href="javascript:{}"
              onclick="document.getElementById('resendConfirmationForm').submit(); return false;">
