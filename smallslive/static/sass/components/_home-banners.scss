@@ -93,35 +93,12 @@ $banners-height: 270px;
   }
 }
 
-
-@mixin background-image($overlay-color) {
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  z-index: -1;
-  img {
-    width: 100%;
-  }
-
-  &:after {
-    content: '\A';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: $overlay-color;
-  }
-}
-
 .darked-image {
-  @include background-image(rgba(0, 0, 0, 0.6));
+  @include background-image-with-overlay(rgba(0, 0, 0, 0.6));
 }
 
 .lighten-image {
-  @include background-image(rgba(255, 255, 255, 0.8));
+  @include background-image-with-overlay(rgba(255, 255, 255, 0.8));
 }
 
 

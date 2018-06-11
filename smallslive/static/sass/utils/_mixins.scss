@@ -49,6 +49,7 @@
     align-content: center;
   @include flex-wrap(wrap);
 }
+
 @mixin place-holder-color($color) {
   &::-webkit-input-placeholder {
     color: $color;
@@ -64,5 +65,27 @@
 
   &:-ms-input-placeholder {
     color: $color;
+  }
+}
+
+@mixin background-image-with-overlay($overlay-color) {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  z-index: -1;
+  img {
+    width: 100%;
+  }
+
+  &:after {
+    content: '\A';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: $overlay-color;
   }
 }

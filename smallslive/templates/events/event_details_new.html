@@ -29,52 +29,127 @@
 {% endblock %}
 
 {% block home_content %}
+  {% include 'events/tickets_dialog.html' %}
 
   <div class="flex-row wrap content-centered event-page-container">
     <div class="flex-column">
-      {% if user.can_watch_video %}
-        <div id="videoContainer" class="player-container">
-          <div id="player-video"></div>
-          <div class="player-info" id="playerTextOveraly">
-            <div class="accent-color text2">
-              {{ event.start|date:'m/d/Y' }}</div>
-            <div class="title1">{{ event.title }}</div>
+    {% if user.is_authenticated %}
+      {% if event.is_live %}
+         <div class="player-container">
+           <div style="padding-bottom:56.25%; position:relative; display:block; width: 800px; height: 450px">
+             <iframe id="UstreamIframe"
+                     width="100%" height="100%"
+                     src="https://www.ustream.tv/embed/23240575?html5ui"
+                     frameborder="0"
+                     style="position:absolute; top:0; left: 0" allowfullscreen
+                     webkitallowfullscreen></iframe>
+           </div>
+         </div>
+      {% elif event.is_future %}
+        <div class="event-video-placeholder flex-column content-space-between">
+          <span class="event-video-placeholder-picture" style="{% if event.photo %}
+             {% include 'partials/thumbored_picture_style.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+           {% else %}
+             {% include 'partials/thumbored_picture_style.html' %}
+           {% endif %}
+         "></span>
+          <div class="player-info flex-column content-space-between">
+            <div>
+              <div class="accent-color text2">{{ event.start|date:'m/d/Y' }}</div>
+              <div class="title1">{{ event.title }}</div>
+            </div>
+            <div>
+              <div class="accent-color text2">{{ event.venue }}</div>
+              <div class="text4">Sets at {{ event.start|date:'g:i A' }} {% if event.end %}& {{ event.end|date:'g:i A' }}{% endif %}</div>
+            </div>
           </div>
         </div>
+      {% else %}
+        {% if user.can_watch_video %}
+          <div id="videoContainer" class="player-container">
+            <div id="player-video"></div>
+            <div class="player-info" id="playerTextOveraly">
+              <div class="accent-color text2">
+                {{ event.start|date:'m/d/Y' }}</div>
+              <div class="title1">{{ event.title }}</div>
+            </div>
+          </div>
+        {% else %}
+          <div class="event-video-banner flex-column content-space-between items-center">
+            <span class="event-banner-background"></span>
+            <p class="title2 accent-color">Archive Access</p>
+            <p class="title3">Become a supporter</p>
+            <p class="text7">Access archive videos by becoming a Supporting Member. Your supporting pledge goes directly to your favorite artists and helps make SmallsLIVE possible through our SmallsLIVE Revenue Share. Supporting Members have unlimited access to our archive of nearly every concert performed at Smalls & Mezzrow with new concerts added weekly. By listening to your favorite artists in the archive you are getting them paid.</p>
+            <button class="white-border-button" onclick="goToSupporter()">Become a Supporter</button>
+          </div>
+        {% endif %}
+        {% if event.published_audio %}
+          <div id="audioContainer" class="player-container" style="display:none;">
+            <div id="player-audio"></div>
+            <div class="player-info" id="playerTextOveraly">
+              <div class="accent-color text2">{{ event.start|date:'m/d/Y' }}</div>
+              <div class="title1">{{ event.title }}</div>
+            </div>
+          </div>
+        {% endif %}
       {% endif %}
-      {% if event.published_audio %}
-        <div id="audioContainer" style="display:none;">
-          <div id="player-audio"></div>
-        </div>
-      {% endif %}
+    {% else %}
+      <div class="event-video-banner flex-column content-space-between items-center">
+        <span class="event-banner-background"></span>
+        <p class="title2 accent-color">Live Stream Access</p>
+        <p class="title3">Sign up</p>
+        <p class="text7">Our live stream has expanded our 60 seat clubs into a worldwide community of jazz fans and supporters. Sign up for free to watch our live streams each night.</p>
+        <button class="white-border-button register-button" onclick="showRegister()">Become a Member</button>
+      </div>
+    {% endif %}
       <div class="flex-row content-space-between">
         <div class="event-video-info flex-column">
-          <div class="event-title title1">{{ event.title }}</div>
           <div class="event-set-info">
-            <div class="accent-color text2">Set 1</div>
-            <div class="accent-color text2">
-              {{ event.start|date:'m/d/Y' }}</div>
+            <div class="event-title title1">{{ event.title }}</div>
+            {% if event.is_past %}
+              <div class="accent-color text2">Set <span id="set-number">1</span></div>
+              <div class="accent-color text2">
+                {{ event.start|date:'m/d/Y' }}</div>
+            {% endif %}
           </div>
-          <div class="flex-column event-band">
-            {% for gig_info in event.get_performers %}
-              <div class="event-info-artist">
-                <a href="{{ gig_info.artist.get_absolute_url }}"
-                   class="artist-link">
-                  {{ gig_info.artist.full_name }} / {{ gig_info.role }}
-                </a>
+          <div class="flex-row event-band">
+            {% for performers_column in performers %}
+              <div class="flex-column">
+                {% for gig_info in performers_column %}
+                  <div class="event-info-artist">
+                    <a href="{{ gig_info.artist.get_absolute_url }}"
+                       class="artist-link">
+                      {{ gig_info.artist.full_name }} / {{ gig_info.role }}
+                    </a>
+                  </div>
+                {% endfor %}
               </div>
             {% endfor %}
           </div>
+          <div id="video-set-buttons">
+            <div class="button-row set-buttons" id="video-sets-list">
+            </div>
+          </div>
+          <div id="audio-set-buttons" style="display: none;">
+            <div class="button-row set-buttons" id="audio-sets-list">
+            </div>
+          </div>
         </div>
         <div class="event-player-buttons flex-column items-flex-stretch">
-          <button class="white-border-button" id="togglePlayerAudio">
-            Audio only player
-          </button>
-          <button class="white-border-button" id="togglePlayerVideo"
-                  style="display: none">
-            Video player
-          </button>
-          <button class="white-border-button">Download for $9.99</button>
+          {% if event.is_past %}
+            <button class="white-border-button" id="togglePlayerAudio">
+              Audio only player
+            </button>
+            <button class="white-border-button" id="togglePlayerVideo"
+                    style="display: none">
+              Video player
+            </button>
+          {% endif %}
+          {% if not event.is_live and event.is_past %}
+            <button class="white-border-button">Download for $9.99</button>
+          {% elif not event.is_live and event.is_future %}
+            <button class="white-border-button" onclick="showTickets()">Tickets</button>
+          {% endif %}
         </div>
       </div>
       <div class="flex-row event-set-selector"></div>
@@ -90,10 +165,10 @@
           {% for related in related_videos%}
             <div class="flex-row related-video">
               {% include 'events/event_card.html' with event=related mini=True %}
-              <div class="related-info flex-column content-centered items-center">
+              <div class="related-info flex-column content-centered">
                 <div class="flex-column">
-                  <div class="text2 related-title">{{ related.title }}</div>
-                  <div class="text2 text-grey">{{ related.start|date:'m/d/Y' }}</div>
+                  <div class="text1 related-title">{{ related.title }}</div>
+                  <div class="text1 text-grey">{{ related.start|date:'m/d/Y' }}</div>
                 </div>
               </div>
             </div>
@@ -105,6 +180,19 @@
 {% endblock %}
 
 {% block extra_js %}
+  <script>
+  var showRegister = function() {
+    $('#becomeMemberDialog').modal('show');
+  };
+
+  var showTickets = function () {
+    $('#ticketsDialog').modal('show');
+  };
+
+  var goToSupporter = function() {
+    window.location = '{% url 'become_supporter' %}'
+  };
+  </script>
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   {% if user.is_authenticated %}
       <script>
@@ -147,7 +235,6 @@
                 })
             };
 
-
             function setUpTimerForMedia(mediaId) {
                 pingMetricsServer(mediaId);
                 if (!activeTracker) {
@@ -169,14 +256,13 @@
                     file: "{{ audio.media_file.get_file_url|safe }}",
                     type: "mp3"
                   }],
-                  title: "{{ event.title }}: Set {{ audio.set_number }}",
                   image: "{{ event.photo.url }}",
                   mediaid: {{ audio.id }}
                 }{% if not forloop.last %},{% endif %}
               {% endfor %}
             ],
             width: "100%",
-            height: 30
+            height: 200
           });
           audioPlayer.on('play', function () {
             {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
@@ -193,31 +279,26 @@
                   activeTracker = null;
               });
           {% endif %}
-          audioPlayer.on('ready', function (olds) {
-            var currentItem = audioPlayer.getPlaylistIndex() + 1;
-            var totalItems = audioPlayer.getPlaylist().length;
-            updateSetText('#audio-control__current', currentItem, totalItems);
+          audioPlayer.on('ready', function () {
+            var playlist = audioPlayer.getPlaylist();
+            var playlistItems = "";
+            $.each(playlist, function (index, item) {
+              playlistItems += '<button class="';
+              if (index === 0) {
+                playlistItems += ' active';
+              }
+              playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</button>';
+            });
+            $("#audio-sets-list").html(playlistItems);
           });
 
-          $('#audio-control_next').on('click', function () {
-            var playlistLength = audioPlayer.getPlaylist().length;
+          $('#audio-sets-list').on('click', 'button', function () {
             var currentIndex = audioPlayer.getPlaylistIndex();
-            // if current item is last, do nothing
-            if (currentIndex !== playlistLength - 1) {
-              var nextItemIndex = (currentIndex + 1) % playlistLength;
-              audioPlayer.playlistItem(nextItemIndex);
-              updateSetText('#audio-control__current', nextItemIndex + 1, playlistLength);
-            }
-          });
-
-          $('#audio-control_prev').on('click', function () {
-            var playlistLength = audioPlayer.getPlaylist().length;
-            var currentIndex = audioPlayer.getPlaylistIndex();
-            if (currentIndex !== 0) {
-              var nextItemIndex = (currentIndex - 1);
-              audioPlayer.playlistItem(nextItemIndex);
-              updateSetText('#audio-control__current', nextItemIndex + 1, playlistLength);
-            }
+            var selectedIndex = $(this).data('playlist-index');
+            audioPlayer.playlistItem(selectedIndex);
+            $('#set-number').html(selectedIndex + 1);
+            $(this).toggleClass('active');
+            $('#audio-sets-list button[data-playlist-index=' + currentIndex + ']').toggleClass('active');
           });
         {% endif %}
 
@@ -253,25 +334,27 @@
                 {% endif %}
                   $('#playerTextOveraly').css('opacity', 1);
               });
-            videoPlayer.on('ready', function () {
+
+              videoPlayer.on('ready', function () {
                 var playlist = videoPlayer.getPlaylist();
                 var playlistItems = "";
                 $.each(playlist, function (index, item) {
-                    playlistItems += '<li class="event-view__header__video__playlist__item';
+                    playlistItems += '<button class="';
                     if (index === 0) {
                         playlistItems += ' active';
                     }
-                    playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</li>';
+                    playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</button>';
                 });
                 $("#video-sets-list").html(playlistItems);
             });
 
-            $('#video-sets-list').on('click', 'li', function () {
+            $('#video-sets-list').on('click', 'button', function () {
                 var currentIndex = videoPlayer.getPlaylistIndex();
                 var selectedIndex = $(this).data('playlist-index');
                 videoPlayer.playlistItem(selectedIndex);
+                $('#set-number').html(selectedIndex + 1);
                 $(this).toggleClass('active');
-                $('li[data-playlist-index=' + currentIndex + ']').toggleClass('active');
+                $('#video-sets-list button[data-playlist-index=' + currentIndex + ']').toggleClass('active');
             });
         {% endif %}
 
@@ -285,6 +368,8 @@
           $(audioContainer).toggle();
           $(togglePlayerAudio).toggle();
           $(togglePlayerVideo).toggle();
+          $('#video-set-buttons').toggle();
+          $('#audio-set-buttons').toggle();
         };
         togglePlayerAudio.on('click', togglePlayer);
         togglePlayerVideo.on('click', togglePlayer);
