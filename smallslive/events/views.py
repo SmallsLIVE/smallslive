@@ -195,7 +195,9 @@ class EventDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(EventDetailView, self).get_context_data(**kwargs)
         event = self.object
-        context['performers'] = event.get_performers()
+        performers = event.get_performers()
+
+        context['performers'] = [performers[i:i + 4] for i in range(0, len(performers), 4)]
         context['facebook_app_id'] = settings.FACEBOOK_APP_ID
         context['metrics_ping_interval'] = settings.PING_INTERVAL
         context['metrics_server_url'] = settings.METRICS_SERVER_URL

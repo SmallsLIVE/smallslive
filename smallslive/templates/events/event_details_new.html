@@ -112,13 +112,17 @@
                 {{ event.start|date:'m/d/Y' }}</div>
             {% endif %}
           </div>
-          <div class="flex-column event-band">
-            {% for gig_info in event.get_performers %}
-              <div class="event-info-artist">
-                <a href="{{ gig_info.artist.get_absolute_url }}"
-                   class="artist-link">
-                  {{ gig_info.artist.full_name }} / {{ gig_info.role }}
-                </a>
+          <div class="flex-row event-band">
+            {% for performers_column in performers %}
+              <div class="flex-column">
+                {% for gig_info in performers_column %}
+                  <div class="event-info-artist">
+                    <a href="{{ gig_info.artist.get_absolute_url }}"
+                       class="artist-link">
+                      {{ gig_info.artist.full_name }} / {{ gig_info.role }}
+                    </a>
+                  </div>
+                {% endfor %}
               </div>
             {% endfor %}
           </div>
@@ -132,7 +136,6 @@
           </div>
         </div>
         <div class="event-player-buttons flex-column items-flex-stretch">
-
           {% if event.is_past %}
             <button class="white-border-button" id="togglePlayerAudio">
               Audio only player

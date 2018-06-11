@@ -22,15 +22,14 @@
       margin-bottom: 20px;
     }
   }
-
-  .event-band {
-    @include links1;
-  }
-
 }
 
 .event-band {
   margin: 2em 0;
+
+  & > div {
+    margin-right: 30px;
+  }
 }
 
 #videoContainer, #audioContainer {
@@ -100,6 +99,7 @@
 
   &:hover {
     color: black;
+    text-decoration: underline;
   }
 }
 
