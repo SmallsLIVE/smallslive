@@ -139,6 +139,7 @@
 
 .album-row {
   .event-display {
+    max-width: 100%;
     .event-card {
       @include event-card(300px, 300px);
       .event-picture-container {
