@@ -54,6 +54,9 @@ class Artist(models.Model):
     def past_events(self):
         return Event.objects.past().filter(performers=self)
 
+    def recently_added(self):
+        return self.past_events().exclude(recordings=None)
+
     def get_instruments(self):
         return "\n".join([i.name for i in self.instruments.all()])
 
