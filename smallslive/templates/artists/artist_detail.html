@@ -26,7 +26,12 @@
   <main>
     <div class="flex-row items-flex-stretch artist-header">
       <div class="artist-picture">
-        {% include 'partials/thumbored_picture.html' with photo_url=artist.photo.url height=300 width=300 %}
+        {% if artist.photo %}
+          {% include 'partials/thumbored_picture.html' with photo_url=artist.photo.url height=300 width=300 %}
+        {% else %}
+          <div class="flex-column content-centered items-center"
+               style="width: 100%; height: 100%"><span class="title1">No Photo</span></div>
+        {% endif %}
       </div>
 
       <div class="flex-column content-space-between artist-info">
@@ -44,8 +49,6 @@
                     role="tab" data-toggle="tab">Upcoming Shows</button>
             <button class="nav-item" data-target="#bio"
                     role="tab" data-toggle="tab">Bio</button>
-            <button class="nav-item" data-target="#contact"
-                    role="tab" data-toggle="tab">Contact</button>
             <button class="nav-item" data-target="#contact"
                     role="tab" data-toggle="tab">Contact</button>
           </div>
