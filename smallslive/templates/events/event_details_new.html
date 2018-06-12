@@ -34,6 +34,7 @@
   <div class="flex-row wrap content-centered event-page-container">
     <div class="flex-column">
     {% if user.is_authenticated %}
+
       {% if event.is_live %}
          <div class="player-container">
            <div style="padding-bottom:56.25%; position:relative; display:block; width: 800px; height: 450px">
@@ -66,14 +67,16 @@
         </div>
       {% else %}
         {% if user.can_watch_video %}
-          <div id="videoContainer" class="player-container">
-            <div id="player-video"></div>
-            <div class="player-info" id="playerTextOveraly">
-              <div class="accent-color text2">
-                {{ event.start|date:'m/d/Y' }}</div>
-              <div class="title1">{{ event.title }}</div>
+          {% if event.published_videos %}
+            <div id="videoContainer" class="player-container">
+              <div id="player-video"></div>
+              <div class="player-info" id="playerTextOveraly">
+                <div class="accent-color text2">
+                  {{ event.start|date:'m/d/Y' }}</div>
+                <div class="title1">{{ event.title }}</div>
+              </div>
             </div>
-          </div>
+          {% endif %}
         {% else %}
           <div class="event-video-banner flex-column content-space-between items-center">
             <span class="event-banner-background"></span>
@@ -92,6 +95,7 @@
             </div>
           </div>
         {% endif %}
+
       {% endif %}
     {% else %}
       <div class="event-video-banner flex-column content-space-between items-center">
@@ -137,13 +141,20 @@
         </div>
         <div class="event-player-buttons flex-column items-flex-stretch">
           {% if event.is_past %}
-            <button class="white-border-button" id="togglePlayerAudio">
-              Audio only player
-            </button>
-            <button class="white-border-button" id="togglePlayerVideo"
-                    style="display: none">
-              Video player
-            </button>
+            {% if event.published_videos %}
+              <button class="white-border-button" id="togglePlayerAudio">
+                  Audio only player
+              </button>
+            {% endif %}
+
+              <button class="white-border-button" id="togglePlayerVideo"
+                      style="display: none">
+                {% if event.published_videos%}
+                  Video player
+                {% else %}
+                  Audio only
+                {% endif %}
+              </button>
           {% endif %}
           {% if not event.is_live and event.is_past %}
             <button class="white-border-button">Download for $9.99</button>
@@ -359,20 +370,29 @@
         {% endif %}
 
         var togglePlayerAudio = $("#togglePlayerAudio");
+        var videoContainer = $("#videoContainer");
+
         var togglePlayerVideo = $("#togglePlayerVideo");
         var audioContainer = $("#audioContainer");
-        var videoContainer = $("#videoContainer");
 
         var togglePlayer = function () {
           $(videoContainer).toggle();
-          $(audioContainer).toggle();
-          $(togglePlayerAudio).toggle();
           $(togglePlayerVideo).toggle();
           $('#video-set-buttons').toggle();
+
+          $(audioContainer).toggle();
+          $(togglePlayerAudio).toggle();
           $('#audio-set-buttons').toggle();
         };
-        togglePlayerAudio.on('click', togglePlayer);
-        togglePlayerVideo.on('click', togglePlayer);
+
+        {% if event.published_videos %}
+          togglePlayerAudio.on('click', togglePlayer);
+          togglePlayerVideo.on('click', togglePlayer);
+        {% else %}
+          togglePlayer();
+          $(togglePlayerVideo).prop('disabled', true);
+          $(togglePlayerVideo).addClass('active');
+        {% endif %}
       </script>
   {% endif %}
     {% with album=event.products.first %}
