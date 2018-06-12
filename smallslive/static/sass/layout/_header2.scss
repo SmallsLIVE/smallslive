@@ -9,6 +9,9 @@
       flex: 1;
       margin-left: 26px;
       margin-right: 26px;
+      input {
+        border-radius: 10px;
+      }
     }
   }
 }
@@ -21,7 +24,6 @@
   @include button1;
   height: $input-height;
   padding: 0 20px;
-  border-radius: 2px;
   background-color: transparent;
 
   &:hover {
@@ -49,7 +51,6 @@
   @include input-border;
   @include text4;
   box-shadow: none;
-  border-radius: 10px;
   height: $input-height;
   font-size: 1.2em;
 
