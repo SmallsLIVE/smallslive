@@ -1,4 +1,4 @@
-var searchTerm, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter;
+var searchTerm, artistSearchTerm, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter;
 
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -19,7 +19,7 @@ function sendArtistRequest() {
     $.ajax({
         url: '/search/ajax/artist/',
         data: {
-            'q': searchTerm,
+            'q': artistSearchTerm,
             'page': artistPageNum
         },
         dataType: 'json',
@@ -83,6 +83,10 @@ function sendEventRequest() {
 
 $(document).ready(function () {
     searchTerm = getUrlParameter("q");
+    if (searchTerm) {
+        searchTerm = searchTerm.replace('+', ' ');
+    }
+    artistSearchTerm = searchTerm;
     artistPageNum = eventPageNum = 1;
     artistMaxPageNum = eventMaxPageNum = 2;
     eventOrderFilter = "newest";
@@ -96,7 +100,7 @@ $(document).ready(function () {
             artistPageNum -= 1;
             $("#artists").hide();
             $(".loading-image").css("display", "block");
-            $(".container-list-article").css("height", height);
+            $(".container-list-article").css("height", $("#artists").height());
 
             sendArtistRequest();
         }
@@ -126,5 +130,17 @@ $(document).ready(function () {
         eventPageNum = 1;
 
         sendEventRequest();
-      });
+    });
+
+    $('.search-artist-box').keypress(function (e) {
+        if (e.which == '13') {
+            artistPageNum = 1;
+            artistSearchTerm = $('.search-artist-box').val();
+            $("#artists").hide();
+            $(".loading-image").css("display", "block");
+            $(".container-list-article").css("height", $("#artists").height());
+
+            sendArtistRequest();
+        }
+    });
 });

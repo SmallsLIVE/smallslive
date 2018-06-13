@@ -1,7 +1,7 @@
 import json
 from itertools import chain
 
-from artists.models import Artist
+from artists.models import Artist, Instrument
 from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse, Http404
 from django.template import RequestContext
@@ -37,37 +37,66 @@ def search_autocomplete(request):
 
 class SearchMixin(object):
 
+    def get_instrument(self, text_array):
+        #queryset = Instrument.objects.all()
+        #for text in text_array:
+        #    queryset = queryset.filter(name__icontains=text)
+
+        condition = Q(name__icontains=text_array[0])
+        for text in text_array[1:]:
+            condition |= Q(name__icontains=text)
+        return Instrument.objects.filter(condition).distinct().first()
+
+
     def search(self, entity, text, page=1, order=None):
 
         if entity == Artist:
             results_per_page = 48
             if order:
-                sqs = entity.objects.filter(Q(
-                    last_name__icontains=text) | Q(
-                    first_name__icontains=text) | Q(
-                    instruments__name__icontains=text)
-                    ).distinct().order_by(order)
+                sqs = entity.objects.all()
+                for artist in text.split(' '):
+                    sqs = sqs.filter(Q(
+                        last_name__icontains=artist) | Q(
+                        first_name__icontains=artist) | Q(
+                        instruments__name__icontains=artist)
+                        ).distinct().order_by(order)
             else:
-                sqs = entity.objects.filter(Q(
-                    last_name__icontains=text) | Q(
-                    first_name__icontains=text) | Q(
-                    instruments__name__icontains=text)).distinct()
+                sqs = entity.objects.all()
+                for artist in text.split(' '):
+                    sqs = sqs.filter(Q(
+                        last_name__icontains=artist) | Q(
+                        first_name__icontains=artist) | Q(
+                        instruments__name__icontains=artist)).distinct()
         elif entity == Event:
             results_per_page = 15
+
+            order = {
+                'newest': '-start',
+                'oldest': 'start',
+                'popular': 'popular',
+            }.get(order, '-start')
             
-            if order:
-                if order == 'newest':
-                    order = '-start'
-                elif order == 'oldest':
-                    order = 'start'
+            
+            instrument = self.get_instrument(text.split(' '))
+            if instrument:
+                sqs = entity.objects.filter(
+                    artists_gig_info__role__name__icontains=instrument.name,
+                    artists_gig_info__is_leader=True)
+                
+                for i in [i for i in text.split(' ') if i.lower() not in [instrument.name.lower()]]:
+                    sqs = sqs.filter(Q(
+                        title__icontains=text) | Q(
+                        description__icontains=i) | Q(
+                        performers__first_name__icontains=i) | Q(
+                        performers__last_name__icontains=i)).distinct()
             else:
-                order = '-start'
-           
-            sqs = entity.objects.filter(Q(
-                title__icontains=text) | Q(
-                description__icontains=text) | Q(
-                performers__first_name__icontains=text) | Q(
-                performers__last_name__icontains=text)).distinct()
+                sqs = entity.objects.all()
+                for text in text.split(' '):
+                    sqs = sqs.filter(Q(
+                        title__icontains=text) | Q(
+                        description__icontains=text) | Q(
+                        performers__first_name__icontains=text) | Q(
+                        performers__last_name__icontains=text)).distinct()
             
             if order == 'popular':
                 sqs = sqs.most_popular()

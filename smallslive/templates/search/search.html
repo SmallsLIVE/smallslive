@@ -22,15 +22,9 @@
   {% include 'inactive_dialog.html' %}
 
 <div class="main-container">
-    <div class="flex-row items-center wrap content-space-around" style="width: 500px; margin: 0 auto;">
-        <div class="white-border-select" style="width:120px;">
-            <select id="artist-filter">
-                <option value="week">ARTIST</option>
-                <option value="month">Last month</option>
-                <option value="year">This Year</option>
-                <option value="alltime">All Time</option>
-            </select>
-        </div>
+    <div class="flex-row items-center wrap content-space-around" style="margin-right: auto; margin-left: 200px;">
+
+        <input class="search-artist-box" name="q" type="text" placeholder="Search">
 
         <div class="white-border-select" style="width:150px;">
             <select id="instrument-filter">
@@ -41,14 +35,7 @@
             </select>
         </div>
 
-        <div class="white-border-select" style="width:150px;">
-            <select id="date-filter">
-                <option value="week">DATE</option>
-                <option value="month">Last month</option>
-                <option value="year">This Year</option>
-                <option value="alltime">All Time</option>
-            </select>
-        </div>
+        
     </div>
 
 <section class="event-stripe">
