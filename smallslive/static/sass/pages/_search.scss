@@ -131,3 +131,9 @@
 .event-filter-select {
   margin-right: 86px;
 }
+
+.search-artist-box {
+    @include bordered-input;
+    width: 350px;
+    margin-right: 30px;
+}

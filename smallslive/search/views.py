@@ -72,9 +72,10 @@ class SearchMixin(object):
 
             order = {
                 'newest': '-start',
-                'oldest': '-oldest',
+                'oldest': 'start',
                 'popular': 'popular',
             }.get(order, '-start')
+            
             
             instrument = self.get_instrument(text.split(' '))
             if instrument:
