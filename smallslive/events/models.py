@@ -251,6 +251,13 @@ class Event(TimeStampedModel):
     def is_live(self):
         return not self.is_past and not self.is_future
 
+    @property
+    def is_today(self):
+        day_start = get_today_start()
+        day_end = day_start + timedelta(days=1)
+
+        return day_start <= self.start < day_end
+
     def get_performers(self):
         return self.artists_gig_info.select_related('artist', 'role')
 
@@ -448,3 +455,7 @@ class Venue(models.Model):
 class StaffPick(models.Model):
     event = models.OneToOneField('events.Event', related_name='staff_picked')
     date_picked = models.DateTimeField()
+
+
+def get_today_start():
+    return timezone.localtime(timezone.now()).replace(hour=5, minute=0)

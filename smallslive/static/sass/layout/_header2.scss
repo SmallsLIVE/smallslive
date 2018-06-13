@@ -9,6 +9,9 @@
       flex: 1;
       margin-left: 26px;
       margin-right: 26px;
+      input {
+        border-radius: 10px;
+      }
     }
   }
 }
@@ -21,8 +24,11 @@
   @include button1;
   height: $input-height;
   padding: 0 20px;
-  border-radius: 2px;
-  background-color: $background-color;
+  background-color: transparent;
+
+  &:hover {
+    background-color: $white-transparent;
+  }
 
   &.active {
     background-color: $white-transparent;
@@ -45,11 +51,10 @@
   @include input-border;
   @include text4;
   box-shadow: none;
-  border-radius: 10px;
   height: $input-height;
   font-size: 1.2em;
 
-  background-color: $background-color;
+  background-color: transparent;
   padding: 8px;
   // TODO Global
   &:focus {
@@ -63,7 +68,6 @@
 
 .button-row {
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
 
   input {
@@ -80,6 +84,10 @@
   a,
   button {
     color: black;
+
+    &:hover {
+      background-color: $white-transparent;
+    }
   }
 
   button,
@@ -121,8 +129,16 @@
   }
 
   &.button-row-margin {
-    * {
+    & > button {
       margin: 0 10px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
     }
   }
 }

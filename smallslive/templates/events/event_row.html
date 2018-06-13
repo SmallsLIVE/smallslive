@@ -1,5 +1,5 @@
 <div class="event-row">
-  {% for event in events %}
+  {% for event in events|slice:":10" %}
   <article class="event-display">
     {% include 'events/event_card.html' with event=event %}
     <div class="event-info">

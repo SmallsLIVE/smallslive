@@ -1,14 +1,12 @@
 from collections import OrderedDict
 from itertools import groupby
 import calendar
-import hashlib
 from datetime import time as std_time
 from cacheops import cached
 from django.core import signing
 from django.db.models import Count
 import monthdelta
 import json
-import time
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import connection
@@ -23,19 +21,20 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView, BaseDetailView
 
 from django_ajax.mixin import AJAXMixin
-from braces.views import LoginRequiredMixin, SuperuserRequiredMixin, StaffuserRequiredMixin
+from braces.views import StaffuserRequiredMixin
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
-from haystack.query import SearchQuerySet, RelatedSearchQuerySet
+from haystack.query import RelatedSearchQuerySet
 from haystack.views import SearchView
 from rest_framework.authtoken.models import Token
 
-from artists.models import Artist, Instrument
+from artists.models import Artist
+from events.models import get_today_start
 from metrics.models import UserVideoMetric, RANGE_WEEK, RANGE_MONTH, RANGE_YEAR
 from oscar_apps.catalogue.models import Product
 from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
     EventSearchForm, EventEditForm
-from .models import Event, Recording, Venue
+from .models import Event, Venue
 
 
 @cached(timeout=6*60*60)
@@ -56,8 +55,7 @@ def _get_most_popular(range=None):
 
 
 def get_today_events():
-    date_range_start = timezone.localtime(timezone.now()).replace(hour=5,
-                                                                  minute=0)
+    date_range_start = get_today_start()
     date_range_end = date_range_start + timedelta(days=1)
     qs = Event.objects.filter(start__gte=date_range_start,
                               start__lte=date_range_end)
@@ -195,7 +193,9 @@ class EventDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(EventDetailView, self).get_context_data(**kwargs)
         event = self.object
-        context['performers'] = event.get_performers()
+        performers = event.get_performers()
+
+        context['performers'] = [performers[i:i + 4] for i in range(0, len(performers), 4)]
         context['facebook_app_id'] = settings.FACEBOOK_APP_ID
         context['metrics_ping_interval'] = settings.PING_INTERVAL
         context['metrics_server_url'] = settings.METRICS_SERVER_URL
@@ -213,6 +213,10 @@ class EventDetailView(DetailView):
                 context['count_metrics'] = True
 
         context['related_videos'] = Event.objects.event_related_videos(event)
+
+        if event.is_today:
+            context['streaming_tonight_videos'] = get_today_events()
+
         return context
 
     def _generate_metrics_data(self):

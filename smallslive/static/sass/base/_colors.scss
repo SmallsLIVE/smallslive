@@ -15,3 +15,5 @@ $text-grey: #808080;
 }
 
 $underline-height: 3px;
+
+$sepia-filter: grayscale(100%) brightness(50%) sepia(100%) saturate(20%) hue-rotate(335deg);

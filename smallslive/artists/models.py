@@ -2,7 +2,7 @@ import os
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Q
 from django.utils.functional import cached_property
 from django.utils.text import slugify
 from allauth.account.models import EmailAddress, EmailConfirmation
@@ -13,6 +13,7 @@ from tinymce import models as tinymce_models
 
 from events.models import Event, GigPlayed, Recording
 from multimedia.s3_storages import get_payouts_storage_object
+from oscar_apps.catalogue.models import Product
 from users.models import SmallsEmailAddress
 
 def artist_image_path(instance, filename):
@@ -45,13 +46,16 @@ class Artist(models.Model):
         return reverse('artist_detail', kwargs={'pk': self.pk, 'slug': self.slug})
 
     def full_name(self):
-        return u"{0} {1}".format(self.first_name, self.last_name)
+        return u" ".join(filter(None, [self.first_name, self.last_name]))
 
     def upcoming_events(self):
         return Event.objects.upcoming().filter(performers=self)
 
     def past_events(self):
         return Event.objects.past().filter(performers=self)
+
+    def recently_added(self):
+        return self.past_events().exclude(recordings=None)
 
     def get_instruments(self):
         return "\n".join([i.name for i in self.instruments.all()])
@@ -101,6 +105,26 @@ class Artist(models.Model):
         played on the event associated with the media object.
         """
         return Recording.objects.filter(event__performers=self.id).order_by('id').values_list('id', flat=True)
+
+    def albums(self):
+        return Product.objects.filter(
+            (
+                Q(description__icontains=self.full_name()) |
+                Q(title__icontains=self.full_name())
+            ) &
+            Q(categories__name='SmallsLIVE Catalog')
+        ).distinct()
+
+    def tracks(self):
+        return Product.objects.filter(
+            (
+                Q(description__icontains=self.full_name()) |
+                Q(title__icontains=self.full_name())
+            ) &
+            Q(categories__name='SmallsLIVE Tracks')
+        ).distinct()
+
+
 
     def event_id_list(self):
         """

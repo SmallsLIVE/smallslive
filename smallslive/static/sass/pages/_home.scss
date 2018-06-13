@@ -3,10 +3,6 @@ body {
   &.home {
     font-size: 10px;
     background: $background-color;
-
-    .modal {
-      top: 0;
-    }
   }
 }
 
@@ -58,4 +54,8 @@ body {
       margin-bottom: 20px;
     }
   }
+}
+
+.sign-in-button, .user-menu {
+  margin-left: 20px;
 }

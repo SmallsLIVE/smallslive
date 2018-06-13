@@ -34,6 +34,10 @@
   padding-left: -20px;
   background-color: transparent;
   border: 2px solid $white-transparent;
+
+  &:hover {
+    background-color: $white-transparent;
+  }
 }
 /*style the arrow inside the select element:*/
 /*point the arrow upwards when the select box is open (active):*/

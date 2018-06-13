@@ -1,8 +1,4 @@
 .event-page-container {
-  @media(min-width: $screen-md-max) {
-    margin: 0 200px;
-  }
-
   .white-border-button {
     margin-bottom: 20px;
   }
@@ -26,19 +22,17 @@
       margin-bottom: 20px;
     }
   }
-
-  .event-band {
-    @include links1;
-  }
-
 }
 
 .event-band {
   margin: 2em 0;
+
+  & > div {
+    margin-right: 30px;
+  }
 }
 
 #videoContainer, #audioContainer {
-  margin-bottom: 30px;
   @media(min-width: $screen-md-min) {
     min-width: 800px;
   }
@@ -46,29 +40,40 @@
 
 .player-container {
   color: $white-transparent;
+  margin-bottom: 30px;
 
   position: relative;
   overflow: hidden;
 
-  .player-info {
-    @include animated;
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 20px 30px;
-  }
 
   .jwplayer {
     .jw-preview {
       background-size: cover;
-      @include cross-browser-grayscale;
+      filter: $sepia-filter
     }
   }
 }
 
+.event-video-placeholder {
+  .player-info {
+    color: $white-transparent;
+  }
+}
+
+.player-info {
+  @include animated;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 20px 30px;
+  height: 40%;
+}
+
 .event-related-videos {
+  margin-bottom: 40px;
   .section-title {
     width: 100%;
+    padding-left: 0;
   }
 
   .related-video {
@@ -96,5 +101,63 @@
 
   &:hover {
     color: black;
+    text-decoration: underline;
   }
 }
+
+.event-video-placeholder {
+  .event-video-placeholder-picture {
+    filter: $sepia-filter;
+  }
+}
+
+.event-video-banner, .event-video-placeholder {
+  position: relative;
+  width: 850px;
+  height: 500px;
+
+  margin-bottom: 30px;
+
+  .event-banner-background {
+    &:not(.dark) {
+      @include background-image-with-overlay(rgba(255, 255, 255, 0.8));
+    }
+
+    &.dark {
+      @include background-image-with-overlay(rgba(0, 0, 0, 0.8));
+    }
+
+    background: url("/static/image/banners/live.jpg");
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+  }
+
+  .white-border-button {
+    background-color: transparent;
+    padding: 0 40px;
+  }
+}
+
+.event-video-banner {
+  padding: 60px 100px;
+}
+
+.set-buttons {
+  button {
+    margin-right: 30px;
+    width: 200px;
+  }
+}
+
+.jw-display .jw-reset .jw-display-icon-container.jw-display-icon-display.jw-reset > div {
+  border-radius: 44px;
+  border: 1px solid $accent-color;
+
+  .jw-svg-icon {
+    height: 44px;
+    width: 44px;
+    color: $accent-color;
+  }
+}
+

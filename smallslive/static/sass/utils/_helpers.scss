@@ -78,3 +78,15 @@
   font-size: 8em;
   transform: scaleY(1.4);
 };
+
+.text-lowercase {
+  text-transform: lowercase;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}

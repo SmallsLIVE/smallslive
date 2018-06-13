@@ -1,5 +1,7 @@
 .modal {
-  top:10%;
+  top: 10%;
+  max-height: 100%;
+  overflow: scroll;
 }
 
 .modal-backdrop {
@@ -25,25 +27,21 @@
     align-items: center;
     justify-content: center;
 
-    > * {
-      margin-bottom: 15px;
-    }
-
     form {
       width: 70%;
 
       margin-top: 10px;
-      flex-grow: 1;
-      display: flex;
       flex-direction: column;
-
-      align-items: center;
+      justify-content: flex-start;
 
       .form-group {
         width: 100%;
 
         input[type="text"], input[type="password"], input[type="email"] {
           @include bordered-input;
+          @include place-holder-color($black);
+          background-color: $white-transparent;
+          border-radius: 0;
         }
 
         //TODO Custom check box
@@ -52,6 +50,13 @@
         }
       }
 
+      .login-button {
+        @include white-border-button;
+        @include input-border;
+
+        margin-top: 30px;
+        padding: 0 40px;
+      }
     }
   }
 }
@@ -84,7 +89,7 @@
 
 .modal-dialog .close {
   background: none;
-  border: none;
+  border: 0;
   font-size: 40px;
   position: absolute;
   top: 10px;
