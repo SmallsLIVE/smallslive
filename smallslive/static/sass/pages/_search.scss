@@ -59,6 +59,11 @@
   margin-left: 300px;
 }
 
+.subheader-results-artist {
+  margin: 0 auto;
+  width: 250px;
+}
+
 .results-text {
   letter-spacing: 0;
   font-weight: 900;
@@ -135,5 +140,43 @@
 .search-artist-box {
     @include bordered-input;
     width: 350px;
-    margin-right: 30px;
+    margin-right: 10px;
+    margin-left: 100px;
+    border-radius: 10px;
+}
+
+.instrument-btn {
+  display: inline-block;
+  width:130px;
+  padding-top: 12px;
+}
+
+.instruments-container {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #f0f0eb;
+  border-color: white;
+  border-style: solid;
+  border-radius: 10px;
+  width: 800px;
+  z-index: 9999;
+  top: 50px;
+  right: -290px;
+  display: none;
+  padding: 50px 100px;
+}
+
+.instrument {
+  margin: 5px;
+  width: 80px;
+  font-family: 'Reem Kufi', sans-serif;
+  font-weight: normal;
+  color: #a6a6a6;
+}
+
+.instrument:hover {
+  text-decoration: underline;
+  color: red;
+  cursor: pointer;
 }

@@ -48,7 +48,7 @@ class SearchMixin(object):
         return Instrument.objects.filter(condition).distinct().first()
 
 
-    def search(self, entity, text, page=1, order=None):
+    def search(self, entity, text, page=1, order=None, instrument=None):
 
         if entity == Artist:
             results_per_page = 48
@@ -67,6 +67,10 @@ class SearchMixin(object):
                         last_name__icontains=artist) | Q(
                         first_name__icontains=artist) | Q(
                         instruments__name__icontains=artist)).distinct()
+            
+            if instrument:
+                sqs = sqs.filter(instruments__name=instrument)
+            
         elif entity == Event:
             results_per_page = 15
 
@@ -122,7 +126,8 @@ class SearchMixin(object):
 
         showing_results = 'SHOWING {} - {} OF {} RESULTS'.format(
             1 + ((page - 1) * results_per_page),
-            results_per_page  + ((page - 1) * results_per_page) if page != paginator.num_pages else len(paginator.page(page).object_list) + ((page - 1) * results_per_page),
+            results_per_page + ((page - 1) * results_per_page) if page != paginator.num_pages else len(
+                paginator.page(page).object_list) + ((page - 1) * results_per_page),
             paginator.count)
 
         return blocks, showing_results, paginator.num_pages
@@ -134,9 +139,10 @@ class MainSearchView(View, SearchMixin):
         page = int(request.GET.get('page', 1))
         entity = self.kwargs.get('entity', None)
         order = request.GET.get('order', None)
+        instrument = request.GET.get('instrument', None)
         
         if entity == 'artist':
-            artists_blocks, showing_results, num_pages = self.search(Artist, q, page)
+            artists_blocks, showing_results, num_pages = self.search(Artist, q, page, instrument=instrument)
 
             context={'artists_blocks': artists_blocks}
             template = 'search/artist_results.html'
@@ -184,6 +190,9 @@ class TemplateSearchView(TemplateView, SearchMixin):
         q = self.request.GET.get('q', '')
 
         artists_blocks, showing_artist_results, num_pages = self.search(Artist, q)
+
+        instruments = [i.name for i in Instrument.objects.all()]
+        context['instruments'] = instruments
 
         context['showing_artist_results'] = showing_artist_results
         context['artists_blocks'] = artists_blocks

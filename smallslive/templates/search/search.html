@@ -22,27 +22,22 @@
   {% include 'inactive_dialog.html' %}
 
 <div class="main-container">
-    <div class="flex-row items-center wrap content-space-around" style="margin-right: auto; margin-left: 200px;">
-
-        <input class="search-artist-box" name="q" type="text" placeholder="Search">
-
-        <div class="white-border-select" style="width:150px;">
-            <select id="instrument-filter">
-                <option value="week">INSTRUMENT</option>
-                <option value="month">Last month</option>
-                <option value="year">This Year</option>
-                <option value="alltime">All Time</option>
-            </select>
-        </div>
-
-        
-    </div>
 
 <section class="event-stripe">
-    <div class="section-title">
-        <div class="title1">Artists</div>
-        <div id="artist-subheader" class="header-sub title2 subheader-results results-text">{{showing_artist_results}}</div>
+<div class="section-title">
+    <div class="title1">Artists</div>
+
+    <input class="search-artist-box" name="q" type="text" placeholder="Search">
+
+    <div id="instrument-btn" class="instrument-btn white-border-button">INSTRUMENT</div>
+
+    <div class="instruments-container">
+        {% for instrument in instruments %}
+        <div class="instrument">{{instrument}}</div>
+        {% endfor %}
     </div>
+
+</div>
     <div class="container-list-article">
         <div id="left_arrow" class="artist-arrow-search">
             <i class="fa fa-angle-left"></i>
@@ -56,6 +51,7 @@
             <i class="fa fa-angle-right"></i>
         </div>
     </div>
+    <div id="artist-subheader" class="header-sub title2 subheader-results-artist results-text">{{showing_artist_results}}</div>
 </section>
 
     <section class="event-stripe">
@@ -77,7 +73,7 @@
             {% include 'search/event_results.html' with events=event_results %}
         </main>
         
-        <div class="concerts-footer">    
+        <div class="concerts-footer">
             <div id="event-subheader-footer" class="header-sub title2 results-text">{{showing_event_results}}</div>
             
             <button id="next-page-btn" class="white-border-button next-page-btn" style="width:220px;">

@@ -1,4 +1,4 @@
-var searchTerm, artistSearchTerm, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter;
+var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter;
 
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -20,6 +20,7 @@ function sendArtistRequest() {
         url: '/search/ajax/artist/',
         data: {
             'q': artistSearchTerm,
+            'instrument': artistInstrument,
             'page': artistPageNum
         },
         dataType: 'json',
@@ -87,6 +88,7 @@ $(document).ready(function () {
         searchTerm = searchTerm.replace('+', ' ');
     }
     artistSearchTerm = searchTerm;
+    artistInstrument = "";
     artistPageNum = eventPageNum = 1;
     artistMaxPageNum = eventMaxPageNum = 2;
     eventOrderFilter = "newest";
@@ -143,4 +145,23 @@ $(document).ready(function () {
             sendArtistRequest();
         }
     });
+
+    $("#instrument-btn").click(function () {
+        
+        if (!$(".instruments-container").is(":visible")) {
+            $(".instruments-container").css("display", "flex");
+        }
+        else {
+            $(".instruments-container").css("display", "none");
+        }
+    });
+
+    $(".instrument").click(function () {
+        artistInstrument = $(this).text();
+        artistPageNum = 1;
+
+        sendArtistRequest();
+        $(".instruments-container").css("display", "none");
+    });
+
 });
