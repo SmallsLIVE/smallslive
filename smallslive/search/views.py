@@ -49,21 +49,25 @@ class SearchMixin(object):
 
         if entity == Artist:
             results_per_page = 48
-            if order:
+
+            if not text:
                 sqs = entity.objects.all()
-                for artist in text.split(' '):
-                    sqs = sqs.filter(Q(
-                        last_name__icontains=artist) | Q(
-                        first_name__icontains=artist) | Q(
-                        instruments__name__icontains=artist)
-                        ).distinct().order_by(order)
             else:
-                sqs = entity.objects.all()
-                for artist in text.split(' '):
-                    sqs = sqs.filter(Q(
-                        last_name__icontains=artist) | Q(
-                        first_name__icontains=artist) | Q(
-                        instruments__name__icontains=artist)).distinct()
+                if order:
+                    sqs = entity.objects.all()
+                    for artist in text.split(' '):
+                        sqs = sqs.filter(Q(
+                            last_name__icontains=artist) | Q(
+                            first_name__icontains=artist) | Q(
+                            instruments__name__icontains=artist)
+                            ).distinct().order_by(order)
+                else:
+                    sqs = entity.objects.all()
+                    for artist in text.split(' '):
+                        sqs = sqs.filter(Q(
+                            last_name__icontains=artist) | Q(
+                            first_name__icontains=artist) | Q(
+                            instruments__name__icontains=artist)).distinct()
             
             if instrument:
                 sqs = sqs.filter(instruments__name=instrument)
@@ -77,28 +81,30 @@ class SearchMixin(object):
                 'popular': 'popular',
             }.get(order, '-start')
             
-            
-            instrument = self.get_instrument(text.split(' '))
-            if instrument:
-                sqs = entity.objects.filter(
-                    artists_gig_info__role__name__icontains=instrument.name,
-                    artists_gig_info__is_leader=True)
-                
-                for i in [i for i in text.split(' ') if i.lower() not in [instrument.name.lower()]]:
-                    sqs = sqs.filter(Q(
-                        title__icontains=text) | Q(
-                        description__icontains=i) | Q(
-                        performers__first_name__icontains=i) | Q(
-                        performers__last_name__icontains=i)).distinct()
-            else:
+            if not text:
                 sqs = entity.objects.all()
-                for text in text.split(' '):
-                    sqs = sqs.filter(Q(
-                        title__icontains=text) | Q(
-                        description__icontains=text) | Q(
-                        performers__first_name__icontains=text) | Q(
-                        performers__last_name__icontains=text)).distinct()
-            
+            else:
+                instrument = self.get_instrument(text.split(' '))
+                if instrument:
+                    sqs = entity.objects.filter(
+                        artists_gig_info__role__name__icontains=instrument.name,
+                        artists_gig_info__is_leader=True)
+                    
+                    for i in [i for i in text.split(' ') if i.lower() not in [instrument.name.lower()]]:
+                        sqs = sqs.filter(Q(
+                            title__icontains=text) | Q(
+                            description__icontains=i) | Q(
+                            performers__first_name__icontains=i) | Q(
+                            performers__last_name__icontains=i)).distinct()
+                else:
+                    sqs = entity.objects.all()
+                    for text in text.split(' '):
+                        sqs = sqs.filter(Q(
+                            title__icontains=text) | Q(
+                            description__icontains=text) | Q(
+                            performers__first_name__icontains=text) | Q(
+                            performers__last_name__icontains=text)).distinct()
+                
             sqs = sqs.filter(recordings__media_file__isnull=False, recordings__state=Recording.STATUS.Published)
             
             if date:
