@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from django.views.generic import View
 from django.views.generic.base import TemplateView
 from django.db.models import Q
-from events.models import Event
+from events.models import Event, Recording
 from haystack.query import SearchQuerySet, SQ
 
 from .utils import facets_by_model_name
@@ -98,6 +98,8 @@ class SearchMixin(object):
                         description__icontains=text) | Q(
                         performers__first_name__icontains=text) | Q(
                         performers__last_name__icontains=text)).distinct()
+            
+            sqs = sqs.filter(recordings__media_file__isnull=False, recordings__state=Recording.STATUS.Published)
             
             if date:
                 sqs = sqs.filter(start__day=date.day, start__month=date.month, start__year=date.year)
