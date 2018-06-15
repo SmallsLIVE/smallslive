@@ -14,6 +14,7 @@
   <meta name="description"
         content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
   <script src="{% static 'js/search/search.js' %}"></script>
+  
 
 {% endblock %}
 
@@ -60,13 +61,21 @@
                 <div class="title1">Concerts</div>
                 <div id="event-subheader" class="header-sub title2 subheader-results results-text">{{showing_event_results}}</div>
             </div>
-            <div class="white-border-select event-filter-select" style="width:250px;">
-                <select id="events-filter">
-                    <option value="newest">NEWEST TO OLDEST</option>
-                    <option value="oldest">OLDEST TO NEWEST</option>
-                    <option value="popular">MOST POPULAR</option>
-                </select>
+            <div>
+                <div class="white-border-select event-filter-select" style="width:250px;">
+                    <select id="events-filter">
+                        <option value="newest">NEWEST TO OLDEST</option>
+                        <option value="oldest">OLDEST TO NEWEST</option>
+                        <option value="popular">MOST POPULAR</option>
+                    </select>
+                </div>
+            
+                <div class="date-picker" id="date-picker" style="width: 200px;">
+                    <input type="text" placeholder="date" readonly>
+                    <i class="fa fa-caret-down"></i>
+                </div>
             </div>
+        
         </div>
         
         <main id="events">
@@ -88,6 +97,10 @@
     </section>
 </div>
 {% endblock%}
+
+{% block extra_js %}
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+{% endblock %}
 
 {% block footer %}
 {% endblock %}

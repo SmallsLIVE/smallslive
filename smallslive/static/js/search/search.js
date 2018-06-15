@@ -1,4 +1,4 @@
-var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter;
+var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter, eventDate;
 
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -66,7 +66,8 @@ function sendEventRequest() {
         data: {
             'q': searchTerm,
             'page': eventPageNum,
-            'order': eventOrderFilter
+            'order': eventOrderFilter,
+            'date': eventDate
         },
         dataType: 'json',
         success: function (data) {
@@ -162,6 +163,20 @@ $(document).ready(function () {
 
         sendArtistRequest();
         $(".instruments-container").css("display", "none");
+    });
+
+    var $datePicker = $('#date-picker input');
+    var now = new Date();
+    $datePicker.datepicker({
+        format: 'MM // dd // yyyy',
+        orientation: "top auto",
+        autoclose: true
+    });
+
+    $datePicker.on('changeDate', function(newDate) {
+        eventDate = newDate.date;
+
+        sendEventRequest();
     });
 
 });

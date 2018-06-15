@@ -1,5 +1,6 @@
 import json
 from itertools import chain
+from dateutil import parser
 
 from artists.models import Artist, Instrument
 from django.core.paginator import Paginator
@@ -38,17 +39,13 @@ def search_autocomplete(request):
 class SearchMixin(object):
 
     def get_instrument(self, text_array):
-        #queryset = Instrument.objects.all()
-        #for text in text_array:
-        #    queryset = queryset.filter(name__icontains=text)
 
         condition = Q(name__icontains=text_array[0])
         for text in text_array[1:]:
             condition |= Q(name__icontains=text)
         return Instrument.objects.filter(condition).distinct().first()
 
-
-    def search(self, entity, text, page=1, order=None, instrument=None):
+    def search(self, entity, text, page=1, order=None, instrument=None, date=None):
 
         if entity == Artist:
             results_per_page = 48
@@ -102,6 +99,9 @@ class SearchMixin(object):
                         performers__first_name__icontains=text) | Q(
                         performers__last_name__icontains=text)).distinct()
             
+            if date:
+                sqs = sqs.filter(start__day=date.day, start__month=date.month, start__year=date.year)
+            
             if order == 'popular':
                 sqs = sqs.most_popular()
             else:
@@ -140,6 +140,10 @@ class MainSearchView(View, SearchMixin):
         entity = self.kwargs.get('entity', None)
         order = request.GET.get('order', None)
         instrument = request.GET.get('instrument', None)
+        date = request.GET.get('date', None)
+
+        if date:
+            date = parser.parse(date, fuzzy=True)
         
         if entity == 'artist':
             artists_blocks, showing_results, num_pages = self.search(Artist, q, page, instrument=instrument)
@@ -148,7 +152,7 @@ class MainSearchView(View, SearchMixin):
             template = 'search/artist_results.html'
             
         elif entity == 'event':
-            events, showing_results, num_pages = self.search(Event, q, page, order=order)
+            events, showing_results, num_pages = self.search(Event, q, page, order=order, date=date)
 
             context={'events': events[0] if events else []}
             template = 'search/event_results.html'
