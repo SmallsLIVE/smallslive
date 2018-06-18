@@ -88,6 +88,10 @@ $(document).ready(function () {
     if (searchTerm) {
         searchTerm = searchTerm.replace('+', ' ');
     }
+    else
+    {
+        searchTerm = '';
+    }
     artistSearchTerm = searchTerm;
     artistInstrument = "";
     artistPageNum = eventPageNum = 1;
@@ -147,6 +151,25 @@ $(document).ready(function () {
         }
     });
 
+    var delay = (function(){
+        var timer = 0;
+        return function(callback, ms){
+          clearTimeout (timer);
+          timer = setTimeout(callback, ms);
+        };
+    })();
+
+    $( ".search-artist-box" ).keyup(function() {
+        delay(function(){
+            artistPageNum = 1;
+            artistSearchTerm = $('.search-artist-box').val();
+            $("#artists").hide();
+            $(".loading-image").css("display", "block");
+            $(".container-list-article").css("height", $("#artists").height());
+            sendArtistRequest();
+        }, 700);
+      });
+
     $("#instrument-btn").click(function () {
         
         if (!$(".instruments-container").is(":visible")) {
@@ -159,10 +182,20 @@ $(document).ready(function () {
 
     $(".instrument").click(function () {
         artistInstrument = $(this).text();
+        $('#instrument-btn').text(artistInstrument);
         artistPageNum = 1;
 
         sendArtistRequest();
         $(".instruments-container").css("display", "none");
+
+        if (searchTerm.length == 0) {
+            searchTerm = artistInstrument;
+        }
+        else {
+            searchTerm += " " + artistInstrument;
+        }
+        
+        sendEventRequest();
     });
 
     var $datePicker = $('#date-picker input');

@@ -89,7 +89,7 @@ class SearchMixin(object):
                     sqs = entity.objects.filter(
                         artists_gig_info__role__name__icontains=instrument.name,
                         artists_gig_info__is_leader=True)
-                    
+
                     for i in [i for i in text.split(' ') if i.lower() not in [instrument.name.lower()]]:
                         sqs = sqs.filter(Q(
                             title__icontains=text) | Q(
@@ -104,11 +104,11 @@ class SearchMixin(object):
                             description__icontains=text) | Q(
                             performers__first_name__icontains=text) | Q(
                             performers__last_name__icontains=text)).distinct()
-                
+
             sqs = sqs.filter(recordings__media_file__isnull=False, recordings__state=Recording.STATUS.Published)
             
             if date:
-                sqs = sqs.filter(start__day=date.day, start__month=date.month, start__year=date.year)
+                sqs = sqs.filter(start__gte=date)
             
             if order == 'popular':
                 sqs = sqs.most_popular()
