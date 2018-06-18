@@ -32,8 +32,10 @@ from events.models import get_today_start
 from metrics.models import UserVideoMetric, RANGE_WEEK, RANGE_MONTH, RANGE_YEAR
 from oscar_apps.catalogue.models import Product
 from search.utils import facets_by_model_name
-from .forms import EventAddForm, GigPlayedAddInlineFormSet, GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
-    EventSearchForm, EventEditForm
+from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
+    GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
+    EventSearchForm, EventEditForm, EventSetInlineFormset, \
+    EventSetInlineFormsetHelper
 from .models import Event, Venue
 
 
@@ -173,12 +175,13 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
     template_name = 'events/event_add.html'
     model = Event
     form_class = EventAddForm
-    inlines = [GigPlayedAddInlineFormSet]
-    inlines_names = ['artists']
+    inlines = [GigPlayedAddInlineFormSet, EventSetInlineFormset]
+    inlines_names = ['artists', 'sets']
 
     def get_context_data(self, **kwargs):
         context = super(EventAddView, self).get_context_data(**kwargs)
         context['artists'].helper = GigPlayedInlineFormSetHelper()
+        context['sets'].helper = EventSetInlineFormsetHelper()
         context['show_times'] = json.dumps(settings.SHOW_TIMES)
         return context
 
@@ -239,12 +242,13 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
     model = Event
     form_class = EventEditForm
     template_name = 'events/event_edit.html'
-    inlines = [GigPlayedEditInlineFormset]
-    inlines_names = ['artists']
+    inlines = [GigPlayedEditInlineFormset, EventSetInlineFormset]
+    inlines_names = ['artists', 'sets']
 
     def get_context_data(self, **kwargs):
         context = super(EventEditView, self).get_context_data(**kwargs)
         context['artists'].helper = GigPlayedInlineFormSetHelper()
+        context['sets'].helper = EventSetInlineFormsetHelper()
         context['show_times'] = json.dumps(settings.SHOW_TIMES)
         return context
 

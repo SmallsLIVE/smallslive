@@ -61,7 +61,7 @@
             </div>
             <div>
               <div class="accent-color text2">{{ event.venue }}</div>
-              <div class="text4">Sets at {{ event.start|date:'g:i A' }} {% if event.end %}& {{ event.end|date:'g:i A' }}{% endif %}</div>
+              <div class="text4">Sets at {{ event.get_set_hours_display }}</div>
             </div>
           </div>
         </div>
@@ -140,27 +140,32 @@
           </div>
         </div>
         <div class="event-player-buttons flex-column items-flex-stretch">
-          {% if event.is_past %}
-            {% if event.published_videos %}
-              <button class="white-border-button" id="togglePlayerAudio">
-                  Audio only player
-              </button>
-            {% endif %}
-
-              <button class="white-border-button" id="togglePlayerVideo"
-                      style="display: none">
-                {% if event.published_videos%}
-                  Video player
-                {% else %}
-                  Audio only
+            {% if event.is_past %}
+                {% if event.published_videos %}
+                    <button class="white-border-button" id="togglePlayerAudio">
+                        Audio only player
+                    </button>
                 {% endif %}
-              </button>
-          {% endif %}
-          {% if not event.is_live and event.is_past %}
-            <button class="white-border-button">Download for $9.99</button>
-          {% elif not event.is_live and event.is_future %}
-            <button class="white-border-button" onclick="showTickets()">Tickets</button>
-          {% endif %}
+
+                <button class="white-border-button" id="togglePlayerVideo"
+                        style="display: none">
+                    {% if event.published_videos %}
+                        Video player
+                    {% else %}
+                        Audio only
+                    {% endif %}
+                </button>
+            {% endif %}
+            {% if not event.is_live and event.is_past %}
+                <button class="white-border-button">Download for $9.99</button>
+            {% elif not event.is_live and event.is_future %}
+                <button class="white-border-button" onclick="showTickets()">Tickets</button>
+            {% endif %}
+            {% if user.is_admin or user.is_staff %}
+                <a href="{% url "event_edit" pk=event.id slug=event.slug %}">
+                    <button class="white-border-button">Edit</button>
+                </a>
+            {% endif %}
         </div>
       </div>
       <div class="flex-row event-set-selector"></div>
