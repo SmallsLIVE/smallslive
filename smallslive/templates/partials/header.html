@@ -35,6 +35,9 @@
               {{ request.user.email }}
             {% endif %}
           </option>
+            {% if request.user.artist %}
+                <option value="artist_dashboard">Artist Dashboard</option>
+            {% endif %}
           <option value="logout">Sign Out</option>
         </select>
       </div>

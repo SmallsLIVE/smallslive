@@ -118,10 +118,13 @@
 
     var userMenu = $('#userMenu');
     userMenu.on('change', function () {
-      if (userMenu.val() === 'logout') {
-        console.log('Logging out');
-        window.location = "{% url 'account_logout' %}";
-      }
+        var value = userMenu.val();
+
+        if (value === 'logout') {
+            window.location = "{% url 'account_logout' %}";
+        } else if (value === 'artist_dashboard') {
+            window.location = "{% url 'artist_dashboard:home' %}";
+        }
     });
   });
 </script>
