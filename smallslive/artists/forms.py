@@ -26,7 +26,7 @@ class ArtistAddForm(forms.ModelForm):
         self.helper.form_action = 'artist_add'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
-        self.fields['photo'].label = "Photo (landscape-style JPG w/ instrument preferred)"
+        self.fields['photo'].label = "Upload / Change Profile Photo"
 
 
 class ArtistInviteForm(forms.Form):

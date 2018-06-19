@@ -1,0 +1,37 @@
+.artist-profile-container {
+  padding: 0 10%;
+
+  //FIXME Shouldnt be necessary
+  a {
+    color: $black;
+  }
+
+  .artist-form {
+    padding: 0 10%;
+
+    margin-bottom: 40px;
+
+    .profile-first-name {
+      margin-right: 20px;
+    }
+    .custom-form {
+      input[type='file'] {
+        width: auto;
+      }
+    }
+  }
+
+}
+
+.artist-profile-picture {
+  .allow-fullsize {
+    display: none;
+  }
+}
+
+
+.hide-original {
+  img  {
+    display: none;
+  }
+}

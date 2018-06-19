@@ -1,10 +1,14 @@
-{% extends "artist_dashboard/base.html" %}
+{% extends "home_new.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
 {% block home-active %}active{% endblock %}
 
 {% block title %}Home{% endblock %}
+
+{% block header %}
+{% include 'partials/artist_header.html' %}
+{% endblock %}
 
 {% block content %}
 
