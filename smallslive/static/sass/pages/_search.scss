@@ -1,25 +1,37 @@
 .artists-container {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 
 }
 
 .artist-column {
   margin: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: space-between;
+  max-width: 300px;
 }
 
 .artist-row {
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: 6px;
 }
 
 .artist-search-text {
   font-family: 'Reem Kufi', sans-serif;
   font-weight: normal;
   text-transform: uppercase;
-  font-size: 1em;
-  color: #a6a6a6;
+  font-size: 1.2em;
+  color: black;
+  line-height: 1.2em;
+}
+
+.artist-search-text:hover {
+  font-weight: 900;
+  color: red;
+  text-decoration: underline;
 }
 
 .artist-arrow-search {
@@ -51,7 +63,7 @@
 .container-list-article {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   margin: 0 40px;
 }
 
@@ -105,11 +117,6 @@
   color: #a6a6a6;
   margin-right: 5px;
   margin-left: 5px;
-}
-
-.artist-search-text:hover {
-  font-weight: 900;
-  color: black;
 }
 
 .active-page {
