@@ -22,9 +22,7 @@
         {% if event.is_live %}
           <span class="accent-box">Live Now</span>
         {% else %}
-          <span>
-            {{ event.start|date:"g:i A" }} & {{ event.end|date:"g:i A" }}
-          </span>
+          <span>{{ event.get_set_hours_display }}</span>
         {% endif %}
       </div>
     {% endif %}

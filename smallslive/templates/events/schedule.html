@@ -48,7 +48,7 @@
                   {% endfor %}
                 </select>
               </div>
-              <div class="date-picker"
+              <div class="custom-date-picker"
                    id="schedule__date-picker">
                 <input type="text" placeholder="Select a month" readonly>
                 <i class="fa fa-caret-down"></i>
@@ -80,7 +80,8 @@
         format: 'MM // yyyy',
         orientation: "top auto",
         autoclose: true,
-        startDate: initialDate.getTime() >= now.getTime() ? now : initialDate
+        startDate: initialDate.getTime() >= now.getTime() ? now : initialDate,
+        container: '#schedule__date-picker'
       });
 
       $datePicker.datepicker("setDate", initialDate);
