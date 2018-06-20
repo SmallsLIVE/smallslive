@@ -450,6 +450,7 @@ class EventSet(models.Model):
     start = models.TimeField()
     end = models.TimeField(blank=True, null=True)
     event = models.ForeignKey('events.Event', related_name='sets')
+    recording = models.OneToOneField('events.Recording', related_name='set', blank=True, null=True)
 
 
 class GigPlayedQuerySet(models.QuerySet):

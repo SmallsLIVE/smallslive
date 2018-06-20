@@ -26,11 +26,18 @@ def convert_to_event_set(apps, schema_editor):
         first_set_end = (ny_start + timedelta(hours=1)).time()
         second_set_end = (ny_end + timedelta(hours=1)).time()
 
-        EventSet.objects.create(event=event, start=first_set_start, end=first_set_end)
-        EventSet.objects.create(event=event, start=second_set_start, end=second_set_end)
+        recording_1 = event.recordings.filter(set_number=1).first()
+        EventSet.objects.create(
+            event=event, start=first_set_start, end=first_set_end, recording=recording_1
+        )
+
+        recording_2 = event.recordings.filter(set_number=2).first()
+        EventSet.objects.create(
+            event=event, start=second_set_start, end=second_set_end, recording=recording_2
+        )
 
 
-def dummy_reverse(apps, schema_editor):
+def dummy(apps, schema_editor):
     pass
 
 
@@ -48,6 +55,7 @@ class Migration(migrations.Migration):
                 ('start', models.TimeField()),
                 ('end', models.TimeField(null=True, blank=True)),
                 ('event', models.ForeignKey(related_name='sets', to='events.Event')),
+                ('recording', models.OneToOneField(related_name='set', null=True, blank=True, to='events.Recording')),
             ],
             options={
             },
@@ -59,5 +67,5 @@ class Migration(migrations.Migration):
             field=models.DateField(null=True, blank=True),
             preserve_default=True,
         ),
-        migrations.RunPython(convert_to_event_set, reverse_code=dummy_reverse)
+        migrations.RunPython(convert_to_event_set, dummy)
     ]
