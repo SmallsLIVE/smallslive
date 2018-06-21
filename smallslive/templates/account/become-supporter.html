@@ -19,10 +19,10 @@
     {% endif %}
     <div class="flex-column items-center">
       <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover">
-        <button disabled {% if not completed %}class="active"{% endif %}>Step 1</button>
-        <button disabled>Step 2</button>
-        <button disabled>Step 3</button>
-        <button disabled {% if completed %}class="active"{% endif %}>Step 4</button>
+        <p {% if not completed %}class="active"{% endif %}>Step 1</p>
+        <p>Step 2</p>
+        <p>Step 3</p>
+        <p {% if completed %}class="active"{% endif %}>Step 4</p>
       </div>
       {% if not completed %}
       <div id="supporterStep1">

@@ -157,7 +157,7 @@
                 </button>
             {% endif %}
             {% if not event.is_live and event.is_past %}
-                <button class="white-border-button">Download for $9.99</button>
+                <button disabled class="white-border-button">Download for $9.99</button>
             {% elif not event.is_live and event.is_future %}
                 <button class="white-border-button" onclick="showTickets()">Tickets</button>
             {% endif %}

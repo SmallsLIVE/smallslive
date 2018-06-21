@@ -37,6 +37,11 @@
   a {
     color: inherit;
   }
+
+  &:disabled {
+    color: $text-grey;
+    cursor: not-allowed;
+  }
 }
 
 .white-border-button {
@@ -77,13 +82,20 @@
     }
   }
 
+  p {
+    display: flex;
+    align-items: center;
+  }
+
   a,
+  p,
   button {
-    color: black;
+    color: $black;
   }
 
   &:not(.button-row-no-hover) {
     a,
+    p,
     button {
       &:hover {
         background-color: $white-transparent;
@@ -130,7 +142,7 @@
   }
 
   &.button-row-margin {
-    & > button {
+    & > button, & > p {
       margin: 0 10px;
 
       &:first-child {

@@ -16,10 +16,14 @@
 }
 
 .event-video-info {
+  .event-title {
+    margin-bottom: 2px;
+  }
+
   @media(max-width: $screen-md-max) {
     .event-title {
       line-height: 1em;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
     }
   }
 }
