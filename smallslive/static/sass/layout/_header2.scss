@@ -26,10 +26,6 @@
   padding: 0 20px;
   background-color: transparent;
 
-  &:hover {
-    background-color: $white-transparent;
-  }
-
   &.active {
     background-color: $white-transparent;
   }
@@ -84,9 +80,14 @@
   a,
   button {
     color: black;
+  }
 
-    &:hover {
-      background-color: $white-transparent;
+  &:not(.button-row-no-hover) {
+    a,
+    button {
+      &:hover {
+        background-color: $white-transparent;
+      }
     }
   }
 
