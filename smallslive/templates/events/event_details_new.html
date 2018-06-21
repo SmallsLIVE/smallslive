@@ -78,12 +78,23 @@
             </div>
           {% endif %}
         {% else %}
-          <div class="event-video-banner flex-column content-space-between items-center">
-            <span class="event-banner-background"></span>
-            <p class="title2 accent-color">Archive Access</p>
-            <p class="title3">Become a supporter</p>
-            <p class="text7">Access archive videos by becoming a Supporting Member. Your supporting pledge goes directly to your favorite artists and helps make SmallsLIVE possible through our SmallsLIVE Revenue Share. Supporting Members have unlimited access to our archive of nearly every concert performed at Smalls & Mezzrow with new concerts added weekly. By listening to your favorite artists in the archive you are getting them paid.</p>
-            <button class="white-border-button" onclick="goToSupporter()">Become a Supporter</button>
+          <div class="event-video-placeholder flex-column content-space-between">
+              <span class="event-video-placeholder-picture" style="{% if event.photo %}
+                 {% include 'partials/thumbored_picture_style.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+               {% else %}
+                 {% include 'partials/thumbored_picture_style.html' %}
+               {% endif %}
+             "></span>
+              <div class="overlay-info flex-column items-center content-space-around">
+                  <p class="title2 accent-color">Archive Access</p>
+                  <p class="title3">Become a supporter</p>
+                  <p class="text7">Access archive videos by becoming a Supporting Member. Your supporting pledge goes
+                      directly to your favorite artists and helps make SmallsLIVE possible through our SmallsLIVE
+                      Revenue Share. Supporting Members have unlimited access to our archive of nearly every concert
+                      performed at Smalls & Mezzrow with new concerts added weekly. By listening to your favorite
+                      artists in the archive you are getting them paid.</p>
+                  <button class="white-border-button" onclick="goToSupporter()">Become a Supporter</button>
+              </div>
           </div>
         {% endif %}
         {% if event.published_audio %}
@@ -98,13 +109,20 @@
 
       {% endif %}
     {% else %}
-      <div class="event-video-banner flex-column content-space-between items-center">
-        <span class="event-banner-background"></span>
-        <p class="title2 accent-color">Live Stream Access</p>
-        <p class="title3">Sign up</p>
-        <p class="text7">Our live stream has expanded our 60 seat clubs into a worldwide community of jazz fans and supporters. Sign up for free to watch our live streams each night.</p>
-        <button class="white-border-button register-button" onclick="showRegister()">Become a Member</button>
-      </div>
+        <div class="event-video-placeholder flex-column content-space-between">
+          <span class="event-video-placeholder-picture" style="{% if event.photo %}
+             {% include 'partials/thumbored_picture_style.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+           {% else %}
+             {% include 'partials/thumbored_picture_style.html' %}
+           {% endif %}
+         "></span>
+          <div class="overlay-info flex-column items-center content-space-around">
+            <p class="title2 accent-color">Live Stream Access</p>
+            <p class="title3">Sign up</p>
+            <p class="text7">Our live stream has expanded our 60 seat clubs into a worldwide community of jazz fans and supporters. Sign up for free to watch our live streams each night.</p>
+            <button class="white-border-button register-button" onclick="showRegister()">Become a Member</button>
+          </div>
+        </div>
     {% endif %}
       <div class="flex-row content-space-between">
         <div class="event-video-info flex-column">
@@ -140,7 +158,7 @@
           </div>
         </div>
         <div class="event-player-buttons flex-column items-flex-stretch">
-            {% if event.is_past %}
+            {% if event.is_past and user.can_listen_to_audio%}
                 {% if event.published_videos %}
                     <button class="white-border-button" id="togglePlayerAudio">
                         Audio only player
