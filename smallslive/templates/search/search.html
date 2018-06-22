@@ -40,7 +40,7 @@
 
 </div>
     <div class="container-list-article">
-        <div id="left_arrow" class="artist-arrow-search">
+        <div id="left_arrow" class="artist-arrow-search" style="visibility: hidden;">
             <i class="fa fa-angle-left"></i>
         </div>
         <img class="loading-image" src="{% static 'image/loading.gif' %}" alt="">
@@ -48,7 +48,11 @@
         <main id="artists">
             {% include 'search/artist_results.html' %}
         </main>
+        {% if artist_num_pages != 1 %}
         <div id="right_arrow" class="artist-arrow-search">
+        {% else %}
+        <div id="right_arrow" class="artist-arrow-search" style="visibility: hidden;">
+        {% endif %}
             <i class="fa fa-angle-right"></i>
         </div>
     </div>

@@ -33,13 +33,13 @@ function sendArtistRequest() {
                 $(".container-list-article").css("height", "auto");
                 artistMaxPageNum = data.numPages;
 
-                if(artistPageNum === 1) {
+                if (artistPageNum === 1) {
                     $("#left_arrow").css('visibility', 'hidden');
                 } else {
                     $("#left_arrow").css('visibility', 'visible');
                 }
 
-                if(artistPageNum === artistMaxPageNum) {
+                if (artistPageNum === artistMaxPageNum) {
                     $("#right_arrow").css('visibility', 'hidden');
                 } else {
                     $("#right_arrow").css('visibility', 'visible');
@@ -56,8 +56,8 @@ function sendArtistRequest() {
 }
 
 function changePage(param) {
-  eventPageNum = parseInt(param.getAttribute("data-page-number"));
-  sendEventRequest();
+    eventPageNum = parseInt(param.getAttribute("data-page-number"));
+    sendEventRequest();
 }
 
 function sendEventRequest() {
@@ -76,7 +76,7 @@ function sendEventRequest() {
                 $("#event-subheader-footer").html(data.showingResults)
                 $("#events").html(data.template);
                 $("#page-numbers-footer").html(data.pageNumbersFooter);
-                
+
                 eventMaxPageNum = data.numPages;
             }
         }
@@ -87,9 +87,7 @@ $(document).ready(function () {
     searchTerm = getUrlParameter("q");
     if (searchTerm) {
         searchTerm = searchTerm.replace('+', ' ');
-    }
-    else
-    {
+    } else {
         searchTerm = '';
     }
     artistSearchTerm = searchTerm;
@@ -99,11 +97,10 @@ $(document).ready(function () {
     eventOrderFilter = "newest";
 
     $("[name='q']").val(searchTerm);
-    $("#left_arrow").css('visibility', 'hidden');
 
     $("#left_arrow").click(function () {
         if (artistPageNum !== 1) {
-            
+
             artistPageNum -= 1;
             $("#artists").hide();
             $(".loading-image").css("display", "block");
@@ -116,10 +113,10 @@ $(document).ready(function () {
     $("#right_arrow").click(function () {
         if (artistPageNum !== artistMaxPageNum) {
             artistPageNum += 1;
-          $("#artists").hide();
+            $("#artists").hide();
             $(".loading-image").css("display", "block");
             $(".container-list-article").css("height", $("#artists").height());
-            
+
             sendArtistRequest();
         }
     });
@@ -127,12 +124,12 @@ $(document).ready(function () {
     $("#next-page-btn").click(function () {
         if (eventPageNum !== eventMaxPageNum) {
             eventPageNum += 1;
-            
+
             sendEventRequest();
         }
     });
 
-    $('#events-filter').change(function(){
+    $('#events-filter').change(function () {
         eventOrderFilter = $(this).val();
         eventPageNum = 1;
 
@@ -151,16 +148,16 @@ $(document).ready(function () {
         }
     });
 
-    var delay = (function(){
+    var delay = (function () {
         var timer = 0;
-        return function(callback, ms){
-          clearTimeout (timer);
-          timer = setTimeout(callback, ms);
+        return function (callback, ms) {
+            clearTimeout(timer);
+            timer = setTimeout(callback, ms);
         };
     })();
 
-    $( ".search-artist-box" ).keyup(function() {
-        delay(function(){
+    $(".search-artist-box").keyup(function () {
+        delay(function () {
             artistPageNum = 1;
             artistSearchTerm = $('.search-artist-box').val();
             $("#artists").hide();
@@ -168,14 +165,13 @@ $(document).ready(function () {
             $(".container-list-article").css("height", $("#artists").height());
             sendArtistRequest();
         }, 700);
-      });
+    });
 
     $("#instrument-btn").click(function () {
-        
+
         if (!$(".instruments-container").is(":visible")) {
             $(".instruments-container").css("display", "flex");
-        }
-        else {
+        } else {
             $(".instruments-container").css("display", "none");
         }
     });
@@ -190,11 +186,10 @@ $(document).ready(function () {
 
         if (searchTerm.length == 0) {
             searchTerm = artistInstrument;
-        }
-        else {
+        } else {
             searchTerm += " " + artistInstrument;
         }
-        
+
         sendEventRequest();
     });
 
@@ -206,7 +201,7 @@ $(document).ready(function () {
         autoclose: true
     });
 
-    $datePicker.on('changeDate', function(newDate) {
+    $datePicker.on('changeDate', function (newDate) {
         eventDate = newDate.date;
 
         sendEventRequest();

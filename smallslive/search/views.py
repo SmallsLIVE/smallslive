@@ -208,6 +208,7 @@ class TemplateSearchView(TemplateView, SearchMixin):
 
         context['showing_artist_results'] = showing_artist_results
         context['artists_blocks'] = artists_blocks
+        context['artist_num_pages'] = num_pages
         
         event_blocks, showing_event_results, num_pages = self.search(Event, q)
 
