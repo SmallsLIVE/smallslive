@@ -136,17 +136,17 @@ $(document).ready(function () {
         sendEventRequest();
     });
 
-    $('.search-artist-box').keypress(function (e) {
-        if (e.which == '13') {
-            artistPageNum = 1;
-            artistSearchTerm = $('.search-artist-box').val();
-            $("#artists").hide();
-            $(".loading-image").css("display", "block");
-            $(".container-list-article").css("height", $("#artists").height());
-
-            sendArtistRequest();
-        }
-    });
+//    $('.search-artist-box').keypress(function (e) {
+//        if (e.which == '13') {
+//            artistPageNum = 1;
+//            artistSearchTerm = $('.search-artist-box').val();
+//            $("#artists").hide();
+//            $(".loading-image").css("display", "block");
+//            $(".container-list-article").css("height", $("#artists").height());
+//
+//            sendArtistRequest();
+//        }
+//    });
 
     var delay = (function () {
         var timer = 0;

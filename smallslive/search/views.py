@@ -57,17 +57,15 @@ class SearchMixin(object):
                     sqs = entity.objects.all()
                     for artist in text.split(' '):
                         sqs = sqs.filter(Q(
-                            last_name__icontains=artist) | Q(
-                            first_name__icontains=artist) | Q(
-                            instruments__name__icontains=artist)
+                            last_name__istartswith=artist) | Q(
+                            first_name__istartswith=artist)
                             ).distinct().order_by(order)
                 else:
                     sqs = entity.objects.all()
                     for artist in text.split(' '):
                         sqs = sqs.filter(Q(
-                            last_name__icontains=artist) | Q(
-                            first_name__icontains=artist) | Q(
-                            instruments__name__icontains=artist)).distinct()
+                            last_name__istartswith=artist) | Q(
+                            first_name__istartswith=artist)).distinct()
             
             if instrument:
                 sqs = sqs.filter(instruments__name=instrument)
