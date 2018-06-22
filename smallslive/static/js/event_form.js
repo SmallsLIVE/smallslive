@@ -7,7 +7,7 @@ EventForm = {
         });
     },
     cloneMore: function (source, destination, type) {
-        var newElement = source.clone(true);
+        var newElement = source.clone();
         var $total = $('#id_' + type + '-TOTAL_FORMS');
         var total = $total.val();
         newElement.find(':input').each(function () {
@@ -20,7 +20,9 @@ EventForm = {
         newElement.find('.sort_order_field').val(total);
         total++;
         $total.val(total);
-        destination.after(newElement);
+        if (destination) {
+            destination.after(newElement);
+        }
         newElement.find("select").selectize({create: false});
         return newElement;
     },
@@ -125,14 +127,15 @@ EventForm = {
             }
             $start.data("DateTimePicker").setDate(start.format(date_format));
             $end.data("DateTimePicker").setDate(end.format(date_format));
+
+            EventForm.propagateSets(start, end);
+
         });
 
         this.addSlotButtons(moment().isoWeekday());
     },
-    initSetsTimePickers: function() {
-        var $setsTable = $(".event-set-list-form .formset_table");
-        var $set_row = $setsTable.find("tbody tr:first").clone(true);
-        $setsTable.find('input.timeinput').each(function () {
+    configureTimePicker: function (firstRow) {
+        firstRow.find('input.timeinput').each(function () {
             $(this).datetimepicker({
                 pickDate: false,
                 minuteStepping: 15,
@@ -145,6 +148,58 @@ EventForm = {
             });
             $(this).datetimepicker('update');
         });
+    }, propagateSets: function(first, second){
+        var $setsTable = $(".event-set-list-form .formset_table");
+        var $setsTableBody = $(".event-set-list-form .formset_table tbody");
+        // Keep first row
+        var $firstClone = $setsTable.find("tbody tr:first").clone();
+
+        //Remove original id and ensure is shown
+        $firstClone.find('input[id$="id"]').val('');
+        $firstClone.show();
+
+        var total = 0;
+        $setsTable.find("tbody tr").each(function () {
+            var row = $(this);
+            var value = row.find('input[id$="id"]').val();
+            if (value && value !== '') {
+                // Mark sets without id as deleted
+                total++;
+                row.hide();
+                var del = row.find('input[id$="DELETE"]')[0];
+                $(del).val(true);
+            } else {
+                // Remove new entered sets
+                row.remove();
+            }
+        });
+
+        //
+        var $total = $('#id_sets-TOTAL_FORMS');
+        $total.val(total);
+
+        var firstRow = EventForm.cloneMore($firstClone, undefined, 'sets');
+        var secondRow = EventForm.cloneMore($firstClone, undefined, 'sets');
+
+        firstRow.appendTo($setsTableBody);
+        secondRow.appendTo($setsTableBody);
+
+        this.configureTimePicker(firstRow);
+        this.configureTimePicker(secondRow);
+
+        firstRow.find('#id_sets-' + total + '-start').data("DateTimePicker").setDate(first);
+        firstRow.find('#id_sets-' + total + '-end').data("DateTimePicker").setDate(first.add(1, 'h'));
+        secondRow.find('#id_sets-' + (total + 1) + '-start').data("DateTimePicker").setDate(second);
+        secondRow.find('#id_sets-' + (total + 1) + '-end').data("DateTimePicker").setDate(second.add(1, 'h'));
+
+        this.fixTableWidths($setsTable);
+    },
+    initSetsTimePickers: function() {
+        var $setsTable = $(".event-set-list-form .formset_table");
+        var $set_row = $setsTable.find("tbody tr:first").clone(true);
+        this.configureTimePicker($setsTable);
+        $setsTable.find('input.timeinput').each(function () {
+        });
 
         var addButtonSelector = '#add_more_sets';
         var tableType = 'sets';
@@ -154,24 +209,9 @@ EventForm = {
 
         $(addButtonSelector).click(function () {
             var $lastRow = $setsTable.find('tbody tr:last');
-            var newRow = EventForm.cloneMore(
-                $set_row, $lastRow, tableType
-            );
+            var newRow = EventForm.cloneMore($set_row, $lastRow, tableType);
             EventForm.fixTableWidths($setsTable);
-            console.log('Setting input');
-            newRow.find('input.timeinput').each(function () {
-                $(this).datetimepicker({
-                    pickDate: false,
-                    minuteStepping: 15,
-                    pickerPosition: 'bottom-right',
-                    format: 'HH:mm',
-                    autoclose: true,
-                    showMeridian: true,
-                    startView: 1,
-                    maxView: 1
-                });
-                $(this).datetimepicker('update');
-            });
+            EventForm.configureTimePicker(newRow);
         });
 
         buttonRemove.on("click", function (e) {
