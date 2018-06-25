@@ -61,18 +61,15 @@ EventForm = {
         });
 
         $date.datetimepicker({
+            sideBySide: true,
             pickTime: false,
             format: 'YYYY-MM-DD'
         });
         $date.datetimepicker('update');
 
         EventForm.selectedDate = $start.data("DateTimePicker").getDate();
-        EventForm.onlyDate = $date.data("DateTimePicker").getDate();
-        console.log('Only date:', EventForm.onlyDate);
 
-        $start.on('dp.hide', function (ev) {
-            // save the selected date so that slot buttons work correctly
-            var start = $(this).data("DateTimePicker").getDate();
+        var propagateStart = function (start) {
             var redrawSlotButtons = (EventForm.selectedDate.isoWeekday() !== start.isoWeekday());
             EventForm.selectedDate = start;
 
@@ -84,11 +81,35 @@ EventForm = {
             if (redrawSlotButtons) {
                 EventForm.addSlotButtons(start.isoWeekday());
             }
+        };
+
+        $start.on('dp.hide', function (ev) {
+            // save the selected date so that slot buttons work correctly
+            var start = $(this).data("DateTimePicker").getDate();
+
+            propagateStart(start);
+            // $(this).data("DateTimePicker").show();
+            return false;
+        });
+
+        // fix for not showing the widget on every click on input
+        $end.on('dp.hide', function (ev) {
             $(this).data("DateTimePicker").show();
             return false;
         });
-        // fix for not showing the widget on every click on input
-        $end.on('dp.hide', function (ev) {
+
+
+        $date.on('dp.hide', function (ev) {
+            var start = moment($(this).data("DateTimePicker").getDate());
+            var oldStart = moment(EventForm.selectedDate);
+
+            var newStart  = moment(
+                new Date(start.year(), start.month(), start.date(), oldStart.hour(), oldStart.minute())
+            );
+
+            $start.data("DateTimePicker").setDate(newStart);
+            propagateStart(newStart);
+
             $(this).data("DateTimePicker").show();
             return false;
         });
@@ -147,6 +168,11 @@ EventForm = {
                 maxView: 1
             });
             $(this).datetimepicker('update');
+            $(this).on('dp.hide', function (ev) {
+                $(this).data("DateTimePicker").show();
+                return false;
+            });
+
         });
     }, propagateSets: function(first, second){
         var $setsTable = $(".event-set-list-form .formset_table");
