@@ -310,7 +310,7 @@
                     file: "{{ audio.media_file.get_file_url|safe }}",
                     type: "mp3"
                   }],
-                  image: "{{ event.photo.url }}",
+                  image: {% include 'partials/thumbor_url.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %},
                   mediaid: {{ audio.id }}
                 }{% if not forloop.last %},{% endif %}
               {% endfor %}
@@ -367,7 +367,7 @@
                             type: "mp4"
                         }],
                         mediaid: {{ video.id }},
-                        image: "{{ event.photo.url }}"
+                        image: {% include 'partials/thumbor_url.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
                     }{% if not forloop.last %},{% endif %}
                     {% endif %}{% endfor %}
                 ],
