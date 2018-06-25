@@ -71,10 +71,22 @@ EventForm = {
 
         var propagateStart = function (start) {
             var redrawSlotButtons = (EventForm.selectedDate.isoWeekday() !== start.isoWeekday());
+            var oldEnd = moment($end.data('DateTimePicker').getDate());
             EventForm.selectedDate = start;
 
             // auto set event end to 1 hour later
-            var end = start.add(1, 'hours').format(date_format);
+            var newEnd  = moment(
+                new Date(start.year(), start.month(), start.date(), oldEnd.hour(), oldEnd.minute())
+            );
+
+            // If start is before the midnight adjust end if necessary
+            if (start.hour() >= 6) {
+                if (newEnd.hour() > 0 && newEnd.hour() < 6) {
+                    newEnd = moment(newEnd).add(1, 'd');
+                }
+            }
+
+            var end = newEnd.format(date_format);
             $end.data("DateTimePicker").setDate(end);
 
             // if the day of the week changes, add appropriate slot buttons
@@ -107,10 +119,14 @@ EventForm = {
                 new Date(start.year(), start.month(), start.date(), oldStart.hour(), oldStart.minute())
             );
 
+            // If current start is after midnight
+            if (oldStart.hour() > 0 && oldStart.hour() < 6) {
+                newStart = moment(newStart).add(1, 'd')
+            }
+
             $start.data("DateTimePicker").setDate(newStart);
             propagateStart(newStart);
 
-            $(this).data("DateTimePicker").show();
             return false;
         });
 
@@ -322,6 +338,8 @@ EventForm = {
         if (datepicker) {
             this.initDateTimeFunctionality();
             this.initSetsTimePickers();
+            $('#id_start').datetimepicker('update');
+            $('#id_end').datetimepicker('update');
         }
         this.initVenueSelectFunctionality();
         this.initInlineArtistsFunctionality();

@@ -4,6 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML, Button, LayoutObject, TEMPLATE_PACK, MultiField
 from django import forms
 from django.conf import settings
+from django.forms import widgets
 from django.template import Context
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -125,7 +126,7 @@ class EventSetInlineFormset(InlineFormSet):
     extra = 1
 
     def construct_formset(self):
-        if self.object.sets.count() > 0:
+        if self.object and self.object.sets.count() > 0:
             self.extra = 0
         formset = super(EventSetInlineFormset, self).construct_formset()
         for num, form in enumerate(formset):
@@ -144,8 +145,8 @@ class EventSetInlineFormsetHelper(FormHelper):
 
 
 class EventAddForm(forms.ModelForm):
-    start = forms.DateTimeField(label="Start time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
-    end = forms.DateTimeField(label="End time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
+    start = forms.DateTimeField(label="Start time", required=True, input_formats=settings.DATETIME_INPUT_FORMATS)
+    end = forms.DateTimeField(label="End time", required=True, input_formats=settings.DATETIME_INPUT_FORMATS)
     date = forms.DateField(label="Event Date", required=True)
     staff_pick = forms.BooleanField(label="Staff Pick", required=False)
 
@@ -187,6 +188,9 @@ class EventAddForm(forms.ModelForm):
         )
         self.fields['state'].label = "Event status"
         self.fields['photo'].label = "Flyer or Band Photo (JPG, PNG)"
+
+        self.fields['start'].widget = forms.HiddenInput()
+        self.fields['end'].widget = forms.HiddenInput()
 
     def save(self, commit=True):
         instance = super(EventAddForm, self).save(commit)

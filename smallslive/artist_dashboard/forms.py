@@ -146,7 +146,7 @@ class MetricsPayoutForm(forms.Form):
     revenue = forms.DecimalField(required=True)
     operating_cost = forms.DecimalField(required=True)
     save_earnings = forms.BooleanField(required=False)
-    
+
     def __init__(self, *args, **kwargs):
         super(MetricsPayoutForm, self).__init__(*args, **kwargs)
         current_period = CurrentPayoutPeriod.objects.first()
