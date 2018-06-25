@@ -203,6 +203,8 @@ $(document).ready(function () {
 
     $datePicker.on('changeDate', function (newDate) {
         eventDate = newDate.date;
+        $('#events-filter').val('oldest');
+        eventOrderFilter = 'oldest';
 
         sendEventRequest();
     });
