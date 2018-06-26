@@ -100,7 +100,10 @@ class MyFutureEventsView(MyEventsView):
     def get_queryset(self):
         artist = self.request.user.artist
         now = timezone.now()
-        queryset = artist.gigs_played.select_related('event').filter(event__start__gte=now)
+        queryset = artist.gigs_played.select_related('event').prefetch_related('event__sets').filter(
+            event__start__gte=now
+        )
+
         queryset = self.apply_filters(queryset).order_by('event__start')
         return queryset
 
@@ -116,7 +119,9 @@ class MyPastEventsView(MyEventsView):
     def get_queryset(self):
         artist = self.request.user.artist
         now = timezone.now()
-        queryset = artist.gigs_played.select_related('event').filter(event__start__lt=now)
+        queryset = artist.gigs_played.select_related('event').prefetch_related('event__sets').filter(
+            event__start__lt=now
+        )
         queryset = self.apply_filters(queryset).order_by('-event__start')
         return queryset
 
@@ -187,8 +192,6 @@ class EventDetailView(HasArtistAssignedMixin, event_views.EventDetailView):
     def get_context_data(self, **kwargs):
         context = super(EventDetailView, self).get_context_data(**kwargs)
         context['is_leader'] = self.request.user.artist.is_leader_for_event(self.object)
-        context['audio'] = self.object.recordings.audio()
-        context['video'] = self.object.recordings.video()
         return context
 
 event_detail = EventDetailView.as_view()
