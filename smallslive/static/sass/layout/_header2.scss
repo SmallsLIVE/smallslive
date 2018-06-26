@@ -54,7 +54,7 @@
   height: $input-height;
   font-size: 1.2em;
 
-  background-color: transparent;
+  background-color: $white-transparent;
   padding: 8px;
   // TODO Global
   &:focus {

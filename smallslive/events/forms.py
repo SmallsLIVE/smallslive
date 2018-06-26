@@ -19,7 +19,7 @@ from .models import Event, GigPlayed
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 from urllib2 import urlopen
-from utils.widgets import ImageCropWidget, ImageSelectWidget
+from utils.widgets import ImageCropWidget
 
 
 class Formset(LayoutObject):
@@ -50,31 +50,8 @@ class Formset(LayoutObject):
             'formset': formset}))
 
 
-
 class EventStatusWidget(floppyforms.RadioSelect):
     template_name = 'form_widgets/event_status.html'
-
-
-class ImageSelectField(floppyforms.ChoiceField):
-    widget = ImageSelectWidget
-
-    def __init__(self, choices=(), required=True, widget=None, label=None,
-                 initial=None, help_text='', *args, **kwargs):
-        queryset = self.get_queryset()
-        super(ImageSelectField, self).__init__(required=required, widget=widget, label=label,
-                                               initial=initial, help_text=help_text, *args, **kwargs)
-        # Set the images dynamically for the imagepicker widget
-        objects = list(queryset)
-        if settings.AWS_S3_CUSTOM_DOMAIN:
-            domain = "https://{0}".format(settings.AWS_S3_CUSTOM_DOMAIN)
-        else:
-            domain = settings.THUMBOR_MEDIA_URL
-        objects = [(id, "{0}/{1}".format(domain, photo)) for (id, photo) in objects]
-        self.choices = Choices(("", ""))
-        self.choices += Choices(*objects)
-
-    def get_queryset(self):
-        return Event.objects.exclude(photo="").order_by('-id').values_list('id', 'photo')[:5]
 
 
 class GigPlayedAddInlineFormSet(InlineFormSet):

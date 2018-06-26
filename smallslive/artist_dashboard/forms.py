@@ -38,12 +38,12 @@ class EventEditForm(event_forms.EventEditForm):
 
     def __init__(self, *args, **kwargs):
         super(EventEditForm, self).__init__(*args, **kwargs)
-        del self.fields['title']
+        del self.fields['venue']
         del self.fields['subtitle']
         del self.fields['state']
         del self.fields['start']
         del self.fields['end']
-        self.helper[3] = Formset('artists', template='form_widgets/formset_layout.html', admin=False)
+        del self.fields['date']
 
 
 class ArtistInfoForm(forms.ModelForm):

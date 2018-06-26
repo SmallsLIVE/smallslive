@@ -8,17 +8,32 @@
           <img src="{% static 'logo-black.svg' %}" alt=""/>
         </a>
       </div>
-      <form class="search-input" action="{% url 'search' %}">
-        <input name="q" type="text" placeholder="Search">
-      </form>
+      <div class="section-title">
+        <div class="title1">Artist Dashboard</div>
+      </div>
     </div>
 
     <div class="button-row">
-      <a href="{% url 'schedule' %}"><button class="no-border {% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">Calendar</button></a>
-      <a href="{% url 'archive' %}"><button class="no-border  {% if request.resolver_match.url_name == 'archive' %}active{% endif %}">Archive</button></a>
-      <a href="{% url 'contact-and-info' %}"><button class="no-border {% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</button></a>
-      <a href=""><button class="no-border">Education</button></a>
-      <a href="{% url "promotions:home" %}"><button class="no-border">Store</button></a>
+      <a href="{% url 'artist_dashboard:my_past_events' %}">
+          <button class="no-border {% if request.resolver_match.url_name == 'my_past_events' %}active{% endif %}">
+              Archived
+          </button>
+      </a>
+      <a href="{% url 'artist_dashboard:edit_profile' %}">
+          <button class="no-border  {% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">
+              Public Profile
+          </button>
+      </a>
+      <a href="{% url 'contact-and-info' %}">
+          <button class="no-border {% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">
+              Smallslive Tracks
+          </button>
+      </a>
+      <a href="">
+          <button class="no-border">
+              Agreement
+          </button>
+      </a>
     </div>
     {% if not request.user.is_authenticated %}
       <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
