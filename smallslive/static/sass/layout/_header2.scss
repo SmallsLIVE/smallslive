@@ -5,10 +5,15 @@
     flex: 1;
     display: flex;
 
+    & > .section-title {
+      margin-left: 26px;
+    }
+
     .search-input {
       flex: 1;
       margin-left: 26px;
       margin-right: 26px;
+
       input {
         border-radius: 10px;
       }
@@ -177,6 +182,7 @@
 
   input {
     @include bordered-input;
+    background-color: transparent;
     width: 60%;
     padding-left: 30px;
   }
