@@ -46,19 +46,8 @@ EventForm = {
     initDateTimeFunctionality: function() {
         var $start = $('#id_start');
         var $end = $('#id_end');
-        var date_format = "MM/DD/YYYY H:mm A";
+        var date_format = "MM/DD/YYYY HH:mm:ss";
         var $date = $('#id_date');
-
-        $start.datetimepicker({
-            sideBySide: true,
-            minuteStepping: 5,
-            defaultDate: moment("19:00", "H:mm")
-        });
-        $end.datetimepicker({
-            sideBySide: true,
-            minuteStepping: 5,
-            defaultDate: moment("20:00", "H:mm")
-        });
 
         $date.datetimepicker({
             sideBySide: true,
@@ -67,7 +56,7 @@ EventForm = {
         });
         $date.datetimepicker('update');
 
-        EventForm.selectedDate = $start.data("DateTimePicker").getDate();
+        EventForm.selectedDate = moment($start.attr('value'));
 
         var propagateStart = function (start) {
             var redrawSlotButtons = (EventForm.selectedDate.isoWeekday() !== start.isoWeekday());
