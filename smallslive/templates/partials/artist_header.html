@@ -14,8 +14,8 @@
     </div>
 
     <div class="button-row">
-      <a href="{% url 'schedule' %}">
-          <button class="no-border {% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">
+      <a href="{% url 'artist_dashboard:my_past_events' %}">
+          <button class="no-border {% if request.resolver_match.url_name == 'my_past_events' %}active{% endif %}">
               Archived
           </button>
       </a>

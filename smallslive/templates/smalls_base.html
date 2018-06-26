@@ -123,7 +123,7 @@
         if (value === 'logout') {
             window.location = "{% url 'account_logout' %}";
         } else if (value === 'artist_dashboard') {
-            window.location = "{% url 'artist_dashboard:home' %}";
+            window.location = "{% url 'artist_dashboard:my_past_events' %}";
         }
     });
   });

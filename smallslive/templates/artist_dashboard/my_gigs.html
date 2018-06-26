@@ -1,4 +1,4 @@
-{% extends "artist_dashboard/base.html" %}
+{% extends "artist_dashboard/home.html" %}
 {% load add_get_parameter %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
@@ -9,156 +9,100 @@
 
 
 {% block content %}
-  <section class="page-heading page-heading-selector container">
-      <h1>My events:</h1>
-      <ul class="page-heading-selector__selector">
-        <li {% if past_active %}class="active"{% endif %}>
-          <a href="{% url "artist_dashboard:my_past_events" %}">Past events</a>
-        </li>
-        <li {% if future_active %}class="active"{% endif %}>
-          <a href="{% url "artist_dashboard:my_future_events" %}">Future events</a>
-        </li>
-      </ul>
-  </section>
-  <section class="events__filters container">
-      <ul class="flexbox-equal-height">
-          <li class="events__filters__heading">
-              Filters:
-          </li>
-          <li class="events__filters__group">
-              <ul>
-                  <li {% if request.GET.audio_filter %}class="active"{% endif %}>Audio:</li>
-                  <li {% if request.GET.audio_filter == "Published" %}class="active"{% endif %}><a href="{% add_get audio_filter="Published" page=None %}">Published</a> {% if request.GET.audio_filter == "Published" %}<a href="{% add_get audio_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.audio_filter == "Hidden" %}class="active"{% endif %}><a href="{% add_get audio_filter="Hidden" page=None %}">Private</a> {% if request.GET.audio_filter == "Hidden" %}<a href="{% add_get audio_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.audio_filter == "None" %}class="active"{% endif %}><a href="{% add_get audio_filter="None" page=None %}">Not available</a> {% if request.GET.audio_filter == "None" %}<a href="{% add_get audio_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-              </ul>
-          </li>
-          <li class="events__filters__group">
-              <ul>
-                  <li {% if request.GET.video_filter %}class="active"{% endif %}>Video:</li>
-                  <li {% if request.GET.video_filter == "Published" %}class="active"{% endif %}><a href="{% add_get video_filter="Published" page=None %}">Published</a> {% if request.GET.video_filter == "Published" %}<a href="{% add_get video_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.video_filter == "Hidden" %}class="active"{% endif %}><a href="{% add_get video_filter="Hidden" page=None %}">Private</a> {% if request.GET.video_filter == "Hidden" %}<a href="{% add_get video_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.video_filter == "None" %}class="active"{% endif %}><a href="{% add_get video_filter="None" page=None %}">Not available</a> {% if request.GET.video_filter == "None" %}<a href="{% add_get video_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-              </ul>
-          </li>
-          <li class="events__filters__group">
-              <ul>
-                  <li {% if request.GET.leader_filter %}class="active"{% endif %}>Leader status:</li>
-                  <li {% if request.GET.leader_filter == "true" %}class="active"{% endif %}><a href="{% add_get leader_filter="true" page=None %}">Leader</a> {% if request.GET.leader_filter == "true" %}<a href="{% add_get leader_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-                  <li {% if request.GET.leader_filter == "false" %}class="active"{% endif %}><a href="{% add_get leader_filter="false" page=None %}">Sideman</a> {% if request.GET.leader_filter == "false" %}<a href="{% add_get leader_filter="" page=None %}"> <i class="fa fa-remove"></i></a>{% endif %}</li>
-              </ul>
-          </li>
-          <li class="events__filters__group">
-              <a class="clear-toggle" href="{% add_get audio_filter=None video_filter=None leader_filter=None page=None%}"><i class="fa fa-remove"></i> Clear filters</a>
-          </li>
-      </ul>
-  </section>
-  <section class="events__list container">
-      <ul>
-        {% for gig_info in gigs %}
-          {% with event=gig_info.event  %}
-          <!-- single event row -->
-          <li class="event-row flexbox-equal-height">
-              <div class="hidden-xs hidden-sm col-md-2 event-row__image">
-                  {% if event.photo %}
-                      {% if gig_info.is_leader %}
-                          <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
-                            <img src="{% thumbor_url event.photo.url|urlencode height=170 width=170 smart=True %}" alt=""/>
-                          </a>
-                      {% else %}
-                          <a href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">
-                            <img src="{% thumbor_url event.photo.url|urlencode height=170 width=170 smart=True %}" alt=""/>
-                          </a>
-                      {% endif %}
-                  {% else %}
-                      {% if gig_info.is_leader %}
-                          <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
-                            <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                          </a>
-                      {% else %}
-                          <a href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">
-                            <img src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
-                          </a>
-                      {% endif %}
-                  {% endif %}
-              </div>
-              <div class="col-xs-12 col-sm-7 col-md-6 event-row__description">
-                  <p class="event-row__description__date">{{ event.listing_date|date:"l, F d, Y" }}  |  {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}</p>
-                  <p class="event-row__venue">{{ event.venue.name }}</p>
-                  {% if gig_info.is_leader %}
-                    <a class="event-row__description__name" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">
-                      {{ event.full_title }} {% if gig_info.is_leader %}<span class="event-row__is-leader">leader</span>{% endif %}
-                    </a>
-                  {% else %}
-                    <a class="event-row__description__name" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">{{ event.full_title }} {% if gig_info.is_leader %}<span class="event-row__is-leader">leader</span>{% endif %}</a>
-                  {% endif %}
-                  <p class="event-row__description__label">Artists:</p>
-                  <p class="event-row__description__artists">
-                    {% for gig_info in event.get_performers %}
-                      {{ gig_info.artist.full_name }} <span class="instrument">({{ gig_info.role }})</span>{% if not forloop.last %}  // {% endif %}
-                    {% endfor %}
-                  </p>
-              </div>
-              <div class="col-xs-12 col-sm-5 col-md-4 event-row__info">
-                  <div class="col-xs-3 event-row__info__audio">
-                      <i class="fa fa-volume-down {{ event.audio_status }}"></i>
-                      <p class="event-row__info__label">Event audio</p>
-                      <p class="event-row__info__status {{ event.audio_status }}">{{ event.audio_status|capfirst }}</p>
-                  </div>
-                  <div class="col-xs-3 event-row__info__video">
-                      <i class="fa fa-video-camera {{ event.video_status }}"></i>
-                      <p class="event-row__info__label">Event video</p>
-                      <p class="event-row__info__status {{ event.video_status }}">{{ event.video_status|capfirst }}</p>
-                  </div>
-                  {% if gig_info.is_leader %}
-                      <a class="col-xs-3 event-row__info__edit-button" href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
-                          <i class="fa fa-edit"></i>
-                          <p class="event-row__info__label">Edit / download</p>
-                      </a>
-                  {% else %}
-                      <a class="col-xs-3 event-row__info__edit-button" href="{% url "artist_dashboard:event_detail" pk=event.id slug=event.slug %}">
-                          <i class="fa fa-align-center"></i>
-                      <p class="event-row__info__label">Details / download</p>
-                      </a>
-                  {% endif %}
-                  {% if event.audio_status != 'none' or event.video_status != 'none' %}
-                      {% if not request.user.legal_agreement_acceptance %}
-                          <a class="col-xs-3 event-row__info__edit-button disabled">
-                            <i class="fa fa-bar-chart"></i>
-                            <p class="event-row__info__label">Event metrics</p>
-                          </a>
-                      {% else %}
-                          <a class="col-xs-3 event-row__info__edit-button" href="{% url "artist_dashboard:event_metrics" pk=event.id slug=event.slug %}">
-                            <i class="fa fa-bar-chart"></i>
-                            <p class="event-row__info__label">Event metrics</p>
-                          </a>
-                      {% endif %}
-                  {% endif %}
-              </div>
-          </li>
-          {% endwith %}
-        {% endfor %}
-      </ul>
-  </section>
-  <section class="page-pagination container">
-      <p class="search-pagination-info">Showing results {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ paginator.count }}</p>
-          {% if page_obj.has_previous or page_obj.has_next %}
-                <div class="search-pagination">
-                  {% if page_obj.has_previous %}<a href="{% add_get page=page_obj.previous_page_number %}"><span class="search-pagination__previous fa fa-caret-left"></span></a>{% endif %}
-                  {% if show_first %}
-                    <a href="{% add_get page=1 %}"><span class="search-pagination__page {% if page_obj.number == 1 %}active{% endif %}">1</span></a>
-                    ...
-                  {% endif %}
-                  {% for page in page_numbers %}
-                    <a href="{% add_get page=page %}"><span class="search-pagination__page {% if page == page_obj.number %}active{% endif %}">{{ page }}</span></a>
-                  {% endfor %}
-                  {% if show_last %}
-                    ...
-                    <a href="{% add_get page=paginator.num_pages %}"><span class="search-pagination__page {% if page_obj.number == paginator.num_pages %}active{% endif %}">{{ paginator.num_pages }}</span></a>
-                  {% endif %}
-                  {% if page_obj.has_next %}<a href="{% add_get page=page_obj.next_page_number %}"><span class="search-pagination__next fa fa-caret-right"></span></a>{% endif %}
+{#    TODO Move container to dashboard base#}
+    <div class="artist-profile-container">
+        <div class="artist-archive-filter flex-row">
+{#            FIXME Remove margin#}
+            <div class="white-border-select" style="width: 150px; float:none; margin-right: 20px">
+                <select id="artist_archive_status_filter">
+                    <option value="all">All</option>
+                    <option value="leader">Leader</option>
+                    <option value="sidemusician">Sidemusician</option>
+                </select>
+            </div>
+            <div class="white-border-select" style="width: 250px; float:none">
+                <select id="artist_archive_order">
+                    <option value="newest">Newest to oldest</option>
+                    <option value="oldest">Oldest to newest</option>
+                    <option value="draft">Most Popular</option>
+                </select>
+            </div>
+        </div>
+        <div class="flex-column items-flex-stretch">
+            {% for gig_info in gigs %}
+                {% with event=gig_info.event %}
+                    <div class="event-row flex-row">
+                        <div class="artist-event-card flex-column items-flex-stretch">
+                            {% include 'events/event_card.html' with event=event %}
+                            <div class="button-row button-row-margin flex-column">
+                                <a style="margin-top: 30px" href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
+                                    <button style="width: 100%">Edit Event</button>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="artist-event flex-column content-space-between">
+                            <div class="flex-row">
+                                <div class="text2 artist-event-info">
+                                    {{ event.title }}
+                                </div>
+                                <div class="text2 accent-color artist-event-date">
+                                    <div>{{ event.venue.name }} {{ event.date|date:'m/d/Y' }}</div>
+                                </div>
+                                <div class="text4">
+                                    {% for gig_info in event.get_performers %}
+                                        {{ gig_info.artist.full_name }}
+                                        <span class="text-grey">({{ gig_info.role }})</span>
+                                        {% if not forloop.last %}  // {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% for set in event.sets.all %}
+                                <div class="flex-row text2 items-center">
+                                    <div class="accent-color artist-event-date">
+                                        <div>
+                                            {% if set.recording %}
+                                                Set {{ set.recording.set_number }} - {{ set.start|date:"g:i A" }}
+                                            {% else %}
+                                                No set for {{ set.start|date:"g:i A" }}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="text-grey">
+                                            {% if set.recording %}
+                                                This set is currently <span class="accent-color">
+                                                {{ set.recording.state }}
+                                            </span>
+                                            {% else %}
+                                                This set is not uploaded yet.
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="artist-event-actions">
+                                        {% if gig_info.is_leader %}
+                                            <div class="button-row button-row-margin">
+                                                <button>Publish</button>
+                                                <button>Monetize</button>
+                                                <button>Download</button>
+                                                <a href="{% url "artist_dashboard:event_metrics" pk=event.id slug=event.slug %}">
+                                                    <button>Metrics</button>
+                                                </a>
+                                            </div>
+                                        {% else %}
+                                            <div class="text-grey">
+                                                <div>Leader only material.</div>
+                                                <div>To access this feature, you must be a designated leader for this set.</div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
 
-                </div>
-            {% endif %}
-  </section>
+                        </div>
+                    </div>
+                {% endwith %}
+            {% endfor %}
+
+        </div>
+    </div>
 {% endblock content %}
