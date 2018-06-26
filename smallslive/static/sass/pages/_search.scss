@@ -147,7 +147,7 @@
 .search-artist-box {
     @include bordered-input;
     width: 350px;
-    margin-right: 10px;
+    margin-right: 0;
     margin-left: 100px;
     border-radius: 10px;
 }
@@ -156,6 +156,7 @@
   display: inline-block;
   width:130px;
   padding-top: 12px;
+  margin-left: 20px;
 }
 
 .instruments-container {
@@ -169,7 +170,7 @@
   width: 800px;
   z-index: 9999;
   top: 50px;
-  right: -290px;
+  right: 350px;
   display: none;
   padding: 50px 100px;
 }
@@ -186,4 +187,8 @@
   text-decoration: underline;
   color: red;
   cursor: pointer;
+}
+
+.event-sub-w {
+  width: 590px;
 }
