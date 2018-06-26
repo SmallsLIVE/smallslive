@@ -44,6 +44,9 @@ class SearchMixin(object):
         for text in text_array[1:]:
             condition |= Q(name__icontains=text)
         return Instrument.objects.filter(condition).distinct().first()
+    
+    def get_instruments(self):
+        return [i.name.upper() for i in Instrument.objects.all()]
 
     def search(self, entity, text, page=1, order=None, instrument=None, date=None):
 
@@ -56,16 +59,27 @@ class SearchMixin(object):
                     sqs = sqs.filter(instruments__name=instrument)
             else:
                 sqs = entity.objects.all()
+                words = text.split(' ')
+                all_instruments = self.get_instruments()
+
+                instruments = [i for i in words if i.upper() in all_instruments]
+                words = [i for i in words if i.upper() not in all_instruments]
+
+                if instruments:
+                    condition = Q(instruments__name__iexact=instruments[0])
+                    for i in instruments[1:]:
+                        condition |= Q(instruments__name__iexact=i)
+                    sqs = entity.objects.filter(condition).distinct()
+
                 if instrument:
                     sqs = sqs.filter(instruments__name=instrument)
 
-                words = text.split(' ')
                 if len(words) > 1:
                     for artist in text.split(' '):
                         sqs = sqs.filter(Q(
                             last_name__istartswith=artist) | Q(
                             first_name__istartswith=artist)).distinct()
-                else:
+                elif len(words) == 1:
                     artist = words[0]
                     good_matches = sqs.filter(Q(
                         last_name__istartswith=artist)).distinct()

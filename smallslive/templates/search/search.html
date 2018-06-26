@@ -25,17 +25,13 @@
 <div class="main-container">
 
 <section class="event-stripe">
-<div style="display: flex;">
-<div class="section-title" style="width: 585px;">
+
+<div class="section-title" style="width: auto;">
     <div class="title1">Musicians</div>
 
-    <input class="search-artist-box" name="q" type="text" placeholder="Search" autocomplete="off">
+    <input id="artist-search" class="search-artist-box" name="q" type="text" placeholder="Search" autocomplete="off">
 
-    
-
-</div>
-<div>
-        <div id="instrument-btn" class="instrument-btn white-border-button">INSTRUMENT</div>
+    <div id="instrument-btn" class="instrument-btn white-border-button">INSTRUMENT</div>
 
         <div class="instruments-container">
             {% for instrument in instruments %}
@@ -43,7 +39,8 @@
             {% endfor %}
         </div>
 </div>
-</div>
+
+
     <div class="container-list-article">
         <div id="left_arrow" class="artist-arrow-search" style="visibility: hidden;">
             <i class="fa fa-angle-left"></i>
@@ -66,7 +63,7 @@
 
     <section class="event-stripe">
         <div class="event-section">
-            <div class="section-title" style="width: 590px;">
+            <div class="section-title" style="width: auto;">
                 <div class="title1">Shows</div>
                 <div id="event-subheader" class="header-sub title2 subheader-results results-text">{{showing_event_results}}</div>
             </div>
@@ -80,7 +77,7 @@
                 </div>
             
                 <div class="date-picker" id="date-picker" style="width: 200px;">
-                    <input type="text" placeholder="calendar" readonly>
+                    <input class="date-picker-text" type="text" placeholder="date" readonly>
                     <i class="fa fa-caret-down"></i>
                 </div>
             </div>

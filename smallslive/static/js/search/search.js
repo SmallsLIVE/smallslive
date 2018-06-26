@@ -19,7 +19,7 @@ function sendArtistRequest() {
     $.ajax({
         url: '/search/ajax/artist/',
         data: {
-            'q': artistSearchTerm,
+            'q': searchTerm ? artistSearchTerm + " " + searchTerm : artistSearchTerm,
             'instrument': artistInstrument,
             'page': artistPageNum
         },
@@ -86,7 +86,7 @@ function sendEventRequest() {
 $(document).ready(function () {
     searchTerm = getUrlParameter("q");
     if (searchTerm) {
-        searchTerm = searchTerm.replace('+', ' ');
+        searchTerm = searchTerm.replace(/\+/g, ' ');
     } else {
         searchTerm = '';
     }
@@ -97,6 +97,7 @@ $(document).ready(function () {
     eventOrderFilter = "newest";
 
     $("[name='q']").val(searchTerm);
+    $('#artist-search').val('');
 
     $("#left_arrow").click(function () {
         if (artistPageNum !== 1) {
@@ -204,9 +205,10 @@ $(document).ready(function () {
     $datePicker.on('changeDate', function (newDate) {
         eventDate = newDate.date;
         $('#events-filter').val('oldest');
-        eventOrderFilter = 'oldest';
+        //eventOrderFilter = 'oldest';
 
-        sendEventRequest();
+        $("[value='oldest']").click()
+        //sendEventRequest();
     });
 
 });
