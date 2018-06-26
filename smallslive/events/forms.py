@@ -4,6 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML, Button, LayoutObject, TEMPLATE_PACK, MultiField
 from django import forms
 from django.conf import settings
+from django.forms import widgets
 from django.template import Context
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -12,7 +13,7 @@ import floppyforms
 from haystack.forms import SearchForm
 from model_utils import Choices
 
-from events.models import StaffPick
+from events.models import StaffPick, EventSet
 from .models import Event, GigPlayed
 
 from django.core.files import File
@@ -119,15 +120,40 @@ class GigPlayedInlineFormSetHelper(FormHelper):
         self.form_show_labels = False
 
 
+class EventSetInlineFormset(InlineFormSet):
+    model = EventSet
+    fields = ('start', 'end')
+    extra = 1
+
+    def construct_formset(self):
+        if self.object and self.object.sets.count() > 0:
+            self.extra = 0
+        formset = super(EventSetInlineFormset, self).construct_formset()
+        for num, form in enumerate(formset):
+            form.fields['DELETE'].widget = forms.HiddenInput()
+        return formset
+
+
+class EventSetInlineFormsetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(EventSetInlineFormsetHelper, self).__init__(*args, **kwargs)
+        self.form_tag = False
+        self.field_template = 'bootstrap3/layout/inline_field.html'
+        self.template = 'form_widgets/table_inline_formset.html'
+        self.form_show_labels = False
+        self.sortable = False
+
+
 class EventAddForm(forms.ModelForm):
-    start = forms.DateTimeField(label="Start time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
-    end = forms.DateTimeField(label="End time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
+    start = forms.DateTimeField(label="Start time", required=True, input_formats=settings.DATETIME_INPUT_FORMATS)
+    end = forms.DateTimeField(label="End time", required=True, input_formats=settings.DATETIME_INPUT_FORMATS)
+    date = forms.DateField(label="Event Date", required=True)
     staff_pick = forms.BooleanField(label="Staff Pick", required=False)
 
     class Meta:
         model = Event
         fields = (
-            'venue', 'start', 'end', 'id', 'title', 'subtitle', 'photo',
+            'venue', 'date', 'start', 'end', 'id', 'title', 'subtitle', 'photo',
             'description', 'state', 'staff_pick'
         )
         widgets = {
@@ -144,12 +170,14 @@ class EventAddForm(forms.ModelForm):
         self.helper.form_tag = False
         self.helper.layout = Layout(
             'venue',
+            Field('date', css_class='datepicker'),
             Field('start', css_class='datepicker'),
             Field('end', css_class='datepicker'),
             FormActions(
                 css_class='form-group slot-buttons'
             ),
             Formset('artists', template='form_widgets/formset_layout.html'),
+            Formset('sets', template='form_widgets/set_formset_layout.html'),
             'title',
             'subtitle',
             'photo',
@@ -160,6 +188,9 @@ class EventAddForm(forms.ModelForm):
         )
         self.fields['state'].label = "Event status"
         self.fields['photo'].label = "Flyer or Band Photo (JPG, PNG)"
+
+        self.fields['start'].widget = forms.HiddenInput()
+        self.fields['end'].widget = forms.HiddenInput()
 
     def save(self, commit=True):
         instance = super(EventAddForm, self).save(commit)
@@ -178,7 +209,7 @@ class EventAddForm(forms.ModelForm):
 class EventEditForm(EventAddForm):
     class Meta(EventAddForm.Meta):
         fields = (
-            'venue', 'start', 'end', 'title', 'subtitle', 'photo', 'cropping',
+            'venue', 'date', 'start', 'end', 'title', 'subtitle', 'photo', 'cropping',
             'description', 'state', 'staff_pick')
 
 
