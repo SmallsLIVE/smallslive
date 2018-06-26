@@ -14,6 +14,7 @@
   <meta name="description"
         content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
   <script src="{% static 'js/search/search.js' %}"></script>
+  
 
 {% endblock %}
 
@@ -22,29 +23,29 @@
   {% include 'inactive_dialog.html' %}
 
 <div class="main-container">
-    <div class="flex-row items-center wrap content-space-around" style="margin-right: auto; margin-left: 200px;">
-
-        <input class="search-artist-box" name="q" type="text" placeholder="Search">
-
-        <div class="white-border-select" style="width:150px;">
-            <select id="instrument-filter">
-                <option value="week">INSTRUMENT</option>
-                <option value="month">Last month</option>
-                <option value="year">This Year</option>
-                <option value="alltime">All Time</option>
-            </select>
-        </div>
-
-        
-    </div>
 
 <section class="event-stripe">
-    <div class="section-title">
-        <div class="title1">Artists</div>
-        <div id="artist-subheader" class="header-sub title2 subheader-results results-text">{{showing_artist_results}}</div>
-    </div>
+<div style="display: flex;">
+<div class="section-title" style="width: 585px;">
+    <div class="title1">Musicians</div>
+
+    <input class="search-artist-box" name="q" type="text" placeholder="Search" autocomplete="off">
+
+    
+
+</div>
+<div>
+        <div id="instrument-btn" class="instrument-btn white-border-button">INSTRUMENT</div>
+
+        <div class="instruments-container">
+            {% for instrument in instruments %}
+            <div class="instrument">{{instrument}}</div>
+            {% endfor %}
+        </div>
+</div>
+</div>
     <div class="container-list-article">
-        <div id="left_arrow" class="artist-arrow-search">
+        <div id="left_arrow" class="artist-arrow-search" style="visibility: hidden;">
             <i class="fa fa-angle-left"></i>
         </div>
         <img class="loading-image" src="{% static 'image/loading.gif' %}" alt="">
@@ -52,32 +53,45 @@
         <main id="artists">
             {% include 'search/artist_results.html' %}
         </main>
+        {% if artist_num_pages != 1 %}
         <div id="right_arrow" class="artist-arrow-search">
+        {% else %}
+        <div id="right_arrow" class="artist-arrow-search" style="visibility: hidden;">
+        {% endif %}
             <i class="fa fa-angle-right"></i>
         </div>
     </div>
+    <div id="artist-subheader" class="header-sub title2 subheader-results-artist results-text">{{showing_artist_results}}</div>
 </section>
 
     <section class="event-stripe">
         <div class="event-section">
-            <div class="section-title">
-                <div class="title1">Concerts</div>
+            <div class="section-title" style="width: 590px;">
+                <div class="title1">Shows</div>
                 <div id="event-subheader" class="header-sub title2 subheader-results results-text">{{showing_event_results}}</div>
             </div>
-            <div class="white-border-select event-filter-select" style="width:250px;">
-                <select id="events-filter">
-                    <option value="newest">NEWEST TO OLDEST</option>
-                    <option value="oldest">OLDEST TO NEWEST</option>
-                    <option value="popular">MOST POPULAR</option>
-                </select>
+            <div>
+                <div class="white-border-select event-filter-select" style="width:250px;">
+                    <select id="events-filter">
+                        <option value="newest">NEWEST TO OLDEST</option>
+                        <option value="oldest">OLDEST TO NEWEST</option>
+                        <option value="popular">MOST POPULAR</option>
+                    </select>
+                </div>
+            
+                <div class="date-picker" id="date-picker" style="width: 200px;">
+                    <input type="text" placeholder="calendar" readonly>
+                    <i class="fa fa-caret-down"></i>
+                </div>
             </div>
+        
         </div>
         
         <main id="events">
             {% include 'search/event_results.html' with events=event_results %}
         </main>
         
-        <div class="concerts-footer">    
+        <div class="concerts-footer">
             <div id="event-subheader-footer" class="header-sub title2 results-text">{{showing_event_results}}</div>
             
             <button id="next-page-btn" class="white-border-button next-page-btn" style="width:220px;">
@@ -92,6 +106,10 @@
     </section>
 </div>
 {% endblock%}
+
+{% block extra_js %}
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+{% endblock %}
 
 {% block footer %}
 {% endblock %}

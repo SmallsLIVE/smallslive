@@ -15,7 +15,7 @@
 
     <div class="button-row">
       <a href="{% url 'schedule' %}"><button class="no-border {% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">Calendar</button></a>
-      <a href="{% url 'archive' %}"><button class="no-border  {% if request.resolver_match.url_name == 'archive' %}active{% endif %}">Archive</button></a>
+      <a href="{% url 'search' %}"><button class="no-border  {% if request.resolver_match.url_name == 'search' %}active{% endif %}">Archive</button></a>
       <a href="{% url 'contact-and-info' %}"><button class="no-border {% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</button></a>
       <a href=""><button class="no-border">Education</button></a>
       <a href="{% url "promotions:home" %}"><button class="no-border">Store</button></a>

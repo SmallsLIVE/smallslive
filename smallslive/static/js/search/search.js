@@ -1,4 +1,4 @@
-var searchTerm, artistSearchTerm, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter;
+var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter, eventDate;
 
 var getUrlParameter = function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -20,6 +20,7 @@ function sendArtistRequest() {
         url: '/search/ajax/artist/',
         data: {
             'q': artistSearchTerm,
+            'instrument': artistInstrument,
             'page': artistPageNum
         },
         dataType: 'json',
@@ -32,13 +33,13 @@ function sendArtistRequest() {
                 $(".container-list-article").css("height", "auto");
                 artistMaxPageNum = data.numPages;
 
-                if(artistPageNum === 1) {
+                if (artistPageNum === 1) {
                     $("#left_arrow").css('visibility', 'hidden');
                 } else {
                     $("#left_arrow").css('visibility', 'visible');
                 }
 
-                if(artistPageNum === artistMaxPageNum) {
+                if (artistPageNum === artistMaxPageNum) {
                     $("#right_arrow").css('visibility', 'hidden');
                 } else {
                     $("#right_arrow").css('visibility', 'visible');
@@ -55,8 +56,8 @@ function sendArtistRequest() {
 }
 
 function changePage(param) {
-  eventPageNum = parseInt(param.getAttribute("data-page-number"));
-  sendEventRequest();
+    eventPageNum = parseInt(param.getAttribute("data-page-number"));
+    sendEventRequest();
 }
 
 function sendEventRequest() {
@@ -65,7 +66,8 @@ function sendEventRequest() {
         data: {
             'q': searchTerm,
             'page': eventPageNum,
-            'order': eventOrderFilter
+            'order': eventOrderFilter,
+            'date': eventDate
         },
         dataType: 'json',
         success: function (data) {
@@ -74,7 +76,7 @@ function sendEventRequest() {
                 $("#event-subheader-footer").html(data.showingResults)
                 $("#events").html(data.template);
                 $("#page-numbers-footer").html(data.pageNumbersFooter);
-                
+
                 eventMaxPageNum = data.numPages;
             }
         }
@@ -85,18 +87,20 @@ $(document).ready(function () {
     searchTerm = getUrlParameter("q");
     if (searchTerm) {
         searchTerm = searchTerm.replace('+', ' ');
+    } else {
+        searchTerm = '';
     }
     artistSearchTerm = searchTerm;
+    artistInstrument = "";
     artistPageNum = eventPageNum = 1;
     artistMaxPageNum = eventMaxPageNum = 2;
     eventOrderFilter = "newest";
 
     $("[name='q']").val(searchTerm);
-    $("#left_arrow").css('visibility', 'hidden');
 
     $("#left_arrow").click(function () {
         if (artistPageNum !== 1) {
-            
+
             artistPageNum -= 1;
             $("#artists").hide();
             $(".loading-image").css("display", "block");
@@ -109,33 +113,6 @@ $(document).ready(function () {
     $("#right_arrow").click(function () {
         if (artistPageNum !== artistMaxPageNum) {
             artistPageNum += 1;
-          $("#artists").hide();
-            $(".loading-image").css("display", "block");
-            $(".container-list-article").css("height", $("#artists").height());
-            
-            sendArtistRequest();
-        }
-    });
-
-    $("#next-page-btn").click(function () {
-        if (eventPageNum !== eventMaxPageNum) {
-            eventPageNum += 1;
-            
-            sendEventRequest();
-        }
-    });
-
-    $('#events-filter').change(function(){
-        eventOrderFilter = $(this).val();
-        eventPageNum = 1;
-
-        sendEventRequest();
-    });
-
-    $('.search-artist-box').keypress(function (e) {
-        if (e.which == '13') {
-            artistPageNum = 1;
-            artistSearchTerm = $('.search-artist-box').val();
             $("#artists").hide();
             $(".loading-image").css("display", "block");
             $(".container-list-article").css("height", $("#artists").height());
@@ -143,4 +120,93 @@ $(document).ready(function () {
             sendArtistRequest();
         }
     });
+
+    $("#next-page-btn").click(function () {
+        if (eventPageNum !== eventMaxPageNum) {
+            eventPageNum += 1;
+
+            sendEventRequest();
+        }
+    });
+
+    $('#events-filter').change(function () {
+        eventOrderFilter = $(this).val();
+        eventPageNum = 1;
+
+        sendEventRequest();
+    });
+
+//    $('.search-artist-box').keypress(function (e) {
+//        if (e.which == '13') {
+//            artistPageNum = 1;
+//            artistSearchTerm = $('.search-artist-box').val();
+//            $("#artists").hide();
+//            $(".loading-image").css("display", "block");
+//            $(".container-list-article").css("height", $("#artists").height());
+//
+//            sendArtistRequest();
+//        }
+//    });
+
+    var delay = (function () {
+        var timer = 0;
+        return function (callback, ms) {
+            clearTimeout(timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+
+    $(".search-artist-box").keyup(function () {
+        delay(function () {
+            artistPageNum = 1;
+            artistSearchTerm = $('.search-artist-box').val();
+            $("#artists").hide();
+            $(".loading-image").css("display", "block");
+            $(".container-list-article").css("height", $("#artists").height());
+            sendArtistRequest();
+        }, 700);
+    });
+
+    $("#instrument-btn").click(function () {
+
+        if (!$(".instruments-container").is(":visible")) {
+            $(".instruments-container").css("display", "flex");
+        } else {
+            $(".instruments-container").css("display", "none");
+        }
+    });
+
+    $(".instrument").click(function () {
+        artistInstrument = $(this).text();
+        $('#instrument-btn').text(artistInstrument);
+        artistPageNum = 1;
+
+        sendArtistRequest();
+        $(".instruments-container").css("display", "none");
+
+        if (searchTerm.length == 0) {
+            searchTerm = artistInstrument;
+        } else {
+            searchTerm += " " + artistInstrument;
+        }
+
+        sendEventRequest();
+    });
+
+    var $datePicker = $('#date-picker input');
+    var now = new Date();
+    $datePicker.datepicker({
+        format: 'MM // dd // yyyy',
+        orientation: "top auto",
+        autoclose: true
+    });
+
+    $datePicker.on('changeDate', function (newDate) {
+        eventDate = newDate.date;
+        $('#events-filter').val('oldest');
+        eventOrderFilter = 'oldest';
+
+        sendEventRequest();
+    });
+
 });
