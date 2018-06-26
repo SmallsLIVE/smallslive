@@ -52,23 +52,28 @@ class SearchMixin(object):
 
             if not text:
                 sqs = entity.objects.all()
+                if instrument:
+                    sqs = sqs.filter(instruments__name=instrument)
             else:
-                if order:
-                    sqs = entity.objects.all()
-                    for artist in text.split(' '):
-                        sqs = sqs.filter(Q(
-                            last_name__istartswith=artist) | Q(
-                            first_name__istartswith=artist)
-                            ).distinct().order_by(order)
-                else:
-                    sqs = entity.objects.all()
+                sqs = entity.objects.all()
+                if instrument:
+                    sqs = sqs.filter(instruments__name=instrument)
+
+                words = text.split(' ')
+                if len(words) > 1:
                     for artist in text.split(' '):
                         sqs = sqs.filter(Q(
                             last_name__istartswith=artist) | Q(
                             first_name__istartswith=artist)).distinct()
-            
-            if instrument:
-                sqs = sqs.filter(instruments__name=instrument)
+                else:
+                    artist = words[0]
+                    good_matches = sqs.filter(Q(
+                        last_name__istartswith=artist)).distinct()
+                    not_so_good_matches = sqs.filter(~Q(
+                        last_name__istartswith=artist) & Q(
+                        first_name__istartswith=artist)).distinct()
+
+                    sqs = list(good_matches) + list(not_so_good_matches)
             
         elif entity == Event:
             results_per_page = 15
