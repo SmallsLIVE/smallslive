@@ -48,18 +48,18 @@ class SearchMixin(object):
     def get_instruments(self):
         return [i.name.upper() for i in Instrument.objects.all()]
 
-    def search(self, entity, text, page=1, order=None, instrument=None, date=None):
+    def search(self, entity, main_search, page=1, order=None, instrument=None, date=None, artist_search=None):
 
         if entity == Artist:
             results_per_page = 48
 
-            if not text:
+            if not main_search:
                 sqs = entity.objects.all()
                 if instrument:
                     sqs = sqs.filter(instruments__name=instrument)
             else:
                 sqs = entity.objects.all()
-                words = text.split(' ')
+                words = main_search.split(' ')
                 all_instruments = self.get_instruments()
 
                 instruments = [i for i in words if i.upper() in all_instruments]
@@ -74,13 +74,21 @@ class SearchMixin(object):
                 if instrument:
                     sqs = sqs.filter(instruments__name=instrument)
 
-                if len(words) > 1:
-                    for artist in text.split(' '):
-                        sqs = sqs.filter(Q(
-                            last_name__istartswith=artist) | Q(
-                            first_name__istartswith=artist)).distinct()
-                elif len(words) == 1:
-                    artist = words[0]
+                if words:
+                    artist = words.pop()
+                    condition = Q(
+                        last_name__icontains=artist) | Q(
+                        first_name__icontains=artist)
+                    for artist in words:
+                        condition |= Q(
+                            last_name__icontains=artist) | Q(
+                            first_name__icontains=artist)
+                    sqs = sqs.filter(condition).distinct()
+                
+                if artist_search:
+                    artist_words = artist_search.split(' ')
+                    artist = artist_words[0]
+
                     good_matches = sqs.filter(Q(
                         last_name__istartswith=artist)).distinct()
                     not_so_good_matches = sqs.filter(~Q(
@@ -98,29 +106,29 @@ class SearchMixin(object):
                 'popular': 'popular',
             }.get(order, '-start')
             
-            if not text:
+            if not main_search:
                 sqs = entity.objects.all()
             else:
-                instrument = self.get_instrument(text.split(' '))
+                instrument = self.get_instrument(main_search.split(' '))
                 if instrument:
                     sqs = entity.objects.filter(
                         artists_gig_info__role__name__icontains=instrument.name,
                         artists_gig_info__is_leader=True)
 
-                    for i in [i for i in text.split(' ') if i.lower() not in [instrument.name.lower()]]:
+                    for i in [i for i in main_search.split(' ') if i.lower() not in [instrument.name.lower()]]:
                         sqs = sqs.filter(Q(
-                            title__icontains=text) | Q(
+                            title__icontains=main_search) | Q(
                             description__icontains=i) | Q(
                             performers__first_name__icontains=i) | Q(
                             performers__last_name__icontains=i)).distinct()
                 else:
                     sqs = entity.objects.all()
-                    for text in text.split(' '):
+                    for main_search in main_search.split(' '):
                         sqs = sqs.filter(Q(
-                            title__icontains=text) | Q(
-                            description__icontains=text) | Q(
-                            performers__first_name__icontains=text) | Q(
-                            performers__last_name__icontains=text)).distinct()
+                            title__icontains=main_search) | Q(
+                            description__icontains=main_search) | Q(
+                            performers__first_name__icontains=main_search) | Q(
+                            performers__last_name__icontains=main_search)).distinct()
 
             sqs = sqs.filter(recordings__media_file__isnull=False, recordings__state=Recording.STATUS.Published)
             
@@ -149,18 +157,22 @@ class SearchMixin(object):
             blocks.append(block)
             block = []
 
-        showing_results = 'SHOWING {} - {} OF {} RESULTS'.format(
-            1 + ((page - 1) * results_per_page),
-            results_per_page + ((page - 1) * results_per_page) if page != paginator.num_pages else len(
-                paginator.page(page).object_list) + ((page - 1) * results_per_page),
-            paginator.count)
+        if paginator.count:
+            showing_results = 'SHOWING {} - {} OF {} RESULTS'.format(
+                1 + ((page - 1) * results_per_page),
+                results_per_page + ((page - 1) * results_per_page) if page != paginator.num_pages else len(
+                    paginator.page(page).object_list) + ((page - 1) * results_per_page),
+                paginator.count)
+        else:
+            showing_results = 'NO RESULTS'
 
         return blocks, showing_results, paginator.num_pages
 
 class MainSearchView(View, SearchMixin):
 
     def get(self, request, *args, **kwargs):
-        q = request.GET.get('q', None)
+        main_search = request.GET.get('main_search', None)
+        artist_search = request.GET.get('artist_search', None)
         page = int(request.GET.get('page', 1))
         entity = self.kwargs.get('entity', None)
         order = request.GET.get('order', None)
@@ -171,13 +183,13 @@ class MainSearchView(View, SearchMixin):
             date = parser.parse(date, fuzzy=True)
         
         if entity == 'artist':
-            artists_blocks, showing_results, num_pages = self.search(Artist, q, page, instrument=instrument)
+            artists_blocks, showing_results, num_pages = self.search(Artist, main_search, page, instrument=instrument, artist_search=artist_search)
 
             context={'artists_blocks': artists_blocks}
             template = 'search/artist_results.html'
             
         elif entity == 'event':
-            events, showing_results, num_pages = self.search(Event, q, page, order=order, date=date)
+            events, showing_results, num_pages = self.search(Event, main_search, page, order=order, date=date)
 
             context={'events': events[0] if events else []}
             template = 'search/event_results.html'

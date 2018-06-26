@@ -19,7 +19,8 @@ function sendArtistRequest() {
     $.ajax({
         url: '/search/ajax/artist/',
         data: {
-            'q': searchTerm ? artistSearchTerm + " " + searchTerm : artistSearchTerm,
+            'main_search': searchTerm,
+            'artist_search': artistSearchTerm,
             'instrument': artistInstrument,
             'page': artistPageNum
         },
@@ -64,7 +65,7 @@ function sendEventRequest() {
     $.ajax({
         url: '/search/ajax/event/',
         data: {
-            'q': searchTerm,
+            'main_search': searchTerm,
             'page': eventPageNum,
             'order': eventOrderFilter,
             'date': eventDate
