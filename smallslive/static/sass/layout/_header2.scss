@@ -26,10 +26,6 @@
   padding: 0 20px;
   background-color: transparent;
 
-  &:hover {
-    background-color: $white-transparent;
-  }
-
   &.active {
     background-color: $white-transparent;
   }
@@ -40,6 +36,11 @@
 
   a {
     color: inherit;
+  }
+
+  &:disabled {
+    color: $text-grey;
+    cursor: not-allowed;
   }
 }
 
@@ -81,12 +82,24 @@
     }
   }
 
-  a,
-  button {
-    color: black;
+  p {
+    display: flex;
+    align-items: center;
+  }
 
-    &:hover {
-      background-color: $white-transparent;
+  a,
+  p,
+  button {
+    color: $black;
+  }
+
+  &:not(.button-row-no-hover) {
+    a,
+    p,
+    button {
+      &:hover {
+        background-color: $white-transparent;
+      }
     }
   }
 
@@ -129,7 +142,7 @@
   }
 
   &.button-row-margin {
-    & > button {
+    & > button, & > p {
       margin: 0 10px;
 
       &:first-child {

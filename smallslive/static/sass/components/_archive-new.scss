@@ -292,25 +292,30 @@
 }
 
 .custom-date-picker {
-  //margin: 15px;
   @include display(flex);
   @include align-items(center);
-  //border: 2px solid $main-accent-color;
   width: 180px;
+
   input {
     @include white-border-button;
     @include place-holder-color($main-accent-color);
     cursor: pointer;
     width: 100%;
     z-index: 2;
-
   }
 
   i {
     font-size: 18px;
     position: relative;
-    z-index: 2;
+    z-index: -1;
     right: 25px;
+    pointer-events: inherit;
+    cursor: pointer;
+
+    &::before {
+      pointer-events: inherit;
+
+    }
   }
 
   .datepicker {
@@ -318,7 +323,6 @@
     @include input-border;
     border-radius: 0;
     min-width: 300px;
-    //position: relative;
 
 
     &:after, &:before {
@@ -329,6 +333,7 @@
     box-shadow: none;
     &.dropdown-menu {
       background-color: $background-color;
+      margin-left: -119px;
 
       .table-condensed > thead > tr > th {
         padding-bottom: 20px;

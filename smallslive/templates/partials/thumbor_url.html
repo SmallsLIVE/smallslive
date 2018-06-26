@@ -1,0 +1,12 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% if photo_url %}
+  {% if crop_box %}
+    "{% thumbor_url photo_url|urlencode crop=crop_box width=600 %}"
+  {% else %}
+    "{% thumbor_url photo_url %}"
+  {% endif %}
+{% else %}
+  "{% static "image/no-event-image-placeholder.jpg" %}"
+{% endif %}

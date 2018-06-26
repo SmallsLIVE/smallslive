@@ -120,6 +120,11 @@ $text-font-size-big: 1.4em;
   @include regular;
 }
 
+@mixin reen-kufi-light {
+  font-family: 'Reem Kufi', sans-serif;
+  @include light;
+}
+
 // Font sizes
 @mixin title1 {
   @include oswald-regular();
