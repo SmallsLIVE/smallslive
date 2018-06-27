@@ -1,7 +1,7 @@
 from django.core.management.base import NoArgsCommand
 
 from artists.models import Artist
-from artists.utils import crop_artist_pictures
+from artists.helpers import crop_artist_pictures
 
 
 class Command(NoArgsCommand):
