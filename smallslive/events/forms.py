@@ -108,6 +108,11 @@ class EventSetInlineFormset(InlineFormSet):
         formset = super(EventSetInlineFormset, self).construct_formset()
         for num, form in enumerate(formset):
             form.fields['DELETE'].widget = forms.HiddenInput()
+            form.fields['start'].widget = forms.TimeInput(format='%I:%M %p')
+            form.fields['start'].input_formats = ['%I:%M %p']
+            form.fields['end'].widget = forms.TimeInput(format='%I:%M %p')
+            form.fields['end'].input_formats = ['%I:%M %p']
+
         return formset
 
 

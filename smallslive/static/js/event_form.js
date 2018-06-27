@@ -24,6 +24,11 @@ EventForm = {
             destination.after(newElement);
         }
         newElement.find("select").selectize({create: false});
+        newElement.find(".artist_remove").on('click', function () {
+            $(this).parents('tr').remove();
+            return false;
+        });
+
         return newElement;
     },
     addSlotButtons: function(dayOfTheWeek){
@@ -52,6 +57,7 @@ EventForm = {
         $date.datetimepicker({
             sideBySide: true,
             pickTime: false,
+            autoclose: true,
             format: 'YYYY-MM-DD'
         });
         $date.datetimepicker('update');
@@ -100,7 +106,7 @@ EventForm = {
         });
 
 
-        $date.on('dp.hide', function (ev) {
+        $date.on('dp.change', function (ev) {
             var start = moment($(this).data("DateTimePicker").getDate());
             var oldStart = moment(EventForm.selectedDate);
 
@@ -122,7 +128,10 @@ EventForm = {
         $('.slot-buttons').on("click", ".slot", function () {
             var times = $(this).data('time').split('-');
             var start, end;
-            if (!$start.val()) {
+
+            var startDate = $('#id_start');
+            var endDate = $('#id_end');
+            if (!startDate.val()) {
                 start = moment(times[0], "H:mm");
             }
             else {
@@ -132,7 +141,7 @@ EventForm = {
                 start.minutes(parseInt(split_start_time[1]));
             }
 
-            if (!$end.val()) {
+            if (!endDate.val()) {
                 end = moment(times[1], "H:mm");
             }
             else {
@@ -151,8 +160,8 @@ EventForm = {
             else if (start.isAfter(end)) {
                 end.add('days', 1);
             }
-            $start.data("DateTimePicker").setDate(start.format(date_format));
-            $end.data("DateTimePicker").setDate(end.format(date_format));
+            startDate.data("DateTimePicker").setDate(start.format(date_format));
+            endDate.data("DateTimePicker").setDate(end.format(date_format));
 
             EventForm.propagateSets(start, end);
 
@@ -166,7 +175,7 @@ EventForm = {
                 pickDate: false,
                 minuteStepping: 15,
                 pickerPosition: 'bottom-right',
-                format: 'HH:mm',
+                format: 'hh:mm A',
                 autoclose: true,
                 showMeridian: true,
                 startView: 1,
@@ -179,7 +188,8 @@ EventForm = {
             });
 
         });
-    }, propagateSets: function(first, second){
+    },
+    propagateSets: function(first, second){
         var $setsTable = $(".event-set-list-form .formset_table");
         var $setsTableBody = $(".event-set-list-form .formset_table tbody");
         // Keep first row
