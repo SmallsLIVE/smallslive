@@ -109,26 +109,56 @@ class SearchMixin(object):
             if not main_search:
                 sqs = entity.objects.all()
             else:
-                instrument = self.get_instrument(main_search.split(' '))
-                if instrument:
-                    sqs = entity.objects.filter(
-                        artists_gig_info__role__name__icontains=instrument.name,
-                        artists_gig_info__is_leader=True)
+                words = main_search.split(' ')
+                all_instruments = self.get_instruments()
 
-                    for i in [i for i in main_search.split(' ') if i.lower() not in [instrument.name.lower()]]:
-                        sqs = sqs.filter(Q(
-                            title__icontains=main_search) | Q(
-                            description__icontains=i) | Q(
-                            performers__first_name__icontains=i) | Q(
-                            performers__last_name__icontains=i)).distinct()
-                else:
-                    sqs = entity.objects.all()
-                    for main_search in main_search.split(' '):
-                        sqs = sqs.filter(Q(
-                            title__icontains=main_search) | Q(
-                            description__icontains=main_search) | Q(
-                            performers__first_name__icontains=main_search) | Q(
-                            performers__last_name__icontains=main_search)).distinct()
+                instruments = [i for i in words if i.upper() in all_instruments]
+                words = [i for i in words if i.upper() not in all_instruments]
+
+                if instruments:
+                    condition = Q(artists_gig_info__role__name__icontains=instruments[0],
+                        artists_gig_info__is_leader=True)
+                    for i in instruments[1:]:
+                        condition |= Q(artists_gig_info__role__name__icontains=i,
+                            artists_gig_info__is_leader=True)
+                    sqs = entity.objects.filter(condition).distinct()
+                
+                if words:
+                    artist = words.pop()
+                    condition = Q(
+                        title__icontains=artist) | Q(
+                        description__icontains=artist) | Q(
+                        performers__first_name__icontains=artist) | Q(
+                        performers__last_name__icontains=artist)
+                    for artist in words:
+                        condition |= Q(
+                            title__icontains=artist) | Q(
+                            description__icontains=artist) | Q(
+                            performers__first_name__icontains=artist) | Q(
+                            performers__last_name__icontains=artist)
+                    sqs = sqs.filter(condition).distinct()
+                
+
+#                instrument = self.get_instrument(main_search.split(' '))
+#                if instrument:
+#                    sqs = entity.objects.filter(
+#                        artists_gig_info__role__name__icontains=instrument.name,
+#                        artists_gig_info__is_leader=True)
+#
+#                    for i in [i for i in main_search.split(' ') if i.lower() not in [instrument.name.lower()]]:
+#                        sqs = sqs.filter(Q(
+#                            title__icontains=main_search) | Q(
+#                            description__icontains=i) | Q(
+#                            performers__first_name__icontains=i) | Q(
+#                            performers__last_name__icontains=i)).distinct()
+#                else:
+#                    sqs = entity.objects.all()
+#                    for main_search in main_search.split(' '):
+#                        sqs = sqs.filter(Q(
+#                            title__icontains=main_search) | Q(
+#                            description__icontains=main_search) | Q(
+#                            performers__first_name__icontains=main_search) | Q(
+#                            performers__last_name__icontains=main_search)).distinct()
 
             sqs = sqs.filter(recordings__media_file__isnull=False, recordings__state=Recording.STATUS.Published)
             
