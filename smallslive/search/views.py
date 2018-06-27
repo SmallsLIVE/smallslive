@@ -52,50 +52,38 @@ class SearchMixin(object):
 
         if entity == Artist:
             results_per_page = 48
-
-            if not main_search:
-                sqs = entity.objects.all()
-                if instrument:
-                    sqs = sqs.filter(instruments__name=instrument)
-            else:
-                sqs = entity.objects.all()
-                words = main_search.split(' ')
-                all_instruments = self.get_instruments()
-
-                instruments = [i for i in words if i.upper() in all_instruments]
-                words = [i for i in words if i.upper() not in all_instruments]
-
-                if instruments:
-                    condition = Q(instruments__name__iexact=instruments[0])
-                    for i in instruments[1:]:
-                        condition |= Q(instruments__name__iexact=i)
-                    sqs = entity.objects.filter(condition).distinct()
-
-                if instrument:
-                    sqs = sqs.filter(instruments__name=instrument)
-
-                if words:
-                    artist = words.pop()
-                    condition = Q(
+            sqs = entity.objects.all()
+            words = main_search.split(' ')
+            all_instruments = self.get_instruments()
+            instruments = [i for i in words if i.upper() in all_instruments]
+            words = [i for i in words if i.upper() not in all_instruments]
+            if instruments:
+                condition = Q(instruments__name__iexact=instruments[0])
+                for i in instruments[1:]:
+                    condition |= Q(instruments__name__iexact=i)
+                sqs = entity.objects.filter(condition).distinct()
+            if instrument:
+                sqs = sqs.filter(instruments__name=instrument)
+            if words:
+                artist = words.pop()
+                condition = Q(
+                    last_name__icontains=artist) | Q(
+                    first_name__icontains=artist)
+                for artist in words:
+                    condition |= Q(
                         last_name__icontains=artist) | Q(
                         first_name__icontains=artist)
-                    for artist in words:
-                        condition |= Q(
-                            last_name__icontains=artist) | Q(
-                            first_name__icontains=artist)
-                    sqs = sqs.filter(condition).distinct()
-                
-                if artist_search:
-                    artist_words = artist_search.split(' ')
-                    artist = artist_words[0]
-
-                    good_matches = sqs.filter(Q(
-                        last_name__istartswith=artist)).distinct()
-                    not_so_good_matches = sqs.filter(~Q(
-                        last_name__istartswith=artist) & Q(
-                        first_name__istartswith=artist)).distinct()
-
-                    sqs = list(good_matches) + list(not_so_good_matches)
+                sqs = sqs.filter(condition).distinct()
+            
+            if artist_search:
+                artist_words = artist_search.split(' ')
+                artist = artist_words[0]
+                good_matches = sqs.filter(Q(
+                    last_name__istartswith=artist)).distinct()
+                not_so_good_matches = sqs.filter(~Q(
+                    last_name__istartswith=artist) & Q(
+                    first_name__istartswith=artist)).distinct()
+                sqs = list(good_matches) + list(not_so_good_matches)
             
         elif entity == Event:
             results_per_page = 15
