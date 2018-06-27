@@ -31,7 +31,7 @@ class Artist(models.Model):
     biography = tinymce_models.HTMLField(blank=True)
     website = models.URLField(max_length=255, blank=True)
     photo = models.ImageField(upload_to=artist_image_path, max_length=150, blank=True)
-    cropping = ImageRatioField('photo', '580x400', help_text="Enable cropping", allow_fullsize=True)
+    cropping = ImageRatioField('photo', '580x580', help_text="Enable cropping", allow_fullsize=True)
     slug = models.SlugField(blank=True, max_length=100)
     current_period_seconds_played = models.BigIntegerField(default=0)
     current_period_ratio = models.DecimalField(max_digits=11, decimal_places=10, default=0)
