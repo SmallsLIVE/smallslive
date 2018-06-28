@@ -19,7 +19,8 @@ function sendArtistRequest() {
     $.ajax({
         url: '/search/ajax/artist/',
         data: {
-            'q': artistSearchTerm,
+            'main_search': searchTerm,
+            'artist_search': artistSearchTerm,
             'instrument': artistInstrument,
             'page': artistPageNum
         },
@@ -64,7 +65,7 @@ function sendEventRequest() {
     $.ajax({
         url: '/search/ajax/event/',
         data: {
-            'q': searchTerm,
+            'main_search': searchTerm,
             'page': eventPageNum,
             'order': eventOrderFilter,
             'date': eventDate
@@ -86,7 +87,7 @@ function sendEventRequest() {
 $(document).ready(function () {
     searchTerm = getUrlParameter("q");
     if (searchTerm) {
-        searchTerm = searchTerm.replace('+', ' ');
+        searchTerm = searchTerm.replace(/\+/g, ' ');
     } else {
         searchTerm = '';
     }
@@ -97,6 +98,7 @@ $(document).ready(function () {
     eventOrderFilter = "newest";
 
     $("[name='q']").val(searchTerm);
+    $('#artist-search').val('');
 
     $("#left_arrow").click(function () {
         if (artistPageNum !== 1) {
@@ -135,18 +137,6 @@ $(document).ready(function () {
 
         sendEventRequest();
     });
-
-//    $('.search-artist-box').keypress(function (e) {
-//        if (e.which == '13') {
-//            artistPageNum = 1;
-//            artistSearchTerm = $('.search-artist-box').val();
-//            $("#artists").hide();
-//            $(".loading-image").css("display", "block");
-//            $(".container-list-article").css("height", $("#artists").height());
-//
-//            sendArtistRequest();
-//        }
-//    });
 
     var delay = (function () {
         var timer = 0;
@@ -204,9 +194,8 @@ $(document).ready(function () {
     $datePicker.on('changeDate', function (newDate) {
         eventDate = newDate.date;
         $('#events-filter').val('oldest');
-        eventOrderFilter = 'oldest';
 
-        sendEventRequest();
+        $("[value='oldest']").click()
     });
 
 });

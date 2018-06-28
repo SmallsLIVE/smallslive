@@ -68,7 +68,7 @@
 }
 
 .subheader-results {
-  margin-left: 300px;
+  margin-left: 370px;
 }
 
 .subheader-results-artist {
@@ -146,7 +146,7 @@
 
 .search-artist-box {
     @include bordered-input;
-    width: 350px;
+    width: 250px;
     margin-right: 0;
     margin-left: 100px;
     border-radius: 10px;
@@ -170,7 +170,7 @@
   width: 800px;
   z-index: 9999;
   top: 50px;
-  right: 350px;
+  right: -290px;
   display: none;
   padding: 50px 100px;
 }
@@ -191,4 +191,10 @@
 
 .event-sub-w {
   width: 590px;
+}
+
+.event-stripe .date-picker-text::placeholder {
+  color: black;
+  opacity: 1;
+  text-align: center;
 }
