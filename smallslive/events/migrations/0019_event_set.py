@@ -26,14 +26,18 @@ def convert_to_event_set(apps, schema_editor):
         first_set_end = (ny_start + timedelta(hours=1)).time()
         second_set_end = (ny_end + timedelta(hours=1)).time()
 
-        recording_1 = event.recordings.filter(set_number=1).first()
+        video_1 = event.recordings.filter(set_number=1).filter(media_file__media_type='video').first()
+        audio_1 = event.recordings.filter(set_number=1).filter(media_file__media_type='audio').first()
         EventSet.objects.create(
-            event=event, start=first_set_start, end=first_set_end, recording=recording_1
+            event=event, start=first_set_start, end=first_set_end,
+            video_recording=video_1, audio_recording=audio_1
         )
 
-        recording_2 = event.recordings.filter(set_number=2).first()
+        video_2 = event.recordings.filter(set_number=2).filter(media_file__media_type='video').first()
+        audio_2 = event.recordings.filter(set_number=2).filter(media_file__media_type='audio').first()
         EventSet.objects.create(
-            event=event, start=second_set_start, end=second_set_end, recording=recording_2
+            event=event, start=second_set_start, end=second_set_end,
+            video_recording=video_2, audio_recording=audio_2
         )
 
 
@@ -54,8 +58,9 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('start', models.TimeField()),
                 ('end', models.TimeField(null=True, blank=True)),
+                ('audio_recording', models.OneToOneField(related_name='set_is_audio', null=True, blank=True, to='events.Recording')),
                 ('event', models.ForeignKey(related_name='sets', to='events.Event')),
-                ('recording', models.OneToOneField(related_name='set', null=True, blank=True, to='events.Recording')),
+                ('video_recording', models.OneToOneField(related_name='set_is_video', null=True, blank=True, to='events.Recording')),
             ],
             options={
             },
