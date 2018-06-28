@@ -9,6 +9,8 @@
 
 
 {% block content %}
+    {% include 'artist_dashboard/publish_modal.html' %}
+
 {#    TODO Move container to dashboard base#}
     <div class="artist-profile-container">
         <div class="artist-archive-filter flex-row">
@@ -57,21 +59,21 @@
                                 </div>
                             </div>
                             {% for set in event.sets.all %}
-                                <div class="flex-row text2 items-center">
+                                <div class="flex-row text2 items-center" id="set-id-{{ set.id }}">
                                     <div class="accent-color artist-event-date">
                                         <div>
-                                            {% if set.recording %}
-                                                Set {{ set.recording.set_number }} - {{ set.start|date:"g:i A" }}
+                                            {% if set.video_recording %}
+                                                Set {{ set.video_recording.set_number }} - {{ set.start|date:"g:i A" }}
                                             {% else %}
                                                 No set for {{ set.start|date:"g:i A" }}
                                             {% endif %}
                                         </div>
                                     </div>
-                                    <div>
+                                    <div class="artist-publish-info">
                                         <div class="text-grey">
                                             {% if set.video_recording %}
                                                 This set is currently <span class="accent-color">
-                                                {{ set.video_recording.state }}
+                                                <span class="set-status">{{ set.video_recording.state }}</span>
                                             </span>
                                             {% else %}
                                                 This set is not uploaded yet.
@@ -80,14 +82,20 @@
                                     </div>
                                     <div class="artist-event-actions">
                                         {% if gig_info.is_leader %}
-                                            <div class="button-row button-row-margin">
-                                                <button>Publish</button>
-                                                <button>Monetize</button>
-                                                <button>Download</button>
-                                                <a href="{% url "artist_dashboard:event_metrics" pk=event.id slug=event.slug %}">
-                                                    <button>Metrics</button>
-                                                </a>
-                                            </div>
+                                            {% if set.video_recording %}
+                                                <div class="button-row button-row-margin">
+                                                    {% if set.video_recording.state != 'Published' %}
+                                                        <button class="publish-button" onclick="askPublish({{ set.id }})">Publish</button>
+                                                    {% else %}
+                                                        <button class="publish-button" onclick="askPrivate({{ set.id }})">Make Private</button>
+                                                    {% endif %}
+                                                    <button>Monetize</button>
+                                                    <button>Download</button>
+                                                    <a href="{% url "artist_dashboard:event_metrics" pk=event.id slug=event.slug %}">
+                                                        <button>Metrics</button>
+                                                    </a>
+                                                </div>
+                                            {% endif %}
                                         {% else %}
                                             <div class="text-grey">
                                                 <div>Leader only material.</div>
@@ -97,12 +105,71 @@
                                     </div>
                                 </div>
                             {% endfor %}
-
                         </div>
                     </div>
                 {% endwith %}
             {% endfor %}
-
         </div>
     </div>
 {% endblock content %}
+
+{% block extra_js %}
+    <script>
+        var selectedSetId;
+        function askPrivate(setId) {
+            $('#privateConfirm').modal('show');
+            selectedSetId=setId;
+        }
+
+        function askPublish(setId) {
+            $('#publishConfirm').modal('show');
+            selectedSetId=setId;
+        }
+
+        function makeSetPrivate() {
+            $.post('/events/sets/' + selectedSetId + '/private/', {
+              csrfmiddlewaretoken: '{{ csrf_token }}'
+            }, function (data, status) {
+                console.log(status);
+            });
+            hideMakePrivate();
+            $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
+                '<button class="publish-button" onclick="askPublish(' + selectedSetId + ')">Publish</button>'
+            )
+            $("#set-id-" + selectedSetId).find('.set-status').text('Hidden')
+            showSuccess('private')
+        }
+
+        function showSuccess(state) {
+            var $publishSuccess = $('#publishSuccess');
+            $publishSuccess.find('.success-state').text(state);
+            $publishSuccess.modal('show')
+        }
+
+        function publishSet() {
+            $.post('/events/sets/' + selectedSetId + '/publish/', {
+              csrfmiddlewaretoken: '{{ csrf_token }}'
+            }, function(data, status) {
+                console.log(status);
+            });
+            hidePublish();
+            $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
+                '<button class="publish-button" onclick="askPrivate(' + selectedSetId + ')">Make Private</button>'
+            )
+            $("#set-id-" + selectedSetId).find('.set-status').text('Published')
+            showSuccess('public')
+        }
+
+        function hideMakePrivate() {
+            $('#privateConfirm').modal('hide');
+        }
+
+        function hidePublish() {
+            $('#publishConfirm').modal('hide');
+        }
+
+        function hideSuccess() {
+            $('#publishSuccess').modal('hide');
+        }
+    </script>
+{% endblock %}

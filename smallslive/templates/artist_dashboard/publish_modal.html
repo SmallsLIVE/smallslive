@@ -1,0 +1,48 @@
+<div class="modal fade" id="publishConfirm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal">
+            <div class="modal-body">
+                <p class="title2 accent-color">Publish</p>
+                <p class="title1">Are you sure?</p>
+                <div class="button-row button-row-margin">
+                    <button onclick="hidePublish()">Back</button>
+                    <button onclick="publishSet()">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="privateConfirm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal">
+            <div class="modal-body">
+                <p class="title2 accent-color">Publish</p>
+                <p class="title1">This set is currently published</p>
+                <p class="text4 text-justify">
+                    Making your performance private will remove it from the archive making it unavaliable to the SmallsLIVE supporting members. You will not be able to generate any residual monies from your performance as is laid out in the Artist Agreement. Learn more about the <span class="accent-color">Revenue Share</span>
+                </p>
+
+                <div class="button-row button-row-margin">
+                    <button onclick="makeSetPrivate()">Make Private</button>
+                    <button onclick="hideMakePrivate()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="publishSuccess" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal">
+            <div class="modal-body">
+                <p class="title2 accent-color">Publish</p>
+                <p class="title1">Your set is now <span class="success-state">public</span></p>
+                <div class="button-row button-row-margin">
+                    <button onclick="hideSuccess()">Got it</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
