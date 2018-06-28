@@ -26,9 +26,14 @@ from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInl
 from haystack.query import RelatedSearchQuerySet
 from haystack.views import SearchView
 from rest_framework.authtoken.models import Token
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import CreateModelMixin
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.viewsets import GenericViewSet
 
 from artists.models import Artist
-from events.models import get_today_start
+from events.models import get_today_start, EventSet, Recording
 from metrics.models import UserVideoMetric, RANGE_WEEK, RANGE_MONTH, RANGE_YEAR
 from oscar_apps.catalogue.models import Product
 from search.utils import facets_by_model_name
@@ -790,3 +795,48 @@ class MonthlyArchiveView(ArchiveView):
         return context
 
 monthly_archive = MonthlyArchiveView.as_view()
+
+
+class PublishSet(GenericViewSet):
+    queryset = EventSet.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        event_set = self.get_object()
+
+        try:
+            recording = event_set.video_recording
+            recording.state = Recording.STATUS.Published
+            recording.save()
+
+            recording = event_set.audio_recording
+            recording.state = Recording.STATUS.Published
+            recording.save()
+
+        except Recording.DoesNotExist:
+            pass
+
+        return Response()
+
+
+publish_set = PublishSet.as_view({'post': 'post'})
+
+
+class MakePrivate(GenericViewSet):
+    queryset = EventSet.objects.all()
+
+    def post(self, request, *args, **kwargs):
+        event_set = self.get_object()
+        try:
+            recording = event_set.video_recording
+            recording.state = Recording.STATUS.Hidden
+            recording.save()
+            recording = event_set.audio_recording
+            recording.state = Recording.STATUS.Hidden
+            recording.save()
+        except Recording.DoesNotExist:
+            pass
+
+        return Response()
+
+
+make_private = MakePrivate.as_view({'post': 'post'})

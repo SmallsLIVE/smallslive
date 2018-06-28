@@ -20,4 +20,6 @@ urlpatterns = patterns('events.views',
     url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/delete/$', 'event_delete', name='event_delete'),
     url(r'^(?P<pk>\d+)-(?P<slug>[-\w]+)/edit/$', 'event_edit', name='event_edit'),
     url(r'^add/$', 'event_add', name='event_add'),
+    url(r'^sets/(?P<pk>\d+)/publish/$', 'publish_set', name='publish_set'),
+    url(r'^sets/(?P<pk>\d+)/private/$', 'make_private', name='make_private'),
 )
