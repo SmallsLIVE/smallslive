@@ -19,6 +19,11 @@
               Archived
           </button>
       </a>
+      <a href="{% url 'artist_dashboard:my_future_events' %}">
+          <button class="no-border {% if request.resolver_match.url_name == 'my_future_events' %}active{% endif %}">
+              Upcoming
+          </button>
+      </a>
       <a href="{% url 'artist_dashboard:edit_profile' %}">
           <button class="no-border  {% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">
               Public Profile
