@@ -253,7 +253,8 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
     def get_context_data(self, **kwargs):
         context = super(EventEditView, self).get_context_data(**kwargs)
         context['artists'].helper = GigPlayedInlineFormSetHelper()
-        context['sets'].helper = EventSetInlineFormsetHelper()
+        if 'sets' in context:
+            context['sets'].helper = EventSetInlineFormsetHelper()
         context['show_times'] = json.dumps(settings.SHOW_TIMES)
         return context
 

@@ -150,14 +150,22 @@ class EventAddForm(forms.ModelForm):
         self.helper.form_action = 'event_add'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
-        self.helper.layout = Layout(
-            'venue',
-            Field('date', css_class='datepicker'),
+
+        layout = self.get_layout()
+
+        self.helper.layout = layout
+        self.fields['state'].label = "Event status"
+        self.fields['photo'].label = "Flyer or Band Photo (JPG, PNG)"
+
+        self.fields['start'].widget = forms.HiddenInput()
+        self.fields['end'].widget = forms.HiddenInput()
+
+    def get_layout(self):
+        return Layout(
+            'venue', Field('date', css_class='datepicker'),
             Field('start', css_class='datepicker'),
             Field('end', css_class='datepicker'),
-            FormActions(
-                css_class='form-group slot-buttons'
-            ),
+            FormActions(css_class='form-group slot-buttons'),
             Formset('artists', template='form_widgets/formset_layout.html'),
             Formset('sets', template='form_widgets/set_formset_layout.html'),
             'title',
@@ -168,11 +176,6 @@ class EventAddForm(forms.ModelForm):
             'state',
             'staff_pick',
         )
-        self.fields['state'].label = "Event status"
-        self.fields['photo'].label = "Flyer or Band Photo (JPG, PNG)"
-
-        self.fields['start'].widget = forms.HiddenInput()
-        self.fields['end'].widget = forms.HiddenInput()
 
     def save(self, commit=True):
         instance = super(EventAddForm, self).save(commit)
@@ -185,7 +188,6 @@ class EventAddForm(forms.ModelForm):
                 instance.staff_picked.delete()
 
         return instance
-
 
 
 class EventEditForm(EventAddForm):

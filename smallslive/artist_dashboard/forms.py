@@ -4,6 +4,8 @@ from allauth.account.utils import user_pk_to_url_str, user_username
 from allauth.utils import build_absolute_uri
 import datetime
 from calendar import monthrange
+
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML, Button, LayoutObject, TEMPLATE_PACK, MultiField
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
@@ -35,6 +37,14 @@ class ToggleRecordingStateForm(forms.ModelForm):
 class EventEditForm(event_forms.EventEditForm):
     class Meta(event_forms.EventEditForm.Meta):
         pass
+
+    def get_layout(self):
+        return Layout(
+            Formset('artists', template='form_widgets/formset_layout.html'),
+            'title',
+            'photo',
+            'cropping'
+        )
 
     def __init__(self, *args, **kwargs):
         super(EventEditForm, self).__init__(*args, **kwargs)

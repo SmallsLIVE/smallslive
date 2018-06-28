@@ -3,6 +3,8 @@ from cacheops import cached
 from django.conf import settings
 from django.db.models import Max
 
+from events.forms import GigPlayedEditInlineFormset
+
 try:
     import cStringIO as StringIO
 except ImportError:
@@ -226,6 +228,9 @@ class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
     form_class = EventEditForm
     success_url = reverse_lazy("artist_dashboard:my_past_events")
     template_name = 'artist_dashboard/event_edit.html'
+
+    inlines = [GigPlayedEditInlineFormset]
+    inlines_names = ['artists']
 
     def get_context_data(self, **kwargs):
         context = super(EventEditView, self).get_context_data(**kwargs)
