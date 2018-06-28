@@ -1,4 +1,4 @@
-{% extends "artist_dashboard/base.html" %}
+{% extends "artist_dashboard/home.html" %}
 {% load crispy_forms_tags %}
 {% load static from staticfiles %}
 
@@ -15,84 +15,92 @@
 {% block title %}Edit my public profile{% endblock title %}
 
 {% block content %}
-  <section class="page-heading container">
-        <h1>Edit my public profile</h1>
-        <a target="_blank" class="page-heading__button-link" href="{{ request.user.artist.get_absolute_url }}">View on live site</a>
-   </section>
-  <section class="edit-public-profile container">
-      <form action="{% url "artist_dashboard:edit_profile" %}" method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <h2 class="edit-public-profile__heading">Basic information</h2>
-          <div class="row">
-              <div class="col-xs-12 col-sm-2">
-                  <div class="form-group {% if form.salutation.errors  %}has-error{% endif %}">
-                    {{ form.salutation.label_tag }}
-                    {{ form.salutation }}
-                    {% for error in form.salutation.errors %}
-                        <p class="form-error-text">{{ error  }}</p>
-                    {% endfor %}
-                  </div>
-              </div>
-              <div class="col-xs-12 col-sm-5">
-                  <div class="form-group {% if form.first_name.errors  %}has-error{% endif %}">
-                    {{ form.first_name.label_tag }}
-                    {{ form.first_name }}
-                    {% for error in form.first_name.errors %}
-                        <p class="form-error-text">{{ error  }}</p>
-                    {% endfor %}
-                  </div>
-              </div>
-              <div class="col-xs-12 col-sm-5">
-                  <div class="form-group {% if form.last_name.errors  %}has-error{% endif %}">
-                    {{ form.last_name.label_tag }}
-                    {{ form.last_name }}
-                    {% for error in form.last_name.errors %}
-                        <p class="form-error-text">{{ error  }}</p>
-                    {% endfor %}
-                  </div>
-              </div>
-          </div>
-          <div class="form-separator-light"></div>
-          <h2 class="edit-public-profile__heading">My instruments</h2>
-          <div id="div_id_instruments" class="form-group  {% if form.instruments.errors  %}has-error{% endif %}">
-              <label for="id_instruments" class="control-label ">Instruments</label>
-              {{ form.instruments }}
-              {% for error in form.instruments.errors %}
-                  <p class="form-error-text">{{ error  }}</p>
-              {% endfor %}
-          </div>
-          <div class="form-separator-light"></div>
-          <h2 class="edit-public-profile__heading">Biography</h2>
-          <div id="div_id_biography" class="form-group {% if form.biography.errors  %}has-error{% endif %}">
-              {{ form.biography }}
-              {% for error in form.biography.errors %}
-                  <p class="form-error-text">{{ error  }}</p>
-              {% endfor %}
-          </div>
-          <div class="form-separator-light"></div>
-          <div class="form-group {% if form.website.errors  %}has-error{% endif %}">
-                    {{ form.website.label_tag }}
-                    {{ form.website }}
-                    {% for error in form.website.errors %}
-                        <p class="form-error-text">{{ error  }}</p>
-                    {% endfor %}
-                  </div>
-          <div class="form-separator-light"></div>
-          <h2 class="edit-public-profile__heading">Photo</h2>
-          <div class="form-group {% if form.photo.errors  %}has-error{% endif %}">
-            {{ form.photo.label_tag }}
-            {{ form.photo }}
-            {% for error in form.photo.errors %}
-                <p class="form-error-text">{{ error  }}</p>
-            {% endfor %}
-          </div>
-          <div id="div_id_cropping" class="form-group {% if form.photo.errors  %}has-error{% endif %}">
-            <p class="help">Enable cropping</p>
-            {{ form.cropping }}
-          </div>
-          <input type="submit" name="submit" class="admin-interface__form__button" value="Save">
-      </form>
-  </section>
+    <div class="artist-profile-container flex-column items-flex-stretch">
+        <div class="flex-column">
+            <div>
+                <a target="_blank" class="pull-right"
+                   href="{{ request.user.artist.get_absolute_url }}">
+                    <button class="white-border-button">View on live site</button>
+                </a>
+            </div>
+            <section class="section-title">
+                <div class="title1">Edit Public profile</div>
+            </section>
+        </div>
+        <section class="artist-form">
+            <form class="custom-form" action="{% url "artist_dashboard:edit_profile" %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="flex-column">
+                    <div class="flex-row content-centered">
+                        <div class="flex-column flex-grow artist-profile-picture">
+                            <div class="text2 text-grey">
+                                {{ form.photo.label_tag }}
+                            </div>
+                            <div class="form-group {% if form.photo.errors %}has-error{% endif %}">
+                                {{ form.cropping }}
+                                <div{% if form.cropping.value %} class="hide-original"{% endif %}>
+                                    {{ form.photo }}
+                                </div>
+                                {% for error in form.photo.errors %}
+                                    <p class="form-error-text">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="flex-column flex-grow">
+                            <div class="flex-row">
+                                <div class="form-group profile-first-name {% if form.first_name.errors %}has-error{% endif %}">
+                                    {{ form.first_name.label_tag }}
+                                    {{ form.first_name }}
+                                    {% for error in form.first_name.errors %}
+                                        <p class="form-error-text">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                                <div class="form-group {% if form.last_name.errors %}has-error{% endif %}">
+                                    {{ form.last_name.label_tag }}
+                                    {{ form.last_name }}
+                                    {% for error in form.last_name.errors %}
+                                        <p class="form-error-text">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div id="div_id_instruments"
+                                 class="form-group  {% if form.instruments.errors %}has-error{% endif %}">
+                                <label for="id_instruments" class="control-label ">Instruments</label>
+                                {{ form.instruments }}
+                                {% for error in form.instruments.errors %}
+                                    <p class="form-error-text">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            <div class="form-group {% if form.website.errors %}has-error{% endif %}">
+                                {{ form.website.label_tag }}
+                                {{ form.website }}
+                                {% for error in form.website.errors %}
+                                    <p class="form-error-text">{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="edit-public-profile__heading">Biography</h2>
+                        <div id="div_id_biography"
+                             class="form-group {% if form.biography.errors %}has-error{% endif %}">
+                            {{ form.biography }}
+                            {% for error in form.biography.errors %}
+                                <p class="form-error-text">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                <div class="flex-column items-center">
+
+                    <div class="button-row button-row-margin">
+                        <input type="submit" name="submit" value="Save">
+                        <button onclick="window.location = '{% url 'artist_dashboard:home' %}'">Cancel</button>
+                    </div>
+                </div>
+                </div>
+            </form>
+        </section>
+    </div>
 {% endblock content %}
 
 {% block extra_js %}

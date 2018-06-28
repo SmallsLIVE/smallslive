@@ -1,13 +1,13 @@
 EventForm = {
     SITE_URL: "",
     selectedDate: "",
-    fixTableWidths: function (selector) {
-        $(selector).find('td').each(function () {
+    fixTableWidths: function (table) {
+        table.find('td').each(function () {
             $(this).css('width', $(this).width() + 'px');
         });
     },
-    cloneMore: function (selector, type) {
-        var newElement = $artist_row.clone(true);
+    cloneMore: function (source, destination, type) {
+        var newElement = source.clone();
         var $total = $('#id_' + type + '-TOTAL_FORMS');
         var total = $total.val();
         newElement.find(':input').each(function () {
@@ -20,10 +20,16 @@ EventForm = {
         newElement.find('.sort_order_field').val(total);
         total++;
         $total.val(total);
-        $(selector).after(newElement);
-        $(selector).find("select").selectize({
-            create: false
+        if (destination) {
+            destination.after(newElement);
+        }
+        newElement.find("select").selectize({create: false});
+        newElement.find(".artist_remove").on('click', function () {
+            $(this).parents('tr').remove();
+            return false;
         });
+
+        return newElement;
     },
     addSlotButtons: function(dayOfTheWeek){
         $slotButtons = $('.slot-buttons');
@@ -45,47 +51,87 @@ EventForm = {
     initDateTimeFunctionality: function() {
         var $start = $('#id_start');
         var $end = $('#id_end');
-        var date_format = "MM/DD/YYYY H:mm A";
-        $start.datetimepicker({
-            sideBySide: true,
-            minuteStepping: 5,
-            defaultDate: moment("19:00", "H:mm")
-        });
-        $end.datetimepicker({
-            sideBySide: true,
-            minuteStepping: 5,
-            defaultDate: moment("20:00", "H:mm")
-        });
+        var date_format = "MM/DD/YYYY HH:mm:ss";
+        var $date = $('#id_date');
 
-        EventForm.selectedDate = $start.data("DateTimePicker").getDate();
+        $date.datetimepicker({
+            sideBySide: true,
+            pickTime: false,
+            autoclose: true,
+            format: 'YYYY-MM-DD'
+        });
+        $date.datetimepicker('update');
 
-        $start.on('dp.hide', function (ev) {
-            // save the selected date so that slot buttons work correctly
-            var start = $(this).data("DateTimePicker").getDate();
+        EventForm.selectedDate = moment($start.attr('value'));
+
+        var propagateStart = function (start) {
             var redrawSlotButtons = (EventForm.selectedDate.isoWeekday() !== start.isoWeekday());
+            var oldEnd = moment($end.data('DateTimePicker').getDate());
             EventForm.selectedDate = start;
 
             // auto set event end to 1 hour later
-            var end = start.add(1, 'hours').format(date_format);
+            var newEnd  = moment(
+                new Date(start.year(), start.month(), start.date(), oldEnd.hour(), oldEnd.minute())
+            );
+
+            // If start is before the midnight adjust end if necessary
+            if (start.hour() >= 6) {
+                if (newEnd.hour() > 0 && newEnd.hour() < 6) {
+                    newEnd = moment(newEnd).add(1, 'd');
+                }
+            }
+
+            var end = newEnd.format(date_format);
             $end.data("DateTimePicker").setDate(end);
 
             // if the day of the week changes, add appropriate slot buttons
             if (redrawSlotButtons) {
                 EventForm.addSlotButtons(start.isoWeekday());
             }
-            $(this).data("DateTimePicker").show();
+        };
+
+        $start.on('dp.hide', function (ev) {
+            // save the selected date so that slot buttons work correctly
+            var start = $(this).data("DateTimePicker").getDate();
+
+            propagateStart(start);
+            // $(this).data("DateTimePicker").show();
             return false;
         });
+
         // fix for not showing the widget on every click on input
         $end.on('dp.hide', function (ev) {
             $(this).data("DateTimePicker").show();
             return false;
         });
 
+
+        $date.on('dp.change', function (ev) {
+            var start = moment($(this).data("DateTimePicker").getDate());
+            var oldStart = moment(EventForm.selectedDate);
+
+            var newStart  = moment(
+                new Date(start.year(), start.month(), start.date(), oldStart.hour(), oldStart.minute())
+            );
+
+            // If current start is after midnight
+            if (oldStart.hour() > 0 && oldStart.hour() < 6) {
+                newStart = moment(newStart).add(1, 'd')
+            }
+
+            $start.data("DateTimePicker").setDate(newStart);
+            propagateStart(newStart);
+
+            return false;
+        });
+
         $('.slot-buttons').on("click", ".slot", function () {
             var times = $(this).data('time').split('-');
             var start, end;
-            if (!$start.val()) {
+
+            var startDate = $('#id_start');
+            var endDate = $('#id_end');
+            if (!startDate.val()) {
                 start = moment(times[0], "H:mm");
             }
             else {
@@ -95,7 +141,7 @@ EventForm = {
                 start.minutes(parseInt(split_start_time[1]));
             }
 
-            if (!$end.val()) {
+            if (!endDate.val()) {
                 end = moment(times[1], "H:mm");
             }
             else {
@@ -114,16 +160,119 @@ EventForm = {
             else if (start.isAfter(end)) {
                 end.add('days', 1);
             }
-            $start.data("DateTimePicker").setDate(start.format(date_format));
-            $end.data("DateTimePicker").setDate(end.format(date_format));
+            startDate.data("DateTimePicker").setDate(start.format(date_format));
+            endDate.data("DateTimePicker").setDate(end.format(date_format));
+
+            EventForm.propagateSets(start, end);
+
         });
 
         this.addSlotButtons(moment().isoWeekday());
     },
-    initInlineArtistsFunctionality: function() {
-        $artist_row = $(".formset_table tbody tr:first").clone(true);
+    configureTimePicker: function (firstRow) {
+        firstRow.find('input.timeinput').each(function () {
+            $(this).datetimepicker({
+                pickDate: false,
+                minuteStepping: 15,
+                pickerPosition: 'bottom-right',
+                format: 'hh:mm A',
+                autoclose: true,
+                showMeridian: true,
+                startView: 1,
+                maxView: 1
+            });
+            $(this).datetimepicker('update');
+            $(this).on('dp.hide', function (ev) {
+                $(this).data("DateTimePicker").show();
+                return false;
+            });
 
-        $(".formset_table select").selectize({
+        });
+    },
+    propagateSets: function(first, second){
+        var $setsTable = $(".event-set-list-form .formset_table");
+        var $setsTableBody = $(".event-set-list-form .formset_table tbody");
+        // Keep first row
+        var $firstClone = $setsTable.find("tbody tr:first").clone();
+
+        //Remove original id and ensure is shown
+        $firstClone.find('input[id$="id"]').val('');
+        $firstClone.show();
+
+        var total = 0;
+        $setsTable.find("tbody tr").each(function () {
+            var row = $(this);
+            var value = row.find('input[id$="id"]').val();
+            if (value && value !== '') {
+                // Mark sets without id as deleted
+                total++;
+                row.hide();
+                var del = row.find('input[id$="DELETE"]')[0];
+                $(del).val(true);
+            } else {
+                // Remove new entered sets
+                row.remove();
+            }
+        });
+
+        //
+        var $total = $('#id_sets-TOTAL_FORMS');
+        $total.val(total);
+
+        var firstRow = EventForm.cloneMore($firstClone, undefined, 'sets');
+        var secondRow = EventForm.cloneMore($firstClone, undefined, 'sets');
+
+        firstRow.appendTo($setsTableBody);
+        secondRow.appendTo($setsTableBody);
+
+        this.configureTimePicker(firstRow);
+        this.configureTimePicker(secondRow);
+
+        firstRow.find('#id_sets-' + total + '-start').data("DateTimePicker").setDate(first);
+        firstRow.find('#id_sets-' + total + '-end').data("DateTimePicker").setDate(first.add(1, 'h'));
+        secondRow.find('#id_sets-' + (total + 1) + '-start').data("DateTimePicker").setDate(second);
+        secondRow.find('#id_sets-' + (total + 1) + '-end').data("DateTimePicker").setDate(second.add(1, 'h'));
+
+        this.fixTableWidths($setsTable);
+    },
+    initSetsTimePickers: function() {
+        var $setsTable = $(".event-set-list-form .formset_table");
+        var $set_row = $setsTable.find("tbody tr:first").clone(true);
+        this.configureTimePicker($setsTable);
+        $setsTable.find('input.timeinput').each(function () {
+        });
+
+        var addButtonSelector = '#add_more_sets';
+        var tableType = 'sets';
+        var buttonRemove = $setsTable.find(".artist_remove");
+
+        this.fixTableWidths($setsTable);
+
+        $(addButtonSelector).click(function () {
+            var $lastRow = $setsTable.find('tbody tr:last');
+            var newRow = EventForm.cloneMore($set_row, $lastRow, tableType);
+            EventForm.fixTableWidths($setsTable);
+            EventForm.configureTimePicker(newRow);
+        });
+
+        buttonRemove.on("click", function (e) {
+            // hide the entry and set the DELETE value to true so Django knows to delete it
+            $(this).parents('tr').hide();
+            var del = $(this).parents('tr').find('input[id$="DELETE"]')[0];
+            $(del).val(true);
+            EventForm.fixTableWidths($setsTable);
+            return false;
+        });
+
+    },
+    initInlineArtistsFunctionality: function() {
+        var $artistTable = $(".artist-list-form .formset_table");
+        var addButtonSelector = '#add_more_artists';
+        var tableType = 'artists_gig_info';
+        var buttonRemove = $artistTable.find(".artist_remove");
+
+        var $artist_row = $artistTable.find("tbody tr:first").clone(true);
+        $artistTable.find("select").selectize({
             create: false
         });
 
@@ -136,7 +285,7 @@ EventForm = {
             });
         });
 
-        $('.formset_table tbody').sortable({
+        $artistTable.find('tbody').sortable({
             // update the sort_order field based on the order in the DOM
             update: function (event, ui) {
                 $(".sort_order_field").each(function (index) {
@@ -144,19 +293,23 @@ EventForm = {
                 })
             }
         });
-        this.fixTableWidths('.formset_table');
 
-        $('#add_more').click(function () {
-            EventForm.cloneMore('.formset_table tbody tr:last', 'artists_gig_info');
-            EventForm.fixTableWidths('.formset_table');
+        this.fixTableWidths($artistTable);
+
+        $(addButtonSelector).click(function () {
+            var $lastRow = $artistTable.find('tbody tr:last');
+            EventForm.cloneMore(
+                $artist_row, $lastRow, tableType
+            );
+            EventForm.fixTableWidths($artistTable);
         });
 
-        $(document).on("click", ".artist_remove", function (e) {
+        buttonRemove.on("click", function (e) {
             // hide the entry and set the DELETE value to true so Django knows to delete it
             $(this).parents('tr').hide();
             var del = $(this).parents('tr').find('input[id$="DELETE"]')[0];
             $(del).val(true);
-            EventForm.fixTableWidths('.formset_table');
+            EventForm.fixTableWidths($artistTable);
             return false;
         });
 
@@ -176,7 +329,6 @@ EventForm = {
         //});
     },
     initVenueSelectFunctionality: function () {
-        console.log('Hola');
         $('#div_id_venue select').selectize({
             create: false
         });
@@ -184,6 +336,9 @@ EventForm = {
     init: function (datepicker) {
         if (datepicker) {
             this.initDateTimeFunctionality();
+            this.initSetsTimePickers();
+            $('#id_start').datetimepicker('update');
+            $('#id_end').datetimepicker('update');
         }
         this.initVenueSelectFunctionality();
         this.initInlineArtistsFunctionality();

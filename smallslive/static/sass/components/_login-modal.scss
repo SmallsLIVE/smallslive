@@ -13,6 +13,41 @@
   overflow: hidden;
 }
 
+@mixin form-styles {
+  .form-group {
+    width: 100%;
+
+    label {
+      @include text2;
+      color: $text-grey;
+    }
+
+    input[type="text"], input[type="password"], input[type="email"] {
+      @include bordered-input;
+      @include place-holder-color($black);
+      background-color: $white-transparent;
+      border-radius: 0;
+    }
+
+    //TODO Custom check box
+    input[type="checkbox"] {
+      margin: 1px 0 0 -20px;
+    }
+  }
+
+  .login-button {
+    @include white-border-button;
+    @include input-border;
+
+    margin-top: 30px;
+    padding: 0 40px;
+  }
+}
+
+.custom-form {
+  @include form-styles;
+}
+
 .login-modal {
   border: 8px solid $white-transparent;
   border-radius: 0;
@@ -28,35 +63,12 @@
     justify-content: center;
 
     form {
+      @include form-styles;
       width: 70%;
 
       margin-top: 10px;
       flex-direction: column;
       justify-content: flex-start;
-
-      .form-group {
-        width: 100%;
-
-        input[type="text"], input[type="password"], input[type="email"] {
-          @include bordered-input;
-          @include place-holder-color($black);
-          background-color: $white-transparent;
-          border-radius: 0;
-        }
-
-        //TODO Custom check box
-        input[type="checkbox"] {
-          margin: 1px 0 0 -20px;
-        }
-      }
-
-      .login-button {
-        @include white-border-button;
-        @include input-border;
-
-        margin-top: 30px;
-        padding: 0 40px;
-      }
     }
   }
 }
@@ -100,7 +112,7 @@
   .login-modal {
     padding: 30px 10px;
   }
-  
+
   .fb-login-button {
     margin-top: 10px;
   }

@@ -4,6 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML, Button, LayoutObject, TEMPLATE_PACK, MultiField
 from django import forms
 from django.conf import settings
+from django.forms import widgets
 from django.template import Context
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -12,13 +13,13 @@ import floppyforms
 from haystack.forms import SearchForm
 from model_utils import Choices
 
-from events.models import StaffPick
+from events.models import StaffPick, EventSet
 from .models import Event, GigPlayed
 
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 from urllib2 import urlopen
-from utils.widgets import ImageCropWidget, ImageSelectWidget
+from utils.widgets import ImageCropWidget
 
 
 class Formset(LayoutObject):
@@ -49,31 +50,8 @@ class Formset(LayoutObject):
             'formset': formset}))
 
 
-
 class EventStatusWidget(floppyforms.RadioSelect):
     template_name = 'form_widgets/event_status.html'
-
-
-class ImageSelectField(floppyforms.ChoiceField):
-    widget = ImageSelectWidget
-
-    def __init__(self, choices=(), required=True, widget=None, label=None,
-                 initial=None, help_text='', *args, **kwargs):
-        queryset = self.get_queryset()
-        super(ImageSelectField, self).__init__(required=required, widget=widget, label=label,
-                                               initial=initial, help_text=help_text, *args, **kwargs)
-        # Set the images dynamically for the imagepicker widget
-        objects = list(queryset)
-        if settings.AWS_S3_CUSTOM_DOMAIN:
-            domain = "https://{0}".format(settings.AWS_S3_CUSTOM_DOMAIN)
-        else:
-            domain = settings.THUMBOR_MEDIA_URL
-        objects = [(id, "{0}/{1}".format(domain, photo)) for (id, photo) in objects]
-        self.choices = Choices(("", ""))
-        self.choices += Choices(*objects)
-
-    def get_queryset(self):
-        return Event.objects.exclude(photo="").order_by('-id').values_list('id', 'photo')[:5]
 
 
 class GigPlayedAddInlineFormSet(InlineFormSet):
@@ -119,15 +97,45 @@ class GigPlayedInlineFormSetHelper(FormHelper):
         self.form_show_labels = False
 
 
+class EventSetInlineFormset(InlineFormSet):
+    model = EventSet
+    fields = ('start', 'end')
+    extra = 1
+
+    def construct_formset(self):
+        if self.object and self.object.sets.count() > 0:
+            self.extra = 0
+        formset = super(EventSetInlineFormset, self).construct_formset()
+        for num, form in enumerate(formset):
+            form.fields['DELETE'].widget = forms.HiddenInput()
+            form.fields['start'].widget = forms.TimeInput(format='%I:%M %p')
+            form.fields['start'].input_formats = ['%I:%M %p']
+            form.fields['end'].widget = forms.TimeInput(format='%I:%M %p')
+            form.fields['end'].input_formats = ['%I:%M %p']
+
+        return formset
+
+
+class EventSetInlineFormsetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(EventSetInlineFormsetHelper, self).__init__(*args, **kwargs)
+        self.form_tag = False
+        self.field_template = 'bootstrap3/layout/inline_field.html'
+        self.template = 'form_widgets/table_inline_formset.html'
+        self.form_show_labels = False
+        self.sortable = False
+
+
 class EventAddForm(forms.ModelForm):
-    start = forms.DateTimeField(label="Start time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
-    end = forms.DateTimeField(label="End time", required=True, input_formats=['%m/%d/%Y %I:%M %p'])
+    start = forms.DateTimeField(label="Start time", required=True, input_formats=settings.DATETIME_INPUT_FORMATS)
+    end = forms.DateTimeField(label="End time", required=True, input_formats=settings.DATETIME_INPUT_FORMATS)
+    date = forms.DateField(label="Event Date", required=True)
     staff_pick = forms.BooleanField(label="Staff Pick", required=False)
 
     class Meta:
         model = Event
         fields = (
-            'venue', 'start', 'end', 'id', 'title', 'subtitle', 'photo',
+            'venue', 'date', 'start', 'end', 'id', 'title', 'subtitle', 'photo',
             'description', 'state', 'staff_pick'
         )
         widgets = {
@@ -144,12 +152,14 @@ class EventAddForm(forms.ModelForm):
         self.helper.form_tag = False
         self.helper.layout = Layout(
             'venue',
+            Field('date', css_class='datepicker'),
             Field('start', css_class='datepicker'),
             Field('end', css_class='datepicker'),
             FormActions(
                 css_class='form-group slot-buttons'
             ),
             Formset('artists', template='form_widgets/formset_layout.html'),
+            Formset('sets', template='form_widgets/set_formset_layout.html'),
             'title',
             'subtitle',
             'photo',
@@ -160,6 +170,9 @@ class EventAddForm(forms.ModelForm):
         )
         self.fields['state'].label = "Event status"
         self.fields['photo'].label = "Flyer or Band Photo (JPG, PNG)"
+
+        self.fields['start'].widget = forms.HiddenInput()
+        self.fields['end'].widget = forms.HiddenInput()
 
     def save(self, commit=True):
         instance = super(EventAddForm, self).save(commit)
@@ -178,7 +191,7 @@ class EventAddForm(forms.ModelForm):
 class EventEditForm(EventAddForm):
     class Meta(EventAddForm.Meta):
         fields = (
-            'venue', 'start', 'end', 'title', 'subtitle', 'photo', 'cropping',
+            'venue', 'date', 'start', 'end', 'title', 'subtitle', 'photo', 'cropping',
             'description', 'state', 'staff_pick')
 
 

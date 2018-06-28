@@ -1,0 +1,115 @@
+.artist-profile-container {
+  padding: 0 10%;
+
+  //FIXME Shouldnt be necessary
+  a {
+    color: $black;
+  }
+
+  .artist-form {
+    padding: 0 10%;
+
+    margin-bottom: 40px;
+
+    .profile-first-name {
+      margin-right: 20px;
+    }
+    .custom-form {
+      input[type='file'] {
+        width: auto;
+      }
+    }
+  }
+
+  .event-row {
+    padding: 30px 0;
+    border-top: 3px solid $white-transparent;
+
+    .artist-event-card {
+      margin-right: 40px;
+    }
+
+    .artist-event-info, .artist-event-date {
+      width: 180px;
+      margin-right: 30px;
+    }
+  }
+}
+
+.artist-profile-picture {
+  .allow-fullsize {
+    display: none;
+  }
+}
+
+
+.hide-original {
+  img  {
+    display: none;
+  }
+}
+
+.artist-event {
+  flex: 1
+}
+
+.artist-archive-filter {
+  margin-bottom: 40px;
+}
+
+.aritst-event-edit {
+  .controls {
+    font-size: 12px;
+    input {
+      @include bordered-input;
+    }
+  }
+
+  .admin-interface__form {
+    .table {
+      thead {
+        background-color: transparent;
+        font-size: 10px; //FIXME Shouldnt be necessary
+        border: none;
+        tr {
+          border: none;
+          th {
+            @include title2;
+            color: $text-grey;
+            border: none;
+          }
+        }
+      }
+
+      tbody {
+        tr {
+          td {
+            border: none;
+          }
+          border: none;
+        }
+      }
+
+
+      .selectize-input {
+        @include bordered-input;
+        background-color: $white-transparent;
+      }
+
+      .selectize-dropdown {
+        @include text4;
+      }
+    }
+  }
+}
+
+.artist-event-actions {
+  margin-left: 30px;
+  justify-self: flex-end;
+
+  .button-row {
+    button {
+      font-size: 0.8em;
+    }
+  }
+}

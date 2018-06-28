@@ -196,7 +196,7 @@
     }
   }
 
-  & .artists-table__button {
+  & .artists-table__button, & .event-sets-table__button {
     background-color: $main-accent-color;
     color: #fff;
     margin-top: -10px;
@@ -241,4 +241,8 @@
       }
     }
   }
+}
+
+.bootstrap-datetimepicker-widget {
+  min-width: 300px;
 }

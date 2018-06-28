@@ -30,7 +30,7 @@
                           </th>
                       {% endif %}
                   {% endfor %}
-                  <th class="col-md-1">Order</th>
+                  {% if sortable != False %}<th class="col-md-1">Order</th>{% endif %}
                   <th class="col-md-1">Remove</th>
               </tr>
           {% endif %}
@@ -46,7 +46,7 @@
                     {% for field in form %}
                         {% include 'form_widgets/table_simple_field.html' with tag="td" form_show_labels=False %}
                     {% endfor %}
-                    <td><i class="fa fa-arrows"></i></td>
+                    {% if sortable != False %}<td><i class="fa fa-arrows"></i></td>{% endif %}
                     <td><a href="" class="artist_remove"><span class="fa fa-remove"></span></a></td>
                 </tr>
             {% endfor %}

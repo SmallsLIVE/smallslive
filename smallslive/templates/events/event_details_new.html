@@ -56,12 +56,12 @@
          "></span>
           <div class="player-info flex-column content-space-between">
             <div>
-              <div class="accent-color text2">{{ event.start|date:'m/d/Y' }}</div>
+              <div class="accent-color text2">{{ event.date|date:'m/d/Y' }}</div>
               <div class="title1">{{ event.title }}</div>
             </div>
             <div>
               <div class="accent-color text2">{{ event.venue }}</div>
-              <div class="text4">Sets at {{ event.start|date:'g:i A' }} {% if event.end %}& {{ event.end|date:'g:i A' }}{% endif %}</div>
+              <div class="text4">Sets at {{ event.get_set_hours_display }}</div>
             </div>
           </div>
         </div>
@@ -72,25 +72,36 @@
               <div id="player-video"></div>
               <div class="player-info" id="playerTextOveraly">
                 <div class="accent-color text2">
-                  {{ event.start|date:'m/d/Y' }}</div>
+                  {{ event.date|date:'m/d/Y' }}</div>
                 <div class="title1">{{ event.title }}</div>
               </div>
             </div>
           {% endif %}
         {% else %}
-          <div class="event-video-banner flex-column content-space-between items-center">
-            <span class="event-banner-background"></span>
-            <p class="title2 accent-color">Archive Access</p>
-            <p class="title3">Become a supporter</p>
-            <p class="text7">Access archive videos by becoming a Supporting Member. Your supporting pledge goes directly to your favorite artists and helps make SmallsLIVE possible through our SmallsLIVE Revenue Share. Supporting Members have unlimited access to our archive of nearly every concert performed at Smalls & Mezzrow with new concerts added weekly. By listening to your favorite artists in the archive you are getting them paid.</p>
-            <button class="white-border-button" onclick="goToSupporter()">Become a Supporter</button>
+          <div class="event-video-placeholder flex-column content-space-between">
+              <span class="event-video-placeholder-picture" style="{% if event.photo %}
+                 {% include 'partials/thumbored_picture_style.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+               {% else %}
+                 {% include 'partials/thumbored_picture_style.html' %}
+               {% endif %}
+             "></span>
+              <div class="overlay-info flex-column items-center content-space-around">
+                  <p class="title2 accent-color">Archive Access</p>
+                  <p class="title3">Become a supporter</p>
+                  <p class="text7">Access archive videos by becoming a Supporting Member. Your supporting pledge goes
+                      directly to your favorite artists and helps make SmallsLIVE possible through our SmallsLIVE
+                      Revenue Share. Supporting Members have unlimited access to our archive of nearly every concert
+                      performed at Smalls & Mezzrow with new concerts added weekly. By listening to your favorite
+                      artists in the archive you are getting them paid.</p>
+                  <button class="white-border-button" onclick="goToSupporter()">Become a Supporter</button>
+              </div>
           </div>
         {% endif %}
         {% if event.published_audio %}
           <div id="audioContainer" class="player-container" style="display:none;">
             <div id="player-audio"></div>
             <div class="player-info" id="playerTextOveraly">
-              <div class="accent-color text2">{{ event.start|date:'m/d/Y' }}</div>
+              <div class="accent-color text2">{{ event.date|date:'m/d/Y' }}</div>
               <div class="title1">{{ event.title }}</div>
             </div>
           </div>
@@ -98,13 +109,20 @@
 
       {% endif %}
     {% else %}
-      <div class="event-video-banner flex-column content-space-between items-center">
-        <span class="event-banner-background"></span>
-        <p class="title2 accent-color">Live Stream Access</p>
-        <p class="title3">Sign up</p>
-        <p class="text7">Our live stream has expanded our 60 seat clubs into a worldwide community of jazz fans and supporters. Sign up for free to watch our live streams each night.</p>
-        <button class="white-border-button register-button" onclick="showRegister()">Become a Member</button>
-      </div>
+        <div class="event-video-placeholder flex-column content-space-between">
+          <span class="event-video-placeholder-picture" style="{% if event.photo %}
+             {% include 'partials/thumbored_picture_style.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+           {% else %}
+             {% include 'partials/thumbored_picture_style.html' %}
+           {% endif %}
+         "></span>
+          <div class="overlay-info flex-column items-center content-space-around">
+            <p class="title2 accent-color">Live Stream Access</p>
+            <p class="title3">Sign up</p>
+            <p class="text7">Our live stream has expanded our 60 seat clubs into a worldwide community of jazz fans and supporters. Sign up for free to watch our live streams each night.</p>
+            <button class="white-border-button register-button" onclick="showRegister()">Become a Member</button>
+          </div>
+        </div>
     {% endif %}
       <div class="flex-row content-space-between">
         <div class="event-video-info flex-column">
@@ -113,7 +131,7 @@
             {% if event.is_past %}
               <div class="accent-color text2">Set <span id="set-number">1</span></div>
               <div class="accent-color text2">
-                {{ event.start|date:'m/d/Y' }}</div>
+                {{ event.date|date:'m/d/Y' }}</div>
             {% endif %}
           </div>
           <div class="flex-row event-band">
@@ -140,27 +158,32 @@
           </div>
         </div>
         <div class="event-player-buttons flex-column items-flex-stretch">
-          {% if event.is_past %}
-            {% if event.published_videos %}
-              <button class="white-border-button" id="togglePlayerAudio">
-                  Audio only player
-              </button>
-            {% endif %}
-
-              <button class="white-border-button" id="togglePlayerVideo"
-                      style="display: none">
-                {% if event.published_videos%}
-                  Video player
-                {% else %}
-                  Audio only
+            {% if event.is_past and user.can_listen_to_audio%}
+                {% if event.published_videos %}
+                    <button class="white-border-button" id="togglePlayerAudio">
+                        Audio only player
+                    </button>
                 {% endif %}
-              </button>
-          {% endif %}
-          {% if not event.is_live and event.is_past %}
-            <button class="white-border-button">Download for $9.99</button>
-          {% elif not event.is_live and event.is_future %}
-            <button class="white-border-button" onclick="showTickets()">Tickets</button>
-          {% endif %}
+
+                <button class="white-border-button" id="togglePlayerVideo"
+                        style="display: none">
+                    {% if event.published_videos %}
+                        Video player
+                    {% else %}
+                        Audio only
+                    {% endif %}
+                </button>
+            {% endif %}
+            {% if not event.is_live and event.is_past %}
+                <button disabled class="white-border-button">Download for $9.99</button>
+            {% elif not event.is_live and event.is_future %}
+                <button class="white-border-button" onclick="showTickets()">Tickets</button>
+            {% endif %}
+            {% if user.is_admin or user.is_staff %}
+                <a href="{% url "event_edit" pk=event.id slug=event.slug %}">
+                    <button class="white-border-button">Edit</button>
+                </a>
+            {% endif %}
         </div>
       </div>
       <div class="flex-row event-set-selector"></div>
@@ -287,7 +310,7 @@
                     file: "{{ audio.media_file.get_file_url|safe }}",
                     type: "mp3"
                   }],
-                  image: "{{ event.photo.url }}",
+                  image: {% include 'partials/thumbor_url.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %},
                   mediaid: {{ audio.id }}
                 }{% if not forloop.last %},{% endif %}
               {% endfor %}
@@ -344,7 +367,7 @@
                             type: "mp4"
                         }],
                         mediaid: {{ video.id }},
-                        image: "{{ event.photo.url }}"
+                        image: {% include 'partials/thumbor_url.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
                     }{% if not forloop.last %},{% endif %}
                     {% endif %}{% endfor %}
                 ],

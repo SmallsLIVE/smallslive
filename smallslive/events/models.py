@@ -143,10 +143,11 @@ class Event(TimeStampedModel):
     objects = EventQuerySet.as_manager()
     #past = QueryManager(start__lt=datetime.now()).order_by('-start')
     #upcoming = QueryManager(start__gte=datetime.now()).order_by('start')
+    date = models.DateField(blank=True, null=True)
 
     class Meta:
         ordering = ['-start']
-    
+
     def __unicode__(self):
         return self.title
 
@@ -155,6 +156,27 @@ class Event(TimeStampedModel):
         if not self.slug:
             self.slug = slugify(self.title)
         super(Event, self).save(force_insert, force_update, using, update_fields)
+
+    def get_set_hours_display(self):
+        all_sets = list(self.sets.all().values_list('start', flat=True))
+
+        def midnight_sort(x, y):
+            x_stamp = x.hour * 60 + x.minute
+            y_stamp = y.hour * 60 + y.minute
+
+            if 0 <= x.hour < 6:
+                x_stamp += 24 * 60
+
+            if 0 <= y.hour < 6:
+                y_stamp += 24 * 60
+
+            return x_stamp - y_stamp
+
+        sorted_sets = sorted(all_sets, cmp=midnight_sort)
+
+        return ' & '.join(
+            [d.strftime('%-I:%M %p') for d in sorted_sets]
+        )
 
     def get_absolute_url(self):
         return reverse('event_detail', kwargs={'pk': self.id, 'slug': slugify(self.title)})
@@ -422,6 +444,13 @@ class EventType(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class EventSet(models.Model):
+    start = models.TimeField()
+    end = models.TimeField(blank=True, null=True)
+    event = models.ForeignKey('events.Event', related_name='sets')
+    recording = models.OneToOneField('events.Recording', related_name='set', blank=True, null=True)
 
 
 class GigPlayedQuerySet(models.QuerySet):

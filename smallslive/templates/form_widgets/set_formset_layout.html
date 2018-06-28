@@ -1,0 +1,11 @@
+{% load crispy_forms_tags %}
+
+<div class="form-group event-set-list-form">
+    {% crispy formset %}
+    <button
+            type="button"
+            class="btn btn-success event-sets-table__button"
+            name="add" id="add_more_sets">
+      <i class="fa fa-plus-circle"></i> Add another
+    </button>
+</div>

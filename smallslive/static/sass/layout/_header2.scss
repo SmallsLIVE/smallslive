@@ -5,10 +5,15 @@
     flex: 1;
     display: flex;
 
+    & > .section-title {
+      margin-left: 26px;
+    }
+
     .search-input {
       flex: 1;
       margin-left: 26px;
       margin-right: 26px;
+
       input {
         border-radius: 10px;
       }
@@ -26,10 +31,6 @@
   padding: 0 20px;
   background-color: transparent;
 
-  &:hover {
-    background-color: $white-transparent;
-  }
-
   &.active {
     background-color: $white-transparent;
   }
@@ -40,6 +41,11 @@
 
   a {
     color: inherit;
+  }
+
+  &:disabled {
+    color: $text-grey;
+    cursor: not-allowed;
   }
 }
 
@@ -54,7 +60,7 @@
   height: $input-height;
   font-size: 1.2em;
 
-  background-color: transparent;
+  background-color: $white-transparent;
   padding: 8px;
   // TODO Global
   &:focus {
@@ -81,12 +87,24 @@
     }
   }
 
-  a,
-  button {
-    color: black;
+  p {
+    display: flex;
+    align-items: center;
+  }
 
-    &:hover {
-      background-color: $white-transparent;
+  a,
+  p,
+  button {
+    color: $black;
+  }
+
+  &:not(.button-row-no-hover) {
+    a,
+    p,
+    button {
+      &:hover {
+        background-color: $white-transparent;
+      }
     }
   }
 
@@ -129,7 +147,7 @@
   }
 
   &.button-row-margin {
-    & > button {
+    & > button, & > p {
       margin: 0 10px;
 
       &:first-child {
@@ -164,6 +182,7 @@
 
   input {
     @include bordered-input;
+    background-color: transparent;
     width: 60%;
     padding-left: 30px;
   }

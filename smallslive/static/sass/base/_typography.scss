@@ -120,6 +120,11 @@ $text-font-size-big: 1.4em;
   @include regular;
 }
 
+@mixin reen-kufi-light {
+  font-family: 'Reem Kufi', sans-serif;
+  @include light;
+}
+
 // Font sizes
 @mixin title1 {
   @include oswald-regular();
@@ -208,12 +213,16 @@ $text-font-size-big: 1.4em;
   font-size: $text-font-size-medium;
 }
 
-.text2 {
+@mixin text2 {
   @include reen-kufi-normal;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   font-size: $text-font-size-big;
-  line-height: $line-height-bigger;
+  //line-height: $line-height-bigger;
+}
+
+.text2 {
+  @include text2;
 }
 
 .text3 {

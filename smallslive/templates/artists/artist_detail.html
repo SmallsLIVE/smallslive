@@ -27,7 +27,7 @@
     <div class="flex-row items-flex-stretch artist-header">
       <div class="artist-picture">
         {% if artist.photo %}
-          {% include 'partials/thumbored_picture.html' with photo_url=artist.photo.url height=300 width=300 %}
+          {% include 'partials/thumbored_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
         {% else %}
           <div class="flex-column content-centered items-center"
                style="width: 100%; height: 100%"><span class="title1">No Photo</span></div>
