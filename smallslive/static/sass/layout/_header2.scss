@@ -147,7 +147,7 @@
   }
 
   &.button-row-margin {
-    & > button, & > p {
+    & > button, & > a, & > p {
       margin: 0 10px;
 
       &:first-child {

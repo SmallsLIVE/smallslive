@@ -90,7 +90,10 @@
                                                         <button class="publish-button" onclick="askPrivate({{ set.id }})">Make Private</button>
                                                     {% endif %}
                                                     <button>Monetize</button>
-                                                    <button>Download</button>
+                                                    <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')">
+                                                        Download
+                                                    </button>
+
                                                     <a href="{% url "artist_dashboard:event_metrics" pk=event.id slug=event.slug %}">
                                                         <button>Metrics</button>
                                                     </a>
@@ -156,7 +159,7 @@
             $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
                 '<button class="publish-button" onclick="askPrivate(' + selectedSetId + ')">Make Private</button>'
             )
-            $("#set-id-" + selectedSetId).find('.set-status').text('Published')
+            $("#set-id-" + selectedSetId).find('.set-status').text('Published');
             showSuccess('public')
         }
 
@@ -171,5 +174,19 @@
         function hideSuccess() {
             $('#publishSuccess').modal('hide');
         }
+
+        function showSelectFormat(videoUrl, audioUrl) {
+            var $downloadFormat = $('#downloadFormat');
+            $downloadFormat.find('#downloadFormatAudioUrl').attr({href: audioUrl}).on('click', function () {
+                $downloadFormat.modal('hide');
+            });
+            $downloadFormat.find('#downloadFormatVideoUrl').attr({href: videoUrl}).on('click', function () {
+                $downloadFormat.modal('hide');
+            });
+            $downloadFormat.modal('show');
+        }
+
+
+
     </script>
 {% endblock %}
