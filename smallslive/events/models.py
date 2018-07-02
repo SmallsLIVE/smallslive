@@ -468,6 +468,7 @@ class GigPlayed(models.Model):
     role = models.ForeignKey('artists.Instrument')
     is_leader = models.BooleanField(default=False)
     sort_order = models.CharField(max_length=30, blank=True)
+    is_admin = models.BooleanField(default=False)
 
     objects = GigPlayedQuerySet.as_manager()
 
