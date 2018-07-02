@@ -14,7 +14,7 @@
   <meta name="description"
         content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
   <script src="{% static 'js/search/search.js' %}"></script>
-  
+
 
 {% endblock %}
 
@@ -76,29 +76,29 @@
                     </select>
                 </div>
             
-                <div class="date-picker" id="date-picker" style="width: 200px;">
+                <div class="custom-date-picker" id="search-date-picker" style="width: 200px;">
                     <input class="date-picker-text" type="text" placeholder="date" readonly>
                     <i class="fa fa-caret-down"></i>
                 </div>
             </div>
-        
+
         </div>
-        
+
         <main id="events">
             {% include 'search/event_results.html' with events=event_results %}
         </main>
-        
+
         <div class="concerts-footer">
             <div id="event-subheader-footer" class="header-sub title2 results-text">{{showing_event_results}}</div>
-            
+
             <button id="next-page-btn" class="white-border-button next-page-btn" style="width:220px;">
                 <span style="display: block; margin-top: -15px;">NEXT PAGE</span>
             </button>
-            
+
             <div id="page-numbers-footer">
                     {% include 'search/page_numbers_footer.html' %}
             </div>
-            
+
         </div>
     </section>
 </div>
