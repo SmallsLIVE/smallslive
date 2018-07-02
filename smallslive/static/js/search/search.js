@@ -183,12 +183,12 @@ $(document).ready(function () {
         sendEventRequest();
     });
 
-    var $datePicker = $('#date-picker input');
+    var $datePicker = $('#search-date-picker input');
     var now = new Date();
     $datePicker.datepicker({
         format: 'MM // dd // yyyy',
-        orientation: "top auto",
-        autoclose: true
+        autoclose: true,
+        container: '#search-date-picker'
     });
 
     $datePicker.on('changeDate', function (newDate) {
