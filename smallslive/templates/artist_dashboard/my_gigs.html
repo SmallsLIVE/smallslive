@@ -36,10 +36,14 @@
                     <div class="event-row flex-row">
                         <div class="artist-event-card flex-column items-flex-stretch">
                             {% include 'events/event_card.html' with event=event %}
-                            <div class="button-row button-row-margin flex-column">
-                                <a style="margin-top: 30px" href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
-                                    <button style="width: 100%">Edit Event</button>
-                                </a>
+                            <div class="button-row button-row-margin flex-column"  style="margin-top: 30px">
+                                {% if gig_info.is_admin %}
+                                    <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
+                                        <button style="width: 100%">Edit Event</button>
+                                    </a>
+                                {% else %}
+                                    <button disabled style="width: 100%">Edit Event</button>
+                                {% endif %}
                             </div>
                         </div>
                         <div class="artist-event flex-column content-space-between">
@@ -81,7 +85,7 @@
                                         </div>
                                     </div>
                                     <div class="artist-event-actions">
-                                        {% if gig_info.is_leader %}
+                                        {% if gig_info.is_admin %}
                                             {% if set.video_recording %}
                                                 <div class="button-row button-row-margin">
                                                     {% if set.video_recording.state != 'Published' %}
@@ -101,8 +105,8 @@
                                             {% endif %}
                                         {% else %}
                                             <div class="text-grey">
-                                                <div>Leader only material.</div>
-                                                <div>To access this feature, you must be a designated leader for this set.</div>
+                                                <div>Admin only material.</div>
+                                                <div>To access this feature, you must be a designated admin for this set.</div>
                                             </div>
                                         {% endif %}
                                     </div>

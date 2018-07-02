@@ -56,7 +56,7 @@ class EventStatusWidget(floppyforms.RadioSelect):
 
 class GigPlayedAddInlineFormSet(InlineFormSet):
     model = GigPlayed
-    fields = ('artist', 'role', 'is_leader', 'sort_order')
+    fields = ('artist', 'role', 'is_leader', 'is_admin', 'sort_order')
     extra = 1
     can_delete = False
 
@@ -68,6 +68,7 @@ class GigPlayedAddInlineFormSet(InlineFormSet):
             form.fields['role'].empty_label = "Role"
             form.fields['role'].widget.attrs['class'] = "role_field"
             form.fields['is_leader'].initial = True
+            form.fields['is_leader'].initial = False
             form.fields['sort_order'].initial = num
             form.fields['sort_order'].widget = forms.HiddenInput()
             form.fields['sort_order'].widget.attrs['class'] = "sort_order_field"
