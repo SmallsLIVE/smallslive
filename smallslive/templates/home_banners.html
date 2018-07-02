@@ -112,6 +112,7 @@
       }
       var bannerButton = bannerContainer.find('#banner-button');
       bannerButton.text(banner.button);
+      bannerButton.off('click');
       bannerButton.on('click', function ($event) {
         $event.stopPropagation();
         banner.click();
