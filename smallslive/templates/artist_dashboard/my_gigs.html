@@ -26,106 +26,19 @@
                 <select id="artist_archive_order">
                     <option value="newest">Newest to oldest</option>
                     <option value="oldest">Oldest to newest</option>
-                    <option value="draft">Most Popular</option>
+                    <option value="popular">Most Popular</option>
                 </select>
             </div>
         </div>
-        <div class="flex-column items-flex-stretch">
-            {% for gig_info in gigs %}
-                {% with event=gig_info.event %}
-                    <div class="artist-event-row">
-                        <div class="artist-event-edit-button button-row button-row-margin">
-                            {% if gig_info.is_admin %}
-                                <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
-                                    <button>Edit Event</button>
-                                </a>
-                            {% else %}
-                                <button disabled>Edit Event</button>
-                            {% endif %}
-                        </div>
-                        <div class="flex-row">
-                            <div class="artist-event-info">
-                                <div class="text2">
-                                    {{ event.title }}
-                                </div>
-                                <div class="text2 accent-color">
-                                    {{ event.date|date:'m/d/Y' }}
-                                </div>
-                            </div>
-                            <div class="text4">
-                                {% for gig_info in event.get_performers %}
-                                    {{ gig_info.artist.full_name }}
-                                    <span class="text-grey">({{ gig_info.role }})</span>
-                                    {% if not forloop.last %}  // {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div>
-                        {% for set in event.sets.all %}
-                        <div class="flex-row artist-event-set text2" id="set-id-{{ set.id }}">
-                            <div class="artist-event-card">
-                                {% include 'events/event_card.html' with event=event %}
-                            </div>
-                            <div class="flex-column content-space-between flex-grow">
-                                <div>
-                                    <div class="accent-color artist-event-date">
-                                        {% if set.video_recording %}
-                                            Set {{ set.video_recording.set_number }} - {{ set.start|date:"g:i A" }}
-                                        {% else %}
-                                            No set for {{ set.start|date:"g:i A" }}
-                                        {% endif %}
-                                    </div>
-                                    <div class="artist-publish-info">
-                                        <div class="text-grey">
-                                            {% if set.video_recording %}
-                                                This set is currently <span class="accent-color">
-                                                <span class="set-status">{{ set.video_recording.state }}</span>
-                                            </span>
-                                            {% else %}
-                                                This set is not uploaded yet.
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="artist-event-actions flex-row content-flex-end items-flex-end flex-grow">
-                                    {% if gig_info.is_admin %}
-                                        {% if set.video_recording %}
-                                            <div class="button-row button-row-margin">
-                                                {% if set.video_recording.state != 'Published' %}
-                                                    <button class="publish-button" onclick="askPublish({{ set.id }})">Publish</button>
-                                                {% else %}
-                                                    <button class="publish-button" onclick="askPrivate({{ set.id }})">Make Private</button>
-                                                {% endif %}
-                                                <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')">
-                                                    Download
-                                                </button>
-
-                                                <a href="{% url "artist_dashboard:event_metrics" pk=event.id slug=event.slug %}">
-                                                    <button>Metrics</button>
-                                                </a>
-                                            </div>
-                                        {% endif %}
-                                    {% else %}
-                                        <div class="text-grey">
-                                            <div>Admin only material.</div>
-                                            <div>To access this feature, you must be a designated admin for this set.</div>
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        </div>
-                    </div>
-                {% endwith %}
-            {% endfor %}
-        </div>
+        <div id="artistEventsContainer" class="flex-column items-flex-stretch"></div>
     </div>
 {% endblock content %}
 
 {% block extra_js %}
     <script>
+        var eventsUrl = "{% url reverse_ajax %}";
         var selectedSetId;
+
         function askPrivate(setId) {
             $('#privateConfirm').modal('show');
             selectedSetId=setId;
@@ -193,7 +106,43 @@
             $downloadFormat.modal('show');
         }
 
+        function loadPage(page) {
 
+            var params = {};
+            if (page > 1) {
+                params.page = page;
+            }
 
+            var isLeader = $('#artist_archive_status_filter').val();
+            if (isLeader !== 'all') {
+                params.leader_filter = isLeader === 'leader';
+            }
+
+            var order = $('#artist_archive_order').val();
+            if (order !== 'newest') {
+                params.order = order;
+            }
+
+            $.ajax({
+                url: eventsUrl,
+                data: params,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.template) {
+                        $("#artistEventsContainer").html(data.template)
+                    }
+                }
+            });
+        }
+
+        $('#artist_archive_status_filter').on('change', function () {
+           loadPage(1);
+        });
+
+        $('#artist_archive_order').on('change', function () {
+           loadPage(1);
+        });
+
+        loadPage(1);
     </script>
 {% endblock %}

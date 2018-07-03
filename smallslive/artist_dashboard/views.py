@@ -2,6 +2,9 @@ from datetime import timedelta
 from cacheops import cached
 from django.conf import settings
 from django.db.models import Max
+from django.template import RequestContext
+from django.template.loader import render_to_string
+from django_ajax.response import JSONResponse
 
 from events.forms import GigPlayedEditInlineFormset
 
@@ -63,14 +66,17 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
 
     def get_queryset(self):
         artist = self.request.user.artist
+
         queryset = artist.gigs_played.select_related('event')
-        queryset = self.apply_filters(queryset).order_by('-event__start')
+        queryset = self.apply_filters(queryset)
         return queryset
 
     def apply_filters(self, queryset):
         audio_filter = self.request.GET.get('audio_filter')
         video_filter = self.request.GET.get('video_filter')
         leader_filter = self.request.GET.get('leader_filter')
+        order = self.request.GET.get('order')
+
         if audio_filter and audio_filter in Recording.FILTER_STATUS:
             if audio_filter == 'None':
                 queryset = queryset.exclude(event__recordings__media_file__media_type='audio')
@@ -95,7 +101,15 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
             else:
                 queryset = queryset.filter(is_leader=False)
 
-        return queryset.distinct()
+        if order:
+            if order == 'newest':
+                queryset = queryset.order_by('-event__date')
+            elif order == 'oldest':
+                queryset = queryset.order_by('event__date')
+            else:
+                queryset = queryset.order_by('-event__date')
+
+        return queryset
 
 
 class MyFutureEventsView(MyEventsView):
@@ -106,15 +120,43 @@ class MyFutureEventsView(MyEventsView):
             event__start__gte=now
         )
 
-        queryset = self.apply_filters(queryset).order_by('event__start')
+        queryset = self.apply_filters(queryset)
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super(MyFutureEventsView, self).get_context_data(**kwargs)
         context['future_active'] = True
+        context['reverse_ajax'] = 'artist_dashboard:my_future_events_ajax'
         return context
 
+
 my_future_events = MyFutureEventsView.as_view()
+
+
+class MyEventsAJAXView(MyEventsView):
+    def get(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        context = self.get_context_data(**kwargs)
+
+        data = {
+            'template': render_to_string(
+                self.template_name, context,
+                context_instance=RequestContext(request)
+            ),
+            'page_numbers': context.get('page_numbers'),
+            'show_first': context.get('show_first'),
+            'show_last': context.get('show_last')
+        }
+
+        return JSONResponse(data)
+
+
+class MyFutureEventsAJAXView(MyEventsAJAXView, MyFutureEventsView):
+    reverse_name = 'my_future_events_ajax'
+    template_name = 'artist_dashboard/artist-dashboard-events.html'
+
+
+my_future_events_ajax = MyFutureEventsAJAXView.as_view()
 
 
 class MyPastEventsView(MyEventsView):
@@ -124,15 +166,25 @@ class MyPastEventsView(MyEventsView):
         queryset = artist.gigs_played.select_related('event').prefetch_related('event__sets').filter(
             event__start__lt=now
         )
-        queryset = self.apply_filters(queryset).order_by('-event__start')
+        queryset = self.apply_filters(queryset)
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsView, self).get_context_data(**kwargs)
         context['past_active'] = True
+        context['reverse_ajax'] = 'artist_dashboard:my_past_events_ajax'
         return context
 
+
 my_past_events = MyPastEventsView.as_view()
+
+
+class MyPastEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
+    reverse_name = 'my_past_events_ajax'
+    template_name = 'artist_dashboard/artist-dashboard-events.html'
+
+
+my_past_events_ajax = MyPastEventsAJAXView.as_view()
 
 
 class DashboardView(HasArtistAssignedMixin, TemplateView):
