@@ -33,45 +33,47 @@
         <div class="flex-column items-flex-stretch">
             {% for gig_info in gigs %}
                 {% with event=gig_info.event %}
-                    <div class="event-row flex-row">
-                        <div class="artist-event-card flex-column items-flex-stretch">
-                            {% include 'events/event_card.html' with event=event %}
-                            <div class="button-row button-row-margin flex-column"  style="margin-top: 30px">
-                                {% if gig_info.is_admin %}
-                                    <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
-                                        <button style="width: 100%">Edit Event</button>
-                                    </a>
-                                {% else %}
-                                    <button disabled style="width: 100%">Edit Event</button>
-                                {% endif %}
-                            </div>
+                    <div class="artist-event-row">
+                        <div class="artist-event-edit-button button-row button-row-margin">
+                            {% if gig_info.is_admin %}
+                                <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
+                                    <button>Edit Event</button>
+                                </a>
+                            {% else %}
+                                <button disabled>Edit Event</button>
+                            {% endif %}
                         </div>
-                        <div class="artist-event flex-column content-space-between">
-                            <div class="flex-row">
-                                <div class="text2 artist-event-info">
+                        <div class="flex-row">
+                            <div class="artist-event-info">
+                                <div class="text2">
                                     {{ event.title }}
                                 </div>
-                                <div class="text2 accent-color artist-event-date">
-                                    <div>{{ event.venue.name }} {{ event.date|date:'m/d/Y' }}</div>
-                                </div>
-                                <div class="text4">
-                                    {% for gig_info in event.get_performers %}
-                                        {{ gig_info.artist.full_name }}
-                                        <span class="text-grey">({{ gig_info.role }})</span>
-                                        {% if not forloop.last %}  // {% endif %}
-                                    {% endfor %}
+                                <div class="text2 accent-color">
+                                    {{ event.date|date:'m/d/Y' }}
                                 </div>
                             </div>
-                            {% for set in event.sets.all %}
-                                <div class="flex-row text2 items-center" id="set-id-{{ set.id }}">
+                            <div class="text4">
+                                {% for gig_info in event.get_performers %}
+                                    {{ gig_info.artist.full_name }}
+                                    <span class="text-grey">({{ gig_info.role }})</span>
+                                    {% if not forloop.last %}  // {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div>
+                        {% for set in event.sets.all %}
+                        <div class="flex-row artist-event-set text2" id="set-id-{{ set.id }}">
+                            <div class="artist-event-card">
+                                {% include 'events/event_card.html' with event=event %}
+                            </div>
+                            <div class="flex-column content-space-between flex-grow">
+                                <div>
                                     <div class="accent-color artist-event-date">
-                                        <div>
-                                            {% if set.video_recording %}
-                                                Set {{ set.video_recording.set_number }} - {{ set.start|date:"g:i A" }}
-                                            {% else %}
-                                                No set for {{ set.start|date:"g:i A" }}
-                                            {% endif %}
-                                        </div>
+                                        {% if set.video_recording %}
+                                            Set {{ set.video_recording.set_number }} - {{ set.start|date:"g:i A" }}
+                                        {% else %}
+                                            No set for {{ set.start|date:"g:i A" }}
+                                        {% endif %}
                                     </div>
                                     <div class="artist-publish-info">
                                         <div class="text-grey">
@@ -84,34 +86,35 @@
                                             {% endif %}
                                         </div>
                                     </div>
-                                    <div class="artist-event-actions">
-                                        {% if gig_info.is_admin %}
-                                            {% if set.video_recording %}
-                                                <div class="button-row button-row-margin">
-                                                    {% if set.video_recording.state != 'Published' %}
-                                                        <button class="publish-button" onclick="askPublish({{ set.id }})">Publish</button>
-                                                    {% else %}
-                                                        <button class="publish-button" onclick="askPrivate({{ set.id }})">Make Private</button>
-                                                    {% endif %}
-                                                    <button>Monetize</button>
-                                                    <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')">
-                                                        Download
-                                                    </button>
+                                </div>
+                                <div class="artist-event-actions flex-row content-flex-end items-flex-end flex-grow">
+                                    {% if gig_info.is_admin %}
+                                        {% if set.video_recording %}
+                                            <div class="button-row button-row-margin">
+                                                {% if set.video_recording.state != 'Published' %}
+                                                    <button class="publish-button" onclick="askPublish({{ set.id }})">Publish</button>
+                                                {% else %}
+                                                    <button class="publish-button" onclick="askPrivate({{ set.id }})">Make Private</button>
+                                                {% endif %}
+                                                <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')">
+                                                    Download
+                                                </button>
 
-                                                    <a href="{% url "artist_dashboard:event_metrics" pk=event.id slug=event.slug %}">
-                                                        <button>Metrics</button>
-                                                    </a>
-                                                </div>
-                                            {% endif %}
-                                        {% else %}
-                                            <div class="text-grey">
-                                                <div>Admin only material.</div>
-                                                <div>To access this feature, you must be a designated admin for this set.</div>
+                                                <a href="{% url "artist_dashboard:event_metrics" pk=event.id slug=event.slug %}">
+                                                    <button>Metrics</button>
+                                                </a>
                                             </div>
                                         {% endif %}
-                                    </div>
+                                    {% else %}
+                                        <div class="text-grey">
+                                            <div>Admin only material.</div>
+                                            <div>To access this feature, you must be a designated admin for this set.</div>
+                                        </div>
+                                    {% endif %}
                                 </div>
-                            {% endfor %}
+                            </div>
+                        </div>
+                        {% endfor %}
                         </div>
                     </div>
                 {% endwith %}
