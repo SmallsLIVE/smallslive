@@ -48,19 +48,10 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
         context = super(MyEventsView, self).get_context_data(**kwargs)
         paginator = context['paginator']
         current_page_number = context['page_obj'].number
-        adjacent_pages = 2
-        startPage = max(current_page_number - adjacent_pages, 1)
-        if startPage <= 3:
-            startPage = 1
-        endPage = current_page_number + adjacent_pages + 1
-        if endPage >= paginator.num_pages - 1:
-            endPage = paginator.num_pages + 1
-        page_numbers = [n for n in xrange(startPage, endPage) if n > 0 and n <= paginator.num_pages]
         context.update({
-            'page_numbers': page_numbers,
-            'show_first': 1 not in page_numbers,
-            'show_last': paginator.num_pages not in page_numbers,
-            })
+            'total_pages': paginator.num_pages,
+            'current_page': current_page_number
+        })
 
         return context
 
@@ -143,9 +134,8 @@ class MyEventsAJAXView(MyEventsView):
                 self.template_name, context,
                 context_instance=RequestContext(request)
             ),
-            'page_numbers': context.get('page_numbers'),
-            'show_first': context.get('show_first'),
-            'show_last': context.get('show_last')
+            'total_pages': context.get('total_pages'),
+            'current_page': context.get('current_page'),
         }
 
         return JSONResponse(data)

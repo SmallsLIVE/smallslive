@@ -31,10 +31,15 @@
             </div>
         </div>
         <div id="artistEventsContainer" class="flex-column items-flex-stretch"></div>
+        <div class="page-numbers-footer">
+            <button id="next-page-btn" class="white-border-button">next page</button>
+            <div id="pagination"></div>
+        </div>
     </div>
 {% endblock content %}
 
 {% block extra_js %}
+    <script src="{% static 'js/jquery.simplePagination.js' %}"></script>
     <script>
         var eventsUrl = "{% url reverse_ajax %}";
         var selectedSetId;
@@ -131,6 +136,16 @@
                     if (data.template) {
                         $("#artistEventsContainer").html(data.template)
                     }
+
+                    if (data.total_pages) {
+                        $('#pagination').pagination('setPagesCount', data.total_pages);
+                        $('#pagination').pagination('redraw');
+                        if (data.total_pages === 1) {
+                            $('#next-page-btn').prop('disabled', true)
+                        } else {
+                            $('#next-page-btn').prop('disabled', false)
+                        }
+                    }
                 }
             });
         }
@@ -144,5 +159,22 @@
         });
 
         loadPage(1);
+
+        $('#pagination').pagination({
+            pages: 1,
+            displayedPages: 3,
+            edges: 1,
+            hrefTextPrefix: '',
+            selectOnClick: false,
+            useAnchors: false,
+            prevText: '', nextText: '',
+            onPageClick: function (page, event) {
+                loadPage(page);
+            }
+        });
+
+        $('#next-page-btn').on('click', function () {
+            $('#pagination').pagination('nextPage');
+        })
     </script>
 {% endblock %}
