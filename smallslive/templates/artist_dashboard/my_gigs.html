@@ -32,17 +32,19 @@
         </div>
         <div id="artistEventsContainer" class="flex-column items-flex-stretch"></div>
         <div class="page-numbers-footer">
-            <button id="next-page-btn" class="white-border-button">next page</button>
-            <div id="pagination"></div>
+            <button id="next-page-btn" class="white-border-button button-title1">
+                <div>View more</div>
+            </button>
         </div>
     </div>
 {% endblock content %}
 
 {% block extra_js %}
-    <script src="{% static 'js/jquery.simplePagination.js' %}"></script>
     <script>
         var eventsUrl = "{% url reverse_ajax %}";
         var selectedSetId;
+        var currentPage = 0;
+        var totalPages = 1;
 
         function askPrivate(setId) {
             $('#privateConfirm').modal('show');
@@ -111,12 +113,12 @@
             $downloadFormat.modal('show');
         }
 
-        function loadPage(page) {
-
+        function loadMore() {
             var params = {};
-            if (page > 1) {
-                params.page = page;
+            if (currentPage >= totalPages) {
+                return;
             }
+            params.page = ++currentPage;
 
             var isLeader = $('#artist_archive_status_filter').val();
             if (isLeader !== 'all') {
@@ -134,16 +136,19 @@
                 dataType: 'json',
                 success: function (data) {
                     if (data.template) {
-                        $("#artistEventsContainer").html(data.template)
+                        if (currentPage > 1) {
+                            $("#artistEventsContainer").append(data.template)
+                        } else {
+                            $("#artistEventsContainer").html(data.template)
+                        }
                     }
 
                     if (data.total_pages) {
-                        $('#pagination').pagination('setPagesCount', data.total_pages);
-                        $('#pagination').pagination('redraw');
-                        if (data.total_pages === 1) {
-                            $('#next-page-btn').prop('disabled', true)
+                        totalPages = data.total_pages;
+                        if (currentPage >= totalPages) {
+                            $('#next-page-btn').hide()
                         } else {
-                            $('#next-page-btn').prop('disabled', false)
+                            $('#next-page-btn').show()
                         }
                     }
                 }
@@ -151,30 +156,20 @@
         }
 
         $('#artist_archive_status_filter').on('change', function () {
-           loadPage(1);
+            currentPage = 0;
+            totalPages = 1;
+            loadMore();
         });
 
         $('#artist_archive_order').on('change', function () {
-           loadPage(1);
+            currentPage = 0;
+            totalPages = 1;
+            loadMore();
         });
 
-        loadPage(1);
-
-        $('#pagination').pagination({
-            pages: 1,
-            displayedPages: 3,
-            edges: 1,
-            hrefTextPrefix: '',
-            selectOnClick: false,
-            useAnchors: false,
-            prevText: '', nextText: '',
-            onPageClick: function (page, event) {
-                loadPage(page);
-            }
-        });
-
+        loadMore();
         $('#next-page-btn').on('click', function () {
-            $('#pagination').pagination('nextPage');
+            loadMore()
         })
     </script>
 {% endblock %}
