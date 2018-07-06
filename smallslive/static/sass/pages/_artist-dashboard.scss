@@ -30,24 +30,18 @@
       margin-right: 40px;
 
     }
-    .artist-event-date {
-      margin-bottom: 20px;
-    }
 
     .artist-event-info {
-      width: 290px;
-      margin-bottom: 40px;
+      margin: 40px 0;
     }
 
     .artist-event-set {
       margin-bottom: 60px;
-    }
 
-    .artist-event-edit-button {
-      position: absolute;
-      top: -$underline-height;
-      right: 0;
-
+      .artsist-set-info {
+        border-top: $underline-height solid $white-transparent;
+        padding-top: 20px;
+      }
     }
   }
 
@@ -121,11 +115,9 @@
 }
 
 .artist-event-actions {
-  border-bottom: $underline-height solid $white-transparent ;
+  margin-left: 40px;
 
   .button-row {
-    position: relative;
-    top: $underline-height;
     button {
       font-size: 0.8em;
     }
