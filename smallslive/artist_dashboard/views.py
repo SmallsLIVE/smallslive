@@ -1,7 +1,7 @@
 from datetime import timedelta
 from cacheops import cached
 from django.conf import settings
-from django.db.models import Max
+from django.db.models import Max, Sum
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django_ajax.response import JSONResponse
@@ -97,6 +97,31 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
                 queryset = queryset.order_by('-event__date')
             elif order == 'oldest':
                 queryset = queryset.order_by('event__date')
+            elif order == 'popular':
+                # Get all events ids
+                artist_event_ids = list(queryset.values_list('event_id', flat=True).distinct())
+
+                # Get ordered event play count
+                page = int(self.request.GET.get('page'))
+                most_popular_ids = list(UserVideoMetric.objects.filter(event_id__in=artist_event_ids).values(
+                    'event_id'
+                ).annotate(
+                    count=Sum('seconds_played')
+                ).order_by('-count')[(page - 1) * self.paginate_by:self.paginate_by])
+
+                ordered_metrics_ids = [
+                    row.get('event_id') for row in most_popular_ids
+                ]
+
+                unordered = dict([
+                    (gig.event_id, gig) for gig in queryset.filter(event_id__in=ordered_metrics_ids)
+                ])
+
+                response = []
+                for event_id in ordered_metrics_ids:
+                    response.append(unordered.get(event_id))
+
+                return response
             else:
                 queryset = queryset.order_by('-event__date')
 
