@@ -21,12 +21,11 @@
 
 {% block content %}
 
-  {% include 'inactive_dialog.html' %}
 
   <div class="main-container">
 
-  {# FIXME Needed?#}
   {% block home_content %}
+    {% include 'inactive_dialog.html' %}
     <main>
       {% if not request.user.is_authenticated %}
         {% include 'home_banners.html' %}

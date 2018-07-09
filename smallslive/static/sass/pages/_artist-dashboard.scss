@@ -2,11 +2,6 @@
   padding: 0 10%;
   margin-bottom: 40px;
 
-  //FIXME Shouldnt be necessary
-  a {
-    color: $black;
-  }
-
   .artist-form {
     padding: 0 10%;
 
@@ -67,6 +62,10 @@
 
 .artist-archive-filter {
   margin-bottom: 40px;
+
+  .white-border-select {
+      margin-right: 20px;
+  }
 }
 
 .aritst-event-edit {
@@ -81,7 +80,6 @@
     .table {
       thead {
         background-color: transparent;
-        font-size: 10px; //FIXME Shouldnt be necessary
         border: none;
         tr {
           border: none;

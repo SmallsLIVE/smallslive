@@ -1,48 +1,58 @@
 {% if user.is_authenticated and not user.has_activated_account %}
-  <div id="inactive-dialog" class="floating-dialog-background">
-    <div class="floating-dialog">
-      <div>
-        <p class="title2 accent-color">Confirmation</p>
-        <p class="title1">Your membership is not yet confirmed</p>
-      </div>
-      <div>
-        <p class="text4 text-justified">You have been sent a confirmation
-          e-mail to <span class="accent-color">{{ user.email }}</span>.
-          Please check yout email and confirm your membership by clicking the
-          link
-          you receive. If you do not received this in the next 10 min, please
-          click
-          the link below to re-send the confirmation e-mail. Be sure to check
-          your
-          spam folder as well.</p>
-      </div>
-      <div class="text4">
-        <span><span>Didn't get an email?</span></span>
-        <form id="resendConfirmationForm"
-              action="{% url 'account_email' %}"
-              method="post" style="display: inline-block">
-          {% csrf_token %}
-          <input id="user_email_hidden" type="hidden" name="email" value="{{ user.email }}" >
-          <input id="action_send" type="hidden" name="action_send" value="" >
-          <a class="accent-color"
-             href="javascript:{}"
-             onclick="document.getElementById('resendConfirmationForm').submit(); return false;">
-            Resend confirmation email
-          </a>
-        </form>
-        <p><span>Or contact support at</span>
-          <a class="accent-color" href="mailto:accountsupport@smallslive.com">
-            accountsupport@smallslive.com
-          </a>
-        </p>
-      </div>
+  <div class="modal fade in" role="dialog" id="inactive-dialog" >
+    <div class="modal-dialog">
+        <div class="modal-content  custom-modal">
+          <div class="modal-body">
+              <p class="title2 accent-color">Confirmation</p>
+              <p class="title1">Your membership is not yet confirmed</p>
+              <p class="text4 text-justified">You have been sent a confirmation
+                  e-mail to <span class="accent-color">{{ user.email }}</span>.
+                  Please check yout email and confirm your membership by clicking the
+                  link
+                  you receive. If you do not received this in the next 10 min, please
+                  click
+                  the link below to re-send the confirmation e-mail. Be sure to check
+                  your
+                  spam folder as well.
+              </p>
+              <div class="text4" style="margin-top: 40px">
+                  <div>
+                      <span class="text-grey">Didn't get an email?</span>
+                      <form id="resendConfirmationForm"
+                            action="{% url 'account_email' %}"
+                            method="post" style="display: inline">
+                          {% csrf_token %}
+                          <input id="user_email_hidden" type="hidden" name="email" value="{{ user.email }}">
+                          <input id="action_send" type="hidden" name="action_send" value="">
+                          <a class="accent-color"
+                             href="javascript:{}"
+                             onclick="document.getElementById('resendConfirmationForm').submit(); return false;">
+                              Resend confirmation email
+                          </a>
+                      </form>
+                  </div>
+                  <p>
+                      <span class="text-grey">Or contact support at</span> <a class="accent-color" href="mailto:accountsupport@smallslive.com">
+                          accountsupport@smallslive.com
+                      </a>
+                  </p>
+              </div>
+          </div>
+          <div>
+          </div>
+        </div>
     </div>
   </div>
-  <script>
-    document.addEventListener('click', function () {
-      $('#inactive-dialog').hide();
-    })
-  </script>
+    <script>
+        document.addEventListener('click', function () {
+            $('#inactive-dialog').hide();
+        });
+
+         $(document).ready(function () {
+            console.log('Ready1');
+            $('#inactive-dialog').show();
+        });
+    </script>
 {% endif %}
 
 

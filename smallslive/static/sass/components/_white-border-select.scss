@@ -1,9 +1,8 @@
-/*the container must be positioned relative:*/
 .white-border-select {
-  position: relative;
-  color: black;
-  float: right;
   @include button1;
+  position: relative;
+  color: $black;
+  float: right;
 
   select {
     display: none;
