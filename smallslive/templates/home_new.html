@@ -20,12 +20,10 @@
 {% endblock %}
 
 {% block content %}
-
+  {% include 'inactive_dialog.html' %}
 
   <div class="main-container">
-
-  {% block home_content %}
-    {% include 'inactive_dialog.html' %}
+    {% block home_content %}
     <main>
       {% if not request.user.is_authenticated %}
         {% include 'home_banners.html' %}
