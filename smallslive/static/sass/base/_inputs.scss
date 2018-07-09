@@ -10,6 +10,7 @@
 
   display: flex;
   align-items: center;
+  justify-content: center;
 
   &.active {
     background-color: $white-transparent;
@@ -21,13 +22,11 @@
 
   color: $black;
 
-  &:hover {
-    color: $black;
-  }
-
   &:disabled {
     color: $text-grey;
     cursor: not-allowed;
+
+    border-color: $text-grey;
   }
 }
 
@@ -118,7 +117,7 @@
     a,
     p,
     button {
-      &:hover {
+      &:hover:enabled {
         background-color: $white-transparent;
       }
     }
