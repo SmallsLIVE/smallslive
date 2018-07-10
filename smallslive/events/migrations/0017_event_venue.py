@@ -9,7 +9,7 @@ def fill_smalls_venue(apps, schema_editor):
     Venue = apps.get_model('events', 'Venue')
     Event = apps.get_model('events', 'Event')
 
-    smallsvenue, _ = Venue.objects.get_or_create(name='Smalls Jazz Club')
+    smallsvenue, _ = Venue.objects.get_or_create(name='Smalls')
     Event.objects.all().update(venue=smallsvenue)
 
 

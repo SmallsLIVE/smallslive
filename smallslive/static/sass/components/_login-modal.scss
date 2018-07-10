@@ -9,7 +9,7 @@
   opacity: 0.65 !important;
 }
 
-.login-modal .modal-body {
+.custom-modal .modal-body {
   overflow: hidden;
 }
 
@@ -29,7 +29,6 @@
       border-radius: 0;
     }
 
-    //TODO Custom check box
     input[type="checkbox"] {
       margin: 1px 0 0 -20px;
     }
@@ -48,7 +47,7 @@
   @include form-styles;
 }
 
-.login-modal {
+.custom-modal {
   border: 8px solid $white-transparent;
   border-radius: 0;
   background-color: $background-color;
@@ -69,6 +68,10 @@
       margin-top: 10px;
       flex-direction: column;
       justify-content: flex-start;
+    }
+
+    .title1 {
+      margin-bottom: 40px;
     }
   }
 }
@@ -109,7 +112,7 @@
 }
 
 @media (max-width: 750px) {
-  .login-modal {
+  .custom-modal {
     padding: 30px 10px;
   }
 

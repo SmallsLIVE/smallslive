@@ -9,11 +9,12 @@
 
 
 {% block content %}
+    {% include 'artist_dashboard/publish_modal.html' %}
+
 {#    TODO Move container to dashboard base#}
     <div class="artist-profile-container">
         <div class="artist-archive-filter flex-row">
-{#            FIXME Remove margin#}
-            <div class="white-border-select" style="width: 150px; float:none; margin-right: 20px">
+            <div class="white-border-select" style="width: 150px; float:none">
                 <select id="artist_archive_status_filter">
                     <option value="all">All</option>
                     <option value="leader">Leader</option>
@@ -24,85 +25,164 @@
                 <select id="artist_archive_order">
                     <option value="newest">Newest to oldest</option>
                     <option value="oldest">Oldest to newest</option>
-                    <option value="draft">Most Popular</option>
+                    <option value="popular">Most Popular</option>
                 </select>
             </div>
         </div>
-        <div class="flex-column items-flex-stretch">
-            {% for gig_info in gigs %}
-                {% with event=gig_info.event %}
-                    <div class="event-row flex-row">
-                        <div class="artist-event-card flex-column items-flex-stretch">
-                            {% include 'events/event_card.html' with event=event %}
-                            <div class="button-row button-row-margin flex-column">
-                                <a style="margin-top: 30px" href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
-                                    <button style="width: 100%">Edit Event</button>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="artist-event flex-column content-space-between">
-                            <div class="flex-row">
-                                <div class="text2 artist-event-info">
-                                    {{ event.title }}
-                                </div>
-                                <div class="text2 accent-color artist-event-date">
-                                    <div>{{ event.venue.name }} {{ event.date|date:'m/d/Y' }}</div>
-                                </div>
-                                <div class="text4">
-                                    {% for gig_info in event.get_performers %}
-                                        {{ gig_info.artist.full_name }}
-                                        <span class="text-grey">({{ gig_info.role }})</span>
-                                        {% if not forloop.last %}  // {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            {% for set in event.sets.all %}
-                                <div class="flex-row text2 items-center">
-                                    <div class="accent-color artist-event-date">
-                                        <div>
-                                            {% if set.recording %}
-                                                Set {{ set.recording.set_number }} - {{ set.start|date:"g:i A" }}
-                                            {% else %}
-                                                No set for {{ set.start|date:"g:i A" }}
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="text-grey">
-                                            {% if set.video_recording %}
-                                                This set is currently <span class="accent-color">
-                                                {{ set.video_recording.state }}
-                                            </span>
-                                            {% else %}
-                                                This set is not uploaded yet.
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                    <div class="artist-event-actions">
-                                        {% if gig_info.is_leader %}
-                                            <div class="button-row button-row-margin">
-                                                <button>Publish</button>
-                                                <button>Monetize</button>
-                                                <button>Download</button>
-                                                <a href="{% url "artist_dashboard:event_metrics" pk=event.id slug=event.slug %}">
-                                                    <button>Metrics</button>
-                                                </a>
-                                            </div>
-                                        {% else %}
-                                            <div class="text-grey">
-                                                <div>Leader only material.</div>
-                                                <div>To access this feature, you must be a designated leader for this set.</div>
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            {% endfor %}
-
-                        </div>
-                    </div>
-                {% endwith %}
-            {% endfor %}
-
+        <div id="artistEventsContainer" class="flex-column items-flex-stretch"></div>
+        <div class="page-numbers-footer">
+            <button id="next-page-btn" class="white-border-button button-title1">
+                <div>View more</div>
+            </button>
         </div>
     </div>
 {% endblock content %}
+
+{% block extra_js %}
+    <script>
+        var eventsUrl = "{% url reverse_ajax %}";
+        var selectedSetId;
+        var currentPage = 0;
+        var totalPages = 1;
+
+        function askPrivate(setId) {
+            $('#privateConfirm').modal('show');
+            selectedSetId=setId;
+        }
+
+        function askPublish(setId) {
+            $('#publishConfirm').modal('show');
+            selectedSetId=setId;
+        }
+
+        function makeSetPrivate() {
+            $.post('/events/sets/' + selectedSetId + '/private/', {
+              csrfmiddlewaretoken: '{{ csrf_token }}'
+            }, function (data, status) {
+                console.log(status);
+            });
+            hideMakePrivate();
+            $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
+                '<button class="publish-button" onclick="askPublish(' + selectedSetId + ')">Publish</button>'
+            )
+            $("#set-id-" + selectedSetId).find('.set-status').text('Hidden')
+            showSuccess('private')
+        }
+
+        function showSuccess(state) {
+            var $publishSuccess = $('#publishSuccess');
+            $publishSuccess.find('.success-state').text(state);
+            $publishSuccess.modal('show')
+        }
+
+        function publishSet() {
+            $.post('/events/sets/' + selectedSetId + '/publish/', {
+              csrfmiddlewaretoken: '{{ csrf_token }}'
+            }, function(data, status) {
+                console.log(status);
+            });
+            hidePublish();
+            $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
+                '<button class="publish-button" onclick="askPrivate(' + selectedSetId + ')">Make Private</button>'
+            )
+            $("#set-id-" + selectedSetId).find('.set-status').text('Published');
+            showSuccess('public')
+        }
+
+        function hideMakePrivate() {
+            $('#privateConfirm').modal('hide');
+        }
+
+        function hidePublish() {
+            $('#publishConfirm').modal('hide');
+        }
+
+        function hideSuccess() {
+            $('#publishSuccess').modal('hide');
+        }
+
+        function showSelectFormat(videoUrl, audioUrl) {
+            var $downloadFormat = $('#downloadFormat');
+            var audioButton = $downloadFormat.find('#downloadFormatAudioUrl');
+            var videoButton = $downloadFormat.find('#downloadFormatVideoUrl');
+
+            if (audioUrl !== '') {
+                audioButton.attr({href: audioUrl}).on('click', function () {
+                    $downloadFormat.modal('hide');
+                });
+                audioButton.find('button').prop('disabled', false);
+            } else {
+                audioButton.find('button').prop('disabled', true);
+            }
+
+            if (videoUrl !== '') {
+                videoButton.attr({href: videoUrl}).on('click', function () {
+                    $downloadFormat.modal('hide');
+                });
+                videoButton.find('button').prop('disabled', false);
+            } else {
+                videoButton.find('button').prop('disabled', true);
+            }
+            $downloadFormat.modal('show');
+        }
+
+        function loadMore() {
+            var params = {};
+            if (currentPage >= totalPages) {
+                return;
+            }
+            params.page = ++currentPage;
+
+            var isLeader = $('#artist_archive_status_filter').val();
+            if (isLeader !== 'all') {
+                params.leader_filter = isLeader === 'leader';
+            }
+
+            var order = $('#artist_archive_order').val();
+            if (order !== 'newest') {
+                params.order = order;
+            }
+
+            $.ajax({
+                url: eventsUrl,
+                data: params,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.template) {
+                        if (currentPage > 1) {
+                            $("#artistEventsContainer").append(data.template)
+                        } else {
+                            $("#artistEventsContainer").html(data.template)
+                        }
+                    }
+
+                    if (data.total_pages) {
+                        totalPages = data.total_pages;
+                        if (currentPage >= totalPages) {
+                            $('#next-page-btn').hide()
+                        } else {
+                            $('#next-page-btn').show()
+                        }
+                    }
+                }
+            });
+        }
+
+        $('#artist_archive_status_filter').on('change', function () {
+            currentPage = 0;
+            totalPages = 1;
+            loadMore();
+        });
+
+        $('#artist_archive_order').on('change', function () {
+            currentPage = 0;
+            totalPages = 1;
+            loadMore();
+        });
+
+        loadMore();
+        $('#next-page-btn').on('click', function () {
+            loadMore()
+        })
+    </script>
+{% endblock %}

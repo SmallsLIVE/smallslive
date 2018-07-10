@@ -1,10 +1,6 @@
 .artist-profile-container {
   padding: 0 10%;
-
-  //FIXME Shouldnt be necessary
-  a {
-    color: $black;
-  }
+  margin-bottom: 40px;
 
   .artist-form {
     padding: 0 10%;
@@ -21,19 +17,31 @@
     }
   }
 
-  .event-row {
-    padding: 30px 0;
+  .artist-event-row {
+    position: relative;
+    padding-top: 10px;
     border-top: 3px solid $white-transparent;
 
     .artist-event-card {
       margin-right: 40px;
+
     }
 
-    .artist-event-info, .artist-event-date {
-      width: 180px;
-      margin-right: 30px;
+    .artist-event-info {
+      margin: 25px 0;
+    }
+
+    .artist-event-set {
+      margin: 25px 0;
+
+      .artsist-set-info {
+        border-top: $underline-height solid $white-transparent;
+        padding-top: 15px;
+        margin-bottom: 40px;
+      }
     }
   }
+
 }
 
 .artist-profile-picture {
@@ -55,6 +63,10 @@
 
 .artist-archive-filter {
   margin-bottom: 40px;
+
+  .white-border-select {
+      margin-right: 20px;
+  }
 }
 
 .aritst-event-edit {
@@ -69,7 +81,6 @@
     .table {
       thead {
         background-color: transparent;
-        font-size: 10px; //FIXME Shouldnt be necessary
         border: none;
         tr {
           border: none;
@@ -104,8 +115,7 @@
 }
 
 .artist-event-actions {
-  margin-left: 30px;
-  justify-self: flex-end;
+  margin-left: 40px;
 
   .button-row {
     button {
@@ -113,3 +123,12 @@
     }
   }
 }
+
+.artist-publish-info {
+  min-width: 275px;
+}
+
+.publish-button {
+  width: 150px;
+}
+

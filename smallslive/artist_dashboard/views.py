@@ -1,7 +1,12 @@
 from datetime import timedelta
 from cacheops import cached
 from django.conf import settings
-from django.db.models import Max
+from django.db.models import Max, Sum
+from django.template import RequestContext
+from django.template.loader import render_to_string
+from django_ajax.response import JSONResponse
+
+from events.forms import GigPlayedEditInlineFormset
 
 try:
     import cStringIO as StringIO
@@ -29,8 +34,8 @@ import events.views as event_views
 import users.forms as user_forms
 from users.models import LegalAgreementAcceptance
 from users.views import HasArtistAssignedMixin, HasArtistAssignedOrIsSuperuserMixin
-from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm,\
-    EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm
+from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm, \
+    EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm, ArtistGigPlayedAddInlineFormSet
 from artist_dashboard.tasks import generate_payout_sheet_task, update_current_period_metrics_task
 
 
@@ -43,32 +48,26 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
         context = super(MyEventsView, self).get_context_data(**kwargs)
         paginator = context['paginator']
         current_page_number = context['page_obj'].number
-        adjacent_pages = 2
-        startPage = max(current_page_number - adjacent_pages, 1)
-        if startPage <= 3:
-            startPage = 1
-        endPage = current_page_number + adjacent_pages + 1
-        if endPage >= paginator.num_pages - 1:
-            endPage = paginator.num_pages + 1
-        page_numbers = [n for n in xrange(startPage, endPage) if n > 0 and n <= paginator.num_pages]
         context.update({
-            'page_numbers': page_numbers,
-            'show_first': 1 not in page_numbers,
-            'show_last': paginator.num_pages not in page_numbers,
-            })
+            'total_pages': paginator.num_pages,
+            'current_page': current_page_number
+        })
 
         return context
 
     def get_queryset(self):
         artist = self.request.user.artist
+
         queryset = artist.gigs_played.select_related('event')
-        queryset = self.apply_filters(queryset).order_by('-event__start')
+        queryset = self.apply_filters(queryset)
         return queryset
 
     def apply_filters(self, queryset):
         audio_filter = self.request.GET.get('audio_filter')
         video_filter = self.request.GET.get('video_filter')
         leader_filter = self.request.GET.get('leader_filter')
+        order = self.request.GET.get('order')
+
         if audio_filter and audio_filter in Recording.FILTER_STATUS:
             if audio_filter == 'None':
                 queryset = queryset.exclude(event__recordings__media_file__media_type='audio')
@@ -93,7 +92,40 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
             else:
                 queryset = queryset.filter(is_leader=False)
 
-        return queryset.distinct()
+        if order:
+            if order == 'newest':
+                queryset = queryset.order_by('-event__date')
+            elif order == 'oldest':
+                queryset = queryset.order_by('event__date')
+            elif order == 'popular':
+                # Get all events ids
+                artist_event_ids = list(queryset.values_list('event_id', flat=True).distinct())
+
+                # Get ordered event play count
+                page = int(self.request.GET.get('page'))
+                most_popular_ids = list(UserVideoMetric.objects.filter(event_id__in=artist_event_ids).values(
+                    'event_id'
+                ).annotate(
+                    count=Sum('seconds_played')
+                ).order_by('-count')[(page - 1) * self.paginate_by:self.paginate_by])
+
+                ordered_metrics_ids = [
+                    row.get('event_id') for row in most_popular_ids
+                ]
+
+                unordered = dict([
+                    (gig.event_id, gig) for gig in queryset.filter(event_id__in=ordered_metrics_ids)
+                ])
+
+                response = []
+                for event_id in ordered_metrics_ids:
+                    response.append(unordered.get(event_id))
+
+                return response
+            else:
+                queryset = queryset.order_by('-event__date')
+
+        return queryset
 
 
 class MyFutureEventsView(MyEventsView):
@@ -104,15 +136,42 @@ class MyFutureEventsView(MyEventsView):
             event__start__gte=now
         )
 
-        queryset = self.apply_filters(queryset).order_by('event__start')
+        queryset = self.apply_filters(queryset)
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super(MyFutureEventsView, self).get_context_data(**kwargs)
-        context['future_active'] = True
+        context['is_future'] = True
+        context['reverse_ajax'] = 'artist_dashboard:my_future_events_ajax'
         return context
 
+
 my_future_events = MyFutureEventsView.as_view()
+
+
+class MyEventsAJAXView(MyEventsView):
+    def get(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        context = self.get_context_data(**kwargs)
+
+        data = {
+            'template': render_to_string(
+                self.template_name, context,
+                context_instance=RequestContext(request)
+            ),
+            'total_pages': context.get('total_pages'),
+            'current_page': context.get('current_page'),
+        }
+
+        return JSONResponse(data)
+
+
+class MyFutureEventsAJAXView(MyEventsAJAXView, MyFutureEventsView):
+    reverse_name = 'my_future_events_ajax'
+    template_name = 'artist_dashboard/artist-dashboard-events.html'
+
+
+my_future_events_ajax = MyFutureEventsAJAXView.as_view()
 
 
 class MyPastEventsView(MyEventsView):
@@ -122,15 +181,25 @@ class MyPastEventsView(MyEventsView):
         queryset = artist.gigs_played.select_related('event').prefetch_related('event__sets').filter(
             event__start__lt=now
         )
-        queryset = self.apply_filters(queryset).order_by('-event__start')
+        queryset = self.apply_filters(queryset)
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsView, self).get_context_data(**kwargs)
-        context['past_active'] = True
+        context['is_future'] = False
+        context['reverse_ajax'] = 'artist_dashboard:my_past_events_ajax'
         return context
 
+
 my_past_events = MyPastEventsView.as_view()
+
+
+class MyPastEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
+    reverse_name = 'my_past_events_ajax'
+    template_name = 'artist_dashboard/artist-dashboard-events.html'
+
+
+my_past_events_ajax = MyPastEventsAJAXView.as_view()
 
 
 class DashboardView(HasArtistAssignedMixin, TemplateView):
@@ -226,6 +295,9 @@ class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
     form_class = EventEditForm
     success_url = reverse_lazy("artist_dashboard:my_past_events")
     template_name = 'artist_dashboard/event_edit.html'
+
+    inlines = [ArtistGigPlayedAddInlineFormSet]
+    inlines_names = ['artists']
 
     def get_context_data(self, **kwargs):
         context = super(EventEditView, self).get_context_data(**kwargs)

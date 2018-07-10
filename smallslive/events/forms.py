@@ -56,7 +56,7 @@ class EventStatusWidget(floppyforms.RadioSelect):
 
 class GigPlayedAddInlineFormSet(InlineFormSet):
     model = GigPlayed
-    fields = ('artist', 'role', 'is_leader', 'sort_order')
+    fields = ('artist', 'role', 'is_leader', 'is_admin', 'sort_order')
     extra = 1
     can_delete = False
 
@@ -68,6 +68,9 @@ class GigPlayedAddInlineFormSet(InlineFormSet):
             form.fields['role'].empty_label = "Role"
             form.fields['role'].widget.attrs['class'] = "role_field"
             form.fields['is_leader'].initial = True
+            form.fields['is_leader'].initial = False
+            form.fields['is_leader'].label = 'Leader'
+            form.fields['is_admin'].label = 'Admin'
             form.fields['sort_order'].initial = num
             form.fields['sort_order'].widget = forms.HiddenInput()
             form.fields['sort_order'].widget.attrs['class'] = "sort_order_field"
@@ -150,35 +153,39 @@ class EventAddForm(forms.ModelForm):
         self.helper.form_action = 'event_add'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
-        self.helper.layout = Layout(
-            'venue',
-            Field('date', css_class='datepicker'),
-            Field('start', css_class='datepicker'),
-            Field('end', css_class='datepicker'),
-            FormActions(
-                css_class='form-group slot-buttons'
-            ),
-            Formset('artists', template='form_widgets/formset_layout.html'),
-            Formset('sets', template='form_widgets/set_formset_layout.html'),
-            'title',
-            'subtitle',
-            'photo',
-            'cropping',
-            'description',
-            'state',
-            'staff_pick',
-        )
+
+        layout = self.get_layout()
+
+        self.helper.layout = layout
         self.fields['state'].label = "Event status"
         self.fields['photo'].label = "Flyer or Band Photo (JPG, PNG)"
 
         self.fields['start'].widget = forms.HiddenInput()
         self.fields['end'].widget = forms.HiddenInput()
 
+    def get_layout(self):
+        return Layout(
+            'venue',
+            'title',
+            'subtitle',
+            Field('date', css_class='datepicker'),
+            Field('start', css_class='datepicker'),
+            Field('end', css_class='datepicker'),
+            FormActions(css_class='form-group slot-buttons'),
+            Formset('sets', template='form_widgets/set_formset_layout.html'),
+            Formset('artists', template='form_widgets/formset_layout.html'),
+            'photo',
+            'cropping',
+            'description',
+            'state',
+            'staff_pick',
+        )
+
 
 class EventEditForm(EventAddForm):
     class Meta(EventAddForm.Meta):
         fields = (
-            'venue', 'date', 'start', 'end', 'title', 'subtitle', 'photo', 'cropping',
+            'venue', 'title', 'subtitle', 'date', 'start', 'end', 'photo', 'cropping',
             'description', 'state', 'staff_pick')
 
 

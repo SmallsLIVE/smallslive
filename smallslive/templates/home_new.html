@@ -20,13 +20,10 @@
 {% endblock %}
 
 {% block content %}
-
   {% include 'inactive_dialog.html' %}
 
   <div class="main-container">
-
-  {# FIXME Needed?#}
-  {% block home_content %}
+    {% block home_content %}
     <main>
       {% if not request.user.is_authenticated %}
         {% include 'home_banners.html' %}

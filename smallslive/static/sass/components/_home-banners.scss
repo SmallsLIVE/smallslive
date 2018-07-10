@@ -20,14 +20,11 @@ $banners-height: 270px;
       height: 100%;
       width: 100%;
 
-      display: flex;
-      border: 1px solid red;
+      border: 1px solid $accent-color;
       border-radius: 20px;
 
       .banner-title-button {
         padding: 25px 40px;
-        display: flex;
-        flex-direction: column;
 
         #banner-title {
           @include title4;
@@ -44,6 +41,7 @@ $banners-height: 270px;
         }
 
         #banner-button {
+          justify-content: center;
           @include white-border-button;
           width: 100%;
         }
@@ -51,10 +49,6 @@ $banners-height: 270px;
 
       .banner-text-container {
         flex: 1;
-        display: flex;
-        align-items: center;
-        align-content: center;
-
 
         #banner-text {
           @include title1;
@@ -71,7 +65,6 @@ $banners-height: 270px;
   .banner-options {
     height: $banners-height;
     width: 100%;
-    display: flex;
 
     .banner-option {
       flex: 1;
@@ -79,7 +72,7 @@ $banners-height: 270px;
       align-items: center;
       justify-content: center;
 
-      color: white;
+      color: $white-transparent;
       margin: 2px;
       cursor: pointer;
       position: relative;

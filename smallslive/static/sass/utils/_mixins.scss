@@ -14,11 +14,10 @@
   font-size: 24px;
 }
 
-
 @mixin animated {
-		-webkit-transition: all .2s ease-in-out;
-		-moz-transition: all .2s ease-in-out;
-		transition: all .2s ease-in-out;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 
 @mixin red-button {
@@ -89,3 +88,4 @@
     background: $overlay-color;
   }
 }
+

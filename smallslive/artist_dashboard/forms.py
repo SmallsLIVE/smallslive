@@ -4,6 +4,8 @@ from allauth.account.utils import user_pk_to_url_str, user_username
 from allauth.utils import build_absolute_uri
 import datetime
 from calendar import monthrange
+
+from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML, Button, LayoutObject, TEMPLATE_PACK, MultiField
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
@@ -12,13 +14,14 @@ from django.core.urlresolvers import reverse
 from django_countries import countries
 import floppyforms
 import allauth.account.forms as allauth_forms
+from extra_views import InlineFormSet
 from localflavor.us.forms import USStateField
 from localflavor.us.us_states import STATE_CHOICES
 from artists.forms import ArtistAddForm
 from artists.models import CurrentPayoutPeriod
 from events import forms as event_forms
 from events.forms import Formset
-from events.models import Recording
+from events.models import Recording, GigPlayed
 
 User = get_user_model()
 
@@ -32,9 +35,38 @@ class ToggleRecordingStateForm(forms.ModelForm):
         fields = ('state',)
 
 
+class ArtistGigPlayedAddInlineFormSet(InlineFormSet):
+    model = GigPlayed
+    fields = ('artist', 'role', 'is_leader', 'sort_order')
+    extra = 0
+    can_delete = False
+
+    def construct_formset(self):
+        formset = super(ArtistGigPlayedAddInlineFormSet, self).construct_formset()
+        for num, form in enumerate(formset):
+            form.fields['artist'].empty_label = "Artist"
+            form.fields['artist'].widget.attrs['class'] = "artist_field"
+            form.fields['role'].empty_label = "Role"
+            form.fields['role'].widget.attrs['class'] = "role_field"
+            form.fields['is_leader'].initial = False
+            form.fields['is_leader'].label = 'Leader'
+            form.fields['sort_order'].initial = num
+            form.fields['sort_order'].widget = forms.HiddenInput()
+            form.fields['sort_order'].widget.attrs['class'] = "sort_order_field"
+        return formset
+
+
 class EventEditForm(event_forms.EventEditForm):
     class Meta(event_forms.EventEditForm.Meta):
         pass
+
+    def get_layout(self):
+        return Layout(
+            'title',
+            Formset('artists', template='form_widgets/formset_layout.html'),
+            'photo',
+            'cropping'
+        )
 
     def __init__(self, *args, **kwargs):
         super(EventEditForm, self).__init__(*args, **kwargs)

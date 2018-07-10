@@ -453,6 +453,10 @@ class EventSet(models.Model):
     video_recording = models.OneToOneField('events.Recording', related_name='set_is_video', blank=True, null=True)
     audio_recording = models.OneToOneField('events.Recording', related_name='set_is_audio', blank=True, null=True)
 
+    @property
+    def has_media(self):
+        return self.video_recording or self.audio_recording
+
 
 class GigPlayedQuerySet(models.QuerySet):
     def upcoming(self):
@@ -468,6 +472,7 @@ class GigPlayed(models.Model):
     role = models.ForeignKey('artists.Instrument')
     is_leader = models.BooleanField(default=False)
     sort_order = models.CharField(max_length=30, blank=True)
+    is_admin = models.BooleanField(default=False)
 
     objects = GigPlayedQuerySet.as_manager()
 
