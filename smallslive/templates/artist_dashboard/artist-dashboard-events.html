@@ -59,8 +59,8 @@
                             </div>
                             <div class="artist-event-actions flex-row">
                                 <div class="button-row button-row-margin">
-                                    {% if gig_info.is_admin and set.video_recording %}
-                                        {% if set.video_recording.state != 'Published' %}
+                                    {% if gig_info.is_admin and set.has_media %}
+                                        {% if set.video_recording and set.video_recording.state != 'Published' or set.audio_recording and set.audio_recording.state != 'Published' %}
                                             <button class="publish-button" onclick="askPublish({{ set.id }})">
                                                 Publish
                                             </button>
@@ -88,11 +88,6 @@
                                         <button disabled>Metrics</button>
                                     {% endif %}
                                 </div>
-
-                                {% if gig_info.is_admin %}
-                                    {% if set.video_recording %}
-                                    {% endif %}
-                                {% endif %}
                             </div>
 
                         </div>

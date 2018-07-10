@@ -103,12 +103,26 @@
 
         function showSelectFormat(videoUrl, audioUrl) {
             var $downloadFormat = $('#downloadFormat');
-            $downloadFormat.find('#downloadFormatAudioUrl').attr({href: audioUrl}).on('click', function () {
-                $downloadFormat.modal('hide');
-            });
-            $downloadFormat.find('#downloadFormatVideoUrl').attr({href: videoUrl}).on('click', function () {
-                $downloadFormat.modal('hide');
-            });
+            var audioButton = $downloadFormat.find('#downloadFormatAudioUrl');
+            var videoButton = $downloadFormat.find('#downloadFormatVideoUrl');
+
+            if (audioUrl !== '') {
+                audioButton.attr({href: audioUrl}).on('click', function () {
+                    $downloadFormat.modal('hide');
+                });
+                audioButton.find('button').prop('disabled', false);
+            } else {
+                audioButton.find('button').prop('disabled', true);
+            }
+
+            if (videoUrl !== '') {
+                videoButton.attr({href: videoUrl}).on('click', function () {
+                    $downloadFormat.modal('hide');
+                });
+                videoButton.find('button').prop('disabled', false);
+            } else {
+                videoButton.find('button').prop('disabled', true);
+            }
             $downloadFormat.modal('show');
         }
 
