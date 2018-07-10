@@ -62,13 +62,14 @@ function changePage(param) {
 }
 
 function sendEventRequest() {
+    var utcDate = eventDate.getFullYear() + '/' + (eventDate.getMonth() + 1) + '/' + eventDate.getDate();
     $.ajax({
         url: '/search/ajax/event/',
         data: {
             'main_search': searchTerm,
             'page': eventPageNum,
             'order': eventOrderFilter,
-            'date': eventDate
+            'date': utcDate
         },
         dataType: 'json',
         success: function (data) {

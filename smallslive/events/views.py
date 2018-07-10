@@ -33,7 +33,7 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from artists.models import Artist
-from events.models import get_today_start, EventSet, Recording
+from events.models import get_today_start, StaffPick, EventSet, Recording
 from metrics.models import UserVideoMetric, RANGE_WEEK, RANGE_MONTH, RANGE_YEAR
 from oscar_apps.catalogue.models import Product
 from search.utils import facets_by_model_name
@@ -176,6 +176,16 @@ class StyleGuideView(TemplateView):
 styleguide = StyleGuideView.as_view()
 
 
+def check_staff_picked(event, is_staff_pick):
+    if is_staff_pick:
+        if not hasattr(event, 'staff_picked'):
+            StaffPick.objects.create(event=event,
+                                     date_picked=timezone.now())
+    else:
+        if hasattr(event, 'staff_picked'):
+            event.staff_picked.delete()
+
+
 class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlinesView):
     template_name = 'events/event_add.html'
     model = Event
@@ -189,6 +199,13 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
         context['sets'].helper = EventSetInlineFormsetHelper()
         context['show_times'] = json.dumps(settings.SHOW_TIMES)
         return context
+
+    def post(self, request, *args, **kwargs):
+        response = super(EventAddView, self).post(request, *args, **kwargs)
+        check_staff_picked(self.object, self.request.POST.get('staff_pick', 'off') == 'on')
+        return response
+
+
 
 event_add = EventAddView.as_view()
 
@@ -265,18 +282,11 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
 
         return form
 
+    def post(self, *args, **kwargs):
+        response = super(EventEditView, self).post(*args, **kwargs)
+        check_staff_picked(self.object, self.request.POST.get('staff_pick', 'off') == 'on')
+        return response
 
-    # def test_func(self, user):
-    #     """
-    #     Show 403 forbidden page only when the logged in user doesn't have required
-    #     permissions, redirect anonymous users to the login screen.
-    #     """
-    #     self.raise_exception = True
-    #     try:
-    #         artist_id_match = self.kwargs.get('pk') == str(user.artist.id)
-    #     except Artist.DoesNotExist:
-    #         artist_id_match = False
-    #     return (artist_id_match or user.is_superuser)
 
 event_edit = staff_member_required(EventEditView.as_view())
 

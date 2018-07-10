@@ -127,6 +127,8 @@ class SearchMixin(object):
                              recordings__state=Recording.STATUS.Published)
 
             if date:
+                # Force hours to start of day
+                date = date.replace(hour=10, minute=0, second=0, microsecond=0)
                 sqs = sqs.filter(start__gte=date)
 
             if order == 'popular':

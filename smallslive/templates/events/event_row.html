@@ -9,7 +9,7 @@
           <div class="accent-color">{{ event.venue.name }}</div>
         {% endif %}
         {% if not hidde_event_date %}
-        <div class="text-grey">{{ event.start|date:'m/d.Y' }}</div>
+        <div class="text-grey">{{ event.date|date:'m/d.Y' }}</div>
         {% endif %}
       </div>
     </div>
