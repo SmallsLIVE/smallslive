@@ -178,18 +178,6 @@ class EventAddForm(forms.ModelForm):
             'staff_pick',
         )
 
-    def save(self, commit=True):
-        instance = super(EventAddForm, self).save(commit)
-        if self.cleaned_data.get('staff_pick'):
-            if not hasattr(instance, 'staff_picked'):
-                StaffPick.objects.create(event=instance,
-                                         date_picked=timezone.now())
-        else:
-            if hasattr(instance, 'staff_picked'):
-                instance.staff_picked.delete()
-
-        return instance
-
 
 class EventEditForm(EventAddForm):
     class Meta(EventAddForm.Meta):
