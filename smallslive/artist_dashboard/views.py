@@ -141,7 +141,7 @@ class MyFutureEventsView(MyEventsView):
 
     def get_context_data(self, **kwargs):
         context = super(MyFutureEventsView, self).get_context_data(**kwargs)
-        context['future_active'] = True
+        context['is_future'] = True
         context['reverse_ajax'] = 'artist_dashboard:my_future_events_ajax'
         return context
 
@@ -186,7 +186,7 @@ class MyPastEventsView(MyEventsView):
 
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsView, self).get_context_data(**kwargs)
-        context['past_active'] = True
+        context['is_future'] = False
         context['reverse_ajax'] = 'artist_dashboard:my_past_events_ajax'
         return context
 
