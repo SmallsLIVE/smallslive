@@ -69,6 +69,8 @@ class GigPlayedAddInlineFormSet(InlineFormSet):
             form.fields['role'].widget.attrs['class'] = "role_field"
             form.fields['is_leader'].initial = True
             form.fields['is_leader'].initial = False
+            form.fields['is_leader'].label = 'Leader'
+            form.fields['is_admin'].label = 'Admin'
             form.fields['sort_order'].initial = num
             form.fields['sort_order'].widget = forms.HiddenInput()
             form.fields['sort_order'].widget.attrs['class'] = "sort_order_field"
@@ -163,14 +165,15 @@ class EventAddForm(forms.ModelForm):
 
     def get_layout(self):
         return Layout(
-            'venue', Field('date', css_class='datepicker'),
+            'venue',
+            'title',
+            'subtitle',
+            Field('date', css_class='datepicker'),
             Field('start', css_class='datepicker'),
             Field('end', css_class='datepicker'),
             FormActions(css_class='form-group slot-buttons'),
-            Formset('artists', template='form_widgets/formset_layout.html'),
             Formset('sets', template='form_widgets/set_formset_layout.html'),
-            'title',
-            'subtitle',
+            Formset('artists', template='form_widgets/formset_layout.html'),
             'photo',
             'cropping',
             'description',
@@ -182,7 +185,7 @@ class EventAddForm(forms.ModelForm):
 class EventEditForm(EventAddForm):
     class Meta(EventAddForm.Meta):
         fields = (
-            'venue', 'date', 'start', 'end', 'title', 'subtitle', 'photo', 'cropping',
+            'venue', 'title', 'subtitle', 'date', 'start', 'end', 'photo', 'cropping',
             'description', 'state', 'staff_pick')
 
 

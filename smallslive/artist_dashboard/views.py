@@ -34,8 +34,8 @@ import events.views as event_views
 import users.forms as user_forms
 from users.models import LegalAgreementAcceptance
 from users.views import HasArtistAssignedMixin, HasArtistAssignedOrIsSuperuserMixin
-from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm,\
-    EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm
+from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm, \
+    EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm, ArtistGigPlayedAddInlineFormSet
 from artist_dashboard.tasks import generate_payout_sheet_task, update_current_period_metrics_task
 
 
@@ -296,7 +296,7 @@ class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
     success_url = reverse_lazy("artist_dashboard:my_past_events")
     template_name = 'artist_dashboard/event_edit.html'
 
-    inlines = [GigPlayedEditInlineFormset]
+    inlines = [ArtistGigPlayedAddInlineFormSet]
     inlines_names = ['artists']
 
     def get_context_data(self, **kwargs):
