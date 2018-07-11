@@ -62,14 +62,16 @@ function changePage(param) {
 }
 
 function sendEventRequest() {
-    var utcDate = eventDate.getFullYear() + '/' + (eventDate.getMonth() + 1) + '/' + eventDate.getDate();
+    if (eventDate) {
+        var utcDate = eventDate.getFullYear() + '/' + (eventDate.getMonth() + 1) + '/' + eventDate.getDate();
+    }
     $.ajax({
         url: '/search/ajax/event/',
         data: {
             'main_search': searchTerm,
             'page': eventPageNum,
             'order': eventOrderFilter,
-            'date': utcDate
+            'date': utcDate ? utcDate : null
         },
         dataType: 'json',
         success: function (data) {
@@ -174,14 +176,6 @@ $(document).ready(function () {
 
         sendArtistRequest();
         $(".instruments-container").css("display", "none");
-
-        if (searchTerm.length == 0) {
-            searchTerm = artistInstrument;
-        } else {
-            searchTerm += " " + artistInstrument;
-        }
-
-        sendEventRequest();
     });
 
     var $datePicker = $('#search-date-picker input');

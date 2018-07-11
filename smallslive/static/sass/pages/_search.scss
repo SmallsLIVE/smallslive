@@ -69,6 +69,7 @@
 
 .subheader-results {
   margin-left: 370px;
+  vertical-align: bottom;
 }
 
 .subheader-results-artist {
@@ -197,4 +198,13 @@
   color: black;
   opacity: 1;
   text-align: center;
+}
+
+.section-title {
+  padding-bottom: 0 !important;
+}
+
+.section-title > .title1 {
+  vertical-align: bottom;
+  padding-bottom: 3px;
 }
