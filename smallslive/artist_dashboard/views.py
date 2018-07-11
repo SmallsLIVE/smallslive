@@ -240,6 +240,44 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
 dashboard = DashboardView.as_view()
 
 
+class MetricsView(HasArtistAssignedMixin, TemplateView):
+    template_name = 'artist_dashboard/metrics.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(MetricsView, self).get_context_data(**kwargs)
+        artist = self.request.user.artist
+        # artist_event_ids = list(self.request.user.artist.event_id_list())
+
+        # need to pass the artist ID to cached function so it caches a different result for each artist
+        # @cached(timeout=6*60*60)
+        # def _most_popular_events(artist_id):
+        #     context = {}
+        #     most_popular_event_ids = UserVideoMetric.objects.top_all_time_events(artist_event_ids=artist_event_ids)
+        #     most_popular_events = []
+        #     for event_data in most_popular_event_ids:
+        #         try:
+        #             event = Event.objects.filter(id=event_data['event_id']).annotate(
+        #                 added=Max('recordings__date_added')).first()
+        #             most_popular_events.append(event)
+        #         except Event.DoesNotExist:
+        #             pass
+        #     context['most_popular_events'] = most_popular_events
+        #     return context
+
+        # context.update(_most_popular_events(artist.id))
+        first_login = self.request.user.is_first_login()
+        context['first_login'] = first_login
+        context['current_payout_period'] = CurrentPayoutPeriod.objects.first()
+        context['previous_payout_period'] = artist.earnings.first()
+        # don't show intro.js when user reloads the dashboard
+        if first_login:
+            self.request.user.last_login += timedelta(seconds=1)
+            self.request.user.save()
+        return context
+
+metrics = MetricsView.as_view()
+
+
 class EditProfileView(HasArtistAssignedMixin, UpdateView):
     form_class = EditProfileForm
     model = Artist
@@ -552,3 +590,22 @@ class ResetPasswordFromKeyDoneView(allauth_views.PasswordResetFromKeyDoneView):
     template_name = 'artist_dashboard/change_password_done.html'
 
 password_reset_from_key_done = ResetPasswordFromKeyDoneView.as_view()
+
+
+class ArtistPayoutAjaxView(HasArtistAssignedMixin, DetailView):
+    template_name = 'artist_dashboard/artist-dashboard-payout.html'
+    model = ArtistEarnings
+
+    def get_context_data(self, **kwargs):
+        context = super(ArtistPayoutAjaxView, self).get_context_data()
+        context['artist'] = self.request.user.artist
+        context['earning'] = self.object
+        return context
+
+    # def get(self, request, *args, **kwargs):
+    #     self.object = self.get_object()
+    #     context = self.get_context_data(object=self.object)
+    #     return self.render_to_response(context)
+
+
+artist_payout_detail_ajax = ArtistPayoutAjaxView.as_view()

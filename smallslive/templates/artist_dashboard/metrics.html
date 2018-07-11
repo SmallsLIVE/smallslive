@@ -1,0 +1,95 @@
+{% extends "artist_dashboard/home.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+{% block home-active %}active{% endblock %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <div class="artist-profile-container">
+        <section class="section-title">
+            <div class="title1">Payout Period</div>
+        </section>
+        <div class="labeled-select">
+            <button class="white-border-button">Current Period</button>
+            <div class="white-border-select" style="width: 250px; float:none">
+                <select id="artist_payout_select">
+                    <option value="current" class="text-grey">
+                        {{ current_payout_period.period_start|date:"b j, Y" }} -
+                        {{ current_payout_period.period_end|date:"b j, Y" }}
+                    </option>
+                    {% for earning in user.artist.earnings.all %}
+                        <option value="{{ earning.id }}">
+                            {{ earning.payout_period.period_start|date:"b j, Y" }} -
+                            {{ earning.payout_period.period_end|date:"b j, Y" }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="artist-payout-data">
+            <div id="currentPayoutData">
+                <div class="flex-row content-space-between">
+                    <div>
+                        <div class="title5">Seconds Viewed</div>
+                        <div>
+                            <div class="title2">Archive pool</div>
+                            <div class="text4 text-grey">{{ current_payout_period.current_total_seconds }} seconds</div>
+                        </div>
+                        <div>
+                            <div class="title2">{{ user.artist.first_name }} {{ user.artist.last_name }}</div>
+                            <div class="text4 text-grey">{{ user.artist.current_period_seconds_played }} seconds</div>
+                        </div>
+                        <div>
+                            <div class="title2">Ratio</div>
+                            <div class="text4 text-grey">
+                                {{ user.artist.current_period_percentage_ratio|floatformat:"-5" }}% of
+                                archive
+                                pool
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="payoutData">
+            </div>
+        </div>
+        <section class="section-title">
+            <div class="title1">Engagement</div>
+        </section>
+    </div>
+{% endblock content %}
+
+
+{% block extra_js %}
+  <script src="{% static 'js/intro/intro.min.js' %}"></script>
+  <script>
+      var payoutsUrl = '/dashboard/my-payouts/';
+      $(document).ready(function () {
+          var $payoutData = $('#payoutData');
+          var $currentPayoutData = $('#currentPayoutData');
+
+          $("#artist_payout_select").on('change', function () {
+              var payoutId = $("#artist_payout_select").val();
+              console.log('Detected', payoutId);
+              console.log(payoutsUrl);
+
+              if (payoutId !== 'current') {
+                  $.ajax({
+                      url: payoutsUrl + '/' + payoutId,
+                      success: function (data) {
+                          console.log(data);
+                          $payoutData.html(data);
+                          $payoutData.show();
+                          $currentPayoutData.hide();
+                      }
+                  })
+              } else {
+                $payoutData.hide();
+                $currentPayoutData.show();
+              }
+          })
+      })
+  </script>
+{% endblock %}

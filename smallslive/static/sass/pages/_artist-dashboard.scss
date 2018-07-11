@@ -2,6 +2,23 @@
   padding: 0 10%;
   margin-bottom: 40px;
 
+  .labeled-select {
+    display: flex;
+
+    button {
+      border-right: none;
+    }
+
+    .select-selected {
+      border-left: none;
+    }
+
+    .select-items {
+      margin-top: 5px;
+    }
+
+  }
+
   .artist-form {
     padding: 0 10%;
 
@@ -15,6 +32,7 @@
         width: auto;
       }
     }
+
   }
 
   .artist-event-row {
@@ -132,3 +150,10 @@
   width: 150px;
 }
 
+.artist-payout-data {
+  margin: 25px 0;
+
+  .title2 {
+    margin-top: 20px;
+  }
+}

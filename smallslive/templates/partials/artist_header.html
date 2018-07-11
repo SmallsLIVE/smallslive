@@ -24,6 +24,11 @@
               Upcoming
           </button>
       </a>
+      <a href="{% url 'artist_dashboard:metrics' %}">
+          <button class="no-border {% if request.resolver_match.url_name == 'metrics' %}active{% endif %}">
+              Metrics
+          </button>
+      </a>
       <a href="{% url 'artist_dashboard:edit_profile' %}">
           <button class="no-border  {% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">
               Public Profile
