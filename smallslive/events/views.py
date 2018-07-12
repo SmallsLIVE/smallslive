@@ -880,50 +880,62 @@ class SessionEventsCountView(views.APIView):
 
         counts = list(UserVideoMetric.objects.filter(metric_filter).values(
             'date', 'recording_type'
-        ).order_by('date').total_counts_annotate())
+        ).order_by('date').total_counts_annotate().filter(seconds_played__gt=0))
 
         if not start or not end:
-            start = counts[0]['date']
-            end = counts[-1]['date']
+            if len(counts):
+                start = counts[0]['date']
+                end = counts[-1]['date']
 
-        days_in_month = (end - start).days
-        days = range(0, days_in_month)
+        if start and end:
+            days_in_range = (end - start).days + 1
+            days = range(0, days_in_range)
 
-        audio_play_counts = {}
-        audio_minutes_counts = {}
-        video_play_counts = {}
-        video_minutes_counts = {}
-        for entry in counts:
-            day = (entry['date'] - start).days
-            # day = entry['date'].day
-            if entry['recording_type'] == 'V':
-                video_play_counts[day] = entry['play_count']
-                video_minutes_counts[day] = entry['seconds_played'] / 60
-            else:
-                audio_play_counts[day] = entry['play_count']
-                audio_minutes_counts[day] = entry['seconds_played'] / 60
+            audio_play_counts = {}
+            audio_minutes_counts = {}
+            video_play_counts = {}
+            video_minutes_counts = {}
+            for entry in counts:
+                day = (entry['date'] - start).days
+                # day = entry['date'].day
+                if entry['recording_type'] == 'V':
+                    video_play_counts[day] = entry['play_count']
+                    video_minutes_counts[day] = entry['seconds_played'] / 60
+                else:
+                    audio_play_counts[day] = entry['play_count']
+                    audio_minutes_counts[day] = entry['seconds_played'] / 60
 
-        count_data = dict(
-            audio_plays_list=[audio_play_counts.get(day_number, 0) for day_number in days],
-            audio_minutes_list=[audio_minutes_counts.get(day_number, 0) for day_number in days],
-            video_plays_list=[video_play_counts.get(day_number, 0) for day_number in days],
-            video_minutes_list=[video_minutes_counts.get(day_number, 0) for day_number in days]
-        )
+            count_data = dict(
+                audio_plays_list=[audio_play_counts.get(day_number, 0) for day_number in days],
+                audio_minutes_list=[audio_minutes_counts.get(day_number, 0) for day_number in days],
+                video_plays_list=[video_play_counts.get(day_number, 0) for day_number in days],
+                video_minutes_list=[video_minutes_counts.get(day_number, 0) for day_number in days]
+            )
 
-        count_data['total_plays_list'] = [a + v for a, v in zip(count_data['audio_plays_list'], count_data['video_plays_list'])]
-        count_data['total_minutes_list'] = [
-            a + v for a, v in zip(count_data['audio_minutes_list'], count_data['video_minutes_list'])
-        ]
+            count_data['total_plays_list'] = [a + v for a, v in zip(count_data['audio_plays_list'], count_data['video_plays_list'])]
+            count_data['total_minutes_list'] = [
+                a + v for a, v in zip(count_data['audio_minutes_list'], count_data['video_minutes_list'])
+            ]
 
-        count_data['dates'] = []
-        for day in days:
-            current_day = start + timedelta(day)
-            label_format = '%m/%d'
+            count_data['dates'] = []
+            for day in days:
+                current_day = start + timedelta(day)
+                label_format = '%m/%d'
 
-            if current_day.day == 1:
-                label_format = '%m/%d/%Y'
+                if current_day.day == 1:
+                    label_format = '%m/%d/%Y'
 
-            count_data['dates'].append(current_day.strftime(label_format))
+                count_data['dates'].append(current_day.strftime(label_format))
+        else:
+            count_data = dict(
+                audio_plays_list=[],
+                audio_minutes_list=[],
+                video_plays_list=[],
+                video_minutes_list=[],
+                total_plays_list=[],
+                total_minutes_list=[],
+                dates=[]
+            )
 
         s = MonthMetricsSerializer()
         return Response(data=s.to_representation(count_data))
