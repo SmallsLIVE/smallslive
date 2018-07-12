@@ -27,6 +27,13 @@
       }
     }
   }
+
+  &.white-border-multiline {
+    .select-items div, .select-selected {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
 }
 
 .select-selected {
@@ -46,11 +53,11 @@
   cursor: pointer;
   display: flex;
   justify-content: center;
+  align-items: center;
 
   padding: 1em;
 
   height: 40px;
-  align-items: center;
 }
 /*style items (options):*/
 .select-items {

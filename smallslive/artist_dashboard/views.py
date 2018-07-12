@@ -1,4 +1,5 @@
 from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 from cacheops import cached
 from django.conf import settings
 from django.db.models import Max, Sum
@@ -266,9 +267,42 @@ class MetricsView(HasArtistAssignedMixin, TemplateView):
 
         # context.update(_most_popular_events(artist.id))
         first_login = self.request.user.is_first_login()
-        context['first_login'] = first_login
         context['current_payout_period'] = CurrentPayoutPeriod.objects.first()
         context['previous_payout_period'] = artist.earnings.first()
+
+        today = timezone.datetime.today()
+        month_start = today.replace(day=1)
+
+        start_of_week = today - timedelta(days=today.weekday())
+        context['date_ranges'] = [
+            {
+                'display': 'Last Week',
+                'start': (start_of_week - timedelta(days=7)).isoformat(),
+                'end': start_of_week.isoformat()
+            },
+            {
+                'key': 'month',
+                'display': 'This Month',
+                'start': month_start.isoformat(),
+                'end': today.isoformat()
+            },
+            {
+                'display': 'Last Month',
+                'start': (month_start - relativedelta(months=1)).isoformat(),
+                'end': month_start.isoformat()
+            },
+            {
+                'display': 'Last 3 Months',
+                'start': (month_start - relativedelta(months=3)).isoformat(),
+                'end': month_start.isoformat()
+            },
+            {
+                'display': 'Last 6 Months',
+                'start': (month_start - relativedelta(months=6)).isoformat(),
+                'end': month_start.isoformat()
+            }
+        ]
+
         # don't show intro.js when user reloads the dashboard
         if first_login:
             self.request.user.last_login += timedelta(seconds=1)

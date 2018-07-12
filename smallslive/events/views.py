@@ -4,7 +4,7 @@ import calendar
 from datetime import time as std_time
 from cacheops import cached
 from django.core import signing
-from django.db.models import Count
+from django.db.models import Count, Q
 import monthdelta
 import json
 from django.conf import settings
@@ -25,6 +25,8 @@ from braces.views import StaffuserRequiredMixin
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInlinesView
 from haystack.query import RelatedSearchQuerySet
 from haystack.views import SearchView
+from rest_framework import status, views, serializers
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import CreateModelMixin
@@ -35,6 +37,8 @@ from rest_framework.viewsets import GenericViewSet
 from artists.models import Artist
 from events.models import get_today_start, StaffPick, EventSet, Recording
 from metrics.models import UserVideoMetric, RANGE_WEEK, RANGE_MONTH, RANGE_YEAR
+from metrics.serializers import MonthMetricsSerializer
+from metrics.views import EventCountsView
 from oscar_apps.catalogue.models import Product
 from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
@@ -851,3 +855,78 @@ class MakePrivate(GenericViewSet):
 
 
 make_private = MakePrivate.as_view({'post': 'post'})
+
+
+# TODO Maybe include this "serialization" in metrics package?
+class SessionEventsCountView(views.APIView):
+    def get(self, request, format=None):
+        start = request.query_params.get('start')
+        end = request.query_params.get('end')
+
+        event_id = request.query_params.get('event_id')
+        if event_id:
+            metric_filter = Q(event_id=event_id)
+        else:
+            event_ids = list(self.request.user.artist.gigs_played.values_list('event_id', flat=True))
+            metric_filter = Q(event_id__in=event_ids)
+
+        if start and end:
+            try:
+                start = serializers.DateField().to_internal_value(start)
+                end = serializers.DateField().to_internal_value(end)
+                metric_filter &= Q(date__range=(start, end))
+            except TypeError:
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        counts = list(UserVideoMetric.objects.filter(metric_filter).values(
+            'date', 'recording_type'
+        ).order_by('date').total_counts_annotate())
+
+        if not start or not end:
+            start = counts[0]['date']
+            end = counts[-1]['date']
+
+        days_in_month = (end - start).days
+        days = range(0, days_in_month)
+
+        audio_play_counts = {}
+        audio_minutes_counts = {}
+        video_play_counts = {}
+        video_minutes_counts = {}
+        for entry in counts:
+            day = (entry['date'] - start).days
+            # day = entry['date'].day
+            if entry['recording_type'] == 'V':
+                video_play_counts[day] = entry['play_count']
+                video_minutes_counts[day] = entry['seconds_played'] / 60
+            else:
+                audio_play_counts[day] = entry['play_count']
+                audio_minutes_counts[day] = entry['seconds_played'] / 60
+
+        count_data = dict(
+            audio_plays_list=[audio_play_counts.get(day_number, 0) for day_number in days],
+            audio_minutes_list=[audio_minutes_counts.get(day_number, 0) for day_number in days],
+            video_plays_list=[video_play_counts.get(day_number, 0) for day_number in days],
+            video_minutes_list=[video_minutes_counts.get(day_number, 0) for day_number in days]
+        )
+
+        count_data['total_plays_list'] = [a + v for a, v in zip(count_data['audio_plays_list'], count_data['video_plays_list'])]
+        count_data['total_minutes_list'] = [
+            a + v for a, v in zip(count_data['audio_minutes_list'], count_data['video_minutes_list'])
+        ]
+
+        count_data['dates'] = []
+        for day in days:
+            current_day = start + timedelta(day)
+            label_format = '%m/%d'
+
+            if current_day.day == 1:
+                label_format = '%m/%d/%Y'
+
+            count_data['dates'].append(current_day.strftime(label_format))
+
+        s = MonthMetricsSerializer()
+        return Response(data=s.to_representation(count_data))
+
+
+metrics_event_counts = SessionEventsCountView.as_view()

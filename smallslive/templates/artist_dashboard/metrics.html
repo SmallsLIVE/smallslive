@@ -1,6 +1,8 @@
 {% extends "artist_dashboard/home.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
+{% load fromisoformat %}
+
 
 {% block home-active %}active{% endblock %}
 
@@ -38,7 +40,7 @@
                             <div class="text4 text-grey">{{ current_payout_period.current_total_seconds }} seconds</div>
                         </div>
                         <div>
-                            <div class="title2">{{ user.artist.first_name }} {{ user.artist.last_name }}</div>
+                            <div class="title2">{{ user.artist.full_name }}</div>
                             <div class="text4 text-grey">{{ user.artist.current_period_seconds_played }} seconds</div>
                         </div>
                         <div>
@@ -58,14 +60,108 @@
         <section class="section-title">
             <div class="title1">Engagement</div>
         </section>
+        <div class="flex-column">
+            <div class="flex-row content-space-between">
+                <div class="flex-row items-center">
+                    <span class="title2">FILTER BY:</span>
+                    <div class="white-border-select white-border-multiline engagement-event-select" style="width: 300px; float:none">
+                        <select id="artist_event_select">
+                            <option value="all" selected>All Shows</option>
+                            {% for gig in user.artist.gigs_played.all %}
+                                <option value="{{ gig.event.id }}">
+                                    {{ gig.event.date|date:'m/d/Y' }} | {{ gig.event.get_set_hours_display }}#{{ gig.event.title }}#{{ gig.event.venue }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="white-border-select" style="width: 500px; float:none">
+                    <select id="artist-metrics-date-select">
+                        {% for range in date_ranges %}
+                            <option value="{{ forloop.counter0 }}">{{ range.display }} | {{ range.start|fromisoformat|date:"b j, Y" }} - {{ range.end|fromisoformat|date:"b j, Y" }}</option>
+                        {% endfor %}
+                        <option value="all">All Time</option>
+                    </select>
+                </div>
+
+            </div>
+            <div>
+                <div class="metric-graph__instance" id="metric-graph__instance-1">
+                    <canvas class="graph-canvas" id="graph-canvas"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock content %}
 
 
 {% block extra_js %}
-  <script src="{% static 'js/intro/intro.min.js' %}"></script>
+    <script src="{% static 'js/Chart.min.js' %}"></script>
+    <script src="{% static 'js/metrics_datepicker.js' %}"></script>
   <script>
+
+      var ranges = {{ date_ranges|safe }};
+      var selectedRange = 'all';
       var payoutsUrl = '/dashboard/my-payouts/';
+      var playsData = {
+          datasets: [{
+              label: "Audio",
+              fillColor: "rgba(56,193,153,0)",
+              strokeColor: "rgba(56,193,153,1)",
+              pointColor: "rgba(56,193,153,1)",
+              pointStrokeColor: "#fff",
+              pointHighlightFill: "#fff",
+              pointHighlightStroke: "rgba(151,187,205,1)"
+          }, {
+              label: "Video",
+              fillColor: "rgba(125,77,117,0)",
+              strokeColor: "rgba(125,77,117,1)",
+              pointColor: "rgba(125,77,117,1)",
+              pointStrokeColor: "#fff",
+              pointHighlightFill: "#fff",
+              pointHighlightStroke: "rgba(151,187,205,1)"
+          }, {
+              label: "Total",
+              fillColor: "rgba(210,21,53,0)",
+              strokeColor: "rgba(210,21,53,1)",
+              pointColor: "rgba(210,21,53,1)",
+              pointStrokeColor: "#fff",
+              pointHighlightFill: "#fff",
+              pointHighlightStroke: "rgba(220,220,220,1)"
+          }]
+      };
+      var minsData = {
+          datasets: [
+              {
+                  label: "Audio",
+                  fillColor: "rgba(56,193,153,0)",
+                  strokeColor: "rgba(56,193,153,1)",
+                  pointColor: "rgba(56,193,153,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(151,187,205,1)"
+              },
+              {
+                  label: "Video",
+                  fillColor: "rgba(125,77,117,0)",
+                  strokeColor: "rgba(125,77,117,1)",
+                  pointColor: "rgba(125,77,117,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(151,187,205,1)"
+              },
+              {
+                  label: "Total",
+                  fillColor: "rgba(210,21,53,0)",
+                  strokeColor: "rgba(210,21,53,1)",
+                  pointColor: "rgba(210,21,53,1)",
+                  pointStrokeColor: "#fff",
+                  pointHighlightFill: "#fff",
+                  pointHighlightStroke: "rgba(220,220,220,1)"
+              }
+          ]
+
+      };
       $(document).ready(function () {
           var $payoutData = $('#payoutData');
           var $currentPayoutData = $('#currentPayoutData');
@@ -89,7 +185,62 @@
                 $payoutData.hide();
                 $currentPayoutData.show();
               }
-          })
+          });
+
+          $('#artist-metrics-date-select').on('change', function () {
+             loadData();
+          });
+
+          var loadData = function () {
+              var eventId = $("#artist_event_select").val();
+
+
+              var rangeSel = $('#artist-metrics-date-select').val();
+              var data = {};
+
+              if (eventId !== 'all') {
+                data.event_id = eventId;
+              }
+
+              if (rangeSel !== 'all') {
+                  selectedRange = parseInt(rangeSel, 10);
+                  data.start =  moment(ranges[selectedRange].start).format('YYYY-MM-DD');
+                  data.end =  moment(ranges[selectedRange].end).format('YYYY-MM-DD');
+              }
+
+              var countsURL = "{% url "event_counts" %}";
+              $.ajax(countsURL, {
+                  data: data,
+                  success: function (data, textStatus, jqXHR) {
+                      playsData.labels = data.dates;
+                      playsData.datasets[0].data = data.audio_plays_list;
+                      playsData.datasets[1].data = data.video_plays_list;
+                      playsData.datasets[2].data = data.total_plays_list;
+                      minsData.labels = data.dates;
+                      minsData.datasets[0].data = data.audio_minutes_list;
+                      minsData.datasets[1].data = data.video_minutes_list;
+                      minsData.datasets[2].data = data.total_minutes_list;
+                      $('#graph-canvas').replaceWith('<canvas class="graph-canvas" id="graph-canvas"></canvas>');
+                      {#var playsActive = $("#metric-graph__show__data-1").hasClass("active");#}
+                      var playsActive = false;
+                      if (playsActive) {
+                          drawGraph(playsData);
+                      } else {
+                          drawGraph(minsData, 'minutes');
+                      }
+                  },
+                  type: 'GET',
+                  xhrFields: {
+                      withCredentials: true
+                  }
+              });
+          };
+
+          $('#artist_event_select').on('change', function () {
+              loadData();
+          });
+          loadData();
       })
   </script>
+    <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
 {% endblock %}

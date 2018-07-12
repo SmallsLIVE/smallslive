@@ -157,3 +157,28 @@
     margin-top: 20px;
   }
 }
+
+.white-border-select {
+  &.engagement-event-select {
+    margin-left: 20px;
+
+    .select-items > div, .select-selected {
+      padding: 10px;
+      height: auto;
+    }
+
+    .select-items {
+      & > div {
+        & > span:first-child {
+          border-top: 2px solid $white-transparent;
+          padding-top: 10px;
+        }
+      }
+    }
+
+    .select-items {
+      max-height: 400px;
+      overflow: scroll;
+    }
+  }
+}
