@@ -182,3 +182,11 @@
     }
   }
 }
+
+.graph-container {
+  padding: 50px;
+  .graph-canvas {
+    border: 4px solid $white-transparent;
+    border-radius: 10px
+  }
+}
