@@ -96,6 +96,7 @@
 
 
 {% block extra_js %}
+    <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
     <script src="{% static 'js/Chart.min.js' %}"></script>
     <script src="{% static 'js/metrics_datepicker.js' %}"></script>
   <script>
@@ -242,5 +243,4 @@
           loadData();
       })
   </script>
-    <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
 {% endblock %}

@@ -1,21 +1,45 @@
 /* Bootstrap datepicker for Metrics */
 var drawGraph = function (data, label) {
     var ctx = document.getElementById("graph-canvas").getContext("2d");
-    window.myLine = new Chart(ctx).Line(data, {
-        responsive: true,
-        maintainAspectRatio: false,
-        bezierCurve: false,
-        bezierCurveTension: 0.25,
-        scaleShowVerticalLines: false,
-        scaleOverride: false,
-        showScale: true,
-        pointDotRadius: 6,
-        datasetStrokeWidth: 4,
-        scaleFontSize: 10,
-        scaleFontStyle: "bold",
-        scaleFontColor: "#999",
-        multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> " + label
-    });
+    var config = {
+        type: 'line',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            bezierCurve: false,
+            bezierCurveTension: 0.25,
+            scaleShowVerticalLines: false,
+            scaleOverride: false,
+            showScale: true,
+            pointDotRadius: 6,
+            datasetStrokeWidth: 4,
+            scaleFontSize: 10,
+            scaleFontStyle: "bold",
+            scaleFontColor: "#999",
+            multiTooltipTemplate: "<%if (label){%><%=datasetLabel%>: <%}%><%= value %> " + label,
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        minUnit: 'day'
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        suggestedMax: 10
+                    }
+                }]
+            }
+        }
+    };
+    window.myLine = new Chart(ctx, config);
+};
+
+var updateGraph = function (data) {
+    window.myLine.data = data;
+    window.myLine.update();
 };
 
 var $datePicker = $('#metric-graph__date-picker input');
