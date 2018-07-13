@@ -36,9 +36,8 @@ from rest_framework.viewsets import GenericViewSet
 
 from artists.models import Artist
 from events.models import get_today_start, StaffPick, EventSet, Recording
+from events.serializers import MonthMetricsSerializer
 from metrics.models import UserVideoMetric, RANGE_WEEK, RANGE_MONTH, RANGE_YEAR
-from metrics.serializers import MonthMetricsSerializer
-from metrics.views import EventCountsView
 from oscar_apps.catalogue.models import Product
 from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
@@ -884,8 +883,8 @@ class SessionEventsCountView(views.APIView):
 
         if not start or not end:
             if len(counts):
-                start = counts[0]['date']
-                end = counts[-1]['date']
+                start = counts[0]['date'] - timedelta(days=1)
+                end = counts[-1]['date'] + timedelta(days=1)
 
         if start and end:
             days_in_range = (end - start).days + 1
@@ -897,7 +896,6 @@ class SessionEventsCountView(views.APIView):
             video_minutes_counts = {}
             for entry in counts:
                 day = (entry['date'] - start).days
-                # day = entry['date'].day
                 if entry['recording_type'] == 'V':
                     video_play_counts[day] = entry['play_count']
                     video_minutes_counts[day] = entry['seconds_played'] / 60
@@ -920,12 +918,7 @@ class SessionEventsCountView(views.APIView):
             count_data['dates'] = []
             for day in days:
                 current_day = start + timedelta(day)
-                label_format = '%m/%d'
-
-                if current_day.day == 1:
-                    label_format = '%m/%d/%Y'
-
-                count_data['dates'].append(current_day.strftime(label_format))
+                count_data['dates'].append(current_day)
         else:
             count_data = dict(
                 audio_plays_list=[],
