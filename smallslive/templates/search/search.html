@@ -75,7 +75,7 @@
                         <option value="popular">MOST POPULAR</option>
                     </select>
                 </div>
-            
+
                 <div class="custom-date-picker" id="search-date-picker" style="width: 200px;">
                     <input class="date-picker-text" type="text" placeholder="date" readonly>
                     <i class="fa fa-caret-down"></i>
@@ -88,7 +88,7 @@
             {% include 'search/event_results.html' with events=event_results %}
         </main>
 
-        <div class="concerts-footer">
+        <div class="concerts-footer flex-column items-center">
             <div id="event-subheader-footer" class="header-sub title2 results-text">{{showing_event_results}}</div>
 
             <button id="next-page-btn" class="white-border-button next-page-btn" style="width:220px;">
