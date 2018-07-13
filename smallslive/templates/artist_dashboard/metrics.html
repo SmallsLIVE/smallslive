@@ -124,14 +124,10 @@
 
           $("#artist_payout_select").on('change', function () {
               var payoutId = $("#artist_payout_select").val();
-              console.log('Detected', payoutId);
-              console.log(payoutsUrl);
-
               if (payoutId !== 'current') {
                   $.ajax({
                       url: payoutsUrl + '/' + payoutId,
                       success: function (data) {
-                          console.log(data);
                           $payoutData.html(data);
                           $payoutData.show();
                           $currentPayoutData.hide();
