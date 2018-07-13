@@ -903,17 +903,11 @@ class SessionEventsCountView(views.APIView):
                     audio_play_counts[day] = entry['play_count']
                     audio_minutes_counts[day] = entry['seconds_played'] / 60
 
+            audio_minutes_list = [audio_minutes_counts.get(day_number, 0) for day_number in days]
+            video_minutes_list = [video_minutes_counts.get(day_number, 0) for day_number in days]
             count_data = dict(
-                audio_plays_list=[audio_play_counts.get(day_number, 0) for day_number in days],
-                audio_minutes_list=[audio_minutes_counts.get(day_number, 0) for day_number in days],
-                video_plays_list=[video_play_counts.get(day_number, 0) for day_number in days],
-                video_minutes_list=[video_minutes_counts.get(day_number, 0) for day_number in days]
+                total_minutes_list=[a + v for a, v in zip(audio_minutes_list, video_minutes_list)]
             )
-
-            count_data['total_plays_list'] = [a + v for a, v in zip(count_data['audio_plays_list'], count_data['video_plays_list'])]
-            count_data['total_minutes_list'] = [
-                a + v for a, v in zip(count_data['audio_minutes_list'], count_data['video_minutes_list'])
-            ]
 
             count_data['dates'] = []
             for day in days:
@@ -921,11 +915,6 @@ class SessionEventsCountView(views.APIView):
                 count_data['dates'].append(current_day)
         else:
             count_data = dict(
-                audio_plays_list=[],
-                audio_minutes_list=[],
-                video_plays_list=[],
-                video_minutes_list=[],
-                total_plays_list=[],
                 total_minutes_list=[],
                 dates=[]
             )

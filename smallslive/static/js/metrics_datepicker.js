@@ -100,10 +100,8 @@ var checkPoints = function(chart, data, datasetIndex, remove) {
 
 var updateGraph = function (data) {
     window.myLine.data = data;
-    checkPoints(window.myLine, data, 2, true);
+    checkPoints(window.myLine, data, 0, true);
     window.myLine.update();
-
-
 };
 
 var $datePicker = $('#metric-graph__date-picker input');

@@ -107,24 +107,6 @@
       var minsData = {
           datasets: [
               {
-                  label: "Audio",
-                  backgroundColor: "rgba(56,193,153,0)",
-                  borderColor: "rgba(56,193,153,1)",
-                  pointBackgroundColor: "rgba(56,193,153,1)",
-                  pointBorderColor: "#fff",
-                  pointHoverBackgroundColor: "#fff",
-                  pointHoverBorderColor: "rgba(151,187,205,1)",
-              },
-              {
-                  label: "Video",
-                  backgroundColor: "rgba(125,77,117,0)",
-                  borderColor: "rgba(125,77,117,1)",
-                  pointBackgroundColor: "rgba(125,77,117,1)",
-                  pointBorderColor: "#fff",
-                  pointHoverBackgroundColor: "#fff",
-                  pointHoverBorderColor: "rgba(125,77,117,1)",
-              },
-              {
                   label: "Total",
                   backgroundColor: "rgba(210,21,53,0)",
                   borderColor: "#ed1c24",
@@ -187,9 +169,7 @@
                   data: data,
                   success: function (data, textStatus, jqXHR) {
                       minsData.labels = data.dates;
-                      minsData.datasets[0].data = data.audio_minutes_list;
-                      minsData.datasets[1].data = data.video_minutes_list;
-                      minsData.datasets[2].data = data.total_minutes_list;
+                      minsData.datasets[0].data = data.total_minutes_list;
                       updateGraph(minsData);
                   },
                   type: 'GET',
