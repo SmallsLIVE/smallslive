@@ -74,7 +74,7 @@ var drawGraph = function (data, label) {
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: 'SECONDS PLAYED',
+                        labelString: 'MINUTES PLAYED',
                         padding: 50
                     }
                 }]
