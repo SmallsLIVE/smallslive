@@ -32,6 +32,7 @@
 {% endblock %}
 
 {% block breadcrumbs %}
+    <span class="store-header__title__divider">|</span>
     {% for category in category.get_ancestors %}
         <span class="store-header__title__category"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></span>
         <span class="store-header__title__divider">|</span>
@@ -47,41 +48,43 @@
 {% endblock %}
 
 {% block store_content %}
-    <div class="col-xs-12 col-sm-8 col-md-9 store-single__content">
+    <div class="store-single__content">
         <div class="row">
-            <div class="store-single__item row">
-                <div class="col-xs-12 col-sm-6 store-single__item__images">
+            <div class="store-single__item flex-row">
+                <div class="store-single__item__images">
                     {% with all_images=product.images.all %}
-
                         <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
                             {% for image in all_images %}
-                                {% thumbnail image.original "x365" upscale=False as thumb %}
-                                    <a href="{{ thumb.url }}" class="fancybox"><img class="defineImageRatio"
-                                                                                    src="{{ thumb.url }}"
-                                                                                    alt="{{ product.get_title }}"></a>
-                                {% endthumbnail %}
+                                {% if not image.is_missing %}
+                                    <a href="{% thumbor_url image.original.url|urlencode height=300 width=300 smart=True %}" class="fancybox"><img
+                                            src="{% thumbor_url image.original.url|urlencode height=300 width=300 smart=True %}"
+                                            alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                                {% else %}
+                                    <a href="{% static "image/image_not_found.jpg" %}" class="fancybox"><img
+                                            src="{% static "image/image_not_found.jpg" %}" alt="{{ product.get_title }}"
+                                            class="defineImageRatio"></a>
+                                {% endif %}
                             {% endfor %}
                         </div>
                         <span class="store-single__item__images__helper">(Click/tap on the image to zoom.)</span>
                         <ul class="store-single__item__images__thumbnails">
                             {% for image in all_images %}
-                                {% thumbnail image.original "x75" upscale=False as thumb %}
-                                    <li data-slickPosition="{{ forloop.counter0 }}"
-                                        class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}">
-                                        <img class="defineImageRatio" src="{{ thumb.url }}"
-                                             alt="{{ product.get_title }} thumbnail"></li>
-                                {% endthumbnail %}
+                                <li data-slickPosition="{{ forloop.counter0 }}"
+                                    class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}">
+                                    <img class="defineImageRatio" src="{% thumbor_url image.original.url|urlencode height=300 width=300 smart=True %}"
+                                         alt="{{ product.get_title }} thumbnail">
+                                </li>
                             {% endfor %}
                         </ul>
                     {% endwith %}
                 </div>
-                <div class="col-xs-12 col-sm-6 store-single__item__content">
-                    <h2 class="store-single__item__name">
+                <div class="store-single__item__content">
+                    <div class="store-single__item__name">
                         <a href="#">{{ product.title }}</a>
-                    </h2>
-                    <h3 class="store-single__item__subtitle">
+                    </div>
+                    <div class="store-single__item__subtitle text-grey">
                         {{ product.subtitle }}
-                    </h3>
+                    </div>
                     <div class="store-single__item__description">
                         {{ product.short_description|safe }}
                     </div>

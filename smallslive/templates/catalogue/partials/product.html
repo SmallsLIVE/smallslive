@@ -13,29 +13,34 @@
 {% block product %}
   {% purchase_info_for_product request product as session %}
     <!-- Single store item -->
-    <div class="col-xs-12 col-sm-6 {% if full_width %}col-md-3{% else %}col-md-4{% endif %} store-list-item">
-        <div class="store-list-item__image cd-ratio-container">
+    <div class="store-list-item flex-column items-flex-stretch">
+        <div class="store-list-item-image">
             {% with image=product.primary_image %}
                 {% if not image.is_missing %}
-                  <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=240 width=264 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                  <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=260 width=260 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
                 {% else %}
                   <a href="{{ product.get_absolute_url }}"><img src="{% static "image/image_not_found.jpg" %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
                 {% endif %}
             {% endwith %}
         </div>
-        <h4 class="store-list-item__name"><a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title }}</a></h4>
-        {% if product.product_class.slug == "album" %}<p class="store-list-item__info">{% if product.has_physical_media %}CD / {% endif %}{% if product.has_digital_media %}Digital download / {% endif %}{% if product.has_tracks %}Tracks{% endif %}</p>{% endif %}
+        <span class="text2 store-list-item-tile">
+            <a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title }}</a>
+        </span>
+        {% if product.product_class.slug == "album" %}
+            <p class="text4">{% if product.has_physical_media %}CD / {% endif %}{% if product.has_digital_media %}Digital download / {% endif %}{% if product.has_tracks %}Tracks{% endif %}</p>{% endif %}
+        <span class="text4">
         {% if session.price.exists %}
             {% if session.price.excl_tax == 0 %}
-                <span class="store-list-item__price">{% trans "Free" %}</span>
+                {% trans "Free" %}
             {% elif session.price.is_tax_known %}
-                <span class="store-list-item__price">{{ session.price.incl_tax|currency:session.price.currency }}</span>
+                {{ session.price.incl_tax|currency:session.price.currency }}
             {% else %}
-                <span class="store-list-item__price">{{ session.price.excl_tax|currency:session.price.currency }}</span>
+                {{ session.price.excl_tax|currency:session.price.currency }}
             {% endif %}
         {% else %}
-            <span class="store-list-item__price">&nbsp;</span>
+            &nbsp;
         {% endif %}
+
         <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
           {% if session.availability.is_available_to_buy %}
             {% basket_form request product 'single' as basket_form %}
