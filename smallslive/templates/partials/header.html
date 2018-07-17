@@ -1,6 +1,6 @@
 {% load static from staticfiles %}
 
-<header class="main-header">
+<header class="main-header hidden-xs hidden-sm">
   <div class="flex-row items-center wrap content-space-around">
     <div class="flex-row items-center wrap logo-container">
       <div>
@@ -44,3 +44,41 @@
     {% endif %}
   </div>
 </header>
+
+
+<header class="mobile-header visible-xs visible-sm">
+  <div class="mobile-logo-container">
+    <a href="/" class="smalls-logo">
+      <img src="{% static 'logo-black.svg' %}"  alt=""/>
+    </a>
+  </div>
+  <div class="mobile-menu-icons flex-row items-center content-space-between">
+    <i class="fa fa-bars" onclick="toggleSideBar()"></i>
+    <div>
+      <i class="fa fa-search" onclick="console.log('Searching')"></i>
+      <i class="fa fa-user" onclick="console.log('User')"></i>
+    </div>
+  </div>
+</header>
+
+<div id="side-navigation" class="side-bar-container visible-sm visible-xs side-bar-hidden">
+  <div class="side-navigation-overlay" onclick="toggleSideBar()"></div>
+  <div class="side-bar">
+    <div class="side-bar-header flex-row">
+      <img src="{% static 'logo-black.svg' %}" alt=""/>
+    </div>
+    <div class="flex-column text2">
+      <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
+      <a href="{% url 'schedule' %}" class="{% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">Calendar</a>
+      <a href="{% url 'search' %}" class="{% if request.resolver_match.url_name == 'search' %}active{% endif %}">Archive</a>
+      <a href="{% url 'contact-and-info' %}" class="{% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</a>
+      <a href="">Education</a>
+      <a href="{% url "promotions:home" %}">Store</a>
+    </div>
+  </div>
+</div>
+<script>
+  function toggleSideBar() {
+      $('#side-navigation').toggleClass('side-bar-hidden');
+  }
+</script>

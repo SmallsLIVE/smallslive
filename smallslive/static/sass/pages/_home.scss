@@ -7,7 +7,9 @@ body {
 }
 
 .main-container {
-  margin: auto;
+  @media (max-width: $screen-sm-max) {
+    padding-top: 75px;
+  }
   display: flex;
   flex-direction: column;
 }

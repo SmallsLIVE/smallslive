@@ -5,6 +5,11 @@
     flex: 1;
     display: flex;
 
+    .smalls-logo {
+      margin-top: 19px;
+      margin-bottom: 19px;
+    }
+
     & > .section-title {
       margin-left: 26px;
     }
@@ -17,6 +22,126 @@
       input {
         border-radius: 10px;
       }
+    }
+  }
+}
+
+.mobile-header {
+  margin-top: 0;
+  background-color: $backgroound-grey;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  height: 60px;
+
+  .mobile-logo-container {
+    width: 100%;
+    position: absolute;
+    top: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+
+    .smalls-logo {
+      margin: 5px 0;
+
+
+      img {
+        height: 50px;
+        width: 50px;
+      }
+    }
+  }
+  .mobile-menu-icons {
+    height: 100%;
+    padding: 0 20px;
+
+    i {
+      font-size: 20px;
+      margin: 10px
+    }
+  }
+}
+
+.side-bar-container {
+  z-index: 1001;
+  width: 100%;
+  position: fixed;
+  height: calc(100vh);
+
+  .side-navigation-overlay {
+    width: 100%;
+    height: 100%;
+    background-color: $black;
+    opacity: 0.8;
+    position: absolute;
+    @include animated;
+
+  }
+
+  .side-bar {
+    background-color: $backgroound-grey;
+    width: 70%;
+    height: 100%;
+    position: absolute;
+    padding: 20px;
+    margin-left: 0;
+    @include animated;
+
+
+    .side-bar-header {
+      margin-bottom: 40px;
+      img {
+        height: 75px;
+        width: 75px;
+      }
+    }
+
+    a {
+      font-size: 1.7em;
+      color: $black;
+      margin: 15px 0;
+
+      &.active {
+        color: $accent-color;
+      }
+    }
+  }
+
+  &.side-bar-hidden {
+    pointer-events: none;
+    .side-bar {
+      @include animated;
+      margin-left: -70%;
+    }
+
+    .side-navigation-overlay {
+      @include animated;
+      opacity: 0;
+    }
+  }
+}
+
+
+// TODO Move to footer file (seems to have problems importing variables
+.footer-mobile {
+  .footer-links {
+    a {
+      padding: 20px;
+      border-top: 2px solid $white-transparent;
+      font-size: 1.5em;
+    }
+  }
+
+  .footer-info {
+    padding: 40px;
+    border-top: 2px solid $white-transparent;
+
+    a {
+      color: $black;
     }
   }
 }
