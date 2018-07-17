@@ -9,8 +9,9 @@
         </a>
       </div>
       <form class="search-input" action="{% url 'search' %}">
-        <input name="q" type="text" placeholder="Search">
+        <input id="search-bar" name="q" type="text" placeholder="Search" autocomplete="off">
       </form>
+      <div class="search-bar-autocomplete-container"></div>
     </div>
 
     <div class="button-row">
@@ -44,3 +45,5 @@
     {% endif %}
   </div>
 </header>
+
+<script type="text/javascript" src="{% static 'js/search/search-bar.js' %}"></script>
