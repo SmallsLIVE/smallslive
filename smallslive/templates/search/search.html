@@ -22,91 +22,94 @@
 
   {% include 'inactive_dialog.html' %}
 
-<div class="main-container">
+  <div class="main-container">
 
-<section class="event-stripe">
+    <section class="event-stripe">
+      <div class="section-title" style="width: auto;">
+        <div class="title1">Musicians</div>
 
-<div class="section-title" style="width: auto;">
-    <div class="title1">Musicians</div>
+        <input id="artist-search" class="search-artist-box" name="q" type="text" placeholder="Search"
+               autocomplete="off">
 
-    <input id="artist-search" class="search-artist-box" name="q" type="text" placeholder="Search" autocomplete="off">
-
-    <div id="instrument-btn" class="instrument-btn white-border-button">INSTRUMENT</div>
+        <div id="instrument-btn" class="instrument-btn white-border-button">INSTRUMENT</div>
 
         <div class="instruments-container">
-            {% for instrument in instruments %}
-            <div class="instrument">{{instrument}}</div>
-            {% endfor %}
+          {% for instrument in instruments %}
+            <div class="instrument">{{ instrument }}</div>
+          {% endfor %}
         </div>
-</div>
+      </div>
 
-
-    <div class="container-list-article">
+      <div class="container-list-article">
         <div id="left_arrow" class="artist-arrow-search" style="visibility: hidden;">
-            <i class="fa fa-angle-left"></i>
+          <i class="fa fa-angle-left"></i>
         </div>
+
         <img class="loading-image" src="{% static 'image/loading.gif' %}" alt="">
 
         <main id="artists">
-            {% include 'search/artist_results.html' %}
+          {% include 'search/artist_results.html' %}
         </main>
-        {% if artist_num_pages != 1 %}
-        <div id="right_arrow" class="artist-arrow-search">
-        {% else %}
-        <div id="right_arrow" class="artist-arrow-search" style="visibility: hidden;">
-        {% endif %}
-            <i class="fa fa-angle-right"></i>
+
+
+        <div id="right_arrow" class="artist-arrow-search"
+             style="{% if artist_num_pages == 1 %}visibility: hidden;{% endif %}">
+          <i class="fa fa-angle-right"></i>
         </div>
-    </div>
-    <div id="artist-subheader" class="header-sub title2 subheader-results-artist results-text">{{showing_artist_results}}</div>
-</section>
+
+      </div>
+      <div id="artist-subheader"
+           class="header-sub title2 subheader-results-artist results-text">{{ showing_artist_results }}
+      </div>
+    </section>
 
     <section class="event-stripe">
-        <div class="event-section">
-            <div class="section-title" style="width: auto;">
-                <div class="title1">Shows</div>
-                <div id="event-subheader" class="header-sub title2 subheader-results results-text">{{showing_event_results}}</div>
-            </div>
-            <div>
-                <div class="white-border-select event-filter-select" style="width:250px;">
-                    <select id="events-filter">
-                        <option value="newest">NEWEST TO OLDEST</option>
-                        <option value="oldest">OLDEST TO NEWEST</option>
-                        <option value="popular">MOST POPULAR</option>
-                    </select>
-                </div>
+      <div class="event-section">
+        <div class="section-title" style="width: auto;">
+          <div class="title1">Shows</div>
+          <div id="event-subheader"
+               class="header-sub title2 subheader-results results-text">{{ showing_event_results }}</div>
+        </div>
+        <div>
+          <div class="white-border-select event-filter-select" style="width:250px;">
+            <select id="events-filter">
+              <option value="newest">NEWEST TO OLDEST</option>
+              <option value="oldest">OLDEST TO NEWEST</option>
+              <option value="popular">MOST POPULAR</option>
+            </select>
+          </div>
 
-                <div class="custom-date-picker" id="search-date-picker" style="width: 200px;">
-                    <input class="date-picker-text" type="text" placeholder="date" readonly>
-                    <i class="fa fa-caret-down"></i>
-                </div>
-            </div>
-
+          <div class="custom-date-picker" id="search-date-picker" style="width: 200px;">
+            <input class="date-picker-text" type="text" placeholder="date" readonly>
+            <i class="fa fa-caret-down"></i>
+          </div>
         </div>
 
-        <main id="events">
-            {% include 'search/event_results.html' with events=event_results %}
-        </main>
+      </div>
 
-        <div class="concerts-footer flex-column items-center">
-            <div id="event-subheader-footer" class="header-sub title2 results-text">{{showing_event_results}}</div>
+      <main id="events">
+        {% include 'search/event_results.html' with events=event_results %}
+      </main>
 
-            <button id="next-page-btn" class="white-border-button next-page-btn" style="width:220px;">
-                <span style="display: block; margin-top: -15px;">NEXT PAGE</span>
-            </button>
+      <div class="concerts-footer flex-column items-center">
+        <div id="event-subheader-footer" class="header-sub title2 results-text">{{ showing_event_results }}</div>
 
-            <div id="page-numbers-footer">
-                    {% include 'search/page_numbers_footer.html' %}
-            </div>
+        <button id="next-page-btn" class="white-border-button next-page-btn" style="width:220px;">
+          <span style="display: block; margin-top: -15px;">NEXT PAGE</span>
+        </button>
 
+        <div id="page-numbers-footer">
+          {% include 'search/page_numbers_footer.html' %}
         </div>
+
+      </div>
     </section>
-</div>
-{% endblock%}
+  </div>
+{% endblock %}
 
 {% block extra_js %}
-<script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
-<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
 {% endblock %}
 
 {% block footer %}
