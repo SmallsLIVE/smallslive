@@ -61,11 +61,11 @@
 
 
 
-{% if user.is_superuser %}
-  {% include 'admin_header.html' %}
-{% endif %}
 
 {% block header %}
+  {% if user.is_superuser %}
+    {% include 'admin_header.html' %}
+  {% endif %}
   {% include 'bootstrap_header.html' %}
 {% endblock %}
 

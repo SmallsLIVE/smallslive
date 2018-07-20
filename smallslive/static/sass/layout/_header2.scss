@@ -26,14 +26,22 @@
   }
 }
 
+@media (max-width: $screen-sm-max) {
+  .navigation-bars {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+  }
+}
+
 .mobile-header {
   margin-top: 0;
   background-color: $backgroound-grey;
-  position: fixed;
+  position: relative;
   top: 0;
   width: 100%;
-  z-index: 1000;
-  height: 60px;
+  height: $mobile-bar-height;
 
   .mobile-logo-container {
     width: 100%;

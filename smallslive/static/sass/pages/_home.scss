@@ -11,10 +11,17 @@ body {
   }
 }
 
-.main-container {
+@mixin variable-admin-padding($extra) {
   @media (max-width: $screen-sm-max) {
-    padding-top: 60px;
+    padding-top: ($mobile-bar-height) + $extra;
+    &.admin-shown {
+      padding-top: ($mobile-bar-height * 2) + $extra;
+    }
   }
+}
+
+.main-container {
+  @include variable-admin-padding(20px);
 
   display: flex;
   flex-direction: column;

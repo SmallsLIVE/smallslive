@@ -16,13 +16,20 @@
 {% endblock %}
 
 {% block header %}
-{% include 'partials/header.html' %}
+  <div class="navigation-bars {% if user.is_superuser %}admin-shown{% endif %}">
+    {% if user.is_superuser %}
+      {% include 'admin_header.html' %}
+    {% endif %}
+    {% include 'partials/header.html' %}
+    {% block extra_nav %}
+    {% endblock %}
+  </div>
 {% endblock %}
 
 {% block content %}
   {% include 'inactive_dialog.html' %}
 
-  <div class="main-container">
+  <div class="main-container{% if user.is_superuser %} admin-shown{% endif %}">
     {% block home_content %}
     <main>
       {% if not request.user.is_authenticated %}

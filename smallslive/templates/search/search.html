@@ -10,22 +10,23 @@
 {# TODO Shouldn't be needed here #}
 {% block body_class %}home{% endblock %}
 
+{% block extra_nav %}
+  <div class="search-tabs">
+    <div class="title1 active" onclick="showContent('#showsContent', this)">Shows</div>
+    <div class="title1" onclick="showContent('#musicianContent', this)">Musicians</div>
+  </div>
+{% endblock %}
+
 {% block extra_head %}
   <meta name="description"
         content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
   <script src="{% static 'js/search/search.js' %}"></script>
-
-
 {% endblock %}
 
 {% block content %}
 
   {% include 'inactive_dialog.html' %}
-  <div class="main-container search-container">
-    <div class="search-tabs">
-      <div class="title1 active" onclick="showContent('#showsContent', this)">Shows</div>
-      <div class="title1" onclick="showContent('#musicianContent', this)">Musicians</div>
-    </div>
+  <div class="main-container search-container {% if user.is_superuser %}admin-shown{% endif %}">
 
     <section id="musicianContent" class="event-stripe search-tab-content">
       <div class="section-title" style="justify-content: space-between">
