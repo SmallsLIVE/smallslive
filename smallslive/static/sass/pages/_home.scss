@@ -3,13 +3,19 @@ body {
   &.home {
     font-size: 10px;
     background: $background-color;
+
+    @media (max-width: $screen-sm-max) {
+      width: calc(100vw);
+      overflow-x: hidden;
+    }
   }
 }
 
 .main-container {
   @media (max-width: $screen-sm-max) {
-    padding-top: 75px;
+    padding-top: 65px;
   }
+
   display: flex;
   flex-direction: column;
 }

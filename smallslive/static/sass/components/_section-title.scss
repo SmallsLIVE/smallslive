@@ -22,11 +22,12 @@
 
   margin-bottom: 20px;
   padding-left: 20px;
-  display: inline-block;
+  display: flex;
+  align-items: flex-end;
   text-decoration: none;
   background: linear-gradient(to right, $white-transparent, $white-transparent) no-repeat bottom left;
   background-size: $underline-length $underline-height;
-  padding-bottom: $underline-height / 2;
+  padding-bottom: 3px;
 
   .date-separator {
     color: $accent-color;
