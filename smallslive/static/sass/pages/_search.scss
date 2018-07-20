@@ -38,6 +38,7 @@
 
 .search-tabs {
   display: none;
+  background-color: $background-grey;
 
   @media (max-width: $screen-sm-max) {
     width: 100%;
@@ -52,11 +53,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: $backgroound-grey;
+      background-color: $background-grey;
 
       &.active {
         border-bottom: 2px solid $accent-color;
         color: $accent-color;
+      }
+
+      span {
+        margin: 10px 0;
       }
     }
   }
