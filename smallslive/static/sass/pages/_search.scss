@@ -68,6 +68,11 @@
 }
 
 .search-container {
+  .container-list-article {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   //Mobile
   @media (max-width: $screen-sm-max) {
     @include variable-admin-padding(70px);
@@ -91,13 +96,6 @@
     .section-title {
       display: none;
     }
-
-  .container-list-article {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
 
 
     .artists-container {
