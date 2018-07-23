@@ -70,7 +70,7 @@
 .search-container {
   //Mobile
   @media (max-width: $screen-sm-max) {
-    @include variable-admin-padding(60px);
+    @include variable-admin-padding(70px);
     .search-tab-content {
       &:not(.active) {
         display: none;

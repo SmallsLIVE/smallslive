@@ -32,6 +32,7 @@
     position: fixed;
     top: 0;
     z-index: 1000;
+    background-color: #E0E0DC;
   }
 }
 
@@ -84,7 +85,7 @@
   &.mobile-search-header-shown {
     @include animated();
     height: $mobile-bar-height;
-    overflow: inherit;
+    box-shadow: 0 9px 9px 0 rgba(145,140,145,1);
 
     .search-triangle {
       $triangle-size: 10px;
