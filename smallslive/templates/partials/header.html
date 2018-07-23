@@ -56,7 +56,7 @@
     <i class="fa fa-bars" onclick="toggleSideBar()"></i>
     <div>
       <i class="fa fa-search" onclick="toggleSearch()"></i>
-      <i class="fa fa-user" onclick="console.log('Searching')"></i>
+      <i class="fa fa-user" onclick="console.log('user')"></i>
     </div>
   </div>
 </header>
@@ -64,10 +64,10 @@
 <div id="search-bar" class="mobile-search-header visible-xs visible-sm">
   <span class="search-triangle"></span>
   <div class="mobile-search-container flex-row items-center">
-    <form action="{% url 'search' %}">
+    <form id="headerSearchForm" action="{% url 'search' %}">
       <input name="q" type="text">
     </form>
-    <i class="fa fa-arrow-right"></i>
+    <i id="searchArrow" class="fa fa-arrow-right"></i>
   </div>
 </div>
 
@@ -95,6 +95,13 @@
 
   function toggleSearch() {
       $('#search-bar').toggleClass('mobile-search-header-shown');
-
   }
+
+  $(document).ready(function () {
+     $('#searchArrow').on('click', function () {
+         $('#headerSearchForm').submit();
+     });
+  });
+
+
 </script>

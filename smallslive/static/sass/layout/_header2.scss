@@ -113,10 +113,12 @@
       flex: 1;
 
       input {
+        font-size: 2em;
         height: 100%;
         width: 100%;
         border: 1px solid $background-grey;
         border-radius: 3px;
+        outline: none;
       }
     }
 
