@@ -41,9 +41,10 @@
         <section class="event-stripe">
           <div class="section-title">
             <div class="title1">
-              Streaming Tonight <span class="date-separator">/</span>
+              Live Tonight <span class="date-separator">/</span>
             </div>
-            <div class="header-sub title2">{% now "l F j, o" %}</div>
+            <div class="header-sub title2 visible-lg visible-md">{% now "l F j, o" %}</div>
+            <div class="header-sub title2 visible-sm visible-xs">{% now "D n/j" %}</div>
           </div>
           <main>
             {% include 'events/event_row.html' with events=events_today show_time=True hidde_event_date=True show_event_venue=True %}
@@ -61,7 +62,7 @@
           <div class="section-title">
             <div class="title1">Most Popular</div>
             <span class="select-container">
-              <div class="white-border-select" style="width:150px;">
+              <div class="white-border-select home-filter">
                 <select id="most-popular-filter">
                   <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
                   <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
