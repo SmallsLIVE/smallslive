@@ -11,22 +11,20 @@
   &:not(.no-arrow) {
     .select-selected {
 
-      @media (min-width: $screen-md-min) {
-        &:after {
-          content: " ";
-          height: 0;
-          width: 0;
-          border-left: 5px solid transparent;
-          border-right: 5px solid transparent;
-          border-top: 5px solid black;
-          position: absolute;
-          right: 16px;
-          top: 16px;
-          transition: all 0.3s linear;
-          cursor: pointer;
-          pointer-events: inherit;
-          z-index: -1;
-        }
+      &:after {
+        content: " ";
+        height: 0;
+        width: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid black;
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        transition: all 0.3s linear;
+        cursor: pointer;
+        pointer-events: inherit;
+        z-index: -1;
       }
     }
   }
@@ -53,7 +51,6 @@
   padding: 1em 3em 1em 1em;
 
   @media (max-width: $screen-sm-max) {
-    padding: 0.5em;
     height: 35px;
   }
 

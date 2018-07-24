@@ -178,14 +178,23 @@ $(document).ready(function () {
     $datePicker.datepicker({
         format: 'MM // dd // yyyy',
         autoclose: true,
-        container: '#search-date-picker'
+        container: '#search-date-picker',
+        showOnFocus: false
     });
 
     $datePicker.on('changeDate', function (newDate) {
         eventDate = newDate.date;
         $('#events-filter').val('oldest');
-
         $("[value='oldest']").click()
     });
 
+    $datePicker.on('click', function () {
+        var dropdown = $('#search-date-picker .dropdown-menu');
+        if (dropdown[0] && dropdown[0].style.display === 'block') {
+            $datePicker.datepicker('hide');
+        } else {
+            $datePicker.datepicker('show');
+        }
+
+    });
 });
