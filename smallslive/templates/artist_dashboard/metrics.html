@@ -78,7 +78,7 @@
                         {% for range in date_ranges %}
                             <option value="{{ forloop.counter0 }}">{{ range.display }} | {{ range.start|fromisoformat|date:"b j, Y" }} - {{ range.end|fromisoformat|date:"b j, Y" }}</option>
                         {% endfor %}
-                        <option value="all">All Time</option>
+                        <option value="all" selected>All Time</option>
                     </select>
                 </div>
 
