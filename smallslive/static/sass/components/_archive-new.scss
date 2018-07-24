@@ -302,6 +302,10 @@
     cursor: pointer;
     width: 100%;
     z-index: 2;
+
+    @media (max-width: $screen-sm-max) {
+      height: 35px;
+    }
   }
 
   i {
@@ -314,7 +318,6 @@
 
     &::before {
       pointer-events: inherit;
-
     }
   }
 

@@ -97,6 +97,7 @@
 
   function toggleSearch() {
       $('#search-bar').toggleClass('mobile-search-header-shown');
+      $('.main-container').toggleClass('mobile-search-header-shown');
   }
 
   $(document).ready(function () {
@@ -105,5 +106,17 @@
      });
   });
 
+  $(document).ready(function () {
+      var searchTerm = getUrlParameter("q");
+      if (searchTerm) {
+          searchTerm = searchTerm.replace(/\+/g, ' ');
+      } else {
+          searchTerm = '';
+      }
+
+      if (searchTerm) {
+        toggleSearch();
+      }
+  })
 
 </script>

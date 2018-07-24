@@ -21,7 +21,11 @@ body {
 }
 
 .main-container {
+  @include animated();
   @include variable-admin-padding(20px);
+  &.mobile-search-header-shown {
+    @include variable-admin-padding(20px + $mobile-bar-height);
+  }
 
   display: flex;
   flex-direction: column;

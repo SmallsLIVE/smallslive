@@ -73,9 +73,13 @@
     justify-content: center;
     align-items: center;
   }
+
   //Mobile
   @media (max-width: $screen-sm-max) {
     @include variable-admin-padding(70px);
+    &.mobile-search-header-shown {
+      @include variable-admin-padding(70px + $mobile-bar-height);
+    }
     .search-tab-content {
       &:not(.active) {
         display: none;
