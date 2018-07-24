@@ -1,0 +1,121 @@
+{% extends "smalls_base.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load i18n %}
+
+{% block homepage_nav_active %}active{% endblock %}
+
+{% block title %}Smalls Jazz Club{% endblock %}
+
+{# TODO Shouldn't be needed here #}
+{% block body_class %}home{% endblock %}
+
+{% block extra_head %}
+  <meta name="description"
+        content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
+{% endblock %}
+
+{% block header %}
+{% include 'partials/header.html' %}
+{% endblock %}
+
+{% block content %}
+{% include 'inactive_dialog.html' %}
+
+<div class="account-settings-container flex-column items-flex-stretch">
+    <div class="section-title" style="width: 100%;">
+        <div class="title1">Account Settings</div>
+    </div>
+
+    <div class="flex-column">
+        <div class="flex-row content-centered">
+            <div class="flex-column flex-grow">
+                <form class="custom-form" role="form" id="edit-profile-form" method="post" action="{% url "user_settings_new" %}">
+                    <h2 class="header">Personal information:</h2>
+                    {% csrf_token %}
+                    <div class="form-group {% if change_profile_form.first_name.errors  %}has-error{% endif %}">
+                        {{ change_profile_form.first_name }}
+                        {% for error in change_profile_form.first_name.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group {% if change_profile_form.last_name.errors  %}has-error{% endif %}">
+                        {{ change_profile_form.last_name }}
+                        {% for error in change_profile_form.last_name.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+        
+                    <h2 class="header">Notification settings:</h2>
+                    <div class="flex-row">
+                        <div>
+                            {{ change_profile_form.newsletter }}
+                        </div>
+                        <div>
+                            <label for="id_newsletter" class="text4 text-grey">I wish to receive news and updates on SmallsLIVE and Mezzrow via email.</label>
+                        </div>
+                    </div>
+                    <input type="submit" class="white-border-button" name="edit_profile" value="Save">
+                </form>
+
+                <hr>
+
+                <form class="custom-form" role="form" id="change-email-form" method="post" action="{% url "user_settings_new" %}">
+                    {% csrf_token %}
+                    <h2 class="header">Email address:</h2>
+                    <p class="text4 text-grey">Please note that you'll need to confirm your ownership of the new email address once you set it. To do that just follow the confirmation link we'll send to that address.</p>
+                    <div class="form-group {% if change_email_form.email.errors  %}has-error{% endif %}">
+                        {{ change_email_form.email }}
+                        {% for error in change_email_form.email.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <input type="submit" class="white-border-button" name="change_email" value="Save">
+                </form>
+
+                <hr>
+
+                <form class="custom-form" role="form" id="change-password-form" method="post" action="{% url "user_settings_new" %}">
+                    {% csrf_token %}
+                    <h2 class="header">Change password:</h2>
+                    <p class="text4 text-grey">To change your password please input your current password and your new password twice.</p>
+                    <div class="form-group {% if change_password_form.oldpassword.errors  %}has-error{% endif %}">
+                        <input type="password" class="form-control" name="oldpassword" id="oldpassword" placeholder="Current password">
+                        {% for error in change_password_form.oldpassword.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group {% if change_password_form.password1.errors  %}has-error{% endif %}">
+                        <input type="password" class="form-control" name="password1" id="password1" placeholder="New Password">
+                        {% for error in change_password_form.password1.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group {% if change_password_form.password1.errors  %}has-error{% endif %}">
+                        <input type="password" class="form-control" name="password2" id="password2" placeholder="New Password Again">
+                        {% for error in change_password_form.password2.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <input type="submit" class="white-border-button" name="change_password" value="Change password">
+                </form>
+                
+            </div>
+            <div class="flex-column flex-grow">
+
+                {% if current_user.artist  %}
+                    {% include 'account/payout_info.html' %}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}
+
+{% block footer %}
+{% endblock %}
+
+{% block extra_js %}
+  
+{% endblock extra_js %}

@@ -124,7 +124,9 @@
             window.location = "{% url 'account_logout' %}";
         } else if (value === 'artist_dashboard') {
             window.location = "{% url 'artist_dashboard:my_past_events' %}";
-        }
+        } else if (value === 'account_info') {
+            window.location = "{% url 'user_settings_new' %}";
+        } 
     });
   });
 </script>
