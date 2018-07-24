@@ -76,7 +76,9 @@
   <div class="side-navigation-overlay" onclick="toggleSideBar()"></div>
   <div class="side-bar">
     <div class="side-bar-header flex-row">
-      <img src="{% static 'logo-black.svg' %}" alt=""/>
+      <a href="/">
+        <img src="{% static 'logo-black.svg' %}" alt=""/>
+      </a>
     </div>
     <div class="flex-column text2">
       <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
