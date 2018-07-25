@@ -1,23 +1,5 @@
 {% if events %}
-<div class="events-results">
-    {% for event in events %}
-    <article class="event-display">
-        {% include 'events/event_card.html' with event=event %}
-        <div class="event-info">
-            <div>
-                <div>{{ event.title }}</div>
-                {% if show_event_venue %}
-                <div class="accent-color">{{ event.venue.name }}</div>
-                {% endif %} {% if not hidde_event_date %}
-                <div class="text-grey">{{ event.start|date:'m/d.Y' }}</div>
-                {% endif %}
-            </div>
-        </div>
-    </article>
-    {% endfor %}
-</div>
+  {% include 'events/event_row.html' with events=events %}
 {% else %}
-<div class="no-result-container">
-NO RESULTS
-</div>
+<div class="no-result-container text2">No results</div>
 {% endif %}

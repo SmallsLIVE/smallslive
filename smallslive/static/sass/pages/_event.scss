@@ -1,11 +1,27 @@
 .event-page-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
   .white-border-button {
     margin-bottom: 20px;
   }
 
-  .event-side {
-    @media(min-width: $screen-md-max) {
+  @media(min-width: $screen-md-min) {
+    .event-side {
       padding-left: 30px;
+    }
+  }
+
+  @media (max-width: $screen-sm-max) {
+    flex-direction: column;
+    align-items: center;
+
+    .event-side {
+      margin-top: 40px;
+      padding: 0 20px;
+      width: 100%;
     }
   }
 }
@@ -15,11 +31,9 @@
     margin-bottom: 2px;
   }
 
-  @media(max-width: $screen-md-max) {
-    .event-title {
-      line-height: 1em;
-      margin-bottom: 22px;
-    }
+  @media(max-width: $screen-sm-max) {
+    padding: 0 20px;
+    width: 100%;
   }
 }
 
@@ -32,9 +46,9 @@
 }
 
 #videoContainer, #audioContainer {
-  @media(min-width: $screen-md-min) {
-    min-width: 800px;
-  }
+  //@media(min-width: $screen-md-min) {
+  //  min-width: 800px;
+  //}
 }
 
 .player-container {
@@ -54,6 +68,7 @@
 }
 
 .event-video-placeholder {
+  flex: 1;
   .player-info {
     color: $white-transparent;
   }
@@ -62,7 +77,7 @@
 .overlay-info,
 .player-info {
   @include animated;
-  position: absolute;
+  //position: absolute;
   top: 0;
   left: 0;
   padding: 20px 30px;
@@ -70,11 +85,13 @@
 
 .player-info {
   height: 40%;
+  position: absolute;
 }
 
 .overlay-info {
-  height: 100%;
-  width: 100%;
+  //height: 100%;
+  //width: 100%;
+  flex: 1;
   background-color: rgba(255, 255, 255, 0.8);
   padding: 60px 100px;
 }
@@ -123,11 +140,15 @@
   }
 }
 
+.event-container {
+  @media (min-width: $screen-md-min) {
+    max-width: 850px;
+  }
+}
+
 .event-video-banner, .event-video-placeholder {
   position: relative;
-  width: 850px;
-  height: 500px;
-
+  max-height: 450px;
   margin-bottom: 30px;
 
   .event-banner-background {
