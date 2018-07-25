@@ -41,7 +41,7 @@ $(document).ready(function () {
     });
 
     $("#search-bar").focusout(function () {
-        $(".search-bar-autocomplete-container").css("display", "none");
+        setTimeout(function(){ $(".search-bar-autocomplete-container").css("display", "none"); }, 300);
     });
 });
 
