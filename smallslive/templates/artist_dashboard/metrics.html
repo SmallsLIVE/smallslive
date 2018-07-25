@@ -66,19 +66,21 @@
                         <select id="artist_event_select">
                             <option value="all" selected>All Shows</option>
                             {% for gig in user.artist.gigs_played.all %}
-                                <option value="{{ gig.event.id }}">
-                                    {{ gig.event.date|date:'m/d/Y' }} | {{ gig.event.get_set_hours_display }}#{{ gig.event.title }}#{{ gig.event.venue }}
+                              {% for set in gig.event.recordings.all %}
+                                <option value="{{ set.id }}">
+                                    {{ set.event.date|date:'m/d/Y' }} | Set {{ set.set_number }}#{{ set.event.title }}#{{ set.event.venue }}
                                 </option>
+                              {% endfor %}
                             {% endfor %}
                         </select>
                     </div>
                 </div>
-                <div class="white-border-select" style="width: 500px; float:none">
+                <div class="white-border-select white-border-select-left" style="width: 315px; float:none">
                     <select id="artist-metrics-date-select">
+                        <option value="all" selected>All Time</option>
                         {% for range in date_ranges %}
                             <option value="{{ forloop.counter0 }}">{{ range.display }} | {{ range.start|fromisoformat|date:"b j, Y" }} - {{ range.end|fromisoformat|date:"b j, Y" }}</option>
                         {% endfor %}
-                        <option value="all" selected>All Time</option>
                     </select>
                 </div>
 
@@ -142,14 +144,12 @@
           });
 
           var loadData = function () {
-              var eventId = $("#artist_event_select").val();
-
-
+              var setId = $("#artist_event_select").val();
               var rangeSel = $('#artist-metrics-date-select').val();
               var data = {};
 
-              if (eventId !== 'all') {
-                data.event_id = eventId;
+              if (setId !== 'all') {
+                data.set_id = setId;
               }
 
               if (rangeSel !== 'all') {

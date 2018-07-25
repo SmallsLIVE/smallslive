@@ -862,12 +862,13 @@ class SessionEventsCountView(views.APIView):
         start = request.query_params.get('start')
         end = request.query_params.get('end')
 
-        event_id = request.query_params.get('event_id')
-        if event_id:
-            metric_filter = Q(event_id=event_id)
+        set_id = request.query_params.get('set_id')
+        if set_id:
+            metric_filter = Q(recording_id=set_id)
         else:
             event_ids = list(self.request.user.artist.gigs_played.values_list('event_id', flat=True))
-            metric_filter = Q(event_id__in=event_ids)
+            set_ids = list(Recording.objects.filter(event_id__in=event_ids).values_list('id', flat=True))
+            metric_filter = Q(recording_id__in=set_ids)
 
         if start and end:
             try:
