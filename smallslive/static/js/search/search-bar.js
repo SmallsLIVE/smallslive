@@ -28,9 +28,9 @@ $(document).ready(function () {
         };
     })();
 
-    $("#search-bar").keyup(function () {
+    $("#desktop-search-bar").keyup(function () {
         delay(function () {
-            searchBarTerm = $('#search-bar').val();
+            searchBarTerm = $('#desktop-search-bar').val();
             if (searchBarTerm.length > 1) {
                 sendSearchBarRequest();
             }
@@ -40,7 +40,7 @@ $(document).ready(function () {
         }, 400);
     });
 
-    $("#search-bar").focusout(function () {
+    $("#desktop-search-bar").focusout(function () {
         setTimeout(function(){ $(".search-bar-autocomplete-container").css("display", "none"); }, 300);
     });
 });
