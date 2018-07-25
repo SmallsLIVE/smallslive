@@ -67,12 +67,12 @@
   <span class="search-triangle"></span>
   <div class="mobile-search-container flex-row items-center">
     <form id="headerSearchForm" action="{% url 'search' %}">
-      <input name="q" type="text">
+      <input name="q" type="text" autocomplete="off">
     </form>
     <i id="searchArrow" class="fa fa-arrow-right"></i>
   </div>
 </div>
-
+<div class="search-bar-autocomplete-container"></div>
 
 <div id="side-navigation" class="side-bar-container visible-sm visible-xs side-bar-hidden">
   <div class="side-navigation-overlay" onclick="toggleSideBar()"></div>

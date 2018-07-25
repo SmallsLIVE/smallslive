@@ -325,6 +325,25 @@
   left: 138px;
   display: none;
   padding: 10px;
+
+  .search-bar-artist {
+    display: inline-block;
+    padding-bottom: 6px;
+  }
+
+  .search-bar-event {
+    display: inline-block;
+    padding: 6px 0;
+  }
+
+  @media (max-width: $screen-sm-max) {
+    left: 0;
+    top: 120px;
+    border-radius: 0;
+    background-color: white;
+    width: 100%;
+    box-shadow: 0 9px 9px 0 rgba(145,140,145,1);
+  }
 }
 
 .search-bar-text {

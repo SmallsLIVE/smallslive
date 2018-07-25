@@ -1,5 +1,5 @@
 {% if artists %}
-    <span class="text2 search-bar-text">ARTISTS({{artists_results}})</span>
+    <span class="text2 search-bar-text search-bar-artist">ARTISTS({{artists_results}})</span>
     {% for artist in artists %}
         <div>
         <a href="{{ artist.get_absolute_url }}">
@@ -16,7 +16,7 @@
 {% endif %}
 
 {% if events %}
-    <span class="text2 search-bar-text">EVENTS({{events_results}})</span>
+    <span class="text2 search-bar-text search-bar-event">EVENTS({{events_results}})</span>
     {% for event in events %}
         <div>
         <a href="{{ event.get_absolute_url }}">
