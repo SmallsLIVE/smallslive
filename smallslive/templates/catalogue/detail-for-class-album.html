@@ -32,6 +32,7 @@
 {% endblock %}
 
 {% block breadcrumbs %}
+    <span class="store-header__title__divider">|</span>
     {% for category in category.get_ancestors %}
         <span class="store-header__title__category"><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></span>
         <span class="store-header__title__divider">|</span>
@@ -47,42 +48,45 @@
 {% endblock %}
 
 {% block store_content %}
-  <div class="col-xs-12 col-sm-8 col-md-9 store-single__content">
-    <div class="row">
-      <div class="store-single__item row">
-        <div class="col-xs-12 col-sm-6 store-single__item__images">
-          {% with all_images=product.images.all %}
-          <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
-            {% for image in all_images %}
-                {% thumbnail image.original "x365" upscale=False as thumb %}
-                <div class="store-single__item__images__big-image square-container">
-                    <a href="{{ thumb.url }}" class="fancybox"><img class="defineImageRatio"
-                                                                    src="{{ thumb.url }}"
-                                                                    alt="{{ product.get_title }}"></a>
-                </div>
-                {% endthumbnail %}
-            {% endfor %}
+  <div class="store-single__content">
+    <div>
+      <div class="store-single__item flex-row">
+        <div class="store-single__item__images">
+              {% with all_images=product.images.all %}
+                  <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
+                      {% for image in all_images %}
+                          {% if not image.is_missing %}
+                              <a href="{% thumbor_url image.original.url|urlencode height=300 width=300 smart=True %}"
+                                 class="fancybox"><img
+                                      src="{% thumbor_url image.original.url|urlencode height=300 width=300 smart=True %}"
+                                      alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                          {% else %}
+                              <a href="{% static "image/image_not_found.jpg" %}" class="fancybox"><img
+                                      src="{% static "image/image_not_found.jpg" %}" alt="{{ product.get_title }}"
+                                      class="defineImageRatio"></a>
+                          {% endif %}
+                      {% endfor %}
+                  </div>
+                  <span class="store-single__item__images__helper">(Click/tap on the image to zoom.)</span>
+                  <ul class="store-single__item__images__thumbnails">
+                      {% for image in all_images %}
+                          <li data-slickPosition="{{ forloop.counter0 }}"
+                              class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}">
+                              <img class="defineImageRatio"
+                                   src="{% thumbor_url image.original.url|urlencode height=300 width=300 smart=True %}"
+                                   alt="{{ product.get_title }} thumbnail">
+                          </li>
+                      {% endfor %}
+                  </ul>
+              {% endwith %}
           </div>
-          <span class="store-single__item__images__helper">(Click/tap on the image to zoom.)</span>
-          <ul class="store-single__item__images__thumbnails">
-            {% for image in all_images %}
-              {% thumbnail image.original "x75" upscale=False as thumb %}
-                  <li data-slickPosition="{{ forloop.counter0 }}"
-                      class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}">
-                      <img class="defineImageRatio" src="{{ thumb.url }}"
-                           alt="{{ product.get_title }} thumbnail"></li>
-              {% endthumbnail %}
-            {% endfor %}
-          </ul>
-          {% endwith %}
-        </div>
-        <div class="col-xs-12 col-sm-6 store-single__item__content">
-          <h2 class="store-single__item__name">
+        <div class="store-single__item__content">
+          <div class="store-single__item__name">
             <a href="#">{{ product.title }}</a>
-          </h2>
-          <h3 class="store-single__item__subtitle">
+          </div>
+          <div class="store-single__item__subtitle">
               {{ product.subtitle }}
-          </h3>
+          </div>
           {% if product.event %}
           <div class="store-single__item__event-link">
             <a href="{{ product.event.get_absolute_url }}">View event in our Archive</a>
@@ -171,93 +175,108 @@
     </div>
     {% endif %}
     <div class="store-single__recording__tracks">
-      <h3 class="store-single__recording__artists__heading">Track listing:</h3>
       <div style="width: 1px; height: 1px; position: absolute; top: -9999px; left: -9999px;">
         <div id="player-audio"></div>
       </div>
-      <!-- tracks table -->
-      <div class="store-single__recording__tracks-table">
+
+      <div class="store-featured-music__single__tracks-table hidden-xs">
+        <h4 class="store-featured-music__single__tracks-table__title">
+          Track listing:
+        </h4>
         <!-- tracks table header -->
-        <div class="store-single__recording__tracks-table__header row">
-          <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
-            <div class="hidden-xs hidden-sm">Preview</div>
-          </div>
-          <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-single__recording__tracks-table__column title">
-            Title
-          </div>
-          <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-single__recording__tracks-table__column duration">
-            Duration
-          </div>
-          <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-single__recording__tracks-table__column price">
-            Mp3 / HD
-          </div>
-          <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-single__recording__tracks-table__column buy-track">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+            <tr>
+              <th>Preview</th>
+              <th>Title</th>
+              <th>Duration</th>
+              <th>Mp3 / HD</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for track in product.tracks.all|dictsort:"ordering" %}
+              <tr>
+                <td>
+                  {% if track.preview %}
+                    <a href="#" class="playback-control"
+                       data-playlist-id="{{ preview_track_id_counter.next }}"><i
+                            class="fa fa-play"></i></a>
+                  {% else %}
+                    <!-- {{ preview_track_id_counter.next }} -->
+                  {% endif %}
+                </td>
+                <td>{{ track.title }}</td>
+                <td>{{ track.attr.duration }}</td>
+                <td>
+                  {% if track.get_track_stockrecord %}$
+                    {{ track.get_track_stockrecord.price_excl_tax }}{% else %}
+                    -{% endif %} / {% if track.get_hd_track_stockrecord %}$
+                  {{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}
+                  -{% endif %}
+                </td>
+                <td>
 
-          </div>
-        </div>
-        <!-- end of tracks table header -->
-        {% for track in product.tracks.all|dictsort:"ordering" %}
-          <!-- tracks table row -->
-          <div class="store-single__recording__tracks-table__row row">
-            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 store-single__recording__tracks-table__column preview">
-              {% if track.preview %}
-                <a href="#" class="playback-control" data-playlist-id="{{ forloop.counter0 }}"><i class="fa fa-play"></i></a>
-              {% endif %}
-            </div>
-            <div class="col-xs-5 col-sm-3 col-md-3 col-lg-6 store-single__recording__tracks-table__column title">
-              {{ track.title }}
-            </div>
-            <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-single__recording__tracks-table__column duration">
-              {{ track.attr.duration }}
-            </div>
-            <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 store-single__recording__tracks-table__column price">
-              {% if track.get_track_stockrecord %}${{ track.get_track_stockrecord.price_excl_tax }}{% else %}-{% endif %} / {% if track.get_hd_track_stockrecord %}${{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}-{% endif %}
-            </div>
-            <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 store-single__recording__tracks-table__column buy-track">
-                {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
+                  {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
                     <div class="buy-button-container">
-                        {% if user.is_authenticated %}
-                          <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Buy track <i
-                            class="fa fa-caret-down"></i></a>
-                        {% else %}
-                          <a class="tracks-table__button" href="#" data-toggle="modal" data-target="#logIn">Buy track <i
-                            class="fa fa-caret-down"></i></a>
+                      {% if user.is_authenticated %}
+                        <a class="tracks-table__button"
+                           data-toggle="dropdown" aria-expanded="false"
+                           href="">Buy track <i
+                                class="fa fa-caret-down"></i></a>
+                      {% else %}
+                        <a class="tracks-table__button" href="#"
+                           data-toggle="modal" data-target="#logIn">Buy
+                          track <i class="fa fa-caret-down"></i></a>
+                      {% endif %}
+                      <ul class="dropdown-menu" role="menu">
+                        {% if track.get_track_stockrecord %}
+                          <li>
+                            {% basket_form request track 'single' as basket_form %}
+                            <form id="add_to_basket_form"
+                                  action="{% url 'basket:add' pk=track.pk %}"
+                                  method="post"
+                                  class="add-to-basket">
+                              {% csrf_token %}
+                              {{ basket_form.quantity }}
+                              {{ basket_form.child_id }}
+                              <input type="hidden"
+                                     name="stockrecord_id"
+                                     value="{{ track.get_track_stockrecord.id }}"/>
+                              <input type="submit"
+                                     value="Buy mp3 (${{ track.get_track_stockrecord.price_excl_tax }})">
+                            </form>
+                          </li>
                         {% endif %}
-                  <ul class="dropdown-menu" role="menu">
-                    {% if track.get_track_stockrecord %}
-                      <li>
-                        {% basket_form request track 'single' as basket_form %}
-                        <form id="add_to_basket_form" action="{% url 'basket:add' pk=track.pk  %}" method="post" class="add-to-basket">
-                          {% csrf_token %}
-                          {{ basket_form.quantity }}
-                          {{ basket_form.child_id }}
-                          <input type="hidden" name="stockrecord_id" value="{{ track.get_track_stockrecord.id }}"/>
-                          <input type="submit" value="Buy mp3 (${{ track.get_track_stockrecord.price_excl_tax }})">
-                        </form>
-                      </li>
-                    {% endif %}
-                    {% if track.get_hd_track_stockrecord %}
-                      <li>
-                        {% basket_form request track 'single' as basket_form %}
-                        <form id="add_to_basket_form" action="{% url 'basket:add' pk=track.pk  %}" method="post" class="add-to-basket">
-                          {% csrf_token %}
-                          {{ basket_form.quantity }}
-                          {{ basket_form.child_id }}
-                          <input type="hidden" name="stockrecord_id" value="{{ track.get_hd_track_stockrecord.id }}"/>
-                          <input type="submit" value="Buy HD (${{ track.get_hd_track_stockrecord.price_excl_tax }})">
-                        </form>
-                      </li>
-                    {% endif %}
-                  </ul>
-
-              </div>
-                {% endif %}
-            </div>
-          </div>
-        {% endfor %}
-        <!-- end of tracks table row -->
+                        {% if track.get_hd_track_stockrecord %}
+                          <li>
+                            {% basket_form request track 'single' as basket_form %}
+                            <form id="add_to_basket_form"
+                                  action="{% url 'basket:add' pk=track.pk %}"
+                                  method="post"
+                                  class="add-to-basket">
+                              {% csrf_token %}
+                              {{ basket_form.quantity }}
+                              {{ basket_form.child_id }}
+                              <input type="hidden"
+                                     name="stockrecord_id"
+                                     value="{{ track.get_hd_track_stockrecord.id }}"/>
+                              <input type="submit"
+                                     value="Buy HD (${{ track.get_hd_track_stockrecord.price_excl_tax }})">
+                            </form>
+                          </li>
+                        {% endif %}
+                      </ul>
+                    </div>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <!-- end of tracks table -->
     </div>
   </div>
 {% endblock store_content %}
