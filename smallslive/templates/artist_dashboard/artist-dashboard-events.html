@@ -3,7 +3,7 @@
 {% for gig_info in gigs %}
     {% with event=gig_info.event %}
         <div class="artist-event-row">
-            <div class="artist-event-info flex-row">
+            <div class="artist-event-info flex-row wrap">
                 <div style="width: 290px;">
                     <div class="text2" style="max-width: 200px; padding-top: 3px;">
                         {{ event.title }}
@@ -33,12 +33,12 @@
             {% if not is_future %}
             <div>
                 {% for set in event.sets.all %}
-                    <div class="flex-row artist-event-set text2" id="set-id-{{ set.id }}">
+                    <div class="flex-row wrap artist-event-set text2" id="set-id-{{ set.id }}">
                         <div class="artist-event-card">
                             {% include 'events/event_card.html' with event=event %}
                         </div>
                         <div class="flex-column">
-                            <div class="flex-row artsist-set-info">
+                            <div class="flex-row wrap artsist-set-info">
                                 <div>
                                     <div class="accent-color artist-event-date">
                                         {% if set.video_recording or set.audio_recording %}

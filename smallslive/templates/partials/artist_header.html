@@ -1,6 +1,6 @@
 {% load static from staticfiles %}
 
-<header class="main-header">
+<header class="main-header hidden-xs hidden-sm">
   <div class="flex-row items-center wrap content-space-around">
     <div class="flex-row items-center wrap logo-container">
       <div>
@@ -34,7 +34,7 @@
               Public Profile
           </button>
       </a>
-      <a href="{% url 'contact-and-info' %}">
+      <a href="">
           <button class="no-border {% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">
               Smallslive Tracks
           </button>
@@ -69,3 +69,40 @@
     {% endif %}
   </div>
 </header>
+
+<header class="mobile-header visible-xs visible-sm">
+  <div class="mobile-logo-container">
+    <a href="/" class="smalls-logo">
+      <img src="{% static 'logo-black.svg' %}"  alt=""/>
+    </a>
+  </div>
+  <div class="mobile-menu-icons flex-row items-center content-space-between">
+    <i class="fa fa-bars" onclick="toggleSideBar()"></i>
+  </div>
+</header>
+
+<div id="side-navigation" class="side-bar-container visible-sm visible-xs side-bar-hidden">
+  <div class="side-navigation-overlay" onclick="toggleSideBar()"></div>
+  <div class="side-bar">
+    <div class="side-bar-header flex-row">
+      <a href="/">
+        <img src="{% static 'logo-black.svg' %}" alt=""/>
+      </a>
+    </div>
+    <div class="flex-column text2">
+      <a href="{% url 'artist_dashboard:my_past_events' %}" class="{% if request.resolver_match.url_name == 'my_past_events' %}active{% endif %}">Archived</a>
+      <a href="{% url 'artist_dashboard:my_future_events' %}" class="{% if request.resolver_match.url_name == 'my_future_events' %}active{% endif %}">Upcoming</a>
+      <a href="{% url 'artist_dashboard:metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}active{% endif %}">Metrics</a>
+      <a href="{% url 'artist_dashboard:edit_profile' %}" class="{% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">Public Profile</a>
+      <a href="">Smallslive Tracks</a>
+      <a href="">Agreement</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function toggleSideBar() {
+      $('#side-navigation').toggleClass('side-bar-hidden');
+  }
+
+</script>

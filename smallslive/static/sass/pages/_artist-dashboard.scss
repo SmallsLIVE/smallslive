@@ -1,6 +1,13 @@
 .artist-profile-container {
-  padding: 0 10%;
   margin-bottom: 40px;
+
+  @media (min-width: $screen-md-min) {
+    padding: 0 10%;
+  }
+
+  @media (max-width: $screen-sm-max) {
+    padding: 20px;
+  }
 
   .labeled-select {
     display: flex;
@@ -49,9 +56,12 @@
       margin: 25px 0;
 
       .artsist-set-info {
-        border-top: $underline-height solid $white-transparent;
         padding-top: 15px;
-        margin-bottom: 40px;
+        @media (min-width: $screen-md-min) {
+          border-top: $underline-height solid $white-transparent;
+          margin-bottom: 40px;
+        }
+
       }
     }
   }
@@ -129,11 +139,19 @@
 }
 
 .artist-event-actions {
-  margin-left: 40px;
+  @media (min-width: $screen-md-min) {
+    margin-left: 40px;
+  }
 
   .button-row {
     button {
       font-size: 0.8em;
+      @media (max-width: $screen-sm-max) {
+        height: 30px;
+        font-size: 0.6em;
+        margin-left: 0;
+        margin-bottom: 10px;
+      }
     }
   }
 }
@@ -180,7 +198,10 @@
 }
 
 .graph-container {
-  padding: 50px;
+  @media (min-width: $screen-md-min) {
+    padding: 50px;
+  }
+
   .graph-canvas {
     border: 4px solid $white-transparent;
     border-radius: 10px
