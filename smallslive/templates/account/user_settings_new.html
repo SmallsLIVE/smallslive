@@ -32,6 +32,7 @@
             <div class="flex-column settings-left">
                 <form class="custom-form" role="form" id="edit-profile-form" method="post" action="{% url "user_settings_new" %}">
                     <h2 class="header">Personal information:</h2>
+                    <p class="text4 text-grey">Enter your name.</p>
                     {% csrf_token %}
                     <div class="form-group {% if change_profile_form.first_name.errors  %}has-error{% endif %}">
                         {{ change_profile_form.first_name }}
@@ -51,7 +52,7 @@
                         <div>
                             {{ change_profile_form.newsletter }}
                         </div>
-                        <div>
+                        <div class="input-label-checkbox">
                             <label for="id_newsletter" class="text4 text-grey">I wish to receive news and updates on SmallsLIVE and Mezzrow via email.</label>
                         </div>
                     </div>

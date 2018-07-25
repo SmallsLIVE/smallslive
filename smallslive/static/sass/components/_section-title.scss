@@ -10,8 +10,7 @@
   background-size: $underline-length $underline-height;
   padding-bottom: 3px;
 
-  width: 100%;
-  @media(min-width: $screen-md-max) {
+  @media(min-width: 1500px) {
     width: $underline-length;
   }
 
