@@ -1,25 +1,6 @@
 .section-title {
   $underline-length: 750px;
   position: relative;
-
-  &:not(.section-title-padded) {
-    width: 100%;
-    @media(min-width: $screen-md-max) {
-      width: $underline-length;
-    }
-  }
-
-  &.section-flex {
-    width: 100%;
-  }
-
-  &.section-title-padded {
-    $padding: 40px;
-    margin-top: 40px;
-    padding-left: $padding;
-    padding-right: $padding;
-  }
-
   margin-bottom: 20px;
   padding-left: 20px;
   display: inline-block;
@@ -27,6 +8,19 @@
   background: linear-gradient(to right, $white-transparent, $white-transparent) no-repeat bottom left;
   background-size: $underline-length $underline-height;
   padding-bottom: $underline-height / 2;
+
+  width: 100%;
+  @media(min-width: $screen-md-max) {
+    width: $underline-length;
+  }
+
+  &.section-flex {
+    width: 100%;
+  }
+
+  &.section-title-no-padded {
+    padding-left: 0;
+  }
 
   .date-separator {
     color: $accent-color;

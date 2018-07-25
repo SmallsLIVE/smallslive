@@ -2,6 +2,19 @@
   padding: 0 10%;
   margin-bottom: 40px;
 
+  .labeled-select {
+    display: flex;
+
+    button {
+      border-right: none;
+    }
+
+    .select-items {
+      margin-top: 5px;
+    }
+
+  }
+
   .artist-form {
     padding: 0 10%;
 
@@ -15,6 +28,7 @@
         width: auto;
       }
     }
+
   }
 
   .artist-event-row {
@@ -132,3 +146,43 @@
   width: 150px;
 }
 
+.artist-payout-data {
+  margin: 25px 0 45px;
+
+  .title2 {
+    margin-top: 20px;
+  }
+}
+
+.white-border-select {
+  &.engagement-event-select {
+    margin-left: 20px;
+
+    .select-items > div, .select-selected {
+      padding: 10px;
+      height: auto;
+    }
+
+    .select-items {
+      & > div {
+        & > span:first-child {
+          border-top: 2px solid $white-transparent;
+          padding-top: 10px;
+        }
+      }
+    }
+
+    .select-items {
+      max-height: 400px;
+      overflow: scroll;
+    }
+  }
+}
+
+.graph-container {
+  padding: 50px;
+  .graph-canvas {
+    border: 4px solid $white-transparent;
+    border-radius: 10px
+  }
+}
