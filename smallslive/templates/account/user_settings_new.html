@@ -28,8 +28,8 @@
     </div>
 
     <div class="flex-column">
-        <div class="flex-row content-centered">
-            <div class="flex-column flex-grow">
+        <div class="flex-row content-centered wrap">
+            <div class="flex-column settings-left">
                 <form class="custom-form" role="form" id="edit-profile-form" method="post" action="{% url "user_settings_new" %}">
                     <h2 class="header">Personal information:</h2>
                     {% csrf_token %}
@@ -101,7 +101,7 @@
                 </form>
                 
             </div>
-            <div class="flex-column flex-grow">
+            <div class="flex-column settings-right">
 
                 {% if current_user.artist  %}
                     {% include 'account/payout_info.html' %}

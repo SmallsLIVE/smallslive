@@ -5,4 +5,43 @@
     .account-form {
         padding: 0 10%;
     }
+
+    .settings-left {
+        width: 560px;
+        padding-right:20px;
+    }
+
+    .settings-right {
+        width: 560px;
+        padding-left: 20px;
+    }
+
+    .zip-country {
+        width: 48%;
+    }
+
+    .select-selected,
+    .select-items {
+        background-color: white;
+        justify-content: left;
+    }
+
+    .select-items div:hover, .same-as-selected {
+        background-color: rgba(240, 240, 235, 0.5);
+    }
+
+    .white-border-select {
+        padding-bottom: 16px;
+        text-transform: none;
+    }
+
+    @media (max-width: $screen-sm-max) {
+        .settings-left {
+            padding-right:0;
+        }
+    
+        .settings-right {
+            padding-left: 0;
+        }
+    }
 }

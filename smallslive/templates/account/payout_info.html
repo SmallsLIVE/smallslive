@@ -27,7 +27,8 @@
               <p class="form-error-text">{{ error  }}</p>
           {% endfor %}
         </div>
-        <div class="half_width left">
+        <div class="flex-row content-space-between">
+        <div class="flex-column zip-country">
             <div class="form-group {% if artist_info_form.city.errors  %}has-error{% endif %}">
               {{ artist_info_form.city }}
               {% for error in artist_info_form.city.errors %}
@@ -35,7 +36,7 @@
               {% endfor %}
             </div>
         </div>
-        <div class="half_width right">
+        <div class="flex-column zip-country">
             <div class="form-group {% if artist_info_form.zip.errors  %}has-error{% endif %}">
               {{ artist_info_form.zip }}
               {% for error in artist_info_form.zip.errors %}
@@ -43,17 +44,22 @@
               {% endfor %}
             </div>
         </div>
+        </div>
         <div class="form-group {% if artist_info_form.state.errors  %}has-error{% endif %}">
+        <div class="white-border-select" style="width: 100%;">
           {{ artist_info_form.state }}
           {% for error in artist_info_form.state.errors %}
               <p class="form-error-text">{{ error  }}</p>
           {% endfor %}
         </div>
+        </div>
         <div class="form-group {% if artist_info_form.country.errors  %}has-error{% endif %}">
+        <div class="white-border-select" style="width: 100%;">
           {{ artist_info_form.country }}
           {% for error in artist_info_form.country.errors %}
               <p class="form-error-text">{{ error  }}</p>
           {% endfor %}
+        </div>
         </div>
         {% comment %}
         <div class="account-settings__form__hidden" id="taxpayer_id">
