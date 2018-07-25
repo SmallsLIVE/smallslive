@@ -15,6 +15,8 @@ from haystack.query import SearchQuerySet, SQ
 
 from .utils import facets_by_model_name
 
+from .search import SearchObject
+
 
 def search_autocomplete(request):
     sqs = SearchQuerySet().autocomplete(content=request.GET.get('term', '')).facet('model')
@@ -38,103 +40,17 @@ def search_autocomplete(request):
 
 class SearchMixin(object):
 
-    def get_instrument(self, text_array):
-
-        condition = Q(name__icontains=text_array[0])
-        for text in text_array[1:]:
-            condition |= Q(name__icontains=text)
-        return Instrument.objects.filter(condition).distinct().first()
-
-    def get_instruments(self):
-        return [i.name.upper() for i in Instrument.objects.all()]
-
     def search(self, entity, main_search, page=1, order=None, instrument=None, date=None, artist_search=None):
+
+        search = SearchObject()
 
         if entity == Artist:
             results_per_page = 48
-            sqs = entity.objects.all()
-            words = main_search.split(' ')
-            all_instruments = self.get_instruments()
-
-            instruments = [i for i in words if i.upper() in all_instruments]
-            words = [i for i in words if i.upper() not in all_instruments]
-
-            if instruments:
-                condition = Q(instruments__name__iexact=instruments[0])
-                for i in instruments[1:]:
-                    condition |= Q(instruments__name__iexact=i)
-                sqs = entity.objects.filter(condition).distinct()
-            if instrument:
-                sqs = sqs.filter(instruments__name=instrument)
-            if words:
-                artist = words.pop()
-                condition = Q(
-                    last_name__icontains=artist) | Q(
-                    first_name__icontains=artist)
-                for artist in words:
-                    condition |= Q(
-                        last_name__icontains=artist) | Q(
-                        first_name__icontains=artist)
-                sqs = sqs.filter(condition).distinct()
-
-            if artist_search:
-                artist_words = artist_search.split(' ')
-                artist = artist_words[0]
-                good_matches = sqs.filter(Q(
-                    last_name__istartswith=artist)).distinct()
-                not_so_good_matches = sqs.filter(~Q(
-                    last_name__istartswith=artist) & Q(
-                    first_name__istartswith=artist)).distinct()
-                sqs = list(good_matches) + list(not_so_good_matches)
+            sqs = search.search_artist(main_search, instrument, artist_search)
 
         elif entity == Event:
             results_per_page = 15
-
-            order = {
-                'newest': '-start',
-                'oldest': 'start',
-                'popular': 'popular',
-            }.get(order, '-start')
-
-            sqs = entity.objects.all()
-            words = main_search.split(' ')
-            all_instruments = self.get_instruments()
-            instruments = [i for i in words if i.upper() in all_instruments]
-            words = [i for i in words if i.upper() not in all_instruments]
-            if instruments:
-                condition = Q(artists_gig_info__role__name__icontains=instruments[0],
-                              artists_gig_info__is_leader=True)
-                for i in instruments[1:]:
-                    condition |= Q(artists_gig_info__role__name__icontains=i,
-                                   artists_gig_info__is_leader=True)
-                sqs = entity.objects.filter(condition).distinct()
-            if words:
-                artist = words.pop()
-                condition = Q(
-                    title__icontains=artist) | Q(
-                    description__icontains=artist) | Q(
-                    performers__first_name__icontains=artist) | Q(
-                    performers__last_name__icontains=artist)
-                for artist in words:
-                    condition |= Q(
-                        title__icontains=artist) | Q(
-                        description__icontains=artist) | Q(
-                        performers__first_name__icontains=artist) | Q(
-                        performers__last_name__icontains=artist)
-                sqs = sqs.filter(condition).distinct()
-
-            sqs = sqs.filter(recordings__media_file__isnull=False,
-                             recordings__state=Recording.STATUS.Published)
-
-            if date:
-                # Force hours to start of day
-                date = date.replace(hour=10, minute=0, second=0, microsecond=0)
-                sqs = sqs.filter(start__gte=date)
-
-            if order == 'popular':
-                sqs = sqs.most_popular()
-            else:
-                sqs = sqs.order_by(order)
+            sqs = search.search_event(main_search, order, date)
 
         blocks = []
         block = []
@@ -218,6 +134,57 @@ class MainSearchView(View, SearchMixin):
                                     )
 
             data['pageNumbersFooter'] = temp
+
+        return JsonResponse(data)
+
+
+#
+#   this is a proof of concept, once it is approved it will be refactored
+#
+class SearchBarView(View):
+
+    def get(self, request, *args, **kwargs):
+        main_search = request.GET.get('main_search', None)
+        search = SearchObject()
+
+        artists = []
+        artist_results_per_page = 6
+        sqs = search.search_artist(main_search)
+        paginator = Paginator(sqs, artist_results_per_page)
+        artists_results = paginator.count
+
+        for item in paginator.page(1).object_list:
+            item = Artist.objects.filter(pk=item.pk).first()
+            artists.append(item)
+        artists_results_left = artists_results - len(artists)
+        
+        events = []
+        event_results_per_page = 8
+        sqs = search.search_event(main_search)
+        paginator = Paginator(sqs, event_results_per_page)
+        events_results = paginator.count
+
+        for item in paginator.page(1).object_list:
+            item = Event.objects.filter(pk=item.pk).first()
+            events.append(item)
+        events_results_left = events_results - len(events)
+
+        context = {'artists': artists,
+                   'artists_results': artists_results,
+                   'artists_results_left': artists_results_left,
+                   'events': events,
+                   'events_results': events_results,
+                   'events_results_left': events_results_left}
+        template = 'search/search_bar_results.html'
+
+        temp = render_to_string(template,
+                                context,
+                                context_instance=RequestContext(request)
+                                )
+
+        data = {
+            'template': temp
+        }
 
         return JsonResponse(data)
 

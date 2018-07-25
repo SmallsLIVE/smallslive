@@ -1,0 +1,40 @@
+{% if artists %}
+    <span class="text2 search-bar-text">ARTISTS({{artists_results}})</span>
+    {% for artist in artists %}
+        <div>
+        <a href="{{ artist.get_absolute_url }}">
+          <span class="search-bar-result-text text2 search-bar-text text-grey">{% if artist.last_name %}{{ artist.last_name }}, {% endif %}{{ artist.first_name }} / {{ artist.instruments.all.first }}</span>
+        </a>
+        </div>
+    {% endfor %}
+    {% if artists_results_left %}
+        <div class="search-bar-more accent-color text2 search-bar-text">+ {{artists_results_left}} MORE</div>
+    {% endif %}
+{% else %}
+<span class="text2 search-bar-text">NO ARTISTS RESULTS</span>
+<br>
+{% endif %}
+
+{% if events %}
+    <span class="text2 search-bar-text">EVENTS({{events_results}})</span>
+    {% for event in events %}
+        <div>
+        <a href="{{ event.get_absolute_url }}">
+          <span class="search-bar-result-text text2 search-bar-text text-grey">{{ event.title }} / {{ event.start|date:'m.d.Y' }}</span>
+        </a>
+        </div>
+    {% endfor %}
+    {% if events_results_left %}
+        <div class="search-bar-more accent-color text2 search-bar-text">+ {{events_results_left}} MORE</div>
+    {% endif %}
+{% else %}
+<span class="text2 search-bar-text">NO EVENTS RESULTS</span>
+<br>
+{% endif %}
+
+
+
+
+
+
+
