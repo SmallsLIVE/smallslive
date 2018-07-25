@@ -20,15 +20,15 @@
         <div class="title5">Earnings</div>
         <div>
             <div class="title2">Total pooled earnings</div>
-            <div class="text4 text-grey">$ {{earning.payout_period.total_amount}}</div>
+            <div class="text4 text-grey">$ {{earning.payout_period.total_amount|floatformat:"2"}}</div>
         </div>
         <div>
             <div class="title2">{{ artist.first_name }} {{ artist.last_name }}'s share</div>
-            <div class="text4 text-grey">$ {{earning.amount}}</div>
+            <div class="text4 text-grey">$ {{earning.amount|floatformat:"2"}}</div>
         </div>
         <div>
             <div class="title2">Previous ledger balance</div>
-            <div class="text4 text-grey">$ {{earning.ledger_balance}}</div>
+            <div class="text4 text-grey">$ {{earning.ledger_balance|floatformat:"2"}}</div>
         </div>
     </div>
     <div class="flex-column content-flex-end">

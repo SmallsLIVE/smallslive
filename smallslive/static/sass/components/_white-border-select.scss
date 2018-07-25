@@ -34,6 +34,14 @@
       align-items: flex-start;
     }
   }
+
+  &.white-border-select-left {
+    .select-items div, .select-selected {
+      flex-direction: column;
+      align-items: flex-start;
+      padding-left: 20px;
+    }
+  }
 }
 
 .select-selected {
@@ -54,7 +62,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   padding: 1em;
 
   height: 40px;
