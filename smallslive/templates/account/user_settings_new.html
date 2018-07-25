@@ -59,7 +59,7 @@
                     <input type="submit" class="white-border-button" name="edit_profile" value="Save">
                 </form>
 
-                <hr>
+                <div class="white-line"></div>
 
                 <form class="custom-form" role="form" id="change-email-form" method="post" action="{% url "user_settings_new" %}">
                     {% csrf_token %}
@@ -74,7 +74,7 @@
                     <input type="submit" class="white-border-button" name="change_email" value="Save">
                 </form>
 
-                <hr>
+                <div class="white-line"></div>
 
                 <form class="custom-form" role="form" id="change-password-form" method="post" action="{% url "user_settings_new" %}">
                     {% csrf_token %}
