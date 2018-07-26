@@ -29,7 +29,6 @@ $(document).ready(function () {
     })();
 
     $("#desktop-search-bar, #search-bar").keyup(function () {
-        console.log("asd");
         delay(function () {
             searchBarTerm = $('#desktop-search-bar:visible, #search-bar input:visible').val();
             if (searchBarTerm.length > 1) {

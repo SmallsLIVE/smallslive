@@ -50,6 +50,12 @@
 
     .artist-event-info {
       margin: 25px 0;
+
+      @media (max-width: $screen-sm-max) {
+        .button-row {
+          margin-top: 20px;
+        }
+      }
     }
 
     .artist-event-set {
@@ -151,6 +157,7 @@
         font-size: 0.6em;
         margin-left: 0;
         margin-bottom: 10px;
+        margin-top: 10px;
       }
     }
   }
@@ -158,10 +165,6 @@
 
 .artist-publish-info {
   min-width: 275px;
-}
-
-.publish-button {
-  width: 150px;
 }
 
 .artist-payout-data {
@@ -174,7 +177,6 @@
 
 .white-border-select {
   &.engagement-event-select {
-    margin-left: 20px;
 
     .select-items > div, .select-selected {
       padding: 10px;
@@ -205,5 +207,11 @@
   .graph-canvas {
     border: 4px solid $white-transparent;
     border-radius: 10px
+  }
+}
+
+.artist-event-set-info {
+  @media (max-width: $screen-sm-max) {
+    margin-left: 10px;
   }
 }

@@ -1,6 +1,15 @@
 .main-header {
   padding: 0 26px 20px;
 
+  .section-title {
+    margin-left: 10px;
+    margin-bottom: 0;
+
+    @media (min-width: $screen-md-min) {
+      width: 300px;
+    }
+  }
+
   .logo-container {
     flex: 1;
     display: flex;
@@ -10,9 +19,6 @@
       margin-bottom: 19px;
     }
 
-    & > .section-title {
-      margin-left: 26px;
-    }
 
     .search-input {
       flex: 1;
