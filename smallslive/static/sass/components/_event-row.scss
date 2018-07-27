@@ -3,7 +3,11 @@ $mobile-event-card-width: $event-card-width / 1.5;
 .event-row, .album-row {
   display: flex;
   overflow: auto;
-  padding-left: 40px;
+  padding-left: 20px;
+
+  @media (min-width: $screen-md-min) {
+    padding-left: 40px;
+  }
 
   .event-display {
     margin: 5px;
