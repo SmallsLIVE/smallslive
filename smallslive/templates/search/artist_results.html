@@ -1,19 +1,17 @@
 {% if artists_blocks %}
-<div class="artists-container">
     {% for artist_block in artists_blocks %}
-    <div class="artist-column">
+      <div class="artist-column">
         {% for artist in artist_block %}
-        <div>
-        <a href="{{ artist.get_absolute_url }}">
-          <span class="artist-search-text artist-row">{% if artist.last_name %}{{ artist.last_name }}, {% endif %}{{ artist.first_name }} / {{ artist.instruments.all.first }}</span>
-        </a>
-        </div>
+          <div>
+            <a class="text2 artist-row" href="{{ artist.get_absolute_url }}">
+              {% if artist.last_name %}{{ artist.last_name }} , {% endif %}{{ artist.first_name }} / {{ artist.instruments.all.first }}
+            </a>
+          </div>
         {% endfor %}
-    </div>
+      </div>
     {% endfor %}
-</div>
-{% else %}
-<div class="no-result-container">
-NO RESULTS
-</div>
+  {% else %}
+  <div class="no-result-container">
+    NO RESULTS
+  </div>
 {% endif %}

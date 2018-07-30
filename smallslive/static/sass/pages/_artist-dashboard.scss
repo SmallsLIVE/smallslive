@@ -1,6 +1,26 @@
 .artist-profile-container {
-  padding: 0 10%;
   margin-bottom: 40px;
+
+  @media (min-width: $screen-md-min) {
+    padding: 0 10%;
+  }
+
+  @media (max-width: $screen-sm-max) {
+    padding: 20px;
+  }
+
+  .labeled-select {
+    display: flex;
+
+    button {
+      border-right: none;
+    }
+
+    .select-items {
+      margin-top: 5px;
+    }
+
+  }
 
   .artist-form {
     padding: 0 10%;
@@ -15,6 +35,7 @@
         width: auto;
       }
     }
+
   }
 
   .artist-event-row {
@@ -29,15 +50,24 @@
 
     .artist-event-info {
       margin: 25px 0;
+
+      @media (max-width: $screen-sm-max) {
+        .button-row {
+          margin-top: 20px;
+        }
+      }
     }
 
     .artist-event-set {
       margin: 25px 0;
 
       .artsist-set-info {
-        border-top: $underline-height solid $white-transparent;
         padding-top: 15px;
-        margin-bottom: 40px;
+        @media (min-width: $screen-md-min) {
+          border-top: $underline-height solid $white-transparent;
+          margin-bottom: 40px;
+        }
+
       }
     }
   }
@@ -64,7 +94,7 @@
 .artist-archive-filter {
   margin-bottom: 40px;
 
-  .white-border-select {
+  .white-border-select:first-child {
       margin-right: 20px;
   }
 }
@@ -115,11 +145,20 @@
 }
 
 .artist-event-actions {
-  margin-left: 40px;
+  @media (min-width: $screen-md-min) {
+    margin-left: 40px;
+  }
 
   .button-row {
     button {
       font-size: 0.8em;
+      @media (max-width: $screen-sm-max) {
+        height: 30px;
+        font-size: 0.6em;
+        margin-left: 0;
+        margin-bottom: 10px;
+        margin-top: 10px;
+      }
     }
   }
 }
@@ -128,7 +167,51 @@
   min-width: 275px;
 }
 
-.publish-button {
-  width: 150px;
+.artist-payout-data {
+  margin: 25px 0 45px;
+
+  .title2 {
+    margin-top: 20px;
+  }
 }
 
+.white-border-select {
+  &.engagement-event-select {
+
+    .select-items > div, .select-selected {
+      padding: 10px;
+      height: auto;
+    }
+
+    .select-items {
+      & > div {
+        & > span:first-child {
+          border-top: 2px solid $white-transparent;
+          padding-top: 10px;
+        }
+      }
+    }
+
+    .select-items {
+      max-height: 400px;
+      overflow: scroll;
+    }
+  }
+}
+
+.graph-container {
+  @media (min-width: $screen-md-min) {
+    padding: 50px;
+  }
+
+  .graph-canvas {
+    border: 4px solid $white-transparent;
+    border-radius: 10px
+  }
+}
+
+.artist-event-set-info {
+  @media (max-width: $screen-sm-max) {
+    margin-left: 10px;
+  }
+}

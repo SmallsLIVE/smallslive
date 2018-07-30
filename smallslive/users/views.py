@@ -23,6 +23,7 @@ from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView,\
 from allauth.account.app_settings import EmailVerificationMethod
 import stripe
 
+from artist_dashboard.forms import ArtistInfoForm
 from users.models import SmallsUser
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
 
@@ -247,6 +248,61 @@ def user_settings_view(request):
         'change_profile_form': edit_profile_form,
         'change_password_form': change_password_form,
         'current_user' : request.user,
+    })
+
+@login_required
+def user_settings_view_new(request):
+
+    # if this is a POST request we need to process the form data
+    if 'edit_profile' in request.POST:
+        # create a form instance and populate it with data from the request:
+        edit_profile_form = EditProfileForm(data=request.POST, user=request.user)
+        # check whether it's valid:
+        if edit_profile_form.is_valid():
+            edit_profile_form.save(request)
+            messages.success(request, "You've successfully updated your profile.")
+            return HttpResponseRedirect('/')
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        edit_profile_form = EditProfileForm(user=request.user)
+
+    if 'change_email' in request.POST:
+        change_email_form = ChangeEmailForm(data=request.POST, user=request.user)
+        if change_email_form.is_valid():
+            change_email_form.save(request)
+            messages.success(request, 'Your email address has been changed successfully.')
+            return HttpResponseRedirect(reverse('account_email_verification_sent'))
+    else:
+        change_email_form = ChangeEmailForm(user=request.user)
+
+    if 'change_password' in request.POST:
+        change_password_form = ChangePasswordForm(data=request.POST, user=request.user)
+        if change_password_form.is_valid():
+            change_password_form.save()
+            messages.success(request, 'Your password has been changed successfully.')
+            return HttpResponseRedirect('/')
+    else:
+        change_password_form = ChangePasswordForm(user=request.user)
+    
+    # if this is a POST request we need to process the form data
+    if 'artist_info' in request.POST:
+        # create a form instance and populate it with data from the request:
+        artist_info_form = ArtistInfoForm(data=request.POST, instance=request.user)
+        # check whether it's valid:
+        if artist_info_form.is_valid():
+            artist_info_form.save(request)
+            messages.success(request, "You've successfully updated your profile.")
+            return HttpResponseRedirect('/')
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        artist_info_form = ArtistInfoForm(instance=request.user)
+
+    return render(request, 'account/user_settings_new.html', {
+        'change_email_form': change_email_form,
+        'change_profile_form': edit_profile_form,
+        'change_password_form': change_password_form,
+        'current_user' : request.user,
+        'artist_info_form': artist_info_form,
     })
 
 

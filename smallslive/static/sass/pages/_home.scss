@@ -3,11 +3,30 @@ body {
   &.home {
     font-size: 10px;
     background: $background-color;
+
+    @media (max-width: $screen-sm-max) {
+      width: calc(100vw);
+      overflow-x: hidden;
+    }
+  }
+}
+
+@mixin variable-admin-padding($extra) {
+  @media (max-width: $screen-sm-max) {
+    padding-top: ($mobile-bar-height) + $extra;
+    &.admin-shown {
+      padding-top: ($mobile-bar-height * 2) + $extra;
+    }
   }
 }
 
 .main-container {
-  margin: auto;
+  @include animated();
+  @include variable-admin-padding(20px);
+  &.mobile-search-header-shown {
+    @include variable-admin-padding(20px + $mobile-bar-height);
+  }
+
   display: flex;
   flex-direction: column;
 }
@@ -15,6 +34,10 @@ body {
 .event-stripe {
   position: relative;
   margin-bottom: 60px;
+
+  @media (max-width: $screen-sm-max) {
+    margin-bottom: 20px;
+  }
 
   .select-container {
     position: absolute;
@@ -26,4 +49,15 @@ body {
 .sign-in-button,
 .user-menu {
   margin-left: 20px;
+}
+
+.home-filter {
+  &.white-border-select {
+    width: 150px;
+
+    @media (max-width: $screen-sm-max) {
+      width: 100px;
+      font-size: 0.9em;
+    }
+  }
 }

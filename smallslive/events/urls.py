@@ -22,4 +22,5 @@ urlpatterns = patterns('events.views',
     url(r'^add/$', 'event_add', name='event_add'),
     url(r'^sets/(?P<pk>\d+)/publish/$', 'publish_set', name='publish_set'),
     url(r'^sets/(?P<pk>\d+)/private/$', 'make_private', name='make_private'),
+    url(r'^event_counts/', 'metrics_event_counts', name='event_counts'),
 )

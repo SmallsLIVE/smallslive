@@ -101,6 +101,15 @@ class ArtistInfoForm(forms.ModelForm):
         # default to US if nothing is set, initial not working as the form is bound
         if not self.initial['country']:
             self.initial['country'] = 'US'
+        
+        self.fields['first_name'].widget.attrs['placeholder'] = self.fields['first_name'].label
+        self.fields['last_name'].widget.attrs['placeholder'] = self.fields['last_name'].label
+        self.fields['address_1'].widget.attrs['placeholder'] = self.fields['address_1'].label
+        self.fields['address_2'].widget.attrs['placeholder'] = self.fields['address_2'].label
+        self.fields['city'].widget.attrs['placeholder'] = self.fields['city'].label
+        self.fields['zip'].widget.attrs['placeholder'] = self.fields['zip'].label
+        self.fields['state'].widget.attrs['placeholder'] = self.fields['state'].label
+        self.fields['country'].widget.attrs['placeholder'] = self.fields['country'].label
 
     def clean(self):
         cleaned_data = super(ArtistInfoForm, self).clean()

@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load basket_tags %}
 {% load promotion_tags %}
 {% load category_tags %}
@@ -12,9 +12,8 @@
 {% block title %}SmallsLIVE Tracks{% endblock %}
 
 
-{% block content %}
-    <div class="content-wrapper">
-
+{% block home_content %}
+    <div class="">
         <div class="store-nav store-nav--category landing-nav col-xs-12 visible-xs">
             <span class="visible-xs store-nav__title store-nav__title--category expand-toggle" id="store-nav-cat-expand">Store Categories<i class="fa fa-caret-down"></i></span>
                 <ul class="store-nav__categories" id="store-nav-cat">
@@ -47,17 +46,18 @@
             </ul>
         </div>
 
-        <section class="store-header container">
+        <section class="store-header flex-row content-centered">
             <div class="store-header__content">
-                <h1 class="store-header__title"><a href="{% url "promotions:home" %}">SmallsLIVE Store</a><span class="store-header__title__divider">|</span>
+                <span class="store-header__title">
+                    <a href="{% url "promotions:home" %}">SmallsLIVE Store</a>
                     {% block breadcrumbs %}
                     {% endblock breadcrumbs %}
-                </h1>
+                </span>
             </div>
         </section>
 
-        <section class="store-listing container">
-            <div class="store-nav landing-nav hidden-xs col-sm-4 col-md-3">
+        <section class="store-listing flex-row">
+            <div class="store-nav landing-nav hidden-xs">
                 <ul class="store-nav__categories" id="store-nav-cat">
                     <form method="get" action="{% url 'search:search' %}">
                         <li class="store-search__container small">
@@ -87,12 +87,15 @@
                     {% endif %}
                 </ul>
             </div>
-
-            {% block store_content %}{% endblock %}
-
+            <div>
+                {% block store_content %}{% endblock %}
+            </div>
         </section>
     </div>
-{% endblock content %}
+    {% block store_extra %}
+    {% endblock store_extra %}
+
+{% endblock home_content %}
 
 {% block extra_js %}
     <script src="{% static "oscar/js/oscar/ui.js" %}" type="text/javascript" charset="utf-8"></script>

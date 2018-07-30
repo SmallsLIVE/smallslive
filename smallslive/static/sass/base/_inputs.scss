@@ -5,7 +5,11 @@
 @mixin white-border-button {
   @include button1;
   height: $input-height;
-  padding: 0 20px;
+
+  @media (min-width: $screen-md-min) {
+    padding: 0 18px;
+  }
+
   background-color: transparent;
 
   display: flex;

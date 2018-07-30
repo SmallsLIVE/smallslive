@@ -31,10 +31,9 @@
 {% block home_content %}
   {% include 'events/tickets_dialog.html' %}
 
-  <div class="flex-row wrap content-centered event-page-container">
-    <div class="flex-column">
+  <div class="event-page-container">
+    <div class="flex-column flex event-container">
     {% if user.is_authenticated %}
-
       {% if event.is_live %}
          <div class="player-container">
            <div style="padding-bottom:56.25%; position:relative; display:block; width: 800px; height: 450px">
@@ -106,7 +105,6 @@
             </div>
           </div>
         {% endif %}
-
       {% endif %}
     {% else %}
         <div class="event-video-placeholder flex-column content-space-between">
@@ -124,68 +122,68 @@
           </div>
         </div>
     {% endif %}
-      <div class="flex-row content-space-between">
-        <div class="event-video-info flex-column">
-          <div class="event-set-info">
-            <div class="event-title title1">{{ event.title }}</div>
-            {% if event.is_past %}
-              <div class="accent-color text2">Set <span id="set-number">1</span></div>
-              <div class="accent-color text2">
-                {{ event.date|date:'m/d/Y' }}</div>
-            {% endif %}
-          </div>
-          <div class="flex-row event-band">
-            {% for performers_column in performers %}
-              <div class="flex-column">
-                {% for gig_info in performers_column %}
-                  <div class="event-info-artist">
-                    <a href="{{ gig_info.artist.get_absolute_url }}"
-                       class="artist-link">
-                      {{ gig_info.artist.full_name }} / {{ gig_info.role }}
-                    </a>
-                  </div>
-                {% endfor %}
-              </div>
-            {% endfor %}
-          </div>
-          <div id="video-set-buttons">
-            <div class="button-row set-buttons" id="video-sets-list">
+    <div class="event-video-info flex-row content-space-between">
+      <div class=" flex-column">
+        <div class="event-set-info">
+          <div class="event-title title1">{{ event.title }}</div>
+          {% if event.is_past %}
+            <div class="accent-color text2">Set <span id="set-number">1</span></div>
+            <div class="accent-color text2">
+              {{ event.date|date:'m/d/Y' }}</div>
+          {% endif %}
+        </div>
+        <div class="flex-row event-band">
+          {% for performers_column in performers %}
+            <div class="flex-column">
+              {% for gig_info in performers_column %}
+                <div class="event-info-artist">
+                  <a href="{{ gig_info.artist.get_absolute_url }}"
+                     class="artist-link">
+                    {{ gig_info.artist.full_name }} / {{ gig_info.role }}
+                  </a>
+                </div>
+              {% endfor %}
             </div>
-          </div>
-          <div id="audio-set-buttons" style="display: none;">
-            <div class="button-row set-buttons" id="audio-sets-list">
-            </div>
+          {% endfor %}
+        </div>
+        <div id="video-set-buttons">
+          <div class="button-row set-buttons" id="video-sets-list">
           </div>
         </div>
-        <div class="event-player-buttons flex-column items-flex-stretch">
-            {% if event.is_past and user.can_listen_to_audio%}
-                {% if event.published_videos %}
-                    <button class="white-border-button" id="togglePlayerAudio">
-                        Audio only player
-                    </button>
-                {% endif %}
-
-                <button class="white-border-button" id="togglePlayerVideo"
-                        style="display: none">
-                    {% if event.published_videos %}
-                        Video player
-                    {% else %}
-                        Audio only
-                    {% endif %}
-                </button>
-            {% endif %}
-            {% if not event.is_live and event.is_past %}
-                <button disabled class="white-border-button">Download for $9.99</button>
-            {% elif not event.is_live and event.is_future %}
-                <button class="white-border-button" onclick="showTickets()">Tickets</button>
-            {% endif %}
-            {% if user.is_admin or user.is_staff %}
-                <a href="{% url "event_edit" pk=event.id slug=event.slug %}">
-                    <button class="white-border-button">Edit</button>
-                </a>
-            {% endif %}
+        <div id="audio-set-buttons" style="display: none;">
+          <div class="button-row set-buttons" id="audio-sets-list">
+          </div>
         </div>
       </div>
+      <div class="event-player-buttons flex-column items-flex-stretch">
+          {% if event.is_past and user.can_listen_to_audio%}
+              {% if event.published_videos %}
+                  <button class="white-border-button" id="togglePlayerAudio">
+                      Audio only player
+                  </button>
+              {% endif %}
+
+              <button class="white-border-button" id="togglePlayerVideo"
+                      style="display: none">
+                  {% if event.published_videos %}
+                      Video player
+                  {% else %}
+                      Audio only
+                  {% endif %}
+              </button>
+          {% endif %}
+          {% if not event.is_live and event.is_past %}
+              <button disabled class="white-border-button">Download for $9.99</button>
+          {% elif not event.is_live and event.is_future %}
+              <button class="white-border-button" onclick="showTickets()">Tickets</button>
+          {% endif %}
+          {% if user.is_admin or user.is_staff %}
+              <a href="{% url "event_edit" pk=event.id slug=event.slug %}">
+                  <button class="white-border-button">Edit</button>
+              </a>
+          {% endif %}
+      </div>
+    </div>
       <div class="flex-row event-set-selector"></div>
     </div>
     <div class="flex-column event-side">

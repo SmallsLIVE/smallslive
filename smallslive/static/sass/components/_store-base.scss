@@ -1,36 +1,37 @@
 .store-header {
   padding: 25px 30px;
   text-align: left;
-  color: #fff;
-  background-size: cover;
-  background-image: url('../image/store/store-small-header-bg.jpg');
-  background-position: center center;
+  //color: #fff;
+  //background-size: cover;
+  //background-image: url('../image/store/store-small-header-bg.jpg');
+  //background-position: center center;
   border-bottom: none;
+  @include title2;
 
   @media(max-width:$screen-xs-max) {
     padding: 15px 20px;
   }
 
   &__title {
-    @include lato-black;
-    font-size: 24px;
+    //@include lato-black;
+    //font-size: 24px;
     margin: 0;
 
     @media(max-width:$screen-xs-max) {
-      font-size: 16px;
-      line-height: 140%;
+      //font-size: 16px;
+      //line-height: 140%;
     }
 
     & a {
-      color: #fff;
+      //color: #fff;
 
       &:hover, &:focus {
-        color: rgba(#fff, 0.7);
+        //color: rgba(#fff, 0.7);
       }
     }
 
     &__divider {
-      @include lato;
+      //@include lato;
       margin: 0 15px;
       display: inline-block;
 
@@ -40,7 +41,7 @@
     }
 
     &__category {
-      @include lato;
+      //@include lato;
     }
   }
 
@@ -61,7 +62,7 @@
 
     &__title {
       margin: 0 0 15px;
-      @include lato-black;
+      //@include lato-black;
       font-size: 48px;
 
       @media(max-width:$screen-xs-max) {
@@ -71,7 +72,7 @@
 
     & p {
       margin: 0 0 10px;
-      @include lato-bold;
+      //@include lato-bold;
       font-size: 16px;
 
       &.small {
@@ -117,7 +118,7 @@
     &__input {
       @include flex-shrink(1);
       font-size: 16px;
-      @include lato-italic;
+      //@include lato-italic;
       outline: none;
       border: none;
       padding: 0 10px;
@@ -144,7 +145,7 @@
       & i {
         font-size: 26px;
       }
-      
+
       &:hover, &:focus {
         opacity: 0.8;
         @include transition(all 0.3s ease-in-out);
@@ -202,13 +203,13 @@
 
 .store-nav {
   padding: 20px 30px;
-  background-color: #f7f7f7;
   border-right: 1px solid #ddd;
   position: relative;
   z-index: 10;
 
   &.landing-nav {
     padding: 40px 30px 10px;
+    min-width: 350px;
   }
 
   &--category.landing-nav {
@@ -277,10 +278,10 @@
 
   &__category {
     padding: 15px 0;
-    @include lato-black;
+    @include text4;
     list-style-type: none;
     font-size: 18px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 2px solid $white-transparent;
 
     @media(max-width:$screen-xs-max) {
       font-size: 16px;
@@ -317,17 +318,18 @@
 
 .store-listing {
   padding: 0;
-  @include display(flex);
-  @include flex-wrap(wrap);
-  @include lato;
+  //@include display(flex);
+  //@include flex-wrap(wrap);
+  //@include lato;
+  overflow: hidden;
 
   &:before, &:after {
-    display: none;
+    //display: none;
   }
 
   &__content {
     padding: 40px 30px;
-    background-color: #fff;
+    //background-color: #fff;
 
     @media(max-width: $screen-xs-max) {
       min-height: 300px;
@@ -335,10 +337,10 @@
   }
 
   &__big-item {
-    @include display(flex);
-    @include flex-wrap(wrap);
+    //@include display(flex);
+    //@include flex-wrap(wrap);
     padding-bottom: 20px;
-    border-bottom: 1px solid #ddd;
+    //border-bottom: 1px solid #ddd;
     margin-bottom: 20px;
 
     &:before, &:after {
@@ -353,7 +355,7 @@
         height: auto;
         position: relative;
         z-index: 1;
-        border: 1px solid #ddd;
+        border: 4px solid $border-color;
       }
     }
 
@@ -362,24 +364,26 @@
     }
 
     &__name {
-      @include lato-black;
-      font-size: 28px;
-      padding: 15px 20px 15px 0;
-      background-color: $main-accent-color;
-      color: #fff;
+      //@include lato-black;
+      //font-size: 28px;
+      //padding: 15px 20px 15px 0;
+      //background-color: $main-accent-color;
+      color: $black;
       margin: 0 0 15px;
-      width: 150%;
+      //width: 150%;
       position: relative;
-      left: -50%;
-      padding-left: 50%;
-      line-height: 130%;
+      //left: -50%;
+      //padding-left: 50%;
+      //line-height: 130%;
 
       & a {
-        color: #fff;
+        @include title3;
+        color: $black;
+        //color: #fff;
 
-        &:hover, &:focus {
-          color: rgba(#fff, 0.7);
-        }
+        //&:hover, &:focus {
+        //  color: rgba(#fff, 0.7);
+        //}
       }
 
       @media (max-width: $screen-md-min) {
@@ -400,13 +404,13 @@
       }
 
       @media (max-width:$screen-xs-max) {
-        font-size: 20px;
+        //font-size: 20px;
         margin-bottom: 10px;
       }
     }
 
     &__description {
-      @include lato;
+      @include text4;
       font-size: 14px;
       margin-bottom: 10px;
       padding-right: 20px;
@@ -429,7 +433,7 @@
 
     &__price {
       display: block;
-      @include lato-black;
+      @include title1;
       margin: 10px 0;
       font-size: 28px;
       color: $main-accent-color;
@@ -451,81 +455,108 @@
 }
 
 .store-list-item {
-  margin-bottom: 20px;
+  margin: 20px;
 
-  @media(max-width:$screen-xs-max) {
-    margin-bottom: 30px;
+  .store-list-item-tile {
+    margin-top: 20px;
+    max-width: 200px;
   }
 
-  &__image {
-    padding: 5px;
-    border: 1px solid #ddd;
-    margin-bottom: 10px;
-    height: 250px;
-    @include display(flex);
-    @include align-items(center);
+  .store-list-item-image {
+    img {
+      min-width: 260px;
+      min-height: 260px;
+      position: relative;
 
-    @media(max-width:$screen-xs-max) {
-      width: 50%;
-    }
-
-    & a {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    & img {
-      margin: 0 auto;
-      display: block;
-
-      &.tall {
+      &:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
         height: 100%;
-        width: auto;
-      }
-
-      &.wide {
         width: 100%;
-        height: auto;
+        background-image: url('../image/image_not_found.jpg');
+        background-size: contain;
       }
     }
   }
 
-  &__name {
-    @include lato-bold;
-    font-size: 16px;
-    color: #131313;
-    margin: 0 0 5px;
-
-    & a {
-      color: #131313;
-      white-space: nowrap;
-      width: 100%;
-      overflow: hidden;
-      display: block;
-      text-overflow: ellipsis;
-
-      &:hover, &:focus {
-        color: rgba(#131313, 0.7);
-      }
-    }
-  }
-
-  &__info {
-    font-size: 12px;
-    @include lato-bold;
-    text-transform: uppercase;
-    color: #9a9a9a;
-    margin: 0 0 5px;
-  }
-
-  &__price {
-    @include lato-black;
-    font-size: 16px;
-    color: $main-accent-color;
-    display: block;
-    margin: 0 0 10px;
-  }
+  //margin-bottom: 20px;
+  //
+  //@media(max-width:$screen-xs-max) {
+  //  margin-bottom: 30px;
+  //}
+  //
+  //&__image {
+  //  padding: 5px;
+  //  border: 1px solid #ddd;
+  //  margin-bottom: 10px;
+  //  height: 250px;
+  //  @include display(flex);
+  //  @include align-items(center);
+  //
+  //  @media(max-width:$screen-xs-max) {
+  //    width: 50%;
+  //  }
+  //
+  //  & a {
+  //    display: block;
+  //    width: 100%;
+  //    height: 100%;
+  //  }
+  //
+  //  & img {
+  //    margin: 0 auto;
+  //    display: block;
+  //
+  //    &.tall {
+  //      height: 100%;
+  //      width: auto;
+  //    }
+  //
+  //    &.wide {
+  //      width: 100%;
+  //      height: auto;
+  //    }
+  //  }
+  //}
+  //
+  //&__name {
+  //  @include lato-bold;
+  //  font-size: 16px;
+  //  color: #131313;
+  //  margin: 0 0 5px;
+  //
+  //  & a {
+  //    color: #131313;
+  //    white-space: nowrap;
+  //    width: 100%;
+  //    overflow: hidden;
+  //    display: block;
+  //    text-overflow: ellipsis;
+  //
+  //    &:hover, &:focus {
+  //      color: rgba(#131313, 0.7);
+  //    }
+  //  }
+  //}
+  //
+  //&__info {
+  //  font-size: 12px;
+  //  @include lato-bold;
+  //  text-transform: uppercase;
+  //  color: #9a9a9a;
+  //  margin: 0 0 5px;
+  //}
+  //
+  //&__price {
+  //  @include lato-black;
+  //  font-size: 16px;
+  //  color: $main-accent-color;
+  //  display: block;
+  //  margin: 0 0 10px;
+  //}
 }
 
 .store-subtle-heading {
@@ -550,6 +581,7 @@
     @include flex-shrink(1);
     width: 100%;
     border: 1px solid #888;
+    //color: $white-transparent;
 
     &:hover, &:focus {
       border: 1px solid $main-accent-color;
@@ -604,10 +636,13 @@
 }
 
 .store-featured-music {
-  background-color: $main-accent-color;
-  color: #fff;
+  //background-color: $main-accent-color;
+  //color: #fff;
   padding: 0;
-  @include lato;
+  //@include lato;
+  display: flex;
+  flex-direction: column;
+  //align-items: center;
 
   & .add-to-basket {
 
@@ -624,7 +659,7 @@
   &__title {
     padding: 15px 30px;
     background-color: #000;
-    color: #fff;
+    //color: #fff;
     display: block;
     @include lato-black;
     font-size: 24px;
@@ -645,13 +680,13 @@
     padding: 15px 0;
     border-bottom: 2px solid rgba(#fff, 0.15);
     margin: 0 30px 30px;
-    
+
     & a {
-      color: #fff;
+      //color: #fff;
       opacity: 0.75;
       font-size: 16px;
       @include lato-black;
-      
+
       &:hover, &:focus {
         opacity: 1;
       }
@@ -671,19 +706,21 @@
     padding: 0 30px;
 
     &__cover {
-      padding: 5px;
-      background-color: rgba(#fff, 0.15);
-      margin-bottom: 10px;
+      //padding: 5px;
+      //background-color: rgba(#fff, 0.15);
+      margin: 0 40px;
+      @include text4;
 
       & img {
         width: 100%;
         height: auto;
+
+        border-radius: 20px;
       }
     }
 
     &__details {
-      font-size: 12px;
-      color: rgba(#fff, 0.7);
+      margin-top: 20px;
     }
 
     &>.row {
@@ -691,9 +728,9 @@
     }
 
     &__price {
-      @include lato-black;
-      font-size: 24px;
-      display: block;
+      @include title1;
+      //font-size: 24px;
+      //display: block;
       margin-bottom: 10px;
     }
 
@@ -702,12 +739,12 @@
       & .store-add-large {
 
         &__options {
-          background-color: $main-accent-color;
-          border: 1px solid #fff;
+          //background-color: $main-accent-color;
+          //border: 1px solid #fff;
         }
 
         &__button {
-          border: 1px solid #fff;
+          //border: 1px solid #fff;
           border-right: none;
           position: relative;
 
@@ -739,21 +776,20 @@
       }
 
       & .arrow {
-        
+
       }
     }
 
     &__title {
-      @include lato-black;
-      font-size: 28px;
+      @include title3;
       margin: 0 0 20px;
 
       & a {
-        color: #fff;
+        color: $black;
 
-        &:hover, &:focus {
-          color: rgba(#fff, 0.7);
-        }
+        //&:hover, &:focus {
+        //  color: rgba(#fff, 0.7);
+        //}
       }
 
       @media(max-width:$screen-xs-max) {
@@ -764,14 +800,26 @@
     &__tracks-table {
       padding: 0 10px;
 
+      table {
+        thead {
+          @include text2;
+          color: $text-grey;
+        }
+
+        tbody {
+          @include text4;
+        }
+
+      }
+
       &__title {
+        @include title2;
         font-size: 18px;
         margin: 0 0 20px -10px;
       }
 
-      &__header {
+      &__header, &__row {
         padding: 10px 0;
-        border-top: 1px solid rgba(#000, 0.1);
         border-bottom: 1px solid rgba(#000, 0.1);
         @include display(flex);
         @include align-items(center);
@@ -780,23 +828,29 @@
         &:before, &:after {
           display: none;
         }
+      }
+
+      &__header {
       }
 
       &__row {
-        padding: 7px 0;
-        border-bottom: 1px solid rgba(#000, 0.1);
-        @include display(flex);
-        @include align-items(center);
-        @include flex-wrap(wrap);
-
-        &:before, &:after {
-          display: none;
-        }
-
-        &:last-of-type {
-          border-bottom: none;
-        }
       }
+
+      //&__row {
+      //  padding: 7px 0;
+      //  border-bottom: 1px solid rgba(#000, 0.1);
+      //  @include display(flex);
+      //  @include align-items(center);
+      //  @include flex-wrap(wrap);
+      //
+      //  &:before, &:after {
+      //    display: none;
+      //  }
+      //
+      //  &:last-of-type {
+      //    border-bottom: none;
+      //  }
+      //}
 
       &__column {
 
@@ -821,7 +875,7 @@
       }
 
       & a {
-        color: #fff;
+        //color: #fff;
 
         &:hover, &:focus {
           color: rgba(#fff, 0.7);
@@ -829,35 +883,35 @@
       }
 
       & .tracks-table__button {
-          border: 1px solid #fff;
+          //border: 1px solid #fff;
           border-right: none;
           position: relative;
           float: right;
 
-          &:after, &:before {
-            left: 100%;
-            top: 50%;
-            border: solid transparent;
-            content: " ";
-            height: 0;
-            width: 0;
-            position: absolute;
-            pointer-events: none;
-          }
-
-          &:after {
-            border-color: rgba(136, 183, 213, 0);
-            border-left-color: $main-accent-color;
-            border-width: 14px;
-            margin-top: -14px;
-          }
-
-          &:before {
-            border-color: rgba(255, 255, 255, 0);
-            border-left-color: #fff;
-            border-width: 15px;
-            margin-top: -15px;
-          }
+          //&:after, &:before {
+          //  left: 100%;
+          //  top: 50%;
+          //  border: solid transparent;
+          //  content: " ";
+          //  height: 0;
+          //  width: 0;
+          //  position: absolute;
+          //  pointer-events: none;
+          //}
+          //
+          //&:after {
+          //  border-color: rgba(136, 183, 213, 0);
+          //  border-left-color: $main-accent-color;
+          //  border-width: 14px;
+          //  margin-top: -14px;
+          //}
+          //
+          //&:before {
+          //  border-color: rgba(255, 255, 255, 0);
+          //  //border-left-color: #fff;
+          //  border-width: 15px;
+          //  margin-top: -15px;
+          //}
 
           & i {
             margin-left: 5px;
@@ -883,11 +937,11 @@
     &__controls {
       @include display(flex);
       @include align-items(center);
-      @include flex-wrap(wrap);
-      @include justify-content(space-between);
-      padding: 30px 10px;
-      margin: 30px 30px 0;
-      border-top: 2px solid rgba(#fff, 0.15);
+      //@include flex-wrap(wrap);
+      @include justify-content(center);
+      //padding: 30px 10px;
+      margin: 30px;
+      //border-top: 2px solid rgba(#fff, 0.15);
     }
 
     &__indicators {
@@ -903,7 +957,7 @@
       height: 10px;
       width: 10px;
       border-radius: 100%;
-      background-color: #fff;
+      background-color: $black;
       opacity: 0.5;
       @include transition(all 0.3s ease-in-out);
       cursor: pointer;
@@ -912,14 +966,16 @@
         opacity: 1;
       }
     }
-    
+
     &__control {
       font-size: 20px;
-      color: #fff;
+      color: $black;
       cursor: pointer;
       opacity: 0.5;
+
+      margin: 0 50px;
       @include transition(all 0.3s ease-in-out);
-      
+
       &:hover, &:focus {
         opacity: 1;
       }
@@ -929,22 +985,22 @@
 
 .store-featured-merch {
   @include lato;
-  background-color: #fff;
-  padding: 40px 30px 50px;
+  //background-color: #fff;
+  //padding: 40px 30px 50px;
 }
 
 
 .store-single {
 
   &__content {
-    background-color: #fff;
+    //background-color: #fff;
     padding: 40px 30px;
   }
 
   &__item {
-    @include display(flex);
-    @include align-items(flex-start);
-    @include flex-wrap(wrap);
+    //@include display(flex);
+    //@include align-items(flex-start);
+    //@include flex-wrap(wrap);
 
     &:before, &:after {
       display: none;
@@ -980,7 +1036,7 @@
         display: block;
         font-size: 12px;
         @include lato;
-        color: #999;
+        //color: #999;
         margin: 15px 0;
       }
 
@@ -1025,30 +1081,27 @@
     }
 
     &__content {
-      margin: 20px 0;
+      //margin: 20px 0;
     }
 
     &__name {
-      @include lato-black;
-      font-size: 28px;
-      color: $main-accent-color;
-      margin: 0 0 20px;
-      line-height: 130%;
+      //@include lato-black;
+      @include title3;
+      //font-size: 28px;
+      //color: $main-accent-color;
+      //margin: 0 0 20px;
+      //line-height: 130%;
 
       & a {
-        color: $main-accent-color;
-
-        &:hover, &:focus {
-          color: rgba($main-accent-color, 0.7);
-        }
+        color: $black;
       }
     }
 
     &__subtitle {
-      @include lato-bold-italic;
+      @include text4;
       font-size: 22px;
       color: rgba($base-text-color, 0.6);
-      margin: -15px 0 20px;
+      //margin: -15px 0 20px;
     }
 
     &__event-link {
@@ -1068,22 +1121,22 @@
     }
 
     &__description {
-      @include lato;
+      @include text4;
       font-size: 14px;
-      margin-bottom: 20px;
-      padding-right: 20px;
+      margin: 20px 0;
+      //padding-right: 20px;
     }
 
     &__details {
-      @include lato;
-      font-size: 12px;
-      margin-bottom: 15px;
-      padding-right: 20px;
+      @include text4;
+      //margin-bottom: 15px;
+      //padding-right: 20px;
 
       &__title {
+        @include text4;
         display: block;
         margin: 0 0 5px;
-        @include lato-bold;
+        //@include lato-bold;
       }
 
       & p {
@@ -1093,7 +1146,7 @@
 
     &__price {
       display: block;
-      @include lato-black;
+      @include title1;
       margin: 10px 0;
       font-size: 28px;
       color: $main-accent-color;
@@ -1399,7 +1452,7 @@
 
           .store-cart__table__row__container {
           }
-          
+
           & .image {
 
           }
@@ -1652,7 +1705,7 @@
         border: 1px solid #ddd;
       }
     }
-    
+
     &__price-container {
       width: 100%;
       @include lato-bold;
@@ -2013,6 +2066,9 @@
 }
 
 img.defineImageRatio {
+  border-radius: 10px;
+  overflow: hidden;
+
   max-width: 100%;
   max-height: 100%;
 
@@ -2034,10 +2090,10 @@ img.defineImageRatio {
 }
 
 .buy-button-container {
-
+  position: relative;
   & ul li {
     padding: 5px;
-    
+
     &:hover, &:focus {
       color: $main-accent-color;
     }

@@ -1,32 +1,27 @@
 .section-title {
   $underline-length: 750px;
   position: relative;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  display: flex;
+  align-items: flex-end;
+  text-decoration: none;
+  background: linear-gradient(to right, $white-transparent, $white-transparent) no-repeat bottom left;
+  background-size: $underline-length $underline-height;
+  padding-bottom: 3px;
 
-  &:not(.section-title-padded) {
-    width: 100%;
-    @media(min-width: $screen-md-max) {
-      width: $underline-length;
-    }
+  width: 100%;
+  @media(min-width: $screen-md-max) {
+    width: $underline-length;
   }
 
   &.section-flex {
     width: 100%;
   }
 
-  &.section-title-padded {
-    $padding: 40px;
-    margin-top: 40px;
-    padding-left: $padding;
-    padding-right: $padding;
+  &.section-title-no-padded {
+    padding-left: 0;
   }
-
-  margin-bottom: 20px;
-  padding-left: 20px;
-  display: inline-block;
-  text-decoration: none;
-  background: linear-gradient(to right, $white-transparent, $white-transparent) no-repeat bottom left;
-  background-size: $underline-length $underline-height;
-  padding-bottom: $underline-height / 2;
 
   .date-separator {
     color: $accent-color;

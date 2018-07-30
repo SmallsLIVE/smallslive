@@ -24,7 +24,7 @@
 
 {% block home_content %}
   <main>
-    <div class="flex-row items-flex-stretch artist-header">
+    <div class="flex-row items-flex-stretch artist-header wrap">
       <div class="artist-picture">
         {% if artist.photo %}
           {% include 'partials/thumbored_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}

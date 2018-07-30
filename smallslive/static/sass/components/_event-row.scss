@@ -1,7 +1,13 @@
+$mobile-event-card-width: $event-card-width / 1.5;
+
 .event-row, .album-row {
   display: flex;
   overflow: auto;
-  padding-left: 40px;
+  padding-left: 20px;
+
+  @media (min-width: $screen-md-min) {
+    padding-left: 40px;
+  }
 
   .event-display {
     margin: 5px;
@@ -20,7 +26,12 @@
 
   div {
     div:first-child {
-      width: 50%;
+      @media (min-width: $screen-md-min) {
+        width: 50%;
+      }
+      @media (max-width: $screen-sm-max) {
+        max-width: $mobile-event-card-width;
+      }
     }
   }
 }
@@ -125,10 +136,13 @@
 
 .event-card {
   @include event-card($event-card-width, $event-card-height);
+  @media (max-width: $screen-sm-max) {
+    @include event-card($mobile-event-card-width, $event-card-height / 1.5);
+  }
 }
 
 .event-card-small {
-  @include event-card($event-card-width / 1.5, $event-card-height / 1.5);
+  @include event-card($mobile-event-card-width, $event-card-height / 1.5);
 
   .event-picture-container {
     border-radius: 0;

@@ -132,6 +132,7 @@ $text-font-size-big: 1.4em;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   transform: scaleY(1.3);
+  line-height: 1em;
 }
 
 // Titles
@@ -168,6 +169,11 @@ $text-font-size-big: 1.4em;
   letter-spacing: 0;
   text-transform: uppercase;
   transform: scaleY(1.2);
+
+  @media (max-width: $screen-sm-max) {
+    font-size: 6em;
+
+  }
 }
 
 .title4 {

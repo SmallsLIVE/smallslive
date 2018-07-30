@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>{% block title %}{% endblock %} - SmallsLIVE</title>
   {% stylesheet 'css' %}
 
@@ -61,11 +61,11 @@
 
 
 
-{% if user.is_superuser %}
-  {% include 'admin_header.html' %}
-{% endif %}
 
 {% block header %}
+  {% if user.is_superuser %}
+    {% include 'admin_header.html' %}
+  {% endif %}
   {% include 'bootstrap_header.html' %}
 {% endblock %}
 
@@ -124,7 +124,9 @@
             window.location = "{% url 'account_logout' %}";
         } else if (value === 'artist_dashboard') {
             window.location = "{% url 'artist_dashboard:my_past_events' %}";
-        }
+        } else if (value === 'account_info') {
+            window.location = "{% url 'user_settings_new' %}";
+        } 
     });
   });
 </script>

@@ -16,13 +16,20 @@
 {% endblock %}
 
 {% block header %}
-{% include 'partials/header.html' %}
+  <div class="navigation-bars {% if user.is_superuser %}admin-shown{% endif %}">
+    {% if user.is_superuser %}
+      {% include 'admin_header.html' %}
+    {% endif %}
+    {% include 'partials/header.html' %}
+    {% block extra_nav %}
+    {% endblock %}
+  </div>
 {% endblock %}
 
 {% block content %}
   {% include 'inactive_dialog.html' %}
 
-  <div class="main-container">
+  <div class="main-container{% if user.is_superuser %} admin-shown{% endif %}">
     {% block home_content %}
     <main>
       {% if not request.user.is_authenticated %}
@@ -34,9 +41,10 @@
         <section class="event-stripe">
           <div class="section-title">
             <div class="title1">
-              Streaming Tonight <span class="date-separator">/</span>
+              Live Tonight <span class="date-separator">/</span>
             </div>
-            <div class="header-sub title2">{% now "l F j, o" %}</div>
+            <div class="header-sub title2 visible-lg visible-md">{% now "l F j, o" %}</div>
+            <div class="header-sub title2 visible-sm visible-xs">{% now "D n/j" %}</div>
           </div>
           <main>
             {% include 'events/event_row.html' with events=events_today show_time=True hidde_event_date=True show_event_venue=True %}
@@ -54,7 +62,7 @@
           <div class="section-title">
             <div class="title1">Most Popular</div>
             <span class="select-container">
-              <div class="white-border-select" style="width:150px;">
+              <div class="white-border-select home-filter">
                 <select id="most-popular-filter">
                   <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
                   <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
@@ -83,6 +91,27 @@
 {% endblock%}
 
 {% block footer %}
+  <div class="footer-mobile visible-xs visible-sm text4 ">
+    <div class="flex-column footer-links">
+      <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
+      <a href="{% url 'schedule' %}" class="{% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">Calendar</a>
+      <a href="{% url 'search' %}"
+         class="{% if request.resolver_match.url_name == 'search' %}active{% endif %}">Archive</a>
+      <a href="{% url 'contact-and-info' %}"
+         class="{% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</a>
+      <a href="">Education</a>
+      <a href="{% url "promotions:home" %}">Store</a>
+    </div>
+    <div class="footer-info flex-column items-center">
+      <div class="text-grey">Copyright ®{% now 'Y' %} SmallsLIVE All rights reserverd.</div>
+      <div>
+        <a href="{% url "static_page" "privacy" %}">Privacy Policy</a> |
+        <a href="{% url "terms-and-conditions" %}">Terms and Conditions</a> |
+        <a href="{% url "contact-and-info" %}">Contact + Info</a>
+      </div>
+
+    </div>
+  </div>
 {% endblock %}
 
 {% block extra_js %}
