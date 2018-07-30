@@ -14,7 +14,8 @@
         <div class="title1">
           Tonight's Shows <span class="date-separator">/</span>
         </div>
-        <div class="header-sub title2">{% now "l F j, o" %}</div>
+        <div class="header-sub title2 visible-lg visible-md">{% now "l F j, o" %}</div>
+        <div class="header-sub title2 visible-sm visible-xs">{% now "D n/j" %}</div>
       </div>
       <main>
         {% include 'events/event_row.html' with events=events_today show_time='True' hidde_event_date='True' show_event_venue='True' %}
