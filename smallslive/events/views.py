@@ -244,6 +244,22 @@ class EventDetailView(DetailView):
 
         if event.is_today:
             context['streaming_tonight_videos'] = get_today_events()
+            live_set = event.is_live
+            if live_set:
+                next_event_ids = get_today_events().values_list('id', flat=True)
+                next_set = EventSet.objects.filter(
+                    event_id__in=next_event_ids, start__gt=live_set.end
+                ).first()
+
+                if next_set:
+                    context['next_streaming'] = {
+                        'event_url': next_set.event.get_absolute_url(),
+                        'start': live_set.utc_end + timedelta(minutes=2)
+                    }
+
+            else:
+                # Sent current event start
+                pass
 
         return context
 
