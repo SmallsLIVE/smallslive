@@ -40,8 +40,12 @@ class SearchObject(object):
                     first_name__icontains=artist)
             sqs = sqs.filter(condition).distinct()
 
+        artist_words = None
         if artist_search:
             artist_words = artist_search.split(' ')
+            artist_words = [i for i in artist_words if i not in instruments]
+
+        if artist_words:
             artist = artist_words[0]
             good_matches = sqs.filter(Q(
                 last_name__istartswith=artist)).distinct()
