@@ -17,13 +17,13 @@ class SearchObject(object):
         sqs = Artist.objects.all()
         words = main_search.split(' ')
         all_instruments = self.get_instruments()
-        instruments = [i for i in words if i.upper() in all_instruments]
-        words = [i for i in words if i.upper() not in all_instruments]
+        instruments = [i for i in words if any(item.startswith(i.upper()) for item in all_instruments)]
+        words = [i for i in words if i not in instruments]
 
         if instruments:
-            condition = Q(instruments__name__iexact=instruments[0])
+            condition = Q(instruments__name__istartswith=instruments[0])
             for i in instruments[1:]:
-                condition |= Q(instruments__name__iexact=i)
+                condition |= Q(instruments__name__istartswith=i)
             sqs = Artist.objects.filter(condition).distinct()
 
         if instrument:
@@ -63,7 +63,6 @@ class SearchObject(object):
         words = main_search.split(' ')
         all_instruments = self.get_instruments()
         instruments = [i for i in words if i.upper() in all_instruments]
-        words = [i for i in words if i.upper() not in all_instruments]
 
         if instruments:
             condition = Q(artists_gig_info__role__name__icontains=instruments[0],
