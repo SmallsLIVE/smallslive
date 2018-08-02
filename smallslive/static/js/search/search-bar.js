@@ -46,5 +46,9 @@ $(document).ready(function () {
 });
 
 $(document).on('click','.search-bar-more', function(){
-    $(".search-input").submit();
+    if($('#search-bar input:visible').length) {
+        $("#headerSearchForm").submit();
+    } else {
+        $(".search-input").submit();
+    }
 });
