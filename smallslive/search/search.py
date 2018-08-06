@@ -30,15 +30,24 @@ class SearchObject(object):
             sqs = sqs.filter(instruments__name=instrument)
 
         if words:
-            artist = words.pop()
-            condition = Q(
-                last_name__icontains=artist) | Q(
-                first_name__icontains=artist)
-            for artist in words:
-                condition |= Q(
+            if len(words) > 1:
+                artist = words.pop()
+                condition = Q(
                     last_name__icontains=artist) | Q(
                     first_name__icontains=artist)
-            sqs = sqs.filter(condition).distinct()
+                for artist in words:
+                    condition |= Q(
+                        last_name__icontains=artist) | Q(
+                        first_name__icontains=artist)
+                sqs = sqs.filter(condition).distinct()
+            else:
+                artist = words[0]
+                good_matches = sqs.filter(Q(
+                    last_name__istartswith=artist)).distinct()
+                not_so_good_matches = sqs.filter(~Q(
+                    last_name__istartswith=artist) & Q(
+                    first_name__istartswith=artist)).distinct()
+                sqs = list(good_matches) + list(not_so_good_matches)
 
         artist_words = None
         if artist_search:
