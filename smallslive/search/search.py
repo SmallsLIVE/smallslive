@@ -42,12 +42,16 @@ class SearchObject(object):
                 sqs = sqs.filter(condition).distinct()
             else:
                 artist = words[0]
+                first_name_matches = sqs.filter(Q(
+                    first_name__iexact=artist)).distinct()
                 good_matches = sqs.filter(Q(
-                    last_name__istartswith=artist)).distinct()
+                    first_name__istartswith=artist) & ~Q(
+                    first_name__iexact=artist)).distinct()
                 not_so_good_matches = sqs.filter(~Q(
-                    last_name__istartswith=artist) & Q(
-                    first_name__istartswith=artist)).distinct()
-                sqs = list(good_matches) + list(not_so_good_matches)
+                    first_name__istartswith=artist) & Q(
+                    last_name__istartswith=artist) & ~Q(
+                    first_name__iexact=artist)).distinct()
+                sqs =  list(first_name_matches) + list(good_matches) + list(not_so_good_matches)
 
         artist_words = None
         if artist_search:
