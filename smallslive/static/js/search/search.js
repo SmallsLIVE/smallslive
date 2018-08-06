@@ -46,6 +46,11 @@ function changePage(param) {
     sendEventRequest();
 }
 
+function loadMoreEvents() {
+    eventPageNum += 1;
+    sendEventRequest();
+}
+
 function sendEventRequest() {
     if (eventDate) {
         var utcDate = eventDate.getFullYear() + '/' + (eventDate.getMonth() + 1) + '/' + eventDate.getDate();
@@ -63,10 +68,15 @@ function sendEventRequest() {
             if (data.template) {
                 $("#event-subheader").html(data.showingResults)
                 $("#event-subheader-footer").html(data.showingResults)
-                $("#events").html(data.template);
-                $("#page-numbers-footer").html(data.pageNumbersFooter);
+                $(data.template).find("article").each(function( index ) {
+                    $("#events .event-row").append($( this ));
+                });
 
                 eventMaxPageNum = data.numPages;
+
+                if (data.numPages == eventPageNum) {
+                    $("#load-more-btn").hide();
+                }
             }
         }
     });
