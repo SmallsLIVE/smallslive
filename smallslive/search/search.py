@@ -31,15 +31,28 @@ class SearchObject(object):
 
         if words:
             if len(words) > 1:
-                artist = words.pop()
-                condition = Q(
-                    last_name__icontains=artist) | Q(
-                    first_name__icontains=artist)
-                for artist in words:
-                    condition |= Q(
+                if len(words) == 2:
+                    exact_sqs = sqs.filter(first_name__iexact=words[0],
+                                                 last_name__iexact=words[1]).distinct()
+                    if exact_sqs.count() == 0:
+                        multiple_search = True
+                    else:
+                        multiple_search = False
+                        sqs = exact_sqs
+                    
+                else:
+                    multiple_search = True
+
+                if multiple_search:
+                    artist = words.pop()
+                    condition = Q(
                         last_name__icontains=artist) | Q(
                         first_name__icontains=artist)
-                sqs = sqs.filter(condition).distinct()
+                    for artist in words:
+                        condition |= Q(
+                            last_name__icontains=artist) | Q(
+                            first_name__icontains=artist)
+                    sqs = sqs.filter(condition).distinct()
             else:
                 artist = words[0]
                 first_name_matches = sqs.filter(Q(
