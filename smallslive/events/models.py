@@ -271,7 +271,19 @@ class Event(TimeStampedModel):
 
     @property
     def is_live(self):
-        return not self.is_past and not self.is_future
+        for event_set in self.sets.all():
+            # Convert set times to UTC, they are in America/New York timezone
+            ny_start = datetime.combine(self.date, event_set.start)
+            ny_end = datetime.combine(self.date, event_set.end)
+
+            current_timezone = timezone.get_current_timezone()
+            utc_start = timezone.make_aware(ny_start, timezone=current_timezone)
+            utc_end = timezone.make_aware(ny_end, timezone=current_timezone)
+
+            if utc_start <= timezone.now() < utc_end:
+                return event_set
+
+        return None
 
     @property
     def is_today(self):
@@ -456,6 +468,20 @@ class EventSet(models.Model):
     @property
     def has_media(self):
         return self.video_recording or self.audio_recording
+
+    @property
+    def utc_start(self):
+        real_date = self.event.date
+        if 0 <= self.start.hour < 5:
+            real_date = real_date + timedelta(days=1)
+
+        ny_start = datetime.combine(real_date, self.start)
+        return timezone.make_aware(ny_start, timezone=(timezone.get_current_timezone()))
+
+    @property
+    def utc_end(self):
+        ny_end = datetime.combine(self.event.date, self.end)
+        return timezone.make_aware(ny_end, timezone=(timezone.get_current_timezone()))
 
 
 class GigPlayedQuerySet(models.QuerySet):
