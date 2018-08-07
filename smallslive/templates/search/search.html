@@ -56,7 +56,7 @@
           <i class="fa fa-angle-left"></i>
         </div>
 
-        <div class="loading-image">
+        <div id="artist-load-gif" class="loading-image">
           <img src="{% static 'image/loading.gif' %}" alt="">
         </div>
 
@@ -121,6 +121,10 @@
           <span style="display: block; margin-top: -15px;">Load More</span>
         </button>
         {% endif %}
+
+        <div id="event-load-gif" class="loading-image events-gif">
+            <img src="{% static 'image/loading.gif' %}" alt="">
+        </div>
 
       </div>
     </section>

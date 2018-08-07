@@ -15,7 +15,7 @@ function sendArtistRequest() {
                 $("#artist-subheader").html(data.showingResults)
                 $("#artists").html(data.template);
                 $("#artists").show();
-                $(".loading-image").css("display", "none");
+                $("#artist-load-gif").css("display", "none");
                 $(".container-list-article").css("height", "auto");
                 artistMaxPageNum = data.numPages;
 
@@ -34,7 +34,7 @@ function sendArtistRequest() {
         },
         error: function (data) {
             $("#artists").show();
-            $(".loading-image").css("display", "none");
+            $("#artist-load-gif").css("display", "none");
             $(".container-list-article").css("height", "auto");
             $(".right_arrow").css('visibility', 'hidden');
         }
@@ -48,6 +48,8 @@ function changePage(param) {
 
 function loadMoreEvents() {
     eventPageNum += 1;
+    $("#load-more-btn").hide();
+    $("#event-load-gif").css("display", "block");
     sendEventRequest();
 }
 
@@ -74,8 +76,9 @@ function sendEventRequest() {
 
                 eventMaxPageNum = data.numPages;
 
-                if (data.numPages == eventPageNum) {
-                    $("#load-more-btn").hide();
+                $("#event-load-gif").css("display", "none");
+                if (data.numPages != eventPageNum) {
+                    $("#load-more-btn").show();
                 }
             }
         }
@@ -103,7 +106,7 @@ $(document).ready(function () {
 
             artistPageNum -= 1;
             $("#artists").hide();
-            $(".loading-image").css("display", "flex");
+            $("#artist-load-gif").css("display", "flex");
             sendArtistRequest();
         }
     });
@@ -112,7 +115,7 @@ $(document).ready(function () {
         if (artistPageNum !== artistMaxPageNum) {
             artistPageNum += 1;
             $("#artists").hide();
-            $(".loading-image").css("display", "flex");
+            $("#artist-load-gif").css("display", "flex");
             sendArtistRequest();
         }
     });
@@ -145,7 +148,7 @@ $(document).ready(function () {
             artistPageNum = 1;
             artistSearchTerm = $('.search-artist-box').val();
             $("#artists").hide();
-            $(".loading-image").css("display", "flex");
+            $("#artist-load-gif").css("display", "flex");
             sendArtistRequest();
         }, 700);
     });
