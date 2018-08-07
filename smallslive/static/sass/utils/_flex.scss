@@ -1,10 +1,6 @@
 .flex-row, .flex-column {
   display: flex;
 
-  &.flex {
-    flex: 1
-  }
-
   &.content-space-around {
     justify-content: space-around;
   }
