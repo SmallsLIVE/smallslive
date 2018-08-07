@@ -56,7 +56,7 @@
           <i class="fa fa-angle-left"></i>
         </div>
 
-        <div class="loading-image">
+        <div id="artist-load-gif" class="loading-image">
           <img src="{% static 'image/loading.gif' %}" alt="">
         </div>
 
@@ -116,12 +116,14 @@
           {{ showing_event_results }}
         </div>
 
-        <button id="next-page-btn" class="white-border-button next-page-btn" style="width:220px;">
-          <span style="display: block; margin-top: -15px;">NEXT PAGE</span>
+        {% if last_page != actual_page %}
+        <button id="load-more-btn" class="white-border-button load-more-btn" style="width:220px;" onclick="loadMoreEvents()">
+          <span style="display: block; margin-top: -15px;">Load More</span>
         </button>
+        {% endif %}
 
-        <div id="page-numbers-footer">
-          {% include 'search/page_numbers_footer.html' %}
+        <div id="event-load-gif" class="loading-image events-gif">
+            <img src="{% static 'image/loading.gif' %}" alt="">
         </div>
 
       </div>

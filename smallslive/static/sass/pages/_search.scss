@@ -240,12 +240,17 @@
   margin-bottom: 100px;
 }
 
-.next-page-btn {
+.load-more-btn {
   font-weight: 900;
   font-size: 2em;
   padding-top: 30px;
   padding-bottom: 30px;
   margin-top: 20px;
+}
+
+.load-more-btn-text {
+  margin-top: -15px;
+  text-transform: uppercase;
 }
 
 
@@ -369,4 +374,8 @@
   font-weight: 900;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.events-gif {
+  margin-top: 30px;
 }
