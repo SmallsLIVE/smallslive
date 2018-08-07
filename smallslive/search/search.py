@@ -32,8 +32,8 @@ class SearchObject(object):
         if words:
             if len(words) > 1:
                 if len(words) == 2:
-                    exact_sqs = sqs.filter(first_name__iexact=words[0],
-                                                 last_name__iexact=words[1]).distinct()
+                    exact_sqs = sqs.filter(first_name__istartswith=words[0],
+                                                 last_name__istartswith=words[1]).distinct()
                     if exact_sqs.count() == 0:
                         multiple_search = True
                     else:
@@ -82,8 +82,8 @@ class SearchObject(object):
 
             elif len(artist_words) > 1:
                 if len(artist_words) == 2:
-                    exact_sqs = sqs.filter(first_name__iexact=artist_words[0],
-                                                 last_name__iexact=artist_words[1]).distinct()
+                    exact_sqs = sqs.filter(first_name__startswith=artist_words[0],
+                                                 last_name__startswith=artist_words[1]).distinct()
                     if exact_sqs.count() == 0:
                         multiple_search = True
                     else:
