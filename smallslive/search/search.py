@@ -71,14 +71,38 @@ class SearchObject(object):
             artist_words = artist_search.split(' ')
             artist_words = [i for i in artist_words if i not in instruments]
 
-        if artist_words:
-            artist = artist_words[0]
-            good_matches = sqs.filter(Q(
-                last_name__istartswith=artist)).distinct()
-            not_so_good_matches = sqs.filter(~Q(
-                last_name__istartswith=artist) & Q(
-                first_name__istartswith=artist)).distinct()
-            sqs = list(good_matches) + list(not_so_good_matches)
+            if len(artist_words) == 1:
+                artist = artist_words[0]
+                good_matches = sqs.filter(Q(
+                    last_name__istartswith=artist)).distinct()
+                not_so_good_matches = sqs.filter(~Q(
+                    last_name__istartswith=artist) & Q(
+                    first_name__istartswith=artist)).distinct()
+                sqs = list(good_matches) + list(not_so_good_matches)
+
+            elif len(artist_words) > 1:
+                if len(artist_words) == 2:
+                    exact_sqs = sqs.filter(first_name__iexact=artist_words[0],
+                                                 last_name__iexact=artist_words[1]).distinct()
+                    if exact_sqs.count() == 0:
+                        multiple_search = True
+                    else:
+                        multiple_search = False
+                        sqs = exact_sqs
+
+                else:
+                    multiple_search = True
+
+                if multiple_search:
+                    artist = artist_words.pop()
+                    condition = Q(
+                        last_name__icontains=artist) | Q(
+                        first_name__icontains=artist)
+                    for artist in artist_words:
+                        condition |= Q(
+                            last_name__icontains=artist) | Q(
+                            first_name__icontains=artist)
+                    sqs = sqs.filter(condition).distinct()
         
         return sqs
 
