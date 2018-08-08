@@ -13,9 +13,8 @@ function sendArtistRequest() {
             if (data.template) {
                 $("#artist-subheader").html(data.showingResults)
                 $("#artists").html(data.template);
-                $("#artists").show();
-                $("#artist-load-gif").css("display", "none");
-                $(".container-list-article").css("height", "auto");
+                $(".container-list-article").removeClass("artist-loading-gif");
+                $("#artists").css("visibility", "visible");
                 artistMaxPageNum = data.numPages;
 
                 if (artistPageNum === 1) {
@@ -104,8 +103,8 @@ $(document).ready(function () {
         if (artistPageNum !== 1) {
 
             artistPageNum -= 1;
-            $("#artists").hide();
-            $("#artist-load-gif").css("display", "flex");
+            $(".container-list-article").addClass("artist-loading-gif");
+            $("#artists").css("visibility", "hidden");
             sendArtistRequest();
         }
     });
@@ -113,8 +112,8 @@ $(document).ready(function () {
     $(".right_arrow").click(function () {
         if (artistPageNum !== artistMaxPageNum) {
             artistPageNum += 1;
-            $("#artists").hide();
-            $("#artist-load-gif").css("display", "flex");
+            $(".container-list-article").addClass("artist-loading-gif");
+            $("#artists").css("visibility", "hidden");
             sendArtistRequest();
         }
     });
@@ -146,8 +145,10 @@ $(document).ready(function () {
         delay(function () {
             artistPageNum = 1;
             artistSearchTerm = $('.search-artist-box').val();
-            $("#artists").hide();
-            $("#artist-load-gif").css("display", "flex");
+            //$("#artists").hide();
+            //$("#artist-load-gif").css("display", "flex");
+            $(".container-list-article").addClass("artist-loading-gif");
+            $("#artists").css("visibility", "hidden");
             sendArtistRequest();
         }, 700);
     });
@@ -165,6 +166,9 @@ $(document).ready(function () {
         artistInstrument = $(this).text();
         $('.instrument-btn').text(artistInstrument);
         artistPageNum = 1;
+
+        $(".container-list-article").addClass("artist-loading-gif");
+        $("#artists").css("visibility", "hidden");
 
         sendArtistRequest();
         $(".instruments-container").css("display", "none");

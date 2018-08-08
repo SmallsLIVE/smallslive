@@ -70,8 +70,9 @@ class SearchObject(object):
         artist_words = None
         if artist_search:
             artist_words = artist_search.split(' ')
-            if words and instruments:
-                    artist_words = [i for i in artist_words if i not in instruments]
+            artist_instruments = [i for i in artist_words if any(item.startswith(i.upper()) for item in all_instruments)]
+            if artist_instruments:
+                    artist_words = [i for i in artist_words if i not in artist_instruments]
 
             if len(artist_words) == 1:
                 artist = artist_words[0]
