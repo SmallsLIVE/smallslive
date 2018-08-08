@@ -17,11 +17,13 @@ class SearchObject(object):
         sqs = Artist.objects.all()
         words = main_search.split(' ') if main_search else None
         all_instruments = self.get_instruments()
+        instruments = None
+
         if words:
             instruments = [i for i in words if any(item.startswith(i.upper()) for item in all_instruments)]
             words = [i for i in words if i not in instruments]
 
-        if words and instruments:
+        if instruments:
             condition = Q(instruments__name__istartswith=instruments[0])
             for i in instruments[1:]:
                 condition |= Q(instruments__name__istartswith=i)
