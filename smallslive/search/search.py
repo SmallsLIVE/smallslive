@@ -75,6 +75,10 @@ class SearchObject(object):
             artist_instruments = [i for i in artist_words if any(item.startswith(i.upper()) for item in all_instruments)]
             if artist_instruments:
                     artist_words = [i for i in artist_words if i not in artist_instruments]
+                    condition = Q(instruments__name__istartswith=artist_instruments[0])
+                    for i in artist_instruments[1:]:
+                        condition |= Q(artist_instruments__name__istartswith=i)
+                    sqs = sqs.filter(condition).distinct()
 
             if len(artist_words) == 1:
                 artist = artist_words[0]
