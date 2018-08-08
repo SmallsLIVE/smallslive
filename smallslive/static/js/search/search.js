@@ -4,7 +4,6 @@ function sendArtistRequest() {
     $.ajax({
         url: '/search/ajax/artist/',
         data: {
-            'main_search': searchTerm,
             'artist_search': artistSearchTerm,
             'instrument': artistInstrument,
             'page': artistPageNum

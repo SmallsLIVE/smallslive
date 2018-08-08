@@ -15,12 +15,13 @@ class SearchObject(object):
 
     def search_artist(self, main_search, instrument=None, artist_search=None):
         sqs = Artist.objects.all()
-        words = main_search.split(' ')
+        words = main_search.split(' ') if main_search else None
         all_instruments = self.get_instruments()
-        instruments = [i for i in words if any(item.startswith(i.upper()) for item in all_instruments)]
-        words = [i for i in words if i not in instruments]
+        if words:
+            instruments = [i for i in words if any(item.startswith(i.upper()) for item in all_instruments)]
+            words = [i for i in words if i not in instruments]
 
-        if instruments:
+        if words and instruments:
             condition = Q(instruments__name__istartswith=instruments[0])
             for i in instruments[1:]:
                 condition |= Q(instruments__name__istartswith=i)
@@ -69,21 +70,26 @@ class SearchObject(object):
         artist_words = None
         if artist_search:
             artist_words = artist_search.split(' ')
-            artist_words = [i for i in artist_words if i not in instruments]
+            if words and instruments:
+                    artist_words = [i for i in artist_words if i not in instruments]
 
             if len(artist_words) == 1:
                 artist = artist_words[0]
+                first_name_matches = sqs.filter(Q(
+                    first_name__iexact=artist)).distinct()
                 good_matches = sqs.filter(Q(
-                    last_name__istartswith=artist)).distinct()
+                    first_name__istartswith=artist) & ~Q(
+                    first_name__iexact=artist)).distinct()
                 not_so_good_matches = sqs.filter(~Q(
-                    last_name__istartswith=artist) & Q(
-                    first_name__istartswith=artist)).distinct()
-                sqs = list(good_matches) + list(not_so_good_matches)
+                    first_name__istartswith=artist) & Q(
+                    last_name__istartswith=artist) & ~Q(
+                    first_name__iexact=artist)).distinct()
+                sqs =  list(first_name_matches) + list(good_matches) + list(not_so_good_matches)
 
             elif len(artist_words) > 1:
                 if len(artist_words) == 2:
-                    exact_sqs = sqs.filter(first_name__startswith=artist_words[0],
-                                                 last_name__startswith=artist_words[1]).distinct()
+                    exact_sqs = sqs.filter(first_name__istartswith=artist_words[0],
+                                                 last_name__istartswith=artist_words[1]).distinct()
                     if exact_sqs.count() == 0:
                         multiple_search = True
                     else:
