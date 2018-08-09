@@ -118,7 +118,10 @@ def _get_most_popular(range=None):
 def _get_most_popular_uploaded(range_size=None):
     range_start, range_end = calculate_query_range(range_size)
 
-    sqs = Event.objects.all()
+    sqs = Event.objects.filter(
+        recordings__media_file__isnull=False,
+        recordings__state=Recording.STATUS.Published
+    )
 
     if range_start and range_end:
         sqs = sqs.filter(date__range=(range_start, range_end))
