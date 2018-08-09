@@ -4,6 +4,7 @@ function sendArtistRequest() {
     $.ajax({
         url: '/search/ajax/artist/',
         data: {
+            'main_search': searchTerm,
             'artist_search': artistSearchTerm,
             'instrument': artistInstrument,
             'page': artistPageNum
@@ -90,7 +91,7 @@ $(document).ready(function () {
     } else {
         searchTerm = '';
     }
-    artistSearchTerm = searchTerm;
+    artistSearchTerm = "";
     artistInstrument = "";
     artistPageNum = eventPageNum = 1;
     artistMaxPageNum = eventMaxPageNum = 2;

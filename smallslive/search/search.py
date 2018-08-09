@@ -13,122 +13,93 @@ class SearchObject(object):
 
     def get_instruments(self):
         return [i.name.upper() for i in Instrument.objects.all()]
-
-    # This needs a refactor
-    def search_artist(self, main_search, instrument=None, artist_search=None):
-        sqs = Artist.objects.all()
-        words = main_search.split(' ') if main_search else None
+    
+    def process_input(self, main_search=None, artist_search=None, instrument=None):
         all_instruments = self.get_instruments()
-        instruments = None
+
+        words = main_search.split(' ') if main_search else []
+        instruments = []
+        partial_instruments = []
 
         if words:
-            entire_instruments = [i for i in words if i.upper() in all_instruments]
-            instruments = [i for i in words if any(item.startswith(i.upper()) for item in all_instruments)]
-            words = [i for i in words if i.upper() not in entire_instruments]
+            words = [i.upper() for i in words]
+            if 'SAX' in words:
+                words.append('ALTO SAX')
+                words.append('BARITONE SAX')
+                words.append('SOPRANO SAX')
+                words.append('TENOR SAX')
+                words.remove('SAX')
 
-        if instrument:
-            sqs = sqs.filter(instruments__name=instrument)
-
-        if words:
-            if len(words) > 1:
-                if len(words) == 2:
-                    exact_sqs = sqs.filter(first_name__istartswith=words[0],
-                                           last_name__istartswith=words[1]).distinct()
-                    if exact_sqs.count() == 0:
-                        multiple_search = True
-                    else:
-                        multiple_search = False
-                        sqs = exact_sqs
-                    
-                else:
-                    multiple_search = True
-
-                if multiple_search:
-                    artist = words.pop()
-                    condition = Q(
-                        last_name__icontains=artist) | Q(
-                        first_name__icontains=artist)
-                    for artist in words:
-                        condition |= Q(
-                            last_name__icontains=artist) | Q(
-                            first_name__icontains=artist)
-                    sqs = sqs.filter(condition).distinct()
-            else:
-                artist = words[0]
-                first_name_matches = sqs.filter(Q(
-                    first_name__iexact=artist)).distinct()
-                good_matches = sqs.filter(Q(
-                    first_name__istartswith=artist) & ~Q(
-                    first_name__iexact=artist)).distinct()
-                not_so_good_matches = sqs.filter(~Q(
-                    first_name__istartswith=artist) & Q(
-                    last_name__istartswith=artist) & ~Q(
-                    first_name__iexact=artist)).distinct()
-                sqs =  list(first_name_matches) + list(good_matches) + list(not_so_good_matches)
-
-        artist_words = None
-        artist_instruments = []
+            instruments = [i.upper() for i in words if i.upper() in all_instruments]
+            if not instruments:
+                partial_instruments = [i.upper() for i in words if any(item.startswith(i.upper()) for item in all_instruments)]
+                partial_instruments = [i for i in partial_instruments if i not in instruments]
+            words = [i for i in words if i.upper() not in instruments]
+        
         if artist_search:
-            artist_words = artist_search.split(' ')
-            artist_instruments = [i for i in artist_words if any(item.startswith(i.upper()) for item in all_instruments)]
-            entire_instruments = [i for i in artist_words if i.upper() in all_instruments]
-            artist_words = [i for i in artist_words if i.upper() not in entire_instruments]
+            words = artist_search.split(' ')
+            partial_instruments = []
+        
+        if instrument:
+            instruments = [instrument]
+            partial_instruments = []
 
-            if len(artist_words) == 1:
-                artist = artist_words[0]
-                first_name_matches = sqs.filter(Q(
-                    first_name__iexact=artist)).distinct()
-                good_matches = sqs.filter(Q(
-                    first_name__istartswith=artist) & ~Q(
-                    first_name__iexact=artist)).distinct()
-                not_so_good_matches = sqs.filter(~Q(
-                    first_name__istartswith=artist) & Q(
-                    last_name__istartswith=artist) & ~Q(
-                    first_name__iexact=artist)).distinct()
-                sqs =  list(first_name_matches) + list(good_matches) + list(not_so_good_matches)
+        return words, instruments, partial_instruments
 
-            elif len(artist_words) > 1:
-                if len(artist_words) == 2:
-                    exact_sqs = sqs.filter(first_name__istartswith=artist_words[0],
-                                           last_name__istartswith=artist_words[1]).distinct()
-                    if exact_sqs.count() == 0:
-                        multiple_search = True
-                    else:
-                        multiple_search = False
-                        sqs = exact_sqs
+    def search_artist(self, main_search=None, artist_search=None, instrument=None):
+        words, instruments, partial_instruments = self.process_input(main_search, artist_search, instrument)
 
-                else:
-                    multiple_search = True
-
-                if multiple_search:
-                    artist = artist_words.pop()
-                    condition = Q(
-                        last_name__icontains=artist) | Q(
-                        first_name__icontains=artist)
-                    for artist in artist_words:
-                        condition |= Q(
-                            last_name__icontains=artist) | Q(
-                            first_name__icontains=artist)
-                    sqs = sqs.filter(condition).distinct()
-
+        sqs = Artist.objects.all()
 
         if instruments:
             condition = Q(instruments__name__istartswith=instruments[0])
             for i in instruments[1:]:
                 condition |= Q(instruments__name__istartswith=i)
-            sqs_instruments = Artist.objects.filter(condition).distinct()
+            sqs = sqs.filter(condition).distinct()
 
-            sqs = list(sqs) + list(sqs_instruments)
-        
-        if artist_instruments:
-            condition = Q(instruments__name__istartswith=artist_instruments[0])
-            for i in artist_instruments[1:]:
-                condition |= Q(instruments__name__istartswith=i)
-            sqs_instruments = Artist.objects.filter(condition).distinct()
+        if words:
+            if len(words) == 2:
+                temp_sqs = sqs.filter(first_name__istartswith=words[0],
+                                      last_name__istartswith=words[1]).distinct()
+                if temp_sqs.count() == 0:
+                    temp_sqs = sqs.filter(first_name__istartswith=words[1],
+                                          last_name__istartswith=words[0]).distinct()
+                sqs = temp_sqs
+            elif len(words) == 1:
 
-            sqs = list(sqs) + list(sqs_instruments)
+                artist = words[0]
+                first_name_matches = sqs.filter(Q(
+                    last_name__iexact=artist)).distinct()
+                good_matches = sqs.filter(Q(
+                    last_name__istartswith=artist) & ~Q(
+                    last_name__iexact=artist)).distinct()
+                not_so_good_matches = sqs.filter(~Q(
+                    last_name__istartswith=artist) & Q(
+                    first_name__istartswith=artist) & ~Q(
+                    last_name__iexact=artist)).distinct()
 
+                sqs =  list(first_name_matches) + list(good_matches) + list(not_so_good_matches)
+
+                if partial_instruments:
+                    condition = Q(instruments__name__istartswith=partial_instruments[0])
+                    for i in partial_instruments[1:]:
+                        condition |= Q(instruments__name__istartswith=i)
+                    sqs_instruments = Artist.objects.filter(condition).distinct()
+
+                    sqs = list(sqs) + list(sqs_instruments)
+            else:
+                word = words[0]
+                condition = Q(
+                    last_name__istartswith=word) | Q(
+                    first_name__istartswith=word)
+                for word in words:
+                    condition |= Q(
+                        last_name__istartswith=word) | Q(
+                        first_name__istartswith=word)
+                sqs = sqs.filter(condition).distinct()
+    
         return sqs
+
 
     def search_event(self, main_search, order=None, date=None):
         order = {

@@ -46,7 +46,7 @@ class SearchMixin(object):
 
         if entity == Artist:
             results_per_page = 48
-            sqs = search.search_artist(main_search, instrument, artist_search)
+            sqs = search.search_artist(main_search, artist_search, instrument)
 
         elif entity == Event:
             results_per_page = 15
