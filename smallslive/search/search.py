@@ -1,6 +1,7 @@
 from artists.models import Artist, Instrument
-from django.db.models import Q
+from django.db.models import Q, Sum
 from events.models import Event, Recording
+from metrics.models import UserVideoMetric
 
 class SearchObject(object):
 
@@ -173,8 +174,27 @@ class SearchObject(object):
             sqs = sqs.filter(start__gte=date)
 
         if order == 'popular':
-            sqs = sqs.most_popular()
+            # TODO Duplicated in event/views
+            # Special case, we need to use metrics db
+            event_map = dict([
+                (event.id, event) for event in sqs.all()
+            ])
+
+            # Order metrics
+            most_popular_ids = UserVideoMetric.objects.filter(
+                event_id__in=event_map.keys()
+            ).values('event_id').annotate(
+                count=Sum('seconds_played')
+            ).order_by('-count')
+
+            most_popular = []
+            for event_data in most_popular_ids:
+                event_id = event_data['event_id']
+                most_popular.append(event_map[event_id])
+
+            return most_popular
+
         else:
             sqs = sqs.order_by(order)
-        
+
         return sqs

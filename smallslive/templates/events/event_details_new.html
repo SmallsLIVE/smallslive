@@ -232,6 +232,7 @@
 {% endblock %}
 
 {% block extra_js %}
+  <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
   <script>
   var showRegister = function() {
     $('#becomeMemberDialog').modal('show');
@@ -408,6 +409,22 @@
                 $(this).toggleClass('active');
                 $('#video-sets-list button[data-playlist-index=' + currentIndex + ']').toggleClass('active');
             });
+        {% endif %}
+
+        {% if event.is_live and next_streaming %}
+            var changeTime = moment("{{ next_streaming.start.isoformat }}");
+            var waitTime = changeTime.diff(moment(), 'miliseconds');
+            console.log(changeTime);
+            console.log(changeTime.toLocaleString());
+            console.log('Programming next event!', "{{ next_streaming.event_url }}", moment.duration(waitTime).asMinutes());
+
+            var intervalId = setInterval(function () {
+                console.log('Changing Event!')
+                clearInterval(intervalId);
+                window.location = "{{ next_streaming.event_url }}";
+            }, waitTime);
+
+
         {% endif %}
 
         var togglePlayerAudio = $("#togglePlayerAudio");

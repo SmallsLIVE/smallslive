@@ -1,10 +1,11 @@
 from collections import OrderedDict
 from itertools import groupby
 import calendar
+import datetime
 from datetime import time as std_time
 from cacheops import cached
 from django.core import signing
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Sum
 import monthdelta
 import json
 from django.conf import settings
@@ -14,7 +15,7 @@ from django.http import HttpResponseRedirect
 from django.utils import timezone
 from django.utils.http import urlencode
 from django.utils.text import slugify
-from django.utils.timezone import datetime, timedelta
+from django.utils.timezone import timedelta
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.generic import DeleteView, TemplateView
 from django.views.generic.list import ListView
@@ -26,18 +27,14 @@ from extra_views import CreateWithInlinesView, NamedFormsetsMixin, UpdateWithInl
 from haystack.query import RelatedSearchQuerySet
 from haystack.views import SearchView
 from rest_framework import status, views, serializers
-from rest_framework.authentication import SessionAuthentication
 from rest_framework.authtoken.models import Token
-from rest_framework.generics import GenericAPIView
-from rest_framework.mixins import CreateModelMixin
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
 
 from artists.models import Artist
 from events.models import get_today_start, StaffPick, EventSet, Recording
 from events.serializers import MonthMetricsSerializer
-from metrics.models import UserVideoMetric, RANGE_WEEK, RANGE_MONTH, RANGE_YEAR
+from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import Product
 from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
@@ -45,6 +42,59 @@ from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
     EventSearchForm, EventEditForm, EventSetInlineFormset, \
     EventSetInlineFormsetHelper
 from .models import Event, Venue
+
+RANGE_YEAR = 'year'
+RANGE_MONTH = 'month'
+RANGE_WEEK = 'week'
+
+def get_weekly_range():
+    now = timezone.now()
+    range_start = (now - datetime.timedelta(days=now.weekday())).date()
+    range_end = range_start + datetime.timedelta(weeks=1)
+    return range_start, range_end
+
+
+def get_monthly_range():
+    now = timezone.now()
+    current_year = now.year
+    current_month = now.month
+
+    range_start = datetime.date(current_year, current_month, 1)
+    range_end = datetime.date(
+        current_year, current_month, calendar.monthrange(
+            current_year, current_month
+        )[1]
+    )
+
+    return range_start, range_end
+
+
+def get_year_range():
+    now = timezone.now()
+    current_year = now.year
+
+    range_start = datetime.date(current_year, 1, 1)
+    range_end = datetime.date(current_year, 12, 31)
+
+    return range_start, range_end
+
+
+def calculate_query_range(range_size, weekly=None):
+    range_start = None
+    range_end = None
+    if range_size:
+        if range_size == RANGE_WEEK:
+            range_start, range_end = get_weekly_range()
+        elif range_size == RANGE_MONTH:
+            range_start, range_end = get_monthly_range()
+        elif range_size == RANGE_YEAR:
+            range_start, range_end = get_year_range()
+
+    else:
+        if weekly:
+            range_start, range_end = get_weekly_range()
+
+    return range_start, range_end
 
 
 @cached(timeout=6*60*60)
@@ -62,6 +112,37 @@ def _get_most_popular(range=None):
             pass
     context['popular_in_archive'] = most_popular
     return context
+
+
+@cached(timeout=6*60*60)
+def _get_most_popular_uploaded(range_size=None):
+    range_start, range_end = calculate_query_range(range_size)
+
+    sqs = Event.objects.all()
+
+    if range_start and range_end:
+        sqs = sqs.filter(date__range=(range_start, range_end))
+
+    return order_events_by_popular(sqs)
+
+
+def order_events_by_popular(sqs):
+    event_map = dict([(event.id, event) for event in sqs])
+    # Order metrics
+    most_popular_ids = UserVideoMetric.objects.filter(
+        event_id__in=event_map.keys()
+    ).values('event_id').annotate(
+        count=Sum('seconds_played')
+    ).order_by('-count')[:10]
+    if most_popular_ids:
+        most_popular = []
+        for event_data in most_popular_ids:
+            event_id = event_data['event_id']
+            most_popular.append(event_map[event_id])
+
+        return most_popular
+    else:
+        return list(sqs.order_by('-date')[:10])
 
 
 def get_today_events():
@@ -121,12 +202,12 @@ class HomepageView(ListView):
 
         context['next_7_days'] = sorted_dates
         context['venues'] = Venue.objects.all()
-        week_popular = _get_most_popular(RANGE_WEEK)
-        if len(week_popular['popular_in_archive']):
-            context.update(week_popular)
-            context['popular_select'] = 'week'
+        month_popular = _get_most_popular_uploaded(RANGE_MONTH)
+        if len(month_popular):
+            context['popular_in_archive'] = month_popular
+            context['popular_select'] = 'month'
         else:
-            context.update(_get_most_popular())
+            context['popular_in_archive'] = _get_most_popular_uploaded()
             context['popular_select'] = 'alltime'
 
         context['staff_picks'] = Event.objects.last_staff_picks()
@@ -157,7 +238,7 @@ class MostPopularEventsAjaxView(AJAXMixin, ListView):
         metrics_range = RANGE_WEEK
         received_range = self.request.GET.get('range', 'weekly')
         if received_range:
-            if received_range == 'month':
+            if received_range == 'week':
                 metrics_range = RANGE_WEEK
             if received_range == 'month':
                 metrics_range = RANGE_MONTH
@@ -166,7 +247,8 @@ class MostPopularEventsAjaxView(AJAXMixin, ListView):
             if received_range == 'alltime':
                 metrics_range = None
 
-        return _get_most_popular(metrics_range)['popular_in_archive']
+        most_popular = _get_most_popular_uploaded(metrics_range)
+        return most_popular
 
 
 event_popular_ajax = MostPopularEventsAjaxView.as_view()
@@ -244,6 +326,22 @@ class EventDetailView(DetailView):
 
         if event.is_today:
             context['streaming_tonight_videos'] = get_today_events()
+            live_set = event.is_live
+            if live_set:
+                next_event_ids = get_today_events().values_list('id', flat=True)
+                next_set = EventSet.objects.filter(
+                    event_id__in=next_event_ids, start__gt=live_set.end
+                ).first()
+
+                if next_set:
+                    context['next_streaming'] = {
+                        'event_url': next_set.event.get_absolute_url(),
+                        'start': live_set.utc_end + timedelta(minutes=2)
+                    }
+
+            else:
+                # Sent current event start
+                pass
 
         return context
 
