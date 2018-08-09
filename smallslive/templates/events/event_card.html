@@ -2,7 +2,16 @@
 {% load thumbor_tags %}
 
 <a href="{{ event.get_absolute_url }}">
-  <div class="{% if not mini%}event-card{% else %}event-card-small{% endif %}">
+  <div class="
+      {% if not mini%}
+        {% if not secondary %}
+        event-card
+        {% else %}
+        event-card-secondary
+        {% endif %}
+      {% else %}
+        event-card-small
+      {% endif %}">
     <div class="event-picture-container">
       <div class="picture-border">
         <div class="event-picture">

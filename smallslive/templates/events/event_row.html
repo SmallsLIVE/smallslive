@@ -1,7 +1,7 @@
 <div class="event-row">
   {% for event in events %}
   <article class="event-display">
-    {% include 'events/event_card.html' with event=event %}
+    {% include 'events/event_card.html' with event=event secondary=secondary %}
     <div class="event-info">
       <div>
         <div class="event-info-title">{{ event.title }}</div>

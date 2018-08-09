@@ -55,7 +55,7 @@
             <div class="title1">Recently Added</div>
           </div>
           <main>
-            {% include 'events/event_row.html' with events=new_in_archive %}
+            {% include 'events/event_row.html' with events=new_in_archive secondary=True %}
           </main>
         </section>
         <section class="event-stripe">
@@ -73,7 +73,7 @@
             </span>
           </div>
           <main id="most-popular-container">
-            {% include 'events/event_row.html' with events=popular_in_archive %}
+            {% include 'events/event_row.html' with events=popular_in_archive secondary=True %}
           </main>
         </section>
         <section class="event-stripe">
@@ -81,7 +81,7 @@
             <div class="title1">Staff Picks</div>
           </div>
           <main>
-            {% include 'events/event_row.html' with events=staff_picks %}
+            {% include 'events/event_row.html' with events=staff_picks secondary=True %}
           </main>
         </section>
       </div>

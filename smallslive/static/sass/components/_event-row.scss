@@ -27,7 +27,7 @@ $mobile-event-card-width: $event-card-width / 1.5;
   div {
     div:first-child {
       @media (min-width: $screen-md-min) {
-        width: 50%;
+        max-width: 130px;
       }
       @media (max-width: $screen-sm-max) {
         max-width: $mobile-event-card-width;
@@ -135,7 +135,44 @@ $mobile-event-card-width: $event-card-width / 1.5;
 }
 
 .event-card {
-  @include event-card($event-card-width, $event-card-height);
+  @media (min-width: 1441px) {
+    @include event-card(300px, 300px * 0.6);
+  }
+
+  @media (max-width: 1440px) and (min-width: 1281px) {
+    @include event-card(215px, 215px * 0.6);
+  }
+
+  @media (max-width: 1280px) and (min-width: 1025px) {
+    @include event-card(260px, 260px * 0.6);
+  }
+
+  @media (max-width: 1024px) and (min-width: $screen-sm-max) {
+    @include event-card(200px, 200px * 0.6);
+  }
+
+  @media (max-width: $screen-sm-max) {
+    @include event-card($mobile-event-card-width, $event-card-height / 1.5);
+  }
+}
+
+.event-card-secondary {
+  @media (min-width: 1441px) {
+    @include event-card(220px, 220px * 0.6);
+  }
+
+  @media (max-width: 1440px) and (min-width: 1281px) {
+    @include event-card(160px, 160px * 0.6);
+  }
+
+  @media (max-width: 1280px) and (min-width: 1025px) {
+    @include event-card(140px, 140px * 0.6);
+  }
+
+  @media (max-width: 1024px) and (min-width: $screen-sm-max) {
+    @include event-card(150px, 150px * 0.6);
+  }
+
   @media (max-width: $screen-sm-max) {
     @include event-card($mobile-event-card-width, $event-card-height / 1.5);
   }
