@@ -109,7 +109,7 @@ class SearchObject(object):
         }.get(order, '-start')
 
         sqs = Event.objects.all()
-        words = main_search.split(' ')
+        words = main_search.strip().split(' ')
         all_instruments = self.get_instruments()
         instruments = [i for i in words if i.upper() in all_instruments]
 
@@ -134,7 +134,8 @@ class SearchObject(object):
                     description__icontains=artist) | Q(
                     performers__first_name__icontains=artist) | Q(
                     performers__last_name__icontains=artist)
-            sqs = sqs.filter(condition).distinct()
+            sqs = sqs | Event.objects.filter(condition).distinct()
+            sqs = sqs.distinct()
 
         sqs = sqs.filter(recordings__media_file__isnull=False,
                          recordings__state=Recording.STATUS.Published)
