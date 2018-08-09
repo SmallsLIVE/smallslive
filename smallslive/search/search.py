@@ -119,7 +119,7 @@ class SearchObject(object):
             for i in instruments[1:]:
                 condition |= Q(artists_gig_info__role__name__icontains=i,
                                artists_gig_info__is_leader=True)
-            sqs = Event.objects.filter(condition).distinct()
+            sqs = Event.objects.filter(condition)
 
         if words:
             artist = words.pop()
@@ -134,7 +134,7 @@ class SearchObject(object):
                     description__icontains=artist) | Q(
                     performers__first_name__icontains=artist) | Q(
                     performers__last_name__icontains=artist)
-            sqs = sqs | Event.objects.filter(condition).distinct()
+            sqs = sqs | Event.objects.filter(condition)
             sqs = sqs.distinct()
 
         sqs = sqs.filter(recordings__media_file__isnull=False,
