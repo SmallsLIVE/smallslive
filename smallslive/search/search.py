@@ -23,12 +23,16 @@ class SearchObject(object):
 
         if words:
             words = [i.upper() for i in words]
-            if 'SAX' in words:
+            if 'SAX' in words or 'SAXOPHONE' in words:
                 words.append('ALTO SAX')
                 words.append('BARITONE SAX')
                 words.append('SOPRANO SAX')
                 words.append('TENOR SAX')
+
+            if 'SAX' in words:
                 words.remove('SAX')
+            if 'SAXOPHONE' in words:
+                words.remove('SAXOPHONE')
 
             instruments = [i.upper() for i in words if i.upper() in all_instruments]
             if not instruments:
