@@ -277,7 +277,8 @@ class Event(TimeStampedModel):
             ny_end = datetime.combine(self.date, event_set.end)
 
             current_timezone = timezone.get_current_timezone()
-            utc_start = timezone.make_aware(ny_start, timezone=current_timezone)
+
+            utc_start = timezone.make_aware(ny_start, timezone=current_timezone) - timedelta(minutes=20)
             utc_end = timezone.make_aware(ny_end, timezone=current_timezone)
 
             if utc_start <= timezone.now() < utc_end:

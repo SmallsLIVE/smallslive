@@ -411,20 +411,16 @@
             });
         {% endif %}
 
-        {% if event.is_live and next_streaming %}
+        {% if event.is_live or event.is_today %}
+          {% if next_streaming %}
+              console.log('Setting Timer')
             var changeTime = moment("{{ next_streaming.start.isoformat }}");
             var waitTime = changeTime.diff(moment(), 'miliseconds');
-            console.log(changeTime);
-            console.log(changeTime.toLocaleString());
-            console.log('Programming next event!', "{{ next_streaming.event_url }}", moment.duration(waitTime).asMinutes());
-
             var intervalId = setInterval(function () {
-                console.log('Changing Event!')
                 clearInterval(intervalId);
                 window.location = "{{ next_streaming.event_url }}";
             }, waitTime);
-
-
+          {% endif %}
         {% endif %}
 
         var togglePlayerAudio = $("#togglePlayerAudio");

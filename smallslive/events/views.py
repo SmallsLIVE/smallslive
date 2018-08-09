@@ -343,8 +343,12 @@ class EventDetailView(DetailView):
                     }
 
             else:
-                # Sent current event start
-                pass
+                first_set = event.sets.order_by('start').first()
+                if first_set:
+                    context['next_streaming'] = {
+                        'event_url': event.get_absolute_url(),
+                        'start': first_set.utc_start - timedelta(minutes=15)
+                    }
 
         return context
 
