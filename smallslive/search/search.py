@@ -14,34 +14,49 @@ class SearchObject(object):
     def get_instruments(self):
         return [i.name.upper() for i in Instrument.objects.all()]
     
+    def filter_sax(self, search_term):
+        saxs = ['ALTO SAX',
+                'BARITONE SAX',
+                'SOPRANO SAX',
+                'TENOR SAX']
+
+        instruments = []
+        search_term = search_term.upper()
+
+        for sax in saxs:
+            if sax in search_term:
+                instruments.append(sax)
+                search_term = search_term.replace(sax, '')
+        
+        if 'SAX' in search_term or 'SAXOPHONE' in search_term:
+            instruments.extend(saxs)
+            search_term = search_term.replace('SAXOPHONE', '')
+            search_term = search_term.replace('SAX', '')
+
+        return search_term, instruments
+    
     def process_input(self, main_search=None, artist_search=None, instrument=None):
         all_instruments = self.get_instruments()
 
-        words = main_search.split(' ') if main_search else []
+        words = []
         instruments = []
         partial_instruments = []
 
+        if main_search:
+            main_search, instruments = self.filter_sax(main_search)
+            words = main_search.strip().split(' ')
+
         if words:
             words = [i.upper() for i in words]
-            if 'SAX' in words or 'SAXOPHONE' in words:
-                words.append('ALTO SAX')
-                words.append('BARITONE SAX')
-                words.append('SOPRANO SAX')
-                words.append('TENOR SAX')
 
-            if 'SAX' in words:
-                words.remove('SAX')
-            if 'SAXOPHONE' in words:
-                words.remove('SAXOPHONE')
-
-            instruments = [i.upper() for i in words if i.upper() in all_instruments]
+            instruments += [i.upper() for i in words if i.upper() in all_instruments]
             if not instruments:
                 partial_instruments = [i.upper() for i in words if any(item.startswith(i.upper()) for item in all_instruments)]
                 partial_instruments = [i for i in partial_instruments if i not in instruments]
             words = [i for i in words if i.upper() not in instruments]
         
         if artist_search:
-            words = artist_search.split(' ')
+            words = artist_search.strip().split(' ')
             partial_instruments = []
         
         if instrument:
@@ -113,9 +128,11 @@ class SearchObject(object):
         }.get(order, '-start')
 
         sqs = Event.objects.all()
+        instruments = []
+        main_search, instruments = self.filter_sax(main_search)
         words = main_search.strip().split(' ')
         all_instruments = self.get_instruments()
-        instruments = [i for i in words if i.upper() in all_instruments]
+        instruments += [i for i in words if i.upper() in all_instruments]
 
         if instruments:
             condition = Q(artists_gig_info__role__name__icontains=instruments[0],
