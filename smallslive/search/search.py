@@ -138,8 +138,13 @@ class SearchObject(object):
                     description__icontains=artist) | Q(
                     performers__first_name__icontains=artist) | Q(
                     performers__last_name__icontains=artist)
-            sqs = sqs | Event.objects.filter(condition)
-            sqs = sqs.distinct()
+
+            if instruments:
+                sqs = sqs | Event.objects.filter(condition)
+            else:
+                sqs = Event.objects.filter(condition)
+
+        sqs = sqs.distinct()
 
         sqs = sqs.filter(recordings__media_file__isnull=False,
                          recordings__state=Recording.STATUS.Published)
