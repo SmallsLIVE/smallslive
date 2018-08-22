@@ -143,22 +143,34 @@ class SearchObject(object):
             sqs = Event.objects.filter(condition)
 
         if words:
-            artist = words.pop()
-            condition = Q(
-                title__icontains=artist) | Q(
-                description__icontains=artist) | Q(
-                performers__first_name__icontains=artist) | Q(
-                performers__last_name__icontains=artist)
-            for artist in words:
-                condition |= Q(
+            single_artist = False
+            if len(words) == 2 and not instruments:
+                temp_sqs = sqs.filter(performers__first_name__iexact=words[0],
+                                      performers__last_name__iexact=words[1]).distinct()
+                if temp_sqs.count() == 0:
+                    temp_sqs = sqs.filter(performers__first_name__iexact=words[1],
+                                          performers__last_name__iexact=words[0]).distinct()
+                if temp_sqs.count() != 0:
+                    single_artist = True
+                    sqs = temp_sqs
+
+            if not single_artist:
+                artist = words.pop()
+                condition = Q(
                     title__icontains=artist) | Q(
                     description__icontains=artist) | Q(
                     performers__first_name__icontains=artist) | Q(
                     performers__last_name__icontains=artist)
+                for artist in words:
+                    condition |= Q(
+                        title__icontains=artist) | Q(
+                        description__icontains=artist) | Q(
+                        performers__first_name__icontains=artist) | Q(
+                        performers__last_name__icontains=artist)
 
             if instruments:
                 sqs = sqs | Event.objects.filter(condition)
-            else:
+            elif not single_artist:
                 sqs = Event.objects.filter(condition)
 
         sqs = sqs.distinct()
