@@ -78,24 +78,24 @@ class SearchObject(object):
 
         if words:
             if len(words) == 2:
-                temp_sqs = sqs.filter(first_name__istartswith=words[0],
-                                      last_name__istartswith=words[1]).distinct()
+                temp_sqs = sqs.filter(first_name__iustartswith=words[0],
+                                      last_name__iustartswith=words[1]).distinct()
                 if temp_sqs.count() == 0:
-                    temp_sqs = sqs.filter(first_name__istartswith=words[1],
-                                          last_name__istartswith=words[0]).distinct()
+                    temp_sqs = sqs.filter(first_name__iustartswith=words[1],
+                                          last_name__iustartswith=words[0]).distinct()
                 sqs = temp_sqs
             elif len(words) == 1:
 
                 artist = words[0]
                 first_name_matches = sqs.filter(Q(
-                    last_name__iexact=artist)).distinct()
+                    last_name__iuexact=artist)).distinct()
                 good_matches = sqs.filter(Q(
-                    last_name__istartswith=artist) & ~Q(
-                    last_name__iexact=artist)).distinct()
+                    last_name__iustartswith=artist) & ~Q(
+                    last_name__iuexact=artist)).distinct()
                 not_so_good_matches = sqs.filter(~Q(
-                    last_name__istartswith=artist) & Q(
-                    first_name__istartswith=artist) & ~Q(
-                    last_name__iexact=artist)).distinct()
+                    last_name__iustartswith=artist) & Q(
+                    first_name__iustartswith=artist) & ~Q(
+                    last_name__iuexact=artist)).distinct()
 
                 sqs =  list(first_name_matches) + list(good_matches) + list(not_so_good_matches)
 
@@ -109,12 +109,12 @@ class SearchObject(object):
             else:
                 word = words[0]
                 condition = Q(
-                    last_name__istartswith=word) | Q(
-                    first_name__istartswith=word)
+                    last_name__iustartswith=word) | Q(
+                    first_name__iustartswith=word)
                 for word in words:
                     condition |= Q(
-                        last_name__istartswith=word) | Q(
-                        first_name__istartswith=word)
+                        last_name__iustartswith=word) | Q(
+                        first_name__iustartswith=word)
                 sqs = sqs.filter(condition).distinct()
     
         return sqs
@@ -145,11 +145,11 @@ class SearchObject(object):
         if words:
             single_artist = False
             if len(words) == 2 and not instruments:
-                temp_sqs = sqs.filter(performers__first_name__iexact=words[0],
-                                      performers__last_name__iexact=words[1]).distinct()
+                temp_sqs = sqs.filter(performers__first_name__iuexact=words[0],
+                                      performers__last_name__iuexact=words[1]).distinct()
                 if temp_sqs.count() == 0:
-                    temp_sqs = sqs.filter(performers__first_name__iexact=words[1],
-                                          performers__last_name__iexact=words[0]).distinct()
+                    temp_sqs = sqs.filter(performers__first_name__iuexact=words[1],
+                                          performers__last_name__iuexact=words[0]).distinct()
                 if temp_sqs.count() != 0:
                     single_artist = True
                     sqs = temp_sqs
@@ -157,16 +157,16 @@ class SearchObject(object):
             if not single_artist:
                 artist = words.pop()
                 condition = Q(
-                    title__icontains=artist) | Q(
-                    description__icontains=artist) | Q(
-                    performers__first_name__icontains=artist) | Q(
-                    performers__last_name__icontains=artist)
+                    title__iucontains=artist) | Q(
+                    description__iucontains=artist) | Q(
+                    performers__first_name__iucontains=artist) | Q(
+                    performers__last_name__iucontains=artist)
                 for artist in words:
                     condition |= Q(
-                        title__icontains=artist) | Q(
-                        description__icontains=artist) | Q(
-                        performers__first_name__icontains=artist) | Q(
-                        performers__last_name__icontains=artist)
+                        title__iucontains=artist) | Q(
+                        description__iucontains=artist) | Q(
+                        performers__first_name__iucontains=artist) | Q(
+                        performers__last_name__iucontains=artist)
 
             if instruments:
                 sqs = sqs | Event.objects.filter(condition)

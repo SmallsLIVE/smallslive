@@ -1,11 +1,13 @@
 import os
+
+from allauth.account.models import EmailAddress, EmailConfirmation
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import Sum, Count, Q
+from django.db.models import Count, Lookup, Q, Sum
+from django.db.models.fields import Field
 from django.utils.functional import cached_property
 from django.utils.text import slugify
-from allauth.account.models import EmailAddress, EmailConfirmation
 from image_cropping import ImageRatioField
 from model_utils import Choices
 from sortedm2m.fields import SortedManyToManyField
@@ -16,10 +18,47 @@ from multimedia.s3_storages import get_payouts_storage_object
 from oscar_apps.catalogue.models import Product
 from users.models import SmallsEmailAddress
 
+
 def artist_image_path(instance, filename):
     ext = os.path.splitext(filename)[1]
     path = os.path.join("artist_images/", slugify(instance.full_name()) + ext)
     return path
+
+class InsensitiveUnaccentExact(Lookup):
+    lookup_name = 'iuexact'
+
+    def as_sql(self, qn, connection):
+        lhs, lhs_params = self.process_lhs(qn, connection)
+        rhs, rhs_params = self.process_rhs(qn, connection)
+        params = lhs_params + rhs_params
+        return 'UPPER(unaccent(%s)) = UPPER(unaccent(%s))' % (lhs, rhs), params
+
+Field.register_lookup(InsensitiveUnaccentExact)
+
+class InsensitiveUnaccentStartsWith(Lookup):
+    lookup_name = 'iustartswith'
+
+    def as_sql(self, qn, connection):
+        lhs, lhs_params = self.process_lhs(qn, connection)
+        rhs, rhs_params = self.process_rhs(qn, connection)
+        params = lhs_params + rhs_params
+        
+        return "UPPER(unaccent(%s)) LIKE UPPER(unaccent(%s || '%%%%'))" % (lhs, rhs), params
+
+Field.register_lookup(InsensitiveUnaccentStartsWith)
+
+class InsensitiveUnaccentContains(Lookup):
+    lookup_name = 'iucontains'
+
+    def as_sql(self, qn, connection):
+        lhs, lhs_params = self.process_lhs(qn, connection)
+        rhs, rhs_params = self.process_rhs(qn, connection)
+        params = lhs_params + rhs_params
+        
+        return "UPPER(unaccent(%s)) LIKE UPPER(unaccent('%%%%' || %s || '%%%%'))" % (lhs, rhs), params
+
+Field.register_lookup(InsensitiveUnaccentContains)
+
 
 class Artist(models.Model):
     SALUTATIONS = Choices('Mr.', 'Mrs.', 'Ms.')
