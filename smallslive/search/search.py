@@ -130,7 +130,7 @@ class SearchObject(object):
         sqs = Event.objects.all()
         instruments = []
         main_search, instruments = self.filter_sax(main_search)
-        words = main_search.strip().split(' ')
+        words = main_search.strip().split()
         all_instruments = self.get_instruments()
         instruments += [i for i in words if i.upper() in all_instruments]
 
