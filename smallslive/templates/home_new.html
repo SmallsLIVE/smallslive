@@ -31,7 +31,7 @@
 
   <div class="main-container{% if user.is_superuser %} admin-shown{% endif %}">
     {% block home_content %}
-    <main>
+    <main style="width: 100%; overflow: hidden">
       {% if not request.user.is_authenticated %}
         {% include 'home_banners.html' %}
       {% elif not request.user.has_active_subscription %}

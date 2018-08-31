@@ -205,14 +205,15 @@ class HomepageView(ListView):
 
         context['next_7_days'] = sorted_dates
         context['venues'] = Venue.objects.all()
-        month_popular = _get_most_popular_uploaded(RANGE_MONTH)
-        if len(month_popular):
-            context['popular_in_archive'] = month_popular
-            context['popular_select'] = 'month'
-        else:
-            context['popular_in_archive'] = _get_most_popular_uploaded()
-            context['popular_select'] = 'alltime'
+        # month_popular = _get_most_popular_uploaded(RANGE_MONTH)
+        # if len(month_popular):
+        #     context['popular_in_archive'] = month_popular
+        #     context['popular_select'] = 'month'
+        # else:
+        #     context['popular_in_archive'] = _get_most_popular_uploaded()
+        #     context['popular_select'] = 'alltime'
 
+        context['popular_in_archive'] = []
         context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
         return context

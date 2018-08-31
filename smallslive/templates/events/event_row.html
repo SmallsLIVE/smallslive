@@ -1,4 +1,7 @@
 <div class="event-row">
+  <div style="flex: 1">
+
+  </div>
   {% for event in events %}
   <article class="event-display">
     {% include 'events/event_card.html' with event=event secondary=secondary %}
@@ -15,4 +18,7 @@
     </div>
   </article>
   {% endfor %}
+  <div style="flex: 1">
+
+  </div>
 </div>
