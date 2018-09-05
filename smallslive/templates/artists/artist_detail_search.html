@@ -1,0 +1,108 @@
+{% load schemaless_url %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+
+<div  class="content-centered flex-row items-center" style="width: 100%;">
+<div class="artist-search-profile-resume flex-row items-center">
+    <div class="artist-search-profile-image">
+        {% if artist.photo %}
+        {% include 'partials/search_artist_profile_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
+        {% else %}
+            <div class="flex-column content-centered items-center"
+                style="width: 100%; height: 100%"><span class="title1">No Photo</span></div>
+        {% endif %}
+    </div>
+    <div class="flex-column white-line-right">
+        <div>
+            <div class="title3">
+                    {{ artist.full_name }}
+            </div>
+        </div>
+        <div class="flex-row">
+            <div class="title1">{{ artist.get_main_instrument_name }}</div>
+            <div class="text1" style="align-self: flex-end; margin-bottom: -5px;">
+                Total shows in archive:
+            </div>
+        </div>
+        <div class="white-line-bottom"></div>
+        {% if artist.user.email %}
+          <div>
+            <p class="text4 text-uppercase">Email: <a href="mailto:{{ artist.user.email }}">{{ artist.user.email }}</a></p>
+          </div>
+        {% endif %}
+        {% if artist.website %}
+          <div>
+            <p class="text4 text-uppercase">Website: <a href="{{ artist.website }}" target="_blank">{{ artist.website }}</a></p>
+          </div>
+        {% endif %}
+    </div>
+
+</div>
+
+<div class="artist-search-profile-bio-container flex-row">
+    <div>
+            <div class="artist-search-profile-bio text4 text-grey">
+                {% if artist.biography %}
+                {{ artist.biography|safe }}
+                {% else %}
+                    This artist does not have a bio yet.
+                {% endif %}
+                  
+            </div>
+            <span class="read-more text4 text-grey">Read more</span>
+    </div>
+    
+    <div class="artist-search-profile-bio-buttons flex-column">
+        <div id="archive-shows-button" class="white-border-button" style="width: 180px; cursor: pointer;">Archive Shows</div>
+        <div id="upcoming-shows-button" class="white-border-button" style="width: 180px; cursor: pointer;">Upcoming Shows</div>
+        <div id="smallslive-tracks-button" class="white-border-button" style="width: 180px; cursor: pointer;">Smallslive Tracks</div>
+    </div>
+</div>
+</div>
+
+<div id="smallslive-tracks" style="display: none;">
+    <div class="musicians-results white-line-bottom">
+        <div class="title1 shows-results-title">Smallslive Tracks</div>
+    </div>
+    <div>
+        {% include 'artists/album_row.html' with events=artist.tracks hidde_event_date=False show_event_venue=True %}
+    </div>
+</div>
+
+<div id="upcoming-shows" style="display: none;">
+    <div class="musicians-results white-line-bottom">
+        <div class="title1 shows-results-title">Upcoming Shows</div>
+    </div>
+    <div>
+        {% include 'events/event_row.html' with events=artist.upcoming_events hidde_event_date=False show_event_venue=True %}
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(".read-more").click(function () {
+            $('.artist-search-profile-bio')[0].style.height = 'auto';
+            this.style.display= 'none';
+        });
+
+        $("#smallslive-tracks-button").click(function () {
+            $("#showsContent").hide();
+            $("#smallslive-tracks").show();
+            $("#upcoming-shows").hide();
+        });
+
+        $("#upcoming-shows-button").click(function () {
+            $("#showsContent").hide();
+            $("#upcoming-shows").show();
+            $("#smallslive-tracks").hide();
+        });
+
+        $("#archive-shows-button").click(function () {
+            $("#showsContent").show();
+            $("#upcoming-shows").hide();
+            $("#smallslive-tracks").hide();
+
+        });
+
+    });
+</script>
