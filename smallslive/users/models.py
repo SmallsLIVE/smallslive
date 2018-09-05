@@ -14,6 +14,8 @@ from django.utils.functional import cached_property
 from djstripe.utils import subscriber_has_active_subscription
 from model_utils import Choices
 from rest_framework.authtoken.models import Token
+from djstripe.models import Customer
+from stripe.error import InvalidRequestError
 
 from newsletters.utils import subscribe_to_newsletter, unsubscribe_from_newsletter
 
@@ -106,6 +108,33 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         or the email address.
         """
         return self.get_full_name() or self.email
+
+    def save(self, **kwargs):
+        old_email = None
+
+        if self.pk:
+            old_email = self._meta.model.objects.filter(
+                id=self.id
+            ).only('email').first().email
+
+        super(SmallsUser, self).save(**kwargs)
+
+        if old_email and old_email != self.email:
+            self.update_stripe_customer(email=self.email)
+
+    def update_stripe_customer(self, **kwargs):
+        """
+        :param kwargs: Update params (https://stripe.com/docs/api#customers)
+        :return: bool: Wether is was updated or not.
+        """
+        try:
+            customer = self.customer.stripe_customer
+            for (key, value) in kwargs.items():
+                customer[key] = value
+            customer.save()
+            return True
+        except (Customer.DoesNotExist, InvalidRequestError):
+            return False
 
     def get_full_name(self):
         """
