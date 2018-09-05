@@ -3,7 +3,7 @@
       <div class="artist-column">
         {% for artist in artist_block %}
           <div>
-            <a class="text2 artist-row" href="{{ artist.get_absolute_url }}">
+            <a class="text2 artist-row" href="#" data-id="{{ artist.pk }}" onclick="showArtistInfo(this);">
               {% if artist.last_name %}{{ artist.last_name }} , {% endif %}{{ artist.first_name }} / {{ artist.instruments.all.first }}
             </a>
           </div>
