@@ -1,6 +1,7 @@
 {% extends "smalls_base.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
+{% load common_tags %}
 {% load i18n %}
 
 {% block homepage_nav_active %}active{% endblock %}
@@ -37,29 +38,34 @@
       {% elif not request.user.has_active_subscription %}
         {% include 'home_banners.html' with active='supporter' %}
       {% endif %}
-      <div>
-        <section class="event-stripe">
-          <div class="section-title">
+      <div class="event-container">
+        <section class="event-stripe live">
+          <div class="section-title home">
             <div class="title1">
-              Live Tonight <span class="date-separator">/</span>
+              Today & Tomorrow <span class="date-separator">/</span>
             </div>
-            <div class="header-sub title2 visible-lg visible-md">{% now "l F j, o" %}</div>
+            <div class="header-sub title2 visible-lg visible-md">{% now "m/d/y" %} - {% tomorrow "%m/%d/%y" %}</div>
             <div class="header-sub title2 visible-sm visible-xs">{% now "D n/j" %}</div>
           </div>
           <main>
+            <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
             {% include 'events/event_row.html' with events=events_today show_time=True hidde_event_date=True show_event_venue=True %}
+            <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
           </main>
         </section>
         <section class="event-stripe">
-          <div class="section-title">
+          <div class="section-title home">
             <div class="title1">Recently Added</div>
           </div>
           <main>
+            <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
             {% include 'events/event_row.html' with events=new_in_archive secondary=True %}
+            <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
           </main>
+
         </section>
         <section class="event-stripe">
-          <div class="section-title">
+          <div class="section-title home">
             <div class="title1">Most Popular</div>
             <span class="select-container">
               <div class="white-border-select home-filter">
@@ -73,7 +79,9 @@
             </span>
           </div>
           <main id="most-popular-container">
+            <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
             {% include 'events/event_row.html' with events=popular_in_archive secondary=True %}
+            <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
           </main>
         </section>
         <section class="event-stripe">
@@ -81,7 +89,9 @@
             <div class="title1">Staff Picks</div>
           </div>
           <main>
+            <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
             {% include 'events/event_row.html' with events=staff_picks secondary=True %}
+            <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
           </main>
         </section>
       </div>
@@ -118,12 +128,12 @@
   <script>
     $(document).ready(function(){
       var filter = $('#most-popular-filter');
-      var mostPopularFilter = $('#most-popular-container');
+      var mostPopularFilter = $('#most-popular-container').find('.event-row');
 
       var setMostPopular = function (value) {
         $.get("{% url 'event_popular_ajax' %}?range=" + value,
           function (data) {
-            mostPopularFilter.html(data.content);
+            mostPopularFilter.replaceWith(data.content);
           });
       };
       filter.on('change', function () {
@@ -136,4 +146,5 @@
       {% endif %}
     });
   </script>
+  <script type="javascript" src="{% static 'js/slider.js' %}"></script>
 {% endblock extra_js %}

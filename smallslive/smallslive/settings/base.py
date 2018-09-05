@@ -334,6 +334,7 @@ PIPELINE_JS = {
           'js/base.js',
           'js/utils.js',
           'js/signup_form.js',
+          'js/slider.js',
           'js/white-border-select.js',
         ),
         'output_filename': 'js/main.js',

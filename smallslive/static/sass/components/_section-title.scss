@@ -2,7 +2,7 @@
   $underline-length: 750px;
   position: relative;
   margin-bottom: 20px;
-  padding-left: 20px;
+  padding-left: 3.5vw;
   display: flex;
   align-items: flex-end;
   text-decoration: none;
@@ -13,6 +13,10 @@
   width: 100%;
   @media(min-width: $screen-md-max) {
     width: $underline-length;
+  }
+
+  &.home {
+    width: 630px;
   }
 
   &.section-flex {

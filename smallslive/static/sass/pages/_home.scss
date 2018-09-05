@@ -31,9 +31,14 @@ body {
   flex-direction: column;
 }
 
+.event-container {
+  margin-top: 3vh;
+}
+
 .event-stripe {
+
+  margin-bottom: 30px;
   position: relative;
-  margin-bottom: 60px;
 
   @media (max-width: $screen-sm-max) {
     margin-bottom: 20px;
@@ -44,6 +49,7 @@ body {
     bottom: 0;
     right: 0;
   }
+
 }
 
 .sign-in-button,

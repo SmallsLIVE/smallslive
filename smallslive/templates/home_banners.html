@@ -1,10 +1,10 @@
 {% load full_static %}
 
-<div class="banners visible-lg">
+<div class="banners">
   <div id="banner-container">
     {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
     <div class="lighten-image banner-background">
-      {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url %}
+      {% include 'partials/thumbored_picture.html' with local_url='image/banners/archive.jpg' %}
     </div>
     <div class="banner-border flex-row">
       <div class="banner-title-button flex-column">
@@ -16,30 +16,30 @@
       <div class="banner-text-container flex-row items-center">
         <p id="banner-text">El texto</p>
       </div>
+      <div>
+        <a href="#" class="close-button"></a>
+      </div>
     </div>
   </div>
   {% if not active %}
   <div id="banner-options" class="banner-options flex-row">
     <div id="banner-archive-box" class="banner-option">
       {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
-      <div class="darked-image">
-        {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url crop_box=event.photo_crop_box %}
+      <div class="fake-image archive">
+        {% include 'partials/thumbored_picture.html' with local_url='image/banners/archive.jpg' %}
       </div>
-      <div class="title4">Archive</div>
     </div>
     <div id="banner-live-box" class="banner-option shadow-text">
       {% fullstatic 'image/banners/live.jpg' as banner_picture_url %}
-      <div class="darked-image">
-        {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url crop_box=event.photo_crop_box %}
+      <div class="fake-image live">
+        {% include 'partials/thumbored_picture.html' with local_url='image/banners/live.jpg' %}
       </div>
-      <div class="title4">Live</div>
     </div>
     <div id="banner-mission-box" class="banner-option">
       {% fullstatic 'image/banners/mission.jpg' as banner_picture_url %}
-      <div class="darked-image">
-        {% include 'partials/thumbored_picture.html' with photo_url=banner_picture_url crop_box=event.photo_crop_box %}
+      <div class="fake-image mission">
+        {% include 'partials/thumbored_picture.html' with local_url='image/banners/mission.jpg' %}
       </div>
-      <div class="title4">Mission</div>
     </div>
   </div>
   {% endif %}
@@ -67,7 +67,7 @@
 
       },
       mission: {
-        text: 'We belive <span class="accent-color">world peace</span> is possible through music and musical community. Our goal is to <span class="accent-color">broadcast and document the music</span> performed in our venues each night. Our initiative is to create a <span class="accent-color">fair reveneue share model</span>, giving the jazz community means to directly benefit musicians and supporting venues',
+        text: 'We believe <span class="accent-color">world peace</span> is possible through music and musical community. Our goal is to <span class="accent-color">broadcast and document the music</span> performed in our venues each night. Our initiative is to create a <span class="accent-color">fair reveneue share model</span>, giving the jazz community means to directly benefit musicians and supporting venues',
         button: 'Become a member',
         click: showBecomeMemberModal
       },
@@ -83,19 +83,21 @@
 
     var bannerContainer = $('#banner-container');
     var bannerOptions = $('#banner-options');
-    $('#banner-archive-box').on('mouseenter', function () {
+    $('#banner-archive-box').on('click', function () {
       setContainerBanner('archive');
     });
 
-    $('#banner-live-box').on('mouseenter', function () {
+    $('#banner-live-box').on('click', function () {
       setContainerBanner('live stream');
     });
 
-    $('#banner-mission-box').on('mouseenter', function () {
+    $('#banner-mission-box').on('click', function () {
       setContainerBanner('mission');
     });
 
-    bannerContainer.on('mouseleave', function () {
+    bannerContainer.find('a.close-button').on('click', function () {
+      bannerOptions.show();
+      bannerContainer.hide();
     });
 
     function setContainerBanner(src) {
@@ -124,7 +126,7 @@
     {% if active %}
       setContainerBanner('{{ active }}');
     {% else %}
-      bannerContainer.on('mouseleave', function () {
+      bannerContainer.find('a.close').on('click', function () {
         bannerOptions.show();
         bannerContainer.hide();
       });
