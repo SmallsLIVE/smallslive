@@ -125,7 +125,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     def update_stripe_customer(self, **kwargs):
         """
         :param kwargs: Update params (https://stripe.com/docs/api#customers)
-        :return: bool: Wether is was updated or not.
+        :return: bool: Whether is was updated or not.
         """
         try:
             customer = self.customer.stripe_customer
