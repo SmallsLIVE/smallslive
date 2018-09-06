@@ -164,7 +164,10 @@ $mobile-event-card-width: $event-card-width / 1.5;
 
 
 @mixin event-card ($event-card-width, $event-card-height) {
-  min-height: $event-card-height;
+
+  max-width: $event-card-width;
+  min-height: auto;
+
   position: relative;
 
   .event-picture-container{
@@ -179,8 +182,8 @@ $mobile-event-card-width: $event-card-width / 1.5;
 
     .event-picture {
       @include cross-browser-grayscale;
-      height: $event-card-height;
-      width: $event-card-width;
+      /*height: $event-card-height;
+      width: $event-card-width;*/
       position: relative;
 
       img {
