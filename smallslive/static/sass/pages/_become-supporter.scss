@@ -21,7 +21,7 @@
     .banner-container {
       &::before {
         content: ' ';
-        display: block;
+        display: flex;
         position: absolute;
         top: 0;
         left: 0;

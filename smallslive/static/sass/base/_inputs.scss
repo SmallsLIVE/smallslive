@@ -69,6 +69,8 @@
   position: relative;
 
   &::before {
+    background-image: url('/static/image/search-icon.svg');
+    background-repeat: no-repeat;
     content: $content;
     font-family: 'FontAwesome', serif;
     color: $color;
@@ -81,13 +83,16 @@
 }
 
 .search-input {
-  @include input-icon('\f002', $accent-color);
-
+  
+  background-image: url(/static/image/search-icon.svg);
+  background-repeat: no-repeat;
+  background-size: 20px;
+  background-position: 10px;
   input {
     @include bordered-input;
     background-color: transparent;
     width: 30vw;
-    padding-left: 30px;
+    padding-left: 38px;
   }
 }
 

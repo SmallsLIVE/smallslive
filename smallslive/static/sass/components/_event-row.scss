@@ -1,17 +1,48 @@
 $mobile-event-card-width: $event-card-width / 1.5;
+.live{
+  .slide-btn {
+    &.prev, &.next {
+      @media (min-width: 1366px) {
+        height: 15.1vw * 0.6;
+      }
+  
+      @media (max-width: 1365px) and (min-width: 1024px) {
+        height: calc(14.5vw * 0.6);
+      }
+  
+      @media (max-width: 1023px) and (min-width: 961px) {
+        height: calc(14.5vw * 0.6);
+      }
+  
+      @media (max-width: 960px) {
+        display: none;
+        }
+      }
+      &.next {
+        border-radius: 10px 0 0 0;
+      }
+    }
+  }
+
+
 
 .slide-btn {
+  
   &.prev, &.next {
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    margin-top: 48px;
+    border-radius: 10px 0 0 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    background-image: url('/static/image/arrow-right-red.svg');
+    background-repeat: no-repeat;
+    background-position: center; 
+    background-size: 20px;
+    margin-top: 56px;
     position: absolute;
     top: 0;
-    width: 3.5vw;
+    
     z-index: 1000;
 
     @media (min-width: 1366px) {
-      height: calc(10.72vw  * 0.6);
+      height: 11.225vw * 0.6;
     }
 
     @media (max-width: 1365px) and (min-width: 1024px) {
@@ -27,8 +58,9 @@ $mobile-event-card-width: $event-card-width / 1.5;
     }
   }
   &.prev {
-    left: -0.78vw;
-
+    transform: scaleX(-1);
+    width: 3.1vw;
+    left: 0;
     b:before {
       content: '\002b';
       position: absolute;
@@ -37,8 +69,9 @@ $mobile-event-card-width: $event-card-width / 1.5;
     }
   }
   &.next {
-    right: -0.78vw;
-
+    width: 3.5vw;
+    right: 0;
+    
     b:before {
       content: '\002b';
       left: 0.78vw;
@@ -134,10 +167,14 @@ $mobile-event-card-width: $event-card-width / 1.5;
   min-height: $event-card-height;
   position: relative;
 
-  .event-picture-container {
-    position: relative;
+  .event-picture-container{
     $picture-border-radius: 10px;
     border-radius: $picture-border-radius;
+  }
+
+  .event-picture-container, .event-picture-container-dashboard{
+    position: relative;
+    
     overflow: hidden;
 
     .event-picture {
@@ -211,7 +248,7 @@ $mobile-event-card-width: $event-card-width / 1.5;
     position: absolute;
 
     left: 0;
-    bottom: 4px;
+    bottom: 3px;
 
     > span {
       color: $white-transparent;

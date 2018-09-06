@@ -12,12 +12,9 @@ $banners-height: 38vh;
     display: none;
     position: relative;
     overflow: hidden;
-    height: 27.34vh;
+    height: 15.065vw;
 
-    .banner-background {
-      top: -240px
-    }
-
+    
     .banner-border {
       height: 100%;
       width: 100%;
@@ -29,6 +26,10 @@ $banners-height: 38vh;
 
       .banner-title-button {
         padding: 1px 1px;
+
+        .banner-learnmore {
+          padding: 0 2vw;
+        }
 
         #banner-title {
           @include title4;
@@ -55,8 +56,7 @@ $banners-height: 38vh;
         flex: 1;
 
         #banner-text {
-          @include title1;
-          font-weight: 500;
+          @include title-banner;
           margin: 0;
           padding-left: 30px;
           padding-right: 30px;

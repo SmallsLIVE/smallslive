@@ -9,7 +9,7 @@
     <div class="banner-border flex-row">
       <div class="banner-title-button flex-column">
         <div id="banner-title">Archive</div>
-        <div>
+        <div class="banner-learnmore">
           <button id="banner-button"></button>
         </div>
       </div>
@@ -67,7 +67,7 @@
 
       },
       mission: {
-        text: 'We believe <span class="accent-color">world peace</span> is possible through music and musical community. Our goal is to <span class="accent-color">broadcast and document the music</span> performed in our venues each night. Our initiative is to create a <span class="accent-color">fair reveneue share model</span>, giving the jazz community means to directly benefit musicians and supporting venues',
+        text: 'the <span class="accent-color">smallslive foundation</span> is a <span class="accent-color">not-for-profit</span> organized for the purpose of the <span class="accent-color">dissemination of jazz music</span> through our archive, live streams, sponsorship of individual jall projects & tours, education, and live performances at smalls & mezzrow. we are supported by our members through <span class="accent-color">tax-deductible donations</span>.',
         button: 'Become a member',
         click: showBecomeMemberModal
       },
@@ -101,6 +101,9 @@
     });
 
     function setContainerBanner(src) {
+      bannerImage = bannerContainer.find('.banner-background').find('img')[0]
+      $(bannerImage).attr('src','static/image/banners/'+ src +'_text.jpg')
+      
       var banner = bannerText[src];
       bannerContainer.find('#banner-text').html(banner.text);
       var find = bannerContainer.find('#banner-title');
