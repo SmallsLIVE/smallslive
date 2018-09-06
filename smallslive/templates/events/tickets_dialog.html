@@ -3,10 +3,19 @@
     <div class="modal-content custom-modal">
       <div class="modal-body">
         <p class="title2 accent-color">Tickets</p>
-        <p class="title3">Tickets not available</p>
-        <p class="text4 text-grey">
-          Smalls is a first come first served establishment. There are no advanced tickets. Arrive no later than 30 min prior to the desired set time to purchase entry at the door
-        </p>
+          {% if event.tickets_url %}
+              <p class="title3">Available from {{ event.venue.name|capfirst }}</p>
+              <a href="{{ event.tickets_url }}" target="_blank" rel="noreferrer">
+                <button class="white-border-button">Buy from {{ event.venue.name|capfirst }}</button>
+              </a>
+          {% else %}
+              <p class="title3">Tickets not available</p>
+              <p class="text4 text-grey">
+                  {%  comment %}{{ event.venue.name|default('smalls') }} {% endcomment %}
+                  smalls is a first come first served establishment. There are no advanced tickets.
+                  Arrive no later than 30 min prior to the desired set time to purchase entry at the door
+              </p>
+          {% endif %}
       </div>
     </div>
   </div>
