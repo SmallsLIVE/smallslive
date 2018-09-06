@@ -194,3 +194,34 @@
   }
 }
 
+.comments-container {
+  textarea {
+    margin: 10px 0;
+    height: 80px;
+    border-radius: 0;
+  }
+}
+@media(max-width: $screen-md-min) {
+  .comments-container {
+    padding: 20px;
+  }
+}
+
+.comment {
+  margin-bottom: 10px;
+  border-bottom: 1px solid $white-transparent;
+  .comment-head {
+    i {
+      color: $background-color;
+      font-size: 1.5em;
+      text-shadow: 0 0 1px black;
+    }
+    .comment-head-user {
+      margin-left: 5px;
+      text-transform: capitalize;
+    }
+  }
+  .comment-body {
+    padding: 10px 25px;
+  }
+}

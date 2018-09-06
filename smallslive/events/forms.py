@@ -1,24 +1,16 @@
-from urlparse import urlparse
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML, Button, LayoutObject, TEMPLATE_PACK, MultiField
+from crispy_forms.layout import Layout, Field, LayoutObject, TEMPLATE_PACK
 from django import forms
 from django.conf import settings
-from django.forms import widgets
 from django.template import Context
 from django.template.loader import render_to_string
-from django.utils import timezone
 from extra_views import InlineFormSet
 import floppyforms
 from haystack.forms import SearchForm
-from model_utils import Choices
 
-from events.models import StaffPick, EventSet
-from .models import Event, GigPlayed
+from .models import EventSet, Event, GigPlayed, Comment
 
-from django.core.files import File
-from django.core.files.temp import NamedTemporaryFile
-from urllib2 import urlopen
 from utils.widgets import ImageCropWidget
 
 
@@ -208,3 +200,18 @@ class EventSearchForm(SearchForm):
 
     def no_query_found(self):
         return self.searchqueryset.all()
+
+
+class CommentForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields['content'].widget.attrs['class'] = 'form-control'
+        self.fields['content'].widget.attrs[
+            'placeholder'
+        ] = 'Add a public comment'
+
+    class Meta:
+        model = Comment
+        fields = ['content']
+

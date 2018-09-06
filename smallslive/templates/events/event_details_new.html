@@ -6,6 +6,7 @@
 {% load i18n %}
 {% load purchase_info_tags %}
 {% load basket_tags %}
+{% load crispy_forms_tags %}
 
 {% block schedule_nav_active %}active{% endblock %}
 
@@ -183,8 +184,17 @@
               </a>
           {% endif %}
       </div>
+
     </div>
-      <div class="flex-row event-set-selector"></div>
+    <div class="flex-row event-set-selector"></div>
+    <div class="comments-container">
+        <div class="text1">
+            <span>Comments</span>
+            <span class="text-grey text-lowercase">32 comments</span>
+            {% include 'events/comment_form.html' %}
+        </div>
+        {% include 'events/comment_list.html' %}
+    </div>
     </div>
     <div class="flex-column event-side">
       {% if streaming_tonight_videos %}
@@ -227,6 +237,7 @@
           {% endfor %}
         </div>
       </div>
+
     </div>
   </div>
 {% endblock %}

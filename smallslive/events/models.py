@@ -521,3 +521,30 @@ class StaffPick(models.Model):
 
 def get_today_start():
     return timezone.localtime(timezone.now()).replace(hour=5, minute=0)
+
+
+class Comment(models.Model):
+
+    STATUS_APPROVED = 'A'
+    STATUS_REJECTED = 'R'
+    STATUS_IN_REVIEW = 'IR'
+
+    STATUS = (
+        (STATUS_APPROVED, 'Approved'),
+        (STATUS_REJECTED, 'Rejected'),
+        (STATUS_IN_REVIEW, 'In Review'),
+    )
+
+    status = models.CharField(choices=STATUS, default=STATUS_APPROVED,
+                              max_length=2)
+    event_set = models.ForeignKey(EventSet, related_name='comments')
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='comments')
+    created_at = models.DateTimeField()
+    content = models.TextField(max_length=500, null=True, blank=False)
+
+    def save(self, **kwargs):
+        if not self.id:
+            self.created_at = timezone.now()
+        super(Comment, self).save(**kwargs)

@@ -1,0 +1,15 @@
+{% for fake in fake_range %}
+    <div class="comment">
+        <div class="comment-head">
+            <i class="fa fa-comment"></i>
+            <span class="comment-head-user text1">Pepe Carlitos</span>
+            <span>{{ fake_date|timesince }} ago</span>
+        </div>
+        <div class="comment-body">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex ea commodi consequat.
+            Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </div>
+    </div>
+{% endfor %}

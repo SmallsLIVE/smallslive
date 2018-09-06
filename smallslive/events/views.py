@@ -19,7 +19,8 @@ from django.utils.timezone import timedelta
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.generic import DeleteView, TemplateView
 from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView, BaseDetailView
+from django.views.generic.detail import BaseDetailView
+from django.views.generic import DetailView, CreateView
 
 from django_ajax.mixin import AJAXMixin
 from braces.views import StaffuserRequiredMixin
@@ -32,7 +33,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from artists.models import Artist
-from events.models import get_today_start, StaffPick, EventSet, Recording
+from events.models import get_today_start, StaffPick, EventSet,\
+    Recording, Comment
 from events.serializers import MonthMetricsSerializer
 from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import Product
@@ -40,7 +42,7 @@ from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
     GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
     EventSearchForm, EventEditForm, EventSetInlineFormset, \
-    EventSetInlineFormsetHelper
+    EventSetInlineFormsetHelper, CommentForm
 from .models import Event, Venue
 
 RANGE_YEAR = 'year'
@@ -308,6 +310,9 @@ class EventDetailView(DetailView):
         event = self.object
         performers = event.get_performers()
 
+        context['comment_form'] = CommentForm()
+        context['fake_date'] = datetime.date(1991, 03, 16)
+        context['fake_range'] = range(10)
         context['performers'] = [performers[i:i + 4] for i in range(0, len(performers), 4)]
         context['facebook_app_id'] = settings.FACEBOOK_APP_ID
         context['metrics_ping_interval'] = settings.PING_INTERVAL
@@ -1027,6 +1032,16 @@ class SessionEventsCountView(views.APIView):
 
         s = MonthMetricsSerializer()
         return Response(data=s.to_representation(count_data))
+
+
+class CommmentListView(ListView):
+
+    model = Comment
+
+
+class CommentCreateView(CreateView):
+
+    model = Comment
 
 
 metrics_event_counts = SessionEventsCountView.as_view()
