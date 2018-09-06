@@ -126,9 +126,19 @@ $text-font-size-big: 1.4em;
 }
 
 // Font sizes
+@mixin title-banner {
+  @include oswald-light();
+  font-size: 34px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transform: scaleY(1.3);
+  line-height: 1em;
+}
+
+// Font sizes
 @mixin title1 {
   @include oswald-regular();
-  font-size: 2.34em;
+  font-size: 30px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   transform: scaleY(1.3);
@@ -142,8 +152,8 @@ $text-font-size-big: 1.4em;
 
 @mixin title2 {
   @include reen-kufi-normal;
-  font-size: 1.4em;
-  letter-spacing: 0.2em;
+  font-size: 18px;
+  letter-spacing: 2px;
   text-transform: uppercase;
 }
 
@@ -153,7 +163,7 @@ $text-font-size-big: 1.4em;
 
 @mixin title3 {
   @include oswald-semi-bold;
-  font-size: 3.35em;
+  font-size: 16px;
   letter-spacing: 0;
   text-transform: uppercase;
   transform: scaleY(1.2);
@@ -165,15 +175,10 @@ $text-font-size-big: 1.4em;
 
 @mixin title4 {
   @include oswald-semi-bold;
-  font-size: 10.37em;
+  font-size: 6.5vw;
   letter-spacing: 0;
   text-transform: uppercase;
   transform: scaleY(1.2);
-
-  @media (max-width: $screen-sm-max) {
-    font-size: 6em;
-
-  }
 }
 
 .title4 {
@@ -282,8 +287,8 @@ $text-font-size-big: 1.4em;
 // Links
 @mixin links1 {
   @include reen-kufi-normal;
-  letter-spacing: 0;
-  font-size: $text-font-size-small;
+  letter-spacing: 1px;
+  font-size: 13px;
   line-height: $line-height-smaller;
   text-transform: uppercase;
   text-shadow: 0.001em 0.001em;
@@ -332,8 +337,8 @@ $text-font-size-big: 1.4em;
 @mixin button1 {
   @include reen-kufi-normal;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 1em;
+  letter-spacing: 1px;
+  font-size: 13px;
   text-shadow: 0.001em 0.001em;
 }
 
