@@ -195,13 +195,13 @@ class HomepageView(ListView):
             dates[k] = list(g)
         # next 7 days
         sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0])).items()[:7]
-        most_recent = Event.objects.most_recent()[:8]
+        most_recent = Event.objects.most_recent()[:20]
         if len(most_recent):
             context['new_in_archive'] = most_recent
         else:
             context['new_in_archive'] = Event.objects.exclude(
                 state=Event.STATUS.Draft
-            ).order_by('-start')[:8]
+            ).order_by('-start')[:20]
 
         context['next_7_days'] = sorted_dates
         context['venues'] = Venue.objects.all()
@@ -236,6 +236,12 @@ class MostPopularEventsAjaxView(AJAXMixin, ListView):
     def __init__(self, **kwargs):
         super(MostPopularEventsAjaxView, self).__init__()
         self.ajax_mandatory = False
+
+    def get_context_data(self, **kwargs):
+        # Need to provide secondary = True for the event card
+        context = super(MostPopularEventsAjaxView, self).get_context_data(**kwargs)
+        context['secondary'] = True
+        return context
 
     def get_queryset(self):
         metrics_range = RANGE_WEEK

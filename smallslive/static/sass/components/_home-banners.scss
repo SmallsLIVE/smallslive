@@ -1,41 +1,46 @@
-$banners-height: 270px;
+$banners-height: 38vh;
 
 .banners {
+
+  @media (max-width: 960px) {
+
+  }
   width: 100%;
 
-  height: $banners-height;
-  margin-bottom: 60px;
 
   #banner-container {
-    padding: 20px;
     display: none;
     position: relative;
     overflow: hidden;
+    height: 15.065vw;
 
-    .banner-background {
-      top: -240px
-    }
-
+    
     .banner-border {
       height: 100%;
       width: 100%;
 
-      border: 1px solid $accent-color;
-      border-radius: 20px;
+      border-top: 1px solid $light-grey;
+      border-bottom: 1px solid $light-grey;
+
+      padding: 1vh 2vw;
 
       .banner-title-button {
-        padding: 25px 40px;
+        padding: 1px 1px;
+
+        .banner-learnmore {
+          padding: 0 2vw;
+        }
 
         #banner-title {
           @include title4;
-          position: relative;
-          top: -16px;
-          padding: 24px 0;
-          line-height: 1em;
+
+          padding-left: 2vw;
+          padding-right: 2vw;
+          padding-top: 2vh;
           text-wrap: normal;
 
           &.custom-banner-text {
-            font-size: 5em;
+            font-size: 1px;
             max-width: 355px;
           }
         }
@@ -51,10 +56,8 @@ $banners-height: 270px;
         flex: 1;
 
         #banner-text {
-          @include title1;
-          font-weight: 500;
+          @include title-banner;
           margin: 0;
-          border-left: 2px solid black;
           padding-left: 30px;
           padding-right: 30px;
         }
@@ -63,23 +66,28 @@ $banners-height: 270px;
   }
 
   .banner-options {
-    height: $banners-height;
     width: 100%;
 
     .banner-option {
-      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
 
       color: $white-transparent;
-      margin: 2px;
       cursor: pointer;
       position: relative;
       overflow: hidden;
 
       &.shadow-text {
         @include shadow-text;
+      }
+
+      #banner-archive-box {
+        margin-right: 0.94%;
+      }
+
+      #banner-live-box {
+        margin-right: 0.94%;
       }
 
     }
@@ -92,6 +100,28 @@ $banners-height: 270px;
 
 .lighten-image {
   @include background-image-with-overlay(rgba(255, 255, 255, 0.8));
+}
+
+.fake-image {
+
+  width: 33vw;
+
+  &:hover {
+    opacity: 0.5;
+    filter: brightness(250%);
+  }
+
+  img {
+    width: 100%;
+  }
+
+  &.archive {
+    margin-right: 0.5vw;
+  }
+
+  &.live {
+    margin-right: 0.5vw;
+  }
 }
 
 
