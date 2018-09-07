@@ -12,6 +12,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import connection
 from django.http import HttpResponseRedirect
+from django.http.response import Http404
 from django.utils import timezone
 from django.utils.http import urlencode
 from django.utils.text import slugify
@@ -19,7 +20,8 @@ from django.utils.timezone import timedelta
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.generic import DeleteView, TemplateView
 from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView, BaseDetailView
+from django.views.generic.detail import BaseDetailView
+from django.views.generic import DetailView, FormView
 
 from django_ajax.mixin import AJAXMixin
 from braces.views import StaffuserRequiredMixin
@@ -32,7 +34,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from artists.models import Artist
-from events.models import get_today_start, StaffPick, EventSet, Recording
+from events.models import get_today_start, StaffPick, EventSet,\
+    Recording, Comment
 from events.serializers import MonthMetricsSerializer
 from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import Product
@@ -40,7 +43,7 @@ from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
     GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
     EventSearchForm, EventEditForm, EventSetInlineFormset, \
-    EventSetInlineFormsetHelper
+    EventSetInlineFormsetHelper, CommentForm
 from .models import Event, Venue
 
 RANGE_YEAR = 'year'
@@ -1034,5 +1037,42 @@ class SessionEventsCountView(views.APIView):
         s = MonthMetricsSerializer()
         return Response(data=s.to_representation(count_data))
 
-
 metrics_event_counts = SessionEventsCountView.as_view()
+
+
+class CommentListView(FormView):
+
+    form_class = CommentForm
+    template_name = 'events/comments.html'
+
+    def post(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            raise Http404()
+        return super(CommentListView, self).post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return self.request.get_full_path()
+
+    def get_form_kwargs(self):
+        kwargs = super(CommentListView, self).get_form_kwargs()
+        initial = kwargs.get('initial', {})
+        initial.update({
+            'event_set': EventSet.objects.filter(
+                event_id=self.kwargs.get('pk')
+            ).first().id})
+        kwargs['initial'] = initial
+        return kwargs
+
+    def form_valid(self, form):
+        comment = form.save(commit=False)
+        comment.author = self.request.user
+        comment.save()
+        return super(CommentListView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super(CommentListView, self).get_context_data(**kwargs)
+        context['object_list'] = Comment.objects.filter(
+            event_set__event_id=self.kwargs.get('pk'))
+        return context
+
+event_comments = CommentListView.as_view()

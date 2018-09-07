@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from models import Event, Recording, Venue
+from models import Event, Recording, Venue, Comment
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -15,6 +15,17 @@ class EventAdmin(admin.ModelAdmin):
         obj.last_modified_by = request.user
         obj.save()
 
+
+class CommentAdmin(admin.ModelAdmin):
+
+    list_display = ['id', 'author', 'event_set_id']
+    raw_id_fields = ['event_set', 'author']
+
+    def event_set_id(self, obj):
+        return obj.event_set.id
+
+
 admin.site.register(Event, EventAdmin)
 admin.site.register(Recording)
 admin.site.register(Venue)
+admin.site.register(Comment, CommentAdmin)

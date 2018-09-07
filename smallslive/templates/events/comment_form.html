@@ -1,0 +1,9 @@
+<form action="{{ request.get_full_path }}">
+    {{ form.content }}
+    {{ form.errors.content }}
+    {{ form.event_set }}
+    <p>
+        <input type="submit" class="white-border-button" value="Submit comment"/>
+        {% csrf_token %}
+    </p>
+</form>
