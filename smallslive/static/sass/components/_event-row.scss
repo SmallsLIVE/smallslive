@@ -121,11 +121,14 @@ $mobile-event-card-width: $event-card-width / 1.5;
 .event-row {
 
   display: flex;
-  overflow: scroll;
   padding-left: 3.5vw;
 
   @media (min-width: 960px) {
     padding-left: 3.5vw;
+  }
+
+  @media (max-width: 960px) {
+    overflow: scroll;
   }
 
   .event-display {
@@ -147,7 +150,7 @@ $mobile-event-card-width: $event-card-width / 1.5;
   }
 }
 
-.event-info {
+.event-info, .album-row {
   @include links1;
   margin-top: 15px;
 

@@ -140,6 +140,12 @@
   }
 }
 
+.event-container {
+  @media (min-width: $screen-md-min) {
+    max-width: 850px;
+  }
+}
+
 .event-video-banner, .event-video-placeholder {
   position: relative;
   max-height: 450px;
