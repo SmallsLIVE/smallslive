@@ -139,7 +139,7 @@ class EventAddForm(forms.ModelForm):
         model = Event
         fields = (
             'venue', 'date', 'start', 'end', 'id', 'title', 'subtitle', 'photo',
-            'description', 'state', 'staff_pick', 'tickets_url_id'
+            'description', 'state', 'staff_pick'
         )
         widgets = {
             'state': EventStatusWidget,
@@ -186,7 +186,7 @@ class EventEditForm(EventAddForm):
     class Meta(EventAddForm.Meta):
         fields = (
             'venue', 'title', 'subtitle', 'date', 'start', 'end', 'photo', 'cropping',
-            'description', 'state', 'staff_pick', 'tickets_url_id')
+            'description', 'state', 'staff_pick')
 
 
 class EventSearchForm(SearchForm):

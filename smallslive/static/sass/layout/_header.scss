@@ -1,6 +1,4 @@
 header {
-  margin-top: 15px;
-
   &.container {
     @include bottom-section-border;
   }
@@ -8,8 +6,9 @@ header {
 
 .smalls-logo {
   float: left;
-  //margin-top: 19px;
-  //margin-bottom: 19px;
+  img {
+    width: 60px;
+  }
 }
 
 .navbar-default {
