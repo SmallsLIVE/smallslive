@@ -1,6 +1,139 @@
 $mobile-event-card-width: $event-card-width / 1.5;
+.live{
+  .slide-btn {
+    &.prev, &.next {
+      @media (min-width: 1366px) {
+        height: 15.1vw * 0.6;
+      }
+  
+      @media (max-width: 1365px) and (min-width: 1024px) {
+        height: calc(14.5vw * 0.6);
+      }
+  
+      @media (max-width: 1023px) and (min-width: 961px) {
+        height: calc(14.5vw * 0.6);
+      }
+  
+      @media (max-width: 960px) {
+        display: none;
+        }
+      }
+      &.next {
+        border-radius: 10px 0 0 0;
+      }
+    }
 
-.event-row, .album-row {
+    .event-info-title {
+      @media (min-width: 1366px) {
+        width: 14vw;
+      }
+
+      @media (max-width: 1365px) and (min-width: 1024px) {
+        width: 20vw;
+      }
+
+      @media (max-width: 1023px) and (min-width: 961px) {
+        width: 20vw;
+      }
+
+      @media (max-width: 960px) {
+        width: 44vw;
+      }
+    }
+  }
+
+
+
+.slide-btn {
+  
+  &.prev, &.next {
+    border-radius: 10px 0 0 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    background-image: url('/static/image/arrow-right-red.svg');
+    background-repeat: no-repeat;
+    background-position: center; 
+    background-size: 20px;
+    margin-top: 56px;
+    position: absolute;
+    top: 0;
+    
+    z-index: 1000;
+
+    @media (min-width: 1366px) {
+      height: 11.225vw * 0.6;
+    }
+
+    @media (max-width: 1365px) and (min-width: 1024px) {
+      height: calc(14.5vw * 0.6);
+    }
+
+    @media (max-width: 1023px) and (min-width: 961px) {
+      height: calc(14.5vw * 0.6);
+    }
+
+    @media (max-width: 960px) {
+      display: none;
+    }
+  }
+  &.prev {
+    transform: scaleX(-1);
+    width: 3.1vw;
+    left: 0;
+    b:before {
+      content: '\002b';
+      position: absolute;
+      right: 0.78vw;
+      top: -0%;
+    }
+  }
+  &.next {
+    width: 3.5vw;
+    right: 0;
+    
+    b:before {
+      content: '\002b';
+      left: 0.78vw;
+      position: absolute;
+      top: 0%;
+    }
+  }
+
+  b {
+    display: none;
+    transform-origin: 45% 50%;
+    height: auto;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    -ms-grid-row-align: center;
+    align-self: center;
+    color: $accent-color;
+    font-size: 10vh;
+    -webkit-transition: -webkit-transform .1s ease-out 0s;
+    transition: -webkit-transform .1s ease-out 0s;
+    -o-transition: -o-transform .1s ease-out 0s;
+    -moz-transition: transform .1s ease-out 0s,-moz-transform .1s ease-out 0s;
+    transition: transform .1s ease-out 0s;
+    transition: transform .1s ease-out 0s,-webkit-transform .1s ease-out 0s,-moz-transform .1s ease-out 0s,-o-transform .1s ease-out 0s;
+
+  }
+}
+
+.event-row {
+
+  display: flex;
+  overflow: scroll;
+  padding-left: 3.5vw;
+
+  @media (min-width: 960px) {
+    padding-left: 3.5vw;
+  }
+
+  .event-display {
+    margin-right: 0.4vw;
+  }
+}
+
+.album-row {
   display: flex;
   overflow: auto;
   padding-left: 20px;
@@ -16,42 +149,56 @@ $mobile-event-card-width: $event-card-width / 1.5;
 
 .event-info {
   @include links1;
-  margin-top: 10px;
+  margin-top: 15px;
 
   &.top-border {
     padding-bottom: 30px;
     padding-top: 5px;
     border-top: $underline-height solid $white-transparent;
   }
+}
 
-  div {
-    div:first-child {
-      @media (min-width: $screen-md-min) {
-        max-width: 130px;
-      }
-      @media (max-width: $screen-sm-max) {
-        max-width: $mobile-event-card-width;
-      }
-    }
+.event-info-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media (min-width: 1366px) {
+    width: 10.85vw;
+  }
+
+  @media (max-width: 1365px) and (min-width: 1024px) {
+    width: 14.7vw;
+  }
+
+  @media (max-width: 1023px) and (min-width: 961px) {
+    width: 14.7vw;
+  }
+
+  @media (max-width: 960px) {
+    width: 45.7vw;
   }
 }
 
 
 @mixin event-card ($event-card-width, $event-card-height) {
-  max-width: $event-card-width;
-  min-height: auto;
+  min-height: $event-card-height;
   position: relative;
 
-  .event-picture-container {
-    position: relative;
+  .event-picture-container{
     $picture-border-radius: 10px;
     border-radius: $picture-border-radius;
+  }
+
+  .event-picture-container, .event-picture-container-dashboard{
+    position: relative;
+    
     overflow: hidden;
 
     .event-picture {
       @include cross-browser-grayscale;
-      /*height: $event-card-height;
-      width: $event-card-width;*/
+      height: $event-card-height;
+      width: $event-card-width;
       position: relative;
 
       img {
@@ -64,7 +211,7 @@ $mobile-event-card-width: $event-card-width / 1.5;
           top: 0;
           left: 0;
           height: $event-card-height;
-          width: $event-card-width;
+          width: 100%;
           background-image: url('../image/no-event-image-placeholder.jpg');
           background-size: cover;
         }
@@ -119,7 +266,7 @@ $mobile-event-card-width: $event-card-width / 1.5;
     position: absolute;
 
     left: 0;
-    bottom: 4px;
+    bottom: 3px;
 
     > span {
       color: $white-transparent;
@@ -135,46 +282,38 @@ $mobile-event-card-width: $event-card-width / 1.5;
 }
 
 .event-card {
-  @media (min-width: 1441px) {
-    @include event-card(300px, 300px * 0.6);
+  @media (min-width: 1366px) {
+    @include event-card(15.1vw, 15.1vw * 0.6);
   }
 
-  @media (max-width: 1440px) and (min-width: 1281px) {
-    @include event-card(215px, 215px * 0.6);
+  @media (max-width: 1365px) and (min-width: 1024px) {
+    @include event-card(22.85vw, 22.85vw * 0.6);
   }
 
-  @media (max-width: 1280px) and (min-width: 1025px) {
-    @include event-card(260px, 260px * 0.6);
+  @media (max-width: 1023px) and (min-width: 961px) {
+    @include event-card(22.85vw, 22.85vw * 0.6);
   }
 
-  @media (max-width: 1024px) and (min-width: $screen-sm-max) {
-    @include event-card(200px, 200px * 0.6);
-  }
-
-  @media (max-width: $screen-sm-max) {
-    @include event-card($mobile-event-card-width, $event-card-height / 1.5);
+  @media (max-width: 960px) {
+    @include event-card(46.1vw, 46.1vw * 0.6);
   }
 }
 
 .event-card-secondary {
-  @media (min-width: 1441px) {
-    @include event-card(220px, 220px * 0.6);
+  @media (min-width: 1366px) {
+    @include event-card(11.225vw, 11.225vw * 0.6);
   }
 
-  @media (max-width: 1440px) and (min-width: 1281px) {
-    @include event-card(160px, 160px * 0.6);
+  @media (max-width: 1365px) and (min-width: 1024px) {
+    @include event-card(15.1vw, 15.1vw * 0.6);
   }
 
-  @media (max-width: 1280px) and (min-width: 1025px) {
-    @include event-card(140px, 140px * 0.6);
+  @media (max-width: 1023px) and (min-width: 961px) {
+    @include event-card(15.1vw, 15.1vw * 0.6);
   }
 
-  @media (max-width: 1024px) and (min-width: $screen-sm-max) {
-    @include event-card(150px, 150px * 0.6);
-  }
-
-  @media (max-width: $screen-sm-max) {
-    @include event-card($mobile-event-card-width, $event-card-height / 1.5);
+  @media (max-width: 960px) {
+    @include event-card(46.1vw, 46.1vw * 0.6);
   }
 }
 

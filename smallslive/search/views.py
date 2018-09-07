@@ -49,7 +49,7 @@ class SearchMixin(object):
             sqs = search.search_artist(main_search, artist_search, instrument)
 
         elif entity == Event:
-            results_per_page = 24
+            results_per_page = 15
             sqs = search.search_event(main_search, order, date)
 
         blocks = []
@@ -61,7 +61,7 @@ class SearchMixin(object):
             item = entity.objects.filter(pk=item.pk).first()
             block.append(item)
 
-            if len(block) == 12 and entity == Artist:
+            if len(block) == 8 and entity == Artist:
                 blocks.append(block)
                 block = []
 
@@ -218,25 +218,3 @@ class TemplateSearchView(TemplateView, SearchMixin):
         context['has_last_page'] = (num_pages - page) >= 3
 
         return context
-
-
-class ArtistInfo(View):
-
-    def get(self, request, *args, **kwargs):
-        id = request.GET.get('id', None)
-        
-        artist = Artist.objects.filter(pk=id).first()
-        
-        context = {'artist': artist}
-        template = 'artists/artist_detail_search.html'
-
-        temp = render_to_string(template,
-                                context,
-                                context_instance=RequestContext(request)
-                                )
-
-        data = {
-            'template': temp
-        }
-
-        return JsonResponse(data)

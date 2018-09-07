@@ -18,7 +18,7 @@
         <div class="header-sub title2 visible-sm visible-xs">{% now "D n/j" %}</div>
       </div>
       <main>
-        {% include 'events/event_row.html' with events=events_today show_time='True' hidde_event_date='True' show_event_venue='True' %}
+        {% include 'events/event_row.html' with events=events_today show_time='True' hidde_event_date='False' show_event_venue='True' %}
       </main>
     </section>
   <div class="flex flex-row content-space-between items-flex-end">

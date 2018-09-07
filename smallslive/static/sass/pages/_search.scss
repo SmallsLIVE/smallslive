@@ -124,7 +124,7 @@
   border-radius: 10px;
   display: none;
   position: absolute;
-  margin: 0 340px;
+  margin: 0 40px;
   top: 50px;
   padding: 10px 20px;
 
@@ -158,7 +158,6 @@
 
 
 .shows-filter-container {
-  margin: 0 auto;
   @media (min-width: $screen-md-min) {
     .white-border-select, .custom-date-picker {
       width: 250px;
@@ -288,38 +287,20 @@
 .event-section {
   display: flex;
   justify-content: space-between;
-  align-content: center;
 }
 
-.search-artist-box-container {
-  position: relative;
-  width: 700px;
-  margin: 0 auto;
-}
-
-.search-artist-box-container::before {
-  content: '\f002';
-  font-family: 'FontAwesome', serif;
-  color: $accent-color;
-  position: absolute;
-  left: 110px;
-  font-size: 1.8em;
-  top: 7px;
-  z-index: 1;
-};
 
 .search-artist-box {
-  @include bordered-input;
-  width: 350px;
-  margin-right: 0;
-  margin-left: 100px;
-  border-radius: 10px;
-  padding-left: 30px;
+    @include bordered-input;
+    width: 250px;
+    margin-right: 0;
+    margin-left: 100px;
+    border-radius: 10px;
 }
 
 .instrument-btn {
   display: inline-block;
-  width: 170px;
+  width: 130px;
   padding-top: 12px;
   margin-left: 20px;
   align-self: center;
@@ -334,10 +315,6 @@
   color: black;
   opacity: 1;
   text-align: center;
-}
-
-.event-stripe {
-  margin-bottom: 10px;
 }
 
 .search-bar-autocomplete-container {
@@ -407,111 +384,4 @@
   background: url(/static/image/loading.gif) 50% 50%;
   background-repeat: no-repeat;
   background-size: 50px;
-}
-.artist-search-profile-container {
-  width: 100%;
-  margin-bottom: 130px;
-  display: none;
-}
-
-.artist-search-profile-resume {
-  width: 500px;
-  p {
-    margin: 0;
-  }
-}
-
-.artist-search-profile-bio-container {
-  width: 800px;
-}
-
-.artist-search-profile-bio {
-  width: 500px;
-  overflow: hidden;
-  line-height: 1.2em;
-  height: 7.2em;
-  margin-top: 40px;
-}
-
-.artist-search-profile-bio-buttons {
-  width: 300px;
-  margin-left: 80px;
-  div {
-    margin: 4px 0;
-  }
-}
-
-.artist-search-profile-image {
-  width: 150px;
-  height: 150px;
-  border: 4px solid $border-color;
-  @include cross-browser-grayscale;
-  img {
-    width: 100%
-  }
-}
-
-.white-line-bottom {
-  margin: 20px 0;
-  border-bottom: 2px solid white;
-}
-
-.white-line-right {
-  padding: 0 30px;
-  border-right: 2px solid white;
-}
-
-.read-more {
-  float: right;
-  text-transform: uppercase;
-}
-
-.read-more:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.musicians-results {
-  width: 100%;
-}
-
-.musicians-results-title {
-  width: 120px;
-  margin: 0 auto;
-}
-
-.shows-results-title {
-  width: 220px;
-  margin: 0 auto;
-}
-
-.showing-results {
-  float: right;
-  color: #e60000;
-  margin-right: 50px;
-}
-
-.shows-container {
-  width: 100%;
-  display: flex;
-  flex-flow: row wrap;
-  position: relative;
-  padding: 0 50px;
-}
-
-.shows-item {
-  margin: 3px;
-  flex: 0 1 calc(100% * (1/8) - 6px);
-
-  @media (max-width: $screen-md-max) {
-    margin: 3px;
-    flex: 0 1 calc(100% * (1/6) - 6px);
-  }
-}
-
-.back-search-button {
-  cursor: pointer;
-  width: 160px;
-  margin-left: 100px;
-  display: none;
 }
