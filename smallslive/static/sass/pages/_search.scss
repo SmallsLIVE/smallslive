@@ -515,3 +515,15 @@
   margin-left: 100px;
   display: none;
 }
+
+.shows-item {
+  .event-card {
+    min-height: 0;
+    .event-picture-container, .event-picture-container-dashboard{
+      .event-picture {
+        height: auto;
+        width: auto;
+      }
+    }
+  }
+}
