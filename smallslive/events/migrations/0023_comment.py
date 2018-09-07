@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('events', '0020_gigplayed_is_admin'),
+        ('events', '0022_event_tickets_url_id'),
     ]
 
     operations = [
@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                     primary_key=True)),
                 ('status',
                     models.CharField(
-                        default=b'A', i
+                        default=b'A',
                         max_length=2,
                         choices=[(b'A', b'Approved'),
                                  (b'R', b'Rejected'),

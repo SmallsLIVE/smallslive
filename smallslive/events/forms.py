@@ -206,6 +206,7 @@ class CommentForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields['event_set'].widget = forms.HiddenInput()
         self.fields['content'].widget.attrs['class'] = 'form-control'
         self.fields['content'].widget.attrs[
             'placeholder'
@@ -213,5 +214,5 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = ['content']
+        fields = ['content', 'event_set']
 
