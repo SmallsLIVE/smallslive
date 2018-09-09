@@ -8,110 +8,11 @@
 
 {% block home_content %}
 <main>
-  <div>
-    <section class="event-stripe">
-      <div class="section-title">
-        <div class="title1">
-          Tonight's Shows <span class="date-separator">/</span>
-        </div>
-        <div class="header-sub title2 visible-lg visible-md">{% now "l F j, o" %}</div>
-        <div class="header-sub title2 visible-sm visible-xs">{% now "D n/j" %}</div>
-      </div>
-      <main>
-        {% include 'events/event_row.html' with events=events_today show_time='True' hidde_event_date='False' show_event_venue='True' %}
-      </main>
-    </section>
-  <div class="flex flex-row content-space-between items-flex-end">
-    <div class="section-title calendar-section">
-      <div class="title1">Upcoming shows</div>
-    </div>
-
+  <div class="event-stripe">
+    {% include 'events/today_and_tomorrow.html' %}
   </div>
-    <main class="schedule-dates-container">
-      <div class="dropdowns-container">
-        <div class="select-container flex-row content-flex-end">
-          <div class="white-border-select" style="width:150px;">
-            <select id="venueSelect">
-              <option value=""{% if not venue_selected %}
-                      selected{% endif %}>All
-              </option>
-              {% for venue in venues %}
-                <option value="{{ venue.id }}"
-                        {% if venue_selected == venue.id %}
-                        selected{% endif %}>{{ venue.name }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="custom-date-picker"
-               id="schedule__date-picker">
-            <input type="text" placeholder="Select a month" readonly>
-            <i class="fa fa-caret-down"></i>
-          </div>
-        </div>
-      </div>
-      <div class="flex-mobile-columns flex-row items-flex-stretch">
-        <a href="{{ prev_url }}" class="schedule-move-icon">
-          {% if prev_url %}
-            <i class="fa fa-angle-left big-icon"></i>
-          {% endif %}
-        </a>
-        <div class="flex flex-column" style="flex: 1">
-          <div class="flex-mobile-columns schedule-days">
-            {% include 'events/calendar_week.html' with dates=dates %}
-          </div>
-        </div>
-        <a class="schedule-move-icon" href="{{ next_url }}"><i
-                class="fa fa-angle-right big-icon"></i></a>
-      </div>
-    </main>
-  </div>
-</main>
-{% endblock home_content %}
+  {% include 'events/shows.html' with upcoming=True %}
+</main>{% endblock home_content %}
 
 {% block extra_js %}
-  <!-- Bootstrap datepicker JavaScript -->
-  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-  <script>
-    $(document).ready(function () {
-      var initialDate = new Date({{ year}}, {{ month }}, {% if day %}{{ day }}{% else %}1{% endif %});
-
-      var $datePicker = $('#schedule__date-picker input');
-      var now = new Date();
-      $datePicker.datepicker({
-        format: 'MM // yyyy',
-        orientation: "top auto",
-        autoclose: true,
-        startDate: initialDate.getTime() >= now.getTime() ? now : initialDate,
-        container: '#schedule__date-picker'
-      });
-
-      $datePicker.datepicker("setDate", initialDate);
-      var venueSelect = $('#venueSelect');
-
-      $datePicker.on('changeDate', function(newDate) {
-        var month = newDate.date.getMonth();
-        var year = newDate.date.getFullYear();
-        var day = newDate.date.getDate();
-
-        var location = '/events/calendar/' + year + '/' + (month + 1) + '/' + day + '/';
-        var selected = venueSelect.val();
-        if (selected) {
-          location += '?venue='+selected;
-        }
-        window.location = location;
-      });
-
-      {#TODO Select using url param#}
-      venueSelect.on('change', function () {
-        var selected = venueSelect.val();
-        var newLocation;
-        if (selected) {
-          newLocation = "{% addurlparameter 'venue' "-1" %}".replace('venue=-1', 'venue='+selected);
-        } else {
-          newLocation = "{% addurlparameter 'venue' None %}";
-        }
-        window.location = newLocation;
-      });
-    });
-  </script>
 {% endblock extra_js %}

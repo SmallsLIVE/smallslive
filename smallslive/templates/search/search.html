@@ -86,49 +86,7 @@
       </div>
     </section>
 
-    <section id="showsContent" class="event-stripe search-tab-content active">
-        <div class="musicians-results white-line-bottom">
-            <div id="artist-subheader" class="showing-results text1">{{ showing_event_results }}</div>
-            <div class="title1 shows-results-title">Archived Shows</div>
-        </div>
-
-      <div class="event-section">
-        <div class="shows-filter-container">
-          <div class="white-border-select event-filter-select">
-            <select id="events-filter">
-              <option value="newest">Newest to oldest</option>
-              <option value="oldest">Oldest to newest</option>
-              <option value="popular">Most popular</option>
-            </select>
-          </div>
-
-          <div class="custom-date-picker" id="search-date-picker">
-            <input class="date-picker-text" type="text" placeholder="date" readonly>
-            <i class="fa fa-caret-down"></i>
-          </div>
-        </div>
-
-      </div>
-
-      <main id="events" class="events-results">
-        {% include 'search/event_search_result.html' with events=event_results %}
-      </main>
-
-      <div class="concerts-footer flex-column items-center">
-      
-
-        {% if last_page != actual_page %}
-        <button id="load-more-btn" class="white-border-button load-more-btn" style="width:220px;" onclick="loadMoreEvents()">
-          <span style="display: block; margin-top: -15px;">Load More</span>
-        </button>
-        {% endif %}
-
-        <div id="event-load-gif" class="loading-image events-gif">
-            <img src="{% static 'image/loading.gif' %}" alt="">
-        </div>
-
-      </div>
-    </section>
+    {% include 'events/shows.html' with archived=True %}
   </div>
 {% endblock %}
 
