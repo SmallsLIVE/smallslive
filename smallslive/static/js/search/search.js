@@ -161,10 +161,10 @@ $(document).ready(function () {
         };
     })();
 
-    $(".search-artist-box").keyup(function () {
+    $("#artist-search").keyup(function () {
         delay(function () {
             artistPageNum = 1;
-            artistSearchTerm = $('.search-artist-box').val();
+            artistSearchTerm = $('#artist-search').val();
             //$("#artists").hide();
             //$("#artist-load-gif").css("display", "flex");
             $(".container-list-article").addClass("artist-loading-gif");

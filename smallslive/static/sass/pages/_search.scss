@@ -295,18 +295,14 @@
   position: relative;
   width: 700px;
   margin: 0 auto;
-}
 
-.search-artist-box-container::before {
-  content: '\f002';
-  font-family: 'FontAwesome', serif;
-  color: $accent-color;
-  position: absolute;
-  left: 110px;
-  font-size: 1.8em;
-  top: 7px;
-  z-index: 1;
-};
+  img {
+    width: 21px;
+    position: absolute;
+    left: 110px;
+    top: 15px;
+  }
+}
 
 .search-artist-box {
   @include bordered-input;
@@ -314,7 +310,7 @@
   margin-right: 0;
   margin-left: 100px;
   border-radius: 10px;
-  padding-left: 30px;
+  padding-left: 40px;
 }
 
 .instrument-btn {
@@ -477,7 +473,7 @@
 
 .musicians-results-title {
   width: 120px;
-  margin: 0 auto;
+  margin: 4px auto;
 }
 
 .shows-results-title {
@@ -489,6 +485,7 @@
   float: right;
   color: #e60000;
   margin-right: 50px;
+  margin-top: 19px;
 }
 
 .shows-container {
