@@ -94,9 +94,12 @@
 .artist-archive-filter {
   margin-bottom: 40px;
 
-  .white-border-select:first-child {
-      margin-right: 20px;
+  .white-border-select{
+    width: 8vw; 
+    float:none;
+    margin-right: 30px;
   }
+  
 }
 
 .aritst-event-edit {
