@@ -51,6 +51,16 @@ body {
     right: 0;
   }
 
+  main {
+    overflow: hidden;
+    width: 100vw;
+
+    @media (max-width: 960px) {
+      overflow: scroll;
+    }
+
+  }
+
 }
 
 .sign-in-button,

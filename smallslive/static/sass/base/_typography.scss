@@ -338,8 +338,16 @@ $text-font-size-big: 1.4em;
   @include reen-kufi-normal;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-size: 13px;
+  font-size: 0.68vw;
   text-shadow: 0.001em 0.001em;
+
+  @media (min-width: 1024px) and (max-width: 1366px) {
+    font-size: 0.68vw;
+  }
+
+  @media(max-width: 1024px) {
+    font-size: 0.68vw;
+  }
 }
 
 .text-justified {
