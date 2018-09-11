@@ -194,30 +194,72 @@ $(document).ready(function () {
         $(".instruments-container").css("display", "none");
     });
 
-    var $datePicker = $('#search-date-picker input');
-    var now = new Date();
-    $datePicker.datepicker({
+    ////////////////
+
+
+    $(".datepicker-btn").click(function () {
+
+        if (!$(".datepicker-container").is(":visible")) {
+            $(".datepicker-container").css("display", "flex");
+        } else {
+            $(".datepicker-container").css("display", "none");
+        }
+
+        $("#search-date-picker-from input").click();
+    });
+
+    /////////////////////
+
+    var $datePickerFrom = $('#search-date-picker-from input');
+    $datePickerFrom.datepicker({
         format: 'MM // dd // yyyy',
         autoclose: true,
-        container: '#search-date-picker',
+        container: '#search-date-picker-from',
         showOnFocus: false
     });
 
-    $datePicker.on('changeDate', function (newDate) {
-        eventDate = newDate.date;
-        $('#events-filter').val('oldest');
-        $("[value='oldest']").click()
+    $datePickerFrom.on('changeDate', function (newDate) {
+        //eventDate = newDate.date;
+        //$('#events-filter').val('oldest');
+        //$("[value='oldest']").click();
+        $("#search-date-picker-to input").click();
     });
 
-    $datePicker.on('click', function () {
+    $datePickerFrom.on('click', function () {
         var dropdown = $('#search-date-picker .dropdown-menu');
         if (dropdown[0] && dropdown[0].style.display === 'block') {
-            $datePicker.datepicker('hide');
+            $datePickerFrom.datepicker('hide');
         } else {
-            $datePicker.datepicker('show');
+            $datePickerFrom.datepicker('show');
         }
 
     });
+
+    //////////////////////
+
+    var $datePickerTo = $('#search-date-picker-to input');
+    $datePickerTo.datepicker({
+        format: 'MM // dd // yyyy',
+        autoclose: false,
+        container: '#search-date-picker-to',
+        showOnFocus: false
+    });
+
+    $datePickerTo.on('changeDate', function (newDate) {
+        
+    });
+
+    $datePickerTo.on('click', function () {
+        var dropdown = $('#search-date-picker .dropdown-menu');
+        if (dropdown[0] && dropdown[0].style.display === 'block') {
+            $datePickerTo.datepicker('hide');
+        } else {
+            $datePickerTo.datepicker('show');
+        }
+
+    });
+
+    ///////////
 
     $("#back-search").click(function () {
         $("#back-search").hide();
