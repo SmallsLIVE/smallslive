@@ -217,6 +217,15 @@ class MyPastEventsInfoView(DetailView):
         #    raise Http404("Event for that artis doesnt exist")
         return obj
 
+    def get_context_data(self, **kwargs):
+    
+        context = super(MyPastEventsInfoView, self).get_context_data(**kwargs)
+        set_id = int(self.request.GET.get('set_id', 0))
+        context.update({
+            'event_set': self.object.sets.all()[set_id]
+        })
+        return context
+
 my_past_events_info = MyPastEventsInfoView.as_view()
 
 class DashboardView(HasArtistAssignedMixin, TemplateView):

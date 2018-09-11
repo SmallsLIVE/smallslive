@@ -1,3 +1,40 @@
 {% load static from staticfiles %}
+{% with set=event_set %}
 
-<div>Hello word{{event.sets.all}</div>
+
+
+<div>Set ID:{{set.id}}</div>
+
+{% for set in event.sets.all %}
+<div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}?set_id={{ forloop.counter0 }}" class="text4 eventChanger">
+        {{set.id}} AA 
+        
+</div>
+{% endfor %}
+<div class="flex-column">
+        <div class="flex-row wrap artsist-set-info">
+            <div>
+                <div class="accent-color artist-event-date text2">
+                    {% if set.video_recording or set.audio_recording %}
+                        Set {% if set.video_recording %}{{ set.video_recording.set_number }}{% elif set.audio_recording %}{{ set.audio_recording.set_number }}{% endif %} - {{ set.start|date:"g:i A" }}
+                    {% else %}
+                        Set {{ forloop.counter }}
+                    {% endif %}
+                </div>
+                
+                
+            </div>
+
+
+{% endwith %}
+
+{% block extra_js %}
+  <script>
+
+    $('.eventChanger').on('click', function () {
+      var eventUrl = $(this).data("url");  
+      loadInfo(eventUrl)
+    })
+  
+  </script>
+{% endblock %}

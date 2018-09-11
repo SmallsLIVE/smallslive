@@ -37,10 +37,10 @@
   <script>
 
     
-    function loadInfo(infoUrl,params){
+    function loadInfo(infoUrl){
             $.ajax({
                 url: infoUrl,
-                data: params,
+               
                 success: function (data) {
                   console.log(data)
                   $("#artistEventsInfo").html(data)
@@ -49,10 +49,11 @@
         }   
     
     $('.artist-event-row').on('click', function () {
-      eventUrl = $(this).data("url")  
-      params = {set : 1}    
-      loadInfo(eventUrl,params)
+      var eventUrl = $(this).data("url");  
+      
+      loadInfo(eventUrl+"?set_id=0")
     })
+   
   
   </script>
 {% endblock %}
