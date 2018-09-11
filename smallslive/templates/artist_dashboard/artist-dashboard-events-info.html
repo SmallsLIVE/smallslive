@@ -7,7 +7,7 @@
 
 {% for set in event.sets.all %}
 <div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}?set_id={{ forloop.counter0 }}" class="text4 eventChanger">
-        {{set.id}} AA 
+        Set {{ forloop.counter0|add:"1" }} Id:{{set.id}} AA 
         
 </div>
 {% endfor %}
