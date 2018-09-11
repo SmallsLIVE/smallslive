@@ -12,40 +12,50 @@
     {% include 'artist_dashboard/publish_modal.html' %}
 
 {#    TODO Move container to dashboard base#}
-    <div class="artist-profile-container flex-column items-center">
-        <div class="artist-archive-filter flex-row content-centered">
-            <div class="white-border-select" style="width: 150px; float:none">
+    <div class="artist-profile-container flex-column">
+        <div class="artist-archive-filter flex-row">
+            <div class="white-border-select">
                 <select id="artist_archive_status_filter">
-                    <option value="all">All</option>
+                    <option value="all">Date</option>
                     <option value="leader">Leader</option>
                     <option value="sidemusician">Sidemusician</option>
                 </select>
             </div>
-            <div class="white-border-select" style="width: 250px; float:none">
+            <div class="white-border-select">
+                <select id="artist_archive_status_filter">
+                    <option value="all">Status</option>
+                    <option value="leader">Public</option>
+                    <option value="sidemusician">Private</option>
+                </select>
+            </div>
+            <div class="white-border-select">
                 <select id="artist_archive_order">
+                    <option value="newest">Sort by</option>
                     <option value="newest">Newest to oldest</option>
                     <option value="oldest">Oldest to newest</option>
                     <option value="popular">Most Popular</option>
                 </select>
             </div>
-        </div>
-        <div id="artistEventsContainer" class="flex-column items-flex-stretch">
-            <div id="artistEventsList" class="flex-column items-flex-stretch">
-
+            <div class="white-border-select">
+                 <select id="artist_archive_order">
+                    <option value="newest">Reset all</option>
+                
+                </select>
             </div>
-
+            
         </div>
-        <div class="page-numbers-footer">
-            <button id="next-page-btn" class="white-border-button button-title1">
-                <div>View more</div>
-            </button>
+        <div id="artistEventsContainer" class="flex-row items-flex-stretch artist-events-container">
+            <div id="artistEventsList" class="flex-column items-flex-stretch artist-events-list"></div>
+            <div id="artistEventsInfo" class="flex-column items-flex-stretch artist-events-list-info"></div>
         </div>
+        
     </div>
 {% endblock content %}
 
 {% block extra_js %}
     <script>
         var eventsUrl = "{% url reverse_ajax %}";
+       
         var selectedSetId;
         var currentPage = 0;
         var totalPages = 1;
@@ -147,7 +157,7 @@
             if (order !== 'newest') {
                 params.order = order;
             }
-
+            
             $.ajax({
                 url: eventsUrl,
                 data: params,

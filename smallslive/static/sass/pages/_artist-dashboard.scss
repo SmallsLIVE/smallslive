@@ -8,9 +8,12 @@
   @media (max-width: $screen-sm-max) {
     padding: 20px;
   }
-
+  .artist-events-list-info{
+    width: 60%;
+  }
   .artist-events-container{
     border-top: 3px solid $white-transparent;
+    height: 75vh;
   }
   .artist-event-details{
     width: 12vw;
@@ -27,7 +30,7 @@
   .artist-events-list{
     width: 40%;
     overflow-y: scroll;
-    height: 75vh;
+   
     
 
     .artist-event-picture{

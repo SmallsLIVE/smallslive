@@ -6,7 +6,7 @@ from django.db.models import Max, Sum
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django_ajax.response import JSONResponse
-
+from django.http import Http404
 from events.forms import GigPlayedEditInlineFormset
 
 try:
@@ -47,7 +47,6 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(MyEventsView, self).get_context_data(**kwargs)
-        print(context)
         paginator = context['paginator']
         current_page_number = context['page_obj'].number
         context.update({
@@ -177,6 +176,7 @@ my_future_events_ajax = MyFutureEventsAJAXView.as_view()
 
 
 class MyPastEventsView(MyEventsView):
+    reverse_name = 'my_past_events'
     def get_queryset(self):
         artist = self.request.user.artist
         now = timezone.now()
@@ -190,6 +190,7 @@ class MyPastEventsView(MyEventsView):
         context = super(MyPastEventsView, self).get_context_data(**kwargs)
         context['is_future'] = False
         context['reverse_ajax'] = 'artist_dashboard:my_past_events_ajax'
+        context['reverse_past'] = 'artist_dashboard:my_past_events'
         return context
 
 
@@ -203,6 +204,20 @@ class MyPastEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
 
 my_past_events_ajax = MyPastEventsAJAXView.as_view()
 
+class MyPastEventsInfoView(DetailView):
+    model = Event
+    pk_url_kwarg = 'pk'
+    reverse_name = 'my_past_events_info'
+    template_name = 'artist_dashboard/artist-dashboard-events-info.html'
+    context_object_name = 'event'
+
+    def get_object(self, *a, **k):
+        obj = super(MyPastEventsInfoView, self).get_object(*a, **k)
+        #if  not obj.artist == self.request.user.artist:
+        #    raise Http404("Event for that artis doesnt exist")
+        return obj
+
+my_past_events_info = MyPastEventsInfoView.as_view()
 
 class DashboardView(HasArtistAssignedMixin, TemplateView):
     template_name = 'artist_dashboard/home.html'
