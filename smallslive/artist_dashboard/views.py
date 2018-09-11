@@ -47,6 +47,7 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(MyEventsView, self).get_context_data(**kwargs)
+        print(context)
         paginator = context['paginator']
         current_page_number = context['page_obj'].number
         context.update({

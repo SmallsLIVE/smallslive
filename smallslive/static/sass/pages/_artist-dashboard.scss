@@ -2,13 +2,46 @@
   margin-bottom: 40px;
 
   @media (min-width: $screen-md-min) {
-    padding: 0 10%;
+    padding: 0 17%;
   }
 
   @media (max-width: $screen-sm-max) {
     padding: 20px;
   }
 
+  .artist-events-container{
+    border-top: 3px solid $white-transparent;
+  }
+  .artist-event-details{
+    width: 12vw;
+  }
+  .artist-event-arrow{
+    margin: 0 auto;
+    height: 6vh;
+    width: 1.2vh;
+    display: flex;
+      img{
+        width: 100%;
+      }
+  }
+  .artist-events-list{
+    width: 40%;
+    overflow-y: scroll;
+    height: 75vh;
+    
+
+    .artist-event-picture{
+      @include filter(grayscale(100%));
+      margin: 0px 30px;
+      height: 6vh;
+      width: 6vh;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+    }
+
+  }
   .labeled-select {
     display: flex;
 
@@ -40,16 +73,22 @@
 
   .artist-event-row {
     position: relative;
-    padding-top: 10px;
-    border-top: 3px solid $white-transparent;
+    border-bottom: 2px solid $white-transparent;
 
     .artist-event-card {
       margin-right: 40px;
 
     }
-
+    .text2{
+      display: block;
+      height: auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
     .artist-event-info {
-      margin: 25px 0;
+      margin: 15px 0;
 
       @media (max-width: $screen-sm-max) {
         .button-row {
@@ -92,7 +131,7 @@
 }
 
 .artist-archive-filter {
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 
   .white-border-select{
     width: 8vw; 

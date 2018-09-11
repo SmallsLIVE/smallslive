@@ -43,7 +43,10 @@
             </div>
             
         </div>
-        <div id="artistEventsContainer" class="flex-column items-flex-stretch"></div>
+        <div id="artistEventsContainer" class="flex-column items-flex-stretch artist-events-container">
+            <div id="artistEventsList" class="flex-column items-flex-stretch artist-events-list"></div>
+
+        </div>
         
     </div>
 {% endblock content %}
@@ -160,9 +163,9 @@
                 success: function (data) {
                     if (data.template) {
                         if (currentPage > 1) {
-                            $("#artistEventsContainer").append(data.template)
+                            $("#artistEventsList").append(data.template)
                         } else {
-                            $("#artistEventsContainer").html(data.template)
+                            $("#artistEventsList").html(data.template)
                         }
                     }
 

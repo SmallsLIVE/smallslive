@@ -29,7 +29,12 @@
                 </select>
             </div>
         </div>
-        <div id="artistEventsContainer" class="flex-column items-flex-stretch"></div>
+        <div id="artistEventsContainer" class="flex-column items-flex-stretch">
+            <div id="artistEventsList" class="flex-column items-flex-stretch">
+
+            </div>
+
+        </div>
         <div class="page-numbers-footer">
             <button id="next-page-btn" class="white-border-button button-title1">
                 <div>View more</div>
@@ -150,9 +155,9 @@
                 success: function (data) {
                     if (data.template) {
                         if (currentPage > 1) {
-                            $("#artistEventsContainer").append(data.template)
+                            $("#artistEventsList").append(data.template)
                         } else {
-                            $("#artistEventsContainer").html(data.template)
+                            $("#artistEventsList").html(data.template)
                         }
                     }
 
