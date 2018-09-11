@@ -107,7 +107,7 @@ class MainSearchView(View, SearchMixin):
                 Event, main_search, page, order=order, date=date)
 
             context = {'events': events[0] if events else []}
-            template = 'search/event_results.html'
+            template = 'search/event_search_result.html'
         else:
             return Http404('entity does not exist')
 
