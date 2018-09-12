@@ -120,7 +120,7 @@ class SearchObject(object):
         return sqs
 
 
-    def search_event(self, main_search, order=None, date=None):
+    def search_event(self, main_search, order=None, date_from=None, date_to=None):
         order = {
             'newest': '-start',
             'oldest': 'start',
@@ -178,10 +178,13 @@ class SearchObject(object):
         sqs = sqs.filter(recordings__media_file__isnull=False,
                          recordings__state=Recording.STATUS.Published)
 
-        if date:
+        if date_from and date_to:
             # Force hours to start of day
-            date = date.replace(hour=10, minute=0, second=0, microsecond=0)
-            sqs = sqs.filter(start__gte=date)
+            date_from = date_from.replace(hour=10, minute=0, second=0, microsecond=0)
+            sqs = sqs.filter(start__gte=date_from)
+
+            date_to = date_to.replace(hour=10, minute=0, second=0, microsecond=0)
+            sqs = sqs.filter(start__lte=date_to)
 
         if order == 'popular':
             # TODO Duplicated in event/views

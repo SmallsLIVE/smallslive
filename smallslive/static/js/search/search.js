@@ -1,4 +1,4 @@
-var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter, eventDate;
+var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter, eventFilter, eventDateFrom, eventDateTo, apply;
 
 function sendArtistRequest() {
     $.ajax({
@@ -72,22 +72,34 @@ function showArtistInfo(artist) {
 }
 
 function sendEventRequest() {
-    if (eventDate) {
-        var utcDate = eventDate.getFullYear() + '/' + (eventDate.getMonth() + 1) + '/' + eventDate.getDate();
+    if (eventDateFrom) {
+        var utcDateFrom = eventDateFrom.getFullYear() + '/' + (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate();
     }
+    if (eventDateTo) {
+        var utcDateTo = eventDateTo.getFullYear() + '/' + (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate();
+    }
+
     $.ajax({
         url: '/search/ajax/event/',
         data: {
             'main_search': searchTerm,
             'page': eventPageNum,
             'order': eventOrderFilter,
-            'date': utcDate ? utcDate : null
+            'date_from': utcDateFrom ? utcDateFrom : null,
+            'date_to': utcDateTo ? utcDateTo : null
         },
         dataType: 'json',
         success: function (data) {
             if (data.template) {
                 $("#event-subheader").html(data.showingResults);
                 $("#event-subheader-footer").html(data.showingResults);
+
+                if (apply || eventFilter) {
+                    apply = false;
+                    eventFilter = false;
+                    $("#events .shows-container").html("");
+                }
+
                 $(data.template).find("article").each(function( index ) {
                     $("#events .shows-container").append($( this ));
                 });
@@ -115,6 +127,8 @@ $(document).ready(function () {
     artistPageNum = eventPageNum = 1;
     artistMaxPageNum = eventMaxPageNum = 2;
     eventOrderFilter = "newest";
+    apply = false;
+    eventFilter = false;
 
     $("[name='q']").val(searchTerm);
     $('#artist-search').val('');
@@ -147,6 +161,7 @@ $(document).ready(function () {
     });
 
     $('#events-filter').change(function () {
+        eventFilter = true;
         eventOrderFilter = $(this).val();
         eventPageNum = 1;
 
@@ -220,7 +235,7 @@ $(document).ready(function () {
     });
 
     $datePickerFrom.on('changeDate', function (newDate) {
-        //eventDate = newDate.date;
+        eventDateFrom = newDate.date;
         //$('#events-filter').val('oldest');
         //$("[value='oldest']").click();
         $("#search-date-picker-to input").click();
@@ -248,7 +263,7 @@ $(document).ready(function () {
     });
 
     $datePickerTo.on('changeDate', function (newDate) {
-        
+        eventDateTo = newDate.date;
     });
 
     $datePickerTo.on('click', function () {
@@ -268,5 +283,11 @@ $(document).ready(function () {
         $("#musicianContent").show();
         $(".artist-search-profile-container").hide();
         $("#showsContent").show();
+    });
+
+    $("#apply-button").click(function () {
+        apply = true;
+        eventPageNum = 1;
+        sendEventRequest();
     });
 });
