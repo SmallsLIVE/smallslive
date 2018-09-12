@@ -206,6 +206,7 @@ $(document).ready(function () {
         }
 
         $("#search-date-picker-from input").click();
+        $("#search-date-picker-from input").focus();
     });
 
     /////////////////////
@@ -223,6 +224,7 @@ $(document).ready(function () {
         //$('#events-filter').val('oldest');
         //$("[value='oldest']").click();
         $("#search-date-picker-to input").click();
+        $("#search-date-picker-to input").focus();
     });
 
     $datePickerFrom.on('click', function () {
