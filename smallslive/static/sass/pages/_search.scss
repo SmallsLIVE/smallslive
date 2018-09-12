@@ -1,3 +1,27 @@
+.caret {
+  cursor: pointer;
+  position: relative;
+  &:after{
+    content: " ";
+    height: 0;
+    width: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    transition: all 0.3s linear;
+    cursor: pointer;
+    pointer-events: inherit;
+    z-index: -1;
+  }
+}
+
+.hover-fade:hover {
+  background-color: $white-transparent;
+}
+
 .artists-container {
   @media (min-width: $screen-md-min) {
     display: flex;
@@ -162,6 +186,15 @@
   @media (min-width: $screen-md-min) {
     .white-border-select, .custom-date-picker {
       width: 120px;
+    }
+
+    > .white-border-button {
+      margin-right: 20px;
+    }
+
+    > .white-border-select,
+    > .white-border-button {
+      width: 200px;
     }
 
     .event-filter-select {
