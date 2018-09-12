@@ -343,6 +343,7 @@
         padding: 10px 0;
 
         &.datepicker-switch {
+          position: relative;
 
           > div:first-child {
             @include title1;

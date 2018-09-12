@@ -212,7 +212,7 @@ $(document).ready(function () {
 
     var $datePickerFrom = $('#search-date-picker-from input');
     $datePickerFrom.datepicker({
-        format: 'MM // dd // yyyy',
+        format: 'mm/dd/yyyy',
         autoclose: true,
         container: '#search-date-picker-from',
         showOnFocus: false
@@ -239,7 +239,7 @@ $(document).ready(function () {
 
     var $datePickerTo = $('#search-date-picker-to input');
     $datePickerTo.datepicker({
-        format: 'MM // dd // yyyy',
+        format: 'mm/dd/yyyy',
         autoclose: false,
         container: '#search-date-picker-to',
         showOnFocus: false
