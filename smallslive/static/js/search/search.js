@@ -288,6 +288,7 @@ $(document).ready(function () {
     $("#apply-button").click(function () {
         apply = true;
         eventPageNum = 1;
+        $(".datepicker-container").hide();
         sendEventRequest();
     });
 });
