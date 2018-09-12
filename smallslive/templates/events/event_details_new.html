@@ -502,6 +502,7 @@
 
     <script>
         var Subpage = function (name) {
+            this.name = name;
             this.element = $('[data-subpage-name="' + name +'"]');
         };
 
@@ -520,7 +521,7 @@
         };
 
         Subpage.prototype.load = function () {
-            this.element.html('<div class="text1">Loading comments...</div>');
+            this.element.html('<div class="text1">Loading  ' + this.name + '...</div>');
             $.get(this.element.data('subpage-url'), function (e) {
                 this.element.html(e);
                 this.bindForms();
