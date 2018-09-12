@@ -42,7 +42,6 @@
                 url: infoUrl,
                
                 success: function (data) {
-                  console.log(data)
                   $("#artistEventsInfo").html(data)
                 }
             });
@@ -53,7 +52,10 @@
       
       loadInfo(eventUrl+"?set_id=0")
     })
-   
+    $('.eventChanger').on('click', function () {
+      var eventUrl = $(this).data("url");  
+      loadInfo(eventUrl)
+    })
   
   </script>
 {% endblock %}
