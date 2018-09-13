@@ -85,7 +85,7 @@
                   </div>
                   <div class="event-overlay-venue">
                       <div class="title5">{{ event.date|date:'m/d/Y' }}</div>
-                      {% if event.sets.count %}
+                      {% if event.sets.count and event.is_live %}
                           <div class="title5"> 
                             Sets at 
                             {% for set in event.sets.all %}
