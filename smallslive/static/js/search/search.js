@@ -211,18 +211,33 @@ $(document).ready(function () {
 
     ////////////////
 
+    $('.datepicker-btn').bind("click", ToggleDisplay);
 
-    $(".datepicker-btn").click(function () {
+    function ToggleDisplay() {
+        if ($(".datepicker-container").data('shown'))
+            hide();
+        else 
+            display();
+    }
 
-        if (!$(".datepicker-container").is(":visible")) {
-            $(".datepicker-container").css("display", "flex");
-        } else {
-            $(".datepicker-container").css("display", "none");
-        }
+    function display() {
+        $(".datepicker-container").css("display", "flex").hide().fadeIn(500, function() {
+            $(document).bind("click", hide);
+            $(".datepicker-container").data('shown', true)}); 
 
         $("#search-date-picker-from input").click();
-        $("#search-date-picker-from input").focus();
-    });
+        $("#search-date-picker-from input").focus();    
+    }
+
+    function hide() {   
+        if (($(window.event.toElement).closest('.noclick').length == 0) &&
+        (!($(window.event.toElement).hasClass("day") || $(window.event.toElement).hasClass("year")))) {
+            $(".datepicker-container").fadeOut(500, function () {
+                $(document).unbind("click");
+                $(".datepicker-container").data('shown', false);
+            });
+        }
+    }
 
     /////////////////////
 
@@ -264,6 +279,13 @@ $(document).ready(function () {
 
     $datePickerTo.on('changeDate', function (newDate) {
         eventDateTo = newDate.date;
+
+        from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
+        from = '<span class="accent-color">' + from + '</span>'
+        to = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
+        to = '<span class="accent-color">' + to + '</span>'
+
+        $(".datepicker-btn").html("From " + from + " to " + to);
     });
 
     $datePickerTo.on('click', function () {

@@ -564,7 +564,7 @@
 
 .datepicker-btn {
   display: inline-block;
-  width: 170px;
+  width: 250px !important;
   padding-top: 10px;
   margin-left: 20px;
   align-self: center;
@@ -665,4 +665,8 @@
     top: 2px;
     left: 4px;
   }
+}
+
+.accent-color {
+  color: $accent-color;
 }
