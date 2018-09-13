@@ -188,7 +188,7 @@
     </div>
     <div class="flex-row event-set-selector"></div>
     {% if event.published_audio or event.published_video %}
-        <div class="comments-container" data-subpage="{% url 'event_comments' pk=event.id slug=event.slug %}"></div>
+        <div class="comments-container" data-subpage-url="{% url 'event_comments' pk=event.id slug=event.slug %}?set=0" data-subpage-name="comments"></div>
     {% endif %}
     </div>
     <div class="flex-column event-side">
@@ -256,44 +256,7 @@
   <script src="http://malsup.github.com/jquery.form.js"></script>
 
   {% if user.is_authenticated and event.sets.count %}
-      <script>
-        /* Yes, this needs a refactor */
-        var bindSubpageForms = function(subpages) {
-          subpages.each(function () {
-              var that = $(this);
-              that.find('form').ajaxForm({
-                  type: 'post',
-                  success: function (response) {
-                      that.html(response);
-                      bindSubpageForms(subpages);
-                  },
-                  error: function (response) {
-                      that.html(response);
-                      bindSubpageForms(subpages);
-                  }
-              });
-          });
-        };
 
-        var loadSubpages = function() {
-          var loadedCount = 0;
-          var subpages = $('[data-subpage]');
-          var subpageCount = subpages.length;
-
-          subpages.each(function () {
-            var that = $(this);
-            $.get(that.data('subpage'), function (e) {
-                that.html(e);
-                loadedCount++;
-                if (loadedCount == subpageCount) {
-                    bindSubpageForms(subpages);
-                }
-            });
-          });
-        };
-        loadSubpages();
-
-      </script>
       <script>
         var playsCountSent = [];
         var activeTracker = null;
@@ -386,6 +349,7 @@
               if (index === 0) {
                 playlistItems += ' active';
               }
+              playlistItems += '" data-comments-page="' + '{% url 'event_comments' pk=event.id slug=event.slug %}?set=' + index;
               playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</button>';
             });
             $("#audio-sets-list").html(playlistItems);
@@ -442,6 +406,7 @@
                     if (index === 0) {
                         playlistItems += ' active';
                     }
+                    playlistItems += '" data-comments-page="' + '{% url 'event_comments' pk=event.id slug=event.slug %}?set=' + index;
                     playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</button>';
                 });
                 $("#video-sets-list").html(playlistItems);
@@ -483,6 +448,10 @@
           $(audioContainer).toggle();
           $(togglePlayerAudio).toggle();
           $('#audio-set-buttons').toggle();
+
+          // Update comments page.
+          var url = $('button[data-playlist-index]:visible.active').data('comments-page');
+          subpages.get('comments').setUrl(url);
         };
 
         {% if event.published_videos %}
@@ -530,4 +499,67 @@
             </script>
         {% endif %}
     {% endwith %}
+
+    <script>
+        var Subpage = function (name) {
+            this.name = name;
+            this.element = $('[data-subpage-name="' + name +'"]');
+        };
+
+        Subpage.prototype.bindForms = function () {
+            this.element.find('form').ajaxForm({
+                type: 'post',
+                success: function (response) {
+                    this.element.html(response);
+                    this.bindForms();
+                }.bind(this),
+                error: function (response) {
+                    this.element.html(response);
+                    this.bindForms();
+                }.bind(this)
+            });
+        };
+
+        Subpage.prototype.load = function () {
+            this.element.html('<div class="text1">Loading  ' + this.name + '...</div>');
+            $.get(this.element.data('subpage-url'), function (e) {
+                this.element.html(e);
+                this.bindForms();
+            }.bind(this));
+        };
+
+        Subpage.prototype.setUrl = function (url) {
+            this.element.data('subpage-url', url);
+            this.load();
+        };
+
+        var SubpageManager = function () {
+            this.subpages = {};
+        };
+        SubpageManager.prototype.register = function() {
+            var manager = this;
+            $('[data-subpage-name]').each(function () {
+                var name = $(this).data('subpage-name');
+                manager.subpages[name] = new Subpage(name);
+            });
+        };
+        SubpageManager.prototype.loadAll = function() {
+            Object.keys(this.subpages).forEach(function (name) {
+                this.subpages[name].load();
+            }.bind(this));
+        };
+        SubpageManager.prototype.get = function(name) {
+            return this.subpages[name];
+        };
+
+        var subpages = new SubpageManager();
+        subpages.register();
+        subpages.loadAll();
+
+        $(document).on('click', '[data-playlist-index]', function (ev) {
+            var url = $(this).data('comments-page');
+            subpages.get('comments').setUrl(url);
+        });
+
+    </script>
 {% endblock %}

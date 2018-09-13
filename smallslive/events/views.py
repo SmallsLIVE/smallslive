@@ -1045,6 +1045,12 @@ class CommentListView(FormView):
     form_class = CommentForm
     template_name = 'events/comments.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        set_index = int(request.GET.get('set') or 0)
+        self.event = Event.objects.get(id=kwargs.get('pk'))
+        self.event_set = self.event.sets.all()[set_index]
+        return super(CommentListView, self).dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             raise Http404()
@@ -1056,10 +1062,7 @@ class CommentListView(FormView):
     def get_form_kwargs(self):
         kwargs = super(CommentListView, self).get_form_kwargs()
         initial = kwargs.get('initial', {})
-        initial.update({
-            'event_set': EventSet.objects.filter(
-                event_id=self.kwargs.get('pk')
-            ).first().id})
+        initial.update({'event_set': self.event_set})
         kwargs['initial'] = initial
         return kwargs
 
@@ -1071,8 +1074,7 @@ class CommentListView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super(CommentListView, self).get_context_data(**kwargs)
-        context['object_list'] = Comment.objects.filter(
-            event_set__event_id=self.kwargs.get('pk'))
+        context['object_list'] = self.event_set.comments.all()
         return context
 
 event_comments = CommentListView.as_view()
