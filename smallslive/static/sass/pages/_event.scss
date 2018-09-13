@@ -78,8 +78,8 @@
 .player-info {
   @include animated;
   //position: absolute;
-  top: 0;
-  left: 0;
+  top: 54px;
+  left: 41px;
   padding: 20px 30px;
 }
 
@@ -142,7 +142,7 @@
 
 .event-container {
   @media (min-width: $screen-md-min) {
-    max-width: 850px;
+    max-width: 45vw;
   }
 }
 

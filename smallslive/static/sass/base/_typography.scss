@@ -145,9 +145,26 @@ $text-font-size-big: 1.4em;
   line-height: 1em;
 }
 
+
+// Font sizes
+@mixin event-overlay-title {
+  @include oswald-regular();
+  font-size: 60px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transform: scaleY(1.3);
+  line-height: 50px;
+}
+
+
 // Titles
 .title1 {
   @include title1;
+}
+
+.event-overlay-title {
+  @include event-overlay-title;
 }
 
 @mixin title2 {

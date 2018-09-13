@@ -71,10 +71,12 @@
             <div id="videoContainer" class="player-container">
               <div id="player-video"></div>
               <div class="player-info" id="playerTextOveraly">
-                <div class="accent-color text2">
-                  {{ event.date|date:'m/d/Y' }}</div>
-                <div class="title1">{{ event.title }}</div>
+                <div class="event-overlay-title">{{ event.title }}</div>
               </div>
+              <div class="accent-color text2">
+                {{ event.date|date:'m/d/Y' }}
+              </div>
+
             </div>
           {% endif %}
         {% else %}
@@ -102,7 +104,7 @@
             <div id="player-audio"></div>
             <div class="player-info" id="playerTextOveraly">
               <div class="accent-color text2">{{ event.date|date:'m/d/Y' }}</div>
-              <div class="title1">{{ event.title }}</div>
+              <div class="event-overlay-title">{{ event.title }}</div>
             </div>
           </div>
         {% endif %}
@@ -179,7 +181,7 @@
               <button class="white-border-button" onclick="showTickets()">Tickets</button>
           {% endif %}
           {% if user.is_admin or user.is_staff %}
-              <a href="{% url "event_edit" pk=event.id slug=event.slug %}">
+              <a href="{% url 'event_edit' pk=event.id slug=event.slug %}">
                   <button class="white-border-button">Edit</button>
               </a>
           {% endif %}
@@ -382,7 +384,7 @@
                 ],
                 skin: "https:{% static "jwplayer-skin/smalls.xml" %}",
                 width: "100%",
-                height: 450
+                height: 525
             });
             videoPlayer.on('play', function () {
                 audioPlayer.pause(true);

@@ -152,11 +152,29 @@ def order_events_by_popular(sqs):
 
 
 def get_today_events():
-    date_range_start = get_today_start()
-    date_range_end = date_range_start + timedelta(days=1)
+    now_ny = timezone.localtime(timezone.now())
+    qs = Event.objects.filter(start__lte=now_ny, end__gte=now_ny)
+    if qs.count():
+        live_event = qs.first()
+    else:
+        live_event = None
+
+    if live_event:
+        date_range_start = live_event.start
+        if date_range_start.hour <= 23:
+            date_range_end = date_range_start + timedelta(days=1)
+        else:
+            date_range_end = date_range_start
+    else:
+        date_range_start = now_ny
+        date_range_end = date_range_start + timedelta(days=1)
+
+    date_range_end = date_range_end.replace(hour=5)
+
     qs = Event.objects.filter(start__gte=date_range_start,
                               start__lte=date_range_end)
     qs = qs.order_by('start')
+
     return qs
 
 
@@ -338,7 +356,7 @@ class EventDetailView(DetailView):
 
         if event.is_today:
             context['streaming_tonight_videos'] = get_today_events()
-            live_set = event.is_live
+            live_set = event.get_live_set
             if live_set:
                 next_event_ids = get_today_events().values_list('id', flat=True)
                 next_set = EventSet.objects.filter(
