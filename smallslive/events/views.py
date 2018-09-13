@@ -1020,10 +1020,13 @@ class SessionEventsCountView(views.APIView):
 
             audio_minutes_list = [audio_minutes_counts.get(day_number, 0) for day_number in days]
             video_minutes_list = [video_minutes_counts.get(day_number, 0) for day_number in days]
+            audio_plays_list = [audio_play_counts.get(day_number, 0) for day_number in days]
+            video_plays_list = [video_play_counts.get(day_number, 0) for day_number in days]
             count_data = dict(
-                total_minutes_list=[a + v for a, v in zip(audio_minutes_list, video_minutes_list)]
-            )
+                total_minutes_list=[a + v for a, v in zip(audio_minutes_list, video_minutes_list)],
+                total_plays_list=[a + v for a, v in zip(audio_plays_list, video_plays_list)]
 
+            )
             count_data['dates'] = []
             for day in days:
                 current_day = start + timedelta(day)
@@ -1031,7 +1034,8 @@ class SessionEventsCountView(views.APIView):
         else:
             count_data = dict(
                 total_minutes_list=[],
-                dates=[]
+                dates=[],
+                total_plays_list=[]
             )
 
         s = MonthMetricsSerializer()

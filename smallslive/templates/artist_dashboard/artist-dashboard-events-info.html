@@ -1,5 +1,34 @@
 {% load static from staticfiles %}
+{% load fromisoformat %}
 {% with set=event_set %}
+<div class="artist-event-actions flex-row">
+        <div class="button-row button-row-margin">
+            {% if is_admin and set.has_media %}
+              
+                <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
+                    <button>Edit</button>
+                </a>
+  {% if set.video_recording and set.video_recording.state != 'Published' or set.audio_recording and set.audio_recording.state != 'Published' %}
+                    <button class="publish-button" onclick="askPublish({{ set.id }})">
+                        Public
+                    </button>
+                {% else %}
+                    <button class="publish-button" onclick="askPrivate({{ set.id }})">Make
+                        Private
+                    </button>
+                {% endif %}
+            {% else %}
+              
+                <button disabled>Edit</button>
+                {% if set.video_recording and set.video_recording.state == 'Published' %}
+                <button disabled>Private</button>
+            {% else %}
+                <button disabled>Publish</button>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
 
 
 <div class="artist-event-info flex-column wrap">
@@ -11,10 +40,17 @@
             <div class="text2" style="max-width: 200px; padding-top: 3px;">
                     {{ event.title }}
                 </div>
+
+
+                <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')">
+                        Download
+                    </button>
         </div>
-
+        <div class="artist-event-card">
+                {% include 'events/event_card.html' with event=event %}
+            </div>
         <div class="artist-event-info flex-row wrap">
-
+            
         {% for set in event.sets.all %}
 <div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}?set_id={{ forloop.counter0 }}" class="text4 eventChanger">
         Set {{ forloop.counter0|add:"1" }} Id:{{set.id}} AA 
@@ -23,34 +59,62 @@
 
 {% endfor %}
 </div>
-        <div class="text4 flex-column flex-grow" style="padding-top: 3px;">
-            {% for gig_info in event.get_performers %}
-                {{ gig_info.artist.full_name }}
-                <span class="text-grey">({{ gig_info.role }})</span>
-                {% if not forloop.last %}  // {% endif %}
-            {% endfor %}
-        </div>
-    </div>
-
-
-
-    
-<div class="flex-column">
-        <div class="flex-row wrap artsist-set-info">
+        <div class="text2 flex-column flex-grow" style="padding-top: 3px;">
             <div>
-                <div class="accent-color artist-event-date text2">
-                    {% if set.video_recording or set.audio_recording %}
-                        Set {% if set.video_recording %}{{ set.video_recording.set_number }}{% elif set.audio_recording %}{{ set.audio_recording.set_number }}{% endif %} - {{ set.start|date:"g:i A" }}
-                    {% else %}
-                        Set {{ forloop.counter }}
-                    {% endif %}
-                </div>
+                {%if leaders|length == 1 %}
+                <span class='accent-color'>Leader</span>
+                {% else %}
+                <span class='accent-color'>Leaders</span>
+                {% endif %} 
+
+
+
+                <div class=''>
+                {% for gig_played in event.get_performers %}
+                   
+                    {% if gig_played.is_leader %}
+                    {{ gig_played.artist.first_name }}, {{ gig_played.artist.last_name }} 
+                    <span class='accent-color'>/</span>
+                    <span class=''>{{ gig_played.role }}</span>
+                   
+                    {% endif %} 
                 
-                
+                {% endfor %}
             </div>
+            </div> 
+            
+            {%if sidemen|length > 0%}
+            <div> <span class='accent-color'>Side musicians</span>
+               
+                {% for gig_played in event.get_performers %}
+                    
+                    {% if not gig_played.is_leader %}
+                    <div class=''>
+                    {{ gig_played.artist.first_name }}, {{ gig_played.artist.last_name }} 
+                    <span class='accent-color'>/</span>
+                    <span class=''>{{ gig_played.role }}</span>
+                    </div>
+                    {% endif %} 
+                {% endfor %}
+               
+            </div> {% endif %} 
+        </div>
+</div>
+<div class="artist-profile-container">
 
-
+                    <div class="white-border-select" style="width: 315px; float:none">
+                            <select id="artist-metrics-date-select">
+                                <option value="all" selected>All Time</option>
+                                {% for range in date_ranges %}
+                                    <option value="{{ forloop.counter0 }}">{{ range.display }} | {{ range.start|fromisoformat|date:"b j, Y" }} - {{ range.end|fromisoformat|date:"b j, Y" }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+        
+    </div>
+            
 {% endwith %}
+
 
 {% block extra_js %}
   <script>
@@ -60,5 +124,76 @@
       loadInfo(eventUrl)
     })
   
+
+
+    
+
   </script>
+
+<script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+<script src="{% static 'js/Chart.min.js' %}"></script>
+<script>
+
+  var ranges = {{ date_ranges|safe }};
+  var selectedRange = 'all';
+  var payoutsUrl = '/dashboard/my-payouts';
+  var minsData = {
+      datasets: [
+          {
+              label: "Total",
+              backgroundColor: "rgba(210,21,53,0)",
+              borderColor: "#ed1c24",
+              pointBackgroundColor: "#000",
+              pointBorderColor: "#000",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "rgba(220,220,220,1)"
+          }
+      ]
+
+  };
+  $(document).ready(function () {
+      var $payoutData = $('#payoutData');
+      var $currentPayoutData = $('#currentPayoutData');
+      $('#artist-metrics-date-select').on('change', function () {
+         loadData();
+      });
+
+      var loadData = function () {
+         
+          var rangeSel = $('#artist-metrics-date-select').val();
+          var data = {};
+            data.set_id = {{event_set.id}} ;
+
+          if (rangeSel !== 'all') {
+              selectedRange = parseInt(rangeSel, 10);
+              data.start =  moment(ranges[selectedRange].start).format('YYYY-MM-DD');
+              data.end =  moment(ranges[selectedRange].end).format('YYYY-MM-DD');
+          }
+
+          var countsURL = "{% url 'event_counts' %}";
+          $.ajax(countsURL, {
+              data: data,
+              success: function (data, textStatus, jqXHR) {
+                  console.log(data)
+                  console.log(textStatus)
+                  console.log(jqXHR)
+                  minsData.labels = data.dates;
+                  minsData.datasets[0].data = data.total_minutes_list;
+              },
+              type: 'GET',
+              xhrFields: {
+                  withCredentials: true
+              }
+          });
+      };
+
+      $('#artist_event_select').on('change', function () {
+          loadData();
+      });
+
+      loadData();
+  })
+</script>
+
+
 {% endblock %}
