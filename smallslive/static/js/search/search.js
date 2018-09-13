@@ -1,4 +1,4 @@
-var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter, eventDate;
+var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter, eventFilter, eventDateFrom, eventDateTo, apply;
 
 function sendArtistRequest() {
     $.ajax({
@@ -72,22 +72,34 @@ function showArtistInfo(artist) {
 }
 
 function sendEventRequest() {
-    if (eventDate) {
-        var utcDate = eventDate.getFullYear() + '/' + (eventDate.getMonth() + 1) + '/' + eventDate.getDate();
+    if (eventDateFrom) {
+        var utcDateFrom = eventDateFrom.getFullYear() + '/' + (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate();
     }
+    if (eventDateTo) {
+        var utcDateTo = eventDateTo.getFullYear() + '/' + (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate();
+    }
+
     $.ajax({
         url: '/search/ajax/event/',
         data: {
             'main_search': searchTerm,
             'page': eventPageNum,
             'order': eventOrderFilter,
-            'date': utcDate ? utcDate : null
+            'date_from': utcDateFrom ? utcDateFrom : null,
+            'date_to': utcDateTo ? utcDateTo : null
         },
         dataType: 'json',
         success: function (data) {
             if (data.template) {
                 $("#event-subheader").html(data.showingResults);
                 $("#event-subheader-footer").html(data.showingResults);
+
+                if (apply || eventFilter) {
+                    apply = false;
+                    eventFilter = false;
+                    $("#events .shows-container").html("");
+                }
+
                 $(data.template).find("article").each(function( index ) {
                     $("#events .shows-container").append($( this ));
                 });
@@ -115,6 +127,8 @@ $(document).ready(function () {
     artistPageNum = eventPageNum = 1;
     artistMaxPageNum = eventMaxPageNum = 2;
     eventOrderFilter = "newest";
+    apply = false;
+    eventFilter = false;
 
     $("[name='q']").val(searchTerm);
     $('#artist-search').val('');
@@ -147,6 +161,7 @@ $(document).ready(function () {
     });
 
     $('#events-filter').change(function () {
+        eventFilter = true;
         eventOrderFilter = $(this).val();
         eventPageNum = 1;
 
@@ -194,35 +209,108 @@ $(document).ready(function () {
         $(".instruments-container").css("display", "none");
     });
 
-    var $datePicker = $('#search-date-picker input');
-    var now = new Date();
-    $datePicker.datepicker({
-        format: 'MM // dd // yyyy',
+    ////////////////
+
+    $('.datepicker-btn').bind("click", ToggleDisplay);
+
+    function ToggleDisplay() {
+        if ($(".datepicker-container").data('shown'))
+            hide();
+        else 
+            display();
+    }
+
+    function display() {
+        $(".datepicker-container").css("display", "flex").hide().fadeIn(500, function() {
+            $(document).bind("click", hide);
+            $(".datepicker-container").data('shown', true)}); 
+
+        $("#search-date-picker-from input").click();
+        $("#search-date-picker-from input").focus();    
+    }
+
+    function hide() {   
+        if (($(window.event.toElement).closest('.noclick').length == 0) &&
+        (!($(window.event.toElement).hasClass("day") || $(window.event.toElement).hasClass("year")))) {
+            $(".datepicker-container").fadeOut(500, function () {
+                $(document).unbind("click");
+                $(".datepicker-container").data('shown', false);
+            });
+        }
+    }
+
+    /////////////////////
+
+    var $datePickerFrom = $('#search-date-picker-from input');
+    $datePickerFrom.datepicker({
+        format: 'mm/dd/yyyy',
         autoclose: true,
-        container: '#search-date-picker',
+        container: '#search-date-picker-from',
         showOnFocus: false
     });
 
-    $datePicker.on('changeDate', function (newDate) {
-        eventDate = newDate.date;
-        $('#events-filter').val('oldest');
-        $("[value='oldest']").click()
+    $datePickerFrom.on('changeDate', function (newDate) {
+        eventDateFrom = newDate.date;
+        //$('#events-filter').val('oldest');
+        //$("[value='oldest']").click();
+        $("#search-date-picker-to input").click();
+        $("#search-date-picker-to input").focus();
     });
 
-    $datePicker.on('click', function () {
+    $datePickerFrom.on('click', function () {
         var dropdown = $('#search-date-picker .dropdown-menu');
         if (dropdown[0] && dropdown[0].style.display === 'block') {
-            $datePicker.datepicker('hide');
+            $datePickerFrom.datepicker('hide');
         } else {
-            $datePicker.datepicker('show');
+            $datePickerFrom.datepicker('show');
         }
 
     });
+
+    //////////////////////
+
+    var $datePickerTo = $('#search-date-picker-to input');
+    $datePickerTo.datepicker({
+        format: 'mm/dd/yyyy',
+        autoclose: false,
+        container: '#search-date-picker-to',
+        showOnFocus: false
+    });
+
+    $datePickerTo.on('changeDate', function (newDate) {
+        eventDateTo = newDate.date;
+
+        from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
+        from = '<span class="accent-color">' + from + '</span>'
+        to = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
+        to = '<span class="accent-color">' + to + '</span>'
+
+        $(".datepicker-btn").html("From " + from + " to " + to);
+    });
+
+    $datePickerTo.on('click', function () {
+        var dropdown = $('#search-date-picker .dropdown-menu');
+        if (dropdown[0] && dropdown[0].style.display === 'block') {
+            $datePickerTo.datepicker('hide');
+        } else {
+            $datePickerTo.datepicker('show');
+        }
+
+    });
+
+    ///////////
 
     $("#back-search").click(function () {
         $("#back-search").hide();
         $("#musicianContent").show();
         $(".artist-search-profile-container").hide();
         $("#showsContent").show();
+    });
+
+    $("#apply-button").click(function () {
+        apply = true;
+        eventPageNum = 1;
+        $(".datepicker-container").hide();
+        sendEventRequest();
     });
 });

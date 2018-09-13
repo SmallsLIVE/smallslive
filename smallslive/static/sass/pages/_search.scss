@@ -1,3 +1,27 @@
+.caret {
+  cursor: pointer;
+  position: relative;
+  &:after{
+    content: " ";
+    height: 0;
+    width: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    transition: all 0.3s linear;
+    cursor: pointer;
+    pointer-events: inherit;
+    z-index: -1;
+  }
+}
+
+.hover-fade:hover {
+  background-color: $white-transparent;
+}
+
 .artists-container {
   @media (min-width: $screen-md-min) {
     display: flex;
@@ -150,7 +174,7 @@
 
     &:hover {
       text-decoration: underline;
-      color: red;
+      color: $accent-color;
       cursor: pointer;
     }
   }
@@ -161,7 +185,16 @@
   margin: 0 auto;
   @media (min-width: $screen-md-min) {
     .white-border-select, .custom-date-picker {
-      width: 250px;
+      width: 120px;
+    }
+
+    > .white-border-button {
+      margin-right: 20px;
+    }
+
+    > .white-border-select,
+    > .white-border-button {
+      width: 200px;
     }
 
     .event-filter-select {
@@ -483,7 +516,7 @@
 
 .showing-results {
   float: right;
-  color: #e60000;
+  color: $accent-color;
   margin-right: 50px;
   margin-top: 19px;
 }
@@ -527,4 +560,113 @@
     margin-top: 5px;
     margin-bottom: 10px;
   }
+}
+
+.datepicker-btn {
+  display: inline-block;
+  width: 250px !important;
+  padding-top: 10px;
+  margin-left: 20px;
+  align-self: center;
+  text-align: center;
+}
+
+.datepicker-container {
+  background-color: #f0f0eb;
+  border: solid white;
+  display: none;
+  position: absolute;
+  margin: 0 auto;
+  top: 120px;
+  padding: 0;
+  z-index: 100;
+  height: 350px;
+  align-items: flex-start;
+
+  .datepicker {
+    left: 28px !important;
+    border: none !important;
+  }
+
+  .custom-date-picker {
+
+    .dropdown-menu {
+      min-width: 256px!important; // inline by bootstrap js.
+      top: 55px!important;
+      padding: 0;
+    }
+
+    input {
+      color: $accent-color;
+      text-align: center;
+
+      &:focus {
+        background-color: $white-transparent;
+        border-radius: 5px;
+        border: 0 transparent;
+        box-shadow: 0 0 1px inset $accent-color;
+      }
+
+      &::-webkit-input-placeholder {
+         color: $gray-light;
+        letter-spacing: .05em;
+      }
+
+      &:-moz-placeholder { /* Firefox 18- */
+        color: $gray-light;
+        letter-spacing: .05em;
+      }
+
+      &::-moz-placeholder {  /* Firefox 19+ */
+        color: $gray-light;
+        letter-spacing: .05em;
+      }
+
+      &:-ms-input-placeholder {
+        color: $gray-light;
+        letter-spacing: .05em;
+      }
+
+    }
+
+    &:first-child > input {
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+
+    &:nth-child(2) > input {
+      border-top: none;
+      border-right: none;
+    }
+  }
+
+  .white-border-button {
+    cursor: pointer;
+    border-top: none;
+    border-right: none;
+  }
+
+  #search-date-picker-from::before {
+    content: 'From';
+  }
+
+  #search-date-picker-to::before {
+    content: 'To';
+    left: 42%; // This is a hack because parent cannot be position: relative.
+  }
+
+  .custom-date-picker::before {
+    @include text2;
+    z-index: 99;
+    font-size: 1em;
+    position: absolute;
+    text-transform: uppercase;
+    top: 2px;
+    left: 4px;
+  }
+}
+
+.accent-color {
+  color: $accent-color;
 }

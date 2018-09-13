@@ -826,8 +826,8 @@
 				tooltip;
 			if (isNaN(year) || isNaN(month))
 				return;
-			this.picker.find('.datepicker-days thead .datepicker-switch')
-						.text(dates[this.o.language].months[month]+' '+year);
+			this.picker.find('.datepicker-days thead .datepicker-switch > div:first')
+					.text(dates[this.o.language].monthsShort[month] +' '+ year);
 			this.picker.find('tfoot .today')
 						.text(todaytxt)
 						.toggle(this.o.todayBtn !== false);
@@ -928,18 +928,14 @@
 
 			html = '';
 			year = parseInt(year/10, 10) * 10;
-			var yearCont = this.picker.find('.datepicker-years')
-								.find('th:eq(1)')
-									.text(year + '-' + (year + 9))
-									.end()
-								.find('td');
+			var yearCont = this.picker.find('.datepicker-switch .years-choices');
 			year -= 1;
 			var years = $.map(this.dates, function(d){
 					return d.getUTCFullYear();
 				}),
 				classes;
 			for (var i = -1; i < 11; i++){
-				classes = ['year'];
+				classes = ['year', 'text1'];
 				if (i === -1)
 					classes.push('old');
 				else if (i === 10)
@@ -948,7 +944,7 @@
 					classes.push('active');
 				if (year < startYear || year > endYear)
 					classes.push('disabled');
-				html += '<span class="' + classes.join(' ') + '">' + year + '</span>';
+				html += '<div class="' + classes.join(' ') + '">' + year + '</div>';
 				year += 1;
 			}
 			yearCont.html(html);
@@ -996,15 +992,14 @@
 
 		click: function(e){
 			e.preventDefault();
-			var target = $(e.target).closest('span, td, th'),
-				year, month, day;
+			var target = $(e.target).closest('span, td, th, div'), year, month, day;
 			if (target.length === 1){
 				switch (target[0].nodeName.toLowerCase()){
 					case 'th':
 						switch (target[0].className){
-							case 'datepicker-switch':
-								this.showMode(1);
-								break;
+							//case 'datepicker-switch':
+							//	// this.showMode(1);
+							//	break;
 							case 'prev':
 							case 'next':
 								var dir = DPGlobal.modes[this.viewMode].navStep * (target[0].className === 'prev' ? -1 : 1);
@@ -1088,6 +1083,21 @@
 							this._setDate(UTCDate(year, month, day));
 						}
 						break;
+                    case 'div':
+                        if (target.hasClass('year')) {
+                            day = this.viewDate.getUTCDay();
+                            year = parseInt(target.text(), 10);
+                            month = this.viewDate.getUTCMonth();
+                            var newDate = UTCDate(year, month, day);
+                            $(target).parents('.years-dropdown').toggleClass('hidden');
+                            this._trigger('changeYear', newDate);
+                            this._setDate(newDate);
+							break;
+                        } else {
+							$(target).siblings('.years-dropdown').toggleClass('hidden');
+							break;
+						}
+
 				}
 			}
 			if (this.picker.is(':visible') && this._focused_from){
@@ -1706,9 +1716,14 @@
 		},
 		headTemplate: '<thead>'+
 							'<tr>'+
-								'<th class="prev">&#171;</th>'+
-								'<th colspan="5" class="datepicker-switch"></th>'+
-								'<th class="next">&#187;</th>'+
+								'<th class="prev">❮</th>'+
+								'<th colspan="5" class="datepicker-switch">' +
+                                    '<div></div>' +
+                                    '<div class="years-dropdown hidden">' +
+                                        '<div class="years-choices"></div>' +
+                                    '</div>' +
+                                '</th>'+
+								'<th class="next">❯</th>'+
 							'</tr>'+
 						'</thead>',
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
