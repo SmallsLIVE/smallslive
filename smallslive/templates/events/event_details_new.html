@@ -71,12 +71,37 @@
             <div id="videoContainer" class="player-container">
               <div id="player-video"></div>
               <div class="player-info" id="playerTextOveraly">
-                <div class="event-overlay-title">{{ event.title }}</div>
+                {% if event.is_live %}
+                  <div class="live-now text2">Live now</div>
+                {% endif %}
+                <div class="event-overlay">
+                  <div class="event-overlay-title">{{ event.title }}</div>
+                  <div class="event-overlay-artists">
+                    {% for gig_info in event.artists_gig_info.all %}
+                      <div class="title5"> 
+                        {{ gig_info.artist.full_name }} <span class="accent-color">/</span> {{ gig_info.role.name }}
+                      </div>
+                    {% endfor %}
+                  </div>
+                  <div class="event-overlay-venue">
+                      <div class="title5">{{ event.date|date:'m/d/Y' }}</div>
+                      {% if event.sets.count %}
+                          <div class="title5"> 
+                            Sets at 
+                            {% for set in event.sets.all %}
+                              <span class="event-overlay-venue-set">
+                                {{ set.start|time:"g:iA"}}
+                              </span>
+                            {% endfor %}
+                          </div>
+                      {% endif %}
+                    <div class="title5 accent-color">LIVE AT {{event.venue.name }}</div>
+                  </div>
+                </div>
               </div>
               <div class="accent-color text2">
                 {{ event.date|date:'m/d/Y' }}
               </div>
-
             </div>
           {% endif %}
         {% else %}
@@ -384,7 +409,7 @@
                 ],
                 skin: "https:{% static "jwplayer-skin/smalls.xml" %}",
                 width: "100%",
-                height: 525
+                height: 525  // If you change this please be kind and change the corresponding css.
             });
             videoPlayer.on('play', function () {
                 audioPlayer.pause(true);
