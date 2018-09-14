@@ -42,16 +42,7 @@
     </div>
     <div class="artist-event-card">
             <a href="{{ event.get_absolute_url }}">
-                    <div class="
-                    {% if not mini%}
-                      {% if not secondary %}
-                      event-card
-                      {% else %}
-                      event-card-secondary
-                      {% endif %}
-                    {% else %}
-                      event-card-small
-                    {% endif %}">
+                   
         <div class="set-picture-container">
             <div class="picture-border">
               <div class="set-picture">
@@ -61,7 +52,7 @@
                   {% include 'partials/thumbored_picture.html' %}
                 {% endif %}
               </div>
-            </div>
+           
           </div>
         </div>
         </a>
@@ -109,7 +100,7 @@
 
 
 <div class="text2 flex-column flex-grow" style="padding-top: 3px;">
-        <div>
+        <div class='artist-set-leader'>
             {%if leaders|length == 1 %}
             <span class='accent-color'>Leader</span>
             {% else %}
@@ -205,7 +196,9 @@
                 console.log(jqXHR)
                     
                 plays.innerHTML= data.total_plays_list.reduce((e, acc) => { return e + acc }, 0);
-                time.innerHTML = data.total_minutes_list.reduce((e, acc) => { return e + acc }, 0);
+                playedMinutes = data.total_minutes_list.reduce((e, acc) => { return e + acc }, 0);
+                const formatted = moment.utc(((playedMinutes*60))*1000).format('HH:mm:ss');
+                time.innerHTML = formatted
             },
             type: 'GET',
             xhrFields: {
