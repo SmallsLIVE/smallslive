@@ -497,7 +497,7 @@ class GenericScheduleView(TemplateView, SearchMixin):
         context['events_today'] = today_events_qs
         date_range_start = get_today_start()
         event_blocks, showing_event_results, num_pages = self.search(
-            Event, '', start_date=date_range_start, order='start')
+            Event, '', date_from=date_range_start, order='start')
 
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []
