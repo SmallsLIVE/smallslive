@@ -309,7 +309,7 @@ class EventDetailView(DetailView):
 
         if event.is_today:
             context['streaming_tonight_videos'] = get_today_and_tomorrow_events()
-            live_set = event.is_live()
+            live_set = event.is_live
             if live_set:
                 next_event_ids = get_today_and_tomorrow_events().values_list('id', flat=True)
                 next_set = EventSet.objects.filter(
