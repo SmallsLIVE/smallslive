@@ -3,15 +3,14 @@ from itertools import chain
 from dateutil import parser
 
 from artists.models import Artist, Instrument
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 from django.http import HttpResponse, JsonResponse, Http404
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.views.generic import View
 from django.views.generic.base import TemplateView
-from django.db.models import Q
-from events.models import Event, Recording
-from haystack.query import SearchQuerySet, SQ
+from events.models import Event
+from haystack.query import SearchQuerySet
 
 from .utils import facets_by_model_name
 
@@ -57,7 +56,12 @@ class SearchMixin(object):
 
         paginator = Paginator(sqs, results_per_page)
 
-        for item in paginator.page(page).object_list:
+        try:
+            objects = paginator.page(page).object_list
+        except EmptyPage:
+            objects = []
+
+        for item in objects:
             item = entity.objects.filter(pk=item.pk).first()
             block.append(item)
 
