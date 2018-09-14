@@ -13,7 +13,7 @@
   {% include 'events/upcoming_filters.html' %}
   {% endif %}
   <main id="events" class="events-results">
-    {% include 'search/event_search_result.html' with events=event_results %}
+    {% include 'search/event_search_result.html' with events=event_results show_event_venue=show_event_venue %}
   </main>
 
   <div class="concerts-footer flex-column items-center">

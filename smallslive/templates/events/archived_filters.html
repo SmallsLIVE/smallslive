@@ -1,16 +1,32 @@
 <div class="event-section">
-  <div class="shows-filter-container">
-    <div class="white-border-select event-filter-select">
-      <select id="events-filter">
-        <option value="newest">Newest to oldest</option>
-        <option value="oldest">Oldest to newest</option>
-        <option value="popular">Most popular</option>
-      </select>
+    <div class="shows-filter-container">
+      <div class="white-border-select event-filter-select">
+        <select id="events-filter">
+          <option value="newest">Newest to oldest</option>
+          <option value="oldest">Oldest to newest</option>
+          <option value="popular">Most popular</option>
+        </select>
+      </div>
+
+    <div class="datepicker-container noclick">
+        <div class="custom-date-picker" id="search-date-picker-from">
+            <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+        </div>
+
+        <div class="custom-date-picker" id="search-date-picker-to">
+            <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+        </div>
+
+        <div class="white-border-button" id="apply-button">Apply</div>
     </div>
 
-    <div class="custom-date-picker" id="search-date-picker">
-      <input class="date-picker-text" type="text" placeholder="date" readonly>
-      <i class="fa fa-caret-down"></i>
+    <div class="datepicker-btn white-border-button caret hover-fade">Filter by date</div>
+
+
     </div>
+
   </div>
-</div>
+
+
+
+
