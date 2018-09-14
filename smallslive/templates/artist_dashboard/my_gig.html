@@ -45,7 +45,7 @@
 
 {% block extra_js %}
     <script>
-        var eventsUrl = "{% url reverse_ajax %}";
+        var eventsUrl = "{% url 'artist_dashboard:my_past_events_ajax' %}";
         var selectedSetId;
         var currentPage = 0;
         var totalPages = 1;

@@ -50,9 +50,14 @@
                                     <div class="artist-publish-info">
                                         <div class="text-grey">
                                             {% if set.video_recording or set.audio_recording %}
-                                                This set is currently <span class="accent-color">
-                                                <span class="set-status">{% if set.video_recording %}{{ set.video_recording.state }}{% elif set.audio_recording %}{{ set.audio_recording.state }}{% endif %}</span>
-                                            </span>
+                                                This set is currently
+                                                <span class="accent-color">
+                                                    <span class="set-status">
+                                                        {% if set.video_recording %}{{ set.video_recording.state }}
+                                                        {% elif set.audio_recording %}{{ set.audio_recording.state }}
+                                                        {% endif %}
+                                                    </span>
+                                                </span>
                                             {% else %}
                                                 This set is not uploaded yet.
                                             {% endif %}
@@ -62,7 +67,8 @@
                                 <div class="artist-event-actions flex-row">
                                     <div class="button-row button-row-margin">
                                         {% if gig_info.is_admin and set.has_media %}
-                                            {% if set.video_recording and set.video_recording.state != 'Published' or set.audio_recording and set.audio_recording.state != 'Published' %}
+                                            {% if set.video_recording and set.video_recording.is_published or
+                                                  set.audio_recording and set.audio_recording.is_published %}
                                                 <button class="publish-button" onclick="askPublish({{ set.id }})">
                                                     Publish
                                                 </button>
@@ -81,7 +87,7 @@
                                                 </a>
                                             </button>
                                         {% else %}
-                                            {% if set.video_recording and set.video_recording.state == 'Published' %}
+                                            {% if set.video_recording and set.video_recording.is_published %}
                                                 <button disabled>Make Private</button>
                                             {% else %}
                                                 <button disabled>Publish</button>
