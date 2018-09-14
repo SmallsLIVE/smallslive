@@ -21,7 +21,7 @@
         <div class="flex-row">
             <div class="title1">{{ artist.get_main_instrument_name }}</div>
             <div class="text1" style="align-self: flex-end; margin-bottom: -5px;">
-                Total shows in archive:
+                Total shows in archive: {{artist.archive_shows}}
             </div>
         </div>
         <div class="white-line-bottom"></div>
@@ -41,7 +41,7 @@
 
 <div class="artist-search-profile-bio-container flex-row">
     <div>
-            <div class="artist-search-profile-bio text4 text-grey">
+            <div class="artist-search-profile-bio text4">
                 {% if artist.biography %}
                 {{ artist.biography|safe }}
                 {% else %}
