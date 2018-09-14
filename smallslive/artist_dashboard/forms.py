@@ -2,10 +2,8 @@ from allauth.account import app_settings
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import user_pk_to_url_str, user_username
 from allauth.utils import build_absolute_uri
-import datetime
-from calendar import monthrange
 
-from crispy_forms.layout import Layout, ButtonHolder, Submit, Div, Field, HTML, Button, LayoutObject, TEMPLATE_PACK, MultiField
+from crispy_forms.layout import Layout
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.tokens import default_token_generator
