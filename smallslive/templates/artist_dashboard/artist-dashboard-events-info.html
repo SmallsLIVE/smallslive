@@ -89,7 +89,7 @@
     <div class="text2 flex-column flex-grow" style="padding-top: 3px;">
         <div class="artist-set-leader">
             <span class="accent-color">Leader{{ leaders|length|pluralize }}</span>
-            {% for gig_played in event.get_performers %} {% if gig_played.is_leader %}
+            {% for gig_played in event.get_performers %} {% if gig_played.is_leader %}{% endif %}
                 <div class="set-artist text1">
                     {{ gig_played.artist.full_name }}
                     <span class="accent-color">/</span>
