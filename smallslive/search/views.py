@@ -1,20 +1,22 @@
-import json
-from itertools import chain
+from collections import OrderedDict
+from itertools import groupby
+import datetime
 from dateutil import parser
-
-from artists.models import Artist, Instrument
+from itertools import chain
+import json
+from haystack.query import SearchQuerySet, SQ
 from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse, Http404
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.views.generic import View
 from django.views.generic.base import TemplateView
-from django.db.models import Q
-from events.models import Event, Recording
-from haystack.query import SearchQuerySet, SQ
+from django.utils import timezone
+from django.utils.timezone import timedelta
+from artists.models import Artist, Instrument
+from events.models import Event, Recording, Venue
 
 from .utils import facets_by_model_name
-
 from .search import SearchObject
 
 
@@ -79,6 +81,43 @@ class SearchMixin(object):
             showing_results = 'NO RESULTS'
 
         return blocks, showing_results, paginator.num_pages
+
+
+class UpcomingEventMixin(object):
+
+    def get_upcoming_events_context_data(self, context):
+        date_range_start = timezone.localtime(timezone.now())
+        # if it's not night when events are still hapenning, show next day
+        if date_range_start.hour > 6:
+            date_range_start += timedelta(days=1)
+        # don't show last nights events that are technically today
+        date_range_start = date_range_start.replace(hour=10)
+        events = Event.objects.filter(start__gte=date_range_start).order_by('start')
+        if not self.request.user.is_staff:
+            events = events.exclude(state=Event.STATUS.Draft)
+
+        venue = self.request.GET.get('venue')
+        if venue is not None:
+            venue_id = int(venue)
+            events = events.filter(venue__id=venue_id)
+            context['venue_selected'] = venue_id
+
+        # 30 events should be enough to show next 7 days with events
+        events = events[:30]
+        dates = {}
+        for k, g in groupby(events, lambda e: e.listing_date()):
+            dates[k] = list(g)
+        sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0])).items()[:7]
+        context['next_7_days'] = sorted_dates
+        most_recent = Event.objects.most_recent()[:20]
+        if len(most_recent):
+            context['new_in_archive'] = most_recent
+        else:
+            context['new_in_archive'] = Event.objects.exclude(
+                state=Event.STATUS.Draft
+            ).order_by('-start')[:20]
+        context['venues'] = Venue.objects.all()
+        return context
 
 
 class MainSearchView(View, SearchMixin):
@@ -191,11 +230,12 @@ class SearchBarView(View):
         return JsonResponse(data)
 
 
-class TemplateSearchView(TemplateView, SearchMixin):
+class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
     template_name = 'search/search.html'
 
     def get_context_data(self, **kwargs):
         context = super(TemplateSearchView, self).get_context_data(**kwargs)
+        context = self.get_upcoming_events_context_data(context)
         q = self.request.GET.get('q', '')
 
         artists_blocks, showing_artist_results, num_pages = self.search(

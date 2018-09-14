@@ -1,0 +1,34 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load i18n %}
+<section id="showsContent" class="event-stripe search-tab-content active">
+    <div class="musicians-results white-line-bottom">
+        <div id="artist-subheader" class="showing-results text1">{{ showing_event_results }}</div>
+        <div class="title1 shows-results-title">{% if archived %}Archived{% else %}Upcoming{% endif %} Shows</div>
+    </div>
+  {% if archived %}
+  {% include 'events/archived_filters.html' %}
+  {% endif %}
+  {% if upcoming %}
+  {% include 'events/upcoming_filters.html' %}
+  {% endif %}
+  <main id="events" class="events-results">
+    {% include 'search/event_search_result.html' with events=event_results %}
+  </main>
+
+  <div class="concerts-footer flex-column items-center">
+
+
+    {% if last_page != actual_page %}
+    <button id="load-more-btn" class="white-border-button load-more-btn" style="width:220px;" onclick="loadMoreEvents()">
+      <span style="display: block; margin-top: -15px;">Load More</span>
+    </button>
+    {% endif %}
+
+    <div id="event-load-gif" class="loading-image events-gif">
+        <img src="{% static 'image/loading.gif' %}" alt="">
+    </div>
+
+  </div>
+</section>
+

@@ -1,7 +1,11 @@
-from artists.models import Artist, Instrument
+from datetime import datetime
+import pytz
 from django.db.models import Q, Sum
+from django.utils import timezone
+from artists.models import Artist, Instrument
 from events.models import Event, Recording
 from metrics.models import UserVideoMetric
+
 
 class SearchObject(object):
 
@@ -119,9 +123,9 @@ class SearchObject(object):
     
         return sqs
 
+    def search_event(self, main_search, order=None, start_date=None, end_date=None):
 
-    def search_event(self, main_search, order=None, date_from=None, date_to=None):
-        order = {
+        order = order or {
             'newest': '-start',
             'oldest': 'start',
             'popular': 'popular',
@@ -175,15 +179,19 @@ class SearchObject(object):
 
         sqs = sqs.distinct()
 
-        sqs = sqs.filter(recordings__media_file__isnull=False,
-                         recordings__state=Recording.STATUS.Published)
+        # FIXME: compare to code in  "today_and_tomorrow_events"
+        today = timezone.now().replace(hour=0, minute=0, second=0)
+        if not start_date or start_date < today:
+            sqs = sqs.filter(recordings__media_file__isnull=False,
+                             recordings__state=Recording.STATUS.Published)
 
-        if date_from and date_to:
+        if start_date:
             # Force hours to start of day
-            date_from = date_from.replace(hour=10, minute=0, second=0, microsecond=0)
+            date_from = start_date.replace(hour=10, minute=0, second=0, microsecond=0)
             sqs = sqs.filter(start__gte=date_from)
 
-            date_to = date_to.replace(hour=10, minute=0, second=0, microsecond=0)
+        if end_date:
+            date_to = end_date.replace(hour=10, minute=0, second=0, microsecond=0)
             sqs = sqs.filter(start__lte=date_to)
 
         if order == 'popular':

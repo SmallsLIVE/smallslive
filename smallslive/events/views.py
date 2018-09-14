@@ -39,6 +39,7 @@ from events.models import get_today_start, StaffPick, EventSet,\
 from events.serializers import MonthMetricsSerializer
 from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import Product
+from search.views import SearchMixin, UpcomingEventMixin
 from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
     GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
@@ -49,6 +50,7 @@ from .models import Event, Venue
 RANGE_YEAR = 'year'
 RANGE_MONTH = 'month'
 RANGE_WEEK = 'week'
+
 
 def get_weekly_range():
     now = timezone.now()
@@ -151,26 +153,9 @@ def order_events_by_popular(sqs):
         return list(sqs.order_by('-date')[:10])
 
 
-def get_today_events():
-    now_ny = timezone.localtime(timezone.now())
-    qs = Event.objects.filter(start__lte=now_ny, end__gte=now_ny)
-    if qs.count():
-        live_event = qs.first()
-    else:
-        live_event = None
-
-    if live_event:
-        date_range_start = live_event.start
-        if date_range_start.hour <= 23:
-            date_range_end = date_range_start + timedelta(days=1)
-        else:
-            date_range_end = date_range_start
-    else:
-        date_range_start = now_ny
-        date_range_end = date_range_start + timedelta(days=1)
-
-    date_range_end = date_range_end.replace(hour=5)
-
+def get_today_and_tomorrow_events():
+    date_range_start = get_today_start()
+    date_range_end = date_range_start + timedelta(days=2)
     qs = Event.objects.filter(start__gte=date_range_start,
                               start__lte=date_range_end)
     qs = qs.order_by('start')
@@ -178,12 +163,12 @@ def get_today_events():
     return qs
 
 
-class HomepageView(ListView):
+class HomepageView(ListView, UpcomingEventMixin):
     template_name = 'home_new.html'
     context_object_name = 'events_today'
 
     def get_queryset(self):
-        qs = get_today_events()
+        qs = get_today_and_tomorrow_events()
         # Uncomment to filter todays events by venue
         # venue = self.request.GET.get('venue')
         # if venue is not None:
@@ -193,39 +178,7 @@ class HomepageView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
-        date_range_start = timezone.localtime(timezone.now())
-        # if it's not night when events are still hapenning, show next day
-        if date_range_start.hour > 6:
-            date_range_start += timedelta(days=1)
-        # don't show last nights events that are technically today
-        date_range_start = date_range_start.replace(hour=10)
-        events = Event.objects.filter(start__gte=date_range_start).order_by('start')
-        if not self.request.user.is_staff:
-            events = events.exclude(state=Event.STATUS.Draft)
-
-        venue = self.request.GET.get('venue')
-        if venue is not None:
-            venue_id = int(venue)
-            events = events.filter(venue__id=venue_id)
-            context['venue_selected'] = venue_id
-
-        # 30 events should be enough to show next 7 days with events
-        events = events[:30]
-        dates = {}
-        for k, g in groupby(events, lambda e: e.listing_date()):
-            dates[k] = list(g)
-        # next 7 days
-        sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0])).items()[:7]
-        most_recent = Event.objects.most_recent()[:20]
-        if len(most_recent):
-            context['new_in_archive'] = most_recent
-        else:
-            context['new_in_archive'] = Event.objects.exclude(
-                state=Event.STATUS.Draft
-            ).order_by('-start')[:20]
-
-        context['next_7_days'] = sorted_dates
-        context['venues'] = Venue.objects.all()
+        context = self.get_upcoming_events_context_data(context)
         month_popular = _get_most_popular_uploaded(RANGE_MONTH)
         if len(month_popular):
             context['popular_in_archive'] = month_popular
@@ -355,10 +308,10 @@ class EventDetailView(DetailView):
         context['related_videos'] = Event.objects.event_related_videos(event)
 
         if event.is_today:
-            context['streaming_tonight_videos'] = get_today_events()
-            live_set = event.get_live_set()
+            context['streaming_tonight_videos'] = get_today_and_tomorrow_events()
+            live_set = event.is_live()
             if live_set:
-                next_event_ids = get_today_events().values_list('id', flat=True)
+                next_event_ids = get_today_and_tomorrow_events().values_list('id', flat=True)
                 next_set = EventSet.objects.filter(
                     event_id__in=next_event_ids, start__gt=live_set.end
                 ).first()
@@ -518,6 +471,7 @@ event_search = EventSearchView(
     searchqueryset=RelatedSearchQuerySet()
 )
 
+
 def annotate_events(events):
     return events.annotate(product_count=Count('products')).extra(select={
         'video_count': "SELECT COUNT(*) FROM events_recording, multimedia_mediafile WHERE "
@@ -533,185 +487,25 @@ def annotate_events(events):
     })
 
 
-class GenericScheduleView(ListView):
+class GenericScheduleView(TemplateView, SearchMixin):
     context_object_name = 'dates'
     template_name = 'events/schedule.html'
 
-    def get_queryset(self):
-        dates = {}
-        date_range_end, date_range_start, number_of_days = self.get_dates_interval()
-        self.date_start = date_range_start
-
-        events = Event.objects.select_related(
-            'venue'
-        ).filter(
-            start__range=(date_range_start, date_range_end)).order_by('start')
-
-        if not self.request.user.is_staff:
-            events = events.exclude(state=Event.STATUS.Draft)
-
-        venue = self.request.GET.get('venue')
-        if venue is not None:
-            events = events.filter(venue__id=int(venue))
-
-        events = annotate_events(events)
-
-        for k, g in groupby(events, lambda e: e.listing_date()):
-            dates[k] = list(g)
-
-        for date in [
-            (date_range_start + timedelta(days=days_after)).date()
-            for days_after in range(number_of_days)
-        ]:
-            if date not in dates:
-                dates[date] = []
-
-        sorted_dates = OrderedDict(sorted(dates.items(), key=lambda d: d[0]))
-        return sorted_dates
-
-    def add_venue_next_prev(self, context, next_url, params_next, prev_url,
-                            params_prev):
-        venue = self.request.GET.get('venue')
-        context['venues'] = Venue.objects.all()
-        if venue is not None:
-            venue_id = int(venue)
-            context['venue_selected'] = venue_id
-            params_next['venue'] = venue_id
-            params_prev['venue'] = venue_id
-
-        if prev_url and len(params_prev):
-            prev_url = '{}?{}'.format(prev_url, urlencode(params_prev))
-        if next_url and len(params_next):
-            next_url = '{}?{}'.format(next_url, urlencode(params_next))
-        context['prev_url'] = prev_url
-        context['next_url'] = next_url
-
-    def get_dates_interval(self):
-        raise NotImplementedError()
-
-
-class WeeklyScheduleView(GenericScheduleView):
-    def get_dates_interval(self):
-        received_week = int(self.request.GET.get('week', 0))
-        number_of_days = 7
-        # Range from now to
-        date_range_start = (
-            timezone.localtime(timezone.now()) +
-            timezone.timedelta(days=(received_week * 7))
-        )
-        # don't show last nights events that are technically today
-        date_range_start = date_range_start.replace(hour=10)
-        # Set end one week later
-        date_range_end = (
-            date_range_start +
-            timezone.timedelta(days=number_of_days)
-        )
-        return date_range_end, date_range_start, number_of_days
-
     def get_context_data(self, **kwargs):
-        context = super(WeeklyScheduleView, self).get_context_data(**kwargs)
-        context['events_today'] = get_today_events()
+        context = super(GenericScheduleView, self).get_context_data(**kwargs)
+        today_events_qs = get_today_and_tomorrow_events()
+        context['events_today'] = today_events_qs
+        date_range_start = get_today_start()
+        event_blocks, showing_event_results, num_pages = self.search(
+            Event, '', start_date=date_range_start, order='start')
 
-        context['month'] = self.date_start.month - 1
-        context['year'] = self.date_start.year
-        context['day'] = self.date_start.day
-
-        base_url = reverse('schedule')
-        params_next = {}
-        params_prev = {}
-
-        week = int(self.request.GET.get('week', 0))
-
-        if week != 1:
-            params_prev['week'] = week - 1
-
-        if week != -1:
-            params_next['week'] = week + 1
-
-        prev_url = None
-        if week:
-            prev_url = base_url
-        next_url = base_url
-
-        self.add_venue_next_prev(
-            context, next_url, params_next, prev_url, params_prev
-        )
+        context['showing_event_results'] = showing_event_results
+        context['event_results'] = event_blocks[0] if event_blocks else []
 
         return context
 
 
-schedule = WeeklyScheduleView.as_view()
-
-
-class MonthlyScheduleView(GenericScheduleView):
-    def get_dates_interval(self):
-        month = int(self.kwargs.get('month', timezone.now().month))
-        year = int(self.kwargs.get('year', timezone.now().year))
-        received_day = self.kwargs.get('day')
-
-        day = 1
-        if received_day:
-            day = int(received_day)
-
-        # don't show last nights events that are technically today
-        date_range_start = timezone.make_aware(
-            timezone.datetime(year, month, day, hour=10),
-            timezone.get_default_timezone()
-        )
-
-        if not received_day:
-            number_of_days = calendar.monthrange(year, month)[1]
-            date_range_end = date_range_start + monthdelta.MonthDelta(1)
-        else:
-            number_of_days = 7
-            date_range_end = date_range_start + timedelta(days=number_of_days)
-
-        return date_range_end, date_range_start, number_of_days
-
-    def get_context_data(self, **kwargs):
-        """
-        Timedelta doesn't support months so to get the next and previous months, we do a max delta (31 days) for the
-        next month, and a min one (1 day) for the previous month.
-        """
-        context = super(MonthlyScheduleView, self).get_context_data(**kwargs)
-        context['events_today'] = get_today_events()
-
-        month = self.date_start.month
-        year = self.date_start.year
-        day = self.date_start.day
-
-        context['month'] = month - 1
-        context['year'] = year
-        context['day'] = day
-        context['month_view'] = True
-
-        # position of the "NEXT" box, after all the dates and the "PREV" box
-        context['next_month_position'] = len(context['dates']) + 2
-        current_date = timezone.datetime(year=year, month=month, day=day)
-
-        next_day = current_date + timezone.timedelta(days=7)
-        prev_day = current_date - timezone.timedelta(days=7)
-
-        prev_url = None
-        if current_date.date() > timezone.now().date():
-            prev_url = reverse('monthly_schedule',
-                               kwargs={'year': prev_day.year,
-                                       'month': prev_day.month,
-                                       'day': prev_day.day})
-
-        next_url = reverse('monthly_schedule',
-                           kwargs={'year': next_day.year,
-                                   'month': next_day.month,
-                                   'day': next_day.day})
-
-        self.add_venue_next_prev(
-            context, next_url, {}, prev_url, {}
-        )
-
-        return context
-
-
-monthly_schedule = MonthlyScheduleView.as_view()
+schedule = GenericScheduleView.as_view()
 
 
 class ScheduleCarouselAjaxView(AJAXMixin, DetailView):
