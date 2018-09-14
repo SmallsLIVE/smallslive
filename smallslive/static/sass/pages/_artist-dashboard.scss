@@ -1,16 +1,20 @@
 .artist-profile-container {
     margin-bottom: 40px;
     @media (min-width: $screen-md-min) {
-        padding: 0 17%;
+        padding: 0 15vw;
     }
     @media (max-width: $screen-sm-max) {
         padding: 20px;
     }
     .artist-events-list-info {
-        width: 60%;
+        width: 70%;
         .artist-set-download{
           width: 3.8em;
         }
+        .set-artist{
+          text-transform: capitalize;
+        }
+        
         .artist-set-main{
           padding-right: 60px;
           width: 40%;
@@ -18,6 +22,26 @@
           justify-content: space-between;
 
           padding: 10px 0;
+        }
+        .set-picture-container{
+          position: relative;
+          justify-content: center;
+          .set-icon-overlay{
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 1;
+            text-align: center;
+            i{display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 30px;
+              width: 30px;
+              border-radius: 30px;
+              border: 1px solid #ed1c24;
+            }
+          }
         }
         .set-picture{
           @include filter(grayscale(100%));
@@ -45,7 +69,7 @@
         }
     }
     .artist-events-list {
-        width: 40%;
+        width: 30%;
         overflow-y: scroll;
         .artist-event-picture {
             @include filter(grayscale(100%));
@@ -63,12 +87,17 @@
       padding-left: 60px;
       padding-top: 30px;
 
+      .artist-set-actions{
+        padding-bottom: 30px;
+      }
       .artist-set-leader{
         padding:10px 0;
       }
       .set-changer{
         padding: 10px 0;
-        width: 50%;
+        flex-basis: auto;
+        flex-grow: 1;
+        flex-shrink: 0;
         text-align: center;
       }
       
