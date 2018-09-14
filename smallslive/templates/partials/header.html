@@ -19,7 +19,7 @@
       <a href="{% url 'search' %}"><button class="no-border  {% if request.resolver_match.url_name == 'search' %}active{% endif %}">Archive</button></a>
       <a href="{% url 'contact-and-info' %}"><button class="no-border {% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</button></a>
       <a href=""><button class="no-border">Education</button></a>
-      <a href="{% url 'promotions:home' %}"><button class="no-border">Store</button></a>
+      <a href="{% url "promotions:home" %}"><button class="no-border">Store</button></a>
     </div>
     {% if not request.user.is_authenticated %}
       <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
@@ -91,7 +91,7 @@
       <a href="{% url 'search' %}" class="{% if request.resolver_match.url_name == 'search' %}active{% endif %}">Archive</a>
       <a href="{% url 'contact-and-info' %}" class="{% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</a>
       <a href="">Education</a>
-      <a href="{% url 'promotions:home' %}">Store</a>
+      <a href="{% url "promotions:home" %}">Store</a>
     </div>
   </div>
 </div>

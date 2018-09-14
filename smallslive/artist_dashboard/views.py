@@ -6,8 +6,7 @@ from django.db.models import Max, Sum
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django_ajax.response import JSONResponse
-
-from events.forms import GigPlayedEditInlineFormset
+from django.http import Http404
 
 try:
     import cStringIO as StringIO
@@ -34,10 +33,13 @@ from events.models import Recording, Event
 import events.views as event_views
 import users.forms as user_forms
 from users.models import LegalAgreementAcceptance
-from users.views import HasArtistAssignedMixin, HasArtistAssignedOrIsSuperuserMixin
+from users.views import HasArtistAssignedMixin, \
+    HasArtistAssignedOrIsSuperuserMixin
 from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm, \
-    EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm, ArtistGigPlayedAddInlineFormSet
-from artist_dashboard.tasks import generate_payout_sheet_task, update_current_period_metrics_task
+    EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm, \
+    ArtistGigPlayedAddInlineFormSet
+from artist_dashboard.tasks import generate_payout_sheet_task,\
+    update_current_period_metrics_task
 
 
 class MyEventsView(HasArtistAssignedMixin, ListView):
@@ -168,7 +170,7 @@ class MyEventsAJAXView(MyEventsView):
 
 
 class MyFutureEventsAJAXView(MyEventsAJAXView, MyFutureEventsView):
-    reverse_name = 'my_future_events_ajax'
+
     template_name = 'artist_dashboard/artist-dashboard-events.html'
 
 
@@ -176,6 +178,7 @@ my_future_events_ajax = MyFutureEventsAJAXView.as_view()
 
 
 class MyPastEventsView(MyEventsView):
+
     def get_queryset(self):
         artist = self.request.user.artist
         now = timezone.now()
@@ -187,20 +190,84 @@ class MyPastEventsView(MyEventsView):
 
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsView, self).get_context_data(**kwargs)
-        context['is_future'] = False
-        context['reverse_ajax'] = 'artist_dashboard:my_past_events_ajax'
+        context['is_future'] = False  # TODO: make dynamic.
         return context
+        
 
 
 my_past_events = MyPastEventsView.as_view()
 
 
 class MyPastEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
-    reverse_name = 'my_past_events_ajax'
+
     template_name = 'artist_dashboard/artist-dashboard-events.html'
 
 
 my_past_events_ajax = MyPastEventsAJAXView.as_view()
+
+class MyPastEventsInfoView(DetailView):
+    
+    model = Event
+    pk_url_kwarg = 'pk'
+    template_name = 'artist_dashboard/artist-dashboard-events-info.html'
+    context_object_name = 'event'
+
+    def get_object(self, *a, **k):
+        obj = super(MyPastEventsInfoView, self).get_object(*a, **k)
+        #if  not obj.artist == self.request.user.artist:
+        #    raise Http404("Event for that artis doesnt exist")
+        return obj
+
+    def get_context_data(self, **kwargs):
+        context = super(MyPastEventsInfoView, self).get_context_data(**kwargs)
+        artist = self.request.user.artist
+        set_id = int(self.request.GET.get('set_id', 0))
+        context.update({
+            'event_set': self.object.sets.all()[set_id]
+        })
+        context['is_admin'] = self.object.artists_gig_info.get(
+            artist_id=artist.id).is_admin
+        context['sidemen'] = self.object.artists_gig_info.filter(
+            is_leader=False)
+        context['leaders'] = self.object.artists_gig_info.filter(
+            is_leader=True)
+
+        #copied metrics code
+        today = timezone.datetime.today()
+        month_start = today.replace(day=1)
+
+        start_of_week = today - timedelta(days=today.weekday())
+        context['date_ranges'] = [
+            {
+                'display': 'Last Week',
+                'start': (start_of_week - timedelta(days=7)).isoformat(),
+                'end': start_of_week.isoformat()
+            },
+            {
+                'key': 'month',
+                'display': 'This Month',
+                'start': month_start.isoformat(),
+                'end': today.isoformat()
+            },
+            {
+                'display': 'Last Month',
+                'start': (month_start - relativedelta(months=1)).isoformat(),
+                'end': month_start.isoformat()
+            },
+            {
+                'display': 'Last 3 Months',
+                'start': (month_start - relativedelta(months=3)).isoformat(),
+                'end': month_start.isoformat()
+            },
+            {
+                'display': 'Last 6 Months',
+                'start': (month_start - relativedelta(months=6)).isoformat(),
+                'end': month_start.isoformat()
+            }
+        ]
+        return context
+
+my_past_events_info = MyPastEventsInfoView.as_view()
 
 
 class DashboardView(HasArtistAssignedMixin, TemplateView):

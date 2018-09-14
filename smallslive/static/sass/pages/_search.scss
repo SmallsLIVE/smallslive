@@ -670,3 +670,19 @@
 .accent-color {
   color: $accent-color;
 }
+
+.musician-title {
+  font-size: 3em;
+  line-height: 1em;
+  margin-bottom: 10px;
+}
+
+.musician-instrument {
+  font-size: 2em;
+}
+
+.show-in-archive {
+  align-self: flex-end;
+  margin-bottom: -5px;
+  margin-left: 10px;
+}

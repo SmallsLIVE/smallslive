@@ -1,0 +1,19 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load common_tags %}
+{% load i18n %}
+
+<section class="event-stripe live">
+  <div class="section-title home">
+    <div class="title1">
+      Today & Tomorrow <span class="date-separator">/</span>
+    </div>
+    <div class="header-sub title2 visible-lg visible-md">{% now "m/d/y" %} - {% tomorrow "%m/%d/%y" %}</div>
+    <div class="header-sub title2 visible-sm visible-xs">{% now "D n/j" %}</div>
+  </div>
+  <main>
+    <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+    {% include 'events/event_row.html' with events=events_today show_time=True hidde_event_date=True show_event_venue=True %}
+    <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+  </main>
+</section>

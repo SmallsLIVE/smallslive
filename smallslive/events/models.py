@@ -271,17 +271,45 @@ class Event(TimeStampedModel):
 
     @property
     def is_live(self):
+        print 'EVENT'
+        print self.date
+        event_ny_start = None
+        event_ny_end = None
+        current_timezone = timezone.get_current_timezone()
+        for event_set in self.sets.all():
+            print 'event set -> {} {}'.format(event_set.start, event_set.end)
+            # Convert set times to UTC, they are in America/New York timezone
+            ny_start = datetime.combine(self.date, event_set.start)
+            ny_start = timezone.make_aware(ny_start, timezone=current_timezone)
+            if not event_ny_start or ny_start < event_ny_start:
+                event_ny_start = ny_start
+            print 'ny start {}'.format(ny_start)
+
+            ny_end = datetime.combine(self.date, event_set.end)
+            print 'ny end: {}'.format(ny_end)
+            ny_end = timezone.make_aware(ny_end, timezone=current_timezone)
+            print 'ny end: {}'.format(ny_end)
+            if not event_ny_end or ny_end > event_ny_end:
+                event_ny_end = ny_end
+
+        print 'Compare:'
+        print event_ny_start
+        print timezone.localtime(timezone.now())
+        print event_ny_end
+
+        print '-----------------------------------------------'
+
+        return event_ny_start <= timezone.localtime(timezone.now()) < event_ny_end
+
+    def get_live_set(self):
         for event_set in self.sets.all():
             # Convert set times to UTC, they are in America/New York timezone
             ny_start = datetime.combine(self.date, event_set.start)
             ny_end = datetime.combine(self.date, event_set.end)
-
             current_timezone = timezone.get_current_timezone()
-
-            utc_start = timezone.make_aware(ny_start, timezone=current_timezone) - timedelta(minutes=20)
-            utc_end = timezone.make_aware(ny_end, timezone=current_timezone)
-
-            if utc_start <= timezone.now() < utc_end:
+            ny_start = timezone.make_aware(ny_start, timezone=current_timezone)
+            ny_end = timezone.make_aware(ny_end, timezone=current_timezone)
+            if ny_start <= timezone.localtime(timezone.now()) < ny_end:
                 return event_set
 
         return None
@@ -520,7 +548,19 @@ class StaffPick(models.Model):
 
 
 def get_today_start():
-    return timezone.localtime(timezone.now()).replace(hour=5, minute=0)
+    """Assuming that before 1am NY it's still the same date as the day before."""
+
+    now_ny = timezone.localtime(timezone.now())
+    # up until 1 am the current set has the previous day's date.
+    # so we need to set the start date at 10:00 pm the day before
+    if now_ny.hour == 0 and now_ny.minute <= 59:
+        start = now_ny - timedelta(days=1)
+        start = start.replace(hour=22, minute=0)
+    else:
+        start = now_ny
+
+    print start
+    return start
 
 
 class Comment(models.Model):
