@@ -210,6 +210,14 @@ class Artist(models.Model):
 
     def current_period_percentage_ratio(self):
         return self.current_period_ratio * 100
+    
+    @property
+    def archive_shows(self):
+        return Event.objects.past().filter(
+            performers=self,
+            recordings__media_file__isnull=False,
+            recordings__state=Recording.STATUS.Published).count()
+
 
 
 class Instrument(models.Model):
