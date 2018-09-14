@@ -1,218 +1,188 @@
-{% load static from staticfiles %} {% load fromisoformat %} {% with set=event_set %}
-<div class="artist-set-actions flex-row">
-    <div class="button-row button-row-margin">
-        {% if is_admin and set.has_media %}
+{% load static from staticfiles %}
+{% load fromisoformat %}
 
-        <a href="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
-            <button class="set-button">Edit</button>
-        </a>
-        {% if set.video_recording and set.video_recording.state != 'Published' or set.audio_recording and set.audio_recording.state != 'Published' %}
-        <button class="publish-button set-button" onclick="askPublish({{ set.id }})">
-            Public
-        </button>
-        {% else %}
-        <button class="publish-button set-button" onclick="askPrivate({{ set.id }})">Private
-        </button>
-        {% endif %} {% else %}
-
-        <button disabled class="set-button">Edit</button>
-        {% if set.video_recording and set.video_recording.state == 'Published' %}
-        <button disabled class="set-button">Public</button>
-        {% else %}
-        <button disabled class="set-button">Private</button>
-        {% endif %} {% endif %}
-    </div>
-</div>
-
-<div class="flex-row">
-<div class='artist-set-main'>
-<div class="artist-event-info flex-column wrap">
-    <div class="flex-row artist-set-header">
-        <div class="artist-set-info">
-        <div class="text2">
-            {{ event.date|date:'m/d/Y' }}
-        </div>
-        <div class="text2">
-            {{ event.title }}
-        </div>
-        </div>
-    <div class='artist-set-download'> 
-            <img  src="/static/image/download-icon.svg" alt="" onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')">
-    </div>
-    </div>
-    <div class="artist-event-card">
-            <a href="{{ event.get_absolute_url }}">
-                   
-        <div class="set-picture-container">
-            <div class="picture-border">
-              <div class="set-picture">
-                {% if event.photo %}
-                  {% include 'partials/thumbored_picture.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+{% with set=event_set %}
+    <div class="artist-set-actions flex-row">
+        <div class="button-row button-row-margin">
+            {% if is_admin and set.has_media %}
+                <a href="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
+                    <button class="set-button">Edit</button>
+                </a>
+                {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
+                    <button id="public-button" class="publish-button set-button" onclick="askPublish({{ set.id }})"> Public </button>
                 {% else %}
-                  {% include 'partials/thumbored_picture.html' %}
+                    <button id="private-button" class="publish-button set-button" onclick="askPrivate({{ set.id }})">Private </button>
                 {% endif %}
-              </div>
-           
-          </div>
+            {% else %}
+                <button disabled class="set-button">Edit</button>
+                {% if set.video_recording and set.video_recording.is_published %}
+                    <button disabled class="set-button">Public</button>
+                {% else %}
+                    <button disabled class="set-button">Private</button>
+                {% endif %}
+            {% endif %}
         </div>
-        </a>
     </div>
-    <div class="artist-set-list flex-row wrap">
 
-        {% for set in event.sets.all %}
-        <div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}?set_id={{ forloop.counter0 }}" class="{% if set.id == event_set.id %} artist-active-set accent-color {% endif %}set-changer">
-                <div class="text2 flex-column flex-grow ">
-            Set {{ forloop.counter0|add:"1" }}
+    <div class="flex-row">
+        <div class='artist-set-main'>
+            <div class="artist-event-info flex-column wrap">
+                <div class="flex-row artist-set-header">
+                    <div class="artist-set-info">
+                        <div class="text2"> {{ event.date|date:'m/d/Y' }} </div>
+                        <div class="text2"> {{ event.title }} </div>
+                    </div>
+                <div class='artist-set-download'>
+                    <img  src="{% static '/static/image/download-icon.svg' %}" alt="" onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')">
+                </div>
+            </div>
+            <div class="artist-event-card">
+                <a href="{{ event.get_absolute_url }}">
+                    <div class="set-picture-container flex-column">
+                        <div class="set-icon-overlay text2">
+                            <i class="fa fa-play fa-thin-circle"></i>
+                        </div>
+                        <div class="picture-border">
+                            <div class="set-picture">
+                                {% if event.photo %}
+                                  {% include 'partials/thumbored_picture.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+                                {% else %}
+                                  {% include 'partials/thumbored_picture.html' %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        <div class="artist-set-list flex-row">
+            {% for set in event.sets.all %}
+                <div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}?set_id={{ forloop.counter0 }}" class="{% if set.id == event_set.id %} artist-active-set accent-color {% endif %}set-changer">
+                    <div class="text2 flex-column flex-grow "> Set {{ forloop.counter0|add:"1" }} </div>
+                </div>
+            {% endfor %}
         </div>
-        </div>
-
-        {% endfor %}
     </div>
     </div>
-    
-</div>
-<div class="artist-metrics-container">
-
-
+    <div class="artist-metrics-container">
         <select id="artist-metrics-date-select">
             <option value="all" selected>All Time</option>
             {% for range in date_ranges %}
-            <option value="{{ forloop.counter0 }}">{{ range.display }} | {{ range.start|fromisoformat|date:"b j, Y" }} -
-                {{ range.end|fromisoformat|date:"b j, Y" }}</option>
+                <option value="{{ forloop.counter0 }}">
+                    {{ range.display }} | {{ range.start|fromisoformat|date:"b j, Y" }} -
+                    {{ range.end|fromisoformat|date:"b j, Y" }}
+                </option>
             {% endfor %}
-
         </select>
-    
-        <div class='event-metrics-container flex-row'>
-                <div class='event-metrics-container-plays event-metrics-container-data'>
-                        <div class="text4">Plays</div>
-                        <div id='play-value' class="text2"></div>
-                </div>
-                <div class='event-metrics-container-time event-metrics-container-data'>
-                        <div class="text4">Time Listened</div>
-                        <div id='time-value' class="text2"></div>
-
-                </div>
+        <div class="event-metrics-container flex-row">
+            <div class="event-metrics-container-plays event-metrics-container-data">
+                <div class="text3">Plays</div>
+                <div id="play-value" class="title1"></div>
             </div>
-
-</div>
-</div>
-
-
-<div class="text2 flex-column flex-grow" style="padding-top: 3px;">
-        <div class='artist-set-leader'>
-            {%if leaders|length == 1 %}
-            <span class='accent-color'>Leader</span>
-            {% else %}
-            <span class='accent-color'>Leaders</span>
-            {% endif %}
-
-
-
-            <div class=''>
-                {% for gig_played in event.get_performers %} {% if gig_played.is_leader %} {{ gig_played.artist.first_name }}, {{ gig_played.artist.last_name}}
-                <span class='accent-color'>/</span>
-                <span class=''>{{ gig_played.role }}</span>
-
-                {% endif %} {% endfor %}
+            <div class="event-metrics-container-time event-metrics-container-data">
+                <div class="text3">Time Listened</div>
+                <div id="time-value" class="title1"></div>
             </div>
         </div>
-
-        {%if sidemen|length > 0%}
-        <div> <span class='accent-color'>Side musicians</span>
-
-            {% for gig_played in event.get_performers %} {% if not gig_played.is_leader %}
-            <div class=''>
-                {{ gig_played.artist.first_name }}, {{ gig_played.artist.last_name }}
-                <span class='accent-color'>/</span>
-                <span class=''>{{ gig_played.role }}</span>
-            </div>
-            {% endif %} {% endfor %}
-
-        </div> {% endif %}
     </div>
-{% endwith %} {% block extra_js %}
-<script>
+    </div>
 
-    $('.set-changer').on('click', function () {
-        var eventUrl = $(this).data("url");
-        loadInfo(eventUrl)
-    })
+    <div class="text2 flex-column flex-grow" style="padding-top: 3px;">
+        <div class="artist-set-leader">
+            <span class="accent-color">Leader{{ leaders|length|pluralize }}</span>
+            {% for gig_played in event.get_performers %} {% if gig_played.is_leader %}
+                <div class="set-artist text1">
+                    {{ gig_played.artist.full_name }}
+                    <span class="accent-color">/</span>
+                    <span>{{ gig_played.role }}</span>
+                </div>
+            {% endfor %}
+        </div>
+        {% if sidemen %}
+            <div>
+                <span class='accent-color'>Side musicians</span>
+                {% for gig_played in event.get_performers %}
+                    {% if not gig_played.is_leader %}
+                        <div class='set-artist text1'>
+                            {{ gig_played.artist.full_name }}
+                            <span class='accent-color'>/</span>
+                            <span class=''>{{ gig_played.role }}</span>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endwith %}
 
+{% block extra_js %}
+    <script>
+        $('.set-changer').on('click', function () {
+            loadInfo($(this).data('url'));
+        })
+    </script>
 
+    <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/Chart.min.js' %}"></script>
 
+    <script>
 
+        var ranges = {{ date_ranges| safe }};
+        var selectedRange = 'all';
+        var payoutsUrl = '/dashboard/my-payouts';
+        var minsData = {
+            datasets: [
+                {
+                    label: "Total",
+                    backgroundColor: "rgba(210,21,53,0)",
+                    borderColor: "#ed1c24",
+                    pointBackgroundColor: "#000",
+                    pointBorderColor: "#000",
+                    pointHoverBackgroundColor: "#fff",
+                    pointHoverBorderColor: "rgba(220,220,220,1)"
+                }
+            ]
 
-</script>
+        };
+        $(document).ready(function () {
+            var plays = document.getElementById("play-value");
+            var time = document.getElementById("time-value");
+            $('#artist-metrics-date-select').on('change', function () {
+                loadData();
+            });
 
-<script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
-<script src="{% static 'js/Chart.min.js' %}"></script>
-<script>
+            var loadData = function () {
+                var rangeSel = $('#artist-metrics-date-select').val();
+                var data = {};
+                data.set_id = {{ event_set.id }};
 
-    var ranges = {{ date_ranges| safe }};
-    var selectedRange = 'all';
-    var payoutsUrl = '/dashboard/my-payouts';
-    var minsData = {
-        datasets: [
-            {
-                label: "Total",
-                backgroundColor: "rgba(210,21,53,0)",
-                borderColor: "#ed1c24",
-                pointBackgroundColor: "#000",
-                pointBorderColor: "#000",
-                pointHoverBackgroundColor: "#fff",
-                pointHoverBorderColor: "rgba(220,220,220,1)"
-            }
-        ]
+                if (rangeSel !== 'all') {
+                    selectedRange = parseInt(rangeSel, 10);
+                    data.start = moment(ranges[selectedRange].start).format('YYYY-MM-DD');
+                    data.end = moment(ranges[selectedRange].end).format('YYYY-MM-DD');
+                }
 
-    };
-    $(document).ready(function () {
-        var $payoutData = $('#payoutData');
-        var $currentPayoutData = $('#currentPayoutData');
-        plays = document.getElementById("play-value");
-        time = document.getElementById("time-value");
-        $('#artist-metrics-date-select').on('change', function () {
-            loadData();
-        });
-
-        var loadData = function () {
-
-            var rangeSel = $('#artist-metrics-date-select').val();
-            var data = {};
-            data.set_id = {{ event_set.id }};
-
-        if (rangeSel !== 'all') {
-            selectedRange = parseInt(rangeSel, 10);
-            data.start = moment(ranges[selectedRange].start).format('YYYY-MM-DD');
-            data.end = moment(ranges[selectedRange].end).format('YYYY-MM-DD');
-        }
-
-        var countsURL = "{% url 'event_counts' %}";
-        $.ajax(countsURL, {
-            data: data,
-            success: function (data, textStatus, jqXHR) {
-                console.log(data)
-                console.log(textStatus)
-                console.log(jqXHR)
-                    
-                plays.innerHTML= data.total_plays_list.reduce((e, acc) => { return e + acc }, 0);
-                playedMinutes = data.total_minutes_list.reduce((e, acc) => { return e + acc }, 0);
-                const formatted = moment.utc(((playedMinutes*60))*1000).format('HH:mm:ss');
-                time.innerHTML = formatted
-            },
-            type: 'GET',
-            xhrFields: {
-                withCredentials: true
-            }
-        });
-       
-        
-    };
-
-    $('#artist_event_select').on('change', function () {
+                var countsURL = "{% url 'event_counts' %}";
+                $.ajax(countsURL, {
+                    data: data,
+                    success: function (response) {
+                        plays.innerHTML= response.total_plays_list.reduce(
+                            function (e, acc) {
+                                return e + acc;
+                            }, 0);
+                        playedMinutes = response.total_minutes_list.reduce(
+                            function (e, acc) {
+                                return e + acc;
+                            }, 0);
+                        time.innerHTML = moment.utc(((playedMinutes*60))*1000).format('HHH:mm:ss');
+                    },
+                    type: 'GET',
+                    xhrFields: {
+                        withCredentials: true
+                    }
+                });
+            };
+        $('#artist_event_select').on('change', loadData());
         loadData();
-    });
-
-    loadData();
-  })
-</script> {% endblock %}
+      })
+    </script>
+{% endblock %}
