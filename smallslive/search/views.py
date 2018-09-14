@@ -1,23 +1,23 @@
-from collections import OrderedDict
-from itertools import groupby
-import datetime
-from dateutil import parser
-from itertools import chain
 import json
-from haystack.query import SearchQuerySet, SQ
-from django.core.paginator import Paginator
-from django.http import HttpResponse, JsonResponse, Http404
+from collections import OrderedDict
+from itertools import chain, groupby
+
+from dateutil import parser
+from django.core.paginator import EmptyPage, Paginator
+from django.http import Http404, HttpResponse, JsonResponse
 from django.template import RequestContext
 from django.template.loader import render_to_string
-from django.views.generic import View
-from django.views.generic.base import TemplateView
 from django.utils import timezone
 from django.utils.timezone import timedelta
-from artists.models import Artist, Instrument
-from events.models import Event, Recording, Venue
+from django.views.generic import View
+from django.views.generic.base import TemplateView
+from haystack.query import SearchQuerySet
 
-from .utils import facets_by_model_name
+from artists.models import Artist, Instrument
+from events.models import Event, Venue
+
 from .search import SearchObject
+from .utils import facets_by_model_name
 
 
 def search_autocomplete(request):
@@ -59,7 +59,12 @@ class SearchMixin(object):
 
         paginator = Paginator(sqs, results_per_page)
 
-        for item in paginator.page(page).object_list:
+        try:
+            objects = paginator.page(page).object_list
+        except EmptyPage:
+            objects = []
+
+        for item in objects:
             item = entity.objects.filter(pk=item.pk).first()
             block.append(item)
 

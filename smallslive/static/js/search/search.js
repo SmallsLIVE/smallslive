@@ -91,24 +91,30 @@ function sendEventRequest() {
         dataType: 'json',
         success: function (data) {
             if (data.template) {
-                $("#event-subheader").html(data.showingResults);
-                $("#event-subheader-footer").html(data.showingResults);
+                $('#event-subheader').html(data.showingResults);
+                $('#event-subheader-footer').html(data.showingResults);
 
                 if (apply || eventFilter) {
                     apply = false;
                     eventFilter = false;
-                    $("#events .shows-container").html("");
+                    $('#events .shows-container').html('');
                 }
 
-                $(data.template).find("article").each(function( index ) {
-                    $("#events .shows-container").append($( this ));
+                var article = $(data.template).find('article');
+                if (!article.length) {
+                    $('#events .shows-container').html(data.template);
+                }
+                article.each(function( index ) {
+                    $('#events .shows-container').append($( this ));
                 });
-
                 eventMaxPageNum = data.numPages;
 
                 $("#event-load-gif").css("display", "none");
+                console.log(data.numPages, eventPageNum);
                 if (data.numPages != eventPageNum) {
                     $("#load-more-btn").show();
+                } else {
+                    $("#load-more-btn").hide();
                 }
             }
         }
@@ -281,9 +287,9 @@ $(document).ready(function () {
         eventDateTo = newDate.date;
 
         from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
-        from = '<span class="accent-color">' + from + '</span>'
+        from = '<span class="accent-color">' + from + '</span>';
         to = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
-        to = '<span class="accent-color">' + to + '</span>'
+        to = '<span class="accent-color">' + to + '</span>';
 
         $(".datepicker-btn").html("From " + from + " to " + to);
     });
