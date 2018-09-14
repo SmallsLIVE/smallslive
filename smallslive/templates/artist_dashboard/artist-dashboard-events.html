@@ -42,7 +42,8 @@
                 url: infoUrl,
                
                 success: function (data) {
-                  $("#artistEventsInfo").html(data)
+                  $("#artistEventsInfo").html(data);
+                  $("#artistEventsInfo").data("url", infoUrl);
                 }
             });
         }   
@@ -57,5 +58,5 @@
       loadInfo(eventUrl)
     })
   
-  </script>
+  </script> 
 {% endblock %}

@@ -7,11 +7,11 @@
             <button class="set-button">Edit</button>
         </a>
         {% if set.video_recording and set.video_recording.state != 'Published' or set.audio_recording and set.audio_recording.state != 'Published' %}
-        <button class="publish-button set-button" onclick="askPublish({{ set.id }})">
+        <button id="public-button" class="publish-button set-button" onclick="askPublish({{ set.id }})">
             Public
         </button>
         {% else %}
-        <button class="publish-button set-button" onclick="askPrivate({{ set.id }})">Private
+        <button id="private-button" class="publish-button set-button" onclick="askPrivate({{ set.id }})">Private
         </button>
         {% endif %} {% else %}
 
@@ -43,7 +43,10 @@
     <div class="artist-event-card">
             <a href="{{ event.get_absolute_url }}">
                    
-        <div class="set-picture-container">
+        <div class="set-picture-container flex-column">
+                <div class="set-icon-overlay text2">
+                        <i class="fa fa-play fa-thin-circle"></i>
+                      </div>
             <div class="picture-border">
               <div class="set-picture">
                 {% if event.photo %}
@@ -57,7 +60,7 @@
         </div>
         </a>
     </div>
-    <div class="artist-set-list flex-row wrap">
+    <div class="artist-set-list flex-row">
 
         {% for set in event.sets.all %}
         <div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}?set_id={{ forloop.counter0 }}" class="{% if set.id == event_set.id %} artist-active-set accent-color {% endif %}set-changer">
@@ -85,12 +88,12 @@
     
         <div class='event-metrics-container flex-row'>
                 <div class='event-metrics-container-plays event-metrics-container-data'>
-                        <div class="text4">Plays</div>
-                        <div id='play-value' class="text2"></div>
+                        <div class="text3">Plays</div>
+                        <div id='play-value' class="title1"></div>
                 </div>
                 <div class='event-metrics-container-time event-metrics-container-data'>
-                        <div class="text4">Time Listened</div>
-                        <div id='time-value' class="text2"></div>
+                        <div class="text3">Time Listened</div>
+                        <div id='time-value' class="title1"></div>
 
                 </div>
             </div>
@@ -109,20 +112,22 @@
 
 
 
-            <div class=''>
-                {% for gig_played in event.get_performers %} {% if gig_played.is_leader %} {{ gig_played.artist.first_name }}, {{ gig_played.artist.last_name}}
+            
+                {% for gig_played in event.get_performers %} {% if gig_played.is_leader %} 
+                <div class='set-artist text1'>
+                {{ gig_played.artist.first_name }}, {{ gig_played.artist.last_name}}
                 <span class='accent-color'>/</span>
                 <span class=''>{{ gig_played.role }}</span>
-
+                </div>
                 {% endif %} {% endfor %}
-            </div>
+            
         </div>
 
         {%if sidemen|length > 0%}
         <div> <span class='accent-color'>Side musicians</span>
 
             {% for gig_played in event.get_performers %} {% if not gig_played.is_leader %}
-            <div class=''>
+            <div class='set-artist text1'>
                 {{ gig_played.artist.first_name }}, {{ gig_played.artist.last_name }}
                 <span class='accent-color'>/</span>
                 <span class=''>{{ gig_played.role }}</span>
@@ -191,13 +196,9 @@
         $.ajax(countsURL, {
             data: data,
             success: function (data, textStatus, jqXHR) {
-                console.log(data)
-                console.log(textStatus)
-                console.log(jqXHR)
-                    
                 plays.innerHTML= data.total_plays_list.reduce((e, acc) => { return e + acc }, 0);
                 playedMinutes = data.total_minutes_list.reduce((e, acc) => { return e + acc }, 0);
-                const formatted = moment.utc(((playedMinutes*60))*1000).format('HH:mm:ss');
+                const formatted = moment.utc(((playedMinutes*60))*1000).format('HHH:mm:ss');
                 time.innerHTML = formatted
             },
             type: 'GET',

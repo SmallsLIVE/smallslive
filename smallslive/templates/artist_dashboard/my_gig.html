@@ -67,10 +67,6 @@
                 console.log(status);
             });
             hideMakePrivate();
-            $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
-                '<button class="publish-button" onclick="askPublish(' + selectedSetId + ')">Publish</button>'
-            )
-            $("#set-id-" + selectedSetId).find('.set-status').text('Hidden')
             showSuccess('private')
         }
 
@@ -87,10 +83,6 @@
                 console.log(status);
             });
             hidePublish();
-            $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
-                '<button class="publish-button" onclick="askPrivate(' + selectedSetId + ')">Make Private</button>'
-            )
-            $("#set-id-" + selectedSetId).find('.set-status').text('Published');
             showSuccess('public')
         }
 
