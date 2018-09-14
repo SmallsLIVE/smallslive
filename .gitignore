@@ -21,6 +21,8 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+.vscode/
+docker-compose.yml
 
 # Installer logs
 pip-log.txt

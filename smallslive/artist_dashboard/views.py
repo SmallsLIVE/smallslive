@@ -6,7 +6,7 @@ from django.db.models import Max, Sum
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django_ajax.response import JSONResponse
-
+from django.http import Http404
 from events.forms import GigPlayedEditInlineFormset
 
 try:
@@ -176,6 +176,7 @@ my_future_events_ajax = MyFutureEventsAJAXView.as_view()
 
 
 class MyPastEventsView(MyEventsView):
+    reverse_name = 'my_past_events'
     def get_queryset(self):
         artist = self.request.user.artist
         now = timezone.now()
@@ -189,7 +190,9 @@ class MyPastEventsView(MyEventsView):
         context = super(MyPastEventsView, self).get_context_data(**kwargs)
         context['is_future'] = False
         context['reverse_ajax'] = 'artist_dashboard:my_past_events_ajax'
+        context['reverse_past'] = 'artist_dashboard:my_past_events'
         return context
+        
 
 
 my_past_events = MyPastEventsView.as_view()
@@ -202,6 +205,77 @@ class MyPastEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
 
 my_past_events_ajax = MyPastEventsAJAXView.as_view()
 
+class MyPastEventsInfoView(DetailView):
+    
+    model = Event
+    pk_url_kwarg = 'pk'
+    reverse_name = 'my_past_events_info'
+    template_name = 'artist_dashboard/artist-dashboard-events-info.html'
+    context_object_name = 'event'
+
+    def get_object(self, *a, **k):
+        obj = super(MyPastEventsInfoView, self).get_object(*a, **k)
+        #if  not obj.artist == self.request.user.artist:
+        #    raise Http404("Event for that artis doesnt exist")
+        return obj
+
+    def get_context_data(self, **kwargs):
+        artist = self.request.user.artist
+        context = super(MyPastEventsInfoView, self).get_context_data(**kwargs)
+        set_id = int(self.request.GET.get('set_id', 0))
+        context.update({
+            'event_set': self.object.sets.all()[set_id]
+        })
+        context['is_admin'] = context['object'].artists_gig_info.get(artist_id=artist.id).is_admin
+        context['sidemen'] = context['object'].artists_gig_info.filter(is_leader=False)
+        context['leaders'] = context['object'].artists_gig_info.filter(is_leader=True)
+
+
+        #copied metrics code
+
+        first_login = self.request.user.is_first_login()
+        context['current_payout_period'] = CurrentPayoutPeriod.objects.first()
+        context['previous_payout_period'] = artist.earnings.first()
+
+        today = timezone.datetime.today()
+        month_start = today.replace(day=1)
+
+        start_of_week = today - timedelta(days=today.weekday())
+        context['date_ranges'] = [
+            {
+                'display': 'Last Week',
+                'start': (start_of_week - timedelta(days=7)).isoformat(),
+                'end': start_of_week.isoformat()
+            },
+            {
+                'key': 'month',
+                'display': 'This Month',
+                'start': month_start.isoformat(),
+                'end': today.isoformat()
+            },
+            {
+                'display': 'Last Month',
+                'start': (month_start - relativedelta(months=1)).isoformat(),
+                'end': month_start.isoformat()
+            },
+            {
+                'display': 'Last 3 Months',
+                'start': (month_start - relativedelta(months=3)).isoformat(),
+                'end': month_start.isoformat()
+            },
+            {
+                'display': 'Last 6 Months',
+                'start': (month_start - relativedelta(months=6)).isoformat(),
+                'end': month_start.isoformat()
+            }
+        ]
+
+
+
+
+        return context
+
+my_past_events_info = MyPastEventsInfoView.as_view()
 
 class DashboardView(HasArtistAssignedMixin, TemplateView):
     template_name = 'artist_dashboard/home.html'

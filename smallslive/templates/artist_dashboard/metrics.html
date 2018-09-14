@@ -60,21 +60,6 @@
         </section>
         <div class="flex-column">
             <div class="flex-row content-space-between">
-                <div class="flex-row items-center">
-                    <span class="title2">FILTER BY:</span>
-                    <div class="white-border-select white-border-multiline engagement-event-select" style="width: 300px; float:none">
-                        <select id="artist_event_select">
-                            <option value="all" selected>All Shows</option>
-                            {% for gig in user.artist.gigs_played.all %}
-                              {% for set in gig.event.recordings.all %}
-                                <option value="{{ set.id }}">
-                                    {{ set.event.date|date:'m/d/Y' }} | Set {{ set.set_number }}#{{ set.event.title }}#{{ set.event.venue }}
-                                </option>
-                              {% endfor %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
                 <div class="white-border-select white-border-select-left" style="width: 315px; float:none">
                     <select id="artist-metrics-date-select">
                         <option value="all" selected>All Time</option>
@@ -162,6 +147,9 @@
               $.ajax(countsURL, {
                   data: data,
                   success: function (data, textStatus, jqXHR) {
+                      console.log(data)
+                      console.log(textStatus)
+                      console.log(jqXHR)
                       minsData.labels = data.dates;
                       minsData.datasets[0].data = data.total_minutes_list;
                       updateGraph(minsData);
