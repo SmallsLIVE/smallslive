@@ -128,7 +128,7 @@ $text-font-size-big: 1.4em;
 // Font sizes
 @mixin title-banner {
   @include oswald-light();
-  font-size: 34px;
+  font-size: 1.8vw;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   transform: scaleY(1.3);

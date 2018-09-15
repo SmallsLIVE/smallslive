@@ -47,7 +47,7 @@ class SearchMixin(object):
         search = SearchObject()
 
         if entity == Artist:
-            results_per_page = 48
+            results_per_page = 32
             sqs = search.search_artist(main_search, artist_search, instrument)
 
         elif entity == Event:
@@ -65,10 +65,10 @@ class SearchMixin(object):
             objects = []
 
         for item in objects:
-            item = entity.objects.filter(pk=item.pk).first()
-            block.append(item)
+            object_item = entity.objects.filter(pk=item.pk).first()
+            block.append(object_item)
 
-            if len(block) == 12 and entity == Artist:
+            if len(block) == 8 and entity == Artist:
                 blocks.append(block)
                 block = []
 

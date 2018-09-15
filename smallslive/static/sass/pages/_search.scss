@@ -210,13 +210,21 @@
 }
 
 .artist-arrow-search {
-  font-size: 62px;
+  background-image: url(/static/image/arrow-right-black.svg);
+  background-repeat: no-repeat;
   cursor: pointer;
+  font-size: 62px;
+  height: 69px;
   margin: 0 40px;
+  width: 35px;
 
   &.artist-arrow-disabled {
     color: $text-grey;
     cursor: not-allowed;
+  }
+
+  &.left_arrow {
+    transform: scaleX(-1);
   }
 }
 
@@ -344,6 +352,7 @@
   margin-left: 100px;
   border-radius: 10px;
   padding-left: 40px;
+  text-transform: uppercase;
 }
 
 .instrument-btn {

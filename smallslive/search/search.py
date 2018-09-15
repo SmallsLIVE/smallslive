@@ -125,7 +125,7 @@ class SearchObject(object):
 
     def search_event(self, main_search, order=None, start_date=None, end_date=None):
 
-        order = order or {
+        order = {
             'newest': '-start',
             'oldest': 'start',
             'popular': 'popular',

@@ -43,7 +43,10 @@
     <section id="musicianContent" class="event-stripe search-tab-content">
         <div  class="search-artist-box-container">
           <img src="{% static 'image/search-icon.svg' %}">
-          <input id="artist-search" class="search-artist-box" name="q" type="text" placeholder="START TYPING AN ARTIST NAME"
+          <input id="artist-search"
+                 class="search-artist-box"
+                 name="q" type="text"
+                 placeholder="START TYPING AN ARTIST NAME"
                  autocomplete="off">
 
           <div class="instrument-btn white-border-button">Instrument</div>
@@ -58,7 +61,7 @@
       <div class="container-list-article">
 
         <div class="left_arrow artist-arrow-search artist-arrow-disabled">
-          <i class="fa fa-angle-left"></i>
+
         </div>
 
         <div id="artist-load-gif" class="loading-image">
@@ -71,17 +74,17 @@
 
         <div class="right_arrow artist-arrow-search"
              style="{% if artist_num_pages == 1 %}visibility: hidden;{% endif %}">
-          <i class="fa fa-angle-right"></i>
+
         </div>
 
       </div>
       <div class="flex-row items-center content-space-around">
         <div class="left_arrow artist-arrow-search artist-arrow-disabled visible-sm visible-xs">
-          <i class="fa fa-angle-left"></i>
+
         </div>
         
         <div class="right_arrow artist-arrow-search visible-sm visible-xs">
-          <i class="fa fa-angle-right"></i>
+
         </div>
       </div>
     </section>
