@@ -1,41 +1,57 @@
+{% load static from staticfiles %}
 <div class="flex-row content-space-between">
     <div>
-        <div class="title5">Seconds Viewed</div>
+            <div class="flex-column content-flex-end">
+                    <a href="{{ earning.payout_period.payout_spreadsheet.url }}" download>
+                        <button class="white-border-button">
+                            Download XLS
+                        </button>
+                    </a>
+                </div>
         <div>
-            <div class="title2">Archive pool</div>
-            <div class="text4 text-grey">{{ earning.payout_period.total_seconds }} seconds</div>
+            <div class="title2">Total archive usage this period</div>
+            <div class="text4 accent-color" id='past-event-seconds' data-seconds='{{ earning.payout_period.total_seconds }}'> </div>
         </div>
         <div>
-            <div class="title2">{{ artist.first_name }} {{ artist.last_name }}</div>
-            <div class="text4 text-grey">{{ earning.artist_seconds }} seconds</div>
+            <div class="title2">{{ artist.full_name }} this period</div>
+            <div class="text4 accent-color" id='past-artist-seconds' data-seconds='{{ earning.artist_seconds }}'></div>
         </div>
         <div>
             <div class="title2">Ratio</div>
-            <div class="text4 text-grey">{{ earning.artist_ratio|floatformat:"-5" }}% of archive
-                pool
+            <div class="text4 accent-color">{{ earning.artist_ratio|floatformat:"-5" }}% of archive pool
             </div>
         </div>
     </div>
     <div>
-        <div class="title5">Earnings</div>
         <div>
-            <div class="title2">Total pooled earnings</div>
-            <div class="text4 text-grey">$ {{earning.payout_period.total_amount|floatformat:"2"}}</div>
+            <div class="title2">Archive revenue this period</div>
+            <div class="text4 accent-color">$ {{earning.payout_period.total_amount|floatformat:"2"}}</div>
         </div>
         <div>
-            <div class="title2">{{ artist.first_name }} {{ artist.last_name }}'s share</div>
-            <div class="text4 text-grey">$ {{earning.amount|floatformat:"2"}}</div>
+            <div class="title2">{{ artist.full_name }}'s share this period</div>
+            <div class="text4 accent-color">$ {{earning.amount|floatformat:"2"}}</div>
         </div>
-        <div>
-            <div class="title2">Previous ledger balance</div>
-            <div class="text4 text-grey">$ {{earning.ledger_balance|floatformat:"2"}}</div>
-        </div>
-    </div>
-    <div class="flex-column content-flex-end">
-            <a href="{{ earning.payout_period.payout_spreadsheet.url }}" download>
-        <button class="white-border-button">
-                Download XLS
-        </button>
-            </a>
     </div>
 </div>
+
+{% block extra_js %}
+<script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+<script>
+    function formattedPayout(seconds) {
+        var hrs = Math.floor(seconds / 3600);
+        seconds -= hrs * 3600;
+        var mnts = Math.floor(seconds / 60);
+        seconds -= mnts * 60;
+        formattedString = hrs + " hrs " + mnts + " min " + seconds + " seconds"
+        return formattedString
+    }
+    var artistSeconds = document.getElementById('past-artist-seconds')
+    var eventsSeconds = document.getElementById('past-event-seconds')
+    var artistSecondsValue = $(artistSeconds).data('seconds')
+    var eventsSecondsValue = $(eventsSeconds).data('seconds')
+    $(document).ready(function () {
+        artistSeconds.innerHTML = formattedPayout(artistSecondsValue)
+        eventsSeconds.innerHTML = formattedPayout(eventsSecondsValue)
+
+    });
+</script> {% endblock %}

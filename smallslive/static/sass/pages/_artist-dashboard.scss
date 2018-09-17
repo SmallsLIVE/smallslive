@@ -1,10 +1,20 @@
 .artist-profile-container {
+    
     margin-bottom: 40px;
     @media (min-width: $screen-md-min) {
         padding: 0 15vw;
     }
     @media (max-width: $screen-sm-max) {
         padding: 20px;
+    }
+
+    .artist-dashboard-payout-title{
+    padding-left: 0;
+    display: flex;
+    align-items: flex-end;
+    text-decoration: none;
+    border-bottom: 5px solid #fff;
+    margin-bottom: 30px ;
     }
     .artist-events-list-info {
         width: 70%;
@@ -54,14 +64,14 @@
     }
     .artist-events-container {
         border-top: 3px solid $white-transparent;
-        height: 75vh;
+        height: 58vh;
     }
     .artist-event-details {
         width: 12vw;
     }
     .artist-event-arrow {
         margin: 0 auto;
-        height: 6vh;
+        height: 5vh;
         width: 1.2vh;
         display: flex;
         img {
@@ -74,8 +84,8 @@
         .artist-event-picture {
             @include filter(grayscale(100%));
             margin: 0px 30px;
-            height: 6vh;
-            width: 6vh;
+            height: 5vh;
+            width: 5vh;
             img {
                 width: 100%;
                 height: 100%;
@@ -161,7 +171,7 @@
             box-sizing: border-box;
         }
         .artist-event-info {
-            margin: 15px 0;
+            margin: 10px 0;
             @media (max-width: $screen-sm-max) {
                 .button-row {
                     margin-top: 20px;

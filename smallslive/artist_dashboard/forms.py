@@ -99,7 +99,7 @@ class ArtistInfoForm(forms.ModelForm):
         self.fields['state'].widget.attrs['class'] = 'form-control selectpicker'
         self.fields['country'].widget.attrs['class'] = 'form-control selectpicker'
         # default to US if nothing is set, initial not working as the form is bound
-        if not self.initial['country']:
+        if not self.initial.get('country'):
             self.initial['country'] = 'US'
         
         self.fields['first_name'].widget.attrs['placeholder'] = self.fields['first_name'].label

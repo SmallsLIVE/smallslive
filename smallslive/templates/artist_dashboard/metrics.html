@@ -1,172 +1,137 @@
-{% extends "artist_dashboard/home.html" %}
-{% load static from staticfiles %}
-{% load thumbor_tags %}
-{% load fromisoformat %}
-
-
-{% block home-active %}active{% endblock %}
-
-{% block title %}Home{% endblock %}
-
-{% block content %}
-    <div class="artist-profile-container">
-        <section class="section-title section-title-no-padded">
-            <div class="title1">Payout Period</div>
-        </section>
-        <div class="labeled-select">
-            <div class="white-border-select white-border-select-left" style="width: 250px; float:none">
-                <select id="artist_payout_select">
-                    <option value="current" class="text-grey">
-                        {{ current_payout_period.period_start|date:"b j, Y" }} - Current
-                    </option>
-                    {% for earning in user.artist.earnings.all %}
-                        <option value="{{ earning.id }}">
-                            {{ earning.payout_period.period_start|date:"b j, Y" }} -
-                            {{ earning.payout_period.period_end|date:"b j, Y" }}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
+{% extends "artist_dashboard/home.html" %} {% load static from staticfiles %} {% load thumbor_tags %} {% load fromisoformat
+%} {% block home-active %}active{% endblock %} {% block title %}Home{% endblock %} {% block content %}
+<div class="artist-profile-container">
+    <section class="artist-dashboard-payout-title">
+        <div class="title1">Pay Period</div>
+    </section>
+    <div class="labeled-select">
+        <div class="white-border-select white-border-select-left" style="width: 250px; float:none">
+            <select id="artist_payout_select">
+                <option value="current" class="text-grey">
+                    {{ current_payout_period.period_start|date:"b j, Y" }} - Current
+                </option>
+                {% for earning in user.artist.earnings.all %}
+                <option value="{{ earning.id }}">
+                    {{ earning.payout_period.period_start|date:"b j, Y" }} - {{ earning.payout_period.period_end|date:"b j, Y" }}
+                </option>
+                {% endfor %}
+            </select>
         </div>
-        <div class="artist-payout-data">
-            <div id="currentPayoutData">
+    </div>
+    <div class="artist-payout-data">
+        <div id="currentPayoutData">
                 <div class="flex-row content-space-between">
                     <div>
-                        <div class="title5">Seconds Viewed</div>
                         <div>
-                            <div class="title2">Archive pool</div>
-                            <div class="text4 text-grey">{{ current_payout_period.current_total_seconds }} seconds</div>
+                            <div class="title2">Total archive usage this period</div>
+                            <div class="text4 accent-color" data-seconds='{{ current_payout_period.current_total_seconds }}' id='event-seconds'></div>
                         </div>
                         <div>
-                            <div class="title2">{{ user.artist.full_name }}</div>
-                            <div class="text4 text-grey">{{ user.artist.current_period_seconds_played }} seconds</div>
+                            <div class="title2">{{ user.artist.full_name }} this period</div>
+                            <div class="text4 accent-color" data-seconds='{{ user.artist.current_period_seconds_played }}' id='artist-seconds'></div>
                         </div>
                         <div>
                             <div class="title2">Ratio</div>
-                            <div class="text4 text-grey">
-                                {{ user.artist.current_period_percentage_ratio|floatformat:"-5" }}% of
-                                archive
-                                pool
+                            <div class="text4 accent-color">
+                                {{ user.artist.current_period_percentage_ratio|floatformat:"-5" }}% of archive pool
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+
+                        <div>
+                            <div>
+                                <div class="title2">Archive revenue this period</div>
+                                <div class="text4 accent-color">$ {{earning.payout_period.total_amount|floatformat:"2"}}</div>
+                            </div>
+                            <div>
+                                <div class="title2">{{ user.artist.full_name }}'s share this period</div>
+                                <div class="text4 accent-color">$ {{earning.amount|floatformat:"2"}}</div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div id="payoutData">
-            </div>
+            
         </div>
-        <section class="section-title section-title-no-padded">
-            <div class="title1">Engagement</div>
-        </section>
-        <div class="flex-column">
-            <div class="flex-row content-space-between">
-                <div class="white-border-select white-border-select-left" style="width: 315px; float:none">
-                    <select id="artist-metrics-date-select">
-                        <option value="all" selected>All Time</option>
-                        {% for range in date_ranges %}
-                            <option value="{{ forloop.counter0 }}">{{ range.display }} | {{ range.start|fromisoformat|date:"b j, Y" }} - {{ range.end|fromisoformat|date:"b j, Y" }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-            </div>
-            <div>
-                <div class="graph-container" id="metric-graph__instance-1" style="height: 800px">
-                    <canvas class="graph-canvas" id="graph-canvas"></canvas>
-                </div>
-            </div>
+        <div id="payoutData">
         </div>
     </div>
-{% endblock content %}
+    <section class="artist-dashboard-payout-title">
+        <div class="title1">Payout info</div>
+    </section>
+    <div class="flex-column settings-right">
+
+        {% include 'artist_dashboard/artist-payout-form.html' %}
+
+    </div>
 
 
-{% block extra_js %}
-    <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
-    <script src="{% static 'js/Chart.min.js' %}"></script>
-    <script src="{% static 'js/metrics_datepicker.js' %}"></script>
-  <script>
 
-      var ranges = {{ date_ranges|safe }};
-      var selectedRange = 'all';
-      var payoutsUrl = '/dashboard/my-payouts';
-      var minsData = {
-          datasets: [
-              {
-                  label: "Total",
-                  backgroundColor: "rgba(210,21,53,0)",
-                  borderColor: "#ed1c24",
-                  pointBackgroundColor: "#000",
-                  pointBorderColor: "#000",
-                  pointHoverBackgroundColor: "#fff",
-                  pointHoverBorderColor: "rgba(220,220,220,1)"
-              }
-          ]
 
-      };
-      $(document).ready(function () {
-          var $payoutData = $('#payoutData');
-          var $currentPayoutData = $('#currentPayoutData');
+</div>
+{% endblock content %} {% block extra_js %}
+<script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+<script src="{% static 'js/Chart.min.js' %}"></script>
+<script src="{% static 'js/metrics_datepicker.js' %}"></script>
+<script>
 
-          $("#artist_payout_select").on('change', function () {
-              var payoutId = $("#artist_payout_select").val();
-              if (payoutId !== 'current') {
-                  $.ajax({
-                      url: payoutsUrl + '/' + payoutId,
-                      success: function (data) {
-                          $payoutData.html(data);
-                          $payoutData.show();
-                          $currentPayoutData.hide();
-                      }
-                  })
-              } else {
+    var ranges = {{ date_ranges| safe }};
+    var selectedRange = 'all';
+    var payoutsUrl = '/dashboard/my-payouts';
+    var minsData = {
+        datasets: [
+            {
+                label: "Total",
+                backgroundColor: "rgba(210,21,53,0)",
+                borderColor: "#ed1c24",
+                pointBackgroundColor: "#000",
+                pointBorderColor: "#000",
+                pointHoverBackgroundColor: "#fff",
+                pointHoverBorderColor: "rgba(220,220,220,1)"
+            }
+        ]
+
+    };
+    $(document).ready(function () {
+        var $payoutData = $('#payoutData');
+        var $currentPayoutData = $('#currentPayoutData');
+
+        $("#artist_payout_select").on('change', function () {
+            var payoutId = $("#artist_payout_select").val();
+            if (payoutId !== 'current') {
+                $.ajax({
+                    url: payoutsUrl + '/' + payoutId,
+                    success: function (data) {
+                        console.log(data);
+                        $payoutData.html(data);
+                        $payoutData.show();
+                        $currentPayoutData.hide();
+                    }
+                })
+            } else {
                 $payoutData.hide();
                 $currentPayoutData.show();
-              }
-          });
+            }
+        });
+    })
+</script>
 
-          $('#artist-metrics-date-select').on('change', function () {
-             loadData();
-          });
+<script>
+    function formattedPayout(seconds) {
+        var hrs = Math.floor(seconds / 3600);
+        seconds -= hrs * 3600;
+        var mnts = Math.floor(seconds / 60);
+        seconds -= mnts * 60;
+        formattedString = hrs + " hrs " + mnts + " min " + seconds + " seconds"
+        return formattedString
+    }
+    var artistSeconds = document.getElementById('artist-seconds')
+    var eventsSeconds = document.getElementById('event-seconds')
+    var artistSecondsValue = $(artistSeconds).data('seconds')
+    var eventsSecondsValue = $(eventsSeconds).data('seconds')
+    $(document).ready(function () {
+        artistSeconds.innerHTML = formattedPayout(artistSecondsValue)
+        eventsSeconds.innerHTML = formattedPayout(eventsSecondsValue)
 
-          var loadData = function () {
-              var setId = $("#artist_event_select").val();
-              var rangeSel = $('#artist-metrics-date-select').val();
-              var data = {};
-
-              if (setId !== 'all') {
-                data.set_id = setId;
-              }
-
-              if (rangeSel !== 'all') {
-                  selectedRange = parseInt(rangeSel, 10);
-                  data.start =  moment(ranges[selectedRange].start).format('YYYY-MM-DD');
-                  data.end =  moment(ranges[selectedRange].end).format('YYYY-MM-DD');
-              }
-
-              var countsURL = "{% url "event_counts" %}";
-              $.ajax(countsURL, {
-                  data: data,
-                  success: function (data, textStatus, jqXHR) {
-                      console.log(data)
-                      console.log(textStatus)
-                      console.log(jqXHR)
-                      minsData.labels = data.dates;
-                      minsData.datasets[0].data = data.total_minutes_list;
-                      updateGraph(minsData);
-                  },
-                  type: 'GET',
-                  xhrFields: {
-                      withCredentials: true
-                  }
-              });
-          };
-
-          $('#artist_event_select').on('change', function () {
-              loadData();
-          });
-
-          drawGraph({}, 'minutes');
-          loadData();
-      })
-  </script>
-{% endblock %}
+    });
+</script> {% endblock %}
