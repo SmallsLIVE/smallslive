@@ -1,5 +1,11 @@
 .artist-profile-container {
     
+    .labeled-select .white-border-select .select-items{
+        margin-top:0;
+        left: initial;
+        
+    }
+
     margin-bottom: 40px;
     @media (min-width: $screen-md-min) {
         padding: 0 15vw;
@@ -26,7 +32,7 @@
         }
         
         .artist-set-main{
-          padding-right: 60px;
+          padding-right: 3.13vw;
           width: 40%;
         .artist-set-header{
           justify-content: space-between;
@@ -83,7 +89,7 @@
         overflow-y: scroll;
         .artist-event-picture {
             @include filter(grayscale(100%));
-            margin: 0px 30px;
+            margin: 0px 1.56vw;
             height: 5vh;
             width: 5vh;
             img {
@@ -171,7 +177,7 @@
             box-sizing: border-box;
         }
         .artist-event-info {
-            margin: 10px 0;
+            margin: 0.52vw 0;
             @media (max-width: $screen-sm-max) {
                 .button-row {
                     margin-top: 20px;

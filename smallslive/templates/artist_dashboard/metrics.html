@@ -24,7 +24,8 @@
                     <div>
                         <div>
                             <div class="title2">Total archive usage this period</div>
-                            <div class="text4 accent-color" data-seconds='{{ current_payout_period.current_total_seconds }}' id='event-seconds'></div>
+                            <div class="text4 accent-color" data-seconds='{{  user.artist.current_payout_period.current_total_seconds }}' id='event-seconds'>
+                            </div>
                         </div>
                         <div>
                             <div class="title2">{{ user.artist.full_name }} this period</div>
