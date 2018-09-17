@@ -286,6 +286,7 @@ class Event(TimeStampedModel):
         event_ny_start = None
         event_ny_end = None
         current_timezone = timezone.get_current_timezone()
+        live = False
         for event_set in self.sets.all():
             print 'event set -> {} {}'.format(event_set.start, event_set.end)
             # Convert set times to UTC, they are in America/New York timezone
@@ -299,17 +300,10 @@ class Event(TimeStampedModel):
             print 'ny end: {}'.format(ny_end)
             ny_end = timezone.make_aware(ny_end, timezone=current_timezone)
             print 'ny end: {}'.format(ny_end)
-            if not event_ny_end or ny_end > event_ny_end:
-                event_ny_end = ny_end
+            if ny_start <= timezone.localtime(timezone.now()) < ny_end:
+                return True
 
-        print 'Compare:'
-        print event_ny_start
-        print timezone.localtime(timezone.now())
-        print event_ny_end
-
-        print '-----------------------------------------------'
-
-        return event_ny_start <= timezone.localtime(timezone.now()) < event_ny_end
+        return live
 
     def get_live_set(self):
         for event_set in self.sets.all():

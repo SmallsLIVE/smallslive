@@ -89,6 +89,7 @@ $mobile-event-card-width: $event-card-width / 1.5;
   &.next {
     width: 3.5vw;
     right: 0;
+    top: 4px;
     
     b:before {
       content: '\002b';
