@@ -151,6 +151,16 @@ class Event(TimeStampedModel):
     def __unicode__(self):
         return self.title
 
+    def get_date(self):
+
+        event_date = self.date
+
+        first_set = self.sets.all()[0]
+        if first_set.start.hour <= 5:
+            event_date = event_date - timedelta(days=1)
+
+        return event_date
+
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         if not self.slug:

@@ -40,8 +40,8 @@
     .artist-row {
       display: block;
       margin-bottom: 6px;
-      font-size: 1.2em;
-      line-height: 1.2em;
+      font-size: 16px;
+      line-height: 22px;
     }
 
     a {
@@ -92,6 +92,7 @@
 }
 
 .search-container {
+
   .container-list-article {
     display: flex;
     justify-content: center;
@@ -335,7 +336,7 @@
 .search-artist-box-container {
   position: relative;
   width: 700px;
-  margin: 0 auto;
+  margin: 10px auto;
 
   img {
     width: 21px;
