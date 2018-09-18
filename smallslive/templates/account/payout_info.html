@@ -60,6 +60,15 @@
                   <p class="form-error-text">{{ error  }}</p>
               {% endfor %}
             </div>
+            <div hidden class="account-settings__form__separator"> </div>
+            <label hidden for="payout_selection">Select your payout method</label>
+            <div hidden>
+              {% for choice in artist_info_form.payout_method %}
+                <div class="row_stack">
+                    <input type="radio" name="payout_method" value="{{ choice.choice_label }}" {% if 'Check' == choice.choice_label %}checked{% endif %} class="radio-button" /> <span class="radio-button__label">{{ choice.choice_label }}</span>
+                </div>
+              {% endfor %}
+            </div>
             </div>
             <input type="submit" class="white-border-button" name="artist_info" value="Save">
         </form>

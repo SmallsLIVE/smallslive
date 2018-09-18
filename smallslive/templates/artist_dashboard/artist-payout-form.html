@@ -1,8 +1,6 @@
 
-    <form  class="custom-form" role="form" method="post" action="{% if form_action %}{{ form_action }}{% else %}{% url "artist_dashboard:payout_form" %}{% endif %}">
+    <form  class="custom-form payout-form" role="form" method="post" action="{% if form_action %}{{ form_action }}{% else %}{% url "artist_dashboard:payout_form" %}{% endif %}">
             {% csrf_token %}
-            <h2 class="header">Payout information:</h2>
-            <p class="text4 text-grey">Enter a mailing address where we can send a check.</p>
             <div hidden class="form-group {% if artist_info_form.first_name.errors  %}has-error{% endif %}">
               {{ artist_info_form.first_name }}
               {% for error in artist_info_form.first_name.errors %}
@@ -36,7 +34,7 @@
                   {% endfor %}
                 </div>
             </div>
-            <div  hidden class=" zip-country">
+            <div class=" zip-country">
                 <div class="form-group {% if artist_info_form.zip.errors  %}has-error{% endif %}">
                   {{ artist_info_form.zip }}
                   {% for error in artist_info_form.zip.errors %}
@@ -46,7 +44,7 @@
             </div>
             </div>
             <div class="form-group {% if artist_info_form.state.errors  %}has-error{% endif %}">
-            <div class="white-border-select" style="width: 100%;">
+            <div class="white-border-select"  style="width: 100%; padding-bottom: 20px;">
               {{ artist_info_form.state }}
               {% for error in artist_info_form.state.errors %}
                   <p class="form-error-text">{{ error  }}</p>
@@ -54,23 +52,23 @@
             </div>
             </div>
             <div class="form-group {% if artist_info_form.country.errors  %}has-error{% endif %}">
-            <div class="white-border-select" style="width: 100%;">
+            <div class="white-border-select"  style="width: 100%; padding-bottom: 20px;">
               {{ artist_info_form.country }}
               {% for error in artist_info_form.country.errors %}
                   <p class="form-error-text">{{ error  }}</p>
               {% endfor %}
             </div>
-            <div class="account-settings__form__separator"></div>
-            <label for="payout_selection">Select your payout method</label>
-            <div>
+            <div hidden class="account-settings__form__separator"> </div>
+            <label hidden for="payout_selection">Select your payout method</label>
+            <div hidden>
               {% for choice in artist_info_form.payout_method %}
                 <div class="row_stack">
-                    <input type="radio" name="payout_method" value="{{ choice.choice_label }}" {% if choice.value == choice.choice_label %}checked{% endif %} class="radio-button" /> <span class="radio-button__label">{{ choice.choice_label }}</span>
+                    <input type="radio" name="payout_method" value="{{ choice.choice_label }}" {% if 'Check' == choice.choice_label %}checked{% endif %} class="radio-button" /> <span class="radio-button__label">{{ choice.choice_label }}</span>
                 </div>
               {% endfor %}
             </div>
-
-            <div class="form-group {% if artist_info_form.state.errors  %}has-error{% endif %}">
+       
+            <div hidden class="form-group {% if artist_info_form.state.errors  %}has-error{% endif %}">
                     {% if artist_info_form.non_field_errors %}
                         {% for error in artist_info_form.non_field_errors %}
                           <p class="form-error-text">{{ error }}</p>

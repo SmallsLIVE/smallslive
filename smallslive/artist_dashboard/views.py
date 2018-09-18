@@ -376,10 +376,24 @@ class MetricsView(HasArtistAssignedMixin, FormView):
         if first_login:
             self.request.user.last_login += timedelta(seconds=1)
             self.request.user.save()
-        context['artist_info_form'] = context['form']
+          # if this is a POST request we need to process the form data
+        if 'artist_info' in self.request.POST:
+            # create a form instance and populate it with data from the request:
+            artist_info_form = ArtistInfoForm(data=self.request.POST, instance=self.request.user)
+            # check whether it's valid:
+            if artist_info_form.is_valid():
+                artist_info_form.save(self.request)
+                messages.success(self.request, "You've successfully updated your payoutinfo.")
+                return redirect('artist_dashboard:metrics_payout') 
+        # if a GET (or any other method) we'll create a blank form
+        else:
+            artist_info_form = ArtistInfoForm(instance=self.request.user)
+
+        context['artist_info_form'] = artist_info_form
+      
         return context
 
-metrics = MetricsView.as_view()
+metrics = MetricsView.as_view(success_url='/dashboard/my-metrics/')
 
 
 class EditProfileView(HasArtistAssignedMixin, UpdateView):

@@ -127,8 +127,8 @@ class ArtistInfoForm(forms.ModelForm):
             if not state:
                 self.add_error('state', 'You must select a valid US state or territory.')
             taxpayer_id = cleaned_data.get('taxpayer_id')
-            if not taxpayer_id:
-                self.add_error('taxpayer_id', 'You must enter a valid taxpayer ID as a US citizen.')
+            # if not taxpayer_id:
+            #     self.add_error('taxpayer_id', 'You must enter a valid taxpayer ID as a US citizen.')
             self.fields['state'].clean(state)
             self.fields['taxpayer_id'].clean(state)
         else:

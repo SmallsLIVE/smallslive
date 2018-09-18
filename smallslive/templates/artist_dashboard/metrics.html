@@ -20,12 +20,12 @@
     </div>
     <div class="artist-payout-data">
         <div id="currentPayoutData">
-                <div class="flex-row content-space-between">
+            <div class="flex-row content-space-between">
+                  <div class="flex-row content-space-between">
                     <div>
                         <div>
                             <div class="title2">Total archive usage this period</div>
-                            <div class="text4 accent-color" data-seconds='{{  user.artist.current_payout_period.current_total_seconds }}' id='event-seconds'>
-                            </div>
+                            <div class="text4 accent-color" data-seconds='{{ current_payout_period.current_total_seconds }}' id='event-seconds'></div>
                         </div>
                         <div>
                             <div class="title2">{{ user.artist.full_name }} this period</div>
@@ -38,21 +38,9 @@
                             </div>
                         </div>
                     </div>
-                    <div>
-
-                        <div>
-                            <div>
-                                <div class="title2">Archive revenue this period</div>
-                                <div class="text4 accent-color">$ {{earning.payout_period.total_amount|floatformat:"2"}}</div>
-                            </div>
-                            <div>
-                                <div class="title2">{{ user.artist.full_name }}'s share this period</div>
-                                <div class="text4 accent-color">$ {{earning.amount|floatformat:"2"}}</div>
-                            </div>
-                        </div>
-                    </div>
+                   
                 </div>
-            
+            </div>
         </div>
         <div id="payoutData">
         </div>

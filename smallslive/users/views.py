@@ -261,7 +261,7 @@ def user_settings_view_new(request):
         if edit_profile_form.is_valid():
             edit_profile_form.save(request)
             messages.success(request, "You've successfully updated your profile.")
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/accounts/settings/')
     # if a GET (or any other method) we'll create a blank form
     else:
         edit_profile_form = EditProfileForm(user=request.user)
@@ -280,7 +280,7 @@ def user_settings_view_new(request):
         if change_password_form.is_valid():
             change_password_form.save()
             messages.success(request, 'Your password has been changed successfully.')
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/accounts/settings/')
     else:
         change_password_form = ChangePasswordForm(user=request.user)
     
@@ -292,7 +292,7 @@ def user_settings_view_new(request):
         if artist_info_form.is_valid():
             artist_info_form.save(request)
             messages.success(request, "You've successfully updated your profile.")
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect('/accounts/settings/')
     # if a GET (or any other method) we'll create a blank form
     else:
         artist_info_form = ArtistInfoForm(instance=request.user)
