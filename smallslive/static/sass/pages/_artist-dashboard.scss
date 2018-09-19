@@ -242,6 +242,10 @@
             
             }
         }
+
+        &:hover {
+            background-color: $white-transparent;
+        }
     }
 }
 
@@ -381,4 +385,61 @@
     @media (max-width: $screen-sm-max) {
         margin-left: 10px;
     }
+}
+
+.artist-metrics-header {
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+}
+
+.datepicker-dashboard-btn {
+    position: relative;
+    display: inline-block;
+    width: 140px;
+    align-self: center; 
+    margin-bottom: 2px;
+    cursor: pointer;
+}
+
+.datepicker-dashboard-btn:after {
+    content: " ";
+    height: 0;
+    width: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
+    position: absolute;
+    right: 0px;
+    top: 12px;
+    transition: all 0.3s linear;
+    cursor: pointer;
+    pointer-events: inherit;
+    z-index: -1;
+}
+
+.datepicker-dashboard-container {
+    top: 330px;
+
+    .datepicker {
+        left: 158px !important;
+    }
+}
+
+.datepicker-dashboard-left-panel {
+    position: absolute;
+    top: 40px;
+    border-right: solid 2px white;
+    height: calc(100% - 40px);
+    width: 140px;
+
+    > div:nth-child(-n + 2) {
+        font-weight: bold;
+    }
+}
+
+.datepicker-dashboard-left-panel-item {
+    padding: 5px;
+    padding-left: 12px;
+    cursor: pointer;
 }

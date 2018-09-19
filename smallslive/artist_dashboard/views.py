@@ -1,4 +1,5 @@
 from datetime import timedelta
+import time
 from dateutil.relativedelta import relativedelta
 from cacheops import cached
 from django.conf import settings
@@ -265,6 +266,31 @@ class MyPastEventsInfoView(DetailView):
                 'end': month_start.isoformat()
             }
         ]
+
+        today = timezone.datetime.today().replace(day=1)
+
+        ranges = []
+        ranges.append({
+            'content': 'All Time',
+            'date': 'all'
+        })
+        ranges.append({
+            'content': 'This Period',
+            'date': 'period'
+        })
+
+        for i in range(1, 7):
+            start = (today - relativedelta(years=i)).replace(day=1, month=1)
+            end = start.replace(day=31, month=12)
+            ranges.append({
+                'content': start.strftime('%m/%d/%Y') + ' - ' + end.strftime('%m/%d/%y'),
+                'date': start.year,
+                'start': int(time.mktime(start.timetuple())) * 1000,
+                'end': int(time.mktime(end.timetuple())) * 1000
+            })
+        
+        context['datepicker_ranges'] = ranges
+
         return context
 
 my_past_events_info = MyPastEventsInfoView.as_view()
