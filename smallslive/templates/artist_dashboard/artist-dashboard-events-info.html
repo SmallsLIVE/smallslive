@@ -64,15 +64,30 @@
     </div>
     </div>
     <div class="artist-metrics-container">
-        <select id="artist-metrics-date-select">
-            <option value="all" selected>All Time</option>
-            {% for range in date_ranges %}
-                <option value="{{ forloop.counter0 }}">
-                    {{ range.display }} | {{ range.start|fromisoformat|date:"b j, Y" }} -
-                    {{ range.end|fromisoformat|date:"b j, Y" }}
-                </option>
-            {% endfor %}
-        </select>
+        <div class="datepicker-container noclick datepicker-dashboard-container">
+            <div class="datepicker-dashboard-left-panel">
+                {% for range in datepicker_ranges %}
+                <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="custom-date-picker" id="search-date-picker-from">
+                <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+            </div>
+    
+            <div class="custom-date-picker" id="search-date-picker-to">
+                <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+            </div>
+    
+            <div class="white-border-button" id="apply-button">Apply</div>
+        </div>
+            
+                
+        <div class="artist-metrics-header white-line-bottom flex-row">
+                <div class="title1 datepicker-dashboard-btn">Metrics</div>
+            <div class="text2" id="datepicker-description">All Time</div>
+        </div>
+
         <div class="event-metrics-container flex-row">
             <div class="event-metrics-container-plays event-metrics-container-data">
                 <div class="text3">Plays</div>
@@ -125,11 +140,12 @@
 
     <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
     <script src="{% static 'js/Chart.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
 
     <script>
+        var eventDateFrom = new Date(2000, 0, 1);
+        var eventDateTo = new Date();
 
-        var ranges = {{ date_ranges| safe }};
-        var selectedRange = 'all';
         var payoutsUrl = '/dashboard/my-payouts';
         var minsData = {
             datasets: [
@@ -148,20 +164,13 @@
         $(document).ready(function () {
             var plays = document.getElementById("play-value");
             var time = document.getElementById("time-value");
-            $('#artist-metrics-date-select').on('change', function () {
-                loadData();
-            });
 
             var loadData = function () {
-                var rangeSel = $('#artist-metrics-date-select').val();
                 var data = {};
                 data.set_id = {{ event_set.id }};
 
-                if (rangeSel !== 'all') {
-                    selectedRange = parseInt(rangeSel, 10);
-                    data.start = moment(ranges[selectedRange].start).format('YYYY-MM-DD');
-                    data.end = moment(ranges[selectedRange].end).format('YYYY-MM-DD');
-                }
+                data.start = moment(eventDateFrom).format('YYYY-MM-DD');
+                data.end = moment(eventDateTo).format('YYYY-MM-DD');
 
                 var countsURL = "{% url 'event_counts' %}";
                 $.ajax(countsURL, {
@@ -175,7 +184,7 @@
                             function (e, acc) {
                                 return e + acc;
                             }, 0);
-                        time.innerHTML = moment.utc(((playedMinutes*60))*1000).format('HHH:mm:ss');
+                        time.innerHTML = moment.utc((playedMinutes*60)*1000).format('HH:mm:ss');
                     },
                     type: 'GET',
                     xhrFields: {
@@ -183,8 +192,131 @@
                     }
                 });
             };
-        $('#artist_event_select').on('change', loadData());
+
         loadData();
-      })
+
+
+        $(".datepicker-dashboard-left-panel > div").click(function () {
+            //alert($(this).data('start'));
+
+            if ($(this).data('date') == "all") {
+                $("#search-date-picker-from input").datepicker("update", new Date(2000, 0, 1));
+                $("#search-date-picker-to input").datepicker("update", new Date());
+            } else if ($(this).data('date') == "period") {
+                d = new Date();
+                d.setFullYear(d.getFullYear() - 1);
+                $("#search-date-picker-from input").datepicker("update", d);
+                $("#search-date-picker-to input").datepicker("update", new Date());
+            } else {
+                $("#search-date-picker-from input").datepicker("update", new Date($(this).data('start')));
+                $("#search-date-picker-to input").datepicker("update", new Date($(this).data('end')));
+            }
+
+            eventDateFrom = $("#search-date-picker-from input").datepicker('getDate');
+            eventDateTo = $("#search-date-picker-to input").datepicker('getDate');
+
+            $("#datepicker-description").html($(this).text());
+
+            $("#search-date-picker-to input").click();
+            $("#search-date-picker-to input").focus();
+        });
+
+        ////////////////
+
+        $('.datepicker-dashboard-btn').bind("click", ToggleDisplay);
+
+        function ToggleDisplay() {
+            if ($(".datepicker-container").data('shown'))
+                hide();
+            else 
+                display();
+        }
+
+        function display() {
+            $(".datepicker-container").css("display", "flex").hide().fadeIn(500, function() {
+                $(document).bind("click", hide);
+                $(".datepicker-container").data('shown', true);
+            });
+
+            $("#search-date-picker-from input").click();
+            $("#search-date-picker-from input").focus();
+        }
+
+        function hide() {   
+            if (($(window.event.toElement).closest('.noclick').length == 0) &&
+            (!($(window.event.toElement).hasClass("day") || $(window.event.toElement).hasClass("year")))) {
+                $(".datepicker-container").fadeOut(500, function () {
+                    $(document).unbind("click");
+                    $(".datepicker-container").data('shown', false);
+                });
+            }
+        }
+
+        /////////////////////
+
+        var $datePickerFrom = $('#search-date-picker-from input');
+        $datePickerFrom.datepicker({
+            format: 'mm/dd/yyyy',
+            autoclose: true,
+            container: '#search-date-picker-from',
+            showOnFocus: false
+        });
+
+        $datePickerFrom.on('changeDate', function (newDate) {
+            eventDateFrom = newDate.date;
+            $("#search-date-picker-to input").click();
+            $("#search-date-picker-to input").focus();
+        });
+
+        $datePickerFrom.on('click', function () {
+            var dropdown = $('#search-date-picker .dropdown-menu');
+            if (dropdown[0] && dropdown[0].style.display === 'block') {
+                $datePickerFrom.datepicker('hide');
+            } else {
+                $datePickerFrom.datepicker('show');
+            }
+        });
+
+        //////////////////////
+
+        var $datePickerTo = $('#search-date-picker-to input');
+        $datePickerTo.datepicker({
+            format: 'mm/dd/yyyy',
+            autoclose: false,
+            container: '#search-date-picker-to',
+            showOnFocus: false
+        });
+
+        $datePickerTo.on('changeDate', function (newDate) {
+            eventDateTo = newDate.date;
+
+            from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
+            to = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
+
+            $("#datepicker-description").html(from + " - " + to);
+        });
+
+        $datePickerTo.on('click', function () {
+            var dropdown = $('#search-date-picker .dropdown-menu');
+            if (dropdown[0] && dropdown[0].style.display === 'block') {
+                $datePickerTo.datepicker('hide');
+            } else {
+                $datePickerTo.datepicker('show');
+            }
+        });
+
+        ///////////
+
+        $("#apply-button").click(function () {
+            $(".datepicker-container").fadeOut(500, function () {
+                $(document).unbind("click");
+                $(".datepicker-container").data('shown', false);
+            });
+
+            loadData();
+        });
+
+    });
+
     </script>
 {% endblock %}
