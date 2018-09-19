@@ -196,6 +196,10 @@ $text-font-size-big: 1.4em;
   letter-spacing: 0;
   text-transform: uppercase;
   transform: scaleY(1.2);
+
+  @media(max-width: 1024px) {
+    font-size: 4.5vw;
+  }
 }
 
 .title4 {
