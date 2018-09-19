@@ -4,6 +4,7 @@ $line-height-medium: 2.17em;
 $line-height-big: 2.51em;
 $line-height-bigger: 2.68em;
 
+$text-font-size-smaller: 1em;
 $text-font-size-small: 1.25em;
 $text-font-size-medium: 1.2em;
 $text-font-size-big: 1.4em;
@@ -299,6 +300,23 @@ $text-font-size-big: 1.4em;
   letter-spacing: 0;
   font-size: $text-font-size-small;
   line-height: $line-height-smaller;
+}
+
+.text9 {
+  @include reen-kufi-normal;
+  letter-spacing: 0.02em;
+  font-size: $text-font-size-big;
+}
+@mixin text10 {
+  @include reen-kufi-normal;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  font-size: $text-font-size-smaller;
+  line-height: $line-height-medium;
+}
+
+.text10 {
+  @include text10;
 }
 
 // Links

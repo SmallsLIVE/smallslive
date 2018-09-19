@@ -1,5 +1,29 @@
 .artist-profile-container {
     
+    .payout-info-button{
+        width: 10%;
+        height: 30px;
+    }
+    .payout-bar{
+        position: relative;
+        width: 24%;
+        flex-direction: row-reverse; 
+        justify-content: space-between;
+        .select-selected{
+            width:100%;
+        }
+        .payout-info-container{
+            position: absolute;
+            margin-top: 38px;
+            border: 2px solid #fff;
+            .fa-times{
+                text-align: right
+            }
+        }
+        .payout-bar-button{
+            padding: 0px 30px;
+        }
+    }
     .payout-form{
         width:33%;
     }
@@ -143,10 +167,9 @@
     }
 
     .labeled-select {
+        margin-bottom:20px;
+        justify-content: space-between;
         display: flex;
-        button {
-            border-right: none;
-        }
         .select-items {
             margin-top: 5px;
         }
@@ -287,9 +310,15 @@
 }
 
 .artist-payout-data {
-    margin: 25px 0 45px;
+    margin: 0 0 10px 0;
     .title2 {
         margin-top: 20px;
+    }
+    .artist-payout-data-text{
+        margin-bottom: 20px;
+    }
+    .artist-payout-data-left{
+        margin-right: 250px;
     }
 }
 

@@ -39,7 +39,7 @@
                             <div class="form-group {% if form.photo.errors %}has-error{% endif %}">
                                 {{ form.cropping }}
                                 <div {% if form.cropping.value %} class="hide-original"{% endif %}>
-                                        <!-- {{ form.photo.label_tag }} -->
+                                        {{ form.photo }}
                                 </div>
                                 {% for error in form.photo.errors %}
                                     <p class="form-error-text">{{ error }}</p>
