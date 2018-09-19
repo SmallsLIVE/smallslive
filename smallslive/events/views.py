@@ -153,9 +153,12 @@ def order_events_by_popular(sqs):
         return list(sqs.order_by('-date')[:10])
 
 
-def get_today_and_tomorrow_events():
+def get_today_and_tomorrow_events(just_today=False):
+    days=2
+    if just_today:
+        days=1
     date_range_start = get_today_start()
-    date_range_end = date_range_start + timedelta(days=2)
+    date_range_end = date_range_start + timedelta(days=days)
     qs = Event.objects.filter(start__gte=date_range_start,
                               start__lte=date_range_end)
     qs = qs.order_by('start')
@@ -308,7 +311,7 @@ class EventDetailView(DetailView):
         context['related_videos'] = Event.objects.event_related_videos(event)
 
         if event.is_today:
-            context['streaming_tonight_videos'] = get_today_and_tomorrow_events()
+            context['streaming_tonight_videos'] = get_today_and_tomorrow_events(just_today=True)
             live_set = event.is_live
             if live_set:
                 next_event_ids = get_today_and_tomorrow_events().values_list('id', flat=True)
@@ -356,6 +359,7 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
     inlines_names = ['artists', 'sets']
 
     def get_context_data(self, **kwargs):
+
         context = super(EventEditView, self).get_context_data(**kwargs)
         context['artists'].helper = GigPlayedInlineFormSetHelper()
         if 'sets' in context:
@@ -373,6 +377,7 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
     def post(self, *args, **kwargs):
         response = super(EventEditView, self).post(*args, **kwargs)
         check_staff_picked(self.object, self.request.POST.get('staff_pick', 'off') == 'on')
+
         return response
 
 

@@ -168,7 +168,20 @@ class Event(TimeStampedModel):
         super(Event, self).save(force_insert, force_update, using, update_fields)
 
     def get_set_hours_display(self):
-        all_sets = list(self.sets.all().values_list('start', flat=True))
+
+        time_format = '%-I:%M %p'
+
+        all_sets = self.sets.all()
+
+        print '***********'
+        print self.full_title()
+        print all_sets
+
+        if len(all_sets) == 1:
+            event_set = all_sets[0]
+            return '{} - {}'.format(event_set.start.strftime(time_format),
+                                    event_set.end.strftime(time_format))
+        all_sets = list(all_sets.values_list('start', flat=True))
 
         def midnight_sort(x, y):
             x_stamp = x.hour * 60 + x.minute
@@ -185,7 +198,7 @@ class Event(TimeStampedModel):
         sorted_sets = sorted(all_sets, cmp=midnight_sort)
 
         return ' & '.join(
-            [d.strftime('%-I:%M %p') for d in sorted_sets]
+            [d.strftime(time_format) for d in sorted_sets]
         )
 
     def get_absolute_url(self):
@@ -563,7 +576,6 @@ def get_today_start():
     else:
         start = now_ny
 
-    print start
     return start
 
 

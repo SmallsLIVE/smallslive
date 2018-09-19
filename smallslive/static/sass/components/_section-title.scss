@@ -45,6 +45,10 @@
     &.title1, &.title2 {
       line-height: 1.1em;
       margin-bottom: 4px;
+
+      &.header-sub {
+        margin-bottom: 0;
+      }
     }
 
     &.title7 {
