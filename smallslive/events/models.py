@@ -294,42 +294,26 @@ class Event(TimeStampedModel):
 
     @property
     def is_live(self):
-        print 'EVENT'
-        print self.date
+        return bool(self.get_live_set())
+
+    def get_live_set(self):
         event_ny_start = None
-        event_ny_end = None
         current_timezone = timezone.get_current_timezone()
-        live = False
+        live_set = None
         for event_set in self.sets.all():
-            print 'event set -> {} {}'.format(event_set.start, event_set.end)
             # Convert set times to UTC, they are in America/New York timezone
             ny_start = datetime.combine(self.date, event_set.start)
             ny_start = timezone.make_aware(ny_start, timezone=current_timezone)
             if not event_ny_start or ny_start < event_ny_start:
                 event_ny_start = ny_start
-            print 'ny start {}'.format(ny_start)
 
             ny_end = datetime.combine(self.date, event_set.end)
-            print 'ny end: {}'.format(ny_end)
-            ny_end = timezone.make_aware(ny_end, timezone=current_timezone)
-            print 'ny end: {}'.format(ny_end)
-            if ny_start <= timezone.localtime(timezone.now()) < ny_end:
-                return True
-
-        return live
-
-    def get_live_set(self):
-        for event_set in self.sets.all():
-            # Convert set times to UTC, they are in America/New York timezone
-            ny_start = datetime.combine(self.date, event_set.start)
-            ny_end = datetime.combine(self.date, event_set.end)
-            current_timezone = timezone.get_current_timezone()
-            ny_start = timezone.make_aware(ny_start, timezone=current_timezone)
             ny_end = timezone.make_aware(ny_end, timezone=current_timezone)
             if ny_start <= timezone.localtime(timezone.now()) < ny_end:
-                return event_set
+                live_set = event_set
+                break
 
-        return None
+        return live_set
 
     @property
     def is_today(self):
@@ -574,7 +558,7 @@ def get_today_start():
         start = now_ny - timedelta(days=1)
         start = start.replace(hour=22, minute=0)
     else:
-        start = now_ny
+        start = now_ny.replace(hour=5, minute=0)
 
     return start
 

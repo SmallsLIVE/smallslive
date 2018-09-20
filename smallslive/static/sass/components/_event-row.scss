@@ -266,7 +266,11 @@ $mobile-event-card-width: $event-card-width / 1.5;
     position: absolute;
 
     left: 0;
-    bottom: 3px;
+    bottom: 2px;
+
+    &.links1 {
+      line-height: normal;
+    }
 
     > span {
       color: $white-transparent;
