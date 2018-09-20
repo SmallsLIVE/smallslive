@@ -1,11 +1,11 @@
 .supporter-main-container {
-  padding: 100px 20px;
+  padding: 20px;
   align-items: center;
   position: relative;
 
   overflow: hidden;
-  margin: 0 200px;
-  min-height: 800px;
+  margin: 30px 200px;
+  min-height: 680px;
 
   @media(max-width:$screen-md-max) {
     margin: 0;
@@ -13,11 +13,21 @@
       margin-bottom: 160px;
     }
   }
-
-  .lighten-image {
+  .text2{
+    letter-spacing: 0.3em;
+  }
+  .supporter-image {
     height: 100%;
     width: 100%;
-
+    position: absolute;
+    top: 0;
+    left: 0;
+  
+    z-index: -1;
+    img {
+      width: 100%;
+    }
+  
     .banner-container {
       &::before {
         content: ' ';
@@ -34,11 +44,16 @@
   }
 
   > p {
-    margin-bottom: 25px;
+    padding: 25px;
   }
-
+  .title7{
+    margin:0 auto;
+  }
   .confirm-button {
     margin-top: 70px;
+    .button-bordered{
+      padding: 0 30px;
+    }
   }
 
   .supporter-card-data {
@@ -68,7 +83,8 @@
 }
 
 .supporter-text {
-  padding: 130px 200px 20px;
+  text-align: justify;
+  padding: 130px 100px 20px;
 
   @media(max-width:$screen-md-max) {
     padding: 20px;
@@ -80,7 +96,6 @@
 
   p {
     line-height: 1.1em;
-    margin-bottom: 80px;
   }
 
 

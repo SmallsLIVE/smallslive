@@ -49,10 +49,11 @@ artist_edit = ArtistEditView.as_view()
 class ArtistDetailView(DetailView):
     model = Artist
     context_object_name = 'artist'
-
+    
     def get_context_data(self, **kwargs):
         context = super(ArtistDetailView, self).get_context_data(**kwargs)
         context['facebook_app_id'] = settings.FACEBOOK_APP_ID
+        print(vars(context['artist']))
         return context
 
 artist_detail = ArtistDetailView.as_view()

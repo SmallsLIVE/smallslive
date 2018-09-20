@@ -2,7 +2,7 @@
 {% load fromisoformat %}
 
 {% with set=event_set %}
-    <div class="artist-set-actions flex-row">
+    <div class="artist-set-actions">
         <div class="button-row button-row-margin">
             {% if is_admin and set.has_media %}
                 <a href="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <div class="flex-row">
+    <div class="header-metrics-container">
         <div class='artist-set-main'>
             <div class="artist-event-info flex-column wrap">
                 <div class="flex-row artist-set-header">

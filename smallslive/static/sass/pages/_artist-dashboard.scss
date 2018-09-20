@@ -20,6 +20,7 @@
             .fa-times{
                 text-align: right;
                 width: 100%;
+                padding-right: 5px;
             }
             .payout-info-text{
                 line-height: $line-height-small;
@@ -28,7 +29,11 @@
             }
         }
         .payout-bar-button{
+            font-size: $text-font-size-smaller;
             padding: 0px 35px;
+            @media (max-width: 991px) {
+                height: 35px;
+            }       
         }
         .payout-bar-button:hover{
             background-color: $white-transparent;
@@ -45,9 +50,10 @@
     }
 
     margin-bottom: 40px;
-    @media (min-width: $screen-md-min) {
-        padding: 0 15vw;
+    @media (max-width: 1024px) {
+        padding:0
     }
+    padding: 0 15vw;
     @media (max-width: $screen-sm-max) {
         padding: 20px;
     }
@@ -62,6 +68,9 @@
     }
     .artist-events-list-info {
         width: 70%;
+        @media (max-width: 1024px) {
+            width: 40%;
+        }
         .artist-set-download{
           width: 3.8em;
         }
@@ -72,6 +81,10 @@
         .artist-set-main{
           padding-right: 3.13vw;
           width: 40%;
+          @media (max-width: 1024px) {
+            width: 100%;
+
+        }
         .artist-set-header{
           justify-content: space-between;
 
@@ -109,12 +122,17 @@
     .artist-events-container {
         border-top: 3px solid $white-transparent;
         height: 620px;
+        @media (max-width: 1024px) {
+            justify-content: center;
+            height: 800px;
+        }
+        
     }
     .artist-event-details {
-        width: 12vw;
+        width: 11vw;
     }
     .artist-event-arrow {
-        margin: 0 auto;
+        margin: auto;
         height: 5vh;
         width: 9px;
         display: flex;
@@ -124,6 +142,9 @@
     }
     .artist-events-list {
         width: 30%;
+        @media (max-width: 1024px) {
+            width: 40%;
+        }
         overflow-y: scroll;
         .artist-event-picture {
             @include filter(grayscale(100%));
@@ -140,12 +161,23 @@
     .artist-events-list-info{
       padding-left: 60px;
       padding-top: 30px;
-
+    
+      .header-metrics-container{
+          display: flex;
+        flex-direction: row;
+        @media (max-width: 1024px) {
+            flex-direction: column;
+            }
+      }
       .artist-set-actions{
+        display: flex;
         padding-bottom: 30px;
       }
       .artist-set-leader{
         padding:10px 0;
+        @media (max-width: 1024px) {
+            padding:10px 0 30px 0;
+            }
       }
       .set-changer{
         padding: 10px 0;
@@ -166,6 +198,10 @@
       }
       .artist-metrics-container{
         width: 60%;
+        @media (max-width: 1024px) {
+            width: 100%;
+            .title1{ line-height: initial;}
+        }
       .event-metrics-container-plays{
         border-right: 3px solid $accent-color;
         padding-right: 10px;
@@ -185,14 +221,20 @@
             margin-top: 5px;
         }
         .white-border-select{
-            button{
+            font-size: inherit;
+            .white-border-button{
+                font-size: $text-font-size-smaller;
                 border-right: none;
+                @media (max-width: 991px) {
+                    height: 35px;
+                    
+                }       
             }
             .select-selected{
                 border-left: none;
                 color:$accent-color;
                 padding: 0px 40px;
-
+                     
             }
         }
     }
@@ -225,9 +267,11 @@
         }
         .artist-event-info {
             margin: 0.52vw 0;
-            @media (max-width: $screen-sm-max) {
+            @media (max-width: 1024px) {
+                margin: 20px 0;
                 .button-row {
                     margin-top: 20px;
+                    
                 }
             }
         }
@@ -267,6 +311,10 @@
 
 .artist-archive-filter {
     margin-bottom: 30px;
+    @media (max-width: 1024px) {
+        margin-left: 115px;
+  
+    }
     .white-border-select {
         width: 8vw;
         float: none;

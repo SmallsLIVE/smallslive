@@ -4,34 +4,32 @@
 
 {% block home_content %}
   <div class="flex-column supporter-main-container">
-    {% fullstatic 'image/banners/supporter.jpg' as banner_picture_url %}
-    <div class="lighten-image">
+      {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
+    <div class="supporter-image">
         <div style="
-                {% include 'partials/thumbored_picture_style.html' with photo_url=banner_picture_url %}
+        background-image:url( {% static 'image/supporter-background.jpg' %} ); background-size: cover; position: absolute; width: 100%; height: 100%; z-index: -1; left:0;
+
                 ">
         </div>
         <div class="banner-blur-container"></div>
     </div>
     {% if not completed %}
-      <p class="title2 accent-color">Become a supporting member</p>
+      <p class="text2 accent-color">Become a supporting member</p>
     {% else %}
-      <p class="title2 accent-color">You are now a supporting member</p>
+      <p class="text2 accent-color">You are now a supporting member</p>
     {% endif %}
     <div class="flex-column items-center">
       <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover">
-        <p {% if not completed %}class="active"{% endif %}>Step 1</p>
-        <p>Step 2</p>
-        <p>Step 3</p>
-        <p {% if completed %}class="active"{% endif %}>Step 4</p>
+        <div class="{% if not completed %}active{% endif %} step-button"></div>
+        <div class="step-button"></div>
+        <div class="step-button"></div>
+        <div class="{% if completed %}active{% endif %} step-button"></div>
       </div>
       {% if not completed %}
       <div id="supporterStep1">
         <div class="supporter-text flex-column">
-          <p class="title7"><span class="big-letter">T</span>hank you for your consideration in becoming a smallslive supporting member. Supporting members make <span class="accent-color">monthly pledges</span> or <span class="accent-color">yearly donations</span>.
-            <br>
-            <br>
-          The revenue is distributed to our musicians based on the <span class="accent-color">Smallslive revenue share aggreement</span>. Your support directly pays the musicians and subsidizes the club's expenses.
-          </p>
+            <p class="title7"><span class="big-letter">T</span>HE <span class='accent-color'>SMALLSLIVE FOUNDATION</span> IS A <span class='accent-color'>NOT-FOR-PROFIT</span> ORGANIZED FOR THE PURPOSE OF THE <span class='accent-color'>DISSEMINATION OF JAZZ MUSIC</span> THROUGH OUR ARCHIVE, LIVE STREAMS, SPONSORSHIP OF INDIVIDUAL JAZZ PROJECTS & TOURS, EDUCATION, AND LIVE PERFORMACES AT SMALLS & MEZZROW. WE ARE SUPPORTED BY OUR MEMBERS THROUGH <span class='accent-color underline'>TAX DEDUCTIBLE DONATIONS.</span></p>
+        </p>
         </div>
       </div>
       <div id="supporterStep2" style="display: none">
@@ -127,7 +125,6 @@
     </div>
     <div class="button-row button-row-margin confirm-button">
       {% if not completed %}
-        <button id="backButton" class="button-bordered">Back</button>
         <button id="confirmButton" class="button-bordered">Confirm</button>
       {% else %}
         <a href="{% url 'archive' %}">
@@ -142,5 +139,5 @@
       </div>
     {% endif %}
   </div>
-  <script src="{% static 'js/become-member.js' %}"></script>
+  <script src="{% static 'js/become-member.js' %}"></script> 
 {% endblock %}
