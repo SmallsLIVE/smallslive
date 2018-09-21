@@ -1,23 +1,53 @@
 .supporter-main-container {
-  padding: 100px 20px;
+  .payment-information{
+    margin-top:60px;
+  }
+
+  .supporter-plan-input{
+    padding: 20px 0;
+  }
+  input{
+    background-color: transparent;
+  }
+  .text9{text-align: center;}
+  .step-button{
+    margin-right: 20px;
+    border-radius: 50%;
+    height: 15px;
+    width: 15px;
+    background-color: $gray-light;
+    &.active{
+      background-color: #fff; 
+    }
+  }
+  padding: 20px;
   align-items: center;
   position: relative;
 
   overflow: hidden;
-  margin: 0 200px;
-  min-height: 800px;
+  margin: 30px 200px;
+  min-height: 680px;
 
+  #supporterSteps {
+    padding-bottom: 30px;}
   @media(max-width:$screen-md-max) {
     margin: 0;
-    #supporterSteps {
-      margin-bottom: 160px;
-    }
   }
-
-  .lighten-image {
+  .text2{
+    letter-spacing: 0.3em;
+  }
+  .supporter-image {
     height: 100%;
     width: 100%;
-
+    position: absolute;
+    top: 0;
+    left: 0;
+  
+    z-index: -1;
+    img {
+      width: 100%;
+    }
+  
     .banner-container {
       &::before {
         content: ' ';
@@ -34,11 +64,19 @@
   }
 
   > p {
-    margin-bottom: 25px;
+    padding: 30px 0 10px 0;
   }
-
+  .title7{
+    margin:0 auto;
+  }
+  .title1{
+    margin:0 auto;
+  }
   .confirm-button {
-    margin-top: 70px;
+    margin-top: 50px;
+    .button-bordered{
+      padding: 0 30px;
+    }
   }
 
   .supporter-card-data {
@@ -68,7 +106,8 @@
 }
 
 .supporter-text {
-  padding: 130px 200px 20px;
+  text-align: justify;
+  padding: 130px 100px 20px;
 
   @media(max-width:$screen-md-max) {
     padding: 20px;
@@ -80,7 +119,6 @@
 
   p {
     line-height: 1.1em;
-    margin-bottom: 80px;
   }
 
 
@@ -93,11 +131,34 @@
     margin-right: -15px;
   }
 }
-
+.form-control::placeholder {
+  color:black;
+}
 .button-row {
   .custom-input {
-    @include input-icon('$', black);
-
+    position: relative;
+    input:focus + label {
+      visibility:hidden
+    }
+    .no-spinners{
+      & + label{
+        z-index: -1;
+        top:0;
+        left: 50%;
+        height: auto;
+        margin: auto 0;
+        text-align: center;
+        position: absolute;
+        &>div{
+          left: -50%;
+          position: relative;
+        }
+      }
+    }
+    
+    .no-spinners::placeholder {
+      color:black;
+  }
     &:before {
       top: 2px;
       left: 20px;

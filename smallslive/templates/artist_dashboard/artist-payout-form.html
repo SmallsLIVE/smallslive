@@ -1,15 +1,13 @@
 
-    <form  class="custom-form" role="form" method="post" action="{% url "user_settings_new" %}">
+    <form  class="custom-form payout-form" role="form" method="post" action="{% url 'artist_dashboard:payout_form'%}">
             {% csrf_token %}
-            <h2 class="header">Payout information:</h2>
-            <p class="text4 text-grey">Enter a mailing address where we can send a check.</p>
-            <div class="form-group {% if artist_info_form.first_name.errors  %}has-error{% endif %}">
+            <div hidden class="form-group {% if artist_info_form.first_name.errors  %}has-error{% endif %}">
               {{ artist_info_form.first_name }}
               {% for error in artist_info_form.first_name.errors %}
                   <p class="form-error-text">{{ error  }}</p>
               {% endfor %}
             </div>
-            <div class="form-group {% if artist_info_form.last_name.errors  %}has-error{% endif %}">
+            <div hidden class="form-group {% if artist_info_form.last_name.errors  %}has-error{% endif %}">
               {{ artist_info_form.last_name }}
               {% for error in artist_info_form.last_name.errors %}
                   <p class="form-error-text">{{ error  }}</p>
@@ -27,8 +25,8 @@
                   <p class="form-error-text">{{ error  }}</p>
               {% endfor %}
             </div>
-            <div class="flex-row content-space-between">
-            <div class="flex-column zip-country">
+            <div style="width: 50%;">
+            <div  class="flex-column zip-country">
                 <div class="form-group {% if artist_info_form.city.errors  %}has-error{% endif %}">
                   {{ artist_info_form.city }}
                   {% for error in artist_info_form.city.errors %}
@@ -36,7 +34,7 @@
                   {% endfor %}
                 </div>
             </div>
-            <div class="flex-column zip-country">
+            <div hidden class=" zip-country">
                 <div class="form-group {% if artist_info_form.zip.errors  %}has-error{% endif %}">
                   {{ artist_info_form.zip }}
                   {% for error in artist_info_form.zip.errors %}
@@ -46,7 +44,7 @@
             </div>
             </div>
             <div class="form-group {% if artist_info_form.state.errors  %}has-error{% endif %}">
-            <div class="white-border-select" style="width: 100%;">
+            <div class="white-border-select"  style="width: 100%; padding-bottom: 20px;">
               {{ artist_info_form.state }}
               {% for error in artist_info_form.state.errors %}
                   <p class="form-error-text">{{ error  }}</p>
@@ -54,11 +52,12 @@
             </div>
             </div>
             <div class="form-group {% if artist_info_form.country.errors  %}has-error{% endif %}">
-            <div class="white-border-select" style="width: 100%;">
+            <div class="white-border-select"  style="width: 100%; padding-bottom: 20px;">
               {{ artist_info_form.country }}
               {% for error in artist_info_form.country.errors %}
                   <p class="form-error-text">{{ error  }}</p>
               {% endfor %}
+            </div>
             </div>
             <div hidden class="account-settings__form__separator"> </div>
             <label hidden for="payout_selection">Select your payout method</label>
@@ -69,7 +68,30 @@
                 </div>
               {% endfor %}
             </div>
+       
+            <div hidden class="form-group {% if artist_info_form.state.errors  %}has-error{% endif %}">
+                    {% if artist_info_form.non_field_errors %}
+                        {% for error in artist_info_form.non_field_errors %}
+                          <p class="form-error-text">{{ error }}</p>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="form-group {% if artist_info_form.paypal_email.errors  %}has-error{% endif %}">
+                      {{ artist_info_form.paypal_email.label_tag }}
+                      {{ artist_info_form.paypal_email }}
+                      {% for error in artist_info_form.paypal_email.errors %}
+                          <p class="form-error-text">{{ error  }}</p>
+                      {% endfor %}
+                    </div>
+                    <div class="form-group {% if artist_info_form.paypal_email_again.errors  %}has-error{% endif %}">
+                      {{ artist_info_form.paypal_email_again.label_tag }}
+                      {{ artist_info_form.paypal_email_again }}
+                      {% for error in artist_info_form.paypal_email_again.errors %}
+                          <p class="form-error-text">{{ error  }}</p>
+                      {% endfor %}
+
+                    </div>
             </div>
+            {{form.errors}}
             <input type="submit" class="white-border-button" name="artist_info" value="Save">
         </form>
     

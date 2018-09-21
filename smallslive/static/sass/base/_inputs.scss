@@ -69,7 +69,6 @@
   position: relative;
 
   &::before {
-    background-image: url('/static/image/search-icon.svg');
     background-repeat: no-repeat;
     content: $content;
     font-family: 'FontAwesome', serif;

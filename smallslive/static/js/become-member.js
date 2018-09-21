@@ -1,6 +1,6 @@
 $(document).ready(function(){
   var monthlyQuantities = [10, 20, 50];
-  var yearlyQuantities = [1000, 2000, 5000];
+  var yearlyQuantities = [100, 500, 1000];
 
   var currentStep = 0;
   var backButton = $("#backButton");
@@ -38,10 +38,14 @@ $(document).ready(function(){
   var updatePaymentInfo = function () {
     var pledgeType = selectedData.type;
     var pledgeAmount = selectedData.quantity;
-
-    $('.supporterType').text(pledgeType);
-    $('#supporterQuantity').text(pledgeAmount);
-
+    console.log(pledgeType)
+    if( pledgeType === 'year'){
+      $('#pledge-type').html('You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' + pledgeAmount +'</span> .');
+      $('#payment-type').html('Your  card  will  be  charged  in  this  amount.');
+    }else if( pledgeType === 'month') {
+      $('#pledge-type').html('You’ve  selected  to  pledge <span class="accent-color">$' + pledgeAmount +'.00 per month</span> . ');
+      $('#payment-type').html('Your  card  will  be  billed  monthly  until  you  choose  to  cancel.');
+    }
     $('#hiddenQuantityInput').val(pledgeAmount);
     $('#hiddenTypeInput').val(pledgeType);
   };
@@ -107,6 +111,7 @@ $(document).ready(function(){
   $(yearlyCustom).on('change', function (event) {
     var value = $(yearlyCustom).val();
     if (value) {
+      console.log('has value!', value);
       resetButtons();
       $(montlyCustom).val('');
       setSelected('year', value);

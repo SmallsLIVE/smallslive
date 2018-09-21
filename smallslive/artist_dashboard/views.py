@@ -1,4 +1,5 @@
 from datetime import timedelta
+import time
 from dateutil.relativedelta import relativedelta
 from cacheops import cached
 from django.conf import settings
@@ -19,7 +20,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import TemplateView, DetailView, FormView
 from django.views.generic.edit import UpdateView
 from django.views.generic.list import ListView
 from braces.views import SuperuserRequiredMixin
@@ -265,6 +266,31 @@ class MyPastEventsInfoView(DetailView):
                 'end': month_start.isoformat()
             }
         ]
+
+        today = timezone.datetime.today().replace(day=1)
+
+        ranges = []
+        ranges.append({
+            'content': 'All Time',
+            'date': 'all'
+        })
+        ranges.append({
+            'content': 'This Period',
+            'date': 'period'
+        })
+
+        for i in range(1, 7):
+            start = (today - relativedelta(years=i)).replace(day=1, month=1)
+            end = start.replace(day=31, month=12)
+            ranges.append({
+                'content': start.strftime('%m/%d/%Y') + ' - ' + end.strftime('%m/%d/%y'),
+                'date': start.year,
+                'start': int(time.mktime(start.timetuple())) * 1000,
+                'end': int(time.mktime(end.timetuple())) * 1000
+            })
+        
+        context['datepicker_ranges'] = ranges
+
         return context
 
 my_past_events_info = MyPastEventsInfoView.as_view()
@@ -308,8 +334,9 @@ class DashboardView(HasArtistAssignedMixin, TemplateView):
 dashboard = DashboardView.as_view()
 
 
-class MetricsView(HasArtistAssignedMixin, TemplateView):
+class MetricsView(HasArtistAssignedMixin, FormView):
     template_name = 'artist_dashboard/metrics.html'
+    form_class = ArtistInfoForm
 
     def get_context_data(self, **kwargs):
         context = super(MetricsView, self).get_context_data(**kwargs)
@@ -336,6 +363,7 @@ class MetricsView(HasArtistAssignedMixin, TemplateView):
         first_login = self.request.user.is_first_login()
         context['current_payout_period'] = CurrentPayoutPeriod.objects.first()
         context['previous_payout_period'] = artist.earnings.first()
+        context['form_action'] = self.request.get_full_path()
 
         today = timezone.datetime.today()
         month_start = today.replace(day=1)
@@ -374,9 +402,24 @@ class MetricsView(HasArtistAssignedMixin, TemplateView):
         if first_login:
             self.request.user.last_login += timedelta(seconds=1)
             self.request.user.save()
+          # if this is a POST request we need to process the form data
+        if 'artist_info' in self.request.POST:
+            # create a form instance and populate it with data from the request:
+            artist_info_form = ArtistInfoForm(data=self.request.POST, instance=self.request.user)
+            # check whether it's valid:
+            if artist_info_form.is_valid():
+                artist_info_form.save(self.request)
+                messages.success(self.request, "You've successfully updated your payoutinfo.")
+                return redirect('artist_dashboard:metrics_payout') 
+        # if a GET (or any other method) we'll create a blank form
+        else:
+            artist_info_form = ArtistInfoForm(instance=self.request.user)
+
+        context['artist_info_form'] = artist_info_form
+      
         return context
 
-metrics = MetricsView.as_view()
+metrics = MetricsView.as_view(success_url='/dashboard/my-metrics/')
 
 
 class EditProfileView(HasArtistAssignedMixin, UpdateView):
@@ -620,7 +663,7 @@ def artist_settings(request):
         if artist_info_form.is_valid():
             artist_info_form.save(request)
             messages.success(request, "You've successfully updated your profile.")
-            return redirect('artist_dashboard:settings')
+            return redirect('artist_dashboard:settings') 
     # if a GET (or any other method) we'll create a blank form
     else:
         artist_info_form = ArtistInfoForm(instance=request.user)
@@ -648,7 +691,6 @@ def artist_settings(request):
         'artist_info_form': artist_info_form,
         'change_password_form': change_password_form,
     })
-
 
 class DashboardLoginView(allauth_views.LoginView):
     success_url = reverse_lazy('artist_dashboard:home')
@@ -694,6 +736,7 @@ password_reset_from_key_done = ResetPasswordFromKeyDoneView.as_view()
 
 
 class ArtistPayoutAjaxView(HasArtistAssignedMixin, DetailView):
+    
     template_name = 'artist_dashboard/artist-dashboard-payout.html'
     model = ArtistEarnings
 
@@ -710,3 +753,22 @@ class ArtistPayoutAjaxView(HasArtistAssignedMixin, DetailView):
 
 
 artist_payout_detail_ajax = ArtistPayoutAjaxView.as_view()
+
+@login_required
+def payout_form(request):
+    # if this is a POST request we need to process the form data
+    if 'artist_info' in request.POST:
+        # create a form instance and populate it with data from the request:
+        artist_info_form = ArtistInfoForm(data=request.POST, instance=request.user)
+        # check whether it's valid:
+        if artist_info_form.is_valid():
+            artist_info_form.save(request)
+            messages.success(request, "You've successfully updated your profile.")
+            return redirect('/dashboard/my-metrics/') 
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        artist_info_form = ArtistInfoForm(instance=request.user)
+
+    return render(request, 'artist_dashboard/artist-payout-form.html', {
+        'artist_info_form': artist_info_form,
+    })

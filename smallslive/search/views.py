@@ -273,7 +273,7 @@ class ArtistInfo(View):
         id = request.GET.get('id', None)
         
         artist = Artist.objects.filter(pk=id).first()
-        
+        print(vars(artist))
         context = {'artist': artist}
         template = 'artists/artist_detail_search.html'
 

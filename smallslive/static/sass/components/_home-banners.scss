@@ -59,6 +59,8 @@ $banners-height: 38vh;
 
         #banner-text {
           @include title-banner;
+          text-align: justify;
+          font-size: 33px;
           margin: 0;
           padding-left: 30px;
           padding-right: 30px;

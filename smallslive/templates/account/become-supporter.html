@@ -4,79 +4,78 @@
 
 {% block home_content %}
   <div class="flex-column supporter-main-container">
-    {% fullstatic 'image/banners/supporter.jpg' as banner_picture_url %}
-    <div class="lighten-image">
+      {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
+    <div class="supporter-image">
         <div style="
-                {% include 'partials/thumbored_picture_style.html' with photo_url=banner_picture_url %}
+        background-image:url( {% static 'image/supporter-background.jpg' %} ); background-size: cover; position: absolute; width: 100%; height: 100%; z-index: -1; left:0;
+
                 ">
         </div>
         <div class="banner-blur-container"></div>
     </div>
     {% if not completed %}
-      <p class="title2 accent-color">Become a supporting member</p>
+      <p class="text2 accent-color">Become a supporting member</p>
     {% else %}
-      <p class="title2 accent-color">You are now a supporting member</p>
+      <p class="text2 accent-color">You are now a supporting member</p>
     {% endif %}
     <div class="flex-column items-center">
       <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover">
-        <p {% if not completed %}class="active"{% endif %}>Step 1</p>
-        <p>Step 2</p>
-        <p>Step 3</p>
-        <p {% if completed %}class="active"{% endif %}>Step 4</p>
+        <div class="{% if not completed %}active{% endif %} step-button"></div>
+        <div class="step-button"></div>
+        <div class="step-button"></div>
+        <div class="{% if completed %}active{% endif %} step-button"></div>
       </div>
       {% if not completed %}
       <div id="supporterStep1">
         <div class="supporter-text flex-column">
-          <p class="title7"><span class="big-letter">T</span>hank you for your consideration in becoming a smallslive supporting member. Supporting members make <span class="accent-color">monthly pledges</span> or <span class="accent-color">yearly donations</span>.
-            <br>
-            <br>
-          The revenue is distributed to our musicians based on the <span class="accent-color">Smallslive revenue share aggreement</span>. Your support directly pays the musicians and subsidizes the club's expenses.
-          </p>
+            <p class="title7"><span class="big-letter">T</span>HE <span class='accent-color'>SMALLSLIVE FOUNDATION</span> IS A <span class='accent-color'>NOT-FOR-PROFIT</span> ORGANIZED FOR THE PURPOSE OF THE <span class='accent-color'>DISSEMINATION OF JAZZ MUSIC</span> THROUGH OUR ARCHIVE, LIVE STREAMS, SPONSORSHIP OF INDIVIDUAL JAZZ PROJECTS & TOURS, EDUCATION, AND LIVE PERFORMACES AT SMALLS & MEZZROW. WE ARE SUPPORTED BY OUR MEMBERS THROUGH <span class='accent-color underline'>TAX DEDUCTIBLE DONATIONS.</span></p>
+
         </div>
       </div>
       <div id="supporterStep2" style="display: none">
-        <div class="flex-column items-center">
+          <div class="text9">You will receive access to our Audio/Video Archive for as long as you are a Supporting Member.<br> Supporting Members may make either monthly pledges or yearly donations. Please choose what is best for you.</div>
+
+        <div class="flex-column items-center supporter-plan-input">
           <div class="section-title section-title-no-padded">
-            <div class="title7">Monthly Pledge</div>
+            <div class="title1">Monthly Pledge</div>
           </div>
-          <p class="text4">Includes Monthly Access To Archive</p>
+          <p class="text9">Monthly Pledges are billed automatically and can be canceled at any time.</p>
           <div id="monthlyPledge" class="button-row button-row-big button-row-margin">
             <button>$ 10</button>
             <button>$ 20</button>
             <button>$ 50</button>
-            <div class="custom-input">
-              <input type="number" class="no-spinners" placeholder="Set your own">
+            <div class="custom-input text4">
+              <input type="number" class="no-spinners" value="supporter-monthly-pledge">
+              <label for="supporter-monthly-pledge"><div>SET YOUR OWN</div></label>
             </div>
           </div>
         </div>
-        <div class="flex-column items-center">
+        <div class="flex-column items-center  supporter-plan-input">
           <div class="section-title section-title-no-padded">
-            <div class="title7">Yearly Donation</div>
+            <div class="title1">Yearly Donation</div>
           </div>
-          <p class="text4">Includes One Year Access To Archive</p>
+          <p class="text9">Yearly Pledges are a one time donation that gives you one year’s access to the Audio/Video Archive.</p>
           <div id="yearlyPledge" class="button-row button-row-big button-row-margin">
+            <button>$ 100</button>
+            <button>$ 500</button>
             <button>$ 1000</button>
-            <button>$ 2000</button>
-            <button>$ 5000</button>
-            <div class="custom-input">
-              <input type="number" class="no-spinners bigger"
-                     placeholder="Enter amount (Min. $1000)">
+            <div class="custom-input text4">
+              <input type="number" class="no-spinners" value="supporter-yearly-pledge">
+              <label for="supporter-yearly-pledge"><div>ENTER  AMOUNT<br>(MIN  $100)</div></label>
             </div>
           </div>
         </div>
       </div>
       <div id="supporterStep3" style="display: none">
-        <div class="flex-column flex-grow">
+        <div class="flex-column flex-grow payment-information">
           <div class="flex-column">
             <div class="section-title section-title-no-padded">
               <div class="title7">Payment Information</div>
             </div>
           </div>
-          <div class="text4 flex-column">
-            <p>You've selected a <span class="supporterType"></span>ly Membership for <span
-                    class="accent-color">$<span id="supporterQuantity"></span>/<span class="supporterType"></span></span>.</p>
-            <p>Your credit card will be charged monthly for full access to our
-              Archive.</p>
+          <div class="text9 flex-column">
+            <p id="pledge-type"></p>
+            <p id="payment-type"></p>
           </div>
           <div class="supporter-card-data">
             <form method="POST" role="form" id="formSupporter"
@@ -95,7 +94,7 @@
                   <input type="text" class="form-control"
                          name="credit_card_number"
                          placeholder="Credit Card Number">
-                  <input type="number" class="form-control"
+                  <input type="number" class="form-control no-spinners"
                          name="credit_card_cvc" placeholder="CVC">
                 </div>
                 <div class="form-group">
@@ -114,12 +113,9 @@
       </div>
       {% else %}
         <div id="supporterStep4" class="flex-column items-center supporter-text-container">
-          <h1 class="title3">Welcome</h1>
           <div class="supporter-text">
-            <p class="title7"><span class="big-letter">T</span>hank you for becoming a supporting member.
-              You now have unlimited access to the <span
-                      class="accent-color">live stream</span> and the <span
-                      class="accent-color">smallslive archive</span>. Feel free to browse our videos of nearly every concert performed at smalls + mezzrow with new concerts added weekly. By listening to your favorite artist you are getting them paid.
+            <p class="title7"><span class="big-letter">T</span>
+              hank you for becoming a <span class='accent-color'>supporting member</span> of the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.  <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span> please enjoy our livestreams and extensive audio/video archive.
             </p>
           </div>
         </div>
@@ -127,7 +123,7 @@
     </div>
     <div class="button-row button-row-margin confirm-button">
       {% if not completed %}
-        <button id="backButton" class="button-bordered">Back</button>
+      <button id="backButton" class="button-bordered">Back</button>
         <button id="confirmButton" class="button-bordered">Confirm</button>
       {% else %}
         <a href="{% url 'archive' %}">
@@ -142,5 +138,5 @@
       </div>
     {% endif %}
   </div>
-  <script src="{% static 'js/become-member.js' %}"></script>
+  <script src="{% static 'js/become-member.js' %}"></script> 
 {% endblock %}
