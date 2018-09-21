@@ -123,6 +123,7 @@
     </div>
     <div class="button-row button-row-margin confirm-button">
       {% if not completed %}
+      <button id="backButton" class="button-bordered">Back</button>
         <button id="confirmButton" class="button-bordered">Confirm</button>
       {% else %}
         <a href="{% url 'archive' %}">
