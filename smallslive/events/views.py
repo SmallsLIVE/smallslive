@@ -5,7 +5,7 @@ import datetime
 from datetime import time as std_time
 from cacheops import cached
 from django.core import signing
-from django.db.models import Count, Q, Sum
+from django.db.models import Count, F, Q, Sum
 import monthdelta
 import json
 from django.conf import settings
@@ -154,16 +154,49 @@ def order_events_by_popular(sqs):
 
 
 def get_today_and_tomorrow_events(just_today=False):
-    days=2
-    if just_today:
-        days=1
-    date_range_start = get_today_start()
-    date_range_end = date_range_start + timedelta(days=days)
-    qs = Event.objects.filter(start__gte=date_range_start,
-                              start__lte=date_range_end)
-    qs = qs.order_by('start')
+    # All the complexity comes from the events after midnight being
+    # considered to be the same before, but internally date is real.
 
-    return qs
+    # cover one day or two
+    days = 2
+    if just_today:
+        days = 1
+    date_range_start = get_today_start()
+    # if 00:00 - 5:00 am, exclude the previous day.
+    if date_range_start.hour <= 5:
+        days -= 1
+
+    date_range_end = date_range_start + timedelta(days=days)
+
+    # Initial range. This includes all events from the day
+    # even if they have already concluded
+    # It also includes 1:00 am - 4:00 am and 7:30 pm
+    # (which are considered different days)
+    qs = Event.objects.filter(date__gte=date_range_start,
+                              date__lte=date_range_end)
+
+    # There is currently no way of sorting events by event sets
+    # without having an ordering field.
+    # Sorting manually
+
+    events = list(qs)
+    events = Event.sorted(events)
+    while True:
+        event = events[0]
+        if event.is_past:
+            events.pop(0)
+        else:
+            break
+
+    while True:
+        event = events[-1]
+        start, end = event.get_range()
+        if start.hour > 5:
+            events.pop()
+        else:
+            break
+
+    return events
 
 
 class HomepageView(ListView, UpcomingEventMixin):

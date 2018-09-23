@@ -149,15 +149,17 @@ class Event(TimeStampedModel):
         ordering = ['-start']
 
     def __unicode__(self):
-        return self.title
+        return '{} - {}'.format(self.title, self.date)
 
     def get_date(self):
 
         event_date = self.date
 
-        first_set = self.sets.all()[0]
-        if first_set.start.hour <= 5:
-            event_date = event_date - timedelta(days=1)
+        first_set = list(self.sets.all())
+        if first_set:
+            first_set = first_set[0]
+            if first_set.start.hour <= 5:
+                event_date = event_date - timedelta(days=1)
 
         return event_date
 
@@ -172,10 +174,6 @@ class Event(TimeStampedModel):
         time_format = '%-I:%M %p'
 
         all_sets = self.sets.all()
-
-        print '***********'
-        print self.full_title()
-        print all_sets
 
         if len(all_sets) == 1:
             event_set = all_sets[0]
@@ -278,12 +276,83 @@ class Event(TimeStampedModel):
             display_title = self.sidemen_with_instruments_string()
         return display_title
 
+    @staticmethod
+    def sets_order(set1, set2):
+
+        if set1.start.hour <= 5 and set2.start.hour <= 5 or \
+                                set1.start.hour > 5 and set2.start.hour > 5:
+            if set1.start < set2.start:
+                return -1
+            elif set1.start > set2.start:
+                return 1
+            else:
+                return 0
+        elif set1.start.hour <= 5:
+            return 1
+        elif set2.start.hour <= 5:
+            return -1
+
+    @staticmethod
+    def events_order(event1, event2):
+        if event1.date < event2.date:
+            return -1
+        elif event1.date > event2.date:
+            return 1
+        else:
+            sets1 = list(event1.sets.all())
+            sets1 = sorted(sets1, Event.sets_order)
+            start1 = sets1[0].start
+            sets2 = list(event2.sets.all())
+            sets2 = sorted(sets2, Event.sets_order)
+            start2 = sets2[0].start
+            if start1 < start2:
+                return -1
+            elif start1 > start2:
+                return 1
+            else:
+                return 0
+
+    @staticmethod
+    def sorted(events):
+        return sorted(events, Event.events_order)
+
+    def get_range(self):
+        sets = list(self.sets.all())
+        sets = sorted(sets, Event.sets_order)
+        start = sets[0].start
+        end = sets[-1].end
+
+        return start, end
+
     @property
     def is_past(self):
         """
         Checks if the event happened in the past and already ended.
         """
-        return self.end < timezone.now()
+        sets = list(self.sets.all())
+        sets = sorted(sets, Event.sets_order)
+
+        local_datetime = timezone.localtime(timezone.now())
+        local_date = local_datetime.date()
+        local_time = local_datetime.time()
+
+        if self.date < local_date:
+            start = sets[0].start
+            end = sets[-1].end
+            if start < end:
+                return True
+            else:
+                return local_date - timedelta(days=1) == self.date
+
+        elif self.date > local_date:
+            return False
+        else:
+            start = sets[0].start
+            end = sets[-1].end
+            if start.hour < end.hour:
+                return local_time > end
+            else:
+                return False
 
     @property
     def is_future(self):
@@ -294,24 +363,39 @@ class Event(TimeStampedModel):
 
     @property
     def is_live(self):
-        return bool(self.get_live_set())
+
+        local_datetime = timezone.localtime(timezone.now())
+        local_date = local_datetime.date()
+        local_time = local_datetime.time()
+
+        start, end = self.get_range()
+
+        if local_date == self.date:
+            if start < local_time < end:
+                return True
+
+            if end < start < local_time:
+                return True
+
+        return False
 
     def get_live_set(self):
-        event_ny_start = None
-        current_timezone = timezone.get_current_timezone()
-        live_set = None
-        for event_set in self.sets.all():
-            # Convert set times to UTC, they are in America/New York timezone
-            ny_start = datetime.combine(self.date, event_set.start)
-            ny_start = timezone.make_aware(ny_start, timezone=current_timezone)
-            if not event_ny_start or ny_start < event_ny_start:
-                event_ny_start = ny_start
+        sets = list(self.sets.all())
+        sets = sorted(sets, Event.sets_order)
 
-            ny_end = datetime.combine(self.date, event_set.end)
-            ny_end = timezone.make_aware(ny_end, timezone=current_timezone)
-            if ny_start <= timezone.localtime(timezone.now()) < ny_end:
-                live_set = event_set
-                break
+        local_datetime = timezone.localtime(timezone.now())
+        local_date = local_datetime.date()
+        local_time = local_datetime.time()
+
+        live_set = None
+        for item in sets:
+            if local_date == self.date:
+                if item.start < local_time < item.end:
+                    live_set = item
+                    break
+                if item.end < item.start < local_time:
+                    live_set = item
+                    break
 
         return live_set
 
@@ -549,16 +633,15 @@ class StaffPick(models.Model):
 
 
 def get_today_start():
-    """Assuming that before 1am NY it's still the same date as the day before."""
+    """Assuming that before 5am NY it's still the same date as the day before."""
 
-    now_ny = timezone.localtime(timezone.now())
-    # up until 1 am the current set has the previous day's date.
-    # so we need to set the start date at 10:00 pm the day before
-    if now_ny.hour == 0 and now_ny.minute <= 59:
-        start = now_ny - timedelta(days=1)
-        start = start.replace(hour=22, minute=0)
-    else:
-        start = now_ny.replace(hour=5, minute=0)
+    delta = 0
+    start = timezone.localtime(timezone.now())
+    if start.hour <=5:
+        delta = 1
+    start = start.replace(hour=6, minute=0)
+
+    start = start - timedelta(days=delta)
 
     return start
 
