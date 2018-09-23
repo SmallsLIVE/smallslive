@@ -50,7 +50,7 @@ function init(){
 
     $next.each(function () {
         $(this).css('visibility', 'hidden');
-        var $last = $(this).prev().find('article').last();
+        var $last = $(this).next().find('article').last();
         if ($last.is(':offscreen')) {
             $(this).css('visibility', 'visible');
         }
@@ -69,7 +69,7 @@ function controls(){
 
     $next.each(function () {
         $(this).css('visibility', 'hidden');
-        var $last = $(this).prev().find('article').last();
+        var $last = $(this).next().find('article').last();
         if ($last.is(':offscreen')) {
             $(this).css('visibility', 'visible');
         }
@@ -81,12 +81,12 @@ function controls(){
         var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
         var margin = vw * 0.0078;
         var frameWidth = vw - $next.width() * 2;
-        var $row = $next.prev();
+        var $row = $next.next();
         var left = - parseFloat($row.css('marginLeft')) + frameWidth;
         $row.animate({
             marginLeft: - left
         }, 400, function(){
-            var $prev = $row.prev();
+            var $prev = $row.prev().prev();
             $prev.css('visibility', 'visible');
             $next.css('visibility', 'hidden');
             var $last = $row.find('article').last();
@@ -99,8 +99,8 @@ function controls(){
     $(document).on('click', 'div.slide-btn.prev', function(){
         var $prev = $(this);
         var $win = $(window);
-        var $row = $prev.next();
-        var $next = $row.next();
+        var $row = $prev.next().next();
+        var $next = $prev.next();
         scrollWidth = 0;
         $row.animate({
             marginLeft: + scrollWidth

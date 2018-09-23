@@ -53,6 +53,7 @@ body {
 
   main {
     overflow: hidden;
+    position: relative;
     width: 100vw;
 
     @media (max-width: 960px) {

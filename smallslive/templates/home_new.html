@@ -46,8 +46,8 @@
           </div>
           <main>
             <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-            {% include 'events/event_row.html' with events=new_in_archive secondary=True %}
             <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+            {% include 'events/event_row.html' with events=new_in_archive secondary=True %}
           </main>
 
         </section>
@@ -67,8 +67,8 @@
           </div>
           <main id="most-popular-container">
             <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-            {% include 'events/event_row.html' with events=popular_in_archive secondary=True %}
             <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+            {% include 'events/event_row.html' with events=popular_in_archive secondary=True %}
           </main>
         </section>
         <section class="event-stripe">
@@ -77,8 +77,8 @@
           </div>
           <main>
             <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-            {% include 'events/event_row.html' with events=staff_picks secondary=True %}
             <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+            {% include 'events/event_row.html' with events=staff_picks secondary=True %}
           </main>
         </section>
       </div>
@@ -97,14 +97,14 @@
       <a href="{% url 'contact-and-info' %}"
          class="{% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</a>
       <a href="">Education</a>
-      <a href="{% url "promotions:home" %}">Store</a>
+      <a href="{% url 'promotions:home' %}">Store</a>
     </div>
     <div class="footer-info flex-column items-center">
       <div class="text-grey">Copyright ®{% now 'Y' %} SmallsLIVE All rights reserverd.</div>
       <div>
-        <a href="{% url "static_page" "privacy" %}">Privacy Policy</a> |
-        <a href="{% url "terms-and-conditions" %}">Terms and Conditions</a> |
-        <a href="{% url "contact-and-info" %}">Contact + Info</a>
+        <a href="{% url 'static_page' 'privacy' %}">Privacy Policy</a> |
+        <a href="{% url 'terms-and-conditions' %}">Terms and Conditions</a> |
+        <a href="{% url 'contact-and-info' %}">Contact + Info</a>
       </div>
 
     </div>
