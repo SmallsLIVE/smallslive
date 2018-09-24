@@ -126,10 +126,10 @@ class SearchObject(object):
     def search_event(self, main_search, order=None, start_date=None, end_date=None):
 
         order = {
-            'newest': '-start',
-            'oldest': 'start',
+            'newest': '-date',
+            'oldest': 'date',
             'popular': 'popular',
-        }.get(order, '-start')
+        }.get(order, '-date')
 
         sqs = Event.objects.all()
         instruments = []
@@ -181,7 +181,7 @@ class SearchObject(object):
 
         # FIXME: compare to code in  "today_and_tomorrow_events"
         today = timezone.now().replace(hour=0, minute=0, second=0)
-        if not start_date or start_date < today:
+        if not start_date or start_date < today.date:
             sqs = sqs.filter(recordings__media_file__isnull=False,
                              recordings__state=Recording.STATUS.Published)
 
