@@ -203,6 +203,17 @@ $(document).ready(function () {
         }
     });
 
+    $(document).on('click', function(event) {
+        // Instruments Container was clicked.
+        var onContainer = $(event.target).closest('.instruments-container').length;
+        // Dropdown button was clicked.
+        var onButton = $(event.target.closest('.instrument-btn')).length;
+        var containerVisible = $('.instruments-container').is(":visible");
+        if (containerVisible && !onButton && !onContainer) {
+            $(".instruments-container").css("display", "none");
+        }
+    });
+
     $(".instrument").click(function () {
         artistInstrument = $(this).text();
         $('.instrument-btn').text(artistInstrument);
