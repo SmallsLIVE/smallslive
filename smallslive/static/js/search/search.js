@@ -208,9 +208,9 @@ $(document).ready(function () {
         var onContainer = $(event.target).closest('.instruments-container').length;
         // Dropdown button was clicked.
         var onButton = $(event.target.closest('.instrument-btn')).length;
-        var containerVisible = $('.instruments-container').is(":visible");
+        var containerVisible = $('.instruments-container').is(':visible');
         if (containerVisible && !onButton && !onContainer) {
-            $(".instruments-container").css("display", "none");
+            $(".instruments-container").css('display', 'none');
         }
     });
 
