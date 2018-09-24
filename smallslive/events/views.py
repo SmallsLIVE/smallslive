@@ -906,7 +906,7 @@ class CommentListView(FormView):
         return super(CommentListView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        if not request.user.is_authenticated:
+        if not request.user.can_watch_video:
             raise Http404()
         return super(CommentListView, self).post(request, *args, **kwargs)
 
