@@ -181,14 +181,14 @@ def get_today_and_tomorrow_events(just_today=False):
 
     events = list(qs)
     events = Event.sorted(events)
-    while True:
+    while True and events:
         event = events[0]
         if event.is_past:
             events.pop(0)
         else:
             break
 
-    while True:
+    while True and events:
         event = events[-1]
         start, end = event.get_range()
         if start.hour > 5:
