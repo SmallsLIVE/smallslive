@@ -24,12 +24,12 @@ $banners-height: 38vh;
 
       padding: 1vh 2vw;
 
+      .banner-text-container {
+
+      }
+
       .banner-title-button {
         padding: 1px 1px;
-
-        .banner-learnmore {
-          padding: 0 2vw;
-        }
 
         #banner-title {
           @include title4;
@@ -39,18 +39,31 @@ $banners-height: 38vh;
           padding-top: 0.7vw;
           text-wrap: normal;
 
-
-
           &.custom-banner-text {
             font-size: 1px;
             max-width: 355px;
           }
         }
 
-        #banner-button {
-          justify-content: center;
-          @include white-border-button;
-          width: 100%;
+        .learnmore-container {
+          z-index: 2;
+
+          .banner-learnmore {
+            padding: 0 2vw;
+            vertical-align: top;
+          }
+
+          #banner-button {
+            justify-content: center;
+            @include white-border-button;
+            width: 100%;
+          }
+
+          #banner-button-info {
+            justify-content: center;
+            @include white-border-button;
+            width: 100%;
+          }
         }
       }
 
@@ -60,10 +73,78 @@ $banners-height: 38vh;
         #banner-text {
           @include title-banner;
           text-align: justify;
-          font-size: 33px;
           margin: 0;
           padding-left: 30px;
           padding-right: 30px;
+        }
+      }
+    }
+
+    &.supporter {
+
+      .banner-border {
+        padding-left: 1.5vw;
+        padding-right: 1.5vw;
+
+        .banner-title-button {
+          flex: none;
+          width: 25.5%;
+
+          #banner-title {
+
+            padding-left: 1.7vw;
+            padding-right: 1.2vw;
+            padding-top: 1.7vw;
+
+            &.custom-banner-text {
+              letter-spacing: 0.6vw;
+              line-height: 2.5vw;
+              max-width: initial;
+              font-size: 2.35vw;
+              font-weight: 300;
+              text-align: justify;
+
+              .accent-color {
+                letter-spacing: 3px;
+                white-space: nowrap;
+              }
+
+              .last {
+                letter-spacing: 0.47vw;
+                white-space: nowrap;
+              }
+
+            }
+          }
+        }
+
+        .learnmore-container {
+
+          margin-top: 1.5vw;
+
+          .banner-learnmore {
+            display: inline-block;
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: 1.5vw;
+            vertical-align: top;
+            width: 65%;
+          }
+          .banner-learnmore-info {
+            display: inline-block;
+            width: 27%;
+          }
+        }
+        .banner-text-container {
+          flex: none;
+          width: 73.5%;
+
+          #banner-text {
+            letter-spacing: 0.136vw;
+            text-align: left;
+            font-size: 1.46vw;
+            line-height: 1.87vw;
+          }
         }
       }
     }
@@ -103,7 +184,7 @@ $banners-height: 38vh;
 }
 
 .lighten-image {
-  @include background-image-with-overlay(rgba(255, 255, 255, 0.8));
+  @include background-image-with-overlay(rgba(255, 255, 255, 0.85));
 }
 
 .fake-image {

@@ -113,7 +113,7 @@ $text-font-size-big: 1.4em;
 
 @mixin oswald-light {
   font-family: 'Oswald', sans-serif;
-  @include light;
+      @include light;
 }
 
 @mixin reen-kufi-normal {

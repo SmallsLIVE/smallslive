@@ -9,8 +9,13 @@
     <div class="banner-border flex-row">
       <div class="banner-title-button flex-column">
         <div id="banner-title">Archive</div>
-        <div class="banner-learnmore">
-          <button id="banner-button"></button>
+        <div class="learnmore-container">
+          <div class="banner-learnmore">
+            <button id="banner-button"></button>
+          </div>
+          <div class="banner-learnmore-info hidden">
+            <button id="banner-button-info">More Info</button>
+          </div>
         </div>
       </div>
       <div class="banner-text-container flex-row items-center">
@@ -56,28 +61,36 @@
       archive: {
         text: '<span class="accent-color">Every show</span> at smalls + mezzrow has been recorded and archived since 2007. Supporting members enjoy <span class="accent-color">unlimited access</span> to our archive. Our musicians are paid royalties through our unique <span class="accent-color">revenue share system.</span>',
         button: 'Learn More',
+        infoButton: false,
         click: function() {
           window.location = '{% url 'archive' %}';
-        }
+        },
+        canClose: true
       },
-      'live stream': {
+      'live': {
         text: 'Our <span class="accent-color">live stream</span> has expanded our 60 seat clubs into a worlwide community of jazz fans and supporters. <span class="accent-color">Sign up for free</span> to watch our live stram every night.',
         button: 'Become a member',
-        click: showBecomeMemberModal
-
+        infoButton: false,
+        click: showBecomeMemberModal,
+        canClose: true,
       },
       mission: {
         text: 'the <span class="accent-color">smallslive foundation</span> is a <span class="accent-color">not-for-profit</span> organized for the purpose of the <span class="accent-color">dissemination of jazz music</span> through our archive, live streams, sponsorship of individual jall projects & tours, education, and live performances at smalls & mezzrow. we are supported by our members through <span class="accent-color">tax-deductible donations</span>.',
         button: 'Become a member',
-        click: showBecomeMemberModal
+        infoButton: false,
+        click: showBecomeMemberModal,
+        canClose: true
       },
       supporter: {
-        text: 'Your supporting pledge goes <span class="accent-color">directly to your favourite artists</span> & helps make smallsville possible through our <span class="accent-color">smallslive revenue share</span>. Supporting members have unlimited access to our archive of <span class="accent-color">every concert</span> performed at smalls + mezzrow',
-        button: 'Become a supporter',
-        title: 'Why become a supporter?',
+        class: 'supporter',
+        text: 'the  mission  of  the  <span class="accent-color">smallslive  foundation</span>  for  jazz  arts  and  education  is  to  <span class="accent-color">disseminate  jazz  music</span>  through  recordings  and  live  streams.    we  sponsor  individual  jazz  projects,  tours  and  educational  classes,  and  subsidize  operating  expenses  for  smalls  and  mezzrow  jazz  clubs.    by  making  a  <span class="accent-color">tax  deductible  donation</span>  to  the  smallslive  foundation  you  will  get  access  to  our  extensive  <span class="accent-color">audio/video  archive</span>  and  directly  support  the  musicians  and  the  clubs.',
+        button: 'Become a member',
+        infoButton: true,
+        title: 'Why <strong>become</strong> a <span class="accent-color">supporting member</span> <span class="last">of <strong>SmallsLIVE</strong></span>?',
         click: function() {
           window.location = '{% url 'become_supporter' %}';
-        }
+        },
+        canClose: false
       }
     };
 
@@ -88,7 +101,7 @@
     });
 
     $('#banner-live-box').on('click', function () {
-      setContainerBanner('live stream');
+      setContainerBanner('live');
     });
 
     $('#banner-mission-box').on('click', function () {
@@ -102,17 +115,23 @@
 
     function setContainerBanner(src) {
       bannerImage = bannerContainer.find('.banner-background').find('img')[0]
-      $(bannerImage).attr('src','static/image/banners/'+ src +'_text.jpg')
+      $(bannerImage).attr('src','static/image/banners/'+ src + '_text.jpg')
       
       var banner = bannerText[src];
       bannerContainer.find('#banner-text').html(banner.text);
       var find = bannerContainer.find('#banner-title');
       if (banner.title) {
-        find.text(banner.title);
+        find.html(banner.title);
         find.addClass('custom-banner-text');
+        if (banner.class) {
+          bannerContainer.addClass(banner.class)
+        }
       } else {
         find.text(src);
         find.removeClass('custom-banner-text');
+        if (banner.class) {
+          bannerContainer.removeClass(banner.class);
+        }
       }
       var bannerButton = bannerContainer.find('#banner-button');
       bannerButton.text(banner.button);
@@ -121,6 +140,20 @@
         $event.stopPropagation();
         banner.click();
       });
+
+      var $learnMore = $('.banner-learnmore-info');
+      if (banner.infoButton) {
+        $learnMore.removeClass('hidden');
+      } else {
+        $learnMore.addClass('hidden');
+      }
+
+      var closeButton = bannerContainer.find('.close-button');
+      if (banner.canClose) {
+        closeButton.removeClass('hidden');
+      } else {
+        closeButton.addClass('hidden');
+      }
 
       bannerContainer.show();
       bannerOptions.hide();
