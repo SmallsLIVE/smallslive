@@ -42,7 +42,7 @@ $banners-height: 38vh;
 
 
           &.custom-banner-text {
-            font-size: 1px;
+            @include text4;
             max-width: 355px;
           }
         }

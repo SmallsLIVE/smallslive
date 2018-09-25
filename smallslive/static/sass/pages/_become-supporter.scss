@@ -1,4 +1,18 @@
 .supporter-main-container {
+  .section-title{
+    width: 350px;
+  }
+  .text9{
+    font-size: $text-font-size-bigger;
+  }
+  .supporter-button-row {
+    button, .no-spinners{width: 160px;
+    padding:0}
+    label{
+      width: 100%;
+    }
+    
+  }
   .payment-information{
     margin-top:60px;
   }

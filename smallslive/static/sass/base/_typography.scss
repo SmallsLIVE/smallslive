@@ -8,6 +8,7 @@ $text-font-size-smaller: 1em;
 $text-font-size-small: 1.25em;
 $text-font-size-medium: 1.2em;
 $text-font-size-big: 1.4em;
+$text-font-size-bigger: 1.6em;
 
 @font-face {
   font-family: 'Oswald';
@@ -396,4 +397,7 @@ $text-font-size-big: 1.4em;
 
 .underline {
   text-decoration: underline;
+}
+.bold{
+  font-weight: 700;
 }
