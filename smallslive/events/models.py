@@ -692,6 +692,9 @@ class Venue(models.Model):
         help_text='eg: https://www.mezzrow.com/events/{event_id}'
     )
 
+    audio_bucket_name = models.CharField(max_length=4096, default='smallslivemp3')
+    video_bucket_name = models.CharField(max_length=4096, default='smallslivevid')
+
     def __unicode__(self):
         return self.name
 

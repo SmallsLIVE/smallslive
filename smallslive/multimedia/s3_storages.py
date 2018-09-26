@@ -38,7 +38,6 @@ class VideoS3Storage(ProtectedS3Storage):
 
         bucket_name = kwargs.get('bucket_name', 'smallslivevid')
         kwargs['bucket'] = bucket_name
-        print bucket_name
         super(VideoS3Storage, self).__init__(*args, **kwargs)
 
 

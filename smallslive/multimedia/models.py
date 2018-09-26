@@ -28,12 +28,18 @@ class MediaFile(models.Model):
     format = models.CharField(max_length=4, choices=FORMATS, editable=False)
     file = DynamicBucketFileField(upload_to=media_file_path, blank=True, max_length=300)
     size = models.BigIntegerField(help_text="File size in bytes", default=0)
-    # bucket indicates basically origin of data (if belongs to a different bucket)
-    bucket_name = models.CharField(max_length=256, blank=True, null=True)
     sd_video_file = DynamicBucketFileField(blank=True)
 
     def __unicode__(self):
         return u''
+
+    def __init__(self, *args, **kwargs):
+        super(MediaFile, self).__init__(*args, **kwargs)
+        # TODO: use cache or different technique to avoid
+        # constant Datababse querying.
+        venue = self.recording.event.venue
+        self.audio_bucket_name = venue.audio_bucket_name
+        self.video_bucket_name = venue.video_bucket_name
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
@@ -47,16 +53,12 @@ class MediaFile(models.Model):
 
     def get_file_url(self):
 
-        print '*******************************'
         if not settings.DEBUG or settings.FORCE_S3_SECURE:
             if self.media_type == 'audio':
-                self.file.storage = AudioS3Storage(bucket_name=self.bucket_name)
+                self.file.storage = AudioS3Storage(bucket_name=self.audio_bucket_name)
             else:
-                self.file.storage = VideoS3Storage(bucket_name=self.bucket_name)
+                self.file.storage = VideoS3Storage(bucket_name=self.video_bucket_name)
 
-        print self.media_type
-        print self.bucket_name
-        print self.file.url
         return self.file.url
 
     def get_downloadable_file_url(self):
@@ -66,22 +68,19 @@ class MediaFile(models.Model):
         }
         if not settings.DEBUG or settings.FORCE_S3_SECURE:
             if self.media_type == 'audio':
-                storage = AudioS3Storage(bucket_name=self.bucket_name)
+                storage = AudioS3Storage(bucket_name=self.audio_bucket_name)
             else:
-                storage = VideoS3Storage(bucket_name=self.bucket_name)
+                storage = VideoS3Storage(bucket_name=self.video_bucket_name)
             return storage.url(self.file.name, response_headers=response_headers)
         return self.file.url
 
     def get_sd_video_url(self):
-        print '********************'
-        print self.bucket_name
         if not settings.DEBUG or settings.FORCE_S3_SECURE:
             if self.media_type == 'audio':
-                self.sd_video_file.storage = AudioS3Storage(bucket_name=self.bucket_name)
+                self.sd_video_file.storage = AudioS3Storage(bucket_name=self.audio_bucket_name)
             else:
-                self.sd_video_file.storage = VideoS3Storage(bucket_name=self.bucket_name)
+                self.sd_video_file.storage = VideoS3Storage(bucket_name=self.video_bucket_name)
 
-        print self.sd_video_file.url
         return self.sd_video_file.url
 
     def get_downloadable_sd_video_url(self):
@@ -91,9 +90,9 @@ class MediaFile(models.Model):
         }
         if not settings.DEBUG or settings.FORCE_S3_SECURE:
             if self.media_type == 'audio':
-                storage = AudioS3Storage(bucket_name=self.bucket_name)
+                storage = AudioS3Storage(bucket_name=self.audio_bucket_name)
             else:
-                storage = VideoS3Storage(bucket_name=self.bucket_name)
+                storage = VideoS3Storage(bucket_name=self.video_bucket_name)
             return storage.url(self.sd_video_file.name, response_headers=response_headers)
         return self.sd_video_file.url
 
