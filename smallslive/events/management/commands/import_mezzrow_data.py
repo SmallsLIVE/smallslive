@@ -25,16 +25,12 @@ class Command(BaseCommand):
         }
 
     def handle(self, *args, **options):
-        if len(args) >= 1:
-            with open('artists_mezzrow.json') as f:
-                mezzrow_artists_data = json.loads(f.read())
-            with open('events_mezzrow.json') as f:
-                mezzrow_events_data = json.loads(f.read())
-        else:
-            raise CommandError(
-                'Provide the path to json file as an argument to this command'
-            )
 
+        with open('smallslive/artists_mezzrow.json') as f:
+            mezzrow_artists_data = json.loads(f.read())
+        with open('smallslive/events_mezzrow.json') as f:
+            mezzrow_events_data = json.loads(f.read())
+        
         # Create Mezzrow venue if it does not exist
         self.mezzrow_venue, _ = Venue.objects.get_or_create(
             name='Mezzrow',
