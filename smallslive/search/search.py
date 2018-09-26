@@ -123,7 +123,7 @@ class SearchObject(object):
     
         return sqs
 
-    def search_event(self, main_search, order=None, start_date=None, end_date=None):
+    def search_event(self, main_search, order=None, start_date=None, end_date=None, artist_pk=None):
 
         order = {
             'newest': '-date',
@@ -131,51 +131,54 @@ class SearchObject(object):
             'popular': 'popular',
         }.get(order, '-date')
 
-        sqs = Event.objects.all()
-        instruments = []
-        main_search, instruments = self.filter_sax(main_search)
-        words = main_search.strip().split()
-        all_instruments = self.get_instruments()
-        instruments += [i for i in words if i.upper() in all_instruments]
+        if artist_pk:
+            sqs = Event.objects.filter(performers__pk=artist_pk)
+        else:
+            sqs = Event.objects.all()
+            instruments = []
+            main_search, instruments = self.filter_sax(main_search)
+            words = main_search.strip().split()
+            all_instruments = self.get_instruments()
+            instruments += [i for i in words if i.upper() in all_instruments]
 
-        if instruments:
-            condition = Q(artists_gig_info__role__name__icontains=instruments[0],
-                          artists_gig_info__is_leader=True)
-            for i in instruments[1:]:
-                condition |= Q(artists_gig_info__role__name__icontains=i,
-                               artists_gig_info__is_leader=True)
-            sqs = Event.objects.filter(condition)
+            if instruments:
+                condition = Q(artists_gig_info__role__name__icontains=instruments[0],
+                            artists_gig_info__is_leader=True)
+                for i in instruments[1:]:
+                    condition |= Q(artists_gig_info__role__name__icontains=i,
+                                artists_gig_info__is_leader=True)
+                sqs = Event.objects.filter(condition)
 
-        if words:
-            single_artist = False
-            if len(words) == 2 and not instruments:
-                temp_sqs = sqs.filter(performers__first_name__iuexact=words[0],
-                                      performers__last_name__iuexact=words[1]).distinct()
-                if temp_sqs.count() == 0:
-                    temp_sqs = sqs.filter(performers__first_name__iuexact=words[1],
-                                          performers__last_name__iuexact=words[0]).distinct()
-                if temp_sqs.count() != 0:
-                    single_artist = True
-                    sqs = temp_sqs
+            if words:
+                single_artist = False
+                if len(words) == 2 and not instruments:
+                    temp_sqs = sqs.filter(performers__first_name__iuexact=words[0],
+                                        performers__last_name__iuexact=words[1]).distinct()
+                    if temp_sqs.count() == 0:
+                        temp_sqs = sqs.filter(performers__first_name__iuexact=words[1],
+                                            performers__last_name__iuexact=words[0]).distinct()
+                    if temp_sqs.count() != 0:
+                        single_artist = True
+                        sqs = temp_sqs
 
-            if not single_artist:
-                artist = words.pop()
-                condition = Q(
-                    title__iucontains=artist) | Q(
-                    description__iucontains=artist) | Q(
-                    performers__first_name__iucontains=artist) | Q(
-                    performers__last_name__iucontains=artist)
-                for artist in words:
-                    condition |= Q(
+                if not single_artist:
+                    artist = words.pop()
+                    condition = Q(
                         title__iucontains=artist) | Q(
                         description__iucontains=artist) | Q(
                         performers__first_name__iucontains=artist) | Q(
                         performers__last_name__iucontains=artist)
+                    for artist in words:
+                        condition |= Q(
+                            title__iucontains=artist) | Q(
+                            description__iucontains=artist) | Q(
+                            performers__first_name__iucontains=artist) | Q(
+                            performers__last_name__iucontains=artist)
 
-            if instruments:
-                sqs = sqs | Event.objects.filter(condition)
-            elif not single_artist:
-                sqs = Event.objects.filter(condition)
+                if instruments:
+                    sqs = sqs | Event.objects.filter(condition)
+                elif not single_artist:
+                    sqs = Event.objects.filter(condition)
 
         sqs = sqs.distinct()
 

@@ -1,4 +1,4 @@
-var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter, eventFilter, eventDateFrom, eventDateTo, apply;
+var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter, eventFilter, eventDateFrom, eventDateTo, apply, artist_pk;
 
 function sendArtistRequest() {
     $.ajax({
@@ -66,6 +66,14 @@ function showArtistInfo(artist) {
                 $(".artist-search-profile-container")[0].style.display = 'block';
                 $("#artist-subheader").html("SHOWING 1 - 1 OF 1 RESULTS");
                 $("#back-search").css("display", "flex");
+
+                eventDateFrom = eventDateTo = null;
+                artist_pk = $(artist).data("id");
+
+                apply = true;
+                eventPageNum = 1;
+                sendEventRequest();
+
             }
         }
     });
@@ -86,7 +94,8 @@ function sendEventRequest() {
             'page': eventPageNum,
             'order': eventOrderFilter,
             'date_from': utcDateFrom ? utcDateFrom : null,
-            'date_to': utcDateTo ? utcDateTo : null
+            'date_to': utcDateTo ? utcDateTo : null,
+            'artist_pk': artist_pk ? artist_pk : null
         },
         dataType: 'json',
         success: function (data) {
@@ -110,7 +119,7 @@ function sendEventRequest() {
                 eventMaxPageNum = data.numPages;
 
                 $("#event-load-gif").css("display", "none");
-                console.log(data.numPages, eventPageNum);
+
                 if (data.numPages != eventPageNum) {
                     $("#load-more-btn").show();
                 } else {
@@ -322,6 +331,10 @@ $(document).ready(function () {
         $("#musicianContent").show();
         $(".artist-search-profile-container").hide();
         $("#showsContent").show();
+        artist_pk = null;
+        apply = true;
+        eventPageNum = 1;
+        sendEventRequest();
     });
 
     $("#apply-button").click(function () {
