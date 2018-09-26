@@ -58,7 +58,7 @@ class Command(BaseCommand):
                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
                                calling_format=boto.s3.connection.OrdinaryCallingFormat())
 
-        
+
         self.bucket = conn.get_bucket(bucket_name)
         self.files_imported = 0
 
@@ -112,8 +112,7 @@ class Command(BaseCommand):
                         media_file, created = MediaFile.objects.get_or_create(category='set',
                                                                               media_type="video",
                                                                               sd_video_file=filename,
-                                                                              size=key.size,
-                                                                              bucket_name=bucket_name)
+                                                                              size=key.size)
                         recording.media_file = media_file
                         recording.save()
                         self.files_imported += 1
