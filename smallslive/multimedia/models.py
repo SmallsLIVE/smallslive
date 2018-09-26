@@ -37,9 +37,14 @@ class MediaFile(models.Model):
         super(MediaFile, self).__init__(*args, **kwargs)
         # TODO: use cache or different technique to avoid
         # constant Datababse querying.
-        venue = self.recording.event.venue
-        self.audio_bucket_name = venue.audio_bucket_name
-        self.video_bucket_name = venue.video_bucket_name
+
+        try:
+            venue = self.recording.event.venue
+            self.audio_bucket_name = venue.audio_bucket_name
+            self.video_bucket_name = venue.video_bucket_name
+        except MediaFile.recording.RelatedObjectDoesNotExist:
+            # self.recording will not exist on object creation.
+            pass
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):

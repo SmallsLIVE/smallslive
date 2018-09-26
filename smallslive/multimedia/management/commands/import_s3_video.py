@@ -82,23 +82,10 @@ class Command(BaseCommand):
             else:
                 event_id = event.id
 
-            event_date = event.listing_date()
-            if event_date.year < 2017:
-                print 'skipping', event_date
-                continue
-            else:
-                if event_date.year == 2017 and event_date.month < 2:
-                    print 'skipping'
-                    continue
-                elif event_date.year == 2017 and event_date.month == 2 and event_date.day < 12:
-                    print 'skipping'
-                    continue
-
             for set_num in range(1, 7):
                 filename = '{0.year}-{0.month:02}-{0.day:02}/360p/{1}-{2}_360p.mp4'.format(
                     event.listing_date(), event_id, set_num)
                 key = self.bucket.get_key(filename)
-                print filename
                 if key:
                     print "importing {0}".format(filename)
                     try:
