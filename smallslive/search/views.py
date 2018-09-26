@@ -42,7 +42,8 @@ def search_autocomplete(request):
 
 class SearchMixin(object):
 
-    def search(self, entity, main_search, page=1, order=None, instrument=None, date_from=None, date_to=None, artist_search=None, artist_pk=None):
+    def search(self, entity, main_search, page=1, order=None,
+               instrument=None, date_from=None, date_to=None, artist_search=None, artist_pk=None):
 
         search = SearchObject()
 
@@ -138,8 +139,9 @@ class MainSearchView(View, SearchMixin):
         date_to = request.GET.get('date_to', None)
         artist_pk = request.GET.get('artist_pk', None)
 
-        if date_from and date_to:
+        if date_from:
             date_from = parser.parse(date_from, fuzzy=True)
+        if date_to:
             date_to = parser.parse(date_to, fuzzy=True)
 
         if entity == 'artist':

@@ -18,7 +18,7 @@
               {% endfor %}
           </p>
       </div>
-      <div class="col-xs-12 col-sm-4 hidden-xs page-heading-event__image" style="background-image: url('{% if event.photo %}{% thumbor_url event.photo.url|urlencode height=320 width=320 smart=True %}{% else %}{% static 'image/no-event-photo-thumbnail.jpg' %}{% endif %}');"></div>
+      <div class="col-xs-12 col-sm-4 hidden-xs page-heading-event__image" style="background-image: url('{% if event.photo %}{% thumbor_url event.get_photo_url|urlencode height=320 width=320 smart=True %}{% else %}{% static 'image/no-event-photo-thumbnail.jpg' %}{% endif %}');"></div>
   </section>
   <section class="metric-graph container">
     <div class="metric-graph__header">

@@ -18,7 +18,7 @@
       </div>
       <div class="col-xs-12 col-sm-4 hidden-xs page-heading-event__image">
           {% if event.photo %}
-              <img id="eventImageCover" src="{% thumbor_url event.photo.url|urlencode height=320 width=320 smart=True %}" alt=""/>
+              <img id="eventImageCover" src="{% thumbor_url event.get_photo_url|urlencode height=320 width=320 smart=True %}" alt=""/>
           {% else %}
               <img id="eventImageCover" src="{% static 'image/no-event-photo-thumbnail.jpg' %}" alt=""/>
           {% endif %}

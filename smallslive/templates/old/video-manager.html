@@ -44,10 +44,10 @@
                 </td>
                 <td rowspan="2" class="video-thumb">
                   <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   1.2GB MP4</a>
-                  {% if past_event.photo.url != "" %}
+                  {% if past_event.get_photo_url != "" %}
                     <a href="/events/{{ past_event.id }}/">
                       <span class="glyphicon glyphicon-play"></span>
-                      <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}" class="img-responsive" />
+                      <img src="{% thumbor_url past_event.get_photo_url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}" class="img-responsive" />
                     </a>
                   {% endif %}       
                 </td>
@@ -154,10 +154,10 @@
                 </td>
                 <td rowspan="2" class="video-thumb">
                   <a href="" class="download small"><span class="glyphicon glyphicon-download"></span>   1.2GB MP4</a>
-                  {% if past_event.photo.url != "" %}
+                  {% if past_event.get_photo_url != "" %}
                     <a href="/events/{{ past_event.id }}/">
                       <span class="glyphicon glyphicon-play"></span>
-                      <img src="{% thumbor_url past_event.photo.url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}" class="img-responsive" />
+                      <img src="{% thumbor_url past_event.get_photo_url|urlencode width=100 height=60 smart=True %}" alt="Play video: {{ event.title }}" class="img-responsive" />
                     </a>
                   {% endif %}       
                 </td>

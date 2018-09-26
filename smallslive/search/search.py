@@ -184,7 +184,7 @@ class SearchObject(object):
 
         # FIXME: compare to code in  "today_and_tomorrow_events"
         today = timezone.now().replace(hour=0, minute=0, second=0)
-        if not start_date or start_date < today.date:
+        if not start_date or start_date < today:
             sqs = sqs.filter(recordings__media_file__isnull=False,
                              recordings__state=Recording.STATUS.Published)
 
