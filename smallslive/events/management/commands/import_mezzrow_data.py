@@ -26,9 +26,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if len(args) >= 1:
-            with open('artists.json') as f:
+            with open('artists_mezzrow.json') as f:
                 mezzrow_artists_data = json.loads(f.read())
-            with open('events.json') as f:
+            with open('events_mezzrow.json') as f:
                 mezzrow_events_data = json.loads(f.read())
         else:
             raise CommandError(
@@ -37,7 +37,10 @@ class Command(BaseCommand):
 
         # Create Mezzrow venue if it does not exist
         self.mezzrow_venue, _ = Venue.objects.get_or_create(
-            name='Mezzrow'
+            name='Mezzrow',
+            tickets_url_format='https://www.mezzrow.com/events/{event_id}',
+            audio_bucket_name='Mezzrowmp3',
+            video_bucket_name='MezzrowVid'
         )
 
         # Delete previous import events
