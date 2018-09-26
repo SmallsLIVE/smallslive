@@ -58,13 +58,7 @@ class Command(BaseCommand):
                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
                                calling_format=boto.s3.connection.OrdinaryCallingFormat())
 
-        buckets = conn.get_all_buckets()
-        for key in buckets:
-            print key.name
-
-        print bucket_name
-        assert False
-
+        
         self.bucket = conn.get_bucket(bucket_name)
         self.files_imported = 0
 

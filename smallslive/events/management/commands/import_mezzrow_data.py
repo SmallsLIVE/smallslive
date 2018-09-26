@@ -30,7 +30,7 @@ class Command(BaseCommand):
             mezzrow_artists_data = json.loads(f.read())
         with open('smallslive/events_mezzrow.json') as f:
             mezzrow_events_data = json.loads(f.read())
-        
+
         # Create Mezzrow venue if it does not exist
         self.mezzrow_venue, _ = Venue.objects.get_or_create(
             name='Mezzrow',
