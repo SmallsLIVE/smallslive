@@ -11,6 +11,7 @@ from model_utils import Choices
 from model_utils.fields import StatusField
 from model_utils.models import QueryManager, TimeStampedModel
 from tinymce import models as tinymce_models
+from multimedia.s3_storages import ImageS3Storage
 
 
 class EventQuerySet(models.QuerySet):
@@ -117,6 +118,20 @@ class EventQuerySet(models.QuerySet):
         return query.order_by('-start')[:total_results]
 
 
+class CustomImageFieldFile(models.fields.files.ImageFieldFile):
+
+    def get_url(self, bucket_name):
+
+        print '-------------'
+        print bucket_name
+        return self.storage.url(self.name, bucket_name)
+
+
+class CustomImageField(models.ImageField):
+
+    attr_class = CustomImageFieldFile
+
+
 class Event(TimeStampedModel):
     SETS = Choices(('22:00-23:00', '10-11pm'), ('23:00-0:00', '11-12pm'), ('0:00-1:00', '12-1am'))
     STATUS = Choices('Published', 'Draft', 'Cancelled')
@@ -133,23 +148,38 @@ class Event(TimeStampedModel):
     link = models.CharField(max_length=255, blank=True)
     active = models.BooleanField(default=False)
     date_freeform = models.TextField(blank=True)
-    photo = models.ImageField(upload_to='event_images', max_length=150, blank=True)
+    photo = CustomImageField(upload_to='event_images', storage=ImageS3Storage(), max_length=150, blank=True)
     cropping = ImageRatioField('photo', '600x360', help_text="Enable cropping", allow_fullsize=True)
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed', related_name='events')
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField(default=STATUS.Draft)
     slug = models.SlugField(blank=True, max_length=500)
+    tickets_url_id = models.CharField(
+        max_length=100, null=True, blank=True,
+        help_text='Identifier for the ticket provider, eg: 4124-polite-jam-session-with-naama-gheber')
 
     objects = EventQuerySet.as_manager()
     #past = QueryManager(start__lt=datetime.now()).order_by('-start')
     #upcoming = QueryManager(start__gte=datetime.now()).order_by('start')
     date = models.DateField(blank=True, null=True)
 
+    # Import information (Mezzrow - possibly other in the future)
+    original_id = models.CharField(blank=True, max_length=4096, null=True)
+    import_date = models.DateTimeField(blank=True, null=True)
+
     class Meta:
         ordering = ['-start']
 
     def __unicode__(self):
-        return '{} - {}'.format(self.title, self.date)
+        return u'{} - {}'.format(self.title, self.date)
+
+    @property
+    def tickets_url(self):
+        if not (self.venue_id and self.venue.tickets_url_format and self.tickets_url_id):
+            return None
+
+        return self.venue.tickets_url_format.format(
+                    event_id=self.tickets_url_id)
 
     def get_date(self):
 
@@ -204,6 +234,16 @@ class Event(TimeStampedModel):
 
     def full_title(self):
         return u"{0} {1}".format(self.title, self.subtitle)
+
+    def get_photo_url(self):
+        """Mezzrow has different buckets. S3 storage is overriden and bucket name has to be passed"""
+        # TODO: store bucket name in Venue
+        if self.venue.name == 'Mezzrow':
+            bucket_name = 'mezzrowmedia'
+        else:
+            bucket_name = 'smallslivestatic'
+
+        return self.photo.get_url(bucket_name)
 
     def performers_string(self, separator=", "):
         "Returns the comma-separated list of performers (including the leader) as a string"
@@ -399,6 +439,19 @@ class Event(TimeStampedModel):
 
         return live_set
 
+    def get_live_stream(self):
+
+        # TODO: set live stream url in model field
+
+        url = ''
+
+        if self.venue.name == 'Mezzrow':
+            url = 'https://www.ustream.tv/embed/23240580?html5ui'
+        elif self.venue.name == 'Smalls':
+            url = 'https://www.ustream.tv/embed/23240575?html5ui'
+
+        return url
+
     @property
     def is_today(self):
         day_start = get_today_start()
@@ -428,6 +481,7 @@ class Event(TimeStampedModel):
         date = local_time.date()
         if 0 <= local_time.hour <= 4:
             date += timedelta(days=-1)
+
         return date
 
     def is_early_morning(self):
@@ -550,6 +604,15 @@ class Recording(models.Model):
     class Meta:
         ordering = ['set_number']
 
+    def __unicode__(self):
+        print self.id
+        return u'State: {}, Media: {}, Event: {}, Set: {}'.format(
+            repr(self.state) or u'N/A',
+            repr(self.media_file) or u'N/A',
+            self.event or u'N/A',
+            self.set_number or u'N/A',
+        )
+
     def is_published(self):
         return self.state == self.STATUS.Published
 
@@ -622,6 +685,12 @@ class GigPlayed(models.Model):
 
 class Venue(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    tickets_url_format = models.CharField(
+        max_length=255,
+        null=True,
+        blank=True,
+        help_text='eg: https://www.mezzrow.com/events/{event_id}'
+    )
 
     def __unicode__(self):
         return self.name
@@ -637,7 +706,7 @@ def get_today_start():
 
     delta = 0
     start = timezone.localtime(timezone.now())
-    if start.hour <=5:
+    if start.hour <= 5:
         delta = 1
     start = start.replace(hour=6, minute=0)
 

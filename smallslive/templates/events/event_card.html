@@ -16,7 +16,7 @@
       <div class="picture-border">
         <div class="event-picture">
           {% if event.photo %}
-            {% include 'partials/thumbored_picture.html' with photo_url=event.photo.url crop_box=event.photo_crop_box %}
+            {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
           {% else %}
             {% include 'partials/thumbored_picture.html' %}
           {% endif %}

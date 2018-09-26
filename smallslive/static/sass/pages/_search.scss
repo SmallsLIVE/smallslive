@@ -40,7 +40,7 @@
     .artist-row {
       display: block;
       margin-bottom: 6px;
-      font-size: 16px;
+      font-size: 0.68vw;
       line-height: 22px;
     }
 
@@ -246,11 +246,6 @@
       flex-wrap: wrap;
       padding: 0 0 0 20px;
     }
-  }
-
-  .event-display {
-    margin: 5px;
-    max-width: 250px;
   }
 }
 
@@ -536,7 +531,7 @@
   display: flex;
   flex-flow: row wrap;
   position: relative;
-  padding: 0 50px;
+  padding-left: 3.5vw;
 }
 
 .shows-item {

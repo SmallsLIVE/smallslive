@@ -24,6 +24,7 @@ def artist_image_path(instance, filename):
     path = os.path.join("artist_images/", slugify(instance.full_name()) + ext)
     return path
 
+
 class InsensitiveUnaccentExact(Lookup):
     lookup_name = 'iuexact'
 
@@ -34,6 +35,7 @@ class InsensitiveUnaccentExact(Lookup):
         return 'UPPER(unaccent(%s)) = UPPER(unaccent(%s))' % (lhs, rhs), params
 
 Field.register_lookup(InsensitiveUnaccentExact)
+
 
 class InsensitiveUnaccentStartsWith(Lookup):
     lookup_name = 'iustartswith'
@@ -46,6 +48,7 @@ class InsensitiveUnaccentStartsWith(Lookup):
         return "UPPER(unaccent(%s)) LIKE UPPER(unaccent(%s || '%%%%'))" % (lhs, rhs), params
 
 Field.register_lookup(InsensitiveUnaccentStartsWith)
+
 
 class InsensitiveUnaccentContains(Lookup):
     lookup_name = 'iucontains'
@@ -217,7 +220,6 @@ class Artist(models.Model):
             performers=self,
             recordings__media_file__isnull=False,
             recordings__state=Recording.STATUS.Published).count()
-
 
 
 class Instrument(models.Model):

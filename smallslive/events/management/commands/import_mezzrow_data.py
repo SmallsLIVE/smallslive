@@ -1,14 +1,15 @@
+import json
 from pprint import pprint
 
 from django.core.management import BaseCommand, CommandError
-import json
+from django.utils import timezone
 
 from artists.models import Artist, Instrument
 from events.models import Event, EventType, GigPlayed, Venue
 
 
 class Command(BaseCommand):
-    args = '<alldata.json>'
+    args = 'artists.json events.json'
     help = 'Imports event data from scraped JSON files'
 
     def __init__(self):
@@ -25,7 +26,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if len(args) >= 1:
-            mezzrow_data = json.load(open(args[0], 'r'))
+            with open('artists.json') as f:
+                mezzrow_artists_data = json.loads(f.read())
+            with open('events.json') as f:
+                mezzrow_events_data = json.loads(f.read())
         else:
             raise CommandError(
                 'Provide the path to json file as an argument to this command'
@@ -33,7 +37,7 @@ class Command(BaseCommand):
 
         # Create Mezzrow venue if it does not exist
         self.mezzrow_venue, _ = Venue.objects.get_or_create(
-            name='Mezzrow Jazz Club'
+            name='Mezzrow'
         )
 
         # Delete previous import events
@@ -41,16 +45,30 @@ class Command(BaseCommand):
 
         # Group data
         grouped_data = {}
-        for item in mezzrow_data:
+        for item in mezzrow_artists_data:
             model = item.get('model')
+            if model not in grouped_data:
+                print model
             grouped_data.setdefault(model, [])
             grouped_data[model].append(item)
 
-        print(
-            '{} types of item: {}'.format(
-                len(grouped_data), grouped_data.keys()
-            )
-        )
+        for item in grouped_data['artists.artist']:
+            print '{}, {}'.format(item['fields']['last_name'].encode('utf-8'), item['fields']['first_name'].encode('utf-8'))
+
+        a_list = Artist.objects.all().order_by('last_name', 'first_name')
+
+        for a in a_list:
+            print '{}, {}'.format(
+                a.last_name.encode('utf-8'),
+                a.first_name.encode('utf-8'))
+
+        for item in mezzrow_events_data:
+            model = item.get('model')
+            if model not in grouped_data:
+                print model
+            grouped_data.setdefault(model, [])
+            grouped_data[model].append(item)
+
         self.import_model(
             grouped_data, 'artists.instrument', self.import_instrument
         )
@@ -80,25 +98,33 @@ class Command(BaseCommand):
         for item_data in data_list:
             old_pk = item_data['pk']
             fields = item_data['fields']
-            item = single_import_func(fields)
-            self.mappings[mappings_name][old_pk] = item.pk
+            item = single_import_func(fields, old_pk=old_pk)
+            if item:
+                self.mappings[mappings_name][old_pk] = item.pk
+            else:
+                print 'No data: {}'.format(item_data)
 
         return True
 
-    def import_instrument(self, fields):
+    def import_instrument(self, fields, old_pk=None):
         name = fields['name']
         print(u'Importing Instrument {}'.format(name))
-        intrument, created = Instrument.objects.get_or_create(
+        instrument, created = Instrument.objects.get_or_create(
             name=name, defaults=fields
         )
-        return intrument
+        return instrument
 
-    def import_artist(self, fields):
+    def import_artist(self, fields, old_pk=None):
         first_name = fields.pop('first_name').strip()
         last_name = fields.pop('last_name').strip()
+        if not first_name and not last_name:
+            return None
+
         instruments = fields.pop('instruments')
+        instruments = [Instrument.objects.get(pk=x) for x in instruments]
+
         fields.pop('user')
-        print(u'Importing artist {} {}'.format(first_name, last_name))
+        print('Importing artist {} {}'.format(first_name.encode('utf-8'), last_name.encode('utf-8')))
         try:
             artist = Artist.objects.get(
                 first_name=first_name, last_name=last_name
@@ -114,21 +140,21 @@ class Command(BaseCommand):
                 **fields
             )
         for instrument in instruments:
-            # TODO Create relation if necesary
-            pass
+            artist.instruments.add(instrument)
 
         return artist
 
-    def import_eventtype(self, fields):
+    def import_eventtype(self, fields, old_pk=None):
         name = fields['name']
-        print(u'Importing event type: {}'.format(name))
+        print('Importing event type: {}'.format(name.encode('utf-8')))
         eventtype, created = EventType.objects.get_or_create(
             name=name, defaults=fields
         )
         return eventtype
 
-    def import_event(self, fields):
-        print(u'Importing event: {}'.format(fields['title']))
+    def import_event(self, fields, old_pk=None):
+
+        print('Importing event: {}'.format(fields['title'].encode('utf-8')))
         fields.pop('streamable')
         fields.pop('last_modified_by')
 
@@ -138,10 +164,15 @@ class Command(BaseCommand):
             fields['event_type'] = types_map[old_event_type]
 
         fields['venue'] = self.mezzrow_venue
+        if old_pk:
+            fields['original_id'] = old_pk
+        fields['import_date'] = timezone.now()
+
         event = Event.objects.create(**fields)
+
         return event
 
-    def import_gigplayed(self, fields):
+    def import_gigplayed(self, fields, old_pk=None):
         old_artist = fields.pop('artist')
         old_role = fields.pop('role')
         old_event = fields.pop('event')

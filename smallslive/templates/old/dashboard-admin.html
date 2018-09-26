@@ -55,8 +55,8 @@
                   </span>
                 </td>
 
-                <td class="event_time"><time datetime="{{ event.start|date:"c" }}">{{ event.start|date:"f" }} - {{ event.end|date:"f A" }}</time></td>                <td>{% if event.photo.url != "" %}
-            <img src="{% thumbor_url event.photo.url|urlencode height=60 width=100 smart=True   %}" class="" />{% else %}<a href="{% url "event_edit" pk=event.id  slug=event.title|slugify %}"><span class="text-danger">[missing photo]</span></a>
+                <td class="event_time"><time datetime="{{ event.start|date:"c" }}">{{ event.start|date:"f" }} - {{ event.end|date:"f A" }}</time></td>                <td>{% if event.get_photo_url != "" %}
+            <img src="{% thumbor_url event.get_photo_url|urlencode height=60 width=100 smart=True   %}" class="" />{% else %}<a href="{% url "event_edit" pk=event.id  slug=event.title|slugify %}"><span class="text-danger">[missing photo]</span></a>
           {% endif %}</td>
                 <td><a href="{{ event.get_absolute_url }}">{{ event.display_title }}</a
                 {% if event.subtitle %}<span class="text-muted"><br />{{ event.subtitle }}</span>{% endif %}</td>
