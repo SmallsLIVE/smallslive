@@ -608,7 +608,6 @@ class Recording(models.Model):
         print self.id
         return u'State: {}, Media: {}, Event: {}, Set: {}'.format(
             repr(self.state) or u'N/A',
-            repr(self.media_file) or u'N/A',
             self.event or u'N/A',
             self.set_number or u'N/A',
         )
