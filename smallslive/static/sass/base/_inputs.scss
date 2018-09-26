@@ -27,7 +27,7 @@
   color: $black;
 
   &:disabled {
-    color: $text-grey;
+    color: lightgrey;
     cursor: not-allowed;
 
     border-color: $text-grey;

@@ -75,6 +75,10 @@
                   <div class="live-now text2">Live now</div>
                 {% endif %}
                 <div class="event-overlay">
+                  <div class="event-overlay-logo">
+                      <img src="{% static 'logo.svg' %}" alt="Smalls"
+                                            class="img-circle" width="50" height="50"/>
+                  </div>
                   <div class="event-overlay-title">{{ event.title }}</div>
                   <div class="event-overlay-artists">
                     {% for gig_info in event.artists_gig_info.all %}
@@ -86,8 +90,8 @@
                   <div class="event-overlay-venue">
                       <div class="title5">{{ event.date|date:'m/d/Y' }}</div>
                       {% if event.sets.count and event.is_live %}
-                          <div class="title5"> 
-                            Sets at 
+                          <div class="title5">
+                            Sets at
                             {% for set in event.sets.all %}
                               <span class="event-overlay-venue-set">
                                 {{ set.start|time:"g:iA"}}
@@ -99,9 +103,7 @@
                   </div>
                 </div>
               </div>
-              <div class="accent-color text2">
-                {{ event.date|date:'m/d/Y' }}
-              </div>
+
             </div>
           {% endif %}
         {% else %}
@@ -174,23 +176,14 @@
             </div>
           {% endfor %}
         </div>
-        <div id="video-set-buttons">
-          <div class="button-row set-buttons" id="video-sets-list">
-          </div>
-        </div>
-        <div id="audio-set-buttons" style="display: none;">
-          <div class="button-row set-buttons" id="audio-sets-list">
-          </div>
-        </div>
+
       </div>
       <div class="event-player-buttons flex-column items-flex-stretch">
+          <div id="video-set-buttons">
+            <div class="button-row set-buttons" id="video-sets-list">
+            </div>
+          </div>
           {% if event.is_past and user.can_listen_to_audio%}
-              {% if event.published_videos %}
-                  <button class="white-border-button" id="togglePlayerAudio">
-                      Audio only player
-                  </button>
-              {% endif %}
-
               <button class="white-border-button" id="togglePlayerVideo"
                       style="display: none">
                   {% if event.published_videos %}
@@ -201,8 +194,9 @@
               </button>
           {% endif %}
           {% if not event.is_live and event.is_past %}
-              <button disabled class="white-border-button">Download for $9.99</button>
-          {% elif not event.is_live and event.is_future %}
+              <button class="white-border-button">Donate</button>
+          {% endif %}
+          {% if not event.is_live and event.is_future %}
               <button class="white-border-button" onclick="showTickets()">Tickets</button>
           {% endif %}
           {% if user.is_admin or user.is_staff %}
@@ -233,7 +227,9 @@
                   <div class="flex-column">
                     <div class="text1 related-title">{{ related.title }}</div>
                     <div class="text1 text-grey">
-                      {{ related.start|date:'m/d/Y' }}</div>
+                      {{ related.date|date:'m/d/Y' }}</div>
+                    <div class="accent-color text-uppercase">
+                        <strong>{{ related.venue.name }}</strong></div>
                   </div>
                 </div>
               </div>
@@ -252,7 +248,7 @@
               <div class="related-info flex-column content-centered">
                 <div class="flex-column">
                   <div class="text1 related-title">{{ related.title }}</div>
-                  <div class="text1 text-grey">{{ related.start|date:'m/d/Y' }}</div>
+                  <div class="text1 text-grey">{{ related.date|date:'m/d/Y' }}</div>
                 </div>
               </div>
             </div>
