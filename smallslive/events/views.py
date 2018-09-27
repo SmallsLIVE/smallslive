@@ -158,20 +158,15 @@ def get_today_and_tomorrow_events(just_today=False):
     # considered to be the same before, but internally date is real.
 
     # cover one day or two
-    days = 2
+    days = 1
     if just_today:
-        days = 1
+        days = 0
     date_range_start = get_today_start()
-    # if 00:00 - 5:00 am, exclude the previous day.
-    if date_range_start.hour <= 5:
-        days -= 1
 
     date_range_end = date_range_start + timedelta(days=days)
 
     # Initial range. This includes all events from the day
     # even if they have already concluded
-    # It also includes 1:00 am - 4:00 am and 7:30 pm
-    # (which are considered different days)
     qs = Event.objects.filter(date__gte=date_range_start,
                               date__lte=date_range_end)
 
@@ -185,14 +180,6 @@ def get_today_and_tomorrow_events(just_today=False):
         event = events[0]
         if event.is_past:
             events.pop(0)
-        else:
-            break
-
-    while True and events:
-        event = events[-1]
-        start, end = event.get_range()
-        if start.hour > 5:
-            events.pop()
         else:
             break
 

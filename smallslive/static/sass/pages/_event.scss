@@ -169,8 +169,13 @@
   .related-video {
     margin-bottom: 1em;
 
+    &.selected {
+      border: 1px solid red;
+      border-radius: 5px;
+    }
+
     .related-info {
-      width: $event-card-width / 1.5;
+      width: 173px;
       background-color: white;
       padding: 1em;
 
