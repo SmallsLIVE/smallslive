@@ -178,6 +178,11 @@
         </div>
 
       </div>
+      {% for set in event.sets.all %}
+        <div class="event-player-buttons flex-column items-flex-stretch">
+          <button class="set-select-button white-border-button {{ forloop.counter0|yesno:',active' }}" data-comments-page="{% url 'event_comments' pk=event.id slug=event.slug %}?set={{ forloop.counter0 }}" data-playlist-index="{{ forloop.counter0 }}">Set {{ forloop.counter }}</button>
+        </div>
+      {% endfor %}
       <div class="event-player-buttons flex-column items-flex-stretch">
           {% if not event.is_live and event.is_past %}
               <button class="white-border-button">Donate</button>
@@ -191,12 +196,6 @@
               </a>
           {% endif %}
       </div>
-
-    </div>
-    <div class="button-row set-buttons" id="video-sets-list">
-        {% for set in event.sets.all %}
-            <button class="{{ forloop.counter0|yesno:',active' }}" data-comments-page="{% url 'event_comments' pk=event.id slug=event.slug %}?set={{ forloop.counter0 }}">Set {{ forloop.counter }}</button>
-        {% endfor %}
     </div>
     <div class="flex-row event-set-selector"></div>
     {% if event.published_audio or event.published_video %}
@@ -474,14 +473,12 @@
                 {% endif %}
                   $('#playerTextOveraly').css('opacity', 1);
               });
-            $('#video-sets-list').on('click', 'button', function () {
-                var currentIndex = videoPlayer.getPlaylistIndex();
+            $('.set-select-button').on('click', function () {
                 var selectedIndex = $(this).data('playlist-index');
                 videoPlayer.playlistItem(selectedIndex);
                 $('#set-number').html(selectedIndex + 1);
-                $(this).siblings('button').removeClass('active');
+                $('.set-select-button').removeClass('active');
                 $(this).toggleClass('active');
-                $('#video-sets-list button[data-playlist-index=' + currentIndex + ']').toggleClass('active');
             });
         {% endif %}
 
