@@ -267,68 +267,70 @@
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   <script src="{% static 'js/jquery.form.js' %}"></script>
 
-    <script>
-        var Subpage = function (name) {
-            this.name = name;
-            this.element = $('[data-subpage-name="' + name +'"]');
-        };
+  <script>
+      var Subpage = function (name) {
+          this.name = name;
+          this.element = $('[data-subpage-name="' + name +'"]');
+      };
 
-        Subpage.prototype.bindForms = function () {
-            this.element.find('form').ajaxForm({
-                type: 'post',
-                success: function (response) {
-                    this.element.html(response);
-                    this.bindForms();
-                }.bind(this),
-                error: function (response) {
-                    this.element.html(response);
-                    this.bindForms();
-                }.bind(this)
-            });
-        };
+      Subpage.prototype.bindForms = function () {
+          this.element.find('form').ajaxForm({
+              type: 'post',
+              success: function (response) {
+                  this.element.html(response);
+                  this.bindForms();
+              }.bind(this),
+              error: function (response) {
+                  this.element.html(response);
+                  this.bindForms();
+              }.bind(this)
+          });
+      };
 
-        Subpage.prototype.load = function () {
-            this.element.html('<div class="text1">Loading  ' + this.name + '...</div>');
-            $.get(this.element.data('subpage-url'), function (e) {
-                this.element.html(e);
-                this.bindForms();
-            }.bind(this));
-        };
+      Subpage.prototype.load = function () {
+          this.element.html('<div class="text1">Loading  ' + this.name + '...</div>');
+          $.get(this.element.data('subpage-url'), function (e) {
+              this.element.html(e);
+              this.bindForms();
+          }.bind(this));
+      };
 
-        Subpage.prototype.setUrl = function (url) {
-            this.element.data('subpage-url', url);
-            this.load();
-        };
+      Subpage.prototype.setUrl = function (url) {
+          this.element.data('subpage-url', url);
+          this.load();
+      };
 
-        var SubpageManager = function () {
-            this.subpages = {};
-        };
-        SubpageManager.prototype.register = function() {
-            var manager = this;
-            $('[data-subpage-name]').each(function () {
-                var name = $(this).data('subpage-name');
-                manager.subpages[name] = new Subpage(name);
-            });
-        };
-        SubpageManager.prototype.loadAll = function() {
-            Object.keys(this.subpages).forEach(function (name) {
-                this.subpages[name].load();
-            }.bind(this));
-        };
-        SubpageManager.prototype.get = function(name) {
-            return this.subpages[name];
-        };
+      var SubpageManager = function () {
+          this.subpages = {};
+      };
+      SubpageManager.prototype.register = function() {
+          var manager = this;
+          $('[data-subpage-name]').each(function () {
+              var name = $(this).data('subpage-name');
+              manager.subpages[name] = new Subpage(name);
+          });
+      };
+      SubpageManager.prototype.loadAll = function() {
+          Object.keys(this.subpages).forEach(function (name) {
+              this.subpages[name].load();
+          }.bind(this));
+      };
+      SubpageManager.prototype.get = function(name) {
+          return this.subpages[name];
+      };
 
-        var subpages = new SubpageManager();
-        subpages.register();
-        subpages.loadAll();
+      var subpages = new SubpageManager();
+      subpages.register();
+      subpages.loadAll();
 
-        $(document).on('click', '[data-playlist-index]', function (ev) {
-            var url = $(this).data('comments-page');
-            subpages.get('comments').setUrl(url);
-        });
+      $(document).on('click', '[data-playlist-index]', function (ev) {
+          var subpage = subpages.get('comments');
+          if (subpage) {
+            subpage.setUrl($(this).data('comments-page'));
+          }
+      });
 
-    </script>
+  </script>
 
   {% if user.is_authenticated and event.sets.count %}
 
