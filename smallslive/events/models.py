@@ -231,7 +231,7 @@ class Event(TimeStampedModel):
     def get_photo_url(self):
         """Mezzrow has different buckets. S3 storage is overriden and bucket name has to be passed"""
         # TODO: store bucket name in Venue
-        if self.venue.name == 'Mezzrow':
+        if self.venue and self.venue.name == 'Mezzrow':
             bucket_name = 'mezzrowmedia'
         else:
             bucket_name = 'smallslivestatic'

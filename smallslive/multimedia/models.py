@@ -38,6 +38,10 @@ class MediaFile(models.Model):
         # TODO: use cache or different technique to avoid
         # constant Datababse querying.
 
+        self.audio_bucket_name = None
+        self.video_bucket_name = None
+
+        # FIXME: This is broken. It assumes Event.venue is not null.
         try:
             venue = self.recording.event.venue
             self.audio_bucket_name = venue.audio_bucket_name
@@ -51,15 +55,14 @@ class MediaFile(models.Model):
         self.format = os.path.splitext(str(self.file))[1].lower().replace('.', '')
         if not self.media_type:
             if self.format in self.AUDIO_FORMATS:
-                self.media_type = 'audio'
+                self.media_type = self.MEDIA_TYPE.audio
             else:
-                self.media_type = 'video'
+                self.media_type = self.MEDIA_TYPE.video
         super(MediaFile, self).save()
 
     def get_file_url(self):
-
         if not settings.DEBUG or settings.FORCE_S3_SECURE:
-            if self.media_type == 'audio':
+            if self.media_type == self.MEDIA_TYPE.audio:
                 self.file.storage = AudioS3Storage(bucket_name=self.audio_bucket_name)
             else:
                 self.file.storage = VideoS3Storage(bucket_name=self.video_bucket_name)
