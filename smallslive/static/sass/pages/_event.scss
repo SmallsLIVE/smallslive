@@ -166,12 +166,19 @@
     padding-left: 0;
   }
 
+  > div:not(.section-title) {
+    height: 525px;
+    overflow-y: auto;
+  }
+
   .related-video {
     margin-bottom: 1em;
+    overflow: hidden;
+    width: 99%;
 
     &.selected {
       border: 1px solid red;
-      border-radius: 5px;
+      border-radius: 10px;
     }
 
     .related-info {

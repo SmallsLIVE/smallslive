@@ -182,9 +182,7 @@ class Event(TimeStampedModel):
                     event_id=self.tickets_url_id)
 
     def get_date(self):
-
         return self.date
-
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
@@ -604,8 +602,7 @@ class Recording(models.Model):
         ordering = ['set_number']
 
     def __unicode__(self):
-        print self.id
-        return u'State: {}, Media: {}, Event: {}, Set: {}'.format(
+        return u'State: {}, Event: {}, Set: {}'.format(
             repr(self.state) or u'N/A',
             self.event or u'N/A',
             self.set_number or u'N/A',

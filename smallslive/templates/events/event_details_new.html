@@ -157,7 +157,6 @@
         <div class="event-set-info">
           <div class="event-title title1">{{ event.title }}</div>
           {% if event.is_past %}
-            <div class="accent-color text2">Set <span id="set-number">1</span></div>
             <div class="accent-color text2">
               {{ event.date|date:'m/d/Y' }}</div>
           {% endif %}
@@ -178,21 +177,12 @@
         </div>
 
       </div>
+      {% for set in event.sets.all %}
+        <div class="event-player-buttons flex-column items-flex-stretch">
+          <button class="set-select-button white-border-button {{ forloop.counter0|yesno:',active' }}" data-comments-page="{% url 'event_comments' pk=event.id slug=event.slug %}?set={{ forloop.counter0 }}" data-playlist-index="{{ forloop.counter0 }}">Set {{ forloop.counter }}</button>
+        </div>
+      {% endfor %}
       <div class="event-player-buttons flex-column items-flex-stretch">
-          <div id="video-set-buttons">
-            <div class="button-row set-buttons" id="video-sets-list">
-            </div>
-          </div>
-          {% if event.is_past and user.can_listen_to_audio%}
-              <button class="white-border-button" id="togglePlayerVideo"
-                      style="display: none">
-                  {% if event.published_videos %}
-                      Video player
-                  {% else %}
-                      Audio only
-                  {% endif %}
-              </button>
-          {% endif %}
           {% if not event.is_live and event.is_past %}
               <button class="white-border-button">Donate</button>
           {% endif %}
@@ -205,7 +195,6 @@
               </a>
           {% endif %}
       </div>
-
     </div>
     <div class="flex-row event-set-selector"></div>
     {% if event.published_audio or event.published_video %}
@@ -221,7 +210,7 @@
           </div>
           <div>
             {% for related in streaming_tonight_videos %}
-              <div class="flex-row related-video {% if related.pk in request.path %}selected{% endif %}">
+              <div class="flex-row related-video {% if related == event %}selected{% endif %}">
                 {% include 'events/event_card.html' with event=related mini=True show_time=True %}
                 <div class="related-info flex-column content-centered">
                   <div class="flex-column">
@@ -278,68 +267,70 @@
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   <script src="{% static 'js/jquery.form.js' %}"></script>
 
-    <script>
-        var Subpage = function (name) {
-            this.name = name;
-            this.element = $('[data-subpage-name="' + name +'"]');
-        };
+  <script>
+      var Subpage = function (name) {
+          this.name = name;
+          this.element = $('[data-subpage-name="' + name +'"]');
+      };
 
-        Subpage.prototype.bindForms = function () {
-            this.element.find('form').ajaxForm({
-                type: 'post',
-                success: function (response) {
-                    this.element.html(response);
-                    this.bindForms();
-                }.bind(this),
-                error: function (response) {
-                    this.element.html(response);
-                    this.bindForms();
-                }.bind(this)
-            });
-        };
+      Subpage.prototype.bindForms = function () {
+          this.element.find('form').ajaxForm({
+              type: 'post',
+              success: function (response) {
+                  this.element.html(response);
+                  this.bindForms();
+              }.bind(this),
+              error: function (response) {
+                  this.element.html(response);
+                  this.bindForms();
+              }.bind(this)
+          });
+      };
 
-        Subpage.prototype.load = function () {
-            this.element.html('<div class="text1">Loading  ' + this.name + '...</div>');
-            $.get(this.element.data('subpage-url'), function (e) {
-                this.element.html(e);
-                this.bindForms();
-            }.bind(this));
-        };
+      Subpage.prototype.load = function () {
+          this.element.html('<div class="text1">Loading  ' + this.name + '...</div>');
+          $.get(this.element.data('subpage-url'), function (e) {
+              this.element.html(e);
+              this.bindForms();
+          }.bind(this));
+      };
 
-        Subpage.prototype.setUrl = function (url) {
-            this.element.data('subpage-url', url);
-            this.load();
-        };
+      Subpage.prototype.setUrl = function (url) {
+          this.element.data('subpage-url', url);
+          this.load();
+      };
 
-        var SubpageManager = function () {
-            this.subpages = {};
-        };
-        SubpageManager.prototype.register = function() {
-            var manager = this;
-            $('[data-subpage-name]').each(function () {
-                var name = $(this).data('subpage-name');
-                manager.subpages[name] = new Subpage(name);
-            });
-        };
-        SubpageManager.prototype.loadAll = function() {
-            Object.keys(this.subpages).forEach(function (name) {
-                this.subpages[name].load();
-            }.bind(this));
-        };
-        SubpageManager.prototype.get = function(name) {
-            return this.subpages[name];
-        };
+      var SubpageManager = function () {
+          this.subpages = {};
+      };
+      SubpageManager.prototype.register = function() {
+          var manager = this;
+          $('[data-subpage-name]').each(function () {
+              var name = $(this).data('subpage-name');
+              manager.subpages[name] = new Subpage(name);
+          });
+      };
+      SubpageManager.prototype.loadAll = function() {
+          Object.keys(this.subpages).forEach(function (name) {
+              this.subpages[name].load();
+          }.bind(this));
+      };
+      SubpageManager.prototype.get = function(name) {
+          return this.subpages[name];
+      };
 
-        var subpages = new SubpageManager();
-        subpages.register();
-        subpages.loadAll();
+      var subpages = new SubpageManager();
+      subpages.register();
+      subpages.loadAll();
 
-        $(document).on('click', '[data-playlist-index]', function (ev) {
-            var url = $(this).data('comments-page');
-            subpages.get('comments').setUrl(url);
-        });
+      $(document).on('click', '[data-playlist-index]', function (ev) {
+          var subpage = subpages.get('comments');
+          if (subpage) {
+            subpage.setUrl($(this).data('comments-page'));
+          }
+      });
 
-    </script>
+  </script>
 
   {% if user.is_authenticated and event.sets.count %}
 
@@ -394,63 +385,6 @@
             }
         {% endif %}
 
-        {% if user.can_listen_to_audio and event.published_audio %}
-          audioPlayer = jwplayer("player-audio").setup({
-            primary: 'html5',
-            playlist: [
-              {% for audio in event.published_audio %}
-                {
-                  sources: [{
-                    file: "{{ audio.media_file.get_file_url|safe }}",
-                    type: "mp3"
-                  }],
-                  image: {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %},
-                  mediaid: {{ audio.id }}
-                }{% if not forloop.last %},{% endif %}
-              {% endfor %}
-            ],
-            width: "100%",
-            height: 200
-          });
-          audioPlayer.on('play', function () {
-            {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
-            updateViewCount(this);
-            {% if count_metrics %}
-                if (! activeTracker) {
-                    setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);
-                }
-            {% endif %}
-          });
-          {% if count_metrics %}
-              audioPlayer.on('pause', function() {
-                  window.clearInterval(activeTracker);
-                  activeTracker = null;
-              });
-          {% endif %}
-          audioPlayer.on('ready', function () {
-            var playlist = audioPlayer.getPlaylist();
-            var playlistItems = "";
-            $.each(playlist, function (index, item) {
-              playlistItems += '<button class="';
-              if (index === 0) {
-                playlistItems += ' active';
-              }
-              playlistItems += '" data-comments-page="' + '{% url 'event_comments' pk=event.id slug=event.slug %}?set=' + index;
-              playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</button>';
-            });
-            $("#audio-sets-list").html(playlistItems);
-          });
-
-          $('#audio-sets-list').on('click', 'button', function () {
-            var currentIndex = audioPlayer.getPlaylistIndex();
-            var selectedIndex = $(this).data('playlist-index');
-            audioPlayer.playlistItem(selectedIndex);
-            $('#set-number').html(selectedIndex + 1);
-            $(this).toggleClass('active');
-            $('#audio-sets-list button[data-playlist-index=' + currentIndex + ']').toggleClass('active');
-          });
-        {% endif %}
-
         {% if user.can_watch_video and event.published_videos %}
             videoPlayer = jwplayer("player-video").setup({
                 primary: 'html5',
@@ -483,28 +417,12 @@
                 {% endif %}
                   $('#playerTextOveraly').css('opacity', 1);
               });
-
-              videoPlayer.on('ready', function () {
-                var playlist = videoPlayer.getPlaylist();
-                var playlistItems = "";
-                $.each(playlist, function (index, item) {
-                    playlistItems += '<button class="';
-                    if (index === 0) {
-                        playlistItems += ' active';
-                    }
-                    playlistItems += '" data-comments-page="' + '{% url 'event_comments' pk=event.id slug=event.slug %}?set=' + index;
-                    playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</button>';
-                });
-                $("#video-sets-list").html(playlistItems);
-            });
-
-            $('#video-sets-list').on('click', 'button', function () {
-                var currentIndex = videoPlayer.getPlaylistIndex();
+            $('.set-select-button').on('click', function () {
                 var selectedIndex = $(this).data('playlist-index');
                 videoPlayer.playlistItem(selectedIndex);
                 $('#set-number').html(selectedIndex + 1);
+                $('.set-select-button').removeClass('active');
                 $(this).toggleClass('active');
-                $('#video-sets-list button[data-playlist-index=' + currentIndex + ']').toggleClass('active');
             });
         {% endif %}
 
