@@ -183,7 +183,8 @@ class Event(TimeStampedModel):
 
     def get_date(self):
 
-        event_date = self.date
+        return self.date
+
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
