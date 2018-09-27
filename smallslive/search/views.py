@@ -43,7 +43,8 @@ def search_autocomplete(request):
 class SearchMixin(object):
 
     def search(self, entity, main_search, page=1, order=None,
-               instrument=None, date_from=None, date_to=None, artist_search=None, artist_pk=None):
+               instrument=None, date_from=None, date_to=None,
+               artist_search=None, artist_pk=None, venue=None):
 
         search = SearchObject()
 
@@ -53,7 +54,8 @@ class SearchMixin(object):
 
         elif entity == Event:
             results_per_page = 24
-            sqs = search.search_event(main_search, order, date_from, date_to, artist_pk=artist_pk)
+            sqs = search.search_event(main_search, order, date_from, date_to,
+                                      artist_pk=artist_pk, venue=venue)
 
         blocks = []
         block = []
@@ -138,6 +140,7 @@ class MainSearchView(View, SearchMixin):
         date_from = request.GET.get('date_from', None)
         date_to = request.GET.get('date_to', None)
         artist_pk = request.GET.get('artist_pk', None)
+        venue = request.GET.get('venue', None)
 
         if date_from:
             date_from = parser.parse(date_from, fuzzy=True)
@@ -153,7 +156,8 @@ class MainSearchView(View, SearchMixin):
 
         elif entity == 'event':
             events, showing_results, num_pages = self.search(
-                Event, main_search, page, order=order, date_from=date_from, date_to=date_to, artist_pk=artist_pk)
+                Event, main_search, page, order=order, date_from=date_from,
+                date_to=date_to, artist_pk=artist_pk, venue=venue)
 
             context = {'events': events[0] if events else []}
             template = 'search/event_search_result.html'

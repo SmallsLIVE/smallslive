@@ -123,7 +123,8 @@ class SearchObject(object):
     
         return sqs
 
-    def search_event(self, main_search, order=None, start_date=None, end_date=None, artist_pk=None):
+    def search_event(self, main_search, order=None, start_date=None, end_date=None,
+                     artist_pk=None, venue=None):
 
         order = {
             'newest': '-date',
@@ -181,6 +182,11 @@ class SearchObject(object):
                     sqs = Event.objects.filter(condition)
 
         sqs = sqs.distinct()
+
+        if venue:
+            if venue != 'All':
+                sqs.filter(venue__pk=venue)
+
 
         # FIXME: compare to code in  "today_and_tomorrow_events"
         today = timezone.now().replace(hour=0, minute=0, second=0)

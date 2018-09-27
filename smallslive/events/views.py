@@ -527,6 +527,7 @@ class GenericScheduleView(TemplateView, SearchMixin):
 
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []
+        context['venues'] = Venue.objects.all()
 
         return context
 

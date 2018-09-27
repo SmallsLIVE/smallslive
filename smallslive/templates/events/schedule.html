@@ -6,6 +6,10 @@
 
 {% block title %}Calendar/Archive{% endblock %}
 
+{% block extra_head %}
+  <script src="{% static 'js/calendar/calendar.js' %}"></script>
+{% endblock %}
+
 {% block home_content %}
 <main>
   <div class="event-stripe">
@@ -15,4 +19,6 @@
 </main>{% endblock home_content %}
 
 {% block extra_js %}
+<script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
 {% endblock extra_js %}
