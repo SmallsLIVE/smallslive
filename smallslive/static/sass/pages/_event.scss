@@ -104,6 +104,7 @@
   }
 
   .event-overlay {
+    color: white;
     position: relative;
     height: 100%;
     padding: 35px 25px;
@@ -113,12 +114,18 @@
     }
   }
 
+  .event-overlay-logo {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
   .event-overlay-title {
     margin-bottom: 35px;
   }
 
   .event-overlay-artists {
-    max-height: 150px;
+    height: 150px;
     column-count: 3;
     column-fill: auto;
     .title5 {
@@ -153,6 +160,7 @@
 
 .event-related-videos {
   margin-bottom: 40px;
+  margin-top: 16px;
   .section-title {
     width: 100%;
     padding-left: 0;
@@ -161,9 +169,14 @@
   .related-video {
     margin-bottom: 1em;
 
+    &.selected {
+      border: 1px solid red;
+      border-radius: 5px;
+    }
+
     .related-info {
-      width: $event-card-width / 1.5;
-      background-color: $white-transparent;
+      width: 173px;
+      background-color: white;
       padding: 1em;
 
       //TODO Show ellipsis

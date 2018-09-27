@@ -58,12 +58,6 @@ class Command(BaseCommand):
                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
                                calling_format=boto.s3.connection.OrdinaryCallingFormat())
 
-        buckets = conn.get_all_buckets()
-        for key in buckets:
-            print key.name
-
-        print bucket_name
-        assert False
 
         self.bucket = conn.get_bucket(bucket_name)
         self.files_imported = 0
@@ -88,23 +82,10 @@ class Command(BaseCommand):
             else:
                 event_id = event.id
 
-            event_date = event.listing_date()
-            if event_date.year < 2017:
-                print 'skipping', event_date
-                continue
-            else:
-                if event_date.year == 2017 and event_date.month < 2:
-                    print 'skipping'
-                    continue
-                elif event_date.year == 2017 and event_date.month == 2 and event_date.day < 12:
-                    print 'skipping'
-                    continue
-
             for set_num in range(1, 7):
                 filename = '{0.year}-{0.month:02}-{0.day:02}/360p/{1}-{2}_360p.mp4'.format(
                     event.listing_date(), event_id, set_num)
                 key = self.bucket.get_key(filename)
-                print filename
                 if key:
                     print "importing {0}".format(filename)
                     try:
@@ -118,8 +99,7 @@ class Command(BaseCommand):
                         media_file, created = MediaFile.objects.get_or_create(category='set',
                                                                               media_type="video",
                                                                               sd_video_file=filename,
-                                                                              size=key.size,
-                                                                              bucket_name=bucket_name)
+                                                                              size=key.size)
                         recording.media_file = media_file
                         recording.save()
                         self.files_imported += 1

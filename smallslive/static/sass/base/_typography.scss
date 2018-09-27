@@ -150,12 +150,12 @@ $text-font-size-big: 1.4em;
 // Font sizes
 @mixin event-overlay-title {
   @include oswald-regular();
-  font-size: 60px;
+  font-size: 3.1vw;
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
   transform: scaleY(1.3);
-  line-height: 50px;
+  line-height: 3.1vw;
 }
 
 

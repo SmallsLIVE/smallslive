@@ -183,15 +183,8 @@ class Event(TimeStampedModel):
 
     def get_date(self):
 
-        event_date = self.date
+        return self.date
 
-        first_set = list(self.sets.all())
-        if first_set:
-            first_set = first_set[0]
-            if first_set.start.hour <= 5:
-                event_date = event_date - timedelta(days=1)
-
-        return event_date
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
@@ -238,7 +231,7 @@ class Event(TimeStampedModel):
     def get_photo_url(self):
         """Mezzrow has different buckets. S3 storage is overriden and bucket name has to be passed"""
         # TODO: store bucket name in Venue
-        if self.venue.name == 'Mezzrow':
+        if self.venue and self.venue.name == 'Mezzrow':
             bucket_name = 'mezzrowmedia'
         else:
             bucket_name = 'smallslivestatic'
@@ -320,7 +313,7 @@ class Event(TimeStampedModel):
     def sets_order(set1, set2):
 
         if set1.start.hour <= 5 and set2.start.hour <= 5 or \
-                                set1.start.hour > 5 and set2.start.hour > 5:
+                set1.start.hour > 5 and set2.start.hour > 5:
             if set1.start < set2.start:
                 return -1
             elif set1.start > set2.start:
@@ -345,12 +338,16 @@ class Event(TimeStampedModel):
             sets2 = list(event2.sets.all())
             sets2 = sorted(sets2, Event.sets_order)
             start2 = sets2[0].start
-            if start1 < start2:
-                return -1
-            elif start1 > start2:
-                return 1
+            if start1.hour <= 5 and start2.hour <=5 or start1.hour >= 5 and start2.hour >= 5:
+                if start1.hour <= start2.hour:
+                    return -1
+                else:
+                    return 1
             else:
-                return 0
+                if start1.hour <= 5:
+                    return 1
+                else:
+                    return -1
 
     @staticmethod
     def sorted(events):
@@ -369,30 +366,18 @@ class Event(TimeStampedModel):
         """
         Checks if the event happened in the past and already ended.
         """
-        sets = list(self.sets.all())
-        sets = sorted(sets, Event.sets_order)
-
         local_datetime = timezone.localtime(timezone.now())
         local_date = local_datetime.date()
         local_time = local_datetime.time()
 
-        if self.date < local_date:
-            start = sets[0].start
-            end = sets[-1].end
-            if start < end:
-                return True
-            else:
-                return local_date - timedelta(days=1) == self.date
+        start, end = self.get_range()
 
-        elif self.date > local_date:
-            return False
-        else:
-            start = sets[0].start
-            end = sets[-1].end
-            if start.hour < end.hour:
-                return local_time > end
-            else:
-                return False
+        if self.date < local_date and end.hour > 5:
+            return True
+        elif self.date == local_date - timedelta(days=1) and end.hour <= 5:
+            return end < local_time
+        elif self.date == local_date:
+            return end < local_time and not end.hour <= 5
 
     @property
     def is_future(self):
@@ -404,20 +389,34 @@ class Event(TimeStampedModel):
     @property
     def is_live(self):
 
+        # Examples:
+        # Feb 28th: 19:30 - 22:00 (event 11), 22:00 - 00:30 (event 21), 1:00 - 4:00 (event 31)
+        # Mar 1: 19:30 - 22:00 (event 12), 22:00 - 00:30 (event 22), 1:00 - 4:00 (event 32)
+        # Mar 2: 19:30 - 22:00 (event 13), 22:00 - 00:30 (event 23), 1:00 - 4:00 (event 33)
+
+        # local_date = Mar 1
+        # local_time = 00:15 -> event 21 is live
+        # local_time = 1:30 -> event 31 is live
+        # local_time = 11:00 -> no live events
+        # local_time = 22:00 -> event 12 and event 22 are live
+
+        # local_date = Mar 2
+        # local_time = 00:15 -> event 22 is live
+        # local_time = 1:30 -> event 32 is live
+        # local_time = 11:00 -> no live events
+        # local_time = 22:00 -> event 13 and event 23 are live
+
         local_datetime = timezone.localtime(timezone.now())
         local_date = local_datetime.date()
         local_time = local_datetime.time()
 
         start, end = self.get_range()
 
-        if local_date == self.date:
-            if start < local_time < end:
-                return True
+        if local_time.hour <= 5:
+            local_date -= timedelta(days=1)
 
-            if end < start < local_time:
-                return True
+        return local_date == self.date and start <= local_time <= end
 
-        return False
 
     def get_live_set(self):
         sets = list(self.sets.all())
@@ -608,7 +607,6 @@ class Recording(models.Model):
         print self.id
         return u'State: {}, Media: {}, Event: {}, Set: {}'.format(
             repr(self.state) or u'N/A',
-            repr(self.media_file) or u'N/A',
             self.event or u'N/A',
             self.set_number or u'N/A',
         )
@@ -641,6 +639,9 @@ class EventSet(models.Model):
     event = models.ForeignKey('events.Event', related_name='sets')
     video_recording = models.OneToOneField('events.Recording', related_name='set_is_video', blank=True, null=True)
     audio_recording = models.OneToOneField('events.Recording', related_name='set_is_audio', blank=True, null=True)
+
+    def __unicode__(self):
+        return '{} - {}'.format(self.start, self.end)
 
     @property
     def has_media(self):
@@ -691,6 +692,9 @@ class Venue(models.Model):
         blank=True,
         help_text='eg: https://www.mezzrow.com/events/{event_id}'
     )
+
+    audio_bucket_name = models.CharField(max_length=4096, default='smallslivemp3')
+    video_bucket_name = models.CharField(max_length=4096, default='smallslivevid')
 
     def __unicode__(self):
         return self.name
