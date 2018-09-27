@@ -197,6 +197,7 @@
         width: 5vw;
       }
       .artist-metrics-container{
+        position: relative;
         width: 60%;
         @media (max-width: 1024px) {
             width: 100%;
@@ -467,7 +468,7 @@
 }
 
 .datepicker-dashboard-container {
-    top: 330px;
+    top: 60px;
 
     .datepicker {
         left: 158px !important;
