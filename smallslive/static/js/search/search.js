@@ -272,7 +272,8 @@ $(document).ready(function () {
         format: 'mm/dd/yyyy',
         autoclose: true,
         container: '#search-date-picker-from',
-        showOnFocus: false
+        showOnFocus: false,
+        endDate: new Date()
     });
 
     $datePickerFrom.on('changeDate', function (newDate) {
@@ -300,7 +301,8 @@ $(document).ready(function () {
         format: 'mm/dd/yyyy',
         autoclose: false,
         container: '#search-date-picker-to',
-        showOnFocus: false
+        showOnFocus: false,
+        endDate: new Date()
     });
 
     $datePickerTo.on('changeDate', function (newDate) {
