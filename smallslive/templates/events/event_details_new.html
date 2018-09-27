@@ -210,7 +210,7 @@
           </div>
           <div>
             {% for related in streaming_tonight_videos %}
-              <div class="flex-row related-video {% if related.pk in request.path %}selected{% endif %}">
+              <div class="flex-row related-video {% if related == event %}selected{% endif %}">
                 {% include 'events/event_card.html' with event=related mini=True show_time=True %}
                 <div class="related-info flex-column content-centered">
                   <div class="flex-column">
