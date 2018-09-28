@@ -16,8 +16,14 @@ function sendEventRequest() {
     if (eventDateFrom) {
         var utcDateFrom = eventDateFrom.getFullYear() + '/' + (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate();
     }
+    else {
+        var utcDateFrom = null;
+    }
     if (eventDateTo) {
         var utcDateTo = eventDateTo.getFullYear() + '/' + (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate();
+    }
+    else {
+        var utcDateTo = null;
     }
 
     $.ajax({
@@ -95,8 +101,16 @@ $(document).ready(function () {
             eventDateTo = null;
             eventDateFrom = new Date();
         }
+        else if ($(this).val() == 'One Day') {
+            eventDateTo = new Date((new Date()).getTime() + 1 * 24 * 60 * 60 * 1000);
+            eventDateFrom = new Date();
+        }
         else if ($(this).val() == 'One Week') {
             eventDateTo = new Date((new Date()).getTime() + 7 * 24 * 60 * 60 * 1000);
+            eventDateFrom = new Date();
+        }
+        else if ($(this).val() == 'One Month') {
+            eventDateTo = new Date((new Date()).getTime() + 31 * 24 * 60 * 60 * 1000);
             eventDateFrom = new Date();
         }
 
@@ -136,8 +150,8 @@ $(document).ready(function () {
             $(document).bind("click", hide);
             $(".datepicker-container").data('shown', true)}); 
 
-        $("#search-date-picker-from input").click();
-        $("#search-date-picker-from input").focus();    
+        $("#search-date-picker-to input").click();
+        $("#search-date-picker-to input").focus();    
     }
 
     function hide() {   
@@ -159,7 +173,7 @@ $(document).ready(function () {
         container: '#search-date-picker-from',
         showOnFocus: false,
         startDate: new Date()
-    });
+    }).datepicker('setDate', 'now');
 
     $datePickerFrom.on('changeDate', function (newDate) {
         eventDateFrom = newDate.date;
@@ -218,5 +232,13 @@ $(document).ready(function () {
         eventPageNum = 1;
         $(".datepicker-container").hide();
         sendEventRequest();
+    });
+
+    $(".datepicker-reset").click(function () {
+        $('#search-date-picker-from input').val("").datepicker("update");
+        $('#search-date-picker-to input').val("").datepicker("update");
+        eventDateFrom = eventDateTo = null;
+        $("#search-date-picker-from input").click();
+        $("#search-date-picker-from input").focus();
     });
 });
