@@ -104,14 +104,20 @@ $(document).ready(function () {
         else if ($(this).val() == 'One Day') {
             eventDateTo = new Date((new Date()).getTime() + 1 * 24 * 60 * 60 * 1000);
             eventDateFrom = new Date();
+            $("#search-date-picker-from input").datepicker("update", eventDateFrom);
+            $("#search-date-picker-to input").datepicker("update", eventDateTo);
         }
         else if ($(this).val() == 'One Week') {
             eventDateTo = new Date((new Date()).getTime() + 7 * 24 * 60 * 60 * 1000);
             eventDateFrom = new Date();
+            $("#search-date-picker-from input").datepicker("update", eventDateFrom);
+            $("#search-date-picker-to input").datepicker("update", eventDateTo);
         }
         else if ($(this).val() == 'One Month') {
             eventDateTo = new Date((new Date()).getTime() + 31 * 24 * 60 * 60 * 1000);
             eventDateFrom = new Date();
+            $("#search-date-picker-from input").datepicker("update", eventDateFrom);
+            $("#search-date-picker-to input").datepicker("update", eventDateTo);
         }
 
         eventPageNum = 1;
