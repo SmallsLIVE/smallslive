@@ -46,6 +46,10 @@
 
     a {
       color: $black;
+      &:hover {
+        color: $accent-color;
+        text-decoration: underline;
+      }
     }
   }
 }
@@ -280,18 +284,12 @@
 }
 
 .load-more-btn {
-  font-weight: 900;
-  font-size: 2em;
-  padding-top: 30px;
-  padding-bottom: 30px;
-  margin-top: 20px;
+  @include title1;
+  font-size: 2.5em;
+  width: auto;
+  height: auto;
+  padding: 10px 30px;
 }
-
-.load-more-btn-text {
-  margin-top: -15px;
-  text-transform: uppercase;
-}
-
 
 .page-numbers-list {
   list-style: none;

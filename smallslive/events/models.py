@@ -121,9 +121,6 @@ class EventQuerySet(models.QuerySet):
 class CustomImageFieldFile(models.fields.files.ImageFieldFile):
 
     def get_url(self, bucket_name):
-
-        print '-------------'
-        print bucket_name
         return self.storage.url(self.name, bucket_name)
 
 
