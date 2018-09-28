@@ -189,6 +189,9 @@
 .shows-filter-container {
   margin: 0 auto;
   position: relative;
+  > * {
+    display: inline-block;
+  }
   @media (min-width: $screen-md-min) {
     .white-border-select, .custom-date-picker {
       width: 120px;
@@ -201,10 +204,6 @@
     > .white-border-select,
     > .white-border-button {
       width: 200px;
-    }
-
-    .event-filter-select {
-      margin-right: 86px;
     }
   }
 
@@ -568,7 +567,7 @@
 
 .datepicker-btn {
   display: inline-block;
-  width: 250px !important;
+  width: 290px !important;
   padding-top: 10px;
   margin-left: 20px;
   align-self: center;
