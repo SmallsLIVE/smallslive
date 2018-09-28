@@ -51,6 +51,17 @@
       }
     }
 
+    @media(max-width: $screen-sm) {
+
+      &.title1 {
+        font-size: 2.2em;
+      }
+
+      &.title2 {
+        font-size: 1.3em;
+      }
+    }
+
     &.title7 {
       line-height: 1.2em;
     }
