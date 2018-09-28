@@ -405,12 +405,14 @@
                 height: 525  // If you change this please be kind and change the corresponding css.
             });
             videoPlayer.on('play', function () {
+                $('#playerTextOveraly').addClass('hidden');
                 audioPlayer.pause(true);
                 updateViewCount(this);
                 {% if count_metrics %}setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);{% endif %}
                 $('#playerTextOveraly').css('opacity', 0);
             });
               videoPlayer.on('pause', function() {
+                $('#playerTextOveraly').removeClass('hidden');
                 {% if count_metrics %}
                   window.clearInterval(activeTracker);
                   activeTracker = null;
