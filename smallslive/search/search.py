@@ -184,7 +184,7 @@ class SearchObject(object):
         sqs = sqs.distinct()
 
         if venue:
-            if venue != 'All':
+            if venue != 'all':
                 sqs.filter(venue__pk=venue)
 
 
