@@ -148,7 +148,8 @@ $mobile-event-card-width: $event-card-width / 1.5;
 
 .event-info, .album-row {
   @include links1;
-  margin-top: 15px;
+  margin-top: 10px;
+  margin-bottom: 15px;
 
   &.top-border {
     padding-bottom: 30px;
