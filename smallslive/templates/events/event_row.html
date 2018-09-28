@@ -3,8 +3,10 @@
     <div class="event-info">
       <div>
         <div class="text-grey">{{ event.get_date|date:'m/d/Y' }}</div>
-        <div class="event-info-title">{{ event.title }}</div> {% if show_event_venue %}
-        <div class="accent-color">{{ event.venue.name }}</div> {% endif %}
+        <div class="event-info-title">{{ event.title }}</div>
+        {% if show_event_venue %}
+          <div class="accent-color">{{ event.venue.name }}</div>
+        {% endif %}
       </div>
     </div>
   </article> {% endfor %}

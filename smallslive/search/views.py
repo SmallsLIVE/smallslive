@@ -164,10 +164,11 @@ class MainSearchView(View, SearchMixin):
         else:
             return Http404('entity does not exist')
 
-        temp = render_to_string(template,
-                                context,
-                                context_instance=RequestContext(request)
-                                )
+        temp = render_to_string(
+            template,
+            context,
+            context_instance=RequestContext(request)
+        )
 
         data = {
             'template': temp,
@@ -181,11 +182,11 @@ class MainSearchView(View, SearchMixin):
                        'range': range(1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2],
                        'has_last_page': (num_pages - page) >= 3}
             template = 'search/page_numbers_footer.html'
-            temp = render_to_string(template,
-                                    context,
-                                    context_instance=RequestContext(request)
-                                    )
-
+            temp = render_to_string(
+                template,
+                context,
+                context_instance=RequestContext(request)
+            )
             data['pageNumbersFooter'] = temp
 
         return JsonResponse(data)
