@@ -95,6 +95,7 @@
   &.mobile-search-header-shown {
     @include animated();
     height: $mobile-bar-height;
+    overflow: visible;
 
     @media(max-width: $screen-md-max) {
       height: 15vw;
@@ -102,17 +103,18 @@
 
     box-shadow: 0 9px 9px 0 rgba(145,140,145,1);
 
-    .search-triangle {
-      $triangle-size: 10px;
+    &::after {
+      $triangle-size: 17px;
       width: 0;
       height: 0;
       border-left: $triangle-size solid transparent;
       border-right: $triangle-size solid transparent;
+      content: '';
 
       border-bottom: $triangle-size solid white;
       position: absolute;
-      top: -$triangle-size;
-      right: 15%;
+      top: -$triangle-size + 1;
+      right: 13%;
 
     }
   }
