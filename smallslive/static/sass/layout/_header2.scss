@@ -96,6 +96,12 @@
     @include animated();
     height: $mobile-bar-height;
 
+    @media(max-width: $screen-md-max) {
+      height: 15vw;
+    }
+
+    box-shadow: 0 9px 9px 0 rgba(145,140,145,1);
+
     .search-triangle {
       $triangle-size: 10px;
       width: 0;
@@ -118,7 +124,9 @@
     flex-grow: 1;
 
     form {
-      height: $mobile-bar-height - 2 * $input-padding;
+      @media(max-width: $screen-md-max) {
+        height: 11vw;
+      }
       flex: 1;
 
       input {
