@@ -4,8 +4,10 @@
 
 <section id="showsContent" class="search-tab-content active">
   <div class="musicians-results white-line-bottom">
+    {% if archived %}
       <div id="artist-subheader" class="showing-results text1">{{ showing_event_results }}</div>
-      <div class="title1 shows-results-title">{{ archived|yesno:'Archived,Upcoming' }} Shows</div>
+    {% endif %}
+    <div class="title1 shows-results-title">{{ archived|yesno:'Archived,Upcoming' }} Shows</div>
   </div>
   {% if archived %}
       {% include 'events/archived_filters.html' %}

@@ -40,8 +40,6 @@ function sendEventRequest() {
         dataType: 'json',
         success: function (data) {
             if (data.template) {
-                $('#event-subheader').html(data.showingResults);
-                $('#event-subheader-footer').html(data.showingResults);
 
                 if (apply || eventFilter) {
                     apply = false;
