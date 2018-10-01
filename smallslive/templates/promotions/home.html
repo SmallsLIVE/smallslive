@@ -284,10 +284,10 @@
                     {% for album in featured_recordings %}
                         {% for track in album.tracks.all|dictsort:"ordering" %}
                             {
-                                sources: [{
+                                {% comment %} sources: [{
                                     file: "{{ track.get_track_preview_url|safe }}",
                                     type: "mp3"
-                                }],
+                                }], {% endcomment %}
                                 mediaid: {{ track.id }}
                             }{% if not forloop.last %},{% endif %}
                         {% endfor %}
