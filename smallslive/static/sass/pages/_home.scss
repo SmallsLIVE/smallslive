@@ -56,7 +56,7 @@ body {
     position: relative;
     width: 100vw;
 
-    @media (max-width: 960px) {
+    @media (max-width: $screen-sm-max) {
       overflow: scroll;
     }
 

@@ -18,7 +18,7 @@
   &.home {
     width: 630px;
 
-    @media(max-width: 960px) {
+    @media(max-width: $screen-sm-max) {
       width: 100vw;
     }
   }
@@ -51,14 +51,14 @@
       }
     }
 
-    @media(max-width: $screen-sm) {
+    @media(max-width: $screen-sm-max) {
 
       &.title1 {
-        font-size: 2.2em;
+        font-size: 7vw;
       }
 
       &.title2 {
-        font-size: 1.3em;
+        font-size: 3vw;
       }
     }
 

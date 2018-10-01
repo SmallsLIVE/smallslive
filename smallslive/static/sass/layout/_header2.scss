@@ -49,6 +49,10 @@
   width: 100%;
   height: $mobile-bar-height;
 
+  @media(max-width: $screen-sm-max) {
+    height: 15vw;
+  }
+
 
   .mobile-logo-container {
     width: 100%;
@@ -62,11 +66,11 @@
 
     .smalls-logo {
       pointer-events: all;
-      margin: 5px 0;
+      margin: 12px 0;
 
       img {
-        height: 50px;
-        width: 50px;
+        height: 11vw;
+        width: 11vw;
       }
     }
   }

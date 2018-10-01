@@ -35,6 +35,7 @@
     <main>
       {% if not request.user.is_authenticated %}
         {% include 'home_banners.html' %}
+        {% include 'home_banners_mobile.html' %}
       {% elif not request.user.has_active_subscription %}
         {% include 'home_banners.html' with active='supporter' %}
       {% endif %}

@@ -14,14 +14,14 @@ $mobile-event-card-width: $event-card-width / 1.5;
         height: calc(14.5vw * 0.6);
       }
   
-      @media (max-width: 960px) {
+      @media (max-width: $screen-sm-max) {
         display: none;
-        }
       }
+    }
       &.next {
         border-radius: 10px 0 0 0;
       }
-    }
+  }
 
     .event-info-title {
       @media (min-width: 1366px) {
@@ -36,7 +36,7 @@ $mobile-event-card-width: $event-card-width / 1.5;
         width: 20vw;
       }
 
-      @media (max-width: 960px) {
+      @media (max-width: $screen-sm-max) {
         width: 44vw;
       }
     }
@@ -70,7 +70,7 @@ $mobile-event-card-width: $event-card-width / 1.5;
       height: calc(14.5vw * 0.6);
     }
 
-    @media (max-width: 960px) {
+    @media (max-width: $screen-sm-max) {
       display: none;
     }
   }
@@ -122,7 +122,7 @@ $mobile-event-card-width: $event-card-width / 1.5;
   display: flex;
   padding-left: 3.5vw;
 
-  @media (min-width: 960px) {
+  @media (min-width: $screen-sm-max) {
     padding-left: 3.5vw;
   }
 
@@ -175,7 +175,7 @@ $mobile-event-card-width: $event-card-width / 1.5;
     width: 14.7vw;
   }
 
-  @media (max-width: 960px) {
+  @media (max-width: $screen-sm-max) {
     width: 45.7vw;
   }
 }
@@ -298,7 +298,7 @@ $mobile-event-card-width: $event-card-width / 1.5;
     @include event-card(22.85vw, 22.85vw * 0.6);
   }
 
-  @media (max-width: 960px) {
+  @media (max-width: $screen-sm-max) {
     @include event-card(46.1vw, 46.1vw * 0.6);
   }
 }
@@ -316,7 +316,7 @@ $mobile-event-card-width: $event-card-width / 1.5;
     @include event-card(15.1vw, 15.1vw * 0.6);
   }
 
-  @media (max-width: 960px) {
+  @media (max-width: $screen-sm-max) {
     @include event-card(46.1vw, 46.1vw * 0.6);
   }
 }
