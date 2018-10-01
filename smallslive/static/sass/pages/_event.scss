@@ -159,16 +159,22 @@
 }
 
 .event-related-videos {
-  margin-bottom: 40px;
-  margin-top: 16px;
+  height: 530px;
+  overflow: hidden;
+
+  &:first-child {
+    margin-top: 34px;
+    padding-bottom: 40px;
+  }
+
   .section-title {
     width: 100%;
     padding-left: 0;
   }
 
   > div:not(.section-title) {
-    height: 525px;
     overflow-y: auto;
+    max-height: 435px;
   }
 
   .related-video {
@@ -270,10 +276,14 @@
 }
 
 .comments-container {
+  > div > span {
+    font-size: 1.4em;
+  }
   textarea {
+    padding: 20px;
     resize: none;
     margin: 10px 0;
-    height: 80px;
+    height: 90px;
     border-radius: 0;
   }
 }
