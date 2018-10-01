@@ -178,18 +178,18 @@
   }
 
   .related-video {
+    background-color: white;
     margin-bottom: 1em;
     overflow: hidden;
     width: 99%;
 
     &.selected {
-      border: 1px solid red;
+      border: 3px solid $accent-color;
       border-radius: 10px;
     }
 
     .related-info {
       width: 173px;
-      background-color: white;
       padding: 1em;
 
       //TODO Show ellipsis
@@ -278,6 +278,9 @@
 .comments-container {
   > div > span {
     font-size: 1.4em;
+    &:first-child {
+      padding-right: 5px;
+    }
   }
   textarea {
     padding: 20px;
