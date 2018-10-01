@@ -24,6 +24,11 @@
       margin-left: 30px;
       margin-right: 30px;
 
+      @media (max-width: 1200px) {
+        margin-left: 15px;
+        margin-right: 0;
+      }
+
       input {
         border-radius: 10px;
       }
