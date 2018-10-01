@@ -13,7 +13,7 @@
 {% block extra_nav %}
   <div class="search-tabs">
     <div class="active" onclick="showContent('#showsContent', this)">
-      <span class="title1">Archived Shows</span>
+      <span class="title1"><span class="hidden-xs">Archived</span> Shows</span>
     </div>
     <div onclick="showContent('#musicianContent', this)">
       <span class="title1">Musicians</span>
@@ -41,7 +41,7 @@
 <div class="main-container search-container {% if user.is_superuser %}admin-shown{% endif %}">
 
     <section id="musicianContent" class="search-tab-content">
-        <div  class="search-artist-box-container">
+        <div  class="search-artist-box-container hidden-xs">
           <img src="{% static 'image/search-icon.svg' %}">
           <input id="artist-search"
                  class="search-artist-box"

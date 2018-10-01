@@ -90,6 +90,11 @@
 
       span {
         margin: 10px 0;
+        @media (max-width: $screen-sm) {
+          margin: 10px 0;
+          font-size: 1em;
+          padding: 10px;
+        }
       }
     }
   }
@@ -105,10 +110,7 @@
 
   //Mobile
   @media (max-width: $screen-sm-max) {
-    @include variable-admin-padding(70px);
-    &.mobile-search-header-shown {
-      @include variable-admin-padding(70px + $mobile-bar-height);
-    }
+    padding-top: 0;
     .search-tab-content {
       &:not(.active) {
         display: none;

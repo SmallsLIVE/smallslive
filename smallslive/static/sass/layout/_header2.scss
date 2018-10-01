@@ -91,7 +91,6 @@
   &.mobile-search-header-shown {
     @include animated();
     height: $mobile-bar-height;
-    box-shadow: 0 9px 9px 0 rgba(145,140,145,1);
 
     .search-triangle {
       $triangle-size: 10px;
