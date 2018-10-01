@@ -41,12 +41,16 @@ class MediaFile(models.Model):
         self.audio_bucket_name = None
         self.video_bucket_name = None
 
+
+
         # FIXME: This is broken. It assumes Event.venue is not null.
         try:
             venue = self.recording.event.venue
             self.audio_bucket_name = venue.audio_bucket_name
             self.video_bucket_name = venue.video_bucket_name
         except MediaFile.recording.RelatedObjectDoesNotExist:
+            self.audio_bucket_name = 'smallslivemp3'
+            self.video_bucket_name = 'smallslivevid'
             # self.recording will not exist on object creation.
             pass
 
