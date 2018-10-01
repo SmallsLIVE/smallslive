@@ -69,7 +69,7 @@
     z-index: 10000;
 }
 
-@media (max-width: 960px) {
+@media (max-width: $screen-sm-max) {
   .gradient-overlay {
     @include linear-gradient(to bottom, rgba(0,0,0,0) 70%, rgba(0,0,0,1) 99%);
   }

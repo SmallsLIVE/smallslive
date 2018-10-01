@@ -83,8 +83,14 @@ function sendEventRequest() {
     if (eventDateFrom) {
         var utcDateFrom = eventDateFrom.getFullYear() + '/' + (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate();
     }
+    else {
+        var utcDateFrom = null;
+    }
     if (eventDateTo) {
         var utcDateTo = eventDateTo.getFullYear() + '/' + (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate();
+    }
+    else {
+        var utcDateTo = null;
     }
 
     $.ajax({
@@ -252,7 +258,7 @@ $(document).ready(function () {
             $(".datepicker-container").data('shown', true)}); 
 
         $("#search-date-picker-from input").click();
-        $("#search-date-picker-from input").focus();    
+        $("#search-date-picker-from input").focus();  
     }
 
     function hide() {   
@@ -303,7 +309,7 @@ $(document).ready(function () {
         container: '#search-date-picker-to',
         showOnFocus: false,
         endDate: new Date()
-    });
+    }).datepicker('setDate', 'now');
 
     $datePickerTo.on('changeDate', function (newDate) {
         eventDateTo = newDate.date;
@@ -344,5 +350,13 @@ $(document).ready(function () {
         eventPageNum = 1;
         $(".datepicker-container").hide();
         sendEventRequest();
+    });
+    
+    $(".datepicker-reset").click(function () {
+        $('#search-date-picker-from input').val("").datepicker("update");
+        $('#search-date-picker-to input').val("").datepicker("update");
+        eventDateFrom = eventDateTo = null;
+        $("#search-date-picker-from input").click();
+        $("#search-date-picker-from input").focus();
     });
 });
