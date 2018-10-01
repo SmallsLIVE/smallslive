@@ -151,9 +151,7 @@ class Event(TimeStampedModel):
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
     state = StatusField(default=STATUS.Draft)
     slug = models.SlugField(blank=True, max_length=500)
-    tickets_url_id = models.CharField(
-        max_length=100, null=True, blank=True,
-        help_text='Identifier for the ticket provider, eg: 4124-polite-jam-session-with-naama-gheber')
+    tickets_url = models.URLField(null=True, blank=True)
 
     objects = EventQuerySet.as_manager()
     #past = QueryManager(start__lt=datetime.now()).order_by('-start')
@@ -169,14 +167,6 @@ class Event(TimeStampedModel):
 
     def __unicode__(self):
         return u'{} - {}'.format(self.title, self.date)
-
-    @property
-    def tickets_url(self):
-        if not (self.venue_id and self.venue.tickets_url_format and self.tickets_url_id):
-            return None
-
-        return self.venue.tickets_url_format.format(
-                    event_id=self.tickets_url_id)
 
     def get_date(self):
         return self.date
@@ -679,14 +669,8 @@ class GigPlayed(models.Model):
 
 
 class Venue(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    tickets_url_format = models.CharField(
-        max_length=255,
-        null=True,
-        blank=True,
-        help_text='eg: https://www.mezzrow.com/events/{event_id}'
-    )
 
+    name = models.CharField(max_length=100, unique=True)
     audio_bucket_name = models.CharField(max_length=4096, default='smallslivemp3')
     video_bucket_name = models.CharField(max_length=4096, default='smallslivevid')
 
