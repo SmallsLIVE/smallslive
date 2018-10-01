@@ -34,7 +34,6 @@ class Command(BaseCommand):
         # Create Mezzrow venue if it does not exist
         self.mezzrow_venue, _ = Venue.objects.get_or_create(
             name='Mezzrow',
-            tickets_url_format='https://www.mezzrow.com/events/{event_id}',
             audio_bucket_name='Mezzrowmp3',
             video_bucket_name='MezzrowVid'
         )
