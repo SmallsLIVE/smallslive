@@ -166,14 +166,17 @@ class MyEventsAJAXView(MyEventsView):
             'total_pages': context.get('total_pages'),
             'current_page': context.get('current_page'),
         }
-
+        
         return JSONResponse(data)
 
 
 class MyFutureEventsAJAXView(MyEventsAJAXView, MyFutureEventsView):
 
     template_name = 'artist_dashboard/artist-dashboard-events.html'
-
+    def get_context_data(self, **kwargs):
+        context = super(MyFutureEventsAJAXView, self).get_context_data(**kwargs)
+        print(context)
+        return context
 
 my_future_events_ajax = MyFutureEventsAJAXView.as_view()
 
@@ -202,7 +205,10 @@ my_past_events = MyPastEventsView.as_view()
 class MyPastEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
 
     template_name = 'artist_dashboard/artist-dashboard-events.html'
-
+    def get_context_data(self, **kwargs):
+        context = super(MyPastEventsAJAXView, self).get_context_data(**kwargs)
+        print(context)
+        return context
 
 my_past_events_ajax = MyPastEventsAJAXView.as_view()
 
@@ -221,6 +227,7 @@ class MyPastEventsInfoView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsInfoView, self).get_context_data(**kwargs)
+        print(context)
         artist = self.request.user.artist
         set_id = int(self.request.GET.get('set_id', 0))
         context.update({

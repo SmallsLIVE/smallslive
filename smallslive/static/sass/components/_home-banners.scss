@@ -179,10 +179,12 @@ $banners-height: 38vh;
   }
 
   &.mobile {
+    .slick-dots li button:before {
+      color: black;
+    }
     display: none;
     white-space: nowrap;
     width: 100vw;
-    overflow: scroll;
     text-align: center;
 
     @media (max-width: $screen-sm-max) {
