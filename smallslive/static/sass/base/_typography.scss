@@ -399,6 +399,14 @@ $text-font-size-big: 1.4em;
   text-justify: inter-word;
 }
 
+.text-centered {
+  text-align: center;
+}
+
 .underline {
+  text-decoration: underline;
+}
+
+.hover-underline:hover {
   text-decoration: underline;
 }

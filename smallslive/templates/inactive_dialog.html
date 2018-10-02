@@ -2,10 +2,11 @@
   <div class="modal fade in" role="dialog" id="inactive-dialog" >
     <div class="modal-dialog">
         <div class="modal-content  custom-modal">
+                <a href="#" class="close-button"></a>
           <div class="modal-body">
               <p class="title2 accent-color">Confirmation</p>
               <p class="title1">Your membership is not yet confirmed</p>
-              <p class="text4 text-justified">You have been sent a confirmation
+              <p class="text9 text-justified">You have been sent a confirmation
                   e-mail to <span class="accent-color">{{ user.email }}</span>.
                   Please check yout email and confirm your membership by clicking the
                   link
@@ -15,7 +16,7 @@
                   your
                   spam folder as well.
               </p>
-              <div class="text4" style="margin-top: 40px">
+              <div class="text4 text-centered" style="margin-top: 40px">
                   <div>
                       <span class="text-grey">Didn't get an email?</span>
                       <form id="resendConfirmationForm"
@@ -24,7 +25,7 @@
                           {% csrf_token %}
                           <input id="user_email_hidden" type="hidden" name="email" value="{{ user.email }}">
                           <input id="action_send" type="hidden" name="action_send" value="">
-                          <a class="accent-color"
+                          <a class="accent-color hover-underline"
                              href="javascript:{}"
                              onclick="document.getElementById('resendConfirmationForm').submit(); return false;">
                               Resend confirmation email
@@ -32,7 +33,7 @@
                       </form>
                   </div>
                   <p>
-                      <span class="text-grey">Or contact support at</span> <a class="accent-color" href="mailto:accountsupport@smallslive.com">
+                      <span class="text-grey">Or contact support at</span> <a class="accent-color hover-underline" href="mailto:accountsupport@smallslive.com">
                           accountsupport@smallslive.com
                       </a>
                   </p>
@@ -47,10 +48,14 @@
         document.addEventListener('click', function () {
             $('#inactive-dialog').hide();
         });
-
          $(document).ready(function () {
             console.log('Ready1');
             $('#inactive-dialog').show();
+        });
+        loginModal = document.getElementById('inactive-dialog')
+        closeButton = loginModal.getElementsByClassName('close-button')[0]
+        closeButton.addEventListener('click', function () {
+            $('#inactive-dialog').hide();
         });
     </script>
 {% endif %}

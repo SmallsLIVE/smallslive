@@ -121,7 +121,7 @@
     }
     .artist-events-container {
         border-top: 3px solid $white-transparent;
-        height: 620px;
+        height: 700px;
         @media (max-width: 1024px) {
             justify-content: center;
             height: 800px;
@@ -267,7 +267,7 @@
             box-sizing: border-box;
         }
         .artist-event-info {
-            margin: 0.52vw 0;
+            margin: 10px 0;
             @media (max-width: 1024px) {
                 margin: 20px 0;
                 .button-row {

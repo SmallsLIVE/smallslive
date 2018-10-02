@@ -61,7 +61,7 @@
     <i class="fa fa-bars" onclick="toggleSideBar()"></i>
     <div>
       <i class="fa fa-search" onclick="toggleSearch()"></i>
-      <i class="fa fa-user" onclick="console.log('user')"></i>
+      <i class="fa fa-user" onclick="toggleAdmin()"></i>
     </div>
   </div>
 </header>
@@ -101,7 +101,11 @@
   function toggleSideBar() {
       $('#side-navigation').toggleClass('side-bar-hidden');
   }
-
+  function toggleAdmin(){
+    console.log("user")
+    //$('#search-bar').toggleClass('mobile-search-header-shown');
+    //$('.main-container').toggleClass('mobile-search-header-shown');
+  }
   function toggleSearch() {
       $('#search-bar').toggleClass('mobile-search-header-shown');
       $('body').toggleClass('mobile-search-header-shown');
