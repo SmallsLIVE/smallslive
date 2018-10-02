@@ -1,6 +1,6 @@
 {% load full_static %}
 
-<div class="banners mobile">
+<div class="banners mobile carousel">
   <div id="banner-archive-box" class="box archive">
     <p class="title">Archive</p>
     <p class="content">
@@ -39,3 +39,14 @@
   </div>
 
 </div>
+
+
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+  $('.carousel').slick({infinite: true, dots:true,   arrows: false}) 
+});
+</script>
+{% endblock %}
+
