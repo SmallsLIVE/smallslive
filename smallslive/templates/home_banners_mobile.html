@@ -43,6 +43,10 @@
 
 
 {% block extra_js %}
-
+<script>
+$(document).ready(function() {
+  $('.carousel').slick({infinite: true, dots:true,   arrows: false}) 
+});
+</script>
 {% endblock %}
 
