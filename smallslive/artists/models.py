@@ -104,10 +104,7 @@ class Artist(models.Model):
 
     def get_main_instrument_name(self):
         instrument = self.instruments.first()
-        if instrument:
-            return instrument.name
-        else:
-            return ""
+        return instrument.name if instrument else ''
 
     def events_count(self):
         return self.events.count()

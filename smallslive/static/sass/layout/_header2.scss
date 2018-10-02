@@ -118,9 +118,8 @@
 
       border-bottom: $triangle-size solid white;
       position: absolute;
-      top: -$triangle-size + 1;
-      right: 13%;
-
+      top: -$triangle-size + 5;
+      right: 60px;
     }
   }
 
@@ -143,6 +142,7 @@
         border: 1px solid $background-grey;
         border-radius: 3px;
         outline: none;
+        padding: 0 0 0 15px;
       }
     }
 

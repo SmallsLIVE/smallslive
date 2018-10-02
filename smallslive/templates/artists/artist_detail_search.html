@@ -2,13 +2,13 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
-<div  class="content-centered flex-row items-center" style="width: 100%;">
-<div class="artist-search-profile-resume flex-row items-center">
+<div  class="content-centered flex-row" style="width: 100%;">
+<div class="artist-search-profile-resume flex-row ">
     <div class="artist-search-profile-image">
         {% if artist.photo %}
         {% include 'partials/search_artist_profile_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
         {% else %}
-            <div class="flex-column content-centered items-center"
+            <div class="flex-column content-centered"
                 style="width: 100%; height: 100%"><span class="title1">No Photo</span></div>
         {% endif %}
     </div>
@@ -41,21 +41,20 @@
 
 <div class="artist-search-profile-bio-container flex-row">
     <div>
-            <div class="artist-search-profile-bio text4">
-                {% if artist.biography %}
+        <div class="artist-search-profile-bio text4">
+            {% if artist.biography %}
                 {{ artist.biography|safe|striptags }}
-                {% else %}
-                    This artist does not have a bio yet.
-                {% endif %}
-                  
-            </div>
-            <span class="read-more text4 text-grey">Read more</span>
+            {% else %}
+                This artist does not have a bio yet.
+            {% endif %}
+        </div>
+        <span class="read-more text4 text-grey">Read more</span>
     </div>
     
     <div class="artist-search-profile-bio-buttons flex-column">
-        <div id="archive-shows-button" class="white-border-button" style="width: 180px; cursor: pointer;">Archive Shows</div>
-        <div id="upcoming-shows-button" class="white-border-button" style="width: 180px; cursor: pointer;">Upcoming Shows</div>
-        <div id="smallslive-tracks-button" class="white-border-button" style="width: 180px; cursor: pointer;">Smallslive Tracks</div>
+        <button id="archive-shows-button" class="white-border-button hover-fade active">Archive Shows</button>
+        <button id="upcoming-shows-button" class="white-border-button hover-fade">Upcoming Shows</button>
+        <button id="smallslive-tracks-button" class="white-border-button hover-fade">Smallslive Tracks</button>
     </div>
 </div>
 </div>
@@ -65,7 +64,11 @@
         <div class="title1 shows-results-title">Smallslive Tracks</div>
     </div>
     <div>
-        {% include 'artists/album_row.html' with events=artist.tracks hidde_event_date=False show_event_venue=True %}
+        {% if artist.tracks %}
+            {% include 'artists/album_row.html' with events=artist.tracks hidde_event_date=False show_event_venue=True %}
+        {% else %}
+            <div class="no-result-container text2">No results</div>
+        {% endif %}
     </div>
 </div>
 
@@ -74,7 +77,11 @@
         <div class="title1 shows-results-title">Upcoming Shows</div>
     </div>
     <div>
-        {% include 'events/event_row.html' with events=artist.upcoming_events hidde_event_date=False show_event_venue=True %}
+        {% if artist.upcoming_events  %}
+            {% include 'events/event_row.html' with events=artist.upcoming_events hidde_event_date=False show_event_venue=True %}
+        {% else %}
+            <div class="no-result-container text2">No results</div>
+        {% endif %}
     </div>
 </div>
 
@@ -85,19 +92,29 @@
             this.style.display= 'none';
         });
 
+
         $("#smallslive-tracks-button").click(function () {
+            $('.artist-search-profile-bio-buttons button').removeClass('active');
+            $(this).addClass('active');
+
             $("#showsContent").hide();
             $("#smallslive-tracks").show();
             $("#upcoming-shows").hide();
         });
 
         $("#upcoming-shows-button").click(function () {
+            $('.artist-search-profile-bio-buttons button').removeClass('active');
+            $(this).addClass('active');
+
             $("#showsContent").hide();
             $("#upcoming-shows").show();
             $("#smallslive-tracks").hide();
         });
 
         $("#archive-shows-button").click(function () {
+            $('.artist-search-profile-bio-buttons button').removeClass('active');
+            $(this).addClass('active');
+
             $("#showsContent").show();
             $("#upcoming-shows").hide();
             $("#smallslive-tracks").hide();

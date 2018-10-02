@@ -184,7 +184,9 @@ class MainSearchView(View, SearchMixin):
                 'has_last_page': (num_pages - page) >= 3
             }
 
-            if date_from and date_from > timezone.now().replace(hour=0, minute=0):
+            if (date_from and timezone.make_aware(
+                        date_from, timezone.get_current_timezone())
+                    > timezone.now().replace(hour=0, minute=0)):
                 context['show_venue_name'] = True
 
             template = 'search/page_numbers_footer.html'
