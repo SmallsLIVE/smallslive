@@ -177,6 +177,9 @@ $banners-height: 38vh;
   }
 
   &.mobile {
+    &.slick-slider{
+      margin-top: 20vw;
+    }
     .slick-dots{
       bottom:0;
     }
