@@ -20,13 +20,19 @@ body {
   }
 }
 
-.main-container {
-  @include animated();
-  @include variable-admin-padding(20px);
-  &.mobile-search-header-shown {
-    @include variable-admin-padding(20px + $mobile-bar-height);
+body.mobile-search-header-shown {
+
+  .main-container {
+    @include variable-admin-padding(20px - $mobile-bar-height);
   }
 
+  .mobile-header .fa-search {
+    color: $accent-color;
+  }
+}
+
+.main-container {
+  @include animated();
   display: flex;
   flex-direction: column;
 }
