@@ -39,7 +39,7 @@
 
   </div>
   {% else %}
-  <div id="banner-mission-box" class="box supporting">
+  <div id="banner-supporting-box" class="box supporting">
     <p class="title7">WHY BECOME A <span class="bold"> SUPPORTING MEMBER?</span></p>
     <p class="content text9">The mission of the <span class="accent-color">SmallsLIVE foundation</span>
       for jazz arts and education is to <span class="accent-color">disseminate jazz music</span>
@@ -63,10 +63,6 @@
   function becomeMember() {
 
     window.location = '{% url 'become_supporter' %}';
-  }
-  function moreInfo() {
-
-    window.location = '{% url 'contact-and-info' %}';
   }
   
   $(document).ready(function () {
