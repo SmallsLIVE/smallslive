@@ -181,7 +181,7 @@ $banners-height: 38vh;
       bottom:0;
     }
     .slick-dots li button:before {
-      font-size: 40px;
+      font-size: 5.2vw;
       content: "○";
       opacity: 1;
     }
@@ -212,6 +212,7 @@ $banners-height: 38vh;
         display: flex;
         height: 57vw;
         justify-content: space-between;
+        margin-bottom: 60px;
       }
       display: inline-block;
       filter: brightness(1.85);
