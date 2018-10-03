@@ -41,9 +41,6 @@
 </div>
 <script>
     loginModal = document.getElementById('login-modal')
-    $(loginModal).find('.close-button').click((event) => { 
-        $('#logIn').modal('toggle');
-      
-    });
+    $('#login-modal .close-button').click(() => { $('#logIn').modal('toggle') })
    
 </script>
