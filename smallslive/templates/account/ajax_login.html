@@ -41,8 +41,7 @@
 </div>
 <script>
     loginModal = document.getElementById('login-modal')
-    closeButton = loginModal.getElementsByClassName('close-button')[0]
-    closeButton.addEventListener('click', function () {
+    $(loginModal).find('.close-button').click((event) => { 
         $('#logIn').modal('toggle');
       
     });

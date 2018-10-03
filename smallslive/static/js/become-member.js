@@ -137,7 +137,7 @@ $(document).ready(function(){
     if (currentStep === 1) {
       if (
         selectedData.type === 'month' && selectedData.quantity >= 10 ||
-        selectedData.type === 'year' && selectedData.quantity >= 1000
+        selectedData.type === 'year' && selectedData.quantity >= 100
       ) {
         $(confirmButton).prop('disabled', false);
       } else {
