@@ -42,7 +42,9 @@ body.mobile-search-header-shown {
 }
 
 .event-stripe {
-
+  &.live{
+    margin-top: 20px;
+  }
   margin-bottom: 30px;
   margin-top: 30px;
   position: relative;
