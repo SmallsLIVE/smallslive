@@ -179,7 +179,17 @@ $banners-height: 38vh;
   }
 
   &.mobile {
+    .slick-dots{
+      bottom:0;
+    }
     .slick-dots li button:before {
+      font-size: 40px;
+      content: "○";
+      opacity: 1;
+    }
+    .slick-dots .slick-active button:before {
+      content: "●";
+      opacity: 1;
       color: black;
     }
     display: none;
@@ -214,6 +224,25 @@ $banners-height: 38vh;
       &.mission {
         /* background-image: url(/static/image/banners/mission_text.jpg); */
 
+      }
+      &.supporting{
+        .text9{
+          font-size: 29.5px;
+          text-align: justify;
+        }
+        .banner-learnmore {
+          display: flex;
+          justify-content: space-evenly;
+          button{
+            padding: 2vw 5vw;
+          }
+        }
+        .title7{
+          line-height: 1.68em;
+          .bold{
+            font-weight: 700;
+          }
+        }
       }
 
       p.title {

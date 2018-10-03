@@ -45,7 +45,7 @@ from artist_dashboard.tasks import generate_payout_sheet_task,\
 
 class MyEventsView(HasArtistAssignedMixin, ListView):
     context_object_name = 'gigs'
-    paginate_by = 15
+    paginate_by = 10000
     template_name = 'artist_dashboard/my_gigs.html'
 
     def get_context_data(self, **kwargs):
