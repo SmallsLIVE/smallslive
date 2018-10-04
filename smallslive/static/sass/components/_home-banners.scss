@@ -178,9 +178,8 @@ $banners-height: 38vh;
 
   &.mobile {
     background-size: cover;
-    &.slick-slider{
-      margin-top: 20vw;
-    }
+    margin-top: 15vw;
+    background-color:wheat;
     .slick-dots{
       bottom:0;
     }
@@ -245,11 +244,14 @@ $banners-height: 38vh;
 
       }
       &.supporting{
+        padding: 6.2vw 0;
+        margin-bottom: 0;
         .text9{
           font-size: 3.84vw;
           text-align: justify;
         }
         .banner-learnmore {
+          padding-top: 3.1vw;
           display: flex;
           justify-content: space-evenly;
           button, a{

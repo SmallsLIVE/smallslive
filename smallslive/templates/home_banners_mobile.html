@@ -1,7 +1,21 @@
 {% load full_static %}
 
-<div class="banners mobile carousel">
+<div class="banners mobile {% if not active %}carousel{% endif%}">
   {% if not active %}
+  <div id="banner-mission-box" class="box flex-column mission">
+      <div class="banner-text-container">
+        <p class="title">Mission</p>
+        <p class="content">The <span class="accent-color">SmallsLIVE foundation</span> is a
+          <span class="accent-color">not-for-profit</span> organized for the purpose of the
+          <span class="accent-color">dissemination of jazz music</span>
+          through our archive, live streams, sponsorship of individual jazzf projects & tours, education, and live performances at Smalls
+          &Smezzrow. we are supported by our members through <span class="accent-color">tax-deductible donations</span>.</p>
+      </div>
+      <div class="banner-learnmore">
+        <button onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+      </div>
+  
+    </div>
   <div id="banner-archive-box" class="box flex-column archive">
     <div class="banner-text-container">
       <p class="title">Archive</p>
@@ -29,20 +43,7 @@
       <button onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
     </div>
   </div>
-  <div id="banner-mission-box" class="box flex-column mission">
-    <div class="banner-text-container">
-      <p class="title">Mission</p>
-      <p class="content">The <span class="accent-color">SmallsLIVE foundation</span> is a
-        <span class="accent-color">not-for-profit</span> organized for the purpose of the
-        <span class="accent-color">dissemination of jazz music</span>
-        through our archive, live streams, sponsorship of individual jazzf projects & tours, education, and live performances at Smalls
-        &Smezzrow. we are supported by our members through <span class="accent-color">tax-deductible donations</span>.</p>
-    </div>
-    <div class="banner-learnmore">
-      <button onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
-    </div>
-
-  </div>
+ 
   {% else %}
   <div id="banner-supporting-box" class="box supporting">
     <p class="title7">WHY BECOME A <span class="bold"> SUPPORTING MEMBER?</span></p>

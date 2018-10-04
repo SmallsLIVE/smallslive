@@ -129,6 +129,7 @@ $mobile-event-card-width: $event-card-width / 1.5;
 }
 
 .event-display {
+ 
   margin-right: 0.4vw;
 }
 
@@ -269,6 +270,9 @@ $mobile-event-card-width: $event-card-width / 1.5;
     bottom: 2px;
 
     &.links1 {
+      @media (max-width: $screen-sm-max) {
+        font-size: 3vw;
+      }
       line-height: normal;
     }
 
