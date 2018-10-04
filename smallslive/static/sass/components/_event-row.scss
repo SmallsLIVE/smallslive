@@ -1,26 +1,39 @@
 $mobile-event-card-width: $event-card-width / 1.5;
-.live{
+$live-card-width-mobile: 46.1vw;
+$live-card-width-tablet: 22.85vw;
+$live-card-width-medium: 22.85vw;
+$live-card-width-large: 15.1vw;
+$regular-card-width-mobile: 46.1vw;
+$regular-card-width-tablet: 15.1vw;
+$regular-card-width-medium: 15.1vw;
+$regular-card-width-large: 11.225vw;
+$event-card-margin: 0.4vw;
+$event-row-padding: 3.5vw;
+
+.live {
   .slide-btn {
     &.prev, &.next {
       @media (min-width: 1366px) {
-        height: 15.1vw * 0.6;
+        height: $live-card-width-large * 0.6;
       }
-  
+
       @media (max-width: 1365px) and (min-width: 1024px) {
-        height: calc(14.5vw * 0.6);
+        height: $live-card-width-medium * 0.6;
       }
-  
+
       @media (max-width: 1023px) and (min-width: 961px) {
-        height: calc(14.5vw * 0.6);
+        height: $live-card-width-medium * 0.6;
       }
-  
+
       @media (max-width: $screen-sm-max) {
         display: none;
       }
     }
-      &.next {
-        border-radius: 10px 0 0 0;
-      }
+
+
+    &.next {
+      border-radius: 10px 0 0 0;
+    }
   }
 
     .event-info-title {
@@ -59,20 +72,21 @@ $mobile-event-card-width: $event-card-width / 1.5;
     z-index: 1000;
 
     @media (min-width: 1366px) {
-      height: 11.225vw * 0.6;
+      height: $regular-card-width-large * 0.6;
     }
 
     @media (max-width: 1365px) and (min-width: 1024px) {
-      height: calc(14.5vw * 0.6);
+      height: $regular-card-width-medium * 0.6;
     }
 
     @media (max-width: 1023px) and (min-width: 961px) {
-      height: calc(14.5vw * 0.6);
+      height: $regular-card-width-medium * 0.6;
     }
 
     @media (max-width: $screen-sm-max) {
       display: none;
     }
+
   }
   &.prev {
     transform: scaleX(-1);
@@ -86,7 +100,7 @@ $mobile-event-card-width: $event-card-width / 1.5;
     }
   }
   &.next {
-    width: 3.5vw;
+    width: $content-left-padding;;
     right: 0;
     
     b:before {
@@ -120,17 +134,17 @@ $mobile-event-card-width: $event-card-width / 1.5;
 .event-row {
 
   display: flex;
-  padding-left: 3.5vw;
+  padding-left: $content-left-padding;;
 
   @media (min-width: $screen-sm-max) {
-    padding-left: 3.5vw;
+    padding-left: $content-left-padding;;
   }
 
 }
 
 .event-display {
- 
-  margin-right: 0.4vw;
+
+  margin-right: $event-card-margin;
 }
 
 .album-row {
@@ -291,37 +305,37 @@ $mobile-event-card-width: $event-card-width / 1.5;
 
 .event-card {
   @media (min-width: 1366px) {
-    @include event-card(15.1vw, 15.1vw * 0.6);
+    @include event-card($live-card-width-large, $live-card-width-large * 0.6);
   }
 
   @media (max-width: 1365px) and (min-width: 1024px) {
-    @include event-card(22.85vw, 22.85vw * 0.6);
+    @include event-card($live-card-width-tablet, $live-card-width-tablet * 0.6);
   }
 
   @media (max-width: 1023px) and (min-width: 961px) {
-    @include event-card(22.85vw, 22.85vw * 0.6);
+    @include event-card($live-card-width-tablet, $live-card-width-tablet * 0.6);
   }
 
   @media (max-width: $screen-sm-max) {
-    @include event-card(46.1vw, 46.1vw * 0.6);
+    @include event-card($live-card-width-mobile, $live-card-width-mobile * 0.6);
   }
 }
 
 .event-card-secondary {
   @media (min-width: 1366px) {
-    @include event-card(11.225vw, 11.225vw * 0.6);
+    @include event-card($regular-card-width-large, $regular-card-width-large * 0.6);
   }
 
   @media (max-width: 1365px) and (min-width: 1024px) {
-    @include event-card(15.1vw, 15.1vw * 0.6);
+    @include event-card($regular-card-width-medium, $regular-card-width-medium * 0.6);
   }
 
   @media (max-width: 1023px) and (min-width: 961px) {
-    @include event-card(15.1vw, 15.1vw * 0.6);
+    @include event-card($regular-card-width-tablet, $regular-card-width-tablet * 0.6);
   }
 
   @media (max-width: $screen-sm-max) {
-    @include event-card(46.1vw, 46.1vw * 0.6);
+    @include event-card($regular-card-width-mobile, $regular-card-width-mobile * 0.6);
   }
 }
 
