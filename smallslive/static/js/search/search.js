@@ -337,7 +337,9 @@ $(document).ready(function () {
     // If only one result -> go to artist
     var $artists = $('.artist-row');
     if ($artists.length == 1) {
-        $artists.click();
+      $artists.click();
+    } else {
+      $('#artists').removeClass('invisible');
     }
 
     $(document).on('click', '#back-search', function () {
@@ -346,16 +348,16 @@ $(document).ready(function () {
         // actually resetting search
         var $artists = $('.artist-row');
         if ($artists.length == 1) {
-            window.location.href = '/search';
+          window.location.href = '/search';
         } else {
-            $("#back-search").hide();
-            $("#musicianContent").show();
-            $(".artist-search-profile-container").hide();
-            $("#showsContent").show();
-            artist_pk = null;
-            apply = true;
-            eventPageNum = 1;
-            sendEventRequest();
+          $("#back-search").hide();
+          $("#musicianContent").show();
+          $(".artist-search-profile-container").hide();
+          $("#showsContent").show();
+          artist_pk = null;
+          apply = true;
+          eventPageNum = 1;
+          sendEventRequest();
         }
     });
 
