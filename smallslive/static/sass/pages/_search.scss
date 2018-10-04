@@ -628,7 +628,7 @@
   display: flex;
   flex-flow: row wrap;
   position: relative;
-  padding-left: 3.5vw;
+  padding-left: $content-left-padding;
 }
 
 .shows-item {
