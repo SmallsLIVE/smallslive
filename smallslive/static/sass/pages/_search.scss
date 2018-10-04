@@ -496,10 +496,11 @@
 
     .artist-search-profile-image {
       width: 100%;
+      height: auto;
       margin: 20px 0 0 0;
 
       img {
-        height: 100%;
+        height: 180px;
         object-fit: cover;
         object-position: top;
         width: 100%;
