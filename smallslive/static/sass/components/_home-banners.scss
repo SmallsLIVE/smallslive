@@ -188,10 +188,10 @@ $banners-height: 38vh;
     .slick-dots{
       bottom:0;
       li{
-      margin:0px;}
+        margin: 0 2.35px;}
     }
     .slick-dots li button:before {
-      font-size: 5.2vw;
+      font-size: 20px;
       content: "○";
       opacity: 1;
     }

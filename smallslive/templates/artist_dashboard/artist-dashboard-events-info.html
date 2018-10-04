@@ -9,9 +9,9 @@
                     <button class="set-button">Edit</button>
                 </a>
                 {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-                    <button id="public-button" class="publish-button set-button" onclick="askPublish({{ set.id }})"> Public </button>
+                <button id="private-button" class="publish-button set-button" onclick="askPrivate({{ set.id }})"> Public </button>
                 {% else %}
-                    <button id="private-button" class="publish-button set-button" onclick="askPrivate({{ set.id }})">Private </button>
+                <button id="public-button" class="publish-button set-button" onclick="askPublish({{ set.id }})"> Private </button>
                 {% endif %}
             {% else %}
                 <button disabled class="set-button">Edit</button>
