@@ -176,6 +176,12 @@ $banners-height: 38vh;
   }
 
   &.mobile {
+    & + * + .event-stripe{
+      margin-top:0;
+      & > .live{
+        margin-top:0;
+      }
+    }
     margin-bottom: 0px;
     background-size: cover;
     margin-top: 15vw;
