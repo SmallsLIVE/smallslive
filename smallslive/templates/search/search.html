@@ -29,8 +29,7 @@
 
 {% block content %}
 
-  {% include 'inactive_dialog.html' %}
-<div id="back-search" class="back-search-button white-border-button"> Back to search</div>
+{% include 'inactive_dialog.html' %}
 
 <div class="musicians-results white-line-bottom">
     <div id="artist-subheader" class="showing-results text1">{{ showing_artist_results }}</div>
@@ -67,7 +66,7 @@
           <img src="{% static 'image/loading.gif' %}" alt="">
         </div>
 
-        <main id="artists" class="artists-container">
+        <main id="artists" class="artists-container invisible">
           {% include 'search/artist_results.html' %}
         </main>
 

@@ -22,22 +22,26 @@ function sendSearchBarRequest() {
 $(document).ready(function () {
     var delay = (function () {
         var timer = 0;
-        return function (callback, ms) {
-            clearTimeout(timer);
+        return function (callback, ms, e) {
+          var code = e.keyCode || e.which;
+          clearTimeout(timer);
+          // Do not trigger autocomplete if <enter> was pressed.
+          if (code != 13) {
             timer = setTimeout(callback, ms);
+          }
         };
     })();
 
-    $("#desktop-search-bar, #search-bar").keyup(function () {
-        delay(function () {
-            searchBarTerm = $('#desktop-search-bar:visible, #search-bar input:visible').val();
-            if (searchBarTerm.length > 1) {
-                sendSearchBarRequest();
-            }
-            else {
-                $(".search-bar-autocomplete-container").css("display", "none");
-            }
-        }, 400);
+    $("#desktop-search-bar, #search-bar").keyup(function (e) {
+      delay(function () {
+        searchBarTerm = $('#desktop-search-bar:visible, #search-bar input:visible').val();
+        if (searchBarTerm.length > 1) {
+            sendSearchBarRequest();
+        }
+        else {
+            $(".search-bar-autocomplete-container").css("display", "none");
+        }
+      }, 400, e);
     });
 
     $("#desktop-search-bar").focusout(function () {
