@@ -13,20 +13,26 @@ body {
 
 @mixin variable-admin-padding($extra) {
   @media (max-width: $screen-sm-max) {
-    padding-top: ($mobile-bar-height) + $extra;
+    padding-top: 16.6vw;
     &.admin-shown {
       padding-top: ($mobile-bar-height * 2) + $extra;
     }
   }
 }
 
-.main-container {
-  @include animated();
-  @include variable-admin-padding(20px);
-  &.mobile-search-header-shown {
-    @include variable-admin-padding(20px + $mobile-bar-height);
+body.mobile-search-header-shown {
+
+  .main-container {
+    @include variable-admin-padding(20px - $mobile-bar-height);
   }
 
+  .mobile-header .fa-search {
+    color: $accent-color;
+  }
+}
+
+.main-container {
+  @include animated();
   display: flex;
   flex-direction: column;
 }
@@ -36,7 +42,9 @@ body {
 }
 
 .event-stripe {
-
+  &.live{
+    margin-top: 20px;
+  }
   margin-bottom: 30px;
   margin-top: 30px;
   position: relative;

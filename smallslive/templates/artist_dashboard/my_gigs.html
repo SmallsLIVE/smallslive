@@ -45,7 +45,9 @@
             
         </div>
         <div id="artistEventsContainer" class="flex-row items-flex-stretch artist-events-container">
-            <div id="artistEventsList" class="flex-column items-flex-stretch artist-events-list"></div>
+            <div id="artistEventsList" class="flex-column items-flex-stretch artist-events-list">
+               
+            </div>
             <div id="artistEventsInfo" class="flex-column items-flex-stretch artist-events-list-info"></div>
         </div>
         
@@ -54,8 +56,11 @@
 
 {% block extra_js %}
     <script>
-        var eventsUrl = "{% url 'artist_dashboard:my_past_events_ajax' %}";
-       
+        {% if is_future %}
+            eventsUrl = "{% url 'artist_dashboard:my_future_events_ajax' %}";
+        {% else %}
+            eventsUrl = "{% url 'artist_dashboard:my_past_events_ajax' %}";
+        {% endif %}
         var selectedSetId;
         var currentPage = 0;
         var totalPages = 1;

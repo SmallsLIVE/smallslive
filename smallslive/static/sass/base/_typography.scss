@@ -381,15 +381,16 @@ $text-font-size-big: 1.4em;
   @include reen-kufi-normal;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-size: 0.68vw;
+  font-size: 13px;
   text-shadow: 0.001em 0.001em;
+  cursor: pointer;
 
   @media (min-width: 1024px) and (max-width: 1366px) {
-    font-size: 0.68vw;
+    font-size: 12px;
   }
 
   @media(max-width: 1024px) {
-    font-size: .9em;
+    font-size: 10px;
   }
 }
 
@@ -398,6 +399,14 @@ $text-font-size-big: 1.4em;
   text-justify: inter-word;
 }
 
+.text-centered {
+  text-align: center;
+}
+
 .underline {
+  text-decoration: underline;
+}
+
+.hover-underline:hover {
   text-decoration: underline;
 }

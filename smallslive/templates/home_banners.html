@@ -14,7 +14,7 @@
             <button id="banner-button"></button>
           </div>
           <div class="banner-learnmore-info hidden">
-            <button id="banner-button-info">More Info</button>
+            <button id="banner-button-info" onclick="moreInfo()">More Info</button>
           </div>
         </div>
       </div>
@@ -50,6 +50,11 @@
   {% endif %}
 </div>
 <script>
+
+  function moreInfo() {
+
+    window.location = '{% url 'contact-and-info' %}';
+  }
   $(document).ready(function(){
 
     var showBecomeMemberModal = function() {
@@ -67,7 +72,7 @@
         },
         canClose: true
       },
-      'live': {
+      livestream: {
         text: 'Our <span class="accent-color">live stream</span> has expanded our 60 seat clubs into a worlwide community of jazz fans and supporters. <span class="accent-color">Sign up for free</span> to watch our live stram every night.',
         button: 'Become a member',
         infoButton: false,
@@ -101,7 +106,7 @@
     });
 
     $('#banner-live-box').on('click', function () {
-      setContainerBanner('live');
+      setContainerBanner('livestream');
     });
 
     $('#banner-mission-box').on('click', function () {

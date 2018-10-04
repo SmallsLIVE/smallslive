@@ -1,41 +1,76 @@
 {% load full_static %}
 
-<div class="banners mobile">
-  <div id="banner-archive-box" class="box archive">
-    <p class="title">Archive</p>
-    <p class="content">
+<div class="banners mobile carousel">
+  {% if not active %}
+  <div id="banner-archive-box" class="box flex-column archive">
+    <div class="banner-text-container">
+      <p class="title">Archive</p>
+      <p class="content">
         <span class="accent-color">Every show</span>
-        at Smalls + Mezzrow has been recorded and archived since 2007.
-        supporting members enjoy <span class="accent-color">unlimited access</span>
-        to our archive. Our musicians are paid royalties through our
-        <span class="accent-color">unique revenue share system.</span>
-    </p>
+        at Smalls + Mezzrow has been recorded and archived since 2007. Supporting members enjoy <span class="accent-color">unlimited
+          access</span>
+        to our archive. Our musicians are paid royalties through our unique
+        <span class="accent-color">revenue share system.</span>
+      </p>
+    </div>
     <div class="banner-learnmore">
-      <button>Learn more</button>
+      <button onclick='window.location = "{% url 'archive' %}"'>Learn more</button>
     </div>
 
   </div>
-  <div id="banner-live-box" class="box live">
-    <p class="title">Live</p>
-    <p class="content">Our <span class="accent-color">live stream</span> has expanded our 60 seat clubs into a
-        <span class="accent-color">worldwide community</span> of jazz fans and supporters.
-        Sign up for free to watch our <span class="accent-color">live streams</span> each night.</p>
+  <div id="banner-live-box" class="box flex-column live">
+    <div class="banner-text-container">
+      <p class="title">Livestream</p>
+      <p class="content">Our <span class="accent-color">live stream</span> has expanded our 60 seat clubs into a
+        <span class="accent-color">worldwide community</span> of jazz fans and supporters. Sign up for free to watch our <span
+          class="accent-color">live streams</span> each night.</p>
+    </div>    
     <div class="banner-learnmore">
-      <button>Become a member</button>
+      <button onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
     </div>
   </div>
-  <div id="banner-mission-box" class="box mission">
-    <p class="title">Mission</p>
-    <p class="content">The <span class="accent-color">Smallslive foundation</span> is a
+  <div id="banner-mission-box" class="box flex-column mission">
+    <div class="banner-text-container">
+      <p class="title">Mission</p>
+      <p class="content">The <span class="accent-color">SmallsLIVE foundation</span> is a
         <span class="accent-color">not-for-profit</span> organized for the purpose of the
         <span class="accent-color">dissemination of jazz music</span>
-        through our archive, live streams, sponsorship of individual jall projects & tours,
-        education, and live performances at Smalls &Smezzrow. we are supported by our
-        members through <span class="accent-color">tax-deductible donations</span>.</p>
-      <div class="banner-learnmore">
-        <button>Become a member</button>
-      </div>
+        through our archive, live streams, sponsorship of individual jazzf projects & tours, education, and live performances at Smalls
+        &Smezzrow. we are supported by our members through <span class="accent-color">tax-deductible donations</span>.</p>
+    </div>
+    <div class="banner-learnmore">
+      <button onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+    </div>
 
   </div>
+  {% else %}
+  <div id="banner-supporting-box" class="box supporting">
+    <p class="title7">WHY BECOME A <span class="bold"> SUPPORTING MEMBER?</span></p>
+    <p class="content text9">The mission of the <span class="accent-color">SmallsLIVE foundation</span>
+      for jazz arts and education is to <span class="accent-color">disseminate jazz music</span>
+      through recordings and live streams. We sponsor individual jazz projects, tours and educational classes, and subsidize operating
+      expenses for Smalls + Mezzrow jazz clubs. By making a
+      <span class="accent-color">tax deductible donation</span> to the SmallsLIVE Foundation you will get access to our extensive
+      <span class="accent-color">audio/ video archive</span> and directly support the musicians and the clubs.</p>
+    <div class="banner-learnmore">
+      <a href="{% url 'become_supporter' %}">Become a member</a>
+      <a href="{% url 'contact-and-info' %}">More Info</a>
+    </div>
 
+  </div>
+  {% endif %}
 </div>
+
+
+
+{% block extra_js %}
+<script>
+  function becomeMember() {
+
+    window.location = '{% url 'become_supporter' %}';
+  }
+  
+  $(document).ready(function () {
+    $('.carousel').slick({ infinite: true, dots: true, arrows: false })
+  });
+</script> {% endblock %}

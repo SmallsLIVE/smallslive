@@ -159,31 +159,37 @@
 }
 
 .event-related-videos {
-  margin-bottom: 40px;
-  margin-top: 16px;
+  height: 530px;
+  overflow: hidden;
+
+  &:first-child {
+    margin-top: 34px;
+    padding-bottom: 40px;
+  }
+
   .section-title {
     width: 100%;
     padding-left: 0;
   }
 
   > div:not(.section-title) {
-    height: 525px;
     overflow-y: auto;
+    max-height: 435px;
   }
 
   .related-video {
+    background-color: white;
     margin-bottom: 1em;
     overflow: hidden;
     width: 99%;
 
     &.selected {
-      border: 1px solid red;
+      border: 3px solid $accent-color;
       border-radius: 10px;
     }
 
     .related-info {
       width: 173px;
-      background-color: white;
       padding: 1em;
 
       //TODO Show ellipsis
@@ -270,10 +276,17 @@
 }
 
 .comments-container {
+  > div > span {
+    font-size: 1.4em;
+    &:first-child {
+      padding-right: 5px;
+    }
+  }
   textarea {
+    padding: 20px;
     resize: none;
     margin: 10px 0;
-    height: 80px;
+    height: 90px;
     border-radius: 0;
   }
 }

@@ -89,3 +89,24 @@
   }
 }
 
+@mixin caret() {
+  cursor: pointer;
+  position: relative;
+
+  &:after{
+    content: " ";
+    height: 0;
+    width: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    transition: all 0.3s linear;
+    cursor: pointer;
+    pointer-events: inherit;
+    z-index: -1;
+  }
+}
+

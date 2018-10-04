@@ -177,10 +177,18 @@ class MainSearchView(View, SearchMixin):
         }
 
         if entity == 'event':
-            context = {'actual_page': page,
-                       'last_page': num_pages,
-                       'range': range(1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2],
-                       'has_last_page': (num_pages - page) >= 3}
+            context = {
+                'actual_page': page,
+                'last_page': num_pages,
+                'range': range(1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2],
+                'has_last_page': (num_pages - page) >= 3
+            }
+
+            if (date_from and timezone.make_aware(
+                        date_from, timezone.get_current_timezone())
+                    > timezone.now().replace(hour=0, minute=0)):
+                context['show_venue_name'] = True
+
             template = 'search/page_numbers_footer.html'
             temp = render_to_string(
                 template,

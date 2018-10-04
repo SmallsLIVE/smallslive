@@ -14,48 +14,39 @@
       <div class="search-bar-autocomplete-container"></div>
     </div>
 
+
     <div class="button-row">
-      <a href="{% url 'schedule' %}">
-          <button class="no-border {% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">
-              Calendar
-          </button>
-      </a>
-      <a href="{% url 'search' %}">
-          <button class="no-border  {% if request.resolver_match.url_name == 'search' %}active{% endif %}">
-              Archive
-          </button>
-      </a>
-      <a href="{% url 'contact-and-info' %}">
-          <button class="no-border {% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">
-              Info
-          </button>
-      </a>
-      <a href=""><button class="no-border">Education</button></a>
-      <a href="{% url "promotions:home" %}"><button class="no-border">Store</button></a>
+      {% include 'partials/header_button.html' with button_url='schedule' button_text='Calendar' %}
+      {% include 'partials/header_button.html' with button_url='search' button_text='Archive' %}
+      {% include 'partials/header_button.html' with button_url='contact-and-info' button_text='Info' %}
+      {% include 'partials/header_button.html' with button_text='Education' %}
+      {% include 'partials/header_button.html' with button_url='promotions:home' button_text='Store' %}
+
+      {% if not request.user.is_authenticated %}
+        <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
+          Sign In
+        </button>
+      {% else %}
+        <div class="user-menu white-border-select no-arrow">
+          <select id="userMenu">
+            <option value="current" noSelect="1" selected="selected">
+              {% if request.user.first_name or request.user.last_name%}
+                {% if request.user.first_name %}{{ request.user.first_name }}{% endif %}
+                {% if request.user.last_name %} {{ request.user.last_name }}{% endif %}
+              {% else %}
+                {{ request.user.email }}
+              {% endif %}
+            </option>
+              {% if request.user.artist %}
+                  <option value="artist_dashboard">Artist Dashboard</option>
+              {% endif %}
+              <option value="account_info">Account</option>
+            <option value="logout">Sign Out</option>
+          </select>
+        </div>
+      {% endif %}
     </div>
-    {% if not request.user.is_authenticated %}
-      <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
-        Sign In
-      </button>
-    {% else %}
-      <div class="user-menu white-border-select no-arrow">
-        <select id="userMenu">
-          <option value="current" noSelect="1" selected="selected">
-            {% if request.user.first_name or request.user.last_name%}
-              {% if request.user.first_name %}{{ request.user.first_name }}{% endif %}
-              {% if request.user.last_name %} {{ request.user.last_name }}{% endif %}
-            {% else %}
-              {{ request.user.email }}
-            {% endif %}
-          </option>
-            {% if request.user.artist %}
-                <option value="artist_dashboard">Artist Dashboard</option>
-            {% endif %}
-            <option value="account_info">Account</option>
-          <option value="logout">Sign Out</option>
-        </select>
-      </div>
-    {% endif %}
+
   </div>
 </header>
 
@@ -70,13 +61,12 @@
     <i class="fa fa-bars" onclick="toggleSideBar()"></i>
     <div>
       <i class="fa fa-search" onclick="toggleSearch()"></i>
-      <i class="fa fa-user" onclick="console.log('user')"></i>
+      <i class="fa fa-user" onclick="toggleAdmin()"></i>
     </div>
   </div>
 </header>
 
 <div id="search-bar" class="mobile-search-header visible-xs visible-sm">
-  <span class="search-triangle"></span>
   <div class="mobile-search-container flex-row items-center">
     <form id="headerSearchForm" action="{% url 'search' %}">
       <input name="q" type="text" autocomplete="off">
@@ -111,10 +101,14 @@
   function toggleSideBar() {
       $('#side-navigation').toggleClass('side-bar-hidden');
   }
-
+  function toggleAdmin(){
+    console.log("user")
+    //$('#search-bar').toggleClass('mobile-search-header-shown');
+    //$('.main-container').toggleClass('mobile-search-header-shown');
+  }
   function toggleSearch() {
       $('#search-bar').toggleClass('mobile-search-header-shown');
-      $('.main-container').toggleClass('mobile-search-header-shown');
+      $('body').toggleClass('mobile-search-header-shown');
   }
 
   $(document).ready(function () {

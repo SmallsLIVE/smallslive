@@ -43,7 +43,7 @@
     function loadInfo(infoUrl){
             $.ajax({
                 url: infoUrl,
-               
+
                 success: function (data) {
                   $("#artistEventsInfo").html(data);
                   $("#artistEventsInfo").data("url", infoUrl);
@@ -52,14 +52,19 @@
         }   
     
     $('.artist-event-row').on('click', function () {
+      $('.artist-event-row').css("background-color", "")
       var eventUrl = $(this).data("url");  
-      
+      $(this).css( "background-color", 'white' );
       loadInfo(eventUrl+"?set_id=0")
     })
     $('.eventChanger').on('click', function () {
       var eventUrl = $(this).data("url");  
       loadInfo(eventUrl)
     })
-  
+    $(document).ready(function() {
+      var $firstEvent= $('.artist-event-row').first()
+      var eventUrl = $($firstEvent).data("url");  
+      loadInfo(eventUrl+"?set_id=0")
+    })
   </script> 
 {% endblock %}

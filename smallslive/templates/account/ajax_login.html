@@ -1,9 +1,10 @@
 <div class="modal fade" id="logIn" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content custom-modal">
+    <div id="login-modal" class="modal-content custom-modal">
+        <a href="#" class="close-button"></a>
       <div class="modal-body">
         <p class="title2 accent-color">Welcome</p>
-        <p class="title3">Sign in</p>
+        <p class="title1">Sign in</p>
         <p class="text4 text-grey">
           Not Yet a Member?
           <a class="accent-color underline"
@@ -38,3 +39,8 @@
     </div>
   </div>
 </div>
+<script>
+    loginModal = document.getElementById('login-modal')
+    $('#login-modal .close-button').click(() => { $('#logIn').modal('toggle') })
+   
+</script>

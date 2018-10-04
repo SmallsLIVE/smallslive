@@ -115,7 +115,7 @@ def _get_most_popular(range=None):
             most_popular.append(event)
         except Event.DoesNotExist:
             pass
-    context['popular_in_archive'] = most_popular
+    context['popular_in_archive'] = [] # TODO: fix most_popular
     return context
 
 
@@ -204,10 +204,10 @@ class HomepageView(ListView, UpcomingEventMixin):
         context = self.get_upcoming_events_context_data(context)
         month_popular = _get_most_popular_uploaded(RANGE_MONTH)
         if len(month_popular):
-            context['popular_in_archive'] = month_popular
+            context['popular_in_archive'] = [] # TODO: fix month_popular
             context['popular_select'] = 'month'
         else:
-            context['popular_in_archive'] = _get_most_popular_uploaded()
+            context['popular_in_archive'] = [] # TODO fix _get_most_popular_uploaded()
             context['popular_select'] = 'alltime'
 
         context['staff_picks'] = Event.objects.last_staff_picks()

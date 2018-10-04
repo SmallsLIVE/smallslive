@@ -95,6 +95,9 @@
 .modal-body {
   position: relative;
   padding: $modal-inner-padding;
+  .title1{
+    font-size: 2.5em;
+  }
 }
 
 // Footer (for actions)

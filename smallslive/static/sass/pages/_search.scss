@@ -42,6 +42,9 @@
       margin-bottom: 6px;
       font-size: 0.68vw;
       line-height: 22px;
+      @media (max-width: $screen-md-min) {
+        font-size: 1em;
+      }
     }
 
     a {
@@ -358,6 +361,10 @@
   margin-left: 20px;
   align-self: center;
   text-align: center;
+
+  @media (max-width: $screen-sm-max) {
+    @include caret;
+  }
 }
 
 .event-sub-w {
@@ -443,9 +450,13 @@
   background-size: 50px;
 }
 .artist-search-profile-container {
-  width: 100%;
-  margin-bottom: 130px;
   display: none;
+  width: 100%;
+  position: relative;
+
+  .close-button {
+    top: 0;
+  }
 }
 
 .artist-search-profile-resume {
@@ -470,8 +481,8 @@
 .artist-search-profile-bio-buttons {
   width: 300px;
   margin-left: 80px;
-  div {
-    margin: 4px 0;
+  button {
+    margin: 10px 0;
   }
 }
 
@@ -515,12 +526,14 @@
 }
 
 .shows-results-title {
-  width: 240px;
-  margin: 70px auto 0;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 4px;
 }
 
 .showing-results {
-  float: right;
+  position: absolute;
+  right: 0;
   color: $accent-color;
   margin-right: 50px;
   margin-top: 19px;
@@ -531,7 +544,7 @@
   display: flex;
   flex-flow: row wrap;
   position: relative;
-  padding-left: 3.5vw;
+  padding-left: $content-left-padding;
 }
 
 .shows-item {
