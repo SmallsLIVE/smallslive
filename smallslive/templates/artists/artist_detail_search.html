@@ -4,6 +4,24 @@
 
 <div  class="content-centered flex-row" style="width: 100%;">
 <div class="artist-search-profile-resume flex-row ">
+    <div class="mobile-bio visible-xs">
+        <div class="text1">
+            Total shows in archive: <span class='accent-color'>{{artist.archive_shows}}</span>
+        </div>
+        <div class="text1">
+            Email: {{ artist.email }}
+        </div>
+        <div class="text1">
+            Website: pepe.com
+        </div>
+        <div class="text4">
+            {% if artist.biography %}
+                {{ artist.biography|safe|striptags }}
+            {% else %}
+                This artist does not have a bio yet.
+            {% endif %}
+        </div>
+    </div>
     <div class="artist-search-profile-image">
         {% if artist.photo %}
         {% include 'partials/search_artist_profile_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
@@ -18,13 +36,14 @@
                     {{ artist.full_name }}
             </div>
         </div>
+        <div class="white-line-bottom visible-xs"></div>
         <div class="flex-row">
             <div class="title1 musician-instrument">{{ artist.get_main_instrument_name }}</div>
-            <div class="text1 show-in-archive ">
+            <div class="text1 show-in-archive hidden-xs">
                 Total shows in archive: <span class='accent-color'>{{artist.archive_shows}}</span>
             </div>
         </div>
-        <div class="white-line-bottom"></div>
+        <div class="white-line-bottom hidden-xs"></div>
         {% if artist.user.email %}
           <div>
             <p class="text4 text-uppercase">Email: <a href="mailto:{{ artist.user.email }}">{{ artist.user.email }}</a></p>
@@ -39,7 +58,7 @@
 
 </div>
 
-<div class="artist-search-profile-bio-container flex-row">
+<div class="artist-search-profile-bio-container flex-row hidden-xs">
     <div>
         <div class="artist-search-profile-bio text4">
             {% if artist.biography %}

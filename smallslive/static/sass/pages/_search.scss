@@ -452,10 +452,48 @@
 .artist-search-profile-container {
   width: 100%;
   display: none;
+
+  .content-centered {
+    flex-direction: row;
+
+    @media (max-width: $screen-sm-max) {
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: $screen-sm-max) {
+    @include variable-admin-padding($mobile-bar-height * 2);
+  }
+
 }
 
 .artist-search-profile-resume {
   width: 500px;
+  flex-direction: row;
+
+  @media (max-width: $screen-sm-max) {
+    width: auto;
+    flex-direction: column-reverse;
+
+    .artist-search-profile-image {
+      width: 100%;
+      margin: 30px 0;
+    }
+
+    .mobile-bio {
+      padding: 20px;
+      width: 100%;
+    }
+
+    .white-line-bottom {
+      margin: 0;
+    }
+
+    .white-line-right {
+      padding: 0;
+    }
+  }
+
   p {
     margin: 0;
   }
@@ -695,7 +733,6 @@
 .musician-title {
   font-size: 3em;
   line-height: 1em;
-  margin-bottom: 10px;
 }
 
 .musician-instrument {
