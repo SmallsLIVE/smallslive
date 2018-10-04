@@ -450,7 +450,6 @@
   background-size: 50px;
 }
 .artist-search-profile-container {
-  width: 100%;
   display: none;
 
   .content-centered {
@@ -465,6 +464,12 @@
     @include variable-admin-padding($mobile-bar-height * 2);
   }
 
+  width: 100%;
+  position: relative;
+
+  .close-button {
+    top: 0;
+  }
 }
 
 .artist-search-profile-resume {

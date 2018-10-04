@@ -334,15 +334,31 @@ $(document).ready(function () {
 
     ///////////
 
-    $("#back-search").click(function () {
-        $("#back-search").hide();
-        $("#musicianContent").show();
-        $(".artist-search-profile-container").hide();
-        $("#showsContent").show();
-        artist_pk = null;
-        apply = true;
-        eventPageNum = 1;
-        sendEventRequest();
+    // If only one result -> go to artist
+    var $artists = $('.artist-row');
+    if ($artists.length == 1) {
+      $artists.click();
+    } else {
+      $('#artists').removeClass('invisible');
+    }
+
+    $(document).on('click', '#back-search', function () {
+
+        // If only one artist, assume back to search means
+        // actually resetting search
+        var $artists = $('.artist-row');
+        if ($artists.length == 1) {
+          window.location.href = '/search';
+        } else {
+          $("#back-search").hide();
+          $("#musicianContent").show();
+          $(".artist-search-profile-container").hide();
+          $("#showsContent").show();
+          artist_pk = null;
+          apply = true;
+          eventPageNum = 1;
+          sendEventRequest();
+        }
     });
 
     $("#apply-button").click(function () {

@@ -13,7 +13,7 @@ body {
 
 @mixin variable-admin-padding($extra) {
   @media (max-width: $screen-sm-max) {
-    padding-top: ($mobile-bar-height) + $extra;
+    padding-top: 16.6vw;
     &.admin-shown {
       padding-top: ($mobile-bar-height * 2) + $extra;
     }
@@ -42,7 +42,9 @@ body.mobile-search-header-shown {
 }
 
 .event-stripe {
-
+  &.live{
+    margin-top: 20px;
+  }
   margin-bottom: 30px;
   margin-top: 30px;
   position: relative;

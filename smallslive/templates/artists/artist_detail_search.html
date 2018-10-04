@@ -59,15 +59,16 @@
 </div>
 
 <div class="artist-search-profile-bio-container flex-row hidden-xs">
-    <div>
-        <div class="artist-search-profile-bio text4">
-            {% if artist.biography %}
-                {{ artist.biography|safe|striptags }}
-            {% else %}
-                This artist does not have a bio yet.
-            {% endif %}
-        </div>
-        <span class="read-more text4 text-grey">Read more</span>
+  <div>
+    <div class="artist-search-profile-bio text4">
+        {% if artist.biography %}
+        {{ artist.biography|safe }}
+        {% else %}
+            This artist does not have a bio yet.
+        {% endif %}
+
+    </div>
+    <span class="read-more text4 text-grey">Read more</span>
     </div>
     
     <div class="artist-search-profile-bio-buttons flex-column">
@@ -75,8 +76,12 @@
         <button id="upcoming-shows-button" class="white-border-button hover-fade">Upcoming Shows</button>
         <button id="smallslive-tracks-button" class="white-border-button hover-fade">Smallslive Tracks</button>
     </div>
+  </div>
 </div>
-</div>
+
+<a href="#" id="back-search" class="close-button">
+</a>
+
 
 <div id="smallslive-tracks" style="display: none;">
     <div class="musicians-results white-line-bottom">

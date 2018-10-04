@@ -52,8 +52,9 @@
         }   
     
     $('.artist-event-row').on('click', function () {
+      $('.artist-event-row').css("background-color", "")
       var eventUrl = $(this).data("url");  
-      
+      $(this).css( "background-color", 'white' );
       loadInfo(eventUrl+"?set_id=0")
     })
     $('.eventChanger').on('click', function () {
@@ -61,8 +62,8 @@
       loadInfo(eventUrl)
     })
     $(document).ready(function() {
-      $firstEvent= $('.artist-event-row')[0]
-      eventUrl = $($firstEvent).data("url");  
+      var $firstEvent= $('.artist-event-row').first()
+      var eventUrl = $($firstEvent).data("url");  
       loadInfo(eventUrl+"?set_id=0")
     })
   </script> 

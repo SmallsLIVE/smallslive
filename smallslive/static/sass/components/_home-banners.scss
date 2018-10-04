@@ -24,9 +24,7 @@ $banners-height: 38vh;
 
       padding: 1vh 2vw;
 
-      .banner-text-container {
-
-      }
+     
 
       .banner-title-button {
         padding: 1px 1px;
@@ -179,11 +177,15 @@ $banners-height: 38vh;
   }
 
   &.mobile {
+    background-size: cover;
+    &.slick-slider{
+      margin-top: 20vw;
+    }
     .slick-dots{
       bottom:0;
     }
     .slick-dots li button:before {
-      font-size: 40px;
+      font-size: 5.2vw;
       content: "○";
       opacity: 1;
     }
@@ -202,10 +204,26 @@ $banners-height: 38vh;
     }
 
     .box {
+      .banner-text-container {
+        .content{
+          @include reen-kufi-normal;
+        }
+      }
+      // .banner-text-container{
+
+      // }
+      &.flex-column{
+        display: flex;
+        height: 60vw;
+        justify-content: space-between;
+        padding: 2.6vw 0;
+
+      }
       display: inline-block;
       filter: brightness(1.85);
       font-family: 'Oswald', sans-serif;
-      height: autopx;
+      justify-content: space-between;
+      
       margin-bottom: 40px;
       vertical-align:top;
       -webkit-filter: brightness(1.85);
@@ -222,22 +240,25 @@ $banners-height: 38vh;
       }
 
       &.mission {
+    
         /* background-image: url(/static/image/banners/mission_text.jpg); */
 
       }
       &.supporting{
         .text9{
-          font-size: 29.5px;
+          font-size: 3.84vw;
           text-align: justify;
         }
         .banner-learnmore {
           display: flex;
           justify-content: space-evenly;
-          button{
+          button, a{
+            color: black;
             padding: 2vw 5vw;
           }
         }
         .title7{
+          font-size: 4.94vw;
           line-height: 1.68em;
           .bold{
             font-weight: 700;
@@ -255,7 +276,7 @@ $banners-height: 38vh;
       }
 
       p.content {
-        font-size: 30px;
+        font-size: 3.5vw;
         margin: 0 auto;
         text-align: left;
         white-space: initial;
@@ -265,12 +286,12 @@ $banners-height: 38vh;
         padding: 0 5vw;
       }
 
-      button {
-        font-size: 4.5vw;
+      button, a {
+        font-size: 3.5vw;
         border: 3px solid white;
         border-radius: 50px;
         padding: 2vw 8vw;
-        margin-top: 21px;
+
         background-color: transparent;
         text-transform: uppercase;
         font-weight: 400;
