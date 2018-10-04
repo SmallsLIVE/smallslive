@@ -450,8 +450,13 @@
   background-size: 50px;
 }
 .artist-search-profile-container {
-  width: 100%;
   display: none;
+  width: 100%;
+  position: relative;
+
+  .close-button {
+    top: 0;
+  }
 }
 
 .artist-search-profile-resume {
