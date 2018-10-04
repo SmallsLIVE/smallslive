@@ -1,0 +1,203 @@
+.refine {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .refine {
+    float: right;
+    display: block;
+    margin-right: 30px;
+  }
+
+  .shows-calendar {
+    .event-section {
+      display: none;
+    }
+  }
+  .white-line-bottom {
+    border-bottom: 4px solid white;
+  }
+  .shows-results-title {
+    font-size: 30px;
+    margin: 0;
+    margin-left: 20px;
+  }
+  .events-calendar {
+    padding-top: 0;
+
+    .shows-container {
+      flex-direction: column;
+      padding-left: 0;
+
+      .event-display {
+        display: flex;
+        padding: 16px 0;
+        padding-left: 32px;
+        border-bottom: solid 2px white;
+        background-image: url('/static/image/arrow-right-red.svg');
+        background-repeat: no-repeat;
+        background-position: 90% 50%;
+        background-size: 16px;
+
+        .event-card-secondary {
+          min-height: 0;
+          margin-right: 20px;
+
+          .event-picture-container {
+            border-radius: 0;
+
+            .event-picture {
+              height: 80px;
+              width: 80px;
+            }
+          }
+        }
+        .event-info {
+          div > * {
+            margin-top: 8px;
+          }
+
+          div > *:first-child {
+            margin-top: 0;
+          }
+
+          .event-info-title {
+            width: auto;
+            max-width: 200px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.refine-overlay {
+  display: none;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 60px;
+  background-color: #f0f0eb;
+}
+
+.refine-overlay-content {
+  position: relative;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+
+  *,*:before,*:after {
+    box-sizing: border-box;
+  }
+
+  .btngroup {
+    font-size: 0;
+    line-height: 1;
+    white-space: nowrap;
+    display: inline; // ?
+    
+    &--btn { // sass bem is cool
+      font-size: 2rem;
+      letter-spacing: .1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      background: transparent;
+      border: 2px solid $white-transparent;
+      //margin: 0 -1px -1px;
+      border-left-width: 0;
+      display: inline-block;
+      padding: .5em 1.25em;
+      outline: 0; // no glow crap
+      
+      &:first-child {
+        border-left-width: 2px;
+        border-radius: 2em 0 0 2em;
+      }
+      
+      &:last-child {
+        border-radius: 0 2em 2em 0;
+      }
+      
+      &:hover {
+        background: $white-transparent;
+        color: black;
+      }
+      
+      &:active {
+        background: $white-transparent;
+        color: black;
+      }
+    }
+  }
+}
+
+.refine-overlay-content > p {
+  margin-top: 40px;
+  margin-bottom: 24px;
+}
+.closebtn {
+  font-size: 60px;
+}
+
+.refine-overlay-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calendar-refine-title {
+  font-size: 30px;
+}
+
+.calendar-refine-menu-item {
+  font-size: 20px;
+}
+
+.calendar-duration {
+  .select-selected {
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 12px;
+  }
+
+  .select-selected:after {
+    content: none !important;
+  }
+
+  .select-items{
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 12px;
+  }
+}
+
+.refine-datepicker-container {
+  display: flex;
+  justify-content: space-evenly;
+
+  .custom-date-picker {
+    width: 120px;
+
+    .date-picker-text {
+      text-align: center;
+      border-radius: 14px;
+    }
+  }
+}
+
+.reset-all {
+  font-size: 22px;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 50px;
+}
+
+.search-date-picker-from-refine {
+  .datepicker {
+    left: 56px !important;
+  }
+}

@@ -676,6 +676,10 @@ class Venue(models.Model):
 
     def __unicode__(self):
         return self.name
+    
+    @property
+    def short_name(self):
+        return self.name.split(' ')[0]
 
 
 class StaffPick(models.Model):

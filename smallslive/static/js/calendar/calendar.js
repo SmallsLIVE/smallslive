@@ -94,6 +94,7 @@ $(document).ready(function () {
 
     $('#period-filter').change(function () {
         eventFilter = true;
+        console.log($(this).val());
 
         if ($(this).val() == 'All Upcoming') {
             eventDateTo = null;
@@ -231,6 +232,67 @@ $(document).ready(function () {
 
     ///////////
 
+    var $datePickerFromRefine = $('#search-date-picker-from-refine input');
+    $datePickerFromRefine.datepicker({
+        format: 'mm/dd/yyyy',
+        autoclose: true,
+        container: '#search-date-picker-from-refine',
+        showOnFocus: false,
+        startDate: new Date()
+    }).datepicker('setDate', 'now');
+
+    $datePickerFromRefine.on('changeDate', function (newDate) {
+        eventDateFrom = newDate.date;
+        //$('#events-filter').val('oldest');
+        //$("[value='oldest']").click();
+        $("#search-date-picker-to-refine input").click();
+        $("#search-date-picker-to-refine input").focus();
+    });
+
+    $datePickerFromRefine.on('click', function () {
+        var dropdown = $('#search-date-picker .dropdown-menu');
+        if (dropdown[0] && dropdown[0].style.display === 'block') {
+            $datePickerFromRefine.datepicker('hide');
+        } else {
+            $datePickerFromRefine.datepicker('show');
+        }
+
+    });
+
+    //////////////////////
+
+    var $datePickerToRefine = $('#search-date-picker-to-refine input');
+    $datePickerToRefine.datepicker({
+        format: 'mm/dd/yyyy',
+        autoclose: false,
+        container: '#search-date-picker-to-refine',
+        showOnFocus: false,
+        startDate: new Date()
+    });
+
+    $datePickerToRefine.on('changeDate', function (newDate) {
+        eventDateTo = newDate.date;
+
+        from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
+        from = '<span class="accent-color">' + from + '</span>';
+        to = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
+        to = '<span class="accent-color">' + to + '</span>';
+
+        $(".datepicker-btn").html("From " + from + " to " + to);
+    });
+
+    $datePickerToRefine.on('click', function () {
+        var dropdown = $('#search-date-picker .dropdown-menu');
+        if (dropdown[0] && dropdown[0].style.display === 'block') {
+            $datePickerToRefine.datepicker('hide');
+        } else {
+            $datePickerToRefine.datepicker('show');
+        }
+
+    });
+
+    ///////////
+
     $("#apply-button").click(function () {
         apply = true;
         eventPageNum = 1;
@@ -245,4 +307,57 @@ $(document).ready(function () {
         $("#search-date-picker-from input").click();
         $("#search-date-picker-from input").focus();
     });
+
+    $(".refine").click(function () {
+        $(".refine-overlay").show();
+    });
+
+    $(".closebtn").click(function () {
+        $(".refine-overlay").hide();
+    });
+
+    $(".refine-apply").click(function () {
+        apply = true;
+        eventPageNum = 1;
+        $(".refine-overlay").hide();
+        sendEventRequest();
+    });
+
+    $('.btngroup--btn').click(function () {
+        venueFilter = $(this).val();
+    });
+
+    $('#refine-period-filter').change(function () {
+        eventFilter = true;
+
+        if ($(this).val() == 'All Upcoming') {
+            eventDateTo = null;
+            eventDateFrom = new Date();
+        }
+        else if ($(this).val() == 'One Day') {
+            eventDateTo = new Date((new Date()).getTime() + 1 * 24 * 60 * 60 * 1000);
+            eventDateFrom = new Date();
+            $("#search-date-picker-from-refine input").datepicker("update", eventDateFrom);
+            $("#search-date-picker-to-refine input").datepicker("update", eventDateTo);
+        }
+        else if ($(this).val() == 'One Week') {
+            eventDateTo = new Date((new Date()).getTime() + 7 * 24 * 60 * 60 * 1000);
+            eventDateFrom = new Date();
+            $("#search-date-picker-from-refine input").datepicker("update", eventDateFrom);
+            $("#search-date-picker-to-refine input").datepicker("update", eventDateTo);
+        }
+        else if ($(this).val() == 'One Month') {
+            eventDateTo = new Date((new Date()).getTime() + 31 * 24 * 60 * 60 * 1000);
+            eventDateFrom = new Date();
+            $("#search-date-picker-from-refine input").datepicker("update", eventDateFrom);
+            $("#search-date-picker-to-refine input").datepicker("update", eventDateTo);
+        }
+    });
+
+    $(".reset-all").click(function () {
+        $('#search-date-picker-from-refine input').val("").datepicker("update");
+        $('#search-date-picker-to-refine input').val("").datepicker("update");
+        eventDateFrom = eventDateTo = null;
+    });
+
 });
