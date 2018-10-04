@@ -2,7 +2,7 @@
   $underline-length: 750px;
   position: relative;
   margin-bottom: 20px;
-  padding-left: 3.5vw;
+  padding-left: $content-left-padding;
   display: flex;
   align-items: flex-end;
   text-decoration: none;
