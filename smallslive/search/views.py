@@ -144,9 +144,15 @@ class MainSearchView(View, SearchMixin):
 
         if date_from:
             date_from = parser.parse(date_from, fuzzy=True)
+            if not date_from.tzinfo:
+                date_from = timezone.make_aware(
+                    date_from, timezone.get_current_timezone())
         if date_to:
-            date_to = parser.parse(date_to, fuzzy=True)
-
+           date_to = parser.parse(date_to, fuzzy=True)
+           if not date_to.tzinfo:
+                date_to = timezone.make_aware(
+                    date_to, timezone.get_current_timezone())
+ 
         if entity == 'artist':
             artists_blocks, showing_results, num_pages = self.search(
                 Artist, main_search, page, instrument=instrument, artist_search=artist_search)
@@ -184,9 +190,7 @@ class MainSearchView(View, SearchMixin):
                 'has_last_page': (num_pages - page) >= 3
             }
 
-            if (date_from and timezone.make_aware(
-                        date_from, timezone.get_current_timezone())
-                    > timezone.now().replace(hour=0, minute=0)):
+            if date_from > timezone.now().replace(hour=0, minute=0):
                 context['show_venue_name'] = True
 
             template = 'search/page_numbers_footer.html'

@@ -29,6 +29,8 @@
 
 {% block content %}
   {% include 'inactive_dialog.html' %}
+  {% include 'become_a_supporter_dialog.html' %}
+
 
   <div class="main-container{% if user.is_superuser %} admin-shown{% endif %}">
     {% block home_content %}

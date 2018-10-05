@@ -1,3 +1,5 @@
+$player-height:  525px;
+
 .event-page-container {
   display: flex;
   flex-direction: row;
@@ -5,7 +7,11 @@
   justify-content: center;
 
   .white-border-button {
-    margin-bottom: 20px;
+    height: 53px;
+    margin-bottom: 5px;
+    padding: 5px 38px;
+    display: inline;
+    margin-right: 2px;
   }
 
   @media(min-width: $screen-md-min) {
@@ -28,12 +34,20 @@
 
 .event-video-info {
   .event-title {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
   }
 
   @media(max-width: $screen-sm-max) {
     padding: 0 20px;
     width: 100%;
+  }
+
+  .event-set-info {
+    padding-top: 5px;
+  }
+
+  .buttons-container {
+    white-space: nowrap;
   }
 }
 
@@ -43,6 +57,14 @@
   & > div {
     margin-right: 30px;
   }
+
+  .artist-link {
+    color: black;
+    font-size: 20px;
+    letter-spacing: 0px;
+  }
+
+
 }
 
 #videoContainer, #audioContainer {
@@ -87,7 +109,7 @@
   pointer-events: none;
   position: absolute;
   width: 100%;
-  height: 525px; // The player's height.
+  height: $player-height; // The player's height.
   padding: 30px;
   pointer-events: none;
   left: 0;
@@ -105,7 +127,6 @@
 
   .event-overlay {
     color: white;
-    position: relative;
     height: 100%;
     padding: 35px 25px;
     .title5 {
@@ -116,8 +137,8 @@
 
   .event-overlay-logo {
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 15px;
+    top: 15px;
   }
 
   .event-overlay-title {
@@ -130,24 +151,42 @@
     column-fill: auto;
     .title5 {
       line-height: 1.5;
+      white-space: nowrap;
     }
   }
 
   .event-overlay-venue {
+
     position: absolute;
-    bottom: 0;
-    right: 0;
+    bottom: 20px;
+    right: 20px;
+    font-size: 0.7vw;
+    font-weight: bold;
+
     .title5 {
       line-height: 1.5;
-    }
-  }
-  .event-overlay-venue .title5 { 
       text-align: right;
+    }
+
+
   }
 
   .event-overlay-venue-set:not(:last-child)::after {
     content: '+';
   }
+}
+
+.event-overlay-venue {
+
+  .title5 {
+    font-weight: 400;
+    font-size: 23px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transform: scaleY(1.3);
+    line-height: 38px;
+  }
+
 }
 
 .overlay-info {
@@ -159,11 +198,11 @@
 }
 
 .event-related-videos {
-  height: 530px;
+  max-height: 530px;
   overflow: hidden;
 
   &:first-child {
-    margin-top: 34px;
+    margin-top: 16px;
     padding-bottom: 40px;
   }
 
@@ -229,8 +268,8 @@
 
 .event-video-banner, .event-video-placeholder {
   position: relative;
-  max-height: 450px;
-  margin-bottom: 30px;
+  max-height: $player-height;
+  margin-bottom: 15px;
 
   .event-banner-background {
     &:not(.dark) {
@@ -276,6 +315,9 @@
 }
 
 .comments-container {
+  border-top: 4px solid white;
+  padding-top: 20px;
+
   > div > span {
     font-size: 1.4em;
     &:first-child {
@@ -287,7 +329,7 @@
     resize: none;
     margin: 10px 0;
     height: 90px;
-    border-radius: 0;
+    border: none;
   }
 }
 @media(max-width: $screen-md-min) {
