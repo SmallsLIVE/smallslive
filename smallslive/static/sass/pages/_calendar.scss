@@ -4,9 +4,10 @@
 
 @media (max-width: 960px) {
   .refine {
-    float: right;
     display: block;
-    margin-right: 30px;
+    margin-right: 20px;
+    position: absolute;
+    right: 0;
   }
 
   .shows-calendar {
@@ -24,7 +25,8 @@
   .shows-results-title {
     font-size: 24px;
     margin: 0;
-    margin-left: 20px;
+    margin-left: 10px;
+    width: auto;
   }
   .events-calendar {
     padding-top: 0;
@@ -53,6 +55,12 @@
             .event-picture {
               height: 80px;
               width: 80px;
+            }
+
+            .event-picture > img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
             }
           }
         }
