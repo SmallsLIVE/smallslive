@@ -1,5 +1,5 @@
 (function() {
-  /*  - Subpages (a trubute).
+  /*  - Subpages (a tribute).
     This utility allows using AJAX to retrieve the contents of any view
     and insert it in any DOM element.
 
