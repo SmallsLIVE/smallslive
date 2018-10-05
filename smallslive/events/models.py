@@ -357,6 +357,8 @@ class Event(TimeStampedModel):
 
         start, end = self.get_range()
 
+        if self.date < local_date - timedelta(days=1):
+            return True
         if self.date < local_date and end.hour > 5:
             return True
         elif self.date == local_date - timedelta(days=1) and end.hour <= 5:
