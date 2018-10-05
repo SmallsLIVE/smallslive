@@ -101,7 +101,7 @@
     </div>
     </div>
 
-    <div class="text2 flex-column flex-grow" style="padding-top: 3px;">
+    <div class="text2 flex-column" style="padding-top: 3px;">
         <div class="artist-set-leader">
             <span class="accent-color">Leader{{ leaders|length|pluralize }}</span>
             {% for gig_played in event.get_performers %} 
@@ -129,6 +129,29 @@
             </div>
         {% endif %}
     </div>
+    <div class="flex-column mobile-event-menu">
+            <div class="flex-row mobile-event-opt">
+            <div class="white-border-button">Metrics</div>
+            {% if is_admin and set.has_media %}
+                {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
+                <div id="private-button" class="white-border-button" onclick="askPrivate({{ set.id }})"> Public </div>
+                {% else %}
+                <div id="public-button" class="white-border-button" onclick="askPublish({{ set.id }})"> Private </div>
+                {% endif %}
+                <div class="white-border-button" data-pk=event.id data-slug=event.slug >Edit</div>
+            {% else %}
+                {% if set.video_recording and set.video_recording.is_published %}
+                    <div disabled class="white-border-button">Public</div>
+                {% else %}
+                    <div disabled class="white-border-button">Private</div>
+                {% endif %}
+                <div disabled class="white-border-button" >Edit</div>
+            {% endif %}
+            
+
+        </div>
+
+    </div>
 {% endwith %}
 
 {% block extra_js %}
@@ -143,6 +166,11 @@
     <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
 
     <script>
+        $('.mobile-event-opt .white-border-button').on('click', function () {
+            $('.mobile-event-opt .white-border-button').css("background-color", "")
+            $(this).css( "background-color", 'white' );
+        })
+
         var eventDateFrom = new Date(2000, 0, 1);
         var eventDateTo = new Date();
 

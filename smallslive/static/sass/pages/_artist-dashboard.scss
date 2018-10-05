@@ -1,5 +1,5 @@
 .artist-profile-container {
-    
+   
     .payout-info-button{
         width: 10%;
         height: 30px;
@@ -57,6 +57,10 @@
     @media (max-width: $screen-sm-max) {
         padding: 20px;
     }
+    @media (max-width: 768px) {
+        padding: 20px 0;
+  
+    }
 
     .artist-dashboard-payout-title{
     padding-left: 0;
@@ -71,6 +75,7 @@
         @media (max-width: 1024px) {
             width: 40%;
         }
+        
         .artist-set-download{
           width: 3.8em;
         }
@@ -120,6 +125,7 @@
       }
     }
     .artist-events-container {
+       
         border-top: 3px solid $white-transparent;
         height: 700px;
         @media (max-width: 1024px) {
@@ -130,6 +136,9 @@
     }
     .artist-event-details {
         width: 11vw;
+        @media (max-width: 768px) {
+            width: 25vw;
+        }
     }
     .artist-event-arrow {
         margin: auto;
@@ -144,6 +153,10 @@
         width: 30%;
         @media (max-width: 1024px) {
             width: 40%;
+        }
+        @media (max-width: 768px) {
+            width: 50%;
+            padding-left: 20px;
         }
         overflow-y: scroll;
         .artist-event-picture {
@@ -162,6 +175,11 @@
       padding-left: 60px;
       padding-top: 30px;
     
+      @media (max-width: 768px) {
+        width: 50%;
+        padding-left: 30px;
+        padding-right: 30px;
+    }
       .header-metrics-container{
           display: flex;
         flex-direction: row;
@@ -170,6 +188,9 @@
             }
       }
       .artist-set-actions{
+        @media (max-width: 978px) {
+            display:none;
+            }
         display: flex;
         padding-bottom: 30px;
       }
@@ -177,6 +198,13 @@
         padding:10px 0;
         @media (max-width: 1024px) {
             padding:10px 0 30px 0;
+            }
+        @media (max-width: 768px) {
+            padding: 30px 0 30px 0;
+            &> .accent-color{
+                margin-bottom: 10px;
+                display: block;
+            }
             }
       }
       .set-changer{
@@ -203,6 +231,9 @@
             width: 100%;
             .title1{ line-height: initial;}
         }
+        @media (max-width: 768px) {
+            display: none;
+        }
       .event-metrics-container-plays{
         border-right: 3px solid $accent-color;
         padding-right: 10px;
@@ -211,6 +242,34 @@
         margin-left: 10px;
       }
     } 
+
+    .mobile-event-menu{
+        display: none;
+        @media (max-width: 768px) {
+            padding-top:30px;
+            display: block;
+            .mobile-event-opt{
+                justify-content: center;
+                .white-border-button
+                {
+                width: 25%;
+                &:nth-child( 1 ){
+                    border-radius: 10px 0 0 10px;
+                    border-right: 0;
+                }
+                &:nth-child( 2 ){
+                    border-left: 0;
+                    border-right: 0;
+                }
+                &:nth-child(3){
+                    border-left: 0;
+                    border-radius: 0 10px 10px 0;
+                }  
+                }
+            }
+            }
+        }
+    
     }
 
     .labeled-select {
@@ -314,6 +373,10 @@
     margin-bottom: 30px;
     @media (max-width: 1024px) {
         margin-left: 115px;
+  
+    }
+    @media (max-width: 768px) {
+        display:none;
   
     }
     .white-border-select {
@@ -424,6 +487,8 @@
     @media (min-width: $screen-md-min) {
         padding: 50px;
     }
+   
+    
     .graph-canvas {
         border: 4px solid $white-transparent;
         border-radius: 10px
