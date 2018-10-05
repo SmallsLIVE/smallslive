@@ -13,12 +13,16 @@
     .event-section {
       display: none;
     }
+
+    .musicians-results {
+      display: flex;
+    }
   }
   .white-line-bottom {
     border-bottom: 4px solid white;
   }
   .shows-results-title {
-    font-size: 30px;
+    font-size: 24px;
     margin: 0;
     margin-left: 20px;
   }
@@ -32,11 +36,11 @@
       .event-display {
         display: flex;
         padding: 16px 0;
-        padding-left: 32px;
+        padding-left: 12px;
         border-bottom: solid 2px white;
         background-image: url('/static/image/arrow-right-red.svg');
         background-repeat: no-repeat;
-        background-position: 90% 50%;
+        background-position: 94% 50%;
         background-size: 16px;
 
         .event-card-secondary {
@@ -63,7 +67,7 @@
 
           .event-info-title {
             width: auto;
-            max-width: 200px;
+            max-width: 180px;
           }
         }
       }
