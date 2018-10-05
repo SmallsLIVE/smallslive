@@ -132,24 +132,30 @@
     <div class="flex-column mobile-event-menu">
             <div class="flex-row mobile-event-opt">
             <div class="white-border-button">Metrics</div>
-            {% if is_admin and set.has_media %}
-                {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-                <div id="private-button" class="white-border-button" onclick="askPrivate({{ set.id }})"> Public </div>
+                {% if is_admin and set.has_media %}
+                    {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
+                    <div id="private-button" class="white-border-button" onclick="askPrivate({{ set.id }})"> Public </div>
+                    {% else %}
+                    <div id="public-button" class="white-border-button" onclick="askPublish({{ set.id }})"> Private </div>
+                    {% endif %}
+                    <div class="white-border-button" id="table-event-edit" data-pk=event.id data-slug=event.slug >Edit</div>
+                    {% comment %} <div class="white-border-button" id="mobile-event-edit" data-pk=event.id data-slug=event.slug >Edit</div> {% endcomment %}
                 {% else %}
-                <div id="public-button" class="white-border-button" onclick="askPublish({{ set.id }})"> Private </div>
-                {% endif %}
-                <div class="white-border-button" data-pk=event.id data-slug=event.slug >Edit</div>
-            {% else %}
-                {% if set.video_recording and set.video_recording.is_published %}
-                    <div disabled class="white-border-button">Public</div>
-                {% else %}
-                    <div disabled class="white-border-button">Private</div>
-                {% endif %}
-                <div disabled class="white-border-button" >Edit</div>
-            {% endif %}
-            
+                    {% if set.video_recording and set.video_recording.is_published %}
+                        <div disabled class="white-border-button">Public</div>
+                    {% else %}
+                        <div disabled class="white-border-button">Private</div>
+                    {% endif %}
+                    <div disabled class="white-border-button" onclick="$('#edit-event-form').modal('show');" >Edit</div>
+                    <div class="modal fade" id="edit-event-form" style="width:50px; height:50px; background-color:red; margin:0 auto;"></div>
 
-        </div>
+                    {% comment %} {% include "artist_dashboard/mobile_dashboard_edit.html" %} {% endcomment %}
+                    {% comment %} {% include "dashboard/event" with pk=event.id slug=event.slug %} {% endcomment %}
+                {% endif %}
+            </div>
+            {% comment %} <div class="flex-row mobile-event-metrics">
+
+            </div> {% endcomment %}
 
     </div>
 {% endwith %}

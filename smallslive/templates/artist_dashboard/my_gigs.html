@@ -13,6 +13,10 @@
 
 {#    TODO Move container to dashboard base#}
     <div class="artist-profile-container flex-column">
+            <div class="refine-container flex-row">
+            <div class="refine text1 flex-grow"><span id="filter-number" class="accent-color">(0)</span>Refine</div>
+            <div class="reset text1">Reset</div>
+            </div>
         <div class="artist-archive-filter flex-row">
             <div class="white-border-select">
                 <select id="artist_archive_status_filter">
@@ -24,8 +28,8 @@
             <div class="white-border-select">
                 <select id="artist_archive_status_filter">
                     <option value="all">Status</option>
-                    <option value="leader">Leader</option>
-                    <option value="sidemusician">Sidemusician</option>
+                    <option value="leader">Public</option>
+                    <option value="sidemusician">Private</option>
                 </select>
             </div>
             <div class="white-border-select">
