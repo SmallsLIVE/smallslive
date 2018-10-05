@@ -81,6 +81,10 @@
       }
     }
   }
+
+  .event-stripe {
+    margin-top: 70px;
+  }
 }
 
 .refine-overlay {
@@ -90,8 +94,12 @@
   position: fixed;
   z-index: 10;
   left: 0;
-  top: 60px;
+  top: 30px;
   background-color: #f0f0eb;
+
+  .white-line-bottom {
+    border-bottom: 2px solid white;
+  }
 }
 
 .refine-overlay-content {
@@ -152,13 +160,15 @@
   margin-bottom: 24px;
 }
 .closebtn {
-  font-size: 60px;
+  font-size: 50px;
+  line-height: .5;
 }
 
 .refine-overlay-menu {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 5px;
 }
 
 .calendar-refine-title {
