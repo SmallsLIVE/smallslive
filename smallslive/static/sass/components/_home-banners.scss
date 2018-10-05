@@ -236,7 +236,7 @@ $banners-height: 38vh;
       vertical-align:top;
       -webkit-filter: brightness(1.85);
       width: 100vw;
-
+      filter:none;
       &.archive {
         background-image: url("/static/image/banners/archive_mobile_banner.jpg"); 
         background-size: 100% 100%;
