@@ -31,7 +31,11 @@
   };
 
   Subpage.prototype.bindForms = function () {
-    this.element.find('form').ajaxForm({
+    var forms = this.element.find('form')
+    if (!forms.length) {
+      return;
+    }
+    forms.ajaxForm({
       type: 'post',
       success: function (response) {
         this.element.html(response);

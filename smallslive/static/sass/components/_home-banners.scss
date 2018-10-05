@@ -67,7 +67,6 @@ $banners-height: 38vh;
 
       .banner-text-container {
         flex: 1;
-
         #banner-text {
           @include title-banner;
           text-align: justify;
@@ -181,15 +180,22 @@ $banners-height: 38vh;
   }
 
   &.mobile {
-    background-size: cover;
-    &.slick-slider{
-      margin-top: 20vw;
+    & + * + .event-stripe{
+      margin-top:0;
+      & > .live{
+        margin-top:0;
+      }
     }
+    margin-bottom: 0px;
+    background-size: cover;
+    margin-top: 15vw;
     .slick-dots{
       bottom:0;
+      li{
+        margin: 0 2.35px;}
     }
     .slick-dots li button:before {
-      font-size: 5.2vw;
+      font-size: 20px;
       content: "○";
       opacity: 1;
     }
@@ -208,6 +214,8 @@ $banners-height: 38vh;
     }
 
     .box {
+      .banner-learnmore {
+        margin-top: 10px;}
       .banner-text-container {
         .content{
           @include reen-kufi-normal;
@@ -218,8 +226,8 @@ $banners-height: 38vh;
       // }
       &.flex-column{
         display: flex;
-        height: 60vw;
-        justify-content: space-between;
+        height: 65vw;
+        justify-content: center;
         padding: 2.6vw 0;
 
       }
@@ -234,26 +242,33 @@ $banners-height: 38vh;
       width: 100vw;
 
       &.archive {
-        /* background-image: url(/static/image/banners/archive_text.jpg); */
+        background-image: url("/static/image/banners/archive_mobile_banner.jpg"); 
+        background-size: 100% 100%;
 
       }
 
       &.live {
-        /* background-image: url(/static/image/banners/live_text.jpg); */
+        background-image: url("/static/image/banners/live_mobile_banner.jpg"); 
+        background-size: 100% 100%;
 
       }
 
       &.mission {
-    
-        /* background-image: url(/static/image/banners/mission_text.jpg); */
+        background-image: url("/static/image/banners/mission_mobile_banner.jpg"); 
+        background-size: 100% 100%;
 
       }
       &.supporting{
+        background-image: url("/static/image/banners/supporter_mobile_banner.jpg"); 
+        background-size: 100% 100%;
+        padding: 6.2vw 0;
+        margin-bottom: 0;
         .text9{
           font-size: 3.84vw;
           text-align: justify;
         }
         .banner-learnmore {
+          padding-top: 3.1vw;
           display: flex;
           justify-content: space-evenly;
           button, a{

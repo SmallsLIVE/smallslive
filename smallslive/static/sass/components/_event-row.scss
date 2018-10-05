@@ -8,7 +8,7 @@ $regular-card-width-tablet: 15.1vw;
 $regular-card-width-medium: 15.1vw;
 $regular-card-width-large: 11.225vw;
 $event-card-margin: 0.4vw;
-$event-row-padding: 3.5;
+$event-row-padding: 3.5vw;
 
 .live {
   .slide-btn {
@@ -143,6 +143,7 @@ $event-row-padding: 3.5;
 }
 
 .event-display {
+
   margin-right: $event-card-margin;
 }
 
@@ -283,6 +284,9 @@ $event-row-padding: 3.5;
     bottom: 2px;
 
     &.links1 {
+      @media (max-width: $screen-sm-max) {
+        font-size: 3vw;
+      }
       line-height: normal;
     }
 
