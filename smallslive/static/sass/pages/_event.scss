@@ -49,6 +49,12 @@ $player-height:  525px;
   .buttons-container {
     white-space: nowrap;
   }
+
+  .flex-column {
+    @media(max-width: 1366px) {
+      flex-direction: column;
+    }
+  }
 }
 
 .event-band {
