@@ -148,7 +148,7 @@
         </div>
 
       </div>
-      <div class="flex-colum">
+      <div class="flex-colum buttons-container">
         {% if event.is_past %}
         {% for set in event.sets.all %}
           <button class="set-select-button white-border-button {{ forloop.counter0|yesno:',active' }}"
@@ -157,12 +157,12 @@
           </button>
         {% endfor %}
         {% endif %}
-        {% if event.is_past and user.can_listen_to_audio and event.published_audio %}
+        {% if event.is_past and event.published_audio %}
             <button class="white-border-button audio togglePlayer" style="display: inline;">
               Audio only player
             </button>
         {% endif %}
-        {% if event.is_past and user.can_watch_video and event.published_videos %}
+        {% if event.is_past and event.published_videos %}
 
           <button class="white-border-button video togglePlayer"
                   style="display: none;">
