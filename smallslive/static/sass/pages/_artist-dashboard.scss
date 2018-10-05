@@ -284,7 +284,41 @@
                 }  
                 }
             }
+            
+            .edit-event-mobile-form{
+                text-align: center;
+                background: $background-color;
+                margin:0 auto;
+                #div_id_description{
+                    display: none;
+                }
+                #div_id_tickets_url{
+                    display: none;
+                }
+                .edit-event-mobile-form-body {
+                    *{
+                        margin-bottom: 30px;
+                    }
+                    
+                }
+                .close-button{
+                    padding-top: 20px;
+                    &:before, &:after{
+                    
+                        background-color:grey;
+                    }
+                }
+                .smalls-form-logo{
+                    padding-top: 20px;
+                    display: block;
+                    margin: 0 auto 30px auto;
+                }
+                .title1{
+                    font-size: 6vw;
+                }
             }
+            }
+        
         }
     
     }

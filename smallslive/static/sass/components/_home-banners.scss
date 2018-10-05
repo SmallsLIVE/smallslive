@@ -238,24 +238,25 @@ $banners-height: 38vh;
       width: 100vw;
 
       &.archive {
-        background-color:blue;
-        /* background-image: url(/static/image/banners/archive_text.jpg); */
+        background-image: url("/static/image/banners/archive_mobile_banner.jpg"); 
+        background-size: 100% 100%;
 
       }
 
       &.live {
-        background-color:rebeccapurple;
-        /* background-image: url(/static/image/banners/live_text.jpg); */
+        background-image: url("/static/image/banners/live_mobile_banner.jpg"); 
+        background-size: 100% 100%;
 
       }
 
       &.mission {
-        background-color:greenyellow;
-        /* background-image: url(/static/image/banners/mission_text.jpg); */
+        background-image: url("/static/image/banners/mission_mobile_banner.jpg"); 
+        background-size: 100% 100%;
 
       }
       &.supporting{
-        background-color:grey;
+        background-image: url("/static/image/banners/supporter_mobile_banner.jpg"); 
+        background-size: 100% 100%;
         padding: 6.2vw 0;
         margin-bottom: 0;
         .text9{

@@ -479,12 +479,16 @@ event_metrics = EventMetricsView.as_view()
 
 
 class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
-    form_class = EventEditForm
-    success_url = reverse_lazy("artist_dashboard:my_past_events")
-    template_name = 'artist_dashboard/event_edit.html'
 
+    form_class = EventEditForm
+    success_url = reverse_lazy('artist_dashboard:my_past_events')
     inlines = [ArtistGigPlayedAddInlineFormSet]
     inlines_names = ['artists']
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return 'artist_dashboard/mobile_event_edit_form.html'
+        return 'artist_dashboard/event_edit.html'
 
     def get_context_data(self, **kwargs):
         context = super(EventEditView, self).get_context_data(**kwargs)

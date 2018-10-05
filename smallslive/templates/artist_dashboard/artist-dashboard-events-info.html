@@ -138,7 +138,7 @@
                     {% else %}
                     <div id="public-button" class="white-border-button" onclick="askPublish({{ set.id }})"> Private </div>
                     {% endif %}
-                    <div class="white-border-button" id="table-event-edit" data-pk=event.id data-slug=event.slug >Edit</div>
+                    <div class="white-border-button" id="table-event-edit" data-pk=event.id data-slug=event.slug onclick="">Edit</div>
                     {% comment %} <div class="white-border-button" id="mobile-event-edit" data-pk=event.id data-slug=event.slug >Edit</div> {% endcomment %}
                 {% else %}
                     {% if set.video_recording and set.video_recording.is_published %}
@@ -147,11 +147,23 @@
                         <div class="white-border-button disabled">Private</div>
                     {% endif %}
                     <div class="white-border-button disabled">Edit</div>
-                    <div class="modal fade" id="edit-event-form" style="width:50px; height:50px; background-color:red; margin:0 auto;"></div>
 
                     {% comment %} {% include "artist_dashboard/mobile_dashboard_edit.html" %} {% endcomment %}
                     {% comment %} {% include "dashboard/event" with pk=event.id slug=event.slug %} {% endcomment %}
                 {% endif %}
+                <div class="modal fade edit-event-mobile-form" id="edit-event-form" style="width:80%; height:80%;" >
+                    <div class="edit-event-mobile-form-body">
+                            <a href="#" class="close-button"></a>
+                            <img class="smalls-form-logo" src="{% static 'logo-black.svg' %}">
+                            <div class="accent-color title2">Archived show</div>
+                            <div class="edit-event-mobile-form-body title1">Edit event info</div>
+                    </div>
+                    <div class="edit-event-mobile-form-body" data-subpage-name="mycoso" data-subpage-url="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
+                            <a href="#" class="close-button"></a>
+                    </div>
+
+                </div>
+
             </div>
             {% comment %} <div class="flex-row mobile-event-metrics">
 
@@ -161,7 +173,17 @@
 {% endwith %}
 
 {% block extra_js %}
+
+    <script src="{% static 'js/subpages.js' %}"></script>
+    <script src="{% static 'js/jquery.form.js' %}"></script>
     <script>
+        $('#edit-event-form .close-button').click(() => { $('#edit-event-form').modal('toggle') })
+
+        $('#table-event-edit').on('click', function () {
+            $('#edit-event-form').modal('show');
+            window.subpages.register();
+            window.subpages.loadAll();
+        })
         $('.set-changer').on('click', function () {
             loadInfo($(this).data('url'));
         })
