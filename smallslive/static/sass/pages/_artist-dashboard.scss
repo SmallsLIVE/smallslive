@@ -2,13 +2,17 @@
     .refine-container{
         display: none;
         @media (max-width: 768px) {
-            display: block;     
+            display: flex;
         }
         padding-bottom: 10px;
         .refine.text1{
             text-align: center;
             padding-left: 30px;
-             margin:0;    
+            display: none;
+            @media (max-width: 768px) {
+                display: block;       
+                margin:0;     
+            }
         }
     }    .payout-info-button{
         width: 10%;
@@ -263,6 +267,9 @@
                 .white-border-button
                 {
                 width: 25%;
+                &.disabled{
+                    color:grey;
+                }
                 &:nth-child( 1 ){
                     border-radius: 10px 0 0 10px;
                     border-right: 0;

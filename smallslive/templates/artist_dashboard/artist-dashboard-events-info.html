@@ -142,11 +142,11 @@
                     {% comment %} <div class="white-border-button" id="mobile-event-edit" data-pk=event.id data-slug=event.slug >Edit</div> {% endcomment %}
                 {% else %}
                     {% if set.video_recording and set.video_recording.is_published %}
-                        <div disabled class="white-border-button">Public</div>
+                        <div class="white-border-button disabled">Public</div>
                     {% else %}
-                        <div disabled class="white-border-button">Private</div>
+                        <div class="white-border-button disabled">Private</div>
                     {% endif %}
-                    <div disabled class="white-border-button" onclick="$('#edit-event-form').modal('show');" >Edit</div>
+                    <div class="white-border-button disabled">Edit</div>
                     <div class="modal fade" id="edit-event-form" style="width:50px; height:50px; background-color:red; margin:0 auto;"></div>
 
                     {% comment %} {% include "artist_dashboard/mobile_dashboard_edit.html" %} {% endcomment %}
