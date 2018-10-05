@@ -41,6 +41,7 @@
 
     
     function loadInfo(infoUrl){
+            if(window.screen.availWidth > 425){
             $.ajax({
                 url: infoUrl,
 
@@ -49,6 +50,18 @@
                   $("#artistEventsInfo").data("url", infoUrl);
                 }
             });
+          }else{
+            console.log("work")
+            $.ajax({
+              url: infoUrl,
+
+              success: function (data) {
+                $("#event-info-modal").html(data);
+                $("#event-info-modal").data("url", infoUrl);
+                $("#event-info-modal").modal('show');
+              }
+          });
+          }
         }   
     
     $('.artist-event-row').on('click', function () {

@@ -2,7 +2,10 @@
 {% load fromisoformat %}
 
 {% with set=event_set %}
+<div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}">
+
     <div class="artist-set-actions">
+        
         <div class="button-row button-row-margin">
             {% if is_admin and set.has_media %}
                 <a href="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
@@ -28,6 +31,14 @@
         <div class='artist-set-main'>
             <div class="artist-event-info flex-column wrap">
                 <div class="flex-row artist-set-header">
+                    <div class="artist-event-arrow" onclick="closeEvent()">
+                        <img src="/static/image/arrow-right-red.svg" alt="arrow-red">    
+                    </div>
+                    <div class="artist-set-info-mobile">
+                            <div class="text2"> {{ event.date|date:'m/d/Y' }} </div>
+                            <div class="text2"> {{ event.title }} </div>
+                            <div class="text2 accent-color"> Live at {{ event.venue }} </div>
+                    </div>
                     <div class="artist-set-info">
                         <div class="text2"> {{ event.date|date:'m/d/Y' }} </div>
                         <div class="text2"> {{ event.title }} </div>
@@ -177,6 +188,9 @@
     <script src="{% static 'js/subpages.js' %}"></script>
     <script src="{% static 'js/jquery.form.js' %}"></script>
     <script>
+        function closeEvent() {
+            $('#event-info-modal').modal('hide');
+        }
         $('#edit-event-form .close-button').click(() => { $('#edit-event-form').modal('toggle') })
 
         $('#table-event-edit').on('click', function () {

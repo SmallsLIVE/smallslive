@@ -13,6 +13,7 @@
 
 {#    TODO Move container to dashboard base#}
     <div class="artist-profile-container flex-column">
+        <div class="modal fade event-mobile-info" id="event-info-modal" style="width:100%; height:90%;padding:0;" ></div>
             <div class="refine-container flex-row">
             <div class="refine text1 flex-grow"><span id="filter-number" class="accent-color">(0)</span>Refine</div>
             <div class="reset text1">Reset</div>
@@ -78,7 +79,6 @@
             $('#publishConfirm').modal('show');
             selectedSetId=setId;
         }
-
         function makeSetPrivate() {
             $.post('/events/sets/' + selectedSetId + '/private/', {
               csrfmiddlewaretoken: '{{ csrf_token }}'

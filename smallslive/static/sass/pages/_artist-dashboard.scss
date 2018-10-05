@@ -1,71 +1,114 @@
 .artist-profile-container {
-    .refine-container{
+    .event-mobile-info {
+        background-color: $background-color;
+        padding: 0;
+        border: none;
+        .header-metrics-container{
+          text-align: center;
+          .artist-set-main{
+            padding-right: 0;
+            .artist-event-info {
+              padding-left: 0;
+              .artist-set-header{
+                padding:10px;
+                .artist-event-arrow{
+                  width: 10px;
+                  height: auto;
+                  display:block;
+                  transform: scaleX(-1);
+                  margin: auto 0;
+                }
+                .artist-set-info-mobile{
+                  display:block;
+                }
+                .artist-set-info{
+                  display: none;
+                }
+              }
+              .artist-event-card{
+                margin:0;
+              }
+            }
+          }
+        }
+        div.set-changer{
+          padding: 0;
+        }
+        .text2.flex-column{
+          padding: 10px;
+        }
+        .mobile-event-menu{ 
+          padding: 10px;
+          .mobile-event-opt div.white-border-button {
+          width: 33%;
+          }
+        }
+    }
+    .refine-container {
         display: none;
         @media (max-width: 768px) {
             display: flex;
         }
         padding-bottom: 10px;
-        .refine.text1{
+        .refine.text1 {
             text-align: center;
             padding-left: 30px;
             display: none;
             @media (max-width: 768px) {
-                display: block;       
-                margin:0;     
+                display: block;
+                margin: 0;
             }
         }
-    }    .payout-info-button{
+    }
+    .payout-info-button {
         width: 10%;
         height: 30px;
     }
-    .payout-bar{
+    .payout-bar {
         position: relative;
         width: 25%;
-        flex-direction: row-reverse; 
+        flex-direction: row-reverse;
         justify-content: space-between;
-        .select-selected{
-            width:100%;
+        .select-selected {
+            width: 100%;
         }
-        .payout-info-container{
+        .payout-info-container {
             background-color: $background-color;
             position: absolute;
             margin-top: 38px;
             border: 2px solid #fff;
-            .fa-times{
+            .fa-times {
                 text-align: right;
                 width: 100%;
                 padding-right: 5px;
             }
-            .payout-info-text{
+            .payout-info-text {
                 line-height: $line-height-small;
                 padding: 10px 20px 20px 20px;
-                text-align:justify;
+                text-align: justify;
             }
         }
-        .payout-bar-button{
+        .payout-bar-button {
             font-size: $text-font-size-smaller;
             padding: 0px 35px;
             @media (max-width: 991px) {
                 height: 35px;
-            }       
+            }
         }
-        .payout-bar-button:hover{
+        .payout-bar-button:hover {
             background-color: $white-transparent;
         }
     }
-    .payout-form{
-        width:33%;
+    .payout-form {
+        width: 33%;
     }
-
-    .labeled-select .white-border-select .select-items{
-        margin-top:0;
+    .labeled-select .white-border-select .select-items {
+        margin-top: 0;
         left: initial;
-        
     }
-
     margin-bottom: 40px;
     @media (max-width: 1024px) {
-        padding:0
+        padding: 0
     }
     padding: 0 15vw;
     @media (max-width: $screen-sm-max) {
@@ -73,85 +116,33 @@
     }
     @media (max-width: 768px) {
         padding: 20px 0;
-  
     }
-
-    .artist-dashboard-payout-title{
-    padding-left: 0;
-    display: flex;
-    align-items: flex-end;
-    text-decoration: none;
-    border-bottom: 5px solid #fff;
-    margin-bottom: 30px ;
-    }
-    .artist-events-list-info {
-        width: 70%;
-        @media (max-width: 1024px) {
-            width: 40%;
-        }
-        
-        .artist-set-download{
-          width: 3.8em;
-        }
-        .set-artist{
-          text-transform: capitalize;
-        }
-        
-        .artist-set-main{
-          padding-right: 3.13vw;
-          width: 40%;
-          @media (max-width: 1024px) {
-            width: 100%;
-
-        }
-        .artist-set-header{
-          justify-content: space-between;
-
-          padding: 10px 0;
-        }
-        .set-picture-container{
-          position: relative;
-          justify-content: center;
-          .set-icon-overlay{
-            position: absolute;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            z-index: 1;
-            text-align: center;
-            i{display: flex;
-              justify-content: center;
-              align-items: center;
-              height: 30px;
-              width: 30px;
-              border-radius: 30px;
-              border: 1px solid #ed1c24;
-            }
-          }
-        }
-        .set-picture{
-          @include filter(grayscale(100%));
-          position: relative;
-          img{
-            width: 100%;
-          }
-        }
-      }
+    .artist-dashboard-payout-title {
+        padding-left: 0;
+        display: flex;
+        align-items: flex-end;
+        text-decoration: none;
+        border-bottom: 5px solid #fff;
+        margin-bottom: 30px;
     }
     .artist-events-container {
-       
+        @media (max-width: 425px) {
+            flex-direction: column;
+        }
         border-top: 3px solid $white-transparent;
         height: 700px;
         @media (max-width: 1024px) {
             justify-content: center;
             height: 800px;
         }
-        
     }
     .artist-event-details {
         width: 11vw;
         @media (max-width: 768px) {
             width: 25vw;
+        }
+        @media (max-width: 425px) {
+            width: 50vw;
         }
     }
     .artist-event-arrow {
@@ -172,6 +163,10 @@
             width: 50%;
             padding-left: 20px;
         }
+        @media (max-width: 425px) {
+            width: 100%;
+            padding-left: 0;
+        }
         overflow-y: scroll;
         .artist-event-picture {
             @include filter(grayscale(100%));
@@ -184,172 +179,217 @@
             }
         }
     }
-
-    .artist-events-list-info{
-      padding-left: 60px;
-      padding-top: 30px;
-    
-      @media (max-width: 768px) {
-        width: 50%;
-        padding-left: 30px;
-        padding-right: 30px;
-    }
-      .header-metrics-container{
-          display: flex;
-        flex-direction: row;
+    .artist-events-list-info,
+    .event-mobile-info {
+        padding-left: 60px;
+        padding-top: 30px;
+        width: 70%;
         @media (max-width: 1024px) {
-            flex-direction: column;
-            }
+          width: 40%;
       }
-      .artist-set-actions{
-        @media (max-width: 978px) {
-            display:none;
-            }
-        display: flex;
-        padding-bottom: 30px;
-      }
-      .artist-set-leader{
-        padding:10px 0;
-        @media (max-width: 1024px) {
-            padding:10px 0 30px 0;
-            }
         @media (max-width: 768px) {
-            padding: 30px 0 30px 0;
-            &> .accent-color{
-                margin-bottom: 10px;
-                display: block;
-            }
-            }
-      }
-      .set-changer{
-        padding: 10px 0;
-        flex-basis: auto;
-        flex-grow: 1;
-        flex-shrink: 0;
-        text-align: center;
-      }
-      
-      .artist-set-list{
-        justify-content: space-evenly;
-        .artist-active-set{
-         border-bottom:  2px solid $accent-color;
+            width: 50%;
+            padding-left: 30px;
+            padding-right: 30px;
         }
-      }
-      .set-button{
-        width: 5vw;
-      }
-      .artist-metrics-container{
-        position: relative;
-        width: 60%;
-        @media (max-width: 1024px) {
-            width: 100%;
-            .title1{ line-height: initial;}
-        }
-        @media (max-width: 768px) {
+        @media (max-width: 425px) {
             display: none;
         }
-      .event-metrics-container-plays{
-        border-right: 3px solid $accent-color;
-        padding-right: 10px;
-      }
-      .event-metrics-container-time{
-        margin-left: 10px;
-      }
-    } 
-
-    .mobile-event-menu{
-        display: none;
-        @media (max-width: 768px) {
-            padding-top:30px;
-            display: block;
-            .mobile-event-opt{
-                justify-content: center;
-                .white-border-button
-                {
-                width: 25%;
-                &.disabled{
-                    color:grey;
-                }
-                &:nth-child( 1 ){
-                    border-radius: 10px 0 0 10px;
-                    border-right: 0;
-                }
-                &:nth-child( 2 ){
-                    border-left: 0;
-                    border-right: 0;
-                }
-                &:nth-child(3){
-                    border-left: 0;
-                    border-radius: 0 10px 10px 0;
-                }  
-                }
-            }
-            
-            .edit-event-mobile-form{
-                text-align: center;
-                background: $background-color;
-                margin:0 auto;
-                #div_id_description{
-                    display: none;
-                }
-                #div_id_tickets_url{
-                    display: none;
-                }
-                .edit-event-mobile-form-body {
-                    *{
-                        margin-bottom: 30px;
-                    }
-                    
-                }
-                .close-button{
-                    padding-top: 20px;
-                    &:before, &:after{
-                    
-                        background-color:grey;
-                    }
-                }
-                .smalls-form-logo{
-                    padding-top: 20px;
-                    display: block;
-                    margin: 0 auto 30px auto;
-                }
-                .title1{
-                    font-size: 6vw;
-                }
-            }
-            }
         
+        .artist-set-download {
+            width: 3.8em;
         }
-    
+        .set-artist {
+            text-transform: capitalize;
+        }
+        .artist-set-main {
+            padding-right: 3.13vw;
+            width: 40%;
+            @media (max-width: 1024px) {
+                width: 100%;
+            }
+            .artist-set-header {
+                justify-content: space-between;
+                padding: 10px 0;
+                .artist-event-arrow, .artist-set-info-mobile{
+                  display:none
+                }
+            }
+            .set-picture-container {
+                position: relative;
+                justify-content: center;
+                .set-icon-overlay {
+                    position: absolute;
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    z-index: 1;
+                    text-align: center;
+                    i {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 30px;
+                        width: 30px;
+                        border-radius: 30px;
+                        border: 1px solid #ed1c24;
+                    }
+                }
+            }
+            .set-picture {
+                @include filter(grayscale(100%));
+                position: relative;
+                img {
+                    width: 100%;
+                }
+            }
+        }
+        .header-metrics-container {
+            display: flex;
+            flex-direction: row;
+            @media (max-width: 1024px) {
+                flex-direction: column;
+            }
+        }
+        .artist-set-actions {
+            @media (max-width: 978px) {
+                display:none;
+            }
+            display: flex;
+            padding-bottom: 30px;
+        }
+        .artist-set-leader {
+            padding: 10px 0;
+            @media (max-width: 1024px) {
+                padding:10px 0 30px 0;
+            }
+            @media (max-width: 768px) {
+                padding: 30px 0 30px 0;
+                &>.accent-color {
+                    margin-bottom: 10px;
+                    display: block;
+                }
+            }
+        }
+        .set-changer {
+            padding: 10px 0;
+            flex-basis: auto;
+            flex-grow: 1;
+            flex-shrink: 0;
+            text-align: center;
+        }
+        .artist-set-list {
+            justify-content: space-evenly;
+            .artist-active-set {
+                border-bottom: 2px solid $accent-color;
+            }
+        }
+        .set-button {
+            width: 5vw;
+        }
+        .artist-metrics-container {
+            position: relative;
+            width: 60%;
+            @media (max-width: 1024px) {
+                width: 100%;
+                .title1 {
+                    line-height: initial;
+                }
+            }
+            @media (max-width: 768px) {
+                display: none;
+            }
+            .event-metrics-container-plays {
+                border-right: 3px solid $accent-color;
+                padding-right: 10px;
+            }
+            .event-metrics-container-time {
+                margin-left: 10px;
+            }
+        }
+        .mobile-event-menu {
+            display: none;
+            @media (max-width: 768px) {
+                padding-top:30px;
+                display: block;
+                .mobile-event-opt {
+                    justify-content: center;
+                    .white-border-button {
+                        width: 25%;
+                        &.disabled {
+                            color: grey;
+                        }
+                        &:nth-child( 1) {
+                            border-radius: 10px 0 0 10px;
+                            border-right: 0;
+                        }
+                        &:nth-child( 2) {
+                            border-left: 0;
+                            border-right: 0;
+                        }
+                        &:nth-child(3) {
+                            border-left: 0;
+                            border-radius: 0 10px 10px 0;
+                        }
+                    }
+                }
+                .edit-event-mobile-form {
+                    text-align: center;
+                    background: $background-color;
+                    margin: 0 auto;
+                    #div_id_description {
+                        display: none;
+                    }
+                    #div_id_tickets_url {
+                        display: none;
+                    }
+                    .edit-event-mobile-form-body {
+                        * {
+                            margin-bottom: 30px;
+                        }
+                    }
+                    .close-button {
+                        padding-top: 20px;
+                        &:before,
+                        &:after {
+                            background-color: grey;
+                        }
+                    }
+                    .smalls-form-logo {
+                        padding-top: 20px;
+                        display: block;
+                        margin: 0 auto 30px auto;
+                    }
+                    .title1 {
+                        font-size: 6vw;
+                    }
+                }
+            }
+        }
     }
-
     .labeled-select {
-        margin-bottom:20px;
+        margin-bottom: 20px;
         justify-content: space-between;
         display: flex;
-
         .select-items {
             margin-top: 5px;
         }
-        .white-border-select{
+        .white-border-select {
             font-size: inherit;
-            .white-border-button{
+            .white-border-button {
                 font-size: $text-font-size-smaller;
                 border-right: none;
                 @media (max-width: 991px) {
                     height: 35px;
-                    
-                }       
+                }
             }
-            .select-selected{
+            .select-selected {
                 border-left: none;
-                color:$accent-color;
+                color: $accent-color;
                 padding: 0px 40px;
-                     
             }
         }
     }
-   
     .artist-form {
         padding: 0 10%;
         margin-bottom: 40px;
@@ -382,8 +422,10 @@
                 margin: 20px 0;
                 .button-row {
                     margin-top: 20px;
-                    
                 }
+            }
+            @media (max-width: 425px) {
+                padding-left: 20px
             }
         }
         .artist-event-set {
@@ -394,10 +436,8 @@
                     border-top: $underline-height solid $white-transparent;
                     margin-bottom: 40px;
                 }
-            
             }
         }
-
         &:hover {
             background-color: $white-transparent;
         }
@@ -424,11 +464,9 @@
     margin-bottom: 30px;
     @media (max-width: 1024px) {
         margin-left: 115px;
-  
     }
     @media (max-width: 768px) {
-        display:none;
-  
+        display: none;
     }
     .white-border-select {
         width: 8vw;
@@ -504,10 +542,10 @@
     .title2 {
         margin-top: 20px;
     }
-    .artist-payout-data-text{
+    .artist-payout-data-text {
         margin-bottom: 20px;
     }
-    .artist-payout-data-left{
+    .artist-payout-data-left {
         margin-right: 250px;
     }
 }
@@ -538,8 +576,6 @@
     @media (min-width: $screen-md-min) {
         padding: 50px;
     }
-   
-    
     .graph-canvas {
         border: 4px solid $white-transparent;
         border-radius: 10px
@@ -553,7 +589,7 @@
 }
 
 .artist-metrics-header {
-    display: flex; 
+    display: flex;
     justify-content: space-between;
     align-items: center;
 }
@@ -562,7 +598,7 @@
     position: relative;
     display: inline-block;
     width: 140px;
-    align-self: center; 
+    align-self: center;
     margin-bottom: 2px;
     cursor: pointer;
 }
@@ -585,7 +621,6 @@
 
 .datepicker-dashboard-container {
     top: 60px;
-
     .datepicker {
         left: 158px !important;
     }
@@ -597,8 +632,7 @@
     border-right: solid 2px white;
     height: calc(100% - 40px);
     width: 140px;
-
-    > div:nth-child(-n + 2) {
+    >div:nth-child(-n + 2) {
         font-weight: bold;
     }
 }
