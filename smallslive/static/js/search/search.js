@@ -138,11 +138,7 @@ function sendEventRequest() {
 
 $(document).ready(function () {
     searchTerm = getUrlParameter("q");
-    if (searchTerm) {
-        searchTerm = searchTerm.replace(/\+/g, ' ');
-    } else {
-        searchTerm = '';
-    }
+    searchTerm = searchTerm ? searchTerm.replace(/\+/g, ' '): '';
     artistSearchTerm = "";
     artistInstrument = "";
     artistPageNum = eventPageNum = 1;

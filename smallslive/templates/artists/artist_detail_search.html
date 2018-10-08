@@ -59,7 +59,6 @@
           </div>
         {% endif %}
     </div>
-
 </div>
 
 <div class="artist-search-profile-bio-container flex-row hidden-xs">
@@ -85,7 +84,16 @@
 
 <a href="#" id="back-search" class="close-button"></a>
 
-<div id="smallslive-tracks" style="display: none;">
+<div class="search-tabs">
+  <div class="active" data-toggle-tab="archived-shows">
+    <span class="title1">Archived</span>
+  </div>
+  <div data-toggle-tab="upcoming-shows">
+    <span class="title1">Upcoming</span>
+  </div>
+</div>
+
+<div id="smallslive-tracks" data-toggle-tab-target="smallslive-tracks" style="display: none;">
     <div class="musicians-results white-line-bottom">
         <div class="title1 shows-results-title">Smallslive Tracks</div>
     </div>
@@ -98,7 +106,7 @@
     </div>
 </div>
 
-<div id="upcoming-shows" style="display: none;">
+<div id="upcoming-shows" data-toggle-tab-target="upcoming-shows" style="display: none;">
     <div class="musicians-results white-line-bottom">
         <div class="title1 shows-results-title">Upcoming Shows</div>
     </div>
@@ -118,34 +126,13 @@
             this.style.display= 'none';
         });
 
-
-        $("#smallslive-tracks-button").click(function () {
-            $('.artist-search-profile-bio-buttons button').removeClass('active');
+        $('[data-toggle-tab]').on('click', function(event) {
+            var tabName =$(this).data('toggle-tab');
+            var target = $('[data-toggle-tab-target="' + tabName + '"]');
+            $(this).siblings('[data-toggle-tab]').removeClass('active');
             $(this).addClass('active');
-
-            $("#showsContent").hide();
-            $("#smallslive-tracks").show();
-            $("#upcoming-shows").hide();
+            target.siblings('[data-toggle-tab-target]').hide();
+            target.show();
         });
-
-        $("#upcoming-shows-button").click(function () {
-            $('.artist-search-profile-bio-buttons button').removeClass('active');
-            $(this).addClass('active');
-
-            $("#showsContent").hide();
-            $("#upcoming-shows").show();
-            $("#smallslive-tracks").hide();
-        });
-
-        $("#archive-shows-button").click(function () {
-            $('.artist-search-profile-bio-buttons button').removeClass('active');
-            $(this).addClass('active');
-
-            $("#showsContent").show();
-            $("#upcoming-shows").hide();
-            $("#smallslive-tracks").hide();
-
-        });
-
     });
 </script>

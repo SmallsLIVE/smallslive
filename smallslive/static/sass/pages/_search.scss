@@ -119,8 +119,6 @@
       &:not(.active) {
         display: none;
       }
-      //padding-top: 100px;
-
       display: flex;
       flex-direction: column;
     }
@@ -249,6 +247,7 @@
   }
 
   @media (max-width: $screen-sm-max) {
+    @include column_events;
     padding-left: 0;
     padding-right: 0;
 
@@ -562,9 +561,19 @@
     width: 100%
   }
 
+  span.title1 {
+    position: relative;
+    top: 50%;
+  }
+
   @media (max-width: $screen-sm-max) {
     border: none;
     height: 250px;
+    span.title1 {
+      position: absolute;
+      top: calc(50% - 11px);
+      right: calc(50% - 20px);
+    }
   }
 }
 

@@ -191,15 +191,13 @@ class Artist(models.Model):
     def has_signed_legal(self):
         if hasattr(self, 'user'):
             return self.user.legal_agreement_acceptance
-        else:
-            return False
+        return False
 
     @cached_property
     def email_invitation(self):
         if hasattr(self, 'user'):
             return EmailConfirmation.objects.filter(email_address__email=self.user.email).order_by('-sent').first()
-        else:
-            return False
+        return False
 
     @cached_property
     def photo_crop_box(self):
