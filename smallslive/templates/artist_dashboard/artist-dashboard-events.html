@@ -75,7 +75,11 @@
     })
     $(document).ready(function() {
       var $firstEvent= $('.artist-event-row').first()
-      var eventUrl = $($firstEvent).data("url");  
+      var eventUrl = $($firstEvent).data("url"); 
+      if (eventUrl === undefined) {
+        $("#artistEventsInfo").html("");
+        return ;
+      }
       loadInfo(eventUrl+"?set_id=0")
     })
   </script> 

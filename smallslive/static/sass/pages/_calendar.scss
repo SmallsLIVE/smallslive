@@ -100,6 +100,7 @@
   .white-line-bottom {
     border-bottom: 2px solid white;
   }
+  
 }
 
 .refine-overlay-content {
@@ -231,5 +232,12 @@
 .search-date-picker-from-refine {
   .datepicker {
     left: 56px !important;
+  }
+}
+
+.refine-overlay.dashboard-refine{
+  .refine-overlay-menu{
+    margin:0;
+    padding:10px;
   }
 }

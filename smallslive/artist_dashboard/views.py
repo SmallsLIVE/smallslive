@@ -8,6 +8,7 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django_ajax.response import JSONResponse
 from django.http import Http404
+from dateutil import parser
 
 try:
     import cStringIO as StringIO
@@ -68,6 +69,8 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
 
     def apply_filters(self, queryset):
         audio_filter = self.request.GET.get('audio_filter')
+        start_date_filter = self.request.GET.get('start_date_filter')
+        end_date_filter = self.request.GET.get('end_date_filter')
         video_filter = self.request.GET.get('video_filter')
         leader_filter = self.request.GET.get('leader_filter')
         order = self.request.GET.get('order')
@@ -96,6 +99,33 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
             else:
                 queryset = queryset.filter(is_leader=False)
 
+        
+        if start_date_filter:
+            artist = self.request.user.artist
+            start_date_filter = parser.parse(start_date_filter, fuzzy=True)
+            if not start_date_filter.tzinfo:
+                start_date_filter = timezone.make_aware(
+                    start_date_filter, timezone.get_current_timezone())
+            print(start_date_filter)
+            queryset = queryset.filter(
+            event__start__gte=start_date_filter
+            )
+
+        if end_date_filter:
+            artist = self.request.user.artist
+            end_date_filter = parser.parse(end_date_filter, fuzzy=True)
+            if not end_date_filter.tzinfo:
+                end_date_filter = timezone.make_aware(
+                    end_date_filter, timezone.get_current_timezone())
+            print(end_date_filter)
+            queryset = queryset.filter(
+                event__start__lte=end_date_filter
+            )
+
+       
+            
+           
+       
         if order:
             if order == 'newest':
                 queryset = queryset.order_by('-event__date')

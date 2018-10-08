@@ -56,6 +56,7 @@
             padding-left: 30px;
             display: none;
             @media (max-width: 768px) {
+                position: relative;
                 display: block;
                 margin: 0;
             }
@@ -472,6 +473,9 @@
     .white-border-select {
         width: 8vw;
         float: none;
+       
+    }
+    > *{
         margin-right: 30px;
     }
 }
