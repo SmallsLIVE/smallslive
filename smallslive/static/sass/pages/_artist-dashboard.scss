@@ -1,47 +1,48 @@
 .artist-profile-container {
     .event-mobile-info {
+        z-index: 102;
         background-color: $background-color;
         padding: 0;
         border: none;
-        .header-metrics-container{
-          text-align: center;
-          .artist-set-main{
-            padding-right: 0;
-            .artist-event-info {
-              padding-left: 0;
-              .artist-set-header{
-                padding:10px;
-                .artist-event-arrow{
-                  width: 10px;
-                  height: auto;
-                  display:block;
-                  transform: scaleX(-1);
-                  margin: auto 0;
+        .header-metrics-container {
+            text-align: center;
+            .artist-set-main {
+                padding-right: 0;
+                .artist-event-info {
+                    padding-left: 0;
+                    .artist-set-header {
+                        padding: 10px;
+                        .artist-event-arrow {
+                            width: 10px;
+                            height: auto;
+                            display: block;
+                            transform: scaleX(-1);
+                            margin: auto 0;
+                        }
+                        .artist-set-info-mobile {
+                            display: block;
+                        }
+                        .artist-set-info {
+                            display: none;
+                        }
+                    }
+                    .artist-event-card {
+                        margin: 0;
+                    }
                 }
-                .artist-set-info-mobile{
-                  display:block;
-                }
-                .artist-set-info{
-                  display: none;
-                }
-              }
-              .artist-event-card{
-                margin:0;
-              }
             }
-          }
         }
-        div.set-changer{
-          padding: 0;
+        div.set-changer {
+            padding: 0;
         }
-        .text2.flex-column{
-          padding: 10px;
+        .text2.flex-column {
+            padding: 10px;
         }
-        .mobile-event-menu{ 
-          padding: 10px;
-          .mobile-event-opt div.white-border-button {
-          width: 33%;
-          }
+        .mobile-event-menu {
+            padding: 10px;
+            .mobile-event-opt div.white-border-button {
+                width: 33%;
+            }
         }
     }
     .refine-container {
@@ -185,8 +186,8 @@
         padding-top: 30px;
         width: 70%;
         @media (max-width: 1024px) {
-          width: 40%;
-      }
+            width: 40%;
+        }
         @media (max-width: 768px) {
             width: 50%;
             padding-left: 30px;
@@ -195,7 +196,6 @@
         @media (max-width: 425px) {
             display: none;
         }
-        
         .artist-set-download {
             width: 3.8em;
         }
@@ -211,8 +211,9 @@
             .artist-set-header {
                 justify-content: space-between;
                 padding: 10px 0;
-                .artist-event-arrow, .artist-set-info-mobile{
-                  display:none
+                .artist-event-arrow,
+                .artist-set-info-mobile {
+                    display: none
                 }
             }
             .set-picture-container {
@@ -319,17 +320,17 @@
                         &.disabled {
                             color: grey;
                         }
-                        &:nth-child( 1) {
+                        &:first-child {
                             border-radius: 10px 0 0 10px;
                             border-right: 0;
                         }
-                        &:nth-child( 2) {
-                            border-left: 0;
-                            border-right: 0;
+                        &:last-child {
+                          border-left: 0;
+                          border-radius: 0 10px 10px 0;
                         }
-                        &:nth-child(3) {
-                            border-left: 0;
-                            border-radius: 0 10px 10px 0;
+                        &:not(:last-child, :first-child){
+                          border-left: 0;
+                          border-right: 0;
                         }
                     }
                 }

@@ -104,6 +104,17 @@
     white-space: nowrap;
     display: inline; // ?
     
+    &.refine-dashboard-buttons{
+      & .btngroup--btn { 
+        &:first-child {
+          border-right: none;
+        }
+        &:not(:first-child, :last-child){
+          border-right: none;
+        }
+      }
+    }
+
     &--btn { // sass bem is cool
       font-size: 2rem;
       letter-spacing: .1em;
@@ -121,7 +132,6 @@
         border-left-width: 2px;
         border-radius: 2em 0 0 2em;
       }
-      
       &:last-child {
         border-radius: 0 2em 2em 0;
       }
