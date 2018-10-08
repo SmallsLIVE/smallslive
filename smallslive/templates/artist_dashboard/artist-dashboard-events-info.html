@@ -9,9 +9,9 @@
                     <button class="set-button">Edit</button>
                 </a>
                 {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-                    <button id="public-button" class="publish-button set-button" onclick="askPublish({{ set.id }})"> Public </button>
+                <button id="private-button" class="publish-button set-button" onclick="askPrivate({{ set.id }})"> Public </button>
                 {% else %}
-                    <button id="private-button" class="publish-button set-button" onclick="askPrivate({{ set.id }})">Private </button>
+                <button id="public-button" class="publish-button set-button" onclick="askPublish({{ set.id }})"> Private </button>
                 {% endif %}
             {% else %}
                 <button disabled class="set-button">Edit</button>
@@ -101,7 +101,7 @@
     </div>
     </div>
 
-    <div class="text2 flex-column flex-grow" style="padding-top: 3px;">
+    <div class="text2 flex-column" style="padding-top: 3px;">
         <div class="artist-set-leader">
             <span class="accent-color">Leader{{ leaders|length|pluralize }}</span>
             {% for gig_played in event.get_performers %} 
@@ -129,10 +129,61 @@
             </div>
         {% endif %}
     </div>
+    <div class="flex-column mobile-event-menu">
+            <div class="flex-row mobile-event-opt">
+            <div class="white-border-button">Metrics</div>
+                {% if is_admin and set.has_media %}
+                    {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
+                    <div id="private-button" class="white-border-button" onclick="askPrivate({{ set.id }})"> Public </div>
+                    {% else %}
+                    <div id="public-button" class="white-border-button" onclick="askPublish({{ set.id }})"> Private </div>
+                    {% endif %}
+                    <div class="white-border-button" id="table-event-edit" data-pk=event.id data-slug=event.slug onclick="">Edit</div>
+                    {% comment %} <div class="white-border-button" id="mobile-event-edit" data-pk=event.id data-slug=event.slug >Edit</div> {% endcomment %}
+                {% else %}
+                    {% if set.video_recording and set.video_recording.is_published %}
+                        <div class="white-border-button disabled">Public</div>
+                    {% else %}
+                        <div class="white-border-button disabled">Private</div>
+                    {% endif %}
+                    <div class="white-border-button disabled">Edit</div>
+
+                    {% comment %} {% include "artist_dashboard/mobile_dashboard_edit.html" %} {% endcomment %}
+                    {% comment %} {% include "dashboard/event" with pk=event.id slug=event.slug %} {% endcomment %}
+                {% endif %}
+                <div class="modal fade edit-event-mobile-form" id="edit-event-form" style="width:80%; height:80%;" >
+                    <div class="edit-event-mobile-form-body">
+                            <a href="#" class="close-button"></a>
+                            <img class="smalls-form-logo" src="{% static 'logo-black.svg' %}">
+                            <div class="accent-color title2">Archived show</div>
+                            <div class="edit-event-mobile-form-body title1">Edit event info</div>
+                    </div>
+                    <div class="edit-event-mobile-form-body" data-subpage-name="mycoso" data-subpage-url="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
+                            <a href="#" class="close-button"></a>
+                    </div>
+
+                </div>
+
+            </div>
+            {% comment %} <div class="flex-row mobile-event-metrics">
+
+            </div> {% endcomment %}
+
+    </div>
 {% endwith %}
 
 {% block extra_js %}
+
+    <script src="{% static 'js/subpages.js' %}"></script>
+    <script src="{% static 'js/jquery.form.js' %}"></script>
     <script>
+        $('#edit-event-form .close-button').click(() => { $('#edit-event-form').modal('toggle') })
+
+        $('#table-event-edit').on('click', function () {
+            $('#edit-event-form').modal('show');
+            window.subpages.register();
+            window.subpages.loadAll();
+        })
         $('.set-changer').on('click', function () {
             loadInfo($(this).data('url'));
         })
@@ -143,6 +194,11 @@
     <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
 
     <script>
+        $('.mobile-event-opt .white-border-button').on('click', function () {
+            $('.mobile-event-opt .white-border-button').css("background-color", "")
+            $(this).css( "background-color", 'white' );
+        })
+
         var eventDateFrom = new Date(2000, 0, 1);
         var eventDateTo = new Date();
 

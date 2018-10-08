@@ -1,4 +1,4 @@
-$player-height:  525px;
+$player-height:  27.5vw;
 
 .event-page-container {
   display: flex;
@@ -21,9 +21,10 @@ $player-height:  525px;
   }
 
   @media (max-width: $screen-sm-max) {
-    flex-direction: column;
     align-items: center;
-
+    flex-direction: column;
+    padding: 0 2vw;
+    padding-top: 21vw;
     .event-side {
       margin-top: 40px;
       padding: 0 20px;
@@ -48,6 +49,12 @@ $player-height:  525px;
 
   .buttons-container {
     white-space: nowrap;
+  }
+
+  .flex-column {
+    @media(max-width: 1366px) {
+      flex-direction: column;
+    }
   }
 }
 
@@ -110,10 +117,15 @@ $player-height:  525px;
   position: absolute;
   width: 100%;
   height: $player-height; // The player's height.
-  padding: 30px;
   pointer-events: none;
   left: 0;
   top: 0;
+
+  &.paused {
+    background: rgba(0,0,0,0.8);
+    padding-bottom: 54px;
+    background-clip: content-box;
+  }
 
   .live-now {
     padding: 2px 8px;
@@ -128,7 +140,7 @@ $player-height:  525px;
   .event-overlay {
     color: white;
     height: 100%;
-    padding: 35px 25px;
+    padding: 2.9vw;
     .title5 {
       font-weight: 200;
       letter-spacing: .09em;
@@ -263,6 +275,11 @@ $player-height:  525px;
 .event-container {
   @media (min-width: $screen-md-min) {
     max-width: 45vw;
+
+    .flex-column {
+      display: block;
+    }
+
   }
 }
 

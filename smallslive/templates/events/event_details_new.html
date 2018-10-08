@@ -410,7 +410,7 @@
                 ],
                 skin: "https:{% static "jwplayer-skin/smalls.xml" %}",
                 width: "100%",
-                height: 525  // If you change this please be kind and change the corresponding css.
+                height: "27.5vw"  // If you change this please be kind and change the corresponding css.
             });
             videoPlayer.on('play', function () {
                 var $videoContainer = $('#videoContainer');
@@ -420,20 +420,23 @@
                 } else {
                   var $overlay = $('#playerTextOverlay');
                   $overlay.addClass('hidden');
+                  $overlay.removeClass('paused');
                   audioPlayer.pause(true);
                   updateViewCount(this);
                   {% if count_metrics %}setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);{% endif %}
-                  $('#playerTextOverlay').css('opacity', 0);
+                  $overlay.css('opacity', 0);
                 }
 
             });
               videoPlayer.on('pause', function() {
-                $('#playerTextOverlay').removeClass('hidden');
+                var $overlay = $('#playerTextOverlay');
+                $overlay.removeClass('hidden');
+                $overlay.addClass('paused');
                 {% if count_metrics %}
                   window.clearInterval(activeTracker);
                   activeTracker = null;
                 {% endif %}
-                  $('#playerTextOverlay').css('opacity', 1);
+                $overlay.css('opacity', 1);
               });
             $('.set-select-button').on('click', function () {
                 var selectedIndex = $(this).data('playlist-index');

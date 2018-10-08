@@ -4,6 +4,9 @@
   }
 
   .supporter-plan-input{
+    .section-title{
+      width: 320px;
+    }
     padding: 20px 0;
   }
   input{
@@ -136,6 +139,7 @@
 }
 .button-row {
   .custom-input {
+    font-size: 1em;
     position: relative;
     input:focus + label {
       visibility:hidden
@@ -143,7 +147,7 @@
     .no-spinners{
       & + label{
         z-index: -1;
-        top:0;
+        top: 20%;
         left: 50%;
         height: auto;
         margin: auto 0;

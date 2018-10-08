@@ -156,6 +156,11 @@ $text-font-size-big: 1.4em;
   text-transform: uppercase;
   transform: scaleY(1.3);
   line-height: 3.1vw;
+
+  @media(max-width: $screen-sm-max) {
+    font-size: 5vw;
+    line-height: 5vw;
+  }
 }
 
 
