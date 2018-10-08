@@ -23,7 +23,7 @@ body {
 body.mobile-search-header-shown {
 
   .main-container {
-    @include variable-admin-padding(20px - $mobile-bar-height);
+    @include variable-admin-padding($mobile-bar-height * 2);
   }
 
   .mobile-header .fa-search {

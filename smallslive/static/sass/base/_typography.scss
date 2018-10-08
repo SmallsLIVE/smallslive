@@ -242,12 +242,16 @@ $text-font-size-big: 1.4em;
   @include title7;
 }
 
-// Texts
-.text1 {
+@mixin text1 {
   @include reen-kufi-normal;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   font-size: $text-font-size-medium;
+}
+
+// Texts
+.text1 {
+  @include text1;
 }
 
 @mixin text2 {

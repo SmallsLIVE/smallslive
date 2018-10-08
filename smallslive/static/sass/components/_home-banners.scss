@@ -90,7 +90,7 @@ $banners-height: 38vh;
           #banner-title {
 
             padding-left: 1.7vw;
-            padding-right: 1.2vw;
+            padding-right: 1.7vw;
             padding-top: 1.7vw;
 
             &.custom-banner-text {
@@ -100,6 +100,7 @@ $banners-height: 38vh;
               font-size: 2.35vw;
               font-weight: 300;
               text-align: justify;
+              white-space: nowrap;
 
               .accent-color {
                 letter-spacing: 3px;
@@ -118,18 +119,21 @@ $banners-height: 38vh;
         .learnmore-container {
 
           margin-top: 1.5vw;
+          text-align: center;
+          whites-pace: nowrap;
 
           .banner-learnmore {
             display: inline-block;
             margin-left: 0;
-            margin-right: 0;
-            padding-left: 1.5vw;
+            margin-right: 2%;
+            padding: 0;
+            padding-left: 1%;
             vertical-align: top;
-            width: 65%;
+            width: 50%
           }
           .banner-learnmore-info {
             display: inline-block;
-            width: 27%;
+            width: 35%;
           }
         }
         .banner-text-container {

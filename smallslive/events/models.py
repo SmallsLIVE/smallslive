@@ -357,6 +357,8 @@ class Event(TimeStampedModel):
 
         start, end = self.get_range()
 
+        if self.date < local_date - timedelta(days=1):
+            return True
         if self.date < local_date and end.hour > 5:
             return True
         elif self.date == local_date - timedelta(days=1) and end.hour <= 5:
@@ -374,34 +376,37 @@ class Event(TimeStampedModel):
     @property
     def is_live(self):
 
-        # Examples:
-        # Feb 28th: 19:30 - 22:00 (event 11), 22:00 - 00:30 (event 21), 1:00 - 4:00 (event 31)
-        # Mar 1: 19:30 - 22:00 (event 12), 22:00 - 00:30 (event 22), 1:00 - 4:00 (event 32)
-        # Mar 2: 19:30 - 22:00 (event 13), 22:00 - 00:30 (event 23), 1:00 - 4:00 (event 33)
-
-        # local_date = Mar 1
-        # local_time = 00:15 -> event 21 is live
-        # local_time = 1:30 -> event 31 is live
-        # local_time = 11:00 -> no live events
-        # local_time = 22:00 -> event 12 and event 22 are live
-
-        # local_date = Mar 2
-        # local_time = 00:15 -> event 22 is live
-        # local_time = 1:30 -> event 32 is live
-        # local_time = 11:00 -> no live events
-        # local_time = 22:00 -> event 13 and event 23 are live
-
         local_datetime = timezone.localtime(timezone.now())
         local_date = local_datetime.date()
         local_time = local_datetime.time()
 
         start, end = self.get_range()
 
+        # After midnight events always have the previous date
         if local_time.hour <= 5:
             local_date -= timedelta(days=1)
 
-        return local_date == self.date and start <= local_time <= end
+        # Start - End examples:
+        # 19:30 - 22:30
+        # 23:00 - 1:00
+        # 1:00 - 4:00
+        # local time can be in between of any of those
+        # 1. date has  to match
+        # start <= current time <= end if both start and end <= 5 or > 5
+        # if start = 22:30 <= current time <= end = 2:00, that's the 'difficult' case.
+        # current time can be before of after midnight.
 
+        match_date = local_date == self.date
+        time_after_start_and_before_end = start <= local_time <= end and \
+                                          end.hour > start.hour > 5
+        start_before_midnight_and_end_after = (start <= local_time or
+                                               local_time <= end) \
+                                               and end.hour <= 5 < start.hour
+        print start_before_midnight_and_end_after
+
+        return match_date and \
+               (time_after_start_and_before_end or
+                start_before_midnight_and_end_after)
 
     def get_live_set(self):
         sets = list(self.sets.all())

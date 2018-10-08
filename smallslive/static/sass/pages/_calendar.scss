@@ -4,9 +4,10 @@
 
 @media (max-width: 960px) {
   .refine {
-    float: right;
     display: block;
-    margin-right: 30px;
+    margin-right: 20px;
+    position: absolute;
+    right: 0;
   }
 
   .shows-calendar {
@@ -24,7 +25,8 @@
   .shows-results-title {
     font-size: 24px;
     margin: 0;
-    margin-left: 20px;
+    margin-left: 10px;
+    width: auto;
   }
   .events-calendar {
     padding-top: 0;
@@ -54,6 +56,12 @@
               height: 80px;
               width: 80px;
             }
+
+            .event-picture > img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
           }
         }
         .event-info {
@@ -73,6 +81,10 @@
       }
     }
   }
+
+  .event-stripe {
+    margin-top: 70px;
+  }
 }
 
 .refine-overlay {
@@ -82,8 +94,12 @@
   position: fixed;
   z-index: 10;
   left: 0;
-  top: 60px;
+  top: 30px;
   background-color: #f0f0eb;
+
+  .white-line-bottom {
+    border-bottom: 2px solid white;
+  }
 }
 
 .refine-overlay-content {
@@ -116,7 +132,7 @@
     }
 
     &--btn { // sass bem is cool
-      font-size: 2rem;
+      font-size: 1.2rem;
       letter-spacing: .1em;
       text-decoration: none;
       text-transform: uppercase;
@@ -154,13 +170,15 @@
   margin-bottom: 24px;
 }
 .closebtn {
-  font-size: 60px;
+  font-size: 50px;
+  line-height: .5;
 }
 
 .refine-overlay-menu {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 5px;
 }
 
 .calendar-refine-title {
