@@ -19,8 +19,20 @@
             <div class="reset text1" id="dashboard-mobile-refine-reset">Reset</div>
             </div>
         <div class="artist-archive-filter flex-row">
-            <div class="white-border-button">
+            <div class="white-border-button datepicker-dashboard-main-btn" >
               Date
+            </div>
+            <div class="datepicker-container noclick" id="dashboard-desktop-datepicker">
+                <div class="custom-date-picker" id="search-date-picker-from-dashboard">
+                    <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+                </div>
+        
+                <div class="custom-date-picker" id="search-date-picker-to-dashboard">
+                    <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+                </div>
+        
+                <div class="white-border-button" id="dashboard-apply-button">Apply</div>
+                <div class="datepicker-reset text2 text-grey">Reset</div>
             </div>
             <div class="white-border-select">
                 <select id="artist_archive_status_filter">
@@ -205,6 +217,9 @@
           if(mobile===false){
             params.page = ++currentPage;
 
+            params.start_date_filter = $("#search-date-picker-from-dashboard").find(".date-picker-text").val()
+            params.end_date_filter =  $("#search-date-picker-to-dashboard").find(".date-picker-text").val()
+            console.log(params)
             var isLeader = $('#artist_archive_status_filter').val();
             if (isLeader !== 'all') {
                 params.leader_filter = isLeader === 'leader';
@@ -242,7 +257,7 @@
             $('#filter-number').text("("+ optNumber +")")
             console.log(params , optNumber)
           }
-            
+          console.log(params)
             $.ajax({
                 url: eventsUrl,
                 data: params,
@@ -297,11 +312,11 @@
     
         $(".datepicker-reset").click(function () {
           console.log("reset")
-            $('#search-date-picker-from input').val("").datepicker("update");
-            $('#search-date-picker-to input').val("").datepicker("update");
+            $('#search-date-picker-from-dashboard input').val("").datepicker("update");
+            $('#search-date-picker-to-dashboard input').val("").datepicker("update");
             eventDateFrom = eventDateTo = null;
-            $("#search-date-picker-from input").click();
-            $("#search-date-picker-from input").focus();
+            $("#search-date-picker-from-dashboard input").click();
+            $("#search-date-picker-from-dashboard input").focus();
         });  
         $(".refine-apply").click(function () {
           console.log("work")
@@ -424,7 +439,95 @@
 
     });
 
+    ///////////this
+
+    $('.datepicker-dashboard-main-btn').bind("click", ToggleDisplay);
+
+    function ToggleDisplay() {
+        if ($("#dashboard-desktop-datepicker").data('shown'))
+            hide();
+        else 
+            display();
+    }
+
+    function display() {
+        $("#dashboard-desktop-datepicker").css("display", "flex").hide().fadeIn(500, function() {
+            $(document).bind("click", hide);
+            $("#dashboard-desktop-datepicker").data('shown', true);
+        });
+
+        $("#search-date-picker-from-dashboard input").click();
+        $("#search-date-picker-from-dashboard input").focus();
+    }
+
+    function hide() {   
+        if (($(window.event.toElement).closest('.noclick').length == 0) &&
+        (!($(window.event.toElement).hasClass("day") || $(window.event.toElement).hasClass("year")))) {
+            $("#dashboard-desktop-datepicker").fadeOut(500, function () {
+                $(document).unbind("click");
+                $("#dashboard-desktop-datepicker").data('shown', false);
+            });
+        }
+    }
+
+    /////////////////////
+
+    var $datePickerFrom = $('#dashboard-desktop-datepicker #search-date-picker-from-dashboard input');
+    $datePickerFrom.datepicker({
+        format: 'mm/dd/yyyy',
+        autoclose: true,
+        container: '#search-date-picker-from-dashboard',
+        showOnFocus: false
+    });
+
+    $datePickerFrom.on('changeDate', function (newDate) {
+        eventDateFrom = newDate.date;
+        $("#dashboard-desktop-datepicker #search-date-picker-to-dashboard input").click();
+        $("#dashboard-desktop-datepicker #search-date-picker-to-dashboard input").focus();
+    });
+
+    $datePickerFrom.on('click', function () {
+        var dropdown = $('#dashboard-desktop-datepicker #search-date-picker .dropdown-menu');
+        if (dropdown[0] && dropdown[0].style.display === 'block') {
+            $datePickerFrom.datepicker('hide');
+        } else {
+            $datePickerFrom.datepicker('show');
+        }
+    });
+
+    //////////////////////
+
+    var $datePickerTo = $('#dashboard-desktop-datepicker #search-date-picker-to-dashboard input');
+    $datePickerTo.datepicker({
+        format: 'mm/dd/yyyy',
+        autoclose: false,
+        container: '#search-date-picker-to-dashboard',
+        showOnFocus: false
+    });
+
+    $datePickerTo.on('click', function () {
+        var dropdown = $('#dashboard-desktop-datepicker #search-date-picker .dropdown-menu');
+        if (dropdown[0] && dropdown[0].style.display === 'block') {
+            $datePickerTo.datepicker('hide');
+        } else {
+            $datePickerTo.datepicker('show');
+        }
+    });
+
     ///////////
+
+    $("#dashboard-apply-button").click(function () {
+        $("#dashboard-desktop-datepicker").fadeOut(500, function () {
+            $(document).unbind("click");
+            $("#dashboard-desktop-datepicker").data('shown', false);
+        });
+        currentPage = 0;
+        totalPages = 1;
+        loadMore(false);
+    });
+
+
+
     
     </script>
 {% endblock %}

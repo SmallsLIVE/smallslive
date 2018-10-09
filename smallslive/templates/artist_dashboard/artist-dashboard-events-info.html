@@ -141,15 +141,15 @@
         {% endif %}
     </div>
     <div class="flex-column mobile-event-menu">
-            <div id="mobile-metrics-button"class="flex-row mobile-event-opt">
+            <div id="mobile-metrics-button" class="flex-row mobile-event-opt">
             <div class="white-border-button">Metrics</div>
                 {% if is_admin and set.has_media %}
                     {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-                    <div id="private-button" class="white-border-button" onclick="askPrivate({{ set.id }})"> Public </div>
+                    <div id="mobile-private-button" class="white-border-button"> Public </div>
                     {% else %}
-                    <div id="public-button" class="white-border-button" onclick="askPublish({{ set.id }})"> Private </div>
+                    <div id="mobile-public-button" class="white-border-button"> Private </div>
                     {% endif %}
-                    <div class="white-border-button" id="table-event-edit" data-pk=event.id data-slug=event.slug onclick="">Edit</div>
+                    <div class="white-border-button" id="table-event-edit" data-pk=event.id data-slug=event.slug>Edit</div>
                 {% else %}
                     {% if set.video_recording and set.video_recording.is_published %}
                         <div class="white-border-button disabled">Public</div>
@@ -160,8 +160,52 @@
                 {% endif %}
                 
             </div>
+            <div id="not-authorized-text">
+                    <div class="text2 accent-color">
+                        LEADERSHIP  STATUS
+                    </div>
+                        <div class="text2">
+                        Leadership status designates ownership of the master recording.
+                        There may be multiple leaders on a master. Leadership status
+                        also grants admin privileges to the master for publishing, downloading and editing.
+                    </div>
+                </div>
+                <div id="metrics-mobile">
+        
+                </div>
+                <div id="make-private-mobile">
+                    <div>
+                        This set is currently published
+                    </div>
+                    <div>
+                        This set is available to our SmallsLIVE Supporting Members in 
+                        the Archive. As they access your show all musicians listed
+                        will be credited with time towards their royalty payout.
+                    </div>
+                    <div>
+                        If you choose to make this show private it will not be available
+                        to the SmallsLIVE Supporters Members and thereby not generating
+                        royalties.
+                    </div>
+                    <div id="privata-mobile-button"  class="white-border-button" onclick="makeSetPrivate()"> Make Private </div>
+                </div>
+                <div id="publish-mobile">
+                    <div>
+                        No available public text
+                    </div>
+                    <div>
+                        Waiting for text
+                    </div>
+                    <div id="publish-mobile-button" class="white-border-button" onclick="publishSet()"> Make Public </div>
+                </div>
+
+            
+
+
+
+
             <div id="mobile-option-container">
-            <div class="edit-event-mobile-form-body" data-subpage-name="tablet-edit" data-subpage-url="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
+            <div class="edit-event-mobile-form-body" data-subpage-name="mobile-edit" data-subpage-url="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
 
             </div>
             <div class="modal fade edit-event-mobile-form" id="edit-event-form" style="width:80%; height:80%;" >
@@ -171,13 +215,15 @@
                             <div class="accent-color title2">Archived show</div>
                             <div class="edit-event-mobile-form-body title1">Edit event info</div>
                     </div>
-                    <div class="edit-event-mobile-form-body" data-subpage-name="mobile-edit" data-subpage-url="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
+                    <div class="edit-event-mobile-form-body" data-subpage-name="tablet-edit" data-subpage-url="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
                             <a href="#" class="close-button"></a>
                     </div>
 
                 </div>
 
     </div>
+</div>
+</div>
 {% endwith %}
 
 {% block extra_js %}
@@ -193,6 +239,7 @@
         $('#table-event-edit').on('click', function () {
               window.subpages.register();
               if(window.screen.availWidth > 425){
+                console.log("Tablet edit")
                 $('#edit-event-form').modal('show');
                 var tabletSubpage = window.subpages.get("tablet-edit");
                 tabletSubpage.load();

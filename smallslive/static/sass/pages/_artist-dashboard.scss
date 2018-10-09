@@ -463,6 +463,32 @@
 }
 
 .artist-archive-filter {
+    >.white-border-button{
+        &:not(.datepicker-dashboard-main-btn):before {
+            content: "x";
+            color:red;
+            right: 20px;
+            cursor: pointer;
+            pointer-events: inherit;
+            z-index: -1;
+        }
+        &.datepicker-dashboard-main-btn{
+            &:after {
+                content: " ";
+                height: 0;
+                width: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 5px solid black;
+                right: 16px;
+                top: 16px;
+                transition: all 0.3s linear;
+                cursor: pointer;
+                pointer-events: inherit;
+                z-index: -1;
+            }
+        }
+    }
     margin-bottom: 30px;
     @media (max-width: 1024px) {
         margin-left: 115px;
