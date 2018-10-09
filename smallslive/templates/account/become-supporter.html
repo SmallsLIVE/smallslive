@@ -1,6 +1,7 @@
 {% extends "home_new.html" %}
 {% load static from staticfiles %}
 {% load full_static %}
+{% load djstripe_tags %}
 
 {% block home_content %}
   <div class="flex-column supporter-main-container">
@@ -85,17 +86,15 @@
               <input type="number" id="hiddenQuantityInput" name="quantity" hidden>
               <div class="flex-column content-space-between flex-grow">
                 <div class="flex-row content-space-between">
-                  <input type="text" class="form-control" name="card_name"
-                         placeholder="Full Name on Credit Card">
-                  <input type="text" class="form-control" name="expiration_date"
-                         placeholder="Expiration Date (XX/XX)">
+                  <input type="text" class="form-control" placeholder="Full Name on Credit Card" data-stripe="name">
+                  <input type="text" class="form-control quarter-group" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month">
+                  <input type="text" class="form-control quarter-group" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-year">
                 </div>
                 <div class="flex-row content-space-between">
-                  <input type="text" class="form-control"
-                         name="credit_card_number"
-                         placeholder="Credit Card Number">
-                  <input type="number" class="form-control no-spinners"
-                         name="credit_card_cvc" placeholder="CVC">
+                  <input type="text" class="form-control"  id="card-number" placeholder="Credit Card Number"
+                         size="20" pattern="[\d ]*" autocomplete="off" data-stripe="number" name="credit_card_number">
+
+                  <input type="text" class="form-control half" id="cvc" placeholder="CVC" size="4" pattern="\d*" autocomplete="off" data-stripe="cvc" name="credit_card_cvc">
                 </div>
                 <div class="form-group">
                   <p class="form-error-text hidden" id="type-error"></p>
@@ -137,6 +136,35 @@
         <p class="text4 text-grey">Processing...Do not close window.</p>
       </div>
     {% endif %}
-  </div>
-  <script src="{% static 'js/become-member.js' %}"></script> 
+</div>
+{% endblock %}
+
+{% block extra_js %}
+  {% block stripe_payment %}
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript">
+      Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
+
+      function startStripePayment($form) {
+        var stripeResponseHandler = function (status, response) {
+          if (response.error) {
+            // Show the errors on the form
+            // TODO Display payment errors
+            $form.find('.payment-errors').text(response.error.message);
+            $form.find('.submit-button').prop('disabled', false).removeClass('disabled');
+          } else {
+            // token contains id, last4, and card type
+            var token = response.id;
+            // Insert the token into the form so it gets submitted to the server
+            $form.append($('<input type="hidden" name="stripe_token" />').val(token));
+            // and submit
+            $form.get(0).submit();
+          }
+        };
+        Stripe.card.createToken($form, stripeResponseHandler);
+      }
+    </script>
+    <script src="{% static 'js/become-member.js' %}"></script>
+  {% endblock %}
+
 {% endblock %}

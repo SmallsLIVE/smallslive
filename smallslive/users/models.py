@@ -212,7 +212,13 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
             return {'name': 'Institutional (inactive)', 'type': 'free'}
         elif self.has_active_subscription:
             plan_id = self.customer.current_subscription.plan
-            return settings.DJSTRIPE_PLANS[plan_id]
+            if plan_id in settings.DJSTRIPE_PLANS:
+                return settings.DJSTRIPE_PLANS[plan_id]
+            else:
+                return {
+                    'name': 'Common Subscriptions',
+                    'type': 'basic'
+                }
         else:
             return {'name': 'Live Video Stream Access', 'type': 'free'}
 

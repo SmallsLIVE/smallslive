@@ -1,6 +1,6 @@
 from allauth.account import app_settings
 from allauth.account.forms import ChangePasswordForm
-from allauth.account.models import EmailAddress, EmailConfirmation
+from allauth.account.models import EmailAddress
 from allauth.account.utils import complete_signup
 from allauth.account.views import SignupView as AllauthSignupView, \
     ConfirmEmailView as CoreConfirmEmailView, \
@@ -10,9 +10,8 @@ from braces.views import FormValidMessageMixin, LoginRequiredMixin, StaffuserReq
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
-from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, FormView, ListView
 from djstripe.mixins import SubscriptionMixin
@@ -24,18 +23,43 @@ from allauth.account.app_settings import EmailVerificationMethod
 import stripe
 
 from artist_dashboard.forms import ArtistInfoForm
+from custom_stripe.models import StripePlan
 from users.models import SmallsUser
+from users.utils import subscribe
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
 
 
 class BecomeSupporterView(TemplateView):
     template_name = 'account/become-supporter.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(BecomeSupporterView, self).get_context_data(**kwargs)
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        return context
+
     # FIXME Dont mock up response
     def post(self, request, *args, **kwargs):
+        stripe_token = self.request.POST.get('stripe_token')
+        plan_type = self.request.POST.get('type')
+        quantity = int(self.request.POST.get('quantity')) * 100
+
+        plan = StripePlan.objects.get_or_create(
+            interval=plan_type, amount=quantity
+        )
+
+        try:
+            customer, created = Customer.get_or_create(
+                subscriber=subscriber_request_callback(self.request))
+            customer.update_card(stripe_token)
+            subscribe(customer, plan)
+        except stripe.StripeError as e:
+            # add form error here
+            return _ajax_response(request, JsonResponse({
+                'error': e.args[0]
+            }, status=500))
+
         return _ajax_response(
             request, redirect(reverse('become_supporter_complete'))
-
         )
 
 
