@@ -34,14 +34,14 @@
                 <div class="white-border-button" id="dashboard-apply-button">Apply</div>
                 <div class="datepicker-reset text2 text-grey">Reset</div>
             </div>
-            <div class="white-border-select">
+            <div class="white-border-select" id="dashboard-status-filter">
                 <select id="artist_archive_status_filter">
                     <option value="all">Status</option>
                     <option value="leader">Leader</option>
                     <option value="sidemusician">Sidemusician</option>
                 </select>
             </div>
-            <div class="white-border-select">
+            <div class="white-border-select" id="dashboard-sort-filter">
                 <select id="artist_archive_order">
                     <option value="newest">Sort by</option>
                     <option value="newest">Newest to oldest</option>
@@ -49,7 +49,7 @@
                     <option value="popular">Most Popular</option>
                 </select>
             </div>
-            <div class="white-border-button">
+            <div class="white-border-button" id="dashboard-desktop-reset">
                  
                     Reset all
                 
@@ -210,6 +210,7 @@
         });
 
         function loadMore(mobile) {
+            var  optNumber = 0;
             var params = {};
             if (currentPage >= totalPages) {
                 return;
@@ -219,7 +220,7 @@
 
             params.start_date_filter = $("#search-date-picker-from-dashboard").find(".date-picker-text").val()
             params.end_date_filter =  $("#search-date-picker-to-dashboard").find(".date-picker-text").val()
-            console.log(params)
+   
             var isLeader = $('#artist_archive_status_filter').val();
             if (isLeader !== 'all') {
                 params.leader_filter = isLeader === 'leader';
@@ -232,14 +233,13 @@
           }
          
           if(mobile===true){
-            optNumber = 0;
+           
             params.page = ++currentPage;
             
             params.start_date_filter = $('#start-date').val()
             params.end_date_filter =  $('#until-date').val()
 
             todayDate=(new Date().getMonth() + 1)  + "/" + new Date().getDate() + "/" + new Date().getFullYear();
-            console.log(todayDate)
             if( params.end_date_filter === todayDate || params.end_date_filter !== "" && params.start_date_filter !== "" ){
               optNumber +=1
             }
@@ -255,7 +255,6 @@
                 optNumber +=1
             }
             $('#filter-number').text("("+ optNumber +")")
-            console.log(params , optNumber)
           }
           console.log(params)
             $.ajax({
@@ -526,7 +525,28 @@
         loadMore(false);
     });
 
+    
+    $("#dashboard-mobile-refine-reset").click(function () {
+        currentPage = 0;
+        totalPages = 1;
+        loadMore(false);
+    });
 
+    $("#dashboard-desktop-reset").click(function () {
+        defaultStatusValue = $("#artist_archive_status_filter option:first-child").val()
+        defaultStatusText = $("#artist_archive_status_filter option:first-child").text()
+        defaultOrderValue = $("#artist_archive_order option:first-child").val()
+        defaultOrderText = $("#artist_archive_order option:first-child").text()
+        $("#artist_archive_status_filter").val(defaultStatusValue)
+        $("#artist_archive_status_filter + .select-selected").text(defaultStatusText)
+        $("#artist_archive_order").val(defaultOrderValue)
+        $("#artist_archive_order + .select-selected").text(defaultOrderText)
+        $("#search-date-picker-from-dashboard").find(".date-picker-text").val("")
+        $("#search-date-picker-to-dashboard").find(".date-picker-text").val("")
+        currentPage = 0;
+        totalPages = 1;
+        loadMore(false);
+    });
 
     
     </script>
