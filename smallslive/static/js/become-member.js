@@ -93,7 +93,7 @@ $(document).ready(function(){
 
   var montlyCustom = $("#monthlyPledge").find("input")[0];
   var yearlyCustom = $("#yearlyPledge").find("input")[0];
-  $(montlyCustom).on('change', function (event) {
+  $(montlyCustom).on('keyup', function (event) {
     var value = $(montlyCustom).val();
     if (value) {
       console.log('has value!', value);
@@ -108,7 +108,7 @@ $(document).ready(function(){
     }
   });
 
-  $(yearlyCustom).on('change', function (event) {
+  $(yearlyCustom).on('keyup', function (event) {
     var value = $(yearlyCustom).val();
     if (value) {
       console.log('has value!', value);
@@ -171,8 +171,30 @@ $(document).ready(function(){
     checkConfirmButton();
   };
 
+  $('.supporter-card-data .form-control').on('keyup', function() {
+    $(this).removeClass('error');
+
+    if ($('.supporter-card-data .form-control.error').length == 0) {
+      $('#form-general-error').text('');
+    }
+  });
+
   confirmButton.on('click', function () {
     if (currentStep === panels.length - 1) {
+
+      var $inputs = $('.supporter-card-data .form-control');
+      var errors = false;
+      $inputs.each(function () {
+        if (!$(this).val()) {
+          $(this).addClass('error');
+          errors = true;
+        }
+      });
+
+      if (errors) {
+        $('#form-general-error').text('Please correct errors above');
+      }
+
       // submitForm();
       // TODO Disable the submit button to prevent repeated clicks
       // $form.find('#confirmButton').prop('disabled', true).addClass('disabled');

@@ -19,7 +19,7 @@
     {% else %}
       <p class="text2 accent-color">You are now a supporting member</p>
     {% endif %}
-    <div class="flex-column items-center">
+    <div class="flex-column items-center items-wrapper">
       <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover">
         <div class="{% if not completed %}active{% endif %} step-button"></div>
         <div class="step-button"></div>
@@ -27,13 +27,13 @@
         <div class="{% if completed %}active{% endif %} step-button"></div>
       </div>
       {% if not completed %}
-      <div id="supporterStep1">
+      <div id="supporterStep1" class="supporter-step">
         <div class="supporter-text flex-column">
             <p class="title7"><span class="big-letter">T</span>HE <span class='accent-color'>SMALLSLIVE FOUNDATION</span> IS A <span class='accent-color'>NOT-FOR-PROFIT</span> ORGANIZED FOR THE PURPOSE OF THE <span class='accent-color'>DISSEMINATION OF JAZZ MUSIC</span> THROUGH OUR ARCHIVE, LIVE STREAMS, SPONSORSHIP OF INDIVIDUAL JAZZ PROJECTS & TOURS, EDUCATION, AND LIVE PERFORMACES AT SMALLS & MEZZROW. WE ARE SUPPORTED BY OUR MEMBERS THROUGH <span class='accent-color'><span class="underline">TAX DEDUCTIBLE DONATIONS</span>.</span></p>
 
         </div>
       </div>
-      <div id="supporterStep2" style="display: none">
+      <div id="supporterStep2" class="supporter-step" style="display: none">
           <div class="text9">You will receive access to our Audio/Video Archive for as long as you are a Supporting Member.<br> Supporting Members may make either monthly pledges or yearly donations. Please choose what is best for you.</div>
 
         <div class="flex-column items-center supporter-plan-input">
@@ -67,7 +67,7 @@
           </div>
         </div>
       </div>
-      <div id="supporterStep3" style="display: none">
+      <div id="supporterStep3" class="supporter-step" style="display: none">
         <div class="flex-column flex-grow payment-information">
           <div class="flex-column">
             <div class="section-title section-title-no-padded">
@@ -86,7 +86,7 @@
               <input type="number" id="hiddenQuantityInput" name="quantity" hidden>
               <div class="flex-column content-space-between flex-grow">
                 <div class="flex-row content-space-between">
-                  <input type="text" class="form-control" placeholder="Full Name on Credit Card" data-stripe="name">
+                  <input id="full-name" type="text" class="form-control credit-card" placeholder="Full Name on Credit Card" data-stripe="name">
                   <input type="text" class="form-control quarter-group" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month">
                   <input type="text" class="form-control quarter-group" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-year">
                 </div>
@@ -107,6 +107,7 @@
                 </div>
               </div>
             </form>
+            <div id="form-general-error" class="accent-color text-center text3"></div>
           </div>
         </div>
       </div>
@@ -150,7 +151,7 @@
           if (response.error) {
             // Show the errors on the form
             // TODO Display payment errors
-            $form.find('.payment-errors').text(response.error.message);
+            $('#form-general-error').text(response.error.message);
             $form.find('.submit-button').prop('disabled', false).removeClass('disabled');
           } else {
             // token contains id, last4, and card type

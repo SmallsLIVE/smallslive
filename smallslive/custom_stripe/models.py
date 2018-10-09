@@ -1,50 +1,37 @@
 import stripe
-from django.conf import settings
-from django.core.exceptions import ValidationError
-from django.db import models
-from djstripe.models import INTERVALS
+from djstripe.models import Customer, Plan
 
 
-class StripePlanManager(models.Manager):
-    def get_or_create(self, **kwargs):
-        amount = kwargs.get('amount')
-        interval = kwargs.get('interval')
+class CustomPlan(Plan):
+    """Cannot upgrade dj-stripe until Django upgrades to 1.11
+    This class overrides the Plan class in order to inject
+    the 'product' parameter.
+    """
 
-        if not amount or not interval:
-            raise ValidationError('amount and interval needed')
+    @classmethod
+    def create(cls, metadata={}, **kwargs):
+        """Create and then return a Plan (both in Stripe, and in our db)."""
 
-        nickname = '{}-{}'.format(interval, amount)
+        print 'CustomPlan:create ->'
+        print kwargs
 
-        try:
-            plan = self.get(amount=amount, interval=interval)
-        except self.model.DoesNotExist:
-            # TODO Check if not in database but created in Stripe
-            product_id = settings.STRIPE_PRODUCTS[interval]
+        plan = stripe.Plan.create(
+            amount=int(kwargs['amount'] * 100),
+            currency=kwargs['currency'],
+            interval=kwargs['interval'],
+            interval_count=kwargs.get('interval_count', None),
+            product=kwargs.get('product'),
+            trial_period_days=kwargs.get('trial_period_days'),
+            metadata=metadata)
 
-            new_plan = stripe.Plan.create(
-                amount=amount,
-                interval=interval,
-                nickname=nickname,
-                currency='usd',
-                product=product_id
-            )
-
-            plan = self.create(
-                amount=amount, interval=interval, nickname=nickname,
-                stripe_id=new_plan.stripe_id
-            )
+        plan = Plan.objects.create(
+            stripe_id=plan.stripe_id,
+            amount=kwargs['amount'],
+            currency=kwargs['currency'],
+            interval=kwargs['interval'],
+            interval_count=kwargs.get('interval_count', None),
+            name='Archive Access',
+            trial_period_days=kwargs.get('trial_period_days'),
+        )
 
         return plan
-
-
-class StripePlan(models.Model):
-    stripe_id = models.CharField(max_length=50, unique=True)
-    nickname = models.CharField(max_length=100)
-    amount = models.IntegerField()
-    interval = models.CharField(
-        max_length=10,
-        choices=INTERVALS,
-        verbose_name="Interval type",
-        null=False)
-
-    objects = StripePlanManager()

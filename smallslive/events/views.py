@@ -121,6 +121,9 @@ def _get_most_popular(range=None):
 
 @cached(timeout=6*60*60)
 def _get_most_popular_uploaded(range_size=None):
+
+    return []
+
     range_start, range_end = calculate_query_range(range_size)
 
     sqs = Event.objects.filter(

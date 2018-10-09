@@ -15,7 +15,7 @@ from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, FormView, ListView
 from djstripe.mixins import SubscriptionMixin
-from djstripe.models import Customer
+from djstripe.models import Customer, Plan
 from djstripe.settings import subscriber_request_callback
 from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView,\
     CancelSubscriptionView as BaseCancelSubscriptionView
@@ -23,7 +23,7 @@ from allauth.account.app_settings import EmailVerificationMethod
 import stripe
 
 from artist_dashboard.forms import ArtistInfoForm
-from custom_stripe.models import StripePlan
+from custom_stripe.models import CustomPlan
 from users.models import SmallsUser
 from users.utils import subscribe
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
@@ -39,13 +39,30 @@ class BecomeSupporterView(TemplateView):
 
     # FIXME Dont mock up response
     def post(self, request, *args, **kwargs):
+
+        print 'BecomeSupporterView: post'
+        print '----------------------------------------------'
+
+        customer = Customer.objects.get(subscriber=request.user)
+        print 'Customer: ', customer
+        print request.POST
+
         stripe_token = self.request.POST.get('stripe_token')
         plan_type = self.request.POST.get('type')
-        quantity = int(self.request.POST.get('quantity')) * 100
+        amount = int(self.request.POST.get('quantity'))
 
-        plan = StripePlan.objects.get_or_create(
-            interval=plan_type, amount=quantity
-        )
+        plan_data = {
+            'amount': amount,
+            'currency': 'usd',
+            'interval': plan_type,
+
+        }
+
+        plan = Plan.objects.filter(**plan_data).first()
+        plan_data['product'] = 'prod_D01wWC6DLGhq3U'
+
+        plan = plan or CustomPlan.create(**plan_data)
+
 
         try:
             customer, created = Customer.get_or_create(
@@ -57,6 +74,17 @@ class BecomeSupporterView(TemplateView):
             return _ajax_response(request, JsonResponse({
                 'error': e.args[0]
             }, status=500))
+
+
+        print 'BecomeSupporterView: post'
+        print '----------------------------------------------'
+
+        customer = Customer.objects.get(subscriber=request.user)
+        print 'Customer: ', customer
+        print request.GET
+
+        # Get plan and create if it doesn't exist
+        # subscribe user to plan
 
         return _ajax_response(
             request, redirect(reverse('become_supporter_complete'))
@@ -73,6 +101,11 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
             BecomeSupporterCompleteView, self
         ).get_context_data(**kwargs)
         context['completed'] = True
+
+        print 'BecomeSupporterCompleteView: get_context_data'
+        print context
+        print '----------------------------------------------'
+
         return context
 
 
