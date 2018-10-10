@@ -58,6 +58,7 @@
             <p class="text4 text-uppercase">Website: <a href="{{ artist.website }}" target="_blank">{{ artist.website }}</a></p>
           </div>
         {% endif %}
+        <div class="close-button-container visible-xs"><a href="#" class="close-button"></a></div>
     </div>
 </div>
 
@@ -75,25 +76,25 @@
     </div>
     
     <div class="artist-search-profile-bio-buttons flex-column">
-        <button id="archive-shows-button" class="white-border-button hover-fade active">Archive Shows</button>
-        <button id="upcoming-shows-button" class="white-border-button hover-fade">Upcoming Shows</button>
+        <button data-toggle-tab-group="search-results" data-toggle-tab-target="archived-shows" id="archive-shows-button" class="white-border-button hover-fade active">Archive Shows</button>
+        <button data-toggle-tab-group="search-results" data-toggle-tab-target="upcoming-shows" id="upcoming-shows-button" class="white-border-button hover-fade">Upcoming Shows</button>
         <button id="smallslive-tracks-button" class="white-border-button hover-fade">Smallslive Tracks</button>
     </div>
   </div>
 </div>
 
-<a href="#" id="back-search" class="close-button"></a>
+<div class="close-button-container hidden-xs"><a href="#" class="close-button"></a></div>
 
-<div class="search-tabs">
-  <div class="active" data-toggle-tab="archived-shows">
+<div class="tabs">
+  <div class="active" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
     <span class="title1">Archived</span>
   </div>
-  <div data-toggle-tab="upcoming-shows">
+  <div data-toggle-tab-target="upcoming-shows" data-toggle-tab-group="search-results">
     <span class="title1">Upcoming</span>
   </div>
 </div>
 
-<div id="smallslive-tracks" data-toggle-tab-target="smallslive-tracks" style="display: none;">
+<div id="smallslive-tracks" data-toggle-tab="smallslive-tracks" style="display: none;">
     <div class="musicians-results white-line-bottom">
         <div class="title1 shows-results-title">Smallslive Tracks</div>
     </div>
@@ -106,7 +107,7 @@
     </div>
 </div>
 
-<div id="upcoming-shows" data-toggle-tab-target="upcoming-shows" style="display: none;">
+<div id="upcoming-shows" data-toggle-tab="upcoming-shows" data-toggle-tab-group="search-results" style="display: none;">
     <div class="musicians-results white-line-bottom">
         <div class="title1 shows-results-title">Upcoming Shows</div>
     </div>
@@ -119,6 +120,7 @@
     </div>
 </div>
 
+
 <script>
     $(document).ready(function () {
         $(".read-more").click(function () {
@@ -126,13 +128,5 @@
             this.style.display= 'none';
         });
 
-        $('[data-toggle-tab]').on('click', function(event) {
-            var tabName =$(this).data('toggle-tab');
-            var target = $('[data-toggle-tab-target="' + tabName + '"]');
-            $(this).siblings('[data-toggle-tab]').removeClass('active');
-            $(this).addClass('active');
-            target.siblings('[data-toggle-tab-target]').hide();
-            target.show();
-        });
     });
 </script>

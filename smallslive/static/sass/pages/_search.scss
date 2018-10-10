@@ -67,7 +67,7 @@
   margin-bottom: 100px;
 }
 
-.search-tabs {
+.tabs {
   display: none;
   background-color: $background-grey;
 
@@ -100,6 +100,13 @@
         }
       }
     }
+  }
+}
+
+.search-tabs {
+  display: none;
+  @media (max-width: $screen-sm-max) {
+    display: flex;
   }
 }
 
@@ -483,6 +490,7 @@
 .artist-search-profile-resume {
   width: 500px;
   flex-direction: row;
+  position: relative;
 
   @media (max-width: $screen-sm-max) {
     font-size: 1.2em;
@@ -531,13 +539,13 @@
   line-height: 20px;
   margin-top: 40px;
   &.collapsed {
-    height: 7.2em;
+    max-height: 7.2em;
   }
   @media (max-width: $screen-sm-max) {
     width: 100%;
     height: auto;
     &.collapsed {
-      height: 120px;
+      max-height: 120px;
     }
   }
 }

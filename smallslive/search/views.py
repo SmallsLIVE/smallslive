@@ -131,6 +131,7 @@ class UpcomingEventMixin(object):
 class MainSearchView(View, SearchMixin):
 
     def get(self, request, *args, **kwargs):
+        # TODO: Why
         main_search = request.GET.get('main_search', None)
         artist_search = request.GET.get('artist_search', None)
         page = int(request.GET.get('page', 1))
@@ -141,6 +142,7 @@ class MainSearchView(View, SearchMixin):
         date_to = request.GET.get('date_to', None)
         artist_pk = request.GET.get('artist_pk', None)
         venue = request.GET.get('venue', None)
+        partial = request.GET.get('partial', False)
 
         if date_from:
             date_from = parser.parse(date_from, fuzzy=True)
@@ -148,8 +150,8 @@ class MainSearchView(View, SearchMixin):
                 date_from = timezone.make_aware(
                     date_from, timezone.get_current_timezone())
         if date_to:
-           date_to = parser.parse(date_to, fuzzy=True)
-           if not date_to.tzinfo:
+            date_to = parser.parse(date_to, fuzzy=True)
+            if not date_to.tzinfo:
                 date_to = timezone.make_aware(
                     date_to, timezone.get_current_timezone())
  
@@ -166,7 +168,8 @@ class MainSearchView(View, SearchMixin):
                 date_to=date_to, artist_pk=artist_pk, venue=venue)
 
             context = {'events': events[0] if events else []}
-            template = 'search/event_search_result.html'
+            template = ('search/event_search_row.html' if partial
+                        else 'search/event_search_result.html')
         else:
             return Http404('entity does not exist')
 
