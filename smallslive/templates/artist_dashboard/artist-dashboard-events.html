@@ -80,7 +80,12 @@
         $("#artistEventsInfo").html("");
         return ;
       }
-      loadInfo(eventUrl+"?set_id=0")
+      if(window.screen.availWidth > 425){
+        loadInfo(eventUrl+"?set_id=0")
+      }else{
+        return;
+      }
+      
     })
   </script> 
 {% endblock %}

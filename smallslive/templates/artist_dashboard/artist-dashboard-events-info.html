@@ -142,72 +142,78 @@
     </div>
     <div class="flex-column mobile-event-menu">
             <div id="mobile-metrics-button" class="flex-row mobile-event-opt">
-            <div class="white-border-button">Metrics</div>
-                {% if is_admin and set.has_media %}
-                    {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-                    <div id="mobile-private-button" class="white-border-button"> Public </div>
+                <div class="white-border-button" data-id="mobile-option-metrics">Metrics</div>
+                    {% if is_admin and set.has_media %}
+                        {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
+                        <div id="mobile-private-button" class="white-border-button" data-id="mobile-option-private"> Public </div>
+                        {% else %}
+                        <div id="mobile-public-button" class="white-border-button" data-id="mobile-option-publish"> Private </div>
+                        {% endif %}
+                        <div class="white-border-button" id="table-event-edit" data-pk=event.id data-slug=event.slug>Edit</div>
                     {% else %}
-                    <div id="mobile-public-button" class="white-border-button"> Private </div>
+                        {% if set.video_recording and set.video_recording.is_published %}
+                            <div class="white-border-button disabled">Public</div>
+                        {% else %}
+                            <div class="white-border-button disabled">Private</div>
+                        {% endif %}
+                        <div class="white-border-button disabled">Edit</div>
                     {% endif %}
-                    <div class="white-border-button" id="table-event-edit" data-pk=event.id data-slug=event.slug>Edit</div>
-                {% else %}
-                    {% if set.video_recording and set.video_recording.is_published %}
-                        <div class="white-border-button disabled">Public</div>
-                    {% else %}
-                        <div class="white-border-button disabled">Private</div>
-                    {% endif %}
-                    <div class="white-border-button disabled">Edit</div>
-                {% endif %}
                 
             </div>
-            <div id="not-authorized-text">
-                    <div class="text2 accent-color">
-                        LEADERSHIP  STATUS
-                    </div>
-                        <div class="text2">
-                        Leadership status designates ownership of the master recording.
-                        There may be multiple leaders on a master. Leadership status
-                        also grants admin privileges to the master for publishing, downloading and editing.
-                    </div>
-                </div>
-                <div id="metrics-mobile">
-        
-                </div>
-                <div id="make-private-mobile">
-                    <div>
-                        This set is currently published
-                    </div>
-                    <div>
-                        This set is available to our SmallsLIVE Supporting Members in 
-                        the Archive. As they access your show all musicians listed
-                        will be credited with time towards their royalty payout.
-                    </div>
-                    <div>
-                        If you choose to make this show private it will not be available
-                        to the SmallsLIVE Supporters Members and thereby not generating
-                        royalties.
-                    </div>
-                    <div id="privata-mobile-button"  class="white-border-button" onclick="makeSetPrivate()"> Make Private </div>
-                </div>
-                <div id="publish-mobile">
-                    <div>
-                        No available public text
-                    </div>
-                    <div>
-                        Waiting for text
-                    </div>
-                    <div id="publish-mobile-button" class="white-border-button" onclick="publishSet()"> Make Public </div>
-                </div>
-
+          
+                
             
 
 
 
 
             <div id="mobile-option-container">
-            <div class="edit-event-mobile-form-body" data-subpage-name="mobile-edit" data-subpage-url="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
-
+            <div class="edit-event-mobile-form-body" data-subpage-name="mobile-edit" data-subpage-url="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}" id="mobile-option-edit">
             </div>
+            {% if is_admin and set.has_media %}
+                <div id="mobile-option-publish">
+                    <div class="text2 accent-color">
+                        THIS SET IS CURRENTLY PRIVATE
+                    </div>
+                    <div class="text9">
+                        This set is unavailable to our SmallsLIVE Supporting Members in the Archive.
+                        If you publish it, they will get access to your show and all musicians listed will be credited with time towards their royalty payout.
+                    </div>
+                    <div class="text9">
+                            If you choose to make this show public it will be 
+                            available to the SmallsLIVE Supporters Members and thereby generating royalties.
+                    </div>
+                    <button class="white-border-button" onclick="publishSetMobile({{ set.id }})">Publish</button>
+                </div>
+
+                <div id="mobile-option-private">
+                    <div class="text2 accent-color">
+                        THIS SET IS CURRENTLY PUBLISHED
+                    </div>
+                    <div class="text9">
+                        This set is available to our SmallsLIVE Supporting Members in the Archive.
+                        As they access your show all musicians listed will be credited with time towards their royalty payout.
+                    </div>
+                    <div class="text9">
+                        If you choose to make this show private it will not be 
+                        available to the SmallsLIVE Supporters Members and thereby not generating royalties.
+                    </div>
+                    <button class="white-border-button" onclick="makeSetPrivateMobile({{ set.id }})">Make Private</button>
+                </div>
+            {% endif %}
+            <div id="mobile-option-metrics"></div>
+
+            <div id="not-authorized-text">
+                    <div class="text2 accent-color">
+                        LEADERSHIP STATUS
+                    </div>
+                        <div class="text2">
+                        Leadership status designates ownership of the master recording.
+                        There may be multiple leaders on a master. Leadership status
+                        also grants admin privileges to the master for publishing, downloading and editing.
+                    </div>
+            </div>
+
             <div class="modal fade edit-event-mobile-form" id="edit-event-form" style="width:80%; height:80%;" >
                     <div class="edit-event-mobile-form-body">
                             <a href="#" class="close-button"></a>
@@ -221,7 +227,7 @@
 
                 </div>
 
-    </div>
+            </div>
 </div>
 </div>
 {% endwith %}
@@ -231,6 +237,8 @@
     <script src="{% static 'js/subpages.js' %}"></script>
     <script src="{% static 'js/jquery.form.js' %}"></script>
     <script>
+       
+
         function closeEvent() {
             $('#event-info-modal').modal('hide');
         }
@@ -245,6 +253,8 @@
                 tabletSubpage.load();
               }else{
                 console.log("Mobile edit")
+                $("#mobile-option-container > *").hide()
+                $("#mobile-option-container > #mobile-option-edit").show()
                 var mobileSubpage = window.subpages.get("mobile-edit");
                 mobileSubpage.load();
               }
@@ -344,19 +354,20 @@
 
         ////////////////
 
-        $('.datepicker-dashboard-btn').bind("click", ToggleDisplay);
+        $('.artist-events-list-info .datepicker-dashboard-btn').bind("click", ToggleDisplay);
 
         function ToggleDisplay() {
-            if ($(".datepicker-container").data('shown'))
+            console.log("a")
+            if ($(".artist-events-list-info .datepicker-container").data('shown'))
                 hide();
             else 
                 display();
         }
 
         function display() {
-            $(".datepicker-container").css("display", "flex").hide().fadeIn(500, function() {
+            $(".artist-events-list-info  .datepicker-container").css("display", "flex").hide().fadeIn(500, function() {
                 $(document).bind("click", hide);
-                $(".datepicker-container").data('shown', true);
+                $(".artist-events-list-info .datepicker-container").data('shown', true);
             });
 
             $("#search-date-picker-from input").click();
@@ -366,9 +377,9 @@
         function hide() {   
             if (($(window.event.toElement).closest('.noclick').length == 0) &&
             (!($(window.event.toElement).hasClass("day") || $(window.event.toElement).hasClass("year")))) {
-                $(".datepicker-container").fadeOut(500, function () {
+                $(".artist-events-list-info .datepicker-container").fadeOut(500, function () {
                     $(document).unbind("click");
-                    $(".datepicker-container").data('shown', false);
+                    $(".artist-events-list-info .datepicker-container").data('shown', false);
                 });
             }
         }
@@ -429,15 +440,57 @@
         ///////////
 
         $("#apply-button").click(function () {
-            $(".datepicker-container").fadeOut(500, function () {
+            $(".artist-events-list-info .datepicker-container").fadeOut(500, function () {
                 $(document).unbind("click");
-                $(".datepicker-container").data('shown', false);
+                $(".artist-events-list-info .datepicker-container").data('shown', false);
             });
 
             loadData();
         });
 
     });
+    //////////
+    $("#mobile-option-container > *").hide()
+    $(".white-border-button.disabled").click(function () {
+        $("#mobile-option-container > *").hide()
+        $("#not-authorized-text").show()
+    });
 
+    $("#mobile-metrics-button .white-border-button:not(.disabled, #table-event-edit)").click(function () {
+        console.log($(this).data("id"))
+        $("#mobile-option-container > *").hide()
+        var $idForOption = $(this).data("id");
+        if( $idForOption !== undefined){
+            $("#mobile-option-container > #"+ $idForOption).show()
+        }
+    });
+     //////////////////
+     function makeSetPrivateMobile(eventId) {
+        $.post('/events/sets/' + eventId + '/private/', {
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        }, function (data, status) {
+            console.log(status);
+        });
+        hideMakePrivate();
+        $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
+            '<button class="publish-button" onclick="askPublish(' + selectedSetId + ')">Publish</button>'
+        )
+        $("#set-id-" + selectedSetId).find('.set-status').text('Hidden')
+        showSuccess('private')
+    }
+  
+    function publishSetMobile(eventId) {
+        $.post('/events/sets/' + eventId + '/publish/', {
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        }, function(data, status) {
+            console.log(status);
+        });
+        hidePublish();
+        $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
+            '<button class="publish-button" onclick="askPrivate(' + selectedSetId + ')">Make Private</button>'
+        )
+        $("#set-id-" + selectedSetId).find('.set-status').text('Published');
+        showSuccess('public')
+    }
     </script>
 {% endblock %}

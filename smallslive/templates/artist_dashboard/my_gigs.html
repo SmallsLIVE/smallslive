@@ -19,6 +19,7 @@
             <div class="reset text1" id="dashboard-mobile-refine-reset">Reset</div>
             </div>
         <div class="artist-archive-filter flex-row">
+            <div class="dashboard-datepicker-container">
             <div class="white-border-button datepicker-dashboard-main-btn" >
               Date
             </div>
@@ -34,6 +35,7 @@
                 <div class="white-border-button" id="dashboard-apply-button">Apply</div>
                 <div class="datepicker-reset text2 text-grey">Reset</div>
             </div>
+          </div>
             <div class="white-border-select" id="dashboard-status-filter">
                 <select id="artist_archive_status_filter">
                     <option value="all">Status</option>
@@ -178,6 +180,8 @@
 
         function hideSuccess() {
             $('#publishSuccess').modal('hide');
+            var $currentSet = $(".artist-active-set.accent-color.set-changer")[0];
+            loadInfo($($currentSet).data('url'));
         }
 
         function showSelectFormat(videoUrl, audioUrl) {
@@ -301,7 +305,7 @@
 
         ////////////////////////////////////////////////////////////
         $(document).ready(function() {
-          
+          $('.refine-dashboard-buttons button[value="all"]').click()
           $("#apply-button").click(function () {
             apply = true;
             eventPageNum = 1;
@@ -329,39 +333,15 @@
         $('.btngroup--btn').click(function () {
             venueFilter = $(this).val();
         });
-    
-        $('#refine-period-filter').change(function () {
-            eventFilter = true;
-    
-            if ($(this).val() == 'All Upcoming') {
-                eventDateTo = null;
-                eventDateFrom = new Date();
-            }
-            else if ($(this).val() == 'One Day') {
-                eventDateTo = new Date((new Date()).getTime() + 1 * 24 * 60 * 60 * 1000);
-                eventDateFrom = new Date();
-                $("#search-date-picker-from-refine input").datepicker("update", eventDateFrom);
-                $("#search-date-picker-to-refine input").datepicker("update", eventDateTo);
-            }
-            else if ($(this).val() == 'One Week') {
-                eventDateTo = new Date((new Date()).getTime() + 7 * 24 * 60 * 60 * 1000);
-                eventDateFrom = new Date();
-                $("#search-date-picker-from-refine input").datepicker("update", eventDateFrom);
-                $("#search-date-picker-to-refine input").datepicker("update", eventDateTo);
-            }
-            else if ($(this).val() == 'One Month') {
-                eventDateTo = new Date((new Date()).getTime() + 31 * 24 * 60 * 60 * 1000);
-                eventDateFrom = new Date();
-                $("#search-date-picker-from-refine input").datepicker("update", eventDateFrom);
-                $("#search-date-picker-to-refine input").datepicker("update", eventDateTo);
-            }
-        });
-    
+        /////////
+        $('#search-date-picker-from-refine input').val("").datepicker("update");
         $(".reset-all").click(function () {
           console.log("resetall")
             $('#search-date-picker-from-refine input').val("").datepicker("update");
             $('#search-date-picker-to-refine input').val("").datepicker("update");
             eventDateFrom = eventDateTo = null;
+            $('.refine-dashboard-buttons button[value="all"]').click()
+            $(".event-filter-select .select-items div[value='newest']").click()
         });
             $(".refine").click(function () {
               $(".refine-overlay").show();
@@ -375,28 +355,29 @@
           $("#dashboard-mobile-refine-reset").click(function () {
             $('#search-date-picker-from-refine input').val("").datepicker("update");
             $('#search-date-picker-to-refine input').val("").datepicker("update");
-            statusFilter="all";
-            $('#refine-order-filter option:selected').val("newest")
+            eventDateFrom = eventDateTo = null;
+            $('.refine-dashboard-buttons button[value="all"]').click()
+            $(".event-filter-select .select-items div[value='newest']").click()
             currentPage = 0;
             totalPages = 1;
             loadMore(true)
           });
           //////////
            var $datePickerFromRefine = $('#search-date-picker-from-refine input');
-    $datePickerFromRefine.datepicker({
-        format: 'mm/dd/yyyy',
-        autoclose: true,
-        container: '#search-date-picker-from-refine',
-        showOnFocus: false
-    }).datepicker('setDate', 'now');
+            $datePickerFromRefine.datepicker({
+                format: 'mm/dd/yyyy',
+                autoclose: true,
+                container: '#search-date-picker-from-refine',
+                showOnFocus: false
+            }).datepicker('setDate', 'now');
 
-    $datePickerFromRefine.on('changeDate', function (newDate) {
-        eventDateFrom = newDate.date;
-        //$('#events-filter').val('oldest');
-        //$("[value='oldest']").click();
-        $("#search-date-picker-to-refine input").click();
-        $("#search-date-picker-to-refine input").focus();
-    });
+            $datePickerFromRefine.on('changeDate', function (newDate) {
+                eventDateFrom = newDate.date;
+                //$('#events-filter').val('oldest');
+                //$("[value='oldest']").click();
+                $("#search-date-picker-to-refine input").click();
+                $("#search-date-picker-to-refine input").focus();
+            });
 
     $datePickerFromRefine.on('click', function () {
         var dropdown = $('#search-date-picker .dropdown-menu');
@@ -525,13 +506,6 @@
         loadMore(false);
     });
 
-    
-    $("#dashboard-mobile-refine-reset").click(function () {
-        currentPage = 0;
-        totalPages = 1;
-        loadMore(false);
-    });
-
     $("#dashboard-desktop-reset").click(function () {
         defaultStatusValue = $("#artist_archive_status_filter option:first-child").val()
         defaultStatusText = $("#artist_archive_status_filter option:first-child").text()
@@ -547,7 +521,12 @@
         totalPages = 1;
         loadMore(false);
     });
+    /////////////
+    $('.refine-dashboard-buttons .btngroup--btn').on('click', function () {
+        $('.refine-dashboard-buttons .btngroup--btn').css("background-color", "")
+        $(this).css( "background-color", 'white' );
+    })
 
-    
+
     </script>
 {% endblock %}

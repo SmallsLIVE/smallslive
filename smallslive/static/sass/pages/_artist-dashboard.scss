@@ -463,6 +463,26 @@
 }
 
 .artist-archive-filter {
+    
+    .dashboard-datepicker-container{
+        position: relative;
+        .datepicker-container.noclick{
+            top:37px;
+            .custom-date-picker{
+                width: 110px;
+                @media (min-width: 992px){
+                    input{
+                        padding: 0 10px
+                    }
+                }
+                }
+            }
+        }
+    .white-border-select{
+        .select-selected{
+            border: 3px solid rgba(255, 255, 255, 0.9);
+        }
+    }
     >.white-border-button{
         &:not(.datepicker-dashboard-main-btn):before {
             content: "x";
@@ -471,10 +491,13 @@
             cursor: pointer;
             pointer-events: inherit;
             z-index: -1;
+            }
         }
-        &.datepicker-dashboard-main-btn{
+    .dashboard-datepicker-container{
+        .datepicker-dashboard-main-btn{
             &:after {
                 content: " ";
+                padding-bottom: 3px;
                 height: 0;
                 width: 0;
                 border-left: 5px solid transparent;
@@ -487,7 +510,7 @@
                 pointer-events: inherit;
                 z-index: -1;
             }
-        }
+    }
     }
     margin-bottom: 30px;
     @media (max-width: 1024px) {

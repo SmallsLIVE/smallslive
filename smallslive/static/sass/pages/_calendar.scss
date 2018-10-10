@@ -240,4 +240,13 @@
     margin:0;
     padding:10px;
   }
+  .refine-datepicker-container{
+    position: relative;
+    .custom-date-picker{
+      .datepicker{
+        position: absolute;
+        left: none;
+      }
+    }
+  }
 }
