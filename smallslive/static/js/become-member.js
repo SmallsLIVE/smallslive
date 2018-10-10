@@ -39,12 +39,15 @@ $(document).ready(function(){
     var pledgeType = selectedData.type;
     var pledgeAmount = selectedData.quantity;
     console.log(pledgeType)
-    if( pledgeType === 'year'){
+    if (pledgeType === 'year') {
       $('#pledge-type').html('You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' + pledgeAmount +'</span> .');
       $('#payment-type').html('Your  card  will  be  charged  in  this  amount.');
-    }else if( pledgeType === 'month') {
+    } else if (pledgeType === 'month') {
       $('#pledge-type').html('You’ve  selected  to  pledge <span class="accent-color">$' + pledgeAmount +'.00 per month</span> . ');
       $('#payment-type').html('Your  card  will  be  billed  monthly  until  you  choose  to  cancel.');
+    } else {
+      $('#pledge-type').html('You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' + pledgeAmount +'</span> .');
+      $('#payment-type').html('Your  card  will  be  charged  in  this  amount.');
     }
     $('#hiddenQuantityInput').val(pledgeAmount);
     $('#hiddenTypeInput').val(pledgeType);
@@ -53,8 +56,8 @@ $(document).ready(function(){
   var resetCustom = function () {
     $(yearlyCustom).val('');
     $(yearlyCustom).removeClass('active');
-    $(montlyCustom).val('');
-    $(montlyCustom).removeClass('active');
+    $(monthlyCustom).val('');
+    $(monthlyCustom).removeClass('active');
   };
 
   var setSelected = function (type, quantity) {
@@ -91,20 +94,33 @@ $(document).ready(function(){
     })
   });
 
-  var montlyCustom = $("#monthlyPledge").find("input")[0];
+  var oneTimePayment = $("#oneTimePayment").find("input")[0];
   var yearlyCustom = $("#yearlyPledge").find("input")[0];
-  $(montlyCustom).on('keyup', function (event) {
-    var value = $(montlyCustom).val();
+  var monthlyCustom = $("#monthlyPledge").find("input")[0];
+  var yearlyCustom = $("#yearlyPledge").find("input")[0];
+
+  $(oneTimePayment).on('keyup', function (event) {
+    var value = $(oneTimePayment).val();
+    if (value) {
+      console.log('has value!', value);
+      resetButtons();
+      setSelected('one-time', value);
+      $(oneTimePayment).addClass('active');
+    }
+  });
+
+  $(monthlyCustom).on('keyup', function (event) {
+    var value = $(monthlyCustom).val();
     if (value) {
       console.log('has value!', value);
       resetButtons();
       $(yearlyCustom).val('');
       setSelected('month', value);
-      $(montlyCustom).addClass('active');
+      $(monthlyCustom).addClass('active');
       $(yearlyCustom).removeClass('active');
     } else {
       setSelected('', 0);
-      $(montlyCustom).removeClass('active');
+      $(monthlyCustom).removeClass('active');
     }
   });
 
@@ -113,10 +129,10 @@ $(document).ready(function(){
     if (value) {
       console.log('has value!', value);
       resetButtons();
-      $(montlyCustom).val('');
+      $(monthlyCustom).val('');
       setSelected('year', value);
       $(yearlyCustom).addClass('active');
-      $(montlyCustom).removeClass('active');
+      $(monthlyCustom).removeClass('active');
     } else {
       $(yearlyCustom).removeClass('active');
       setSelected('', 0);
@@ -137,7 +153,8 @@ $(document).ready(function(){
     if (currentStep === 1) {
       if (
         selectedData.type === 'month' && selectedData.quantity >= 10 ||
-        selectedData.type === 'year' && selectedData.quantity >= 100
+        selectedData.type === 'year' && selectedData.quantity >= 100 ||
+        selectedData.type === 'one-time'
       ) {
         $(confirmButton).prop('disabled', false);
       } else {

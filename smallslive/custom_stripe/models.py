@@ -1,5 +1,6 @@
 import stripe
 from djstripe.models import Customer, Plan
+from django.db import models
 
 
 class CustomPlan(Plan):
@@ -35,3 +36,13 @@ class CustomPlan(Plan):
         )
 
         return plan
+
+
+class CustomerDetail(models.Model):
+    """Store billing information on Stripe
+     This version of djstripe does not support this
+     """
+
+    @classmethod
+    def get(cls, **kwargs):
+        return stripe.Customer.retrieve(kwargs.get('id'))

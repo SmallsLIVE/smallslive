@@ -176,7 +176,7 @@
             </a>
           {% endif %}
           {% if not event.is_live and event.is_past %}
-          <button class="white-border-button" style="display: inline;">Donate</button>
+          <button id="btn-donate" class="white-border-button" style="display: inline;">Donate</button>
           {% endif %}
           {% if not event.is_live and event.is_future %}
           <button class="white-border-button" onclick="showTickets()" style="display: inline;">Tickets</button>
@@ -483,6 +483,10 @@
             if (comments) {
               comments.setUrl(url);
             }
+          });
+
+          $('#btn-donate').click(function () {
+            window.location = "{{ donate_url }}";
           });
 
         });

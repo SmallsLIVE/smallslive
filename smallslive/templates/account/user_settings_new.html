@@ -106,9 +106,14 @@
 
                 <form class="custom-form" role="form" id="" method="post" action="{% url "user_settings_new" %}">
                     {% csrf_token %}
-                    <h2 class="header"Donation settings:</h2>
+                    <h2 class="header">Donation settings:</h2>
                     <p>Current Subscription</p>
-                    <pre></pre>
+                    <pre>Settings</pre>
+                    <pre>{{ user.first_name }}</pre>
+                    <pre>{{ user.customer.card_kind }}</pre>
+                    <pre>{{ user.customer.card_last_4 }}</pre>
+                    <pre>{{ user.customer.current_subscription.amount }}</pre>
+
                     <div class="form-group {% if change_password_form.oldpassword.errors  %}has-error{% endif %}">
                         <input type="password" class="form-control" name="oldpassword" id="oldpassword" placeholder="Current password">
                         {% for error in change_password_form.oldpassword.errors %}

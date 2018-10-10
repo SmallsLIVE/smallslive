@@ -357,6 +357,8 @@ class EventDetailView(DetailView):
                         'start': first_set.utc_start - timedelta(minutes=15)
                     }
 
+        context['donate_url'] = reverse('donate')
+
         return context
 
     def _generate_metrics_data(self):

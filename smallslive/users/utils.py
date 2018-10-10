@@ -1,7 +1,7 @@
 import decimal
 from datetime import timedelta
-
-from djstripe.models import CurrentSubscription, convert_tstamp
+import stripe
+from djstripe.models import Charge, CurrentSubscription, convert_tstamp
 
 try:
     from django.utils.timezone import now
@@ -128,3 +128,14 @@ def subscribe(customer, plan):
 
         print cs
         return cs
+
+
+def charge(customer, amount):
+    print 'charge: ---->'
+    print amount
+    print type(amount)
+
+    charge = customer.charge(decimal.Decimal(amount))
+    print charge
+
+    return charge

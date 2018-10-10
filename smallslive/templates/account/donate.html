@@ -1,0 +1,149 @@
+{% extends "home_new.html" %}
+{% load static from staticfiles %}
+{% load full_static %}
+{% load djstripe_tags %}
+
+{% block home_content %}
+  <div class="flex-column supporter-main-container">
+      {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
+    <div class="supporter-image">
+        <div style="
+        background-image:url( {% static 'image/supporter-background.jpg' %} ); background-size: cover; position: absolute; width: 100%; height: 100%; z-index: -1; left:0;
+
+                ">
+        </div>
+        <div class="banner-blur-container"></div>
+    </div>
+    {% if not completed %}
+      <p class="text2 accent-color">Donate</p>
+    {% else %}
+      <p class="text2 accent-color">Thank you for your donation</p>
+    {% endif %}
+    <div class="flex-column items-center items-wrapper">
+      <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover">
+        <div class="{% if not completed %}active{% endif %} step-button"></div>
+        <div class="step-button"></div>
+        <div class="{% if completed %}active{% endif %} step-button"></div>
+      </div>
+      {% if not completed %}
+      <div id="supporterStep1" class="supporter-step">
+        <div class="supporter-text flex-column">
+            <p class="title7"><span class="big-letter">T</span>HE <span class='accent-color'>SMALLSLIVE FOUNDATION</span> IS A <span class='accent-color'>NOT-FOR-PROFIT</span> ORGANIZED FOR THE PURPOSE OF THE <span class='accent-color'>DISSEMINATION OF JAZZ MUSIC</span> THROUGH OUR ARCHIVE, LIVE STREAMS, SPONSORSHIP OF INDIVIDUAL JAZZ PROJECTS & TOURS, EDUCATION, AND LIVE PERFORMACES AT SMALLS & MEZZROW. WE ARE SUPPORTED BY OUR MEMBERS THROUGH <span class='accent-color'><span class="underline">TAX DEDUCTIBLE DONATIONS</span>.</span></p>
+
+        </div>
+      </div>
+      <div id="supporterStep2" class="supporter-step" style="display: none">
+          <div class="text9">You will be able to download a Tax return sheet from your donation history</div>
+
+        <div class="flex-column items-center supporter-plan-input">
+          <div class="section-title section-title-no-padded">
+            <div class="title1">One Time Donation</div>
+          </div>
+          <p class="text9">Enter any amount of you choice to support Jazz music</p>
+          <div id="oneTimePayment" class="button-row button-row-big button-row-margin">
+            <div class="custom-input text4">
+              <input type="number" class="no-spinners" value="one_time_payment">
+              <label><div>Enter amount</div></label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="supporterStep3" class="supporter-step" style="display: none">
+        <div class="flex-column flex-grow payment-information">
+          <div class="flex-column">
+            <div class="section-title section-title-no-padded">
+              <div class="title7">Payment Information</div>
+            </div>
+          </div>
+          <div class="supporter-card-data">
+            <form method="POST" role="form" id="formSupporter"
+                  action="{% url 'donate' %}">
+              {% csrf_token %}
+              <input type="text" id="hiddenTypeInput" name="type" hidden>
+              <input type="number" id="hiddenQuantityInput" name="quantity" hidden>
+              <input type="text" name="redirect_url" value="{{ redirect_url }}"hidden>
+              <div class="flex-column content-space-between flex-grow">
+                <div class="flex-row content-space-between">
+                  <input id="full-name" type="text" class="form-control credit-card" placeholder="Full Name on Credit Card" data-stripe="name">
+                  <input type="text" class="form-control quarter-group" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month">
+                  <input type="text" class="form-control quarter-group" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-year">
+                </div>
+                <div class="flex-row content-space-between">
+                  <input type="text" class="form-control"  id="card-number" placeholder="Credit Card Number"
+                         size="20" pattern="[\d ]*" autocomplete="off" data-stripe="number" name="credit_card_number">
+
+                  <input type="text" class="form-control half" id="cvc" placeholder="CVC" size="4" pattern="\d*" autocomplete="off" data-stripe="cvc" name="credit_card_cvc">
+                </div>
+                <div class="form-group">
+                  <p class="form-error-text hidden" id="type-error"></p>
+                  <p class="form-error-text hidden" id="quantity-error"></p>
+                  <p class="form-error-text hidden" id="card_name-error"></p>
+                  <p class="form-error-text hidden" id="expiration_date-error"></p>
+                  <p class="form-error-text hidden" id="credit_card_number-error"></p>
+                  <p class="form-error-text hidden" id="credit_card_cvc-error"></p>
+                  <p class="form-error-text hidden" id="all-errors"></p>
+                </div>
+              </div>
+            </form>
+            <div id="form-general-error" class="accent-color text-center text3"></div>
+          </div>
+        </div>
+      </div>
+      {% else %}
+        <div id="supporterStep4" class="flex-column items-center supporter-text-container">
+          <div class="supporter-text">
+            <p class="title7"><span class="big-letter">T</span>
+              hank you for donating. we greatly appreciate your support of our mission.
+            </p>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+    <div class="button-row button-row-margin confirm-button">
+      {% if not completed %}
+      <button id="backButton" class="button-bordered">Back</button>
+        <button id="confirmButton" class="button-bordered">Confirm</button>
+      {% else %}
+        <a href="{{ redirect_url }}">
+          <button>Continue</button>
+        </a>
+      {% endif %}
+
+    </div>
+    {% if not completed %}
+      <div id="sentHint" class="processing-message" hidden>
+        <p class="text4 text-grey">Processing...Do not close window.</p>
+      </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+  {% block stripe_payment %}
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript">
+      Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
+
+      function startStripePayment($form) {
+        var stripeResponseHandler = function (status, response) {
+          if (response.error) {
+            // Show the errors on the form
+            // TODO Display payment errors
+            $('#form-general-error').text(response.error.message);
+            $form.find('.submit-button').prop('disabled', false).removeClass('disabled');
+          } else {
+            // token contains id, last4, and card type
+            var token = response.id;
+            // Insert the token into the form so it gets submitted to the server
+            $form.append($('<input type="hidden" name="stripe_token" />').val(token));
+            // and submit
+            $form.get(0).submit();
+          }
+        };
+        Stripe.card.createToken($form, stripeResponseHandler);
+      }
+    </script>
+    <script src="{% static 'js/become-member.js' %}"></script>
+  {% endblock %}
+
+{% endblock %}
