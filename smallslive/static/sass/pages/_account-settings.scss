@@ -59,3 +59,21 @@
         margin-bottom: 30px;
     }
 }
+.account-settings-container-new {
+    padding: 0 10%;
+    margin-bottom: 40px;
+    .account-settings-view{
+        margin-bottom: 30px;
+        >*:not(.title5){
+            margin-left: 5px;
+        }
+        .title5{
+            line-height: 20px;
+            background: linear-gradient(to right, $white-transparent, $white-transparent) no-repeat bottom left;
+            background-size: 100% 2px;
+        }
+        .account-settings-info, button{
+            margin-top: 10px;
+        }
+    }
+}

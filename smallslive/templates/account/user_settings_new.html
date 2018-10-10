@@ -11,8 +11,8 @@
 {% block body_class %}home{% endblock %}
 
 {% block extra_head %}
-  <meta name="description"
-        content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
+	<meta name="description"
+				content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
 {% endblock %}
 
 {% block header %}
@@ -23,95 +23,102 @@
 {% include 'inactive_dialog.html' %}
 {% include 'become_a_supporter_dialog.html' %}
 
-<div class="account-settings-container flex-column items-flex-stretch">
-    <div class="section-title" style="width: 100%;">
-        <div class="title1">Account Settings</div>
-    </div>
 
-    <div class="flex-column">
-        <div class="flex-row content-centered wrap">
-            <div class="flex-column settings-left">
-                <form class="custom-form" role="form" id="edit-profile-form" method="post" action="{% url "user_settings_new" %}">
-                    <h2 class="header">Personal information:</h2>
-                    <p class="text4 text-grey">Enter your name.</p>
-                    {% csrf_token %}
-                    <div class="form-group {% if change_profile_form.first_name.errors  %}has-error{% endif %}">
-                        {{ change_profile_form.first_name }}
-                        {% for error in change_profile_form.first_name.errors %}
-                            <p class="form-error-text">{{ error  }}</p>
-                        {% endfor %}
-                    </div>
-                    <div class="form-group {% if change_profile_form.last_name.errors  %}has-error{% endif %}">
-                        {{ change_profile_form.last_name }}
-                        {% for error in change_profile_form.last_name.errors %}
-                            <p class="form-error-text">{{ error  }}</p>
-                        {% endfor %}
-                    </div>
-        
-                    <h2 class="header">Notification settings:</h2>
-                    <div class="flex-row">
-                        <div>
-                            {{ change_profile_form.newsletter }}
-                        </div>
-                        <div class="input-label-checkbox">
-                            <label for="id_newsletter" class="text4 text-grey">I wish to receive news and updates on SmallsLIVE and Mezzrow via email.</label>
-                        </div>
-                    </div>
-                    <input type="submit" class="white-border-button" name="edit_profile" value="Save">
-                </form>
 
-                <div class="white-line"></div>
 
-                <form class="custom-form" role="form" id="change-email-form" method="post" action="{% url "user_settings_new" %}">
-                    {% csrf_token %}
-                    <h2 class="header">Email address:</h2>
-                    <p class="text4 text-grey">Please note that you'll need to confirm your ownership of the new email address once you set it. To do that just follow the confirmation link we'll send to that address.</p>
-                    <div class="form-group {% if change_email_form.email.errors  %}has-error{% endif %}">
-                        {{ change_email_form.email }}
-                        {% for error in change_email_form.email.errors %}
-                            <p class="form-error-text">{{ error  }}</p>
-                        {% endfor %}
-                    </div>
-                    <input type="submit" class="white-border-button" name="change_email" value="Save">
-                </form>
-
-                <div class="white-line"></div>
-
-                <form class="custom-form" role="form" id="change-password-form" method="post" action="{% url "user_settings_new" %}">
-                    {% csrf_token %}
-                    <h2 class="header">Change password:</h2>
-                    <p class="text4 text-grey">To change your password please input your current password and your new password twice.</p>
-                    <div class="form-group {% if change_password_form.oldpassword.errors  %}has-error{% endif %}">
-                        <input type="password" class="form-control" name="oldpassword" id="oldpassword" placeholder="Current password">
-                        {% for error in change_password_form.oldpassword.errors %}
-                            <p class="form-error-text">{{ error  }}</p>
-                        {% endfor %}
-                    </div>
-                    <div class="form-group {% if change_password_form.password1.errors  %}has-error{% endif %}">
-                        <input type="password" class="form-control" name="password1" id="password1" placeholder="New Password">
-                        {% for error in change_password_form.password1.errors %}
-                            <p class="form-error-text">{{ error  }}</p>
-                        {% endfor %}
-                    </div>
-                    <div class="form-group {% if change_password_form.password1.errors  %}has-error{% endif %}">
-                        <input type="password" class="form-control" name="password2" id="password2" placeholder="New Password Again">
-                        {% for error in change_password_form.password2.errors %}
-                            <p class="form-error-text">{{ error  }}</p>
-                        {% endfor %}
-                    </div>
-                    <input type="submit" class="white-border-button" name="change_password" value="Change password">
-                </form>
-                
-            </div>
-            <div class="flex-column settings-right">
-
-                {% if current_user.artist  %}
-                    {% include 'account/payout_info.html' %}
-                {% endif %}
-
-            </div>
-        </div>
-    </div>
+<div class="account-settings-container-new flex-row">
+	<div class="account-settings-menu">
+			<div data-id="user-account" class="text1">Account info</div>
+			<div data-id="user-payout" class="text1">Payout info</div>
+			<div data-id="user-donation-settings" class="text1">Donation settings</div>
+			<div data-id="user-donation-history" class="text1">Donation history</div>
+			<div data-id="user-billing" class="text1">Billing</div>
+		</div>
+		<div class="flex-column">
+			<div id="user-account" class="account-settings-view">
+				<div class="title5 account-settings-title text-bottom-line">Account info</div>
+				<div class="account-settings-info">
+					<div class="text5">Name</div>
+					<div class="text9 text-grey">{{user.first_name}} {{user.last_name}}</div>
+				</div>
+				<div class="account-settings-info">
+					<div class="text5">Email</div>
+					<div class="text9 text-grey">{{user.email}}</div>
+				</div>
+				<div class="account-settings-info">
+					<div class="text5">Password</div>
+					<div class="text9 text-grey"></div>
+				</div>
+				<button class="white-border-button">Edit info</button>		
+			</div>
+			<div id="user-payout" class="account-settings-view">
+				<div class="title5 account-settings-title text-bottom-line">Payout info</div>
+				<div class="account-settings-info">
+					<div class="text5">Mailing address</div>
+					{% if user.address_1 or user.address_2 or user.city %}
+						<div class="text9 text-grey">{{ user.address_1 }}</div>
+						<div class="text9 text-grey">{{ user.address_2 }}</div>
+						<div class="text9 text-grey">{{user.city }}</div>
+					{% else %}
+						<div class="text9 text-grey">There is no address assigned</div>
+					{% endif %}
+				</div>
+				<button class="white-border-button">Edit info</button>	
+				<div id="payout-form" style="display: none;">
+						{% include 'artist_dashboard/artist-payout-form.html' %}
+				</div>
+			</div>
+			<div id="user-donation-settings" class="account-settings-view">
+				<div class="title5 account-settings-title text-bottom-line">Donation settings</div>
+				<div class="account-settings-info">
+					<div class="text5">Current Subscription</div>
+					<div class="text9 accent-color"></div>
+				</div>
+				<div class="account-settings-info flex-row">
+					<button class="white-border-button">Cancel monthly</button>		
+					<button class="white-border-button">Update pledge</button>		
+				</div>
+				<div class="account-settings-info">
+					<div class="text5">Last invoice</div>
+					<div class="text9 text-grey"></div>	
+				</div>
+				<div class="account-settings-info ">
+					<div class="text5">Expiration of archive access</div>
+					<div class="text9 text-grey"></div>
+				</div>
+			</div>
+			<div id="user-donation-history" class="account-settings-view">
+				<div class="title5 account-settings-title text-bottom-line">Donation history</div>
+					<div class="account-settings-info">
+						<div class="text5">Total donations this year</div>
+						<div class="text9 text-grey"></div>
+					</div>
+					<div class="account-settings-info">
+						{% comment %} Use for, show 4 and create a view more TBD {% endcomment %}
+					</div>
+					<button class="white-border-button">Download tax document</button>		
+			</div>
+			<div id="user-billing" class="account-settings-view">
+				<div class="title5 account-settings-title">Billing</div>
+					<div class="account-settings-info">
+						<div class="text5">Credit card</div>
+						<div class="text9 text-grey"></div>
+						<div class="text9 text-grey"></div>
+					</div>
+					<div class="account-settings-info">
+						<div class="text5">Billing address</div>
+						{% if user.address_1 or user.address_2 or user.city %}
+							<div class="text9 text-grey">{{ user.address_1 }}</div>
+							<div class="text9 text-grey">{{ user.address_2 }}</div>
+							<div class="text9 text-grey">{{user.city }}</div>
+						{% else %}
+							<div class="text9 text-grey">There is no address assigned</div>
+						{% endif %}
+					
+					<button class="white-border-button">Update</button>	
+				</div>
+			</div>
+		</div>
 </div>
 {% endblock%}
 
@@ -119,5 +126,5 @@
 {% endblock %}
 
 {% block extra_js %}
-  
+	
 {% endblock extra_js %}
