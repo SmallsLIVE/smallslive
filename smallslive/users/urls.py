@@ -22,4 +22,6 @@ urlpatterns = patterns('users.views',
     url(r'^', include('allauth.urls', app_name="allauth")),
     url(r'^supporter/$', 'become_supporter', name="become_supporter"),
     url(r'^supporter/completed/$', 'become_supporter_complete', name="become_supporter_complete"),
+    url(r'^donate/$', 'donate', name="donate"),
+    url(r'^donate/completed/$', 'donate_complete', name="donate_complete"),
 )

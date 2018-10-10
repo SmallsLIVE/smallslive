@@ -1,6 +1,6 @@
 from allauth.account import app_settings
 from allauth.account.forms import ChangePasswordForm
-from allauth.account.models import EmailAddress, EmailConfirmation
+from allauth.account.models import EmailAddress
 from allauth.account.utils import complete_signup
 from allauth.account.views import SignupView as AllauthSignupView, \
     ConfirmEmailView as CoreConfirmEmailView, \
@@ -10,13 +10,12 @@ from braces.views import FormValidMessageMixin, LoginRequiredMixin, StaffuserReq
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
-from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, FormView, ListView
 from djstripe.mixins import SubscriptionMixin
-from djstripe.models import Customer
+from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
 from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView,\
     CancelSubscriptionView as BaseCancelSubscriptionView
@@ -24,31 +23,147 @@ from allauth.account.app_settings import EmailVerificationMethod
 import stripe
 
 from artist_dashboard.forms import ArtistInfoForm
+from custom_stripe.models import CustomPlan, CustomerDetail
 from users.models import SmallsUser
+from users.utils import charge, subscribe
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
+
+
+# TODO: remove duplicate code (views and templates)
+class DonateView(TemplateView):
+    template_name = 'account/donate.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DonateView, self).get_context_data(**kwargs)
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['redirect_url'] = self.request.META.get('HTTP_REFERER')
+        return context
+
+    def post(self, request, *args, **kwargs):
+
+        print 'Donate: post'
+        print '----------------------------------------------'
+
+        customer = Customer.objects.get(subscriber=request.user)
+        print 'Customer: ', customer
+        print request.POST
+
+        stripe_token = self.request.POST.get('stripe_token')
+        amount = int(self.request.POST.get('quantity'))
+        redirect_url = self.request.POST.get('redirect_url')
+
+        try:
+            customer, created = Customer.get_or_create(
+                subscriber=subscriber_request_callback(self.request))
+            customer.update_card(stripe_token)
+            charge(customer, amount)
+        except stripe.StripeError as e:
+            # add form error here
+            return _ajax_response(request, JsonResponse({
+                'error': e.args[0]
+            }, status=500))
+
+        return _ajax_response(
+            request, redirect(reverse(
+                'donate_complete') + '?redirect_url={}'.format(redirect_url))
+        )
+
+
+donate = DonateView.as_view()
+
+
+class DonateCompleteView(DonateView):
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            DonateCompleteView, self
+        ).get_context_data(**kwargs)
+        context['completed'] = True
+        context['redirect_url'] = self.request.GET.get('redirect_url')
+
+        print 'DonateCompleteView: get_context_data'
+        print context
+        print '----------------------------------------------'
+
+        return context
+
+
+donate_complete = DonateCompleteView.as_view()
 
 
 class BecomeSupporterView(TemplateView):
     template_name = 'account/become-supporter.html'
 
-    # FIXME Dont mock up response
+    def get_context_data(self, **kwargs):
+        context = super(BecomeSupporterView, self).get_context_data(**kwargs)
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        return context
+
     def post(self, request, *args, **kwargs):
+
+        print 'BecomeSupporterView: post'
+        print '----------------------------------------------'
+
+        customer = Customer.objects.get(subscriber=request.user)
+        print 'Customer: ', customer
+        print request.POST
+
+        stripe_token = self.request.POST.get('stripe_token')
+        plan_type = self.request.POST.get('type')
+        amount = int(self.request.POST.get('quantity'))
+
+        plan_data = {
+            'amount': amount,
+            'currency': 'usd',
+            'interval': plan_type,
+
+        }
+
+        plan = Plan.objects.filter(**plan_data).first()
+        plan_data['product'] = 'prod_D01wWC6DLGhq3U'
+
+        plan = plan or CustomPlan.create(**plan_data)
+
+        try:
+            customer, created = Customer.get_or_create(
+                subscriber=subscriber_request_callback(self.request))
+            customer.update_card(stripe_token)
+            subscribe(customer, plan)
+        except stripe.StripeError as e:
+            # add form error here
+            return _ajax_response(request, JsonResponse({
+                'error': e.args[0]
+            }, status=500))
+
+        print 'BecomeSupporterView: post'
+        print '----------------------------------------------'
+
+        customer = Customer.objects.get(subscriber=request.user)
+        print 'Customer: ', customer
+        print request.GET
+
+        # Get plan and create if it doesn't exist
+        # subscribe user to plan
+
         return _ajax_response(
             request, redirect(reverse('become_supporter_complete'))
-
         )
 
 
 become_supporter = BecomeSupporterView.as_view()
 
 
-# FIXME Temporary view to mock become supporter completion
 class BecomeSupporterCompleteView(BecomeSupporterView):
     def get_context_data(self, **kwargs):
         context = super(
             BecomeSupporterCompleteView, self
         ).get_context_data(**kwargs)
         context['completed'] = True
+
+        print 'BecomeSupporterCompleteView: get_context_data'
+        print context
+        print '----------------------------------------------'
+
         return context
 
 
@@ -297,11 +412,18 @@ def user_settings_view_new(request):
     else:
         artist_info_form = ArtistInfoForm(instance=request.user)
 
+    plan_id = request.user.customer.current_subscription.plan
+    plan = stripe.Plan.retrieve(id=plan_id)
+
+    customer_detail = CustomerDetail.get(id=request.user.customer.stripe_id)
+    print customer_detail
+
+
     return render(request, 'account/user_settings_new.html', {
         'change_email_form': change_email_form,
         'change_profile_form': edit_profile_form,
         'change_password_form': change_password_form,
-        'current_user' : request.user,
+        'current_user': request.user,
         'artist_info_form': artist_info_form,
     })
 

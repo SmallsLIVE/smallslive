@@ -103,6 +103,7 @@ INSTALLED_APPS = [
     'static_pages',
     'users',
     'utils',
+    'custom_stripe',
 ] + get_core_apps([
     'oscar_apps.address',
     'oscar_apps.basket',
@@ -540,7 +541,22 @@ DJSTRIPE_PLANS = {
         "currency": "usd",
         "interval": "yearly"
     },
+    "monthly": {
+        "stripe_plan_id": "plan_D01xMWV5Brx2vm",
+        "name": "Monthly Subscriptions",
+        "type": 'monthly',
+        "description": "Monthly Subscription",
+        "price": 0,  # $1000.00
+        "currency": "usd",
+        "interval": "monthly"
+    },
 }
+
+STRIPE_PRODUCTS = {
+    'month': 'prod_D01wWC6DLGhq3U',
+    'year': 'prod_D0T011J87Uwv2E'
+}
+
 
 SUBSCRIPTION_PLANS = {
     'free': {

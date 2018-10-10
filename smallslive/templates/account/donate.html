@@ -15,14 +15,13 @@
         <div class="banner-blur-container"></div>
     </div>
     {% if not completed %}
-      <p class="text2 accent-color">Become a supporting member</p>
+      <p class="text2 accent-color">Donate</p>
     {% else %}
-      <p class="text2 accent-color">You are now a supporting member</p>
+      <p class="text2 accent-color">Thank you for your donation</p>
     {% endif %}
     <div class="flex-column items-center items-wrapper">
       <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover">
         <div class="{% if not completed %}active{% endif %} step-button"></div>
-        <div class="step-button"></div>
         <div class="step-button"></div>
         <div class="{% if completed %}active{% endif %} step-button"></div>
       </div>
@@ -34,35 +33,17 @@
         </div>
       </div>
       <div id="supporterStep2" class="supporter-step" style="display: none">
-          <div class="text9">You will receive access to our Audio/Video Archive for as long as you are a Supporting Member.<br> Supporting Members may make either monthly pledges or yearly donations. Please choose what is best for you.</div>
+          <div class="text9">You will be able to download a Tax return sheet from your donation history</div>
 
         <div class="flex-column items-center supporter-plan-input">
           <div class="section-title section-title-no-padded">
-            <div class="title1">Monthly Pledge</div>
+            <div class="title1">One Time Donation</div>
           </div>
-          <p class="text9">Monthly Pledges are billed automatically and can be canceled at any time.</p>
-          <div id="monthlyPledge" class="button-row button-row-big button-row-margin">
-            <button>$ 10</button>
-            <button>$ 20</button>
-            <button>$ 50</button>
+          <p class="text9">Enter any amount of you choice to support Jazz music</p>
+          <div id="oneTimePayment" class="button-row button-row-big button-row-margin">
             <div class="custom-input text4">
-              <input type="number" class="no-spinners" value="supporter-monthly-pledge">
-              <label for="supporter-monthly-pledge"><div>SET YOUR OWN</div></label>
-            </div>
-          </div>
-        </div>
-        <div class="flex-column items-center  supporter-plan-input">
-          <div class="section-title section-title-no-padded">
-            <div class="title1">Yearly Donation</div>
-          </div>
-          <p class="text9">Yearly Pledges are a one time donation that gives you one year’s access to the Audio/Video Archive.</p>
-          <div id="yearlyPledge" class="button-row button-row-big button-row-margin">
-            <button>$ 100</button>
-            <button>$ 500</button>
-            <button>$ 1000</button>
-            <div class="custom-input text4">
-              <input type="number" class="no-spinners" value="supporter-yearly-pledge">
-              <label for="supporter-yearly-pledge"><div>ENTER  AMOUNT<br>(MIN  $100)</div></label>
+              <input type="number" class="no-spinners" value="one_time_payment">
+              <label><div>Enter amount</div></label>
             </div>
           </div>
         </div>
@@ -74,16 +55,13 @@
               <div class="title7">Payment Information</div>
             </div>
           </div>
-          <div class="text9 flex-column">
-            <p id="pledge-type"></p>
-            <p id="payment-type"></p>
-          </div>
           <div class="supporter-card-data">
             <form method="POST" role="form" id="formSupporter"
-                  action="{% url 'become_supporter' %}">
+                  action="{% url 'donate' %}">
               {% csrf_token %}
               <input type="text" id="hiddenTypeInput" name="type" hidden>
               <input type="number" id="hiddenQuantityInput" name="quantity" hidden>
+              <input type="text" name="redirect_url" value="{{ redirect_url }}"hidden>
               <div class="flex-column content-space-between flex-grow">
                 <div class="flex-row content-space-between">
                   <input id="full-name" type="text" class="form-control credit-card" placeholder="Full Name on Credit Card" data-stripe="name">
@@ -115,7 +93,7 @@
         <div id="supporterStep4" class="flex-column items-center supporter-text-container">
           <div class="supporter-text">
             <p class="title7"><span class="big-letter">T</span>
-              hank you for becoming a <span class='accent-color'>supporting member</span> of the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.  <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span> please enjoy our livestreams and extensive audio/video archive.
+              hank you for donating. we greatly appreciate your support of our mission.
             </p>
           </div>
         </div>
@@ -126,8 +104,8 @@
       <button id="backButton" class="button-bordered">Back</button>
         <button id="confirmButton" class="button-bordered">Confirm</button>
       {% else %}
-        <a href="{% url 'archive' %}">
-          <button>Access the archive</button>
+        <a href="{{ redirect_url }}">
+          <button>Continue</button>
         </a>
       {% endif %}
 

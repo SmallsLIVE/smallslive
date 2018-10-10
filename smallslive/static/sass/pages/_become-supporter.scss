@@ -3,6 +3,13 @@
     margin-top:60px;
   }
 
+  .items-wrapper {
+    width: auto;
+
+    .supporter-step {
+      width: 100%;
+    }
+  }
   .supporter-plan-input{
     .section-title{
       width: 320px;
@@ -89,6 +96,14 @@
       margin: 10px;
       border-radius: 0;
       background-color: $white-transparent;
+
+      &.credit-card {
+        flex: 0 0 calc(50% - 20px);
+      }
+
+      &.error {
+        border: 1px solid red;
+      }
     }
 
     .flex-row {

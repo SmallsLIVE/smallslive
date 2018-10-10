@@ -121,6 +121,9 @@ def _get_most_popular(range=None):
 
 @cached(timeout=6*60*60)
 def _get_most_popular_uploaded(range_size=None):
+
+    return []
+
     range_start, range_end = calculate_query_range(range_size)
 
     sqs = Event.objects.filter(
@@ -353,6 +356,8 @@ class EventDetailView(DetailView):
                         'event_url': event.get_absolute_url(),
                         'start': first_set.utc_start - timedelta(minutes=15)
                     }
+
+        context['donate_url'] = reverse('donate')
 
         return context
 
