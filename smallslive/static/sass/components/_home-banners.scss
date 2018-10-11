@@ -5,6 +5,7 @@ $banners-height: 38vh;
   @media (max-width: $screen-sm-max) {
     display: none;
   }
+  margin-bottom: 30px;
   width: 100%;
 
 
@@ -262,7 +263,7 @@ $banners-height: 38vh;
         background-image: url("/static/image/banners/supporter_mobile_banner.jpg"); 
         background-size: 100% 100%;
         padding: 6.2vw 0;
-        margin-bottom: 0;
+        margin-bottom: 15px;
         .text9{
           font-size: 3.84vw;
           text-align: justify;
