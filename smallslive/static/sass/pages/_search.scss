@@ -120,7 +120,6 @@
 
   //Mobile
   @media (max-width: $screen-sm-max) {
-    padding-top: 0;
 
     .search-tab-content {
       &:not(.active) {
@@ -464,13 +463,9 @@
 
     @media (max-width: $screen-sm-max) {
       flex-direction: column;
-      padding-top: 130px;
     }
   }
 
-  @media (max-width: $screen-sm-max) {
-    @include variable-admin-padding($mobile-bar-height * 2);
-  }
   width: 100%;
   position: relative;
 

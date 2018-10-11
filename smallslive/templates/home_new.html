@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block header %}
-  <div class="navigation-bars {% if user.is_superuser %}admin-shown{% endif %}">
+  <div class="navigation-bars">
     {% if user.is_superuser %}
       {% include 'admin_header.html' %}
     {% endif %}
@@ -32,7 +32,7 @@
   {% include 'become_a_supporter_dialog.html' %}
 
 
-  <div class="main-container{% if user.is_superuser %} admin-shown{% endif %}">
+  <div class="main-container pad-content">
     {% block home_content %}
     <main>
       {% if not request.user.is_authenticated %}

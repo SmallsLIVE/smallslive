@@ -55,7 +55,7 @@
   height: $mobile-bar-height;
 
   @media(max-width: $screen-sm-max) {
-    height: 15vw;
+    height: $mobile-bar-height;
   }
 
 
@@ -68,14 +68,14 @@
     justify-content: center;
     align-items: center;
     pointer-events: none;
+    max-height: 100%;
 
     .smalls-logo {
       pointer-events: all;
       margin: 12px 0;
 
       img {
-        height: 11vw;
-        width: 11vw;
+        width: 50px;
       }
     }
   }
