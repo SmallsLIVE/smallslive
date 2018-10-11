@@ -368,7 +368,7 @@ $(document).ready(function () {
     })
 
     if (setToDate) {
-      $datePickerTo.datepicker('setDate', defaultEndDate);
+      $datePickerTo.datepicker('setDate', defaultToDate);
     }
 
     $datePickerTo.on('changeDate', function (newDate) {
@@ -440,8 +440,8 @@ $(document).ready(function () {
     $(".datepicker-reset").click(function () {
         $('#search-date-picker-from input').val("").datepicker("update");
         $('#search-date-picker-to input').val("").datepicker("update");
-        datePickerFromDate = defaultToDate;
-        datePickerToDate = defaultEndDate;
+        datePickerFromDate = defaultFromDate;
+        datePickerToDate = defaultToDate;
         $("#search-date-picker-from input").click();
         $("#search-date-picker-from input").focus();
     });
