@@ -131,6 +131,7 @@ class UpcomingEventMixin(object):
 class MainSearchView(View, SearchMixin):
 
     def get(self, request, *args, **kwargs):
+        # TODO: Why
         main_search = request.GET.get('main_search', None)
         artist_search = request.GET.get('artist_search', None)
         page = int(request.GET.get('page', 1))
@@ -141,6 +142,7 @@ class MainSearchView(View, SearchMixin):
         date_to = request.GET.get('date_to', None)
         artist_pk = request.GET.get('artist_pk', None)
         venue = request.GET.get('venue', None)
+        partial = request.GET.get('partial', False)
 
         if date_from:
             date_from = parser.parse(date_from, fuzzy=True)
@@ -148,9 +150,14 @@ class MainSearchView(View, SearchMixin):
                 date_from = timezone.make_aware(
                     date_from, timezone.get_current_timezone())
         if date_to:
+<<<<<<< HEAD
            print(date_to)
            date_to = parser.parse(date_to, fuzzy=True)
            if not date_to.tzinfo:
+=======
+            date_to = parser.parse(date_to, fuzzy=True)
+            if not date_to.tzinfo:
+>>>>>>> develop
                 date_to = timezone.make_aware(
                     date_to, timezone.get_current_timezone())
  
@@ -167,7 +174,8 @@ class MainSearchView(View, SearchMixin):
                 date_to=date_to, artist_pk=artist_pk, venue=venue)
 
             context = {'events': events[0] if events else []}
-            template = 'search/event_search_result.html'
+            template = ('search/event_search_row.html' if partial
+                        else 'search/event_search_result.html')
         else:
             return Http404('entity does not exist')
 
@@ -191,7 +199,7 @@ class MainSearchView(View, SearchMixin):
                 'has_last_page': (num_pages - page) >= 3
             }
 
-            if date_from > timezone.now().replace(hour=0, minute=0):
+            if date_from and date_from > timezone.now().replace(hour=0, minute=0):
                 context['show_venue_name'] = True
 
             template = 'search/page_numbers_footer.html'
@@ -284,6 +292,11 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         context['range'] = range(
             1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2]
         context['has_last_page'] = (num_pages - page) >= 3
+        default_to_date = 'now'
+        if event_blocks[0]:
+            default_to_date = event_blocks[0][0].date.strftime('%m/%d/%Y')
+        context['default_from_date'] = timezone.now().strftime('%m/%d/%Y')
+        context['default_to_date'] = default_to_date
 
         return context
 

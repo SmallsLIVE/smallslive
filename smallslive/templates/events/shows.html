@@ -2,23 +2,23 @@
 {% load thumbor_tags %}
 {% load i18n %}
 
-<section id="showsContent" class="search-tab-content active {{ archived|yesno:',shows-calendar' }}">
+<section id="showsContent" class="search-tab-content active {{ archived|yesno:',shows-calendar' }}" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
   <div class="musicians-results white-line-bottom">
       <div class="title1 shows-results-title">{{ archived|yesno:'Archived,Upcoming' }} Shows</div>
     {% if archived %}
-      <div id="artist-subheader" class="showing-results text1" style="margin-top: -13px;">{{ showing_event_results }}</div>
+      <div id="artist-subheader" class="showing-results text1" style="margin-top: -13px;">{{ showing_evet_results }}</div>
     {% else %}
     <div class="refine text1">Refine</div>
     {% endif %}
   </div>
   {% if archived %}
-      {% include 'events/archived_filters.html' %}
+      {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
   {% endif %}
   {% if upcoming %}
       {% include 'events/upcoming_filters.html' %}
   {% endif %}
   <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
-    {% include 'search/event_search_result.html' with events=event_results show_event_venue=show_event_venue %}
+    {% include 'search/event_search_result.html' with events=event_results show_event_venue=show_event_venue secondary=True %}
   </main>
 
   <div class="concerts-footer flex-column items-center">
@@ -67,13 +67,11 @@
 
         <span class="btngroup">
           {% for venue in venues %}
-          <button class="btngroup--btn" value="{{venue.pk}}">{{venue.short_name}}</button>
+              <button class="btngroup--btn" value="{{venue.pk}}">{{venue.short_name}}</button>
           {% endfor %}
           <button value="all" class="btngroup--btn">All</button>
         </span>
 
         <div class="reset-all text2 text-grey">Reset All</div>
-
     </div>
-  
   </div>

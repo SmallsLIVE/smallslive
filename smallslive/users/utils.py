@@ -1,4 +1,8 @@
+import decimal
 from datetime import timedelta
+import stripe
+from djstripe.models import Charge, CurrentSubscription, convert_tstamp
+
 try:
     from django.utils.timezone import now
 except ImportError:
@@ -86,3 +90,52 @@ def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
                                                            signup=signup,
                                                            confirm=True)
             assert email_address
+
+
+def subscribe(customer, plan):
+    print 'subscribe: '
+    print customer
+    print plan
+    cu = customer.stripe_customer
+    print cu
+    cu.update_subscription(plan=plan.stripe_id)
+    try:
+        current_subscription = customer.current_subscription
+        print current_subscription
+        current_subscription.plan = plan.stripe_id
+        current_subscription.amount = plan.amount
+        current_subscription.save()
+        print 'current_subscription saved'
+    except CurrentSubscription.DoesNotExist:
+        sub = cu.subscription
+        print 'Creating current subscription: '
+        cs = CurrentSubscription.objects.create(
+            customer=customer,
+            plan=plan.stripe_id,
+            current_period_start=convert_tstamp(
+                sub.current_period_start
+            ),
+            current_period_end=convert_tstamp(
+                sub.current_period_end
+            ),
+            amount=sub.plan.amount,
+            status=sub.status,
+            cancel_at_period_end=sub.cancel_at_period_end,
+            canceled_at=convert_tstamp(sub, 'canceled_at'),
+            start=convert_tstamp(sub.start),
+            quantity=sub.quantity
+        )
+
+        print cs
+        return cs
+
+
+def charge(customer, amount):
+    print 'charge: ---->'
+    print amount
+    print type(amount)
+
+    charge = customer.charge(decimal.Decimal(amount))
+    print charge
+
+    return charge

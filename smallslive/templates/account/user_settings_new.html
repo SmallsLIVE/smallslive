@@ -26,6 +26,7 @@
 
 
 
+<<<<<<< HEAD
 <div class="account-settings-container-new flex-row">
 	<div class="account-settings-menu">
 			<div data-id="user-account" class="text1">Account info</div>
@@ -119,6 +120,116 @@
 				</div>
 			</div>
 		</div>
+=======
+                <form class="custom-form" role="form" id="change-email-form" method="post" action="{% url "user_settings_new" %}">
+                    {% csrf_token %}
+                    <h2 class="header">Email address:</h2>
+                    <p class="text4 text-grey">Please note that you'll need to confirm your ownership of the new email address once you set it. To do that just follow the confirmation link we'll send to that address.</p>
+                    <div class="form-group {% if change_email_form.email.errors  %}has-error{% endif %}">
+                        {{ change_email_form.email }}
+                        {% for error in change_email_form.email.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <input type="submit" class="white-border-button" name="change_email" value="Save">
+                </form>
+
+                <div class="white-line"></div>
+
+                <form class="custom-form" role="form" id="change-password-form" method="post" action="{% url "user_settings_new" %}">
+                    {% csrf_token %}
+                    <h2 class="header">Change password:</h2>
+                    <p class="text4 text-grey">To change your password please input your current password and your new password twice.</p>
+                    <div class="form-group {% if change_password_form.oldpassword.errors  %}has-error{% endif %}">
+                        <input type="password" class="form-control" name="oldpassword" id="oldpassword" placeholder="Current password">
+                        {% for error in change_password_form.oldpassword.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group {% if change_password_form.password1.errors  %}has-error{% endif %}">
+                        <input type="password" class="form-control" name="password1" id="password1" placeholder="New Password">
+                        {% for error in change_password_form.password1.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group {% if change_password_form.password1.errors  %}has-error{% endif %}">
+                        <input type="password" class="form-control" name="password2" id="password2" placeholder="New Password Again">
+                        {% for error in change_password_form.password2.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <input type="submit" class="white-border-button" name="change_password" value="Change password">
+                </form>
+
+
+
+                <form class="custom-form" role="form" id="" method="post" action="{% url "user_settings_new" %}">
+                    {% csrf_token %}
+                    <h2 class="header">Donation settings:</h2>
+                    <p>Current Subscription</p>
+                    <pre>Settings</pre>
+                    <pre>{{ user.first_name }}</pre>
+                    <pre>{{ user.customer.card_kind }}</pre>
+                    <pre>{{ user.customer.card_last_4 }}</pre>
+                    <pre>{{ user.customer.current_subscription.amount }}</pre>
+
+                    <div class="form-group {% if change_password_form.oldpassword.errors  %}has-error{% endif %}">
+                        <input type="password" class="form-control" name="oldpassword" id="oldpassword" placeholder="Current password">
+                        {% for error in change_password_form.oldpassword.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group {% if change_password_form.password1.errors  %}has-error{% endif %}">
+                        <input type="password" class="form-control" name="password1" id="password1" placeholder="New Password">
+                        {% for error in change_password_form.password1.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group {% if change_password_form.password1.errors  %}has-error{% endif %}">
+                        <input type="password" class="form-control" name="password2" id="password2" placeholder="New Password Again">
+                        {% for error in change_password_form.password2.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <input type="submit" class="white-border-button" name="change_password" value="Change password">
+                </form>
+
+                <form class="custom-form" role="form" id="" method="post" action="{% url "user_settings_new" %}">
+                    {% csrf_token %}
+                    <h2 class="header">Change Credit card Info:</h2>
+                    <p class="text4 text-grey">To change your credit card ....</p>
+                    <div class="form-group {% if change_password_form.oldpassword.errors  %}has-error{% endif %}">
+                        <input type="password" class="form-control" name="oldpassword" id="oldpassword" placeholder="Current password">
+                        {% for error in change_password_form.oldpassword.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group {% if change_password_form.password1.errors  %}has-error{% endif %}">
+                        <input type="password" class="form-control" name="password1" id="password1" placeholder="New Password">
+                        {% for error in change_password_form.password1.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <div class="form-group {% if change_password_form.password1.errors  %}has-error{% endif %}">
+                        <input type="password" class="form-control" name="password2" id="password2" placeholder="New Password Again">
+                        {% for error in change_password_form.password2.errors %}
+                            <p class="form-error-text">{{ error  }}</p>
+                        {% endfor %}
+                    </div>
+                    <input type="submit" class="white-border-button" name="change_password" value="Change password">
+                </form>
+                
+            </div>
+            <div class="flex-column settings-right">
+
+                {% if current_user.artist  %}
+                    {% include 'account/payout_info.html' %}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+>>>>>>> develop
 </div>
 {% endblock%}
 

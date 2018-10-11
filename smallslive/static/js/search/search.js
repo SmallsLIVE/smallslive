@@ -1,4 +1,4 @@
-var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter, eventFilter, eventDateFrom, eventDateTo, apply, artist_pk;
+var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, venueFilter, eventFilter, eventDateFrom, eventDateTo, apply, artist_pk;
 
 function sendArtistRequest() {
     $.ajax({
@@ -12,7 +12,7 @@ function sendArtistRequest() {
         dataType: 'json',
         success: function (data) {
             if (data.template) {
-                $("#artist-subheader").html(data.showingResults)
+                $("#artist-subheader").html(data.showingResults);
                 $("#artists").html(data.template);
                 $(".container-list-article").removeClass("artist-loading-gif");
                 $("#artists").css("visibility", "visible");
@@ -52,85 +52,87 @@ function loadMoreEvents() {
     sendEventRequest();
 }
 
-function showArtistInfo(artist) {
-    $.ajax({
-        url: '/search/ajax/artist-info/',
-        data: {
-            'id': $(artist).data("id")
-        },
-        dataType: 'json',
-        success: function (data) {
-            if (data.template) {
-                $("#musicianContent").hide();
-                $(".artist-search-profile-container").html(data.template);
-                $(".artist-search-profile-container")[0].style.display = 'block';
-                $("#artist-subheader").html("SHOWING 1 - 1 OF 1 RESULTS");
-                $("#back-search").css("display", "flex");
+$(document).on('click', '#artists .artist-row', function() {
+  var artistId = $(this).data('id');
+  $.ajax({
+    url: '/search/ajax/artist-info/',
+    data: {
+      'id': artistId
+    },
+    dataType: 'json',
+    success: function (data) {
+      if (data.template) {
+        $('#musicianContent').hide();
+        $('.artist-search-profile-container').html(data.template);
+        $('.artist-search-profile-container')[0].style.display = 'block';
+        $('#artist-subheader').html('SHOWING 1 - 1 OF 1 RESULTS');
+        $('.artist-search-profile-container .close-button-parent').show();
+        $('.search-tabs').addClass('hidden');
+        $('*[data-toggle-tab-group="search-results"][data-toggle-tab="archived-shows"]').show();
 
-                eventDateFrom = eventDateTo = null;
-                artist_pk = $(artist).data("id");
+        eventDateFrom = eventDateTo = null;
+        artist_pk = artistId;
 
-                apply = true;
-                eventPageNum = 1;
-                sendEventRequest();
-
-            }
-        }
-    });
-}
+        apply = true;
+        eventPageNum = 1;
+        sendEventRequest();
+      }
+    }
+  });
+});
 
 function sendEventRequest() {
+    var utcDateFrom = null;
+    var utcDateTo = null;
+    
     if (eventDateFrom) {
-        var utcDateFrom = eventDateFrom.getFullYear() + '/' + (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate();
-    }
-    else {
-        var utcDateFrom = null;
+        utcDateFrom = eventDateFrom.getFullYear() + '/' + (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate();
     }
     if (eventDateTo) {
-        var utcDateTo = eventDateTo.getFullYear() + '/' + (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate();
-    }
-    else {
-        var utcDateTo = null;
+        utcDateTo = eventDateTo.getFullYear() + '/' + (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate();
     }
 
+    searchFilters = {
+        'main_search': searchTerm,
+        'page': eventPageNum,
+        'order': eventOrderFilter,
+        'date_from': utcDateFrom ? utcDateFrom : null,
+        'date_to': utcDateTo ? utcDateTo : null,
+        'artist_pk': artist_pk ? artist_pk : null,
+        'partial': true
+    }
+    if (venueFilter) {
+        searchFilters['venue'] = venueFilter;
+    }
     $.ajax({
         url: '/search/ajax/event/',
-        data: {
-            'main_search': searchTerm,
-            'page': eventPageNum,
-            'order': eventOrderFilter,
-            'date_from': utcDateFrom ? utcDateFrom : null,
-            'date_to': utcDateTo ? utcDateTo : null,
-            'artist_pk': artist_pk ? artist_pk : null
-        },
+        data: searchFilters,
         dataType: 'json',
         success: function (data) {
             if (data.template) {
+                var $showsContainer = $('.search-content .shows-container');
                 $('#event-subheader').html(data.showingResults);
                 $('#event-subheader-footer').html(data.showingResults);
 
                 if (apply || eventFilter) {
                     apply = false;
                     eventFilter = false;
+                    $showsContainer.html('');
                     $('#events .shows-container').html('');
                 }
+                 var article = $(data.template).find('article');
+                 if (!article.length) {
+                     $('#events .shows-container').html(data.template);
+                     $showsContainer.html(data.template);
+                 }
+                 article.each(function( index ) {
+                     $('#events .shows-container').append($( this ));
+                     $showsContainer.append($( this ));
+                 });
 
-                var article = $(data.template).find('article');
-                if (!article.length) {
-                    $('#events .shows-container').html(data.template);
-                }
-                article.each(function( index ) {
-                    $('#events .shows-container').append($( this ));
-                });
                 eventMaxPageNum = data.numPages;
-
                 $("#event-load-gif").css("display", "none");
-
-                if (data.numPages != eventPageNum) {
-                    $("#load-more-btn").show();
-                } else {
-                    $("#load-more-btn").hide();
-                }
+                $("#load-more-btn").toggle(data.numPages != eventPageNum);
             }
         }
     });
@@ -138,16 +140,11 @@ function sendEventRequest() {
 
 $(document).ready(function () {
     searchTerm = getUrlParameter("q");
-    if (searchTerm) {
-        searchTerm = searchTerm.replace(/\+/g, ' ');
-    } else {
-        searchTerm = '';
-    }
+    searchTerm = searchTerm ? searchTerm.replace(/\+/g, ' '): '';
     artistSearchTerm = "";
     artistInstrument = "";
     artistPageNum = eventPageNum = 1;
     artistMaxPageNum = eventMaxPageNum = 2;
-    eventOrderFilter = "newest";
     apply = false;
     eventFilter = false;
 
@@ -184,8 +181,53 @@ $(document).ready(function () {
     $('#events-filter').change(function () {
         eventFilter = true;
         eventOrderFilter = $(this).val();
+        venueFilter = "all";
         eventPageNum = 1;
 
+        sendEventRequest();
+    });
+
+    $('#period-filter, #refine-period-filter').change(function () {
+        eventFilter = true;
+        console.log($(this).val());
+
+        if ($(this).val() == 'All Upcoming') {
+            eventDateTo = null;
+            eventDateFrom = new Date();
+        }
+        else if ($(this).val() == 'One Day') {
+            eventDateTo = new Date((new Date()).getTime() + 1 * 24 * 60 * 60 * 1000);
+            eventDateFrom = new Date();
+        }
+        else if ($(this).val() == 'One Week') {
+            eventDateTo = new Date((new Date()).getTime() + 7 * 24 * 60 * 60 * 1000);
+            eventDateFrom = new Date();
+        }
+        else if ($(this).val() == 'One Month') {
+            eventDateTo = new Date((new Date()).getTime() + 31 * 24 * 60 * 60 * 1000);
+            eventDateFrom = new Date();
+        }
+
+        var $filter = $(this);
+        if ($filter.attr('id').indexOf('refine') > -1) {
+            $("#search-date-picker-from-refine input").datepicker("update", eventDateFrom);
+            $("#search-date-picker-to-refine input").datepicker("update", eventDateTo);
+
+        } else {
+            $("#search-date-picker-from input").datepicker("update", eventDateFrom);
+            $("#search-date-picker-to input").datepicker("update", eventDateTo);
+
+        }
+        if (eventDateTo) {
+            $(".datepicker-btn").html('From <span class="from accent-color"></span> to <span class="to accent-color"></span>');
+            $('.datepicker-btn span.from').text(eventDateFrom.toLocaleDateString());
+            $('.datepicker-btn span.to').text(eventDateTo.toLocaleDateString());
+        } else {
+            $(".datepicker-btn").html("DATE");
+        }
+
+
+        eventPageNum = 1;
         sendEventRequest();
     });
 
@@ -253,12 +295,16 @@ $(document).ready(function () {
     }
 
     function display() {
-        $(".datepicker-container").css("display", "flex").hide().fadeIn(500, function() {
+        var $datePickerContainer = $(".datepicker-container");
+        $datePickerContainer.css({'left': datePickerLeft, 'top': datePickerTop});
+        $datePickerContainer.css("display", "flex").hide().fadeIn(500, function() {
             $(document).bind("click", hide);
-            $(".datepicker-container").data('shown', true)}); 
+            $(".datepicker-container").data('shown', true);
+        });
 
-        $("#search-date-picker-from input").click();
-        $("#search-date-picker-from input").focus();  
+        var $datePickerInput = $(datePickerInputSelector);
+        $datePickerInput.click();
+        $datePickerInput.focus();  
     }
 
     function hide() {   
@@ -279,11 +325,20 @@ $(document).ready(function () {
         autoclose: true,
         container: '#search-date-picker-from',
         showOnFocus: false,
-        endDate: new Date()
+        startDate: datePickerFromDate,
+        endDate: datePickerToDate
     });
 
+    if (setFromDate) {
+      $datePickerFrom.datepicker('setDate', 'now');
+    }
+
     $datePickerFrom.on('changeDate', function (newDate) {
-        eventDateFrom = newDate.date;
+        datePickerFromDate = newDate.date;
+        if (!datePickerToDate || datePickerFromDate > datePickerToDate) {
+           datePickerToDate = datePickerFromDate;
+           $datePickerTo.datepicker('setDate', datePickerToDate);
+        }
         //$('#events-filter').val('oldest');
         //$("[value='oldest']").click();
         $("#search-date-picker-to input").click();
@@ -308,18 +363,16 @@ $(document).ready(function () {
         autoclose: false,
         container: '#search-date-picker-to',
         showOnFocus: false,
-        endDate: new Date()
-    }).datepicker('setDate', 'now');
+        startDate: datePickerFromDate,
+        endDate: datePickerToDate
+    })
+
+    if (setToDate) {
+      $datePickerTo.datepicker('setDate', defaultEndDate);
+    }
 
     $datePickerTo.on('changeDate', function (newDate) {
-        eventDateTo = newDate.date;
-
-        from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
-        from = '<span class="accent-color">' + from + '</span>';
-        to = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
-        to = '<span class="accent-color">' + to + '</span>';
-
-        $(".datepicker-btn").html("From " + from + " to " + to);
+        datePickerToDate = newDate.date;
     });
 
     $datePickerTo.on('click', function () {
@@ -342,37 +395,140 @@ $(document).ready(function () {
       $('#artists').removeClass('invisible');
     }
 
-    $(document).on('click', '#back-search', function () {
-
+    $(document).on('click', '.artist-search-profile-container .close-button', function () {
         // If only one artist, assume back to search means
         // actually resetting search
         var $artists = $('.artist-row');
         if ($artists.length == 1) {
           window.location.href = '/search';
         } else {
-          $("#back-search").hide();
           $("#musicianContent").show();
           $(".artist-search-profile-container").hide();
-          $("#showsContent").show();
+          $('.artist-search-profile-resume .close-button').show();
+          $('.search-tabs').removeClass('hidden');
           artist_pk = null;
           apply = true;
           eventPageNum = 1;
+          $('[data-toggle-tab-group="search-results"][data-toggle-tab-target]').show();
+          $('[data-toggle-tab-group="search-results"][data-toggle-tab]').hide();
+          $('[data-toggle-tab-group="search-results"][data-toggle-tab="musicians"]').show();
           sendEventRequest();
         }
     });
 
     $("#apply-button").click(function () {
+
+        eventDateFrom = datePickerFromDate;
+        eventDateTo = datePickerToDate;
         apply = true;
         eventPageNum = 1;
         $(".datepicker-container").hide();
         sendEventRequest();
+
+        if (!eventDateTo || !eventDateFrom) {
+          $(".datepicker-btn").html("DATE");
+        }
+
+        from = (datePickerFromDate.getMonth() + 1) + '/' + datePickerFromDate.getDate() + '/' + datePickerFromDate.getFullYear();
+        from = '<span class="from accent-color">' + from + '</span>';
+        to = (datePickerToDate.getMonth() + 1) + '/' + datePickerToDate.getDate() + '/' + datePickerToDate.getFullYear();
+        to = '<span class="to accent-color">' + to + '</span>';
+
+        $(".datepicker-btn").html("From " + from + " to " + to);
     });
     
     $(".datepicker-reset").click(function () {
         $('#search-date-picker-from input').val("").datepicker("update");
         $('#search-date-picker-to input').val("").datepicker("update");
-        eventDateFrom = eventDateTo = null;
+        datePickerFromDate = defaultToDate;
+        datePickerToDate = defaultEndDate;
         $("#search-date-picker-from input").click();
         $("#search-date-picker-from input").focus();
     });
+
+
+    var $datePickerFromRefine = $('#search-date-picker-from-refine input');
+    $datePickerFromRefine.datepicker({
+        format: 'mm/dd/yyyy',
+        autoclose: true,
+        container: '#search-date-picker-from-refine',
+        showOnFocus: false,
+        startDate: new Date()
+    }).datepicker('setDate', 'now');
+    eventDateFrom = new Date();
+    datePickerFromDate = eventDateFrom;
+
+    $datePickerFromRefine.on('changeDate', function (newDate) {
+        eventDateFrom = newDate.date;
+        //$('#events-filter').val('oldest');
+        //$("[value='oldest']").click();
+        $("#search-date-picker-to-refine input").click();
+        $("#search-date-picker-to-refine input").focus();
+    });
+
+    $datePickerFromRefine.on('click', function () {
+        var dropdown = $('#search-date-picker .dropdown-menu');
+        if (dropdown[0] && dropdown[0].style.display === 'block') {
+            $datePickerFromRefine.datepicker('hide');
+        } else {
+            $datePickerFromRefine.datepicker('show');
+        }
+
+    });
+
+    //////////////////////
+
+    var $datePickerToRefine = $('#search-date-picker-to-refine input');
+    $datePickerToRefine.datepicker({
+        format: 'mm/dd/yyyy',
+        autoclose: false,
+        container: '#search-date-picker-to-refine',
+        showOnFocus: false,
+        startDate: new Date()
+    });
+
+    $datePickerToRefine.on('changeDate', function (newDate) {
+        eventDateTo = newDate.date;
+
+        from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
+        from = '<span class="from accent-color">' + from + '</span>';
+        to = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
+        to = '<span class="to accent-color">' + to + '</span>';
+
+        $(".datepicker-btn").html("From " + from + " to " + to);
+    });
+
+    $datePickerToRefine.on('click', function () {
+        var dropdown = $('#search-date-picker .dropdown-menu');
+        if (dropdown[0] && dropdown[0].style.display === 'block') {
+            $datePickerToRefine.datepicker('hide');
+        } else {
+            $datePickerToRefine.datepicker('show');
+        }
+
+    });
+
+    $(".refine").click(function () {
+        $(".refine-overlay").show();
+    });
+
+    $(".closebtn").click(function () {
+        $(".refine-overlay").hide();
+    });
+
+    $(".refine-apply").click(function () {
+        apply = true;
+        eventPageNum = 1;
+        $(".refine-overlay").hide();
+        sendEventRequest();
+    });
+
+
+    $(".reset-all").click(function () {
+        $('#search-date-picker-from-refine input').val("").datepicker("update");
+        $('#search-date-picker-to-refine input').val("").datepicker("update");
+        eventDateFrom = eventDateTo = null;
+    });
+
+
 });

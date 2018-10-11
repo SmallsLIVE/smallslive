@@ -121,6 +121,9 @@ def _get_most_popular(range=None):
 
 @cached(timeout=6*60*60)
 def _get_most_popular_uploaded(range_size=None):
+
+    return []
+
     range_start, range_end = calculate_query_range(range_size)
 
     sqs = Event.objects.filter(
@@ -354,6 +357,8 @@ class EventDetailView(DetailView):
                         'start': first_set.utc_start - timedelta(minutes=15)
                     }
 
+        context['donate_url'] = reverse('donate')
+
         return context
 
     def _generate_metrics_data(self):
@@ -530,6 +535,7 @@ class GenericScheduleView(TemplateView, SearchMixin):
         context['venues'] = Venue.objects.all()
         context['actual_page'] = page = 1
         context['last_page'] = num_pages
+        context['default_from_date'] = timezone.now().strftime('%m/%d/%Y')
 
         return context
 
