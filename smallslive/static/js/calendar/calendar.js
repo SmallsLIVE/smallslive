@@ -1,4 +1,5 @@
 var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, eventOrderFilter, venueFilter, eventFilter, eventDateFrom, eventDateTo, apply, artist_pk;
+var datePickerFromDate, datePickerToDate;
 
 function changePage(param) {
     eventPageNum = parseInt(param.getAttribute("data-page-number"));
@@ -79,7 +80,7 @@ $(document).ready(function () {
     artistInstrument = "";
     artistPageNum = eventPageNum = 1;
     artistMaxPageNum = eventMaxPageNum = 2;
-    eventOrderFilter = "newest";
+    eventOrderFilter = "oldest";
     venueFilter = "all";
     apply = false;
     eventFilter = false;
@@ -156,9 +157,10 @@ $(document).ready(function () {
     }
 
     function display() {
-        $(".datepicker-container").css("display", "flex").hide().fadeIn(500, function() {
+        var $datePickerContainer = $(".datepicker-container");
+        $datePickerContainer.css({'left': 222, 'top': 41});
+        $datePickerContainer.css("display", "flex").hide().fadeIn(500, function() {
             $(document).bind("click", hide);
-            $(".datepicker-container").css({'left': 222, 'top': 41});
             $(".datepicker-container").data('shown', true);
         });
 
@@ -188,7 +190,7 @@ $(document).ready(function () {
     }).datepicker('setDate', 'now');
 
     $datePickerFrom.on('changeDate', function (newDate) {
-        eventDateFrom = newDate.date;
+        datePickerFromDate = newDate.date;
         //$('#events-filter').val('oldest');
         //$("[value='oldest']").click();
         $("#search-date-picker-to input").click();
@@ -217,14 +219,7 @@ $(document).ready(function () {
     });
 
     $datePickerTo.on('changeDate', function (newDate) {
-        eventDateTo = newDate.date;
-
-        from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
-        from = '<span class="from accent-color">' + from + '</span>';
-        to = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
-        to = '<span class="to accent-color">' + to + '</span>';
-
-        $(".datepicker-btn").html("From " + from + " to " + to);
+        datePickerToDate = newDate.date;
     });
 
     $datePickerTo.on('click', function () {
@@ -247,6 +242,8 @@ $(document).ready(function () {
         showOnFocus: false,
         startDate: new Date()
     }).datepicker('setDate', 'now');
+    eventDateFrom = new Date();
+    datePickerFromDate = eventDateFrom;
 
     $datePickerFromRefine.on('changeDate', function (newDate) {
         eventDateFrom = newDate.date;
@@ -301,16 +298,32 @@ $(document).ready(function () {
     ///////////
 
     $("#apply-button").click(function () {
+
+        eventDateFrom = datePickerFromDate;
+        eventDateTo = datePickerToDate;
+
         apply = true;
         eventPageNum = 1;
         $(".datepicker-container").hide();
         sendEventRequest();
+
+        if (!eventDateTo) {
+          $(".datepicker-btn").html("DATE");
+        }
+
+        from = (datePickerFromDate.getMonth() + 1) + '/' + datePickerFromDate.getDate() + '/' + datePickerFromDate.getFullYear();
+        from = '<span class="from accent-color">' + from + '</span>';
+        to = (datePickerToDate.getMonth() + 1) + '/' + datePickerToDate.getDate() + '/' + datePickerToDate.getFullYear();
+        to = '<span class="to accent-color">' + to + '</span>';
+
+        $(".datepicker-btn").html("From " + from + " to " + to);
     });
 
     $(".datepicker-reset").click(function () {
         $('#search-date-picker-from input').val("").datepicker("update");
         $('#search-date-picker-to input').val("").datepicker("update");
-        eventDateFrom = eventDateTo = null;
+        datePickerFromDate = newDate();
+        datePickerToDate = null;
         $("#search-date-picker-from input").click();
         $("#search-date-picker-from input").focus();
     });
