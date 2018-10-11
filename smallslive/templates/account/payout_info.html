@@ -1,15 +1,13 @@
 
     <form  class="custom-form" role="form" method="post" action="{% url "user_settings_new" %}">
             {% csrf_token %}
-            <h2 class="header">Payout information:</h2>
-            <p class="text4 text-grey">Enter a mailing address where we can send a check.</p>
-            <div class="form-group {% if artist_info_form.first_name.errors  %}has-error{% endif %}">
+            <div hidden class="form-group {% if artist_info_form.first_name.errors  %}has-error{% endif %}">
               {{ artist_info_form.first_name }}
               {% for error in artist_info_form.first_name.errors %}
                   <p class="form-error-text">{{ error  }}</p>
               {% endfor %}
             </div>
-            <div class="form-group {% if artist_info_form.last_name.errors  %}has-error{% endif %}">
+            <div hidden class="form-group {% if artist_info_form.last_name.errors  %}has-error{% endif %}">
               {{ artist_info_form.last_name }}
               {% for error in artist_info_form.last_name.errors %}
                   <p class="form-error-text">{{ error  }}</p>

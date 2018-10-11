@@ -23,8 +23,8 @@ from events.models import Recording, GigPlayed
 
 User = get_user_model()
 
-STATE_CHOICES_WITH_EMPTY = (('', ''),) + STATE_CHOICES
-COUNTRIES_WITH_EMPTY = (('', ''),) + tuple(countries)
+STATE_CHOICES_WITH_EMPTY = (('', 'State'),) + STATE_CHOICES
+COUNTRIES_WITH_EMPTY = (('', 'Country'),) + tuple(countries)
 
 
 class ToggleRecordingStateForm(forms.ModelForm):

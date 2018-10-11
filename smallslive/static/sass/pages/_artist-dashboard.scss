@@ -38,12 +38,6 @@
         .text2.flex-column {
             padding: 10px;
         }
-        .mobile-event-menu {
-            padding: 10px;
-            .mobile-event-opt div.white-border-button {
-                width: 33%;
-            }
-        }
     }
     .refine-container {
         display: none;
@@ -317,7 +311,7 @@
                 .mobile-event-opt {
                     justify-content: center;
                     .white-border-button {
-                        width: 25%;
+                        width:33%;
                         &.disabled {
                             color: grey;
                         }
@@ -335,37 +329,58 @@
                         }
                     }
                 }
-                .edit-event-mobile-form {
-                    text-align: center;
-                    background: $background-color;
-                    margin: 0 auto;
-                    #div_id_description {
-                        display: none;
-                    }
-                    #div_id_tickets_url {
-                        display: none;
-                    }
-                    .edit-event-mobile-form-body {
-                        * {
-                            margin-bottom: 30px;
+                .mobile-option-container{
+                    #not-authorized-text{
+                        .accent-color{
+                            margin: 20px 0;
                         }
                     }
-                    .close-button {
-                        padding-top: 20px;
-                        &:before,
-                        &:after {
-                            background-color: grey;
+                    .mobile-option-event-status{
+                        padding: 10px;
+                        .accent-color{
+                            margin: 20px 0;
+                        }
+                        .white-border-button{
+                            margin:0 auto;
+                            border-radius: 10px;
+                        }
+                        >  *:not(.accent-color){
+                            margin-bottom: 20px;
                         }
                     }
-                    .smalls-form-logo {
-                        padding-top: 20px;
-                        display: block;
-                        margin: 0 auto 30px auto;
-                    }
-                    .title1 {
-                        font-size: 6vw;
+                    .edit-event-mobile-form {
+                        text-align: center;
+                        background: $background-color;
+                        margin: 0 auto;
+                        #div_id_description {
+                            display: none;
+                        }
+                        #div_id_tickets_url {
+                            display: none;
+                        }
+                        .edit-event-mobile-form-body {
+                            * {
+                                margin-bottom: 30px;
+                            }
+                        }
+                        .close-button {
+                            padding-top: 20px;
+                            &:before,
+                            &:after {
+                                background-color: grey;
+                            }
+                        }
+                        .smalls-form-logo {
+                            padding-top: 20px;
+                            display: block;
+                            margin: 0 auto 30px auto;
+                        }
+                        .title1 {
+                            font-size: 6vw;
+                        }
                     }
                 }
+              
             }
         }
     }

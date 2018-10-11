@@ -98,17 +98,7 @@
                 <div class="title1 datepicker-dashboard-btn">Metrics</div>
             <div class="text2" id="datepicker-description">All Time</div>
         </div>
-
-        <div class="event-metrics-container flex-row">
-            <div class="event-metrics-container-plays event-metrics-container-data">
-                <div class="text3">Plays</div>
-                <div id="play-value" class="title1"></div>
-            </div>
-            <div class="event-metrics-container-time event-metrics-container-data">
-                <div class="text3">Time Listened</div>
-                <div id="time-value" class="title1"></div>
-            </div>
-        </div>
+        
     </div>
     </div>
 
@@ -143,21 +133,21 @@
     <div class="flex-column mobile-event-menu">
             <div id="mobile-metrics-button" class="flex-row mobile-event-opt">
                 <div class="white-border-button" data-id="mobile-option-metrics">Metrics</div>
-                    {% if is_admin and set.has_media %}
-                        {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-                        <div id="mobile-private-button" class="white-border-button" data-id="mobile-option-private"> Public </div>
-                        {% else %}
-                        <div id="mobile-public-button" class="white-border-button" data-id="mobile-option-publish"> Private </div>
-                        {% endif %}
-                        <div class="white-border-button" id="table-event-edit" data-pk=event.id data-slug=event.slug>Edit</div>
+                {% if is_admin and set.has_media %}
+                    {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
+                    <div id="mobile-private-button" class="white-border-button" data-id="mobile-option-private"> Public </div>
                     {% else %}
-                        {% if set.video_recording and set.video_recording.is_published %}
-                            <div class="white-border-button disabled">Public</div>
-                        {% else %}
-                            <div class="white-border-button disabled">Private</div>
-                        {% endif %}
-                        <div class="white-border-button disabled">Edit</div>
+                    <div id="mobile-public-button" class="white-border-button" data-id="mobile-option-publish"> Private </div>
                     {% endif %}
+                    <div class="white-border-button" id="table-event-edit" data-pk=event.id data-slug=event.slug>Edit</div>
+                {% else %}
+                    {% if set.video_recording and set.video_recording.is_published %}
+                        <div class="white-border-button disabled">Public</div>
+                    {% else %}
+                        <div class="white-border-button disabled">Private</div>
+                    {% endif %}
+                    <div class="white-border-button disabled">Edit</div>
+                {% endif %}
                 
             </div>
           
@@ -167,11 +157,11 @@
 
 
 
-            <div id="mobile-option-container">
+            <div class="mobile-option-container" id="mobile-option-container">
             <div class="edit-event-mobile-form-body" data-subpage-name="mobile-edit" data-subpage-url="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}" id="mobile-option-edit">
             </div>
             {% if is_admin and set.has_media %}
-                <div id="mobile-option-publish">
+                <div id="mobile-option-publish" class="mobile-option-event-status">
                     <div class="text2 accent-color">
                         THIS SET IS CURRENTLY PRIVATE
                     </div>
@@ -186,7 +176,7 @@
                     <button class="white-border-button" onclick="publishSetMobile({{ set.id }})">Publish</button>
                 </div>
 
-                <div id="mobile-option-private">
+                <div id="mobile-option-private" class="mobile-option-event-status">
                     <div class="text2 accent-color">
                         THIS SET IS CURRENTLY PUBLISHED
                     </div>
@@ -201,15 +191,28 @@
                     <button class="white-border-button" onclick="makeSetPrivateMobile({{ set.id }})">Make Private</button>
                 </div>
             {% endif %}
-            <div id="mobile-option-metrics"></div>
+            <div id="mobile-option-metrics">
+                <div class="event-metrics-container flex-row">
+                    <div class="event-metrics-container-plays event-metrics-container-data">
+                        <div class="text3">Plays</div>
+                        <div id="play-value" class="title1"></div>
+                    </div>
+                    <div class="event-metrics-container-time event-metrics-container-data">
+                        <div class="text3">Time Listened</div>
+                        <div id="time-value" class="title1"></div>
+                    </div>
+                </div>
+                <div class="title1">Select Metrics Period</div>
+            </div>
 
             <div id="not-authorized-text">
                     <div class="text2 accent-color">
                         LEADERSHIP STATUS
                     </div>
-                        <div class="text2">
+                        <div class="text9">
                         Leadership status designates ownership of the master recording.
-                        There may be multiple leaders on a master. Leadership status
+                        There may be multiple leaders on a master.<br> 
+                        Leadership status
                         also grants admin privileges to the master for publishing, downloading and editing.
                     </div>
             </div>
