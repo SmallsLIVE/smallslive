@@ -23,7 +23,6 @@
 
 {% block extra_head %}
   <meta name="description" content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
-  <script src="{% static 'js/search/search.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -87,15 +86,28 @@
       </div>
     </section>
     <section class="search-content">
-      {% include 'events/shows.html' with archived=True default_end_date=default_end_date %}
+      {% include 'events/shows.html' with archived=True default_to_date=default_to_date secondary=True%}
     </section>
   </div>
 {% endblock %}
 
 {% block extra_js %}
+  <script>
+    var eventOrderFilter = 'newest';
+    var datePickerInputSelector = '#search-date-picker-from input';
+    var datePickerFromDate = null;
+    var datePickerToDate = new Date;
+    var setFromDate = false;
+    var setToDate = true;
+    var datePickerLeft = 0;
+    var datePickerTop = 0;
+    var defaultFromDate;
+    var defaultToDate = {{ default_to_date }};
+  </script>
   <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
   <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
   <script src="{% static 'js/tabs.js' %}"></script>
+  <script src="{% static 'js/search/search.js' %}"></script>
 {% endblock %}
 
 {% block footer %}
