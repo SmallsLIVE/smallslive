@@ -167,7 +167,10 @@ class MainSearchView(View, SearchMixin):
                 Event, main_search, page, order=order, date_from=date_from,
                 date_to=date_to, artist_pk=artist_pk, venue=venue)
 
-            context = {'events': events[0] if events else []}
+            context = {
+                'events': events[0] if events else [],
+                'secondary': True,
+            }
             template = ('search/event_search_row.html' if partial
                         else 'search/event_search_result.html')
         else:

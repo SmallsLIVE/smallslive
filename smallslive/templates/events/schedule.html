@@ -22,13 +22,13 @@
 <script>
   var eventOrderFilter = 'oldest';
   var datePickerInputSelector = '#search-date-picker-to input';
-  var datePickerFromDate = new Date();
+  var datePickerFromDate = '{{ default_from_date }}';
   var datePickerToDate = null;
   var setFromDate = true;
   var setToDate = false;
   var datePickerLeft = 222;
   var datePickerTop = 42;
-  var defaultFromDate = {{ default_from_date }};
+  var defaultFromDate = '{{ default_from_date }}';
   var defaultToDate;
 </script>
 <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>

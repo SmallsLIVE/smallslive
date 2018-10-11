@@ -96,13 +96,13 @@
     var eventOrderFilter = 'newest';
     var datePickerInputSelector = '#search-date-picker-from input';
     var datePickerFromDate = null;
-    var datePickerToDate = new Date;
+    var datePickerToDate = '{{ default_to_date }}';
     var setFromDate = false;
     var setToDate = true;
     var datePickerLeft = 0;
     var datePickerTop = 0;
     var defaultFromDate;
-    var defaultToDate = {{ default_to_date }};
+    var defaultToDate = '{{ default_to_date }}';
   </script>
   <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
   <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>

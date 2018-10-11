@@ -325,12 +325,13 @@ $(document).ready(function () {
         autoclose: true,
         container: '#search-date-picker-from',
         showOnFocus: false,
-        startDate: datePickerFromDate,
-        endDate: datePickerToDate
+        startDate: defaultFromDate,
+        endDate: defaultToDate
     });
 
     if (setFromDate) {
-      $datePickerFrom.datepicker('setDate', 'now');
+      $datePickerFrom.datepicker('setDate', defaultFromDate);
+      datePickerFromDate = new Date(defaultFromDate);
     }
 
     $datePickerFrom.on('changeDate', function (newDate) {
@@ -363,12 +364,13 @@ $(document).ready(function () {
         autoclose: false,
         container: '#search-date-picker-to',
         showOnFocus: false,
-        startDate: datePickerFromDate,
-        endDate: datePickerToDate
+        startDate: defaultFromDate,
+        endDate: defaultToDate
     })
 
     if (setToDate) {
       $datePickerTo.datepicker('setDate', defaultToDate);
+      datePickerToDate = new Date(defaultToDate);
     }
 
     $datePickerTo.on('changeDate', function (newDate) {
