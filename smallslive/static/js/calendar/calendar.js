@@ -103,21 +103,26 @@ $(document).ready(function () {
         else if ($(this).val() == 'One Day') {
             eventDateTo = new Date((new Date()).getTime() + 1 * 24 * 60 * 60 * 1000);
             eventDateFrom = new Date();
-            $("#search-date-picker-from input").datepicker("update", eventDateFrom);
-            $("#search-date-picker-to input").datepicker("update", eventDateTo);
         }
         else if ($(this).val() == 'One Week') {
             eventDateTo = new Date((new Date()).getTime() + 7 * 24 * 60 * 60 * 1000);
             eventDateFrom = new Date();
-            $("#search-date-picker-from input").datepicker("update", eventDateFrom);
-            $("#search-date-picker-to input").datepicker("update", eventDateTo);
         }
         else if ($(this).val() == 'One Month') {
             eventDateTo = new Date((new Date()).getTime() + 31 * 24 * 60 * 60 * 1000);
             eventDateFrom = new Date();
-            $("#search-date-picker-from input").datepicker("update", eventDateFrom);
-            $("#search-date-picker-to input").datepicker("update", eventDateTo);
         }
+
+        $("#search-date-picker-from input").datepicker("update", eventDateFrom);
+        $("#search-date-picker-to input").datepicker("update", eventDateTo);
+        if (eventDateTo) {
+            $(".datepicker-btn").html('From <span class="from accent-color"></span> to <span class="to accent-color"></span>');
+            $('.datepicker-btn span.from').text(eventDateFrom.toLocaleDateString());
+            $('.datepicker-btn span.to').text(eventDateTo.toLocaleDateString());
+        } else {
+            $(".datepicker-btn").html("DATE");
+        }
+
 
         eventPageNum = 1;
         sendEventRequest();
@@ -153,7 +158,9 @@ $(document).ready(function () {
     function display() {
         $(".datepicker-container").css("display", "flex").hide().fadeIn(500, function() {
             $(document).bind("click", hide);
-            $(".datepicker-container").data('shown', true)}); 
+            $(".datepicker-container").css({'left': 222, 'top': 41});
+            $(".datepicker-container").data('shown', true);
+        });
 
         $("#search-date-picker-to input").click();
         $("#search-date-picker-to input").focus();    
@@ -213,9 +220,9 @@ $(document).ready(function () {
         eventDateTo = newDate.date;
 
         from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
-        from = '<span class="accent-color">' + from + '</span>';
+        from = '<span class="from accent-color">' + from + '</span>';
         to = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
-        to = '<span class="accent-color">' + to + '</span>';
+        to = '<span class="to accent-color">' + to + '</span>';
 
         $(".datepicker-btn").html("From " + from + " to " + to);
     });
@@ -274,9 +281,9 @@ $(document).ready(function () {
         eventDateTo = newDate.date;
 
         from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
-        from = '<span class="accent-color">' + from + '</span>';
+        from = '<span class="from accent-color">' + from + '</span>';
         to = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
-        to = '<span class="accent-color">' + to + '</span>';
+        to = '<span class="to accent-color">' + to + '</span>';
 
         $(".datepicker-btn").html("From " + from + " to " + to);
     });
