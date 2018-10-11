@@ -12,13 +12,13 @@
     {% endif %}
   </div>
   {% if archived %}
-      {% include 'events/archived_filters.html' %}
+      {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
   {% endif %}
   {% if upcoming %}
       {% include 'events/upcoming_filters.html' %}
   {% endif %}
   <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
-    {% include 'search/event_search_result.html' with events=event_results show_event_venue=show_event_venue %}
+    {% include 'search/event_search_result.html' with events=event_results show_event_venue=show_event_venue secondary=True %}
   </main>
 
   <div class="concerts-footer flex-column items-center">

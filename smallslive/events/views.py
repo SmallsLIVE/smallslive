@@ -535,6 +535,7 @@ class GenericScheduleView(TemplateView, SearchMixin):
         context['venues'] = Venue.objects.all()
         context['actual_page'] = page = 1
         context['last_page'] = num_pages
+        context['default_from_date'] = timezone.now().strftime('%m/%d/%Y')
 
         return context
 
