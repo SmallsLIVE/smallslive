@@ -22,7 +22,7 @@ body {
 
 body.mobile-search-header-shown {
 
-  .main-container {
+  .main-container:first-of-type {  // Some pages have seveal main-container ლ(ಠ益ಠლ)
     @include variable-admin-padding($mobile-bar-height * 2);
   }
 

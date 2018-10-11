@@ -12,7 +12,7 @@ function sendArtistRequest() {
         dataType: 'json',
         success: function (data) {
             if (data.template) {
-                $("#artist-subheader").html(data.showingResults)
+                $("#artist-subheader").html(data.showingResults);
                 $("#artists").html(data.template);
                 $(".container-list-article").removeClass("artist-loading-gif");
                 $("#artists").css("visibility", "visible");
@@ -52,45 +52,44 @@ function loadMoreEvents() {
     sendEventRequest();
 }
 
-function showArtistInfo(artist) {
-    $.ajax({
-        url: '/search/ajax/artist-info/',
-        data: {
-            'id': $(artist).data("id")
-        },
-        dataType: 'json',
-        success: function (data) {
-            if (data.template) {
-                $("#musicianContent").hide();
-                $(".artist-search-profile-container").html(data.template);
-                $(".artist-search-profile-container")[0].style.display = 'block';
-                $("#artist-subheader").html("SHOWING 1 - 1 OF 1 RESULTS");
-                $("#back-search").css("display", "flex");
+$(document).on('click', '#artists .artist-row', function() {
+  var artistId = $(this).data('id');
+  $.ajax({
+    url: '/search/ajax/artist-info/',
+    data: {
+      'id': artistId
+    },
+    dataType: 'json',
+    success: function (data) {
+      if (data.template) {
+        $('#musicianContent').hide();
+        $('.artist-search-profile-container').html(data.template);
+        $('.artist-search-profile-container')[0].style.display = 'block';
+        $('#artist-subheader').html('SHOWING 1 - 1 OF 1 RESULTS');
+        $('.artist-search-profile-container .close-button-parent').show();
+        $('.search-tabs').addClass('hidden');
+        $('*[data-toggle-tab-group="search-results"][data-toggle-tab="archived-shows"]').show();
 
-                eventDateFrom = eventDateTo = null;
-                artist_pk = $(artist).data("id");
+        eventDateFrom = eventDateTo = null;
+        artist_pk = artistId;
 
-                apply = true;
-                eventPageNum = 1;
-                sendEventRequest();
-
-            }
-        }
-    });
-}
+        apply = true;
+        eventPageNum = 1;
+        sendEventRequest();
+      }
+    }
+  });
+});
 
 function sendEventRequest() {
+    var utcDateFrom = null;
+    var utcDateTo = null;
+    
     if (eventDateFrom) {
-        var utcDateFrom = eventDateFrom.getFullYear() + '/' + (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate();
-    }
-    else {
-        var utcDateFrom = null;
+        utcDateFrom = eventDateFrom.getFullYear() + '/' + (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate();
     }
     if (eventDateTo) {
-        var utcDateTo = eventDateTo.getFullYear() + '/' + (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate();
-    }
-    else {
-        var utcDateTo = null;
+        utcDateTo = eventDateTo.getFullYear() + '/' + (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate();
     }
 
     $.ajax({
@@ -99,38 +98,34 @@ function sendEventRequest() {
             'main_search': searchTerm,
             'page': eventPageNum,
             'order': eventOrderFilter,
-            'date_from': utcDateFrom ? utcDateFrom : null,
-            'date_to': utcDateTo ? utcDateTo : null,
-            'artist_pk': artist_pk ? artist_pk : null
+            'date_from': utcDateFrom,
+            'date_to': utcDateTo,
+            'artist_pk': artist_pk ? artist_pk : null,
+            'partial': true
         },
         dataType: 'json',
         success: function (data) {
             if (data.template) {
+                var $showsContainer = $('.search-content .shows-container');
                 $('#event-subheader').html(data.showingResults);
                 $('#event-subheader-footer').html(data.showingResults);
 
                 if (apply || eventFilter) {
                     apply = false;
                     eventFilter = false;
-                    $('#events .shows-container').html('');
+                    $showsContainer.html('');
                 }
+                 var article = $(data.template).find('article');
+                 if (!article.length) {
+                     $showsContainer.html(data.template);
+                 }
+                 article.each(function( index ) {
+                     $showsContainer.append($( this ));
+                 });
 
-                var article = $(data.template).find('article');
-                if (!article.length) {
-                    $('#events .shows-container').html(data.template);
-                }
-                article.each(function( index ) {
-                    $('#events .shows-container').append($( this ));
-                });
                 eventMaxPageNum = data.numPages;
-
                 $("#event-load-gif").css("display", "none");
-
-                if (data.numPages != eventPageNum) {
-                    $("#load-more-btn").show();
-                } else {
-                    $("#load-more-btn").hide();
-                }
+                $("#load-more-btn").toggle(data.numPages != eventPageNum);
             }
         }
     });
@@ -138,11 +133,7 @@ function sendEventRequest() {
 
 $(document).ready(function () {
     searchTerm = getUrlParameter("q");
-    if (searchTerm) {
-        searchTerm = searchTerm.replace(/\+/g, ' ');
-    } else {
-        searchTerm = '';
-    }
+    searchTerm = searchTerm ? searchTerm.replace(/\+/g, ' '): '';
     artistSearchTerm = "";
     artistInstrument = "";
     artistPageNum = eventPageNum = 1;
@@ -342,21 +333,23 @@ $(document).ready(function () {
       $('#artists').removeClass('invisible');
     }
 
-    $(document).on('click', '#back-search', function () {
-
+    $(document).on('click', '.artist-search-profile-container .close-button', function () {
         // If only one artist, assume back to search means
         // actually resetting search
         var $artists = $('.artist-row');
         if ($artists.length == 1) {
           window.location.href = '/search';
         } else {
-          $("#back-search").hide();
           $("#musicianContent").show();
           $(".artist-search-profile-container").hide();
-          $("#showsContent").show();
+          $('.artist-search-profile-resume .close-button').show();
+          $('.search-tabs').removeClass('hidden');
           artist_pk = null;
           apply = true;
           eventPageNum = 1;
+          $('[data-toggle-tab-group="search-results"][data-toggle-tab-target]').show();
+          $('[data-toggle-tab-group="search-results"][data-toggle-tab]').hide();
+          $('[data-toggle-tab-group="search-results"][data-toggle-tab="musicians"]').show();
           sendEventRequest();
         }
     });

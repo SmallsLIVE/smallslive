@@ -110,3 +110,61 @@
   }
 }
 
+// Events
+@mixin column_events() {
+  padding-top: 0;
+
+  .shows-container {
+    flex-direction: column;
+    padding-left: 0;
+
+    .event-display {
+      display: flex;
+      padding: 16px 0;
+      padding-left: 12px;
+      border-bottom: solid 2px white;
+      background-image: url('/static/image/arrow-right-red.svg');
+      background-repeat: no-repeat;
+      background-position: 94% 50%;
+      background-size: 16px;
+
+      .event-card-secondary {
+        min-height: 0;
+        margin-right: 20px;
+
+        .event-picture-container {
+          border-radius: 0;
+
+          .event-picture {
+            height: 80px;
+            width: 80px;
+          }
+
+          .event-picture > img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+      }
+      .event-info {
+        div > * {
+          margin-top: 8px;
+        }
+
+        div > *:first-child {
+          margin-top: 0;
+        }
+
+        .event-info-title {
+          width: auto;
+          max-width: 180px;
+        }
+      }
+    }
+  }
+
+  .event-stripe {
+    margin-top: 70px;
+  }
+}

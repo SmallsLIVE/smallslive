@@ -1,4 +1,4 @@
-{% extends "home_new.html" %}
+{% extends 'home_new.html' %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 {% load i18n %}
@@ -11,19 +11,18 @@
 {% block body_class %}home{% endblock %}
 
 {% block extra_nav %}
-  <div class="search-tabs">
-    <div class="active" onclick="showContent('#showsContent', this)">
+  <div class="search-tabs tabs">
+    <div class="active" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
       <span class="title1"><span class="hidden-xs">Archived</span> Shows</span>
     </div>
-    <div onclick="showContent('#musicianContent', this)">
+    <div data-toggle-tab-target="musicians" data-toggle-tab-group="search-results">
       <span class="title1">Musicians</span>
     </div>
   </div>
 {% endblock %}
 
 {% block extra_head %}
-  <meta name="description"
-        content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
+  <meta name="description" content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
   <script src="{% static 'js/search/search.js' %}"></script>
 {% endblock %}
 
@@ -39,7 +38,7 @@
 <div class="artist-search-profile-container "></div>
 <div class="main-container search-container {% if user.is_superuser %}admin-shown{% endif %}">
 
-    <section id="musicianContent" class="search-tab-content">
+    <section id="musicianContent" data-toggle-tab="musicians" class="search-tab-content" data-toggle-tab-group="search-results">
         <div  class="search-artist-box-container hidden-xs">
           <img src="{% static 'image/search-icon.svg' %}">
           <input id="artist-search"
@@ -87,22 +86,16 @@
         </div>
       </div>
     </section>
-    {% include 'events/shows.html' with archived=True %}
+    <section class="search-content">
+      {% include 'events/shows.html' with archived=True %}
+    </section>
   </div>
 {% endblock %}
 
 {% block extra_js %}
   <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
   <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-  <script>
-      function showContent(id, tab) {
-          $('.search-tab-content').removeClass('active');
-          $(id).addClass('active');
-
-          $('.search-tabs > div').removeClass('active');
-          $(tab).addClass('active');
-      }
-  </script>
+  <script src="{% static 'js/tabs.js' %}"></script>
 {% endblock %}
 
 {% block footer %}
