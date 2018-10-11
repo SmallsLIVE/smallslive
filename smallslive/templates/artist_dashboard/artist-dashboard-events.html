@@ -55,9 +55,11 @@
               url: infoUrl,
 
               success: function (data) {
-                $("#event-info-modal").html(data);
-                $("#event-info-modal").data("url", infoUrl);
-                $("#event-info-modal").modal('show');
+                $("#event-info-mobile-card").html(data);
+                $("#event-info-mobile-cardl").data("url", infoUrl);
+                $("#artistEventsContainer").hide();
+                $("#refine-container").hide();
+                $("#event-info-mobile-card").show();
               }
           });
           }

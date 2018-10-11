@@ -13,11 +13,11 @@
 
 {#    TODO Move container to dashboard base#}
     <div class="artist-profile-container flex-column">
-        <div class="modal fade event-mobile-info" id="event-info-modal" style="width:100%; height:90%;padding:0;" ></div>
-            <div class="refine-container flex-row">
+        <div class="event-mobile-info" id="event-info-mobile-card" style="display:none;width:100%;padding:0"></div>
+        <div class="refine-container flex-row" id="refine-container">
             <div class="refine text1 flex-grow"><span id="filter-number" class="accent-color">(0)</span>Refine</div>
             <div class="reset text1" id="dashboard-mobile-refine-reset">Reset</div>
-            </div>
+        </div>
         <div class="artist-archive-filter flex-row">
             <div class="dashboard-datepicker-container">
             <div class="white-border-button datepicker-dashboard-main-btn" >
@@ -323,6 +323,7 @@
         });  
         $(".refine-apply").click(function () {
           console.log("work")
+          $("body").removeClass("hidden-body");
             currentPage = 0;
             totalPages = 1;
             loadMore(true)
@@ -345,10 +346,12 @@
         });
             $(".refine").click(function () {
               $(".refine-overlay").show();
+              $("body").addClass("hidden-body");
           });
         
           $(".closebtn").click(function () {
               $(".refine-overlay").hide();
+              $("body").removeClass("hidden-body");
           });})
           
           //////////
@@ -504,6 +507,7 @@
         currentPage = 0;
         totalPages = 1;
         loadMore(false);
+
     });
 
     $("#dashboard-desktop-reset").click(function () {

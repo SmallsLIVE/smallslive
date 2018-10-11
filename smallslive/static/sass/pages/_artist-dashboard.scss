@@ -1,5 +1,10 @@
 .artist-profile-container {
+    ~ .refine-overlay.dashboard-refine{
+        top:15vw;
+        overflow: scroll;
+    }
     .event-mobile-info {
+        width: 100%;
         z-index: 102;
         background-color: $background-color;
         padding: 0;
@@ -306,7 +311,7 @@
         .mobile-event-menu {
             display: none;
             @media (max-width: 768px) {
-                padding-top:30px;
+                padding-top: 30px;
                 display: block;
                 .mobile-event-opt {
                     justify-content: center;
@@ -330,7 +335,44 @@
                     }
                 }
                 .mobile-option-container{
+                    .mobile-option-metrics{
+                        justify-content: center;
+                        padding: 10px;
+                        >*{
+                            margin-bottom: 20px;
+                        }
+                        >.text3{
+                            text-align: center;
+                        }
+                        .event-metrics-mobile-container{
+                            justify-content: center;
+                            .mobile-value-metrics{
+                                font-size: 3.5em;
+                            }
+                            .event-metrics-mobile-container-plays{
+                                border-right: solid red 2px;
+                                padding-right: 30px;
+                                >*{ 
+                                    &:first-child{
+                                        padding-bottom: 20px;
+                                    }
+                                    padding-bottom: 10px;
+                                }
+                            }
+                            .event-metrics-mobile-container-time{
+                                padding-left: 30px;
+                                >*{ 
+                                    &:first-child{
+                                        padding-bottom: 20px;
+                                    }
+                                    padding-bottom: 10px;
+                                }
+
+                            }
+                        }
+                    }
                     #not-authorized-text{
+                        padding: 10px;
                         .accent-color{
                             margin: 20px 0;
                         }

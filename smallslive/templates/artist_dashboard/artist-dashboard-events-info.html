@@ -191,18 +191,27 @@
                     <button class="white-border-button" onclick="makeSetPrivateMobile({{ set.id }})">Make Private</button>
                 </div>
             {% endif %}
-            <div id="mobile-option-metrics">
-                <div class="event-metrics-container flex-row">
-                    <div class="event-metrics-container-plays event-metrics-container-data">
+            <div id="mobile-option-metrics" class="mobile-option-metrics flex-column">
+                <div class="event-metrics-mobile-container flex-row">
+                    <div class="event-metrics-mobile-container-plays event-metrics-container-data">
                         <div class="text3">Plays</div>
-                        <div id="play-value" class="title1"></div>
+                        <div id="play-value" class="title1 mobile-value-metrics"></div>
                     </div>
-                    <div class="event-metrics-container-time event-metrics-container-data">
+                    <div class="event-metrics-mobile-container-time event-metrics-container-data">
                         <div class="text3">Time Listened</div>
-                        <div id="time-value" class="title1"></div>
+                        <div id="time-value" class="title1 mobile-value-metrics"></div>
                     </div>
                 </div>
-                <div class="title1">Select Metrics Period</div>
+                <div class="text3">Select Metrics Period</div>
+                <div class="white-border-select" id="dashboard-sort-filter">
+                        <select id="mobile_artist_metrics">
+                                {% for range in datepicker_ranges %}
+                                <option value="{{ range.content }}" class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</option>
+                                {% endfor %}
+                                <option value="custom">Custom</option>
+                        </select>
+                    </div>
+              
             </div>
 
             <div id="not-authorized-text">
@@ -240,11 +249,7 @@
     <script src="{% static 'js/subpages.js' %}"></script>
     <script src="{% static 'js/jquery.form.js' %}"></script>
     <script>
-       
 
-        function closeEvent() {
-            $('#event-info-modal').modal('hide');
-        }
         $('#edit-event-form .close-button').click(() => { $('#edit-event-form').modal('toggle') })
 
         $('#table-event-edit').on('click', function () {
@@ -296,6 +301,7 @@
 
         };
         $(document).ready(function () {
+            replaceWhiteSelects($("#event-info-mobile-card")[0])
             var plays = document.getElementById("play-value");
             var time = document.getElementById("time-value");
 
@@ -328,6 +334,30 @@
             };
 
         loadData();
+
+        $( "#mobile_artist_metrics" ).change(function() {
+            //alert($(this).data('start'));
+            thisDate= new Date()
+            pastDate = new Date(1994, 0, 1)
+            if ($(this).val() == "custom") {
+                console.log("custom")
+                //("mobile-metrics").show()
+                return;
+            }else if ($(this).val() == "All Time") {
+                eventDateFrom = (pastDate.getMonth() + 1) + '/' + pastDate.getDate() + '/' + pastDate.getFullYear();
+                eventDateTo = (thisDate.getMonth() + 1) + '/' + thisDate.getDate() + '/' + thisDate.getFullYear();
+            } else if ($(this).val() == "This Period") {
+                from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
+                to = (thisDate.getMonth() + 1) + '/' + thisDate.getDate() + '/' + thisDate.getFullYear();
+            } else {
+                eventDateFrom = $(this).find(":selected").data("start");
+                eventDateTo =  $(this).find(":selected").data("end");
+            }
+            console.log("not")
+            console.log(eventDateFrom, eventDateTo)
+            //("mobile-metrics").hide()
+            loadData();
+          });
 
 
         $(".datepicker-dashboard-left-panel > div").click(function () {
@@ -495,5 +525,13 @@
         $("#set-id-" + selectedSetId).find('.set-status').text('Published');
         showSuccess('public')
     }
+    ////////
+    function closeEvent(){
+        $("#artistEventsContainer").show();
+        $("#refine-container").show();
+        $("#event-info-mobile-card").hide();
+    }
+    //////////
+    
     </script>
 {% endblock %}
