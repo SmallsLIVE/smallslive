@@ -60,7 +60,7 @@
   <div class="mobile-menu-icons flex-row items-center content-space-between">
     <i class="fa fa-bars" onclick="toggleSideBar()"></i>
     <div>
-      <i class="fa fa-search" onclick="toggleSearch()"></i>
+      <i class="fa fa-search"></i>
       <i class="fa fa-user" onclick="toggleAdmin()"></i>
     </div>
   </div>
@@ -106,10 +106,16 @@
     //$('#search-bar').toggleClass('mobile-search-header-shown');
     //$('.main-container').toggleClass('mobile-search-header-shown');
   }
-  function toggleSearch() {
+  $('.mobile-menu-icons .fa-search').click(function () {
+      var headerCount = getHeaderCount();
+      document.body.classList = Array.prototype.filter.call(document.body.classList, (c) => !c.startsWith('headers-'));
+      if ($('#search-bar').hasClass('mobile-search-header-shown')) {
+          $('body').addClass('headers-' + (headerCount - 1))
+      } else {
+          $('body').addClass('headers-' + (headerCount + 1))
+      }
       $('#search-bar').toggleClass('mobile-search-header-shown');
-      $('body').toggleClass('mobile-search-header-shown');
-  }
+  });
 
   $(document).ready(function () {
      $('#searchArrow').on('click', function () {
@@ -126,7 +132,7 @@
       }
 
       if (searchTerm) {
-        toggleSearch();
+          $('.mobile-menu-icons .fa-search').click();
       }
   })
 
