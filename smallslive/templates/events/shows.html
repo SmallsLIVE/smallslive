@@ -12,7 +12,7 @@
     {% endif %}
   </div>
   {% if archived %}
-      {% include 'events/archived_filters.html' %}
+      {% include 'events/archived_filters.html' with default_end_date=default_end_date %}
   {% endif %}
   {% if upcoming %}
       {% include 'events/upcoming_filters.html' %}

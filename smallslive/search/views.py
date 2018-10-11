@@ -286,6 +286,10 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         context['range'] = range(
             1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2]
         context['has_last_page'] = (num_pages - page) >= 3
+        default_end_date = 'now'
+        if event_blocks[0]:
+            default_end_date = event_blocks[0][0].date.strftime('%m/%d/%Y')
+        context['default_end_date'] = default_end_date
 
         return context
 

@@ -87,7 +87,7 @@
       </div>
     </section>
     <section class="search-content">
-      {% include 'events/shows.html' with archived=True %}
+      {% include 'events/shows.html' with archived=True default_end_date=default_end_date %}
     </section>
   </div>
 {% endblock %}

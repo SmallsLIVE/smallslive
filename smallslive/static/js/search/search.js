@@ -293,6 +293,8 @@ $(document).ready(function () {
 
     //////////////////////
 
+    var defaultEndDate = $('.datepicker-btn').data('default-end-date');
+
     var $datePickerTo = $('#search-date-picker-to input');
     $datePickerTo.datepicker({
         format: 'mm/dd/yyyy',
@@ -300,7 +302,7 @@ $(document).ready(function () {
         container: '#search-date-picker-to',
         showOnFocus: false,
         endDate: new Date()
-    }).datepicker('setDate', 'now');
+    }).datepicker('setDate', defaultEndDate);
 
     $datePickerTo.on('changeDate', function (newDate) {
         eventDateTo = newDate.date;
