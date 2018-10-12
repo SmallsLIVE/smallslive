@@ -169,7 +169,7 @@ $text-font-size-big: 1.4em;
   @include title1;
 
   @media(max-width: $screen-sm-max) {
-    font-size: 11px;
+    font-size: 5vw;
   }
 }
 
