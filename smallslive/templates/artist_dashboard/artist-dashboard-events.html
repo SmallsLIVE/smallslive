@@ -41,6 +41,7 @@
 
     
     function loadInfo(infoUrl){
+            if(window.screen.availWidth > 425){
             $.ajax({
                 url: infoUrl,
 
@@ -49,6 +50,19 @@
                   $("#artistEventsInfo").data("url", infoUrl);
                 }
             });
+          }else{
+            $.ajax({
+              url: infoUrl,
+
+              success: function (data) {
+                $("#event-info-mobile-card").html(data);
+                $("#event-info-mobile-cardl").data("url", infoUrl);
+                $("#artistEventsContainer").hide();
+                $("#refine-container").hide();
+                $("#event-info-mobile-card").show();
+              }
+          });
+          }
         }   
     
     $('.artist-event-row').on('click', function () {
@@ -63,8 +77,17 @@
     })
     $(document).ready(function() {
       var $firstEvent= $('.artist-event-row').first()
-      var eventUrl = $($firstEvent).data("url");  
-      loadInfo(eventUrl+"?set_id=0")
+      var eventUrl = $($firstEvent).data("url"); 
+      if (eventUrl === undefined) {
+        $("#artistEventsInfo").html("");
+        return ;
+      }
+      if(window.screen.availWidth > 425){
+        loadInfo(eventUrl+"?set_id=0")
+      }else{
+        return;
+      }
+      
     })
   </script> 
 {% endblock %}

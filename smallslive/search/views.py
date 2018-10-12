@@ -150,8 +150,8 @@ class MainSearchView(View, SearchMixin):
                 date_from = timezone.make_aware(
                     date_from, timezone.get_current_timezone())
         if date_to:
-            date_to = parser.parse(date_to, fuzzy=True)
-            if not date_to.tzinfo:
+           date_to = parser.parse(date_to, fuzzy=True)
+           if not date_to.tzinfo:
                 date_to = timezone.make_aware(
                     date_to, timezone.get_current_timezone())
  

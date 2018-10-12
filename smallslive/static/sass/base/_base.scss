@@ -7,7 +7,9 @@ body {
   text-rendering: optimizeLegibility;
   color: $black;
 }
-
+.hidden-body{
+  overflow: hidden;
+}
 button, input[type="submit"] {
   border: none;
 
