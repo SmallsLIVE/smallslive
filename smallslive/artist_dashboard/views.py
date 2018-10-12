@@ -55,9 +55,8 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
         current_page_number = context['page_obj'].number
         context.update({
             'total_pages': paginator.num_pages,
-            'current_page': current_page_number
+            'current_page': current_page_number,  
         })
-
         return context
 
     def get_queryset(self):
@@ -224,6 +223,7 @@ class MyPastEventsView(MyEventsView):
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsView, self).get_context_data(**kwargs)
         context['is_future'] = False  # TODO: make dynamic.
+        print context
         return context
         
 
@@ -267,7 +267,7 @@ class MyPastEventsInfoView(DetailView):
             is_leader=False)
         context['leaders'] = self.object.artists_gig_info.filter(
             is_leader=True)
-
+        context['current_payout_period']= CurrentPayoutPeriod.objects.first()
         #copied metrics code
         today = timezone.datetime.today()
         month_start = today.replace(day=1)

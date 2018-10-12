@@ -338,6 +338,32 @@
                     .mobile-option-metrics{
                         justify-content: center;
                         padding: 10px;
+                        .refine-datepicker-container{
+                            .custom-date-picker {
+                                input{
+                                    background-color: $background-color;
+                                }
+                            }
+                            .search-date-picker-for-mobile-metrics,.search-date-picker-from-mobile-metrics{
+                                position:relative;
+                            }
+                            .search-date-picker-for-mobile-metrics{
+                                >.datepicker{
+                                    top: 24px;
+                                    left: -160px !important;
+                                    position: absolute;
+                                    z-index: 1;
+                                }
+                            }
+                            .search-date-picker-from-mobile-metrics{
+                                >.datepicker{
+                                    top: 24px;
+                                    left: -18px !important;
+                                    position: absolute;
+                                    z-index: 1;
+                                }
+                            }
+                        }
                         >*{
                             margin-bottom: 20px;
                         }
@@ -523,6 +549,7 @@
     
     .dashboard-datepicker-container{
         position: relative;
+       
         .datepicker-container.noclick{
             top:37px;
             .custom-date-picker{
@@ -532,6 +559,7 @@
                         padding: 0 10px
                     }
                 }
+                
                 }
             }
         }
