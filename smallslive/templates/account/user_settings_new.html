@@ -48,7 +48,7 @@
 						</div>
 						<div class="account-settings-info">
 							<div class="text5">Password</div>
-							<div class="text9 text-grey"></div>
+							<div class="text9 text-grey">xxxxxxxxxx</div>
 						</div>
 						<button class="white-border-button" data-toggle-tab-target="user-account-form" data-toggle-tab-group="user-account"">Edit info</button>
 				</div>
@@ -80,7 +80,8 @@
 				<div class="title5 account-settings-title text-bottom-line">Donation settings</div>
 				<div class="account-settings-info">
 					<div class="text5">Current Subscription</div>
-					<div class="text9 accent-color"></div>
+					
+					<div class="text9 accent-color">${{customer_detail.subscription.plan.amount}}/{{customer_detail.subscription.plan.interval}}</div>
 				</div>
 				<div class="account-settings-info flex-row">
 					<button class="white-border-button">Cancel monthly</button>		
@@ -88,7 +89,11 @@
 				</div>
 				<div class="account-settings-info">
 					<div class="text5">Last invoice</div>
-					<div class="text9 text-grey"></div>	
+					<div class="text9 text-grey">
+						{% with customer_charges|first as first_charge%}
+						{{ first_charge.created|date:"d/m/Y"  }}: {{ first_charge.amount }} - {{ first_charge.amount }}
+						{% endwith %}
+					</div>	
 				</div>
 				<div class="account-settings-info ">
 					<div class="text5">Expiration of archive access</div>
@@ -99,7 +104,12 @@
 				<div class="title5 account-settings-title text-bottom-line">Donation history</div>
 					<div class="account-settings-info">
 						<div class="text5">Total donations this year</div>
-						<div class="text9 text-grey"></div>
+						<div class="text9 accent-color">${{charges_value}}</div>
+						<br>
+						<br>
+						{% for charge in customer_charges %}
+						<div class="text9 text-grey">{{ charge.created|date:"d/m/Y"  }}: ${{ charge.amount }}</div>
+						{% endfor%}
 					</div>
 					<div class="account-settings-info">
 						{% comment %} Use for, show 4 and create a view more TBD {% endcomment %}
@@ -110,8 +120,8 @@
 				<div class="title5 account-settings-title">Billing</div>
 					<div class="account-settings-info">
 						<div class="text5">Credit card</div>
-						<div class="text9 text-grey"></div>
-						<div class="text9 text-grey"></div>
+						<div class="text9 text-grey">xxxx-xxxx-xxxx-xxxx-{{customer_detail.active_card.last4}}</div>
+						<div class="text9 text-grey">exp: {{customer_detail.active_card.exp_month}}/{{customer_detail.active_card.exp_year}}</div>
 					</div>
 					<div class="account-settings-info">
 						<div class="text5">Billing address</div>
@@ -134,39 +144,13 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="{% static 'js/tabs.js' %}"></script>
 <script>
 	$(".account-settings-menu .text1").on('click', function() {
 		$(".account-settings-menu .text1").removeClass("white-background")
 		$(this).addClass("white-background")
 	})
-		(function($) {
-			/* Tabs.js
-				Tab: Put data-toggle-tab-target="name" in any clickable element.
-				Tab content: Put data-toggle-tab="name" in any other element.
-				
-				Optional:
-				Tab Group: Put data-toggle-tab-group="groupname" in both elements.
-				
-				Clicking the element will:
-					* Hide any siblings of the Tab Content (with the data attribute) unless tab-group is used,
-						 in which case they are matched my group name instead of siblinhood.
-					* Add 'active' class to the tab and remove it from its siblings (with the data atribute).
-			**/
-			$(document).on('click', '[data-toggle-tab-target]', function() {
-				$(this).siblings('[data-toggle-tab-target]').removeClass('active');
-				$(this).addClass('active');
-				
-				var tabName = $(this).data('toggle-tab-target');
-				var tabGroup = $(this).data('toggle-tab-group');
-				var $target = $('[data-toggle-tab="' + tabName + '"]');
-		
-				if (tabGroup) {
-					$('[data-toggle-tab-group="' + tabGroup + '"][data-toggle-tab]').hide();
-				} else {
-					$target.siblings('[data-toggle-tab]').hide();
-				}
-				$target.show();
-			});
-		})(window.jQuery);
+
 </script>
+
 {% endblock %}
