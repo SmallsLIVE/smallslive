@@ -384,13 +384,6 @@ def user_settings_view_new(request):
     else:
         artist_info_form = ArtistInfoForm(instance=request.user)
 
-    plan_id = request.user.customer.current_subscription.plan
-    plan = stripe.Plan.retrieve(id=plan_id)
-
-    customer_detail = CustomerDetail.get(id=request.user.customer.stripe_id)
-    print customer_detail
-
-
     return render(request, 'account/user_settings_new.html', {
         'change_email_form': change_email_form,
         'change_profile_form': edit_profile_form,
