@@ -15,7 +15,7 @@
   <div class="event-stripe">
     {% include 'events/today_and_tomorrow.html' %}
   </div>
-  {% include 'events/shows.html' with upcoming=True show_event_venue=True %}
+  {% include 'events/shows.html' with upcoming=True show_event_venue=True hide_play=True%}
 </main>{% endblock home_content %}
 
 {% block extra_js %}
