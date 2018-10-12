@@ -25,7 +25,7 @@ import stripe
 from artist_dashboard.forms import ArtistInfoForm
 from custom_stripe.models import CustomPlan, CustomerDetail
 from users.models import SmallsUser
-from users.utils import charge, subscribe
+from users.utils import charge, subscribe_to_plan, one_time_donation
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
 
 
@@ -41,23 +41,17 @@ class DonateView(TemplateView):
 
     def post(self, request, *args, **kwargs):
 
-        print 'Donate: post'
-        print '----------------------------------------------'
-
-        customer = Customer.objects.get(subscriber=request.user)
-        print 'Customer: ', customer
-        print request.POST
-
         stripe_token = self.request.POST.get('stripe_token')
         amount = int(self.request.POST.get('quantity'))
         redirect_url = self.request.POST.get('redirect_url')
 
         try:
             customer, created = Customer.get_or_create(
-                subscriber=subscriber_request_callback(self.request))
-            customer.update_card(stripe_token)
-            charge(customer, amount)
+                subscriber=subscriber_request_callback(request))
+            one_time_donation(customer, stripe_token, amount)
         except stripe.StripeError as e:
+            print 'Except -->'
+            print e
             # add form error here
             return _ajax_response(request, JsonResponse({
                 'error': e.args[0]
@@ -101,49 +95,27 @@ class BecomeSupporterView(TemplateView):
 
     def post(self, request, *args, **kwargs):
 
-        print 'BecomeSupporterView: post'
-        print '----------------------------------------------'
-
-        customer = Customer.objects.get(subscriber=request.user)
-        print 'Customer: ', customer
-        print request.POST
-
         stripe_token = self.request.POST.get('stripe_token')
         plan_type = self.request.POST.get('type')
         amount = int(self.request.POST.get('quantity'))
 
-        plan_data = {
-            'amount': amount,
-            'currency': 'usd',
-            'interval': plan_type,
-
-        }
-
-        plan = Plan.objects.filter(**plan_data).first()
-        plan_data['product'] = 'prod_D01wWC6DLGhq3U'
-
-        plan = plan or CustomPlan.create(**plan_data)
+        # As per Aslan's request
+        # Yearly donations will no longer exist. They are One Time Donations  now.
 
         try:
             customer, created = Customer.get_or_create(
-                subscriber=subscriber_request_callback(self.request))
-            customer.update_card(stripe_token)
-            subscribe(customer, plan)
+                subscriber=subscriber_request_callback(request))
+            if plan_type == 'month':
+                subscribe_to_plan(customer, stripe_token, amount, plan_type)
+            else:
+                grant = amount >= 100
+                one_time_donation(customer, stripe_token, amount,
+                                  grant_access_to_archive=grant)
         except stripe.StripeError as e:
             # add form error here
             return _ajax_response(request, JsonResponse({
                 'error': e.args[0]
             }, status=500))
-
-        print 'BecomeSupporterView: post'
-        print '----------------------------------------------'
-
-        customer = Customer.objects.get(subscriber=request.user)
-        print 'Customer: ', customer
-        print request.GET
-
-        # Get plan and create if it doesn't exist
-        # subscribe user to plan
 
         return _ajax_response(
             request, redirect(reverse('become_supporter_complete'))
