@@ -802,8 +802,10 @@ def payout_form(request):
         # check whether it's valid:
         if artist_info_form.is_valid():
             artist_info_form.save(request)
-            messages.success(request, "You've successfully updated your profile.")
-            return redirect('/dashboard/my-metrics/') 
+            messages.success(
+                request,
+                'You\'ve successfully updated your profile.'
+            )
     # if a GET (or any other method) we'll create a blank form
     else:
         artist_info_form = ArtistInfoForm(instance=request.user)

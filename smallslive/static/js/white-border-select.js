@@ -95,4 +95,4 @@ function replaceWhiteSelects(divElement){
     
 
 }
-replaceWhiteSelects()
+replaceWhiteSelects();

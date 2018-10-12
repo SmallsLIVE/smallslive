@@ -140,7 +140,6 @@
             $.post('/events/sets/' + selectedSetId + '/private/', {
               csrfmiddlewaretoken: '{{ csrf_token }}'
             }, function (data, status) {
-                console.log(status);
             });
             hideMakePrivate();
             $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
@@ -160,7 +159,6 @@
             $.post('/events/sets/' + selectedSetId + '/publish/', {
               csrfmiddlewaretoken: '{{ csrf_token }}'
             }, function(data, status) {
-                console.log(status);
             });
             hidePublish();
             $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
@@ -260,7 +258,6 @@
             }
             $('#filter-number').text("("+ optNumber +")")
           }
-          console.log(params)
             $.ajax({
                 url: eventsUrl,
                 data: params,
@@ -314,7 +311,6 @@
         });
     
         $(".datepicker-reset").click(function () {
-          console.log("reset")
             $('#search-date-picker-from-dashboard input').val("").datepicker("update");
             $('#search-date-picker-to-dashboard input').val("").datepicker("update");
             eventDateFrom = eventDateTo = null;
@@ -322,7 +318,6 @@
             $("#search-date-picker-from-dashboard input").focus();
         });  
         $(".refine-apply").click(function () {
-          console.log("work")
           $("body").removeClass("hidden-body");
             currentPage = 0;
             totalPages = 1;
@@ -337,7 +332,6 @@
         /////////
         $('#search-date-picker-from-refine input').val("").datepicker("update");
         $(".reset-all").click(function () {
-          console.log("resetall")
             $('#search-date-picker-from-refine input').val("").datepicker("update");
             $('#search-date-picker-to-refine input').val("").datepicker("update");
             eventDateFrom = eventDateTo = null;
