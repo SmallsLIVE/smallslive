@@ -130,6 +130,11 @@ $player-height:  27.5vw;
   left: 0;
   top: 0;
 
+  @media (max-width: $screen-sm-max) {
+    font-size: .6em;
+  }
+
+
   &.paused {
     background: rgba(0,0,0,0.8);
     padding-bottom: 54px;
@@ -206,6 +211,10 @@ $player-height:  27.5vw;
     text-transform: uppercase;
     transform: scaleY(1.3);
     line-height: 38px;
+    @media (max-width: $screen-sm-max) {
+      font-size: 6em;
+    }
+
   }
 
 }
