@@ -41,30 +41,26 @@
 
     
     function loadInfo(infoUrl){
-            if(window.screen.availWidth > 425){
-            $.ajax({
-                url: infoUrl,
-
-                success: function (data) {
-                  $("#artistEventsInfo").html(data);
-                  $("#artistEventsInfo").data("url", infoUrl);
-                }
-            });
-          }else{
-            $.ajax({
-              url: infoUrl,
-
-              success: function (data) {
-                $("#event-info-mobile-card").html(data);
-                $("#event-info-mobile-cardl").data("url", infoUrl);
-                $("#artistEventsContainer").hide();
-                $("#refine-container").hide();
-                $("#event-info-mobile-card").show();
-              }
-          });
+      $.ajax({
+        url: infoUrl,
+          success: function (data) {
+            var $target;
+            if(window.screen.availWidth > 425) {
+              $target = $('#artistEventsInfo');
+              $target.html(data);
+              $target.data('url', infoUrl);
+            } else {
+              $target = $('#event-info-mobile-card');
+              $target.html(data);
+              $target.data('url', infoUrl);
+              $target.show();
+              $('#artistEventsContainer').hide();
+              $('#refine-container').hide();
+            }
           }
-        }   
-    
+      });
+    }
+
     $('.artist-event-row').on('click', function () {
       $('.artist-event-row').css("background-color", "")
       var eventUrl = $(this).data("url");  
@@ -84,8 +80,6 @@
       }
       if(window.screen.availWidth > 425){
         loadInfo(eventUrl+"?set_id=0")
-      }else{
-        return;
       }
       
     })

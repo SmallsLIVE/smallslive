@@ -384,15 +384,14 @@ def user_settings_view_new(request):
             return HttpResponseRedirect('/accounts/settings/')
     # if a GET (or any other method) we'll create a blank form
     else:
-        artist_info_form = ArtistInfoForm(instance=request.user)
-    
+        artist_info_form = ArtistInfoForm(instance=request.user)    
     #Context for strip info
     
     customer = request.user.customer
     if customer.has_active_subscription():
         plan_id = request.user.customer.current_subscription.plan
         plan = stripe.Plan.retrieve(id=plan_id)
-        #print(plan)
+  
 
     customer_charges= customer.charges.all()
    
@@ -401,7 +400,7 @@ def user_settings_view_new(request):
         charges_value += charge.amount
  
     customer_detail = CustomerDetail.get(id=request.user.customer.stripe_id)
-    print customer_detail
+ 
 
 
     return render(request, 'account/user_settings_new.html', {

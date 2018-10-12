@@ -1,4 +1,6 @@
-
+{% if request.is_ajax %}
+    <p>{% include 'messages.html' %}</p>
+{% endif %}
     <form  class="custom-form payout-form" role="form" method="post" action="{% url 'artist_dashboard:payout_form'%}">
             {% csrf_token %}
             <div hidden class="form-group {% if artist_info_form.first_name.errors  %}has-error{% endif %}">
@@ -68,7 +70,7 @@
                 </div>
               {% endfor %}
             </div>
-       
+
             <div hidden class="form-group {% if artist_info_form.state.errors  %}has-error{% endif %}">
                     {% if artist_info_form.non_field_errors %}
                         {% for error in artist_info_form.non_field_errors %}
@@ -94,4 +96,3 @@
             {{form.errors}}
             <input type="submit" class="white-border-button" name="artist_info" value="Save">
         </form>
-    
