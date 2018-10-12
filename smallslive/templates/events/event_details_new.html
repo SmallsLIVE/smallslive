@@ -46,13 +46,14 @@
          </div>
        </div>
     {% elif event.is_future %}
-      <div class="event-video-placeholder flex-column content-space-between">
-        <span class="event-video-placeholder-picture" style="{% if event.photo %}
-           {% include 'partials/thumbored_picture_style.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
-         {% else %}
-           {% include 'partials/thumbored_picture_style.html' %}
-         {% endif %}
-       "></span>
+      <div class="event-video-placeholder flex-column content-space-between" style="flex: initial;">
+        <span class="event-video-placeholder-picture">
+          {% if event.photo %}
+          <img src="{% thumbor_url event.get_photo_url|urlencode height=360 width=600 smart=True %}" style="width: 100%">
+          {% else %}
+          <img src="{% static 'image/no-event-image-placeholder.jpg' %}" style="width: 100%">
+          {% endif %}
+        </span>
         <div class="player-info">
           {% if event.is_live %}
             <div class="live-now text2">Live now</div>
