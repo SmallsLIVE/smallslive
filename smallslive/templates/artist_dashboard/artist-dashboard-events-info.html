@@ -203,17 +203,27 @@
                     </div>
                 </div>
                 <div class="text3">Select Metrics Period</div>
-                <div class="white-border-select" id="dashboard-sort-filter">
-                        <select id="mobile_artist_metrics">
-                                {% for range in datepicker_ranges %}
-                                <option value="{{ range.content }}" class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</option>
-                                {% endfor %}
-                                <option value="custom">Custom</option>
-                        </select>
-                    </div>
-              
+                <div class="white-border-select">
+                    <select id="mobile_artist_metrics">
+                            {% for range in datepicker_ranges %}
+                            <option value="{{ range.content }}" class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</option>
+                            {% endfor %}
+                            <option value="custom">Custom</option>
+                    </select>
+                </div>
+                <div id="myMobileMetrics" class="" style="display:none">
+                        
+                              <div class="refine-datepicker-container">
+                                  <div class="custom-date-picker search-date-picker-from-mobile-metrics" id="search-date-picker-from-mobile-metrics">
+                                      <input class="date-picker-text" id="start-date" type="text" placeholder="Select date" readonly>
+                                  </div>
+                          
+                                  <div class="custom-date-picker search-date-picker-for-mobile-metrics" id="search-date-picker-for-mobile-metrics">
+                                      <input class="date-picker-text" id="until-date" type="text" placeholder="Select date" readonly>
+                                  </div>
+                                </div>
+                </div>
             </div>
-
             <div id="not-authorized-text">
                     <div class="text2 accent-color">
                         LEADERSHIP STATUS
@@ -277,6 +287,41 @@
     <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
 
     <script>
+        ///
+        var plays = document.getElementById("play-value");
+        var time = document.getElementById("time-value");
+
+        var loadData = function () {
+            var data = {};
+            data.set_id = {{ event_set.id }};
+
+            data.start = moment(eventDateFrom).format('YYYY-MM-DD');
+            data.end = moment(eventDateTo).format('YYYY-MM-DD');
+
+            var countsURL = "{% url 'event_counts' %}";
+            $.ajax(countsURL, {
+                data: data,
+                success: function (response) {
+                    plays.innerHTML= response.total_plays_list.reduce(
+                        function (e, acc) {
+                            return e + acc;
+                        }, 0);
+                    playedMinutes = response.total_minutes_list.reduce(
+                        function (e, acc) {
+                            return e + acc;
+                        }, 0);
+                    time.innerHTML = moment.utc((playedMinutes*60)*1000).format('HH:mm:ss');
+                },
+                type: 'GET',
+                xhrFields: {
+                    withCredentials: true
+                }
+            });
+        };
+
+
+
+        ///
         $('.mobile-event-opt .white-border-button').on('click', function () {
             $('.mobile-event-opt .white-border-button').css("background-color", "")
             $(this).css( "background-color", 'white' );
@@ -302,36 +347,9 @@
         };
         $(document).ready(function () {
             replaceWhiteSelects($("#event-info-mobile-card")[0])
-            var plays = document.getElementById("play-value");
-            var time = document.getElementById("time-value");
+            replaceWhiteSelects($("#artistEventsInfo")[0])
 
-            var loadData = function () {
-                var data = {};
-                data.set_id = {{ event_set.id }};
-
-                data.start = moment(eventDateFrom).format('YYYY-MM-DD');
-                data.end = moment(eventDateTo).format('YYYY-MM-DD');
-
-                var countsURL = "{% url 'event_counts' %}";
-                $.ajax(countsURL, {
-                    data: data,
-                    success: function (response) {
-                        plays.innerHTML= response.total_plays_list.reduce(
-                            function (e, acc) {
-                                return e + acc;
-                            }, 0);
-                        playedMinutes = response.total_minutes_list.reduce(
-                            function (e, acc) {
-                                return e + acc;
-                            }, 0);
-                        time.innerHTML = moment.utc((playedMinutes*60)*1000).format('HH:mm:ss');
-                    },
-                    type: 'GET',
-                    xhrFields: {
-                        withCredentials: true
-                    }
-                });
-            };
+            
 
         loadData();
 
@@ -341,21 +359,21 @@
             pastDate = new Date(1994, 0, 1)
             if ($(this).val() == "custom") {
                 console.log("custom")
-                //("mobile-metrics").show()
+                $("#myMobileMetrics").show()
                 return;
             }else if ($(this).val() == "All Time") {
                 eventDateFrom = (pastDate.getMonth() + 1) + '/' + pastDate.getDate() + '/' + pastDate.getFullYear();
                 eventDateTo = (thisDate.getMonth() + 1) + '/' + thisDate.getDate() + '/' + thisDate.getFullYear();
             } else if ($(this).val() == "This Period") {
-                from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
-                to = (thisDate.getMonth() + 1) + '/' + thisDate.getDate() + '/' + thisDate.getFullYear();
+                eventDateFrom = "{{current_payout_period.period_start|date:'m/d/Y'}}";
+                eventDateTo = "{{current_payout_period.period_end|date:'m/d/Y'}}";
             } else {
                 eventDateFrom = $(this).find(":selected").data("start");
                 eventDateTo =  $(this).find(":selected").data("end");
             }
             console.log("not")
             console.log(eventDateFrom, eventDateTo)
-            //("mobile-metrics").hide()
+            $("#myMobileMetrics").hide()
             loadData();
           });
 
@@ -533,5 +551,69 @@
     }
     //////////
     
+    /////////////////////
+
+    var $datePickerFromMetricsMobile = $('#search-date-picker-from-mobile-metrics input');
+    $datePickerFromMetricsMobile.datepicker({
+        format: 'mm/dd/yyyy',
+        autoclose: true,
+        container: '#search-date-picker-from-mobile-metrics',
+        showOnFocus: false
+    });
+
+    $datePickerFromMetricsMobile.on('changeDate', function (newDate) {
+        eventDateFrom = newDate.date;
+        $("#search-date-picker-to input").click();
+        $("#search-date-picker-to input").focus();
+    });
+
+    $datePickerFromMetricsMobile.on('click', function () {
+        console.log("from")
+        var dropdown = $('#search-date-picker .dropdown-menu');
+        if (dropdown[0] && dropdown[0].style.display === 'block') {
+            $datePickerFromMetricsMobile.datepicker('hide');
+        } else {
+            $datePickerFromMetricsMobile.datepicker('show');
+        }
+    });
+
+    //////////////////////
+
+    var $datePickerToMetricsMobile = $('#search-date-picker-for-mobile-metrics input');
+    $datePickerToMetricsMobile.datepicker({
+        format: 'mm/dd/yyyy',
+        autoclose: false,
+        container: '#search-date-picker-for-mobile-metrics',
+        showOnFocus: false
+    });
+
+    $datePickerToMetricsMobile.on('changeDate', function (newDate) {
+        console.log(typeof eventDateFrom)
+        eventDateTo = newDate.date;
+        if(typeof eventDateFrom === "object"){
+            eventDateFrom = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
+        }else if(typeof eventDateFrom === undefined){
+            eventDateFrom = new Date()
+            eventDateFrom = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
+        }
+        
+        eventDateTo = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
+        console.log(eventDateFrom,eventDateTo)
+        $("#datepicker-description").html(eventDateFrom + " - " + eventDateTo);
+        loadData();
+    });
+
+    $datePickerToMetricsMobile.on('click', function () {
+        console.log("to")
+        var dropdown = $('#search-date-picker .dropdown-menu');
+        if (dropdown[0] && dropdown[0].style.display === 'block') {
+            $datePickerToMetricsMobile.datepicker('hide');
+        } else {
+            $datePickerToMetricsMobile.datepicker('show');
+        }
+    });
+
+    ///////////
+
     </script>
 {% endblock %}

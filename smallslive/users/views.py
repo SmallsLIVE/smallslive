@@ -297,6 +297,8 @@ class UpgradePlanView(ChangePlanView):
 upgrade_plan = UpgradePlanView.as_view()
 
 
+
+
 @login_required
 def user_settings_view(request):
     # if this is a POST request we need to process the form data
@@ -382,7 +384,24 @@ def user_settings_view_new(request):
             return HttpResponseRedirect('/accounts/settings/')
     # if a GET (or any other method) we'll create a blank form
     else:
-        artist_info_form = ArtistInfoForm(instance=request.user)
+        artist_info_form = ArtistInfoForm(instance=request.user)    
+    #Context for strip info
+    
+    customer = request.user.customer
+    if customer.has_active_subscription():
+        plan_id = request.user.customer.current_subscription.plan
+        plan = stripe.Plan.retrieve(id=plan_id)
+  
+
+    customer_charges= customer.charges.all()
+   
+    charges_value=0
+    for charge in customer_charges:
+        charges_value += charge.amount
+ 
+    customer_detail = CustomerDetail.get(id=request.user.customer.stripe_id)
+ 
+
 
     return render(request, 'account/user_settings_new.html', {
         'change_email_form': change_email_form,
@@ -390,7 +409,29 @@ def user_settings_view_new(request):
         'change_password_form': change_password_form,
         'current_user': request.user,
         'artist_info_form': artist_info_form,
+        'plan':plan,
+        'customer_charges':customer_charges,
+        'customer_detail':customer_detail,
+        'charges_value':charges_value,
     })
+
+@login_required
+def user_tax_letter(request):
+
+    customer = request.user.customer
+
+    customer_charges= customer.charges.all()
+    charges_value=0
+    for charge in customer_charges:
+        charges_value += charge.amount
+
+    print(customer)
+    context=	{
+    "customer": customer,
+    "charges_value": charges_value,
+    "year": 1964
+    }
+    return render(request, 'account/tax-letter.html', context)
 
 
 class ConfirmEmailView(CoreConfirmEmailView):
@@ -490,7 +531,6 @@ class ResendEmailConfirmationView(StaffuserRequiredMixin, ListView):
 
     def post(self, request, *args, **kwargs):
         context = { 'object_list' : {}, }
-        print("yo")
         # if form.is_valid():
         #     return self.form_valid(form)
         # else:
@@ -500,3 +540,4 @@ class ResendEmailConfirmationView(StaffuserRequiredMixin, ListView):
 
 
 admin_email_confirmation = ResendEmailConfirmationView.as_view()
+
