@@ -218,3 +218,14 @@ p.unavailable {
     }
   }
 }
+
+@for $i from 1 through 8 {
+
+  body.headers-#{$i} {
+    @media(max-width:$screen-xs-max) {
+      .pad-content {
+        padding-top: $mobile-bar-height * $i;
+      }
+    }
+  }
+}

@@ -169,7 +169,7 @@ $text-font-size-big: 1.4em;
   @include title1;
 
   @media(max-width: $screen-sm-max) {
-    font-size: 11px;
+    font-size: 5vw;
   }
 }
 
@@ -344,6 +344,10 @@ $text-font-size-big: 1.4em;
   line-height: $line-height-smaller;
   text-transform: uppercase;
   text-shadow: 0.001em 0.001em;
+
+  @media(max-width: $screen-sm-max) {
+    font-size: 3.4vw;
+  }
 }
 
 .links1 {

@@ -11,24 +11,24 @@
 {% endblock %}
 
 {% block home_content %}
-<main>
+<main class="calendar">
   <div class="event-stripe">
     {% include 'events/today_and_tomorrow.html' %}
   </div>
-  {% include 'events/shows.html' with upcoming=True show_event_venue=True %}
+  {% include 'events/shows.html' with upcoming=True show_event_venue=True hide_play=True%}
 </main>{% endblock home_content %}
 
 {% block extra_js %}
 <script>
   var eventOrderFilter = 'oldest';
   var datePickerInputSelector = '#search-date-picker-to input';
-  var datePickerFromDate = new Date();
+  var datePickerFromDate = '{{ default_from_date }}';
   var datePickerToDate = null;
   var setFromDate = true;
   var setToDate = false;
   var datePickerLeft = 222;
   var datePickerTop = 42;
-  var defaultFromDate = {{ default_from_date }};
+  var defaultFromDate = '{{ default_from_date }}';
   var defaultToDate;
 </script>
 <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>

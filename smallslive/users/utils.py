@@ -1,6 +1,8 @@
 import decimal
-from datetime import timedelta
-import stripe
+from datetime import date, timedelta
+from djstripe.models import Customer, Charge, Plan
+from djstripe.settings import subscriber_request_callback
+from custom_stripe.models import CustomPlan, CustomerDetail
 from djstripe.models import Charge, CurrentSubscription, convert_tstamp
 
 try:
@@ -11,6 +13,19 @@ except ImportError:
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import user_email
 from django.contrib import messages
+
+
+def add_years(d, years):
+    """Return a date that's `years` years after the date (or datetime)
+    object `d`. Return the same calendar date (month and day) in the
+    destination year, if it exists, otherwise use the following day
+    (thus changing February 29 to March 1).
+    From StackOverflow
+    """
+    try:
+        return d.replace(year = d.year + years)
+    except ValueError:
+        return d + (date(d.year + years, 1, 1) - date(d.year, 1, 1))
 
 
 def send_email_confirmation(request, user, signup=False, **kwargs):
@@ -90,6 +105,33 @@ def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
                                                            signup=signup,
                                                            confirm=True)
             assert email_address
+
+
+def one_time_donation(customer, stripe_token, amount,
+                      grant_access_to_archive=False):
+    customer.update_card(stripe_token)
+    charge(customer, amount)
+    if grant_access_to_archive:
+        user = customer.subscriber
+        user.archive_access_until = add_years(now(), 1)
+        user.save()
+        print user.archive_access_until
+
+
+def subscribe_to_plan(customer, stripe_token, amount, plan_type):
+
+    plan_data = {
+        'amount': amount,
+        'currency': 'usd',
+        'interval': plan_type,
+    }
+
+    plan = Plan.objects.filter(**plan_data).first()
+    plan_data['product'] = 'prod_D01wWC6DLGhq3U'
+    plan = plan or CustomPlan.create(**plan_data)
+
+    customer.update_card(stripe_token)
+    subscribe(customer, plan)
 
 
 def subscribe(customer, plan):

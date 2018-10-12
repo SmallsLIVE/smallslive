@@ -177,7 +177,7 @@
     
     .no-spinners::placeholder {
       color:black;
-  }
+    }
     &:before {
       top: 2px;
       left: 20px;
@@ -191,6 +191,12 @@
     &.active, &:focus-within {
       border: 1px solid $accent-color;
       background-color: white;
+    }
+  }
+
+  &.button-row-margin {
+    &.button-row-big {
+      margin-top: 5px;
     }
   }
 }

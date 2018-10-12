@@ -11,7 +11,9 @@
   padding-bottom: 3px;
 
   width: 100%;
-  @media(min-width: $screen-md-max) {
+  @media(max-width: $screen-sm-max) {
+    background-size: 100vw 10px;
+    padding-bottom: 22px;
     width: 500px;
   }
 
@@ -49,6 +51,11 @@
       &.header-sub {
         margin-bottom: 0;
       }
+
+      @media(max-width: $screen-sm-max) {
+        margin-bottom: -9px;
+      }
+
     }
 
     @media(max-width: $screen-sm-max) {
@@ -59,6 +66,7 @@
 
       &.title2 {
         font-size: 3vw;
+        line-height: 1.5vw;
       }
     }
 

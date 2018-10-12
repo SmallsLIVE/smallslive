@@ -1,3 +1,18 @@
+$mobile-filter-button-width: 48vw;
+
+body.headers-1 {
+  .search-container {
+    @media (max-width: $screen-sm-max) {
+    }
+  }
+}
+
+.search-container {
+  @media (max-width: $screen-sm-max) {
+    padding-top: 250px;
+  }
+}
+
 .caret {
   cursor: pointer;
   position: relative;
@@ -15,6 +30,11 @@
     cursor: pointer;
     pointer-events: inherit;
     z-index: -1;
+
+    @media(max-width: $screen-sm-max) {
+      top: 5.5vw;
+    }
+
   }
 }
 
@@ -95,7 +115,6 @@
         margin: 10px 0;
         @media (max-width: $screen-sm) {
           margin: 10px 0;
-          font-size: 1em;
           padding: 10px;
         }
       }
@@ -120,7 +139,6 @@
 
   //Mobile
   @media (max-width: $screen-sm-max) {
-    padding-top: 0;
 
     .search-tab-content {
       &:not(.active) {
@@ -203,6 +221,26 @@
   > * {
     display: inline-block;
   }
+
+  .white-border-select {
+  &:not(.no-arrow) {
+    .select-selected {
+      @media (max-width: $screen-sm-max) {
+        border: 3px solid rgba(255, 255, 255, 0.9);
+        font-size: 3.5vw;
+        height: 13vw;
+        line-height: 9vw;
+        vertical-align: top;
+      }
+      &:after {
+        @media (max-width: $screen-sm-max) {
+          top: 5.5vw;
+        }
+      }
+    }
+  }
+  }
+
   @media (min-width: $screen-md-min) {
     .white-border-select, .custom-date-picker {
       width: 120px;
@@ -220,8 +258,7 @@
 
   @media (max-width: $screen-sm-max) {
     width: 100%;
-    display: flex;
-    align-items: center;
+    text-align: center;
   }
 }
 
@@ -254,7 +291,6 @@
   }
 
   @media (max-width: $screen-sm-max) {
-    @include column_events;
     padding-left: 0;
     padding-right: 0;
 
@@ -336,6 +372,12 @@
   display: flex;
   justify-content: space-between;
   align-content: center;
+
+  .event-filter-select {
+    @media (max-width: $screen-sm-max) {
+      width: $mobile-filter-button-width;
+    }
+  }
 }
 
 .search-artist-box-container {
@@ -464,13 +506,9 @@
 
     @media (max-width: $screen-sm-max) {
       flex-direction: column;
-      padding-top: 130px;
     }
   }
 
-  @media (max-width: $screen-sm-max) {
-    @include variable-admin-padding($mobile-bar-height * 2);
-  }
   width: 100%;
   position: relative;
 
@@ -619,6 +657,10 @@
 
 .musicians-results {
   width: 100%;
+
+  @media(max-width: $screen-sm-max) {
+    display: none;
+  }
 }
 
 .musicians-results-title {
@@ -630,6 +672,10 @@
   width: 100%;
   text-align: center;
   margin-bottom: 4px;
+
+  @media (max-width: $screen-sm-max) {
+    display: none;
+  }
 }
 
 .showing-results {
@@ -683,11 +729,27 @@
 
 .datepicker-btn {
   display: inline-block;
-  width: 290px !important;
+  width: 290px;
   padding-top: 10px;
   margin-left: 20px;
   align-self: center;
   text-align: center;
+
+  @media(max-width: $screen-sm-max) {
+    width: $mobile-filter-button-width;
+    margin-left: 0;
+  }
+
+  &.white-border-button {
+    @media(max-width: $screen-sm-max) {
+      font-size: 3.5vw;
+      height: 13vw;
+      line-height: 13vw;
+      margin-right: 1vw;
+      padding-top: 0;
+      vertical-align: top;
+    }
+  }
 }
 
 .datepicker-container {
@@ -822,4 +884,181 @@
   align-self: flex-end;
   margin-bottom: -5px;
   margin-left: 10px;
+}
+
+.refine {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .refine {
+    display: block;
+    margin-right: 20px;
+    position: absolute;
+    right: 0;
+  }
+
+  .shows-calendar {
+    .event-section {
+      display: none;
+    }
+
+    .musicians-results {
+      display: flex;
+    }
+  }
+  .white-line-bottom {
+    border-bottom: 4px solid white;
+
+    &.musicians-result {
+      display: none;
+    }
+  }
+  .shows-results-title {
+    font-size: 24px;
+    margin: 0;
+    margin-left: 10px;
+    width: auto;
+  }
+  .events-calendar {
+    @include column_events;
+  }
+
+}
+
+.refine-overlay {
+  display: none;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 30px;
+  background-color: #f0f0eb;
+
+  .white-line-bottom {
+    border-bottom: 2px solid white;
+  }
+}
+
+.refine-overlay-content {
+  position: relative;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+
+  *,*:before,*:after {
+    box-sizing: border-box;
+  }
+
+  .btngroup {
+    font-size: 0;
+    line-height: 1;
+    white-space: nowrap;
+    display: inline; // ?
+
+    &--btn { // sass bem is cool
+      font-size: 1.2rem;
+      letter-spacing: .1em;
+      text-decoration: none;
+      text-transform: uppercase;
+      background: transparent;
+      border: 2px solid $white-transparent;
+      //margin: 0 -1px -1px;
+      border-left-width: 0;
+      display: inline-block;
+      padding: .5em 1.25em;
+      outline: 0; // no glow crap
+
+      &:first-child {
+        border-left-width: 2px;
+        border-radius: 2em 0 0 2em;
+      }
+
+      &:last-child {
+        border-radius: 0 2em 2em 0;
+      }
+
+      &:hover {
+        background: $white-transparent;
+        color: black;
+      }
+
+      &:active {
+        background: $white-transparent;
+        color: black;
+      }
+    }
+  }
+}
+
+.refine-overlay-content > p {
+  margin-top: 40px;
+  margin-bottom: 24px;
+}
+.closebtn {
+  font-size: 50px;
+  line-height: .5;
+}
+
+.refine-overlay-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+}
+
+.calendar-refine-title {
+  font-size: 30px;
+}
+
+.calendar-refine-menu-item {
+  font-size: 20px;
+}
+
+.calendar-duration {
+  .select-selected {
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 12px;
+  }
+
+  .select-selected:after {
+    content: none !important;
+  }
+
+  .select-items{
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 12px;
+  }
+}
+
+.refine-datepicker-container {
+  display: flex;
+  justify-content: space-evenly;
+
+  .custom-date-picker {
+    width: 120px;
+
+    .date-picker-text {
+      text-align: center;
+      border-radius: 14px;
+    }
+  }
+}
+
+.reset-all {
+  font-size: 22px;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: 50px;
+}
+
+.search-date-picker-from-refine {
+  .datepicker {
+    left: 56px !important;
+  }
 }

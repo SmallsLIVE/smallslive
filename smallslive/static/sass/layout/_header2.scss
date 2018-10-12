@@ -55,7 +55,7 @@
   height: $mobile-bar-height;
 
   @media(max-width: $screen-sm-max) {
-    height: 15vw;
+    height: $mobile-bar-height;
   }
 
 
@@ -68,14 +68,14 @@
     justify-content: center;
     align-items: center;
     pointer-events: none;
+    max-height: 100%;
 
     .smalls-logo {
       pointer-events: all;
       margin: 12px 0;
 
       img {
-        height: 11vw;
-        width: 11vw;
+        width: 50px;
       }
     }
   }
@@ -99,11 +99,10 @@
 
   &.mobile-search-header-shown {
     @include animated();
-    height: $mobile-bar-height;
     overflow: visible;
 
     @media(max-width: $screen-md-max) {
-      height: 15vw;
+      height: $mobile-bar-height;
     }
 
     box-shadow: 0 9px 9px 0 rgba(145,140,145,1);
@@ -128,10 +127,11 @@
     $input-padding: 10px;
     padding: $input-padding;
     flex-grow: 1;
+    height: 100%;
 
     form {
       @media(max-width: $screen-md-max) {
-        height: 11vw;
+        height: 100%;
       }
       flex: 1;
 

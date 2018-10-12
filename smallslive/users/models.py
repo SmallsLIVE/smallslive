@@ -77,6 +77,8 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     login_count = models.IntegerField(default=0)
     accept_agreement = models.BooleanField(default=False)
     renewal_date = models.DateField(blank=True, null=True)
+    # One Time Donations will set this date to one year after the donation is made.
+    archive_access_until = models.DateTimeField(blank=True, null=True)
     subscription_price = models.IntegerField(blank=True, null=True)
     company_name = models.CharField(max_length=150, blank=True)
     address_1 = models.CharField(max_length=100, blank=True)
@@ -199,6 +201,12 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         return subscriber_has_active_subscription(self)
 
     @cached_property
+    def has_archive_access(self):
+        # One Time Donations are new  "one year subscriptions"
+        return self.archive_access_until and \
+               self.archive_access_until > timezone.now()
+
+    @cached_property
     def get_subscription_plan(self):
         if self.is_staff:
             return {'name': 'Admin', 'type': 'premium'}
@@ -238,11 +246,15 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
     @cached_property
     def can_watch_video(self):
-        return self.has_activated_account and self.get_subscription_plan['type'] != 'free'
+        return self.has_activated_account and \
+               (self.has_archive_access or
+                self.get_subscription_plan['type'] != 'free')
 
     @cached_property
     def can_listen_to_audio(self):
-        return self.has_activated_account and self.get_subscription_plan['type'] != 'free'
+        return self.has_activated_account and \
+               (self.has_archive_access or
+                self.get_subscription_plan['type'] != 'free')
 
 
 class SmallsEmailConfirmation(EmailConfirmation):

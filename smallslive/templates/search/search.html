@@ -8,12 +8,12 @@
 {% block title %}Smalls Jazz Club{% endblock %}
 
 {# TODO Shouldn't be needed here #}
-{% block body_class %}home{% endblock %}
+{% block body_class %}home headers-4{% endblock %}
 
 {% block extra_nav %}
   <div class="search-tabs tabs">
     <div class="active" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
-      <span class="title1"><span class="hidden-xs">Archived</span> Shows</span>
+      <span class="title1">Shows</span>
     </div>
     <div data-toggle-tab-target="musicians" data-toggle-tab-group="search-results">
       <span class="title1">Musicians</span>
@@ -34,8 +34,8 @@
     <div id="artist-subheader" class="showing-results text1">{{ showing_artist_results }}</div>
     <div class="title1 musicians-results-title">Musicians</div>
 </div>
-<div class="artist-search-profile-container "></div>
-<div class="main-container search-container {% if user.is_superuser %}admin-shown{% endif %}">
+<div class="artist-search-profile-container pad-content"></div>
+<div class="search-container pad-content">
 
     <section id="musicianContent" data-toggle-tab="musicians" class="search-tab-content" data-toggle-tab-group="search-results">
         <div  class="search-artist-box-container hidden-xs">
@@ -96,13 +96,13 @@
     var eventOrderFilter = 'newest';
     var datePickerInputSelector = '#search-date-picker-from input';
     var datePickerFromDate = null;
-    var datePickerToDate = new Date;
+    var datePickerToDate = '{{ default_to_date }}';
     var setFromDate = false;
     var setToDate = true;
     var datePickerLeft = 0;
     var datePickerTop = 0;
     var defaultFromDate;
-    var defaultToDate = {{ default_to_date }};
+    var defaultToDate = '{{ default_to_date }}';
   </script>
   <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
   <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>

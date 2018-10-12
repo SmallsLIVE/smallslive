@@ -3,7 +3,7 @@ from djstripe.models import Customer, Plan
 from django.db import models
 
 
-class CustomPlan(Plan):
+class CustomPlan(models.Model):
     """Cannot upgrade dj-stripe until Django upgrades to 1.11
     This class overrides the Plan class in order to inject
     the 'product' parameter.

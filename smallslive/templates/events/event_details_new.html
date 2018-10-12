@@ -46,13 +46,14 @@
          </div>
        </div>
     {% elif event.is_future %}
-      <div class="event-video-placeholder flex-column content-space-between">
-        <span class="event-video-placeholder-picture" style="{% if event.photo %}
-           {% include 'partials/thumbored_picture_style.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
-         {% else %}
-           {% include 'partials/thumbored_picture_style.html' %}
-         {% endif %}
-       "></span>
+      <div class="event-video-placeholder flex-column content-space-between" style="flex: initial;">
+        <span class="event-video-placeholder-picture">
+          {% if event.photo %}
+          <img src="{% thumbor_url event.get_photo_url|urlencode height=360 width=600 smart=True %}" style="width: 100%">
+          {% else %}
+          <img src="{% static 'image/no-event-image-placeholder.jpg' %}" style="width: 100%">
+          {% endif %}
+        </span>
         <div class="player-info">
           {% if event.is_live %}
             <div class="live-now text2">Live now</div>
@@ -118,11 +119,11 @@
       {% endif %}
     {% endif %}
 
-    <div class="event-video-info flex-row content-space-between">
+    <div class="event-video-info content-space-between">
       <div class=" flex-column">
         <div class="event-set-info">
           <div class="event-title title1">{{ event.title }}</div>
-            <div class="accent-color title5">
+            <div class="accent-color text7">
               {{ event.date|date:'m/d/Y' }}</div>
         </div>
         <div class="event-overlay-venue">
@@ -137,14 +138,6 @@
             </div>
             <div class="title5 accent-color">LIVE AT {{event.venue.name }}</div>
           {% endif %}
-        </div>
-        <div class="event-band">
-          {% for gig_info in event.artists_gig_info.all %}
-            <div>
-              <a href="{{ gig_info.artist.get_absolute_url }}" class="artist-link">
-                {{ gig_info.artist.full_name }} / {{ gig_info.role.name }}</a>
-            </div>
-          {% endfor %}
         </div>
 
       </div>
@@ -184,6 +177,15 @@
         </div>
       </div>
     </div>
+            <div class="event-band">
+          {% for gig_info in event.artists_gig_info.all %}
+            <div>
+              <a href="{{ gig_info.artist.get_absolute_url }}" class="artist-link">
+                {{ gig_info.artist.full_name }} / {{ gig_info.role.name }}</a>
+            </div>
+          {% endfor %}
+        </div>
+
     <div class="flex-row event-set-selector"></div>
     {% if event.published_audio or event.published_video %}
         <div class="comments-container" data-subpage-url="{% url 'event_comments' pk=event.id slug=event.slug %}?set=0" data-subpage-name="comments"></div>
@@ -344,7 +346,7 @@
               {% endfor %}
             ],
             width: "100%",
-            height: 200
+            height: "27.5vw"  // If you change this please be kind and change the corresponding css.
           });
           audioPlayer.on('play', function () {
             var $videoContainer = $('#videoContainer');
@@ -410,7 +412,7 @@
                 ],
                 skin: "https:{% static "jwplayer-skin/smalls.xml" %}",
                 width: "100%",
-                height: "27.5vw"  // If you change this please be kind and change the corresponding css.
+                aspectratio: "16:9",
             });
             videoPlayer.on('play', function () {
                 var $videoContainer = $('#videoContainer');

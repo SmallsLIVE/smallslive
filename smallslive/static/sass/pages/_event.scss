@@ -7,9 +7,8 @@ $player-height:  27.5vw;
   justify-content: center;
 
   .white-border-button {
-    height: 53px;
     margin-bottom: 5px;
-    padding: 5px 38px;
+    padding: 5px 25px;
     display: inline;
     margin-right: 2px;
   }
@@ -24,7 +23,6 @@ $player-height:  27.5vw;
     align-items: center;
     flex-direction: column;
     padding: 0 2vw;
-    padding-top: 21vw;
     .event-side {
       margin-top: 40px;
       padding: 0 20px;
@@ -34,11 +32,22 @@ $player-height:  27.5vw;
 }
 
 .event-video-info {
+  display: flex;
+  flex-direction: row;
+
+  @media(max-width: $screen-sm-max) {
+    flex-direction: column;
+  }
+
   .event-title {
     margin-bottom: 5px;
+    @media(max-width: $screen-sm-max) {
+      font-size: 2.5em;
+    }
   }
 
   @media(max-width: $screen-sm-max) {
+    flex-direction: column;
     padding: 0 20px;
     width: 100%;
   }
@@ -66,9 +75,11 @@ $player-height:  27.5vw;
   }
 
   .artist-link {
+    @include text1();
+    text-transform: capitalize;
+    font-size: 1.5em;
     color: black;
-    font-size: 20px;
-    letter-spacing: 0px;
+    letter-spacing: 0;
   }
 
 
@@ -116,8 +127,6 @@ $player-height:  27.5vw;
   pointer-events: none;
   position: absolute;
   width: 100%;
-  height: $player-height; // The player's height.
-  pointer-events: none;
   left: 0;
   top: 0;
 
@@ -281,11 +290,13 @@ $player-height:  27.5vw;
     }
 
   }
+  @media (max-width: $screen-md-min) {
+    max-width: 100%;
+  }
 }
 
 .event-video-banner, .event-video-placeholder {
   position: relative;
-  max-height: $player-height;
   margin-bottom: 15px;
 
   .event-banner-background {

@@ -65,3 +65,11 @@ function calculateWeeksBetween(date1, date2) {
   }
 }
 
+function getHeaderCount() {
+  return Array.prototype.map
+    .call(document.body.classList, function (c) {
+      return c.startsWith('headers-') ? parseInt(c.split('-')[1]) : 0})
+    .reduce(function(a, b){
+      return Math.max(a, b)
+    });
+}

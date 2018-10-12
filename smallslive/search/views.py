@@ -167,7 +167,10 @@ class MainSearchView(View, SearchMixin):
                 Event, main_search, page, order=order, date_from=date_from,
                 date_to=date_to, artist_pk=artist_pk, venue=venue)
 
-            context = {'events': events[0] if events else []}
+            context = {
+                'events': events[0] if events else [],
+                'secondary': True,
+            }
             template = ('search/event_search_row.html' if partial
                         else 'search/event_search_result.html')
         else:
@@ -287,7 +290,7 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
             1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2]
         context['has_last_page'] = (num_pages - page) >= 3
         default_to_date = 'now'
-        if event_blocks[0]:
+        if event_blocks and event_blocks[0]:
             default_to_date = event_blocks[0][0].date.strftime('%m/%d/%Y')
         context['default_from_date'] = timezone.now().strftime('%m/%d/%Y')
         context['default_to_date'] = default_to_date
