@@ -3,7 +3,6 @@ $mobile-filter-button-width: 48vw;
 body.headers-1 {
   .search-container {
     @media (max-width: $screen-sm-max) {
-      padding-top: 220px;
     }
   }
 }
@@ -127,7 +126,6 @@ body.headers-1 {
   display: none;
   @media (max-width: $screen-sm-max) {
     display: flex;
-    height: 130px;
   }
 }
 
@@ -293,7 +291,6 @@ body.headers-1 {
   }
 
   @media (max-width: $screen-sm-max) {
-    @include column_events;
     padding-left: 0;
     padding-right: 0;
 
