@@ -234,7 +234,6 @@ class MyPastEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
     template_name = 'artist_dashboard/artist-dashboard-events.html'
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsAJAXView, self).get_context_data(**kwargs)
-        context['is_past'] = True
         return context
 
 my_past_events_ajax = MyPastEventsAJAXView.as_view()
