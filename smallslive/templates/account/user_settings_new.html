@@ -164,10 +164,11 @@
 		$(".account-settings-menu .text1").removeClass("white-background");
 		$(this).addClass("white-background")
 		$infoId = $(this).data('id')
-		$infoContainer = $("#" + $infoId)[0]
-		$infoContainer.scrollIntoView()
-		$header = $("header")[0]
-		$header.scrollIntoView()
+		$infoContainerId = $("#" + $infoId)
+		$infoContainer = $(".account-settings-info-container")[0]
+		$($infoContainer).animate({
+			scrollTop: $($infoContainer).scrollTop() + ($($infoContainerId).offset().top - $($infoContainer).offset().top)
+		}, 300); 
 	})
 
 </script>
