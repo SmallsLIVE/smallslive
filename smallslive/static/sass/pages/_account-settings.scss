@@ -60,11 +60,20 @@
     }
 }
 .account-settings-container-new {
-    padding: 0 10%;
+    padding: 0 0 0 10%;
     margin-bottom: 40px;
     .text-bottom-line{
         background: linear-gradient(to right, $white-transparent, $white-transparent) no-repeat bottom left;
         background-size: 100% 2px;
+    }
+    .account-settings-info-container{
+        height: 100vh;
+        overflow-y: auto;
+        width: 100%;
+        display: flex;
+        >.flex-column{
+            height: 230vh;
+        }
     }
     .account-settings-menu{
         margin-right: 90px;

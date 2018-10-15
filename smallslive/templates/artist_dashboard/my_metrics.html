@@ -441,7 +441,6 @@
                     withCredentials: true
                 },
                 success: function (data, textStatus, jqXHR) {
-                    console.log(data)
                     playsData.labels = data.dates;
                     playsData.datasets[0].data = data.audio_plays_list;
                     playsData.datasets[1].data = data.video_plays_list;
