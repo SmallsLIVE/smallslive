@@ -33,7 +33,8 @@
 			<div data-id="user-donation-settings" class="text1">Donation settings</div>
 			<div data-id="user-donation-history" class="text1">Donation history</div>
 			<div data-id="user-billing" class="text1">Billing</div>
-		</div>
+	</div>
+	<div class="account-settings-info-container">
 		<div class="flex-column">
 			<div id="user-account" class="account-settings-view">
 				<div class="title5 account-settings-title text-bottom-line">Account info</div>
@@ -149,6 +150,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 </div>
 {% endblock%}
 
@@ -161,6 +163,11 @@
 	$(".account-settings-menu .text1").on('click', function() {
 		$(".account-settings-menu .text1").removeClass("white-background")
 		$(this).addClass("white-background")
+		$infoId = $(this).data('id')
+		$infoContainer = $("#" + $infoId)[0]
+		$infoContainer.scrollIntoView()
+		$header = $("header")[0]
+		$header.scrollIntoView()
 	})
 
 </script>

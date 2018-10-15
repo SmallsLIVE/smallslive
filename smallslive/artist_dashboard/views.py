@@ -236,6 +236,7 @@ class MyPastEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
     template_name = 'artist_dashboard/artist-dashboard-events.html'
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsAJAXView, self).get_context_data(**kwargs)
+        context['is_past'] = True
         return context
 
 my_past_events_ajax = MyPastEventsAJAXView.as_view()
@@ -271,7 +272,6 @@ class MyPastEventsInfoView(DetailView):
         #copied metrics code
         today = timezone.datetime.today()
         month_start = today.replace(day=1)
-
         start_of_week = today - timedelta(days=today.weekday())
         context['date_ranges'] = [
             {

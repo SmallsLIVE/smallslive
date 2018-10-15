@@ -74,6 +74,7 @@
         </div>
     </div>
     </div>
+    {% if not event.is_future%}    
     <div class="artist-metrics-container">
         <div class="datepicker-container noclick datepicker-dashboard-container">
             <div class="datepicker-dashboard-left-panel">
@@ -111,6 +112,7 @@
         </div>
         
     </div>
+    {% endif %}
     </div>
 
     <div class="text2 flex-column" style="padding-top: 3px;">
@@ -143,7 +145,11 @@
     </div>
     <div class="flex-column mobile-event-menu">
             <div id="mobile-metrics-button" class="flex-row mobile-event-opt">
+                {% if event.is_future%}    
+                <div class="white-border-button" disabled style="color: grey">Metrics</div>
+                {% else %}
                 <div class="white-border-button" data-id="mobile-option-metrics">Metrics</div>
+                {% endif %}
                 {% if is_admin and set.has_media %}
                     {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
                     <div id="mobile-private-button" class="white-border-button" data-id="mobile-option-private"> Public </div>
