@@ -112,6 +112,10 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
         return self.get_full_name() or self.email
 
     def save(self, **kwargs):
+
+        # Force lowercase email
+        self.email = self.email.lower()
+
         old_email = None
 
         if self.pk:

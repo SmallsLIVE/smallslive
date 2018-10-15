@@ -165,6 +165,9 @@ class SignupView(AllauthSignupView):
             context['facebook_next_url'] = reverse('accounts_signup_payment', kwargs={'plan_name': plan_name})
         return context
 
+    def clean_email(self):
+        return self.cleaned_data['email'].lower()
+
     def form_valid(self, form):
         user = form.save(self.request)
         # if self.kwargs['plan_name'] == 'free':
@@ -384,30 +387,26 @@ def user_settings_view_new(request):
             return HttpResponseRedirect('/accounts/settings/')
     # if a GET (or any other method) we'll create a blank form
     else:
-        artist_info_form = ArtistInfoForm(instance=request.user)    
+        artist_info_form = ArtistInfoForm(instance=request.user)
     #Context for strip info
-    
+
+    plan = None
     customer = request.user.customer
     if customer.has_active_subscription():
         plan_id = request.user.customer.current_subscription.plan
         plan = stripe.Plan.retrieve(id=plan_id)
-<<<<<<< HEAD
-        #print(plan)
     else:
         plan = None
-=======
-  
+ 
+    customer_charges = customer.charges.all()
 
->>>>>>> 84bf7a2bc0b1497d4ea0455d7c30b91a08fd32bf
-    customer_charges= customer.charges.all()
    
-    charges_value=0
+    charges_value =0
     for charge in customer_charges:
         charges_value += charge.amount
  
+        artist_info_form = ArtistInfoForm(instance=request.user)
     customer_detail = CustomerDetail.get(id=request.user.customer.stripe_id)
- 
-
 
     return render(request, 'account/user_settings_new.html', {
         'change_email_form': change_email_form,
@@ -415,7 +414,7 @@ def user_settings_view_new(request):
         'change_password_form': change_password_form,
         'current_user': request.user,
         'artist_info_form': artist_info_form,
-        'plan':plan,
+        'plan': plan,
         'customer_charges':customer_charges,
         'customer_detail':customer_detail,
         'charges_value':charges_value,
