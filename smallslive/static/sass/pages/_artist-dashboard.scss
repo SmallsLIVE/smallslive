@@ -763,6 +763,15 @@
     .datepicker {
         left: 158px !important;
     }
+    .custom-date-picker{
+        &#search-date-picker-from .date-picker-text{
+            border-left: none;
+        }
+        &#search-date-picker-to input{
+            border-style: hidden hidden solid solid;
+        }
+    }
+    
 }
 
 .datepicker-dashboard-left-panel {

@@ -74,32 +74,45 @@
         </div>
     </div>
     </div>
-    <div class="artist-metrics-container">
-        <div class="datepicker-container noclick datepicker-dashboard-container">
-            <div class="datepicker-dashboard-left-panel">
-                {% for range in datepicker_ranges %}
-                <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</div>
-                {% endfor %}
+    {% if not event.is_future%}    
+        <div class="artist-metrics-container">
+            <div class="datepicker-container noclick datepicker-dashboard-container">
+                <div class="datepicker-dashboard-left-panel">
+                    {% for range in datepicker_ranges %}
+                    <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="custom-date-picker" id="search-date-picker-from">
+                    <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+                </div>
+
+                <div class="custom-date-picker" id="search-date-picker-to">
+                    <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+                </div>
+
+                <div class="white-border-button" id="apply-button">Apply</div>
+            </div>
+                
+                    
+            <div class="artist-metrics-header white-line-bottom flex-row">
+                    <div class="title1 datepicker-dashboard-btn">Metrics</div>
+                <div class="text2" id="datepicker-description">All Time</div>
             </div>
 
-            <div class="custom-date-picker" id="search-date-picker-from">
-                <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+            <div class="event-metrics-container flex-row">
+                <div class="event-metrics-container-plays event-metrics-container-data">
+                    <div class="text3">Plays</div>
+                    <div id="play-value" class="title1"></div>
+                </div>
+                <div class="event-metrics-container-time event-metrics-container-data">
+                    <div class="text3">Time Listened</div>
+                    <div id="time-value" class="title1"></div>
+                </div>
             </div>
-    
-            <div class="custom-date-picker" id="search-date-picker-to">
-                <input class="date-picker-text" type="text" placeholder="Select date" readonly>
-            </div>
-    
-            <div class="white-border-button" id="apply-button">Apply</div>
-        </div>
             
-                
-        <div class="artist-metrics-header white-line-bottom flex-row">
-                <div class="title1 datepicker-dashboard-btn">Metrics</div>
-            <div class="text2" id="datepicker-description">All Time</div>
         </div>
-        
-    </div>
+    {% endif %}
     </div>
 
     <div class="text2 flex-column" style="padding-top: 3px;">
@@ -132,7 +145,11 @@
     </div>
     <div class="flex-column mobile-event-menu">
             <div id="mobile-metrics-button" class="flex-row mobile-event-opt">
-                <div class="white-border-button" data-id="mobile-option-metrics">Metrics</div>
+                {% if event.is_future%}    
+                    <div class="white-border-button" disabled style="color: grey">Metrics</div>
+                {% else %}
+                    <div class="white-border-button" data-id="mobile-option-metrics">Metrics</div>
+                {% endif %}
                 {% if is_admin and set.has_media %}
                     {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
                     <div id="mobile-private-button" class="white-border-button" data-id="mobile-option-private"> Public </div>
@@ -265,12 +282,10 @@
         $('#table-event-edit').on('click', function () {
               window.subpages.register();
               if(window.screen.availWidth > 425){
-                console.log("Tablet edit")
                 $('#edit-event-form').modal('show');
                 var tabletSubpage = window.subpages.get("tablet-edit");
                 tabletSubpage.load();
               }else{
-                console.log("Mobile edit")
                 $("#mobile-option-container > *").hide()
                 $("#mobile-option-container > #mobile-option-edit").show()
                 var mobileSubpage = window.subpages.get("mobile-edit");
@@ -358,7 +373,6 @@
             thisDate= new Date()
             pastDate = new Date(1994, 0, 1)
             if ($(this).val() == "custom") {
-                console.log("custom")
                 $("#myMobileMetrics").show()
                 return;
             }else if ($(this).val() == "All Time") {
@@ -371,8 +385,6 @@
                 eventDateFrom = $(this).find(":selected").data("start");
                 eventDateTo =  $(this).find(":selected").data("end");
             }
-            console.log("not")
-            console.log(eventDateFrom, eventDateTo)
             $("#myMobileMetrics").hide()
             loadData();
           });
@@ -408,7 +420,6 @@
         $('.artist-events-list-info .datepicker-dashboard-btn').bind("click", ToggleDisplay);
 
         function ToggleDisplay() {
-            console.log("a")
             if ($(".artist-events-list-info .datepicker-container").data('shown'))
                 hide();
             else 
@@ -508,7 +519,6 @@
     });
 
     $("#mobile-metrics-button .white-border-button:not(.disabled, #table-event-edit)").click(function () {
-        console.log($(this).data("id"))
         $("#mobile-option-container > *").hide()
         var $idForOption = $(this).data("id");
         if( $idForOption !== undefined){
@@ -520,7 +530,6 @@
         $.post('/events/sets/' + eventId + '/private/', {
           csrfmiddlewaretoken: '{{ csrf_token }}'
         }, function (data, status) {
-            console.log(status);
         });
         hideMakePrivate();
         $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
@@ -533,9 +542,7 @@
     function publishSetMobile(eventId) {
         $.post('/events/sets/' + eventId + '/publish/', {
           csrfmiddlewaretoken: '{{ csrf_token }}'
-        }, function(data, status) {
-            console.log(status);
-        });
+        }, function(data, status) { });
         hidePublish();
         $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
             '<button class="publish-button" onclick="askPrivate(' + selectedSetId + ')">Make Private</button>'
@@ -563,12 +570,11 @@
 
     $datePickerFromMetricsMobile.on('changeDate', function (newDate) {
         eventDateFrom = newDate.date;
-        $("#search-date-picker-to input").click();
-        $("#search-date-picker-to input").focus();
+        $("#search-date-picker-for-mobile-metrics input").click();
+        $("#search-date-picker-for-mobile-metrics input").focus();
     });
 
     $datePickerFromMetricsMobile.on('click', function () {
-        console.log("from")
         var dropdown = $('#search-date-picker .dropdown-menu');
         if (dropdown[0] && dropdown[0].style.display === 'block') {
             $datePickerFromMetricsMobile.datepicker('hide');
@@ -588,8 +594,9 @@
     });
 
     $datePickerToMetricsMobile.on('changeDate', function (newDate) {
-        console.log(typeof eventDateFrom)
         eventDateTo = newDate.date;
+        eventDateTo = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
+
         if(typeof eventDateFrom === "object"){
             eventDateFrom = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
         }else if(typeof eventDateFrom === undefined){
@@ -597,15 +604,12 @@
             eventDateFrom = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
         }
         
-        eventDateTo = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
-        console.log(eventDateFrom,eventDateTo)
-        $("#datepicker-description").html(eventDateFrom + " - " + eventDateTo);
+        $datePickerToMetricsMobile.datepicker('hide');
         loadData();
     });
 
     $datePickerToMetricsMobile.on('click', function () {
-        console.log("to")
-        var dropdown = $('#search-date-picker .dropdown-menu');
+        var dropdown = $('#search-date-picker-for-mobile-metrics .dropdown-menu');
         if (dropdown[0] && dropdown[0].style.display === 'block') {
             $datePickerToMetricsMobile.datepicker('hide');
         } else {

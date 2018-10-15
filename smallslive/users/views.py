@@ -395,8 +395,11 @@ def user_settings_view_new(request):
     if customer.has_active_subscription():
         plan_id = request.user.customer.current_subscription.plan
         plan = stripe.Plan.retrieve(id=plan_id)
-
+    else:
+        plan = None
+ 
     customer_charges = customer.charges.all()
+
    
     charges_value =0
     for charge in customer_charges:
@@ -426,8 +429,6 @@ def user_tax_letter(request):
     charges_value=0
     for charge in customer_charges:
         charges_value += charge.amount
-
-    print(customer)
     context=	{
     "customer": customer,
     "charges_value": charges_value,
