@@ -1,14 +1,13 @@
-{% extends "generic-text-page.html" %}
+{% extends 'home_new.html' %}
 
-{% load i18n %}
+{% block title %}Verify your e-mail address{% endblock %}
+{% block head_title %}Verify your e-mail address{% endblock %}
 
-{% block title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
 
-{% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
-
-{% block static-content %}
-    <h2>{% trans "Verify Your E-mail Address" %}</h2>
-
-    <p>{% blocktrans %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.{% endblocktrans %}</p>
-
+{% block content %}
+  <div class="flex-column items-center">
+    <h1 class="title2 accent-color"> Verify your e-mail address </h1>
+    <p class="text4">We have sent an email to you for verification. Follow the link provided to finalize the signup process.</p>
+    <p class="text4">Please contact us if you do not receive it within a few minutes.</p>
+  </div>
 {% endblock %}

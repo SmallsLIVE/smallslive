@@ -1,6 +1,5 @@
 from allauth.account.models import EmailAddress
 from django.conf import settings
-from djstripe.settings import PAYMENTS_PLANS
 import floppyforms as forms
 from allauth.account.forms import SignupForm, AddEmailForm
 
