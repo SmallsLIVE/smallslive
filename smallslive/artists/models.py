@@ -1,4 +1,5 @@
 import os
+import urllib
 
 from allauth.account.models import EmailAddress, EmailConfirmation
 from django.contrib.auth import get_user_model
@@ -85,7 +86,9 @@ class Artist(models.Model):
         return u"{0} {1}".format(self.first_name, self.last_name)
 
     def get_absolute_url(self):
-        return reverse('artist_detail', kwargs={'pk': self.pk, 'slug': self.slug})
+        search_url = reverse('search')
+        params = urllib.urlencode({'q': self.full_name()})
+        return '?'.join([search_url, params])
 
     def full_name(self):
         return u" ".join(filter(None, [self.first_name, self.last_name]))
