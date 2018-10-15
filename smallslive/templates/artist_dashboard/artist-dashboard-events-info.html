@@ -75,43 +75,43 @@
     </div>
     </div>
     {% if not event.is_future%}    
-    <div class="artist-metrics-container">
-        <div class="datepicker-container noclick datepicker-dashboard-container">
-            <div class="datepicker-dashboard-left-panel">
-                {% for range in datepicker_ranges %}
-                <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</div>
-                {% endfor %}
-            </div>
+        <div class="artist-metrics-container">
+            <div class="datepicker-container noclick datepicker-dashboard-container">
+                <div class="datepicker-dashboard-left-panel">
+                    {% for range in datepicker_ranges %}
+                    <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</div>
+                    {% endfor %}
+                </div>
 
-            <div class="custom-date-picker" id="search-date-picker-from">
-                <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+                <div class="custom-date-picker" id="search-date-picker-from">
+                    <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+                </div>
+
+                <div class="custom-date-picker" id="search-date-picker-to">
+                    <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+                </div>
+
+                <div class="white-border-button" id="apply-button">Apply</div>
             </div>
-    
-            <div class="custom-date-picker" id="search-date-picker-to">
-                <input class="date-picker-text" type="text" placeholder="Select date" readonly>
-            </div>
-    
-            <div class="white-border-button" id="apply-button">Apply</div>
-        </div>
-            
                 
-        <div class="artist-metrics-header white-line-bottom flex-row">
-                <div class="title1 datepicker-dashboard-btn">Metrics</div>
-            <div class="text2" id="datepicker-description">All Time</div>
-        </div>
+                    
+            <div class="artist-metrics-header white-line-bottom flex-row">
+                    <div class="title1 datepicker-dashboard-btn">Metrics</div>
+                <div class="text2" id="datepicker-description">All Time</div>
+            </div>
 
-        <div class="event-metrics-container flex-row">
-            <div class="event-metrics-container-plays event-metrics-container-data">
-                <div class="text3">Plays</div>
-                <div id="play-value" class="title1"></div>
+            <div class="event-metrics-container flex-row">
+                <div class="event-metrics-container-plays event-metrics-container-data">
+                    <div class="text3">Plays</div>
+                    <div id="play-value" class="title1"></div>
+                </div>
+                <div class="event-metrics-container-time event-metrics-container-data">
+                    <div class="text3">Time Listened</div>
+                    <div id="time-value" class="title1"></div>
+                </div>
             </div>
-            <div class="event-metrics-container-time event-metrics-container-data">
-                <div class="text3">Time Listened</div>
-                <div id="time-value" class="title1"></div>
-            </div>
+            
         </div>
-        
-    </div>
     {% endif %}
     </div>
 
@@ -146,9 +146,9 @@
     <div class="flex-column mobile-event-menu">
             <div id="mobile-metrics-button" class="flex-row mobile-event-opt">
                 {% if event.is_future%}    
-                <div class="white-border-button" disabled style="color: grey">Metrics</div>
+                    <div class="white-border-button" disabled style="color: grey">Metrics</div>
                 {% else %}
-                <div class="white-border-button" data-id="mobile-option-metrics">Metrics</div>
+                    <div class="white-border-button" data-id="mobile-option-metrics">Metrics</div>
                 {% endif %}
                 {% if is_admin and set.has_media %}
                     {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}

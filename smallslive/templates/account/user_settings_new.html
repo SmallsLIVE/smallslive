@@ -131,9 +131,9 @@
 					<div class="account-settings-info">
 						<div class="text5">Credit card</div>
 						{% if not customer_detail.active_card %}
-						<div class="text9 text-grey">There is no credit card assigned</div>
+							<div class="text9 text-grey">There is no credit card assigned</div>
 						{% else %}
-						<div class="text9 text-grey">exp: {{customer_detail.active_card.exp_month}}/{{customer_detail.active_card.exp_year}}</div>
+							<div class="text9 text-grey">exp: {{customer_detail.active_card.exp_month}}/{{customer_detail.active_card.exp_year}}</div>
 						{% endif %}
 					</div>
 					<div class="account-settings-info">
