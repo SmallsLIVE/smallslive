@@ -75,8 +75,7 @@
         <div class="title1">Payout info</div>
     </section>
     <div class="flex-column settings-right artist-payout-data">
-        <div id="payout-form" style="display: none;">
-        {% include 'artist_dashboard/artist-payout-form.html' %}
+        <div id="payout-form" style="display: none;" data-subpage-url="{% url 'artist_dashboard:payout_form'%}" data-subpage-name="payout-form">
         </div>
         <div class="flex-column" id="payout-address-info">
             <div class="text10 artist-payout-data-text">Mailing address</div>
@@ -104,7 +103,15 @@
     <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
     <script src="{% static 'js/Chart.min.js' %}"></script>
     <script src="{% static 'js/metrics_datepicker.js' %}"></script>
+    <script src="{% static 'js/jquery.form.js' %}"></script>
+    <script src="{% static 'js/subpages.js' %}"></script>
     <script>
+        var subpages = window.subpages;
+        subpages.register();
+        subpages.get('payout-form').setCallback(function() {
+            replaceWhiteSelects($('[data-subpage-name="payout-form"]')[0]);
+        });
+        subpages.loadAll();
 
         var ranges = {{ date_ranges| safe }};
         var selectedRange = 'all';
@@ -133,7 +140,6 @@
                     $.ajax({
                         url: payoutsUrl + '/' + payoutId,
                         success: function (data) {
-                            console.log(data);
                             $payoutData.html(data);
                             $payoutData.show();
                             $currentPayoutData.hide();
