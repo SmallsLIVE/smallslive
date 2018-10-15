@@ -56,6 +56,7 @@
 						{% include 'account/account-change-form.html' %}
 				</div>		
 			</div>
+			{% if request.user.artist %}
 			<div id="user-payout" class="account-settings-view">
 				<div class="title5 account-settings-title text-bottom-line">Payout info</div>
 				<div data-toggle-tab-group="user-payout" data-toggle-tab="user-payout-info">
@@ -76,12 +77,16 @@
 					{% include 'account/payout_info.html' %}
 				</div>
 			</div>
+			{% endif %}
 			<div id="user-donation-settings" class="account-settings-view">
 				<div class="title5 account-settings-title text-bottom-line">Donation settings</div>
 				<div class="account-settings-info">
 					<div class="text5">Current Subscription</div>
-					
+					{% if not profile.user.first_name %}
+					<div class="text9 accent-color">There is no subcription plan yet</div>
+					{% else %}
 					<div class="text9 accent-color">${{customer_detail.subscription.plan.amount}}/{{customer_detail.subscription.plan.interval}}</div>
+					{% endif %}
 				</div>
 				<div class="account-settings-info flex-row">
 					<button class="white-border-button">Cancel monthly</button>		
@@ -91,7 +96,11 @@
 					<div class="text5">Last invoice</div>
 					<div class="text9 text-grey">
 						{% with customer_charges|first as first_charge%}
+						{% if not profile.user.first_name %}
+						You havent made and invoice yet
+						{% else %}
 						{{ first_charge.created|date:"d/m/Y"  }}: {{ first_charge.amount }} - {{ first_charge.amount }}
+						{% endif %}
 						{% endwith %}
 					</div>	
 				</div>
@@ -120,8 +129,11 @@
 				<div class="title5 account-settings-title">Billing</div>
 					<div class="account-settings-info">
 						<div class="text5">Credit card</div>
-						<div class="text9 text-grey">xxxx-xxxx-xxxx-xxxx-{{customer_detail.active_card.last4}}</div>
+						{% if not customer_detail.active_card %}
+						<div class="text9 text-grey">There is no credit card assigned</div>
+						{% else %}
 						<div class="text9 text-grey">exp: {{customer_detail.active_card.exp_month}}/{{customer_detail.active_card.exp_year}}</div>
+						{% endif %}
 					</div>
 					<div class="account-settings-info">
 						<div class="text5">Billing address</div>

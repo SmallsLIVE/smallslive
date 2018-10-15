@@ -393,7 +393,8 @@ def user_settings_view_new(request):
         plan_id = request.user.customer.current_subscription.plan
         plan = stripe.Plan.retrieve(id=plan_id)
         #print(plan)
-
+    else:
+        plan = None
     customer_charges= customer.charges.all()
    
     charges_value=0

@@ -98,6 +98,17 @@
                 <div class="title1 datepicker-dashboard-btn">Metrics</div>
             <div class="text2" id="datepicker-description">All Time</div>
         </div>
+
+        <div class="event-metrics-container flex-row">
+            <div class="event-metrics-container-plays event-metrics-container-data">
+                <div class="text3">Plays</div>
+                <div id="play-value" class="title1"></div>
+            </div>
+            <div class="event-metrics-container-time event-metrics-container-data">
+                <div class="text3">Time Listened</div>
+                <div id="time-value" class="title1"></div>
+            </div>
+        </div>
         
     </div>
     </div>
@@ -563,8 +574,8 @@
 
     $datePickerFromMetricsMobile.on('changeDate', function (newDate) {
         eventDateFrom = newDate.date;
-        $("#search-date-picker-to input").click();
-        $("#search-date-picker-to input").focus();
+        $("#search-date-picker-for-mobile-metrics input").click();
+        $("#search-date-picker-for-mobile-metrics input").focus();
     });
 
     $datePickerFromMetricsMobile.on('click', function () {
@@ -588,8 +599,9 @@
     });
 
     $datePickerToMetricsMobile.on('changeDate', function (newDate) {
-        console.log(typeof eventDateFrom)
         eventDateTo = newDate.date;
+        eventDateTo = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
+
         if(typeof eventDateFrom === "object"){
             eventDateFrom = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
         }else if(typeof eventDateFrom === undefined){
@@ -597,15 +609,14 @@
             eventDateFrom = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
         }
         
-        eventDateTo = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
-        console.log(eventDateFrom,eventDateTo)
-        $("#datepicker-description").html(eventDateFrom + " - " + eventDateTo);
+        $datePickerToMetricsMobile.datepicker('hide');
         loadData();
     });
 
     $datePickerToMetricsMobile.on('click', function () {
         console.log("to")
-        var dropdown = $('#search-date-picker .dropdown-menu');
+        var dropdown = $('#search-date-picker-for-mobile-metrics .dropdown-menu');
+        console.log(dropdown)
         if (dropdown[0] && dropdown[0].style.display === 'block') {
             $datePickerToMetricsMobile.datepicker('hide');
         } else {
