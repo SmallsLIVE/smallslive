@@ -389,13 +389,12 @@ def user_settings_view_new(request):
     else:
         artist_info_form = ArtistInfoForm(instance=request.user)
     #Context for strip info
-    
+
+    plan = None
     customer = request.user.customer
     if customer.has_active_subscription():
         plan_id = request.user.customer.current_subscription.plan
         plan = stripe.Plan.retrieve(id=plan_id)
-    else:
-        plan = None
 
     customer_charges = customer.charges.all()
    

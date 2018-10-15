@@ -545,10 +545,9 @@ body.headers-1 {
       margin: 20px 0 0 0;
 
       img {
-        height: 180px;
         object-fit: cover;
         object-position: top;
-        width: 100%;
+        height: 240px;
       }
     }
 
@@ -568,6 +567,9 @@ body.headers-1 {
 
 .artist-search-profile-bio-container {
   width: 800px;
+  > div:first-of-type {
+    padding: 0 30px;
+  }
 }
 
 .artist-search-profile-bio {
@@ -590,7 +592,6 @@ body.headers-1 {
 
 .artist-search-profile-bio-buttons {
   width: 300px;
-  margin-left: 80px;
 
   button {
     margin: 10px 0;
@@ -598,28 +599,35 @@ body.headers-1 {
 }
 
 .artist-search-profile-image {
-  width: 150px;
-  height: 150px;
-  border: 4px solid $border-color;
   @include cross-browser-grayscale;
+  display: flex;
 
-  img {
-    width: 100%
+  @media (max-width: $screen-sm-max) {
+    display: block;
+  }
+  .no-photo {
+    @media (max-width: $screen-sm-max) {
+      padding: 20px 10px;
+      height: 150px;
+      text-align: center;
+    }
+    .title1 {
+      @media (min-width: $screen-sm-max) {
+        position: relative;
+        top: 50%;
+      }
+    }
+
   }
 
-  span.title1 {
-    position: relative;
-    top: 50%;
+  img {
+    width: 100%;
+    border: 4px solid $border-color;
   }
 
   @media (max-width: $screen-sm-max) {
     border: none;
     height: 250px;
-    span.title1 {
-      position: absolute;
-      top: calc(50% - 11px);
-      right: calc(50% - 20px);
-    }
   }
 }
 
@@ -641,7 +649,7 @@ body.headers-1 {
 }
 
 .white-line-right {
-  padding: 0 30px;
+  padding: 15px 30px;
   border-right: 2px solid white;
 }
 
