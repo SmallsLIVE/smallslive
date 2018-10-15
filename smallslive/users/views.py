@@ -429,8 +429,6 @@ def user_tax_letter(request):
     charges_value=0
     for charge in customer_charges:
         charges_value += charge.amount
-
-    print(customer)
     context=	{
     "customer": customer,
     "charges_value": charges_value,

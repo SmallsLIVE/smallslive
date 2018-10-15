@@ -282,12 +282,10 @@
         $('#table-event-edit').on('click', function () {
               window.subpages.register();
               if(window.screen.availWidth > 425){
-                console.log("Tablet edit")
                 $('#edit-event-form').modal('show');
                 var tabletSubpage = window.subpages.get("tablet-edit");
                 tabletSubpage.load();
               }else{
-                console.log("Mobile edit")
                 $("#mobile-option-container > *").hide()
                 $("#mobile-option-container > #mobile-option-edit").show()
                 var mobileSubpage = window.subpages.get("mobile-edit");
@@ -375,7 +373,6 @@
             thisDate= new Date()
             pastDate = new Date(1994, 0, 1)
             if ($(this).val() == "custom") {
-                console.log("custom")
                 $("#myMobileMetrics").show()
                 return;
             }else if ($(this).val() == "All Time") {
@@ -388,8 +385,6 @@
                 eventDateFrom = $(this).find(":selected").data("start");
                 eventDateTo =  $(this).find(":selected").data("end");
             }
-            console.log("not")
-            console.log(eventDateFrom, eventDateTo)
             $("#myMobileMetrics").hide()
             loadData();
           });
@@ -425,7 +420,6 @@
         $('.artist-events-list-info .datepicker-dashboard-btn').bind("click", ToggleDisplay);
 
         function ToggleDisplay() {
-            console.log("a")
             if ($(".artist-events-list-info .datepicker-container").data('shown'))
                 hide();
             else 
@@ -525,7 +519,6 @@
     });
 
     $("#mobile-metrics-button .white-border-button:not(.disabled, #table-event-edit)").click(function () {
-        console.log($(this).data("id"))
         $("#mobile-option-container > *").hide()
         var $idForOption = $(this).data("id");
         if( $idForOption !== undefined){
@@ -537,7 +530,6 @@
         $.post('/events/sets/' + eventId + '/private/', {
           csrfmiddlewaretoken: '{{ csrf_token }}'
         }, function (data, status) {
-            console.log(status);
         });
         hideMakePrivate();
         $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
@@ -550,9 +542,7 @@
     function publishSetMobile(eventId) {
         $.post('/events/sets/' + eventId + '/publish/', {
           csrfmiddlewaretoken: '{{ csrf_token }}'
-        }, function(data, status) {
-            console.log(status);
-        });
+        }, function(data, status) { });
         hidePublish();
         $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
             '<button class="publish-button" onclick="askPrivate(' + selectedSetId + ')">Make Private</button>'
@@ -585,7 +575,6 @@
     });
 
     $datePickerFromMetricsMobile.on('click', function () {
-        console.log("from")
         var dropdown = $('#search-date-picker .dropdown-menu');
         if (dropdown[0] && dropdown[0].style.display === 'block') {
             $datePickerFromMetricsMobile.datepicker('hide');
@@ -620,9 +609,7 @@
     });
 
     $datePickerToMetricsMobile.on('click', function () {
-        console.log("to")
         var dropdown = $('#search-date-picker-for-mobile-metrics .dropdown-menu');
-        console.log(dropdown)
         if (dropdown[0] && dropdown[0].style.display === 'block') {
             $datePickerToMetricsMobile.datepicker('hide');
         } else {

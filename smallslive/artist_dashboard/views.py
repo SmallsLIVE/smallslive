@@ -105,7 +105,6 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
             if not start_date_filter.tzinfo:
                 start_date_filter = timezone.make_aware(
                     start_date_filter, timezone.get_current_timezone())
-            print(start_date_filter)
             queryset = queryset.filter(
             event__start__gte=start_date_filter
             )
@@ -116,7 +115,6 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
             if not end_date_filter.tzinfo:
                 end_date_filter = timezone.make_aware(
                     end_date_filter, timezone.get_current_timezone())
-            print(end_date_filter)
             queryset = queryset.filter(
                 event__start__lte=end_date_filter
             )
@@ -261,7 +259,6 @@ class MyPastEventsInfoView(DetailView):
         context.update({
             'event_set': self.object.sets.all()[set_id]
         })
-        print(context['event_set'].audio_recording)
         context['is_admin'] = self.object.artists_gig_info.get(
             artist_id=artist.id).is_admin
         context['sidemen'] = self.object.artists_gig_info.filter(
