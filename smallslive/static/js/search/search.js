@@ -271,9 +271,9 @@ $(document).ready(function () {
         }
     });
 
-    $(".instrument").click(function () {
-        artistInstrument = $(this).text();
-        $('.instrument-btn').text(artistInstrument);
+    $('.instrument').click(function () {
+        artistInstrument = $(this).data('instrument');
+        $('.instrument-btn').text(artistInstrument || 'Instrument');
         artistPageNum = 1;
 
         $(".container-list-article").addClass("artist-loading-gif");

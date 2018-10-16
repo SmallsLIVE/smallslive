@@ -186,6 +186,18 @@ body.headers-1 {
   top: 50px;
   padding: 10px 20px;
 
+  @media (max-width: $screen-sm-max) {
+    display: block;
+    margin: 0;
+    width: 90vw;
+    position: fixed;
+    z-index: 9999;
+    height: 90vh;
+    overflow-y: auto;
+    top: 5vh;
+    left: 5vw;
+  }
+
   @media (min-width: $screen-md-min) {
     width: 50%;
     left: 50px;
@@ -204,6 +216,7 @@ body.headers-1 {
     @media (max-width: $screen-sm-max) {
       font-size: 2em;
       margin: 0 15px;
+      width: 150px;
     }
 
     &:hover {
@@ -413,6 +426,7 @@ body.headers-1 {
 
   @media (max-width: $screen-sm-max) {
     @include caret;
+    margin: 0 auto;
   }
 }
 

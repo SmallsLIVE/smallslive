@@ -25,7 +25,7 @@
                 This artist does not have a bio yet.
             {% endif %}
         </div>
-        <span class="read-more text4 text-grey">Read more</span>
+        {% if artist.biography %} <span class="read-more text4 text-grey">Read more</span> {% endif %}
     </div>
     <div class="artist-search-profile-image">
         {% if artist.photo %}
@@ -65,14 +65,13 @@
 <div class="artist-search-profile-bio-container flex-row hidden-xs">
   <div>
     <div class="artist-search-profile-bio collapsed text4">
-        {% if artist.biography %}
-        {{ artist.biography|safe }}
-        {% else %}
-            This artist does not have a bio yet.
-        {% endif %}
-
+      {% if artist.biography %}
+          {{ artist.biography|safe }}
+      {% else %}
+          This artist does not have a bio yet.
+      {% endif %}
     </div>
-    <span class="read-more text4 text-grey">Read more</span>
+    {% if artist.biography %} <span class="read-more text4 text-grey">Read more</span> {% endif %}
     </div>
     
     <div class="artist-search-profile-bio-buttons flex-column">

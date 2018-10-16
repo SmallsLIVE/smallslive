@@ -49,8 +49,10 @@
           <div class="instrument-btn white-border-button">Instrument</div>
         </div>
       <div class="instruments-container">
+        <a href="#" class="close-button visible-sm visible-xs"></a>
+        <div class="instrument text4" data-instrument="">All Instruments</div>
         {% for instrument in instruments %}
-          <div class="instrument text4 text-grey">{{ instrument }}</div>
+          <div data-instrument="{{ instrument }}" class="instrument text4 text-grey">{{ instrument }}</div>
         {% endfor %}
       </div>
       <div class="instrument-btn white-border-button visible-sm visible-xs">Instrument</div>
@@ -103,6 +105,11 @@
     var datePickerTop = 0;
     var defaultFromDate;
     var defaultToDate = '{{ default_to_date }}';
+  </script>
+  <script>
+    $('.instruments-container .close-button').on('click', function() {
+      $(this).closest('.instruments-container').hide();
+    });
   </script>
   <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
   <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
