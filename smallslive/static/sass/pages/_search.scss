@@ -275,22 +275,30 @@ body.headers-1 {
   }
 }
 
-.artist-arrow-search {
-  background-image: url(/static/image/arrow-right-black.svg);
-  background-repeat: no-repeat;
-  cursor: pointer;
-  font-size: 62px;
-  height: 69px;
-  margin: 0 40px;
-  width: 35px;
-
-  &.artist-arrow-disabled {
-    color: $text-grey;
-    cursor: not-allowed;
+#musicianContent .artist-arrows {
+  @media (max-width: $screen-sm-max) {
+    position: absolute;
+    top: 80vh;
+    justify-content: space-between;
+    width: 100vw;
   }
+  .artist-arrow-search {
+    background-image: url(/static/image/arrow-right-black.svg);
+    background-repeat: no-repeat;
+    cursor: pointer;
+    font-size: 62px;
+    height: 69px;
+    margin: 0 40px;
+    width: 35px;
 
-  &.left_arrow {
-    transform: scaleX(-1);
+    &.artist-arrow-disabled {
+      color: $text-grey;
+      cursor: not-allowed;
+    }
+
+    &.left_arrow {
+      transform: scaleX(-1);
+    }
   }
 }
 
