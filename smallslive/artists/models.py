@@ -87,7 +87,9 @@ class Artist(models.Model):
 
     def get_absolute_url(self):
         search_url = reverse('search')
-        params = urllib.urlencode({'q': self.full_name()})
+        params = urllib.urlencode(
+            {'q': self.full_name().encode('utf8'), 'artist_pk': self.id}
+        )
         return '?'.join([search_url, params])
 
     def full_name(self):

@@ -269,8 +269,14 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         context = self.get_upcoming_events_context_data(context)
         q = self.request.GET.get('q', '')
 
-        artists_blocks, showing_artist_results, num_pages = self.search(
-            Artist, q)
+        artist_id = self.request.GET.get('artist_pk')
+        if artist_id:
+            artists_blocks = [[Artist.objects.filter(id=artist_id).first()]]
+            showing_artist_results = ''
+            num_pages = 1
+        else:
+            artists_blocks, showing_artist_results, num_pages = self.search(
+                Artist, q)
 
         instruments = [i.name for i in Instrument.objects.all()]
         context['instruments'] = instruments
