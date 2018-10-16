@@ -7,12 +7,6 @@ body.headers-1 {
   }
 }
 
-.search-container {
-  @media (max-width: $screen-sm-max) {
-    padding-top: 250px;
-  }
-}
-
 .caret {
   cursor: pointer;
   position: relative;
@@ -548,7 +542,7 @@ body.headers-1 {
 }
 
 .artist-search-profile-resume {
-  width: 500px;
+  width: 530px;
   flex-direction: row;
   position: relative;
 
@@ -588,20 +582,25 @@ body.headers-1 {
 }
 
 .artist-search-profile-bio-container {
-  width: 800px;
+  width: 950px;
   > div:first-of-type {
     padding: 0 30px;
   }
 }
 
 .artist-search-profile-bio {
-  width: 500px;
+  width: 600px;
   overflow: hidden;
   height: auto;
   line-height: 20px;
   margin-top: 40px;
+
   &.collapsed {
     max-height: 7.2em;
+  }
+
+  &.text4{
+    font-size: 15px;
   }
   @media (max-width: $screen-sm-max) {
     width: 100%;
@@ -623,12 +622,14 @@ body.headers-1 {
 .artist-search-profile-image {
   @include cross-browser-grayscale;
   display: flex;
+  width: 700px;
 
   @media (max-width: $screen-sm-max) {
     display: block;
   }
   @media (min-width: $screen-sm-max) {
-    max-height: 185px;
+    max-height: 190px;
+    font-size: 15px;
   }
   .no-photo {
     @media (max-width: $screen-sm-max) {
@@ -768,18 +769,15 @@ body.headers-1 {
   align-self: center;
   text-align: center;
 
-  @media(max-width: $screen-sm-max) {
-    width: $mobile-filter-button-width;
-    margin-left: 0;
-  }
-
   &.white-border-button {
     @media(max-width: $screen-sm-max) {
-      font-size: 3.5vw;
+      width: $mobile-filter-button-width;
+      margin-left: 0;
+      padding: 1em;
       height: 13vw;
-      line-height: 13vw;
+      line-height: 4.5vw;
+      font-size: 3.5vw;
       margin-right: 1vw;
-      padding-top: 0;
       vertical-align: top;
     }
   }
@@ -895,7 +893,7 @@ body.headers-1 {
 
 .musician-title {
   @include title3;
-  font-size: 3em;
+  font-size: 4em;
   line-height: 1em;
   padding-bottom: 3px;
   @media (max-width: $screen-sm-max) {
