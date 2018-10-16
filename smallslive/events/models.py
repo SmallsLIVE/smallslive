@@ -494,12 +494,12 @@ class Event(TimeStampedModel):
 
     def get_next_event(self):
         next_event_ids = [x.id for x in
-                          self.objects.get_today_and_tomorrow_events(
+                          Event.objects.get_today_and_tomorrow_events(
                               venue_id=self.venue_id)]
         next_event = None
         while next_event_ids and not next_event:
             item = next_event_ids.pop(0)
-            if self.pk == item.pk:
+            if self.pk == item:
                 next_event = item
 
     @property
