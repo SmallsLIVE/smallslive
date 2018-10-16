@@ -117,6 +117,43 @@ class EventQuerySet(models.QuerySet):
 
         return query.order_by('-start')[:total_results]
 
+    def get_today_and_tomorrow_events(self, just_today=False, venue_id=None):
+        # All the complexity comes from the events after midnight being
+        # considered to be the same before, but internally date is real.
+
+        # cover one day or two
+        days = 1
+        if just_today:
+            days = 0
+        date_range_start = get_today_start()
+
+        date_range_end = date_range_start + timedelta(days=days)
+
+        # Initial range. This includes all events from the day
+        # even if they have already concluded
+        filter_data = {
+            'date__gte': date_range_start,
+            'date__lte': date_range_end,
+        }
+        if venue_id:
+            filter_data['venue_id'] = venue_id
+        qs = self.filter(**filter_data)
+
+        # There is currently no way of sorting events by event sets
+        # without having an ordering field.
+        # Sorting manually
+
+        events = list(qs)
+        events = Event.sorted(events)
+        while True and events:
+            event = events[0]
+            if event.is_past:
+                events.pop(0)
+            else:
+                break
+
+        return events
+
 
 class CustomImageFieldFile(models.fields.files.ImageFieldFile):
 
@@ -157,6 +194,7 @@ class Event(TimeStampedModel):
     #past = QueryManager(start__lt=datetime.now()).order_by('-start')
     #upcoming = QueryManager(start__gte=datetime.now()).order_by('start')
     date = models.DateField(blank=True, null=True)
+    start_streaming_before_minutes = models.IntegerField(default=15)
 
     # Import information (Mezzrow - possibly other in the future)
     original_id = models.CharField(blank=True, max_length=4096, null=True)
@@ -371,7 +409,22 @@ class Event(TimeStampedModel):
         """
         Checks if the event will happen in the future and hasn't yet started.
         """
-        return self.start > timezone.now()
+        local_datetime = timezone.localtime(timezone.now())
+        local_date = local_datetime.date()
+        local_time = local_datetime.time()
+
+        start, end = self.get_range()
+
+        # After midnight events always have the previous date
+        if local_time.hour <= 5:
+            local_date -= timedelta(days=1)
+
+        match_date = local_date <= self.date
+        time_before_start = local_time < start and start.hour > 5 or \
+                            local_time.hour < 5 < start.hour or \
+                            start.hour < local_time.hour > 5
+
+        return match_date and time_before_start
 
     @property
     def is_live(self):
@@ -402,8 +455,6 @@ class Event(TimeStampedModel):
         start_before_midnight_and_end_after = (start <= local_time or
                                                local_time <= end) \
                                                and end.hour <= 5 < start.hour
-        print start_before_midnight_and_end_after
-
         return match_date and \
                (time_after_start_and_before_end or
                 start_before_midnight_and_end_after)
@@ -440,6 +491,16 @@ class Event(TimeStampedModel):
             url = 'https://www.ustream.tv/embed/23240575?html5ui'
 
         return url
+
+    def get_next_event(self):
+        next_event_ids = [x.id for x in
+                          self.objects.get_today_and_tomorrow_events(
+                              venue_id=self.venue_id)]
+        next_event = None
+        while next_event_ids and not next_event:
+            item = next_event_ids.pop(0)
+            if self.pk == item.pk:
+                next_event = item
 
     @property
     def is_today(self):

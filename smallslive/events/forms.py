@@ -177,7 +177,8 @@ class EventAddForm(forms.ModelForm):
 class EventEditForm(EventAddForm):
     class Meta(EventAddForm.Meta):
         fields = (
-            'venue', 'title', 'subtitle', 'date', 'start', 'end', 'photo', 'cropping',
+            'venue', 'title', 'subtitle', 'date', 'start', 'end',
+            'start_streaming_before_minutes', 'photo', 'cropping',
             'description', 'state', 'staff_pick', 'tickets_url')
 
 

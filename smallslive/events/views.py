@@ -156,49 +156,12 @@ def order_events_by_popular(sqs):
         return list(sqs.order_by('-date')[:10])
 
 
-def get_today_and_tomorrow_events(just_today=False):
-    # All the complexity comes from the events after midnight being
-    # considered to be the same before, but internally date is real.
-
-    # cover one day or two
-    days = 1
-    if just_today:
-        days = 0
-    date_range_start = get_today_start()
-
-    date_range_end = date_range_start + timedelta(days=days)
-
-    # Initial range. This includes all events from the day
-    # even if they have already concluded
-    qs = Event.objects.filter(date__gte=date_range_start,
-                              date__lte=date_range_end)
-
-    # There is currently no way of sorting events by event sets
-    # without having an ordering field.
-    # Sorting manually
-
-    events = list(qs)
-    events = Event.sorted(events)
-    while True and events:
-        event = events[0]
-        if event.is_past:
-            events.pop(0)
-        else:
-            break
-
-    return events
-
-
 class HomepageView(ListView, UpcomingEventMixin):
     template_name = 'home_new.html'
     context_object_name = 'events_today'
 
     def get_queryset(self):
-        qs = get_today_and_tomorrow_events()
-        # Uncomment to filter todays events by venue
-        # venue = self.request.GET.get('venue')
-        # if venue is not None:
-        #     qs = qs.filter(venue__id=int(venue))
+        qs = Event.objects.get_today_and_tomorrow_events()
 
         return qs
 
@@ -333,20 +296,16 @@ class EventDetailView(DetailView):
 
         context['related_videos'] = Event.objects.event_related_videos(event)
 
-        context['streaming_tonight_videos'] = get_today_and_tomorrow_events(just_today=True)
+        context['streaming_tonight_videos'] = Event.objects.get_today_and_tomorrow_events(just_today=True)
 
         if event.is_today:
-            live_set = event.get_live_set()
-            if live_set:
-                next_event_ids = [x.id for x in get_today_and_tomorrow_events()]
-                next_set = EventSet.objects.filter(
-                    event_id__in=next_event_ids, start__gt=live_set.end
-                ).first()
-
-                if next_set:
+            if event.is_live:
+                next_event = event.get_next_event()
+                if next_event:
                     context['next_streaming'] = {
-                        'event_url': next_set.event.get_absolute_url(),
-                        'start': live_set.utc_end + timedelta(minutes=2)
+                        'event_url': next_event.get_absolute_url(),
+                        'start': next_event.utc_start - timedelta(
+                            minutes=next_event.start_streaming_before_minutes)
                     }
 
             else:
@@ -524,7 +483,7 @@ class GenericScheduleView(TemplateView, SearchMixin):
 
     def get_context_data(self, **kwargs):
         context = super(GenericScheduleView, self).get_context_data(**kwargs)
-        today_events_qs = get_today_and_tomorrow_events()
+        today_events_qs = Event.objects.get_today_and_tomorrow_events()
         context['events_today'] = today_events_qs
         date_range_start = get_today_start()
         event_blocks, showing_event_results, num_pages = self.search(
