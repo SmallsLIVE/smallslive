@@ -9,6 +9,10 @@ body {
       overflow-x: hidden;
     }
   }
+
+  &.no-scroll {
+    overflow: hidden;
+  }
 }
 
 @mixin variable-admin-padding($extra) {

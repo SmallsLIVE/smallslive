@@ -62,6 +62,9 @@
 .account-settings-container-new {
     padding: 0 0 0 10%;
     margin-bottom: 40px;
+    @media(max-width: $screen-sm-max) {
+      margin-top: 10px;
+    }
     .text-bottom-line{
         background: linear-gradient(to right, $white-transparent, $white-transparent) no-repeat bottom left;
         background-size: 100% 2px;
@@ -86,6 +89,10 @@
         &.white-background{
             background-color: $white-transparent;
         }
+        }
+
+        @media(max-width: $screen-sm-max) {
+          display: none;
         }
     }
     .form-control{
