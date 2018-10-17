@@ -18,7 +18,7 @@
   <meta property="og:site_name" content="SmallsLIVE"/>
   <meta property="og:title" content="{{ event.full_title }}"/>
   <meta property="og:description"
-        content="{{ event.listing_date|date:"l, F j, Y" }} {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}"/>
+        content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.date|date:'g:i A' }} - {{ event.date|date:'g:i A' }}"/>
   {% if event.photo %}
     <meta property="og:image" content="https:{% thumbor_url event.get_photo_url|urlencode height=315 width=600 smart=True %}"/>
     <meta itemprop="image" content="https:{% thumbor_url event.get_photo_url|urlencode height=315 width=600 smart=True %}">
@@ -26,7 +26,7 @@
   <meta property="fb:app_id" content="{{ facebook_app_id }}"/>
   <meta itemprop="name" content="{{ event.full_title }}">
   <meta itemprop="description"
-        content="{{ event.listing_date|date:"l, F j, Y" }} {{ event.start|date:"g:i A" }} - {{ event.end|date:"g:i A" }}">
+        content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.date|date:'g:i A' }} - {{ event.date|date:'g:i A' }}">
 {% endblock %}
 
 {% block home_content %}
@@ -34,14 +34,14 @@
 
   <div class="event-page-container">
     <div class="flex-column flex event-container">
-    {% if event.is_live %}
+    {% if event.show_streaming %}
        <div class="player-container">
          <div style="padding-bottom:56.25%; position:relative; display:block; width: 800px; height: 450px">
            <iframe id="UstreamIframe"
                    width="100%" height="100%"
                    src="{{ event.get_live_stream }}"
                    frameborder="0"
-                   style="position:absolute; top:0; left: 0" allowfullscreen
+                   style="position:absolute; top:0; left: 0" allowfullscreen allowautoplay
                    webkitallowfullscreen></iframe>
          </div>
        </div>
@@ -55,24 +55,22 @@
           {% endif %}
         </span>
         <div class="player-info">
-          {% if event.is_live %}
-            <div class="live-now text2">Live now</div>
-          {% endif %}
+          <div class="live-now text2{% if not event.is_live %} hidden{% endif %}">Live now</div>
           <div class="event-overlay">
-            <div class="event-overlay-title">{{ event.title }}</div>
+            <div class="event-title-ajax event-overlay-title">{{ event.title }}</div>
             <div class="event-overlay-artists">
-              {% for gig_info in event.artists_gig_info.all %}
+              {% for gig_info in event_artists %}
                 <div class="title5">
-                  {{ gig_info.artist.full_name }} <span class="accent-color">/</span> {{ gig_info.role.name }}
+                  {{ gig_info.name }} <span class="accent-color">/</span> {{ gig_info.role }}
                 </div>
               {% endfor %}
             </div>
             <div class="event-overlay-venue">
                 <div class="title5">{{ event.date|date:'m/d/Y' }}</div>
-                {% if event.sets.count %}
+                {% if sets %}
                     <div class="title5">
                       Sets at
-                      {% for set in event.sets.all %}
+                      {% for set in sets %}
                         <span class="event-overlay-venue-set">
                           {{ set.start|time:"g:iA"}}
                         </span>
@@ -94,11 +92,11 @@
                   <img src="{% static 'logo.svg' %}" alt="Smalls"
                                         class="img-circle" width="40" height="40"/>
               </div>
-              <div class="event-overlay-title">{{ event.title }}</div>
+              <div class="event-title-ajax event-overlay-title">{{ event.title }}</div>
               <div class="event-overlay-artists">
-                {% for gig_info in event.artists_gig_info.all %}
+                {% for gig_info in event_artists %}
                   <div class="title5">
-                    {{ gig_info.artist.full_name }} <span class="accent-color">/</span> {{ gig_info.role.name }}
+                    {{ gig_info.name }} <span class="accent-color">/</span> {{ gig_info.role }}
                   </div>
                 {% endfor %}
               </div>
@@ -122,17 +120,22 @@
     <div class="event-video-info content-space-between">
       <div class=" flex-column">
         <div class="event-set-info">
-          <div class="event-title title1">{{ event.title }}</div>
-            <div class="accent-color text7">
+          <div class="current-event event-title title1">{{ event.title }}</div>
+          <div class="current-event accent-color text7">
               {{ event.date|date:'m/d/Y' }}</div>
+          {% if next_event %}
+          <div class="next-event event-title title1 hidden">{{ next_event.title }}</div>
+          <div class="next-event accent-color text7 hidden">
+              {{ next_event.date|date:'m/d/Y' }}</div>
+          {% endif %}
         </div>
         <div class="event-overlay-venue">
-          {% if event.sets.count and event.is_future %}
+          {% if sets and event.is_future %}
             <div class="title5">
               Sets at
-              {% for set in event.sets.all %}
+              {% for set in sets %}
                 <span class="event-overlay-venue-set">
-                  {{ set.start|time:"g:iA"}}
+                  {{ set.start|time:'g:iA'}}
                 </span>
               {% endfor %}
             </div>
@@ -143,7 +146,7 @@
       </div>
       <div class="flex-colum buttons-container">
         {% if event.is_past %}
-        {% for set in event.sets.all %}
+        {% for set in sets %}
           <button class="set-select-button white-border-button {{ forloop.counter0|yesno:',active' }}"
                   data-comments-page="{% url 'event_comments' pk=event.id slug=event.slug %}?set={{ forloop.counter0 }}"
                   data-playlist-index="{{ forloop.counter0 }}">Set {{ forloop.counter }}
@@ -177,14 +180,22 @@
         </div>
       </div>
     </div>
-            <div class="event-band">
-          {% for gig_info in event.artists_gig_info.all %}
-            <div>
-              <a href="{{ gig_info.artist.get_absolute_url }}" class="artist-link">
-                {{ gig_info.artist.full_name }} / {{ gig_info.role.name }}</a>
-            </div>
+      <div class="event-band">
+        {% for gig_info in event_artists %}
+          <div class="current_event">
+            <a href="{{ gig_info.artist.get_absolute_url }}" class="artist-link">
+              {{ gig_info.name }} / {{ gig_info.role }}</a>
+          </div>
+        {% endfor %}
+        {% if next_event %}
+          {% for gig_info in next_event.artists_info %}
+          <div class="next_event hidden">
+            <a href="{{ gig_info.artist.get_absolute_url }}" class="artist-link">
+              {{ gig_info.name }} / {{ gig_info.role }}</a>
+          </div>
           {% endfor %}
-        </div>
+        {% endif %}
+      </div>
 
     <div class="flex-row event-set-selector"></div>
     {% if event.published_audio or event.published_video %}
@@ -201,8 +212,15 @@
           <div>
               <div>
               {% for related in streaming_tonight_videos %}
-                <div class="flex-row related-video {% if related == event %}selected{% endif %}">
+                <div class="flex-row related-video{% if related == event %} selected{% endif %}{% if next_event and next_event.title == related.title %} next-up{% endif %}">
+                  {% if next_event and next_event.title == related.title %}
+                  {% include 'events/event_card.html' with event=related mini=True show_time=True next_up=True %}
+                  {% elif related == event %}
+                  {% include 'events/event_card.html' with event=related mini=True show_time=True current_event=True %}
+                  {% else %}
                   {% include 'events/event_card.html' with event=related mini=True show_time=True %}
+                  {% endif %}
+
                   <div class="related-info flex-column content-centered">
                     <div class="flex-column">
                       <div class="text1 related-title">{{ related.title }}</div>
@@ -277,7 +295,7 @@
   </script>
 
 
-  {% if event.sets.count %}
+  {% if event.sets %}
 
       <script>
         var playsCountSent = [];
@@ -448,15 +466,27 @@
                 $(this).toggleClass('active');
             });
         {% endif %}
+        {% if event.show_streaming or event.is_today %}
+          {% if streaming or next_event %}
+            {% if streaming %}
+            var changeTime = moment("{{ streaming.start.isoformat }}");
+            {% endif %}
+            {% if next_event %}
+            var changeTime = moment("{{ next_event.start.isoformat }}");
+            {% endif %}
 
-        {% if event.is_live or event.is_today %}
-          {% if next_streaming %}
-              console.log('Setting Timer')
-            var changeTime = moment("{{ next_streaming.start.isoformat }}");
             var waitTime = changeTime.diff(moment(), 'miliseconds');
             var intervalId = setInterval(function () {
                 clearInterval(intervalId);
-                window.location = "{{ next_streaming.event_url }}";
+                {% if streaming  %}
+                window.location = "{{ streaming.event_url }}";
+                {% endif %}
+                {% if next_event %}
+                $('.current-event').addClass('hidden');
+                $('.next-event').removeClass('hidden');
+                $('.related-video.selected').removeClass('selected');
+                $('.related-video.next-up').addClass('selected');
+                {% endif %}
             }, waitTime);
           {% endif %}
         {% endif %}

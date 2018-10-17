@@ -299,23 +299,46 @@ class EventDetailView(DetailView):
         context['streaming_tonight_videos'] = Event.objects.get_today_and_tomorrow_events(just_today=True)
 
         if event.is_today:
-            if event.is_live:
+
+            event_url = None
+            start = None
+            next_event = None
+            # In this case, we need to change show info without reloading
+            # The strategy is to provide the next show's info as hidden elements
+            # They will be swapped with current info at start time.
+            if event.show_streaming:
                 next_event = event.get_next_event()
                 if next_event:
-                    context['next_streaming'] = {
-                        'event_url': next_event.get_absolute_url(),
-                        'start': next_event.utc_start - timedelta(
-                            minutes=next_event.start_streaming_before_minutes)
-                    }
+                    title = next_event.title
+                    date = next_event.date
+                    sets_info = next_event.get_sets_info_dict()
+                    artists_info = next_event.get_artists_info_dict()
+                    start = next_event.get_actual_start() - timedelta(
+                        minutes=next_event.start_streaming_before_minutes)
 
-            else:
-                first_set = event.sets.order_by('start').first()
-                if first_set:
-                    context['next_streaming'] = {
-                        'event_url': event.get_absolute_url(),
-                        'start': first_set.utc_start - timedelta(minutes=15)
-                    }
+            # Reload the page to show the live streaming at start time.
+            elif event.is_future:
+                event_url = event.get_absolute_url()
+                start = event.get_actual_start() - timedelta(
+                    minutes=event.start_streaming_before_minutes)
 
+            if event_url:
+                context['streaming'] = {
+                    'event_url': event_url,
+                    'start': start
+                }
+
+            if next_event:
+                context['next_event'] = {
+                    'title': title,
+                    'date': date,
+                    'sets_info': sets_info,
+                    'artists_info': artists_info,
+                    'start': start
+                }
+
+        context['sets'] = event.get_sets_info_dict()
+        context['event_artists'] = event.get_artists_info_dict()
         context['donate_url'] = reverse('donate')
 
         return context

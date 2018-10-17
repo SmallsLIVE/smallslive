@@ -145,12 +145,7 @@ class EventQuerySet(models.QuerySet):
 
         events = list(qs)
         events = Event.sorted(events)
-        while True and events:
-            event = events[0]
-            if event.is_past:
-                events.pop(0)
-            else:
-                break
+        events = [e for e in events if not e.is_past]
 
         return events
 
@@ -214,6 +209,24 @@ class Event(TimeStampedModel):
         if not self.slug:
             self.slug = slugify(self.title)
         super(Event, self).save(force_insert, force_update, using, update_fields)
+
+    def get_actual_start(self):
+        """ Event dates after midnight are set as the previous day
+            This method returns the real date of an event so it
+            can be compared to current date tand time
+        """
+
+        real_date = self.date
+
+        sets = list(self.sets.all())
+        sets = sorted(sets, Event.sets_order)
+
+        if 0 <= sets[0].start.hour < 5:
+            real_date = real_date + timedelta(days=1)
+
+        ny_start = datetime.combine(real_date, sets[0].start)
+
+        return timezone.make_aware(ny_start, timezone=(timezone.get_current_timezone()))
 
     def get_set_hours_display(self):
 
@@ -343,9 +356,9 @@ class Event(TimeStampedModel):
                 return 1
             else:
                 return 0
-        elif set1.start.hour <= 5:
+        elif set1.start.hour <= 5:  # and set2.start.hour > 5
             return 1
-        elif set2.start.hour <= 5:
+        elif set2.start.hour <= 5:  # and set1.start.hour > 5
             return -1
 
     @staticmethod
@@ -361,11 +374,16 @@ class Event(TimeStampedModel):
             sets2 = list(event2.sets.all())
             sets2 = sorted(sets2, Event.sets_order)
             start2 = sets2[0].start
-            if start1.hour <= 5 and start2.hour <=5 or start1.hour >= 5 and start2.hour >= 5:
-                if start1.hour <= start2.hour:
+            if start1.hour <= 5 and start2.hour <= 5 or start1.hour >= 5 and start2.hour >= 5:
+                if start1.hour < start2.hour:
                     return -1
-                else:
+                elif start1.hour > start2.hour:
                     return 1
+                else:  # same hour
+                    if start1.minute <= start2.minute:
+                        return -1
+                    else:
+                        return 1
             else:
                 if start1.hour <= 5:
                     return 1
@@ -420,20 +438,31 @@ class Event(TimeStampedModel):
             local_date -= timedelta(days=1)
 
         match_date = local_date <= self.date
-        time_before_start = local_time < start and start.hour > 5 or \
-                            local_time.hour < 5 < start.hour or \
-                            start.hour < local_time.hour > 5
+        time_before_start = local_date < self.date or \
+                            local_time < start or \
+                            local_time.hour < 5 < start.hour
 
         return match_date and time_before_start
 
-    @property
-    def is_live(self):
-
+    def is_live_or_about_to_begin(self, about_to_begin=False):
+        """
+        An event is live depending on start and end time.
+        'about_to_begin' considers the actual start date minus X minutes (typically 15) set
+        in the database as 'start_streaming_before_minutes'
+        """
         local_datetime = timezone.localtime(timezone.now())
         local_date = local_datetime.date()
         local_time = local_datetime.time()
 
         start, end = self.get_range()
+
+        if about_to_begin:
+            # convert to datetime temporarily to subtract minutes
+            start = datetime.combine(local_date, start)
+            start = timezone.make_aware(start, timezone=(timezone.get_current_timezone()))
+            start = start - timedelta(
+                minutes=self.start_streaming_before_minutes)
+            start = start.time()
 
         # After midnight events always have the previous date
         if local_time.hour <= 5:
@@ -455,9 +484,18 @@ class Event(TimeStampedModel):
         start_before_midnight_and_end_after = (start <= local_time or
                                                local_time <= end) \
                                                and end.hour <= 5 < start.hour
+
         return match_date and \
                (time_after_start_and_before_end or
                 start_before_midnight_and_end_after)
+
+    @property
+    def show_streaming(self):
+        return self.is_live_or_about_to_begin(about_to_begin=True)
+
+    @property
+    def is_live(self):
+        return self.is_live_or_about_to_begin(about_to_begin=False)
 
     def get_live_set(self):
         sets = list(self.sets.all())
@@ -493,21 +531,25 @@ class Event(TimeStampedModel):
         return url
 
     def get_next_event(self):
-        next_event_ids = [x.id for x in
-                          Event.objects.get_today_and_tomorrow_events(
-                              venue_id=self.venue_id)]
+        next_events = Event.objects.get_today_and_tomorrow_events(
+            venue_id=self.venue_id)
+
         next_event = None
-        while next_event_ids and not next_event:
-            item = next_event_ids.pop(0)
-            if self.pk == item:
+        while next_events and not next_event:
+            item = next_events.pop(0)
+            if self.pk == item.pk:
                 next_event = item
+
+        next_event = next_events.pop(0) if next_events else None
+
+        return next_event
 
     @property
     def is_today(self):
         day_start = get_today_start()
         day_end = day_start + timedelta(days=1)
 
-        return day_start <= self.start < day_end
+        return day_start.date() <= self.date < day_end.date()
 
     def get_performers(self):
         return self.artists_gig_info.select_related('artist', 'role')
@@ -611,6 +653,21 @@ class Event(TimeStampedModel):
             return
         top_x, top_y, bottom_x, bottom_y = self.cropping.split(',')
         return ((top_x, top_y), (bottom_x, bottom_y))
+
+    def get_sets_info_dict(self):
+        sets_info = []
+        for item in self.sets.all():
+            sets_info.append({'start': item.start})
+
+        return sets_info
+
+    def get_artists_info_dict(self):
+        event_artists_info = []
+        for item in self.artists_gig_info.all():
+            event_artists_info.append({'name': item.artist.full_name(),
+                                       'role': item.role.name})
+
+        return event_artists_info
 
 
 class RecordingQuerySet(models.QuerySet):
