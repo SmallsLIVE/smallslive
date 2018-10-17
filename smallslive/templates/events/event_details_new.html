@@ -36,7 +36,7 @@
     <div class="flex-column flex event-container">
     {% if event.show_streaming %}
        <div class="player-container">
-         <div style="padding-bottom:56.25%; position:relative; display:block; width: 800px; height: 450px">
+         <div class="wrapper">
            <iframe id="UstreamIframe"
                    width="100%" height="100%"
                    src="{{ event.get_live_stream }}"
@@ -172,7 +172,9 @@
             </a>
           {% endif %}
           {% if not event.is_live and event.is_past %}
-          <button id="btn-donate" class="white-border-button" style="display: inline;">Donate</button>
+            {% if user.has_active_subscription or user.has_archive_access %}
+            <button id="btn-donate" class="white-border-button" style="display: inline;">Donate</button>
+            {% endif %}
           {% endif %}
           {% if not event.is_live and event.is_future %}
           <button class="white-border-button" onclick="showTickets()" style="display: inline;">Tickets</button>

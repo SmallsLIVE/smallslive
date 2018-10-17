@@ -53,6 +53,7 @@ $player-height:  27.5vw;
   }
 
   .event-set-info {
+    margin-right: 2px;
     padding-top: 5px;
   }
 
@@ -104,6 +105,14 @@ $player-height:  27.5vw;
       background-size: cover;
       filter: $sepia-filter
     }
+  }
+
+  .wrapper {
+    padding-bottom: 56.25%;
+    position: relative;
+    display: block;
+    width: 46vw;
+    height: 26vw;
   }
 }
 
@@ -212,7 +221,7 @@ $player-height:  27.5vw;
     transform: scaleY(1.3);
     line-height: 38px;
     @media (max-width: $screen-sm-max) {
-      font-size: 6em;
+      font-size: 3.5vw;
     }
 
   }
