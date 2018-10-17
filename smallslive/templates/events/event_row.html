@@ -1,5 +1,5 @@
 <div class="event-row"> {% for event in events %}
-  <article class="event-display"> {% include 'events/event_card.html' with event=event secondary=secondary %}
+  <article class="event-display"> {% include 'events/event_card.html' with event=event secondary=secondary hide_play=True%}
     <div class="event-info">
       <div>
         <div class="text-grey">{{ event.get_date|date:'m/d/Y' }}</div>

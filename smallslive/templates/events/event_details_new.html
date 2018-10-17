@@ -31,6 +31,7 @@
 
 {% block home_content %}
   {% include 'events/tickets_dialog.html' %}
+  {% include 'events/streaming_not_available_dialog.html' %}
 
   <div class="event-page-container">
     <div class="flex-column flex event-container">
@@ -54,7 +55,7 @@
           <img src="{% static 'image/no-event-image-placeholder.jpg' %}" style="width: 100%">
           {% endif %}
         </span>
-        <div class="player-info">
+        <div class="player-info pointer-events">
           <div class="live-now text2{% if not event.is_live %} hidden{% endif %}">Live now</div>
           <div class="event-overlay">
             <div class="event-title-ajax event-overlay-title">{{ event.title }}</div>
@@ -78,6 +79,9 @@
                     </div>
                 {% endif %}
               <div class="title5 accent-color">LIVE AT {{event.venue.name }}</div>
+            </div>
+            <div class="icon-overlay">
+              <i id="btn-play-event" class="fa fa-play fa-thin-circle"></i>
             </div>
           </div>
         </div>
@@ -191,7 +195,7 @@
         {% endfor %}
         {% if next_event %}
           {% for gig_info in next_event.artists_info %}
-          <div class="next_event hidden">
+          <div class="next-event hidden">
             <a href="{{ gig_info.artist.get_absolute_url }}" class="artist-link">
               {{ gig_info.name }} / {{ gig_info.role }}</a>
           </div>
@@ -469,10 +473,7 @@
             });
         {% endif %}
         {% if event.show_streaming or event.is_today %}
-          {% if streaming or next_event %}
-            {% if streaming %}
-            var changeTime = moment("{{ streaming.start.isoformat }}");
-            {% endif %}
+          {% if next_event %}
             {% if next_event %}
             var changeTime = moment("{{ next_event.start.isoformat }}");
             {% endif %}
@@ -480,9 +481,6 @@
             var waitTime = changeTime.diff(moment(), 'miliseconds');
             var intervalId = setInterval(function () {
                 clearInterval(intervalId);
-                {% if streaming  %}
-                window.location = "{{ streaming.event_url }}";
-                {% endif %}
                 {% if next_event %}
                 $('.current-event').addClass('hidden');
                 $('.next-event').removeClass('hidden');
@@ -521,6 +519,18 @@
 
           $('#btn-donate').click(function () {
             window.location = "{{ donate_url }}";
+          });
+
+          $('#btn-play-event').click(function () {
+            {% if streaming %}
+            var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
+            if (moment() - allowStreamingTime > 0) {
+              window.location = "{{ streaming.event_url }}";
+            } else {
+              $('#streamingNotAvailableDialog').modal('show');
+            }
+            {% endif %}
+
           });
 
         });

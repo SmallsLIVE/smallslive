@@ -1,0 +1,27 @@
+<div class="modal fade" id="streamingNotAvailableDialog"
+     tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+
+    <div class="modal-content custom-modal">
+      <a href="#" class="close-button"></a>
+      <div class="modal-body">
+        <p class="title2 accent-color">Streaming not available yet</p>
+        <p>Streaming for this event will be available 15 minutes before it begins</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('click', function () {
+    $('#streamingNotAvailableDialog').hide();
+  });
+  $(document).ready(function () {
+    var $streamingDialog = $('#streamingNotAvailableDialog');
+    var $streamingCloseButton = $($streamingDialog.find('.close-button')[0]);
+    $streamingCloseButton.click(function () {
+      $streamingDialog.modal('hide');
+    });
+  });
+
+</script>

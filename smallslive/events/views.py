@@ -263,7 +263,6 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
         return response
 
 
-
 event_add = EventAddView.as_view()
 
 
@@ -298,10 +297,11 @@ class EventDetailView(DetailView):
 
         context['streaming_tonight_videos'] = Event.objects.get_today_and_tomorrow_events(just_today=True)
 
+        event_url = None
+        start = None
+
         if event.is_today:
 
-            event_url = None
-            start = None
             next_event = None
             # In this case, we need to change show info without reloading
             # The strategy is to provide the next show's info as hidden elements
@@ -316,18 +316,6 @@ class EventDetailView(DetailView):
                     start = next_event.get_actual_start() - timedelta(
                         minutes=next_event.start_streaming_before_minutes)
 
-            # Reload the page to show the live streaming at start time.
-            elif event.is_future:
-                event_url = event.get_absolute_url()
-                start = event.get_actual_start() - timedelta(
-                    minutes=event.start_streaming_before_minutes)
-
-            if event_url:
-                context['streaming'] = {
-                    'event_url': event_url,
-                    'start': start
-                }
-
             if next_event:
                 context['next_event'] = {
                     'title': title,
@@ -336,6 +324,17 @@ class EventDetailView(DetailView):
                     'artists_info': artists_info,
                     'start': start
                 }
+
+        if event.is_future:
+            event_url = event.get_absolute_url()
+            start = event.get_actual_start() - timedelta(
+                minutes=event.start_streaming_before_minutes)
+
+        if event_url:
+            context['streaming'] = {
+                'event_url': event_url,
+                'start': start
+            }
 
         context['sets'] = event.get_sets_info_dict()
         context['event_artists'] = event.get_artists_info_dict()

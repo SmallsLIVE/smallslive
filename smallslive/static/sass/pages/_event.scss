@@ -133,16 +133,20 @@ $player-height:  27.5vw;
 
 .player-info {
   @include animated;
+  height: 100%;
   pointer-events: none;
   position: absolute;
   width: 100%;
   left: 0;
   top: 0;
 
+  &.pointer-events {
+    pointer-events: all;
+  }
+
   @media (max-width: $screen-sm-max) {
     font-size: .6em;
   }
-
 
   &.paused {
     background: rgba(0,0,0,0.8);
@@ -202,8 +206,15 @@ $player-height:  27.5vw;
       line-height: 1.5;
       text-align: right;
     }
+  }
 
+  .icon-overlay {
+    @include icon-overlay;
+    opacity: 1;
 
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .event-overlay-venue-set:not(:last-child)::after {
@@ -305,6 +316,7 @@ $player-height:  27.5vw;
 
     .flex-column {
       display: block;
+      margin-right: 5px;
     }
 
   }

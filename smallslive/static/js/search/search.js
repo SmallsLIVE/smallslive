@@ -457,7 +457,7 @@ $(document).ready(function () {
         showOnFocus: false,
         startDate: new Date()
     }).datepicker('setDate', 'now');
-    
+
     $datePickerFromRefine.on('changeDate', function (newDate) {
         eventDateFrom = newDate.date;
         //$('#events-filter').val('oldest');
