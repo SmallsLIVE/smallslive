@@ -1,53 +1,63 @@
 {% load static from staticfiles %}
 
-<div class="tax-letter-container">
-    <div class="tax-letter-header">
-        <p>The SmallsLIVE Foundation, INC.</p>
-        
-        <p>183 West 10th Street</p>
-        
-        <p> Greenwich Village, New York, 10014</p>
-       
-        <p>(646) 476-4346</p>
-        
-        <p>Email: SmallsLIVEFoundation@smallslive.com</p>
-        
-        <p><a href="http://www.smallslive.com">www.smallslive.com</a></p>
-       
-    </div>
-    <div class="tax-letter-body">
-        
-        
-        <p>
-        {% now "m/d/y" %}
-        </p>
-        
-        <p>
-        Dear {{user.first_name}} {{user.last_name}}:
-        </p>
-        <p>
-        We thank you for your support of the mission of the SmallsLIVE Foundation for Jazz Arts and Education. 
-        Your generous donation is helping to support the musicians and the venues and allowing us to continue to present jazz music in New York City.
-        </p>
-        <p>Your donation for this tax year was: ${{charges_value}}.
-                This amount is deductible from your taxes to the limit allowable by law.</p>
-        
-        
-        <p>The SmallsLIVE Foundation Tax ID is 38-4083862.</p>
-        
-        
-        <p>
-        Our office is at 183 West 10th basement, New York City, 10014.
-        Our number is (646) 476-4346. The SmallsLIVE Foundation for Jazz Arts and Education 
-        is an IRS recognized not-for-profit corporation organized in the state of New York.
-        </p>
-        <p>
-        My Sincerest Regards,
-        <br>
-        Spike Wilner
-        <br>
-        CEO
-        The SmallsLIVE Foundation, INC.
-        </p>
-    </div>
-</div>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tax letter</title>
+  <link href="/static/css/main.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+        <div class="tax-letter-container">
+                <div class="tax-letter-header">
+                    <p>The SmallsLIVE Foundation, INC.</p>
+                    
+                    <p>183 West 10th Street</p>
+                    
+                    <p> Greenwich Village, New York, 10014</p>
+                   
+                    <p>(646) 476-4346</p>
+                    
+                    <p>Email: SmallsLIVEFoundation@smallslive.com</p>
+                    
+                    <p><a href="http://www.smallslive.com">www.smallslive.com</a></p>
+                   
+                </div>
+                <div class="tax-letter-body">
+                    
+                    
+                    <p>
+                    {% now "m/d/y" %}
+                    </p>
+                    
+                    <p>
+                    Dear {{user.first_name}} {{user.last_name}}:
+                    </p>
+                    <p>
+                    We thank you for your support of the mission of the SmallsLIVE Foundation for Jazz Arts and Education. 
+                    Your generous donation is helping to support the musicians and the venues and allowing us to continue to present jazz music in New York City.
+                    </p>
+                    <p>Your donation for this tax year was: ${{charges_value}}.
+                            This amount is deductible from your taxes to the limit allowable by law.</p>
+                    
+                    
+                    <p>The SmallsLIVE Foundation Tax ID is 38-4083862.</p>
+                    
+                    
+                    <p>
+                    Our office is at 183 West 10th basement, New York City, 10014.
+                    Our number is (646) 476-4346. The SmallsLIVE Foundation for Jazz Arts and Education 
+                    is an IRS recognized not-for-profit corporation organized in the state of New York.
+                    </p>
+                    <p>
+                    My Sincerest Regards,
+                    <br>
+                    Spike Wilner
+                    <br>
+                    CEO
+                    The SmallsLIVE Foundation, INC.
+                    </p>
+                </div>
+            </div>
+</body>
+</html>
