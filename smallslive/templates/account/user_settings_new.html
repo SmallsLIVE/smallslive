@@ -114,7 +114,7 @@
 					<div class="text9 text-grey">
 						{% with customer_charges|first as first_charge%}
 						{% if not customer_charges %}
-						You havent made and invoice yet
+						You haven't made an invoice yet
 						{% else %}
 						{{ first_charge.created|date:"d/m/Y"  }} ${{ first_charge.amount }}
 						{% endif %}
@@ -125,7 +125,7 @@
 						<div class="text5">Total donations this year</div>
 						<div class="text9 accent-color">${{charges_value}}</div>
 				</div>
-				<button class="white-border-button">Download tax document</button>		
+				<a href="{% url 'user_tax_letter' %}" class="white-border-button">Download tax document</a>
 			</div>
 			
 			<div id="user-billing" class="account-settings-view">

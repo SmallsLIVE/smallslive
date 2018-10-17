@@ -435,20 +435,21 @@ def user_settings_view_new(request):
         'monthly_pledge_in_dollars': monthly_pledge_in_dollars,
     })
 
+
 @login_required
 def user_tax_letter(request):
 
     customer = request.user.customer
 
-    customer_charges= customer.charges.all()
-    charges_value=0
+    customer_charges = customer.charges.all()
+    charges_value = 0
     for charge in customer_charges:
         charges_value += charge.amount
 
-    context=	{
-    "customer": customer,
-    "charges_value": charges_value,
-    "year": 1964
+    context = {
+        'customer': customer,
+        'charges_value': charges_value,
+        'year': 1964
     }
     return render(request, 'account/tax-letter.html', context)
 
