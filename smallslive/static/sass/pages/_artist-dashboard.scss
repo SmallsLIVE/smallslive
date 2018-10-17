@@ -554,16 +554,23 @@
             top:37px;
             .custom-date-picker{
                 width: 110px;
+               
                 @media (min-width: 992px){
                     input{
                         padding: 0 10px
                     }
-                }
                 
+                }
+                @media (max-width: 992px){
+                    width: 130px;
+                
+                }
+
                 }
             }
         }
     .white-border-select{
+        text-align: center;
         .select-selected{
             border: 3px solid rgba(255, 255, 255, 0.9);
         }

@@ -427,12 +427,12 @@ def user_settings_view_new(request):
         'current_user': request.user,
         'artist_info_form': artist_info_form,
         'plan': plan,
-        'customer_charges':customer_charges,
-        'customer_detail':customer_detail,
-        'charges_value':charges_value,
-        'period_end':period_end,
-        'user_archive_access_until':user_archive_access_until,
-        'monthly_pledge_in_dollars':monthly_pledge_in_dollars,
+        'customer_charges': customer_charges,
+        'customer_detail': customer_detail,
+        'charges_value': charges_value,
+        'period_end': period_end,
+        'user_archive_access_until': user_archive_access_until,
+        'monthly_pledge_in_dollars': monthly_pledge_in_dollars,
     })
 
 @login_required

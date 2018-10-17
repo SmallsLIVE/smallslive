@@ -87,16 +87,17 @@
 					{% else %}
 					<div class="text9 accent-color">${{monthly_pledge_in_dollars}}/{{customer_detail.subscription.plan.interval}}</div>
 					{% endif %}
-					<div class="flex-row supporter-options">	
-						{% if active %}
+					
+					{% if active %}
 						<button class="white-border-button">Become a Supporting Member</button>		
-						{% elif customer_detail.subscription.plan and not period_end.due %}
-						<button class="white-border-button">Cancel</button>		
-						<button class="white-border-button">Update Pledge</button>		
-						{% else %}
+					{% elif customer_detail.subscription.plan and not period_end.due %}
+						<div class="flex-row supporter-options">	
+							<button class="white-border-button">Cancel</button>		
+							<button class="white-border-button">Update Pledge</button>	
+						</div>	
+					{% else %}
 						<button class="white-border-button">Make a Recurring Monthly Pledge</button>	
-						{% endif %}
-					</div>
+					{% endif %}
 				</div>
 			
 				<div class="account-settings-info ">
