@@ -1,4 +1,5 @@
 from allauth.account import app_settings
+from datetime import datetime, date
 from allauth.account.forms import ChangePasswordForm
 from allauth.account.models import EmailAddress
 from allauth.account.utils import complete_signup
@@ -123,6 +124,9 @@ class BecomeSupporterView(TemplateView):
 
 
 become_supporter = BecomeSupporterView.as_view()
+
+
+
 
 
 class BecomeSupporterCompleteView(BecomeSupporterView):
@@ -391,15 +395,17 @@ def user_settings_view_new(request):
     #Context for strip info
 
     plan = None
+    period_end = {}
+    period_end["date"] = None
+    monthly_pledge_in_dollars = None
     customer = request.user.customer
+    user_archive_access_until = request.user.archive_access_until
+
     if customer.has_active_subscription():
         plan_id = request.user.customer.current_subscription.plan
         plan = stripe.Plan.retrieve(id=plan_id)
-    else:
-        plan = None
- 
-    customer_charges = customer.charges.all()
 
+    customer_charges = customer.charges.all()
    
     charges_value =0
     for charge in customer_charges:
@@ -407,7 +413,13 @@ def user_settings_view_new(request):
  
         artist_info_form = ArtistInfoForm(instance=request.user)
     customer_detail = CustomerDetail.get(id=request.user.customer.stripe_id)
-
+    if customer_detail.subscription:
+        monthly_pledge_in_dollars = customer_detail.subscription.plan.amount/100
+    
+    if customer_detail.subscription:
+        period_end["date"] = datetime.fromtimestamp(customer_detail.subscription.current_period_end).strftime("%d/%m/%y")
+        period_end["due"] = datetime.fromtimestamp(customer_detail.subscription.current_period_end) <= datetime.now()
+    
     return render(request, 'account/user_settings_new.html', {
         'change_email_form': change_email_form,
         'change_profile_form': edit_profile_form,
@@ -418,6 +430,9 @@ def user_settings_view_new(request):
         'customer_charges':customer_charges,
         'customer_detail':customer_detail,
         'charges_value':charges_value,
+        'period_end':period_end,
+        'user_archive_access_until':user_archive_access_until,
+        'monthly_pledge_in_dollars':monthly_pledge_in_dollars,
     })
 
 @login_required
@@ -429,6 +444,7 @@ def user_tax_letter(request):
     charges_value=0
     for charge in customer_charges:
         charges_value += charge.amount
+
     context=	{
     "customer": customer,
     "charges_value": charges_value,

@@ -31,7 +31,6 @@
 			<div data-id="user-account" class="text1">Account info</div>
 			<div data-id="user-payout" class="text1">Payout info</div>
 			<div data-id="user-donation-settings" class="text1">Donation settings</div>
-			<div data-id="user-donation-history" class="text1">Donation history</div>
 			<div data-id="user-billing" class="text1">Billing</div>
 	</div>
 	<div class="account-settings-info-container">
@@ -80,54 +79,56 @@
 			</div>
 			{% endif %}
 			<div id="user-donation-settings" class="account-settings-view">
-				<div class="title5 account-settings-title text-bottom-line">Donation settings</div>
+				<div class="title5 account-settings-title text-bottom-line">Supporter settings</div>
 				<div class="account-settings-info">
-					<div class="text5">Current Subscription</div>
-					{% if not profile.user.first_name %}
-					<div class="text9 accent-color">There is no subcription plan yet</div>
+					<div class="text5">Current Monthly Pledge</div>
+					{% if not customer_detail.subscription.plan %}
+					<div class="text9 accent-color">None</div>
 					{% else %}
-					<div class="text9 accent-color">${{customer_detail.subscription.plan.amount}}/{{customer_detail.subscription.plan.interval}}</div>
+					<div class="text9 accent-color">${{monthly_pledge_in_dollars}}/{{customer_detail.subscription.plan.interval}}</div>
+					{% endif %}
+					<div class="flex-row supporter-options">	
+						{% if active %}
+						<button class="white-border-button">Become a Supporting Member</button>		
+						{% elif customer_detail.subscription.plan and not period_end.due %}
+						<button class="white-border-button">Cancel</button>		
+						<button class="white-border-button">Update Pledge</button>		
+						{% else %}
+						<button class="white-border-button">Make a Recurring Monthly Pledge</button>	
+						{% endif %}
+					</div>
+				</div>
+			
+				<div class="account-settings-info ">
+					{% if customer_detail.subscription.plan %}
+					<button class="white-border-button">Make a One Time Donation</button>		
 					{% endif %}
 				</div>
-				<div class="account-settings-info flex-row">
-					<button class="white-border-button">Cancel monthly</button>		
-					<button class="white-border-button">Update pledge</button>		
+				<div class="account-settings-info ">
+						<div class="text5">Expiration of archive access</div>
+						<div class="text9 text-grey"> {{ period_end.date }}</div>
 				</div>
 				<div class="account-settings-info">
-					<div class="text5">Last invoice</div>
+					<div class="text5">Last donation</div>
 					<div class="text9 text-grey">
 						{% with customer_charges|first as first_charge%}
-						{% if not profile.user.first_name %}
+						{% if not customer_charges %}
 						You havent made and invoice yet
 						{% else %}
-						{{ first_charge.created|date:"d/m/Y"  }}: {{ first_charge.amount }} - {{ first_charge.amount }}
+						{{ first_charge.created|date:"d/m/Y"  }} ${{ first_charge.amount }}
 						{% endif %}
 						{% endwith %}
 					</div>	
 				</div>
-				<div class="account-settings-info ">
-					<div class="text5">Expiration of archive access</div>
-					<div class="text9 text-grey"></div>
-				</div>
-			</div>
-			<div id="user-donation-history" class="account-settings-view">
-				<div class="title5 account-settings-title text-bottom-line">Donation history</div>
-					<div class="account-settings-info">
+				<div class="account-settings-info">
 						<div class="text5">Total donations this year</div>
 						<div class="text9 accent-color">${{charges_value}}</div>
-						<br>
-						<br>
-						{% for charge in customer_charges %}
-						<div class="text9 text-grey">{{ charge.created|date:"d/m/Y"  }}: ${{ charge.amount }}</div>
-						{% endfor%}
-					</div>
-					<div class="account-settings-info">
-						{% comment %} Use for, show 4 and create a view more TBD {% endcomment %}
-					</div>
-					<button class="white-border-button">Download tax document</button>		
+				</div>
+				<button class="white-border-button">Download tax document</button>		
 			</div>
+			
 			<div id="user-billing" class="account-settings-view">
-				<div class="title5 account-settings-title">Billing</div>
+				<div class="title5 account-settings-title text-bottom-lineFin">Billing</div>
 					<div class="account-settings-info">
 						<div class="text5">Credit card</div>
 						{% if not customer_detail.active_card %}
