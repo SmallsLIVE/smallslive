@@ -38,129 +38,128 @@
       {% endblock %}
 
       <div class="event-video-info content-space-between">
-      <div class=" flex-column">
-        <div class="event-set-info">
-          <div class="current-event event-title title1">{{ event.title }}</div>
-          <div class="current-event accent-color text7">
+        <div class=" flex-column info-container">
+          <div class="event-set-info">
+            <div class="current-event event-title title1">{{ event.title }}</div>
+            <div class="current-event accent-color text7">
               {{ event.date|date:'m/d/Y' }}</div>
-          {% if next_event %}
-          <div class="next-event event-title title1 hidden">{{ next_event.title }}</div>
-          <div class="next-event accent-color text7 hidden">
+            {% if next_event %}
+            <div class="next-event event-title title1 hidden">
+              {{ next_event.title }}</div>
+            <div class="next-event accent-color text7 hidden">
               {{ next_event.date|date:'m/d/Y' }}</div>
-          {% endif %}
-        </div>
-        <div class="event-overlay-venue">
-          {% if sets and event.is_future %}
-            <div class="title5">
-              Sets at
-              {% for set in sets %}
-                <span class="event-overlay-venue-set">
-                  {{ set.start|time:'g:iA'}}
-                </span>
-              {% endfor %}
-            </div>
-            <div class="title5 accent-color">LIVE AT {{event.venue.name }}</div>
-          {% endif %}
-        </div>
-
-      </div>
-      <div class="flex-colum buttons-container">
-        {% block control_buttons %}
-        {% endblock %}
-        <div class="event-player-buttons text-right">
-          {% if user.is_admin or user.is_staff %}
-            <a href="{% url 'event_edit' pk=event.id slug=event.slug %}" style="display: inline-block; margin-right: 5px;">
-                <button class="white-border-button">Edit</button>
-            </a>
-          {% endif %}
-          {% if not event.is_live and event.is_past %}
-            {% if user.has_active_subscription or user.has_archive_access %}
-            <button id="btn-donate" class="white-border-button" style="display: inline;">Donate</button>
             {% endif %}
-          {% endif %}
-          {% if not event.is_live and event.is_future %}
-          <button id="btn-tickets" class="white-border-button" style="display: inline;">Tickets</button>
-          {% endif %}
+          </div>
+          <div class="event-overlay-venue">
+            {% if sets and event.is_future %}
+              <div class="title5">
+                Sets at
+                {% for set in sets %}
+                  <span class="event-overlay-venue-set">
+                    {{ set.start|time:'g:iA'}}
+                  </span>
+                {% endfor %}
+              </div>
+              <div class="title5 accent-color">LIVE AT {{event.venue.name }}</div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="flex-colum buttons-container">
+          {% block control_buttons %}
+          {% endblock %}
+          <div class="event-player-buttons text-right">
+            {% if user.is_admin or user.is_staff %}
+              <a href="{% url 'event_edit' pk=event.id slug=event.slug %}" style="display: inline-block; margin-right: 5px;">
+                  <button class="white-border-button">Edit</button>
+              </a>
+            {% endif %}
+            {% if not event.is_live and event.is_past %}
+              {% if user.has_active_subscription or user.has_archive_access %}
+              <button id="btn-donate" class="white-border-button" style="display: inline;">Donate</button>
+              {% endif %}
+            {% endif %}
+            {% if not event.is_live and event.is_future %}
+            <button id="btn-tickets" class="white-border-button" style="display: inline;">Tickets</button>
+            {% endif %}
+          </div>
         </div>
       </div>
-    </div>
-    <div class="event-band">
-      {% for gig_info in event_artists %}
-        <div class="current_event">
-          <a href="{{ gig_info.artist.get_absolute_url }}" class="artist-link">
-            {{ gig_info.name }} / {{ gig_info.role }}</a>
-        </div>
-      {% endfor %}
-      {% if next_event %}
-        {% for gig_info in next_event.artists_info %}
-        <div class="next-event hidden">
-          <a href="{{ gig_info.artist.get_absolute_url }}" class="artist-link">
-            {{ gig_info.name }} / {{ gig_info.role }}</a>
-        </div>
+      <div class="event-band">
+        {% for gig_info in event_artists %}
+          <div class="current_event">
+            <a href="{{ gig_info.artist.get_absolute_url }}" class="artist-link">
+              {{ gig_info.name }} / {{ gig_info.role }}</a>
+          </div>
         {% endfor %}
-      {% endif %}
-    </div>
+        {% if next_event %}
+          {% for gig_info in next_event.artists_info %}
+          <div class="next-event hidden">
+            <a href="{{ gig_info.artist.get_absolute_url }}" class="artist-link">
+              {{ gig_info.name }} / {{ gig_info.role }}</a>
+          </div>
+          {% endfor %}
+        {% endif %}
+      </div>
 
-    <div class="flex-row event-set-selector"></div>
-    {% if event.published_audio or event.published_video %}
-        <div class="comments-container" data-subpage-url="{% url 'event_comments' pk=event.id slug=event.slug %}?set=0" data-subpage-name="comments"></div>
-    {% endif %}
+      <div class="flex-row event-set-selector"></div>
+      {% if event.published_audio or event.published_video %}
+      <div class="comments-container" data-subpage-url="{% url 'event_comments' pk=event.id slug=event.slug %}?set=0" data-subpage-name="comments"></div>
+      {% endif %}
     </div>
     <div class="flex-column event-side">
       {% if streaming_tonight_videos %}
-        <div class="event-related-videos">
-          <div class="section-title section-flex">
-            <div class="title1">Streaming Tonight <span class="date-separator">/</span></div>
-            <div class="header-sub title2">{% now "m/d/y" %}</div>
-          </div>
-          <div>
-              <div>
-              {% for related in streaming_tonight_videos %}
-                <div class="flex-row related-video{% if related == event %} selected{% endif %}{% if next_event and next_event.title == related.title %} next-up{% endif %}">
-                  {% if next_event and next_event.title == related.title %}
-                  {% include 'events/event_card.html' with event=related mini=True show_time=True next_up=True %}
-                  {% elif related == event %}
-                  {% include 'events/event_card.html' with event=related mini=True show_time=True current_event=True %}
-                  {% else %}
-                  {% include 'events/event_card.html' with event=related mini=True show_time=True %}
-                  {% endif %}
+      <div class="event-related-videos">
+        <div class="section-title section-flex">
+          <div class="title1">Streaming Tonight <span class="date-separator">/</span></div>
+          <div class="header-sub title2">{% now "m/d/y" %}</div>
+        </div>
+        <div>
+            <div>
+            {% for related in streaming_tonight_videos %}
+              <div class="flex-row related-video{% if related == event %} selected{% endif %}{% if next_event and next_event.title == related.title %} next-up{% endif %}">
+                {% if next_event and next_event.title == related.title %}
+                {% include 'events/event_card.html' with event=related mini=True show_time=True next_up=True %}
+                {% elif related == event %}
+                {% include 'events/event_card.html' with event=related mini=True show_time=True current_event=True %}
+                {% else %}
+                {% include 'events/event_card.html' with event=related mini=True show_time=True %}
+                {% endif %}
 
-                  <div class="related-info flex-column content-centered">
-                    <div class="flex-column">
-                      <div class="text1 related-title">{{ related.title }}</div>
-                      <div class="text1 text-grey">
-                        {{ related.date|date:'m/d/Y' }}</div>
-                      <div class="accent-color text-uppercase">
-                          <strong>{{ related.venue.name }}</strong></div>
-                    </div>
+                <div class="related-info flex-column content-centered">
+                  <div class="flex-column">
+                    <div class="text1 related-title">{{ related.title }}</div>
+                    <div class="text1 text-grey">
+                      {{ related.date|date:'m/d/Y' }}</div>
+                    <div class="accent-color text-uppercase">
+                        <strong>{{ related.venue.name }}</strong></div>
                   </div>
                 </div>
-              {% endfor %}
               </div>
-          </div>
+            {% endfor %}
+            </div>
         </div>
+      </div>
       {% endif %}
       <div class="event-related-videos">
         <div class="section-title section-flex">
           <div class="title1">Related videos</div>
         </div>
         <div>
-            <div>
-              {% for related in related_videos%}
-                <div class="flex-row related-video">
-                  {% include 'events/event_card.html' with event=related mini=True %}
-                  <div class="related-info flex-column content-centered">
-                    <div class="flex-column">
-                      <div class="text1 related-title">{{ related.title }}</div>
-                      <div class="text1 text-grey">{{ related.date|date:'m/d/Y' }}</div>
-                    </div>
+          <div>
+            {% for related in related_videos%}
+              <div class="flex-row related-video">
+                {% include 'events/event_card.html' with event=related mini=True %}
+                <div class="related-info flex-column content-centered">
+                  <div class="flex-column">
+                    <div class="text1 related-title">{{ related.title }}</div>
+                    <div class="text1 text-grey">{{ related.date|date:'m/d/Y' }}</div>
                   </div>
                 </div>
-              {% endfor %}
-            </div>
+              </div>
+            {% endfor %}
+          </div>
         </div>
       </div>
-
     </div>
   </div>
 {% endblock %}
@@ -181,7 +180,7 @@
   <script src="{% static 'js/subpages.js' %}"></script>
 
   <script>
-  
+
     var subpages = window.subpages;
     subpages.register();
     subpages.loadAll();

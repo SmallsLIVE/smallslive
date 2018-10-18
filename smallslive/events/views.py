@@ -299,7 +299,6 @@ class EventDetailView(DetailView):
         event_url = None
         start = None
 
-
         # In this case, we need to change show info without reloading
         # The strategy is to provide the next show's info as hidden elements
         # They will be swapped with current info at start time.
@@ -341,12 +340,12 @@ class EventDetailView(DetailView):
     def get_template_names(self):
 
         event = self.object
-        if event.is_past:
+        if event.show_streaming:
+            return ['events/_event_details_streaming.html']
+        elif event.is_past:
             return ['events/_event_details_past.html']
         if event.is_future:
             return ['events/_event_details_upcoming.html']
-        elif event.show_streaming:
-            return ['events/_event_details_streaming.html']
         else:  # Not sure if there will be another option.
             return ['events/_event_details_streaming.html']
 

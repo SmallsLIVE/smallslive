@@ -2,18 +2,18 @@
   $underline-length: 750px;
   position: relative;
   margin-bottom: 20px;
+  padding-bottom: 0;
   padding-left: $content-left-padding;
   display: flex;
   align-items: flex-end;
   text-decoration: none;
   background: linear-gradient(to right, $white-transparent, $white-transparent) no-repeat bottom left;
   background-size: $underline-length 5px;
-  padding-bottom: 3px;
 
   width: 100%;
   @media(max-width: $screen-sm-max) {
     background-size: 100vw 10px;
-    padding-bottom: 22px;
+    padding-bottom: 9px;
     width: 500px;
   }
 
@@ -45,28 +45,31 @@
     }
 
     &.title1, &.title2 {
-      line-height: 1.1em;
-      margin-bottom: 4px;
 
       &.header-sub {
         margin-bottom: 0;
       }
+    }
 
-      @media(max-width: $screen-sm-max) {
-        margin-bottom: -9px;
-      }
+    &.title1 {
+      display: inline-block;
+      line-height: 46px;
+    }
 
+    &.title2 {
+      line-height: 25px;
     }
 
     @media(max-width: $screen-sm-max) {
 
       &.title1 {
         font-size: 7vw;
+        line-height: 9vw;
       }
 
       &.title2 {
         font-size: 3vw;
-        line-height: 1.5vw;
+        line-height: 2.5vw;
       }
     }
 

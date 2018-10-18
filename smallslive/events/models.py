@@ -420,7 +420,7 @@ class Event(TimeStampedModel):
         elif self.date == local_date - timedelta(days=1) and end.hour <= 5:
             return end < local_time
         elif self.date == local_date:
-            return end < local_time and not end.hour <= 5
+            return end < local_time and end.hour > 5
 
     @property
     def is_future(self):

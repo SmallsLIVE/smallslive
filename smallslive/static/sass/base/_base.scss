@@ -6,6 +6,10 @@ body {
   background-color: $background-color;
   text-rendering: optimizeLegibility;
   color: $black;
+
+  @media (max-width: $screen-md-max) {
+    padding-top: 60px;
+  }
 }
 .hidden-body{
   overflow: hidden;
