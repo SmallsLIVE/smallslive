@@ -30,98 +30,14 @@
 {% endblock %}
 
 {% block home_content %}
-  {% include 'events/tickets_dialog.html' %}
-  {% include 'events/streaming_not_available_dialog.html' %}
 
   <div class="event-page-container">
     <div class="flex-column flex event-container">
-    {% if event.show_streaming %}
-       <div class="player-container">
-         <div class="wrapper">
-           <iframe id="UstreamIframe"
-                   width="100%" height="100%"
-                   src="{{ event.get_live_stream }}"
-                   frameborder="0"
-                   style="position:absolute; top:0; left: 0" allowfullscreen allowautoplay
-                   webkitallowfullscreen></iframe>
-         </div>
-       </div>
-    {% elif event.is_future %}
-      <div class="event-video-placeholder flex-column content-space-between" style="flex: initial;">
-        <span class="event-video-placeholder-picture">
-          {% if event.photo %}
-          <img src="{% thumbor_url event.get_photo_url|urlencode height=360 width=600 smart=True %}" style="width: 100%">
-          {% else %}
-          <img src="{% static 'image/no-event-image-placeholder.jpg' %}" style="width: 100%">
-          {% endif %}
-        </span>
-        <div class="player-info pointer-events">
-          <div class="live-now text2{% if not event.is_live %} hidden{% endif %}">Live now</div>
-          <div class="event-overlay">
-            <div class="event-title-ajax event-overlay-title">{{ event.title }}</div>
-            <div class="event-overlay-artists">
-              {% for gig_info in event_artists %}
-                <div class="title5">
-                  {{ gig_info.name }} <span class="accent-color">/</span> {{ gig_info.role }}
-                </div>
-              {% endfor %}
-            </div>
-            <div class="event-overlay-venue">
-                <div class="title5">{{ event.date|date:'m/d/Y' }}</div>
-                {% if sets %}
-                    <div class="title5">
-                      Sets at
-                      {% for set in sets %}
-                        <span class="event-overlay-venue-set">
-                          {{ set.start|time:"g:iA"}}
-                        </span>
-                      {% endfor %}
-                    </div>
-                {% endif %}
-              <div class="title5 accent-color">LIVE AT {{event.venue.name }}</div>
-            </div>
-            <div class="icon-overlay">
-              <i id="btn-play-event" class="fa fa-play fa-thin-circle"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    {% else %}
-      {% if event.published_videos %}
-        <div id="videoContainer" class="player-container {% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}">
-          <div id="player-video"></div>
-          <div class="player-info" id="playerTextOverlay">
-            <div class="event-overlay">
-              <div class="event-overlay-logo">
-                  <img src="{% static 'logo.svg' %}" alt="Smalls"
-                                        class="img-circle" width="40" height="40"/>
-              </div>
-              <div class="event-title-ajax event-overlay-title">{{ event.title }}</div>
-              <div class="event-overlay-artists">
-                {% for gig_info in event_artists %}
-                  <div class="title5">
-                    {{ gig_info.name }} <span class="accent-color">/</span> {{ gig_info.role }}
-                  </div>
-                {% endfor %}
-              </div>
 
-            </div>
-          </div>
+      {% block event_content %}
+      {% endblock %}
 
-        </div>
-      {% endif %}
-      {% if event.published_audio %}
-        <div id="audioContainer" class="player-container" style="display: none;">
-          <div id="player-audio" class="{% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}"></div>
-          <div class="player-info" id="playerAudioTextOverlay">
-            <div class="accent-color text2">{{ event.date|date:'m/d/Y' }}</div>
-            <div class="event-overlay-title">{{ event.title }}</div>
-          </div>
-        </div>
-      {% endif %}
-    {% endif %}
-
-    <div class="event-video-info content-space-between">
+      <div class="event-video-info content-space-between">
       <div class=" flex-column">
         <div class="event-set-info">
           <div class="current-event event-title title1">{{ event.title }}</div>
@@ -149,26 +65,8 @@
 
       </div>
       <div class="flex-colum buttons-container">
-        {% if event.is_past %}
-        {% for set in sets %}
-          <button class="set-select-button white-border-button {{ forloop.counter0|yesno:',active' }}"
-                  data-comments-page="{% url 'event_comments' pk=event.id slug=event.slug %}?set={{ forloop.counter0 }}"
-                  data-playlist-index="{{ forloop.counter0 }}">Set {{ forloop.counter }}
-          </button>
-        {% endfor %}
-        {% endif %}
-        {% if event.is_past and event.published_audio %}
-            <button class="white-border-button audio togglePlayer" style="display: inline;">
-              Audio only player
-            </button>
-        {% endif %}
-        {% if event.is_past and event.published_videos %}
-
-          <button class="white-border-button video togglePlayer"
-                  style="display: none;">
-              Video player
-          </button>
-        {% endif %}
+        {% block control_buttons %}
+        {% endblock %}
         <div class="event-player-buttons text-right">
           {% if user.is_admin or user.is_staff %}
             <a href="{% url 'event_edit' pk=event.id slug=event.slug %}" style="display: inline-block; margin-right: 5px;">
@@ -181,27 +79,27 @@
             {% endif %}
           {% endif %}
           {% if not event.is_live and event.is_future %}
-          <button class="white-border-button" onclick="showTickets()" style="display: inline;">Tickets</button>
+          <button id="btn-tickets" class="white-border-button" style="display: inline;">Tickets</button>
           {% endif %}
         </div>
       </div>
     </div>
-      <div class="event-band">
-        {% for gig_info in event_artists %}
-          <div class="current_event">
-            <a href="{{ gig_info.artist.get_absolute_url }}" class="artist-link">
-              {{ gig_info.name }} / {{ gig_info.role }}</a>
-          </div>
+    <div class="event-band">
+      {% for gig_info in event_artists %}
+        <div class="current_event">
+          <a href="{{ gig_info.artist.get_absolute_url }}" class="artist-link">
+            {{ gig_info.name }} / {{ gig_info.role }}</a>
+        </div>
+      {% endfor %}
+      {% if next_event %}
+        {% for gig_info in next_event.artists_info %}
+        <div class="next-event hidden">
+          <a href="{{ gig_info.artist.get_absolute_url }}" class="artist-link">
+            {{ gig_info.name }} / {{ gig_info.role }}</a>
+        </div>
         {% endfor %}
-        {% if next_event %}
-          {% for gig_info in next_event.artists_info %}
-          <div class="next-event hidden">
-            <a href="{{ gig_info.artist.get_absolute_url }}" class="artist-link">
-              {{ gig_info.name }} / {{ gig_info.role }}</a>
-          </div>
-          {% endfor %}
-        {% endif %}
-      </div>
+      {% endif %}
+    </div>
 
     <div class="flex-row event-set-selector"></div>
     {% if event.published_audio or event.published_video %}
@@ -274,10 +172,6 @@
     $('#becomeMemberDialog').modal('show');
   };
 
-  var showTickets = function () {
-    $('#ticketsDialog').modal('show');
-  };
-
   var goToSupporter = function() {
     window.location = '{% url 'become_supporter' %}';
   };
@@ -287,290 +181,55 @@
   <script src="{% static 'js/subpages.js' %}"></script>
 
   <script>
-      var subpages = window.subpages;
-      subpages.register();
-      subpages.loadAll();
+  
+    var subpages = window.subpages;
+    subpages.register();
+    subpages.loadAll();
 
-      $(document).on('click', '[data-playlist-index]', function (ev) {
-          var subpage = subpages.get('comments');
-          if (subpage) {
-            subpage.setUrl($(this).data('comments-page'));
-          }
-      });
+    $(document).on('click', '[data-playlist-index]', function (ev) {
+        var subpage = subpages.get('comments');
+        if (subpage) {
+          subpage.setUrl($(this).data('comments-page'));
+        }
+    });
 
   </script>
 
 
-  {% if event.sets %}
-
-      <script>
-        var playsCountSent = [];
-        var activeTracker = null;
-        function updateViewCount(player) {
-          var id = player.getPlaylistItem(player.getPlaylistIndex()).mediaid;
-          if (playsCountSent.indexOf(id) === -1) {
-            playsCountSent.push(id);
-            $.post('/multimedia/update_media_viewcount/', {
-              recording_id: id,
-              csrfmiddlewaretoken: '{{ csrf_token }}'
-
-            });
-          }
-        }
-
-        function updateSetText(textElement, currentItem, totalSets) {
-          var setText = "Set " + currentItem + "/" + totalSets;
-          $(textElement).text(setText);
-        }
-
-        {% if count_metrics %}
-            var metricsSignedData = {{ metrics_signed_data|safe }};
-
-            var pingMetricsServer = function(mediaId) {
-                var data = {};
-                data.signed_data = metricsSignedData[mediaId];
-                data.csrfmiddlewaretoken = '{{ csrf_token }}';
-                $.ajax({
-                    url: "{{ metrics_server_url }}/metric/",
-                    method: 'POST',
-                    headers: {
-                        "Authorization": "Token {{ user_token }}"
-                    },
-                    data: data,
-                    xhrFields: {
-                        withCredentials: true
-                    }
-                })
-            };
-
-            function setUpTimerForMedia(mediaId) {
-                pingMetricsServer(mediaId);
-                if (!activeTracker) {
-                    activeTracker = window.setInterval(function () {
-                                pingMetricsServer(mediaId);
-                            }, {{ metrics_ping_interval }} * 1000
-                    )
-                }
-            }
-        {% endif %}
-
-        {% if event.published_audio %}
-          audioPlayer = jwplayer("player-audio").setup({
-            primary: 'html5',
-            playlist: [
-              {% for audio in event.published_audio %}
-                {
-                  sources: [{
-                    file: "{{ audio.media_file.get_file_url|safe }}",
-                    type: "mp3"
-                  }],
-                  image: {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %},
-                  mediaid: {{ audio.id }}
-                }{% if not forloop.last %},{% endif %}
-              {% endfor %}
-            ],
-            width: "100%",
-            height: "27.5vw"  // If you change this please be kind and change the corresponding css.
-          });
-          audioPlayer.on('play', function () {
-            var $videoContainer = $('#videoContainer');
-            if ($videoContainer.hasClass('forbidden')) {
-              videoPlayer.stop();
-              $('#become-a-supporter-dialog').modal('show');
-            } else {
-              {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
-              updateViewCount(this);
-              {% if count_metrics %}
-              if (! activeTracker) {
-                setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);
-              }
-              {% endif %}
-            }
-          });
-
-          {% if count_metrics %}
-          audioPlayer.on('pause', function() {
-              window.clearInterval(activeTracker);
-              activeTracker = null;
-          });
-          {% endif %}
-
-          audioPlayer.on('ready', function () {
-            var playlist = audioPlayer.getPlaylist();
-            var playlistItems = "";
-            $.each(playlist, function (index, item) {
-              playlistItems += '<button class="';
-              if (index === 0) {
-                playlistItems += ' active';
-              }
-              playlistItems += '" data-comments-page="' + '{% url 'event_comments' pk=event.id slug=event.slug %}?set=' + index;
-              playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</button>';
-            });
-            $("#audio-sets-list").html(playlistItems);
-          });
-
-          $('#audio-sets-list').on('click', 'button', function () {
-            var currentIndex = audioPlayer.getPlaylistIndex();
-            var selectedIndex = $(this).data('playlist-index');
-            audioPlayer.playlistItem(selectedIndex);
-            $('#set-number').html(selectedIndex + 1);
-            $(this).toggleClass('active');
-            $('#audio-sets-list button[data-playlist-index=' + currentIndex + ']').toggleClass('active');
-          });
-        {% endif %}
-
-        {% if event.published_videos %}
-            videoPlayer = jwplayer("player-video").setup({
-                primary: 'html5',
-                playlist: [
-                    {% for video in event.published_videos %}{% if video.media_file.sd_video_file %}
-                    {
-                        sources: [{
-                            file: "{{ video.media_file.get_sd_video_url|safe }}",
-                            type: "mp4"
-                        }],
-                        mediaid: {{ video.id }},
-                        image: {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
-                    }{% if not forloop.last %},{% endif %}
-                    {% endif %}{% endfor %}
-                ],
-                skin: "https:{% static "jwplayer-skin/smalls.xml" %}",
-                width: "100%",
-                aspectratio: "16:9",
-            });
-            videoPlayer.on('play', function () {
-                var $videoContainer = $('#videoContainer');
-                if ($videoContainer.hasClass('forbidden')) {
-                  videoPlayer.stop();
-                  $('#become-a-supporter-dialog').modal('show');
-                } else {
-                  var $overlay = $('#playerTextOverlay');
-                  $overlay.addClass('hidden');
-                  $overlay.removeClass('paused');
-                  audioPlayer.pause(true);
-                  updateViewCount(this);
-                  {% if count_metrics %}setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);{% endif %}
-                  $overlay.css('opacity', 0);
-                }
-
-            });
-              videoPlayer.on('pause', function() {
-                var $overlay = $('#playerTextOverlay');
-                $overlay.removeClass('hidden');
-                $overlay.addClass('paused');
-                {% if count_metrics %}
-                  window.clearInterval(activeTracker);
-                  activeTracker = null;
-                {% endif %}
-                $overlay.css('opacity', 1);
+  {% with album=event.products.first %}
+      {% if album and album.tracks %}
+          <script>
+              var tracksPlayer = jwplayer("player-tracks").setup({
+                  primary: 'html5',
+                  playlist: [
+                      {% for track in album.tracks.all %}
+                          {% if track.preview %}
+                              {
+                                  sources: [{
+                                      file: "{{ track.get_track_preview_url|safe }}",
+                                      type: "mp3"
+                                  }],
+                                  mediaid: {{ track.id }}
+                              }{% if not forloop.last %},{% endif %}
+                          {% endif %}
+                      {% endfor %}
+                  ],
+                  skin: "{% static "jwplayer-skin/smalls.xml" %}",
+                  width: "100%",
+                  height: 0
               });
-            $('.set-select-button').on('click', function () {
-                var selectedIndex = $(this).data('playlist-index');
-                videoPlayer.playlistItem(selectedIndex);
-                $('#set-number').html(selectedIndex + 1);
-                $('.set-select-button').removeClass('active');
-                $(this).toggleClass('active');
-            });
-        {% endif %}
-        {% if event.show_streaming or event.is_today %}
-          {% if next_event %}
-            {% if next_event %}
-            var changeTime = moment("{{ next_event.start.isoformat }}");
-            {% endif %}
-
-            var waitTime = changeTime.diff(moment(), 'miliseconds');
-            var intervalId = setInterval(function () {
-                clearInterval(intervalId);
-                {% if next_event %}
-                $('.current-event').addClass('hidden');
-                $('.next-event').removeClass('hidden');
-                $('.related-video.selected').removeClass('selected');
-                $('.related-video.next-up').addClass('selected');
-                {% endif %}
-            }, waitTime);
-          {% endif %}
-        {% endif %}
-
-
-        $(document).ready(function () {
-
-          $('.togglePlayer').click(function () {
-
-            $this = $(this);
-            if ($this.hasClass('video')) {
-              $this.parent().find('.audio').css('display', 'inline');
-              $this.hide();
-              $('#videoContainer').show();
-              $('#audioContainer').hide()
-            } else {
-              $this.parent().find('.video').css('display', 'inline');
-              $this.hide();
-              $('#audioContainer').show();
-              $('#videoContainer').hide()
-            }
-
-            // Update comments page.
-            var url = $('button[data-playlist-index]:visible.active').data('comments-page');
-            var comments = subpages.get('comments');
-            if (comments) {
-              comments.setUrl(url);
-            }
-          });
-
-          $('#btn-donate').click(function () {
-            window.location = "{{ donate_url }}";
-          });
-
-          $('#btn-play-event').click(function () {
-            {% if streaming %}
-            var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
-            if (moment() - allowStreamingTime > 0) {
-              window.location = "{{ streaming.event_url }}";
-            } else {
-              $('#streamingNotAvailableDialog').modal('show');
-            }
-            {% endif %}
-
-          });
-
-        });
-
-      </script>
-  {% endif %}
-    {% with album=event.products.first %}
-        {% if album and album.tracks %}
-            <script>
-                var tracksPlayer = jwplayer("player-tracks").setup({
-                    primary: 'html5',
-                    playlist: [
-                        {% for track in album.tracks.all %}
-                            {% if track.preview %}
-                                {
-                                    sources: [{
-                                        file: "{{ track.get_track_preview_url|safe }}",
-                                        type: "mp3"
-                                    }],
-                                    mediaid: {{ track.id }}
-                                }{% if not forloop.last %},{% endif %}
-                            {% endif %}
-                        {% endfor %}
-                    ],
-                    skin: "{% static "jwplayer-skin/smalls.xml" %}",
-                    width: "100%",
-                    height: 0
-                });
-                $(".playback-control").on('click', function (e) {
-                    e.preventDefault();
-                    if (tracksPlayer.getPlaylistIndex() == $(this).data('playlist-id')) {
-                        tracksPlayer.pause();
-                    } else {
-                        tracksPlayer.playlistItem($(this).data('playlist-id'));
-                        $('.playback-control i').removeClass('fa-pause').addClass('fa-play');
-                    }
-                    $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
-                });
-            </script>
-        {% endif %}
-    {% endwith %}
+              $(".playback-control").on('click', function (e) {
+                  e.preventDefault();
+                  if (tracksPlayer.getPlaylistIndex() == $(this).data('playlist-id')) {
+                      tracksPlayer.pause();
+                  } else {
+                      tracksPlayer.playlistItem($(this).data('playlist-id'));
+                      $('.playback-control i').removeClass('fa-pause').addClass('fa-play');
+                  }
+                  $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
+              });
+          </script>
+      {% endif %}
+  {% endwith %}
 
 {% endblock %}
