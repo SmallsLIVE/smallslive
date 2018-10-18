@@ -27,14 +27,6 @@
 
 
 <div class="account-settings-container-new flex-row">
-	<div class="account-settings-menu">
-			<div data-id="user-account" class="text1">Account info</div>
-			{% if request.user.artist %}
-			<div data-id="user-payout" class="text1">Payout info</div>
-			{% endif %}
-			<div data-id="user-donation-settings" class="text1">Supporter settings</div>
-			<div data-id="user-billing" class="text1">Billing</div>
-	</div>
 	<div class="account-settings-info-container">
 		<div class="flex-column">
 			<div id="user-account" class="account-settings-view">
@@ -84,17 +76,17 @@
 				<div class="title5 account-settings-title text-bottom-line">Supporter settings</div>
 				<div class="account-settings-info">
 					<div class="text5">Current Monthly Pledge</div>
-					{% if not customer_detail.subscription.plan %}
+					{% if not customer_detail.subscription.plan or cancelled %}
 					<div class="text9 accent-color">None</div>
 					{% else %}
 					<div class="text9 accent-color">${{monthly_pledge_in_dollars}}/{{customer_detail.subscription.plan.interval}}</div>
 					{% endif %}
 					
 					{% if not customer_detail.subscription.plan and not user_archive_access_until %}
-						<button class="white-border-button">Become a Supporting Member</button>		
+						<a class="white-border-button" href="{% url 'become_supporter' %}">Become a Supporting Member</a>		
 					{% elif customer_detail.subscription.plan and not period_end.due %}
 						<div class="flex-row supporter-options">	
-							<button class="white-border-button">Cancel</button>		
+							<button class="white-border-button" onclick="$('#cancel-subscription').modal('toggle')">Cancel</button>		
 							<button class="white-border-button">Update Pledge</button>	
 						</div>	
 					{% else %}
@@ -106,14 +98,6 @@
 					{% if customer_detail.subscription.plan or user_archive_access_until %}
 					<button class="white-border-button">Make a One Time Donation</button>		
 					{% endif %}
-				</div>
-				<div class="account-settings-info ">
-						<div class="text5">Expiration of archive access</div>
-						{% if user_archive_access_until %}
-						<div class="text9 text-grey"> {{ user_archive_access_until|date:"d/m/Y" }}</div>
-						{% else %}
-						<div class="text9 text-grey"> {{ period_end.date }}</div>
-						{% endif %}
 				</div>
 				<div class="account-settings-info">
 					<div class="text5">Last donation</div>
@@ -131,7 +115,21 @@
 						<div class="text5">Total donations this year</div>
 						<div class="text9 accent-color">${{charges_value}}</div>
 				</div>
+				<br>
+				<br>
 				<a href="{% url 'user_tax_letter' %}" class="white-border-button">Download tax document</a>
+				<div class="account-settings-info ">
+						<div class="text5">Expiration of archive access</div>
+						{% if customer_detail.subscription.plan %}
+						<div class="text9 text-grey">There is no expiration date until the monthly pledge is cancelled</div>
+						{% elif user_archive_access_until %}
+						<div class="text9 text-grey"> {{ user_archive_access_until|date:"d/m/Y" }} Because of a one time donation.</div>
+						{% elif not customer_detail.subscription.plan and not period_end.due  %}
+						<button class="white-border-button">{{ period_end.date }}</button>			
+						{% else %}
+						<div class="text9 text-grey">There is no access to the archive</div>
+						{% endif %}
+				</div>
 			</div>
 			
 			<div id="user-billing" class="account-settings-view">
@@ -160,7 +158,38 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="cancel-subscription"
+    aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content custom-modal">
+				<a href="#" class="close-button"></a>
+				<div class="modal-body">
+					{% if user.has_active_subscription %}
+						<section class="account-settings-view">
+							<div class="title5 account-settings-title text-bottom-line" style="text-align: center;">Cancelling pledge</div>
+							<div class="account-settings-info">
+									<div class="text9">
+										Your actual monthly pledge is ${{monthly_pledge_in_dollars}} giving you access to the archive until
+										{{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}.<br>
+										Canceling it will make the access to the archive videos unavailable until the renovation of the pledge or the
+										making of a one time donation.
+									</div>
+									<div>
+										<form action="{% url 'cancel_subscription' %}" method="post" id="cancel-form" >
+											{% csrf_token %}
+											<button class="white-border-button" style="margin: 0 auto ; width: 100%;" >Cancel monthly pledge</button>
+										</form>
+									</div> 
+							</div>
+						</section>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+
+
 {% endblock%}
 
 {% block footer %}
@@ -168,18 +197,17 @@
 
 {% block extra_js %}
 <script src="{% static 'js/tabs.js' %}"></script>
+
+
 <script>
-	$(".account-settings-menu .text1").on('click', function() {
-		$(".account-settings-menu .text1").removeClass("white-background");
-		$(this).addClass("white-background")
-		$infoId = $(this).data('id')
-		$infoContainerId = $("#" + $infoId)
-		$infoContainer = $(".account-settings-info-container")[0]
-		$($infoContainer).animate({
-			scrollTop: $($infoContainer).scrollTop() + ($($infoContainerId).offset().top - $($infoContainer).offset().top)
-		}, 300); 
-	})
+
+  $(document).ready(function () {
+    var $streamingDialog = $('#cancel-subscription');
+    var $streamingCloseButton = $($streamingDialog.find('.close-button')[0]);
+    $streamingCloseButton.click(function () {
+      $streamingDialog.modal('hide');
+    });
+  });
 
 </script>
-
 {% endblock %}

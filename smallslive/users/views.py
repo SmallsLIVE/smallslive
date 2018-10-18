@@ -413,13 +413,11 @@ def user_settings_view_new(request):
  
         artist_info_form = ArtistInfoForm(instance=request.user)
     customer_detail = CustomerDetail.get(id=request.user.customer.stripe_id)
-    print(customer_detail)
-    print("dummy")
-    print(customer.has_active_subscription)
-    print(user_archive_access_until)
     if customer_detail.subscription:
         monthly_pledge_in_dollars = customer_detail.subscription.plan.amount/100
-    
+    print(customer_detail)
+    print(dir(customer_detail))
+
     if customer_detail.subscription:
         period_end["date"] = datetime.fromtimestamp(customer_detail.subscription.current_period_end).strftime("%d/%m/%y")
         period_end["due"] = datetime.fromtimestamp(customer_detail.subscription.current_period_end) <= datetime.now()
@@ -437,6 +435,7 @@ def user_settings_view_new(request):
         'period_end': period_end,
         'user_archive_access_until': user_archive_access_until,
         'monthly_pledge_in_dollars': monthly_pledge_in_dollars,
+        'cancelled': customer_detail.subscriptions.data[0]["cancel_at_period_end"]
     })
 
 
@@ -484,7 +483,7 @@ login_view = LoginView.as_view()
 
 
 class CancelSubscriptionView(BaseCancelSubscriptionView):
-    success_url = reverse_lazy("subscription_settings")
+    success_url = reverse_lazy("user_settings_new")
 
 cancel_subscription = CancelSubscriptionView.as_view()
 
