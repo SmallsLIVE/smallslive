@@ -413,6 +413,10 @@ def user_settings_view_new(request):
  
         artist_info_form = ArtistInfoForm(instance=request.user)
     customer_detail = CustomerDetail.get(id=request.user.customer.stripe_id)
+    print(customer_detail)
+    print("dummy")
+    print(customer.has_active_subscription)
+    print(user_archive_access_until)
     if customer_detail.subscription:
         monthly_pledge_in_dollars = customer_detail.subscription.plan.amount/100
     

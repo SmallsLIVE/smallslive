@@ -1,4 +1,15 @@
 .artist-profile-container {
+    margin-bottom: 40px;
+    @media (max-width: 1024px) {
+        padding: 20px 0;
+    }
+    padding: 0 15vw;
+    @media (max-width: $screen-sm-max) {
+        padding: 20px 0;
+    }
+    @media (max-width: 768px) {
+        padding: 20px 0;
+    }
     ~ .refine-overlay.dashboard-refine{
         top:15vw;
         overflow: scroll;
@@ -107,17 +118,7 @@
         margin-top: 0;
         left: initial;
     }
-    margin-bottom: 40px;
-    @media (max-width: 1024px) {
-        padding: 0
-    }
-    padding: 0 15vw;
-    @media (max-width: $screen-sm-max) {
-        padding: 20px;
-    }
-    @media (max-width: 768px) {
-        padding: 20px 0;
-    }
+   
     .artist-dashboard-payout-title {
         padding-left: 0;
         display: flex;
@@ -273,6 +274,10 @@
             }
         }
         .set-changer {
+            cursor: default;
+            &:hover{
+                background-color: $white-transparent;
+            }
             padding: 10px 0;
             flex-basis: auto;
             flex-grow: 1;
@@ -565,10 +570,10 @@
                     width: 130px;
                 
                 }
-
-                }
+                
             }
         }
+    }
     .white-border-select{
         text-align: center;
         .select-selected{

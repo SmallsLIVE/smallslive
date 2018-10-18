@@ -221,7 +221,6 @@ class MyPastEventsView(MyEventsView):
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsView, self).get_context_data(**kwargs)
         context['is_future'] = False  # TODO: make dynamic.
-        print context
         return context
         
 
@@ -247,8 +246,8 @@ class MyPastEventsInfoView(DetailView):
 
     def get_object(self, *a, **k):
         obj = super(MyPastEventsInfoView, self).get_object(*a, **k)
-        #if  not obj.artist == self.request.user.artist:
-        #    raise Http404("Event for that artis doesnt exist")
+        if  not self.request.user.artist in obj.performers.all() :
+            raise Http404("Event for that artist doesnt exist")
         return obj
 
     def get_context_data(self, **kwargs):

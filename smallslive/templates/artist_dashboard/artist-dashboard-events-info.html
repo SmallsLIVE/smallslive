@@ -212,11 +212,11 @@
                 <div class="event-metrics-mobile-container flex-row">
                     <div class="event-metrics-mobile-container-plays event-metrics-container-data">
                         <div class="text3">Plays</div>
-                        <div id="play-value" class="title1 mobile-value-metrics"></div>
+                        <div id="mobile-time-value" class="title1 mobile-value-metrics"></div>
                     </div>
                     <div class="event-metrics-mobile-container-time event-metrics-container-data">
                         <div class="text3">Time Listened</div>
-                        <div id="time-value" class="title1 mobile-value-metrics"></div>
+                        <div id="mobile-play-value" class="title1 mobile-value-metrics"></div>
                     </div>
                 </div>
                 <div class="text3">Select Metrics Period</div>
@@ -305,7 +305,9 @@
         ///
         var plays = document.getElementById("play-value");
         var time = document.getElementById("time-value");
-
+        var mobilePlays = document.getElementById("mobile-play-value");
+        var mobileTime = document.getElementById("mobile-time-value");
+        console.log(plays,time,mobilePlays,mobileTime)
         var loadData = function () {
             var data = {};
             data.set_id = {{ event_set.id }};
@@ -317,15 +319,18 @@
             $.ajax(countsURL, {
                 data: data,
                 success: function (response) {
-                    plays.innerHTML= response.total_plays_list.reduce(
+                    playsNumber= response.total_plays_list.reduce(
                         function (e, acc) {
                             return e + acc;
                         }, 0);
+                    plays.innerHTML = playsNumber
+                    mobilePlays.innerHTML = playsNumber
                     playedMinutes = response.total_minutes_list.reduce(
                         function (e, acc) {
                             return e + acc;
                         }, 0);
                     time.innerHTML = moment.utc((playedMinutes*60)*1000).format('HH:mm:ss');
+                    mobileTime.innerHTML = moment.utc((playedMinutes*60)*1000).format('HH:mm:ss');
                 },
                 type: 'GET',
                 xhrFields: {
