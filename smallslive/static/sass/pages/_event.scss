@@ -20,9 +20,9 @@ $player-height:  27.5vw;
   }
 
   @media (max-width: $screen-sm-max) {
-    align-items: center;
-    flex-direction: column;
+    display: block;
     padding: 0 2vw;
+
     .event-side {
       margin-top: 40px;
       padding: 0 20px;
@@ -36,7 +36,7 @@ $player-height:  27.5vw;
   flex-direction: row;
 
   @media(max-width: $screen-sm-max) {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .event-title {
@@ -46,9 +46,8 @@ $player-height:  27.5vw;
     }
   }
 
-  @media(max-width: $screen-sm-max) {
+  @media(max-width: $screen-md-max) {
     flex-direction: column;
-    padding: 0 20px;
     width: 100%;
   }
 
@@ -57,13 +56,23 @@ $player-height:  27.5vw;
     padding-top: 5px;
   }
 
+  .info-container {
+    width: 40%;
+  }
+
   .buttons-container {
-    white-space: nowrap;
+    flex-grow: 1;
+    text-align: right;
+
+    @media(max-width: $screen-md-max) {
+      text-align: left;
+    }
   }
 
   .flex-column {
-    @media(max-width: 1366px) {
+    @media(max-width: $screen-md-max) {
       flex-direction: column;
+      width: 100%
     }
   }
 }
@@ -111,8 +120,10 @@ $player-height:  27.5vw;
     padding-bottom: 56.25%;
     position: relative;
     display: block;
-    width: 46vw;
-    height: 26vw;
+   
+    @media(max-width: $screen-sm-max) {
+      width: 90vw;
+    }
   }
 }
 
@@ -252,7 +263,7 @@ $player-height:  27.5vw;
   overflow: hidden;
 
   &:first-child {
-    margin-top: 16px;
+    margin-top: 10px;
     padding-bottom: 40px;
   }
 
@@ -311,17 +322,20 @@ $player-height:  27.5vw;
 }
 
 .event-container {
+
+
   @media (min-width: $screen-md-min) {
     max-width: 45vw;
-
-    .flex-column {
-      display: block;
-      margin-right: 5px;
-    }
-
   }
   @media (max-width: $screen-md-min) {
     max-width: 100%;
+
+    &.flex-column {
+      display: block;
+      margin-left: 8px;
+      margin-right: 5px;
+    }
+
   }
 }
 

@@ -23,6 +23,13 @@
 </div>
 <script>
   document.addEventListener('click', function () {
-    $('#ticketsDialog').hide();
-  })
+    $('#streamingNotAvailableDialog').hide();
+  });
+  $(document).ready(function () {
+    var ticketsDialog = $('#ticketsDialog');
+    var $ticketsCloseButton = $(ticketsDialog.find('.close-button')[0]);
+    $ticketsCloseButton.click(function () {
+      ticketsDialog.modal('hide');
+    });
+  });
 </script>

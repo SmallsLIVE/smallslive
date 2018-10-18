@@ -1,0 +1,24 @@
+{% extends "events/event_details_new.html" %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load thumbnail %}
+{% load currency_filters %}
+{% load i18n %}
+{% load purchase_info_tags %}
+{% load basket_tags %}
+{% load crispy_forms_tags %}
+{% block event_content %}
+<div class="player-container">
+  <div class="wrapper">
+     <iframe id="UstreamIframe"
+             width="100%" height="100%"
+             src="{{ event.get_live_stream }}"
+             frameborder="0"
+             style="position:absolute; top:0; left: 0" allowfullscreen allowautoplay
+             webkitallowfullscreen></iframe>
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+{{ block.super }}
+{% endblock %}

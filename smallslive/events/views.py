@@ -269,7 +269,6 @@ event_add = EventAddView.as_view()
 class EventDetailView(DetailView):
     queryset = Event.objects.all().select_related('recording', 'recording__media_file')
     context_object_name = 'event'
-    template_name = 'events/event_details_new.html'
 
     def get_context_data(self, **kwargs):
         context = super(EventDetailView, self).get_context_data(**kwargs)
@@ -300,23 +299,19 @@ class EventDetailView(DetailView):
         event_url = None
         start = None
 
-        if event.is_today:
-
-            next_event = None
-            # In this case, we need to change show info without reloading
-            # The strategy is to provide the next show's info as hidden elements
-            # They will be swapped with current info at start time.
-            if event.show_streaming:
-                next_event = event.get_next_event()
-                if next_event:
-                    title = next_event.title
-                    date = next_event.date
-                    sets_info = next_event.get_sets_info_dict()
-                    artists_info = next_event.get_artists_info_dict()
-                    start = next_event.get_actual_start() - timedelta(
-                        minutes=next_event.start_streaming_before_minutes)
-
+        # In this case, we need to change show info without reloading
+        # The strategy is to provide the next show's info as hidden elements
+        # They will be swapped with current info at start time.
+        if event.show_streaming:
+            next_event = event.get_next_event()
             if next_event:
+                title = next_event.title
+                date = next_event.date
+                sets_info = next_event.get_sets_info_dict()
+                artists_info = next_event.get_artists_info_dict()
+                start = next_event.get_actual_start() - timedelta(
+                    minutes=next_event.start_streaming_before_minutes)
+
                 context['next_event'] = {
                     'title': title,
                     'date': date,
@@ -341,6 +336,18 @@ class EventDetailView(DetailView):
         context['donate_url'] = reverse('donate')
 
         return context
+
+    def get_template_names(self):
+
+        event = self.object
+        if event.show_streaming:
+            return ['events/_event_details_streaming.html']
+        elif event.is_past:
+            return ['events/_event_details_past.html']
+        if event.is_future:
+            return ['events/_event_details_upcoming.html']
+        else:  # Not sure if there will be another option.
+            return ['events/_event_details_streaming.html']
 
     def _generate_metrics_data(self):
         data = {}
