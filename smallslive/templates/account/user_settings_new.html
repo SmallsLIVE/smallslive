@@ -77,7 +77,7 @@
 				<div class="account-settings-info">
 					<div class="text5">Current Monthly Pledge</div>
 					{% if not customer_detail.subscription.plan or cancelled %}
-					<div class="text9 accent-color">None</div>
+					<div class="text9 accent-color">None{% if cancelled %} (cancelled) {% endif %}</div>
 					{% else %}
 					<div class="text9 accent-color">${{monthly_pledge_in_dollars}}/{{customer_detail.subscription.plan.interval}}</div>
 					{% endif %}
@@ -120,7 +120,7 @@
 				<a href="{% url 'user_tax_letter' %}" class="white-border-button">Download tax document</a>
 				<div class="account-settings-info ">
 						<div class="text5">Expiration of archive access</div>
-						{% if customer_detail.subscription.plan %}
+						{% if customer_detail.subscription.plan and not cancelled %}
 						<div class="text9 text-grey">There is no expiration date until the monthly pledge is cancelled</div>
 						{% elif user_archive_access_until %}
 						<div class="text9 text-grey"> {{ user_archive_access_until|date:"d/m/Y" }} Because of a one time donation.</div>
@@ -167,14 +167,14 @@
 					{% if user.has_active_subscription %}
 						<section class="account-settings-view">
 							<div class="title5 account-settings-title text-bottom-line" style="text-align: center;">Cancelling pledge</div>
-							<div class="account-settings-info">
+							<div class="account-settings-info cancel-info">
 									<div class="text9">
 										Your actual monthly pledge is ${{monthly_pledge_in_dollars}} giving you access to the archive until
 										{{ user.get_current_subscription.current_period_end|date:"n/j/Y" }}.<br>
 										Canceling it will make the access to the archive videos unavailable until the renovation of the pledge or the
 										making of a one time donation.
 									</div>
-									<div>
+									<div class="custom-settings-form">
 										<form action="{% url 'cancel_subscription' %}" method="post" id="cancel-form" >
 											{% csrf_token %}
 											<button class="white-border-button" style="margin: 0 auto ; width: 100%;" >Cancel monthly pledge</button>

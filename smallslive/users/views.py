@@ -435,7 +435,7 @@ def user_settings_view_new(request):
         'period_end': period_end,
         'user_archive_access_until': user_archive_access_until,
         'monthly_pledge_in_dollars': monthly_pledge_in_dollars,
-        'cancelled': customer_detail.subscriptions.data[0]["cancel_at_period_end"]
+        'cancelled': customer_detail.subscriptions.data[0]["cancel_at_period_end"],
     })
 
 
