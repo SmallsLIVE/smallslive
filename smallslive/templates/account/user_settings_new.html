@@ -96,7 +96,7 @@
 			
 				<div class="account-settings-info ">
 					{% if customer_detail.subscription.plan or user_archive_access_until %}
-					<button class="white-border-button">Make a One Time Donation</button>		
+					<button id="btn-donate" class="white-border-button">Make a One Time Donation</button>
 					{% endif %}
 				</div>
 				<div class="account-settings-info">
@@ -207,6 +207,10 @@
     $streamingCloseButton.click(function () {
       $streamingDialog.modal('hide');
     });
+
+    $('#btn-donate').click(function () {
+        window.location = "{{ donate_url }}";
+      });
   });
 
 </script>

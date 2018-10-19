@@ -421,7 +421,11 @@ def user_settings_view_new(request):
     if customer_detail.subscription:
         period_end["date"] = datetime.fromtimestamp(customer_detail.subscription.current_period_end).strftime("%d/%m/%y")
         period_end["due"] = datetime.fromtimestamp(customer_detail.subscription.current_period_end) <= datetime.now()
-    
+
+    if customer_detail.subscriptions.data:
+        cancel_at = customer_detail.subscriptions.data[0]['cancel_at_period_end']
+    else:
+        cancel_at = False
     return render(request, 'account/user_settings_new.html', {
         'change_email_form': change_email_form,
         'change_profile_form': edit_profile_form,
@@ -435,7 +439,8 @@ def user_settings_view_new(request):
         'period_end': period_end,
         'user_archive_access_until': user_archive_access_until,
         'monthly_pledge_in_dollars': monthly_pledge_in_dollars,
-        'cancelled': customer_detail.subscriptions.data[0]["cancel_at_period_end"],
+        'cancelled': cancel_at,
+        'donate_url': reverse('donate')
     })
 
 
