@@ -30,7 +30,6 @@ $event-row-padding: 3.5vw;
       }
     }
 
-
     &.next {
       border-radius: 10px 0 0 0;
     }
@@ -58,7 +57,6 @@ $event-row-padding: 3.5vw;
 
 
 .slide-btn {
-  
   &.prev, &.next {
     border-radius: 10px 0 0 10px;
     background-color: rgba(0, 0, 0, 0.5);
@@ -69,8 +67,12 @@ $event-row-padding: 3.5vw;
     cursor: pointer;
     position: absolute;
     top: 0;
-    
     z-index: 1000;
+    transition: .2s ease all;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.9);
+    }
 
     @media (min-width: 1366px) {
       height: $regular-card-width-large * 0.6;
@@ -93,6 +95,7 @@ $event-row-padding: 3.5vw;
     transform: scaleX(-1);
     width: 3.1vw;
     left: 0;
+
     b:before {
       content: '\002b';
       position: absolute;
@@ -103,12 +106,12 @@ $event-row-padding: 3.5vw;
   &.next {
     width: $content-left-padding;;
     right: 0;
-    
+
     b:before {
       content: '\002b';
       left: 0.78vw;
       position: absolute;
-      top: 0%;
+      top: 0;
     }
   }
 
