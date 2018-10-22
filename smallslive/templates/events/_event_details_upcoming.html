@@ -57,28 +57,6 @@
     $('#btn-tickets').click(function () {
       $('#ticketsDialog').modal('show');
     });
-
-    {% if event.show_streaming %}
-      {% if next_event %}
-        {% if next_event %}
-        var changeTime = moment("{{ next_event.start.isoformat }}");
-        {% endif %}
-
-        var waitTime = changeTime.diff(moment(), 'miliseconds');
-        var intervalId = setInterval(function () {
-            clearInterval(intervalId);
-            {% if next_event %}
-            $('.current-event').addClass('hidden');
-            $('.next-event').removeClass('hidden');
-            $('.related-video.selected').removeClass('selected');
-            $('.related-video.next-up').addClass('selected');
-            {% endif %}
-        }, waitTime);
-      {% endif %}
-    {% endif %}
-
-    {% if streaming %}
-
     $('#btn-play-event').click(function () {
       var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
       if (moment() - allowStreamingTime > 0) {
@@ -88,9 +66,6 @@
       }
 
     });
-
-    {% endif %}
-
   });
 
 </script>

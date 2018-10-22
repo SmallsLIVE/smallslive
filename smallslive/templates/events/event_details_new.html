@@ -1,5 +1,6 @@
 {% extends "home_new.html" %}
 {% load static from staticfiles %}
+{% load basket_tags currency_filters tz %}
 {% load thumbor_tags %}
 {% load thumbnail %}
 {% load currency_filters %}
@@ -43,12 +44,12 @@
             <div class="current-event event-title title1">{{ event.title }}</div>
             <div class="current-event accent-color text7">
               {{ event.date|date:'m/d/Y' }}</div>
-            {% if next_event %}
-            <div class="next-event event-title title1 hidden">
-              {{ next_event.title }}</div>
-            <div class="next-event accent-color text7 hidden">
-              {{ next_event.date|date:'m/d/Y' }}</div>
-            {% endif %}
+              {% if next_event %}
+                <div class="next-event event-title title1 hidden">
+                  {{ next_event.title }}</div>
+                <div class="next-event accent-color text7 hidden">
+                  {{ next_event.date|date:'m/d/Y' }}</div>
+              {% endif %}
           </div>
           <div class="event-overlay-venue">
             {% if sets and event.is_future %}
@@ -74,7 +75,7 @@
               </a>
             {% endif %}
             {% if not event.is_live and event.is_past %}
-              {% if user.has_active_subscription or user.has_archive_access %}
+              {% if user.has_archive_access %}
               <button id="btn-donate" class="white-border-button" style="display: inline;">Donate</button>
               {% endif %}
             {% endif %}
@@ -99,6 +100,43 @@
           </div>
           {% endfor %}
         {% endif %}
+      </div>
+
+      <div class="tickets">
+      {% for product in event.products.all %}
+        {% purchase_info_for_product request product as session %}
+        <p class="set">{{ product.set }}</p>
+        {% if session.availability.is_available_to_buy %}
+          <p class="{{ session.availability.code }} availability">
+            {{ session.availability.num_available }} reserve seats available
+          </p>
+          {% basket_form request product 'single' as basket_form %}
+          <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
+            {% csrf_token %}
+            {{ basket_form.as_p }}
+            <input type="hidden" name="next" value="{% url "basket:summary" %}"/>
+            {% if session.availability.num_available > 0 %}
+              <button type="submit" class="btn btn-default btn-sm">reserve seats for the {{ product.set }} Show <span class="glyphicon glyphicon-chevron-right"></span></button>
+            {% endif %}
+            {% if user.is_superuser %}
+              <a href="{% url "dashboard:catalogue-product" pk=product.id %}" class="btn btn-default btn-sm">Edit
+                ticket</a>
+            {% endif %}
+          </form>
+        {% else %}
+          {% if has_active_alert %}
+            <p>{% trans "You have an active stock alert for this product." %}</p>
+          {% else %}
+            <form id="alert_form" method="post" action="{% url 'customer:alert-create' pk=product.id %}"
+                  class="add-to-basket">
+              {% csrf_token %}
+              <p>All the reserve seats have been reserved for this show, however, there is still room available as a walk-in for our Lounge.  Please email us at
+                <a href="mailto:mezzrowclub@gmail.com">mezzrowclub@gmail.com</a> if you need further information</p>
+              {% comment %}<button type="submit" class="btn btn-default btn-sm">{% trans "Notify me" %}</button>{% endcomment %}
+            </form>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
       </div>
 
       <div class="flex-row event-set-selector"></div>

@@ -37,6 +37,7 @@ class DonateView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DonateView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['form_action'] = reverse('donate')
         context['redirect_url'] = self.request.META.get('HTTP_REFERER')
         return context
 
@@ -92,6 +93,7 @@ class BecomeSupporterView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(BecomeSupporterView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['form_action'] = reverse('become_supporter')
         return context
 
     def post(self, request, *args, **kwargs):
@@ -124,9 +126,6 @@ class BecomeSupporterView(TemplateView):
 
 
 become_supporter = BecomeSupporterView.as_view()
-
-
-
 
 
 class BecomeSupporterCompleteView(BecomeSupporterView):

@@ -18,6 +18,17 @@
   <h1 class="admin-interface__main-title">Add/Edit gig:</h1>
     <form method="post"  class="admin-interface__form" enctype="multipart/form-data">
       {% crispy form %}
+      <div class="alert alert-warning">
+        <div id="div_id_state" class="form-group">
+          <label for="id_state" class="control-label">Add tickets</label>
+
+          <div class="controls ">
+            {% for ticket_form in ticket_forms %}
+              {% crispy ticket_form %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
       <div class="buttonHolder">
             <input type="submit" name="submit" value="Save event" class="admin-interface__form__button" id="submit-id-submit">
       </div>
@@ -32,8 +43,23 @@
   <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
   <script src="{% static "js/event_form.js" %}"></script>
   <script>
+
+
+    function checkTicketFormVisibility(element) {
+      $full_form = $(element).parents(".form-group").next();
+        if($(element).is(':checked')) {
+          $full_form.show();
+        } else {
+          $full_form.hide();
+        }
+    }
     var show_times = {{ show_times|safe }};
     $(document).ready(function() {
+      $toggle = $(".toggle");
+      $toggle.click(function() {
+        checkTicketFormVisibility(this)
+      });
+      checkTicketFormVisibility($toggle);
       EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
       EventForm.init(true);
     });
