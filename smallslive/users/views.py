@@ -21,6 +21,8 @@ from djstripe.settings import subscriber_request_callback
 from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView,\
     CancelSubscriptionView as BaseCancelSubscriptionView
 from allauth.account.app_settings import EmailVerificationMethod
+from urllib import urlencode
+import urlparse
 import stripe
 
 from artist_dashboard.forms import ArtistInfoForm
@@ -463,16 +465,25 @@ def user_tax_letter(request):
 
 
 class ConfirmEmailView(CoreConfirmEmailView):
-    def login_on_confirm(self, confirmation):
-        """
-        Redirects the user to the user settings page only after successfully confirming the email address.
-        """
-        resp = super(ConfirmEmailView, self).login_on_confirm(confirmation)
-        if resp:
-            if app_settings.EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL:
-                return HttpResponseRedirect(app_settings.EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL)
-            else:
-                return HttpResponseRedirect('/')
+
+    def get_redirect_url(self):
+        # Add offer parameter to url, or `next` if it's login.
+        url = super(ConfirmEmailView, self).get_redirect_url()
+        if 'login' in url:
+            parts = list(urlparse.urlparse(url))
+            query = urlparse.parse_qs(parts[4])
+            query['next'] = '{}?offer=subscribe'.format(
+                settings.LOGIN_REDIRECT_URL
+            )
+            parts[4] = urlencode(query)
+            url = urlparse.urlunparse(parts)
+        else:
+            parts = list(urlparse.urlparse(url))
+            query = urlparse.parse_qs(parts[4])
+            query.update({'offer': 'subscribe'})
+            parts[4] = urlencode(query)
+            url = urlparse.urlunparse(parts)
+        return url
 
 confirm_email = ConfirmEmailView.as_view()
 

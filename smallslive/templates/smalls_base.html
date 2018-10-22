@@ -1,5 +1,6 @@
 {% load account %}
 {% load pipeline %}
+{% load offer_modal %}
 {% load static from staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
@@ -43,6 +44,7 @@
   {% endblock %}
 </head>
 <body class="{% block body_class %}default{% endblock %} {% if user.is_superuser %}headers-2{% endif %}">
+{% offer %}
 {% include "account/ajax_login.html" %}
 {% include "account/ajax_become_member.html" %}
 
@@ -85,6 +87,7 @@
   ga('send', 'pageview');
 </script>
 <script src="{% static 'js/utils.js' %}"></script>
+<script src="{% static 'js/modal.js' %}"></script>
 <script>
   $(document).ready(function() {
     var signInModal = $('#logIn');
