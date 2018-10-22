@@ -14,6 +14,9 @@ class Product(AbstractProduct):
     preview = models.OneToOneField('multimedia.MediaFile', blank=True, null=True, related_name='product')
     featured = models.BooleanField(default=False, help_text="Make this product featured in the store")
 
+    event = models.ForeignKey('events.Event', related_name='products', null=True)
+    set = models.CharField(max_length=50, blank=True)
+
     class Meta(AbstractProduct.Meta):
         ordering = ['ordering', 'title']
 

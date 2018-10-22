@@ -21,4 +21,18 @@
 {% endblock %}
 {% block extra_js %}
 {{ block.super }}
+
+  $(document).ready(function () {
+    {% if next_event %}
+      var changeTime = moment("{{ next_event.start.isoformat }}");
+      var waitTime = changeTime.diff(moment(), 'miliseconds');
+      var intervalId = setInterval(function () {
+          clearInterval(intervalId);
+          $('.current-event').addClass('hidden');
+          $('.next-event').removeClass('hidden');
+          $('.related-video.selected').removeClass('selected');
+          $('.related-video.next-up').addClass('selected');
+      }, waitTime);
+    {% endif %}
+  });
 {% endblock %}

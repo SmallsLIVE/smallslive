@@ -44,7 +44,7 @@ from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
     GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
     EventSearchForm, EventEditForm, EventSetInlineFormset, \
-    EventSetInlineFormsetHelper, CommentForm
+    EventSetInlineFormsetHelper, CommentForm, TicketAddForm
 from .models import Event, Venue
 
 RANGE_YEAR = 'year'
@@ -242,6 +242,8 @@ def check_staff_picked(event, is_staff_pick):
         if hasattr(event, 'staff_picked'):
             event.staff_picked.delete()
 
+TICKETS_NUMBER_OF_SETS = 4
+
 
 class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlinesView):
     template_name = 'events/event_add.html'
@@ -255,12 +257,27 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
         context['artists'].helper = GigPlayedInlineFormSetHelper()
         context['sets'].helper = EventSetInlineFormsetHelper()
         context['show_times'] = json.dumps(settings.SHOW_TIMES)
+        context['ticket_forms'] = self.construct_ticket_forms()
         return context
 
     def post(self, request, *args, **kwargs):
         response = super(EventAddView, self).post(request, *args, **kwargs)
         check_staff_picked(self.object, self.request.POST.get('staff_pick', 'off') == 'on')
+        ticket_forms = self.construct_ticket_forms(data=request.POST)
+        for ticket_form in ticket_forms:
+            if ticket_form.is_valid():
+                if ticket_form.cleaned_data.get('form_enabled'):
+                    print ticket_form
+                    print self.object
+                    ticket_form.save(event=self.object)
         return response
+
+    def construct_ticket_forms(self, data=None):
+        ticket_forms = []
+        for i in range(1, TICKETS_NUMBER_OF_SETS + 1):
+            ticket_form = TicketAddForm(data, prefix="set{0}".format(i), number=i)
+            ticket_forms.append(ticket_form)
+        return ticket_forms
 
 
 event_add = EventAddView.as_view()
@@ -325,7 +342,6 @@ class EventDetailView(DetailView):
             start = event.get_actual_start() - timedelta(
                 minutes=event.start_streaming_before_minutes)
 
-        if event_url:
             context['streaming'] = {
                 'event_url': event_url,
                 'start': start
