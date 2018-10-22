@@ -28,7 +28,7 @@ function sendEventRequest() {
     }
 
     $.ajax({
-        url: '/search/ajax/event/',
+        url: '/search/ajax/event/ ',
         data: {
             'main_search': searchTerm,
             'page': eventPageNum,
@@ -155,6 +155,15 @@ $(document).ready(function () {
             display();
     }
 
+    $('.datepicker-btn-calendar').bind("click", ToggleCalendarDisplay);
+
+    function ToggleDisplay() {
+        if ($(".datepicker-container").data('shown'))
+            hide();
+        else 
+            displayCalendar();
+    }
+
     function display() {
         var $datePickerContainer = $(".datepicker-container");
         $datePickerContainer.css({'left': 222, 'top': 41});
@@ -165,6 +174,17 @@ $(document).ready(function () {
 
         $("#search-date-picker-to input").click();
         $("#search-date-picker-to input").focus();    
+    }
+
+    function displayCalendar() {
+        var $datePickerContainer = $(".datepicker-container");
+        $datePickerContainer.css("display", "flex").hide().fadeIn(500, function() {
+            $(document).bind("click", hide);
+            $(".datepicker-container").data('shown', true);
+        });
+
+        $("#search-date-picker-calendar input").click();
+        $("#search-date-picker-calendar input").focus();    
     }
 
     function hide() {   

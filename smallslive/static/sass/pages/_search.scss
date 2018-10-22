@@ -921,6 +921,17 @@ body.headers-1 {
   display: none;
 }
 
+.shows-calendar {
+  .datepicker-container.noclick{
+    width: 320px !important;
+    top: 40px !important;
+    left: 170px !important;
+    .custom-date-picker{
+      width: 100%;
+    }
+  }
+}
+
 @media (max-width: 960px) {
   .refine {
     display: block;
@@ -930,6 +941,7 @@ body.headers-1 {
   }
 
   .shows-calendar {
+    .datepicker-container.noclick{}
     .event-section {
       display: none;
     }

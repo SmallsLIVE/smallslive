@@ -82,7 +82,7 @@
 					<div class="text9 accent-color">${{monthly_pledge_in_dollars}}/{{customer_detail.subscription.plan.interval}}</div>
 					{% endif %}
 					
-					{% if not customer_detail.subscription.plan and not user_archive_access_until %}
+					{% if not customer_detail.subscription.plan and not cancelled %}
 						<a class="white-border-button" href="{% url 'become_supporter' %}">Become a Supporting Member</a>		
 					{% elif customer_detail.subscription.plan and not period_end.due %}
 						<div class="flex-row supporter-options">	
