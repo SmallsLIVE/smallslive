@@ -221,17 +221,18 @@ $(document).ready(function () {
             $("#search-date-picker-to input").datepicker("update", eventDateTo);
 
         }
+        
         if (eventDateTo) {
             $(".datepicker-btn").html('From <span class="from accent-color"></span> to <span class="to accent-color"></span>');
             $('.datepicker-btn span.from').text(eventDateFrom.toLocaleDateString());
             $('.datepicker-btn span.to').text(eventDateTo.toLocaleDateString());
-            if ($('.shows-calendar .datepicker-btn')){
-                $(".datepicker-btn").html("DATE");
-            }
         } else {
             $(".datepicker-btn").html("DATE");
         }
-
+        if ($('.shows-calendar .datepicker-btn')){
+            $(".datepicker-btn").html("DATE");
+            $("#calendar-date-range .title2").html( eventDateFrom.toLocaleDateString() + " - " + eventDateTo.toLocaleDateString() );
+        }
 
         eventPageNum = 1;
         sendEventRequest();
@@ -564,6 +565,7 @@ $(document).ready(function () {
         apply = true;
         eventDateFrom = datePickerFromDate
         eventPageNum = 1;
+        $("#calendar-date-range .title2").html( eventDateFrom.toLocaleDateString() + " - " );
         $(".datepicker-container").hide();
         sendEventRequest();
     });

@@ -15,6 +15,9 @@
       {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
   {% endif %}
   {% if upcoming %}
+      <div class="section-title home" id="calendar-date-range">
+        <div class="header-sub title2">  {% now "m/d/Y" %} - </div>
+      </div>
       {% include 'events/upcoming_filters.html' %}
   {% endif %}
   <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
