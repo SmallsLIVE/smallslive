@@ -231,7 +231,8 @@ $(document).ready(function () {
         }
         if ($('.shows-calendar .datepicker-btn')){
             $(".datepicker-btn").html("DATE");
-            $("#calendar-date-range .title2").html( eventDateFrom.toLocaleDateString() + " - " + eventDateTo.toLocaleDateString() );
+            $datePickerCalendar.datepicker('setDate', eventDateFrom);
+            $("#calendar-date-range .title2").html( eventDateFrom.toLocaleDateString() + " - " + (eventDateTo != null ? eventDateTo.toLocaleDateString() : ""));
         }
 
         eventPageNum = 1;
