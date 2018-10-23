@@ -54,8 +54,8 @@
           </div>
         {% endif %}
         {% if artist.website %}
-          <div class="hidden-xs">
-            <p class="text4 text-uppercase">Website: <a href="{{ artist.website }}" target="_blank">{{ artist.website }}</a></p>
+          <div class="hidden-xs artist-details-website">
+            <p class="text4 text-uppercase">Website: <a href="{{ artist.website }}" rel="noreferrer noopener" target="_blank">{{ artist.website|schemaless_url }}</a></p>
           </div>
         {% endif %}
         <div class="close-button-container visible-xs"><a href="#" class="close-button"></a></div>

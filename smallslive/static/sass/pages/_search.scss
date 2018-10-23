@@ -546,6 +546,16 @@ body.headers-1 {
   flex-direction: row;
   position: relative;
 
+  .artist-details-website {
+    a {
+      max-width: 75%;
+      text-overflow: ellipsis;
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+    }
+  }
+
   @media (max-width: $screen-sm-max) {
     font-size: 1.2em;
     width: auto;
