@@ -95,4 +95,5 @@ urllib3==1.10.1
 whitenoise==2.0.4
 wsgiref==0.1.2
 xlsxwriter==0.7.3
-wkhtmltopdf-pack==django-wkhtmltopdf==3.2.0
+django-wkhtmltopdf==3.2.0
+wkhtmltopdf-pack==0.12.2.4
