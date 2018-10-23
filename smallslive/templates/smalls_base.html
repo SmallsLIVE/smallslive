@@ -119,7 +119,17 @@
     });
   });
 </script>
-{% block extra_js %}
-{% endblock %}
+
+{% block config_js %}
+  <script>
+    var smallsConfig = {
+      user: {
+        isAuthenticated: {{ user.is_authenticated|lower }}
+      }
+    };
+  </script>
+{% endblock config_js %}
+
+{% block extra_js %}{% endblock %}
 </body>
 </html>
