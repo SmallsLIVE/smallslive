@@ -107,6 +107,7 @@ function sendEventRequest() {
     if (venueFilter) {
         searchFilters['venue'] = venueFilter;
     }
+    console.log(utcDateFrom)
     $.ajax({
         url: '/search/ajax/event/',
         data: searchFilters,
@@ -231,7 +232,6 @@ $(document).ready(function () {
         }
         if ($('.shows-calendar .datepicker-btn')){
             $(".datepicker-btn").html("DATE");
-            $datePickerCalendar.datepicker('setDate', eventDateFrom);
             $("#calendar-date-range .title2").html( eventDateFrom.toLocaleDateString() + " - " + (eventDateTo != null ? eventDateTo.toLocaleDateString() : ""));
         }
 
@@ -565,6 +565,7 @@ $(document).ready(function () {
         }
         apply = true;
         eventDateFrom = datePickerFromDate
+        eventDateTo = null
         eventPageNum = 1;
         $("#calendar-date-range .title2").html( eventDateFrom.toLocaleDateString() + " - " );
         $(".datepicker-container").hide();
@@ -573,7 +574,6 @@ $(document).ready(function () {
 
     $datePickerCalendar.on('click', function () {
         var dropdown = $('#search-date-picker-calendar .dropdown-menu');
-        console.log("Advance")
         if (dropdown[0] && dropdown[0].style.display === 'block') {
             $datePickerCalendar.datepicker('hide');
         } else {
