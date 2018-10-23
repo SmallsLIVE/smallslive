@@ -13,7 +13,7 @@
 {% block home_content %}
 <main class="calendar">
   <div class="event-stripe">
-    {% include 'events/today_and_tomorrow.html' %}
+    {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
   </div>
   {% include 'events/shows.html' with upcoming=True show_event_venue=True hide_play=True%}
 </main>{% endblock home_content %}
