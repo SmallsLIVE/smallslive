@@ -453,6 +453,7 @@ metrics = MetricsView.as_view(success_url='/dashboard/my-metrics/')
 
 
 class EditProfileView(HasArtistAssignedMixin, UpdateView):
+
     form_class = EditProfileForm
     model = Artist
     template_name = 'artist_dashboard/edit_profile.html'

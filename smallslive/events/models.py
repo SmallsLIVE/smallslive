@@ -804,6 +804,13 @@ class Venue(models.Model):
     def short_name(self):
         return self.name.split(' ')[0]
 
+    @property
+    def color(self):
+        # TODO: un-hardcode o_o'
+        if 'mezzrow' in self.name.lower():
+            return 'rgb(241, 187, 83)'
+        return '#D21535'
+
 
 class StaffPick(models.Model):
     event = models.OneToOneField('events.Event', related_name='staff_picked')

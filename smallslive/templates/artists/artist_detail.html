@@ -121,10 +121,10 @@
         <div role="tabpanel" class="tab-pane" id="contact">
           <div class="flex-column items-center">
             <div class="artist-contact">
-              {% if artist.user.email %}
+              {% if artist.public_email %}
                 <div>
                   <p class="text4 text-uppercase">Email</p>
-                  <p class="text4"><a href="mailto:{{ artist.user.email }}">{{ artist.user.email }}</a></p>
+                  <p class="text4"><a href="mailto:{{ artist.public_email }}">{{ artist.public_email }}</a></p>
                 </div>
               {% endif %}
 

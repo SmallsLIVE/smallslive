@@ -135,7 +135,11 @@
         var $videoContainer = $('#videoContainer');
         if ($videoContainer.hasClass('forbidden')) {
           videoPlayer.stop();
-          $('#become-a-supporter-dialog').modal('show');
+          var modal = '#becomeMemberDialog';
+          if (smallsConfig.user.isAuthenticated) {
+            modal = '#become-a-supporter-dialog';
+          }
+          $(modal).modal('show');
         } else {
           {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
           updateViewCount(this);
@@ -201,7 +205,13 @@
             var $videoContainer = $('#videoContainer');
             if ($videoContainer.hasClass('forbidden')) {
               videoPlayer.stop();
-              $('#become-a-supporter-dialog').modal('show');
+
+              var modal = '#becomeMemberDialog';
+              if (smallsConfig.user.isAuthenticated) {
+                modal = '#become-a-supporter-dialog';
+              }
+              $(modal).modal('show');
+
             } else {
               var $overlay = $('#playerTextOverlay');
               $overlay.addClass('hidden');

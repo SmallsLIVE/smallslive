@@ -14,7 +14,8 @@ from .models import Artist
 class ArtistAddForm(forms.ModelForm):
     class Meta:
         model = Artist
-        fields = ('salutation', 'first_name', 'last_name',  'instruments', 'biography', 'website', 'photo', 'cropping')
+        fields = ('salutation', 'first_name', 'last_name',  'instruments',
+                  'biography', 'website', 'photo', 'cropping', 'public_email')
         widgets = {
             'instruments': floppyforms.SelectMultiple,
             'photo': ImageCropWidget,

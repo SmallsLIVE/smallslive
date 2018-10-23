@@ -9,7 +9,7 @@
               {% endif %}
               <div class="event-info-title">{{ event.title }}</div>
               {% if show_event_venue %}
-                <div class="accent-color">{{ event.venue.name }}</div>
+                <div style="color: {{ event.venue.color }}">{{ event.venue.name }}</div>
               {% endif %}
 
             </div>

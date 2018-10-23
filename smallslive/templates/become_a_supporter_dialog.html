@@ -1,8 +1,8 @@
 {% if not user.can_watch_videos %}
-  <div class="modal fade in" role="dialog" id="become-a-supporter-dialog" >
+  <div class="modal fade in" role="dialog" id="become-a-supporter-dialog" {% if offer_visible %}style="display: block"{% endif %}>
     <div class="modal-dialog">
-        <div class="modal-content  custom-modal">
-                <a href="#" class="close-button"></a>
+        <div class="modal-content custom-modal">
+          <a href="#" class="close-button"></a>
           <div class="modal-body">
               <p class="title2 accent-color">ACCESS THE ARCHIVE</p>
               <p class="title1">WHY BECOME A SUPPORTING MEMBER?</p>
@@ -16,7 +16,14 @@
               </p>
               <div class="text4 text-centered" style="margin-top: 40px">
                 <button class="white-border-button" onclick="" style="display: inline; margin-right: 25px;">More Info</button>
-                <button class="white-border-button" onclick="goToSupporter()" style="display: inline;">Become a Supporting Member</button>
+                <button class="white-border-button" onclick="window.location = '{% url 'become_supporter' %}'" style="display: inline;">
+                  {% comment %}
+                    Sorry but I'm not refactoring the onClick thing,
+                    if you want a better world for the children of the future
+                    then stop using <button> for links.
+                  {% endcomment %}
+                  Become a Supporting Member
+                </button>
               </div>
           </div>
           <div>
@@ -28,14 +35,6 @@
       document.addEventListener('click', function () {
         $('#become-a-supporter-dialog').hide();
       });
-      $(document).ready(function () {
-        var $supporterDialog = $('#become-a-supporter-dialog');
-        var $supporterCloseButton = $($supporterDialog.find('.close-button')[0]);
-        $supporterCloseButton.click(function () {
-            $supporterDialog.modal('hide');
-        });
-      });
-
   </script>
 {% endif %}
 
