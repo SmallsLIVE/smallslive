@@ -941,9 +941,27 @@ body.headers-1 {
   }
 
   .shows-calendar {
-    .datepicker-container.noclick{}
-    .event-section {
-      display: none;
+    .calendar-filters{
+      flex-direction: column-reverse;
+      .section-title.home {
+        margin-bottom: 0;
+        > .header-sub{
+          margin: 10px auto 0;
+        }
+      }
+      .event-section {
+        .event-filter-select{
+          display: none;
+        }
+        .select-selected{
+        width: 40VW;
+        }
+        .datepicker-container.noclick{
+          top: 46px !important;
+          left: 0 !important;
+          right: 0px;
+        }
+      }
     }
 
     .musicians-results {

@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'image_cropping',
     'localflavor',
     'metrics',
+    'wkhtmltopdf',
     #'oscar_stripe',
     'paypal',
     'pipeline',

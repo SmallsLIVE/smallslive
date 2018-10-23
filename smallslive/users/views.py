@@ -28,6 +28,7 @@ from custom_stripe.models import CustomPlan, CustomerDetail
 from users.models import SmallsUser
 from users.utils import charge, subscribe_to_plan, one_time_donation
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
+from wkhtmltopdf.views import PDFTemplateView
 
 
 # TODO: remove duplicate code (views and templates)
@@ -439,22 +440,26 @@ def user_settings_view_new(request):
     })
 
 
-@login_required
-def user_tax_letter(request):
 
-    customer = request.user.customer
+class UserTaxLetter(PDFTemplateView):
 
-    customer_charges = customer.charges.all()
-    charges_value = 0
-    for charge in customer_charges:
-        charges_value += charge.amount
+    filename = 'tax_letter.pdf'
+    template_name = 'account/tax-letter.html'
+    
+    
+    def get_context_data(self, **kwargs):
+        context = super(UserTaxLetter, self).get_context_data(**kwargs)
+        customer =  self.request.user.customer
+        customer_charges = customer.charges.all()
+        charges_value = 0
+        for charge in customer_charges:
+            charges_value += charge.amount
+        context['customer'] = customer
+        context['charges_value'] = charges_value
+        context['year'] = 1964
+        return context
 
-    context = {
-        'customer': customer,
-        'charges_value': charges_value,
-        'year': 1964
-    }
-    return render(request, 'account/tax-letter.html', context)
+user_tax_letter = UserTaxLetter.as_view()
 
 
 class ConfirmEmailView(CoreConfirmEmailView):

@@ -3,19 +3,17 @@
 {% load i18n %}
 
 <section id="showsContent" class="search-tab-content active {{ archived|yesno:',shows-calendar' }}" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
+  {% if archived %}
   <div class="musicians-results white-line-bottom">
       <div class="title1 shows-results-title">{{ archived|yesno:'Archived,Upcoming' }} Shows</div>
-    {% if archived %}
       <div id="artist-subheader" class="showing-results text1" style="margin-top: -13px;">{{ showing_evet_results }}</div>
-    {% else %}
-    <div class="refine text1">Refine</div>
-    {% endif %}
   </div>
+  {% endif %}
   {% if archived %}
       {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
   {% endif %}
   {% if upcoming %}
-  <div class="flex-row">
+  <div class="flex-row calendar-filters">
       <div class="section-title home" id="calendar-date-range">
         <div class="header-sub title2">  {% now "m/d/Y" %} - </div>
       </div>
