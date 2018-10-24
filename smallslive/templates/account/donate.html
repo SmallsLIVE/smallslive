@@ -1,4 +1,4 @@
-{% extends "home_new.html" %}
+
 {% load static from staticfiles %}
 {% load full_static %}
 {% load djstripe_tags %}
@@ -122,11 +122,13 @@
   {% block stripe_payment %}
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script type="text/javascript">
+      var sentHint = $('#sentHint');
       Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
 
       function startStripePayment($form) {
         var stripeResponseHandler = function (status, response) {
           if (response.error) {
+            sentHint.hide();
             // Show the errors on the form
             // TODO Display payment errors
             $('#form-general-error').text(response.error.message);
@@ -137,7 +139,27 @@
             // Insert the token into the form so it gets submitted to the server
             $form.append($('<input type="hidden" name="stripe_token" />').val(token));
             // and submit
-            $form.get(0).submit();
+            //$form.get(0).submit();
+
+             $.ajax({
+            type: "POST",
+            url: $form.attr('action'),
+            data: $form.serialize(),
+            success: function (data) {
+              if(typeof subpages !== 'undefined'){
+                $('#donate-setting-steps').html("")
+                var donationSubpage = window.subpages.get("make-donation-complete");
+		            donationSubpage.load();
+              }
+              else{
+                window.location = data.location
+              }
+              console.log('Data Location', data);
+            },
+            error: function () {
+            }
+          });
+
           }
         };
         Stripe.card.createToken($form, stripeResponseHandler);
