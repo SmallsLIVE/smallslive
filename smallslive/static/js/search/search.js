@@ -191,6 +191,14 @@ $(document).ready(function () {
         sendEventRequest();
     });
 
+    $('#club-filter').change(function () {
+        eventFilter = true;
+        venueFilter = $(this).val();
+        eventPageNum = 1;
+
+        sendEventRequest();
+    });
+
     $('#period-filter, #refine-period-filter').change(function () {
         eventFilter = true;
         console.log($(this).val());

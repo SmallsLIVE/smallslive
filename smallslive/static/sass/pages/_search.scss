@@ -227,6 +227,7 @@ body.headers-1 {
   position: relative;
   > * {
     display: inline-block;
+    vertical-align: top;
   }
 
   .white-border-select {
