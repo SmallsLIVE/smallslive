@@ -1,6 +1,7 @@
 var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, venueFilter, eventFilter, eventDateFrom, eventDateTo, apply, artist_pk, show_event_venue;
 
 function sendArtistRequest(callback) {
+    callback = callback || function () {};
     $.ajax({
         url: '/search/ajax/artist/',
         data: {
@@ -14,19 +15,8 @@ function sendArtistRequest(callback) {
             if (data.template) {
                 $("#artist-subheader").html(data.showingResults);
                 $("#artists").append(data.template);
+                $("#artists").css('left', 0);
                 artistMaxPageNum = data.numPages;
-
-                // if (artistPageNum === 1) {
-                //     $(".left_arrow").addClass('artist-arrow-disabled');
-                // } else {
-                //     $(".left_arrow").removeClass('artist-arrow-disabled');
-                // }
-
-                // if (artistPageNum === artistMaxPageNum) {
-                //     $(".right_arrow").addClass('artist-arrow-disabled');
-                // } else {
-                //     $(".right_arrow").removeClass('artist-arrow-disabled');
-                // }
             }
             callback(data);
         },
@@ -87,8 +77,16 @@ function toggleArrows() {
     var columnWidth = parseInt($('.artist-column').first().css('width').replace('px', ''));
     var left = style.replace('px', '');
     var pseudoPage = parseInt(-left / columnWidth);
+    if (!smallsConfig.display.isMobile()) {
+        pseudoPage /= 4;
+    }
+    
+    var lastPseudoPage = $('.artist-column').length - 1; 
+    if (!smallsConfig.display.isMobile()) {
+        lastPseudoPage = Math.floor(lastPseudoPage / 4);
+    }
     $('.left_arrow').css('visibility', pseudoPage == 0 ? 'hidden' : 'visible');
-    $('.right_arrow').css('visibility', pseudoPage == $('.artist-column').length - 1 ? 'hidden': 'visible');
+    $('.right_arrow').css('visibility', pseudoPage == lastPseudoPage ? 'hidden': 'visible');
 }
 
 toggleArrows();
@@ -164,32 +162,40 @@ $(document).ready(function () {
     $("[name='q']").val(searchTerm);
     $('#artist-search').val('');
 
-    $(".visible-xs.left_arrow").click(function () {
+    $(".left_arrow").click(function () {
         var style = $('#artists').css('left');
         var columnWidth = parseInt($('.artist-column').first().css('width').replace('px', ''));
+        if (!smallsConfig.display.isMobile()) {
+            columnWidth *= 4;
+        }
         var left = parseInt(style.replace('px', ''));
         if (left % columnWidth) {
             return;
         }
         $('#artists').animate({left: (left + columnWidth) + 'px'},
-            100,
+            200,
             'linear',
             function() {
                 toggleArrows();
             });
     });
 
-    $(".visible-xs.right_arrow").click(function () {
+    $(".right_arrow").click(function () {
         var style = $('#artists').css('left');
         var columnWidth = parseInt($('.artist-column').first().css('width').replace('px', ''));
+        if (!smallsConfig.display.isMobile()) {
+            columnWidth *= 4;
+        }
+        
         var left = parseInt(style.replace('px', ''));
+        console.log('notsureif');
         if (left % columnWidth) {
             return;
         }
         var pseudoPage = parseInt(-left / columnWidth);
         $('#artists').animate(
             {left: (left - columnWidth) + 'px'},
-            100,
+            200,
             'linear',
         function() {
             toggleArrows();
@@ -291,11 +297,12 @@ $(document).ready(function () {
         delay(function () {
             artistPageNum = 1;
             artistSearchTerm = $('#artist-search').val();
-            //$("#artists").hide();
-            //$("#artist-load-gif").css("display", "flex");
             $(".container-list-article").addClass("artist-loading-gif");
-            $("#artists").css("visibility", "hidden");
-            sendArtistRequest();
+            $('#artists').html('');
+            sendArtistRequest(function() {
+                $(".container-list-article").removeClass("artist-loading-gif");
+                toggleArrows();
+            });
         }, 700);
     });
 

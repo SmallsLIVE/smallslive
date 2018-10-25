@@ -1,5 +1,3 @@
-from datetime import datetime
-import pytz
 from django.db.models import Q, Sum
 from django.utils import timezone
 from artists.models import Artist, Instrument

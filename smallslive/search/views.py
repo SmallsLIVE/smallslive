@@ -49,7 +49,7 @@ class SearchMixin(object):
         search = SearchObject()
 
         if entity == Artist:
-            results_per_page = 64
+            results_per_page = 64 * 4
             sqs = search.search_artist(main_search, artist_search, instrument)
 
         elif entity == Event:
