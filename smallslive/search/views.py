@@ -143,6 +143,8 @@ class MainSearchView(View, SearchMixin):
         artist_pk = request.GET.get('artist_pk', None)
         venue = request.GET.get('venue', None)
         partial = request.GET.get('partial', False)
+        show_venue = request.GET.get('show_event_venue', False)
+
 
         if date_from:
             date_from = parser.parse(date_from, fuzzy=True)
@@ -170,6 +172,7 @@ class MainSearchView(View, SearchMixin):
             context = {
                 'events': events[0] if events else [],
                 'secondary': True,
+                'show_event_venue':show_venue,
             }
             template = ('search/event_search_row.html' if partial
                         else 'search/event_search_result.html')
