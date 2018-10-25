@@ -89,7 +89,9 @@ function toggleArrows() {
     $('.right_arrow').css('visibility', pseudoPage == lastPseudoPage ? 'hidden': 'visible');
 }
 
-toggleArrows();
+if ($('#artists .artist-column').length) {
+    toggleArrows();
+}
 
 function sendEventRequest() {
     var utcDateFrom = null;
