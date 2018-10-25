@@ -195,21 +195,27 @@ $(document).ready(function () {
         eventFilter = true;
         console.log($(this).val());
 
+        if (datePickerFromDate) {
+            var start = datePickerFromDate;
+        } else  {
+            var start = new Date();
+        }
+
         if ($(this).val() == 'All Upcoming') {
             eventDateTo = null;
             eventDateFrom = new Date();
         }
         else if ($(this).val() == 'One Day') {
-            eventDateTo = new Date((new Date()).getTime() + 1 * 24 * 60 * 60 * 1000);
-            eventDateFrom = new Date();
+            eventDateTo = new Date(start.getTime() + 1 * 24 * 60 * 60 * 1000);
+            eventDateFrom = start;
         }
         else if ($(this).val() == 'One Week') {
-            eventDateTo = new Date((new Date()).getTime() + 7 * 24 * 60 * 60 * 1000);
-            eventDateFrom = new Date();
+            eventDateTo = new Date(start.getTime() + 7 * 24 * 60 * 60 * 1000);
+            eventDateFrom = start;
         }
         else if ($(this).val() == 'One Month') {
-            eventDateTo = new Date((new Date()).getTime() + 31 * 24 * 60 * 60 * 1000);
-            eventDateFrom = new Date();
+            eventDateTo = new Date(start.getTime() + 31 * 24 * 60 * 60 * 1000);
+            eventDateFrom = start;
         }
 
         var $filter = $(this);

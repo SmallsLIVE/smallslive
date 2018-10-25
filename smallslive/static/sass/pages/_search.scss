@@ -387,6 +387,7 @@ body.headers-1 {
   display: flex;
   justify-content: space-between;
   align-content: center;
+  margin: 0 auto;
 
   .event-filter-select {
     @media (max-width: $screen-sm-max) {
@@ -940,6 +941,15 @@ body.headers-1 {
       width: 100%;
     }
   }
+}
+
+.calendar-filters {
+    .section-title {
+      &.home {
+        position: absolute;
+        width: 350px;
+      }
+    }
 }
 
 @media (max-width: 960px) {
