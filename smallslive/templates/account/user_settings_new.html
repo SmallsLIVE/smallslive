@@ -226,12 +226,24 @@
   
   $(document).ready(function () {
 
+
 	$('.close-button').bind("click", ToggleDisplay);
 
 	function ToggleDisplay() {
 		var $currentModal = $(this).closest('.modal');
 		$currentModal.modal('hide');
 	}
+
+    var $streamingDialog = $('#cancel-subscription');
+    var $streamingCloseButton = $($streamingDialog.find('.close-button')[0]);
+    $streamingCloseButton.click(function () {
+      $streamingDialog.modal('hide');
+    });
+
+    $('#btn-donate').click(function () {
+        window.location = "{{ donate_url }}";
+      });
+
   });
 
 </script>

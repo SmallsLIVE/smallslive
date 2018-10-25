@@ -46,7 +46,7 @@ from artist_dashboard.tasks import generate_payout_sheet_task,\
 
 class MyEventsView(HasArtistAssignedMixin, ListView):
     context_object_name = 'gigs'
-    paginate_by = 10000
+    paginate_by = 30
     template_name = 'artist_dashboard/my_gigs.html'
 
     def get_context_data(self, **kwargs):
@@ -98,7 +98,6 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
             else:
                 queryset = queryset.filter(is_leader=False)
 
-        
         if start_date_filter:
             artist = self.request.user.artist
             start_date_filter = parser.parse(start_date_filter, fuzzy=True)
@@ -119,10 +118,6 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
                 event__start__lte=end_date_filter
             )
 
-       
-            
-           
-       
         if order:
             if order == 'newest':
                 queryset = queryset.order_by('-event__date')
@@ -138,7 +133,7 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
                     'event_id'
                 ).annotate(
                     count=Sum('seconds_played')
-                ).order_by('-count')[(page - 1) * self.paginate_by:self.paginate_by])
+                ).order_by('-count')[(page - 1) * self.paginate_by: self.paginate_by])
 
                 ordered_metrics_ids = [
                     row.get('event_id') for row in most_popular_ids
@@ -160,6 +155,7 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
 
 
 class MyFutureEventsView(MyEventsView):
+
     def get_queryset(self):
         artist = self.request.user.artist
         now = timezone.now()
@@ -181,6 +177,7 @@ my_future_events = MyFutureEventsView.as_view()
 
 
 class MyEventsAJAXView(MyEventsView):
+
     def get(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()
         context = self.get_context_data(**kwargs)
@@ -200,6 +197,7 @@ class MyEventsAJAXView(MyEventsView):
 class MyFutureEventsAJAXView(MyEventsAJAXView, MyFutureEventsView):
 
     template_name = 'artist_dashboard/artist-dashboard-events.html'
+
     def get_context_data(self, **kwargs):
         context = super(MyFutureEventsAJAXView, self).get_context_data(**kwargs)
         return context
@@ -216,6 +214,7 @@ class MyPastEventsView(MyEventsView):
             event__start__lt=now
         )
         queryset = self.apply_filters(queryset)
+
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -224,18 +223,19 @@ class MyPastEventsView(MyEventsView):
         return context
         
 
-
 my_past_events = MyPastEventsView.as_view()
 
 
 class MyPastEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
 
     template_name = 'artist_dashboard/artist-dashboard-events.html'
+
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsAJAXView, self).get_context_data(**kwargs)
         return context
 
 my_past_events_ajax = MyPastEventsAJAXView.as_view()
+
 
 class MyPastEventsInfoView(DetailView):
     
@@ -453,6 +453,7 @@ metrics = MetricsView.as_view(success_url='/dashboard/my-metrics/')
 
 
 class EditProfileView(HasArtistAssignedMixin, UpdateView):
+
     form_class = EditProfileForm
     model = Artist
     template_name = 'artist_dashboard/edit_profile.html'

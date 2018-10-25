@@ -78,6 +78,7 @@ class Artist(models.Model):
     slug = models.SlugField(blank=True, max_length=100)
     current_period_seconds_played = models.BigIntegerField(default=0)
     current_period_ratio = models.DecimalField(max_digits=11, decimal_places=10, default=0)
+    public_email = models.EmailField(null=True, blank=True)
 
     class Meta:
         ordering = ['last_name']
@@ -128,11 +129,12 @@ class Artist(models.Model):
         email_model, created = SmallsEmailAddress.objects.get_or_create(user=user, email=email)
         email_model.send_confirmation(request, signup=True, invite_text=invite_text)
 
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
+    def save(self, **kwargs):
+        if not self.id and not self.public_email and self.user_id:
+            self.public_email = self.user.email
         if not self.slug:
             self.slug = slugify(self.full_name())
-        super(Artist, self).save(force_insert, force_update, using, update_fields)
+        super(Artist, self).save(**kwargs)
 
     def autocomplete_label(self):
         return self.full_name()

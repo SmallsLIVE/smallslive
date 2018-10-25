@@ -105,9 +105,6 @@
   "buildpacks": [
     {
       "url": "git://github.com/heroku/heroku-buildpack-python.git"
-    },
-    {
-      "url": "https://github.com/homelight/wkhtmltox-buildpack.git"
     }
   ]
 }

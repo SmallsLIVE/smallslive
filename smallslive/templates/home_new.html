@@ -38,7 +38,7 @@
       {% if not request.user.is_authenticated %}
         {% include 'home_banners.html' %}
         {% include 'home_banners_mobile.html' %}
-      {% elif not request.user.has_active_subscription %}
+      {% elif not request.user.has_archive_access %}
         {% include 'home_banners.html' with active='supporter' %}
         {% include 'home_banners_mobile.html'  with active='supporter'%}
       {% endif %}

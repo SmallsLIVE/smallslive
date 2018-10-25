@@ -21,6 +21,8 @@ from djstripe.settings import subscriber_request_callback
 from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView,\
     CancelSubscriptionView as BaseCancelSubscriptionView
 from allauth.account.app_settings import EmailVerificationMethod
+from urllib import urlencode
+import urlparse
 import stripe
 
 from artist_dashboard.forms import ArtistInfoForm
@@ -46,6 +48,7 @@ class DonateView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(DonateView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['form_action'] = reverse('donate')
         context['redirect_url'] = self.request.META.get('HTTP_REFERER')
        
         return context
@@ -103,6 +106,7 @@ class BecomeSupporterView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(BecomeSupporterView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['form_action'] = reverse('become_supporter')
         return context
 
     def post(self, request, *args, **kwargs):
@@ -135,9 +139,6 @@ class BecomeSupporterView(TemplateView):
 
 
 become_supporter = BecomeSupporterView.as_view()
-
-
-
 
 
 class BecomeSupporterCompleteView(BecomeSupporterView):
@@ -432,7 +433,11 @@ def user_settings_view_new(request):
     if customer_detail.subscription:
         period_end["date"] = datetime.fromtimestamp(customer_detail.subscription.current_period_end).strftime("%d/%m/%y")
         period_end["due"] = datetime.fromtimestamp(customer_detail.subscription.current_period_end) <= datetime.now()
-    
+
+    if customer_detail.subscriptions.data:
+        cancel_at = customer_detail.subscriptions.data[0]['cancel_at_period_end']
+    else:
+        cancel_at = False
     return render(request, 'account/user_settings_new.html', {
         'change_email_form': change_email_form,
         'change_profile_form': edit_profile_form,
@@ -446,7 +451,8 @@ def user_settings_view_new(request):
         'period_end': period_end,
         'user_archive_access_until': user_archive_access_until,
         'monthly_pledge_in_dollars': monthly_pledge_in_dollars,
-        'cancelled': customer_detail.subscriptions.data[0]["cancel_at_period_end"],
+        'cancelled': cancel_at,
+        'donate_url': reverse('donate')
     })
 
 
@@ -473,16 +479,25 @@ user_tax_letter = UserTaxLetter.as_view()
 
 
 class ConfirmEmailView(CoreConfirmEmailView):
-    def login_on_confirm(self, confirmation):
-        """
-        Redirects the user to the user settings page only after successfully confirming the email address.
-        """
-        resp = super(ConfirmEmailView, self).login_on_confirm(confirmation)
-        if resp:
-            if app_settings.EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL:
-                return HttpResponseRedirect(app_settings.EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL)
-            else:
-                return HttpResponseRedirect('/')
+
+    def get_redirect_url(self):
+        # Add offer parameter to url, or `next` if it's login.
+        url = super(ConfirmEmailView, self).get_redirect_url()
+        if 'login' in url:
+            parts = list(urlparse.urlparse(url))
+            query = urlparse.parse_qs(parts[4])
+            query['next'] = '{}?offer=subscribe'.format(
+                settings.LOGIN_REDIRECT_URL
+            )
+            parts[4] = urlencode(query)
+            url = urlparse.urlunparse(parts)
+        else:
+            parts = list(urlparse.urlparse(url))
+            query = urlparse.parse_qs(parts[4])
+            query.update({'offer': 'subscribe'})
+            parts[4] = urlencode(query)
+            url = urlparse.urlunparse(parts)
+        return url
 
 confirm_email = ConfirmEmailView.as_view()
 

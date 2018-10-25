@@ -78,12 +78,18 @@
                                     <p class="form-error-text">{{ error }}</p>
                                 {% endfor %}
                             </div>
+                            <div class="form-group {% if form.public_email.errors %}has-error{% endif %}">
+                                {{ form.public_email.label_tag }}
+                                {{ form.public_email }}
+                                {% for error in form.public_email.errors %}
+                                    <p class="form-error-text">{{ error }}</p>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                     <div>
-                        <h2 class="edit-public-profile__heading">Biography</h2>
-                        <div id="div_id_biography"
-                             class="form-group {% if form.biography.errors %}has-error{% endif %}">
+                        <h2 class="edit-public-profile__heading">biography</h2>
+                        <div id="div_id_biography" class="form-group {% if form.biography.errors %}has-error{% endif %}">
                             {{ form.biography }}
                             {% for error in form.biography.errors %}
                                 <p class="form-error-text">{{ error }}</p>

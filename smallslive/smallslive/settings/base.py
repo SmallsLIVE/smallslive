@@ -150,6 +150,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'oscar.apps.checkout.context_processors.checkout',
     'oscar.apps.customer.notifications.context_processors.notifications',
     'oscar.core.context_processors.metadata',
+    'users.context_processors.offer_modal',
 )
 
 ROOT_URLCONF = 'smallslive.urls'
@@ -395,7 +396,8 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
-        }
+        },
+
     },
     'loggers': {
         'cron': {
@@ -648,6 +650,11 @@ OSCAR_DASHBOARD_NAVIGATION += [
 
          ],
     },
+    {
+        'label': 'Tickets',
+        'icon': 'icon-bar-chart',
+        'url_name': 'dashboard:tickets-report-index',
+    },
 ]
 
 OSCAR_DASHBOARD_NAVIGATION.append(
@@ -749,3 +756,4 @@ SHOW_HIJACKUSER_IN_ADMIN = False
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 FORCE_S3_SECURE = False
 
+WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'

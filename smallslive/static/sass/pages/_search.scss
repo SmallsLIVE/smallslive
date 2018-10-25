@@ -41,15 +41,35 @@ body.headers-1 {
     display: flex;
     flex: 1;
     justify-content: space-between;
-    margin: 0 40px;
+    width: 100%;
+    padding: 0 70px;
+    height: auto;
+    .artist-column {
+    }
+  }
+
+  @media (max-width: $screen-md-min) {
+    display: flex;
+    min-width: 400vw;
+    flex-direction: row;
+    position: absolute;
+    left: 0;
+    visibility: visible;
+    height: 90vh;
   }
 
   .artist-column {
-    margin: 20px;
     flex-direction: column;
     flex-wrap: wrap;
     align-content: space-between;
-    max-width: 300px;
+    width: 20vw;
+    margin: 0;
+    padding: 0;
+
+    @media (max-width: $screen-md-min) {
+      font-size: 1em;
+      width: 100vw;
+    }
 
     .artist-row {
       display: block;
@@ -126,9 +146,13 @@ body.headers-1 {
 .search-container {
 
   .container-list-article {
+    @media (max-width: $screen-sm-max) {
+      height: 100vh;
+    }
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
   }
 
   //Mobile
@@ -153,11 +177,11 @@ body.headers-1 {
       display: none;
     }
 
-
     .artists-container {
-      padding: 0 20px;
 
       .artist-column {
+        padding: 0 30vw;
+        width: 100vh;
         margin: 0;
         color: $text-grey;
 
@@ -227,6 +251,7 @@ body.headers-1 {
   position: relative;
   > * {
     display: inline-block;
+    vertical-align: top;
   }
 
   .white-border-select {
@@ -387,6 +412,7 @@ body.headers-1 {
   display: flex;
   justify-content: space-between;
   align-content: center;
+  margin: 0 auto;
 
   .event-filter-select {
     @media (max-width: $screen-sm-max) {
@@ -545,6 +571,16 @@ body.headers-1 {
   width: 530px;
   flex-direction: row;
   position: relative;
+
+  .artist-details-website {
+    a {
+      max-width: 75%;
+      text-overflow: ellipsis;
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+    }
+  }
 
   @media (max-width: $screen-sm-max) {
     font-size: 1.2em;
@@ -930,6 +966,15 @@ body.headers-1 {
       width: 100%;
     }
   }
+}
+
+.calendar-filters {
+    .section-title {
+      &.home {
+        position: absolute;
+        width: 350px;
+      }
+    }
 }
 
 @media (max-width: 960px) {

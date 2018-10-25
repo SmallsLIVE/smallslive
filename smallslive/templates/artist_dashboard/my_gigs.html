@@ -60,10 +60,21 @@
             
         </div>
         <div id="artistEventsContainer" class="flex-row items-flex-stretch artist-events-container">
-            <div id="artistEventsList" class="flex-column items-flex-stretch artist-events-list">
-               
+            <div class="flex-column items-flex-stretch artist-events-list">
+              <div id="artistEventsList" ></div>
+              {% if current_page < total_pages %}
+                <div class="concerts-footer" >
+                  <button id="load-more-btn" class="white-border-button load-more-btn" onclick="loadMore(false)" style="margin: 0 auto;">
+                    <span>Load More</span>
+                  </button>
+                </div>
+              {% endif %}
+              <div id="event-load-gif" class="loading-image events-gif">
+                <img src="{% static 'image/loading.gif' %}" alt="">
+              </div>
             </div>
             <div id="artistEventsInfo" class="flex-column items-flex-stretch artist-events-list-info"></div>
+
         </div>
         
     </div>
@@ -212,6 +223,8 @@
         });
 
         function loadMore(mobile) {
+          $("#event-load-gif").css("display", "block");
+          $('.concerts-footer').hide();
             var  optNumber = 0;
             var params = {};
             if (currentPage >= totalPages) {
@@ -263,6 +276,8 @@
                 data: params,
                 dataType: 'json',
                 success: function (data) {
+                    $("#event-load-gif").hide();
+                    $('.concerts-footer').show();
                     if (data.template) {
                         if (currentPage > 1) {
                             $("#artistEventsList").append(data.template)
@@ -274,7 +289,8 @@
                     if (data.total_pages) {
                         totalPages = data.total_pages;
                         if (currentPage >= totalPages) {
-                            $('#next-page-btn').hide()
+                            $('#next-page-btn').hide();
+                            $('#load-more-btn').hide();
                         } else {
                             $('#next-page-btn').show()
                         }
@@ -308,36 +324,36 @@
             eventPageNum = 1;
             $(".datepicker-container").hide();
               sendEventRequest();
-        });
+          });
     
-        $(".datepicker-reset").click(function () {
-            $('#search-date-picker-from-dashboard input').val("").datepicker("update");
-            $('#search-date-picker-to-dashboard input').val("").datepicker("update");
-            eventDateFrom = eventDateTo = null;
-            $("#search-date-picker-from-dashboard input").click();
-            $("#search-date-picker-from-dashboard input").focus();
-        });  
-        $(".refine-apply").click(function () {
-          $("body").removeClass("hidden-body");
-            currentPage = 0;
-            totalPages = 1;
-            loadMore(true)
-            $(".refine-overlay").hide();
-            
-        });
-    
-        $('.btngroup--btn').click(function () {
-            venueFilter = $(this).val();
-        });
-        /////////
-        $('#search-date-picker-from-refine input').val("").datepicker("update");
-        $(".reset-all").click(function () {
-            $('#search-date-picker-from-refine input').val("").datepicker("update");
-            $('#search-date-picker-to-refine input').val("").datepicker("update");
-            eventDateFrom = eventDateTo = null;
-            $('.refine-dashboard-buttons button[value="all"]').click()
-            $(".event-filter-select .select-items div[value='newest']").click()
-        });
+          $(".datepicker-reset").click(function () {
+              $('#search-date-picker-from-dashboard input').val("").datepicker("update");
+              $('#search-date-picker-to-dashboard input').val("").datepicker("update");
+              eventDateFrom = eventDateTo = null;
+              $("#search-date-picker-from-dashboard input").click();
+              $("#search-date-picker-from-dashboard input").focus();
+          });
+          $(".refine-apply").click(function () {
+            $("body").removeClass("hidden-body");
+              currentPage = 0;
+              totalPages = 1;
+              loadMore(true)
+              $(".refine-overlay").hide();
+
+          });
+
+          $('.btngroup--btn').click(function () {
+              venueFilter = $(this).val();
+          });
+          /////////
+          $('#search-date-picker-from-refine input').val("").datepicker("update");
+          $(".reset-all").click(function () {
+              $('#search-date-picker-from-refine input').val("").datepicker("update");
+              $('#search-date-picker-to-refine input').val("").datepicker("update");
+              eventDateFrom = eventDateTo = null;
+              $('.refine-dashboard-buttons button[value="all"]').click()
+              $(".event-filter-select .select-items div[value='newest']").click()
+          });
             $(".refine").click(function () {
               $(".refine-overlay").show();
               $("body").addClass("hidden-body");
@@ -346,7 +362,12 @@
           $(".closebtn").click(function () {
               $(".refine-overlay").hide();
               $("body").removeClass("hidden-body");
-          });})
+          })
+
+          $('#load-more-btn').click(function () {
+            loadMore();
+          });
+        });
           
           //////////
           $("#dashboard-mobile-refine-reset").click(function () {

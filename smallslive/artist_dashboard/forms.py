@@ -138,6 +138,7 @@ class ArtistInfoForm(forms.ModelForm):
 class EditProfileForm(ArtistAddForm):
     def __init__(self, *args, **kwargs):
         super(EditProfileForm, self).__init__(*args, **kwargs)
+        self.fields['website'].widget = forms.TextInput()
         for field in self.Meta.fields:
             self.fields[field].widget.attrs['class'] = self.fields[field].widget.attrs.get('class', '') + ' form-control'
         self.fields['salutation'].widget.attrs['class'] = 'form-control selectpicker'

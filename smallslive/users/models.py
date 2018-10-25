@@ -208,7 +208,8 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     def has_archive_access(self):
         # One Time Donations are new  "one year subscriptions"
         return self.archive_access_until and \
-               self.archive_access_until > timezone.now()
+               self.archive_access_until > timezone.now() or \
+               self.has_active_subscription
 
     @cached_property
     def get_subscription_plan(self):
