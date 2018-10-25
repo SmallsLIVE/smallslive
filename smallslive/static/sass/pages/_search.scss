@@ -694,7 +694,7 @@ body.headers-1 {
 
 .white-line-bottom {
   margin: 20px 0;
-  border-bottom: 2px solid white;
+  border-bottom: 5px solid white;
 
   &.thin {
     border-bottom-width: 1px;
@@ -726,6 +726,7 @@ body.headers-1 {
 }
 
 .musicians-results {
+  position: relative;
   width: 100%;
 
   @media(max-width: $screen-sm-max) {
@@ -735,13 +736,19 @@ body.headers-1 {
 
 .musicians-results-title {
   width: 120px;
-  margin: 4px auto;
+  margin: 0 auto;
+}
+
+
+.calendar-date-range {
+  position: absolute;
+  top: 17px;
+  left: 3.5vw;
 }
 
 .shows-results-title {
   width: 100%;
   text-align: center;
-  margin-bottom: 4px;
 
   @media (max-width: $screen-sm-max) {
     display: none;
