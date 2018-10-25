@@ -90,9 +90,6 @@
     },
     "THUMBOR_SERVER": {
       "required": true
-    },
-    "WKHTMLTOPDF_URL": {
-      "required": true
     }
   },
   "formation": {
