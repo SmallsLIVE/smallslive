@@ -207,15 +207,15 @@ $(document).ready(function(){
           errors = true;
         }
       });
-
+      sentHint.show();
       if (errors) {
+        sentHint.hide();
         $('#form-general-error').text('Please correct errors above');
       }
 
       // submitForm();
       // TODO Disable the submit button to prevent repeated clicks
       // $form.find('#confirmButton').prop('disabled', true).addClass('disabled');
-      sentHint.show();
       startStripePayment($supporterForm);
     } else {
       showPanel(currentStep + 1);

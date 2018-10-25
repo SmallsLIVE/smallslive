@@ -96,3 +96,7 @@ whitenoise==2.0.4
 wsgiref==0.1.2
 xlsxwriter==0.7.3
 django-wkhtmltopdf==3.2.0
+<<<<<<< HEAD
+wkhtmltopdf-pack==0.12.2.4
+=======
+>>>>>>> 1e7e85ab88ec73e03c469a6aedd80e5e166ddb4d

@@ -35,14 +35,24 @@ from wkhtmltopdf.views import PDFTemplateView
 
 # TODO: remove duplicate code (views and templates)
 class DonateView(TemplateView):
-    template_name = 'account/donate.html'
+
+    
+    def get_template_names(self):
+        if self.request.is_ajax():
+            template_name = 'account/donate.html'
+        else:
+           template_name = 'account/donate-event.html'
+        return [template_name]
+        
 
     def get_context_data(self, **kwargs):
         context = super(DonateView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         context['form_action'] = reverse('donate')
         context['redirect_url'] = self.request.META.get('HTTP_REFERER')
+       
         return context
+        
 
     def post(self, request, *args, **kwargs):
 
