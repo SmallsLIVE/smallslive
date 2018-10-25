@@ -15,7 +15,6 @@ function sendArtistRequest(callback) {
             if (data.template) {
                 $("#artist-subheader").html(data.showingResults);
                 $("#artists").append(data.template);
-                $("#artists").css('left', 0);
                 artistMaxPageNum = data.numPages;
             }
             callback(data);
@@ -303,6 +302,7 @@ $(document).ready(function () {
             $('#artists').html('');
             sendArtistRequest(function() {
                 $(".container-list-article").removeClass("artist-loading-gif");
+                $("#artists").css('left', 0);
                 toggleArrows();
             });
         }, 700);
