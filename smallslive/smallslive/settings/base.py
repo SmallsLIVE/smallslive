@@ -396,7 +396,11 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
-        }
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
     },
     'loggers': {
         'cron': {
@@ -648,6 +652,11 @@ OSCAR_DASHBOARD_NAVIGATION += [
             },
 
          ],
+    },
+    {
+        'label': 'Tickets',
+        'icon': 'icon-bar-chart',
+        'url_name': 'dashboard:tickets-report-index',
     },
 ]
 
