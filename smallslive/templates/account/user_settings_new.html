@@ -82,15 +82,16 @@
 					<div class="text9 accent-color">${{monthly_pledge_in_dollars}}/{{customer_detail.subscription.plan.interval}}</div>
 					{% endif %}
 					
-					{% if not customer_detail.subscription.plan and not cancelled %}
-						<a class="white-border-button" href="{% url 'become_supporter' %}">Become a Supporting Member</a>		
-					{% elif customer_detail.subscription.plan and not period_end.due %}
+						
+					{% if customer_detail.subscription.plan and not period_end.due %}
 						<div class="flex-row supporter-options">	
 							<button class="white-border-button" onclick="$('#cancel-subscription').modal('toggle')">Cancel</button>		
 							<button class="white-border-button">Update Pledge</button>	
 						</div>	
-					{% else %}
+					{% elif cancelled and not period_end.due or user_archive_access_until %}
 						<button class="white-border-button">Make a Recurring Monthly Pledge</button>	
+					{% else %}
+						<a class="white-border-button" href="{% url 'become_supporter' %}">Become a Supporting Member</a>		
 					{% endif %}
 				</div>
 			
