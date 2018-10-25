@@ -43,7 +43,7 @@
         {% include 'home_banners_mobile.html'  with active='supporter'%}
       {% endif %}
       <div class="event-stripe">
-        {% include 'events/today_and_tomorrow.html' %}
+        {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
         <section class="event-stripe">
           <div class="section-title home">
             <div class="title1">Recently Added</div>
