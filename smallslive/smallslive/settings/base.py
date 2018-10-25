@@ -397,10 +397,7 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
         },
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
+
     },
     'loggers': {
         'cron': {
