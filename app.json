@@ -90,6 +90,9 @@
     },
     "THUMBOR_SERVER": {
       "required": true
+    },
+    "WKHTMLTOPDF_URL": {
+      "required": true
     }
   },
   "formation": {
@@ -108,6 +111,9 @@
     },
     {
       "url": "https://github.com/homelight/wkhtmltox-buildpack.git"
+    },
+    {
+      "url": "https://github.com/issueapp/heroku-buildpack-wkhtmltopdf"
     }
   ]
 }
