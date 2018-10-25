@@ -83,6 +83,7 @@ INSTALLED_APPS = [
     'image_cropping',
     'localflavor',
     'metrics',
+    'wkhtmltopdf',
     #'oscar_stripe',
     'paypal',
     'pipeline',
@@ -395,7 +396,8 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'simple'
-        }
+        },
+
     },
     'loggers': {
         'cron': {
@@ -648,6 +650,11 @@ OSCAR_DASHBOARD_NAVIGATION += [
 
          ],
     },
+    {
+        'label': 'Tickets',
+        'icon': 'icon-bar-chart',
+        'url_name': 'dashboard:tickets-report-index',
+    },
 ]
 
 OSCAR_DASHBOARD_NAVIGATION.append(
@@ -749,3 +756,4 @@ SHOW_HIJACKUSER_IN_ADMIN = False
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 FORCE_S3_SECURE = False
 
+WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'

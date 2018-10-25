@@ -4,7 +4,7 @@
 
 {% block schedule_nav_active %}active{% endblock %}
 
-{% block title %}Calendar/Archive{% endblock %}
+{% block title %}Calendar{% endblock %}
 
 {% block extra_head %}
 
@@ -21,7 +21,8 @@
 {% block extra_js %}
 <script>
   var eventOrderFilter = 'oldest';
-  var datePickerInputSelector = '#search-date-picker-to input';
+  var show_event_venue = true;
+  var datePickerInputSelector = '#search-date-picker-calendar > input';
   var datePickerFromDate = '{{ default_from_date }}';
   var datePickerToDate = null;
   var setFromDate = true;

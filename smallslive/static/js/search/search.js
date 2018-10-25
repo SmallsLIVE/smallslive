@@ -1,4 +1,4 @@
-var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, venueFilter, eventFilter, eventDateFrom, eventDateTo, apply, artist_pk;
+var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, venueFilter, eventFilter, eventDateFrom, eventDateTo, apply, artist_pk, show_event_venue;
 
 function sendArtistRequest(callback) {
     $.ajax({
@@ -44,6 +44,9 @@ function changePage(param) {
 }
 
 function loadMoreEvents() {
+    if( $("main.calendar").length > 0){
+        show_event_venue = true
+    }
     eventPageNum += 1;
     $("#load-more-btn").hide();
     $("#event-load-gif").css("display", "block");
@@ -84,7 +87,6 @@ function toggleArrows() {
     var columnWidth = parseInt($('.artist-column').first().css('width').replace('px', ''));
     var left = style.replace('px', '');
     var pseudoPage = parseInt(-left / columnWidth);
-    console.log(-left / columnWidth);
     $('.left_arrow').css('visibility', pseudoPage == 0 ? 'hidden' : 'visible');
     $('.right_arrow').css('visibility', pseudoPage == $('.artist-column').length - 1 ? 'hidden': 'visible');
 }
@@ -101,7 +103,6 @@ function sendEventRequest() {
     if (eventDateTo) {
         utcDateTo = eventDateTo.getFullYear() + '/' + (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate();
     }
-
     searchFilters = {
         'main_search': searchTerm,
         'page': eventPageNum,
@@ -109,7 +110,8 @@ function sendEventRequest() {
         'date_from': utcDateFrom ? utcDateFrom : null,
         'date_to': utcDateTo ? utcDateTo : null,
         'artist_pk': artist_pk ? artist_pk : null,
-        'partial': true
+        'partial': true,
+        'show_event_venue' : show_event_venue ? show_event_venue : null
     };
     if (venueFilter) {
         searchFilters['venue'] = venueFilter;
@@ -219,21 +221,27 @@ $(document).ready(function () {
     $('#period-filter, #refine-period-filter').change(function () {
         eventFilter = true;
 
+        if (datePickerFromDate) {
+            var start = datePickerFromDate;
+        } else  {
+            var start = new Date();
+        }
+
         if ($(this).val() == 'All Upcoming') {
             eventDateTo = null;
             eventDateFrom = new Date();
         }
         else if ($(this).val() == 'One Day') {
-            eventDateTo = new Date((new Date()).getTime() + 1 * 24 * 60 * 60 * 1000);
-            eventDateFrom = new Date();
+            eventDateTo = new Date(start.getTime() + 1 * 24 * 60 * 60 * 1000);
+            eventDateFrom = start;
         }
         else if ($(this).val() == 'One Week') {
-            eventDateTo = new Date((new Date()).getTime() + 7 * 24 * 60 * 60 * 1000);
-            eventDateFrom = new Date();
+            eventDateTo = new Date(start.getTime() + 7 * 24 * 60 * 60 * 1000);
+            eventDateFrom = start;
         }
         else if ($(this).val() == 'One Month') {
-            eventDateTo = new Date((new Date()).getTime() + 31 * 24 * 60 * 60 * 1000);
-            eventDateFrom = new Date();
+            eventDateTo = new Date(start.getTime() + 31 * 24 * 60 * 60 * 1000);
+            eventDateFrom = start;
         }
 
         var $filter = $(this);
@@ -246,6 +254,7 @@ $(document).ready(function () {
             $("#search-date-picker-to input").datepicker("update", eventDateTo);
 
         }
+        
         if (eventDateTo) {
             $(".datepicker-btn").html('From <span class="from accent-color"></span> to <span class="to accent-color"></span>');
             $('.datepicker-btn span.from').text(eventDateFrom.toLocaleDateString());
@@ -253,7 +262,10 @@ $(document).ready(function () {
         } else {
             $(".datepicker-btn").html("DATE");
         }
-
+        if ($('.shows-calendar .datepicker-btn')){
+            $(".datepicker-btn").html("DATE");
+            $("#calendar-date-range .title2").html( eventDateFrom.toLocaleDateString() + " - " + (eventDateTo != null ? eventDateTo.toLocaleDateString() : ""));
+        }
 
         eventPageNum = 1;
         sendEventRequest();
@@ -447,7 +459,9 @@ $(document).ready(function () {
     });
 
     $("#apply-button").click(function () {
-
+        if($(this).closest('.calendar').length > 0){
+            show_event_venue = true
+        }
         eventDateFrom = datePickerFromDate;
         eventDateTo = datePickerToDate;
         apply = true;
@@ -558,5 +572,49 @@ $(document).ready(function () {
         eventDateFrom = eventDateTo = null;
     });
 
+    /////////////////////
+
+    var $datePickerCalendar = $('#search-date-picker-calendar input');
+    $datePickerCalendar.datepicker({
+        format: 'mm/dd/yyyy',
+        autoclose: true,
+        container: '#search-date-picker-calendar',
+        showOnFocus: false,
+        startDate: defaultFromDate,
+        endDate: defaultToDate
+    });
+
+    if (setFromDate) {
+      $datePickerCalendar.datepicker('setDate', defaultFromDate);
+      datePickerFromDate = new Date(defaultFromDate);
+    }
+
+    $datePickerCalendar.on('changeDate', function (newDate) {
+        datePickerFromDate = newDate.date;
+        if (!datePickerToDate || datePickerFromDate > datePickerToDate) {
+           datePickerToDate = datePickerFromDate;
+           $datePickerTo.datepicker('setDate', datePickerToDate);
+        }
+        apply = true;
+        eventDateFrom = datePickerFromDate
+        eventDateTo = null
+        eventPageNum = 1;
+        $("#calendar-date-range .title2").html( eventDateFrom.toLocaleDateString() + " - " );
+        $(".datepicker-container").hide();
+        sendEventRequest();
+    });
+
+    $datePickerCalendar.on('click', function () {
+        var dropdown = $('#search-date-picker-calendar .dropdown-menu');
+        if (dropdown[0] && dropdown[0].style.display === 'block') {
+            $datePickerCalendar.datepicker('hide');
+        } else {
+            $datePickerCalendar.datepicker('show');
+        }
+
+    });
+
+    //////////////////////
+    
 
 });
