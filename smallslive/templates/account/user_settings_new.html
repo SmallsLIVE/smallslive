@@ -125,7 +125,7 @@
 						{% elif user_archive_access_until %}
 						<div class="text9 text-grey"> {{ user_archive_access_until|date:"d/m/Y" }} Because of a one time donation.</div>
 						{% elif not customer_detail.subscription.plan and not period_end.due  %}
-						<button class="white-border-button">{{ period_end.date }}</button>			
+						<div class="text9 text-grey">{{ period_end.date }}</div>			
 						{% else %}
 						<div class="text9 text-grey">There is no access to the archive</div>
 						{% endif %}
