@@ -755,5 +755,3 @@ SHOW_HIJACKUSER_IN_ADMIN = False
 # Celery
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 FORCE_S3_SECURE = False
-
-WKHTMLTOPDF_CMD = '/app/bin/wkhtmltopdf'

@@ -486,7 +486,6 @@ def user_settings_view_new(request):
     customer_detail = CustomerDetail.get(id=request.user.customer.stripe_id)
     if customer_detail.subscription:
         monthly_pledge_in_dollars = customer_detail.subscription.plan.amount/100
-    print(customer_detail)
 
     if customer_detail.subscription:
         period_end["date"] = datetime.fromtimestamp(customer_detail.subscription.current_period_end).strftime("%d/%m/%y")
@@ -496,6 +495,7 @@ def user_settings_view_new(request):
         cancel_at = customer_detail.subscriptions.data[0]['cancel_at_period_end']
     else:
         cancel_at = False
+
     return render(request, 'account/user_settings_new.html', {
         'change_email_form': change_email_form,
         'change_profile_form': edit_profile_form,

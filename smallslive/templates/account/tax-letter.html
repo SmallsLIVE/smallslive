@@ -1,18 +1,21 @@
+{% load pipeline %}
 {% load static from staticfiles %}
-
 <html lang="en">
 <head>
+  {% stylesheet 'css' %}
+
   <style>
-    body {background-image: none !important; background-color: white  !important; }
+    body {background-image: none !important; background-color: white  !important;
+    }
   </style>
   <meta charset="utf-8">
   <title>Tax letter</title>
-  <link href="/static/css/main.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
   <div class="tax-letter-container">
       <div class="tax-letter-header">
+          <img src="{% static 'logo-black.svg' %}"  alt=""/>
           <p>The SmallsLIVE Foundation, INC.</p>
 
           <p>183 West 10th Street</p>
