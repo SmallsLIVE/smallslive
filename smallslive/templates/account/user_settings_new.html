@@ -86,10 +86,10 @@
 					{% if customer_detail.subscription.plan and not period_end.due %}
 						<div class="flex-row supporter-options">	
 							<button class="white-border-button" onclick="$('#cancel-subscription').modal('toggle')">Cancel</button>		
-							<button class="white-border-button">Update Pledge</button>	
+							<button class="white-border-button update-pledge">Update Pledge</button>	
 						</div>	
 					{% elif cancelled and not period_end.due or user_archive_access_until %}
-						<button class="white-border-button">Make a Recurring Monthly Pledge</button>	
+						<button class="white-border-button update-pledge">Make a Recurring Monthly Pledge</button>	
 					{% else %}
 						<a class="white-border-button" href="{% url 'become_supporter' %}">Become a Supporting Member</a>		
 					{% endif %}
@@ -187,7 +187,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="one-time-donation" aria-hidden="true">
+	<div class="modal fade flow-modal" id="one-time-donation" aria-hidden="true">
 		<div class="modal-dialog donate-dialog">
 			<div class="modal-content custom-modal">
 				<a href="#" class="close-button"></a>
@@ -200,6 +200,19 @@
 			</div>
 		</div>
 	</div>
+	<div class="modal fade flow-modal" id="update-pledge-modal" aria-hidden="true">
+			<div class="modal-dialog donate-dialog">
+				<div class="modal-content custom-modal">
+					<a href="#" class="close-button"></a>
+					<div class="modal-body">
+						<div id="update-setting-steps" class="donate-setting-container" data-subpage-name="update-pledge" data-subpage-url="{% url 'update_pledge' %}">	
+						</div>
+						<div id="update-setting-steps-complete" class="donate-setting-container" data-subpage-name="update-pledge-complete" data-subpage-url="{% url 'become_supporter_complete' %}">	
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 </div>
 
 
@@ -211,7 +224,10 @@
 {% block extra_js %}
 <script src="{% static 'js/tabs.js' %}"></script>
 <script src="{% static 'js/subpages.js' %}"></script>
+<script src="{% static 'js/jquery.form.js' %}"></script>
 <script>
+	var completeSubpage;
+	var notCompleteContainer;
     var subpages = window.subpages;
     subpages.register();
 	$('#one-time-donation-btn').on('click', function () {
@@ -219,6 +235,15 @@
 		$('#one-time-donation').modal('show');
 		var donationSubpage = window.subpages.get("make-donation");
 		donationSubpage.load();
+
+	})
+	$('.update-pledge').on('click', function () {
+		$('#update-setting-steps-complete').html("")
+		$('#update-pledge-modal').modal('show');
+		var updatePledgeSubpage = window.subpages.get("update-pledge");
+		completeSubpage = "update-pledge-complete"
+		notCompleteContainer = $('#update-setting-steps')
+		updatePledgeSubpage.load();
 	})
 	
 </script>

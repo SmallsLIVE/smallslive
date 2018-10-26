@@ -99,14 +99,28 @@ class DonateCompleteView(DonateView):
 
 donate_complete = DonateCompleteView.as_view()
 
+class ContributeFlowView(TemplateView):
 
-class BecomeSupporterView(TemplateView):
-    template_name = 'account/become-supporter.html'
+    def get_template_names(self):
+        if self.request.is_ajax():
+            template_name = 'account/supporter-flow-ajax.html'
+        else:
+            template_name = 'account/supporter-flow.html'
+        return [template_name]
+
+    def get_context_data(self, **kwargs):
+        context = super(ContributeFlowView, self).get_context_data(**kwargs)
+        return context
+
+
+
+class BecomeSupporterView(ContributeFlowView):
 
     def get_context_data(self, **kwargs):
         context = super(BecomeSupporterView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         context['form_action'] = reverse('become_supporter')
+        context['flowtype'] = "become_supporter"
         return context
 
     def post(self, request, *args, **kwargs):
@@ -140,6 +154,57 @@ class BecomeSupporterView(TemplateView):
 
 become_supporter = BecomeSupporterView.as_view()
 
+class BecomeSupporterView(ContributeFlowView):
+
+    def get_context_data(self, **kwargs):
+        context = super(BecomeSupporterView, self).get_context_data(**kwargs)
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['form_action'] = reverse('become_supporter')
+        context['flowtype'] = "become_supporter"
+        return context
+
+    def post(self, request, *args, **kwargs):
+
+        stripe_token = self.request.POST.get('stripe_token')
+        plan_type = self.request.POST.get('type')
+        amount = int(self.request.POST.get('quantity'))
+
+        # As per Aslan's request
+        # Yearly donations will no longer exist. They are One Time Donations  now.
+
+        try:
+            customer, created = Customer.get_or_create(
+                subscriber=subscriber_request_callback(request))
+            if plan_type == 'month':
+                subscribe_to_plan(customer, stripe_token, amount, plan_type)
+            else:
+                grant = amount >= 100
+                one_time_donation(customer, stripe_token, amount,
+                                  grant_access_to_archive=grant)
+        except stripe.StripeError as e:
+            # add form error here
+            return _ajax_response(request, JsonResponse({
+                'error': e.args[0]
+            }, status=500))
+
+        return _ajax_response(
+            request, redirect(reverse('become_supporter_complete'))
+        )
+
+
+become_supporter = BecomeSupporterView.as_view()
+
+class UpdatePledgeView(BecomeSupporterView):
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdatePledgeView, self).get_context_data(**kwargs)
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['form_action'] = reverse('become_supporter')
+        context['flowtype'] = "update_pledge"
+        return context
+
+
+update_pledge = UpdatePledgeView.as_view()
 
 class BecomeSupporterCompleteView(BecomeSupporterView):
     def get_context_data(self, **kwargs):
@@ -428,7 +493,6 @@ def user_settings_view_new(request):
     if customer_detail.subscription:
         monthly_pledge_in_dollars = customer_detail.subscription.plan.amount/100
     print(customer_detail)
-    print(dir(customer_detail))
 
     if customer_detail.subscription:
         period_end["date"] = datetime.fromtimestamp(customer_detail.subscription.current_period_end).strftime("%d/%m/%y")
