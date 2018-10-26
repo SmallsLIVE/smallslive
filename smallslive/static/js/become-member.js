@@ -167,6 +167,7 @@ $(document).ready(function(){
     }
 
     if (currentStep === 2) {
+
       $(confirmButton).text('Confirm Payment');
     } else if (currentStep === 0) {
       $(confirmButton).text('Continue');

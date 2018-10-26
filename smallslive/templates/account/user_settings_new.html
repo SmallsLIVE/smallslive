@@ -97,7 +97,7 @@
 			
 				<div class="account-settings-info ">
 					{% if customer_detail.subscription.plan or user_archive_access_until %}
-					<button class="white-border-button" id="one-time-donation-btn">Make a One Time Donation</button>		
+					<button class="white-border-button" id="one-time-donation-btn">Make a One Time Donation</button>
 					{% endif %}
 				</div>
 				<div class="account-settings-info">
@@ -228,8 +228,98 @@
 <script>
 	var completeSubpage;
 	var notCompleteContainer;
-    var subpages = window.subpages;
-    subpages.register();
+  var subpages = window.subpages;
+  subpages.register();
+
+  var isPaypalScriptLoaded = false;
+  var isCardScriptLoaded = false;
+
+	$('#one-time-donation').on('shown.bs.modal', function (e) {
+
+	  if (!isPaypalScriptLoaded ){
+
+			$.getScript("https://www.paypalobjects.com/api/checkout.js")
+				.done(function( script, textStatus ) {
+				  isPaypalScriptLoaded = true;
+
+				  paypal.Button.render({
+						// Configure environment
+						env: 'sandbox',
+						client: {
+							sandbox: 'AZjFfKVUvv8BWED4z-wJVElDiPiYe3oCXVQ8BV3KrmZ_lRw7G6ohCxBuz-0L3bW_AKIY-aYhZjTYklET',
+							production: 'demo_production_client_id'
+						},
+						// Customize button (optional)
+						locale: 'en_US',
+						style: {
+							label: 'generic',
+							size: 'small',
+							color: 'white',
+							shape: 'rect',
+						},
+						// Set up a payment
+						payment: function(data, actions) {
+							return actions.payment.create({
+								transactions: [{
+									amount: {
+										total: '0.01',
+										currency: 'USD'
+									}
+								}]
+							});
+						},
+						// Execute the payment
+						onAuthorize: function(data, actions) {
+							return actions.payment.execute().then(function() {
+
+								console.log(data);
+								var $supporterForm = $('#formSupporter');
+								$supporterForm.append($('<input type="hidden" name="paypal_payment_id" />').val(data['paymentID']));
+
+								$.ajax({
+									type: "POST",
+									url: $supporterForm.attr('action'),
+									data: $supporterForm.serialize(),
+									success: function (data) {
+										if(typeof completeSubpage !== "undefined"){
+											console.log("Works?")
+											notCompleteContainer.html("")
+											var flowCompleteSubpage = window.subpages.get(completeSubpage);
+											flowCompleteSubpage.load();
+										}
+										else{
+											window.location = data.location
+										}
+									},
+									error: function () {
+									}
+								});
+
+							});
+						}
+					}, '#paypal-button');
+
+				})
+				.fail(function( jqxhr, settings, exception ) {
+					$( "div.log" ).text( "Triggered ajaxError handler." );
+				});
+		}
+
+    if (!isCardScriptLoaded) {
+      $.getScript("{% static 'js/card.js' %}")
+				.done(function( script, textStatus ) {
+					isCardScriptLoaded = true;
+					var card = new Card({
+						form: '#formSupporter',
+						container: '.card-wrapper'
+					});
+				})
+				.fail(function( jqxhr, settings, exception ) {
+					$( "div.log" ).text( "Triggered ajaxError handler." );
+				});
+    }
+	})
+
 	$('#one-time-donation-btn').on('click', function () {
 		$('#donate-setting-steps-complete').html("")
 		$('#one-time-donation').modal('show');
@@ -275,4 +365,6 @@
   });
 
 </script>
+
+
 {% endblock %}

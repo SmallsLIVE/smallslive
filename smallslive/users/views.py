@@ -1,5 +1,5 @@
-from allauth.account import app_settings
-from datetime import datetime, date
+from datetime import datetime
+from wkhtmltopdf.views import PDFTemplateView
 from allauth.account.forms import ChangePasswordForm
 from allauth.account.models import EmailAddress
 from allauth.account.utils import complete_signup
@@ -30,7 +30,6 @@ from custom_stripe.models import CustomPlan, CustomerDetail
 from users.models import SmallsUser
 from users.utils import charge, subscribe_to_plan, one_time_donation
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
-from wkhtmltopdf.views import PDFTemplateView
 
 
 # TODO: remove duplicate code (views and templates)
@@ -49,6 +48,7 @@ class ContributeFlowView(TemplateView):
         context = super(ContributeFlowView, self).get_context_data(**kwargs)
         return context
 
+
 class DonateView(ContributeFlowView):
 
     def get_context_data(self, **kwargs):
@@ -59,25 +59,30 @@ class DonateView(ContributeFlowView):
         context['flowtype'] = "donate"
        
         return context
-        
 
     def post(self, request, *args, **kwargs):
 
-        stripe_token = self.request.POST.get('stripe_token')
-        amount = int(self.request.POST.get('quantity'))
         redirect_url = self.request.POST.get('redirect_url')
 
-        try:
-            customer, created = Customer.get_or_create(
-                subscriber=subscriber_request_callback(request))
-            one_time_donation(customer, stripe_token, amount)
-        except stripe.StripeError as e:
-            print 'Except -->'
-            print e
-            # add form error here
-            return _ajax_response(request, JsonResponse({
-                'error': e.args[0]
-            }, status=500))
+        paypal_payment_id = self.request.POST.get('paypal_payment_id')
+        if paypal_payment_id:
+            pass
+        else:
+            stripe_token = self.request.POST.get('stripe_token')
+            amount = int(self.request.POST.get('quantity'))
+
+
+            try:
+                customer, created = Customer.get_or_create(
+                    subscriber=subscriber_request_callback(request))
+                one_time_donation(customer, stripe_token, amount)
+            except stripe.StripeError as e:
+                print 'Except -->'
+                print e
+                # add form error here
+                return _ajax_response(request, JsonResponse({
+                    'error': e.args[0]
+                }, status=500))
 
         return _ajax_response(
             request, redirect(reverse(
@@ -514,16 +519,33 @@ def user_settings_view_new(request):
     })
 
 
+class UserTaxLetterHtml(TemplateView):
+
+    template_name = 'account/tax-letter.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserTaxLetterHtml, self).get_context_data(**kwargs)
+        customer = self.request.user.customer
+        customer_charges = customer.charges.all()
+        charges_value = 0
+        for charge in customer_charges:
+            charges_value += charge.amount
+        context['customer'] = customer
+        context['charges_value'] = charges_value
+        context['year'] = 1964
+        return context
+
+user_tax_letter_html = UserTaxLetterHtml.as_view()
+
 
 class UserTaxLetter(PDFTemplateView):
 
     filename = 'tax_letter.pdf'
     template_name = 'account/tax-letter.html'
-    
-    
+
     def get_context_data(self, **kwargs):
         context = super(UserTaxLetter, self).get_context_data(**kwargs)
-        customer =  self.request.user.customer
+        customer = self.request.user.customer
         customer_charges = customer.charges.all()
         charges_value = 0
         for charge in customer_charges:

@@ -86,6 +86,7 @@ INSTALLED_APPS = [
     'wkhtmltopdf',
     #'oscar_stripe',
     'paypal',
+    'paypal.standard.ipn',
     'pipeline',
     'rest_framework.authtoken',
     'sortedm2m',
@@ -116,6 +117,7 @@ INSTALLED_APPS = [
     'oscar_apps.order',
     'oscar_apps.partner',
     'oscar_apps.promotions',
+    'oscar_apps.dashboard.reports',
     'oscar_apps.search',
     'oscar_apps.shipping',
 ]) + [

@@ -101,6 +101,10 @@ urlpatterns += patterns('',
     url(r'^.*\.cfm$', OldSiteRedirectView.as_view()),
 )
 
+urlpatterns += [
+    url(r'^paypal/', include('paypal.standard.ipn.urls')),
+]
+
 if settings.ENABLE_HIJACK:
     urlpatterns += url(r'^hijack/', include('hijack.urls')),
 
