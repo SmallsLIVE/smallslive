@@ -105,7 +105,7 @@
               url: $form.attr('action'),
               data: $form.serialize(),
               success: function (data) {
-                if(completeSubpage){
+                if(typeof completeSubpage !== "undefined"){
                   console.log("Works?")
                   notCompleteContainer.html("")
                   var flowCompleteSubpage = window.subpages.get(completeSubpage);

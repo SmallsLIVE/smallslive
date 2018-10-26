@@ -234,6 +234,8 @@
 		$('#donate-setting-steps-complete').html("")
 		$('#one-time-donation').modal('show');
 		var donationSubpage = window.subpages.get("make-donation");
+		completeSubpage = "make-donation-complete"
+		notCompleteContainer = $('#donate-setting-steps')
 		donationSubpage.load();
 
 	})
