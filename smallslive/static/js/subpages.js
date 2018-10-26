@@ -24,6 +24,15 @@
      - To change the url of a supbage.
      var commentsSubpage = window.subpages.get('comments');
      commentsSubpage.setUrl('/comments/?page=2');
+     
+     - You can add a callback after a subpage has been loaded.
+     var commentsSubpage = window.subpages.get('comments');
+     commentsSubpage.setCallback(() => { console.log('subpage loaded' )})
+     
+     - You can pass the callbacks to SubpageManager.
+     window.subpages.loadAll(
+       {comments: () => { console.log('comments subpage loaded') }
+     )
      **/
     var Subpage = function (name) {
         this.name = name;
