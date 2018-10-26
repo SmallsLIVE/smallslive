@@ -307,7 +307,7 @@
         var time = document.getElementById("time-value");
         var mobilePlays = document.getElementById("mobile-play-value");
         var mobileTime = document.getElementById("mobile-time-value");
-        console.log(plays,time,mobilePlays,mobileTime)
+
         var loadData = function () {
             var data = {};
             data.set_id = {{ event_set.id }};
@@ -424,9 +424,9 @@
 
         $('.artist-events-list-info .datepicker-dashboard-btn').bind("click", ToggleDisplay);
 
-        function ToggleDisplay() {
+        function ToggleDisplay(event) {
             if ($(".artist-events-list-info .datepicker-container").data('shown'))
-                hide();
+                hide(event);
             else 
                 display();
         }
@@ -441,9 +441,10 @@
             $("#search-date-picker-from input").focus();
         }
 
-        function hide() {   
-            if (($(window.event.toElement).closest('.noclick').length == 0) &&
-            (!($(window.event.toElement).hasClass("day") || $(window.event.toElement).hasClass("year")))) {
+        function hide(event) {
+            var $target = event.target;
+            if (($target.closest('.noclick').length == 0) &&
+            (!($target.hasClass('day') || $target.hasClass('year')))) {
                 $(".artist-events-list-info .datepicker-container").fadeOut(500, function () {
                     $(document).unbind("click");
                     $(".artist-events-list-info .datepicker-container").data('shown', false);

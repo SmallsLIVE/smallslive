@@ -342,11 +342,11 @@ $(document).ready(function () {
 
     ////////////////
 
-    $('.datepicker-btn').bind("click", ToggleDisplay);
+    $('.datepicker-btn').bind("click", toggleDisplay);
 
-    function ToggleDisplay() {
+    function toggleDisplay(event) {
         if ($(".datepicker-container").data('shown'))
-            hide();
+            hide(event);
         else 
             display();
     }
@@ -364,9 +364,10 @@ $(document).ready(function () {
         $datePickerInput.focus();  
     }
 
-    function hide() {   
-        if (($(window.event.toElement).closest('.noclick').length == 0) &&
-        (!($(window.event.toElement).hasClass("day") || $(window.event.toElement).hasClass("year")))) {
+    function hide(event) {
+        var $target = $(event.target);
+        if (($target.closest('.noclick').length == 0) &&
+        (!($target.hasClass("day") || $target.hasClass("year")))) {
             $(".datepicker-container").fadeOut(500, function () {
                 $(document).unbind("click");
                 $(".datepicker-container").data('shown', false);

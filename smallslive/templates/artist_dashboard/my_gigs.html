@@ -441,9 +441,9 @@
 
     $('.datepicker-dashboard-main-btn').bind("click", ToggleDisplay);
 
-    function ToggleDisplay() {
+    function ToggleDisplay(event) {
         if ($("#dashboard-desktop-datepicker").data('shown'))
-            hide();
+            hide(event);
         else 
             display();
     }
@@ -458,12 +458,13 @@
         $("#search-date-picker-from-dashboard input").focus();
     }
 
-    function hide() {   
-        if (($(window.event.toElement).closest('.noclick').length == 0) &&
-        (!($(window.event.toElement).hasClass("day") || $(window.event.toElement).hasClass("year")))) {
-            $("#dashboard-desktop-datepicker").fadeOut(500, function () {
-                $(document).unbind("click");
-                $("#dashboard-desktop-datepicker").data('shown', false);
+    function hide(event) {
+        var $target = $(event.target);
+        if (($target.closest('.noclick').length == 0) &&
+        (!($target.hasClass('day') || $target.hasClass('year')))) {
+            $('#dashboard-desktop-datepicker').fadeOut(500, function () {
+                $(document).unbind('click');
+                $('#dashboard-desktop-datepicker').data('shown', false);
             });
         }
     }
