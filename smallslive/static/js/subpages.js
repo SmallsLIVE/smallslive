@@ -28,11 +28,6 @@
      - You can add a callback after a subpage has been loaded.
      var commentsSubpage = window.subpages.get('comments');
      commentsSubpage.setCallback(() => { console.log('subpage loaded' )})
-     
-     - You can pass the callbacks to SubpageManager.
-     window.subpages.loadAll(
-       {comments: () => { console.log('comments subpage loaded') }
-     )
      **/
     var Subpage = function (name) {
         this.name = name;
@@ -94,7 +89,7 @@
             manager.subpages[name] = new Subpage(name);
         });
     };
-    SubpageManager.prototype.loadAll = function (callbacks) {
+    SubpageManager.prototype.loadAll = function () {
         Object.keys(this.subpages).forEach(function (name) {
             this.subpages[name].load();
         }.bind(this));
