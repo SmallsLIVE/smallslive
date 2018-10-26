@@ -662,11 +662,13 @@ class Event(TimeStampedModel):
         return sets_info
 
     def get_artists_info_dict(self):
+        # DOCUMENT: Why is this necessary.
         event_artists_info = []
-        for item in self.artists_gig_info.all():
-            event_artists_info.append({'name': item.artist.full_name(),
-                                       'role': item.role.name})
-
+        for gig in self.artists_gig_info.select_related('artist', 'role'):
+            event_artists_info.append({
+                'name': gig.artist.full_name(),
+                'role': gig.role.name,
+                'absolute_url': gig.artist.get_absolute_url()})
         return event_artists_info
 
 
