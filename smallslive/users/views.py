@@ -34,22 +34,29 @@ from wkhtmltopdf.views import PDFTemplateView
 
 
 # TODO: remove duplicate code (views and templates)
-class DonateView(TemplateView):
 
-    
+
+class ContributeFlowView(TemplateView):
+
     def get_template_names(self):
         if self.request.is_ajax():
-            template_name = 'account/donate.html'
+            template_name = 'account/supporter-flow-ajax.html'
         else:
-           template_name = 'account/donate-event.html'
+            template_name = 'account/supporter-flow.html'
         return [template_name]
-        
+
+    def get_context_data(self, **kwargs):
+        context = super(ContributeFlowView, self).get_context_data(**kwargs)
+        return context
+
+class DonateView(ContributeFlowView):
 
     def get_context_data(self, **kwargs):
         context = super(DonateView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         context['form_action'] = reverse('donate')
         context['redirect_url'] = self.request.META.get('HTTP_REFERER')
+        context['flowtype'] = "donate"
        
         return context
         
@@ -98,19 +105,6 @@ class DonateCompleteView(DonateView):
 
 
 donate_complete = DonateCompleteView.as_view()
-
-class ContributeFlowView(TemplateView):
-
-    def get_template_names(self):
-        if self.request.is_ajax():
-            template_name = 'account/supporter-flow-ajax.html'
-        else:
-            template_name = 'account/supporter-flow.html'
-        return [template_name]
-
-    def get_context_data(self, **kwargs):
-        context = super(ContributeFlowView, self).get_context_data(**kwargs)
-        return context
 
 
 
