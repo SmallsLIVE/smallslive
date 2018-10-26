@@ -1,4 +1,3 @@
-{% extends "home_new.html" %}
 {% load static from staticfiles %}
 {% load full_static %}
 {% load djstripe_tags %}
@@ -83,6 +82,7 @@
   {% block stripe_payment %}
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
     <script type="text/javascript">
+      var sentHint = $('#sentHint');
       Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
 
       function startStripePayment($form) {
@@ -98,12 +98,37 @@
             // Insert the token into the form so it gets submitted to the server
             $form.append($('<input type="hidden" name="stripe_token" />').val(token));
             // and submit
-            $form.get(0).submit();
+            
+
+            $.ajax({
+              type: "POST",
+              url: $form.attr('action'),
+              data: $form.serialize(),
+              success: function (data) {
+                if(typeof completeSubpage !== "undefined"){
+                  console.log("Works?")
+                  notCompleteContainer.html("")
+                  var flowCompleteSubpage = window.subpages.get(completeSubpage);
+                  flowCompleteSubpage.load();
+                }
+                else{
+                  window.location = data.location
+                }
+              },
+              error: function () {
+              }
+            });
+  
+
+
           }
         };
         Stripe.card.createToken($form, stripeResponseHandler);
       }
     </script>
+
+
+  
     <script src="{% static 'js/become-member.js' %}"></script>
   {% endblock %}
 
