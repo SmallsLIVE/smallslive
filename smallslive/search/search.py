@@ -190,7 +190,7 @@ class SearchObject(object):
 
         if venue:
             if venue != 'all':
-                sqs.filter(venue__pk=venue)
+                sqs = sqs.filter(venue__pk=venue)
 
 
         # FIXME: compare to code in  "today_and_tomorrow_events"
