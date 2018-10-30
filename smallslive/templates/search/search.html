@@ -49,7 +49,7 @@
           <div class="instrument-btn white-border-button">Instrument</div>
         </div>
       <div class="instruments-container">
-        <a href="#" class="close-button visible-sm visible-xs"></a>
+        <a href="#" class="close-button"></a>
         <div class="instrument text4" data-instrument="">All Instruments</div>
         {% for instrument in instruments %}
           <div data-instrument="{{ instrument }}" class="instrument text4 text-grey">{{ instrument }}</div>
@@ -95,8 +95,8 @@
     var datePickerToDate = '{{ default_to_date }}';
     var setFromDate = false;
     var setToDate = true;
-    var datePickerLeft = 0;
-    var datePickerTop = 0;
+    var datePickerLeft = 45;
+    var datePickerTop = 38;
     var defaultFromDate;
     var defaultToDate = '{{ default_to_date }}';
   </script>
