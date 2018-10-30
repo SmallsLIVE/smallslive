@@ -144,8 +144,12 @@ body.headers-1 {
   }
 }
 
-.search-container {
+.home.headers-3  .search-container.pad-content{
+padding-top: 100px;
+}
 
+
+.search-container {
   .container-list-article {
     height: 500px;
     @media (max-width: $screen-sm-max) {
@@ -480,6 +484,10 @@ body.headers-1 {
 }
 
 .search-bar-autocomplete-container {
+  &.mobile-search-container{
+    @media (min-width: $screen-md-max) {display: none !important;
+    }}
+    
   position: absolute;
   background-color: #f0f0eb;
   border-color: white;
@@ -488,8 +496,8 @@ body.headers-1 {
   border-width: 2px;
   width: 398px;
   z-index: 9999;
-  top: 92px;
-  left: 138px;
+  top: 47px;
+  left: 90px;
   display: none;
   padding: 10px;
 
