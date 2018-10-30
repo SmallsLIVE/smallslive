@@ -95,7 +95,6 @@ if ($('#artists .artist-column').length) {
 function sendEventRequest() {
     var utcDateFrom = null;
     var utcDateTo = null;
-    
     if (eventDateFrom) {
         utcDateFrom = eventDateFrom.getFullYear() + '/' + (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate();
     }
@@ -189,7 +188,6 @@ $(document).ready(function () {
         }
         
         var left = parseInt(style.replace('px', ''));
-        console.log('notsureif');
         if (left % columnWidth) {
             return;
         }

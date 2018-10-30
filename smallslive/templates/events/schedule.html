@@ -20,6 +20,7 @@
 
 {% block extra_js %}
 <script>
+  $("#club-filter ~ .select-selected").text("Club")
   var eventOrderFilter = 'oldest';
   var show_event_venue = true;
   var datePickerInputSelector = '#search-date-picker-calendar > input';
@@ -29,6 +30,7 @@
   var setToDate = false;
   var datePickerLeft = 222;
   var datePickerTop = 42;
+  var eventDateFrom = new Date();
   var defaultFromDate = '{{ default_from_date }}';
   var defaultToDate;
 </script>
