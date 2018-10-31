@@ -755,9 +755,12 @@ padding-top: 100px;
 
 
 .calendar-date-range {
-  position: absolute;
-  top: 17px;
-  left: 3.5vw;
+  &.section-title {
+    left: 0;
+    position: absolute;
+    top: 76px;
+    width: 20vw;
+  }
 }
 
 .shows-results-title {
@@ -767,6 +770,10 @@ padding-top: 100px;
   @media (max-width: $screen-sm-max) {
     display: none;
   }
+}
+
+.shows-calendar {
+  position: relative;
 }
 
 .showing-results {
