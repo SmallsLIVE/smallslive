@@ -582,9 +582,13 @@ padding-top: 100px;
 }
 
 .artist-search-profile-resume {
-  width: 530px;
   flex-direction: row;
   position: relative;
+  display: inline-flex;
+  margin-left: 3.5vw;
+  float: left;
+  vertical-align: top;
+  width: 34.7vw;
 
   .artist-details-website {
     a {
@@ -631,26 +635,23 @@ padding-top: 100px;
   }
 }
 
-.artist-search-profile-bio-container {
-  width: 950px;
-  > div:first-of-type {
-    padding: 0 30px;
-  }
-}
-
 .artist-search-profile-bio {
-  width: 600px;
-  overflow: hidden;
-  height: auto;
   line-height: 20px;
-  margin-top: 40px;
+  margin-top: 15px;
+  max-height: 100vh;
+  overflow: hidden;
+  padding-right: 4vw;
+  transition: max-height 0.15s ease-out;
+  width: 45vw;
 
   &.collapsed {
-    max-height: 7.2em;
+    max-height: 172px;
+    transition: max-height 0.15s ease-in;
   }
 
   &.text4{
-    font-size: 15px;
+    font-size: 0.9vw;
+    line-height: 1.5vw;
   }
   @media (max-width: $screen-sm-max) {
     width: 100%;
@@ -662,7 +663,7 @@ padding-top: 100px;
 }
 
 .artist-search-profile-bio-buttons {
-  width: 300px;
+  width: 11vw;
 
   button {
     margin: 10px 0;
@@ -672,14 +673,14 @@ padding-top: 100px;
 .artist-search-profile-image {
   @include cross-browser-grayscale;
   display: flex;
-  width: 700px;
+  width: 27vw;
 
   @media (max-width: $screen-sm-max) {
     display: block;
   }
   @media (min-width: $screen-sm-max) {
-    max-height: 190px;
     font-size: 15px;
+    height: 10vw;
   }
   .no-photo {
     @media (max-width: $screen-sm-max) {
@@ -714,6 +715,10 @@ padding-top: 100px;
     border-bottom-width: 1px;
   }
 
+  &.medium {
+    border-bottom-width: 3px;
+  }
+
   &.thick {
     border-bottom-width: 4px;
   }
@@ -724,13 +729,15 @@ padding-top: 100px;
 }
 
 .white-line-right {
-  width: 900px;
-  padding: 15px 30px;
-  border-right: 2px solid white;
+  width: 46vw;
+  padding: 27px 1.5vw;
+  border-right: 3px solid white;
 }
 
 .read-more {
   float: right;
+  margin-right: 4vw;
+  margin-top: 5px;
   text-transform: uppercase;
 }
 
@@ -742,6 +749,11 @@ padding-top: 100px;
 .musicians-results {
   position: relative;
   width: 100%;
+
+  &.white-line-bottom {
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
 
   @media(max-width: $screen-sm-max) {
     display: none;
@@ -957,8 +969,9 @@ padding-top: 100px;
 
 .musician-title {
   @include title3;
-  font-size: 4em;
-  line-height: 1em;
+  font-size: 2.7vw;
+  letter-spacing: 0.1vw;
+  line-height: 2.7vw;
   padding-bottom: 3px;
   @media (max-width: $screen-sm-max) {
     @include title1;
@@ -966,19 +979,29 @@ padding-top: 100px;
 }
 
 .musician-instrument {
+
   @include title1;
+
+  font-size: 1.5vw;
+  line-height: 1.5vw;
+  margin-top: 10px;
+
   @media (max-width: $screen-md-max) {
     transform: none;
     @include text1;
     margin-top: 5px;
   }
-  font-size: 2em;
+
 }
 
 .show-in-archive {
   align-self: flex-end;
-  margin-bottom: -5px;
-  margin-left: 10px;
+  margin-bottom: -7px;
+  margin-left: 4.8vw;
+
+  &.text1 {
+    font-size: 0.7vw;
+  }
 }
 
 .refine {
