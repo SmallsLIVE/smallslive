@@ -72,14 +72,16 @@ class SearchObject(object):
 
         sqs = Artist.objects.all()
 
-        if not words:
-            return sqs
+        
 
         if instruments:
             condition = Q(instruments__name__istartswith=instruments[0])
             for i in instruments[1:]:
                 condition |= Q(instruments__name__istartswith=i)
-            sqs = sqs.filter(condition).distinct()
+            sqs = sqs.filter(condition).distinct() 
+
+        if not words:
+            return sqs
 
         if len(words) == 2:
             (first_name, last_name) = words
