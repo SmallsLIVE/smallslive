@@ -108,6 +108,11 @@ $player-height:  27.5vw;
   position: relative;
   overflow: hidden;
 
+  &:hover {
+    .jw-display .jw-reset .jw-display-icon-container.jw-display-icon-display.jw-reset > div {
+      opacity: 1;
+    }
+  }
 
   .jwplayer {
     .jw-preview {
@@ -125,6 +130,7 @@ $player-height:  27.5vw;
       width: 90vw;
     }
   }
+
 }
 
 .event-video-placeholder {
@@ -183,6 +189,13 @@ $player-height:  27.5vw;
       font-weight: 200;
       letter-spacing: .09em;
     }
+
+    &:hover {
+      .event-detail {
+        opacity: 1;
+      }
+    }
+
   }
 
   .event-overlay-logo {
@@ -225,6 +238,17 @@ $player-height:  27.5vw;
 
     &:hover {
       cursor: pointer;
+    }
+
+    .event-detail {
+      border-radius: 5vw;
+      height: 5vw;
+      opacity: 0;
+      width: 5vw;
+
+      &:hover {
+        opacity: 1;
+      }
     }
   }
 
@@ -378,12 +402,15 @@ $player-height:  27.5vw;
 .jw-display .jw-reset .jw-display-icon-container.jw-display-icon-display.jw-reset > div {
   border-radius: 44px;
   border: 1px solid $accent-color;
+  opacity: 0;
 
   .jw-svg-icon {
     height: 44px;
     width: 44px;
     color: $accent-color;
   }
+
+
 }
 
 .comments-container {
