@@ -326,7 +326,7 @@ class EventDetailView(DetailView):
                 date = next_event.date
                 sets_info = next_event.get_sets_info_dict()
                 artists_info = next_event.get_artists_info_dict()
-                start = next_event.get_actual_start() - timedelta(
+                start = next_event.get_actual_start_end()[0] - timedelta(
                     minutes=next_event.start_streaming_before_minutes)
 
                 context['next_event'] = {
@@ -339,7 +339,7 @@ class EventDetailView(DetailView):
 
         if event.is_future:
             event_url = event.get_absolute_url()
-            start = event.get_actual_start() - timedelta(
+            start = event.get_actual_start_end()[0] - timedelta(
                 minutes=event.start_streaming_before_minutes)
 
             context['streaming'] = {
