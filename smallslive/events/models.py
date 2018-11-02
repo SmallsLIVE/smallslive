@@ -210,23 +210,37 @@ class Event(TimeStampedModel):
             self.slug = slugify(self.title)
         super(Event, self).save(force_insert, force_update, using, update_fields)
 
-    def get_actual_start(self):
+    def get_actual_start_end(self):
         """ Event dates after midnight are set as the previous day
             This method returns the real date of an event so it
             can be compared to current date tand time
         """
 
-        real_date = self.date
+        print 'Event date: {}'.format(self.date)
+
+        real_start_date = self.date
+        real_end_date = self.date
 
         sets = list(self.sets.all())
         sets = sorted(sets, Event.sets_order)
 
-        if 0 <= sets[0].start.hour < 5:
-            real_date = real_date + timedelta(days=1)
+        print sets
 
-        ny_start = datetime.combine(real_date, sets[0].start)
+        if 0 <= sets[0].start.hour <= 5:
+            real_start_date = self.date + timedelta(days=1)
 
-        return timezone.make_aware(ny_start, timezone=(timezone.get_current_timezone()))
+        ny_start = datetime.combine(real_start_date, sets[0].start)
+        ny_start = timezone.make_aware(ny_start, timezone=(timezone.get_current_timezone()))
+
+        if sets[-1].end.hour <= 5:
+            real_end_date = self.date + timedelta(days=1)
+        ny_end = datetime.combine(real_end_date, sets[-1].end)
+        ny_end = timezone.make_aware(ny_end, timezone=(timezone.get_current_timezone()))
+
+        print 'NY Start: {}'.format(ny_start)
+        print 'NY End: {}'.format(ny_end)
+
+        return ny_start, ny_end
 
     def get_set_hours_display(self):
 
@@ -238,25 +252,13 @@ class Event(TimeStampedModel):
             event_set = all_sets[0]
             return '{} - {}'.format(event_set.start.strftime(time_format),
                                     event_set.end.strftime(time_format))
-        all_sets = list(all_sets.values_list('start', flat=True))
 
-        def midnight_sort(x, y):
-            x_stamp = x.hour * 60 + x.minute
-            y_stamp = y.hour * 60 + y.minute
+        sorted_sets = sorted(list(all_sets), Event.sets_order)
 
-            if 0 <= x.hour < 6:
-                x_stamp += 24 * 60
+        sets_display = ' & '.join(
+            [d.start.strftime(time_format) for d in sorted_sets])
 
-            if 0 <= y.hour < 6:
-                y_stamp += 24 * 60
-
-            return x_stamp - y_stamp
-
-        sorted_sets = sorted(all_sets, cmp=midnight_sort)
-
-        return ' & '.join(
-            [d.strftime(time_format) for d in sorted_sets]
-        )
+        return sets_display
 
     def get_absolute_url(self):
         return reverse('event_detail', kwargs={'pk': self.id, 'slug': slugify(self.title)})
@@ -656,7 +658,7 @@ class Event(TimeStampedModel):
 
     def get_sets_info_dict(self):
         sets_info = []
-        for item in self.sets.all():
+        for item in sorted(list(self.sets.all()), Event.sets_order):
             sets_info.append({'start': item.start})
 
         return sets_info
@@ -751,6 +753,15 @@ class EventSet(models.Model):
 
     def __unicode__(self):
         return '{} - {}'.format(self.start, self.end)
+
+    def save(self, *args, **kwargs):
+        obj = super(EventSet, self).save(*args, **kwargs)
+
+        # Keep actual start, end dates of the event.
+        (self.event.start, self.event.end) = self.event.get_actual_start_end()
+        self.event.save()
+
+        return obj
 
     @property
     def has_media(self):

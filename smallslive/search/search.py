@@ -132,10 +132,10 @@ class SearchObject(object):
                      artist_pk=None, venue=None):
 
         order = {
-            'newest': '-date',
-            'oldest': 'date',
+            'newest': '-start',
+            'oldest': 'start',
             'popular': 'popular',
-        }.get(order, '-date')
+        }.get(order, '-start')
 
         if artist_pk:
             sqs = Event.objects.filter(performers__pk=artist_pk)
