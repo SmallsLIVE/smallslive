@@ -115,11 +115,14 @@ def _get_most_popular(range=None):
             most_popular.append(event)
         except Event.DoesNotExist:
             pass
-    context['popular_in_archive'] = [] # TODO: fix most_popular
+    context['popular_in_archive'] = [] # TODO: FIX most_popular
     return context
 
 
 def _get_most_popular_uploaded(range_size=None):
+
+    #TODO fix
+    return []
 
     range_start, range_end = calculate_query_range(range_size)
 
@@ -723,6 +726,7 @@ class ArchiveView(ListView):
 
 
 archive = ArchiveView.as_view()
+
 
 class MonthlyArchiveView(ArchiveView):
     def get_queryset(self):
