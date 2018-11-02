@@ -196,7 +196,14 @@ body.headers-1 {
 
     .artists-container {
       .artist-column-mobile{
+        width: 100vw;
         display: flex;
+        overflow-y: auto;
+        .white-border-button{
+          width: 25%;
+          height: 50px;
+          margin: 0 auto;      
+        }
         .artist-mobile {
           padding: 0 40px;
           margin-bottom: 20px;
@@ -206,14 +213,7 @@ body.headers-1 {
         }
       }
       .artist-column {
-        padding: 0 30vw;
-        width: 100vh;
-        margin: 0;
-        color: $text-grey;
-
-        a {
-          color: $text-grey;
-        }
+       display: none;
       }
     }
   }

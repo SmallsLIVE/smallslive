@@ -332,9 +332,13 @@ $(document).ready(function () {
         artistPageNum = 1;
 
         $(".container-list-article").addClass("artist-loading-gif");
-        $("#artists").css("visibility", "hidden");
+        $('#artists').html('');
 
-        sendArtistRequest();
+        sendArtistRequest(function() {
+            $(".container-list-article").removeClass("artist-loading-gif");
+            $("#artists").css('left', 0);
+            toggleArrows();
+        });
         $(".instruments-container").css("display", "none");
     });
 
@@ -632,6 +636,9 @@ $(document).ready(function () {
     });
 
     //////////////////////
-    
+    //$(".artists-container").slick({
+     //   slidesToShow: 4,
+      //  slidesToScroll: 4
+      //});
 
 });
