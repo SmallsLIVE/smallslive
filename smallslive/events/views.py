@@ -115,13 +115,13 @@ def _get_most_popular(range=None):
             most_popular.append(event)
         except Event.DoesNotExist:
             pass
-    context['popular_in_archive'] = [] # TODO: fix most_popular
+    context['popular_in_archive'] = [] # TODO: FIX most_popular
     return context
 
 
-@cached(timeout=6*60*60)
 def _get_most_popular_uploaded(range_size=None):
 
+    #TODO fix
     return []
 
     range_start, range_end = calculate_query_range(range_size)
@@ -170,14 +170,15 @@ class HomepageView(ListView, UpcomingEventMixin):
         context = self.get_upcoming_events_context_data(context)
         month_popular = _get_most_popular_uploaded(RANGE_MONTH)
         if len(month_popular):
-            context['popular_in_archive'] = [] # TODO: fix month_popular
+            context['popular_in_archive'] = month_popular
             context['popular_select'] = 'month'
         else:
-            context['popular_in_archive'] = [] # TODO fix _get_most_popular_uploaded()
+            context['popular_in_archive'] = _get_most_popular_uploaded()
             context['popular_select'] = 'alltime'
 
         context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
+
         return context
 
 
@@ -326,7 +327,7 @@ class EventDetailView(DetailView):
                 date = next_event.date
                 sets_info = next_event.get_sets_info_dict()
                 artists_info = next_event.get_artists_info_dict()
-                start = next_event.get_actual_start() - timedelta(
+                start = next_event.get_actual_start_end()[0] - timedelta(
                     minutes=next_event.start_streaming_before_minutes)
 
                 context['next_event'] = {
@@ -339,7 +340,7 @@ class EventDetailView(DetailView):
 
         if event.is_future:
             event_url = event.get_absolute_url()
-            start = event.get_actual_start() - timedelta(
+            start = event.get_actual_start_end()[0] - timedelta(
                 minutes=event.start_streaming_before_minutes)
 
             context['streaming'] = {
@@ -725,6 +726,7 @@ class ArchiveView(ListView):
 
 
 archive = ArchiveView.as_view()
+
 
 class MonthlyArchiveView(ArchiveView):
     def get_queryset(self):

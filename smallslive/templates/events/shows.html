@@ -5,9 +5,6 @@
 <section id="showsContent" class="search-tab-content active {{ archived|yesno:',shows-calendar' }}" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
   {% if archived or upcoming %}
   <div class="musicians-results white-line-bottom">
-      <div class="calendar-date-range" id="calendar-date-range">
-        <div class="header-sub title2">  {% now "m/d/Y" %} - </div>
-      </div>
       <div class="title1 shows-results-title">{{ archived|yesno:'Archived,Upcoming' }} Shows</div>
       <div id="artist-subheader" class="showing-results text1" style="margin-top: -13px;">{{ showing_evet_results }}</div>
   </div>

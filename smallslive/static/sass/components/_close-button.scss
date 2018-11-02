@@ -1,8 +1,8 @@
 .close-button {
   position: absolute;
-  right: 15px;
+  right: 0.8vw;
   top: 15px;
-  width: 32px;
+  width: 1.8vw;
   height: 32px;
   opacity: 0.3;
 
@@ -12,9 +12,9 @@
 
   &:before, &:after {
     position: absolute;
-    left: 15px;
+    left: 1vw;
     content: ' ';
-    height: 33px;
+    height: 1.5vw;
     width: 2px;
     background-color: $accent-color;
   }
