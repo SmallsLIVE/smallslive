@@ -105,6 +105,13 @@
     //$('#search-bar').toggleClass('mobile-search-header-shown');
     //$('.main-container').toggleClass('mobile-search-header-shown');
   }
+  function toggleSearch() {
+     
+      if(!($('#search-bar').hasClass('mobile-search-header-shown'))){
+        $(".search-bar-autocomplete-container").css("display", "none");
+      }
+    }
+  
   $('.mobile-menu-icons .fa-search').click(function () {
       var headerCount = getHeaderCount();
       document.body.classList = Array.prototype.filter.call(document.body.classList, (c) => !c.startsWith('headers-'));
@@ -113,7 +120,9 @@
       } else {
           $('body').addClass('headers-' + (headerCount + 1))
       }
+
       $('#search-bar').toggleClass('mobile-search-header-shown');
+      toggleSearch()
   });
 
   $(document).ready(function () {

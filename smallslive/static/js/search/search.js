@@ -332,16 +332,20 @@ $(document).ready(function () {
         artistPageNum = 1;
 
         $(".container-list-article").addClass("artist-loading-gif");
-        $("#artists").css("visibility", "hidden");
+        $('#artists').html('');
 
-        sendArtistRequest();
+        sendArtistRequest(function() {
+            $(".container-list-article").removeClass("artist-loading-gif");
+            $("#artists").css('left', 0);
+            toggleArrows();
+        });
         $(".instruments-container").css("display", "none");
     });
 
     ////////////////
 
     $('.datepicker-btn').bind("click", toggleDisplay);
-
+    
     function toggleDisplay(event) {
         if ($(".datepicker-container").data('shown'))
             hide(event);
@@ -367,7 +371,7 @@ $(document).ready(function () {
         if (($target.closest('.noclick').length == 0) &&
         (!($target.hasClass("day") || $target.hasClass("year")))) {
             $(".datepicker-container").fadeOut(500, function () {
-                $(document).unbind("click");
+                $(document).unbind("click", hide);
                 $(".datepicker-container").data('shown', false);
             });
         }
@@ -456,6 +460,7 @@ $(document).ready(function () {
     $(document).on('click', '.artist-search-profile-container .close-button', function () {
         // If only one artist, assume back to search means
         // actually resetting search
+        console.log("aaaa")
         var $artists = $('.artist-row');
         if ($artists.length == 1) {
           window.location.href = '/search';
@@ -468,7 +473,7 @@ $(document).ready(function () {
           apply = true;
           eventPageNum = 1;
           $('[data-toggle-tab-group="search-results"][data-toggle-tab-target]').show();
-          $('[data-toggle-tab-group="search-results"][data-toggle-tab]').hide();
+          //$('[data-toggle-tab-group="search-results"][data-toggle-tab]').hide();
           $('[data-toggle-tab-group="search-results"][data-toggle-tab="musicians"]').show();
           sendEventRequest();
         }
@@ -631,6 +636,9 @@ $(document).ready(function () {
     });
 
     //////////////////////
-    
+    //$(".artists-container").slick({
+     //   slidesToShow: 4,
+      //  slidesToScroll: 4
+      //});
 
 });
