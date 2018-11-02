@@ -175,6 +175,92 @@ body.headers-1 {
   //Mobile
   @media (max-width: $screen-sm-max) {
 
+    .datepicker-container.noclick{
+      top: 12.5vw !important;
+      left: 0 !important;
+      width: 96.4vw;
+      .datepicker.datepicker-orient-right.datepicker-orient-top{
+        
+        left: 5vw !important;
+        .table-condensed{
+          width: 87vw;
+        }
+      }
+      .date-picker-text{
+        color:black;
+        border:none;
+        border-radius: 5px;
+        box-shadow: 0 0 1px inset grey;
+        &:focus{
+          box-shadow: 0 0 1px inset red;
+        }
+      }
+      background-color: white;
+      *, .dropdown-menu td.day{
+        .years-dropdown{
+          border: solid 1px black;
+        }
+        background-color: white;
+        &:hover{
+          background-color: white;
+        }
+        .dropdown-menu .table-condensed > thead > tr > th.datepicker-switch > .years-dropdown .years-choices > div{
+          background-color: white;
+        }
+      }
+      padding: 10px;
+      table{
+        width: 135%;
+      }
+      .datepicker-reset{
+        border: none;
+        height: 35px;
+        width: 10%;
+        padding-top: 7px;
+        position: initial;
+        text-decoration: none;
+        span{
+          display: none;
+        }
+        &::after{
+          content: "X";
+          transform: scaleX(2);
+          
+        }
+      }
+      #apply-button{
+        color: grey;
+        width: 10%;
+        border: none;
+        height: 35px;
+        span{
+          display: none;
+        }
+        &::after{
+          content: "✔";
+        }
+      }
+      #search-date-picker-from{
+        &::before{
+          content: "";
+        }
+        &::after{
+          color: gray;
+          content: "to";
+          margin: 10px;
+        }
+      }
+      #search-date-picker-to{
+        &::before{
+        content: "";
+        } 
+      }
+      .custom-date-picker .datepicker.dropdown-menu .table-condensed > thead > tr > th.datepicker-switch > div:first-child::after{
+        content: "";
+      }
+    }
+
+
     .search-tab-content {
       &:not(.active) {
         display: none;
@@ -324,10 +410,7 @@ body.headers-1 {
     width: 100%;
     top: 50%;
   @media (max-width: $screen-sm-max) {
-    position: absolute;
-    top: 80vh;
-    justify-content: space-between;
-    width: 100vw;
+    display: none;
   }
   .artist-arrow-search {
     z-index: 3;
