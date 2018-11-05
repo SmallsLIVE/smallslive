@@ -176,7 +176,8 @@ body.headers-1 {
   }
   //Mobile
   @media (max-width: $screen-sm-max) {
-
+  
+   
     .datepicker-container.noclick{
       top: 12.5vw !important;
       left: 0 !important;
@@ -686,6 +687,18 @@ body.headers-1 {
 }
 
 .artist-search-profile-resume {
+  @media (max-width: $screen-sm-max) {
+    margin-left: 0;
+    .musician-title{
+      padding-bottom: 0;
+    }
+    .flex-column.white-line-right {
+      width: 100vw;
+      padding: 27px 0;
+      border-right: none;
+    }
+  }
+  
   flex-direction: row;
   position: relative;
   display: inline-flex;
@@ -849,7 +862,7 @@ body.headers-1 {
   text-decoration: underline;
   cursor: pointer;
 }
-
+z
 .musicians-results {
   position: relative;
   width: 100%;
@@ -857,6 +870,7 @@ body.headers-1 {
   &.white-line-bottom {
     margin-top: 0;
     margin-bottom: 30px;
+    display: none;
   }
 
   @media(max-width: $screen-sm-max) {
@@ -876,6 +890,9 @@ body.headers-1 {
     position: absolute;
     top: 76px;
     width: 20vw;
+    @media (max-width: $screen-sm-max) {
+      display: none;
+    }
   }
 }
 
