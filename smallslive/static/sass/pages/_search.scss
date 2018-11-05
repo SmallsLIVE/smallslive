@@ -132,9 +132,9 @@ body.headers-1 {
 
       span {
         margin: 10px 0;
+        font-size: 4vw;
         @media (max-width: $screen-sm) {
           margin: 10px 0;
-          padding: 10px;
         }
       }
     }
@@ -150,7 +150,7 @@ body.headers-1 {
 
 .home.headers-3  .search-container.pad-content{
   @media (max-width: $screen-sm-max) {
-    padding-top: 100px;
+    padding-top: 70px;
   }
 }
 
@@ -167,7 +167,6 @@ body.headers-1 {
     position: relative;
   }
   #showsContent{
-    margin-top: 30px;
     min-height: 500px;
   }
   .search-tab-content {
@@ -474,7 +473,7 @@ body.headers-1 {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  padding-top: 40px;
+  padding-top: 20px;
   .event-row {
     flex-wrap: wrap;
   }
@@ -571,6 +570,9 @@ body.headers-1 {
 }
 
 .search-artist-box-container {
+  @media (max-width: $screen-sm-max) {
+    display: none;
+  }
   position: relative;
   width: 700px;
   margin: 10px auto;
@@ -595,7 +597,7 @@ body.headers-1 {
 
 .instrument-btn {
   display: inline-block;
-  width: 170px;
+  width: 200px;
   padding-top: 10px;
   margin-left: 20px;
   align-self: center;
