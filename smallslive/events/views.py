@@ -120,7 +120,12 @@ def _get_most_popular(range=None):
 
 def _get_most_popular_uploaded(range_size=None):
 
+    print range_size
+
     range_start, range_end = calculate_query_range(range_size)
+
+    print range_start
+    print range_end
 
     qs = UserVideoMetric.objects.all()
     if range_size:
@@ -128,6 +133,8 @@ def _get_most_popular_uploaded(range_size=None):
             event_date__gte=range_start,
             event_date__lte=range_end
         )
+
+        print qs.query
 
     event_values = qs.values('event_id').annotate(
         count=Sum('seconds_played')
@@ -175,10 +182,8 @@ class HomepageView(ListView, UpcomingEventMixin):
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
         context = self.get_upcoming_events_context_data(context)
-        month_popular = [] #_get_most_popular_uploaded(RANGE_MONTH)
-        context['popular_in_archive'] = [] #_get_most_popular_uploaded()
+        context['popular_in_archive'] = _get_most_popular_uploaded()
         context['popular_select'] = 'alltime'
-
         context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
 
@@ -201,6 +206,7 @@ class MostPopularEventsAjaxView(AJAXMixin, ListView):
     template_name = "events/event_row.html"
 
     def __init__(self, **kwargs):
+
         super(MostPopularEventsAjaxView, self).__init__()
         self.ajax_mandatory = False
 
@@ -224,6 +230,7 @@ class MostPopularEventsAjaxView(AJAXMixin, ListView):
                 metrics_range = None
 
         most_popular = _get_most_popular_uploaded(metrics_range)
+
         return most_popular
 
 
