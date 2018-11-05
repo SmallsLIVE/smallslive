@@ -310,7 +310,7 @@ $(document).ready(function () {
     $(".instrument-btn").click(function () {
 
         if (!$(".instruments-container").is(":visible")) {
-            $("#musicianContent").css("min-height", "500px");
+            $("#musicianContent").animate({'min-height':'500'}, 'fast');
             $(".instruments-container").css("display", "flex");
         } else {
             $("#musicianContent").css("min-height", "");
@@ -329,8 +329,12 @@ $(document).ready(function () {
         }
     });
 
+    $('.instruments-container .close-button').click(function () {
+        $("#musicianContent").animate({'min-height':''});
+    });
+
     $('.instrument').click(function () {
-        $("#musicianContent").css("min-height", "");
+        $("#musicianContent").animate({'min-height':''});
         artistInstrument = $(this).data('instrument');
         $('.instrument-btn').text(artistInstrument || 'Instrument');
         artistPageNum = 1;
@@ -460,7 +464,7 @@ $(document).ready(function () {
     } else {
       $('#artists').removeClass('invisible');
     }
-
+    
     $(document).on('click', '.artist-search-profile-container .close-button', function () {
         // If only one artist, assume back to search means
         // actually resetting search

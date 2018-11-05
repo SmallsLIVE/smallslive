@@ -348,7 +348,7 @@ body.headers-1 {
   border-radius: 10px;
   display: none;
   position: absolute;
-  margin: 0 340px;
+  margin: 0 15%;
   padding: 10px 20px;
 
   @media (max-width: $screen-sm-max) {
@@ -364,9 +364,9 @@ body.headers-1 {
   }
 
   @media (min-width: $screen-md-min) {
-    width: 50%;
+    width: 70%;
     left: 50px;
-    padding: 50px 100px;
+    padding: 30px 125px;
     .instrument {
       width: 80px;
     }
@@ -1211,6 +1211,15 @@ body.headers-1 {
         }
         .select-selected{
         width: 40VW;
+        }
+        .datepicker table{
+          width: 82vw;
+        }
+        .datepicker-container{
+          margin:0;
+          &.noclick{
+            width:90vw !important;
+          }
         }
         .datepicker-container.noclick{
           top: 12.162162vw !important;
