@@ -175,7 +175,7 @@ class HomepageView(ListView, UpcomingEventMixin):
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
         context = self.get_upcoming_events_context_data(context)
-        month_popular = _get_most_popular_uploaded(RANGE_MONTH)
+        month_popular = [] #_get_most_popular_uploaded(RANGE_MONTH)
         context['popular_in_archive'] = [] #_get_most_popular_uploaded()
         context['popular_select'] = 'alltime'
 
