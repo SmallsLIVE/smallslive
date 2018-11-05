@@ -477,7 +477,9 @@ $(document).ready(function () {
           apply = true;
           eventPageNum = 1;
           $('[data-toggle-tab-group="search-results"][data-toggle-tab-target]').show();
-          //$('[data-toggle-tab-group="search-results"][data-toggle-tab]').hide();
+          if(window.screen.availWidth < 1200){
+            $('[data-toggle-tab-group="search-results"][data-toggle-tab]').hide();
+          }
           $('[data-toggle-tab-group="search-results"][data-toggle-tab="musicians"]').show();
           sendEventRequest();
         }

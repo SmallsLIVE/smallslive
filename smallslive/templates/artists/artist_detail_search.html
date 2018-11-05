@@ -10,7 +10,7 @@
         </div>
         {% if artist.public_email %}
             <div>
-                <p class="text4 text-uppercase hidden-xs">Email: <a href="mailto:{{ artist.public_email }}">{{ artist.public_email }}</a></p>
+                <p class="text4 text-uppercase">Email: <a href="mailto:{{ artist.public_email }}">{{ artist.public_email }}</a></p>
             </div>
         {% endif %}
         {% if artist.website %}
@@ -84,7 +84,7 @@
 
 <div class="close-button-container hidden-xs"><a href="#" class="close-button"></a></div>
 
-<div class="tabs">
+<div class="tabs artist-tabs">
   <div class="active" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
     <span class="title1">Archived</span>
   </div>

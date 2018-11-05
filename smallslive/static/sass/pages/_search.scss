@@ -114,14 +114,17 @@ body.headers-1 {
     align-items: stretch;
     justify-content: stretch;
     z-index: 1000;
-
+    &.artist-tabs{
+      & > div {
+        background-color: $background-color;
+      }
+    }
     & > div {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: $background-grey;
-
+      
       &.active {
         border-bottom: 2px solid $accent-color;
         color: $accent-color;
@@ -219,19 +222,35 @@ body.headers-1 {
         border: none;
         height: 35px;
         width: 10%;
-        padding-top: 7px;
+        padding-top: 8px;
         position: initial;
         text-decoration: none;
         span{
           display: none;
         }
-        &::after{
-          content: "X";
-          transform: scaleX(2);
-          
+        &:before, &:after {
+          position: absolute;
+          content: ' ';
+          height: 22px;
+          width: 3px;
+          background-color: grey;
+        }
+      
+        &:before {
+          transform: rotate(45deg);
+        }
+      
+        &:after {
+          transform: rotate(-45deg);
         }
       }
+      .checkmark{
+        display:inline-block;
+      }
+
+
       #apply-button{
+        margin: 0px 10px;
         color: grey;
         width: 10%;
         border: none;
@@ -240,7 +259,21 @@ body.headers-1 {
           display: none;
         }
         &::after{
-          content: "✔";
+          margin-top: -5px;
+          /*Add another block-level blank space*/
+          content: '';
+          display: block;
+       
+          /*Make it a small rectangle so the border will create an L-shape*/
+          width: 12px;
+          height: 20px;
+       
+          /*Add a white border on the bottom and left, creating that 'L' */
+          border: solid grey;
+          border-width: 0 3px 3px 0;
+       
+          /*Rotate the L 45 degrees to turn it into a checkmark*/
+          transform: rotate(45deg);
         }
       }
       #search-date-picker-from{
@@ -659,9 +692,11 @@ body.headers-1 {
   background-repeat: no-repeat;
   background-size: 50px;
 }
-.artist-search-profile-container {
+.home .artist-search-profile-container {
   display: none;
-
+  &.pad-content{
+    padding-top: 0px;
+  }
   .content-centered {
     flex-direction: row;
 
@@ -689,6 +724,9 @@ body.headers-1 {
 .artist-search-profile-resume {
   @media (max-width: $screen-sm-max) {
     margin-left: 0;
+    .mobile-padding > .text1{
+      margin-top: 15px;
+    }
     .musician-title{
       padding-bottom: 0;
     }
@@ -730,11 +768,11 @@ body.headers-1 {
       width: 100%;
       height: auto;
       margin: 20px 0 0 0;
-
       img {
         object-fit: cover;
         object-position: top;
         height: 240px;
+        border: none;
       }
     }
 
@@ -767,8 +805,10 @@ body.headers-1 {
   }
 
   &.text4{
-    font-size: 0.9vw;
-    line-height: 1.5vw;
+    @media (max-width: $screen-sm-max) {
+    font-size:  3.125vw;
+    line-height: 4.7vw;
+    }
   }
   @media (max-width: $screen-sm-max) {
     width: 100%;
@@ -862,20 +902,19 @@ body.headers-1 {
   text-decoration: underline;
   cursor: pointer;
 }
-z
+
 .musicians-results {
   position: relative;
   width: 100%;
-
-  &.white-line-bottom {
-    margin-top: 0;
-    margin-bottom: 30px;
-    display: none;
-  }
-
   @media(max-width: $screen-sm-max) {
     display: none;
   }
+  &.white-line-bottom {
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
+
+ 
 }
 
 .musicians-results-title {
@@ -1110,7 +1149,7 @@ z
   @media (max-width: $screen-md-max) {
     transform: none;
     @include text1;
-    margin-top: 5px;
+    margin-top: 15px;
   }
 
 }
@@ -1118,7 +1157,7 @@ z
 .show-in-archive {
   align-self: flex-end;
   margin-bottom: -7px;
-  margin-left: 4.8vw;
+  margin-left: 3.8vw;
 
   &.text1 {
     font-size: 0.7vw;
