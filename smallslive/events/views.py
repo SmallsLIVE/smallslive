@@ -102,7 +102,6 @@ def calculate_query_range(range_size, weekly=None):
     return range_start, range_end
 
 
-@cached(timeout=6*60*60)
 def _get_most_popular(range=None):
     context = {}
     most_popular_ids = UserVideoMetric.objects.most_popular(
@@ -115,26 +114,34 @@ def _get_most_popular(range=None):
             most_popular.append(event)
         except Event.DoesNotExist:
             pass
-    context['popular_in_archive'] = [] # TODO: FIX most_popular
+    context['popular_in_archive'] = most_popular
     return context
 
 
 def _get_most_popular_uploaded(range_size=None):
 
-    #TODO fix
-    return []
-
     range_start, range_end = calculate_query_range(range_size)
 
+    qs = UserVideoMetric.objects.all()
+    if range_size:
+        qs = qs.filter(
+            event_date__gte=range_start,
+            event_date__lte=range_end
+        )
+
+    event_values = qs.values('event_id').annotate(
+        count=Sum('seconds_played')
+    ).order_by('-count')[:10]
+
+    event_ids = [e['event_id'] for e in event_values]
+
     sqs = Event.objects.filter(
+        id__in=event_ids,
         recordings__media_file__isnull=False,
         recordings__state=Recording.STATUS.Published
-    )
+    ).distinct()
 
-    if range_start and range_end:
-        sqs = sqs.filter(date__range=(range_start, range_end))
-
-    return order_events_by_popular(sqs)
+    return sqs
 
 
 def order_events_by_popular(sqs):
@@ -169,12 +176,8 @@ class HomepageView(ListView, UpcomingEventMixin):
         context = super(HomepageView, self).get_context_data(**kwargs)
         context = self.get_upcoming_events_context_data(context)
         month_popular = _get_most_popular_uploaded(RANGE_MONTH)
-        if len(month_popular):
-            context['popular_in_archive'] = month_popular
-            context['popular_select'] = 'month'
-        else:
-            context['popular_in_archive'] = _get_most_popular_uploaded()
-            context['popular_select'] = 'alltime'
+        context['popular_in_archive'] = _get_most_popular_uploaded()
+        context['popular_select'] = 'alltime'
 
         context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
@@ -268,8 +271,6 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
         for ticket_form in ticket_forms:
             if ticket_form.is_valid():
                 if ticket_form.cleaned_data.get('form_enabled'):
-                    print ticket_form
-                    print self.object
                     ticket_form.save(event=self.object)
         return response
 
@@ -347,6 +348,7 @@ class EventDetailView(DetailView):
                 'event_url': event_url,
                 'start': start
             }
+            context['product'] = self.object.products.first()
 
         context['sets'] = event.get_sets_info_dict()
         context['event_artists'] = event.get_artists_info_dict()
@@ -396,6 +398,7 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
         if 'sets' in context:
             context['sets'].helper = EventSetInlineFormsetHelper()
         context['show_times'] = json.dumps(settings.SHOW_TIMES)
+        context['ticket_forms'] = self.construct_ticket_forms()
         return context
 
     def get_form(self, form_class):
@@ -408,8 +411,20 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
     def post(self, *args, **kwargs):
         response = super(EventEditView, self).post(*args, **kwargs)
         check_staff_picked(self.object, self.request.POST.get('staff_pick', 'off') == 'on')
-
+        ticket_forms = self.construct_ticket_forms(data=self.request.POST)
+        for ticket_form in ticket_forms:
+            if ticket_form.is_valid():
+                if ticket_form.cleaned_data.get('form_enabled'):
+                    ticket_form.save(event=self.object)
         return response
+
+    # TODO: remove duplicate code
+    def construct_ticket_forms(self, data=None):
+        ticket_forms = []
+        for i in range(1, TICKETS_NUMBER_OF_SETS + 1):
+            ticket_form = TicketAddForm(data, prefix="set{0}".format(i), number=i)
+            ticket_forms.append(ticket_form)
+        return ticket_forms
 
 
 event_edit = staff_member_required(EventEditView.as_view())

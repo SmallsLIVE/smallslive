@@ -85,7 +85,7 @@ raven==5.7.2
 requests==2.8.1
 requests-oauthlib==0.4.2
 six==1.10.0
-git+https://github.com/SmallsLIVE/smallslive-metrics-djangoapp.git@8e0f4f5014b1380a894cdd61f27651da10f3dfd0#egg=smallslive_metrics_app-0.1.40
+git+https://github.com/SmallsLIVE/smallslive-metrics-djangoapp.git@ed4fc57c31b8f457e513545beea1500f943e43a4
 sorl-thumbnail==11.12.1b
 sqlparse==0.1.14
 static==1.1.1
@@ -97,3 +97,4 @@ wsgiref==0.1.2
 xlsxwriter==0.7.3
 django-wkhtmltopdf==3.2.0
 wkhtmltopdf-pack==0.12.2.4
+
