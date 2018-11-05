@@ -44,7 +44,7 @@
 							<div class="text5">Password</div>
 							<div class="text9 text-grey">xxxxxxxxxx</div>
 						</div>
-						<button class="white-border-button" data-toggle-tab-target="user-account-form" data-toggle-tab-group="user-account"">Edit info</button>
+						<button class="white-border-button" data-toggle-tab-target="user-account-form" data-toggle-tab-group="user-account">Edit info</button>
 				</div>
 				<div data-toggle-tab="user-account-form" data-toggle-tab-group="user-account" style="display:none">
 						{% include 'account/account-change-form.html' %}
@@ -84,7 +84,7 @@
 					
 						
 
-					{% if not customer_detail.subscription.plan and not user_archive_access_until  %}
+					{% if not customer_detail.subscription.plan and not user_archive_access_until or cancelled %}
 						<a class="white-border-button" href="{% url 'become_supporter' %}">Become a Supporting Member</a>
 					{% elif customer_detail.subscription.plan and not cancelled %}
 						<div class="flex-row supporter-options">	

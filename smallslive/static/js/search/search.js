@@ -98,6 +98,7 @@ function sendEventRequest() {
     if (eventDateFrom) {
         utcDateFrom = eventDateFrom.getFullYear() + '/' + (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate();
     }
+    console.log(eventDateTo)
     if (eventDateTo) {
         utcDateTo = eventDateTo.getFullYear() + '/' + (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate();
     }
@@ -309,8 +310,10 @@ $(document).ready(function () {
     $(".instrument-btn").click(function () {
 
         if (!$(".instruments-container").is(":visible")) {
+            $("#musicianContent").animate({'min-height':'500'}, 'fast');
             $(".instruments-container").css("display", "flex");
         } else {
+            $("#musicianContent").css("min-height", "");
             $(".instruments-container").css("display", "none");
         }
     });
@@ -326,7 +329,12 @@ $(document).ready(function () {
         }
     });
 
+    $('.instruments-container .close-button').click(function () {
+        $("#musicianContent").animate({'min-height':''});
+    });
+
     $('.instrument').click(function () {
+        $("#musicianContent").animate({'min-height':''});
         artistInstrument = $(this).data('instrument');
         $('.instrument-btn').text(artistInstrument || 'Instrument');
         artistPageNum = 1;
@@ -456,7 +464,7 @@ $(document).ready(function () {
     } else {
       $('#artists').removeClass('invisible');
     }
-
+    
     $(document).on('click', '.artist-search-profile-container .close-button', function () {
         // If only one artist, assume back to search means
         // actually resetting search
@@ -473,7 +481,9 @@ $(document).ready(function () {
           apply = true;
           eventPageNum = 1;
           $('[data-toggle-tab-group="search-results"][data-toggle-tab-target]').show();
-          //$('[data-toggle-tab-group="search-results"][data-toggle-tab]').hide();
+          if(window.screen.availWidth < 1200){
+            $('[data-toggle-tab-group="search-results"][data-toggle-tab]').hide();
+          }
           $('[data-toggle-tab-group="search-results"][data-toggle-tab="musicians"]').show();
           sendEventRequest();
         }
@@ -493,20 +503,30 @@ $(document).ready(function () {
         if (!eventDateTo || !eventDateFrom) {
           $(".datepicker-btn").html("DATE");
         }
-
-        from = (datePickerFromDate.getMonth() + 1) + '/' + datePickerFromDate.getDate() + '/' + datePickerFromDate.getFullYear();
-        from = '<span class="from accent-color">' + from + '</span>';
-        to = (datePickerToDate.getMonth() + 1) + '/' + datePickerToDate.getDate() + '/' + datePickerToDate.getFullYear();
-        to = '<span class="to accent-color">' + to + '</span>';
-
+        if(eventDateFrom){
+            from = (datePickerFromDate.getMonth() + 1) + '/' + datePickerFromDate.getDate() + '/' + datePickerFromDate.getFullYear();
+            from = '<span class="from accent-color">' + from + '</span>';
+        }else{
+            from = '<span class="from accent-color">-</span>'
+        }
+        
+        if(eventDateTo){
+            to = (datePickerToDate.getMonth() + 1) + '/' + datePickerToDate.getDate() + '/' + datePickerToDate.getFullYear();
+            to = '<span class="to accent-color">' + to + '</span>';    
+        }
+        else{
+            to = '<span class="from accent-color">-</span>'
+        }
         $(".datepicker-btn").html("From " + from + " to " + to);
     });
     
     $(".datepicker-reset").click(function () {
         $('#search-date-picker-from input').val("").datepicker("update");
         $('#search-date-picker-to input').val("").datepicker("update");
-        datePickerFromDate = defaultFromDate;
-        datePickerToDate = defaultToDate;
+        console.log
+        console.log(defaultToDate !== undefined)
+        datePickerFromDate = (defaultFromDate !== undefined) ? new Date(defaultFromDate) : null ;
+        datePickerToDate = (defaultToDate !== undefined) ? new Date(defaultToDate) : null ;
         $("#search-date-picker-from input").click();
         $("#search-date-picker-from input").focus();
     });
