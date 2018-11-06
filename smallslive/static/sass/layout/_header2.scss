@@ -57,7 +57,21 @@
   @media(max-width: $screen-sm-max) {
     height: $mobile-bar-height;
   }
-
+  .mobile-user-option{
+    z-index: 9999;
+    display: none;
+    position: absolute;
+    right: 0;
+    >*{
+      text-align: center;
+      width: 120px;
+      padding: 1em;
+      background-color: $background-grey;
+    }
+    a{
+      color:black;
+    }
+  }
 
   .mobile-logo-container {
     width: 100%;
