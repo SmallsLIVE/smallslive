@@ -310,10 +310,14 @@ $(document).ready(function () {
     $(".instrument-btn").click(function () {
 
         if (!$(".instruments-container").is(":visible")) {
-            $("#musicianContent").animate({'min-height':'500'}, 'fast');
+            if(window.screen.availWidth < 1200){
+                $("body").addClass("hidden-body");
+            }
             $(".instruments-container").css("display", "flex");
         } else {
-            $("#musicianContent").css("min-height", "");
+            if(window.screen.availWidth < 1200){
+                $("body").removeClass("hidden-body");
+            }
             $(".instruments-container").css("display", "none");
         }
     });
@@ -330,11 +334,15 @@ $(document).ready(function () {
     });
 
     $('.instruments-container .close-button').click(function () {
-        $("#musicianContent").animate({'min-height':''});
+        if(window.screen.availWidth < 1200){
+        $("body").removeClass("hidden-body");
+        }
     });
 
     $('.instrument').click(function () {
-        $("#musicianContent").animate({'min-height':''});
+        if(window.screen.availWidth < 1200){
+            $("body").removeClass("hidden-body");
+        }
         artistInstrument = $(this).data('instrument');
         $('.instrument-btn').text(artistInstrument || 'Instrument');
         artistPageNum = 1;
