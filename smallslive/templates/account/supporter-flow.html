@@ -1,9 +1,9 @@
 {% extends "home_new.html" %}
 {% block home_content %}
 {% if flowtype == "become_supporter"%}
-{% include 'account/update-pledge.html' %}
-{% elif flowtype == "update_pledge"%}
 {% include 'account/become-supporter.html' %}
+{% elif flowtype == "update_pledge"%}
+{% include 'account/update-pledge.html' %}
 {% elif flowtype == "donate"%}
 {% include 'account/donate.html' %}
 {% endif %}
