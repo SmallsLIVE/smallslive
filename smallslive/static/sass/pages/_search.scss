@@ -114,14 +114,17 @@ body.headers-1 {
     align-items: stretch;
     justify-content: stretch;
     z-index: 1000;
-
+    &.artist-tabs{
+      & > div {
+        background-color: $background-color;
+      }
+    }
     & > div {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      background-color: $background-grey;
-
+      
       &.active {
         border-bottom: 2px solid $accent-color;
         color: $accent-color;
@@ -129,9 +132,9 @@ body.headers-1 {
 
       span {
         margin: 10px 0;
+        font-size: 4vw;
         @media (max-width: $screen-sm) {
           margin: 10px 0;
-          padding: 10px;
         }
       }
     }
@@ -147,7 +150,7 @@ body.headers-1 {
 
 .home.headers-3  .search-container.pad-content{
   @media (max-width: $screen-sm-max) {
-    padding-top: 100px;
+    padding-top: 70px;
   }
 }
 
@@ -163,7 +166,9 @@ body.headers-1 {
     align-items: center;
     position: relative;
   }
-
+  #showsContent{
+    min-height: 500px;
+  }
   .search-tab-content {
     position: relative;
     max-width: 100vw;
@@ -174,7 +179,8 @@ body.headers-1 {
   }
   //Mobile
   @media (max-width: $screen-sm-max) {
-
+  
+   
     .datepicker-container.noclick{
       top: 12.5vw !important;
       left: 0 !important;
@@ -216,19 +222,35 @@ body.headers-1 {
         border: none;
         height: 35px;
         width: 10%;
-        padding-top: 7px;
+        padding-top: 8px;
         position: initial;
         text-decoration: none;
         span{
           display: none;
         }
-        &::after{
-          content: "X";
-          transform: scaleX(2);
-          
+        &:before, &:after {
+          position: absolute;
+          content: ' ';
+          height: 22px;
+          width: 3px;
+          background-color: grey;
+        }
+      
+        &:before {
+          transform: rotate(45deg);
+        }
+      
+        &:after {
+          transform: rotate(-45deg);
         }
       }
+      .checkmark{
+        display:inline-block;
+      }
+
+
       #apply-button{
+        margin: 0px 10px;
         color: grey;
         width: 10%;
         border: none;
@@ -237,7 +259,21 @@ body.headers-1 {
           display: none;
         }
         &::after{
-          content: "✔";
+          margin-top: -5px;
+          /*Add another block-level blank space*/
+          content: '';
+          display: block;
+       
+          /*Make it a small rectangle so the border will create an L-shape*/
+          width: 12px;
+          height: 20px;
+       
+          /*Add a white border on the bottom and left, creating that 'L' */
+          border: solid grey;
+          border-width: 0 3px 3px 0;
+       
+          /*Rotate the L 45 degrees to turn it into a checkmark*/
+          transform: rotate(45deg);
         }
       }
       #search-date-picker-from{
@@ -312,7 +348,7 @@ body.headers-1 {
   border-radius: 10px;
   display: none;
   position: absolute;
-  margin: 0 340px;
+  margin: 0 15%;
   padding: 10px 20px;
 
   @media (max-width: $screen-sm-max) {
@@ -328,9 +364,9 @@ body.headers-1 {
   }
 
   @media (min-width: $screen-md-min) {
-    width: 50%;
+    width: 70%;
     left: 50px;
-    padding: 50px 100px;
+    padding: 30px 125px;
     .instrument {
       width: 80px;
     }
@@ -408,7 +444,7 @@ body.headers-1 {
 #musicianContent .artist-arrows {
     position: absolute;
     width: 100%;
-    top: 50%;
+    top: 140px;
   @media (max-width: $screen-sm-max) {
     display: none;
   }
@@ -437,7 +473,7 @@ body.headers-1 {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  padding-top: 40px;
+  padding-top: 20px;
   .event-row {
     flex-wrap: wrap;
   }
@@ -534,6 +570,9 @@ body.headers-1 {
 }
 
 .search-artist-box-container {
+  @media (max-width: $screen-sm-max) {
+    display: none;
+  }
   position: relative;
   width: 700px;
   margin: 10px auto;
@@ -558,7 +597,7 @@ body.headers-1 {
 
 .instrument-btn {
   display: inline-block;
-  width: 170px;
+  width: 200px;
   padding-top: 10px;
   margin-left: 20px;
   align-self: center;
@@ -656,9 +695,11 @@ body.headers-1 {
   background-repeat: no-repeat;
   background-size: 50px;
 }
-.artist-search-profile-container {
+.home .artist-search-profile-container {
   display: none;
-
+  &.pad-content{
+    padding-top: 0px;
+  }
   .content-centered {
     flex-direction: row;
 
@@ -684,6 +725,21 @@ body.headers-1 {
 }
 
 .artist-search-profile-resume {
+  @media (max-width: $screen-sm-max) {
+    margin-left: 0;
+    .mobile-padding > .text1{
+      margin-top: 15px;
+    }
+    .musician-title{
+      padding-bottom: 0;
+    }
+    .flex-column.white-line-right {
+      width: 100vw;
+      padding: 27px 0;
+      border-right: none;
+    }
+  }
+  
   flex-direction: row;
   position: relative;
   display: inline-flex;
@@ -715,11 +771,11 @@ body.headers-1 {
       width: 100%;
       height: auto;
       margin: 20px 0 0 0;
-
       img {
         object-fit: cover;
         object-position: top;
         height: 240px;
+        border: none;
       }
     }
 
@@ -752,8 +808,10 @@ body.headers-1 {
   }
 
   &.text4{
-    font-size: 0.9vw;
-    line-height: 1.5vw;
+    @media (max-width: $screen-sm-max) {
+    font-size:  3.125vw;
+    line-height: 4.7vw;
+    }
   }
   @media (max-width: $screen-sm-max) {
     width: 100%;
@@ -851,15 +909,15 @@ body.headers-1 {
 .musicians-results {
   position: relative;
   width: 100%;
-
-  &.white-line-bottom {
-    margin-top: 0;
-    margin-bottom: 30px;
-  }
-
   @media(max-width: $screen-sm-max) {
     display: none;
   }
+  &.white-line-bottom {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+ 
 }
 
 .musicians-results-title {
@@ -874,6 +932,9 @@ body.headers-1 {
     position: absolute;
     top: 76px;
     width: 20vw;
+    @media (max-width: $screen-sm-max) {
+      display: none;
+    }
   }
 }
 
@@ -1091,7 +1152,7 @@ body.headers-1 {
   @media (max-width: $screen-md-max) {
     transform: none;
     @include text1;
-    margin-top: 5px;
+    margin-top: 15px;
   }
 
 }
@@ -1099,7 +1160,7 @@ body.headers-1 {
 .show-in-archive {
   align-self: flex-end;
   margin-bottom: -7px;
-  margin-left: 4.8vw;
+  margin-left: 3.8vw;
 
   &.text1 {
     font-size: 0.7vw;
@@ -1154,9 +1215,18 @@ body.headers-1 {
         .select-selected{
         width: 40VW;
         }
+        .datepicker table{
+          width: 82vw;
+        }
+        .datepicker-container{
+          margin:0;
+          &.noclick{
+            width:100vw !important;
+          }
+        }
         .datepicker-container.noclick{
           top: 12.162162vw !important;
-          left: 0 !important;
+          left: -4.5vw !important;
           right: 0px;
         }
       }

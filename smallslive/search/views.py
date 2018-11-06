@@ -54,11 +54,14 @@ class SearchMixin(object):
 
         elif entity == Event:
             results_per_page = 24
+
             sqs = search.search_event(main_search, order, date_from, date_to,
                                       artist_pk=artist_pk, venue=venue)
 
         blocks = []
         block = []
+
+
 
         paginator = Paginator(sqs, results_per_page)
 

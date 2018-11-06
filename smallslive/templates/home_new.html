@@ -119,9 +119,9 @@
   <script>
     $(document).ready(function(){
       var filter = $('#most-popular-filter');
-      var mostPopularFilter = $('#most-popular-container').find('.event-row');
 
       var setMostPopular = function (value) {
+        var mostPopularFilter = $('#most-popular-container').find('.event-row');
         $.get("{% url 'event_popular_ajax' %}?range=" + value,
           function (data) {
             mostPopularFilter.replaceWith(data.content);
