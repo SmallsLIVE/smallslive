@@ -76,7 +76,7 @@
             {% endif %}
             {% if not event.is_live and event.is_past %}
               {% if user.has_archive_access %}
-              <button id="btn-donate" class="white-border-button" style="display: inline;">Donate</button>
+              <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">Donate</button>
               {% endif %}
             {% endif %}
             {% if not event.is_live and event.is_future %}
@@ -200,6 +200,19 @@
       </div>
     </div>
   </div>
+  <div class="modal fade flow-modal" id="one-time-donation" aria-hidden="true">
+      <div class="modal-dialog donate-dialog">
+        <div class="modal-content custom-modal">
+          <a href="#" class="close-button"></a>
+          <div class="modal-body">
+            <div id="donate-setting-steps" class="donate-setting-container" data-subpage-name="make-donation" data-subpage-url="{% url 'donate' %}">	
+            </div>
+            <div id="donate-setting-steps-complete" class="donate-setting-container" data-subpage-name="make-donation-complete" data-subpage-url="{% url 'donate_complete' %}">	
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock %}
 
 {% block extra_js %}
@@ -212,6 +225,7 @@
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   <script src="{% static 'js/jquery.form.js' %}"></script>
   <script src="{% static 'js/subpages.js' %}"></script>
+  <script src="{% static 'js/become-member.js' %}"></script>
 
   <script>
 
@@ -227,7 +241,16 @@
     });
 
   </script>
-
+  <script>
+      
+    function endDonation(){
+      if("{{ redirect_url }}"){
+        window.location = "{{ redirect_url }}"
+      }else{
+        $('#one-time-donation').modal('hide');
+      }
+    }
+    </script>
 
   {% with album=event.products.first %}
       {% if album and album.tracks %}

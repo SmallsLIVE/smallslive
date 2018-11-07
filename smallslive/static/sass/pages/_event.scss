@@ -1,4 +1,25 @@
 $player-height:  27.5vw;
+.modal-dialog.donate-dialog{
+  margin: 0 auto 30px auto;
+  width: 95vw;
+  min-height: 95vh;
+  .modal-content.custom-modal{
+      padding: 0 45px;
+      min-height: 95vh;
+  }
+  .donate-setting-container{
+      .supporter-main-container{
+          margin:0;
+          min-height: 0;
+      }
+  }
+  .custom-modal .modal-body form{
+      width: 100%;
+      .form-control:first-child{
+          margin-top: 10px;
+      }
+  }
+}
 
 .event-page-container {
   display: flex;
