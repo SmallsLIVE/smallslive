@@ -41,7 +41,7 @@ function loadMoreEvents() {
     $("#event-load-gif").css("display", "block");
     sendEventRequest();
 }
-
+var artistCount = ""
 $(document).on('click', '#artists .artist-row', function() {
   var artistId = $(this).data('id');
   $.ajax({
@@ -55,6 +55,7 @@ $(document).on('click', '#artists .artist-row', function() {
         $('#musicianContent').hide();
         $('.artist-search-profile-container').html(data.template);
         $('.artist-search-profile-container')[0].style.display = 'block';
+        artistCount = $('#artist-subheader').text()
         $('#artist-subheader').html('SHOWING 1 - 1 OF 1 RESULTS');
         $('.artist-search-profile-container .close-button-parent').show();
         $('.search-tabs').addClass('hidden');
@@ -98,7 +99,6 @@ function sendEventRequest() {
     if (eventDateFrom) {
         utcDateFrom = eventDateFrom.getFullYear() + '/' + (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate();
     }
-    console.log(eventDateTo)
     if (eventDateTo) {
         utcDateTo = eventDateTo.getFullYear() + '/' + (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate();
     }
@@ -122,9 +122,9 @@ function sendEventRequest() {
         success: function (data) {
             if (data.template) {
                 var $showsContainer = $('.search-content .shows-container');
+                console.log(data.showingResults)
                 $('#event-subheader').html(data.showingResults);
                 $('#event-subheader-footer').html(data.showingResults);
-
                 if (apply || eventFilter) {
                     apply = false;
                     eventFilter = false;
@@ -310,10 +310,14 @@ $(document).ready(function () {
     $(".instrument-btn").click(function () {
 
         if (!$(".instruments-container").is(":visible")) {
-            $("#musicianContent").animate({'min-height':'500'}, 'fast');
+            if(window.screen.availWidth < 960){
+                $("body").addClass("hidden-body");
+            }
             $(".instruments-container").css("display", "flex");
         } else {
-            $("#musicianContent").css("min-height", "");
+            if(window.screen.availWidth < 960){
+                $("body").removeClass("hidden-body");
+            }
             $(".instruments-container").css("display", "none");
         }
     });
@@ -330,11 +334,15 @@ $(document).ready(function () {
     });
 
     $('.instruments-container .close-button').click(function () {
-        $("#musicianContent").animate({'min-height':''});
+        if(window.screen.availWidth < 960){
+        $("body").removeClass("hidden-body");
+        }
     });
 
     $('.instrument').click(function () {
-        $("#musicianContent").animate({'min-height':''});
+        if(window.screen.availWidth < 960){
+            $("body").removeClass("hidden-body");
+        }
         artistInstrument = $(this).data('instrument');
         $('.instrument-btn').text(artistInstrument || 'Instrument');
         artistPageNum = 1;
@@ -468,12 +476,12 @@ $(document).ready(function () {
     $(document).on('click', '.artist-search-profile-container .close-button', function () {
         // If only one artist, assume back to search means
         // actually resetting search
-        console.log("aaaa")
         var $artists = $('.artist-row');
         if ($artists.length == 1) {
           window.location.href = '/search';
         } else {
           $("#musicianContent").show();
+          $('#artist-subheader').text(artistCount)
           $(".artist-search-profile-container").hide();
           $('.artist-search-profile-resume .close-button').show();
           $('.search-tabs').removeClass('hidden');
@@ -481,7 +489,7 @@ $(document).ready(function () {
           apply = true;
           eventPageNum = 1;
           $('[data-toggle-tab-group="search-results"][data-toggle-tab-target]').show();
-          if(window.screen.availWidth < 1200){
+          if(window.screen.availWidth < 960){
             $('[data-toggle-tab-group="search-results"][data-toggle-tab]').hide();
           }
           $('[data-toggle-tab-group="search-results"][data-toggle-tab="musicians"]').show();
@@ -523,8 +531,6 @@ $(document).ready(function () {
     $(".datepicker-reset").click(function () {
         $('#search-date-picker-from input').val("").datepicker("update");
         $('#search-date-picker-to input').val("").datepicker("update");
-        console.log
-        console.log(defaultToDate !== undefined)
         datePickerFromDate = (defaultFromDate !== undefined) ? new Date(defaultFromDate) : null ;
         datePickerToDate = (defaultToDate !== undefined) ? new Date(defaultToDate) : null ;
         $("#search-date-picker-from input").click();

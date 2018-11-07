@@ -6,7 +6,9 @@
   {% if archived or upcoming %}
   <div class="musicians-results white-line-bottom">
       <div class="title1 shows-results-title">{{ archived|yesno:'Archived,Upcoming' }} Shows</div>
-      <div id="artist-subheader" class="showing-results text1" style="margin-top: -13px;">{{ showing_evet_results }}</div>
+      {% if archived %}
+      <div id="event-subheader" class="showing-results text1" style="margin-top: -13px;">{{ showing_event_results }}</div>
+      {% endif %}
   </div>
   {% endif %}
   {% if archived %}

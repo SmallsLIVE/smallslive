@@ -55,8 +55,9 @@
     <button id="backButton" class="button-bordered">Back</button>
     <button id="confirmButton" class="button-bordered">Confirm</button>
   {% else %}
-    <a href="{{ redirect_url }}">
-      <button>Continue</button>
-    </a>
+   
+      <button onclick="endDonation()">Continue</button>
   {% endif %}
 {% endblock %}
+
+

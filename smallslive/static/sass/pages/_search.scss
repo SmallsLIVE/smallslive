@@ -157,6 +157,7 @@ body.headers-1 {
 
 .search-container {
   .container-list-article {
+    overflow-x: hidden;
     height: 200px;
     @media (max-width: $screen-sm-max) {
       height: 100vh;
@@ -167,12 +168,13 @@ body.headers-1 {
     position: relative;
   }
   #showsContent{
+    margin-top: 30px;
     min-height: 500px;
   }
   .search-tab-content {
     position: relative;
     max-width: 100vw;
-    overflow: hidden;
+    overflow-y: visible;
   }
   .artist-column-mobile{
     display: none;
@@ -354,13 +356,12 @@ body.headers-1 {
   @media (max-width: $screen-sm-max) {
     display: block;
     margin: 0;
-    width: 90vw;
-    position: fixed;
-    z-index: 9999;
-    height: 90vh;
+    width: 100vw;
+    position: absolute;
+    height: 74vh;
     overflow-y: auto;
-    top: 5vh;
-    left: 5vw;
+    top: 38px;
+    
   }
 
   @media (min-width: $screen-md-min) {
@@ -575,7 +576,7 @@ body.headers-1 {
   }
   position: relative;
   width: 700px;
-  margin: 10px auto;
+  margin: 30px auto 10px auto;
 
   img {
     width: 21px;

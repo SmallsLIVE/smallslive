@@ -76,16 +76,16 @@
 				<div class="title5 account-settings-title text-bottom-line">Supporter settings</div>
 				<div class="account-settings-info">
 					<div class="text5">Current Monthly Pledge</div>
-					{% if not customer_detail.subscription.plan or cancelled %}
-					<div class="text9 accent-color">None{% if cancelled %} (cancelled) {% endif %}</div>
-					{% else %}
+					{% if customer_detail.subscription.plan %}
 					<div class="text9 accent-color">${{monthly_pledge_in_dollars}}/{{customer_detail.subscription.plan.interval}}</div>
+					{% else %}
+					<div class="text9 accent-color">None{% if cancelled %} (cancelled) {% endif %}</div>
 					{% endif %}
 					
 						
 
 					{% if not customer_detail.subscription.plan and not user_archive_access_until or cancelled %}
-						<a class="white-border-button" href="{% url 'become_supporter' %}">Become a Supporting Member</a>
+						<button class="white-border-button" id="become-supporter">Become a Supporting Member</button>	
 					{% elif customer_detail.subscription.plan and not cancelled %}
 						<div class="flex-row supporter-options">	
 						<button class="white-border-button" onclick="$('#cancel-subscription').modal('toggle')">Cancel</button>		
@@ -202,18 +202,31 @@
 		</div>
 	</div>
 	<div class="modal fade flow-modal" id="update-pledge-modal" aria-hidden="true">
-			<div class="modal-dialog donate-dialog">
-				<div class="modal-content custom-modal">
-					<a href="#" class="close-button"></a>
-					<div class="modal-body">
-						<div id="update-setting-steps" class="donate-setting-container" data-subpage-name="update-pledge" data-subpage-url="{% url 'update_pledge' %}">	
-						</div>
-						<div id="update-setting-steps-complete" class="donate-setting-container" data-subpage-name="update-pledge-complete" data-subpage-url="{% url 'become_supporter_complete' %}">	
-						</div>
+		<div class="modal-dialog donate-dialog">
+			<div class="modal-content custom-modal">
+				<a href="#" class="close-button"></a>
+				<div class="modal-body">
+					<div id="update-setting-steps" class="donate-setting-container" data-subpage-name="update-pledge" data-subpage-url="{% url 'update_pledge' %}">	
+					</div>
+					<div id="update-setting-steps-complete" class="donate-setting-container" data-subpage-name="update-pledge-complete" data-subpage-url="{% url 'become_supporter_complete' %}">	
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="modal fade flow-modal" id="become-member-modal" aria-hidden="true">
+		<div class="modal-dialog donate-dialog">
+			<div class="modal-content custom-modal">
+				<a href="#" class="close-button"></a>
+				<div class="modal-body">
+					<div id="become-member-steps" class="donate-setting-container" data-subpage-name="become-member" data-subpage-url="{% url 'become_supporter' %}">	
+					</div>
+					<div id="become-member-steps-complete" class="donate-setting-container" data-subpage-name="become-member-complete" data-subpage-url="{% url 'become_supporter_complete' %}">	
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 
@@ -338,6 +351,14 @@
 		notCompleteContainer = $('#update-setting-steps')
 		updatePledgeSubpage.load();
 	})
+	$('#become-supporter').on('click', function () {
+		$('#become-member-steps-complete').html("")
+		$('#become-member-modal').modal('show');
+		var updatePledgeSubpage = window.subpages.get("become-member");
+		completeSubpage = "become-member-complete"
+		notCompleteContainer = $('#become-member-steps')
+		updatePledgeSubpage.load();
+	})
 	
 </script>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
@@ -358,10 +379,6 @@
     $streamingCloseButton.click(function () {
       $streamingDialog.modal('hide');
     });
-
-    $('#btn-donate').click(function () {
-        window.location = "{{ donate_url }}";
-      });
 
   });
 
