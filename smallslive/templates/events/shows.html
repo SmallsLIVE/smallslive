@@ -2,7 +2,7 @@
 {% load thumbor_tags %}
 {% load i18n %}
 
-<section id="showsContent" class="search-tab-content active {{ archived|yesno:',shows-calendar' }}" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
+<section id="showsContent" class="search-tab-content {% if not musician_search %}active{% endif %} {{ archived|yesno:',shows-calendar' }}" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
   {% if archived or upcoming %}
   <div class="musicians-results white-line-bottom">
       <div class="title1 shows-results-title">{{ archived|yesno:'Archived,Upcoming' }} Shows</div>
