@@ -1,5 +1,14 @@
 $mobile-filter-button-width: 48vw;
 
+.load-more-artist-button{
+  display: none;
+  @media (max-width: $screen-md-min) {
+  display: flex;
+  margin-bottom: 30px;
+  width: 33vw;
+  margin-left: 33vw;
+  }
+}
 body.headers-1 {
   .search-container {
     @media (max-width: $screen-sm-max) {
@@ -82,16 +91,13 @@ body.headers-1 {
 
   @media (max-width: $screen-md-max) {
     display: flex;
-    min-width: 400vw;
     flex-direction: column;
     visibility: visible; 
+    position: relative;
     .artist-column-mobile:last-of-type {
       .load-more-button{
         display: flex;
       }
-    }
-    .load-more-button{
-      display: flex;
     }
   }
 
@@ -188,8 +194,8 @@ body.headers-1 {
   .container-list-article {
     overflow-x: hidden;
     height: 200px;
-    @media (max-width: $screen-sm-max) {
-      height: 100vh;
+    @media (max-width: $screen-md-max) {
+      height: auto;
     }
     display: flex;
     justify-content: center;

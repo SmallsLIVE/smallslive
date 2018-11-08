@@ -1,5 +1,12 @@
 var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, venueFilter, eventFilter, eventDateFrom, eventDateTo, apply, artist_pk, show_event_venue;
 
+function loadMoreArtistButton(){
+    if (artistPageNum !== artistMaxPageNum){
+        artistPageNum += 1;
+        sendArtistRequest();
+    }
+}
+
 function sendArtistRequest(callback) {
     callback = callback || function () {};
     $.ajax({
@@ -16,6 +23,9 @@ function sendArtistRequest(callback) {
                 $("#artist-subheader").html(data.showingResults);
                 $("#artists").append(data.template);
                 artistMaxPageNum = data.numPages;
+                if (artistPageNum === artistMaxPageNum){
+                    $(".white-border-button.load-more-artist-button").hide()
+                }
             }
             callback(data);
         },
@@ -205,14 +215,6 @@ $(document).ready(function () {
             sendArtistRequest(function() {
                 maxPseudopage += 4;
             });
-        }
-    });
-    
-    $(".load-more-button").click(function () {
-        console.log("a")
-        if (artistPageNum !== artistMaxPageNum){
-            artistPageNum += 1;
-            sendArtistRequest();
         }
     });
 
