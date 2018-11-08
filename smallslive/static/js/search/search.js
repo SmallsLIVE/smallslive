@@ -207,6 +207,14 @@ $(document).ready(function () {
             });
         }
     });
+    
+    $(".load-more-button").click(function () {
+        console.log("a")
+        if (artistPageNum !== artistMaxPageNum){
+            artistPageNum += 1;
+            sendArtistRequest();
+        }
+    });
 
     $("#next-page-btn").click(function () {
         if (eventPageNum !== eventMaxPageNum) {
@@ -661,10 +669,6 @@ $(document).ready(function () {
 
     });
 
-    //////////////////////
-    //$(".artists-container").slick({
-     //   slidesToShow: 4,
-      //  slidesToScroll: 4
-      //});
+    
 
 });

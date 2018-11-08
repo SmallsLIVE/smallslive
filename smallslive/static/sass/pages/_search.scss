@@ -80,12 +80,19 @@ body.headers-1 {
     height: auto;
   }
 
-  @media (max-width: $screen-md-min) {
+  @media (max-width: $screen-md-max) {
     display: flex;
     min-width: 400vw;
-    flex-direction: row;
-    visibility: visible;
-    height: 90vh;
+    flex-direction: column;
+    visibility: visible; 
+    .artist-column-mobile:last-of-type {
+      .load-more-button{
+        display: flex;
+      }
+    }
+    .load-more-button{
+      display: flex;
+    }
   }
 
   .artist-column {
@@ -346,6 +353,7 @@ body.headers-1 {
         display: flex;
         overflow-y: auto;
         .white-border-button{
+          padding: 20px;
           width: 25%;
           height: 50px;
           margin: 0 auto;      
@@ -987,6 +995,10 @@ body.headers-1 {
   flex-flow: row wrap;
   position: relative;
   padding-left: $content-left-padding;
+  .event-card-secondary{
+    margin-top: 10px;
+    margin-bottom: 15px;
+  }
 }
 
 .shows-item {
