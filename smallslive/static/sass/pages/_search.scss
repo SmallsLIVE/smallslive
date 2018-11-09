@@ -15,12 +15,20 @@ body.headers-1 {
     }
   }
 }
-
+.musicians-results.white-line-bottom{
+  ~ .artist-search-profile-container[style*="display: block"].pad-content{
+    ~ .search-container.pad-content{
+      @media (max-width: $screen-md-max) {
+        padding-top: 30px;
+      }
+    }
+  }
+}
 .home.headers-3{ 
   &.admin-header{
     .search-container.pad-content{
       @media (max-width: $screen-md-max) {
-        padding-top: 30px;
+        padding-top: 120px;
       }
     }
   } 
@@ -516,6 +524,7 @@ body.headers-1 {
 }
 
 .events-results {
+  min-height: 100px;
   width: 100%;
   display: flex;
   flex-wrap: wrap;

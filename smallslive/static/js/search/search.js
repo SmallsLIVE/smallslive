@@ -512,6 +512,8 @@ $(document).ready(function () {
     });
 
     $("#apply-button").click(function () {
+        $('#load-more-btn').hide()
+        $('#events .shows-container').html('');
         if($(this).closest('.calendar').length > 0){
             show_event_venue = true
         }
