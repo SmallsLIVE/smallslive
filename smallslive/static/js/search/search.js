@@ -29,7 +29,9 @@ function sendArtistRequest(callback) {
                 if (artistPageNum === artistMaxPageNum){
                     $(".white-border-button.load-more-artist-button").hide()
                 }else{
-                    $(".white-border-button.load-more-artist-button").show()
+                    if(window.screen.availWidth < 960){
+                        $(".white-border-button.load-more-artist-button").show()
+                    }
                 }
             }
             callback(data);
