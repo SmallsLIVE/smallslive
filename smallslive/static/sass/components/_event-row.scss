@@ -287,11 +287,7 @@ $event-row-padding: 3.5vw;
     @include event-card($live-card-width-tablet, $live-card-width-tablet * 0.6);
   }
 
-  @media (max-width: 1023px) and (min-width: 961px) {
-    @include event-card($live-card-width-tablet, $live-card-width-tablet * 0.6);
-  }
-
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     @include event-card($live-card-width-mobile, $live-card-width-mobile * 0.6);
   }
 }

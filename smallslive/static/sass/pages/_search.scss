@@ -2,7 +2,7 @@ $mobile-filter-button-width: 48vw;
 
 .load-more-artist-button{
   display: none;
-  @media (max-width: $screen-md-min) {
+  @media (max-width: $screen-md-max) {
   display: flex;
   margin-bottom: 30px;
   width: 33vw;
@@ -70,7 +70,7 @@ body.headers-1 {
     pointer-events: inherit;
     z-index: -1;
 
-    @media(max-width: $screen-sm-max) {
+    @media(max-width: $screen-md-max) {
       top: 5.5vw;
     }
     @media (max-width: $screen-xs) {
@@ -88,7 +88,7 @@ body.headers-1 {
   left: 0;
   top: 0;
 
-  @media (min-width: $screen-md-min) {
+  @media (min-width: $screen-lg-min) {
     z-index: 2;
     margin-top: 30px;
     display: flex;
@@ -195,7 +195,7 @@ body.headers-1 {
 
 .search-tabs {
   display: none;
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     display: flex;
   }
 }
@@ -229,7 +229,7 @@ body.headers-1 {
     display: none;
   }
   //Mobile
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
   
    
     .datepicker-container.noclick{
@@ -474,7 +474,7 @@ body.headers-1 {
   }
   }
 
-  @media (min-width: $screen-md-min) {
+  @media (min-width: $screen-lg-min) {
     .white-border-select, .custom-date-picker {
       width: 120px;
     }
@@ -489,7 +489,7 @@ body.headers-1 {
     }
   }
 
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     width: 100%;
     text-align: center;
   }
@@ -499,7 +499,7 @@ body.headers-1 {
     position: absolute;
     width: 100%;
     top: 140px;
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     display: none;
   }
   .artist-arrow-search {
@@ -618,14 +618,14 @@ body.headers-1 {
   margin: 0 auto;
 
   .event-filter-select {
-    @media (max-width: $screen-sm-max) {
+    @media (max-width: $screen-md-max) {
       width: $mobile-filter-button-width;
     }
   }
 }
 
 .search-artist-box-container {
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     display: none;
   }
   position: relative;
@@ -658,7 +658,7 @@ body.headers-1 {
   align-self: center;
   text-align: center;
 
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     @include caret;
     margin: 0 auto;
   }
@@ -964,7 +964,7 @@ body.headers-1 {
 .musicians-results {
   position: relative;
   width: 100%;
-  @media(max-width: $screen-sm-max) {
+  @media(max-width: $screen-md-max) {
     display: none;
   }
   &.white-line-bottom {
@@ -987,7 +987,7 @@ body.headers-1 {
     position: absolute;
     top: 76px;
     width: 20vw;
-    @media (max-width: $screen-sm-max) {
+    @media (max-width: $screen-md-max) {
       display: none;
     }
   }
@@ -997,7 +997,7 @@ body.headers-1 {
   width: 100%;
   text-align: center;
 
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     display: none;
   }
 }
@@ -1068,7 +1068,7 @@ body.headers-1 {
   text-align: center;
 
   &.white-border-button {
-    @media(max-width: $screen-sm-max) {
+    @media(max-width: $screen-md-max) {
       width: $mobile-filter-button-width;
       margin-left: 0;
       padding: 1em;
@@ -1250,7 +1250,7 @@ body.headers-1 {
     }
 }
 
-@media (max-width: 960px) {
+@media (max-width: $screen-md-max) {
   .refine {
     display: block;
     margin-right: 20px;
