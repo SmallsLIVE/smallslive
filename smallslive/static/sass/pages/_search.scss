@@ -215,7 +215,7 @@ body.headers-1 {
   }
   #showsContent{
     margin-top: 30px;
-    @media (max-width: $screen-md-min) {
+    @media (max-width: $screen-md-max) {
       margin-top: 0px;
     }
     min-height: 500px;
