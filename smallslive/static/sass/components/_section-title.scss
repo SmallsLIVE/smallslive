@@ -19,11 +19,35 @@
 
   &.home {
     width: 630px;
-
     @media(max-width: $screen-sm-max) {
+    background-size: 100vw 5px;
+    padding-bottom: 3px;
       width: 100vw;
+    
+    .select-container{      
+      height: 100%;
+    }
+    .white-border-select.home-filter{
+      width: 37vw;
+      height: 100%;
+      .select-items{
+        top: 98%;
+      }
+      .select-selected{
+        height: 100%;
+        padding: 0;
+        font-size: 4vw;
+        border: 0;
+        justify-content: flex-end;
+        padding-right: 7vw;
+        &::after{
+          top:auto;
+          right: 3vw;
+        }
+      }
     }
   }
+}
 
   &.section-flex {
     width: 100%;

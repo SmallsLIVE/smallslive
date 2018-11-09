@@ -1,6 +1,18 @@
 body {
   // TODO Remove
   &.home {
+    &.admin-header{
+      @media (max-width: $screen-md-max) {
+        &.headers-1{
+          .main-container{
+            padding-top: 100px;
+          }
+        }
+        .main-container{
+          padding-top: 50px;
+        }
+      }
+    }
     font-size: 10px;
     background: $background-color;
 

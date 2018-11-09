@@ -43,7 +43,7 @@
   {% block extra_head %}
   {% endblock %}
 </head>
-<body class="{% block body_class %}default{% endblock %} {% if user.is_superuser %}headers-2{% endif %}">
+<body class="{% block body_class %}default{% endblock %} {% if user.is_superuser %}admin-header{% endif %}">
 {% offer %}
 {% include "account/ajax_login.html" %}
 {% include "account/ajax_become_member.html" %}

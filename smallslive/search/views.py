@@ -274,6 +274,8 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         context = super(TemplateSearchView, self).get_context_data(**kwargs)
         context = self.get_upcoming_events_context_data(context)
         q = self.request.GET.get('q', '')
+        if q:
+            context['musician_search'] = True
 
         artist_id = self.request.GET.get('artist_pk')
         if artist_id:

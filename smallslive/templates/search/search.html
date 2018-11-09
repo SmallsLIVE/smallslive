@@ -12,10 +12,10 @@
 
 {% block extra_nav %}
   <div class="search-tabs tabs">
-    <div class="active" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
+    <div class="{% if not musician_search %}active{% endif %}" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
       <span class="title1">Shows</span>
     </div>
-    <div data-toggle-tab-target="musicians" data-toggle-tab-group="search-results">
+    <div class="{% if musician_search %}active{% endif %}" data-toggle-tab-target="musicians" data-toggle-tab-group="search-results">
       <span class="title1">Musicians</span>
     </div>
   </div>
@@ -37,7 +37,7 @@
 <div class="artist-search-profile-container pad-content"></div>
 
 <div class="search-container pad-content">
-    <section id="musicianContent" data-toggle-tab="musicians" class="search-tab-content" data-toggle-tab-group="search-results">
+    <section id="musicianContent" data-toggle-tab="musicians" class="search-tab-content {% if musician_search %}active{% endif %}" data-toggle-tab-group="search-results">
         <div  class="search-artist-box-container hidden-xs">
           <img src="{% static 'image/search-icon.svg' %}">
           <input id="artist-search"
@@ -46,7 +46,7 @@
                  placeholder="START TYPING AN ARTIST NAME"
                  autocomplete="off">
 
-          <div class="instrument-btn white-border-button">Instrument</div>
+          <div class="instrument-btn white-border-button caret">Instrument</div>
         </div>
       <div class="instruments-container">
         <a href="#" class="close-button"></a>
@@ -55,7 +55,7 @@
           <div data-instrument="{{ instrument }}" class="instrument text4 text-grey">{{ instrument }}</div>
         {% endfor %}
       </div>
-      <div class="instrument-btn white-border-button visible-sm visible-xs">Instrument</div>
+      <div class="instrument-btn white-border-button visible-sm visible-xs caret">Instrument</div>
 
       <div class="container-list-article">
 
@@ -75,6 +75,8 @@
              style="{% if artist_num_pages == 1 %}visibility: hidden;{% endif %}">
         </div>
       </div>
+      <div class="white-border-button load-more-artist-button" onclick="loadMoreArtistButton()" style="{% if artist_num_pages == 1 %}visibility: hidden;{% endif %}">Load more</div>
+      <div hidden class="artist-loading-gif mobile-artist-loading" style="height: 50px; margin-bottom: 30px;"></div>
       <div class="flex-row items-center content-space-between artist-arrows">
         <div class="left_arrow artist-arrow-search"></div>
         <div class="right_arrow artist-arrow-search"></div>

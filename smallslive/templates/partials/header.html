@@ -130,10 +130,11 @@
   
   $('.mobile-menu-icons .fa-search').click(function () {
       var headerCount = getHeaderCount();
-      document.body.classList = Array.prototype.filter.call(document.body.classList, (c) => !c.startsWith('headers-'));
       if ($('#search-bar').hasClass('mobile-search-header-shown')) {
+          $('body').removeClass('headers-' + (headerCount))
           $('body').addClass('headers-' + (headerCount - 1))
       } else {
+        $('body').removeClass('headers-' + (headerCount))
           $('body').addClass('headers-' + (headerCount + 1))
       }
 

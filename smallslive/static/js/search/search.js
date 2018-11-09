@@ -1,5 +1,14 @@
 var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, venueFilter, eventFilter, eventDateFrom, eventDateTo, apply, artist_pk, show_event_venue;
 
+function loadMoreArtistButton(){
+    if (artistPageNum !== artistMaxPageNum){
+        artistPageNum += 1;
+        $(".white-border-button.load-more-artist-button").hide()
+        $(".mobile-artist-loading").show()
+        sendArtistRequest();
+    }
+}
+
 function sendArtistRequest(callback) {
     callback = callback || function () {};
     $.ajax({
@@ -13,9 +22,15 @@ function sendArtistRequest(callback) {
         dataType: 'json',
         success: function (data) {
             if (data.template) {
+                $(".mobile-artist-loading").hide()
                 $("#artist-subheader").html(data.showingResults);
                 $("#artists").append(data.template);
                 artistMaxPageNum = data.numPages;
+                if (artistPageNum === artistMaxPageNum){
+                    $(".white-border-button.load-more-artist-button").hide()
+                }else{
+                    $(".white-border-button.load-more-artist-button").show()
+                }
             }
             callback(data);
         },
@@ -122,7 +137,7 @@ function sendEventRequest() {
         success: function (data) {
             if (data.template) {
                 var $showsContainer = $('.search-content .shows-container');
-                console.log(data.showingResults)
+                $("#events").removeClass("artist-loading-gif");
                 $('#event-subheader').html(data.showingResults);
                 $('#event-subheader-footer').html(data.showingResults);
                 if (apply || eventFilter) {
@@ -131,16 +146,15 @@ function sendEventRequest() {
                     $showsContainer.html('');
                     $('#events .shows-container').html('');
                 }
-                 var article = $(data.template).find('article');
-                 if (!article.length) {
-                     $('#events .shows-container').html(data.template);
-                     $showsContainer.html(data.template);
-                 }
-                 article.each(function( index ) {
-                     $('#events .shows-container').append($( this ));
-                     $showsContainer.append($( this ));
-                 });
-
+                var article = $(data.template).find('article');
+                if (!article.length) {
+                    $('#events .shows-container').html(data.template);
+                    $showsContainer.html(data.template);
+                }
+                article.each(function( index ) {
+                    $('#events .shows-container').append($( this ));
+                    $showsContainer.append($( this ));
+                });
                 eventMaxPageNum = data.numPages;
                 $("#event-load-gif").css("display", "none");
                 $("#load-more-btn").toggle(data.numPages != eventPageNum);
@@ -498,6 +512,8 @@ $(document).ready(function () {
     });
 
     $("#apply-button").click(function () {
+        $('#load-more-btn').hide()
+        $('#events .shows-container').html('');
         if($(this).closest('.calendar').length > 0){
             show_event_venue = true
         }
@@ -506,6 +522,7 @@ $(document).ready(function () {
         apply = true;
         eventPageNum = 1;
         $(".datepicker-container").hide();
+        $("#events").addClass("artist-loading-gif");
         sendEventRequest();
 
         if (!eventDateTo || !eventDateFrom) {
@@ -661,10 +678,6 @@ $(document).ready(function () {
 
     });
 
-    //////////////////////
-    //$(".artists-container").slick({
-     //   slidesToShow: 4,
-      //  slidesToScroll: 4
-      //});
+    
 
 });

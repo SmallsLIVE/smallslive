@@ -398,11 +398,11 @@ $text-font-size-big: 1.4em;
   text-shadow: 0.001em 0.001em;
   cursor: pointer;
 
-  @media (min-width: 1024px) and (max-width: 1366px) {
+  @media (min-width: 1023px) and (max-width: 1366px) {
     font-size: 12px;
   }
 
-  @media(max-width: 1024px) {
+  @media(max-width: 1023px) {
     font-size: 10px;
   }
 }
