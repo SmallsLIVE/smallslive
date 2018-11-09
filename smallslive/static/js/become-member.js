@@ -38,7 +38,6 @@ $(document).ready(function(){
   var updatePaymentInfo = function () {
     var pledgeType = selectedData.type;
     var pledgeAmount = selectedData.quantity;
-    console.log(pledgeType)
     if (pledgeType === 'year') {
       $('#pledge-type').html('You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' + pledgeAmount +'</span> .');
       $('#payment-type').html('Your  card  will  be  charged  in  this  amount.');
@@ -102,7 +101,6 @@ $(document).ready(function(){
   $(oneTimePayment).on('keyup', function (event) {
     var value = $(oneTimePayment).val();
     if (value) {
-      console.log('has value!', value);
       resetButtons();
       setSelected('one-time', value);
       $(oneTimePayment).addClass('active');

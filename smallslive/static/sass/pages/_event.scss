@@ -234,6 +234,10 @@ $player-height:  27.5vw;
     column-count: 3;
     column-fill: auto;
     .title5 {
+      @media (max-width: $screen-md-min) {
+        width: 47vw;
+        font-size: 3vw;
+      }
       line-height: 1.5;
       white-space: nowrap;
     }
@@ -424,7 +428,9 @@ $player-height:  27.5vw;
   border-radius: 44px;
   border: 1px solid $accent-color;
   opacity: 0;
-
+  @media (max-width: $screen-md-max) {
+    opacity: 1;
+  }
   .jw-svg-icon {
     height: 44px;
     width: 44px;

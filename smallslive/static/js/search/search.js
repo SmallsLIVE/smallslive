@@ -3,6 +3,7 @@ var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPage
 function loadMoreArtistButton(){
     if (artistPageNum !== artistMaxPageNum){
         artistPageNum += 1;
+        //$(".container-list-article").addClass("artist-loading-gif");
         sendArtistRequest();
     }
 }
@@ -132,7 +133,7 @@ function sendEventRequest() {
         success: function (data) {
             if (data.template) {
                 var $showsContainer = $('.search-content .shows-container');
-                console.log(data.showingResults)
+                $("#events").removeClass("artist-loading-gif");
                 $('#event-subheader').html(data.showingResults);
                 $('#event-subheader-footer').html(data.showingResults);
                 if (apply || eventFilter) {
@@ -141,16 +142,15 @@ function sendEventRequest() {
                     $showsContainer.html('');
                     $('#events .shows-container').html('');
                 }
-                 var article = $(data.template).find('article');
-                 if (!article.length) {
-                     $('#events .shows-container').html(data.template);
-                     $showsContainer.html(data.template);
-                 }
-                 article.each(function( index ) {
-                     $('#events .shows-container').append($( this ));
-                     $showsContainer.append($( this ));
-                 });
-
+                var article = $(data.template).find('article');
+                if (!article.length) {
+                    $('#events .shows-container').html(data.template);
+                    $showsContainer.html(data.template);
+                }
+                article.each(function( index ) {
+                    $('#events .shows-container').append($( this ));
+                    $showsContainer.append($( this ));
+                });
                 eventMaxPageNum = data.numPages;
                 $("#event-load-gif").css("display", "none");
                 $("#load-more-btn").toggle(data.numPages != eventPageNum);
@@ -516,6 +516,7 @@ $(document).ready(function () {
         apply = true;
         eventPageNum = 1;
         $(".datepicker-container").hide();
+        $("#events").addClass("artist-loading-gif");
         sendEventRequest();
 
         if (!eventDateTo || !eventDateFrom) {
