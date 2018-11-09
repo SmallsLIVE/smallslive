@@ -3,7 +3,8 @@ var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPage
 function loadMoreArtistButton(){
     if (artistPageNum !== artistMaxPageNum){
         artistPageNum += 1;
-        //$(".container-list-article").addClass("artist-loading-gif");
+        $(".white-border-button.load-more-artist-button").hide()
+        $(".mobile-artist-loading").show()
         sendArtistRequest();
     }
 }
@@ -21,11 +22,14 @@ function sendArtistRequest(callback) {
         dataType: 'json',
         success: function (data) {
             if (data.template) {
+                $(".mobile-artist-loading").hide()
                 $("#artist-subheader").html(data.showingResults);
                 $("#artists").append(data.template);
                 artistMaxPageNum = data.numPages;
                 if (artistPageNum === artistMaxPageNum){
                     $(".white-border-button.load-more-artist-button").hide()
+                }else{
+                    $(".white-border-button.load-more-artist-button").show()
                 }
             }
             callback(data);

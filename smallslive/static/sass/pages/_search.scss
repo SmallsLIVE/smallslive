@@ -19,8 +19,8 @@ body.headers-1 {
 .home.headers-3{ 
   &.admin-header{
     .search-container.pad-content{
-      @media (max-width: $screen-sm-max) {
-        padding-top: 120px;
+      @media (max-width: $screen-md-max) {
+        padding-top: 30px;
       }
     }
   } 
@@ -65,7 +65,9 @@ body.headers-1 {
     @media(max-width: $screen-sm-max) {
       top: 5.5vw;
     }
-
+    @media (max-width: $screen-xs) {
+      display: none;
+    }
   }
 }
 
@@ -148,7 +150,7 @@ body.headers-1 {
   display: none;
   background-color: $background-grey;
 
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     width: 100%;
     display: flex;
     flex: 1;
@@ -156,6 +158,7 @@ body.headers-1 {
     justify-content: stretch;
     z-index: 1000;
     &.artist-tabs{
+      margin-top: 0px;
       & > div {
         background-color: $background-color;
       }
@@ -204,6 +207,9 @@ body.headers-1 {
   }
   #showsContent{
     margin-top: 30px;
+    @media (max-width: $screen-md-min) {
+      margin-top: 0px;
+    }
     min-height: 500px;
   }
   .search-tab-content {
@@ -440,7 +446,8 @@ body.headers-1 {
   .white-border-select {
   &:not(.no-arrow) {
     .select-selected {
-      @media (max-width: $screen-sm-max) {
+      @media (max-width: $screen-md-max) {
+        padding: 0.5em;
         border: 3px solid rgba(255, 255, 255, 0.9);
         font-size: 3.5vw;
         height: 13vw;
@@ -448,8 +455,11 @@ body.headers-1 {
         vertical-align: top;
       }
       &:after {
-        @media (max-width: $screen-sm-max) {
+        @media (max-width: $screen-md-max) {
           top: 5.5vw;
+        }
+        @media (max-width: $screen-xs) {
+          display: none;
         }
       }
     }
@@ -731,10 +741,10 @@ body.headers-1 {
   background-repeat: no-repeat;
   background-size: 50px;
 }
-.home .artist-search-profile-container {
+.home div.artist-search-profile-container {
   display: none;
   &.pad-content{
-    padding-top: 0px;
+    padding-top: 60px;
   }
   .content-centered {
     flex-direction: row;
@@ -761,7 +771,7 @@ body.headers-1 {
 }
 
 .artist-search-profile-resume {
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     margin-left: 0;
     .mobile-padding > .text1{
       margin-top: 15px;
