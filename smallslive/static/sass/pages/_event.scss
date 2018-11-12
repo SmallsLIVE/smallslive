@@ -230,16 +230,17 @@ $player-height:  27.5vw;
   }
 
   .event-overlay-artists {
-    height: 150px;
+    height: 65%;
     column-count: 3;
     column-fill: auto;
     .title5 {
+      font-size: 1.3vw;
+      line-height: 1.5;
+      white-space: nowrap;
       @media (max-width: $screen-md-min) {
         width: 47vw;
         font-size: 3vw;
-      }
-      line-height: 1.5;
-      white-space: nowrap;
+      }    
     }
   }
 

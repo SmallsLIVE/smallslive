@@ -33,7 +33,7 @@ body.headers-1 {
     }
   } 
   .search-container.pad-content{
-    @media (max-width: $screen-sm-max) {
+    @media (max-width: $screen-md-max) {
       padding-top: 70px;
     }
   }
@@ -235,7 +235,7 @@ body.headers-1 {
     .datepicker-container.noclick{
       top: 12.5vw !important;
       left: 0 !important;
-      width: 96.4vw;
+      width: 100vw;
       .datepicker.datepicker-orient-right.datepicker-orient-top{
         
         left: 5vw !important;
@@ -379,6 +379,10 @@ body.headers-1 {
           margin: 0 auto;      
         }
         .artist-mobile {
+          flex: 1;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
           padding: 0 40px;
           margin-bottom: 20px;
           > a{
@@ -1077,6 +1081,9 @@ body.headers-1 {
       font-size: 3.5vw;
       margin-right: 1vw;
       vertical-align: top;
+      &.caret{
+        margin-right: 0;
+      }
     }
   }
 }
