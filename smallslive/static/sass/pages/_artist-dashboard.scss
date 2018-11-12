@@ -11,8 +11,48 @@
         padding: 20px 0;
     }
     ~ .refine-overlay.dashboard-refine{
-        top:15vw;
+        
+        top:54px;
         overflow: scroll;
+        .custom-date-picker{
+            width: 160px;
+            &::before{
+                position: absolute;
+                z-index: 3;
+                @include text2;
+                font-size: 1.2em;
+            }
+            &.search-date-picker-to-refine::before{
+                margin-left: 25px;
+                content: "To";
+            }
+            &.search-date-picker-from-refine::before{
+                margin-left: 15px;
+                content: "From";
+            }
+            input{
+                &::placeholder{
+                    color:grey;
+                }
+                font-size: 1.2em;
+                background-color: $background-color;
+                color: $accent-color;
+                border-radius: 12px;
+                padding: 20px 0 20px 40px;
+                
+            }
+            .date-picker-text input::after{
+                content: "to";
+                color: black;
+                font-size: 7px;
+            }
+        }
+        .refine-datepicker-container .datepicker {
+            left:0 !important;
+            width: 100vw;
+            top: 80px !important;
+            z-index: 1 !important;
+        }
     }
     .event-mobile-info {
         width: 100%;
