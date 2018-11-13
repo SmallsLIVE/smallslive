@@ -1,4 +1,14 @@
 .supporter-main-container {
+  #supporterStep3{
+    @media(max-width:$screen-md-max) {
+      .section-title {
+        background-size: 100vw 10px;
+        padding-bottom: 9px;
+        min-width: 320px;
+        width: 49vw;
+      }
+    }
+  }
   .payment-information{
     margin-top:60px;
   }
@@ -110,6 +120,9 @@
     margin-top: 50px;
     .button-bordered{
       padding: 0 30px;
+      @media(max-width:$screen-md-max) {
+        padding: 0 20px;
+      }
     }
   }
 
