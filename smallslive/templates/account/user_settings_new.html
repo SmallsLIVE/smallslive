@@ -8,7 +8,7 @@
 {% block title %}Smalls Jazz Club{% endblock %}
 
 {# TODO Shouldn't be needed here #}
-{% block body_class %}home no-scroll{% endblock %}
+{% block body_class %}home no-scroll absolute{% endblock %}
 
 {% block extra_head %}
 	<meta name="description"
@@ -382,6 +382,14 @@
 
   });
 
+  function endDonation(){
+	if("{{ redirect_url }}"){
+	  window.location = "{{ redirect_url }}"
+	}else{
+	  $('#one-time-donation').modal('hide');
+	}
+  }
+  </script>
 </script>
 
 

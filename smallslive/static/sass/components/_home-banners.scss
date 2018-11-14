@@ -2,7 +2,7 @@ $banners-height: 38vh;
 
 .banners {
 
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     display: none;
   }
   margin-bottom: 30px;
@@ -209,7 +209,7 @@ $banners-height: 38vh;
     width: 100vw;
     text-align: center;
 
-    @media (max-width: $screen-sm-max) {
+    @media (max-width: $screen-md-max) {
       display: block;
     }
 

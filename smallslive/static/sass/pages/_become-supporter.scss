@@ -1,4 +1,14 @@
 .supporter-main-container {
+  #supporterStep3{
+    @media(max-width:$screen-md-max) {
+      .section-title {
+        background-size: 100vw 10px;
+        padding-bottom: 9px;
+        min-width: 320px;
+        width: 49vw;
+      }
+    }
+  }
   .payment-information{
     margin-top:60px;
   }
@@ -15,6 +25,26 @@
       width: 320px;
     }
     padding: 20px 0;
+    @media(max-width:$screen-md-max) {
+      .section-title > div.title1 {
+          font-size: 30px;
+          line-height: 36px;
+      }
+      #monthlyPledge,#yearlyPledge{
+        button{
+          margin: 0 10px 0 0;
+          font-size:14px;
+        }
+        .no-spinners{
+          font-size: 9px;
+        }
+        .custom-input{
+          label div{
+            font-size:0.8em;
+          }
+        }
+      }
+    }
   }
   input{
     background-color: transparent;
@@ -35,7 +65,7 @@
   position: relative;
 
   overflow: hidden;
-  margin: 30px 200px;
+  margin: 30px 10vw;
   min-height: 680px;
 
   #supporterSteps {
@@ -74,9 +104,13 @@
   }
 
   > p {
+    text-align: center;
     padding: 30px 0 10px 0;
   }
   .title7{
+    @media(max-width:$screen-md-max) {
+      font-size: 4vw;
+    }
     margin:0 auto;
   }
   .title1{
@@ -86,6 +120,9 @@
     margin-top: 50px;
     .button-bordered{
       padding: 0 30px;
+      @media(max-width:$screen-md-max) {
+        padding: 0 20px;
+      }
     }
   }
 
@@ -128,7 +165,7 @@
   padding: 130px 100px 20px;
 
   @media(max-width:$screen-md-max) {
-    padding: 20px;
+    padding:0px;
 
     h1 {
       margin-bottom: 150px;
