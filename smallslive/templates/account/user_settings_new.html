@@ -26,7 +26,7 @@
 
 
 
-<div class="account-settings-container-new flex-row">
+<div class="account-settings-container-new">
 	<div class="account-settings-info-container">
 		<div class="flex-column">
 			<div id="user-account" class="account-settings-view">
@@ -135,28 +135,33 @@
 			</div>
 			
 			<div id="user-billing" class="account-settings-view">
-				<div class="title5 account-settings-title text-bottom-lineFin">Billing</div>
-					<div class="account-settings-info">
-						<div class="text5">Credit card</div>
-						{% if not customer_detail.active_card %}
-							<div class="text9 text-grey">There is no credit card assigned</div>
-						{% else %}
-							<div class="text9 text-grey">xxxx-xxxx-xxxx-{{customer_detail.active_card.last4}}</div>
-							<div class="text9 text-grey">exp: {{customer_detail.active_card.exp_month}}/{{customer_detail.active_card.exp_year}}</div>
-						{% endif %}
-					</div>
-					<div class="account-settings-info">
-						<div class="text5">Billing address</div>
-						{% if user.address_1 or user.address_2 or user.city %}
-							<div class="text9 text-grey">{{ user.address_1 }}</div>
-							<div class="text9 text-grey">{{ user.address_2 }}</div>
-							<div class="text9 text-grey">{{user.city }}</div>
-						{% else %}
-							<div class="text9 text-grey">There is no address assigned</div>
-						{% endif %}
-					
-					<button class="white-border-button">Update</button>	
+				<div class="title5 account-settings-title text-bottom-line">Billing</div>
+				<div data-toggle-tab="user-billing-info" data-toggle-tab-group="user-billing">
+						<div class="account-settings-info">
+							<div class="text5">Credit card</div>
+							{% if not customer_detail.active_card %}
+								<div class="text9 text-grey">There is no credit card assigned</div>
+							{% else %}
+								<div class="text9 text-grey">xxxx-xxxx-xxxx-{{customer_detail.active_card.last4}}</div>
+								<div class="text9 text-grey">exp: {{customer_detail.active_card.exp_month}}/{{customer_detail.active_card.exp_year}}</div>
+							{% endif %}
+						</div>
+						<div class="account-settings-info">
+							<div class="text5">Billing address</div>
+							{% if user.address_1 or user.address_2 or user.city %}
+								<div class="text9 text-grey">{{ user.address_1 }}</div>
+								<div class="text9 text-grey">{{ user.address_2 }}</div>
+								<div class="text9 text-grey">{{user.city }}</div>
+							{% else %}
+								<div class="text9 text-grey">There is no address assigned</div>
+							{% endif %}
+						
+							<button class="white-border-button" data-toggle-tab-target="user-billing-form" data-toggle-tab-group="user-billing">Update</button>
+						</div>
 				</div>
+				<div data-toggle-tab="user-billing-form" data-toggle-tab-group="user-billing" style="display:none">
+						{% comment %} Forms here {% endcomment %}
+				</div>	
 			</div>
 		</div>
 	</div>
