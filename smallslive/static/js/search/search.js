@@ -324,12 +324,12 @@ $(document).ready(function () {
     $(".instrument-btn").click(function () {
 
         if (!$(".instruments-container").is(":visible")) {
-            if(window.screen.availWidth < 960){
+            if(window.screen.availWidth < 1024){
                 $("body").addClass("hidden-body");
             }
             $(".instruments-container").css("display", "flex");
         } else {
-            if(window.screen.availWidth < 960){
+            if(window.screen.availWidth < 1024){
                 $("body").removeClass("hidden-body");
             }
             $(".instruments-container").css("display", "none");
@@ -348,13 +348,13 @@ $(document).ready(function () {
     });
 
     $('.instruments-container .close-button').click(function () {
-        if(window.screen.availWidth < 960){
+        if(window.screen.availWidth < 1024){
         $("body").removeClass("hidden-body");
         }
     });
 
     $('.instrument').click(function () {
-        if(window.screen.availWidth < 960){
+        if(window.screen.availWidth < 1024){
             $("body").removeClass("hidden-body");
         }
         artistInstrument = $(this).data('instrument');
@@ -503,7 +503,7 @@ $(document).ready(function () {
           apply = true;
           eventPageNum = 1;
           $('[data-toggle-tab-group="search-results"][data-toggle-tab-target]').show();
-          if(window.screen.availWidth < 960){
+          if(window.screen.availWidth < 1024){
             $('[data-toggle-tab-group="search-results"][data-toggle-tab]').hide();
           }
           $('[data-toggle-tab-group="search-results"][data-toggle-tab="musicians"]').show();

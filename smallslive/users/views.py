@@ -480,7 +480,7 @@ def user_settings_view_new(request):
     if customer.has_active_subscription():
         plan_id = request.user.customer.current_subscription.plan
         plan = stripe.Plan.retrieve(id=plan_id)
-
+    
     customer_charges = customer.charges.all()
    
     charges_value =0
@@ -501,6 +501,8 @@ def user_settings_view_new(request):
     else:
         cancel_at = False
 
+    print(customer_detail)
+    print(customer.has_active_subscription())
     return render(request, 'account/user_settings_new.html', {
         'change_email_form': change_email_form,
         'change_profile_form': edit_profile_form,
