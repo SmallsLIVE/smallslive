@@ -407,7 +407,7 @@ body.headers-1 {
   margin: 0 15%;
   padding: 10px 20px;
 
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     margin: 0;
     width: 100vw;
     position: absolute;
@@ -417,7 +417,7 @@ body.headers-1 {
     
   }
 
-  @media (min-width: $screen-md-min) {
+  @media (min-width: $screen-lg-min) {
     width: 70%;
     left: 50px;
     padding: 30px 125px;
@@ -432,7 +432,7 @@ body.headers-1 {
     width: 130px;
     margin: 5px;
 
-    @media (max-width: $screen-sm-max) {
+    @media (max-width: $screen-md-max) {
       font-size: 2em;
       margin: 0 15px;
       width: 150px;
