@@ -299,7 +299,10 @@ $event-row-padding: 3.5vw;
   @media (max-width: 1365px) and (min-width: 1024px) {
     @include event-card($regular-card-width-medium, $regular-card-width-medium * 0.6);
   } 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-md-max) and (min-width: $screen-md-min) {
+    @include event-card($regular-card-width-medium, $regular-card-width-medium * 0.6);
+  } 
+  @media (max-width: $screen-sm-max) {
     @include event-card($regular-card-width-mobile, $regular-card-width-mobile * 0.6);
   }
 }

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from wkhtmltopdf.views import PDFTemplateView
 from allauth.account.forms import ChangePasswordForm
 from allauth.account.models import EmailAddress
@@ -501,8 +501,6 @@ def user_settings_view_new(request):
     else:
         cancel_at = False
 
-    print(customer_detail)
-    print(customer.has_active_subscription())
     return render(request, 'account/user_settings_new.html', {
         'change_email_form': change_email_form,
         'change_profile_form': edit_profile_form,
@@ -548,7 +546,9 @@ class UserTaxLetter(PDFTemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserTaxLetter, self).get_context_data(**kwargs)
         customer = self.request.user.customer
-        customer_charges = customer.charges.all()
+        start_date =date(date.today().year, 1, 1)
+        end_date = date(date.today().year, 12, 31)
+        customer_charges = customer.charges.filter(created__range=(start_date, end_date))
         charges_value = 0
         for charge in customer_charges:
             charges_value += charge.amount
