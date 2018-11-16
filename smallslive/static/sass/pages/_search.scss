@@ -407,7 +407,7 @@ body.headers-1 {
   margin: 0 15%;
   padding: 10px 20px;
 
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     margin: 0;
     width: 100vw;
     position: absolute;
@@ -417,7 +417,7 @@ body.headers-1 {
     
   }
 
-  @media (min-width: $screen-md-min) {
+  @media (min-width: $screen-lg-min) {
     width: 70%;
     left: 50px;
     padding: 30px 125px;
@@ -432,7 +432,7 @@ body.headers-1 {
     width: 130px;
     margin: 5px;
 
-    @media (max-width: $screen-sm-max) {
+    @media (max-width: $screen-md-max) {
       font-size: 2em;
       margin: 0 15px;
       width: 150px;
@@ -454,7 +454,6 @@ body.headers-1 {
     display: inline-block;
     vertical-align: top;
   }
-
   .white-border-select {
   &:not(.no-arrow) {
     .select-selected {
@@ -485,12 +484,19 @@ body.headers-1 {
 
     > .white-border-button {
       margin-right: 20px;
+      border: 2px solid $white-transparent;
     }
 
     > .white-border-select,
     > .white-border-button {
       width: 200px;
     }
+  }
+  @media (max-width: 1366px) and (min-width: 1024px){
+    > .white-border-select{
+        width: 14vw;
+    }
+
   }
 
   @media (max-width: $screen-md-max) {
@@ -797,7 +803,7 @@ body.headers-1 {
 
 .mobile-padding {
 
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     padding: 0 20px;
     width: 100%;
   }
@@ -837,7 +843,7 @@ body.headers-1 {
     }
   }
 
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     font-size: 1.2em;
     width: auto;
     flex-direction: column-reverse;
@@ -887,12 +893,12 @@ body.headers-1 {
   }
 
   &.text4{
-    @media (max-width: $screen-sm-max) {
+    @media (max-width: $screen-md-max) {
     font-size:  3.125vw;
     line-height: 4.7vw;
     }
   }
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     width: 100%;
     height: auto;
     &.collapsed {
@@ -917,7 +923,7 @@ body.headers-1 {
   @media (max-width: $screen-sm-max) {
     display: block;
   }
-  @media (min-width: $screen-sm-max) {
+  @media (min-width: $screen-md-min) {
     font-size: 15px;
     height: 10vw;
   }
@@ -927,8 +933,9 @@ body.headers-1 {
       height: 150px;
       text-align: center;
     }
-    @media (min-width: $screen-sm-max) {
+    @media (min-width: $screen-md-max) {
       .title1 {
+        font-size: 5vw;
         position: relative;
         top: 50%;
       }
@@ -1222,7 +1229,7 @@ body.headers-1 {
   letter-spacing: 0.1vw;
   line-height: 2.7vw;
   padding-bottom: 3px;
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     @include title1;
   }
 }
@@ -1260,8 +1267,11 @@ body.headers-1 {
 .shows-calendar {
   .datepicker-container.noclick{
     width: 320px !important;
-    top: 40px !important;
+    top: 38px !important;
     left: 170px !important;
+    @media (max-width: 1366px) and (min-width: 1024px){
+      left: 11.5vw !important;
+    }
     .custom-date-picker{
       width: 100%;
     }
@@ -1300,6 +1310,9 @@ body.headers-1 {
         }
         .select-selected{
         width: 40VW;
+        }
+        .datepicker-btn{
+          width: 40vw;
         }
         .datepicker table{
           width: 82vw;

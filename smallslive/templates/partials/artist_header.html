@@ -76,6 +76,22 @@
   </div>
   <div class="mobile-menu-icons flex-row items-center content-space-between">
     <i class="fa fa-bars" onclick="toggleSideBar()"></i>
+    <div>
+      <i class="fa fa-user" onclick="toggleAdmin()"></i>
+    </div>
+  </div>
+  <div id="mobile-user-option-menu" hidden class="mobile-user-option flex-column">
+    {% if not request.user.is_authenticated %}
+      <button class="text2 sign-in-button" href="#logIn" data-toggle="modal">
+      Sign In
+      </button>
+    {% else %}
+      {% if request.user.artist %}
+        <div class="text2"><a href="{% url 'artist_dashboard:my_past_events' %}">Artist Dashboard</a></div>
+      {% endif %}
+        <div class="text2"><a href="{% url 'user_settings_new' %}">Account</a></div>
+        <div class="text2"><a href="{% url 'account_logout' %}">Sign Out</a></div>
+    {% endif %}
   </div>
 </header>
 
@@ -102,5 +118,11 @@
   function toggleSideBar() {
       $('#side-navigation').toggleClass('side-bar-hidden');
   }
-
+  function toggleAdmin(){
+    if ($("#mobile-user-option-menu").is(":hidden")) {
+      $("#mobile-user-option-menu").slideDown("slow");
+    } else {
+      $("#mobile-user-option-menu").hide();
+    }
+  }
 </script>
