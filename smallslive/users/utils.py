@@ -113,9 +113,13 @@ def one_time_donation(customer, stripe_token, amount,
     charge(customer, amount)
     if grant_access_to_archive:
         user = customer.subscriber
-        user.archive_access_until = add_years(now(), 1)
+        user.archive_access_until = date(date.today().year+1, 1, 1)
         user.save()
         print user.archive_access_until
+
+def update_active_card(customer, stripe_token):
+    customer.update_card(stripe_token)
+    print("A")
 
 
 def subscribe_to_plan(customer, stripe_token, amount, plan_type):

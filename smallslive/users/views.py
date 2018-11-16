@@ -438,6 +438,23 @@ def user_settings_view_new(request):
     else:
         edit_profile_form = EditProfileForm(user=request.user)
 
+    """if 'edit_profile' in request.POST:
+        try:
+                stripe_token = self.request.POST.get('stripe_token')
+                customer, created = Customer.get_or_create(
+                    subscriber=subscriber_request_callback(request))
+                update_active_card(customer, stripe_token)
+            except stripe.StripeError as e:
+                # add form error here
+                return _ajax_response(request, JsonResponse({
+                    'error': e.args[0]
+                }, status=500))
+
+            return _ajax_response(
+                request, redirect(reverse('become_supporter_complete'))
+            )
+    """
+
     if 'change_email' in request.POST:
         change_email_form = ChangeEmailForm(data=request.POST, user=request.user)
         if change_email_form.is_valid():
