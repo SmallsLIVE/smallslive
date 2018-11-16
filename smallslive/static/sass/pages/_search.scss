@@ -454,7 +454,6 @@ body.headers-1 {
     display: inline-block;
     vertical-align: top;
   }
-
   .white-border-select {
   &:not(.no-arrow) {
     .select-selected {
@@ -485,12 +484,19 @@ body.headers-1 {
 
     > .white-border-button {
       margin-right: 20px;
+      border: 2px solid $white-transparent;
     }
 
     > .white-border-select,
     > .white-border-button {
       width: 200px;
     }
+  }
+  @media (max-width: 1366px) and (min-width: 1024px){
+    > .white-border-select{
+        width: 14vw;
+    }
+
   }
 
   @media (max-width: $screen-md-max) {
@@ -1261,8 +1267,11 @@ body.headers-1 {
 .shows-calendar {
   .datepicker-container.noclick{
     width: 320px !important;
-    top: 40px !important;
+    top: 38px !important;
     left: 170px !important;
+    @media (max-width: 1366px) and (min-width: 1024px){
+      left: 11.5vw !important;
+    }
     .custom-date-picker{
       width: 100%;
     }
@@ -1301,6 +1310,9 @@ body.headers-1 {
         }
         .select-selected{
         width: 40VW;
+        }
+        .datepicker-btn{
+          width: 40vw;
         }
         .datepicker table{
           width: 82vw;

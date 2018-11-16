@@ -1,0 +1,31 @@
+<script type="text/javascript">
+    var sentHint = $('#sentHint');
+    Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
+
+    function startStripePayment($form) {
+      var stripeResponseHandler = function (status, response) {
+        if (response.error) {
+          // Show the errors on the form
+          // TODO Display payment errors
+          $('#form-general-error').text(response.error.message);
+          $form.find('.submit-button').prop('disabled', false).removeClass('disabled');
+        } else {
+          // token contains id, last4, and card type
+          var token = response.id;
+          // Insert the token into the form so it gets submitted to the server
+          $form.append($('<input type="hidden" name="stripe_token" />').val(token));
+          $.ajax({
+            type: "POST",
+            url: $form.attr('action'),
+            data: $form.serialize(),
+            success: function (data) {
+                window.location = data.location
+            },
+            error: function () {
+            }
+          });
+        }
+      };
+      Stripe.card.createToken($form, stripeResponseHandler);
+    }
+  </script>
