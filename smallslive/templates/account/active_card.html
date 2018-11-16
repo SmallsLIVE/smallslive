@@ -1,0 +1,97 @@
+{% load static from staticfiles %}
+{% load full_static %}
+{% load djstripe_tags %}
+{% block flow_payment %}
+
+    <form method="POST" role="form" class="custom-form" action="{{ form_action }}">
+      {% csrf_token %}
+      <input type="text" name="redirect_url" value="{{ redirect_url }}"hidden>
+      <div class="flex-column content-space-between flex-grow">
+        <div class="flex-row content-space-between">
+          <div class="form-group">
+            <input id="full-name" type="text" class="form-control credit-card" placeholder="Full Name on Credit Card" data-stripe="name">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control quarter-group" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control quarter-group" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-year">
+          </div>
+        </div>
+        <div class="flex-row content-space-between">
+          <div class="form-group">
+          <input type="text" class="form-control"  id="card-number" placeholder="Credit Card Number" size="20" pattern="[\d ]*" autocomplete="off" data-stripe="number" name="number">
+          </div>
+          <div class="form-group">
+          <input type="text" class="form-control half" id="cvc" placeholder="CVC" size="4" pattern="\d*" autocomplete="off" data-stripe="cvc" name="cvc">
+          </div>  
+        </div>
+        <div class="form-group">
+          <p class="form-error-text hidden" id="type-error"></p>
+          <p class="form-error-text hidden" id="quantity-error"></p>
+          <p class="form-error-text hidden" id="card_name-error"></p>
+          <p class="form-error-text hidden" id="expiration_date-error"></p>
+          <p class="form-error-text hidden" id="credit_card_number-error"></p>
+          <p class="form-error-text hidden" id="credit_card_cvc-error"></p>
+          <p class="form-error-text hidden" id="all-errors"></p>
+        </div>
+      </div>
+      <input type="submit" class="white-border-button" value="Continue">
+    </form>
+
+{% endblock %}
+{% block extra_js %}
+  {% block stripe_payment %}
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript">
+      var sentHint = $('#sentHint');
+      Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
+
+      function startStripePayment($form) {
+        var stripeResponseHandler = function (status, response) {
+          if (response.error) {
+            // Show the errors on the form
+            // TODO Display payment errors
+            $('#form-general-error').text(response.error.message);
+            $form.find('.submit-button').prop('disabled', false).removeClass('disabled');
+          } else {
+            // token contains id, last4, and card type
+            var token = response.id;
+            // Insert the token into the form so it gets submitted to the server
+            $form.append($('<input type="hidden" name="stripe_token" />').val(token));
+            // and submit
+            
+
+            $.ajax({
+              type: "POST",
+              url: $form.attr('action'),
+              data: $form.serialize(),
+              success: function (data) {
+                if(typeof completeSubpage !== "undefined"){
+                  console.log("Works?")
+                  notCompleteContainer.html("")
+                  var flowCompleteSubpage = window.subpages.get(completeSubpage);
+                  flowCompleteSubpage.load();
+                }
+                else{
+                  window.location = data.location
+                }
+              },
+              error: function () {
+              }
+            });
+  
+
+
+          }
+        };
+        Stripe.card.createToken($form, stripeResponseHandler);
+      }
+    </script>
+
+
+  
+    <script src="{% static 'js/become-member.js' %}"></script>
+  {% endblock %}
+
+{% endblock %}

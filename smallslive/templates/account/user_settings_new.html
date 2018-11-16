@@ -160,6 +160,7 @@
 						</div>
 				</div>
 				<div data-toggle-tab="user-billing-form" data-toggle-tab-group="user-billing" style="display:none">
+						{% include 'account/active_card.html' %}
 						{% include 'account/payout_info.html' %}
 				</div>	
 			</div>
@@ -243,10 +244,11 @@
 <script src="{% static 'js/subpages.js' %}"></script>
 <script src="{% static 'js/jquery.form.js' %}"></script>
 <script>
+	Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
 	var completeSubpage;
 	var notCompleteContainer;
-  var subpages = window.subpages;
-  subpages.register();
+	var subpages = window.subpages;
+	subpages.register();
 
   var isPaypalScriptLoaded = false;
   var isCardScriptLoaded = false;
