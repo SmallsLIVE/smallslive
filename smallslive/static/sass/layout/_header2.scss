@@ -53,7 +53,9 @@
   top: 0;
   width: 100%;
   height: $mobile-bar-height;
-
+  &.mobile-artist-header{
+    position: absolute;
+  }
   @media(max-width: $screen-sm-max) {
     height: $mobile-bar-height;
   }

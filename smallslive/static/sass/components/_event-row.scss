@@ -20,12 +20,7 @@ $event-row-padding: 3.5vw;
       @media (max-width: 1365px) and (min-width: 1024px) {
         height: $live-card-width-medium * 0.6;
       }
-
-      @media (max-width: 1023px) and (min-width: 961px) {
-        height: $live-card-width-medium * 0.6;
-      }
-
-      @media (max-width: $screen-sm-max) {
+      @media (max-width: $screen-md-max) {
         display: none;
       }
     }
@@ -303,12 +298,10 @@ $event-row-padding: 3.5vw;
 
   @media (max-width: 1365px) and (min-width: 1024px) {
     @include event-card($regular-card-width-medium, $regular-card-width-medium * 0.6);
-  }
-
-  @media (max-width: 1023px) and (min-width: 961px) {
-    @include event-card($regular-card-width-tablet, $regular-card-width-tablet * 0.6);
-  }
-
+  } 
+  @media (max-width: $screen-md-max) and (min-width: $screen-md-min) {
+    @include event-card($regular-card-width-medium, $regular-card-width-medium * 0.6);
+  } 
   @media (max-width: $screen-sm-max) {
     @include event-card($regular-card-width-mobile, $regular-card-width-mobile * 0.6);
   }

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from wkhtmltopdf.views import PDFTemplateView
 from allauth.account.forms import ChangePasswordForm
 from allauth.account.models import EmailAddress
@@ -438,6 +438,23 @@ def user_settings_view_new(request):
     else:
         edit_profile_form = EditProfileForm(user=request.user)
 
+    """if 'edit_profile' in request.POST:
+        try:
+                stripe_token = self.request.POST.get('stripe_token')
+                customer, created = Customer.get_or_create(
+                    subscriber=subscriber_request_callback(request))
+                update_active_card(customer, stripe_token)
+            except stripe.StripeError as e:
+                # add form error here
+                return _ajax_response(request, JsonResponse({
+                    'error': e.args[0]
+                }, status=500))
+
+            return _ajax_response(
+                request, redirect(reverse('become_supporter_complete'))
+            )
+    """
+
     if 'change_email' in request.POST:
         change_email_form = ChangeEmailForm(data=request.POST, user=request.user)
         if change_email_form.is_valid():
@@ -480,7 +497,7 @@ def user_settings_view_new(request):
     if customer.has_active_subscription():
         plan_id = request.user.customer.current_subscription.plan
         plan = stripe.Plan.retrieve(id=plan_id)
-
+    
     customer_charges = customer.charges.all()
    
     charges_value =0
@@ -546,7 +563,9 @@ class UserTaxLetter(PDFTemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserTaxLetter, self).get_context_data(**kwargs)
         customer = self.request.user.customer
-        customer_charges = customer.charges.all()
+        start_date =date(date.today().year, 1, 1)
+        end_date = date(date.today().year, 12, 31)
+        customer_charges = customer.charges.filter(created__range=(start_date, end_date))
         charges_value = 0
         for charge in customer_charges:
             charges_value += charge.amount

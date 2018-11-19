@@ -1,6 +1,11 @@
 body {
   // TODO Remove
   &.home {
+    &.absolute{
+      .mobile-header{
+      position: absolute;
+      }
+    }
     &.admin-header{
       @media (max-width: $screen-md-max) {
         &.headers-1{

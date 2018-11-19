@@ -369,12 +369,20 @@ $(document).ready(function () {
     $(".instrument-btn").click(function () {
 
         if (!$(".instruments-container").is(":visible")) {
+<<<<<<< HEAD
             if( viewPortLength("width") < 960){
+=======
+            if(window.screen.availWidth < 1024){
+>>>>>>> 8b91ffd22f852924d45f0951d9872e5a574bbdae
                 $("body").addClass("hidden-body");
             }
             $(".instruments-container").css("display", "flex");
         } else {
+<<<<<<< HEAD
             if( viewPortLength("width") < 960){
+=======
+            if(window.screen.availWidth < 1024){
+>>>>>>> 8b91ffd22f852924d45f0951d9872e5a574bbdae
                 $("body").removeClass("hidden-body");
             }
             $(".instruments-container").css("display", "none");
@@ -393,13 +401,21 @@ $(document).ready(function () {
     });
 
     $('.instruments-container .close-button').click(function () {
+<<<<<<< HEAD
         if( viewPortLength("width") < 960){
+=======
+        if(window.screen.availWidth < 1024){
+>>>>>>> 8b91ffd22f852924d45f0951d9872e5a574bbdae
         $("body").removeClass("hidden-body");
         }
     });
 
     $('.instrument').click(function () {
+<<<<<<< HEAD
         if( viewPortLength("width") < 960){
+=======
+        if(window.screen.availWidth < 1024){
+>>>>>>> 8b91ffd22f852924d45f0951d9872e5a574bbdae
             $("body").removeClass("hidden-body");
         }
         artistInstrument = $(this).data('instrument');
@@ -548,7 +564,11 @@ $(document).ready(function () {
           apply = true;
           eventPageNum = 1;
           $('[data-toggle-tab-group="search-results"][data-toggle-tab-target]').show();
+<<<<<<< HEAD
           if( viewPortLength("width") < 960){
+=======
+          if(window.screen.availWidth < 1024){
+>>>>>>> 8b91ffd22f852924d45f0951d9872e5a574bbdae
             $('[data-toggle-tab-group="search-results"][data-toggle-tab]').hide();
           }
           $('[data-toggle-tab-group="search-results"][data-toggle-tab="musicians"]').show();

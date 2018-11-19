@@ -19,7 +19,7 @@
 
   &.home {
     width: 630px;
-    @media(max-width: $screen-sm-max) {
+    @media(max-width: $screen-md-max) {
     background-size: 100vw 5px;
     padding-bottom: 3px;
       width: 100vw;
@@ -84,7 +84,7 @@
       line-height: 25px;
     }
 
-    @media(max-width: $screen-sm-max) {
+    @media(max-width: $screen-md-max) {
 
       &.title1 {
         font-size: 7vw;

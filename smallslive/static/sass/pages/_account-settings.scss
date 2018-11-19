@@ -75,7 +75,7 @@
         width: 100%;
         display: flex;
         >.flex-column{
-            height: 230vh;
+            height: 260vh;
         }
     }
     .account-settings-menu{
@@ -139,6 +139,30 @@
         .modal-content.custom-modal{
             padding: 0 45px;
             min-height: 95vh;
+            @media(max-width: $screen-md-max) {
+                padding: 0px;
+                .close-button{
+                    z-index: 3;
+                }
+                > .modal-body{
+                    padding: 0;
+                }
+                .items-wrapper {
+                    width: 80vw;
+                }
+                .no-spinners{
+                    min-width: 0px;
+                }
+                .title1{
+                    margin-bottom: 0px;
+                }
+                #supporterStep3{
+                    .section-title{
+                        margin: 0 auto 20px;
+                        min-width: 100%;
+                    }
+                }
+            }
         }
         .donate-setting-container{
             .supporter-main-container{

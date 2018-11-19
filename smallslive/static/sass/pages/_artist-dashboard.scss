@@ -11,8 +11,48 @@
         padding: 20px 0;
     }
     ~ .refine-overlay.dashboard-refine{
-        top:15vw;
+        
+        top:54px;
         overflow: scroll;
+        .custom-date-picker{
+            width: 160px;
+            &::before{
+                position: absolute;
+                z-index: 3;
+                @include text2;
+                font-size: 1.2em;
+            }
+            &.search-date-picker-to-refine::before{
+                margin-left: 25px;
+                content: "To";
+            }
+            &.search-date-picker-from-refine::before{
+                margin-left: 15px;
+                content: "From";
+            }
+            input{
+                &::placeholder{
+                    color:grey;
+                }
+                font-size: 1.2em;
+                background-color: $background-color;
+                color: $accent-color;
+                border-radius: 12px;
+                padding: 20px 0 20px 40px;
+                
+            }
+            .date-picker-text input::after{
+                content: "to";
+                color: black;
+                font-size: 7px;
+            }
+        }
+        .refine-datepicker-container .datepicker {
+            left:0 !important;
+            width: 100vw;
+            top: 80px !important;
+            z-index: 1 !important;
+        }
     }
     .event-mobile-info {
         width: 100%;
@@ -208,6 +248,7 @@
             width: 40%;
             @media (max-width: 1024px) {
                 width: 100%;
+                padding-right: 0px;
             }
             .artist-set-header {
                 justify-content: space-between;
@@ -254,7 +295,7 @@
             }
         }
         .artist-set-actions {
-            @media (max-width: 978px) {
+            @media (max-width: 768px) {
                 display:none;
             }
             display: flex;
@@ -304,6 +345,13 @@
             }
             @media (max-width: 768px) {
                 display: none;
+            }
+            .title1.datepicker-dashboard-btn{
+                width: auto;
+                &::after{
+                    top: 50%;
+                    right: -1vw;
+                }
             }
             .event-metrics-container-plays {
                 border-right: 3px solid $accent-color;
@@ -507,9 +555,9 @@
             box-sizing: border-box;
         }
         .artist-event-info {
-            margin: 10px 0;
+            padding: 10px 0;
             @media (max-width: 1024px) {
-                margin: 20px 0;
+                padding: 20px 0;
                 .button-row {
                     margin-top: 20px;
                 }

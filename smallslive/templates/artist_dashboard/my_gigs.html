@@ -95,7 +95,7 @@
                           <input class="date-picker-text" id="start-date" type="text" placeholder="Select date" readonly>
                       </div>
               
-                      <div class="custom-date-picker" id="search-date-picker-to-refine">
+                      <div class="custom-date-picker search-date-picker-to-refine" id="search-date-picker-to-refine">
                           <input class="date-picker-text" id="until-date" type="text" placeholder="Select date" readonly>
                       </div>
                   </div>
@@ -391,8 +391,6 @@
 
             $datePickerFromRefine.on('changeDate', function (newDate) {
                 eventDateFrom = newDate.date;
-                //$('#events-filter').val('oldest');
-                //$("[value='oldest']").click();
                 $("#search-date-picker-to-refine input").click();
                 $("#search-date-picker-to-refine input").focus();
             });
