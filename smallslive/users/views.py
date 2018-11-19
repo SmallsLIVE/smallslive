@@ -450,7 +450,7 @@ def user_settings_view_new(request):
                 'error': e.args[0]
             }, status=500))
 
-        return HttpResponseRedirect('/accounts/settings/')
+        messages.success(request, 'Your account card has been changed successfully.')
     
 
     if 'change_email' in request.POST:
