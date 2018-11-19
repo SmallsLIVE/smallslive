@@ -10,7 +10,6 @@ var scrollWidth = 0;
 
 
 function outOfBounds(viewPort) {
-
     var browserName = navigator.userAgent.toLowerCase(); 
     if (browserName.indexOf('safari') != -1) { 
         if (browserName.indexOf('chrome') > -1) {
