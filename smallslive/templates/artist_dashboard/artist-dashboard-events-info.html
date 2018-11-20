@@ -433,7 +433,7 @@
 
         function display() {
             $(".artist-events-list-info  .datepicker-container").css("display", "flex").hide().fadeIn(500, function() {
-                $(document).bind("click", hide);
+                $(".artist-metrics-header .artist-metrics-header").bind("click", hide);
                 $(".artist-events-list-info .datepicker-container").data('shown', true);
             });
 
@@ -442,15 +442,12 @@
         }
 
         function hide(event) {
-            var $target = event.target;
-            if (($target.closest('.noclick').length == 0) &&
-            (!($target.hasClass('day') || $target.hasClass('year')))) {
-                $(".artist-events-list-info .datepicker-container").fadeOut(500, function () {
-                    $(document).unbind("click");
-                    $(".artist-events-list-info .datepicker-container").data('shown', false);
-                });
-            }
+            $(".artist-metrics-container .datepicker-container").fadeOut(500, function () {
+                $(".artist-metrics-header .artist-metrics-header").unbind("click");
+                $(".artist-metrics-container .datepicker-container").data('shown', false);
+            });
         }
+        
 
         /////////////////////
 

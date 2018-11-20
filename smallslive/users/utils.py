@@ -119,7 +119,6 @@ def one_time_donation(customer, stripe_token, amount,
 
 def update_active_card(customer, stripe_token):
     customer.update_card(stripe_token)
-    print("A")
 
 
 def subscribe_to_plan(customer, stripe_token, amount, plan_type):
