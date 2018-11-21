@@ -12,7 +12,7 @@
 
     <div class="row">
             <div class="col-sm-6 col-xs-12 user-settings__form left">
-                <form role="form" id="change-email-form" method="post" action="{% url "user_settings" %}">
+                <form role="form" id="change-email-form" method="post" action="{% url "user_settings_new" %}">
                     {% csrf_token %}
                     <h2 class="user-settings__form__heading">Email address:</h2>
                     <p class="user-settings__form__text">Please note that you'll need to confirm your ownership of the new email address once you set it. To do that just follow the confirmation link we'll send to that address.</p>

@@ -1,0 +1,99 @@
+{% load static from staticfiles %}
+{% load full_static %}
+{% load djstripe_tags %}
+{% block flow_payment %}
+<div class="supporter-card-data">
+  <form role="form" id="change-active-card-form" method="post" action="{% url "user_settings_new" %}" class="custom-form">
+    {% csrf_token %}
+    <input type="text" name="redirect_url" value="{{ redirect_url }}"hidden>
+    <div class="flex-column content-space-between flex-grow">
+      <input  hidden type="text" name="edit_active_card" value="Change Card Info">
+      <div class="flex-row content-space-between">
+        <div class="form-group">
+          <input id="full-name" type="text" class="form-control credit-card" placeholder="Full Name on Credit Card" data-stripe="name">
+        </div>
+        <div class="form-group" style="width: 40%; margin-left: 5%;">
+          <input type="text" class="form-control quarter-group" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month" s>
+        </div>
+        <div class="form-group" style="width: 40%; margin-left: 5%;">
+          <input type="text" class="form-control quarter-group" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-year">
+        </div>
+      </div>
+      <div class="flex-row content-space-between">
+        <div class="form-group">
+        <input type="text" class="form-control"  id="card-number" placeholder="Credit Card Number" size="20" pattern="[\d ]*" autocomplete="off" data-stripe="number" name="number">
+        </div>
+        <div class="form-group" style="width: 40%; margin-left: 5%;">
+        <input type="text" class="form-control half" id="cvc" placeholder="CVC" size="4" pattern="\d*" autocomplete="off" data-stripe="cvc" name="cvc">
+        </div>  
+      </div>
+      <div class="form-group">
+        <p class="form-error-text hidden" id="type-error"></p>
+        <p class="form-error-text hidden" id="quantity-error"></p>
+        <p class="form-error-text hidden" id="card_name-error"></p>
+        <p class="form-error-text hidden" id="expiration_date-error"></p>
+        <p class="form-error-text hidden" id="credit_card_number-error"></p>
+        <p class="form-error-text hidden" id="credit_card_cvc-error"></p>
+        <p class="form-error-text hidden" id="all-errors"></p>
+      </div>
+    </div>
+    
+  </form>
+  <button id="change-active-card-confirm" class="white-border-button" onclick="updateCard()">Change Card Info</button>
+  <div id="active-card-error" class="accent-color text-center text3"></div>
+</div>
+{% endblock %}
+{% block extra_js %}
+  {% block stripe_payment %}
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript">
+      Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
+      var $supporterForm = $("#change-active-card-form");
+      var $confirmButton = $("#change-active-card-confirm");
+
+      
+      function startStripePayment($form) {
+        var stripeResponseHandler = function (status, response) {
+          if (response.error) {
+            // Show the errors on the form
+            // TODO Display payment errors
+            $('#active-card-error').text(response.error.message);
+            $form.find('.submit-button').prop('disabled', false).removeClass('disabled');
+          } else {
+            // token contains id, last4, and card type
+            var token = response.id;
+            // Insert the token into the form so it gets submitted to the server
+            $form.append($('<input type="hidden" name="stripe_token" />').val(token));
+            // and submit
+            $form.submit()
+          }
+        };
+        Stripe.card.createToken($form, stripeResponseHandler);
+      }
+
+      function updateCard(){
+
+          var $inputs = $('.supporter-card-data .form-control');
+          var errors = false;
+          $inputs.each(function () {
+            if (!$(this).val()) {
+              $(this).addClass('error');
+              errors = true;
+            }
+          });
+          if (errors) {
+            $('#active-card-error').text('Please correct errors above');
+          }
+    
+          // submitForm();
+          // TODO Disable the submit button to prevent repeated clicks
+          // $form.find('#confirmButton').prop('disabled', true).addClass('disabled');
+          startStripePayment($supporterForm);
+       
+      }
+    </script>
+  
+  
+  {% endblock %}
+
+{% endblock %}

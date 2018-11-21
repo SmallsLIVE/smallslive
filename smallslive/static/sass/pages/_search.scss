@@ -454,6 +454,14 @@ body.headers-1 {
     display: inline-block;
     vertical-align: top;
   }
+  .datepicker-container.noclick{
+    @media (min-width: 1366px){
+    left: 170px !important;
+    }
+    @media (max-width: 1366px) and (min-width: 1024px){
+      left: 11.5vw !important;
+    }
+  }
   .white-border-select {
   &:not(.no-arrow) {
     .select-selected {
@@ -1313,6 +1321,9 @@ body.headers-1 {
         }
         .datepicker-btn{
           width: 40vw;
+          @media(max-width: $screen-md-max) { 
+            margin-left: 10.8vw;
+          }
         }
         .datepicker table{
           width: 82vw;
@@ -1324,7 +1335,7 @@ body.headers-1 {
           }
         }
         .datepicker-container.noclick{
-          top: 12.162162vw !important;
+          top:12.6162vw !important;
           left: -4.5vw !important;
           right: 0px;
         }

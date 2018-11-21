@@ -28,7 +28,7 @@ import stripe
 from artist_dashboard.forms import ArtistInfoForm
 from custom_stripe.models import CustomPlan, CustomerDetail
 from users.models import SmallsUser
-from users.utils import charge, subscribe_to_plan, one_time_donation
+from users.utils import charge, subscribe_to_plan, one_time_donation, update_active_card
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
 
 
@@ -438,22 +438,20 @@ def user_settings_view_new(request):
     else:
         edit_profile_form = EditProfileForm(user=request.user)
 
-    """if 'edit_profile' in request.POST:
+    if 'edit_active_card' in request.POST:
         try:
-                stripe_token = self.request.POST.get('stripe_token')
-                customer, created = Customer.get_or_create(
-                    subscriber=subscriber_request_callback(request))
-                update_active_card(customer, stripe_token)
-            except stripe.StripeError as e:
-                # add form error here
-                return _ajax_response(request, JsonResponse({
-                    'error': e.args[0]
-                }, status=500))
+            stripe_token = request.POST.get('stripe_token')
+            customer, created = Customer.get_or_create(
+                subscriber=subscriber_request_callback(request))
+            update_active_card(customer, stripe_token)
+        except stripe.StripeError as e:
+            # add form error here
+            return _ajax_response(request, JsonResponse({
+                'error': e.args[0]
+            }, status=500))
 
-            return _ajax_response(
-                request, redirect(reverse('become_supporter_complete'))
-            )
-    """
+        messages.success(request, 'Your account card has been changed successfully.')
+    
 
     if 'change_email' in request.POST:
         change_email_form = ChangeEmailForm(data=request.POST, user=request.user)
@@ -519,6 +517,7 @@ def user_settings_view_new(request):
         cancel_at = False
 
     return render(request, 'account/user_settings_new.html', {
+        'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
         'change_email_form': change_email_form,
         'change_profile_form': edit_profile_form,
         'change_password_form': change_password_form,

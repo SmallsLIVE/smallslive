@@ -38,7 +38,7 @@
           </div>
             <div class="white-border-select" id="dashboard-status-filter">
                 <select id="artist_archive_status_filter">
-                    <option value="all">Status</option>
+                    <option value="all">All</option>
                     <option value="leader">Leader</option>
                     <option value="sidemusician">Sidemusician</option>
                 </select>
@@ -318,6 +318,7 @@
 
         ////////////////////////////////////////////////////////////
         $(document).ready(function() {
+            $("#dashboard-status-filter .select-selected").text("Status")
           $('.refine-dashboard-buttons button[value="all"]').click()
           $("#apply-button").click(function () {
             apply = true;

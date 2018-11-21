@@ -1,15 +1,40 @@
 .artist-profile-container {
     margin-bottom: 40px;
+    padding: 0 15vw;
     @media (max-width: 1024px) {
         padding: 20px 0;
     }
-    padding: 0 15vw;
-    @media (max-width: $screen-sm-max) {
-        padding: 20px 0;
+    &.metrics-profile-container{
+        @media (max-width: 1024px) {
+            padding: 20px 15vw;
+            .title1{
+                font-size: 30px;
+            }
+            
+        }
+        
+        #artist_payout_select ~{
+            .select-items{
+                border: 3px solid $white-transparent;
+                top:92%;
+                padding: 0px 18px;
+            } 
+            .select-selected{
+                border: 3px solid $white-transparent;
+                border-style: solid solid solid none;
+            }
+        } 
+        #payout-form{
+            .payout-form{
+                min-width: 220px;
+            }
+            .select-items{
+                top: 64%;
+            }
+        }
+       
     }
-    @media (max-width: 768px) {
-        padding: 20px 0;
-    }
+   
     ~ .refine-overlay.dashboard-refine{
         
         top:54px;
@@ -113,7 +138,8 @@
         }
     }
     .payout-info-button {
-        width: 10%;
+        min-width: 100px;
+        width: 20%;
         height: 30px;
     }
     .payout-bar {
@@ -153,6 +179,7 @@
     }
     .payout-form {
         width: 33%;
+
     }
     .labeled-select .white-border-select .select-items {
         margin-top: 0;
@@ -332,7 +359,8 @@
             }
         }
         .set-button {
-            width: 5vw;
+            width: 100px;
+            display: inline-block;
         }
         .artist-metrics-container {
             position: relative;
@@ -623,8 +651,10 @@
         }
     }
     .white-border-select{
+        
         text-align: center;
         .select-selected{
+            padding: 0;
             border: 3px solid rgba(255, 255, 255, 0.9);
         }
     }
@@ -665,11 +695,19 @@
         display: none;
     }
     .white-border-select {
-        width: 8vw;
         float: none;
        
     }
+    .dashboard-datepicker-container{
+        width: 90px;
+        .datepicker-dashboard-main-btn{
+            &::after{
+                margin-left: 10px;
+            }
+        }
+    }
     > *{
+        width: 120px;
         margin-right: 30px;
     }
 }
