@@ -7,6 +7,54 @@ var sliderCount = videoCount / showCount;
 var controlsWidth = 40;
 var scrollWidth = 0;
 
+<<<<<<< Updated upstream
+=======
+
+
+function outOfBounds(viewPort) {
+    var browserName = navigator.userAgent.toLowerCase(); 
+    console.log(browserName)
+    if (browserName.indexOf('safari') != -1) { 
+        if (browserName.indexOf('chrome') > -1) {
+            if( viewPort === "height" )
+                return window.innerHeight
+            else if( viewPort === "width" )
+                return window.innerWidth
+        } else {  
+            switch (window.orientation) {  
+                case 0:  
+                    if( viewPort === "height" )
+                        return window.innerWidth
+                    else if( viewPort === "width" )
+                        return window.innerHeight
+                    break;
+                    
+                case 180:  
+                    if( viewPort === "height" )
+                        return window.innerWidth
+                    else if( viewPort === "width" )
+                        return window.innerHeight
+                    break;
+                
+                case -90:  
+                    if( viewPort === "height" )
+                        return window.innerHeight
+                    else if( viewPort === "width" )
+                        return window.innerWidth
+                    break;
+                
+                case 90:                  
+                    if( viewPort === "height" )
+                        return window.innerHeight
+                    else if( viewPort === "width" )
+                        return window.innerWidth
+                    break;
+            }
+        }
+    }
+}
+
+>>>>>>> Stashed changes
 jQuery.expr.filters.offscreen = function(el) {
   var rect = el.getBoundingClientRect();
   return (
@@ -108,6 +156,7 @@ function controls(){
             $prev.css('visibility', 'hidden');
             $next.css('visibility', 'hidden');
             var $last = $row.find('article').last();
+            console.log($last)
             if ($last.is(':offscreen')) {
                 $next.css('visibility', 'visible');
             }
