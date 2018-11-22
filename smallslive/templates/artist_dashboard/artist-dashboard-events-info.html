@@ -11,17 +11,21 @@
                 <a href="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
                     <button class="set-button">Edit</button>
                 </a>
-                {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-                <button id="private-button" class="publish-button set-button" onclick="askPrivate({{ set.id }})"> Public </button>
-                {% else %}
-                <button id="public-button" class="publish-button set-button" onclick="askPublish({{ set.id }})"> Private </button>
+                {% if not event.is_future %}    
+                    {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
+                    <button id="private-button" class="publish-button set-button" onclick="askPrivate({{ set.id }})"> Public </button>
+                    {% else %}
+                    <button id="public-button" class="publish-button set-button" onclick="askPublish({{ set.id }})"> Private </button>
+                    {% endif %}
                 {% endif %}
             {% else %}
                 <button disabled class="set-button">Edit</button>
-                {% if set.video_recording and set.video_recording.is_published %}
-                    <button disabled class="set-button">Public</button>
-                {% else %}
-                    <button disabled class="set-button">Private</button>
+                {% if not event.is_future %}    
+                    {% if set.video_recording and set.video_recording.is_published %}
+                        <button disabled class="set-button">Public</button>
+                    {% else %}
+                        <button disabled class="set-button">Private</button>
+                    {% endif %}
                 {% endif %}
             {% endif %}
         </div>
@@ -44,14 +48,18 @@
                         <div class="text2"> {{ event.title }} </div>
                     </div>
                 <div class='artist-set-download'>
-                    <img  src="{% static '/static/image/download-icon.svg' %}" alt="" onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')">
+                    {% if not event.is_future %}
+                        <img  src="{% static '/static/image/download-icon.svg' %}" alt="" onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')">
+                    {% endif %}
                 </div>
             </div>
             <div class="artist-event-card">
                 <a href="{{ event.get_absolute_url }}">
                     <div class="set-picture-container flex-column">
                         <div class="set-icon-overlay text2">
-                            <i class="fa fa-play fa-thin-circle"></i>
+                            {% if not event.is_future %}
+                                <i class="fa fa-play fa-thin-circle"></i>
+                            {% endif %}
                         </div>
                         <div class="picture-border">
                             <div class="set-picture">
@@ -66,15 +74,17 @@
                 </a>
             </div>
         <div class="artist-set-list flex-row">
-            {% for set in event.sets.all %}
-                <div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}?set_id={{ forloop.counter0 }}" class="{% if set.id == event_set.id %} artist-active-set accent-color {% endif %}set-changer">
-                    <div class="text2 flex-column flex-grow "> Set {{ forloop.counter0|add:"1" }} </div>
-                </div>
-            {% endfor %}
+            {% if not event.is_future %}
+                {% for set in event.sets.all %}
+                    <div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}?set_id={{ forloop.counter0 }}" class="{% if set.id == event_set.id %} artist-active-set accent-color {% endif %}set-changer">
+                        <div class="text2 flex-column flex-grow "> Set {{ forloop.counter0|add:"1" }} </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
     </div>
-    {% if not event.is_future%}    
+    {% if not event.is_future %}    
         <div class="artist-metrics-container">
             <div class="datepicker-container noclick datepicker-dashboard-container">
                 <div class="datepicker-dashboard-left-panel">
@@ -145,25 +155,27 @@
     </div>
     <div class="flex-column mobile-event-menu">
             <div id="mobile-metrics-button" class="flex-row mobile-event-opt">
-                {% if event.is_future%}    
-                    <div class="white-border-button" disabled style="color: grey">Metrics</div>
-                {% else %}
+                {% if not event.is_future%}    
                     <div class="white-border-button" data-id="mobile-option-metrics">Metrics</div>
                 {% endif %}
                 {% if is_admin and set.has_media %}
-                    {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-                    <div id="mobile-private-button" class="white-border-button" data-id="mobile-option-private"> Public </div>
-                    {% else %}
-                    <div id="mobile-public-button" class="white-border-button" data-id="mobile-option-publish"> Private </div>
+                    {% if not event.is_future%}    
+                        {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
+                        <div id="mobile-private-button" class="white-border-button" data-id="mobile-option-private"> Public </div>
+                        {% else %}
+                        <div id="mobile-public-button" class="white-border-button" data-id="mobile-option-publish"> Private </div>
+                        {% endif %}
                     {% endif %}
-                    <div class="white-border-button" id="table-event-edit" data-pk=event.id data-slug=event.slug>Edit</div>
+                    <div class="white-border-button {% if event.is_future%} upcoming-edit {% endif %}" id="table-event-edit" data-pk=event.id data-slug=event.slug>Edit</div>
                 {% else %}
-                    {% if set.video_recording and set.video_recording.is_published %}
-                        <div class="white-border-button disabled">Public</div>
-                    {% else %}
-                        <div class="white-border-button disabled">Private</div>
+                    {% if not event.is_future%}    
+                        {% if set.video_recording and set.video_recording.is_published %}
+                            <div class="white-border-button disabled">Public</div>
+                        {% else %}
+                            <div class="white-border-button disabled">Private</div>
+                        {% endif %}
                     {% endif %}
-                    <div class="white-border-button disabled">Edit</div>
+                    <div class="white-border-button disabled {% if event.is_future%} upcoming-edit {% endif %}">Edit</div>
                 {% endif %}
                 
             </div>
