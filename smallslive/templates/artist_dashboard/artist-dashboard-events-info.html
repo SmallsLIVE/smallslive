@@ -19,7 +19,13 @@
                     {% endif %}
                 {% endif %}
             {% else %}
-                <button disabled class="set-button">Edit</button>
+                {% if event.is_future and is_admin %}
+                    <a href="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
+                        <button class="set-button">Edit</button>
+                    </a>
+                {% else %}
+                    <button disabled class="set-button">Edit</button>
+                {% endif %}
                 {% if not event.is_future %}    
                     {% if set.video_recording and set.video_recording.is_published %}
                         <button disabled class="set-button">Public</button>
@@ -166,7 +172,6 @@
                         <div id="mobile-public-button" class="white-border-button" data-id="mobile-option-publish"> Private </div>
                         {% endif %}
                     {% endif %}
-                    <div class="white-border-button {% if event.is_future%} upcoming-edit {% endif %}" id="table-event-edit" data-pk=event.id data-slug=event.slug>Edit</div>
                 {% else %}
                     {% if not event.is_future%}    
                         {% if set.video_recording and set.video_recording.is_published %}
@@ -175,16 +180,14 @@
                             <div class="white-border-button disabled">Private</div>
                         {% endif %}
                     {% endif %}
-                    <div class="white-border-button disabled {% if event.is_future%} upcoming-edit {% endif %}">Edit</div>
+                    {% if event.is_future and is_admin %}
+                        <div class="white-border-button upcoming-edit" id="table-event-edit" data-pk=event.id data-slug=event.slug>Edit</div>
+                    {% else %}
+                        <div class="white-border-button disabled {% if event.is_future%} upcoming-edit {% endif %}">Edit</div>
+                    {% endif %}
                 {% endif %}
                 
             </div>
-          
-                
-            
-
-
-
 
             <div class="mobile-option-container" id="mobile-option-container">
             <div class="edit-event-mobile-form-body" data-subpage-name="mobile-edit" data-subpage-url="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}" id="mobile-option-edit">
@@ -381,9 +384,9 @@
             replaceWhiteSelects($("#event-info-mobile-card")[0])
             replaceWhiteSelects($("#artistEventsInfo")[0])
 
-            
-
+        if('{{event.is_future}}' === 'False'){
         loadData();
+        }
 
         $( "#mobile_artist_metrics" ).change(function() {
             //alert($(this).data('start'));

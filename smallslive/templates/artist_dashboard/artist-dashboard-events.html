@@ -19,9 +19,11 @@
                     <div class="text2">
                         {{ event.title }}
                       </div>
-                      <div class="text2 accent-color">
-                          {{ event.venue }}
-                        </div>
+                      {% if not is_future %}
+                      <div class="text2 ">
+                          <span id="event-plays">{{event.get_play_total}}</span>/<span id="event-time">{{event.get_seconds_total}}</span>
+                      </div>
+                      {% endif %}
                   </div>
                   <div class="artist-event-arrow">
                     <img src="/static/image/arrow-right-red.svg" alt="">
@@ -38,8 +40,6 @@
 
 {% block extra_js %}
   <script>
-
-    
     function loadInfo(infoUrl){
       $.ajax({
         url: infoUrl,
