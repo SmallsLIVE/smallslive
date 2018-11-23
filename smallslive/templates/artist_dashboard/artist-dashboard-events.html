@@ -43,13 +43,14 @@
 {% endfor %}
 
 {% block extra_js %}
+  <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
   <script>
     function loadInfo(infoUrl){
       $.ajax({
         url: infoUrl,
           success: function (data) {
             var $target;
-            if(window.screen.availWidth > 425) {
+            if( viewPortLength("width") > 425) {
               $target = $('#artistEventsInfo');
               $target.html(data);
               $target.data('url', infoUrl);
@@ -82,7 +83,7 @@
         $("#artistEventsInfo").html("");
         return ;
       }
-      if(window.screen.availWidth > 425){
+      if( viewPortLength("width") > 425){
         loadInfo(eventUrl+"?set_id=0")
       }
       

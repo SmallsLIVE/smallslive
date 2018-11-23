@@ -294,13 +294,15 @@
     <script type="text/javascript" src="{% static 'js/event_form.js' %}"></script>
     <script src="{% static 'js/subpages.js' %}"></script>
     <script src="{% static 'js/jquery.form.js' %}"></script>
+    <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
     <script>
+
             EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
         $('#edit-event-form .close-button').click(() => { $('#edit-event-form').modal('toggle') })
 
         $('#table-event-edit').on('click', function () {
               window.subpages.register();
-              if(window.screen.availWidth > 425){
+              if( viewPortLength("width") > 425){
                 $('#edit-event-form').modal('show');
                 var tabletSubpage = window.subpages.get("tablet-edit");
                 tabletSubpage.setCallback(() => {         
