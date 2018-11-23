@@ -23,7 +23,7 @@ def add_years(d, years):
     From StackOverflow
     """
     try:
-        return d.replace(year = d.year + years)
+        return d.replace(year=d.year + years)
     except ValueError:
         return d + (date(d.year + years, 1, 1) - date(d.year, 1, 1))
 
@@ -113,9 +113,16 @@ def one_time_donation(customer, stripe_token, amount,
     charge(customer, amount)
     if grant_access_to_archive:
         user = customer.subscriber
-        user.archive_access_until = add_years(now(), 1)
-        user.save()
-        print user.archive_access_until
+        # As per Spike request, grant access until then next fiscal year end
+        # In this  case, 1/1
+        grant_access_to_archive(user)
+
+
+def grant_access_to_archive(user):
+    next_year = add_years(now(), 1)
+    user.archive_access_until = next_year.replace(month=1, day=1)
+    user.save()
+    print user.archive_access_until
 
 
 def subscribe_to_plan(customer, stripe_token, amount, plan_type):

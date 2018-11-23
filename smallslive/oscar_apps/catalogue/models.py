@@ -14,6 +14,10 @@ class Product(AbstractProduct):
     preview = models.OneToOneField('multimedia.MediaFile', blank=True, null=True, related_name='product')
     featured = models.BooleanField(default=False, help_text="Make this product featured in the store")
 
+    gift = models.BooleanField(default=False, help_text="Make this product a gift in the store")
+    gift_price = models.DecimalField(help_text="Set the gift price",
+                                     decimal_places=2, max_digits=12, blank=True, null=True)
+
     event = models.ForeignKey('events.Event', related_name='products', null=True)
     set = models.CharField(max_length=50, blank=True)
 

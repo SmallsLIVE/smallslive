@@ -56,3 +56,5 @@ class PhotoTable(Table):
         fields = ('name', 'size', 'file')
         sequence = ('name', 'size', 'file')
         order_by = '-modified_at'
+
+

@@ -65,6 +65,7 @@ class PaymentForm(forms.Form):
             else:
                 try:
                     token = stripe.Token.create(
+                        api_key='sk_test_ciTEPv3CAEmLII211ntWy2Cn',
                         card={
                             "number": data.get('number'),
                             "exp_month": data.get('exp_month'),

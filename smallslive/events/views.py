@@ -134,16 +134,20 @@ def _get_most_popular_uploaded(range_size=None):
             event_date__lte=range_end
         )
 
-        print qs.query
-
-    event_values = qs.values('event_id').annotate(
+    event_values = qs.values('recording_id').annotate(
         count=Sum('seconds_played')
     ).order_by('-count')[:10]
 
-    event_ids = [e['event_id'] for e in event_values]
+    print event_values
+
+    print event_values.query
+
+    event_ids = [e['recording_id'] for e in event_values]
+
+    print event_ids
 
     sqs = Event.objects.filter(
-        id__in=event_ids,
+        recordings__id__in=event_ids,
         recordings__media_file__isnull=False,
         recordings__state=Recording.STATUS.Published
     ).distinct()
