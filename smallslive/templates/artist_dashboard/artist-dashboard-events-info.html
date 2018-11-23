@@ -287,11 +287,15 @@
 {% endwith %}
 
 {% block extra_js %}
-
+    <script type="text/javascript" src="{% static 'js/selectize.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/Chart.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/event_form.js' %}"></script>
     <script src="{% static 'js/subpages.js' %}"></script>
     <script src="{% static 'js/jquery.form.js' %}"></script>
     <script>
-
+            EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
         $('#edit-event-form .close-button').click(() => { $('#edit-event-form').modal('toggle') })
 
         $('#table-event-edit').on('click', function () {
@@ -299,11 +303,17 @@
               if(window.screen.availWidth > 425){
                 $('#edit-event-form').modal('show');
                 var tabletSubpage = window.subpages.get("tablet-edit");
+                tabletSubpage.setCallback(() => {         
+                    EventForm.init(false);
+                    })
                 tabletSubpage.load();
               }else{
                 $("#mobile-option-container > *").hide()
                 $("#mobile-option-container > #mobile-option-edit").show()
                 var mobileSubpage = window.subpages.get("mobile-edit");
+                mobileSubpage.setCallback(() => {         
+                    EventForm.init(false);
+                    })
                 mobileSubpage.load();
               }
         })
@@ -312,9 +322,7 @@
         })
     </script>
 
-    <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
-    <script src="{% static 'js/Chart.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+   
 
     <script>
         ///
@@ -381,6 +389,7 @@
 
         };
         $(document).ready(function () {
+       
             replaceWhiteSelects($("#event-info-mobile-card")[0])
             replaceWhiteSelects($("#artistEventsInfo")[0])
 
