@@ -1,29 +1,5 @@
 {% load static from staticfiles %}
 
-{% for gig_info in gigs %}
-    {% with event=gig_info.event %}
-        <div class="artist-event-row">
-            <div class="artist-event-info flex-row wrap">
-                <div style="width: 290px;">
-                    <div class="text2" style="max-width: 200px; padding-top: 3px;">
-                        {{ event.title }}
-                    </div>
-                    <div class="text2 accent-color">
-                        {{ event.date|date:'m/d/Y' }}
-                    </div>
-                </div>
-                <div class="text4 flex-grow" style="padding-top: 3px;">
-                    {% for gig_info in event.get_performers %}
-                        {{ gig_info.artist.full_name }}
-                        <span class="text-grey">({{ gig_info.role }})</span>
-                        {% if not forloop.last %}  // {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="button-row button-row-margin">
-                    {% if gig_info.is_admin %}
-                        <a href="{% url "artist_dashboard:event_edit" pk=event.id slug=event.slug %}">
-                            <button>Edit Event</button>
-                        </a>
                     {% else %}
                         <button disabled>Edit Event</button>
                     {% endif %}

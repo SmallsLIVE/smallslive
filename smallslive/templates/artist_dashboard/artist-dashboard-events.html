@@ -18,10 +18,16 @@
                     </div>
                     <div class="text2">
                         {{ event.title }}
-                      </div>
-                      <div class="text2 accent-color">
-                          {{ event.venue }}
-                        </div>
+                    </div>
+                    {% if not is_future %}
+                    <div class="text2 ">
+                        <span id="event-plays">{{event.get_play_total}}</span> plays /<span id="event-time">{{event.get_seconds_total}}</span>
+                    </div>
+                    {% else %}
+                    <div class="text2 ">
+                        <span class="accent-color">{{event.venue}}</span>
+                    </div>
+                    {% endif %}
                   </div>
                   <div class="artist-event-arrow">
                     <img src="/static/image/arrow-right-red.svg" alt="">
@@ -39,8 +45,6 @@
 {% block extra_js %}
   <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
   <script>
-
-    
     function loadInfo(infoUrl){
       $.ajax({
         url: infoUrl,

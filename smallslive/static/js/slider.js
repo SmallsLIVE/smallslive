@@ -152,6 +152,7 @@ function controls(){
             $prev.css('visibility', 'hidden');
             $next.css('visibility', 'hidden');
             var $last = $row.find('article').last();
+            console.log($last)
             if ($last.is(':offscreen')) {
                 $next.css('visibility', 'visible');
             }

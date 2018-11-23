@@ -78,7 +78,7 @@
         <div id="payout-form" style="display: none;" data-subpage-url="{% url 'artist_dashboard:payout_form'%}" data-subpage-name="payout-form">
         </div>
         <div class="flex-column" id="payout-address-info">
-            <div class="text10 artist-payout-data-text">Mailing address</div>
+            <div class="text1 artist-payout-data-text">Mailing address</div>
             <div class="text9 text-grey artist-payout-data-text">
                 {% if user.address_1 or user.address_2 or user.city %}
                     {{ user.address_1 }} <br>

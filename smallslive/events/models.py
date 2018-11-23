@@ -1,4 +1,4 @@
-from django.db.models import Count, Max, Q
+from django.db.models import Count, Max, Q, Sum
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta, get_default_timezone
 from django.utils import timezone
@@ -12,6 +12,7 @@ from model_utils.fields import StatusField
 from model_utils.models import QueryManager, TimeStampedModel
 from tinymce import models as tinymce_models
 from multimedia.s3_storages import ImageS3Storage
+from metrics.models import UserVideoMetric
 
 
 class EventQuerySet(models.QuerySet):
@@ -223,6 +224,35 @@ class Event(TimeStampedModel):
         ny_end = timezone.make_aware(ny_end, timezone=(timezone.get_current_timezone()))
 
         return ny_start, ny_end
+
+
+    def get_play_total(self):
+        play_total = 0
+        sets = list(self.sets.all())
+        for event_set in sets:
+            event_set_play_total = UserVideoMetric.objects.filter(event_id=event_set.id).aggregate(Sum('play_count'))['play_count__sum'] or 0
+            play_total = play_total + event_set_play_total
+        return play_total
+    
+    def get_seconds_total(self):
+        seconds_total = 0
+        sets = list(self.sets.all())
+        for event_set in sets:
+            event_set_seconds_total = UserVideoMetric.objects.filter(event_id=event_set.id).aggregate(Sum('seconds_played'))['seconds_played__sum'] or 0
+            seconds_total = seconds_total + event_set_seconds_total
+        return seconds_total
+
+    def get_event_plays_and_time(self):
+        set_data = {view_count:0,times_played:0}
+        all_sets = self.sets.all()
+
+        for event_set in all_sets:
+            pass
+
+
+        return sets_display
+
+
 
     def get_set_hours_display(self):
 
