@@ -89,6 +89,12 @@
 <script src="{% static 'js/utils.js' %}"></script>
 <script src="{% static 'js/modal.js' %}"></script>
 <script>
+
+  // keep track of scripts across the site
+  var isPaymentScriptLoaded = false;
+  var isPayPalScriptLoaded = false;
+  var isCardScriptLoaded = false;
+
   $(document).ready(function() {
     var signInModal = $('#logIn');
     var becomeMemberModal = $('#becomeMemberDialog');
@@ -133,6 +139,7 @@
   </script>
 {% endblock config_js %}
 
-{% block extra_js %}{% endblock %}
+{% block extra_js %}
+{% endblock %}
 </body>
 </html>

@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from oscar.apps.dashboard.catalogue import views as oscar_views
 from oscar.core.loading import get_model
 from .forms import TrackFormSet
+from .tables import ProductTable
 
 Product = get_model('catalogue', 'Product')
 ProductClass = get_model('catalogue', 'ProductClass')
@@ -105,7 +106,12 @@ class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
 
 
 class ProductListView(oscar_views.ProductListView):
+
     def get_queryset(self):
         qs = super(ProductListView, self).get_queryset()
         qs = qs.exclude(product_class__slug='track')
         return qs
+
+    def get_table_class(self):
+
+       return ProductTable

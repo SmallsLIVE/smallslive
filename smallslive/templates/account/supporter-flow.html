@@ -1,10 +1,10 @@
-{% extends "home_new.html" %}
+{% extends 'account/supporter_base.html' %}
 {% block home_content %}
-{% if flowtype == "become_supporter"%}
+{% if flow_type == 'become_supporter'%}
 {% include 'account/become-supporter.html' %}
-{% elif flowtype == "update_pledge"%}
+{% elif flow_type == 'update_pledge'%}
 {% include 'account/update-pledge.html' %}
-{% elif flowtype == "donate"%}
+{% elif flow_type == 'donate'%}
 {% include 'account/donate.html' %}
 {% endif %}
 {% endblock home_content %}

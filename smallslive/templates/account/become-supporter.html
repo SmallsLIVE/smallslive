@@ -2,6 +2,15 @@
 {% load static from staticfiles %}
 {% load full_static %}
 {% load djstripe_tags %}
+{% load reviews_tags %}
+{% load thumbnail %}
+{% load i18n %}
+{% load display_tags %}
+{% load staticfiles %}
+{% load purchase_info_tags %}
+{% load currency_filters %}
+{% load thumbor_tags %}
+{% load basket_tags %}
 
 {% block flow_title %}
   {% if not completed %}
@@ -11,20 +20,30 @@
   {% endif %}
 {% endblock %}
 {% block flow_steps %}
+
   <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover">
     <div class="{% if not completed %}active{% endif %} step-button"></div>
     <div class="step-button"></div>
     <div class="step-button"></div>
+    <div class="step-button hidden gift"></div>
+    <div class="step-button hidden gift"></div>
     <div class="{% if completed %}active{% endif %} step-button"></div>
   </div>
   {% if not completed %}
-  <div id="supporterStep1" class="supporter-step">
+
+  <div id="supporterStep" class="supporter-step hidden">
+
+  </div>
+
+
+  <div id="supporterStepIntro" class="supporter-step">
     <div class="supporter-text flex-column">
         <p class="title7"><span class="big-letter">T</span>HE <span class='accent-color'>SMALLSLIVE FOUNDATION</span> IS A <span class='accent-color'>NOT-FOR-PROFIT</span> ORGANIZED FOR THE PURPOSE OF THE <span class='accent-color'>DISSEMINATION OF JAZZ MUSIC</span> THROUGH OUR ARCHIVE, LIVE STREAMS, SPONSORSHIP OF INDIVIDUAL JAZZ PROJECTS & TOURS, EDUCATION, AND LIVE PERFORMACES AT SMALLS & MEZZROW. WE ARE SUPPORTED BY OUR MEMBERS THROUGH <span class='accent-color'><span class="underline">TAX DEDUCTIBLE DONATIONS</span>.</span></p>
 
     </div>
   </div>
-  <div id="supporterStep2" class="supporter-step" style="display: none">
+
+  <div id="supporterStepSelectType" class="supporter-step" style="display: none">
 
     <div class="text9">You are making a tax deductible donation to the SmallsLIVE Foundation.<br> You may download your tax receipt letter in your account settings.</div>
 
@@ -59,11 +78,95 @@
         </div>
       </div>
     </div>
+    <div class="flex-column items-center  supporter-plan-input">
+      <div class="section-title section-title-no-padded">
+        <div class="title1">Choose a gift</div>
+      </div>
+      <p class="text9">Choose a gift to get access to the Archive</p>
+      <div id="gift" class="button-row button-row-big button-row-margin">
+
+
+        {% for product in gifts %}
+          {% purchase_info_for_product request product as session %}
+            <!-- Single store item -->
+            <div class="store-list-item flex-column items-flex-stretch">
+              {% if product.gift_price %}
+              <button class="select-gift">$ {{ product.gift_price }}</button>
+              {% endif %}
+              <div class="store-list-item-image">
+                  {% with image=product.primary_image %}
+                      {% if not image.is_missing %}
+                        <img src="{% thumbor_url image.original.url|urlencode height=260 width=260 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio">
+                      {% else %}
+                        <img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio">
+                      {% endif %}
+                  {% endwith %}
+              </div>
+              <span class="text2 store-list-item-tile">
+                {{ product.get_title }}
+              </span>
+              {% if product.product_class.slug == "album" %}
+                  <p class="text4">{% if product.has_physical_media %}CD / {% endif %}{% if product.has_digital_media %}Digital download / {% endif %}{% if product.has_tracks %}Tracks{% endif %}</p>
+              {% endif %}
+              <form action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
+                {% if session.availability.is_available_to_buy %}
+                  {% basket_form request product 'single' as basket_form %}
+                  <div class="store-add-small">
+                      {% csrf_token %}
+                      {{ basket_form.quantity }}
+                      {% if basket_form.fields.child_id.choices %}
+                        <div class="white-border-select">
+                          <select class="store-add-small__options" name="child_id" style="height: 50px;">
+                            <option data-price="0" value="none">Select size</option>
+                            {% for variant in product.variants.all %}
+                            {% purchase_info_for_product request variant as variant_session %}
+                              {% if session.availability.is_available_to_buy %}
+                                <option data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}"
+                                        value="{{ variant.id }}">{{ variant.title }}</option>
+                              {% endif %}
+                            {% endfor %}
+                          </select>
+                        </div>
+                      {% else %}
+                        {{ basket_form.child_id }}
+                        <div class="arrow-button-container"><button style="margin-top: 15px;">Select</button></div>
+                      {% endif %}
+                  </div>
+                {% endif %}
+              </form>
+              <div class="overlay hidden"></div>
+            </div>
+            <!-- End of single store item -->
+          {% endfor %}
+
+
+      </div>
+
+    </div>
   </div>
+
+  <div id="supporterStepShipping" class="supporter-step" style="display: none">
+
+  </div>
+
+  <div id="supporterStepBilling" class="supporter-step" style="display: none">
+
+  </div>
+
+  <div id="supporterStepPreview" class="supporter-step" style="display: none">
+
+  </div>
+
+
   {% endif %}
+
 {% endblock %}
+
+{% block flow_payment %}
+{% endblock %}
+
 {% block flow_completed %}
-  <div id="supporterStep4" class="flex-column items-center supporter-text-container">
+  <div id="supporterStepThankYou" class="flex-column items-center supporter-text-container">
     <div class="supporter-text">
       <p class="title7"><span class="big-letter">T</span>
         hank you for becoming a <span class='accent-color'>supporting member</span> of the smallslive foundation for jazz arts and education. we greatly appreciate your support of our mission.  <span class='accent-color'>the smallslive foundation can only exist because of supporting members like yourself.</span> please enjoy our livestreams and extensive audio/video archive.
@@ -72,12 +175,16 @@
   </div>
 {% endblock %}
 {% block flow_confirm %}
+
   {% if not completed %}
-  <button id="backButton" class="button-bordered">Back</button>
+    <button id="backButton" class="button-bordered">Back</button>
     <button id="confirmButton" class="button-bordered">Confirm</button>
+    <a class="btn" href="{% url 'paypal-redirect' %}">PayPal</a>
+    <div id="paypal-button" style="width: 100px;"></div>
   {% else %}
     <a href="{% url 'archive' %}">
       <button>Access the archive</button>
     </a>
   {% endif %}
+
 {% endblock %}

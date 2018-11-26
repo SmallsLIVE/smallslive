@@ -1,11 +1,12 @@
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from oscar.apps.basket import views as basket_views
 from oscar.apps.basket.views import apply_messages
 from oscar_apps.partner.models import StockRecord
 
 
 class BasketAddView(basket_views.BasketAddView):
+
     def form_valid(self, form):
         offers_before = self.request.basket.applied_offers()
 
@@ -30,4 +31,7 @@ class BasketAddView(basket_views.BasketAddView):
             sender=self, product=form.product, user=self.request.user,
             request=self.request)
 
-        return HttpResponseRedirect(self.get_success_url())
+        if self.request.is_ajax():
+            return HttpResponse(status=200)
+        else:
+            return HttpResponseRedirect(self.get_success_url())

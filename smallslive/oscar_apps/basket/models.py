@@ -10,8 +10,12 @@ class Basket(AbstractBasket):
         return len(physical_items) > 0
 
     def has_digital_products(self):
-        digital_count = self.all_lines().filter(product__product_class__requires_shipping=False).count()
+        digital_count = self.all_lines().filter(product__product_class__requires_shipping=False).exclude(product__product_class__name='Tickets').count()
         return digital_count > 0
+
+    def has_tickets(self):
+        tickets_count = self.all_lines().filter(product__product_class__name='Tickets').count()
+        return tickets_count > 0
 
     def digital_lines(self):
         return self.all_lines().select_related('product').filter(product__product_class__requires_shipping=False)

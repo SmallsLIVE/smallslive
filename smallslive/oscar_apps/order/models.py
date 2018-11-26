@@ -1,15 +1,18 @@
-from django.conf import settings
-from django.contrib.sites.models import Site
-from django.core.mail import EmailMultiAlternatives, EmailMessage
 from oscar.apps.order.signals import order_placed
 from oscar.apps.order.abstract_models import AbstractOrder
 from oscar.core.loading import get_model, get_class
+from django.conf import settings
+from django.contrib.sites.models import Site
+from django.core.mail import EmailMultiAlternatives, EmailMessage
+from django.db import models
 
 CommunicationEventType = get_model('customer', 'CommunicationEventType')
 
 
-
 class Order(AbstractOrder):
+
+    first_name = models.CharField(max_length=150, blank=True)
+    last_name = models.CharField(max_length=150, blank=True)
 
     def has_physical_products(self):
         physical_count = self.lines.filter(product__product_class__requires_shipping=True).count()

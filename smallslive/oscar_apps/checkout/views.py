@@ -1,12 +1,16 @@
 import logging
+import paypalrestsdk
 from django import http
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
 from django.shortcuts import redirect
 from django.utils import six
 from django.utils.translation import ugettext as _
+from django.views.generic import RedirectView, View
 from oscar.apps.checkout import views as checkout_views
 from oscar.apps.checkout import signals
+from oscar.apps.checkout.views import OrderPlacementMixin
 from oscar.apps.order.exceptions import UnableToPlaceOrder
 from oscar.apps.payment.exceptions import RedirectRequired, UnableToTakePayment, PaymentError
 from oscar.apps.payment.models import SourceType, Source
@@ -14,16 +18,29 @@ from oscar.core.loading import get_class
 from oscar_stripe.facade import Facade
 from .forms import PaymentForm, BillingAddressForm
 from oscar_apps.order.models import Order
+from oscar_apps.payment.exceptions import RedirectRequiredAjax
 
 OrderTotalCalculator = get_class(
     'checkout.calculators', 'OrderTotalCalculator')
-Repository = get_class('shipping.repository', ('Repository'))
+Repository = get_class('shipping.repository', 'Repository')
+Selector = get_class('partner.strategy', 'Selector')
+selector = Selector()
+
 
 logger = logging.getLogger('oscar.checkout')
 
 
 class ShippingAddressView(checkout_views.ShippingAddressView):
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            template_name = 'checkout/shipping_address_ajax.html'
+        else:
+            template_name = 'checkout/shipping_address.html'
+        return [template_name]
+
     def get_context_data(self, **kwargs):
+
         context = super(ShippingAddressView, self).get_context_data(**kwargs)
         method = self.get_default_shipping_method(self.request.basket)
         shipping_charge = method.calculate(self.request.basket)
@@ -47,7 +64,29 @@ class ShippingAddressView(checkout_views.ShippingAddressView):
 
 
 class PaymentDetailsView(checkout_views.PaymentDetailsView):
+    """
+    In the case of AJAX  (new become a supporter flow - gifts), we need to
+    split billing from payment to match the existing payment design.
+    I couldn't find a way
+    """
+
+    def get_template_names(self):
+
+        if not self.preview:
+            if self.request.is_ajax():
+                template_name = 'checkout/payment_details_ajax.html'
+            else:
+                template_name = 'checkout/payment_details.html'
+        else:
+            if self.request.is_ajax():
+                template_name = 'checkout/preview_ajax.html'
+            else:
+                template_name = 'checkout/preview.html'
+
+        return [template_name]
+
     def get_context_data(self, **kwargs):
+
         if 'form' not in kwargs:
             kwargs['form'] = PaymentForm(self.request.user)
         if 'billing_address_form' not in kwargs:
@@ -74,39 +113,61 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
         if not self.preview:
             return http.HttpResponseBadRequest()
 
-        if request.POST.get('payment_method') == 'paypal':
-            return redirect('paypal-direct-payment')
-
         # We use a custom parameter to indicate if this is an attempt to place
         # an order (normally from the preview page).  Without this, we assume a
         # payment form is being submitted from the payment details view. In
         # this case, the form needs validating and the order preview shown.
+
         if request.POST.get('action', '') == 'place_order':
             self.token = self.request.POST.get('card_token')
             return self.handle_place_order_submission(request)
         return self.handle_payment_details_submission(request)
 
     def handle_payment_details_submission(self, request):
+
         form = PaymentForm(self.request.user, request.POST)
         shipping_address = self.get_shipping_address(self.request.basket)
         billing_address_form = BillingAddressForm(shipping_address, self.request.user, request.POST)
-        if form.is_valid() and billing_address_form.is_valid():
+        if billing_address_form.is_valid():
+            print billing_address_form.errors
             if billing_address_form.cleaned_data.get('billing_option') == "same-address":
                 self.checkout_session.bill_to_shipping_address()
             else:
                 address = billing_address_form.save()
                 self.checkout_session.bill_to_user_address(address)
-                self.token = form.token
-            self.checkout_session._set('payment', 'card_info', {
-                'name': form.cleaned_data['name'],
-                'last_4': form.cleaned_data['number'][-4:],
-            })
-            return self.render_preview(request, card_token=form.token, form=form,
-                                       billing_address_form=billing_address_form)
+
         else:
             return self.render_payment_details(request, form=form, billing_address_form=billing_address_form)
 
-    def submit(self, user, basket, shipping_address, shipping_method,  # noqa (too complex (10))
+        if request.POST.get('payment_method') == 'paypal':
+            return self.render_preview(request, billing_address_form=billing_address_form,
+                                       payment_method='paypal')
+        else:
+            if form.is_valid():
+                self.token = form.token
+                self.checkout_session._set('payment', 'card_info', {
+                    'name': form.cleaned_data['name'],
+                    'last_4': form.cleaned_data['number'][-4:],
+                })
+                return self.render_preview(request, card_token=form.token, form=form,
+                                           billing_address_form=billing_address_form)
+            else:
+                return self.render_payment_details(request, form=form,
+                                                   billing_address_form=billing_address_form)
+
+    def handle_place_order_submission(self, request):
+        print '****************************'
+        print 'handle_place_order_submission'
+        print 'Basket: ', request.basket
+        print request.basket.pk
+        print '****************************'
+
+        payment_method = request.POST.get('payment_method')
+
+        return self.submit(**self.build_submission(payment_method=payment_method))
+
+    def submit(self, user, basket, payment_method,
+               shipping_address, shipping_method,  # noqa (too complex (10))
                shipping_charge, billing_address, order_total,
                payment_kwargs=None, order_kwargs=None):
         """
@@ -130,6 +191,13 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
                          forms can be re-rendered correctly if payment fails.
         :order_kwargs: Additional kwargs to pass to the place_order method
         """
+
+        print 'Submit *****************'
+        print 'Basket: ', basket, ' ', basket.pk
+        print payment_kwargs
+        print order_kwargs
+        print '************************'
+
         if payment_kwargs is None:
             payment_kwargs = {}
         if order_kwargs is None:
@@ -167,11 +235,20 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
         signals.pre_payment.send_robust(sender=self, view=self)
         basket_lines = basket.lines.all()
         try:
-            self.handle_payment(order_number, order_total, basket_lines, **payment_kwargs)
+            print 'try handle payment'
+            self.handle_payment(order_number, order_total, basket_lines, payment_method, **payment_kwargs)
         except RedirectRequired as e:
             # Redirect required (eg PayPal, 3DS)
             logger.info("Order #%s: redirecting to %s", order_number, e.url)
             return http.HttpResponseRedirect(e.url)
+        except RedirectRequiredAjax as e:
+            # Redirect required (eg PayPal, 3DS)
+            logger.info("Order #%s: redirecting to %s", order_number, e.url)
+            print '****************************'
+            print 'JsonResponse: Basket: ', self.request.basket, ' ', self.request.basket.pk
+            print 'Basket: ', basket, ' ', basket.pk
+            print 'Submitted basket: ', self.checkout_session.get_submitted_basket_id()
+            return http.JsonResponse({'payment_url': e.url})
         except UnableToTakePayment as e:
             # Something went wrong with payment but in an anticipated way.  Eg
             # their bankcard has expired, wrong card number - that kind of
@@ -213,12 +290,14 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
             return self.render_preview(
                 self.request, error=error_msg, **payment_kwargs)
 
+        print 'Send post payment signal'
         signals.post_payment.send_robust(sender=self, view=self)
 
         # If all is ok with payment, try and place order
         logger.info("Order #%s: payment successful, placing order",
                     order_number)
         try:
+            print 'Handle order placement'
             return self.handle_order_placement(
                 order_number, user, basket, shipping_address, shipping_method,
                 shipping_charge, billing_address, order_total, **order_kwargs)
@@ -234,42 +313,156 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
             return self.render_preview(
                 self.request, error=msg, **payment_kwargs)
 
-    def handle_payment(self, order_number, total, basket_lines, **kwargs):
-        card_token = self.request.POST.get('card_token')
-        if card_token.startswith('card_'):
-            stripe_ref = Facade().charge(
-                order_number,
-                total,
-                card=card_token,
-                description=self.payment_description(order_number, total, **kwargs),
-                metadata=self.payment_metadata(order_number, total, basket_lines, **kwargs),
-                customer=self.request.user.customer.stripe_id)
-        else:
-            stripe_ref = Facade().charge(
-                order_number,
-                total,
-                card=card_token,
-                description=self.payment_description(order_number, total, **kwargs),
-                metadata=self.payment_metadata(order_number, total, basket_lines, **kwargs))
+    def handle_paypal_payment(self):
+        print '**************************'
+        print 'handle_paypal_payment:'
+        print self.request.basket
+        print 'Submitted basket: ', self.checkout_session.get_submitted_basket_id()
+        print '**************************'
 
-        source_type, __ = SourceType.objects.get_or_create(name='Credit Card')
+        payment_execute_url = self.request.build_absolute_uri(reverse('checkout:paypal_execute'))
+        payment_cancel_url = self.request.build_absolute_uri(reverse('become_supporter'))
+        paypalrestsdk.configure({
+            'mode': 'sandbox',  # sandbox or live
+            'client_id': 'EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM',
+            'client_secret': 'EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM'})
+        payment = paypalrestsdk.Payment({
+            'intent': 'sale',
+            'payer': {
+                'payment_method': 'paypal'},
+            'redirect_urls': {
+                'return_url': payment_execute_url,
+                'cancel_url': payment_cancel_url},
+            'transactions': [{
+                'item_list': {
+                    'items': [{
+                        'name': 'item',
+                        'sku': 'item',
+                        'price': '5.00',
+                        'currency': 'USD',
+                        'quantity': 1}]},
+                'amount': {
+                    'total': '5.00',
+                    'currency': 'USD'},
+                'description': "This is the payment transaction description."}]})
+
+        if payment.create():
+            for link in payment.links:
+                if link.rel == 'approval_url':
+                    # Convert to str to avoid Google App Engine Unicode issue
+                    # https://github.com/paypal/rest-api-sdk-python/pull/58
+                    approval_url = str(link.href)
+                    print("Redirect for approval: %s" % approval_url)
+            if self.request.is_ajax():
+                raise RedirectRequiredAjax(approval_url)
+            else:
+                raise RedirectRequired(approval_url)
+        else:
+            raise UnableToTakePayment(payment.error)
+
+    def handle_payment(self, order_number, total, basket_lines, payment_method, **kwargs):
+
+        print kwargs
+
+        card_token = self.request.POST.get('card_token')
+        print '**************************'
+        print 'handle_payment:'
+        print 'Basket: ', self.request.basket
+        print 'Card Token:', card_token
+        print 'Payment Method:', payment_method
+        print 'Submitted basket: ', self.checkout_session.get_submitted_basket_id()
+        print '**************************'
+
+        if card_token:
+            if card_token.startswith('card_'):
+                stripe_ref = Facade().charge(
+                    order_number,
+                    total,
+                    card=card_token,
+                    description=self.payment_description(order_number, total, **kwargs),
+                    metadata=self.payment_metadata(order_number, total, basket_lines, **kwargs),
+                    customer=self.request.user.customer.stripe_id)
+            else:
+                stripe_ref = Facade().charge(
+                    order_number,
+                    total,
+                    card=card_token,
+                    description=self.payment_description(order_number, total, **kwargs),
+                    metadata=self.payment_metadata(order_number, total, basket_lines, **kwargs))
+
+            source_name = 'Credit Card'
+            reference = stripe_ref
+            currency = settings.STRIPE_CURRENCY
+        elif payment_method == 'paypal':
+            self.handle_paypal_payment()
+            source_name = 'PayPal'
+            reference = ''
+            currency = 'USD'
+
+        source_type, __ = SourceType.objects.get_or_create(name=source_name)
         source = Source(
             source_type=source_type,
-            currency=settings.STRIPE_CURRENCY,
+            currency=currency,
             amount_allocated=total.incl_tax,
             amount_debited=total.incl_tax,
-            reference=stripe_ref)
+            reference=reference)
         self.add_payment_source(source)
 
         self.add_payment_event('Purchase', total.incl_tax)
 
     def payment_description(self, order_number, total, **kwargs):
-        return "Order #{0} at SmallsLIVE".format(order_number)
+        return 'Order #{0} at SmallsLIVE'.format(order_number)
 
     def payment_metadata(self, order_number, total, basket_lines, **kwargs):
         items = {}
         for idx, item in enumerate(basket_lines, start=1):
-            item_key = u"item{0}".format(idx)
-            items[item_key] = u"{0}, qty: {1}".format(item.product.get_title(), item.quantity)
+            item_key = u'item{0}'.format(idx)
+            items[item_key] = u'{0}, qty: {1}'.format(item.product.get_title(), item.quantity)
         items['order_number'] = order_number
         return items
+
+
+class ExecutePayPalPaymentView(OrderPlacementMixin, View):
+    """
+    """
+
+    def get(self, request, *args, **kwargs):
+
+        print '****************** get PayPalExecute'
+        print request.GET
+        print 'Submitted basket: ', self.checkout_session.get_submitted_basket_id()
+
+        basket = self.get_submitted_basket()
+        strategy = selector.strategy(request=request, user=request.user)
+        basket.strategy = strategy
+        print 'Basket: ', basket, basket.pk
+        self.handle_order_placement(basket)
+        return http.HttpResponse('OK')
+
+    def handle_order_placement(self, basket):
+        order_number = self.checkout_session.get_order_number()
+
+        total_incl_tax = basket.total_incl_tax
+        total_excl_tax = basket.total_excl_tax
+
+        # Record payment source
+        source_type, is_created = SourceType.objects.get_or_create(name='PayPal')
+        source = Source(source_type=source_type,
+            currency='USD',
+            amount_allocated=total_incl_tax,
+            amount_debited=total_incl_tax)
+        self.add_payment_source(source)
+
+        shipping_address = self.get_shipping_address(self.request.basket)
+        shipping_method = Repository().get_default_shipping_method(
+            basket=self.request.basket, user=self.request.user,
+            request=self.request)
+        shipping_charge = shipping_method.calculate(self.request.basket)
+        order_total = self.get_order_totals(
+            basket, shipping_charge=shipping_charge)
+        billing_address = self.get_billing_address(shipping_address)
+        # Place order
+        super(ExecutePayPalPaymentView, self).handle_order_placement(
+            order_number, self.request.user, basket,
+            shipping_address, shipping_method, shipping_charge,
+            billing_address, order_total)

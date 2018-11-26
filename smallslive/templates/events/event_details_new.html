@@ -80,7 +80,22 @@
               {% endif %}
             {% endif %}
             {% if not event.is_live and event.is_future %}
+            {% if product %}
+            {% purchase_info_for_product request product as session %}
+            {% basket_form request product 'single' as basket_form %}
+            <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
+              {% csrf_token %}
+              {{ basket_form.as_p }}
+              <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
+              {% if session.availability.num_available > 0 %}
+                <button type="submit" class="white-border-button" style="display: inline;">Tickets ({{ session.availability.num_available }} available)</button>
+              {% else %}
+                <button class="white-border-button" disabled style="display: inline;">Tickets sold out)</button>
+              {% endif %}
+            </form>
+            {% else %}
             <button id="btn-tickets" class="white-border-button" style="display: inline;">Tickets</button>
+            {% endif %}
             {% endif %}
           </div>
         </div>
@@ -100,43 +115,6 @@
             </div>
           {% endfor %}
         {% endif %}
-      </div>
-
-      <div class="tickets">
-      {% for product in event.products.all %}
-        {% purchase_info_for_product request product as session %}
-        <p class="set">{{ product.set }}</p>
-        {% if session.availability.is_available_to_buy %}
-          <p class="{{ session.availability.code }} availability">
-            {{ session.availability.num_available }} reserve seats available
-          </p>
-          {% basket_form request product 'single' as basket_form %}
-          <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
-            {% csrf_token %}
-            {{ basket_form.as_p }}
-            <input type="hidden" name="next" value="{% url "basket:summary" %}"/>
-            {% if session.availability.num_available > 0 %}
-              <button type="submit" class="btn btn-default btn-sm">reserve seats for the {{ product.set }} Show <span class="glyphicon glyphicon-chevron-right"></span></button>
-            {% endif %}
-            {% if user.is_superuser %}
-              <a href="{% url "dashboard:catalogue-product" pk=product.id %}" class="btn btn-default btn-sm">Edit
-                ticket</a>
-            {% endif %}
-          </form>
-        {% else %}
-          {% if has_active_alert %}
-            <p>{% trans "You have an active stock alert for this product." %}</p>
-          {% else %}
-            <form id="alert_form" method="post" action="{% url 'customer:alert-create' pk=product.id %}"
-                  class="add-to-basket">
-              {% csrf_token %}
-              <p>All the reserve seats have been reserved for this show, however, there is still room available as a walk-in for our Lounge.  Please email us at
-                <a href="mailto:mezzrowclub@gmail.com">mezzrowclub@gmail.com</a> if you need further information</p>
-              {% comment %}<button type="submit" class="btn btn-default btn-sm">{% trans "Notify me" %}</button>{% endcomment %}
-            </form>
-          {% endif %}
-        {% endif %}
-      {% endfor %}
       </div>
 
       <div class="flex-row event-set-selector"></div>
@@ -226,12 +204,34 @@
   <script src="{% static 'js/jquery.form.js' %}"></script>
   <script src="{% static 'js/subpages.js' %}"></script>
   <script src="{% static 'js/become-member.js' %}"></script>
+  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+  <script src="{% static 'js/card.js' %}"></script>
+  <script src="{% static 'js/payment/payment.js' %}"></script>
+  <script src="https://js.stripe.com/v2/"></script>
 
   <script>
+    $(document).ready(function () {
 
-    var subpages = window.subpages;
-    subpages.register();
-    subpages.loadAll();
+      function renderObjects() {
+        // in payment.js
+        renderPayPal(paypal);
+        renderCardAnimation();
+      }
+
+      var subpages = window.subpages;
+      subpages.register();
+      subpages.loadAll();
+
+      $('#one-time-donation-btn').on('click', function () {
+        $('#donate-setting-steps-complete').html("")
+        $('#one-time-donation').modal('show');
+        var donationSubpage = window.subpages.get("make-donation");
+        completeSubpage = "make-donation-complete"
+        notCompleteContainer = $('#donate-setting-steps')
+        donationSubpage.load();
+
+      });
+    }
 
     $(document).on('click', '[data-playlist-index]', function (ev) {
         var subpage = subpages.get('comments');
@@ -243,14 +243,14 @@
   </script>
   <script>
       
-    function endDonation(){
-      if("{{ redirect_url }}"){
-        window.location = "{{ redirect_url }}"
-      }else{
+    function endDonation() {
+      if ("{{ redirect_url }}") {
+        window.location = "{{ redirect_url }}";
+      } else {
         $('#one-time-donation').modal('hide');
       }
     }
-    </script>
+  </script>
 
   {% with album=event.products.first %}
       {% if album and album.tracks %}

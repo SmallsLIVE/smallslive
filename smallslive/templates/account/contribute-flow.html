@@ -19,7 +19,7 @@
       {% block flow_steps %}
       {% endblock %}
       {% block flow_payment %}
-      <div id="supporterStep3" class="supporter-step" style="display: none">
+      <div id="supporterStepPaymentInfo" class="supporter-step" style="display: none">
         <div class="flex-column flex-grow payment-information">
           <div class="flex-column">
             <div class="section-title section-title-no-padded">
@@ -36,9 +36,10 @@
               <input type="text" name="redirect_url" value="{{ redirect_url }}"hidden>
               <div class="flex-column content-space-between flex-grow">
                 <div class="flex-row content-space-between">
-                  <input id="full-name" type="text" class="form-control credit-card" placeholder="Full Name on Credit Card" data-stripe="name">
-                  <input type="text" class="form-control quarter-group" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month">
-                  <input type="text" class="form-control quarter-group" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-year">
+                  <input id="full-name" type="text" class="form-control credit-card" name="name" placeholder="Full Name on Credit Card" data-stripe="name">
+                  <input type="text" class="form-control quarter-group" id="expiry-month" placeholder="MM" size="2" pattern="[0-9]{2}" autocomplete="off" data-stripe="exp-month">
+                  <input type="text" class="form-control quarter-group" id="expiry-year" placeholder="YY" size="2" pattern="[0-9]{2}" autocomplete="off" data-stripe="exp-year">
+                  <input type="hidden" id="expiry-date">
                 </div>
                 <div class="flex-row content-space-between">
                   <input type="text" class="form-control"  id="card-number" placeholder="Credit Card Number"
@@ -67,10 +68,13 @@
       {% block flow_completed %}
       {% endblock %}
       {% endif %}
+
     </div>
     <div class="button-row button-row-margin confirm-button">
+
       {% block flow_confirm %}
       {% endblock %}
+
     </div>
     {% if not completed %}
       <div id="sentHint" class="processing-message" hidden>
@@ -80,58 +84,3 @@
 </div>
 {% endblock %}
 
-{% block extra_js %}
-  {% block stripe_payment %}
-    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-    <script type="text/javascript">
-      var sentHint = $('#sentHint');
-      Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
-
-      function startStripePayment($form) {
-        var stripeResponseHandler = function (status, response) {
-          if (response.error) {
-            // Show the errors on the form
-            // TODO Display payment errors
-            $('#form-general-error').text(response.error.message);
-            $form.find('.submit-button').prop('disabled', false).removeClass('disabled');
-          } else {
-            // token contains id, last4, and card type
-            var token = response.id;
-            // Insert the token into the form so it gets submitted to the server
-            $form.append($('<input type="hidden" name="stripe_token" />').val(token));
-            // and submit
-            
-
-            $.ajax({
-              type: "POST",
-              url: $form.attr('action'),
-              data: $form.serialize(),
-              success: function (data) {
-                if(typeof completeSubpage !== "undefined"){
-                  console.log("Works?")
-                  notCompleteContainer.html("")
-                  var flowCompleteSubpage = window.subpages.get(completeSubpage);
-                  flowCompleteSubpage.load();
-                }
-                else{
-                  window.location = data.location
-                }
-              },
-              error: function () {
-              }
-            });
-  
-
-
-          }
-        };
-        Stripe.card.createToken($form, stripeResponseHandler);
-      }
-    </script>
-
-
-  
-    <script src="{% static 'js/become-member.js' %}"></script>
-  {% endblock %}
-
-{% endblock %}

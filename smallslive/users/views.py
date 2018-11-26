@@ -27,8 +27,11 @@ import stripe
 
 from artist_dashboard.forms import ArtistInfoForm
 from custom_stripe.models import CustomPlan, CustomerDetail
+from oscar_apps.catalogue.models import Product
+from oscar.apps.partner.strategy import Selector
 from users.models import SmallsUser
-from users.utils import charge, subscribe_to_plan, one_time_donation, update_active_card
+from users.utils import charge, grant_access_to_archive, \
+    one_time_donation, subscribe_to_plan,  update_active_card
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
 
 
@@ -56,7 +59,7 @@ class DonateView(ContributeFlowView):
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         context['form_action'] = reverse('donate')
         context['redirect_url'] = self.request.META.get('HTTP_REFERER')
-        context['flowtype'] = "donate"
+        context['flow_type'] = "donate"
        
         return context
 
@@ -102,31 +105,44 @@ class DonateCompleteView(DonateView):
         context['completed'] = True
         context['redirect_url'] = self.request.GET.get('redirect_url')
 
-        print 'DonateCompleteView: get_context_data'
-        print context
-        print '----------------------------------------------'
-
         return context
 
 
 donate_complete = DonateCompleteView.as_view()
 
 
-
 class BecomeSupporterView(ContributeFlowView):
 
     def get_context_data(self, **kwargs):
         context = super(BecomeSupporterView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         context['form_action'] = reverse('become_supporter')
-        context['flowtype'] = "become_supporter"
+        context['flow_type'] = "become_supporter"
+
+        # We need to clear the basket in case the user has anything in there.
+        print '********************************'
+        print 'Flushing basket ..'
+        self.request.basket.flush()
+
+        context['gifts'] = []
+        for product in Product.objects.filter(gift=True):
+            context['gifts'].append(product)
+
         return context
 
     def post(self, request, *args, **kwargs):
 
+        grant_access_to_archive(self.request.user)
+
+        return _ajax_response(
+            request, redirect(reverse('become_supporter_complete'))
+        )
+
         stripe_token = self.request.POST.get('stripe_token')
         plan_type = self.request.POST.get('type')
-        amount = int(self.request.POST.get('quantity'))
+        amount = self.request.POST.get('quantity')
+        if amount:
+            amount = int(amount)
 
         # As per Aslan's request
         # Yearly donations will no longer exist. They are One Time Donations  now.
@@ -153,45 +169,6 @@ class BecomeSupporterView(ContributeFlowView):
 
 become_supporter = BecomeSupporterView.as_view()
 
-class BecomeSupporterView(ContributeFlowView):
-
-    def get_context_data(self, **kwargs):
-        context = super(BecomeSupporterView, self).get_context_data(**kwargs)
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-        context['form_action'] = reverse('become_supporter')
-        context['flowtype'] = "become_supporter"
-        return context
-
-    def post(self, request, *args, **kwargs):
-
-        stripe_token = self.request.POST.get('stripe_token')
-        plan_type = self.request.POST.get('type')
-        amount = int(self.request.POST.get('quantity'))
-
-        # As per Aslan's request
-        # Yearly donations will no longer exist. They are One Time Donations  now.
-
-        try:
-            customer, created = Customer.get_or_create(
-                subscriber=subscriber_request_callback(request))
-            if plan_type == 'month':
-                subscribe_to_plan(customer, stripe_token, amount, plan_type)
-            else:
-                grant = amount >= 100
-                one_time_donation(customer, stripe_token, amount,
-                                  grant_access_to_archive=grant)
-        except stripe.StripeError as e:
-            # add form error here
-            return _ajax_response(request, JsonResponse({
-                'error': e.args[0]
-            }, status=500))
-
-        return _ajax_response(
-            request, redirect(reverse('become_supporter_complete'))
-        )
-
-
-become_supporter = BecomeSupporterView.as_view()
 
 class UpdatePledgeView(BecomeSupporterView):
 
@@ -199,11 +176,12 @@ class UpdatePledgeView(BecomeSupporterView):
         context = super(UpdatePledgeView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         context['form_action'] = reverse('become_supporter')
-        context['flowtype'] = "update_pledge"
+        context['flow_type'] = "update_pledge"
         return context
 
 
 update_pledge = UpdatePledgeView.as_view()
+
 
 class BecomeSupporterCompleteView(BecomeSupporterView):
     def get_context_data(self, **kwargs):
@@ -211,10 +189,6 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
             BecomeSupporterCompleteView, self
         ).get_context_data(**kwargs)
         context['completed'] = True
-
-        print 'BecomeSupporterCompleteView: get_context_data'
-        print context
-        print '----------------------------------------------'
 
         return context
 
