@@ -123,7 +123,13 @@
                 file: "{{ audio.media_file.get_file_url|safe }}",
                 type: "mp3"
               }],
-              image: {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %},
+              image:   {% if event.photo %}
+                          {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                        {% else %}
+                          {% include 'partials/thumbor_url.html' %}
+                        {% endif %}
+                       
+              ,
               mediaid: {{ audio.id }}
             }{% if not forloop.last %},{% endif %}
           {% endfor %}
@@ -193,7 +199,11 @@
                         type: "mp4"
                     }],
                     mediaid: {{ video.id }},
-                    image: {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                    image: {% if event.photo %}
+                          {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                        {% else %}
+                          {% include 'partials/thumbor_url.html' %}
+                        {% endif %}
                 }{% if not forloop.last %},{% endif %}
                 {% endif %}{% endfor %}
             ],
