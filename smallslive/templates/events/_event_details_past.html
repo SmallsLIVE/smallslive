@@ -214,7 +214,7 @@
         videoPlayer.on('play', function () {
             var $videoContainer = $('#videoContainer');
             if ($videoContainer.hasClass('forbidden')) {
-              videoPlayer.stop();
+              videoPlayer.stop(true);
 
               var modal = '#becomeMemberDialog';
               if (smallsConfig.user.isAuthenticated) {
