@@ -247,11 +247,13 @@
 
         $this = $(this);
         if ($this.hasClass('video')) {
+          jwplayer("player-audio").pause(true)
           $this.parent().find('.audio').css('display', 'inline');
           $this.hide();
           $('#videoContainer').show();
           $('#audioContainer').hide()
         } else {
+          jwplayer("player-video").pause(true)
           $this.parent().find('.video').css('display', 'inline');
           $this.hide();
           $('#audioContainer').show();
