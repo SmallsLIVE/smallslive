@@ -253,20 +253,28 @@
     {% endif %}
 
     $(document).ready(function () {
-      if('{% if not event.published_videos %} true {% else %} false {% endif %}'){
-        $('.white-border-button.audio.togglePlayer')[0].click()
+      if($("#videoContainer").length === 0){
+        $('#videoContainer').hide();
+        $('#audioContainer').show()
+        $this = $('.white-border-button.audio.togglePlayer');
+        $this.hide();
+        
       }
       $('.togglePlayer').click(function () {
 
         $this = $(this);
         if ($this.hasClass('video')) {
-          jwplayer("player-audio").pause(true)
+          if($("#audioContainer").length > 0){
+            jwplayer("player-audio").pause(true)
+          }
           $this.parent().find('.audio').css('display', 'inline');
           $this.hide();
           $('#videoContainer').show();
           $('#audioContainer').hide()
         } else {
+          if($("#videoContainer").length > 0){
           jwplayer("player-video").pause(true)
+          }
           $this.parent().find('.video').css('display', 'inline');
           $this.hide();
           $('#audioContainer').show();
