@@ -253,6 +253,9 @@
     {% endif %}
 
     $(document).ready(function () {
+      if('{% if not event.published_videos %} true {% else %} false {% endif %}'){
+        $('.white-border-button.audio.togglePlayer')[0].click()
+      }
       $('.togglePlayer').click(function () {
 
         $this = $(this);
