@@ -62,19 +62,7 @@
             <div class="artist-event-card">
                 {% if user.can_watch_video and event_set.video_recording_id and not event.is_future %}
                     <div class="set-picture-container flex-column">
-                            <div id="player-video"></div>
-                            <div class="set-icon-overlay text2">                  
-                                    <i class="fa fa-play fa-thin-circle"></i>
-                            </div>
-                            <div class="picture-border">
-                                <div class="set-picture">
-                                    {% if event.photo %}
-                                    {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
-                                    {% else %}
-                                    {% include 'partials/thumbored_picture.html' %}
-                                    {% endif %}
-                                </div>
-                            </div>
+                            <div id="player-video"></div>    
                     </div>
                 {% else %}
                     <a href="{{ event.get_absolute_url }}">
@@ -668,7 +656,7 @@
 
     ///////////
      {% if user.can_watch_video and event_set.video_recording_id %}
-        console.log("Serioulsy")
+        
         jwplayer("player-video").setup({
             primary: 'html5',
             playlist: [
@@ -678,28 +666,25 @@
                 type: "mp4"
                 }],
                 title: "{{ event.title }}: Video set 0",
-                mediaid: {{ event_set.video_recording_id }}
+                mediaid: {{ event_set.video_recording_id }},
+                image: {% if event.photo %}
+                          {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                        {% else %}
+                          {% include 'partials/thumbor_url.html' %}
+                        {% endif %}
             }
             ],
             skin: "{% static "jwplayer-skin/smalls.xml" %}",
             listbar: {
             position: "bottom",
             layout: 'basic',
-            size: 90
+            size: 90,
+           
             },
+            aspectratio: "16:9",
             width: "100%",
-            height: 450
+           
             });
-        jwplayer("player-video").on('pause', function () {
-            var $overlay = $('.artist-event-card .picture-border');
-            $overlay.removeClass('hidden');
-            $overlay.css('opacity', 1);
-        })
-        jwplayer("player-video").on('play', function () {
-            var $overlay = $('.artist-event-card .picture-border');
-            $overlay.addClass('hidden');
-            $overlay.css('opacity', 0);
-        })
     {% endif %}
 
     

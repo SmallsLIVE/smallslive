@@ -289,7 +289,9 @@
                 position: relative;
                 justify-content: center;
                 #player-video{
-                    width:  100% !important;
+                    .jw-display .jw-reset .jw-display-icon-container.jw-display-icon-display.jw-reset > div {
+                        opacity: 1;
+                    }
                 }
                 .set-icon-overlay {
                     position: absolute;
