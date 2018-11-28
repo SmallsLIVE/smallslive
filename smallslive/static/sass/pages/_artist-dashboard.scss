@@ -288,6 +288,9 @@
             .set-picture-container {
                 position: relative;
                 justify-content: center;
+                #player-video{
+                    width:  100% !important;
+                }
                 .set-icon-overlay {
                     position: absolute;
                     width: 100%;

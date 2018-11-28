@@ -690,7 +690,18 @@
             width: "100%",
             height: 450
             });
+        jwplayer("player-video").on('pause', function () {
+            var $overlay = $('.artist-event-card .picture-border');
+            $overlay.removeClass('hidden');
+            $overlay.css('opacity', 1);
+        })
+        jwplayer("player-video").on('play', function () {
+            var $overlay = $('.artist-event-card .picture-border');
+            $overlay.addClass('hidden');
+            $overlay.css('opacity', 0);
+        })
     {% endif %}
+
     
 
     </script>
