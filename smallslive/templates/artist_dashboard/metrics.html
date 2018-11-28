@@ -32,23 +32,6 @@
                 Info
             </button>
             <div id='download-button'></div>
-            <div class="modal fade" id="payout-info" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content custom-modal">
-                        <div class="modal-body">
-                            <i class="fa fa-times accent-color" onclick="toogleInfo()"></i>
-                            <div class="text-grey text4 payout-info-text">
-                                These numbers reflect the total usage of the archive in minutes and seconds for the selected pay period, as well as your
-                                own personal usage and your payout ratio percentage. The payout ration percentage is your total time
-                                divided by the archive total time. This ratio is the percent-age of the archive revenue that is paid
-                                to you as royalty. If you earned less than $20 in the pay period it is carried over to the next pay period
-                                and reflected as a previous balance.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
         </div>
     </div>
     <div class="artist-payout-data">
@@ -100,10 +83,22 @@
             </button>
         </div>
     </div>
-
-
-
-
+      <div class="modal fade" id="payout-info" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content custom-modal">
+                        <i class="close-button"></i>
+                        <div class="modal-body">
+                            <div class="text-grey text4 payout-info-text">
+                                These numbers reflect the total usage of the archive in minutes and seconds for the selected pay period, as well as your
+                                own personal usage and your payout ratio percentage. The payout ration percentage is your total time
+                                divided by the archive total time. This ratio is the percent-age of the archive revenue that is paid
+                                to you as royalty. If you earned less than $20 in the pay period it is carried over to the next pay period
+                                and reflected as a previous balance.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 </div>
 {% endblock content %}
 {% block extra_js %}

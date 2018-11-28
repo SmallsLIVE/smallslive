@@ -1,5 +1,5 @@
 (function() {
   $(document).on('click', '.close-button', function() {
-    $(this).closest('.modal').hide();
+    $(this).closest('.modal').modal('hide');
   });
 }());
