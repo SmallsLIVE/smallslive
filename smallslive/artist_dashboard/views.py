@@ -320,7 +320,7 @@ class MyPastEventsInfoView(DetailView):
             })
         
         context['datepicker_ranges'] = ranges
-
+        
         return context
 
 my_past_events_info = MyPastEventsInfoView.as_view()

@@ -60,24 +60,43 @@
                 </div>
             </div>
             <div class="artist-event-card">
-                <a href="{{ event.get_absolute_url }}">
+                {% if user.can_watch_video and event_set.video_recording_id and not event.is_future %}
                     <div class="set-picture-container flex-column">
-                        <div class="set-icon-overlay text2">
-                            {% if not event.is_future %}
-                                <i class="fa fa-play fa-thin-circle"></i>
-                            {% endif %}
-                        </div>
-                        <div class="picture-border">
-                            <div class="set-picture">
-                                {% if event.photo %}
-                                  {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
-                                {% else %}
-                                  {% include 'partials/thumbored_picture.html' %}
+                            <div id="player-video"></div>
+                            <div class="set-icon-overlay text2">                  
+                                    <i class="fa fa-play fa-thin-circle"></i>
+                            </div>
+                            <div class="picture-border">
+                                <div class="set-picture">
+                                    {% if event.photo %}
+                                    {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                                    {% else %}
+                                    {% include 'partials/thumbored_picture.html' %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                    </div>
+                {% else %}
+                    <a href="{{ event.get_absolute_url }}">
+                        <div class="set-picture-container flex-column">
+                            <div class="set-icon-overlay text2">
+                                {% if not event.is_future %}
+                                    <i class="fa fa-play fa-thin-circle"></i>
                                 {% endif %}
                             </div>
+                            <div class="picture-border">
+                                <div class="set-picture">
+                                    {% if event.photo %}
+                                    {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                                    {% else %}
+                                    {% include 'partials/thumbored_picture.html' %}
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
+                {% endif %}
+                
             </div>
         <div class="artist-set-list flex-row">
             {% if not event.is_future %}
@@ -295,6 +314,7 @@
     <script src="{% static 'js/subpages.js' %}"></script>
     <script src="{% static 'js/jquery.form.js' %}"></script>
     <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
+    <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
     <script>
 
             EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
@@ -647,6 +667,33 @@
     });
 
     ///////////
+     {% if user.can_watch_video and event_set.video_recording_id %}
+        console.log("Serioulsy")
+        jwplayer("player-video").setup({
+            primary: 'html5',
+            playlist: [
+            {
+                sources: [{
+                file: "{{ event_set.video_recording.get_redirect_url|safe }}",
+                type: "mp4"
+                }],
+                title: "{{ event.title }}: Video set 0",
+                mediaid: {{ event_set.video_recording_id }}
+            }
+            ],
+            skin: "{% static "jwplayer-skin/smalls.xml" %}",
+            listbar: {
+            position: "bottom",
+            layout: 'basic',
+            size: 90
+            },
+            width: "100%",
+            height: 450
+            });
+    {% endif %}
+    
 
     </script>
+
+    
 {% endblock %}
