@@ -658,32 +658,18 @@
      {% if user.can_watch_video and event_set.video_recording_id %}
         
         jwplayer("player-video").setup({
-            primary: 'html5',
-            playlist: [
-            {
-                sources: [{
-                file: "{{ event_set.video_recording.get_redirect_url|safe }}",
-                type: "mp4"
-                }],
-                title: "{{ event.title }}: Video set 0",
-                mediaid: {{ event_set.video_recording_id }},
-                image: {% if event.photo %}
-                          {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
-                        {% else %}
-                          {% include 'partials/thumbor_url.html' %}
-                        {% endif %}
-            }
-            ],
+            file: "{{ event_set.video_recording.get_redirect_url|safe }}",
+            type: "mp4",
+            title: "{{ event.title }}: Video set 0",
+            mediaid: {{ event_set.video_recording_id }},
+            image: {% if event.photo %}
+                        {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                    {% else %}
+                        {% include 'partials/thumbor_url.html' %}
+                    {% endif %},
             skin: "{% static "jwplayer-skin/smalls.xml" %}",
-            listbar: {
-            position: "bottom",
-            layout: 'basic',
-            size: 90,
-           
-            },
-            aspectratio: "16:9",
-            width: "100%",
-           
+            aspectratio: "16:9.60",
+            width: "100%"
             });
     {% endif %}
 
