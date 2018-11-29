@@ -1,6 +1,9 @@
 .supporter-main-container {
 
-  
+  .store-overview {
+    background: transparent;
+  }
+
   input {
     @include bordered-input;
     background-color: white;
@@ -296,7 +299,6 @@
     }
 
     .overlay {
-      background: #dddd;
       border-radius: 10px;
       height: 86%;
       margin-top: 69px;
