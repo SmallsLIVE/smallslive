@@ -68,7 +68,7 @@ libthumbor==1.0.1
 lxml==3.3.4
 mailchimp==2.0.9
 mock==1.0.1
-natsort==3.5.0
+#natsort==3.5.0
 newrelic==2.54.0.41
 oauthlib==0.7.2
 phonenumbers==6.3.0
@@ -98,5 +98,5 @@ wsgiref==0.1.2
 xlsxwriter==0.7.3
 django-wkhtmltopdf==3.2.0
 wkhtmltopdf-pack==0.12.2.4
-paypalrestsdk
+#paypalrestsdk
 
