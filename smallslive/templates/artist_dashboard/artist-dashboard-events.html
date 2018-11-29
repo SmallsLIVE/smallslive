@@ -51,10 +51,12 @@
           success: function (data) {
             var $target;
             if( viewPortLength("width") > 425) {
+              $('#event-info-mobile-card').html("")
               $target = $('#artistEventsInfo');
               $target.html(data);
               $target.data('url', infoUrl);
             } else {
+              $('#artistEventsInfo').html("")
               $target = $('#event-info-mobile-card');
               $target.html(data);
               $target.data('url', infoUrl);

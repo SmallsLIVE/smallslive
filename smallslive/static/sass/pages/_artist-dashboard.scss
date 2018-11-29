@@ -1,3 +1,7 @@
+.artist-event-card {
+    width: 100%;
+}
+
 .artist-profile-container {
     margin-bottom: 40px;
     padding: 0 15vw;
@@ -288,6 +292,11 @@
             .set-picture-container {
                 position: relative;
                 justify-content: center;
+                #player-video{
+                    .jw-display .jw-reset .jw-display-icon-container.jw-display-icon-display.jw-reset > div {
+                        opacity: 1;
+                    }
+                }
                 .set-icon-overlay {
                     position: absolute;
                     width: 100%;
@@ -295,7 +304,8 @@
                     justify-content: center;
                     z-index: 1;
                     text-align: center;
-                    i {
+                    i { 
+                        color: red;
                         display: flex;
                         justify-content: center;
                         align-items: center;
