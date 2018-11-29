@@ -71,7 +71,7 @@ function renderCardAnimation(selector) {
   });
 }
 
-function startStripePayment($form, completeSubpage) {
+function startStripePayment($form, action_url, completeSubpage) {
   var stripeResponseHandler = function (status, response) {
     if (response.error) {
       // Show the errors on the form
@@ -87,12 +87,11 @@ function startStripePayment($form, completeSubpage) {
 
       $.ajax({
         type: "POST",
-        url: $form.attr('action'),
+        url: action_url,
         data: $form.serialize(),
         success: function (data) {
           if(typeof completeSubpage !== "undefined" && completeSubpage){
-            console.log("Works?")
-            notCompleteContainer.html("")
+            //notCompleteContainer.html("")
             var flowCompleteSubpage = window.subpages.get(completeSubpage);
             flowCompleteSubpage.load();
           }
@@ -106,4 +105,24 @@ function startStripePayment($form, completeSubpage) {
     }
   };
   Stripe.card.createToken($form, stripeResponseHandler);
+}
+
+function startPayPalPayment($form,  action_url, completeSubpage) {
+  $.ajax({
+    type: "POST",
+    url: action_url,
+    data: $form.serialize(),
+    success: function (data) {
+      if(typeof completeSubpage !== "undefined" && completeSubpage){
+        //notCompleteContainer.html("")
+        var flowCompleteSubpage = window.subpages.get(completeSubpage);
+        flowCompleteSubpage.load();
+      }
+      else{
+        window.location = data.payment_url
+      }
+    },
+    error: function () {
+    }
+  });
 }

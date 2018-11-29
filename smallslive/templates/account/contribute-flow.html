@@ -36,10 +36,9 @@
               <input type="text" name="redirect_url" value="{{ redirect_url }}"hidden>
               <div class="flex-column content-space-between flex-grow">
                 <div class="flex-row content-space-between">
-                  <input id="full-name" type="text" class="form-control credit-card" name="name" placeholder="Full Name on Credit Card" data-stripe="name">
-                  <input type="text" class="form-control quarter-group" id="expiry-month" placeholder="MM" size="2" pattern="[0-9]{2}" autocomplete="off" data-stripe="exp-month">
-                  <input type="text" class="form-control quarter-group" id="expiry-year" placeholder="YY" size="2" pattern="[0-9]{2}" autocomplete="off" data-stripe="exp-year">
-                  <input type="hidden" id="expiry-date">
+                  <input id="full-name" type="text" class="form-control credit-card" placeholder="Full Name on Credit Card" data-stripe="name">
+                  <input type="text" class="form-control quarter-group" id="expiry-month" placeholder="MM" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-month">
+                  <input type="text" class="form-control quarter-group" id="expiry-year" placeholder="YY" size="2" pattern="\d*" autocomplete="off" data-stripe="exp-year">
                 </div>
                 <div class="flex-row content-space-between">
                   <input type="text" class="form-control"  id="card-number" placeholder="Credit Card Number"

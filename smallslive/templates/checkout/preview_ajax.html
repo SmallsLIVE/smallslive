@@ -8,12 +8,13 @@
 
 <div>
 
-    <section class="store-overview container">
-        <div class="col-xs-12 col-sm-8 store-overview__left-column">
+    <section class="preview container">
+        <div class="col-xs-12 col-sm-8 store-overview__left-column text8">
             {% if basket.has_physical_products %}
                 <div class="store-overview__group">
-                <h3 class="store-overview__group__heading">Ordered items:</h3>
-                <h4 class="store-overview__group__table__heading">Physical items:</h4>
+                <div class="section-title section-title-no-padded">
+                  <div class="title1">Selected Gifts</div>
+                </div>
                 <div class="store-overview__group__table">
                     <!-- table header start -->
                     <div class="store-overview__group__table__header clearfix">
@@ -60,12 +61,12 @@
                                             {{ product.title }}
                                         {% endif %}
                                     </p>
-                                    <p class="store-overview__group__table__product-details">
+                                    <p class="">
                                         {% if product.parent_id %}
                                             {{ product.title }}
                                         {% endif %}
                                     </p>
-                                    <p class="store-overview__group__table__product-details">
+                                    <p class="">
                                         {{ line.quantity }} x ${{ line.unit_price_excl_tax }}
                                     </p>
                                 </div>
@@ -78,10 +79,10 @@
                     {% endfor %}
                     <!-- group total -->
                     <div class="store-overview__group__total clearfix">
-                        <div class="col-xs-9 store-overview__group__total__label">
+                        <div class="col-xs-9">
                             Sub-total:
                         </div>
-                        <div class="col-xs-3 store-overview__group__total__value">
+                        <div class="col-xs-3">
                             {{ basket.physical_total_excl_tax|currency:basket.currency }}
                         </div>
                     </div>
@@ -161,7 +162,9 @@
         </div>
         <div class="col-xs-12 col-sm-4 store-overview__right-column">
             <div class="store-overview__group">
-                <h3 class="store-overview__group__heading">Shipping information:</h3>
+                <div class="section-title section-title-no-padded">
+                  <div class="title1">Shipping Information</div>
+                </div>
                 {% if shipping_address %}
                     <div class="store-overview__group__textblock">
                         <p>{{ shipping_address.name }}</p>
@@ -179,7 +182,9 @@
                 {% endif %}
             </div>
             <div class="store-overview__group">
-                <h3 class="store-overview__group__heading">Billing information:</h3>
+                <div class="section-title section-title-no-padded">
+                  <div class="title1">Billing Information</div>
+                </div>
                 {% if billing_address %}
                 <div class="store-overview__group__textblock">
                     <p>{{ billing_address.name }}</p>
@@ -204,12 +209,12 @@
     <section class="store-cart__footer container">
         <div class="col-xs-12 col-sm-6 store-cart__footer__right">
             <div class="store-cart__footer__price-container">
-                <span class="store-cart__footer__price-container__value">{{ basket.total_excl_tax|currency:basket.currency }}</span>
+                <span class="store-cart__footer__price-container__value accent-color">{{ basket.total_excl_tax|currency:basket.currency }}</span>
                 <span class="store-cart__footer__price-container__label">Total:</span>
-                <span class="store-cart__footer__price-container__value">{{ shipping_charge.excl_tax|currency:basket.currency }}</span>
+                <span class="store-cart__footer__price-container__value accent-color">{{ shipping_charge.excl_tax|currency:basket.currency }}</span>
                 <span class="store-cart__footer__price-container__label">Shipping:</span>
                 <div class="store-cart__footer__price-container__total">
-                    <span class="store-cart__footer__price-container__value">{{ order_total.excl_tax|currency:basket.currency }}</span>
+                    <span class="store-cart__footer__price-container__value accent-color">{{ order_total.excl_tax|currency:basket.currency }}</span>
                     <span class="store-cart__footer__price-container__label">Total:</span>
                 </div>
             </div>

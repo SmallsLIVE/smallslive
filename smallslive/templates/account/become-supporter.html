@@ -53,11 +53,11 @@
       </div>
       <p class="text9">Monthly pledges are billed automatically and can be cancelled at any time in your account settings.<br>You will receive access to our audio/video library for as long as you are a Supporting Member of SmallsLIVE.</p>
       <div id="monthlyPledge" class="button-row button-row-big button-row-margin">
-        <button>$ 10</button>
-        <button>$ 20</button>
-        <button>$ 50</button>
+        <button>$10</button>
+        <button>$20</button>
+        <button>$50</button>
         <div class="custom-input text4">
-          <input type="number" class="no-spinners" value="supporter-monthly-pledge">
+          <input type="number" pattern="\d*" class="no-spinners" value="supporter-monthly-pledge">
           <label><div>SET YOUR OWN <br> (MIN $10)</div></label>
         </div>
       </div>
@@ -69,11 +69,11 @@
       <p class="text9">This is a one time tax deductible donation to The SmallsLIVE Foundation. You will receive one year’s access to our Audio/video archive.<br>
      If you would like to make a customized donation or donate to us directly, please contact us at foundation@smallslive.com</p>
       <div id="yearlyPledge" class="button-row button-row-big button-row-margin">
-        <button>$ 100</button>
-        <button>$ 500</button>
-        <button>$ 1000</button>
+        <button>$100</button>
+        <button>$500</button>
+        <button>$1000</button>
         <div class="custom-input text4">
-          <input type="number" class="no-spinners" value="supporter-yearly-pledge">
+          <input type="number" pattern="\d*" class="no-spinners" value="supporter-yearly-pledge">
           <label><div>ENTER  AMOUNT<br>(MIN  $100)</div></label>
         </div>
       </div>
@@ -90,8 +90,12 @@
           {% purchase_info_for_product request product as session %}
             <!-- Single store item -->
             <div class="store-list-item flex-column items-flex-stretch">
-              {% if product.gift_price %}
-              <button class="select-gift">$ {{ product.gift_price }}</button>
+              {% if session.price.excl_tax == 0 %}
+                  <button class="select-gift">Free</button>
+              {% elif session.price.is_tax_known %}
+              <button class="select-gift">{{ session.price.incl_tax|currency:session.price.currency }}</button>
+              {% else %}
+              <button class="select-gift">{{ session.price.excl_tax|currency:session.price.currency }}</button>
               {% endif %}
               <div class="store-list-item-image">
                   {% with image=product.primary_image %}
@@ -134,7 +138,7 @@
                   </div>
                 {% endif %}
               </form>
-              <div class="overlay hidden"></div>
+              <div class="overlay" style="display: none;"></div>
             </div>
             <!-- End of single store item -->
           {% endfor %}
@@ -143,6 +147,12 @@
       </div>
 
     </div>
+  </div>
+
+  <div id="supporterStepPaymentInfo" class="supporter-step" style="display: none"
+       data-payment-info-url="{{ payment_info_url }}"
+       data-payment-info-complete-url="{% url 'become_supporter' %}">
+
   </div>
 
   <div id="supporterStepShipping" class="supporter-step" style="display: none">
@@ -179,8 +189,6 @@
   {% if not completed %}
     <button id="backButton" class="button-bordered">Back</button>
     <button id="confirmButton" class="button-bordered">Confirm</button>
-    <a class="btn" href="{% url 'paypal-redirect' %}">PayPal</a>
-    <div id="paypal-button" style="width: 100px;"></div>
   {% else %}
     <a href="{% url 'archive' %}">
       <button>Access the archive</button>
