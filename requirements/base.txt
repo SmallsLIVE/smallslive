@@ -68,6 +68,7 @@ libthumbor==1.0.1
 lxml==3.3.4
 mailchimp==2.0.9
 mock==1.0.1
+natsort==3.5.0
 newrelic==2.54.0.41
 oauthlib==0.7.2
 phonenumbers==6.3.0
