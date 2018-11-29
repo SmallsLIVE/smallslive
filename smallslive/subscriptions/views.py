@@ -175,7 +175,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         self.request.basket.flush()
 
         context['gifts'] = []
-        for product in Product.objects.filter(gift=True):
+        for product in Product.objects.filter(product_class__slug='gift'):
             context['gifts'].append(product)
 
         return context
