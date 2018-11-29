@@ -21,7 +21,7 @@ $(document).ready(function () {
     if (selectedData.type == 'gift') {
       steps = steps.concat(['Shipping', 'Billing', 'Preview']);
     } else {
-
+      steps = steps.concat(['PaymentInfo']);
     }
 
     steps = steps.concat(['ThankYou']);
@@ -61,19 +61,15 @@ $(document).ready(function () {
   var $itemForm;
 
 
-  $(document).on('change', '.select-gift', function () {
+  $(document).on('change', '.store-list-item select', function () {
     /* Add a border to the display selection on dropdown change.
      */
     var $that = $(this);
-    var $elements  = $('.select').not(this);
-
-    $elements.val($('.store-add-small__options option:first').val());
-    $('.store-list-item .store-list-item-image').removeClass('selected');
+    var val = $that.val();
+    var $elements  = $('.store-list-item select').not(this);
 
     if (val != 'none') {
-      $that.closest('.store-list-item').find('.store-list-item-image').addClass('selected');
-      $that.next().removeClass('alert');
-      setSelected('gift', 1);
+      $that.closest('.store-list-item').find('.select-gift').click();
       $itemForm = $that.closest('form');
     } else {
       $that.next().addClass('alert');
@@ -196,6 +192,7 @@ $(document).ready(function () {
 
     // Set new value to input - payment-method
     $('#payment-method').val(paymentMethod);
+    checkConfirmButton();
 
     return false;
   });
@@ -210,6 +207,8 @@ $(document).ready(function () {
       success: function( data ) {
         if (data && data.payment_url) {
           window.location = data.payment_url;
+        } else if (data && data.success_url) {
+          window.location = data.success_url;
         } else {
           submitComplete();
         }
@@ -231,7 +230,6 @@ $(document).ready(function () {
       data: $supporterForm.serialize(),
       success: function (data) {
         if(typeof completeSubpage !== "undefined"){
-          console.log("Works?")
           notCompleteContainer.html("")
           var flowCompleteSubpage = window.subpages.get(completeSubpage);
           flowCompleteSubpage.load();
@@ -251,14 +249,6 @@ $(document).ready(function () {
 
   var buttons = $('#supporterSteps > *');
   var monthlyButtons = $("#monthlyPledge > button");
-
-  var $supporterForm = $('#formSupporter');
-  // $supporterForm.submit(getAjaxSubmitForForm(
-  //   $supporterForm, [
-  //     "type", "quantity", "card_name", "expiration_date", "credit_card_number",
-  //     "credit_card_cvc"
-  //   ]
-  // ));
 
   var resetButtons = function () {
     [monthlyButtons, yearlyButtons].forEach(function (buttons) {
@@ -287,12 +277,16 @@ $(document).ready(function () {
     if (pledgeType === 'year') {
       $('#pledge-type').html('You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' + pledgeAmount +'</span> .');
       $('#payment-type').html('Your  card  will  be  charged  in  this  amount.');
+      $('#select-payment-row').show();
     } else if (pledgeType === 'month') {
       $('#pledge-type').html('You’ve  selected  to  pledge <span class="accent-color">$' + pledgeAmount +'.00 per month</span> . ');
       $('#payment-type').html('Your  card  will  be  billed  monthly  until  you  choose  to  cancel.');
+      // Do not show select payment section.
+      $('#select-payment-row').hide();
     } else {
       $('#pledge-type').html('You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' + pledgeAmount +'</span> .');
       $('#payment-type').html('Your  card  will  be  charged  in  this  amount.');
+      $('#select-payment-row').show();
     }
     $('#hiddenQuantityInput').val(pledgeAmount);
     $('#hiddenTypeInput').val(pledgeType);
@@ -346,23 +340,32 @@ $(document).ready(function () {
   var monthlyCustom = $("#monthlyPledge").find("input")[0];
   var yearlyCustom = $("#yearlyPledge").find("input")[0];
 
+  function isPositiveInteger(s) {
+    return /^\+?[1-9][\d]*$/.test(s);
+  }
   $(oneTimePayment).on('keyup', function (event) {
     var value = $(oneTimePayment).val();
-    if (value) {
+    if (value && isPositiveInteger(value)) {
       resetButtons();
       setSelected('one-time', value);
       $(oneTimePayment).addClass('active');
+      if (event.keyCode == 13) {
+        $('#confirmButton').click();
+      }
     }
   });
 
   $(monthlyCustom).on('keyup', function (event) {
     var value = $(monthlyCustom).val();
-    if (value) {
+    if (value && isPositiveInteger(value)) {
       resetButtons();
       $(yearlyCustom).val('');
       setSelected('month', value);
       $(monthlyCustom).addClass('active');
       $(yearlyCustom).removeClass('active');
+      if (event.keyCode == 13) {
+        $('#confirmButton').click();
+      }
     } else {
       setSelected('', 0);
       $(monthlyCustom).removeClass('active');
@@ -371,12 +374,15 @@ $(document).ready(function () {
 
   $(yearlyCustom).on('keyup', function (event) {
     var value = $(yearlyCustom).val();
-    if (value) {
+    if (value && isPositiveInteger(value)) {
       resetButtons();
       $(monthlyCustom).val('');
       setSelected('year', value);
       $(yearlyCustom).addClass('active');
       $(monthlyCustom).removeClass('active');
+      if (event.keyCode == 13) {
+        $('#confirmButton').click();
+      }
     } else {
       $(yearlyCustom).removeClass('active');
       setSelected('', 0);
@@ -392,20 +398,73 @@ $(document).ready(function () {
     // fade other items and make this one active
     $('.select-gift').removeClass('active');
     $(this).addClass('active');
-    $('.store-list-item .overlay').removeClass('hidden');
+    $('.store-list-item .overlay').fadeIn();
     var $parent = $(this).parent();
-    $parent.find('.overlay').addClass('hidden');
-    $("#confirmButton").prop('disabled', false);
+    $parent.find('.overlay').fadeOut();
     // highlight dropdown if no option selected
     var $option = $parent.find('.same-as-selected');
     var $select = $parent.find('.select-selected');
     $('.select-selected').removeClass('alert');
     if ($option.length == 0 || $option.val() === 'none') {
       $select.addClass('alert');
+      $("#confirmButton").prop('disabled', true);
     } else {
       $select.removeClass('alert');
+      $("#confirmButton").prop('disabled', false);
     }
   });
+
+  var checks = {
+    '#card-number':  19, //4444 4444 4444 4444
+    '#expiry-month':  2,
+    '#expiry-year':  2,
+    '#cvc':  3,
+  };
+
+  $(document).on('keyup', '#payment-form input', function (e) {
+    checkConfirmButton();
+
+    if (e.which > 90 || e.which < 48) {
+      return;
+    }
+
+    var id = '#' + $(this).attr('id');
+    var keys = Object.keys(checks);
+    var pos = keys.indexOf(id);
+    if (pos + 1 < keys.length && $(this).val().length  == checks[id]) {
+      if (id == '#expiry-year') {
+        $('#name-on-card').focus();
+      } else  {
+        $(keys[pos + 1]).focus();
+      }
+    }
+  });
+
+  function checkInput(selector,  value) {
+    $input = $(selector);
+    return $input.val().length === value;
+  }
+
+  function checkCreditCardForm() {
+    var check = true;
+    $.each(checks, function(selector, value){
+      if (!checkInput(selector, value)) {
+        check = false;
+        return;
+      }
+    });
+
+    if (!check) {
+      return false;
+    }
+
+    if ($('#name-on-card').val().length === 0) {
+      return false;
+    }
+
+    return true;
+
+  }
 
   var checkConfirmButton = function () {
 
@@ -420,7 +479,7 @@ $(document).ready(function () {
       ) {
         $confirmButton.prop('disabled', false);
       } else {
-          $confirmButton.prop('disabled', true);
+        $confirmButton.prop('disabled', true);
       }
     } else if (currentStep === 0) {
         $confirmButton.prop('disabled', false);
@@ -428,10 +487,15 @@ $(document).ready(function () {
         $confirmButton.prop('disabled', false);
     }
 
-    if (currentStep === 'Payment') {
+    if (currentStep === 'PaymentInfo'  && selectedData.type != 'gift') {
+        var method = $('#payment-method').val();
+        if (method == 'credit-card') {
+          var confirm  = checkCreditCardForm();
+          $confirmButton.prop('disabled', !confirm);
+        } else {
+          $confirmButton.prop('disabled', false);
+        }
         $confirmButton.text('Confirm Payment');
-    } else if (currentStep === "SelectType") {
-        $confirmButton.text('Continue');
     } else {
         $confirmButton.text('Continue');
     }
@@ -451,32 +515,65 @@ $(document).ready(function () {
     }
   });
 
+  function getPaymentInfoForm() {
+
+    var $step = $('#supporterStepPaymentInfo');
+    var url = $step.data('payment-info-url');
+
+    $.ajax({
+      url: url,
+      type: 'get',
+      success: function( data ) {
+        $step.html(data);
+        updatePaymentInfo();
+        replaceWhiteSelects($('#supporterStepPaymentInfo')[0]);
+        renderCardAnimation('#payment-form');
+        showPanel(getNextStep());
+      },
+      error: function( xhr, err ) {
+        console.log(err);
+      }
+    });
+
+  }
+
   $(document).on('click', '#confirmButton', function (event) {
+
+    var $that = $(this);
 
     if (selectedData.type == 'gift') {
       event.preventDefault();
       event.stopPropagation();
     }
 
-    if (currentStep === 'Payment') {
-      var $inputs = $('.supporter-card-data .form-control');
-      var errors = false;
-      $inputs.each(function () {
-        if (!$(this).val()) {
-          $(this).addClass('error');
-          errors = true;
-        }
-      });
-      sentHint.show();
-      if (errors) {
-        sentHint.hide();
-        $('#form-general-error').text('Please correct errors above');
-      }
+    if (currentStep === 'PaymentInfo') {
 
-      // submitForm();
-      // TODO Disable the submit button to prevent repeated clicks
-      // $form.find('#confirmButton').prop('disabled', true).addClass('disabled');
-      startStripePayment($supporterForm, completeSubpage);
+      var method = $('#payment-method').val();
+      if (method == 'credit-card') {
+        var $inputs = $('.supporter-card-data .form-control');
+        var errors = false;
+        $inputs.each(function () {
+          if (!$(this).val()) {
+            $(this).addClass('error');
+            errors = true;
+          }
+        });
+        sentHint.show();
+        if (errors) {
+          sentHint.hide();
+          $('#form-general-error').text('Please correct errors above');
+        } else {
+          $that.prop('disabled', true);
+          startStripePayment($('#payment-form'),
+            $('#supporterStepPaymentInfo').data('payment-info-complete-url'),
+            completeSubpage);
+        }
+      } else if (method == 'paypal') {
+        $that.prop('disabled', true);
+        startPayPalPayment($('#payment-form'),
+          $('#supporterStepPaymentInfo').data('payment-info-complete-url'),
+          completeSubpage);
+      }
     } else if (currentStep === 'SelectType'  && selectedData.type == 'gift') {
       $('.step-button').removeClass('hidden');
       $itemForm.submit();
@@ -486,6 +583,8 @@ $(document).ready(function () {
       $('#payment-form').submit();
     } else if (currentStep === 'Preview'  && selectedData.type == 'gift') {
       $('#place-order').submit();
+    } else if (currentStep === 'SelectType' && selectedData.type != 'gift') {
+      getPaymentInfoForm();
     } else {
       $('.step-button.gift').addClass('hidden');
       showPanel(getNextStep());

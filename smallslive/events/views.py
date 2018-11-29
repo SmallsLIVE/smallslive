@@ -120,12 +120,7 @@ def _get_most_popular(range=None):
 
 def _get_most_popular_uploaded(range_size=None):
 
-    print range_size
-
     range_start, range_end = calculate_query_range(range_size)
-
-    print range_start
-    print range_end
 
     qs = UserVideoMetric.objects.all()
     if range_size:
@@ -138,13 +133,7 @@ def _get_most_popular_uploaded(range_size=None):
         count=Sum('seconds_played')
     ).order_by('-count')[:10]
 
-    print event_values
-
-    print event_values.query
-
     event_ids = [e['recording_id'] for e in event_values]
-
-    print event_ids
 
     sqs = Event.objects.filter(
         recordings__id__in=event_ids,

@@ -60,6 +60,7 @@
   color: black;
   cursor: pointer;
   display: flex;
+  height: 40px;
   justify-content: center;
   align-items: center;
   padding: 1em 3em 1em 1em;
@@ -68,11 +69,13 @@
     padding: 1em;
   }
 
+  /*
   @media (max-width: $screen-sm-max) {
     height: 35px;
   }
 
   height: 40px;
+  */
 }
 /*style items (options):*/
 .select-items {

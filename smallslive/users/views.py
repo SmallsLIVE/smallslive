@@ -7,19 +7,17 @@ from allauth.account.views import SignupView as AllauthSignupView, \
     ConfirmEmailView as CoreConfirmEmailView, \
     LoginView as CoreLoginView, _ajax_response
 import braces.views
-from braces.views import FormValidMessageMixin, LoginRequiredMixin, StaffuserRequiredMixin
+from braces.views import LoginRequiredMixin, StaffuserRequiredMixin
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.forms.models import model_to_dict
 from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, FormView, ListView
-from djstripe.mixins import SubscriptionMixin
+from django.views.generic import TemplateView, FormView, ListView, View
 from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
-from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView,\
-    CancelSubscriptionView as BaseCancelSubscriptionView
 from allauth.account.app_settings import EmailVerificationMethod
 from urllib import urlencode
 import urlparse
@@ -27,172 +25,10 @@ import stripe
 
 from artist_dashboard.forms import ArtistInfoForm
 from custom_stripe.models import CustomPlan, CustomerDetail
-from oscar_apps.catalogue.models import Product
-from oscar.apps.partner.strategy import Selector
 from users.models import SmallsUser
 from users.utils import charge, grant_access_to_archive, subscribe_to_plan, one_time_donation
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
 
-
-# TODO: remove duplicate code (views and templates)
-
-
-class ContributeFlowView(TemplateView):
-
-    def get_template_names(self):
-        if self.request.is_ajax():
-            template_name = 'account/supporter-flow-ajax.html'
-        else:
-            template_name = 'account/supporter-flow.html'
-        return [template_name]
-
-    def get_context_data(self, **kwargs):
-        context = super(ContributeFlowView, self).get_context_data(**kwargs)
-        return context
-
-
-class DonateView(ContributeFlowView):
-
-    def get_context_data(self, **kwargs):
-        context = super(DonateView, self).get_context_data(**kwargs)
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-        context['form_action'] = reverse('donate')
-        context['redirect_url'] = self.request.META.get('HTTP_REFERER')
-        context['flow_type'] = "donate"
-       
-        return context
-
-    def post(self, request, *args, **kwargs):
-
-        redirect_url = self.request.POST.get('redirect_url')
-
-        paypal_payment_id = self.request.POST.get('paypal_payment_id')
-        if paypal_payment_id:
-            pass
-        else:
-            stripe_token = self.request.POST.get('stripe_token')
-            amount = int(self.request.POST.get('quantity'))
-
-
-            try:
-                customer, created = Customer.get_or_create(
-                    subscriber=subscriber_request_callback(request))
-                one_time_donation(customer, stripe_token, amount)
-            except stripe.StripeError as e:
-                print 'Except -->'
-                print e
-                # add form error here
-                return _ajax_response(request, JsonResponse({
-                    'error': e.args[0]
-                }, status=500))
-
-        return _ajax_response(
-            request, redirect(reverse(
-                'donate_complete') + '?redirect_url={}'.format(redirect_url))
-        )
-
-
-donate = DonateView.as_view()
-
-
-class DonateCompleteView(DonateView):
-
-    def get_context_data(self, **kwargs):
-        context = super(
-            DonateCompleteView, self
-        ).get_context_data(**kwargs)
-        context['completed'] = True
-        context['redirect_url'] = self.request.GET.get('redirect_url')
-
-        return context
-
-
-donate_complete = DonateCompleteView.as_view()
-
-
-class BecomeSupporterView(ContributeFlowView):
-
-    def get_context_data(self, **kwargs):
-        context = super(BecomeSupporterView, self).get_context_data(**kwargs)
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-        context['form_action'] = reverse('become_supporter')
-        context['flow_type'] = "become_supporter"
-
-        # We need to clear the basket in case the user has anything in there.
-        print '********************************'
-        print 'Flushing basket ..'
-        self.request.basket.flush()
-
-        context['gifts'] = []
-        for product in Product.objects.filter(gift=True):
-            context['gifts'].append(product)
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-
-        grant_access_to_archive(self.request.user)
-
-        return _ajax_response(
-            request, redirect(reverse('become_supporter_complete'))
-        )
-
-        stripe_token = self.request.POST.get('stripe_token')
-        plan_type = self.request.POST.get('type')
-        amount = self.request.POST.get('quantity')
-        if amount:
-            amount = int(amount)
-
-        # As per Aslan's request
-        # Yearly donations will no longer exist. They are One Time Donations  now.
-
-        try:
-            customer, created = Customer.get_or_create(
-                subscriber=subscriber_request_callback(request))
-            if plan_type == 'month':
-                subscribe_to_plan(customer, stripe_token, amount, plan_type)
-            else:
-                grant = amount >= 100
-                one_time_donation(customer, stripe_token, amount,
-                                  grant_access_to_archive=grant)
-        except stripe.StripeError as e:
-            # add form error here
-            return _ajax_response(request, JsonResponse({
-                'error': e.args[0]
-            }, status=500))
-
-        return _ajax_response(
-            request, redirect(reverse('become_supporter_complete'))
-        )
-
-
-become_supporter = BecomeSupporterView.as_view()
-
-
-class UpdatePledgeView(BecomeSupporterView):
-
-    def get_context_data(self, **kwargs):
-        context = super(UpdatePledgeView, self).get_context_data(**kwargs)
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-        context['form_action'] = reverse('become_supporter')
-        context['flow_type'] = "update_pledge"
-        return context
-
-
-update_pledge = UpdatePledgeView.as_view()
-
-
-class BecomeSupporterCompleteView(BecomeSupporterView):
-    def get_context_data(self, **kwargs):
-        context = super(
-            BecomeSupporterCompleteView, self
-        ).get_context_data(**kwargs)
-        context['completed'] = True
-
-        return context
-
-
-become_supporter_complete = BecomeSupporterCompleteView.as_view()
 
 
 class SignupLandingView(TemplateView):
@@ -241,55 +77,6 @@ class SignupView(AllauthSignupView):
 signup_view = SignupView.as_view()
 
 
-class SignupPaymentView(LoginRequiredMixin, FormValidMessageMixin, SubscriptionMixin, FormView):
-    # TODO - needs tests
-
-    form_class = PlanForm
-    template_name = 'account/signup-payment.html'
-    success_url = reverse_lazy("accounts_signup_complete")
-    form_valid_message = "You are now subscribed!"
-
-    def get_form_kwargs(self):
-        kwargs = super(SignupPaymentView, self).get_form_kwargs()
-        kwargs['selected_plan_type'] = self.kwargs.get('plan_name')
-        return kwargs
-
-    def get_context_data(self, **kwargs):
-        context = super(FormView, self).get_context_data(**kwargs)
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-        plan_name = self.kwargs.get('plan_name')
-        plan = settings.SUBSCRIPTION_PLANS.get(plan_name)
-        if not plan:
-            raise Http404
-        context['plan'] = plan
-        return context
-
-    def post(self, request, *args, **kwargs):
-        """
-        Handles POST requests, instantiating a form instance with the passed
-        POST variables and then checked for validity.
-        """
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
-        if form.is_valid():
-            try:
-                customer, created = Customer.get_or_create(
-                    subscriber=subscriber_request_callback(self.request))
-                customer.update_card(self.request.POST.get("stripe_token"))
-                customer.subscribe(form.cleaned_data["plan"])
-            except stripe.StripeError as e:
-                # add form error here
-                self.error = e.args[0]
-                return self.form_invalid(form)
-
-            # redirect to confirmation page
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-signup_payment = SignupPaymentView.as_view()
-
-
 class SignupCompleteView(LoginRequiredMixin, TemplateView):
     template_name = 'account/signup-complete.html'
 
@@ -299,60 +86,6 @@ class SignupCompleteView(LoginRequiredMixin, TemplateView):
         return context
 
 signup_complete = SignupCompleteView.as_view()
-
-
-class SyncPaymentHistoryView(SyncHistoryView):
-    template_name = 'account/blocks/payment_history.html'
-
-sync_payment_history = SyncPaymentHistoryView.as_view()
-
-
-class SubscriptionSettingsView(LoginRequiredMixin, TemplateView):
-    template_name = 'account/subscription-settings.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(SubscriptionSettingsView, self).get_context_data(**kwargs)
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-        return context
-
-subscription_settings = SubscriptionSettingsView.as_view()
-
-
-class UpdateCardView(ChangeCardView):
-    def get_post_success_url(self):
-        return reverse('subscription_settings')
-
-    def get(self, request, *args, **kwargs):
-        # only POST
-        return redirect(self.get_post_success_url())
-
-update_card = UpdateCardView.as_view()
-
-
-class UpgradePlanView(ChangePlanView):
-    form_class = PlanForm
-    success_url = reverse_lazy("subscription_settings")
-    template_name = 'account/upgrade_plan.html'
-
-    def get_form_kwargs(self):
-        kwargs = super(UpgradePlanView, self).get_form_kwargs()
-        kwargs['selected_plan_type'] = self.kwargs.get('plan_name')
-        return kwargs
-
-    def get_context_data(self, **kwargs):
-        context = super(UpgradePlanView, self).get_context_data(**kwargs)
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-        plan_name = self.kwargs.get('plan_name')
-        plan = settings.SUBSCRIPTION_PLANS.get(plan_name)
-        if not plan:
-            raise Http404
-        context['plan'] = plan
-        context['stripe_token'] = self.request.user.customer.card_fingerprint
-        return context
-
-upgrade_plan = UpgradePlanView.as_view()
-
-
 
 
 @login_required
@@ -563,43 +296,6 @@ class LoginView(CoreLoginView):
             return ["account/login.html"]
 
 login_view = LoginView.as_view()
-
-
-class CancelSubscriptionView(BaseCancelSubscriptionView):
-    success_url = reverse_lazy("user_settings_new")
-
-cancel_subscription = CancelSubscriptionView.as_view()
-
-
-class ReactivateSubscriptionView(FormView):
-    success_url = reverse_lazy("subscription_settings")
-    form_class = ReactivateSubscriptionForm
-
-    def form_valid(self, form):
-        customer, created = Customer.get_or_create(
-            subscriber=subscriber_request_callback(self.request))
-
-        if customer.has_active_subscription() and customer.current_subscription.cancel_at_period_end:
-            customer.subscribe(customer.current_subscription.plan)
-
-            messages.info(self.request, "You have reactivated your subscription. It expires at '{period_end}'.".format(
-                period_end=customer.current_subscription.current_period_end))
-
-        return super(ReactivateSubscriptionView, self).form_valid(form)
-
-reactivate_subscription = ReactivateSubscriptionView.as_view()
-
-
-class SubscriberEmailsFilterView(StaffuserRequiredMixin, ListView):
-    content_type = 'text/plain'
-    paginate_by = 3000
-    template_name = "account/subscriber_list_emails.html"
-    context_object_name = 'subscribers'
-
-    def get_queryset(self):
-        return SmallsUser.objects.filter(artist=None).values_list('email', flat=True).nocache()
-
-subscriber_list_emails = SubscriberEmailsFilterView.as_view()
 
 
 class HasArtistAssignedMixin(braces.views.UserPassesTestMixin):

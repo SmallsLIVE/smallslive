@@ -1,5 +1,4 @@
 import logging
-import paypalrestsdk
 from django import http
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -16,9 +15,10 @@ from oscar.apps.payment.exceptions import RedirectRequired, UnableToTakePayment,
 from oscar.apps.payment.models import SourceType, Source
 from oscar.core.loading import get_class
 from oscar_stripe.facade import Facade
-from .forms import PaymentForm, BillingAddressForm
 from oscar_apps.order.models import Order
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
+from subscriptions.mixins import PayPalMixin
+from .forms import PaymentForm, BillingAddressForm
 
 OrderTotalCalculator = get_class(
     'checkout.calculators', 'OrderTotalCalculator')
@@ -63,7 +63,7 @@ class ShippingAddressView(checkout_views.ShippingAddressView):
         return initial
 
 
-class PaymentDetailsView(checkout_views.PaymentDetailsView):
+class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
     """
     In the case of AJAX  (new become a supporter flow - gifts), we need to
     split billing from payment to match the existing payment design.
@@ -121,6 +121,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
         if request.POST.get('action', '') == 'place_order':
             self.token = self.request.POST.get('card_token')
             return self.handle_place_order_submission(request)
+
         return self.handle_payment_details_submission(request)
 
     def handle_payment_details_submission(self, request):
@@ -191,12 +192,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
                          forms can be re-rendered correctly if payment fails.
         :order_kwargs: Additional kwargs to pass to the place_order method
         """
-
-        print 'Submit *****************'
-        print 'Basket: ', basket, ' ', basket.pk
-        print payment_kwargs
-        print order_kwargs
-        print '************************'
 
         if payment_kwargs is None:
             payment_kwargs = {}
@@ -313,65 +308,55 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
             return self.render_preview(
                 self.request, error=msg, **payment_kwargs)
 
-    def handle_paypal_payment(self):
-        print '**************************'
-        print 'handle_paypal_payment:'
-        print self.request.basket
-        print 'Submitted basket: ', self.checkout_session.get_submitted_basket_id()
-        print '**************************'
+    def handle_successful_order(self, order):
+        """
+        Handle the various steps required after an order has been successfully
+        placed.
 
-        payment_execute_url = self.request.build_absolute_uri(reverse('checkout:paypal_execute'))
-        payment_cancel_url = self.request.build_absolute_uri(reverse('become_supporter'))
-        paypalrestsdk.configure({
-            'mode': 'sandbox',  # sandbox or live
-            'client_id': 'EBWKjlELKMYqRNQ6sYvFo64FtaRLRR5BdHEESmha49TM',
-            'client_secret': 'EO422dn3gQLgDbuwqTjzrFgFtaRLRR5BdHEESmha49TM'})
-        payment = paypalrestsdk.Payment({
-            'intent': 'sale',
-            'payer': {
-                'payment_method': 'paypal'},
-            'redirect_urls': {
-                'return_url': payment_execute_url,
-                'cancel_url': payment_cancel_url},
-            'transactions': [{
-                'item_list': {
-                    'items': [{
-                        'name': 'item',
-                        'sku': 'item',
-                        'price': '5.00',
-                        'currency': 'USD',
-                        'quantity': 1}]},
-                'amount': {
-                    'total': '5.00',
-                    'currency': 'USD'},
-                'description': "This is the payment transaction description."}]})
+        Overridden from OrderPlacementMixin.
+        """
+        # Send confirmation message (normally an email)
+        self.send_confirmation_message(order, self.communication_type_code)
 
-        if payment.create():
-            for link in payment.links:
-                if link.rel == 'approval_url':
-                    # Convert to str to avoid Google App Engine Unicode issue
-                    # https://github.com/paypal/rest-api-sdk-python/pull/58
-                    approval_url = str(link.href)
-                    print("Redirect for approval: %s" % approval_url)
-            if self.request.is_ajax():
-                raise RedirectRequiredAjax(approval_url)
-            else:
-                raise RedirectRequired(approval_url)
+        # Flush all session data
+        self.checkout_session.flush()
+
+        # Save order id in session so thank-you page can load it
+        self.request.session['checkout_order_id'] = order.id
+        if self.request.is_ajax():
+            response = http.JsonResponse({'success_url': reverse('become_supporter_complete')})
         else:
-            raise UnableToTakePayment(payment.error)
+            response = http.HttpResponseRedirect(self.get_success_url())
+            self.send_signal(self.request, response, order)
+
+        return response
+
+    def get_item_list(self, basket_lines):
+
+        items = []
+        for line in basket_lines:
+            item = {
+                'name': line.product.get_title(),
+                'price': str(line.unit_price_excl_tax),
+                "sku": "N/A",
+                'currency': 'USD',
+                'quantity': line.quantity}
+            items.append(item)
+
+        print '***********************'
+        print 'Items: '
+        print items
+
+        return items
 
     def handle_payment(self, order_number, total, basket_lines, payment_method, **kwargs):
 
-        print kwargs
-
         card_token = self.request.POST.get('card_token')
-        print '**************************'
-        print 'handle_payment:'
-        print 'Basket: ', self.request.basket
-        print 'Card Token:', card_token
-        print 'Payment Method:', payment_method
-        print 'Submitted basket: ', self.checkout_session.get_submitted_basket_id()
-        print '**************************'
+
+        print '*******************'
+        print 'handle_payment: '
+        print 'Card token: ', card_token
+        print 'Payment method: ', payment_method
 
         if card_token:
             if card_token.startswith('card_'):
@@ -394,7 +379,16 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
             reference = stripe_ref
             currency = settings.STRIPE_CURRENCY
         elif payment_method == 'paypal':
-            self.handle_paypal_payment()
+            item_list = self.get_item_list(basket_lines)
+            payment_execute_url = self.request.build_absolute_uri(reverse('checkout:paypal_execute'))
+            payment_cancel_url = self.request.build_absolute_uri(reverse('become_supporter'))
+            total = str(total.incl_tax)
+            currency = total.currency
+            # Donation will be set to True  if user is selecting gifts
+            # For Tickets and  other goods, there will  be no donation.
+            self.handle_paypal_payment(currency, total, item_list,
+                                       payment_execute_url, payment_cancel_url,
+                                       donation=True)
             source_name = 'PayPal'
             reference = ''
             currency = 'USD'
@@ -422,35 +416,55 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView):
         return items
 
 
-class ExecutePayPalPaymentView(OrderPlacementMixin, View):
+class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
     """
     """
 
     def get(self, request, *args, **kwargs):
 
-        print '****************** get PayPalExecute'
-        print request.GET
-        print 'Submitted basket: ', self.checkout_session.get_submitted_basket_id()
+        """
+        Receive callback from PayPal after the user has authorized the payment there.
+        GET /store/checkout/paypal/execute/?paymentId=PAY-1LV98277E5422594XLP4E2MY&token=EC-1FB41424NL964725H&PayerID=EXH9W7JL6NSN8
+        Confirm the payment and place the order
+        """
 
+        try:
+            payment_id = self.execute_payment()
+
+        except UnableToTakePayment as e:
+            # Something went wrong with payment but in an anticipated way.  Eg
+            # their bankcard has expired, wrong card number - that kind of
+            # thing. This type of exception is supposed to set a friendly error
+            # message that makes sense to the customer.
+            error_msg = "{0} No payment has been taken. Please " \
+                        "<a href='mailto:smallslive@gmail.com' tabindex='-1'>contact customer service</a> if this problem persists"
+            msg = six.text_type(e) + "."
+            error_msg = error_msg.format(msg)
+            self.restore_frozen_basket()
+
+            return self.render_payment_details(
+                self.request, error=error_msg)
+
+        # request.basket doesn't work b/c the basket is frozen
         basket = self.get_submitted_basket()
         strategy = selector.strategy(request=request, user=request.user)
         basket.strategy = strategy
-        print 'Basket: ', basket, basket.pk
-        self.handle_order_placement(basket)
-        return http.HttpResponse('OK')
+        self.handle_order_placement(basket, payment_id)
 
-    def handle_order_placement(self, basket):
+        return http.HttpResponseRedirect(reverse(
+            'become_supporter_complete') + '?payment_id={}'.format(payment_id))
+
+    def handle_order_placement(self, basket, payment_id):
         order_number = self.checkout_session.get_order_number()
 
         total_incl_tax = basket.total_incl_tax
-        total_excl_tax = basket.total_excl_tax
-
         # Record payment source
         source_type, is_created = SourceType.objects.get_or_create(name='PayPal')
         source = Source(source_type=source_type,
-            currency='USD',
-            amount_allocated=total_incl_tax,
-            amount_debited=total_incl_tax)
+                        currency='USD',
+                        amount_allocated=total_incl_tax,
+                        amount_debited=total_incl_tax,
+                        reference=payment_id)
         self.add_payment_source(source)
 
         shipping_address = self.get_shipping_address(self.request.basket)

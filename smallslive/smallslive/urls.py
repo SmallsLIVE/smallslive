@@ -59,6 +59,7 @@ urlpatterns = patterns('',
     url(r'^newsletters/$', 'newsletters.views.newsletter_list', name="newsletters"),
 
     url(r'^accounts/', include('users.urls')),
+    url(r'^subscriptions/', include('subscriptions.urls')),
     url(r'^multimedia/', include('multimedia.urls')),
     url(r'^institutional-subscriptions/', include('institutional_subscriptions.urls',
                                                   app_name="institutional_subscriptions")),

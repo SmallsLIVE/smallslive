@@ -108,10 +108,10 @@ def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
 
 
 def one_time_donation(customer, stripe_token, amount,
-                      grant_access_to_archive=False):
+                      grant_access=False):
     customer.update_card(stripe_token)
     charge(customer, amount)
-    if grant_access_to_archive:
+    if grant_access:
         user = customer.subscriber
         # As per Spike request, grant access until then next fiscal year end
         # In this  case, 1/1

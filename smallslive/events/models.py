@@ -511,8 +511,8 @@ class Event(TimeStampedModel):
         return url
 
     def get_next_event(self):
-        next_events = Event.objects.get_today_and_tomorrow_events(
-            venue_id=self.venue_id)
+        next_events = list(Event.objects.get_today_and_tomorrow_events(
+            venue_id=self.venue_id))
 
         next_event = None
         while next_events and not next_event:
