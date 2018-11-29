@@ -8,13 +8,12 @@ class ProductQuerySet(models.query.QuerySet):
         Applies select_related and prefetch_related for commonly related
         models to save on queries
         """
-        return self.exclude(product_class__slug='gift')\
-            .prefetch_related('children',
-                              'product_options',
-                              'product_class__options',
-                              'stockrecords',
-                              'images',
-                              )
+        return self.prefetch_related('children',
+                                     'product_options',
+                                     'product_class__options',
+                                     'stockrecords',
+                                     'images',
+                                    )
 
     def browsable(self):
         """
