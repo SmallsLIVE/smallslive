@@ -15,10 +15,20 @@
         Set
       </div>
       <div class="store-cart__mobile-quantity col-md-6 col-lg-4">
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell price">
-          Price
-        </div><div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
-          Total
+        <div class="store-cart__mobile-quantity__half">
+          <div class="col-xs-12 store-cart__table__cell quantity">
+            <div class="store-cart__quantity-control">
+                Quantity
+            </div>
+          </div>
+        </div>
+        <div class="store-cart__mobile-quantity__half">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell price">
+            Price
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
+            Total
+          </div>
         </div>
       </div>
     </div>
@@ -52,15 +62,30 @@
                     {{ product.set }}
                   </div>
                   <div class="store-cart__mobile-quantity col-md-6 col-lg-4">
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell price">
-                      {{ line.unit_price_excl_tax|currency:line.price_currency }}
+                    <div class="store-cart__mobile-quantity__half">
+                      <div class="col-xs-12 store-cart__table__cell quantity">
+                        <div class="store-cart__quantity-control">
+                          <button class="store-cart__quantity-control__button control-decrease {% if form.quantity.value <= 1 %}disabled{% endif %}" {% if form.quantity.value <= 1 %}disabled{% endif %} data-behaviour="decrease"><i
+                                  class="fa fa-minus-circle"></i></button>
+                          <span class="store-cart__quantity-control__label">{{ form.quantity.value }}</span>
+                          <input type="hidden" name="form-{{ forloop.counter0 }}-quantity"  value="{{ form.quantity.value }}"/>
+                          <div style="display: none;"><input id="id_form-{{ forloop.counter0 }}-DELETE" name="form-{{ forloop.counter0 }}-DELETE" type="checkbox"></div>
+                          <button class="store-cart__quantity-control__button control-increase"  data-behaviour="increase"><i
+                                  class="fa fa-plus-circle"></i></button>
+                        </div>
+                      </div>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
-                      {{ line.unit_price_excl_tax|currency:line.price_currency }}
+                    <div class="store-cart__mobile-quantity__half">
+                      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell price">
+                        {{ line.unit_price_excl_tax|currency:line.price_currency }}
+                      </div>
+                      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
+                        {{ line.line_price_excl_tax|currency:line.price_currency }}
+                      </div>
                     </div>
                   </div>
                   <div class="col-xs-1 hidden-md hidden-lg store-cart__table__cell remove">
-                      <button class="store-cart__table__remove-button" data-behaviours="remove" data-id="{{ forloop.counter0 }}"><i class="fa fa-remove"></i></button>
+                    <button class="store-cart__table__remove-button" data-behaviours="remove" data-id="{{ forloop.counter0 }}"><i class="fa fa-remove"></i></button>
                   </div>
                 </div>
               </div>

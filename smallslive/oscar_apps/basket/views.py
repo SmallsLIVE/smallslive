@@ -14,8 +14,7 @@ class BasketAddView(basket_views.BasketAddView):
         print '**************'
         print 'BasketAddView: '
         print form.product
-        print form.product.product_class.slug
-        if 'ticket' in form.product.product_class.slug:
+        if form.product.product_class and 'ticket' in form.product.product_class.slug:
             print 'Ticket found -> clearing basket'
             self.request.basket.flush()
 
