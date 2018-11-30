@@ -209,6 +209,9 @@ $(document).ready(function () {
           window.location = data.payment_url;
         } else if (data && data.success_url) {
           window.location = data.success_url;
+        } else if (data && data.error) {
+          // go back to previous step
+          backButton.click();
         } else {
           submitComplete();
         }

@@ -129,6 +129,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         form = PaymentForm(self.request.user, request.POST)
         shipping_address = self.get_shipping_address(self.request.basket)
         billing_address_form = BillingAddressForm(shipping_address, self.request.user, request.POST)
+        payment_method = request.POST.get('payment_method')
+
         if billing_address_form.is_valid():
             print billing_address_form.errors
             if billing_address_form.cleaned_data.get('billing_option') == "same-address":
@@ -140,7 +142,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         else:
             return self.render_payment_details(request, form=form, billing_address_form=billing_address_form)
 
-        if request.POST.get('payment_method') == 'paypal':
+        if payment_method == 'paypal':
             return self.render_preview(request, billing_address_form=billing_address_form,
                                        payment_method='paypal')
         else:
@@ -151,6 +153,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
                     'last_4': form.cleaned_data['number'][-4:],
                 })
                 return self.render_preview(request, card_token=form.token, form=form,
+                                           payment_method=payment_method,
                                            billing_address_form=billing_address_form)
             else:
                 return self.render_payment_details(request, form=form,
@@ -164,10 +167,13 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         print '****************************'
 
         payment_method = request.POST.get('payment_method')
+        submission = self.build_submission()
+        submission['payment_kwargs']['payment_method'] = payment_method
+        print 'Submission: '
+        print submission
+        return self.submit(**submission)
 
-        return self.submit(**self.build_submission(payment_method=payment_method))
-
-    def submit(self, user, basket, payment_method,
+    def submit(self, user, basket,
                shipping_address, shipping_method,  # noqa (too complex (10))
                shipping_charge, billing_address, order_total,
                payment_kwargs=None, order_kwargs=None):
@@ -192,6 +198,10 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
                          forms can be re-rendered correctly if payment fails.
         :order_kwargs: Additional kwargs to pass to the place_order method
         """
+
+        print '*******************************'
+        print 'Submit: '
+        print payment_kwargs
 
         if payment_kwargs is None:
             payment_kwargs = {}
@@ -231,7 +241,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         basket_lines = basket.lines.all()
         try:
             print 'try handle payment'
-            self.handle_payment(order_number, order_total, basket_lines, payment_method, **payment_kwargs)
+            self.handle_payment(order_number, order_total, basket_lines, **payment_kwargs)
         except RedirectRequired as e:
             # Redirect required (eg PayPal, 3DS)
             logger.info("Order #%s: redirecting to %s", order_number, e.url)
@@ -251,6 +261,9 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             # message that makes sense to the customer.
             msg = six.text_type(e) + "."
             error_msg = error_msg.format(msg)
+            print '******************'
+            print 'UnableToTakePayment: '
+            print error_msg
             logger.warning(
                 "Order #%s: unable to take payment (%s) - restoring basket",
                 order_number, msg)
@@ -258,9 +271,13 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
 
             # We assume that the details submitted on the payment details view
             # were invalid (eg expired bankcard).
-            return self.render_payment_details(
-                self.request, error=error_msg, **payment_kwargs)
+            if self.request.is_ajax():
+                return http.JsonResponse({'error': error_msg})
+            else:
+                return self.render_payment_details(
+                    self.request, error=error_msg, **payment_kwargs)
         except PaymentError as e:
+
             # A general payment error - Something went wrong which wasn't
             # anticipated.  Eg, the payment gateway is down (it happens), your
             # credentials are wrong - that king of thing.
@@ -272,8 +289,15 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
                          exc_info=True)
             self.restore_frozen_basket()
             error_msg = error_msg.format(msg)
-            return self.render_payment_details(
-                self.request, error=error_msg, **payment_kwargs)
+            print '******************'
+            print 'PaymentError: '
+            print error_msg
+
+            if self.request.is_ajax():
+                return http.JsonResponse({'error': error_msg})
+            else:
+                return self.render_payment_details(
+                    self.request, error=error_msg, **payment_kwargs)
         except Exception as e:
             # Unhandled exception - hopefully, you will only ever see this in
             # development...
@@ -282,6 +306,10 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
                 order_number, e, exc_info=True)
             self.restore_frozen_basket()
             error_msg = error_msg.format("")
+            print '******************'
+            print 'Unhandled Exception: '
+            print error_msg
+
             return self.render_preview(
                 self.request, error=error_msg, **payment_kwargs)
 
@@ -349,9 +377,10 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
 
         return items
 
-    def handle_payment(self, order_number, total, basket_lines, payment_method, **kwargs):
+    def handle_payment(self, order_number, total, basket_lines, **kwargs):
 
         card_token = self.request.POST.get('card_token')
+        payment_method = kwargs.get('payment_method')
 
         print '*******************'
         print 'handle_payment: '
