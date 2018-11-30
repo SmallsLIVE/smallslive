@@ -301,9 +301,11 @@ $player-height:  27.5vw;
     }
   }
 
-  .event-overlay-venue-set:not(:last-child)::after {
-    content: '+';
-  }
+
+}
+
+.event-overlay-venue-set:not(:last-child)::after {
+  content: '&';
 }
 
 .event-overlay-venue {
