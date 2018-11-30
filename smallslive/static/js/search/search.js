@@ -711,9 +711,7 @@ $(document).ready(function () {
         eventDateTo = null
         eventPageNum = 1;
         $("#calendar-date-range .title2").html( eventDateFrom.toLocaleDateString() + " - " );
-        $(".datepicker-container").data('shown', false);
-        $(document).unbind("click", hide);
-        $(".datepicker-container").hide();
+        toggleDisplay(this);
         sendEventRequest();
     });
 
