@@ -566,9 +566,7 @@ $(document).ready(function () {
         eventDateTo = datePickerToDate;
         apply = true;
         eventPageNum = 1;
-        $(".datepicker-container").hide();
-        $(".datepicker-container").data('shown', false);
-        $(document).unbind("click", hide);
+        toggleDisplay(this);
         $("#events").addClass("artist-loading-gif");
         sendEventRequest();
 
