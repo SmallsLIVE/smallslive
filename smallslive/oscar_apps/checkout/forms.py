@@ -36,6 +36,8 @@ class PaymentForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super(PaymentForm, self).__init__(*args, **kwargs)
         self.user = user
+        if not user.is_authenticated():
+            return
         try:
             customer = Customer.objects.get(subscriber=user)
             if customer and customer.can_charge():

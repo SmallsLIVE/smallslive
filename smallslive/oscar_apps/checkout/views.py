@@ -89,10 +89,15 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
 
         if 'form' not in kwargs:
             kwargs['form'] = PaymentForm(self.request.user)
-        if 'billing_address_form' not in kwargs:
+        if 'billing_address_form' not in kwargs and self.request.user.is_authenticated():
             shipping_address = self.get_shipping_address(self.request.basket)
+            if self.request.user.is_authenticated():
+                billing_initial = self.get_billing_initial()
+            else:
+                billing_initial = {}
+
             kwargs['billing_address_form'] = BillingAddressForm(shipping_address, self.request.user,
-                                                                initial=self.get_billing_initial())
+                                                                initial=billing_initial)
         if hasattr(self, 'token'):
             kwargs['stripe_token'] = self.token
 
@@ -128,19 +133,23 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
 
         form = PaymentForm(self.request.user, request.POST)
         shipping_address = self.get_shipping_address(self.request.basket)
-        billing_address_form = BillingAddressForm(shipping_address, self.request.user, request.POST)
         payment_method = request.POST.get('payment_method')
-
-        if billing_address_form.is_valid():
-            print billing_address_form.errors
-            if billing_address_form.cleaned_data.get('billing_option') == "same-address":
-                self.checkout_session.bill_to_shipping_address()
+        user = self.request.user
+        if user.is_authenticated():
+            billing_address_form = BillingAddressForm(shipping_address, user, request.POST)
+            if billing_address_form.is_valid():
+                print billing_address_form.errors
+                if billing_address_form.cleaned_data.get('billing_option') == "same-address":
+                    self.checkout_session.bill_to_shipping_address()
+                else:
+                    if user:
+                        address = billing_address_form.save()
+                        self.checkout_session.bill_to_user_address(address)
             else:
-                address = billing_address_form.save()
-                self.checkout_session.bill_to_user_address(address)
-
+                return self.render_payment_details(request, form=form,
+                                                   billing_address_form=billing_address_form)
         else:
-            return self.render_payment_details(request, form=form, billing_address_form=billing_address_form)
+            billing_address_form = None
 
         if payment_method == 'paypal':
             return self.render_preview(request, billing_address_form=billing_address_form,
