@@ -566,7 +566,7 @@ $(document).ready(function () {
         eventDateTo = datePickerToDate;
         apply = true;
         eventPageNum = 1;
-        $(".datepicker-container").hide();
+        toggleDisplay(this);
         $("#events").addClass("artist-loading-gif");
         sendEventRequest();
 
@@ -709,7 +709,7 @@ $(document).ready(function () {
         eventDateTo = null
         eventPageNum = 1;
         $("#calendar-date-range .title2").html( eventDateFrom.toLocaleDateString() + " - " );
-        $(".datepicker-container").hide();
+        toggleDisplay(this);
         sendEventRequest();
     });
 
