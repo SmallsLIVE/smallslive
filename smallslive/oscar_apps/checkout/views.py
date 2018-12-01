@@ -210,6 +210,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
 
         print '*******************************'
         print 'Submit: '
+        print order_total
         print payment_kwargs
 
         if payment_kwargs is None:
@@ -249,7 +250,9 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         signals.pre_payment.send_robust(sender=self, view=self)
         basket_lines = basket.lines.all()
         try:
-            print 'try handle payment'
+            print 'try handle payment: '
+            print order_number
+            print  order_total
             self.handle_payment(order_number, order_total, basket_lines, **payment_kwargs)
         except RedirectRequired as e:
             # Redirect required (eg PayPal, 3DS)
@@ -395,6 +398,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         print 'handle_payment: '
         print 'Card token: ', card_token
         print 'Payment method: ', payment_method
+        print total
 
         if card_token:
             if card_token.startswith('card_'):
@@ -420,8 +424,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             item_list = self.get_item_list(basket_lines)
             payment_execute_url = self.request.build_absolute_uri(reverse('checkout:paypal_execute'))
             payment_cancel_url = self.request.build_absolute_uri(reverse('become_supporter'))
-            total = str(total.incl_tax)
             currency = total.currency
+            total = str(total.incl_tax)
             # Donation will be set to True  if user is selecting gifts
             # For Tickets and  other goods, there will  be no donation.
             self.handle_paypal_payment(currency, total, item_list,
