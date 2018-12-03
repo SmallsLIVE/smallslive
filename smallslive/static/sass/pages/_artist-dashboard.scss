@@ -154,8 +154,9 @@
             flex-direction: row;
             max-width: 335px;
             width: 100%;
+            justify-content: space-between;
         }
-        justify-content: space-between;
+       
         .select-selected {
             width: 100%;
         }
@@ -181,6 +182,10 @@
             @media (max-width: 991px) {
                 height: 35px;
             }
+            
+                @media(min-width: $screen-md-min){
+                    margin-left:30px;
+                }
         }
         .payout-bar-button:hover {
             background-color: $white-transparent;
@@ -824,7 +829,9 @@
         margin-bottom: 20px;
     }
     > #payoutData .flex-row{
-        flex-direction: column;
+        @media (max-width: $screen-md-max) {
+            flex-direction: column;
+        }
     }
     .artist-payout-data-left {
         @media (min-width: $screen-sm-min) {
