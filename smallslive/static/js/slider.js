@@ -52,12 +52,12 @@ function outOfBounds(viewPort) {
 }
 
 jQuery.expr.filters.offscreen = function(el) {
-  var rect = el.getBoundingClientRect();
-  return (
-           (rect.x + rect.width) < 0
-             || (rect.y + rect.height) < 0
-             || (rect.top > outOfBounds("width") || rect.left > outOfBounds("height") )
-         );
+    var rect = el.getBoundingClientRect();
+    return (
+             (rect.x + rect.width) < 0
+               || (rect.y + rect.height) < 0
+               || (rect.top > outOfBounds("height") || rect.right > outOfBounds("width") )
+           );
 };
 
 $(document).ready(function(){
