@@ -49,6 +49,12 @@ function outOfBounds(viewPort) {
             }
         }
     }
+    else{
+        if( viewPort === "height" )
+            return window.innerHeight
+        else if( viewPort === "width" )
+            return window.innerWidth
+    }
 }
 
 jQuery.expr.filters.offscreen = function(el) {
