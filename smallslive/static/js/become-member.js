@@ -324,6 +324,7 @@ $(document).ready(function () {
       resetCustom();
       $(el).addClass("active");
       setSelected('month', quantity);
+      $('#selectionConfirmationDialog').modal('show');
     })
   });
 
@@ -335,6 +336,7 @@ $(document).ready(function () {
       resetCustom();
       $(el).addClass("active");
       setSelected('year', quantity);
+      $('#selectionConfirmationDialog').modal('show');
     })
   });
 
@@ -415,6 +417,10 @@ $(document).ready(function () {
       $select.removeClass('alert');
       $("#confirmButton").prop('disabled', false);
     }
+    $('#selectionConfirmationDialog').modal('show');
+    var $content = $('#selectionConfirmationDialog').find('#giftContent');
+    var $basketForm = $(this).parent().find('.add-to-basket').clone();
+    $content.html($basketForm);
   });
 
   var checks = {
