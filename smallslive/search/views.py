@@ -61,8 +61,6 @@ class SearchMixin(object):
         blocks = []
         block = []
 
-
-
         paginator = Paginator(sqs, results_per_page)
 
         try:
@@ -148,15 +146,14 @@ class MainSearchView(View, SearchMixin):
         partial = request.GET.get('partial', False)
         show_venue = request.GET.get('show_event_venue', False)
 
-
         if date_from:
             date_from = parser.parse(date_from, fuzzy=True)
             if not date_from.tzinfo:
                 date_from = timezone.make_aware(
                     date_from, timezone.get_current_timezone())
         if date_to:
-           date_to = parser.parse(date_to, fuzzy=True)
-           if not date_to.tzinfo:
+            date_to = parser.parse(date_to, fuzzy=True)
+            if not date_to.tzinfo:
                 date_to = timezone.make_aware(
                     date_to, timezone.get_current_timezone())
  
@@ -164,7 +161,10 @@ class MainSearchView(View, SearchMixin):
             artists_blocks, showing_results, num_pages = self.search(
                 Artist, main_search, page, instrument=instrument, artist_search=artist_search)
 
-            context = {'artists_blocks': artists_blocks}
+            context = {
+                'artists_blocks': artists_blocks,
+                'query_term': main_search,
+            }
             template = 'search/artist_results.html'
 
         elif entity == 'event':
@@ -285,6 +285,7 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         else:
             artists_blocks, showing_artist_results, num_pages = self.search(
                 Artist, q)
+        context['query_term'] = q
 
         instruments = [i.name for i in Instrument.objects.all()]
         context['instruments'] = instruments
