@@ -174,10 +174,11 @@
                 {% if is_admin and set.has_media %}
                     {% if not event.is_future%}    
                         {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-                        <div id="mobile-private-button" class="white-border-button" data-id="mobile-option-private"> Public </div>
+                            <div id="mobile-private-button" class="white-border-button" data-id="mobile-option-private"> Public </div>
                         {% else %}
-                        <div id="mobile-public-button" class="white-border-button" data-id="mobile-option-publish"> Private </div>
+                            <div id="mobile-public-button" class="white-border-button" data-id="mobile-option-publish"> Private </div>
                         {% endif %}
+                        <div class="white-border-button" id="table-event-edit" data-pk=event.id data-slug=event.slug>Edit</div>
                     {% endif %}
                 {% else %}
                     {% if not event.is_future%}    

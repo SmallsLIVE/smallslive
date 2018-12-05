@@ -66,7 +66,6 @@ function sendArtistRequest(callback) {
         success: function (data) {
             if (data.template) {
                 $(".mobile-artist-loading").hide()
-                $("#artist-subheader").html(data.showingResults);
                 $("#artists").append(data.template);
                 artistMaxPageNum = data.numPages;
                 if (artistPageNum === artistMaxPageNum){
@@ -183,8 +182,6 @@ function sendEventRequest() {
             if (data.template) {
                 var $showsContainer = $('.search-content .shows-container');
                 $("#events").removeClass("artist-loading-gif");
-                $('#event-subheader').html(data.showingResults);
-                $('#event-subheader-footer').html(data.showingResults);
                 if (apply || eventFilter) {
                     apply = false;
                     eventFilter = false;
