@@ -284,10 +284,10 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
             artists_blocks, showing_artist_results, num_pages = self.search(
                 Artist, q)
         context['query_term'] = q
-
+        
         instruments = [i.name for i in Instrument.objects.all()]
-        context['instruments'] = instruments
 
+        context['instruments'] = instruments
         context['showing_artist_results'] = showing_artist_results
         context['artists_blocks'] = artists_blocks
         context['artist_num_pages'] = num_pages

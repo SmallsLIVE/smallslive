@@ -35,7 +35,7 @@
     <div id="artist-subheader" class="showing-results text1">{{ showing_artist_results }}</div>
   {% endif %}
   <div class="title1 musicians-results-title">
-    {% if artists_blocks %} Musicians
+    {% if artists_blocks %} <span id="total-artist" class="accent-color">{{ showing_artist_results }}</span> Musicians
     {% else %} No musicians named "<span class="accent-color">{{ query_term }}</span>" found
     {% endif%}</div>
 </div>
