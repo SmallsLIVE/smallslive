@@ -240,11 +240,12 @@ class SearchObject(object):
         if number_of_performers_searched:
                 sqs = search_by_number_musicians(number_of_performers_searched, main_search)
                 sqs = sqs.order_by(order)
+
          #FIXME: compare to code in  "today_and_tomorrow_events"
-        today = timezone.now().replace(hour=0, minute=0, second=0)
-        if not start_date or start_date.date() < today.date():
-            sqs = sqs.filter(recordings__media_file__isnull=False,
-                             recordings__state=Recording.STATUS.Published)
+        #today = timezone.now().replace(hour=0, minute=0, second=0)
+        #if not start_date or start_date.date() < today.date():
+        #    sqs = sqs.filter(recordings__media_file__isnull=False,
+        #                     recordings__state=Recording.STATUS.Published)
 
         if start_date:
             # Force hours to start of day
