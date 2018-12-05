@@ -70,10 +70,16 @@ class SearchObject(object):
         return words, instruments, partial_instruments
 
     def search_artist(self, main_search=None, artist_search=None, instrument=None):
+        if main_search != '':
+            posible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
+            if main_search.split()[-1] in posible_number_of_performers:
+                if ''.join(main_search.split()[:-1]) != '':
+                    main_search = ' '.join(main_search.split()[:-1])
+
         words, instruments, partial_instruments = self.process_input(main_search, artist_search, instrument)
 
         sqs = Artist.objects.all()
-
+        
         
 
         if instruments:
@@ -164,6 +170,7 @@ class SearchObject(object):
         # sets number_of_performers_searched based in the last word from main_seach
         number_of_performers_searched = None
         posible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
+
         if main_search != '':
             if main_search.split()[-1] in posible_number_of_performers:
                 number_of_performers_searched = posible_number_of_performers.index(main_search.split()[-1]) + 1
