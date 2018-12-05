@@ -61,6 +61,10 @@ class EventQuerySet(models.QuerySet):
             staff_picked__isnull=False
         ).order_by('-staff_picked__date_picked')
 
+    def get_events_by_performers(self, number_of_performers_searched):
+        print number_of_performers_searched
+        return self.values('id').annotate(performers_count=Count('performers')).filter(performers_count=number_of_performers_searched)
+
     # TODO Select properly
     def event_related_videos(self, event):
         query = self.exclude(state=Event.STATUS.Draft).exclude(
@@ -831,6 +835,7 @@ class Venue(models.Model):
         if 'mezzrow' in self.name.lower():
             return 'rgb(241, 187, 83)'
         return '#D21535'
+
 
 
 class StaffPick(models.Model):

@@ -1,8 +1,10 @@
+import operator
 from django.db.models import Q, Sum
 from django.utils import timezone
 from artists.models import Artist, Instrument
 from events.models import Event, Recording
 from metrics.models import UserVideoMetric
+
 
 
 class SearchObject(object):
@@ -129,9 +131,47 @@ class SearchObject(object):
             sqs = sqs.filter(condition).distinct()
 
         return sqs
+    
 
     def search_event(self, main_search, order=None, start_date=None, end_date=None,
                      artist_pk=None, venue=None):
+
+
+        def search_by_number_musicians(number_of_performers_searched, artist):
+            
+
+            condition = Q(
+                        title__iucontains=artist) | Q(
+                        description__iucontains=artist) | Q(
+                        performers__first_name__iucontains=artist) | Q(
+                        performers__last_name__iucontains=artist)
+
+            sqs = Event.objects.filter(condition)
+
+            events_data = sqs.get_events_by_performers(number_of_performers_searched)
+
+            event_ids = [ x['id'] for x in events_data]
+
+            # DEBUG show events on console
+            #for e in event_ids:
+            #    event = Event.objects.get(pk=e)
+            #    print event.title
+            #    print event.performers.all().count()
+            #    print event.start
+
+            sqs = Event.objects.filter(pk__in=event_ids)
+            return sqs
+
+        # sets number_of_performers_searched based in the last word from main_seach
+        number_of_performers_searched = None
+        posible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
+        if main_search.split()[-1] in posible_number_of_performers:
+            number_of_performers_searched = posible_number_of_performers.index(main_search.split()[-1]) + 1
+            if ''.join(main_search.split()[:-1]) != '':
+                main_search = ' '.join(main_search.split()[:-1])
+        sqs = ''
+        
+        
 
         order = {
             'newest': '-start',
@@ -156,10 +196,11 @@ class SearchObject(object):
                     condition |= Q(artists_gig_info__role__name__icontains=i,
                                 artists_gig_info__is_leader=True)
                 sqs = Event.objects.filter(condition)
+                
 
             if words:
                 single_artist = False
-                if len(words) == 2 and not instruments:
+                if len(words) == 2 and not instruments or not number_of_performers_searched:
                     temp_sqs = sqs.filter(performers__first_name__iuexact=words[0],
                                         performers__last_name__iuexact=words[1]).distinct()
                     if temp_sqs.count() == 0:
@@ -186,7 +227,7 @@ class SearchObject(object):
                 if instruments:
                     sqs = sqs | Event.objects.filter(condition)
                 elif not single_artist:
-                    sqs = Event.objects.filter(condition)
+                    sqs = Event.objects.filter(condition)                     
 
         sqs = sqs.distinct()
 
@@ -194,12 +235,15 @@ class SearchObject(object):
             if venue != 'all':
                 sqs = sqs.filter(venue__pk=venue)
 
-
+        
+        if number_of_performers_searched:
+                sqs = search_by_number_musicians(number_of_performers_searched, main_search)
+                sqs = sqs.order_by(order)
         # FIXME: compare to code in  "today_and_tomorrow_events"
-        today = timezone.now().replace(hour=0, minute=0, second=0)
-        if not start_date or start_date.date() < today.date():
-            sqs = sqs.filter(recordings__media_file__isnull=False,
-                             recordings__state=Recording.STATUS.Published)
+        #today = timezone.now().replace(hour=0, minute=0, second=0)
+        #if not start_date or start_date.date() < today.date():
+        #    sqs = sqs.filter(recordings__media_file__isnull=False,
+        #                     recordings__state=Recording.STATUS.Published)
 
         if start_date:
             # Force hours to start of day
@@ -216,7 +260,6 @@ class SearchObject(object):
             event_map = dict([
                 (event.id, event) for event in sqs.all()
             ])
-
             # Order metrics
             most_popular_ids = UserVideoMetric.objects.filter(
                 event_id__in=event_map.keys()
@@ -228,10 +271,13 @@ class SearchObject(object):
             for event_data in most_popular_ids:
                 event_id = event_data['event_id']
                 most_popular.append(event_map[event_id])
-
             return most_popular
 
         else:
             sqs = sqs.order_by(order)
+        
 
+      
+
+        
         return sqs
