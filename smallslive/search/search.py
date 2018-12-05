@@ -138,7 +138,6 @@ class SearchObject(object):
 
 
         def search_by_number_musicians(number_of_performers_searched, artist):
-            print 'debug'
 
             condition = Q(
                         title__iucontains=artist) | Q(
@@ -153,11 +152,11 @@ class SearchObject(object):
             event_ids = [ x['id'] for x in events_data]
 
             # DEBUG show events on console
-            for e in event_ids:
-                event = Event.objects.get(pk=e)
-                print event.title
-                print event.performers.all().count()
-                print event.start
+            #for e in event_ids:
+            #    event = Event.objects.get(pk=e)
+            #    print event.title
+            #    print event.performers.all().count()
+            #    print event.start
 
             sqs = Event.objects.filter(pk__in=event_ids)
             return sqs
