@@ -373,3 +373,37 @@
 
 }
 
+#selectionConfirmationDialog {
+
+  .gift-content  {
+
+    .modal-content {
+      background-color: inherit;
+      border: none;
+      box-shadow: none;
+      text-align: center;
+
+      .store-list-item-tile {
+        &.text2 {
+          height: 65px;
+          margin: 0 auto;
+          margin-top: 5px;
+          display: block;
+        }
+      }
+
+      .store-add-small {
+        justify-content: center;
+      }
+    }
+
+  }
+}
+
+.supporter-main-container {
+  input {
+    &.transparent {
+      background: none;
+    }
+  }
+}

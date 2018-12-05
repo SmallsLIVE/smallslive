@@ -61,38 +61,17 @@ $(document).ready(function () {
   var $itemForm;
 
 
-  $(document).on('change', '.store-list-item select', function () {
+  $(document).on('change', '.gift-content select', function () {
     /* Add a border to the display selection on dropdown change.
      */
     var $that = $(this);
     var val = $that.val();
-    var $elements  = $('.store-list-item select').not(this);
+    var $confirmSelectionButton = $('#confirmSelectionButton');
+    $confirmSelectionButton.prop('disabled', val == 'none');
 
-    if (val != 'none') {
-      $that.closest('.store-list-item').find('.select-gift').click();
-      $itemForm = $that.closest('form');
-    } else {
-      $that.next().addClass('alert');
+    if (val == 'none') {
       setSelected('', 0);
       $itemForm = null;
-    }
-
-  });
-
-  $(document).on('change', '.store-add-small__options', function () {
-    /* Add a border to the display selection on dropdown change.
-     */
-    var $that = $(this);
-    var val = $that.val();
-
-    if (val != 'none') {
-      setSelected('gift', 1);
-      $itemForm = $that.closest('form');
-      $that.next().removeClass('alert');
-    } else {
-      setSelected('', 0);
-      $itemForm = null;
-      $that.next().addClass('alert');
     }
 
   });
@@ -324,7 +303,13 @@ $(document).ready(function () {
       resetCustom();
       $(el).addClass("active");
       setSelected('month', quantity);
-      $('#selectionConfirmationDialog').modal('show');
+      var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
+      $selectionConfirmationDialog.find('.title').text('Thank you for your support');
+      $selectionConfirmationDialog.find('.subtitle').text('You\'re helping promote jazz music and musicians from all over the world');
+      $selectionConfirmationDialog.find('.text').text('Your selection: Monthly pledge of $' + quantity +'. Please confirm to continue.');
+      $selectionConfirmationDialog.find('.gift-content');
+      $selectionConfirmationDialog.modal('show');
+
     })
   });
 
@@ -336,7 +321,13 @@ $(document).ready(function () {
       resetCustom();
       $(el).addClass("active");
       setSelected('year', quantity);
-      $('#selectionConfirmationDialog').modal('show');
+      var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
+      $selectionConfirmationDialog.modal('show');
+      $selectionConfirmationDialog.find('.title').text('Thank you for your support');
+      $selectionConfirmationDialog.find('.subtitle').text('You\'re helping promote jazz music and musicians from all over the world');
+      $selectionConfirmationDialog.find('.text').text('Your selection: One Time Donation of $' + quantity +'. Please confirm to continue.');
+      $selectionConfirmationDialog.find('.gift-content');
+
     })
   });
 
@@ -417,10 +408,54 @@ $(document).ready(function () {
       $select.removeClass('alert');
       $("#confirmButton").prop('disabled', false);
     }
-    $('#selectionConfirmationDialog').modal('show');
     var $content = $('#selectionConfirmationDialog').find('#giftContent');
-    var $basketForm = $(this).parent().find('.add-to-basket').clone();
-    $content.html($basketForm);
+    $itemForm = $(this).parent().find('form');
+    var $item = $(this).parent().find('.modal-content').clone();
+    var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
+    $selectionConfirmationDialog.find('.title').text('Thank you for your support');
+    $selectionConfirmationDialog.find('.subtitle').text('You\'re helping promote jazz music and musicians from all over the world');
+    $selectionConfirmationDialog.find('.text').text('Your selection: Gift valued ' + $(this).text() +'. Please confirm to continue.');
+    var $giftContent = $selectionConfirmationDialog.find('.gift-content');
+    $giftContent.html($item);
+    $item.removeClass('hidden');
+    $selectionConfirmationDialog.find('.select').addClass('white-border-select');
+    replaceWhiteSelects($giftContent[0]);
+    var $select = $selectionConfirmationDialog.find('.select-items');
+    var $confirmSelectionButton = $('#confirmSelectionButton');
+    $confirmSelectionButton.prop('disabled', $select.length == 1);
+    $selectionConfirmationDialog.modal('show');
+
+  });
+
+  function giftSelected(selection) {
+    var $input = $itemForm.find('input[name="child_id"]');
+    $input.val(selection);
+    $('#confirmButton').prop('disabled', false);
+    $('#confirmButton').click();
+  }
+
+  var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
+  var $selectionConfirmationCloseButton = $selectionConfirmationDialog.find('.close-button');
+  $('#confirmSelectionButton').click(function () {
+    $selectionConfirmationDialog.modal('hide');
+    var $variantSelect = $selectionConfirmationDialog.find('select');
+    if ($variantSelect) {
+      giftSelected($variantSelect.val());
+    } else {
+      $('#confirmButton').click();
+    }
+  });
+  $('#cancelSelectionButton').click(function () {
+    $selectionConfirmationDialog.modal('hide');
+  });
+  $('.close-action').click(function () {
+    $selectionConfirmationDialog.modal('hide');
+  });
+  $selectionConfirmationDialog.on('hidden.bs.modal', function () {
+    $selectionConfirmationDialog.find('.title').empty();
+    $selectionConfirmationDialog.find('.subtitle').empty();
+    $selectionConfirmationDialog.find('.text').empty();
+    $selectionConfirmationDialog.find('.gift-content').empty();
   });
 
   var checks = {

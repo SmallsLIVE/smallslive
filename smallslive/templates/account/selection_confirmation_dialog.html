@@ -16,12 +16,12 @@
     <div class="modal-content custom-modal">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
-        <p class="title2 accent-color">Thank you for your support</p>
-          <p class="title3">Monthly pledge</p>
-          <p class="text4 text-grey">
-            You've selected a monthly pledge of $50
+        <p class="title2 accent-color title">Thank you for your support</p>
+          <p class="title3 subtitle"></p>
+          <p class="text4 text-grey text">
+
           </p>
-          <p id="giftContent"></p>
+          <p class="gift-content"></p>
         </p>
         <div class="text4 text-centered" style="display: flex; justify-content: center;">
           <button id="confirmSelectionButton" class="white-border-button confirm" style="margin-right: 5px;">Confirm</button>
@@ -31,19 +31,3 @@
     </div>
   </div>
 </div>
-<script>
-  $(document).ready(function () {
-    var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
-    var $selectionConfirmationCloseButton = $selectionConfirmationDialog.find('.close-button');
-    $('#confirmSelectionButton').click(function () {
-      $selectionConfirmationDialog.modal('hide');
-      $('#confirmButton').click();
-    });
-    $('#cancelSelectionButton').click(function () {
-      $selectionConfirmationDialog.modal('hide');
-    });
-    $('.close-action').click(function () {
-      $selectionConfirmationDialog.modal('hide');
-    });
-  });
-</script>
