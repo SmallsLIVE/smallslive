@@ -2,7 +2,7 @@
     <span class="text2 search-bar-text search-bar-artist">ARTISTS({{artists_results}})</span>
     {% for artist in artists %}
         <div>
-        <a href="/search/?q={{ artist.first_name }}+{{ artist.last_name }}&artist_pk={{ artist.id }}">
+        <a href="/search/?artist_pk={{ artist.id }}">
           <span class="search-bar-result-text text2 search-bar-text text-grey">{% if artist.last_name %}{{ artist.last_name }}, {% endif %}{{ artist.first_name }} / {{ artist.instruments.all.first }}</span>
         </a>
         </div>
@@ -31,8 +31,6 @@
 <span class="text2 search-bar-text">NO EVENTS RESULTS</span>
 <br>
 {% endif %}
-
-
 
 
 
