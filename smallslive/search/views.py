@@ -81,11 +81,9 @@ class SearchMixin(object):
             block = []
 
         if paginator.count:
+            
             actual_results = 1 + ((page - 1) * results_per_page) if entity == Artist else 1
-            showing_results = 'SHOWING {} - {} OF {} RESULTS'.format(actual_results,
-                results_per_page + ((page - 1) * results_per_page) if page != paginator.num_pages else len(
-                    paginator.page(page).object_list) + ((page - 1) * results_per_page),
-                paginator.count)
+            showing_results = paginator.count
         else:
             showing_results = 'NO RESULTS'
 
@@ -224,7 +222,7 @@ class SearchBarView(View):
     def get(self, request, *args, **kwargs):
         main_search = request.GET.get('main_search', None)
         search = SearchObject()
-
+        
         artists = []
         artist_results_per_page = 6
         sqs = search.search_artist(main_search)
