@@ -138,7 +138,7 @@ class SearchObject(object):
 
 
         def search_by_number_musicians(number_of_performers_searched, artist):
-            
+            print 'debug'
 
             condition = Q(
                         title__iucontains=artist) | Q(
@@ -153,11 +153,11 @@ class SearchObject(object):
             event_ids = [ x['id'] for x in events_data]
 
             # DEBUG show events on console
-            #for e in event_ids:
-            #    event = Event.objects.get(pk=e)
-            #    print event.title
-            #    print event.performers.all().count()
-            #    print event.start
+            for e in event_ids:
+                event = Event.objects.get(pk=e)
+                print event.title
+                print event.performers.all().count()
+                print event.start
 
             sqs = Event.objects.filter(pk__in=event_ids)
             return sqs
@@ -201,7 +201,7 @@ class SearchObject(object):
 
             if words:
                 single_artist = False
-                if len(words) == 2 and not instruments or not number_of_performers_searched:
+                if len(words) == 2 and not instruments and not number_of_performers_searched:
                     temp_sqs = sqs.filter(performers__first_name__iuexact=words[0],
                                         performers__last_name__iuexact=words[1]).distinct()
                     if temp_sqs.count() == 0:
@@ -242,10 +242,10 @@ class SearchObject(object):
                 sqs = sqs.order_by(order)
 
          #FIXME: compare to code in  "today_and_tomorrow_events"
-        #today = timezone.now().replace(hour=0, minute=0, second=0)
-        #if not start_date or start_date.date() < today.date():
-        #    sqs = sqs.filter(recordings__media_file__isnull=False,
-        #                     recordings__state=Recording.STATUS.Published)
+        today = timezone.now().replace(hour=0, minute=0, second=0)
+        if not start_date or start_date.date() < today.date():
+            sqs = sqs.filter(recordings__media_file__isnull=False,
+                             recordings__state=Recording.STATUS.Published)
 
         if start_date:
             # Force hours to start of day
