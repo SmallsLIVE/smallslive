@@ -132,7 +132,7 @@
               <div class="store__form__group clearfix row payment-method-form hidden" id="paypal-form">
                 <p class="text9">You will be redirected to your PayPal account on order confirmation</p>
               </div>
-              <div class="store__form__group clearfix row payment-method-form {% if form.can_use_existing %}hidden{% endif %}" id="credit-card-form">
+              <div class="store__form__group clearfix payment-method-form {% if form.can_use_existing %}hidden{% endif %}" id="credit-card-form">
                   <div class="col-xs-12 col-sm-4 col-sm-offset-4">
                       <div class="signup__payment__card__info">
                           {% csrf_token %}

@@ -12,6 +12,8 @@ class PayPalMixin(object):
     def handle_paypal_payment(self, currency, total, item_list,
                               payment_execute_url, payment_cancel_url,
                               donation=False):
+        print '******************************'
+        print 'PayPal Mixin handle PayPal payment'
 
         print total
         print currency

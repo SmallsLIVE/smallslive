@@ -31,13 +31,22 @@
 {% include 'become_a_supporter_dialog.html' %}
 
 <div class="musicians-results white-line-bottom">
+  {% if artists_block %}
     <div id="artist-subheader" class="showing-results text1" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>1-24</div>
-    <div class="title1 musicians-results-title">Musicians</div>
+  {% endif %}
+  <div class="title1 musicians-results-title">
+    {% if artists_blocks %} Musicians
+    {% else %} No musicians named "<span class="accent-color">{{ query_term }}</span>" found
+    {% endif%}</div>
 </div>
 <div class="artist-search-profile-container pad-content"></div>
 
 <div class="search-container pad-content">
-    <section id="musicianContent" data-toggle-tab="musicians" class="search-tab-content {% if musician_search %}active{% endif %}" data-toggle-tab-group="search-results">
+    <section id="musicianContent"
+             data-toggle-tab="musicians"
+             class="search-tab-content {% if musician_search %}active{% endif %}"
+             data-toggle-tab-group="search-results">
+      {% if artists_blocks %}
         <div  class="search-artist-box-container hidden-xs">
           <img src="{% static 'image/search-icon.svg' %}">
           <input id="artist-search"
@@ -48,39 +57,42 @@
 
           <div class="instrument-btn white-border-button caret">Instrument</div>
         </div>
-      <div class="instruments-container">
-        <a href="#" class="close-button"></a>
-        <div class="instrument text4" data-instrument="">All Instruments</div>
-        {% for instrument in instruments %}
-          <div data-instrument="{{ instrument }}" class="instrument text4 text-grey">{{ instrument }}</div>
-        {% endfor %}
-      </div>
-      <div class="instrument-btn white-border-button visible-sm visible-xs visible-md caret">Instrument</div>
+        <div class="instruments-container">
+          <a href="#" class="close-button"></a>
+          <div class="instrument text4" data-instrument="">All Instruments</div>
+          {% for instrument in instruments %}
+            <div data-instrument="{{ instrument }}" class="instrument text4 text-grey">{{ instrument }}</div>
+          {% endfor %}
+        </div>
+        <div class="instrument-btn white-border-button visible-sm visible-xs visible-md caret">Instrument</div>
 
-      <div class="container-list-article">
 
-        <div class="left_arrow artist-arrow-search artist-arrow-disabled">
+        <div class="container-list-article">
 
+          <div class="left_arrow artist-arrow-search artist-arrow-disabled">
+
+          </div>
+
+          <div id="artist-load-gif" class="loading-image">
+            <img src="{% static 'image/loading.gif' %}" alt="">
+          </div>
+
+          <main id="artists" class="artists-container invisible">
+            {% include 'search/artist_results.html' %}
+          </main>
+
+          <div class="right_arrow artist-arrow-search"
+               style="{% if artist_num_pages == 1 %}visibility: hidden;{% endif %}">
+          </div>
         </div>
 
-        <div id="artist-load-gif" class="loading-image">
-          <img src="{% static 'image/loading.gif' %}" alt="">
+        <div class="white-border-button load-more-artist-button" onclick="loadMoreArtistButton()" style="{% if artist_num_pages == 1 %}visibility: hidden;{% endif %}">Load more</div>
+        <div hidden class="artist-loading-gif mobile-artist-loading" style="height: 50px; margin-bottom: 30px;"></div>
+        <div class="flex-row items-center content-space-between artist-arrows">
+          <div class="left_arrow artist-arrow-search"></div>
+          <div class="right_arrow artist-arrow-search"></div>
         </div>
-
-        <main id="artists" class="artists-container invisible">
-          {% include 'search/artist_results.html' %}
-        </main>
-        
-        <div class="right_arrow artist-arrow-search"
-             style="{% if artist_num_pages == 1 %}visibility: hidden;{% endif %}">
-        </div>
-      </div>
-      <div class="white-border-button load-more-artist-button" onclick="loadMoreArtistButton()" style="{% if artist_num_pages == 1 %}visibility: hidden;{% endif %}">Load more</div>
-      <div hidden class="artist-loading-gif mobile-artist-loading" style="height: 50px; margin-bottom: 30px;"></div>
-      <div class="flex-row items-center content-space-between artist-arrows">
-        <div class="left_arrow artist-arrow-search"></div>
-        <div class="right_arrow artist-arrow-search"></div>
-      </div>
+      {% endif %}
     </section>
     <section class="search-content">
       {% include 'events/shows.html' with archived=True default_to_date=default_to_date secondary=True%}

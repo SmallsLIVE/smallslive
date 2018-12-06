@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load static from staticfiles %}
 {% load thumbnail %}
 {% load thumbor_tags %}
@@ -6,11 +6,10 @@
 {% block title %}My downloads{% endblock %}
 
 {% block content %}
-    <div class="content-wrapper">
 
-        <section class="my-downloads-header">
-            <h1 class="my-downloads-header__title container">My downloads</h1>
-        </section>
+      <div class="white-line-bottom">
+        <div class="title1 center">My Downloads</div>
+      </div>
         <section class="my-downloads-album__list container">
           {% if lines %}
             {% regroup lines by product.album as album_list %}
@@ -99,5 +98,5 @@
           {% endif %}
         </section>
 
-    </div>
+
 {% endblock content %}
