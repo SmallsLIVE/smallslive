@@ -158,7 +158,6 @@ class SearchObject(object):
             if main_search.split()[-1] in posible_number_of_performers:
                 number_of_performers_searched = posible_number_of_performers.index(main_search.split()[-1]) + 1
                 if ''.join(main_search.split()[:-1]) != '' and len(''.join(main_search.split()[:-1])) != 1 :  
-                    print 'entra'
                     main_search = ' '.join(main_search.split()[:-1])
             sqs = ''
         
@@ -200,8 +199,6 @@ class SearchObject(object):
                     if temp_sqs.count() != 0:
                         single_artist = True
                         sqs = temp_sqs
-                print 'Falso single artist'
-                print sqs.all().count()
                 if not single_artist:
                     artist = words.pop()
                     condition = Q(
@@ -270,12 +267,7 @@ class SearchObject(object):
             sqs = sqs.order_by(order)
 
         if number_of_performers_searched:
-            print 'Falso single artist 2'
-            print sqs.all().count()
             sqs = filter_quantity_of_performers(sqs, number_of_performers_searched)
             sqs.distinct()
-        else:
-            print 'Falso single artist 2 else'
-            print sqs.all().count()
-        
+
         return sqs
