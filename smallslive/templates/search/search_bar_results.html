@@ -32,6 +32,20 @@
 <br>
 {% endif %}
 
+{% if instruments %}
+    <span class="text2 search-bar-text search-bar-event">instruments({{instruments_results}})</span>
+    {% for instrument in instruments %}
+        <div>
+        <a href="/search/?instrument={{ instrument.name }}">
+          <span class="search-bar-result-text text2 search-bar-text text-grey">{{ instrument.name }}</span>
+        </a>
+        </div>
+    {% endfor %}
+{% else %}
+<span class="text2 search-bar-text">NO INSTRUMENTS RESULTS</span>
+<br>
+{% endif %}
+
 
 
 

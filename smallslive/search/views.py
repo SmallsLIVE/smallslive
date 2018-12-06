@@ -236,6 +236,7 @@ class SearchBarView(View):
         events = []
         event_results_per_page = 8
         sqs = search.search_event(main_search)
+        print sqs
         paginator = Paginator(sqs, event_results_per_page)
         events_results = paginator.count
 
@@ -244,12 +245,28 @@ class SearchBarView(View):
             events.append(item)
         events_results_left = events_results - len(events)
 
+
+
+        instruments = []
+        instrument_results_per_page = 6
+        sqs = search.get_instrument([main_search])
+        print main_search
+        print sqs
+        paginator = Paginator(sqs, instrument_results_per_page)
+        instruments_results = paginator.count
+
+        for item in paginator.page(1).object_list:
+            item = Instrument.objects.filter(pk=item.pk).first()
+            instruments.append(item)
+
         context = {'artists': artists,
                    'artists_results': artists_results,
                    'artists_results_left': artists_results_left,
                    'events': events,
                    'events_results': events_results,
-                   'events_results_left': events_results_left}
+                   'events_results_left': events_results_left,
+                   'instruments': instruments,
+                   'instruments_results': instruments_results}
         template = 'search/search_bar_results.html'
 
         temp = render_to_string(template,
