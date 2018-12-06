@@ -156,6 +156,7 @@ $(document).on('click', '#artists .artist-row', function() {
     dataType: 'json',
     success: function (data) {
       if (data.template) {
+        window.history.pushState({"html":'a',"pageTitle":'b'},"", '?artist_pk=' + artistId + '#');
         $('#musicianContent').hide();
         $('.artist-search-profile-container').html(data.template);
         $('.artist-search-profile-container')[0].style.display = 'block';
