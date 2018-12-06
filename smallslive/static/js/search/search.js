@@ -54,6 +54,8 @@ function showQuantityDisplay(element, addition, slider){
             rightValue = maxValue
             $(element).data('right-number', maxValue)
         }else{
+            console.log(rightValue)
+
             rightValue = rightValue + paginatorValue
             $(element).data('right-number', rightValue)
         }
@@ -234,11 +236,12 @@ function sendEventRequest() {
                     }else{
                         $('#event-subheader').text('1-24')
                     }
+                    $('#event-subheader').data('max-number', data.showingResults)
+                    $('#event-subheader').data('left-number', 1)
+                    $('#event-subheader').data('right-number', 24)
                 }
                 
-                $('#event-subheader').data('max-number', data.showingResults)
-                $('#event-subheader').data('left-number', 1)
-                $('#event-subheader').data('right-number', 24)
+                
                 var $showsContainer = $('.search-content .shows-container');
                 $("#events").removeClass("artist-loading-gif");
                 if (apply || eventFilter) {
