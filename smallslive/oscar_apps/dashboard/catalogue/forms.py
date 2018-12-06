@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
+from django.utils.translation import ugettext_lazy as _
 from oscar.apps.dashboard.catalogue import forms as oscar_forms
 from events.models import Event
 from multimedia.models import MediaFile
@@ -247,3 +248,17 @@ class TrackFormSet(BaseTrackFormSet):
     def get_queryset(self):
         qs = super(TrackFormSet, self).get_queryset()
         return qs.order_by('ordering')
+
+
+class ProductSearchForm(forms.Form):
+    upc = forms.CharField(max_length=16, required=False, label=_('UPC'))
+    title = forms.CharField(
+        max_length=255, required=False, label=_('Product title'))
+    product_class = forms.ModelChoiceField(queryset=ProductClass.objects.all(),
+                                           required=False)
+
+    def clean(self):
+        cleaned_data = super(ProductSearchForm, self).clean()
+        cleaned_data['upc'] = cleaned_data['upc'].strip()
+        cleaned_data['title'] = cleaned_data['title'].strip()
+        return cleaned_data
