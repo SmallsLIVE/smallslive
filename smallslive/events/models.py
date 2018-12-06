@@ -62,9 +62,30 @@ class EventQuerySet(models.QuerySet):
         ).order_by('-staff_picked__date_picked')
 
     def get_events_by_performers(self, number_of_performers_searched):
-        print number_of_performers_searched
-        return self.values('id').annotate(performers_count=Count('performers')).filter(performers_count=number_of_performers_searched)
+        #print number_of_performers_searched
+        #print "DEBUG"
+        #test =  self.values('id', 'title').annotate(performers_count=Count('performers')).filter(performers_count=number_of_performers_searched)
+        #print test
+        #print 'FIN DEBUG'
+        #return test
 
+
+        #2nd way
+        events_ids = []
+        for event in self:
+            number_of_performers = len(event.performers.all())
+            if number_of_performers == number_of_performers_searched:
+                events_ids.append(event.id)
+        
+        temp_sqs = Event.objects.filter(pk__in=events_ids)
+
+        sqs = []
+        if temp_sqs.count() != 0:
+            sqs = temp_sqs
+        
+
+        return sqs
+                
     # TODO Select properly
     def event_related_videos(self, event):
         query = self.exclude(state=Event.STATUS.Draft).exclude(

@@ -70,18 +70,17 @@ class SearchObject(object):
         return words, instruments, partial_instruments
 
     def search_artist(self, main_search=None, artist_search=None, instrument=None):
+        posible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
         if main_search != '':
-            posible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
             if main_search.split()[-1] in posible_number_of_performers:
-                if ''.join(main_search.split()[:-1]) != '':
-                    main_search = ' '.join(main_search.split()[:-1])
-
+                main_search = ' '.join(main_search.split()[:-1])
+        print main_search
+        
         words, instruments, partial_instruments = self.process_input(main_search, artist_search, instrument)
 
         sqs = Artist.objects.all()
-        
-        
 
+        
         if instruments:
             condition = Q(instruments__name__istartswith=instruments[0])
             for i in instruments[1:]:
@@ -141,40 +140,25 @@ class SearchObject(object):
 
     def search_event(self, main_search, order=None, start_date=None, end_date=None,
                      artist_pk=None, venue=None):
-
-
-        def search_by_number_musicians(number_of_performers_searched, artist):
-
-            condition = Q(
-                        title__iucontains=artist) | Q(
-                        description__iucontains=artist) | Q(
-                        performers__first_name__iucontains=artist) | Q(
-                        performers__last_name__iucontains=artist)
-
-            sqs = Event.objects.filter(condition)
-
+        def filter_quantity_of_performers(sqs, number_of_performers_searched):
             events_data = sqs.get_events_by_performers(number_of_performers_searched)
-
-            event_ids = [ x['id'] for x in events_data]
-
-            # DEBUG show events on console
-            #for e in event_ids:
-            #    event = Event.objects.get(pk=e)
-            #    print event.title
-            #    print event.performers.all().count()
-            #    print event.start
-
+            print events_data
+            event_ids = [ x.id for x in events_data]
+            
             sqs = Event.objects.filter(pk__in=event_ids)
+
+            print sqs
+
             return sqs
 
         # sets number_of_performers_searched based in the last word from main_seach
         number_of_performers_searched = None
         posible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
-
         if main_search != '':
             if main_search.split()[-1] in posible_number_of_performers:
                 number_of_performers_searched = posible_number_of_performers.index(main_search.split()[-1]) + 1
-                if ''.join(main_search.split()[:-1]) != '':
+                if ''.join(main_search.split()[:-1]) != '' and len(''.join(main_search.split()[:-1])) != 1 :  
+                    print 'entra'
                     main_search = ' '.join(main_search.split()[:-1])
             sqs = ''
         
@@ -207,7 +191,7 @@ class SearchObject(object):
 
             if words:
                 single_artist = False
-                if len(words) == 2 and not instruments and not number_of_performers_searched:
+                if len(words) == 2 and not instruments:
                     temp_sqs = sqs.filter(performers__first_name__iuexact=words[0],
                                         performers__last_name__iuexact=words[1]).distinct()
                     if temp_sqs.count() == 0:
@@ -216,7 +200,8 @@ class SearchObject(object):
                     if temp_sqs.count() != 0:
                         single_artist = True
                         sqs = temp_sqs
-
+                print 'Falso single artist'
+                print sqs.all().count()
                 if not single_artist:
                     artist = words.pop()
                     condition = Q(
@@ -234,24 +219,24 @@ class SearchObject(object):
                 if instruments:
                     sqs = sqs | Event.objects.filter(condition)
                 elif not single_artist:
-                    sqs = Event.objects.filter(condition)                     
+                    sqs = Event.objects.filter(condition) 
 
+                
+                           
+        
         sqs = sqs.distinct()
 
         if venue:
             if venue != 'all':
                 sqs = sqs.filter(venue__pk=venue)
+                
 
-        
-        if number_of_performers_searched:
-                sqs = search_by_number_musicians(number_of_performers_searched, main_search)
-                sqs = sqs.order_by(order)
-
-         #FIXME: compare to code in  "today_and_tomorrow_events"
+        #FIXME: compare to code in  "today_and_tomorrow_events"
         today = timezone.now().replace(hour=0, minute=0, second=0)
         if not start_date or start_date.date() < today.date():
             sqs = sqs.filter(recordings__media_file__isnull=False,
                              recordings__state=Recording.STATUS.Published)
+
 
         if start_date:
             # Force hours to start of day
@@ -283,9 +268,14 @@ class SearchObject(object):
 
         else:
             sqs = sqs.order_by(order)
-        
 
-      
-
+        if number_of_performers_searched:
+            print 'Falso single artist 2'
+            print sqs.all().count()
+            sqs = filter_quantity_of_performers(sqs, number_of_performers_searched)
+            sqs.distinct()
+        else:
+            print 'Falso single artist 2 else'
+            print sqs.all().count()
         
         return sqs
