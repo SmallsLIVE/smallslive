@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
-  var monthlyQuantities = [10, 20, 50];
-  var yearlyQuantities = [100, 500, 1000];
+  var monthlyAmounts = [10, 20, 50];
+  var yearlyAmounts = [100, 500, 1000];
 
   var panels;
   var currentStep = 'Intro';
@@ -11,7 +11,7 @@ $(document).ready(function () {
 
   var selectedData = {
     type: '',
-    quantity: 0
+    amount: 0
   };
 
   var getSteps = function () {
@@ -255,7 +255,7 @@ $(document).ready(function () {
 
   var updatePaymentInfo = function () {
     var pledgeType = selectedData.type;
-    var pledgeAmount = selectedData.quantity;
+    var pledgeAmount = selectedData.amount;
     if (pledgeType === 'year') {
       $('#pledge-type').html('You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' + pledgeAmount +'</span> .');
       $('#payment-type').html('Your  card  will  be  charged  in  this  amount.');
@@ -270,7 +270,7 @@ $(document).ready(function () {
       $('#payment-type').html('Your  card  will  be  charged  in  this  amount.');
       $('#select-payment-row').show();
     }
-    $('#hiddenQuantityInput').val(pledgeAmount);
+    $('#hiddenAmountInput').val(pledgeAmount);
     $('#hiddenTypeInput').val(pledgeType);
   };
 
@@ -281,12 +281,12 @@ $(document).ready(function () {
     $(monthlyCustom).removeClass('active');
   };
 
-  var setSelected = function (type, quantity) {
+  var setSelected = function (type, amount) {
     selectedData.type = type;
-    selectedData.quantity = quantity;
+    selectedData.amount = amount;
 
-    if (quantity) {
-      if (quantity > 0) {
+    if (amount) {
+      if (amount > 0) {
         updatePaymentInfo();
       } else {
         resetCustom();
@@ -298,15 +298,15 @@ $(document).ready(function () {
 
   monthlyButtons.each(function (index, el) {
     $(el).on('click', function () {
-      var quantity = monthlyQuantities[index];
+      var amount = monthlyAmounts[index];
       resetButtons();
       resetCustom();
       $(el).addClass("active");
-      setSelected('month', quantity);
+      setSelected('month', amount);
       var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
       $selectionConfirmationDialog.find('.title').text('Thank you for your support');
       $selectionConfirmationDialog.find('.subtitle').text('You\'re helping promote jazz music and musicians from all over the world');
-      $selectionConfirmationDialog.find('.text').text('Your selection: Monthly pledge of $' + quantity +'. Please confirm to continue.');
+      $selectionConfirmationDialog.find('.text').text('Your selection: Monthly pledge of $' + amount +'. Please confirm to continue.');
       $selectionConfirmationDialog.find('.gift-content');
       $selectionConfirmationDialog.modal('show');
 
@@ -316,16 +316,16 @@ $(document).ready(function () {
   var yearlyButtons = $("#yearlyPledge > button");
   yearlyButtons.each(function (index, el) {
     $(el).on('click', function () {
-      var quantity = yearlyQuantities[index];
+      var amount = yearlyAmounts[index];
       resetButtons();
       resetCustom();
       $(el).addClass("active");
-      setSelected('year', quantity);
+      setSelected('year', amount);
       var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
       $selectionConfirmationDialog.modal('show');
       $selectionConfirmationDialog.find('.title').text('Thank you for your support');
       $selectionConfirmationDialog.find('.subtitle').text('You\'re helping promote jazz music and musicians from all over the world');
-      $selectionConfirmationDialog.find('.text').text('Your selection: One Time Donation of $' + quantity +'. Please confirm to continue.');
+      $selectionConfirmationDialog.find('.text').text('Your selection: One Time Donation of $' + amount +'. Please confirm to continue.');
       $selectionConfirmationDialog.find('.gift-content');
 
     })
@@ -428,8 +428,11 @@ $(document).ready(function () {
   });
 
   function giftSelected(selection) {
-    var $input = $itemForm.find('input[name="child_id"]');
-    $input.val(selection);
+    if ($itemForm) {
+      var $input = $itemForm.find('input[name="child_id"]');
+      $input.val(selection);
+      setSelected('gift',  0)
+    }
     $('#confirmButton').prop('disabled', false);
     $('#confirmButton').click();
   }
@@ -439,7 +442,7 @@ $(document).ready(function () {
   $('#confirmSelectionButton').click(function () {
     $selectionConfirmationDialog.modal('hide');
     var $variantSelect = $selectionConfirmationDialog.find('select');
-    if ($variantSelect) {
+    if ($variantSelect.length != 0) {
       giftSelected($variantSelect.val());
     } else {
       $('#confirmButton').click();
@@ -516,8 +519,8 @@ $(document).ready(function () {
 
     if (currentStep === 'SelectType') {
       if (
-        selectedData.type === 'month' && selectedData.quantity >= 10 ||
-        selectedData.type === 'year' && selectedData.quantity >= 100 ||
+        selectedData.type === 'month' && selectedData.amount >= 10 ||
+        selectedData.type === 'year' && selectedData.amount >= 100 ||
         selectedData.type === 'one-time' ||
         selectedData.type === 'gift'
       ) {

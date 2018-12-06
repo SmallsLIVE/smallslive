@@ -120,18 +120,6 @@
                       {{ basket_form.quantity }}
                       {% if basket_form.fields.child_id.choices %}
                         <input type="hidden" name="child_id">
-                        <div class="select">
-                          <select class="store-add-small__options hidden" name="child_id" style="height: 50px;">
-                            <option data-price="0" value="none">Select size</option>
-                            {% for variant in product.variants.all %}
-                            {% purchase_info_for_product request variant as variant_session %}
-                              {% if session.availability.is_available_to_buy %}
-                                <option data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}"
-                                        value="{{ variant.id }}">{{ variant.title }}</option>
-                              {% endif %}
-                            {% endfor %}
-                          </select>
-                        </div>
                       {% else %}
                         {{ basket_form.child_id }}
                         <div class="arrow-button-container"><button style="margin-top: 15px;">Select</button></div>

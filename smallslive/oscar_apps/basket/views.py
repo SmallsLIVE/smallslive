@@ -19,6 +19,9 @@ class BasketAddView(basket_views.BasketAddView):
             self.request.basket.flush()
 
     def form_valid(self, form):
+        print '****************************'
+        print 'BasketAddView: form_valid'
+
         offers_before = self.request.basket.applied_offers()
 
         stockrecord_id = form.cleaned_data.get('stockrecord_id')
@@ -46,6 +49,7 @@ class BasketAddView(basket_views.BasketAddView):
             request=self.request)
 
         if self.request.is_ajax():
+            print 'return  200 (ajax)'
             return HttpResponse(status=200)
         else:
             return HttpResponseRedirect(self.get_success_url())

@@ -197,6 +197,9 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
                                    payment_execute_url, payment_cancel_url)
 
     def execute_stripe_payment(self, stripe_token, amount, plan_type):
+        print '********************************'
+        print 'execute stripe payment'
+        print 'Amount: ', amount
         try:
             # As per Aslan's request
             # Yearly donations will no longer exist. They are One Time Donations  now.
@@ -210,6 +213,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
                                   grant_access=grant)
         except stripe.StripeError as e:
             # add form error here
+            print e
             return _ajax_response(self.request, JsonResponse({
                 'error': e.args[0]
             }, status=500))
