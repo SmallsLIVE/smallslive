@@ -8,10 +8,11 @@ from metrics.models import UserVideoMetric
 class SearchObject(object):
 
     def get_instrument(self, text_array):
+        print text_array[0]
         condition = Q(name__icontains=text_array[0])
         for text in text_array[1:]:
             condition |= Q(name__icontains=text)
-        return Instrument.objects.filter(condition).distinct().first()
+        return Instrument.objects.filter(condition).distinct()
 
     def get_instruments(self):
         return map(unicode.upper, Instrument.objects.values_list('name', flat=True))

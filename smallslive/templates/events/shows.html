@@ -5,9 +5,9 @@
 <section id="showsContent" class="search-tab-content {% if not musician_search %}active{% endif %} {{ archived|yesno:',shows-calendar' }}" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
   {% if archived or upcoming %}
   <div class="musicians-results white-line-bottom">
-      <div class="title1 shows-results-title">{{ archived|yesno:'Archived,Upcoming' }} Shows</div>
+      <div class="title1 shows-results-title"><span class="accent-color">{{ showing_event_results }}</span>{{ archived|yesno:'Archived,Upcoming' }} Shows</div>
       {% if archived %}
-      <div id="event-subheader" class="showing-results text1" style="margin-top: -13px;">{{ showing_event_results }}</div>
+      <div id="event-subheader" class="showing-results text1" style="margin-top: -13px;" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>1-24</div>
       {% endif %}
   </div>
   {% endif %}

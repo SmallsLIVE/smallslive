@@ -82,10 +82,7 @@ class SearchMixin(object):
 
         if paginator.count:
             actual_results = 1 + ((page - 1) * results_per_page) if entity == Artist else 1
-            showing_results = 'SHOWING {} - {} OF {} RESULTS'.format(actual_results,
-                results_per_page + ((page - 1) * results_per_page) if page != paginator.num_pages else len(
-                    paginator.page(page).object_list) + ((page - 1) * results_per_page),
-                paginator.count)
+            showing_results = paginator.count
         else:
             showing_results = 'NO RESULTS'
 
@@ -239,6 +236,7 @@ class SearchBarView(View):
         events = []
         event_results_per_page = 8
         sqs = search.search_event(main_search)
+        print sqs
         paginator = Paginator(sqs, event_results_per_page)
         events_results = paginator.count
 
@@ -247,12 +245,28 @@ class SearchBarView(View):
             events.append(item)
         events_results_left = events_results - len(events)
 
+
+
+        instruments = []
+        instrument_results_per_page = 6
+        sqs = search.get_instrument([main_search])
+        print main_search
+        print sqs
+        paginator = Paginator(sqs, instrument_results_per_page)
+        instruments_results = paginator.count
+
+        for item in paginator.page(1).object_list:
+            item = Instrument.objects.filter(pk=item.pk).first()
+            instruments.append(item)
+
         context = {'artists': artists,
                    'artists_results': artists_results,
                    'artists_results_left': artists_results_left,
                    'events': events,
                    'events_results': events_results,
-                   'events_results_left': events_results_left}
+                   'events_results_left': events_results_left,
+                   'instruments': instruments,
+                   'instruments_results': instruments_results}
         template = 'search/search_bar_results.html'
 
         temp = render_to_string(template,
@@ -274,6 +288,7 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         context = super(TemplateSearchView, self).get_context_data(**kwargs)
         context = self.get_upcoming_events_context_data(context)
         q = self.request.GET.get('q', '')
+        instrument = self.request.GET.get('instrument','')
         if q:
             context['musician_search'] = True
 
@@ -284,9 +299,9 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
             num_pages = 1
         else:
             artists_blocks, showing_artist_results, num_pages = self.search(
-                Artist, q)
-        context['query_term'] = q
 
+                Artist, q, instrument=instrument)
+        context['query_term'] = q
         instruments = [i.name for i in Instrument.objects.all()]
         context['instruments'] = instruments
 
