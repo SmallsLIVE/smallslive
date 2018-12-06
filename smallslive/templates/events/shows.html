@@ -6,7 +6,7 @@
   {% if archived or upcoming %}
   <div class="musicians-results white-line-bottom">
       <div class="title1 shows-results-title">      
-        {% if archive %}
+        {% if archived %}
           <span id="event-totals" class='accent-color' >{{ showing_event_results }}</span>
         {% endif %}
       {{ archived|yesno:'Archived,Upcoming' }} Shows</div>
