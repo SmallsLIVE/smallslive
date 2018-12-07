@@ -49,15 +49,21 @@ function outOfBounds(viewPort) {
             }
         }
     }
+    else{
+        if( viewPort === "height" )
+            return window.innerHeight
+        else if( viewPort === "width" )
+            return window.innerWidth
+    }
 }
 
 jQuery.expr.filters.offscreen = function(el) {
-  var rect = el.getBoundingClientRect();
-  return (
-           (rect.x + rect.width) < 0
-             || (rect.y + rect.height) < 0
-             || (rect.top > outOfBounds("width") || rect.left > outOfBounds("height") )
-         );
+    var rect = el.getBoundingClientRect();
+    return (
+             (rect.x + rect.width) < 0
+               || (rect.y + rect.height) < 0
+               || (rect.top > outOfBounds("height") || rect.right > outOfBounds("width") )
+           );
 };
 
 $(document).ready(function(){

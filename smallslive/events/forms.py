@@ -20,7 +20,7 @@ class Formset(LayoutObject):
     Layout object. It renders an entire formset, as though it were a Field.
 
     Example::
-
+    THIS
     Formset("attached_files_formset")
     """
 
@@ -39,6 +39,7 @@ class Formset(LayoutObject):
 
     def render(self, form, form_style, context, template_pack=TEMPLATE_PACK):
         formset = context[self.formset_name_in_context]
+
         return render_to_string(self.template, Context({'wrapper': self,
             'formset': formset}))
 

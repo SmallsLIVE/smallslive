@@ -150,7 +150,13 @@
         position: relative;
         width: 25%;
         flex-direction: row-reverse;
-        justify-content: space-between;
+        @media(max-width: $screen-sm-max){
+            flex-direction: row;
+            max-width: 335px;
+            width: 100%;
+            justify-content: space-between;
+        }
+       
         .select-selected {
             width: 100%;
         }
@@ -176,6 +182,10 @@
             @media (max-width: 991px) {
                 height: 35px;
             }
+            
+                @media(min-width: $screen-md-min){
+                    margin-left:30px;
+                }
         }
         .payout-bar-button:hover {
             background-color: $white-transparent;
@@ -555,22 +565,34 @@
         margin-bottom: 20px;
         justify-content: space-between;
         display: flex;
+        @media( max-width: $screen-sm-max){
+            flex-direction: column;
+        }
         .select-items {
             margin-top: 5px;
         }
         .white-border-select {
             font-size: inherit;
+            @media(max-width:$screen-sm-max){
+                max-width: 335px;
+            }
             .white-border-button {
                 font-size: $text-font-size-smaller;
                 border-right: none;
                 @media (max-width: 991px) {
                     height: 35px;
                 }
+                @media(max-width:$screen-sm-max){
+                    padding: 0 18px;
+                }
             }
             .select-selected {
                 border-left: none;
                 color: $accent-color;
                 padding: 0px 40px;
+                @media(max-width: 991px){
+                    height: 35px;
+                }
             }
         }
     }
@@ -806,8 +828,15 @@
     .artist-payout-data-text {
         margin-bottom: 20px;
     }
+    > #payoutData .flex-row{
+        @media (max-width: $screen-md-max) {
+            flex-direction: column;
+        }
+    }
     .artist-payout-data-left {
-        margin-right: 250px;
+        @media (min-width: $screen-sm-min) {
+            margin-right: 250px;
+        }
     }
 }
 
