@@ -125,8 +125,8 @@ def _get_most_popular_uploaded(range_size=None):
     qs = UserVideoMetric.objects.all()
     if range_size:
         qs = qs.filter(
-            date__gte=range_start,
-            date__lte=range_end
+            event_date__gte=range_start,
+            event_date__lte=range_end
         )
 
     event_values = qs.values('recording_id').annotate(
