@@ -60,6 +60,23 @@ class EventQuerySet(models.QuerySet):
         return self.filter(
             staff_picked__isnull=False
         ).order_by('-staff_picked__date_picked')
+    
+    def get_events_by_performers_and_artist(self, number_of_performers_searched, name, just_by_qty):
+        #WIP WIPW IPW IPWWIP WPIW 
+        if just_by_qty:
+            return Event.objects.annotate(num = Count('performers')).filter(Q(num=number_of_performers_searched))
+
+        if len(name.split()) > 1:
+            first_name = name.split()[0]
+            last_name = name.split()[1]
+            return Event.objects.annotate(num = Count('performers')).filter(Q(num=number_of_performers_searched) & Q(
+                        performers__first_name__iucontains=first_name) & Q(
+                        performers__last_name__iucontains=last_name))
+        else:
+            return Event.objects.annotate(num = Count('performers')).filter(Q(num=number_of_performers_searched) & Q(
+                        performers__first_name__iucontains=name) | Q(
+                        performers__last_name__iucontains=name))
+
 
     # TODO Select properly
     def event_related_videos(self, event):
