@@ -108,6 +108,7 @@ function sendArtistRequest(callback) {
                     }
                 }
                 $(".mobile-artist-loading").hide()
+                $("#total-artist").html(data.showingResults);
                 $('#artist-subheader').data('max-number', data.showingResults)
                 $("#artists").append(data.template);
                 artistMaxPageNum = data.numPages;
@@ -244,6 +245,7 @@ function sendEventRequest() {
                 
                 var $showsContainer = $('.search-content .shows-container');
                 $("#events").removeClass("artist-loading-gif");
+                $('#event-totals').html(data.showingResults)
                 if (apply || eventFilter) {
                     apply = false;
                     eventFilter = false;
