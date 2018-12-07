@@ -87,7 +87,12 @@
       }
     }
   }
-  .text9{text-align: center;}
+  .text9 {
+    font-size: 1.7em;
+    text-align: center;
+
+  }
+
   .step-button{
     margin-right: 20px;
     border-radius: 50%;
@@ -203,7 +208,7 @@
   }
 
   .section-title {
-    margin: 40px auto;
+    margin: 25px auto;
     width: 50%;
 
     @media(max-width:$screen-md-max) {
