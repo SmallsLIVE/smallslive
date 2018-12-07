@@ -19,7 +19,7 @@
   <meta property="og:site_name" content="SmallsLIVE"/>
   <meta property="og:title" content="{{ event.full_title }}"/>
   <meta property="og:description"
-        content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.date|date:'g:i A' }} - {{ event.date|date:'g:i A' }}"/>
+        content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.get_date|date:'g:i A' }} - {{ event.get_date|date:'g:i A' }}"/>
   {% if event.photo %}
     <meta property="og:image" content="https:{% thumbor_url event.get_photo_url|urlencode height=315 width=600 smart=True %}"/>
     <meta itemprop="image" content="https:{% thumbor_url event.get_photo_url|urlencode height=315 width=600 smart=True %}">
@@ -27,7 +27,7 @@
   <meta property="fb:app_id" content="{{ facebook_app_id }}"/>
   <meta itemprop="name" content="{{ event.full_title }}">
   <meta itemprop="description"
-        content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.date|date:'g:i A' }} - {{ event.date|date:'g:i A' }}">
+        content="{{ event.listing_date|date:'l, F j, Y' }} {{ event.get_date|date:'g:i A' }} - {{ event.get_date|date:'g:i A' }}">
 {% endblock %}
 
 {% block home_content %}
@@ -43,12 +43,12 @@
           <div class="event-set-info">
             <div class="current-event event-title title1">{{ event.title }}</div>
             <div class="current-event accent-color text7">
-              {{ event.date|date:'m/d/Y' }}</div>
+              {{ event.get_date|date:'m/d/Y' }}</div>
               {% if next_event %}
                 <div class="next-event event-title title1 hidden">
                   {{ next_event.title }}</div>
                 <div class="next-event accent-color text7 hidden">
-                  {{ next_event.date|date:'m/d/Y' }}</div>
+                  {{ next_event.get_date|date:'m/d/Y' }}</div>
               {% endif %}
           </div>
           <div class="event-overlay-venue">

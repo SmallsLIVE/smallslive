@@ -4,6 +4,29 @@
     background: transparent;
   }
 
+  .store-overview__group__table__header {
+    border: none;
+  }
+
+  .store-overview__group__table__row {
+    border: none;
+  }
+
+  .store-overview__left-column {
+    border: none;
+  }
+
+  .store-overview__group__total {
+    background-color: transparent;
+    border: none;
+  }
+
+  .store-cart__footer {
+    background-color: transparent;
+    border: none;
+  }
+
+
   input {
     @include bordered-input;
     background-color: white;
@@ -299,7 +322,7 @@
     }
 
     .overlay {
-      background-color: #ddd;
+      background-color: rgba(120,120,120, .4);
       border-radius: 10px;
       height: 86%;
       margin-top: 69px;
@@ -345,7 +368,42 @@
 
       }
     }
+
   }
 
 }
 
+#selectionConfirmationDialog {
+
+  .gift-content  {
+
+    .modal-content {
+      background-color: inherit;
+      border: none;
+      box-shadow: none;
+      text-align: center;
+
+      .store-list-item-tile {
+        &.text2 {
+          height: 65px;
+          margin: 0 auto;
+          margin-top: 5px;
+          display: block;
+        }
+      }
+
+      .store-add-small {
+        justify-content: center;
+      }
+    }
+
+  }
+}
+
+.supporter-main-container {
+  input {
+    &.transparent {
+      background: none;
+    }
+  }
+}

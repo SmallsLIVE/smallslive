@@ -7,7 +7,7 @@
 
   <form id="payment-form" method="post" action="{% url 'checkout:preview' %}">
     <input type="text" id="hiddenTypeInput" name="type" hidden>
-    <input type="number" id="hiddenQuantityInput" name="quantity" hidden>
+    <input type="number" id="hiddenAmountInput" name="quantity" hidden>
     {% if error %}
       <section class="store-error container">
         <span class="store-error__message">{{ error|safe }}</span>

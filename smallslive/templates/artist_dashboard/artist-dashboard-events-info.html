@@ -45,12 +45,12 @@
                         <img src="/static/image/arrow-right-red.svg" alt="arrow-red">    
                     </div>
                     <div class="artist-set-info-mobile">
-                            <div class="text2"> {{ event.date|date:'m/d/Y' }} </div>
+                            <div class="text2"> {{ event.get_date|date:'m/d/Y' }} </div>
                             <div class="text2"> {{ event.title }} </div>
                             <div class="text2 accent-color"> Live at {{ event.venue }} </div>
                     </div>
                     <div class="artist-set-info">
-                        <div class="text2"> {{ event.date|date:'m/d/Y' }} </div>
+                        <div class="text2"> {{ event.get_date|date:'m/d/Y' }} </div>
                         <div class="text2"> {{ event.title }} </div>
                     </div>
                 <div class='artist-set-download'>

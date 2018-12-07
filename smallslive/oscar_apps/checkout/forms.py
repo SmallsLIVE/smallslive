@@ -36,6 +36,8 @@ class PaymentForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super(PaymentForm, self).__init__(*args, **kwargs)
         self.user = user
+        if not user.is_authenticated():
+            return
         try:
             customer = Customer.objects.get(subscriber=user)
             if customer and customer.can_charge():
@@ -65,7 +67,7 @@ class PaymentForm(forms.Form):
             else:
                 try:
                     token = stripe.Token.create(
-                        api_key='sk_test_ciTEPv3CAEmLII211ntWy2Cn',
+                        api_key='sk_test_SrCBpROYG7Gn8gua98U0y4TK',
                         card={
                             "number": data.get('number'),
                             "exp_month": data.get('exp_month'),

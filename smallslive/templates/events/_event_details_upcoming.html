@@ -30,7 +30,7 @@
         {% endfor %}
       </div>
       <div class="event-overlay-venue">
-          <div class="title5">{{ event.date|date:'m/d/Y' }}</div>
+          <div class="title5">{{ event.get_date|date:'m/d/Y' }}</div>
           {% if sets %}
               <div class="title5">
                 Sets at

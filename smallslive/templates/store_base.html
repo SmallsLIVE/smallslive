@@ -71,6 +71,7 @@
                     {% category_tree as tree_categories %}
                     {% if tree_categories %}
                         {% for tree_category, info in tree_categories %}
+                            {% if tree_category.slug != 'gifts' and tree_category.slug != 'tickets' %}
                             <li class="store-nav__category {% if tree_category.pk == category.pk %}active{% endif %}">
                                 {% if tree_category.pk == category.pk %}
                                     {{ tree_category.name }}
@@ -83,6 +84,7 @@
                             {% for n in info.num_to_close %}
                                 </ul></li>
                             {% endfor %}
+                            {% endif %}
                         {% endfor %}
                     {% endif %}
                 </ul>

@@ -218,10 +218,10 @@ class Artist(models.Model):
     
     @property
     def archive_shows(self):
-        return Event.objects.past().filter(
+        return Event.objects.filter(
             performers=self,
             recordings__media_file__isnull=False,
-            recordings__state=Recording.STATUS.Published).count()
+            recordings__state=Recording.STATUS.Published).distinct().count()
 
 
 class Instrument(models.Model):
