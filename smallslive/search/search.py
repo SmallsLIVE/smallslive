@@ -69,6 +69,13 @@ class SearchObject(object):
         return words, instruments, partial_instruments
 
     def search_artist(self, main_search=None, artist_search=None, instrument=None):
+
+        posible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
+        if main_search != '':
+            if main_search.split()[-1] in posible_number_of_performers:
+                main_search = ' '.join(main_search.split()[:-1])
+
+
         words, instruments, partial_instruments = self.process_input(main_search, artist_search, instrument)
 
         sqs = Artist.objects.all()
@@ -134,16 +141,46 @@ class SearchObject(object):
     def search_event(self, main_search, order=None, start_date=None, end_date=None,
                      artist_pk=None, venue=None):
 
+        def filter_quantity_of_performers(number_of_performers_searched, artist, just_by_qty):
+            events_data = Event.objects.get_events_by_performers_and_artist(number_of_performers_searched, artist, just_by_qty)
+            event_ids = [ x.id for x in events_data]
+            
+            sqs = Event.objects.filter(pk__in=event_ids)
+
+            return sqs
+    
+        # sets number_of_performers_searched based in the last word from main_seach
+        number_of_performers_searched = None
+        posible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
+        if main_search != '':
+            if main_search.split()[-1] in posible_number_of_performers:
+                number_of_performers_searched = posible_number_of_performers.index(main_search.split()[-1]) + 1
+                if ''.join(main_search.split()[:-1]) != '' and len(''.join(main_search.split()[:-1])) != 1 :  
+                    main_search = ' '.join(main_search.split()[:-1])
+            sqs = ''
+
+
         order = {
             'newest': '-start',
             'oldest': 'start',
             'popular': 'popular',
         }.get(order, '-start')
 
+        if number_of_performers_searched:
+            just_by_qty = False
+            if main_search in posible_number_of_performers:
+                just_by_qty = True
+            sqs = filter_quantity_of_performers(number_of_performers_searched, main_search, just_by_qty)
+            sqs = sqs.order_by(order)
+            sqs.distinct()
+            return sqs
+
+
         if artist_pk:
             sqs = Event.objects.filter(performers__pk=artist_pk)
         else:
-            sqs = Event.objects.all()
+            if not number_of_performers_searched and not len(main_search.split()) == 1:
+                sqs = Event.objects.all()
             instruments = []
             main_search, instruments = self.filter_sax(main_search)
             words = main_search.strip().split()

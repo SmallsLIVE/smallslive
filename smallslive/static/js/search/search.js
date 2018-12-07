@@ -1,5 +1,9 @@
 var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, venueFilter, eventFilter, eventDateFrom, eventDateTo, apply, artist_pk, show_event_venue;
 
+function fromYearClick(){
+    $datePickerFrom = $('#search-date-picker-from input');
+    $datePickerFrom.click()
+}
 
 
 function viewPortLength(viewPort) {
@@ -108,6 +112,7 @@ function sendArtistRequest(callback) {
                     }
                 }
                 $(".mobile-artist-loading").hide()
+                $("#total-artist").html(data.showingResults);
                 $('#artist-subheader').data('max-number', data.showingResults)
                 $("#artists").append(data.template);
                 artistMaxPageNum = data.numPages;
@@ -156,6 +161,7 @@ $(document).on('click', '#artists .artist-row', function() {
     dataType: 'json',
     success: function (data) {
       if (data.template) {
+        window.history.pushState({"html":'a',"pageTitle":'b'},"", '?artist_pk=' + artistId + '#');
         $('#musicianContent').hide();
         $('.artist-search-profile-container').html(data.template);
         $('.artist-search-profile-container')[0].style.display = 'block';
@@ -244,6 +250,7 @@ function sendEventRequest() {
                 
                 var $showsContainer = $('.search-content .shows-container');
                 $("#events").removeClass("artist-loading-gif");
+                $('#event-totals').html(data.showingResults)
                 if (apply || eventFilter) {
                     apply = false;
                     eventFilter = false;
@@ -516,6 +523,10 @@ $(document).ready(function () {
             });
         }
     }
+    ///////
+
+       
+
 
     /////////////////////
 
@@ -545,6 +556,7 @@ $(document).ready(function () {
         $("#search-date-picker-to input").click();
         $("#search-date-picker-to input").focus();
     });
+    
 
     $datePickerFrom.on('click', function () {
         var dropdown = $('#search-date-picker .dropdown-menu');

@@ -31,7 +31,7 @@
       {% if artist.photo %}
           {% include 'partials/search_artist_profile_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
       {% else %}
-          <div class="flex-column content-centered no-photo"><span class="title1">No Photo</span></div>
+          <div class="flex-column content-centered no-photo"><span class="title1" style="font-size: 2vw">No Photo</span></div>
       {% endif %}
     </div>
     <div class="flex-column white-line-right">
