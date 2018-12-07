@@ -66,7 +66,7 @@ function sendArtistRequest(callback) {
         success: function (data) {
             if (data.template) {
                 $(".mobile-artist-loading").hide()
-                $("#artist-subheader").html(data.showingResults);
+                $("#total-artist").html(data.showingResults);
                 $("#artists").append(data.template);
                 artistMaxPageNum = data.numPages;
                 if (artistPageNum === artistMaxPageNum){
@@ -101,7 +101,7 @@ function loadMoreEvents() {
     $("#event-load-gif").css("display", "block");
     sendEventRequest();
 }
-var artistCount = ""
+
 $(document).on('click', '#artists .artist-row', function() {
   var artistId = $(this).data('id');
   $.ajax({
@@ -115,7 +115,6 @@ $(document).on('click', '#artists .artist-row', function() {
         $('#musicianContent').hide();
         $('.artist-search-profile-container').html(data.template);
         $('.artist-search-profile-container')[0].style.display = 'block';
-        artistCount = $('#artist-subheader').text()
         $('#artist-subheader').html('SHOWING 1 - 1 OF 1 RESULTS');
         $('.artist-search-profile-container .close-button-parent').show();
         $('.search-tabs').addClass('hidden');
@@ -183,7 +182,7 @@ function sendEventRequest() {
             if (data.template) {
                 var $showsContainer = $('.search-content .shows-container');
                 $("#events").removeClass("artist-loading-gif");
-                $('#event-subheader').html(data.showingResults);
+                $('#event-totals').html(data.showingResults)
                 $('#event-subheader-footer').html(data.showingResults);
                 if (apply || eventFilter) {
                     apply = false;
@@ -540,7 +539,6 @@ $(document).ready(function () {
           window.location.href = '/search';
         } else {
           $("#musicianContent").show();
-          $('#artist-subheader').text(artistCount)
           $(".artist-search-profile-container").hide();
           $('.artist-search-profile-resume .close-button').show();
           $('.search-tabs').removeClass('hidden');
