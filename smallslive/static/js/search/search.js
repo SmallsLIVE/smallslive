@@ -1,5 +1,9 @@
 var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, venueFilter, eventFilter, eventDateFrom, eventDateTo, apply, artist_pk, show_event_venue;
 
+function fromYearClick(){
+    $datePickerFrom = $('#search-date-picker-from input');
+    $datePickerFrom.click()
+}
 
 
 function viewPortLength(viewPort) {
@@ -519,6 +523,10 @@ $(document).ready(function () {
             });
         }
     }
+    ///////
+
+       
+
 
     /////////////////////
 
@@ -548,6 +556,7 @@ $(document).ready(function () {
         $("#search-date-picker-to input").click();
         $("#search-date-picker-to input").focus();
     });
+    
 
     $datePickerFrom.on('click', function () {
         var dropdown = $('#search-date-picker .dropdown-menu');
