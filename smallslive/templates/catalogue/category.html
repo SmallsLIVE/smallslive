@@ -61,7 +61,7 @@
                     <form id="add_to_basket_form" action="{% url 'basket:add' pk=featured_product.pk  %}" method="post" class="add-to-basket">
                       {% if session.availability.is_available_to_buy %}
                         {% basket_form request product 'single' as basket_form %}
-                        <div class="store-add-large">
+                        <div class="store-add-large" style='flex-direction: column'>
                             {% csrf_token %}
                             {{ basket_form.quantity }}
                             {% if basket_form.fields.child_id.choices %}
@@ -70,11 +70,10 @@
                                     <option value="{{ item_value }}">{{ item_name }}</option>
                                   {% endfor %}
                               </select>
-                              <div class="arrow-button-container"><button type="submit" class="store-add-large__button"><i class="fa fa-plus"></i></button><span class="arrow"></span></div>
-                            {% else %}
+                                <div class="arrow-button-container"><button type="submit" class="white-border-button"></button></div>              
+                             {% else %}
                               {{ basket_form.child_id }}
-                              <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
-                            {% endif %}
+                            <div><button type="submit" class="white-border-button">Add to cart</button></div>                            {% endif %}
                         </div>
                       {% endif %}
                     </form>

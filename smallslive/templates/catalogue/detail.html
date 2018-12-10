@@ -116,22 +116,24 @@
                                     {% csrf_token %}
                                     {{ basket_form.quantity }}
                                     {% if basket_form.fields.child_id.choices %}
+                                        <div class='white-border-select'>
                                       <select class="store-add-large__options" name="child_id">
                                           {% for item_value, item_name in basket_form.fields.child_id.choices %}
                                             <option value="{{ item_value }}">{{ item_name }}</option>
                                           {% endfor %}
                                       </select>
+                                      </div>
                                       {% if user.is_authenticated %}
-                                        <div class="arrow-button-container"><button type="submit" class="store-add-large__button"><i class="fa fa-plus"></i></button><span class="arrow"></span></div>
+                                        <div class="arrow-button-container"><button type="submit" class="white-border-button"><i class="fa fa-plus"></i></button></div>
                                       {% else %}
-                                        <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="store-add-large__button"><i class="fa fa-plus"></i></a><span class="arrow"></span></div>
+                                        <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="white-border-button"><i class="fa fa-plus"></i></a></div>
                                       {% endif %}
                                     {% else %}
                                       {{ basket_form.child_id }}
                                       {% if user.is_authenticated %}
-                                        <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
+                                        <div class="arrow-button-container"><button type="submit" class="white-border-button">Add to cart</button></div>
                                       {% else %}
-                                        <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="store-add-large__button">Add to cart</a><span class="arrow"></span></div>
+                                        <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="white-border-button">Add to cart</a></div>
                                       {% endif %}
                                     {% endif %}
                                 </div>
