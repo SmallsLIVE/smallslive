@@ -77,11 +77,12 @@
                         method="post" class="add-to-basket">
                     {% if session.availability.is_available_to_buy %}
                       {% basket_form request album 'single' as basket_form %}
-                      <div class="store-add-large negative">
+                      <div class="store-add-large">
                         {% csrf_token %}
                         {{ basket_form.quantity }}
                         {% if basket_form.fields.child_id.choices %}
-                          <select class="store-add-large__options" name="child_id">
+                       <div class="white-border-select">
+                          <select class="store-add-large__options" id="white-select-fix" name="child_id">
                             {% for variant in album.variants.all %}
                               {% purchase_info_for_product request variant as variant_session %}
                               {% if session.availability.is_available_to_buy %}
@@ -95,17 +96,16 @@
                               {% endif %}
                             {% endfor %}
                           </select>
+                          </div>
                           {% if user.is_authenticated %}
                             <div class="arrow-button-container">
-                              <button type="submit" class="store-add-large__button"><i
-                                      class="fa fa-plus"></i></button>
-                              <span class="arrow"></span></div>
+                              <button type="submit" class='white-border-button'></button>
+                              </div>
                           {% else %}
                             <div class="arrow-button-container"><a href="#"
                                                                    data-toggle="modal"
                                                                    data-target="#logIn"
-                                                                   class="store-add-large__button"><i
-                                    class="fa fa-plus"></i></a><span class="arrow"></span>
+                                                                   class="white-border-button">Add to cart</a>
                             </div>
                           {% endif %}
                         {% else %}
@@ -120,8 +120,8 @@
                             <div class="arrow-button-container"><a href="#"
                                                                    data-toggle="modal"
                                                                    data-target="#logIn"
-                                                                   class="store-add-large__button">Add
-                              to cart</a><span class="arrow"></span></div>
+                                                                   class="white-border-button">Add
+                              to cart</a></div>
                           {% endif %}
                         {% endif %}
                       </div>
@@ -311,3 +311,4 @@
         });
     </script>
 {% endblock %}
+

@@ -31,7 +31,9 @@
 
   &__button {
     @include lato-bold-italic;
-    @include red-button;
+    background: $black;
+    color: $white-transparent;
+    padding: 3px;
 
     //&:after, &:before {
     //  left: 100%;

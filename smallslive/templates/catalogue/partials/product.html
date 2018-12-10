@@ -44,32 +44,8 @@
         <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
           {% if session.availability.is_available_to_buy %}
             {% basket_form request product 'single' as basket_form %}
-            <div class="store-add-small">
                 {% csrf_token %}
                 {{ basket_form.quantity }}
-                {% if basket_form.fields.child_id.choices %}
-                  <select class="store-add-small__options" name="child_id">
-                      {% for variant in product.variants.all %}
-                      {% purchase_info_for_product request variant as variant_session %}
-                          {% if session.availability.is_available_to_buy %}
-                                <option data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}" value="{{ variant.id }}">{{ variant.title }} ({{ variant_session.price.excl_tax|currency:variant_session.price.currency }})</option>
-                          {% endif %}
-                      {% endfor %}
-                  </select>
-                  {% if user.is_authenticated %}
-                      <div class="arrow-button-container"><button type="submit" class="store-add-small__button"><i class="fa fa-plus"></i></button><span class="arrow"></span></div>
-                  {% else %}
-                      <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="store-add-small__button"><i class="fa fa-plus"></i></a><span class="arrow"></span></div>
-                  {% endif %}
-                {% else %}
-                  {{ basket_form.child_id }}
-                    {% if user.is_authenticated %}
-                      <div class="arrow-button-container"><button type="submit" class="store-add-large__button">Add to cart</button><span class="arrow"></span></div>
-                    {% else %}
-                      <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="store-add-large__button">Add to cart</a><span class="arrow"></span></div>
-                    {% endif %}
-                {% endif %}
-            </div>
           {% endif %}
         </form>
     </div>

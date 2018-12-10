@@ -6,6 +6,9 @@ function replaceWhiteSelects(divElement){
     for (i = 0; i < x.length; i++) {
         var currentSelect = x[i];
         selElmnt = currentSelect.getElementsByTagName("select")[0];
+        //if(!selElmnt){
+          //  selElmnt = $('#white-select-fix')[0];
+        //}
       /*for each element, create a new DIV that will act as the selected item:*/
       a = document.createElement("DIV");
       a.setAttribute("class", "select-selected");

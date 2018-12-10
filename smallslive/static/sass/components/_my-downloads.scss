@@ -51,12 +51,12 @@
   &__name {
     @include lato-black;
     font-size: 28px;
-    color: $main-accent-color;
+    color: $black;
     margin: 0 0 15px;
     line-height: 130%;
 
     & a {
-      color: $main-accent-color;
+      color: $black;
 
       &:hover, &:focus {
         color: rgba($main-accent-color, 0.7);
@@ -179,14 +179,13 @@
 
     &:after {
       border-color: rgba(136, 183, 213, 0);
-      border-left-color: $main-accent-color;
       border-width: 14px;
       margin-top: -14px;
     }
 
     &:before {
       border-color: rgba(255, 255, 255, 0);
-      border-left-color: #fff;
+      border-left-color: transparent;
       border-width: 15px;
       margin-top: -15px;
     }

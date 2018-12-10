@@ -39,6 +39,11 @@
   }
 }
 
+@mixin black-button {
+  @include red-button;
+  background-color: $black;
+}
+
 @mixin flexbox-vertical-center {
   @include display(flex);
   -webkit-box-align: center;
