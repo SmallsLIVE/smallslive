@@ -1,0 +1,20 @@
+{% load static from staticfiles %}
+<div class="event-overlay">
+  <div class="event-overlay-logo">
+      <img src="{% static 'logo.svg' %}" alt="Smalls"
+                            class="img-circle" width="40" height="40"/>
+  </div>
+  <div class="event-title-ajax event-overlay-title">{{ event.title }}</div>
+  <div class="event-overlay-artists">
+    {% for gig_info in event_artists %}
+      <div class="title5">
+        {{ gig_info.name }} <span class="accent-color">/</span> {{ gig_info.role }}
+      </div>
+    {% endfor %}
+  </div>
+  {% if info_label %}
+  <div class="event-overlay-info text5">
+    {{ info_label }}
+  </div>
+  {% endif %}
+</div>
