@@ -1,4 +1,4 @@
-$mobile-filter-button-width: 48vw;
+$mobile-filter-button-width: 40vw;
 
 .load-more-artist-button{
   display: none;
@@ -71,7 +71,7 @@ body.headers-1 {
     z-index: -1;
 
     @media(max-width: $screen-md-max) {
-      top: 5.5vw;
+      top: 4.5vw;
     }
     @media (max-width: $screen-xs) {
       display: none;
@@ -468,14 +468,16 @@ body.headers-1 {
       @media (max-width: $screen-md-max) {
         padding: 0.5em;
         border: 3px solid rgba(255, 255, 255, 0.9);
-        font-size: 3.5vw;
-        height: 13vw;
-        line-height: 9vw;
+        font-size: 2.5vw;
+        height: 11vw;
+        line-height: 2.5vw;
+        margin-right: 5px;
+        margin-top: 10px;
         vertical-align: top;
       }
       &:after {
         @media (max-width: $screen-md-max) {
-          top: 5.5vw;
+          top: 6.8vw;
         }
         @media (max-width: $screen-xs) {
           display: none;
@@ -644,6 +646,9 @@ body.headers-1 {
     }
   }
 }
+
+
+
 
 .search-artist-box-container {
   @media (max-width: $screen-md-max) {
@@ -1109,13 +1114,14 @@ body.headers-1 {
   &.white-border-button {
     @media(max-width: $screen-md-max) {
       width: $mobile-filter-button-width;
-      margin-left: 0;
-      padding: 1em;
-      height: 13vw;
-      line-height: 4.5vw;
-      font-size: 3.5vw;
+      margin-left: 5px;
+      padding: 1.5em;
+      height: 11vw;
+      line-height: 2.5vw;
+      font-size: 2.5vw;
       margin-right: 1vw;
       vertical-align: top;
+      margin-top: 10px;
       &.caret{
         margin-right: 0;
       }
