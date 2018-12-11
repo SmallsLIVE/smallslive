@@ -356,7 +356,11 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         Overridden from OrderPlacementMixin.
         """
         # Send confirmation message (normally an email)
-        self.send_confirmation_message(order, self.communication_type_code)
+        order_type_code = 'ORDER_PLACED'
+        first_element_type = order.lines.first().product.get_product_class().name
+        if first_element_type == 'Tickets':
+            order_type_code = 'TICKET_PLACED'
+        self.send_confirmation_message(order, order_type_code)
 
         # Flush all session data
         self.checkout_session.flush()
