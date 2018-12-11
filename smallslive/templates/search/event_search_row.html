@@ -10,10 +10,11 @@
               {% endif %}
               <div class="event-info-title">{{ event.title }}</div>
               {% if show_event_venue %}
-                <div style="color: {{ event.venue.color }}">{{ event.venue.name }}</div>
-              {% endif %}
+              <div class="{{ event.venue.name|lower}}-color">{{ event.venue.name }}</div>
+              
+               {% endif %}
 
-            </div>
+           </div>
           </div>
         </article>
       

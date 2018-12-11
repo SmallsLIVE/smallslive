@@ -7,11 +7,18 @@ $black: black;
 $light-grey: #AEAEAE;
 $text-grey: #808080;
 $background-grey: #E0E0DC;
+$mezzrow: #f1bb53;
+$smallslive: #D21535;
 
 .accent-color {
   color: $accent-color;
 }
-
+.smalls-color{
+  color: $smallslive !important;
+}
+.mezzrow-color{
+  color: $mezzrow;
+}
 .text-grey {
   color: $text-grey;
 }
