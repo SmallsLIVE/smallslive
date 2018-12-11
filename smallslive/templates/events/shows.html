@@ -11,7 +11,7 @@
       {% endif %}
       {{ archived|yesno:'Archived,Upcoming' }} Shows</div>
       {% if archived %}
-      <div id="event-subheader" class="showing-results text1" style="margin-top: -13px;" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>1-24</div>
+        <div id="event-subheader" class="showing-results text1" style="margin-top: -13px;" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>1-24</div>
       {% endif %}
   </div>
   {% endif %}

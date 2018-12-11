@@ -148,7 +148,7 @@ function loadMoreEvents() {
     let eventSubheader= $('#event-subheader')
     showQuantityDisplay(eventSubheader, true, false)
 }
-var artistCount = ""
+
 $(document).on('click', '#artists .artist-row', function() {
   var artistId = $(this).data('id');
   $.ajax({
@@ -163,7 +163,6 @@ $(document).on('click', '#artists .artist-row', function() {
         $('#musicianContent').hide();
         $('.artist-search-profile-container').html(data.template);
         $('.artist-search-profile-container')[0].style.display = 'block';
-        artistCount = $('#artist-subheader').text()
         $('#artist-subheader').html('SHOWING 1 - 1 OF 1 RESULTS');
         $('.artist-search-profile-container .close-button-parent').show();
         $('.search-tabs').addClass('hidden');
@@ -249,6 +248,7 @@ function sendEventRequest() {
                 var $showsContainer = $('.search-content .shows-container');
                 $("#events").removeClass("artist-loading-gif");
                 $('#event-totals').html(data.showingResults)
+                $('#event-subheader-footer').html(data.showingResults);
                 if (apply || eventFilter) {
                     apply = false;
                     eventFilter = false;
@@ -615,7 +615,6 @@ $(document).ready(function () {
           window.location.href = '/search';
         } else {
           $("#musicianContent").show();
-          $('#artist-subheader').text(artistCount)
           $(".artist-search-profile-container").hide();
           $('.artist-search-profile-resume .close-button').show();
           $('.search-tabs').removeClass('hidden');
