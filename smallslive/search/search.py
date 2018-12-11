@@ -1,8 +1,10 @@
+import operator
 from django.db.models import Q, Sum
 from django.utils import timezone
 from artists.models import Artist, Instrument
 from events.models import Event, Recording
 from metrics.models import UserVideoMetric
+
 
 
 class SearchObject(object):
@@ -81,7 +83,6 @@ class SearchObject(object):
         sqs = Artist.objects.all()
 
         
-
         if instruments:
             condition = Q(instruments__name__istartswith=instruments[0])
             for i in instruments[1:]:
@@ -137,9 +138,28 @@ class SearchObject(object):
             sqs = sqs.filter(condition).distinct()
 
         return sqs
+    
 
     def search_event(self, main_search, order=None, start_date=None, end_date=None,
                      artist_pk=None, venue=None):
+        def filter_quantity_of_performers(number_of_performers_searched, artist, just_by_qty):
+            events_data = Event.objects.get_events_by_performers_and_artist(number_of_performers_searched, artist, just_by_qty)
+            event_ids = [ x.id for x in events_data]
+            
+            sqs = Event.objects.filter(pk__in=event_ids)
+
+            return sqs
+    
+        # sets number_of_performers_searched based in the last word from main_seach
+        number_of_performers_searched = None
+        posible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
+        if main_search != '':
+            if main_search.split()[-1] in posible_number_of_performers:
+                number_of_performers_searched = posible_number_of_performers.index(main_search.split()[-1]) + 1
+                if ''.join(main_search.split()[:-1]) != '' and len(''.join(main_search.split()[:-1])) != 1 :  
+                    main_search = ' '.join(main_search.split()[:-1])
+            sqs = ''
+        
 
         def filter_quantity_of_performers(number_of_performers_searched, artist, just_by_qty):
             events_data = Event.objects.get_events_by_performers_and_artist(number_of_performers_searched, artist, just_by_qty)
@@ -194,6 +214,7 @@ class SearchObject(object):
                     condition |= Q(artists_gig_info__role__name__icontains=i,
                                 artists_gig_info__is_leader=True)
                 sqs = Event.objects.filter(condition)
+                
 
             if words:
                 single_artist = False
@@ -206,7 +227,6 @@ class SearchObject(object):
                     if temp_sqs.count() != 0:
                         single_artist = True
                         sqs = temp_sqs
-
                 if not single_artist:
                     artist = words.pop()
                     condition = Q(
@@ -224,16 +244,15 @@ class SearchObject(object):
                 if instruments:
                     sqs = sqs | Event.objects.filter(condition)
                 elif not single_artist:
-                    sqs = Event.objects.filter(condition)
+                    sqs = Event.objects.filter(condition) 
 
         sqs = sqs.distinct()
 
         if venue:
             if venue != 'all':
                 sqs = sqs.filter(venue__pk=venue)
-
-
-        # FIXME: compare to code in  "today_and_tomorrow_events"
+                
+        #FIXME: compare to code in  "today_and_tomorrow_events"
         today = timezone.now().replace(hour=0, minute=0, second=0)
         if not start_date or start_date.date() < today.date():
             sqs = sqs.filter(recordings__media_file__isnull=False,
@@ -254,7 +273,6 @@ class SearchObject(object):
             event_map = dict([
                 (event.id, event) for event in sqs.all()
             ])
-
             # Order metrics
             most_popular_ids = UserVideoMetric.objects.filter(
                 event_id__in=event_map.keys()
@@ -266,10 +284,11 @@ class SearchObject(object):
             for event_data in most_popular_ids:
                 event_id = event_data['event_id']
                 most_popular.append(event_map[event_id])
-
             return most_popular
 
         else:
             sqs = sqs.order_by(order)
+
+       
 
         return sqs

@@ -116,7 +116,7 @@
                                     {% csrf_token %}
                                     {{ basket_form.quantity }}
                                     {% if basket_form.fields.child_id.choices %}
-                                        <div class='white-border-select'>
+                                    <div class='white-border-select'>
                                       <select class="store-add-large__options" name="child_id">
                                           {% for item_value, item_name in basket_form.fields.child_id.choices %}
                                             <option value="{{ item_value }}">{{ item_name }}</option>

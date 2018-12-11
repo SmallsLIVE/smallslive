@@ -81,7 +81,7 @@
                         {% csrf_token %}
                         {{ basket_form.quantity }}
                         {% if basket_form.fields.child_id.choices %}
-                          <div class="white-border-select">
+                       <div class="white-border-select">
                           <select class="store-add-large__options" id="white-select-fix" name="child_id">
                             {% for variant in album.variants.all %}
                               {% purchase_info_for_product request variant as variant_session %}
@@ -100,9 +100,8 @@
                           </div>
                           {% if user.is_authenticated %}
                             <div class="arrow-button-container">
-                            <button type="submit" class='white-border-button'></button>
+                              <button type="submit" class='white-border-button'>Add to cart</button>
                               </div>
-
                           {% else %}
                             <div class="arrow-button-container"><a href="#"
                                                                    data-toggle="modal"
@@ -124,7 +123,6 @@
                                                                    data-target="#logIn"
                                                                    class="white-border-button">Add
                               to cart</a></div>
-
                           {% endif %}
                         {% endif %}
                       </div>
@@ -178,12 +176,12 @@
                               {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
                                 <div class="buy-button-container">
                                   {% if user.is_authenticated %}
-                                    <a class="tracks-table__button"
+                                    <a class="white-border-button"
                                        data-toggle="dropdown" aria-expanded="false"
                                        href="">Buy track <i
                                             class="fa fa-caret-down"></i></a>
                                   {% else %}
-                                    <a class="tracks-table__button" href="#"
+                                    <a class="white-border-button" href="#"
                                        data-toggle="modal" data-target="#logIn">Buy
                                       track <i class="fa fa-caret-down"></i></a>
                                   {% endif %}
@@ -314,3 +312,4 @@
         });
     </script>
 {% endblock %}
+

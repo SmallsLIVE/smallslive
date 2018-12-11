@@ -15,7 +15,7 @@
   padding: 40px 20px;
 
   &:nth-child(odd) {
-    background-color: #efefef;
+    background-color: #f0f0eb;
   }
 
   &__list {
@@ -136,7 +136,7 @@
     }
 
     &.buy-track {
-      padding-right: 20px;
+      padding-right: 10px;
       @include display(flex);
       @include align-items(center);
       @include justify-content(flex-end);

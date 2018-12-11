@@ -111,7 +111,6 @@ function sendArtistRequest(callback) {
                 }
                 $(".mobile-artist-loading").hide()
                 $("#total-artist").html(data.showingResults);
-                $('#artist-subheader').data('max-number', data.showingResults)
                 $("#artists").append(data.template);
                 artistMaxPageNum = data.numPages;
                 if (artistPageNum === artistMaxPageNum){
@@ -542,9 +541,17 @@ $(document).ready(function () {
       $datePickerFrom.datepicker('setDate', defaultFromDate);
       datePickerFromDate = new Date(defaultFromDate);
     }
+    var lastYearSelected = 'Thu Sep 30 1000 00:00:00 GMT-0300 (Uruguay Standard Time)';
+    lastYearSelected = new Date(lastYearSelected);
 
     $datePickerFrom.on('changeDate', function (newDate) {
         datePickerFromDate = newDate.date;
+
+        if(datePickerFromDate.getFullYear() != lastYearSelected.getFullYear()){
+            lastYearSelected = datePickerFromDate;
+            lastYearSelected = new Date(lastYearSelected);
+            console.log(lastYearSelected);
+        }
         if (!datePickerToDate || datePickerFromDate > datePickerToDate) {
            datePickerToDate = datePickerFromDate;
            $datePickerTo.datepicker('setDate', datePickerToDate);

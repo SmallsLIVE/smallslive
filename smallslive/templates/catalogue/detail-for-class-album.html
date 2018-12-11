@@ -133,9 +133,8 @@
                         {% endfor %}
                     </select>
                   </div>
-
                   {% if user.is_authenticated %}
-<div class="arrow-button-container"><button type="submit" class="white-border-button">Add to cart</button></div>
+                    <div class="arrow-button-container"><button type="submit" class="white-border-button">Add to cart</button></div>
                   {% else %}
                     <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="white-border-button">Add to cart</a></div>
                   {% endif %}

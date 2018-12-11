@@ -78,6 +78,41 @@ class EventQuerySet(models.QuerySet):
                         performers__last_name__iucontains=name))
 
 
+    def get_events_by_performers_and_artist(self, number_of_performers_searched, name, just_by_qty):
+        #WIP WIPW IPW IPWWIP WPIW 
+        if just_by_qty:
+            return Event.objects.annotate(num = Count('performers')).filter(Q(num=number_of_performers_searched))
+
+        if len(name.split()) > 1:
+            first_name = name.split()[0]
+            last_name = name.split()[1]
+            return Event.objects.annotate(num = Count('performers')).filter(Q(num=number_of_performers_searched) & Q(
+                        performers__first_name__iucontains=first_name) & Q(
+                        performers__last_name__iucontains=last_name))
+        else:
+            return Event.objects.annotate(num = Count('performers')).filter(Q(num=number_of_performers_searched) & Q(
+                        performers__first_name__iucontains=name) | Q(
+                        performers__last_name__iucontains=name))
+
+            
+
+
+        #2nd way
+        #events_ids = []
+        #for event in self:
+        #    number_of_performers = len(event.performers.all())
+        #    if number_of_performers == number_of_performers_searched:
+        #        events_ids.append(event.id)
+        
+        #temp_sqs = Event.objects.filter(pk__in=events_ids)
+
+        #sqs = []
+        #if temp_sqs.count() != 0:
+        #    sqs = temp_sqs
+        
+
+        
+                
     # TODO Select properly
     def event_related_videos(self, event):
         query = self.exclude(state=Event.STATUS.Draft).exclude(
@@ -848,6 +883,7 @@ class Venue(models.Model):
         if 'mezzrow' in self.name.lower():
             return 'rgb(241, 187, 83)'
         return '#D21535'
+
 
 
 class StaffPick(models.Model):
