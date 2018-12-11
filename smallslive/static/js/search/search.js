@@ -1,47 +1,81 @@
 var searchTerm, artistSearchTerm, artistInstrument, artistPageNum, artistMaxPageNum, eventPageNum, eventMaxPageNum, venueFilter, eventFilter, eventDateFrom, eventDateTo, apply, artist_pk, show_event_venue;
 
+function fromYearClick(){
+    $datePickerFrom = $('#search-date-picker-from input');
+    $datePickerFrom.click()
+}
+
+
 function viewPortLength(viewPort) {
     var browserName = navigator.userAgent.toLowerCase(); 
     if (browserName.indexOf('safari') != -1) { 
-        if (browserName.indexOf('chrome') > -1) {
-            if( viewPort === "height" )
-                return window.innerHeight
-            else if( viewPort === "width" )
-                return window.innerWidth
-        } else {  
-            switch (window.orientation) {  
-                case 0:  
-                    if( viewPort === "height" )
-                        return window.innerWidth
-                    else if( viewPort === "width" )
-                        return window.innerHeight
-                    break;
-                    
-                case 180:  
-                    if( viewPort === "height" )
-                        return window.innerWidth
-                    else if( viewPort === "width" )
-                        return window.innerHeight
-                    break;
+        windowOrientation = (window.orientation, 90)
+        switch (windowOrientation) {  
+            case 0:  
+                if( viewPort === "height" )
+                    return window.innerWidth
+                else if( viewPort === "width" )
+                    return window.innerHeight
+                break;
                 
-                case -90:  
-                    if( viewPort === "height" )
-                        return window.innerHeight
-                    else if( viewPort === "width" )
-                        return window.innerWidth
-                    break;
-                
-                case 90:                  
-                    if( viewPort === "height" )
-                        return window.innerHeight
-                    else if( viewPort === "width" )
-                        return window.innerWidth
-                    break;
-            }
+            case 180:  
+                if( viewPort === "height" )
+                    return window.innerWidth
+                else if( viewPort === "width" )
+                    return window.innerHeight
+                break;
+            
+            case -90:  
+                if( viewPort === "height" )
+                    return window.innerHeight
+                else if( viewPort === "width" )
+                    return window.innerWidth
+                break;
+            
+            case 90:                  
+                if( viewPort === "height" )
+                    return window.innerHeight
+                else if( viewPort === "width" )
+                    return window.innerWidth
+                break; 
         }
+    }else{
+        if( viewPort === "height" )
+            return window.innerHeight
+        else if( viewPort === "width" )
+            return window.innerWidth
     }
 }
+function showQuantityDisplay(element, addition, slider){
+    paginatorValue = $(element).data('paginator-number')
+    maxValue = $(element).data('max-number')
+    leftValue = $(element).data('left-number')
+    rightValue = $(element).data('right-number')
+    if(addition){
+        if((rightValue + paginatorValue) > maxValue){
+            rightValue = maxValue
+            $(element).data('right-number', maxValue)
+        }else{
+            console.log(rightValue)
 
+            rightValue = rightValue + paginatorValue
+            $(element).data('right-number', rightValue)
+        }
+        if(slider){
+            leftValue = leftValue + paginatorValue
+            $(element).data('left-number', leftValue)
+        }else{
+            leftValue = 1
+            $(element).data('left-number', leftValue)
+        }
+    }else{
+        leftValue = leftValue - paginatorValue
+        rightValue = rightValue - paginatorValue
+        $(element).data('left-number', leftValue)
+        $(element).data('right-number', rightValue)
+    }
+    $(element).text(leftValue + '-' + rightValue)
+}
 
 function loadMoreArtistButton(){
     if (artistPageNum !== artistMaxPageNum){
@@ -65,6 +99,16 @@ function sendArtistRequest(callback) {
         dataType: 'json',
         success: function (data) {
             if (data.template) {
+                if(artistPageNum === 1){
+                    if(typeof data.showingResults !== 'number'){
+                        $('#artist-subheader').text('0-0')
+                    }
+                    else if(data.showingResults < 24){
+                        $('#artist-subheader').text('1-' + data.showingResults)
+                    }else{
+                        $('#artist-subheader').text('1-24')
+                    }
+                }
                 $(".mobile-artist-loading").hide()
                 $("#total-artist").html(data.showingResults);
                 $("#artists").append(data.template);
@@ -100,6 +144,8 @@ function loadMoreEvents() {
     $("#load-more-btn").hide();
     $("#event-load-gif").css("display", "block");
     sendEventRequest();
+    let eventSubheader= $('#event-subheader')
+    showQuantityDisplay(eventSubheader, true, false)
 }
 
 $(document).on('click', '#artists .artist-row', function() {
@@ -112,6 +158,7 @@ $(document).on('click', '#artists .artist-row', function() {
     dataType: 'json',
     success: function (data) {
       if (data.template) {
+        window.history.pushState({"html":'a',"pageTitle":'b'},"", '?artist_pk=' + artistId + '#');
         $('#musicianContent').hide();
         $('.artist-search-profile-container').html(data.template);
         $('.artist-search-profile-container')[0].style.display = 'block';
@@ -132,20 +179,22 @@ $(document).on('click', '#artists .artist-row', function() {
 });
 
 function toggleArrows() {
-    var style = $('#artists').css('left');
-    var columnWidth = parseInt($('.artist-column').first().css('width').replace('px', ''));
-    var left = style.replace('px', '');
-    var pseudoPage = parseInt(-left / columnWidth);
-    if (!smallsConfig.display.isMobile()) {
-        pseudoPage /= 4;
+    if($('.artist-column').length){
+        var style = $('#artists').css('left');
+        var columnWidth = parseInt($('.artist-column').first().css('width').replace('px', ''));
+        var left = style.replace('px', '');
+        var pseudoPage = parseInt(-left / columnWidth);
+        if (!smallsConfig.display.isMobile()) {
+            pseudoPage /= 4;
+        }
+        
+        var lastPseudoPage = $('.artist-column').length - 1; 
+        if (!smallsConfig.display.isMobile()) {
+            lastPseudoPage = Math.floor(lastPseudoPage / 4);
+        }
+        $('.left_arrow').css('visibility', pseudoPage == 0 ? 'hidden' : 'visible');
+        $('.right_arrow').css('visibility', pseudoPage == lastPseudoPage ? 'hidden': 'visible');
     }
-    
-    var lastPseudoPage = $('.artist-column').length - 1; 
-    if (!smallsConfig.display.isMobile()) {
-        lastPseudoPage = Math.floor(lastPseudoPage / 4);
-    }
-    $('.left_arrow').css('visibility', pseudoPage == 0 ? 'hidden' : 'visible');
-    $('.right_arrow').css('visibility', pseudoPage == lastPseudoPage ? 'hidden': 'visible');
 }
 
 if ($('#artists .artist-column').length) {
@@ -180,6 +229,21 @@ function sendEventRequest() {
         dataType: 'json',
         success: function (data) {
             if (data.template) {
+                if(eventPageNum === 1){
+                    if(typeof data.showingResults !== 'number'){
+                        $('#event-subheader').text('0-0')
+                    }
+                    else if(data.showingResults < 24){
+                        $('#event-subheader').text('1-' + data.showingResults)
+                    }else{
+                        $('#event-subheader').text('1-24')
+                    }
+                    $('#event-subheader').data('max-number', data.showingResults)
+                    $('#event-subheader').data('left-number', 1)
+                    $('#event-subheader').data('right-number', 24)
+                }
+                
+                
                 var $showsContainer = $('.search-content .shows-container');
                 $("#events").removeClass("artist-loading-gif");
                 $('#event-totals').html(data.showingResults)
@@ -222,6 +286,7 @@ $(document).ready(function () {
     $('#artist-search').val('');
 
     $(".left_arrow").click(function () {
+        $('#artist-subheader').html()
         var style = $('#artists').css('left');
         var columnWidth = parseInt($('.artist-column').first().css('width').replace('px', ''));
         if (!smallsConfig.display.isMobile()) {
@@ -237,6 +302,7 @@ $(document).ready(function () {
             function() {
                 toggleArrows();
             });
+        showQuantityDisplay(artistSubheader, false, true)
     });
 
     $(".right_arrow").click(function () {
@@ -258,6 +324,8 @@ $(document).ready(function () {
         function() {
             toggleArrows();
         });
+        artistSubheader = $('#artist-subheader')
+        showQuantityDisplay(artistSubheader, true, true)
         if (artistPageNum !== artistMaxPageNum && maxPseudopage - pseudoPage <= 4) {
             artistPageNum += 1;
             sendArtistRequest(function() {
@@ -357,6 +425,8 @@ $(document).ready(function () {
             artistSearchTerm = $('#artist-search').val();
             $(".container-list-article").addClass("artist-loading-gif");
             $('#artists').html('');
+            $('#artist-subheader').data('left-number', 1)
+            $('#artist-subheader').data('right-number', 24)
             sendArtistRequest(function() {
                 $(".container-list-article").removeClass("artist-loading-gif");
                 $("#artists").css('left', 0);
@@ -450,6 +520,10 @@ $(document).ready(function () {
             });
         }
     }
+    ///////
+
+       
+
 
     /////////////////////
 
@@ -487,6 +561,7 @@ $(document).ready(function () {
         $("#search-date-picker-to input").click();
         $("#search-date-picker-to input").focus();
     });
+    
 
     $datePickerFrom.on('click', function () {
         var dropdown = $('#search-date-picker .dropdown-menu');

@@ -45,7 +45,8 @@
 
   <div id="supporterStepSelectType" class="supporter-step" style="display: none">
 
-    <div class="text9">You are making a tax deductible donation to the SmallsLIVE Foundation.<br> You may download your tax receipt letter in your account settings.</div>
+    <div class="text9">You are making a tax deductible donation to the SmallsLIVE Foundation.<br>
+      You may download your tax receipt letter in your account settings. Please choose one of the following:</div>
 
     <div class="flex-column items-center supporter-plan-input">
       <div class="section-title section-title-no-padded">
@@ -57,7 +58,7 @@
         <button>$20</button>
         <button>$50</button>
         <div class="custom-input text4">
-          <input type="number" pattern="\d*" class="no-spinners" value="supporter-monthly-pledge">
+          <input type="number" pattern="\d*" class="no-spinners transparent" value="supporter-monthly-pledge">
           <label><div>SET YOUR OWN <br> (MIN $10)</div></label>
         </div>
       </div>
@@ -66,23 +67,24 @@
       <div class="section-title section-title-no-padded">
         <div class="title1">One Time Donation</div>
       </div>
-      <p class="text9">This is a one time tax deductible donation to The SmallsLIVE Foundation. You will receive one year’s access to our Audio/video archive.<br>
-     If you would like to make a customized donation or donate to us directly, please contact us at foundation@smallslive.com</p>
+      <p class="text9">This is a one time tax deductible donation to The SmallsLIVE Foundation. You will receive access to our audio/video archive for the remainder of the tax year.<br>
+        If you would like to make a customized donation or donate to us directly, please contact us at foundation@smallslive.com</p>
       <div id="yearlyPledge" class="button-row button-row-big button-row-margin">
         <button>$100</button>
         <button>$500</button>
         <button>$1000</button>
         <div class="custom-input text4">
-          <input type="number" pattern="\d*" class="no-spinners" value="supporter-yearly-pledge">
+          <input type="number" pattern="\d*" class="no-spinners transparent" value="supporter-yearly-pledge">
           <label><div>ENTER  AMOUNT<br>(MIN  $100)</div></label>
         </div>
       </div>
     </div>
     <div class="flex-column items-center  supporter-plan-input">
       <div class="section-title section-title-no-padded">
-        <div class="title1">Choose a gift</div>
+        <div class="title1">Choose a Gift Tier</div>
       </div>
-      <p class="text9">Choose a gift to get access to the Archive</p>
+      <p class="text9">Choose a gift tier from the following selection. <br>
+        Your donation will be partially tax deductible and you will receive access to our audio/video archive for the remainder of the tax year.</p>
       <div id="gift" class="button-row button-row-big button-row-margin">
 
 
@@ -91,20 +93,20 @@
             <!-- Single store item -->
             <div class="store-list-item flex-column items-flex-stretch">
               {% if session.price.excl_tax == 0 %}
-                  <button class="select-gift">Free</button>
+                <button class="select-gift">Free</button>
               {% elif session.price.is_tax_known %}
               <button class="select-gift">{{ session.price.incl_tax|currency:session.price.currency }}</button>
               {% else %}
               <button class="select-gift">{{ session.price.excl_tax|currency:session.price.currency }}</button>
               {% endif %}
               <div class="store-list-item-image">
-                  {% with image=product.primary_image %}
-                      {% if not image.is_missing %}
-                        <img src="{% thumbor_url image.original.url|urlencode height=260 width=260 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio">
-                      {% else %}
-                        <img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio">
-                      {% endif %}
-                  {% endwith %}
+                {% with image=product.primary_image %}
+                  {% if not image.is_missing %}
+                    <img src="{% thumbor_url image.original.url|urlencode height=260 width=260 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio">
+                  {% else %}
+                    <img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio">
+                  {% endif %}
+                {% endwith %}
               </div>
               <span class="text2 store-list-item-tile">
                 {{ product.get_title }}
@@ -112,25 +114,14 @@
               {% if product.product_class.slug == "album" %}
                   <p class="text4">{% if product.has_physical_media %}CD / {% endif %}{% if product.has_digital_media %}Digital download / {% endif %}{% if product.has_tracks %}Tracks{% endif %}</p>
               {% endif %}
-              <form action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
+              <form action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket" style="width: 100%">
                 {% if session.availability.is_available_to_buy %}
                   {% basket_form request product 'single' as basket_form %}
                   <div class="store-add-small">
                       {% csrf_token %}
                       {{ basket_form.quantity }}
                       {% if basket_form.fields.child_id.choices %}
-                        <div class="white-border-select">
-                          <select class="store-add-small__options" name="child_id" style="height: 50px;">
-                            <option data-price="0" value="none">Select size</option>
-                            {% for variant in product.variants.all %}
-                            {% purchase_info_for_product request variant as variant_session %}
-                              {% if session.availability.is_available_to_buy %}
-                                <option data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}"
-                                        value="{{ variant.id }}">{{ variant.title }}</option>
-                              {% endif %}
-                            {% endfor %}
-                          </select>
-                        </div>
+                        <input type="hidden" name="child_id">
                       {% else %}
                         {{ basket_form.child_id }}
                         <div class="arrow-button-container"><button style="margin-top: 15px;">Select</button></div>
@@ -138,8 +129,44 @@
                   </div>
                 {% endif %}
               </form>
-              <div class="overlay" style="display: none;"></div>
+              <!-- html to be loaded into selection popup -->
+              <div class="modal-content hidden">
+                <div class="store-list-item-image">
+                  {% with image=product.primary_image %}
+                    {% if not image.is_missing %}
+                      <img src="{% thumbor_url image.original.url|urlencode height=260 width=260 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio">
+                    {% else %}
+                      <img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio">
+                    {% endif %}
+                  {% endwith %}
+                </div>
+                <span class="text2 store-list-item-tile">
+                  {{ product.get_title }}
+                </span>
+                {% if product.product_class.slug == "album" %}
+                  <p class="text4">{% if product.has_physical_media %}CD / {% endif %}{% if product.has_digital_media %}Digital download / {% endif %}{% if product.has_tracks %}Tracks{% endif %}</p>
+                {% endif %}
+                <div class="store-add-small">
+                  {% basket_form request product 'single' as basket_form %}
+                  {% if basket_form.fields.child_id.choices %}
+                    <div class="select">
+                      <select class="store-add-small__options" name="child_id" style="height: 50px;">
+                        <option data-price="0" value="none">Select size</option>
+                        {% for variant in product.variants.all %}
+                        {% purchase_info_for_product request variant as variant_session %}
+                          {% if session.availability.is_available_to_buy %}
+                            <option data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}"
+                                    value="{{ variant.id }}">{{ variant.title }}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
             </div>
+
+
             <!-- End of single store item -->
           {% endfor %}
 

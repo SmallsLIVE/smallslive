@@ -3,6 +3,7 @@
 {% load djstripe_tags %}
 
 {% block home_content %}
+  {% include 'account/selection_confirmation_dialog.html' %}
   <div class="flex-column supporter-main-container">
       {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
     <div class="supporter-image">
@@ -32,7 +33,7 @@
                   action="{{ form_action }}">
               {% csrf_token %}
               <input type="text" id="hiddenTypeInput" name="type" hidden>
-              <input type="number" id="hiddenQuantityInput" name="quantity" hidden>
+              <input type="number" id="hiddenAmountInput" name="quantity" hidden>
               <input type="text" name="redirect_url" value="{{ redirect_url }}"hidden>
               <div class="flex-column content-space-between flex-grow">
                 <div class="flex-row content-space-between">

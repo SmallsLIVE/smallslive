@@ -115,3 +115,32 @@ class ProductListView(oscar_views.ProductListView):
     def get_table_class(self):
 
        return ProductTable
+
+    def apply_search(self, queryset):
+        """
+        Filter the queryset and set the description according to the search
+        parameters given
+        """
+        self.form = self.form_class(self.request.GET)
+
+        if not self.form.is_valid():
+            return queryset
+
+        data = self.form.cleaned_data
+
+        if data.get('upc'):
+            # If there's an exact UPC match, it returns just the matched
+            # product. Otherwise does a broader icontains search.
+            qs_match = queryset.filter(upc=data['upc'])
+            if qs_match.exists():
+                queryset = qs_match
+            else:
+                queryset = queryset.filter(upc__icontains=data['upc'])
+
+        if data.get('title'):
+            queryset = queryset.filter(title__icontains=data['title'])
+
+        if data.get('product_class'):
+            queryset = queryset.filter(product_class=data['product_class'])
+
+        return queryset

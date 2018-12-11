@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from oscar.apps.dashboard.catalogue import app as catalogue_app
-
+from oscar.core.loading import get_class
 
 class CatalogueApplication(catalogue_app.CatalogueApplication):
     def get_urls(self):
@@ -60,5 +60,8 @@ class CatalogueApplication(catalogue_app.CatalogueApplication):
         ]
         return self.post_process_urls(urls)
 
+    product_list_view = get_class('dashboard.catalogue.views',
+                                  'ProductListView')
 
 application = CatalogueApplication()
+

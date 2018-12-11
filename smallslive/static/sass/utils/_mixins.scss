@@ -38,6 +38,11 @@
     outline: none;
   }
 }
+@mixin black-button {
+  @include red-button;
+  background-color: $black;
+}
+
 
 @mixin black-button {
   @include red-button;

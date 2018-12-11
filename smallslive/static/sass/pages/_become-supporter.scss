@@ -87,7 +87,12 @@
       }
     }
   }
-  .text9{text-align: center;}
+  .text9 {
+    font-size: 1.7em;
+    text-align: center;
+
+  }
+
   .step-button{
     margin-right: 20px;
     border-radius: 50%;
@@ -203,7 +208,7 @@
   }
 
   .section-title {
-    margin: 40px auto;
+    margin: 25px auto;
     width: 50%;
 
     @media(max-width:$screen-md-max) {
@@ -373,3 +378,37 @@
 
 }
 
+#selectionConfirmationDialog {
+
+  .gift-content  {
+
+    .modal-content {
+      background-color: inherit;
+      border: none;
+      box-shadow: none;
+      text-align: center;
+
+      .store-list-item-tile {
+        &.text2 {
+          height: 65px;
+          margin: 0 auto;
+          margin-top: 5px;
+          display: block;
+        }
+      }
+
+      .store-add-small {
+        justify-content: center;
+      }
+    }
+
+  }
+}
+
+.supporter-main-container {
+  input {
+    &.transparent {
+      background: none;
+    }
+  }
+}
