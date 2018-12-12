@@ -26,6 +26,36 @@
     border: none;
   }
 
+  .price-tag {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+    font-size: 3.35em;
+    letter-spacing: 1px;
+    font-size: 23px;
+    text-shadow: 0.001em 0.001em;
+    margin-right: 12px;
+  }
+  .justifyed-text {
+    text-align: justify;
+  }
+
+  .gifts-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+  }
+
+  .store-add-small {
+      padding: 0;
+  }
+
+  .select-gift {
+    margin-bottom: 10px;
+    width: fit-content;
+  }
 
   input {
     @include bordered-input;
@@ -399,6 +429,7 @@
 
       .store-add-small {
         justify-content: center;
+        padding: 0;
       }
     }
 
