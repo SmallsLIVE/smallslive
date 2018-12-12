@@ -4,15 +4,17 @@
 {% load purchase_info_tags %}
 
 <div id="content_inner">
-    <div class="content-wrapper">
+    <div class="content-wrapper borderless mt-5">
         <section class="store-header container">
             <div class="store-header__content">
                 {% if basket.has_tickets %}
-                <h1 class="store-header__title">Tickets<span class="store-header__title__divider">|</span><span
-                        class="store-header__title__category">Purchase tickets</span></h1>
+                  <div class="white-line-bottom">
+                    <div class="title1 center">Purchase tickets</div>
+                 </div>
                 {% else %}
-                <h1 class="store-header__title">SmallsLIVE Store<span class="store-header__title__divider">|</span><span
-                        class="store-header__title__category">My Shopping Cart</span></h1>
+                  <div class="white-line-bottom">
+                    <div class="title1 center">Shopping cart</div>
+                  </div>
                 {% endif %}
             </div>
         </section>
@@ -249,7 +251,7 @@
 
                 </section>
                 <section class="store-cart__footer container">
-                    <div class="col-xs-12 col-sm-6 store-cart__footer__left">
+                    <!--<div class="col-xs-12 col-sm-6 store-cart__footer__left">
                         <p class="store-cart__footer__left__text">We accept the following payment options:</p>
                         <div class="store-cart__footer__card-icons">
                             <img src="{% static 'image/payment/visa.png' %}" alt="Visa">
@@ -257,21 +259,21 @@
                             <img src="{% static 'image/payment/amex.png' %}" alt="American Express">
                             <img src="{% static 'image/payment/diners.png' %}" alt="Diners">
                         </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-6 store-cart__footer__right">
+                    </div>-->
+                    <div class="col-xs-12 col-sm-12 store-cart__footer__right">
                         <div class="store-cart__footer__price-container">
                             <span class="store-cart__footer__price-container__value">{{ basket.total_excl_tax|currency:basket.currency }}</span>
-                            <span class="store-cart__footer__price-container__label">Basket total:</span>
+                            <span class="store-cart__footer__price-container__label mt-2">Basket total:</span>
                             <span class="store-cart__footer__price-container__value">{{ shipping_charge.excl_tax|currency:basket.currency }}</span>
-                            <span class="store-cart__footer__price-container__label">Shipping:</span>
+                            <span class="store-cart__footer__price-container__label mt-2">Shipping:</span>
                             <div class="store-cart__footer__price-container__total">
                                 <span class="store-cart__footer__price-container__value">{{ order_total.excl_tax|currency:basket.currency }}</span>
-                                <span class="store-cart__footer__price-container__label">Total:</span>
+                                <span class="store-cart__footer__price-container__label mt-2">Total:</span>
                             </div>
                         </div>
                     </div>
                     <div class="col-xs-12 store-cart__footer__buttons">
-                        <a href="{% url 'checkout:index' %}" class="store-cart__footer__button-next">Continue checkout</a>
+                        <a href="{% url 'checkout:index' %}" class="white-border-button checkout-white">Continue checkout</a>
                     </div>
                 </section>
             </form>
