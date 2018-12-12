@@ -231,9 +231,10 @@ $(document).ready(function () {
 
   var buttons = $('#supporterSteps > *');
   var monthlyButtons = $("#monthlyPledge > button");
+  var giftsButtons = $('.select-gift');
 
   var resetButtons = function () {
-    [monthlyButtons, yearlyButtons].forEach(function (buttons) {
+    [monthlyButtons, yearlyButtons, giftsButtons].forEach(function (buttons) {
       buttons.each(function (index, el) {
         $(el).removeClass("active");
       });
@@ -306,7 +307,7 @@ $(document).ready(function () {
       var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
       $selectionConfirmationDialog.find('.title').text('become a supporter');
       $selectionConfirmationDialog.find('.subtitle').text('Monthly pledge');
-      $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a monthly pledge of <span class="smalls-color">$'+amount+'.00 .</span> Monthly pldeges are billed automatically and can be cancelled at any time in your Account Settings. You will recieve access to our audio/video library for as long as you are a Supporting Member of SmallsLIVE.');
+      $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a monthly pledge of <span class="smalls-color">$'+amount+'.</span> Monthly pldeges are billed automatically and can be cancelled at any time in your Account Settings. You will recieve access to our audio/video library for as long as you are a Supporting SmallsLIVE');
       $selectionConfirmationDialog.find('.gift-content');
       $selectionConfirmationDialog.modal('show');
 
@@ -325,7 +326,7 @@ $(document).ready(function () {
       $selectionConfirmationDialog.modal('show');
       $selectionConfirmationDialog.find('.title').text('become a supporter');
       $selectionConfirmationDialog.find('.subtitle').text('One time donation');
-      $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a one time donation of <span class="smalls-color">$'+amount+'.00 .</span> You will receive access to our Audio/Video Archive for the remainder of the tax year. Onetime donations are tax deductible.   ');
+      $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a one time donation of <span class="smalls-color">$'+amount+'.</span> You will receive access to our Audio/Video Archive for the remainder of the tax year. Onetime donations are tax deductible.   ');
       $selectionConfirmationDialog.find('.gift-content');
 
     })
@@ -411,12 +412,11 @@ $(document).ready(function () {
     var $content = $('#selectionConfirmationDialog').find('#giftContent');
     $itemForm = $(this).parent().find('form');
     var $item = $(this).parent().find('.modal-content').clone();
-    console.log($item);
     var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
     $selectionConfirmationDialog.find('.title').text('Become a supporter');
     $selectionConfirmationDialog.find('.subtitle').text('Gift Tier: ' + $(this).attr("data-type") );
     let price =  $(this).children('.price-tag').text();
-    $selectionConfirmationDialog.find('.text').html('You have selected a one time, gift tier donation of <span class="smalls-color">'+price+'.00 .</span> You will receive access to ou Audio/Video Archive for the remainder of the tax year. One tima, gift-tier donations are partially tax deductible.<br> Please select your size below.');
+    $selectionConfirmationDialog.find('.text').html('You have selected a one time, gift tier donation of <span class="smalls-color">'+price+'</span> You will receive access to ou Audio/Video Archive for the remainder of the tax year. One tima, gift-tier donations are partially tax deductible.<br> Please select your size below.');
     var $giftContent = $selectionConfirmationDialog.find('.gift-content');
     $giftContent.html($item);
     $item.removeClass('hidden');
@@ -452,12 +452,15 @@ $(document).ready(function () {
     }
   });
   $('#cancelSelectionButton').click(function () {
+    resetButtons();
     $selectionConfirmationDialog.modal('hide');
   });
   $('.close-action').click(function () {
     $selectionConfirmationDialog.modal('hide');
+    resetButtons();
   });
   $selectionConfirmationDialog.on('hidden.bs.modal', function () {
+    resetButtons();
     $selectionConfirmationDialog.find('.title').empty();
     $selectionConfirmationDialog.find('.subtitle').empty();
     $selectionConfirmationDialog.find('.text').empty();
