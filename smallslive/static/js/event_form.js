@@ -35,14 +35,15 @@ EventForm = {
         $slotButtons = $('.slot-buttons');
         $slotButtons.html("");
         var buttons = [];
-        var todaysSchedule = show_times[dayOfTheWeek];
+        var todaysSchedule = show_times;
         $.each(todaysSchedule, function(idx, val) {
             var button = $("<input>", {
                 type: "button",
                 class: "btn btn-success slot",
-                "data-time": val[0],
-                title: val[1],
-                value: val[2]
+                "data-time": val['set-starts'],
+                title:  val['set-title'],
+                value:  val['set-redeable-starts'],
+                "data-set-duration": val['set-duration']
             });
             buttons.push(button, " ");
         });
@@ -129,6 +130,8 @@ EventForm = {
             var times = $(this).data('time').split('-');
             var start, end;
 
+            let setDuration = ($(this).data('set-duration'), 1)
+
             var startDate = $('#id_start');
             var endDate = $('#id_end');
             if (!startDate.val()) {
@@ -163,7 +166,7 @@ EventForm = {
             startDate.data("DateTimePicker").setDate(start.format(date_format));
             endDate.data("DateTimePicker").setDate(end.format(date_format));
 
-            EventForm.propagateSets(start, end);
+            EventForm.propagateSets(start, end, setDuration);
 
         });
 
@@ -189,7 +192,7 @@ EventForm = {
 
         });
     },
-    propagateSets: function(first, second){
+    propagateSets: function(first, second, duration=1){
         var $setsTable = $(".event-set-list-form .formset_table");
         var $setsTableBody = $(".event-set-list-form .formset_table tbody");
         // Keep first row
@@ -228,10 +231,11 @@ EventForm = {
         this.configureTimePicker(firstRow);
         this.configureTimePicker(secondRow);
 
+
         firstRow.find('#id_sets-' + total + '-start').data("DateTimePicker").setDate(first);
-        firstRow.find('#id_sets-' + total + '-end').data("DateTimePicker").setDate(first.add(1, 'h'));
+        firstRow.find('#id_sets-' + total + '-end').data("DateTimePicker").setDate(first.add(duration, 'h'));
         secondRow.find('#id_sets-' + (total + 1) + '-start').data("DateTimePicker").setDate(second);
-        secondRow.find('#id_sets-' + (total + 1) + '-end').data("DateTimePicker").setDate(second.add(1, 'h'));
+        secondRow.find('#id_sets-' + (total + 1) + '-end').data("DateTimePicker").setDate(second.add(duration, 'h'));
 
         this.fixTableWidths($setsTable);
     },
