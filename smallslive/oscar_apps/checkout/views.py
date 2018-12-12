@@ -360,6 +360,10 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         first_element_type = order.lines.first().product.get_product_class().name
         if first_element_type == 'Tickets':
             order_type_code = 'TICKET_PLACED'
+        print dir(order.lines.first().product.event)
+        print order.lines.first().product.event.venue.name
+        print order.lines.first().product.event.date
+
         self.send_confirmation_message(order, order_type_code)
 
         # Flush all session data

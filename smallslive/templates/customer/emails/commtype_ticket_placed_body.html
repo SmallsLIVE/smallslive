@@ -6,7 +6,7 @@
 <p>
     {% with order_number=order.number %}
         {% for line in order.lines.all %}
-            Thank you for your purchase of {{ line.quantity }} ticket(s) to {{ line.title }}  at CLUB NAME on DATE. 
+            Thank you for your purchase of {{ line.quantity }} ticket(s) to {{ line.title }}  at {{ line.product.event.venue.name }} on {{ line.product.event.date }}. 
             Your confirmation number is {{order_number}}. Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}.
         {% endfor %}
     {% endwith %}
