@@ -29,7 +29,6 @@
   <script src="{% static "js/event_form.js" %}"></script>
   <script>
     var show_times = {{ show_times|safe }};
-    console.log(show_times)
     $(document).ready(function() {
       EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
       EventForm.init(false);

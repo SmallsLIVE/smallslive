@@ -43,11 +43,13 @@ EventForm = {
                 "data-time": val['set-starts'],
                 title:  val['set-title'],
                 value:  val['set-redeable-starts'],
-                "data-set-duration": val['set-duration']
+                "data-set-duration": val['set-duration'],
+                "data-venue": val['set-venue']
             });
             buttons.push(button, " ");
         });
         $slotButtons.append(buttons);
+        $('.btn.btn-success.slot').hide()
     },
     initDateTimeFunctionality: function() {
         var $start = $('#id_start');
@@ -129,9 +131,8 @@ EventForm = {
         $('.slot-buttons').on("click", ".slot", function () {
             var times = $(this).data('time').split('-');
             var start, end;
-
-            let setDuration = ($(this).data('set-duration'), 1)
-
+            
+            let setDuration = $(this).data('set-duration')
             var startDate = $('#id_start');
             var endDate = $('#id_end');
             if (!startDate.val()) {
@@ -165,7 +166,7 @@ EventForm = {
             }
             startDate.data("DateTimePicker").setDate(start.format(date_format));
             endDate.data("DateTimePicker").setDate(end.format(date_format));
-
+           
             EventForm.propagateSets(start, end, setDuration);
 
         });
@@ -334,7 +335,12 @@ EventForm = {
     },
     initVenueSelectFunctionality: function () {
         $('#div_id_venue select').selectize({
-            create: false
+            create: false,
+            onChange: function(value) {
+                venue = $('#div_id_venue .selectize-dropdown-content [data-value~=' + value + ']').text()
+                $('.btn.btn-success.slot').hide()
+                $('.btn.btn-success.slot[data-venue~=' + venue + ']').show()
+           }
         });
     },
     init: function (datepicker) {
@@ -348,3 +354,4 @@ EventForm = {
         this.initInlineArtistsFunctionality();
     }
 };
+
