@@ -10,13 +10,8 @@
 
 {% block content %}
 
-    <div class="supporter-main-container"> <!-- without this class this wont extend the correct form style   #TODO: create a scss file to centralize all payment forms styles  -->  
+    <div class="payment-main-container"> 
 
-        <section class="store-header container">
-           <div class="white-line-bottom">
-                    <div class="title1 center">Order Payment</div>
-                 </div>
-        </section>
         <form id="payment-form" method="post" action="{% url 'checkout:preview' %}">
     <input type="text" id="hiddenTypeInput" name="type" hidden>
     <input type="number" id="hiddenAmountInput" name="quantity" hidden>
@@ -27,8 +22,13 @@
     {% endif %}
     <section class="container">
       <div class="white-line-bottom">
-                    <div class="title1 center">Billing information</div>
-                 </div>
+        <div class="title1 center">Billing information</div>
+      </div>
+      <div class="store__form__selection__option useless-checkbox">
+        <input type="radio" name="billing_option" id="different-address"
+      {% if billing_address_form.billing_option.value == "different-address"%}checked{% endif %} value="different-address">
+      <label for="different-address">{% if shipping_address %}My billing address is different than the shipping address{% else %}Enter billing address{% endif %}</label>
+      </div>
       <div class="row">
         <div class="store__form__group clearfix" id="custom-billing-address">
           <div class="col-xs-12 col-sm-6">
@@ -110,6 +110,9 @@
         <div class="white-line-bottom">
                     <div class="title1 center">Payment information</div>
                  </div>
+                 <div class="store__form__selection__option useless-checkbox">
+                      <input type="radio" name="payment_method" id="pay-credit-card" value="credit-card" {% if form.payment_method.value == "existing-credit-card" %}checked{% endif %}><label for="pay-credit-card">Pay with credit card</label>
+                  </div>
         <div id="select-payment-row" class="row" style="margin-bottom: 20px;">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
             <div class="button-row justify-content-center button-row-margin">
@@ -122,7 +125,7 @@
               <button class="payment-method-toggle active" data-id="credit-card">Pay with credit card</button>
               </div>
               <div class="store__form__selection__option">
-              <button class="payment-method-toggle" data-id="paypal">Pay with PayPal</button>
+              <button class="payment-method-toggle" data-id="paypal" >Pay with PayPal</button>
               </div>
             </div>
           </div>
@@ -225,7 +228,7 @@
               </div>
               <div class="col-xs-12 store-cart__footer__buttons">
                   <a href="#" class="white-border-button back-white">Back</a>
-                  <button class="white-border-button checkout-white">Continue checkout</button>
+                  <button type='submit' placeholder='Confirm' class="white-border-button checkout-white" id='confirmButto'> confirm</button>
               </div>
           </section>
         </form>
@@ -235,9 +238,33 @@
 
 
 {% block extra_js %}
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script src="https://js.stripe.com/v2/"></script>
+    <script src="{% static 'js/payment/payment.js' %}"></script>
     <script src="{% static 'js/store-base.js' %}"></script>
     <script src="{% static 'js/card.js' %}"></script>
+    <script src="{% static 'js/become-member.js' %}"></script>
+
+
+  <script>
+
+    $(document).ready(function () {
+
+      Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
+      // in payment.js
+      //renderPayPal(paypal);
+      //renderCardAnimation();
+
+    });
+
+  </script>
     <script>
+
+      $('.useless-checkbox').hide();
+
+      $('#confirmButton').click(function(){
+        currentStep = 'payment';
+      })
       var card = new Card({
         // a selector or DOM element for the form where users will
         // be entering their information
