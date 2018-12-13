@@ -1,0 +1,81 @@
+{% extends "home_new.html" %}
+{% load static from staticfiles %}
+
+{% load i18n %}
+
+{% block title %}
+  {% trans "Checkout gateway" %} | {{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+<div id="content_inner">
+    <div class="content-wrapper" style="border:none">
+    <section class="store-header container" style="text-align:center">
+        <span class="store-header__title">{% trans "Who are you?" %}</span>
+    </section>
+        <form action="." method="post" class="form-stacked well">
+            {% csrf_token %}
+            <div class="control-group error">
+            {{ form.non_field_errors }}
+            </div>
+           
+            <div class="span4">
+                {% include "partials/form_field.html" with field=form.username %}
+            </div>
+        
+
+            <div class="control-group">
+                <div class="controls">
+                    <div class="radio">
+                        {{ form.options.0 }}
+                        <div class="form-inline">
+                            {% include "partials/form_field.html" with field=form.first_name %}
+                            {% include "partials/form_field.html" with field=form.last_name %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="control-group {% if form.password.errors %}error{% endif %}">
+            {{ form.options.errors }}
+            <div class="controls">
+                <div class="radio">
+                {{ form.options.2 }}
+                <div class="form-inline">
+                    {{ form.password }}
+                    <small><a href="{% url 'password-reset' %}" tabindex="-1">{% trans "Get a password reminder" %}</a></small>
+                    {% for error in form.password.errors %}
+                    <span class="error-block">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="control-group">
+            <div class="controls">
+                <div class="radio">
+                {{ form.options.1 }}
+                </div>
+            </div>
+            </div>
+            <div class="form-actions">
+            <div class="row-fluid">
+                <div class="span3">
+                <button type="submit" class="btn btn-large btn-block  white-border-button">{% trans "Continue" %}</button>
+                </div>
+            </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
+
+
+
+{% block onbodyload %}
+  {{ block.super }}
+  oscar.checkout.gateway.init();
+{% endblock %}
