@@ -5,6 +5,8 @@ from natsort import natsorted
 from oscar.core.loading import get_class
 from oscar.apps.dashboard.reports.views import IndexView
 from events.models import Event
+from datetime import date 
+
 
 Line = get_class('order.models', 'Line')
 
@@ -82,12 +84,13 @@ class TicketDetailsView(DetailView):
         sets = OrderedDict()
         products = list(self.object.products.all())
         products = natsorted(products, key=attrgetter('set'))
-        for product in products:
+        for idx, product in enumerate(products):
+            set_start = str(product.event.get_set_start(idx).strftime('%I:%M %p'))
             person_list = []
             for line in Line.objects.filter(product=product).exclude(
                     status="Cancelled").exclude(status="Exchanged").order_by('order__last_name'):
                 person_list.append(line)
-            sets[product.set] = person_list
+            sets[set_start] = person_list
         data['ticket_data'] = sets
 
         return data

@@ -17,6 +17,7 @@
   <div class="row">
     <h1>{{ event.title }}
       <small>{{ event.start|date:"F jS, g:i A" }} </small>
+      at {{ event.venue.name }}
     </h1>
   </div>
   {% for set, lines in ticket_data.items %}
