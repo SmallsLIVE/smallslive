@@ -1,0 +1,13 @@
+.gateway{
+    .form-group > *{
+        margin-top: 15px;
+    }
+    .white-border-button, .controls input{
+    width: 220px;
+    }
+    .radio label, .custom-form label, .radio .form-group{
+        display: none;
+    }
+    
+
+}

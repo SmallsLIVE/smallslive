@@ -164,12 +164,14 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
 
 
 class GatewayForm(CoreGatewayForm):
-    username = forms.EmailField(required=True)
+    username = forms.EmailField(required=True,widget=forms.TextInput(attrs={'placeholder': 'Email'}))
     first_name = forms.CharField(max_length=150, required=True,
-                                       help_text="First name for the guest list")
+                                       widget=forms.TextInput(attrs={'placeholder': 'First name for the guest list'}))
     last_name = forms.CharField(max_length=150, required=True,
-                                       help_text="Last name for the guest list")
+                                       widget=forms.TextInput(attrs={'placeholder': 'Last name for the guest list'}))
+    password = forms.CharField(label=("Password"), widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
+    
     def clean(self):
         if not self.is_guest_checkout():
             if 'first_name' in self.errors:
