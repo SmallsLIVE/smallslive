@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "store_base.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 {% load currency_filters %}
@@ -10,17 +10,16 @@
 
 {% block content %}
 
-    <div class="content-wrapper">
+    <div class="payment-main-container borderless m0">
 {{ form.errors }}
         <section class="store-header container">
-            <div class="store-header__content">
-                <h1 class="store-header__title">SmallsLIVE Store<span class="store-header__title__divider">|</span><span class="store-header__title__category">Shipping information</span></h1>
-            </div>
+      <div class="white-line-bottom">
+                    <div class="title1 center">shipping information</div>
+                 </div>
         </section>
         <form action="{% url 'checkout:shipping-address' %}" method="post" id="new_shipping_address">
             {% csrf_token %}
             <section class="store-shipping container">
-                <h3 class="store__form__heading">Shipping information:</h3>
                 <div class="row">
                     <div class="col-xs-12 col-sm-6">
                         <label for="first_name" class="store__form__label">Name</label>
@@ -61,21 +60,23 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        <label for="state" class="store__form__label">State</label>
-                        <select name="state" id="state" class="store__form__select">
-                            {% for val, choice in form.fields.state.widget.choices %}
-                                <option value="{{ val }}" {% if val == form.state.value %}selected{% endif %}>{{ choice }}</option>
-                            {% endfor %}
-                        </select>
+                        <div class="white-border-select">
+                            <select name="state" id="state" class="store__form__select">
+                                {% for val, choice in form.fields.state.widget.choices %}
+                                    <option value="{{ val }}" {% if val == form.state.value %}selected{% endif %}>{{ choice }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                         {% for error in form.state.errors %}
                             <span class="store__form__field-error">{{ error }}</span>
                         {% endfor %}
-                        <label for="country" class="store__form__label">Country</label>
-                        <select name="country" id="country" class="store__form__select">
-                            {% for val, choice in form.fields.country.choices %}
-                                <option value="{{ val }}" {% if val == form.country.value %}selected{% endif %}>{{ choice }}</option>
-                            {% endfor %}
-                        </select>
+                        <div class="white-border-select">
+                            <select name="country" id="country" class="store__form__select">
+                                {% for val, choice in form.fields.country.choices %}
+                                    <option value="{{ val }}" {% if val == form.country.value %}selected{% endif %}>{{ choice }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                         {% for error in form.country.errors %}
                             <span class="store__form__field-error">{{ error }}</span>
                         {% endfor %}
@@ -87,21 +88,11 @@
 {#                        </select>#}
                     </div>
                 </div>
-                <h3 class="store__form__heading">Digital downloads:</h3>
-                <p class="store-shipping__text">Upon purchase your Digital downloads will be available to you in your <a href="#">My downloads</a> section.<br>From there you’ll be able to download all digital tracks and albums you purchase on SmallsLIVE.</p>
+                <h3 class="text3">Digital downloads:</h3>
+                <p class="text4">Upon purchase your Digital downloads will be available to you in your <a href="#">My downloads</a> section.<br>From there you’ll be able to download all digital tracks and albums you purchase on SmallsLIVE.</p>
             </section>
             <section class="store-cart__footer container">
-                <div class="col-xs-12 col-sm-6 store-cart__footer__left">
-                    <p class="store-cart__footer__left__text">We accept the following payment options:</p>
-                    <div class="store-cart__footer__card-icons">
-                        <img src="{% static 'image/payment/visa.png' %}" alt="Visa">
-                        <img src="{% static 'image/payment/mastercard.png' %}" alt="MasterCard">
-                        <img src="{% static 'image/payment/amex.png' %}" alt="American Express">
-                        <img src="{% static 'image/payment/diners.png' %}" alt="Diners">
-                        <img src="{% static 'image/payment/paypal.png' %}" alt="Paypal">
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 store-cart__footer__right">
+                <div class="col-xs-12 col-sm-12 store-cart__footer__right">
                     <div class="store-cart__footer__price-container">
                         <span class="store-cart__footer__price-container__value">{{ basket.total_excl_tax|currency:basket.currency }}</span>
                         <span class="store-cart__footer__price-container__label">Basket total:</span>
@@ -114,8 +105,8 @@
                     </div>
                 </div>
                 <div class="col-xs-12 store-cart__footer__buttons">
-                    <a href="{% url 'basket:summary' %}" class="store-cart__footer__button-back"><i class="fa fa-angle-double-left"></i> Back to basket</a>
-                    <button type="submit" class="store-cart__footer__button-next">Continue checkout</button>
+                    <a href="{% url 'basket:summary' %}" class="white-border-button left"><i class="fa fa-angle-double-left"></i> Back to basket</a>
+                    <button type="submit" class="white-border-button checkout-white">Continue checkout</button>
                 </div>
             </section>
         </form>

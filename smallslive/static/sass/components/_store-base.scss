@@ -1,5 +1,5 @@
 .store-header {
-  padding: 25px 30px;
+  padding: 0 30px;
   text-align: left;
   //color: #fff;
   //background-size: cover;
@@ -29,7 +29,6 @@
         //color: rgba(#fff, 0.7);
       }
     }
-
     &__divider {
       //@include lato;
       margin: 0 15px;
@@ -106,7 +105,9 @@
       padding: 10px 8px;
     }
   }
-
+.m0{
+  margin: 0;
+}
   &__large {
     &__icon {
       font-size: 22px;
@@ -1802,6 +1803,9 @@
 }
 .left{
   float: left;
+}
+.right{
+  float: right;
 }
 .justify-content-center {
   justify-content: center;
