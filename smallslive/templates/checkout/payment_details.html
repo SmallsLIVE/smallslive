@@ -11,7 +11,6 @@
 {% block content %}
 
     <div class="payment-main-container"> 
-        <p>{{ basket.digital_lines }}</p>
         <form id="payment-form" method="post" action="{% url 'checkout:preview' %}">
     {% if error %}
       <section class="store-error container">
