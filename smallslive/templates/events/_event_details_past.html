@@ -12,31 +12,15 @@
     <div id="videoContainer" class="player-container {% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}">
       <div id="player-video"></div>
       <div class="player-info" id="playerTextOverlay">
-        <div class="event-overlay">
-          <div class="event-overlay-logo">
-              <img src="{% static 'logo.svg' %}" alt="Smalls"
-                                    class="img-circle" width="40" height="40"/>
-          </div>
-          <div class="event-title-ajax event-overlay-title">{{ event.title }}</div>
-          <div class="event-overlay-artists">
-            {% for gig_info in event_artists %}
-              <div class="title5">
-                {{ gig_info.name }} <span class="accent-color">/</span> {{ gig_info.role }}
-              </div>
-            {% endfor %}
-          </div>
-
-        </div>
+        {% include 'events/_event_player_overlay.html' %}
       </div>
-
     </div>
   {% endif %}
   {% if event.published_audio %}
     <div id="audioContainer" class="player-container" style="display: none;">
       <div id="player-audio" class="{% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}"></div>
       <div class="player-info" id="playerAudioTextOverlay">
-        <div class="accent-color text2">{{ event.get_date|date:'m/d/Y' }}</div>
-        <div class="event-overlay-title">{{ event.title }}</div>
+        {% include 'events/_event_player_overlay.html' with info_label='Audio Only' %}
       </div>
     </div>
   {% endif %}
@@ -135,7 +119,7 @@
           {% endfor %}
         ],
         width: "100%",
-        height: "27.5vw"  // If you change this please be kind and change the corresponding css.
+        height: "25.3vw"  // If you change this please be kind and change the corresponding css.
       });
       audioPlayer.on('play', function () {
         var $videoContainer = $('#videoContainer');
