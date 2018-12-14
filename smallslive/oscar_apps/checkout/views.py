@@ -122,18 +122,19 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         # an order (normally from the preview page).  Without this, we assume a
         # payment form is being submitted from the payment details view. In
         # this case, the form needs validating and the order preview shown.
-
+        print(request.POST)
         if request.POST.get('action', '') == 'place_order':
             self.token = self.request.POST.get('card_token')
             return self.handle_place_order_submission(request)
-
+        print('4')
         return self.handle_payment_details_submission(request)
 
     def handle_payment_details_submission(self, request):
-
         form = PaymentForm(self.request.user, request.POST)
         shipping_address = self.get_shipping_address(self.request.basket)
         payment_method = request.POST.get('payment_method')
+        print(payment_method)
+        print(form)
         user = self.request.user
         if user.is_authenticated():
             billing_address_form = BillingAddressForm(shipping_address, user, request.POST)
@@ -146,12 +147,14 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
                         address = billing_address_form.save()
                         self.checkout_session.bill_to_user_address(address)
             else:
+                print('3')
                 return self.render_payment_details(request, form=form,
                                                    billing_address_form=billing_address_form)
         else:
             billing_address_form = None
 
         if payment_method == 'paypal':
+            print('4')
             return self.render_preview(request, billing_address_form=billing_address_form,
                                        payment_method='paypal')
         else:
@@ -161,10 +164,13 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
                     'name': form.cleaned_data['name'],
                     'last_4': form.cleaned_data['number'][-4:],
                 })
+                print('5')
+                print(request)
                 return self.render_preview(request, card_token=form.token, form=form,
                                            payment_method=payment_method,
                                            billing_address_form=billing_address_form)
             else:
+                print(form.errors)
                 return self.render_payment_details(request, form=form,
                                                    billing_address_form=billing_address_form)
 

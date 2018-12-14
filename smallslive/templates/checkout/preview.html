@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "store_base.html" %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 {% load thumbnail %}
@@ -11,11 +11,13 @@
 {% block title %}Preview your order{% endblock %}
 
 {% block content %}
-    <div class="content-wrapper">
+    <div class="content-wrapper borderless">
 
         <section class="store-header container">
             <div class="store-header__content">
-                <h1 class="store-header__title">SmallsLIVE Store<span class="store-header__title__divider">|</span><span class="store-header__title__category">Order overview</span></h1>
+                <div class="white-line-bottom">
+                    <div class="title1 center">Order overview</div>
+                </div>
             </div>
         </section>
         <section class="store-overview container">
@@ -103,7 +105,7 @@
                     <h4 class="store-overview__group__table__heading">Digital downloads:</h4>
                     <div class="store-overview__group__table">
                         <!-- table header start -->
-                        <div class="store-overview__group__table__header clearfix">
+                        <div class="basket-header clearfix">
                             <div class="col-xs-2 image">
                                 Cover
                             </div>
@@ -169,7 +171,7 @@
                 </div>
                 {% endif %}
                 <div class="store-overview__return-button__container">
-                    <a href="{% url "basket:summary" %}" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to cart</a>
+                    <a href="{% url "basket:summary" %}" class="white-border-button checkout-white right"> Back to cart</a>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-4 store-overview__right-column">
@@ -192,7 +194,7 @@
                     {% endif %}
                 </div>
                 <div class="store-overview__return-button__container">
-                    <a href="{% url "checkout:shipping-address" %}" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to shipping</a>
+                    <a href="{% url "checkout:shipping-address" %}" class="white-border-button"><i class="fa fa-angle-double-left"></i> Back to shipping</a>
                 </div>
                 <div class="store-overview__group">
                     <h3 class="store-overview__group__heading">Billing information:</h3>
@@ -211,22 +213,13 @@
                         <p>xxxx xxxx xxxx {{ card_info.last_4 }}</p>
                     </div>
                     <div class="store-overview__return-button__container">
-                    <a href="{% url "checkout:payment-details" %}" class="store-overview__return-button"><i class="fa fa-angle-double-left"></i> Back to billing</a>
+                    <a href="{% url "checkout:payment-details" %}" class="white-border-button"><i class="fa fa-angle-double-left"></i> Back to billing</a>
                 </div>
                 </div>
             </div>
         </section>
         <section class="store-cart__footer container">
-            <div class="col-xs-12 col-sm-6 store-cart__footer__left">
-                <p class="store-cart__footer__left__text">We accept the following payment options:</p>
-                <div class="store-cart__footer__card-icons">
-                    <img src="{% static 'image/payment/visa.png' %}" alt="Visa">
-                    <img src="{% static 'image/payment/mastercard.png' %}" alt="MasterCard">
-                    <img src="{% static 'image/payment/amex.png' %}" alt="American Express">
-                    <img src="{% static 'image/payment/diners.png' %}" alt="Diners">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-6 store-cart__footer__right">
+            <div class="col-xs-12 col-sm-12 store-cart__footer__right right">
                 <div class="store-cart__footer__price-container">
                     <span class="store-cart__footer__price-container__value">{{ basket.total_excl_tax|currency:basket.currency }}</span>
                     <span class="store-cart__footer__price-container__label">Basket total:</span>
@@ -242,9 +235,9 @@
               {% block place_order %}
                 <form action="{% url "checkout:preview" %}" method="post">
                   {% csrf_token %}
-                  <a href="{% url "checkout:payment-details" %}" class="store-cart__footer__button-back"><i class="fa fa-angle-double-left"></i> Back to
+                  <a href="{% url "checkout:payment-details" %}" class="white-border-button left"> Back to
                     payment information</a>
-                  <button class="store-cart__footer__button-next">Pay and order</button>
+                  <button class="white-border-button checkout-white">Pay and order</button>
                   <input type="hidden" name="action" value="place_order"/>
                   <input type="hidden" name="card_token" value="{{ card_token }}"/>
                 </form>

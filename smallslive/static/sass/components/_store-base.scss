@@ -1,5 +1,5 @@
 .store-header {
-  padding: 25px 30px;
+  padding: 0 30px;
   text-align: left;
   //color: #fff;
   //background-size: cover;
@@ -29,7 +29,6 @@
         //color: rgba(#fff, 0.7);
       }
     }
-
     &__divider {
       //@include lato;
       margin: 0 15px;
@@ -106,7 +105,9 @@
       padding: 10px 8px;
     }
   }
-
+.m0{
+  margin: 0;
+}
   &__large {
     &__icon {
       font-size: 22px;
@@ -200,7 +201,20 @@
     }
   }
 }
+.borderless {
+  border: #000 0px solid;
+}
 
+
+.basket-header{
+  border-bottom: 2px solid #ddd;
+  font-family: 'Reem Kufi', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 1.4em;
+    color: #808080;
+}
 .store-nav {
   padding: 20px 30px;
   border-right: 1px solid #ddd;
@@ -1368,7 +1382,7 @@
 
     &__header {
       padding: 10px 20px;
-      background-color: $main-accent-color;
+      background-color: $black;
       color: #fff;
 
       &__title {
@@ -1411,7 +1425,7 @@
 
     &__row {
       padding: 0;
-      background-color: #fff;
+      background-color: #f0f0eb;
       color: $base-text-color;
       @include display(flex);
       @include align-items(center);
@@ -1442,7 +1456,6 @@
 
       @media (min-width: $screen-sm-max) {
 
-        &:hover, &:focus {
           .store-cart__table__row__remove {
             width: 20px;
             opacity: 1;
@@ -1456,7 +1469,6 @@
           & .image {
 
           }
-        }
       }
     }
 
@@ -1593,7 +1605,7 @@
     }
 
     &__footer {
-      background-color: #FBFBFB;
+      background-color: #f0f0eb;
       border-top: 1px solid #eee;
       padding: 15px 30px;
       @include lato-bold;
@@ -1664,7 +1676,7 @@
 
   &__footer {
     @include lato;
-    background-color: #fbfbfb;
+    background-color: #f0f0eb;
     padding: 40px 20px;
     @include display(flex);
     @include flex-wrap(wrap);
@@ -1789,10 +1801,30 @@
     }
   }
 }
-
+.left{
+  float: left;
+}
+.right{
+  float: right;
+}
+.justify-content-center {
+  justify-content: center;
+}
+.checkout-white {
+  position: relative;
+  float: right;
+  margin-top: 10px;
+    width: 200px;
+}
+.back-white {
+  position: relative;
+  float: left;
+  margin-top: 10px;
+    width: 200px;
+}
 .store-shipping, .store-billing {
   padding: 30px;
-  background-color: #fff;
+  background-color: #f0f0eb;
   @include lato;
   color: $base-text-color;
 
@@ -1927,7 +1959,7 @@
 
 .store-overview {
   padding: 30px 20px;
-  background-color: #fff;
+  background-color: #f0f0eb;
   @include lato;
   color: $base-text-color;
   @include display(flex);
@@ -2026,7 +2058,7 @@
 
     &__total {
       padding: 10px 0;
-      background-color: #fbfbfb;
+      background-color: #f0f0eb;
       border-top: 1px solid #eee;
       border-bottom: 1px solid #eee;
       text-align: right;
@@ -2071,7 +2103,7 @@ img.defineImageRatio {
 
   max-width: 100%;
   max-height: 100%;
-
+  margin: 15px 0;
   &.wide {
     width: 100%;
     height: auto;
