@@ -340,6 +340,7 @@ $text-font-size-big: 1.4em;
 
 .text9 {
   @include reen-kufi-normal;
+  
   letter-spacing: 0.02em;
   font-size: $text-font-size-big;
 }

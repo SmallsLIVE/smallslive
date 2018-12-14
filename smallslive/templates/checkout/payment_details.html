@@ -11,10 +11,8 @@
 {% block content %}
 
     <div class="payment-main-container"> 
-
+        <p>{{ basket.digital_lines }}</p>
         <form id="payment-form" method="post" action="{% url 'checkout:preview' %}">
-    <input type="text" id="hiddenTypeInput" name="type" hidden>
-    <input type="number" id="hiddenAmountInput" name="quantity" hidden>
     {% if error %}
       <section class="store-error container">
         <span class="store-error__message">{{ error|safe }}</span>
@@ -110,9 +108,6 @@
         <div class="white-line-bottom">
                     <div class="title1 center">Payment information</div>
                  </div>
-                 <div class="store__form__selection__option useless-checkbox">
-                      <input type="radio" name="payment_method" id="pay-credit-card" value="credit-card" {% if form.payment_method.value == "existing-credit-card" %}checked{% endif %}><label for="pay-credit-card">Pay with credit card</label>
-                  </div>
         <div id="select-payment-row" class="row" style="margin-bottom: 20px;">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3">
             <div class="button-row justify-content-center button-row-margin">
@@ -130,7 +125,7 @@
             </div>
           </div>
         </div>
-        <input type="hidden" name="payment_method" id="payment-method" value="{% if payment_form.payment_method.value == 'existing-credit-card' %}existing-credit-card{%  else %}credit-card{% endif %}">
+        <input type="hidden" name="payment_method" id="payment-method" value="{% if payment_form.payment_method.value == 'credit-card' %}existing-credit-card{%  else %}credit-card{% endif %}">
         <div class="store__form__group clearfix row payment-method-form hidden" id="existing-credit-card-form">
           <p>Pay with existing {{ user.customer.card_kind }} credit card ending in {{ user.customer.card_last_4 }}</p>
         </div>
@@ -228,7 +223,7 @@
               </div>
               <div class="col-xs-12 store-cart__footer__buttons">
                   <a href="#" class="white-border-button back-white">Back</a>
-                  <button type='submit' placeholder='Confirm' class="white-border-button checkout-white" id='confirmButto'> confirm</button>
+                  <button type='submit' placeholder='Confirm' class="white-border-button checkout-white confirm-store-payment" > confirm</button>
               </div>
           </section>
         </form>
@@ -243,7 +238,7 @@
     <script src="{% static 'js/payment/payment.js' %}"></script>
     <script src="{% static 'js/store-base.js' %}"></script>
     <script src="{% static 'js/card.js' %}"></script>
-    <script src="{% static 'js/become-member.js' %}"></script>
+    <script src="{% static 'js/store-payments.js' %}"></script>
 
 
   <script>

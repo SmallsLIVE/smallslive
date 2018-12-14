@@ -285,7 +285,6 @@ $(document).ready(function () {
   var setSelected = function (type, amount) {
     selectedData.type = type;
     selectedData.amount = amount;
-
     if (amount) {
       if (amount > 0) {
         updatePaymentInfo();
@@ -410,7 +409,8 @@ $(document).ready(function () {
       $("#confirmButton").prop('disabled', false);
     }
     var $content = $('#selectionConfirmationDialog').find('#giftContent');
-    $itemForm = $(this).parent().find('form');
+    $itemForm = $(this).parent().parent().find('form');
+    $('#confirmButton').show();
     var $item = $(this).parent().find('.modal-content').clone();
     var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
     $selectionConfirmationDialog.find('.title').text('Become a supporter');
@@ -433,7 +433,7 @@ $(document).ready(function () {
     if ($itemForm) {
       var $input = $itemForm.find('input[name="child_id"]');
       $input.val(selection);
-      setSelected('gift',  0)
+      setSelected('gift',  1)
     }
     $('#confirmButton').prop('disabled', false);
     $('#confirmButton').click();
@@ -442,10 +442,10 @@ $(document).ready(function () {
   var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
   var $selectionConfirmationCloseButton = $selectionConfirmationDialog.find('.close-button');
   $('#confirmSelectionButton').click(function () {
-    $('#confirmButton').show();
     $selectionConfirmationDialog.modal('hide');
     var $variantSelect = $selectionConfirmationDialog.find('select');
     if ($variantSelect.length != 0) {
+
       giftSelected($variantSelect.val());
     } else {
       $('#confirmButton').click();

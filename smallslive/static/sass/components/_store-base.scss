@@ -1800,6 +1800,9 @@
     }
   }
 }
+.left{
+  float: left;
+}
 .justify-content-center {
   justify-content: center;
 }
@@ -1952,7 +1955,7 @@
 
 .store-overview {
   padding: 30px 20px;
-  background-color: #fff;
+  background-color: #f0f0eb;
   @include lato;
   color: $base-text-color;
   @include display(flex);
@@ -2051,7 +2054,7 @@
 
     &__total {
       padding: 10px 0;
-      background-color: #fbfbfb;
+      background-color: #f0f0eb;
       border-top: 1px solid #eee;
       border-bottom: 1px solid #eee;
       text-align: right;
