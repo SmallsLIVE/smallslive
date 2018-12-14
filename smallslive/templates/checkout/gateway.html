@@ -1,0 +1,107 @@
+{% extends "home_new.html" %}
+{% load static from staticfiles %}
+
+{% load i18n %}
+
+{% block title %}
+  {% trans "Checkout gateway" %} | {{ block.super }}
+{% endblock %}
+
+
+{% block content %}
+<div id="content_inner" class="gateway">
+    <div class="content-wrapper" style="border:none">
+    <section class="container" style="text-align:center">
+        <div class="white-line-bottom">
+            <span class="title1">{% trans "Who are you?" %}</span>
+        </div>
+    </section>
+        <form action="." method="post" class="form-stacked well">
+            {% csrf_token %}
+            <div class="control-group error">
+            {{ form.non_field_errors }}
+            </div>
+           
+            <div class="control-group">
+                <div class="controls">
+                    <div class="custom-form">
+                        <div class="form-group">
+                            {% include "partials/form_field.html" with field=form.username %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="controls">
+                    <div class="radio custom-form">
+                        <div class='white-border-button gateway-option'>checkout as a guest</div>
+                        {{ form.options.0 }}
+                        <div class="form-inline form-group" data-type='anonymous'>
+                            {% include "partials/form_field.html" with field=form.first_name %}
+                            {% include "partials/form_field.html" with field=form.last_name %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="control-group {% if form.password.errors %}error{% endif %}">
+            {{ form.options.errors }}
+            <div class="controls">
+                <div class="radio custom-form">
+                    <div class='white-border-button gateway-option'>log in</div>
+                    {{ form.options.2 }}
+                    <div class="form-inline form-group" data-type='existing'>
+                        {{ form.password }}
+                        <small><a href="{% url 'password-reset' %}" tabindex="-1">{% trans "Forgot Your Password?" %}</a></small>
+                        {% for error in form.password.errors %}
+                        <span class="error-block">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="control-group">
+            <div class="controls">
+                <div class="radio">
+                <div class='white-border-button gateway-option'>Become a member</div>
+                {{ form.options.1 }}
+                </div>
+            </div>
+            </div>
+            <div class="form-actions" data-type='new'>
+            <div class="row-fluid">
+                <div class="span3">
+                <button type="submit" class="btn btn-large btn-block  white-border-button">{% trans "Continue" %}</button>
+                </div>
+            </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock content %}
+
+
+
+{% block onbodyload %}
+  {{ block.super }}
+  oscar.checkout.gateway.init();
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+    $(".gateway-option").on( "click", function() {
+        $('.gateway-option').css("background-color", "")
+        $(this).css( "background-color", 'white' );
+        $(this).siblings('label').find('input').prop("checked", true);
+        $('.radio .form-group').hide()
+        formGroup = $(this).siblings('.form-group')
+        if(formGroup){
+            formGroup.show()
+        }
+	});
+</script>
+{% endblock %}

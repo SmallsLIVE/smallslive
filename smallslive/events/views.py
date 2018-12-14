@@ -45,7 +45,7 @@ from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
     GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
     EventSearchForm, EventEditForm, EventSetInlineFormset, \
     EventSetInlineFormsetHelper, CommentForm, TicketAddForm
-from .models import Event, Venue
+from .models import Event, Venue, ShowDefaultTime
 
 RANGE_YEAR = 'year'
 RANGE_MONTH = 'month'
@@ -260,7 +260,10 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
         context = super(EventAddView, self).get_context_data(**kwargs)
         context['artists'].helper = GigPlayedInlineFormSetHelper()
         context['sets'].helper = EventSetInlineFormsetHelper()
-        context['show_times'] = json.dumps(settings.SHOW_TIMES)
+        default_sets = []
+        for default_set in ShowDefaultTime.objects.all():
+            default_sets.append({"set-venue" : str(default_set.venue.name), "set-starts": default_set.sets_start(), "set-redeable-starts":  default_set.sets_readable_start(), "set-duration": default_set.set_duration, "set-title": str(default_set.title)})
+        context['show_times'] = default_sets
         context['ticket_forms'] = self.construct_ticket_forms()
         return context
 
@@ -397,7 +400,10 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
         context['artists'].helper = GigPlayedInlineFormSetHelper()
         if 'sets' in context:
             context['sets'].helper = EventSetInlineFormsetHelper()
-        context['show_times'] = json.dumps(settings.SHOW_TIMES)
+        default_sets = []
+        for default_set in ShowDefaultTime.objects.all():
+            default_sets.append({"set-venue" : str(default_set.venue.name), "set-starts": default_set.sets_start(), "set-redeable-starts":  default_set.sets_readable_start(), "set-duration": default_set.set_duration, "set-title": str(default_set.title)})
+        context['show_times'] = default_sets
         context['ticket_forms'] = self.construct_ticket_forms()
         return context
 

@@ -884,6 +884,23 @@ class Venue(models.Model):
             return 'rgb(241, 187, 83)'
         return '#D21535'
 
+class ShowDefaultTime(models.Model):
+    venue = models.ForeignKey('Venue', on_delete=models.CASCADE, blank=False)
+    first_set = models.TimeField(blank=False)
+    second_set = models.TimeField(blank=False)
+    set_duration = models.IntegerField(default=1)
+    title = models.CharField(max_length=100, default='Set duration')
+
+    def sets_start(self):
+        return self.first_set.strftime('%H:%M') + "-" + self.second_set.strftime('%H:%M') 
+
+    def sets_readable_start(self):
+        return self.first_set.strftime('%I:%M %p') + " - " + self.second_set.strftime('%I:%M %p') 
+
+    def __unicode__(self):
+        return self.sets_readable_start() + "    " + self.venue.name
+
+
 
 
 class StaffPick(models.Model):

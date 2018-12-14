@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.core import urlresolvers
-from models import Event, Recording, Venue, Comment
+from models import Event, Recording, Venue, Comment, ShowDefaultTime
 
 
 class EventAdmin(admin.ModelAdmin):
@@ -55,4 +55,6 @@ class RecordingAdmin(admin.ModelAdmin):
 
 admin.site.register(Recording, RecordingAdmin)
 admin.site.register(Venue)
+admin.site.register(ShowDefaultTime)
+
 
