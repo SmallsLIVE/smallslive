@@ -2,7 +2,6 @@
 <form method="post" class="admin-interface__form" enctype="multipart/form-data" action="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
   {% crispy form %}
   <div class="buttonHolder">
-    <input type="submit" name="submit" value="Save event" class="admin-interface__form__button"
-           id="submit-id-submit">
+    <button id="event-edit-save-button" class="white-border-button">Save</button>
   </div>
 </form>

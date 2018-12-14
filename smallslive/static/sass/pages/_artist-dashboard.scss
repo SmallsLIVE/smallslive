@@ -941,3 +941,21 @@
     padding-left: 12px;
     cursor: pointer;
 }
+
+#event_edit_modal {
+  .custom-modal {
+    .modal-body {
+
+      form {
+        width: 100%;
+      }
+
+      table {
+        input[type="checkbox"] {
+          margin-left: 10px;
+        }
+      }
+
+    }
+  }
+}

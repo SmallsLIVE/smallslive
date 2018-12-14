@@ -8,10 +8,10 @@
         
         <div class="button-row button-row-margin">
             {% if is_admin and set.has_media %}
-                <a href="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
-                    <button class="set-button">Edit</button>
-                </a>
-                {% if not event.is_future %}    
+                <button data-url="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}"
+                        class="event-edit-button set-button white-border-button">Edit
+                </button>
+                {% if not event.is_future %}
                     {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
                     <button id="private-button" class="publish-button set-button" onclick="askPrivate({{ set.id }})"> Public </button>
                     {% else %}
@@ -399,13 +399,12 @@
 
         };
         $(document).ready(function () {
-       
-            replaceWhiteSelects($("#event-info-mobile-card")[0])
-            replaceWhiteSelects($("#artistEventsInfo")[0])
+          replaceWhiteSelects($("#event-info-mobile-card")[0])
+          replaceWhiteSelects($("#artistEventsInfo")[0])
 
-        if('{{event.is_future}}' === 'False'){
-        loadData();
-        }
+          if ('{{ event.is_future }}' === 'False') {
+            loadData();
+          }
 
         $( "#mobile_artist_metrics" ).change(function() {
             //alert($(this).data('start'));

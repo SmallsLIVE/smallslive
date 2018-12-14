@@ -10,6 +10,7 @@
 
 {% block content %}
     {% include 'artist_dashboard/publish_modal.html' %}
+    {% include 'artist_dashboard/event_edit_modal.html' %}
 
 {#    TODO Move container to dashboard base#}
     <div class="artist-profile-container flex-column">
@@ -320,6 +321,41 @@
 
         ////////////////////////////////////////////////////////////
         $(document).ready(function() {
+
+          $(document).on('click', '.event-edit-button', function () {
+            var url = $(this).data('url');
+            $('#event_edit_modal').modal('show');
+
+            $.ajax({
+              type: 'GET',
+              url: url,
+              success: function(data) {
+                $('#event_edit_modal').find('.modal-body').html(data);
+              },
+              error: function() {
+
+              }
+            });
+
+          });
+
+          $(document).on('click', '#event-edit-save-button', function (e) {
+            e.preventDefault();
+
+            var $form = $(this).closest('form');
+            $.ajax({
+              type: "POST",
+              url: $form.attr('action'),
+              data: $form.serialize(),
+              success: function (data) {
+                console.log(data);
+              },
+              error: function () {
+              }
+            });
+            return false;
+          });
+
             $("#dashboard-status-filter .select-selected").text("Status")
           $('.refine-dashboard-buttons button[value="all"]').click()
           $("#apply-button").click(function () {

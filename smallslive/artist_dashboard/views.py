@@ -211,7 +211,7 @@ class MyPastEventsView(MyEventsView):
         artist = self.request.user.artist
         now = timezone.now()
         queryset = artist.gigs_played.select_related('event').prefetch_related('event__sets').filter(
-            event__start__lt=now
+            event__recordings__media_file__isnull=False
         )
         queryset = self.apply_filters(queryset)
 
@@ -246,7 +246,7 @@ class MyPastEventsInfoView(DetailView):
 
     def get_object(self, *a, **k):
         obj = super(MyPastEventsInfoView, self).get_object(*a, **k)
-        if  not self.request.user.artist in obj.performers.all() :
+        if not self.request.user.artist in obj.performers.all() :
             raise Http404("Event for that artist doesnt exist")
         return obj
 
@@ -523,7 +523,23 @@ class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
         context['video'] = self.object.recordings.video()
         return context
 
+    def post(self, *args, **kwargs):
+        response = super(EventEditView, self).post(*args, **kwargs)
+
+        if self.request.is_ajax():
+            response = HttpResponse(status=200)
+
+        return response
+
+
+
 event_edit = EventEditView.as_view()
+
+
+class EventEditAjaxView(EventEditView):
+    pass
+
+event_edit_ajax = EventEditView.as_view()
 
 
 class ToggleRecordingStateView(HasArtistAssignedMixin, UpdateView):
