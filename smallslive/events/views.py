@@ -351,7 +351,7 @@ class EventDetailView(DetailView):
                 'event_url': event_url,
                 'start': start
             }
-            context['product'] = self.object.products.first()
+            context['products'] = self.object.products.all()
 
         context['sets'] = event.get_sets_info_dict()
         context['event_artists'] = event.get_artists_info_dict()
