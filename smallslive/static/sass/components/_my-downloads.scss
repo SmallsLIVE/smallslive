@@ -15,28 +15,13 @@
   padding: 40px 20px;
 
   &:nth-child(odd) {
-    background-color: #f0f0eb;
+    background-color:#f0f0eb;
   }
 
   &__list {
     position: relative;
     background-color: #fff;
     padding: 0 10px;
-
-    &:before {
-      top: 0;
-      left: 50%;
-      border: solid transparent;
-      content: " ";
-      height: 0;
-      width: 0;
-      position: absolute;
-      pointer-events: none;
-      border-color: rgba(136, 183, 213, 0);
-      border-top-color: #fff;
-      border-width: 24px;
-      margin-left: -24px;
-    }
 
     & ul {
       padding: 0;

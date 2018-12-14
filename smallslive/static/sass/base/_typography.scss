@@ -125,7 +125,15 @@ $text-font-size-big: 1.4em;
   font-family: 'Reem Kufi', sans-serif;
   @include light;
 }
-
+.title-big {
+  @include oswald-regular();
+  font-size: 30px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transform: scaleY(1.3);
+  line-height: 36px;
+  margin: 30px 0;
+}
 // Font sizes
 @mixin title-banner {
   @include oswald-light();
@@ -180,6 +188,10 @@ $text-font-size-big: 1.4em;
 
 .event-overlay-title {
   @include event-overlay-title;
+}
+
+.thiner {
+  font-weight: 100;
 }
 
 @mixin title2 {
@@ -238,7 +250,9 @@ $text-font-size-big: 1.4em;
   text-transform: uppercase;
   transform: scaleY(1.3);
 }
-
+.justifyed-text {
+  text-align: justify;
+}
 @mixin title7 {
   @include oswald-light;
   font-size: 3.35em;
@@ -326,6 +340,7 @@ $text-font-size-big: 1.4em;
 
 .text9 {
   @include reen-kufi-normal;
+  
   letter-spacing: 0.02em;
   font-size: $text-font-size-big;
 }
