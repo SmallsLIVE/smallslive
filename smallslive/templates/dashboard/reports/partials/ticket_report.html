@@ -10,6 +10,7 @@
                 <th>{% trans "Event title" %}</th>
                 <th>{% trans "Event subtitle" %}</th>
                 <th>{% trans "Event start" %}</th>
+                <th>{% trans "Venue" %}</th>
                 <th></th>
             </tr>
             {% for event in objects %}
@@ -20,6 +21,7 @@
                     </td>
                     <td>{{ event.subtitle }}</td>
                     <td>{{ event.start|date:"F jS, g:i A" }}</td>
+                    <td>{{ event.venue.name }}</td>
                     <td>
                         <a class="btn btn-info" href="{% url 'dashboard:ticket_details' pk=event.id %}">Report</a>
                     </td>

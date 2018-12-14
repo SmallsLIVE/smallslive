@@ -278,6 +278,11 @@ class Event(TimeStampedModel):
         return ny_start, ny_end
 
 
+    def get_set_start(self, set_number):
+        sets = list(self.sets.all())
+        sets = sorted(sets, Event.sets_order)
+        return sets[set_number].start
+
     def get_play_total(self):
         play_total = 0
         sets = list(self.sets.all())
