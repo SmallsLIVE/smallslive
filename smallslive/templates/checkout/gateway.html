@@ -103,5 +103,15 @@
             formGroup.show()
         }
 	});
+    $(document).ready(function(){
+        $('.radio input[type="radio"]').each(function(){
+            if($(this).prop("checked")){
+                console.log($(this).parents('.custom-form'))
+                $(this).parents('.custom-form').find('.form-group').show()
+                $(this).parents('label').siblings('.gateway-option').css( "background-color", 'white' );
+            }
+
+        })
+    });
 </script>
 {% endblock %}
