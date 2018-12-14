@@ -360,7 +360,18 @@ $(document).ready(function () {
       $(monthlyCustom).addClass('active');
       $(yearlyCustom).removeClass('active');
       if (event.keyCode == 13) {
-        $('#confirmButton').click();
+        var amount = $(this).val();
+        if(amount > 9){
+          resetButtons();
+          resetCustom();
+          setSelected('year', amount);
+          var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
+          $selectionConfirmationDialog.modal('show');
+          $selectionConfirmationDialog.find('.title').text('become a supporter');
+          $selectionConfirmationDialog.find('.subtitle').text('One time donation');
+          $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a one time donation of <span class="smalls-color">$'+amount+'.</span> You will receive access to our Audio/Video Archive for the remainder of the tax year. Onetime donations are tax deductible.   ');
+          $selectionConfirmationDialog.find('.gift-content');
+        }
       }
     } else {
       setSelected('', 0);
@@ -377,7 +388,18 @@ $(document).ready(function () {
       $(yearlyCustom).addClass('active');
       $(monthlyCustom).removeClass('active');
       if (event.keyCode == 13) {
-        $('#confirmButton').click();
+        var amount = $(this).val();
+        if(amount > 99){
+          resetButtons();
+          resetCustom();
+          setSelected('year', amount);
+          var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
+          $selectionConfirmationDialog.modal('show');
+          $selectionConfirmationDialog.find('.title').text('become a supporter');
+          $selectionConfirmationDialog.find('.subtitle').text('One time donation');
+          $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a one time donation of <span class="smalls-color">$'+amount+'.</span> You will receive access to our Audio/Video Archive for the remainder of the tax year. Onetime donations are tax deductible.   ');
+          $selectionConfirmationDialog.find('.gift-content');
+        }
       }
     } else {
       $(yearlyCustom).removeClass('active');
