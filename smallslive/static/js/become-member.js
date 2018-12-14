@@ -658,6 +658,10 @@ $(document).ready(function () {
       $('#confirmButton').hide();
     }
 
+    if(currentStep == 'Shipping'){
+      $('#confirmButton').hide();
+    }
+
     if (currentStep === 'Intro') return;
     $('#confirmButton').text('Confirm');
 
