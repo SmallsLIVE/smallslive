@@ -1,8 +1,11 @@
 {% load static from staticfiles %}
+{% load pipeline %}
+
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  {% stylesheet 'dashboard_css' %}
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
@@ -12,11 +15,13 @@
   <!-- Bootstrap core CSS -->
   <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
 </head>
-<body>
+<body class="no-background">
 <div class="container">
   <div class="row">
     <h1>{{ event.title }}
+    at {{ event.venue.name }}
       <small>{{ event.start|date:"F jS, g:i A" }} </small>
+      
     </h1>
   </div>
   {% for set, lines in ticket_data.items %}
@@ -35,7 +40,7 @@
         {% for line in lines %}
           <tr>
             <td>{{ line.order.number }}</td>
-            <td><strong>{{ line.order.last_name }}, {{ line.order.first_name }}</strong></td>
+            <td><strong>{{ line.order.billing_address.last_name }}, {{ line.order.billing_address.first_name }}</strong></td>
             <td><strong>{{ line.quantity }}</strong></td>
             <td>${{ line.line_price_incl_tax }}</td>
           </tr>

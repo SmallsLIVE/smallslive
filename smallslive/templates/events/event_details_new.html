@@ -80,7 +80,9 @@
               {% endif %}
             {% endif %}
             {% if not event.is_live and event.is_future %}
-            {% if product %}
+            {% if products %}
+            {% for product in products %}
+            
             {% purchase_info_for_product request product as session %}
             {% basket_form request product 'single' as basket_form %}
             <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
@@ -88,11 +90,13 @@
               {{ basket_form.as_p }}
               <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
               {% if session.availability.num_available > 0 %}
-                <button type="submit" class="white-border-button" style="display: inline;">Tickets ({{ session.availability.num_available }} available)</button>
+                <button type="submit" class="white-border-button" style="display: inline;">Tickets for the {{ set_time.1 }} show ({{ session.availability.num_available }} available)</button>
               {% else %}
                 <button class="white-border-button" disabled style="display: inline;">Tickets sold out)</button>
               {% endif %}
             </form>
+            
+            {% endfor %}
             {% else %}
             <button id="btn-tickets" class="white-border-button" style="display: inline;">Tickets</button>
             {% endif %}

@@ -17,6 +17,9 @@ body {
   @media (max-width: $screen-md-max) {
     padding-top: 54px;
   }
+  .no-backgound{
+    background-image: none;
+  }
 }
 .hidden-body{
   overflow: hidden;
