@@ -301,18 +301,6 @@ class Event(TimeStampedModel):
 
         return str(timedelta(seconds=seconds_total))
 
-    def get_event_plays_and_time(self):
-        set_data = {view_count:0,times_played:0}
-        all_sets = self.sets.all()
-
-        for event_set in all_sets:
-            pass
-
-
-        return sets_display
-
-
-
     def get_set_hours_display(self):
 
         time_format = '%-I:%M %p'
