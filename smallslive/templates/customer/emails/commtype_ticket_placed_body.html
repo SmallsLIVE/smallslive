@@ -1,7 +1,7 @@
 {% extends "customer/emails/base.html" %}
 {% load currency_filters i18n %}
 
-{% block body %}<p xmlns="http://www.w3.org/1999/html">Dear {{ order.billing_address.first_name }}:</p>
+{% block body %}<p xmlns="http://www.w3.org/1999/html">Dear {{ order.first_name }}:</p>
 
 <p>
     {% with order_number=order.number %}
