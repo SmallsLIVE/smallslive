@@ -162,24 +162,6 @@ class SearchObject(object):
                     main_search = ' '.join(main_search.split()[:-1])
             sqs = ''
 
-        def filter_quantity_of_performers(number_of_performers_searched, artist, just_by_qty):
-            events_data = Event.objects.get_events_by_performers_and_artist(
-                number_of_performers_searched, artist, just_by_qty)
-            event_ids = [ x.id for x in events_data]
-            
-            sqs = Event.objects.filter(pk__in=event_ids)
-
-            return sqs
-    
-        # sets number_of_performers_searched based in the last word from main_seach
-        number_of_performers_searched = None
-        possible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
-        if main_search != '':
-            if main_search.split()[-1] in possible_number_of_performers:
-                number_of_performers_searched = possible_number_of_performers.index(main_search.split()[-1]) + 1
-                if ''.join(main_search.split()[:-1]) != '' and len(''.join(main_search.split()[:-1])) != 1 :  
-                    main_search = ' '.join(main_search.split()[:-1])
-            sqs = ''
 
         order = {
             'newest': '-start',
