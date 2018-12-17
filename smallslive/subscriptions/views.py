@@ -173,7 +173,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
         # We need to clear the basket in case the user has anything in there.
         self.request.basket.flush()
-
+        print Product.objects.filter(product_class__slug='gift').order_by('gift_price')
         context['gifts'] = []
         for product in Product.objects.filter(product_class__slug='gift').order_by('gift_price'):
             context['gifts'].append(product)
