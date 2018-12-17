@@ -242,6 +242,8 @@ $(document).ready(function () {
   };
 
   $(document).on('change', 'input[name="payment_method"]', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
     var $that = $(this);
     var option  = $that.attr('id');
     if (option == 'pay-credit-card') {
@@ -457,7 +459,7 @@ $(document).ready(function () {
     if ($itemForm) {
       var $input = $itemForm.find('input[name="child_id"]');
       $input.val(selection);
-      setSelected('gift',  1)
+      setSelected('gift',  0)
     }
     $('#confirmButton').prop('disabled', false);
     $('#confirmButton').click();
@@ -473,7 +475,7 @@ $(document).ready(function () {
 
       giftSelected($variantSelect.val());
     } else {
-      $('#confirmButton').click();
+      giftSelected($("#single-product").val())
     }
   });
   $('#cancelSelectionButton').click(function () {

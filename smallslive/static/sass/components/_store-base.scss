@@ -620,6 +620,11 @@
   }
 }
 
+.store-add-small .select-selected {
+  margin-bottom: 18px;
+  width: 200px;
+}
+
 .store-add-small {
   @include display(flex);
   @include navbar-vertical-align(center);

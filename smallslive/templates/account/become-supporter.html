@@ -113,12 +113,12 @@
                   <button class="select-gift">Free</button>
               </div>
               {% elif session.price.is_tax_known %}
-              <div class="button-row button-row-big button-row-margin gift-button">
-                <button class="select-gift white-border-button" data-type={{ product.categories.all.first }}><span class="price-tag">{{ session.price.incl_tax|currency:session.price.currency }} </span><span class="gift-title">{{ product.get_title }}</span></button>
-              </div>
+                <div class="button-row button-row-big button-row-margin gift-button">
+                  <button class="select-gift white-border-button" data-type={{ product.categories.all.first }}><span class="price-tag">{{ session.price.incl_tax|currency:session.price.currency }} </span><span class="gift-title">{{ product.get_title }}</span></button>
+                </div>
               {% else %}
               <div class="button-row button-row-big button-row-margin gift-button">
-                <button class="select-gift white-border-button" data-type={{ product.categories.all.first }}><span class="price-tag">{{ session.price.incl_tax|currency:session.price.currency }} </span>{ {{ product.get_title }}</button>
+                   <button class="select-gift white-border-button" data-type={{ product.categories.all.first }}><span class="price-tag">{{ session.price.incl_tax|currency:session.price.currency }} </span><span class="gift-title">{{ product.get_title }}</span></button>
               </div>
               {% endif %}
              
@@ -151,6 +151,8 @@
                         {% endfor %}
                       </select>
                     </div>
+                  {% else %}
+                    <input class="hidden" id="single-product" value="{{ product.id }}"/>
                   {% endif %}
                 </div>
               </div>
