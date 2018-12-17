@@ -3,6 +3,7 @@ from itertools import groupby
 import calendar
 import datetime
 from datetime import time as std_time
+from dateutil.relativedelta import relativedelta
 from cacheops import cached
 from django.core import signing
 from django.db.models import Count, F, Q, Sum
@@ -52,15 +53,22 @@ RANGE_WEEK = 'week'
 
 def get_weekly_range():
     now = timezone.now()
+    last_week = now - relativedelta(weeks=1)
     range_start = (now - datetime.timedelta(days=now.weekday())).date()
     range_end = range_start + datetime.timedelta(weeks=1)
-    return range_start, range_end
+
+    return last_week.replace(hour=0, minute=0, second=0), now
+
+    # return range_start, range_end
 
 
 def get_monthly_range():
+
     now = timezone.now()
+    last_month = now - relativedelta(months=1)
+
     current_year = now.year
-    current_month = now.month
+    current_month = last_month.month
 
     range_start = datetime.date(current_year, current_month, 1)
     range_end = datetime.date(
@@ -69,7 +77,9 @@ def get_monthly_range():
         )[1]
     )
 
-    return range_start, range_end
+    return last_month.replace(hour=0, minute=0, second=0), now
+
+    # return range_start, range_end
 
 
 def get_year_range():
@@ -126,6 +136,8 @@ def _get_most_popular_uploaded(range_size=None):
             event_date__gte=range_start,
             event_date__lte=range_end
         )
+
+    print qs.query
 
     event_values = qs.values('event_id').annotate(
         count=Sum('seconds_played')

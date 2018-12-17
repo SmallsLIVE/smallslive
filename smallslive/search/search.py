@@ -138,12 +138,33 @@ class SearchObject(object):
             sqs = sqs.filter(condition).distinct()
 
         return sqs
-    
 
     def search_event(self, main_search, order=None, start_date=None, end_date=None,
                      artist_pk=None, venue=None):
+
         def filter_quantity_of_performers(number_of_performers_searched, artist, just_by_qty):
-            events_data = Event.objects.get_events_by_performers_and_artist(number_of_performers_searched, artist, just_by_qty)
+
+            events_data = Event.objects.get_events_by_performers_and_artist(
+                number_of_performers_searched, artist, just_by_qty)
+            event_ids = [x.id for x in events_data]
+            
+            sqs = Event.objects.filter(pk__in=event_ids)
+
+            return sqs
+    
+        # sets number_of_performers_searched based in the last word from main_seach
+        number_of_performers_searched = None
+        possible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
+        if main_search != '':
+            if main_search.split()[-1] in possible_number_of_performers:
+                number_of_performers_searched = possible_number_of_performers.index(main_search.split()[-1]) + 1
+                if ''.join(main_search.split()[:-1]) != '' and len(''.join(main_search.split()[:-1])) != 1 :  
+                    main_search = ' '.join(main_search.split()[:-1])
+            sqs = ''
+
+        def filter_quantity_of_performers(number_of_performers_searched, artist, just_by_qty):
+            events_data = Event.objects.get_events_by_performers_and_artist(
+                number_of_performers_searched, artist, just_by_qty)
             event_ids = [ x.id for x in events_data]
             
             sqs = Event.objects.filter(pk__in=event_ids)
@@ -152,33 +173,13 @@ class SearchObject(object):
     
         # sets number_of_performers_searched based in the last word from main_seach
         number_of_performers_searched = None
-        posible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
+        possible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
         if main_search != '':
-            if main_search.split()[-1] in posible_number_of_performers:
-                number_of_performers_searched = posible_number_of_performers.index(main_search.split()[-1]) + 1
+            if main_search.split()[-1] in possible_number_of_performers:
+                number_of_performers_searched = possible_number_of_performers.index(main_search.split()[-1]) + 1
                 if ''.join(main_search.split()[:-1]) != '' and len(''.join(main_search.split()[:-1])) != 1 :  
                     main_search = ' '.join(main_search.split()[:-1])
             sqs = ''
-        
-
-        def filter_quantity_of_performers(number_of_performers_searched, artist, just_by_qty):
-            events_data = Event.objects.get_events_by_performers_and_artist(number_of_performers_searched, artist, just_by_qty)
-            event_ids = [ x.id for x in events_data]
-            
-            sqs = Event.objects.filter(pk__in=event_ids)
-
-            return sqs
-    
-        # sets number_of_performers_searched based in the last word from main_seach
-        number_of_performers_searched = None
-        posible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
-        if main_search != '':
-            if main_search.split()[-1] in posible_number_of_performers:
-                number_of_performers_searched = posible_number_of_performers.index(main_search.split()[-1]) + 1
-                if ''.join(main_search.split()[:-1]) != '' and len(''.join(main_search.split()[:-1])) != 1 :  
-                    main_search = ' '.join(main_search.split()[:-1])
-            sqs = ''
-
 
         order = {
             'newest': '-start',
@@ -188,13 +189,12 @@ class SearchObject(object):
 
         if number_of_performers_searched:
             just_by_qty = False
-            if main_search in posible_number_of_performers:
+            if main_search in possible_number_of_performers:
                 just_by_qty = True
             sqs = filter_quantity_of_performers(number_of_performers_searched, main_search, just_by_qty)
             sqs = sqs.order_by(order)
             sqs.distinct()
             return sqs
-
 
         if artist_pk:
             sqs = Event.objects.filter(performers__pk=artist_pk)
@@ -214,7 +214,6 @@ class SearchObject(object):
                     condition |= Q(artists_gig_info__role__name__icontains=i,
                                 artists_gig_info__is_leader=True)
                 sqs = Event.objects.filter(condition)
-                
 
             if words:
                 single_artist = False
@@ -268,6 +267,16 @@ class SearchObject(object):
             sqs = sqs.filter(start__lte=date_to)
 
         if order == 'popular':
+
+            sqs = UserVideoMetric.objects.all()
+            if start_date:
+                # Force hours to start of day
+                date_from = start_date.replace(hour=10, minute=0, second=0, microsecond=0)
+                sqs = sqs.filter(event_date__gte=date_from)
+            if end_date:
+                date_to = end_date.replace(hour=10, minute=0, second=0, microsecond=0)
+                sqs = sqs.filter(event_date__lte=date_to)
+
             # TODO Duplicated in event/views
             # Special case, we need to use metrics db
             event_map = dict([
@@ -288,7 +297,5 @@ class SearchObject(object):
 
         else:
             sqs = sqs.order_by(order)
-
-       
 
         return sqs
