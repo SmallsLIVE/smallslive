@@ -162,10 +162,6 @@ class SearchObject(object):
                     main_search = ' '.join(main_search.split()[:-1])
             sqs = ''
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 3fd43181dc8c9ad152a0bb2f4cdbda147d724197
         order = {
             'newest': '-start',
             'oldest': 'start',
