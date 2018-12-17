@@ -257,7 +257,7 @@ class MyPastEventsInfoView(DetailView):
             'event_set': self.object.sets.all()[set_id]
         })
         context['is_admin'] = self.object.artists_gig_info.get(
-            artist_id=artist.id).is_admin
+            artist_id=artist.id).is_leader
         context['sidemen'] = self.object.artists_gig_info.filter(
             is_leader=False)
         context['leaders'] = self.object.artists_gig_info.filter(
