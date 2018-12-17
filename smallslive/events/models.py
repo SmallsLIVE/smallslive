@@ -30,31 +30,31 @@ class EventQuerySet(models.QuerySet):
 
     def most_popular(self):
         return self.exclude(recordings=None).annotate(
-            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-play_count')
+            r_play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-r_play_count')
 
     def most_popular_audio(self):
         return self.filter(
             recordings__media_file__media_type='audio').annotate(
-            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-play_count')
+            r_play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-r_play_count')
 
     def most_popular_video(self):
         return self.filter(
             recordings__media_file__media_type='video').annotate(
-            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-play_count')
+            r_play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-r_play_count')
 
     def most_recent(self):
-        return self.exclude(recordings=None).annotate(play_count=Count('recordings__view_count'),
+        return self.exclude(recordings=None).annotate(r_play_count=Count('recordings__view_count'),
                                                       added=Max('recordings__date_added')).order_by('-added')
 
     def most_recent_audio(self):
         return self.filter(
             recordings__media_file__media_type='audio').annotate(
-            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-added')
+            r_play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-added')
 
     def most_recent_video(self):
         return self.filter(
             recordings__media_file__media_type='video').annotate(
-            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-added')
+            r_play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-added')
 
     def last_staff_picks(self):
         return self.filter(
@@ -240,6 +240,11 @@ class Event(TimeStampedModel):
     # Import information (Mezzrow - possibly other in the future)
     original_id = models.CharField(blank=True, max_length=4096, null=True)
     import_date = models.DateTimeField(blank=True, null=True)
+
+    # Redundant fields from UserVideoMetrics
+    # Otherwise it'd be impossible to resolve search queries.
+    seconds_played = models.IntegerField(default=0)
+    play_count = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-start']

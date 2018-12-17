@@ -267,34 +267,7 @@ class SearchObject(object):
             sqs = sqs.filter(start__lte=date_to)
 
         if order == 'popular':
-
-            sqs = UserVideoMetric.objects.all()
-            if start_date:
-                # Force hours to start of day
-                date_from = start_date.replace(hour=10, minute=0, second=0, microsecond=0)
-                sqs = sqs.filter(event_date__gte=date_from)
-            if end_date:
-                date_to = end_date.replace(hour=10, minute=0, second=0, microsecond=0)
-                sqs = sqs.filter(event_date__lte=date_to)
-
-            # TODO Duplicated in event/views
-            # Special case, we need to use metrics db
-            event_map = dict([
-                (event.id, event) for event in sqs.all()
-            ])
-            # Order metrics
-            most_popular_ids = UserVideoMetric.objects.filter(
-                event_id__in=event_map.keys()
-            ).values('event_id').annotate(
-                count=Sum('seconds_played')
-            ).order_by('-count')
-
-            most_popular = []
-            for event_data in most_popular_ids:
-                event_id = event_data['event_id']
-                most_popular.append(event_map[event_id])
-            return most_popular
-
+            sqs = sqs.order_by('-seconds_played')
         else:
             sqs = sqs.order_by(order)
 
