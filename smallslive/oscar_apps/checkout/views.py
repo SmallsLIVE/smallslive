@@ -30,6 +30,12 @@ selector = Selector()
 logger = logging.getLogger('oscar.checkout')
 
 
+
+
+
+
+
+
 class ShippingAddressView(checkout_views.ShippingAddressView):
 
     def get_template_names(self):
@@ -192,6 +198,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
                shipping_address, shipping_method,  # noqa (too complex (10))
                shipping_charge, billing_address, order_total,
                payment_kwargs=None, order_kwargs=None):
+
         """
         Submit a basket for order placement.
 
@@ -223,6 +230,18 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             payment_kwargs = {}
         if order_kwargs is None:
             order_kwargs = {}
+
+        if not user.is_anonymous():
+            first_name, last_name = user.first_name, user.last_name
+            print first_name, last_name
+        else:
+            first_name, last_name = self.checkout_session.get_reservation_name()
+            print first_name, last_name
+        if first_name and last_name:
+            order_kwargs.update({
+                'first_name': first_name,
+                'last_name': last_name
+            })
 
         # Taxes must be known at this point
         assert basket.is_tax_known, (
@@ -338,6 +357,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         logger.info("Order #%s: payment successful, placing order",
                     order_number)
         try:
+            print user
             print 'Handle order placement'
             return self.handle_order_placement(
                 order_number, user, basket, shipping_address, shipping_method,

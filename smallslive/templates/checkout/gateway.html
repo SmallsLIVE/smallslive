@@ -57,8 +57,6 @@
                     
                     {{ form.options.2 }}
                     <div class="form-inline form-group" data-type='existing'>
-                        {% include "partials/form_field.html" with field=form.first_name %}
-                        {% include "partials/form_field.html" with field=form.last_name %}
                         {{ form.password }}
                         <small><a href="{% url 'password-reset' %}" tabindex="-1">{% trans "Forgot Your Password?" %}</a></small>
                         {% for error in form.password.errors %}
