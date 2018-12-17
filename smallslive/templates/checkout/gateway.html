@@ -21,7 +21,12 @@
             <div class="control-group error">
             {{ form.non_field_errors }}
             </div>
-           
+            <div class='flex-row' style='margin: 0 auto; justify-content: center'>
+                <div class='white-border-button gateway-option' data-gateway-type="anonymous">checkout as a guest</div>
+                <div class='white-border-button gateway-option' data-gateway-type="existing">log in</div>
+                <div class='white-border-button gateway-option' data-gateway-type="new">Become a member</div>
+            </div>
+
             <div class="control-group">
                 <div class="controls">
                     <div class="custom-form">
@@ -35,7 +40,6 @@
             <div class="control-group">
                 <div class="controls">
                     <div class="radio custom-form">
-                        <div class='white-border-button gateway-option'>checkout as a guest</div>
                         {{ form.options.0 }}
                         <div class="form-inline form-group" data-type='anonymous'>
                             {% include "partials/form_field.html" with field=form.first_name %}
@@ -50,9 +54,11 @@
             {{ form.options.errors }}
             <div class="controls">
                 <div class="radio custom-form">
-                    <div class='white-border-button gateway-option'>log in</div>
+                    
                     {{ form.options.2 }}
                     <div class="form-inline form-group" data-type='existing'>
+                        {% include "partials/form_field.html" with field=form.first_name %}
+                        {% include "partials/form_field.html" with field=form.last_name %}
                         {{ form.password }}
                         <small><a href="{% url 'password-reset' %}" tabindex="-1">{% trans "Forgot Your Password?" %}</a></small>
                         {% for error in form.password.errors %}
@@ -66,7 +72,6 @@
             <div class="control-group">
             <div class="controls">
                 <div class="radio">
-                <div class='white-border-button gateway-option'>Become a member</div>
                 {{ form.options.1 }}
                 </div>
             </div>
@@ -74,7 +79,7 @@
             <div class="form-actions" data-type='new'>
             <div class="row-fluid">
                 <div class="span3">
-                <button type="submit" class="btn btn-large btn-block  white-border-button">{% trans "Continue" %}</button>
+                <button type="submit" class="btn btn-large btn-block  white-border-button" style='margin: 0 auto'>{% trans "Continue" %}</button>
                 </div>
             </div>
             </div>
@@ -96,9 +101,11 @@
     $(".gateway-option").on( "click", function() {
         $('.gateway-option').css("background-color", "")
         $(this).css( "background-color", 'white' );
-        $(this).siblings('label').find('input').prop("checked", true);
+        let $radioButton = $('input[value="' + $(this).data('gateway-type') + '"]')
+        $($radioButton).prop("checked", true);
         $('.radio .form-group').hide()
-        formGroup = $(this).siblings('.form-group')
+        console.log($radioButton)
+        formGroup = $($radioButton).parents('label').siblings('.form-group')
         if(formGroup){
             formGroup.show()
         }
@@ -106,9 +113,8 @@
     $(document).ready(function(){
         $('.radio input[type="radio"]').each(function(){
             if($(this).prop("checked")){
-                console.log($(this).parents('.custom-form'))
                 $(this).parents('.custom-form').find('.form-group').show()
-                $(this).parents('label').siblings('.gateway-option').css( "background-color", 'white' );
+                $('.gateway-option[data-gateway-type="' + $(this).val() + '"]').css( "background-color", 'white' );
             }
 
         })
