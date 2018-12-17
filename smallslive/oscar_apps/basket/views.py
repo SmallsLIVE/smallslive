@@ -32,7 +32,7 @@ class BasketAddView(basket_views.BasketAddView):
 
         # Need to run some logic before adding
         self._clean_basket(form)
-        
+
         self.request.basket.add_product(
             form.product, form.cleaned_data['quantity'],
             form.cleaned_options(), stockrecord)

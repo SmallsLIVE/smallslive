@@ -298,6 +298,7 @@ $(document).ready(function () {
 
   monthlyButtons.each(function (index, el) {
     $(el).on('click', function () {
+      $('#confirmSelectionButton').prop('disabled', false);
       var amount = monthlyAmounts[index];
       resetButtons();
       resetCustom();
@@ -316,6 +317,7 @@ $(document).ready(function () {
   var yearlyButtons = $("#yearlyPledge > button");
   yearlyButtons.each(function (index, el) {
     $(el).on('click', function () {
+      $('#confirmSelectionButton').prop('disabled', false);
       var amount = yearlyAmounts[index];
       resetButtons();
       resetCustom();
@@ -360,7 +362,18 @@ $(document).ready(function () {
       $(monthlyCustom).addClass('active');
       $(yearlyCustom).removeClass('active');
       if (event.keyCode == 13) {
-        $('#confirmButton').click();
+        var amount = $(this).val();
+        if(amount > 9){
+          resetButtons();
+          resetCustom();
+          setSelected('year', amount);
+          var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
+          $selectionConfirmationDialog.modal('show');
+          $selectionConfirmationDialog.find('.title').text('become a supporter');
+          $selectionConfirmationDialog.find('.subtitle').text('One time donation');
+          $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a one time donation of <span class="smalls-color">$'+amount+'.</span> You will receive access to our Audio/Video Archive for the remainder of the tax year. Onetime donations are tax deductible.   ');
+          $selectionConfirmationDialog.find('.gift-content');
+        }
       }
     } else {
       setSelected('', 0);
@@ -377,7 +390,18 @@ $(document).ready(function () {
       $(yearlyCustom).addClass('active');
       $(monthlyCustom).removeClass('active');
       if (event.keyCode == 13) {
-        $('#confirmButton').click();
+        var amount = $(this).val();
+        if(amount > 99){
+          resetButtons();
+          resetCustom();
+          setSelected('year', amount);
+          var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
+          $selectionConfirmationDialog.modal('show');
+          $selectionConfirmationDialog.find('.title').text('become a supporter');
+          $selectionConfirmationDialog.find('.subtitle').text('One time donation');
+          $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a one time donation of <span class="smalls-color">$'+amount+'.</span> You will receive access to our Audio/Video Archive for the remainder of the tax year. Onetime donations are tax deductible.   ');
+          $selectionConfirmationDialog.find('.gift-content');
+        }
       }
     } else {
       $(yearlyCustom).removeClass('active');
@@ -409,9 +433,9 @@ $(document).ready(function () {
       $("#confirmButton").prop('disabled', false);
     }
     var $content = $('#selectionConfirmationDialog').find('#giftContent');
-    $itemForm = $(this).parent().parent().find('form');
+    $itemForm = $(this).parent().parent().parent().find('form');
     $('#confirmButton').show();
-    var $item = $(this).parent().find('.modal-content').clone();
+    var $item = $(this).parent().parent().find('.modal-content').clone();
     var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
     $selectionConfirmationDialog.find('.title').text('Become a supporter');
     $selectionConfirmationDialog.find('.subtitle').text('Gift Tier: ' + $(this).attr("data-type") );
@@ -442,6 +466,7 @@ $(document).ready(function () {
   var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
   var $selectionConfirmationCloseButton = $selectionConfirmationDialog.find('.close-button');
   $('#confirmSelectionButton').click(function () {
+    $("#confirmButton").show();
     $selectionConfirmationDialog.modal('hide');
     var $variantSelect = $selectionConfirmationDialog.find('select');
     if ($variantSelect.length != 0) {
