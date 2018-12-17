@@ -89,6 +89,7 @@
 
         {% for product in gifts %}
           {% purchase_info_for_product request product as session %}
+          <div>
              <form action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket hidden" style="width: 100%">
                 {% if session.availability.is_available_to_buy %}
                   {% basket_form request product 'single' as basket_form %}
@@ -154,7 +155,7 @@
                 </div>
               </div>
             </div>
-
+          </div>
 
             <!-- End of single store item -->
           {% endfor %}

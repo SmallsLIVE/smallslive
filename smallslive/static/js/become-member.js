@@ -298,6 +298,7 @@ $(document).ready(function () {
 
   monthlyButtons.each(function (index, el) {
     $(el).on('click', function () {
+      $('#confirmSelectionButton').prop('disabled', false);
       var amount = monthlyAmounts[index];
       resetButtons();
       resetCustom();
@@ -316,6 +317,7 @@ $(document).ready(function () {
   var yearlyButtons = $("#yearlyPledge > button");
   yearlyButtons.each(function (index, el) {
     $(el).on('click', function () {
+      $('#confirmSelectionButton').prop('disabled', false);
       var amount = yearlyAmounts[index];
       resetButtons();
       resetCustom();
@@ -431,9 +433,9 @@ $(document).ready(function () {
       $("#confirmButton").prop('disabled', false);
     }
     var $content = $('#selectionConfirmationDialog').find('#giftContent');
-    $itemForm = $(this).parent().parent().find('form');
+    $itemForm = $(this).parent().parent().parent().find('form');
     $('#confirmButton').show();
-    var $item = $(this).parent().find('.modal-content').clone();
+    var $item = $(this).parent().parent().find('.modal-content').clone();
     var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
     $selectionConfirmationDialog.find('.title').text('Become a supporter');
     $selectionConfirmationDialog.find('.subtitle').text('Gift Tier: ' + $(this).attr("data-type") );
@@ -464,6 +466,7 @@ $(document).ready(function () {
   var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
   var $selectionConfirmationCloseButton = $selectionConfirmationDialog.find('.close-button');
   $('#confirmSelectionButton').click(function () {
+    $("#confirmButton").show();
     $selectionConfirmationDialog.modal('hide');
     var $variantSelect = $selectionConfirmationDialog.find('select');
     if ($variantSelect.length != 0) {
