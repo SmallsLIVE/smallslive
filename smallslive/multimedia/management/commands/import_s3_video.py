@@ -1,10 +1,10 @@
+import boto
 import datetime
 import logging
 from optparse import make_option
 import os
 from django.conf import settings
 from django.core.management.base import BaseCommand
-import boto
 from django.utils import timezone
 from events.models import Recording, Event
 from multimedia.models import MediaFile
@@ -36,6 +36,7 @@ class Command(BaseCommand):
                     dest='different_source',
                     default=False,
                     help='Import recording from different event ids'),
+
     )
 
     def handle(self, *args, **options):
@@ -49,10 +50,9 @@ class Command(BaseCommand):
         now = timezone.now()
         # heroku scheduler launches the task every day, we make sure it only really does the import
         # twice a week
-        if env == "heroku" and now.weekday() in (0,1,3,4,5):
+        if not full and env == "heroku" and now.weekday() in (0, 1, 3, 4, 5):
             logger.info('Today is not importing day')
             return
-
 
         conn = boto.connect_s3(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
@@ -76,7 +76,10 @@ class Command(BaseCommand):
         if venue_name:
             filter_cond['venue__name'] = venue_name
 
+        count = Event.objects.filter(**filter_cond).count()
         for event in Event.objects.filter(**filter_cond).order_by('start'):
+            print count
+            count -= 1
             if different_source:
                 event_id = event.original_id
             else:

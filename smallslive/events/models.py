@@ -30,31 +30,31 @@ class EventQuerySet(models.QuerySet):
 
     def most_popular(self):
         return self.exclude(recordings=None).annotate(
-            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-play_count')
+            r_play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-r_play_count')
 
     def most_popular_audio(self):
         return self.filter(
             recordings__media_file__media_type='audio').annotate(
-            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-play_count')
+            r_play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-r_play_count')
 
     def most_popular_video(self):
         return self.filter(
             recordings__media_file__media_type='video').annotate(
-            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-play_count')
+            r_play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-r_play_count')
 
     def most_recent(self):
-        return self.exclude(recordings=None).annotate(play_count=Count('recordings__view_count'),
+        return self.exclude(recordings=None).annotate(r_play_count=Count('recordings__view_count'),
                                                       added=Max('recordings__date_added')).order_by('-added')
 
     def most_recent_audio(self):
         return self.filter(
             recordings__media_file__media_type='audio').annotate(
-            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-added')
+            r_play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-added')
 
     def most_recent_video(self):
         return self.filter(
             recordings__media_file__media_type='video').annotate(
-            play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-added')
+            r_play_count=Count('recordings__view_count'), added=Max('recordings__date_added')).order_by('-added')
 
     def last_staff_picks(self):
         return self.filter(
@@ -241,6 +241,11 @@ class Event(TimeStampedModel):
     original_id = models.CharField(blank=True, max_length=4096, null=True)
     import_date = models.DateTimeField(blank=True, null=True)
 
+    # Redundant fields from UserVideoMetrics
+    # Otherwise it'd be impossible to resolve search queries.
+    seconds_played = models.IntegerField(default=0)
+    play_count = models.IntegerField(default=0)
+
     class Meta:
         ordering = ['-start']
 
@@ -277,7 +282,6 @@ class Event(TimeStampedModel):
 
         return ny_start, ny_end
 
-
     def get_set_start(self, set_number):
         sets = list(self.sets.all())
         sets = sorted(sets, Event.sets_order)
@@ -285,31 +289,22 @@ class Event(TimeStampedModel):
 
     def get_play_total(self):
         play_total = 0
-        sets = list(self.sets.all())
-        for event_set in sets:
-            event_set_play_total = UserVideoMetric.objects.filter(event_id=event_set.id).aggregate(Sum('play_count'))['play_count__sum'] or 0
-            play_total = play_total + event_set_play_total
+
+        qs = UserVideoMetric.objects.filter(event_id=self.id)
+        qs = qs.values('event_id').annotate(play_count=Sum('play_count'))
+        if qs.count():
+            play_total = qs[0]['play_count']
+
         return play_total
     
     def get_seconds_total(self):
         seconds_total = 0
-        sets = list(self.sets.all())
-        for event_set in sets:
-            event_set_seconds_total = UserVideoMetric.objects.filter(event_id=event_set.id).aggregate(Sum('seconds_played'))['seconds_played__sum'] or 0
-            seconds_total = seconds_total + event_set_seconds_total
-        return seconds_total
+        qs = UserVideoMetric.objects.filter(event_id=self.id)
+        qs = qs.values('event_id').annotate(seconds_played=Sum('seconds_played'))
+        if qs.count():
+            seconds_total = qs[0]['seconds_played']
 
-    def get_event_plays_and_time(self):
-        set_data = {view_count:0,times_played:0}
-        all_sets = self.sets.all()
-
-        for event_set in all_sets:
-            pass
-
-
-        return sets_display
-
-
+        return str(timedelta(seconds=seconds_total))
 
     def get_set_hours_display(self):
 
