@@ -352,18 +352,13 @@
             $.ajax(countsURL, {
                 data: data,
                 success: function (response) {
-                    playsNumber= response.total_plays_list.reduce(
-                        function (e, acc) {
-                            return e + acc;
-                        }, 0);
-                    plays.innerHTML = playsNumber
-                    mobilePlays.innerHTML = playsNumber
-                    playedMinutes = response.total_minutes_list.reduce(
-                        function (e, acc) {
-                            return e + acc;
-                        }, 0);
-                    time.innerHTML = moment.utc((playedMinutes*60)*1000).format('HH:mm:ss');
-                    mobileTime.innerHTML = moment.utc((playedMinutes*60)*1000).format('HH:mm:ss');
+                    console.log('-----------------------------');
+                    console.log(response);
+                    plays.innerHTML = response['playCount'];
+                    mobilePlays.innerHTML = response['playCount'];
+                    playedSeconds = response['secondsPlayed'];
+                    time.innerHTML = moment.utc((playedSeconds) * 1000).format('HH:mm:ss');
+                    mobileTime.innerHTML = moment.utc((playedSeconds) * 1000).format('HH:mm:ss');
                 },
                 type: 'GET',
                 xhrFields: {

@@ -277,7 +277,6 @@ class Event(TimeStampedModel):
 
         return ny_start, ny_end
 
-
     def get_set_start(self, set_number):
         sets = list(self.sets.all())
         sets = sorted(sets, Event.sets_order)
@@ -285,19 +284,22 @@ class Event(TimeStampedModel):
 
     def get_play_total(self):
         play_total = 0
-        sets = list(self.sets.all())
-        for event_set in sets:
-            event_set_play_total = UserVideoMetric.objects.filter(event_id=event_set.id).aggregate(Sum('play_count'))['play_count__sum'] or 0
-            play_total = play_total + event_set_play_total
+
+        qs = UserVideoMetric.objects.filter(event_id=self.id)
+        qs = qs.values('event_id').annotate(play_count=Sum('play_count'))
+        if qs.count():
+            play_total = qs[0]['play_count']
+
         return play_total
     
     def get_seconds_total(self):
         seconds_total = 0
-        sets = list(self.sets.all())
-        for event_set in sets:
-            event_set_seconds_total = UserVideoMetric.objects.filter(event_id=event_set.id).aggregate(Sum('seconds_played'))['seconds_played__sum'] or 0
-            seconds_total = seconds_total + event_set_seconds_total
-        return seconds_total
+        qs = UserVideoMetric.objects.filter(event_id=self.id)
+        qs = qs.values('event_id').annotate(seconds_played=Sum('seconds_played'))
+        if qs.count():
+            seconds_total = qs[0]['seconds_played']
+
+        return str(timedelta(seconds=seconds_total))
 
     def get_event_plays_and_time(self):
         set_data = {view_count:0,times_played:0}

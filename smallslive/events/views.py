@@ -7,11 +7,10 @@ from cacheops import cached
 from django.core import signing
 from django.db.models import Count, F, Q, Sum
 import monthdelta
-import json
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import connection
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.http.response import Http404
 from django.utils import timezone
 from django.utils.http import urlencode
@@ -36,7 +35,6 @@ from rest_framework.viewsets import GenericViewSet
 from artists.models import Artist
 from events.models import get_today_start, StaffPick, EventSet,\
     Recording, Comment
-from events.serializers import MonthMetricsSerializer
 from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import Product
 from search.views import SearchMixin, UpcomingEventMixin
@@ -853,13 +851,19 @@ make_private = MakePrivate.as_view({'post': 'post'})
 
 # TODO Maybe include this "serialization" in metrics package?
 class SessionEventsCountView(views.APIView):
-    def get(self, request, format=None):
+
+    def get(self, request):
         start = request.query_params.get('start')
         end = request.query_params.get('end')
-
         set_id = request.query_params.get('set_id')
+
         if set_id:
-            metric_filter = Q(recording_id=set_id)
+            event_set = EventSet.objects.get(pk=set_id)
+            audio_recording_id = event_set.audio_recording_id
+            video_recording_id = event_set.video_recording_id
+
+            metric_filter = Q(recording_id__in=[audio_recording_id,
+                                                video_recording_id])
         else:
             event_ids = list(self.request.user.artist.gigs_played.values_list('event_id', flat=True))
             set_ids = list(Recording.objects.filter(event_id__in=event_ids).values_list('id', flat=True))
@@ -869,58 +873,31 @@ class SessionEventsCountView(views.APIView):
             try:
                 start = serializers.DateField().to_internal_value(start)
                 end = serializers.DateField().to_internal_value(end)
-                metric_filter &= Q(date__range=(start, end))
+                metric_filter &= Q(event_date__range=(start, end))
             except TypeError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        counts = list(UserVideoMetric.objects.filter(metric_filter).values(
-            'date', 'recording_type'
-        ).order_by('date').total_counts_annotate().filter(seconds_played__gt=0))
-
-        if not start or not end:
-            if len(counts):
-                start = counts[0]['date'] - timedelta(days=1)
-                end = counts[-1]['date'] + timedelta(days=1)
-
-        if start and end:
-            days_in_range = (end - start).days + 1
-            days = range(0, days_in_range)
-
-            audio_play_counts = {}
-            audio_minutes_counts = {}
-            video_play_counts = {}
-            video_minutes_counts = {}
-            for entry in counts:
-                day = (entry['date'] - start).days
-                if entry['recording_type'] == 'V':
-                    video_play_counts[day] = entry['play_count']
-                    video_minutes_counts[day] = entry['seconds_played'] / 60
-                else:
-                    audio_play_counts[day] = entry['play_count']
-                    audio_minutes_counts[day] = entry['seconds_played'] / 60
-
-            audio_minutes_list = [audio_minutes_counts.get(day_number, 0) for day_number in days]
-            video_minutes_list = [video_minutes_counts.get(day_number, 0) for day_number in days]
-            audio_plays_list = [audio_play_counts.get(day_number, 0) for day_number in days]
-            video_plays_list = [video_play_counts.get(day_number, 0) for day_number in days]
-            count_data = dict(
-                total_minutes_list=[a + v for a, v in zip(audio_minutes_list, video_minutes_list)],
-                total_plays_list=[a + v for a, v in zip(audio_plays_list, video_plays_list)]
-
-            )
-            count_data['dates'] = []
-            for day in days:
-                current_day = start + timedelta(day)
-                count_data['dates'].append(current_day)
+        qs = UserVideoMetric.objects.filter(metric_filter)
+        qs = qs.values('event_id').annotate(play_count=Sum('play_count'))
+        if qs.count():
+            play_count = qs[0]['play_count']
         else:
-            count_data = dict(
-                total_minutes_list=[],
-                dates=[],
-                total_plays_list=[]
-            )
+            play_count = 0
 
-        s = MonthMetricsSerializer()
-        return Response(data=s.to_representation(count_data))
+        qs = UserVideoMetric.objects.filter(metric_filter)
+        qs = qs.values('event_id').annotate(seconds_played=Sum('seconds_played'))
+        if qs.count():
+            seconds_played = qs[0]['seconds_played']
+        else:
+            seconds_played = 0
+
+        data = {
+            'playCount': play_count,
+            'secondsPlayed': seconds_played,
+        }
+
+        return JsonResponse(data)
+
 
 metrics_event_counts = SessionEventsCountView.as_view()
 

@@ -4,10 +4,9 @@ from dateutil.relativedelta import relativedelta
 from cacheops import cached
 from django.conf import settings
 from django.db.models import Max, Sum
+from django.http import Http404, JsonResponse
 from django.template import RequestContext
 from django.template.loader import render_to_string
-from django_ajax.response import JSONResponse
-from django.http import Http404
 from dateutil import parser
 
 try:
@@ -191,7 +190,7 @@ class MyEventsAJAXView(MyEventsView):
             'current_page': context.get('current_page'),
         }
         
-        return JSONResponse(data)
+        return JsonResponse(data)
 
 
 class MyFutureEventsAJAXView(MyEventsAJAXView, MyFutureEventsView):
@@ -215,7 +214,7 @@ class MyPastEventsView(MyEventsView):
         )
         queryset = self.apply_filters(queryset)
 
-        return queryset
+        return queryset.distinct()
 
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsView, self).get_context_data(**kwargs)
@@ -246,7 +245,7 @@ class MyPastEventsInfoView(DetailView):
 
     def get_object(self, *a, **k):
         obj = super(MyPastEventsInfoView, self).get_object(*a, **k)
-        if not self.request.user.artist in obj.performers.all() :
+        if self.request.user.artist not in obj.performers.all() :
             raise Http404("Event for that artist doesnt exist")
         return obj
 
@@ -263,7 +262,7 @@ class MyPastEventsInfoView(DetailView):
             is_leader=False)
         context['leaders'] = self.object.artists_gig_info.filter(
             is_leader=True)
-        context['current_payout_period']= CurrentPayoutPeriod.objects.first()
+        context['current_payout_period'] = CurrentPayoutPeriod.objects.first()
         #copied metrics code
         today = timezone.datetime.today()
         month_start = today.replace(day=1)
