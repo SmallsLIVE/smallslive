@@ -22,8 +22,7 @@
         <div class="title1 center">Billing information</div>
       </div>
       <div class="store__form__selection__option useless-checkbox">
-        <input type="radio" name="billing_option" id="different-address"
-      {% if billing_address_form.billing_option.value == "different-address"%}checked{% endif %} value="different-address">
+        <input type="radio" name="billing_option" id="different-address" checked value="different-address">
       <label for="different-address">{% if shipping_address %}My billing address is different than the shipping address{% else %}Enter billing address{% endif %}</label>
       </div>
       <div class="row">

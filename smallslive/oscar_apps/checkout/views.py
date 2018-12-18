@@ -19,6 +19,8 @@ from oscar_apps.order.models import Order
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.mixins import PayPalMixin
 from .forms import PaymentForm, BillingAddressForm
+from oscar_apps.basket.models import Basket
+
 
 OrderTotalCalculator = get_class(
     'checkout.calculators', 'OrderTotalCalculator')
@@ -134,7 +136,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         shipping_address = self.get_shipping_address(self.request.basket)
         payment_method = request.POST.get('payment_method')
         print(payment_method)
-        print(form)
+
         user = self.request.user
         if user.is_authenticated():
             billing_address_form = BillingAddressForm(shipping_address, user, request.POST)
@@ -147,7 +149,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
                         address = billing_address_form.save()
                         self.checkout_session.bill_to_user_address(address)
             else:
-                print('3')
                 return self.render_payment_details(request, form=form,
                                                    billing_address_form=billing_address_form)
         else:
@@ -158,6 +159,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             return self.render_preview(request, billing_address_form=billing_address_form,
                                        payment_method='paypal')
         else:
+            print('else')
             if form.is_valid():
                 self.token = form.token
                 self.checkout_session._set('payment', 'card_info', {
@@ -433,6 +435,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         elif payment_method == 'paypal':
             item_list = self.get_item_list(basket_lines)
             payment_execute_url = self.request.build_absolute_uri(reverse('checkout:paypal_execute'))
+            self.get_payment_URL(basket_lines)
             payment_cancel_url = self.request.build_absolute_uri(reverse('become_supporter'))
             currency = total.currency
             total = str(total.incl_tax)
@@ -467,6 +470,18 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         items['order_number'] = order_number
         return items
 
+    def get_payment_URL(self, basket_lines):
+        print 'AAAAAA'
+        basket = Basket.objects.filter(pk=basket_lines[0].basket.pk).first()
+        if basket:
+            if basket.has_tickets():
+                print 'Tickets'
+            if basket.has_digital_products():
+                print 'Digital'
+            if basket.has_physical_products():
+                print 'Physical'
+            if basket.has_gifts():
+                print 'Gift'
 
 class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
     """
