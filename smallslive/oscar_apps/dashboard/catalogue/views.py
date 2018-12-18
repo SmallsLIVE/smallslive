@@ -13,6 +13,7 @@ ProductClass = get_model('catalogue', 'ProductClass')
 
 
 class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
+
     def get_context_data(self, **kwargs):
         if self.product_class.slug == 'album':
             self.formsets['track_formset'] = TrackFormSet

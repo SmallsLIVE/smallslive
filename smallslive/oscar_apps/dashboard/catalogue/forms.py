@@ -29,12 +29,29 @@ class ProductForm(oscar_forms.ProductForm):
             'gift',
             'gift_price',
             'event',
+            'set',
             'ordering'
         ]
 
     def __init__(self, product_class, data=None, parent=None, *args, **kwargs):
+
+
         self.set_initial(product_class, parent, kwargs)
         super(oscar_forms.ProductForm, self).__init__(data, *args, **kwargs)
+        if product_class.slug == 'tickets':
+            del self.fields['subtitle']
+            del self.fields['upc']
+            del self.fields['short_description']
+            del self.fields['description']
+            del self.fields['structure']
+            del self.fields['featured']
+            del self.fields['gift']
+            del self.fields['gift_price']
+            del self.fields['ordering']
+        else:
+            del self.fields['event']
+            del self.fields['set']
+
         if parent:
             self.instance.parent = parent
             # We need to set the correct product structures explicitly to pass
