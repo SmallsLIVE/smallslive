@@ -371,6 +371,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         # Save order id in session so thank-you page can load it
         self.request.session['checkout_order_id'] = order.id
         if self.request.is_ajax():
+            print get_payment_URL(order)
             response = http.JsonResponse({'success_url': reverse('become_supporter_complete')})
         else:
             response = http.HttpResponseRedirect(self.get_success_url())
@@ -464,8 +465,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         items['order_number'] = order_number
         return items
 
-    def get_payment_URL(self, basket_lines):
-        basket = Basket.objects.filter(pk=basket_lines[0].basket.pk).first()
+    def get_payment_URL(self, order):
+        basket = order.basket
         if basket:
             url = 'become_supporter'
             if basket.has_tickets():
