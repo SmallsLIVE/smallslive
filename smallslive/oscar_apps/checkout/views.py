@@ -430,7 +430,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         elif payment_method == 'paypal':
             item_list = self.get_item_list(basket_lines)
             payment_execute_url = self.request.build_absolute_uri(reverse('checkout:paypal_execute'))
-            print self.get_payment_URL(basket_lines)
             payment_cancel_url = self.request.build_absolute_uri(reverse('become_supporter'))
             currency = total.currency
             total = str(total.incl_tax)

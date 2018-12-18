@@ -614,7 +614,6 @@ $(document).ready(function () {
   }
 
   $(document).on('click', '#confirmButton', function (event) {
-    console.log('asdasd')
     var $that = $(this);
 
     if (selectedData.type == 'gift') {

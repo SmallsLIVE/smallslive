@@ -42,7 +42,6 @@ class Order(AbstractOrder):
                 'site': Site.objects.get_current(),
                 'lines': order.lines.all()
             }
-            print('test1')
             messages = CommunicationEventType.objects.get_and_render(code, ctx)
             from_email = to_email = settings.OSCAR_FROM_EMAIL
             if messages['html']:
