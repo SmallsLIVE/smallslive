@@ -128,14 +128,12 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         if request.POST.get('action', '') == 'place_order':
             self.token = self.request.POST.get('card_token')
             return self.handle_place_order_submission(request)
-        print('4')
         return self.handle_payment_details_submission(request)
 
     def handle_payment_details_submission(self, request):
         form = PaymentForm(self.request.user, request.POST)
         shipping_address = self.get_shipping_address(self.request.basket)
         payment_method = request.POST.get('payment_method')
-        print(payment_method)
 
         user = self.request.user
         if user.is_authenticated():
@@ -155,18 +153,15 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             billing_address_form = None
 
         if payment_method == 'paypal':
-            print('4')
             return self.render_preview(request, billing_address_form=billing_address_form,
                                        payment_method='paypal')
         else:
-            print('else')
             if form.is_valid():
                 self.token = form.token
                 self.checkout_session._set('payment', 'card_info', {
                     'name': form.cleaned_data['name'],
                     'last_4': form.cleaned_data['number'][-4:],
                 })
-                print('5')
                 print(request)
                 return self.render_preview(request, card_token=form.token, form=form,
                                            payment_method=payment_method,
@@ -435,7 +430,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         elif payment_method == 'paypal':
             item_list = self.get_item_list(basket_lines)
             payment_execute_url = self.request.build_absolute_uri(reverse('checkout:paypal_execute'))
-            self.get_payment_URL(basket_lines)
+            print self.get_payment_URL(basket_lines)
             payment_cancel_url = self.request.build_absolute_uri(reverse('become_supporter'))
             currency = total.currency
             total = str(total.incl_tax)
@@ -471,17 +466,18 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         return items
 
     def get_payment_URL(self, basket_lines):
-        print 'AAAAAA'
         basket = Basket.objects.filter(pk=basket_lines[0].basket.pk).first()
         if basket:
+            url = 'become_supporter'
             if basket.has_tickets():
-                print 'Tickets'
+                url = 'become_supporter'
             if basket.has_digital_products():
-                print 'Digital'
+                url = 'become_supporter'
             if basket.has_physical_products():
-                print 'Physical'
+                url = 'become_supporter'
             if basket.has_gifts():
-                print 'Gift'
+                url = 'become_supporter'
+        return url
 
 class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
     """
