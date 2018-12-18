@@ -22,6 +22,14 @@ class Order(AbstractOrder):
         digital_count = self.lines.filter(product__product_class__requires_shipping=False).count()
         return digital_count > 0
     
+    def has_tickets(self):
+        tickets_count = self.lines.filter(product__product_class__name='Tickets').count()
+        return tickets_count > 0
+    
+    def has_gift(self):
+        gifts_count = self.lines.filter(product__product_class__slug='Gift').count()
+        return gifts_count > 0
+
     # signal receiving method to send email to fulfilment partner
     def send_fulfilment_request(sender, **kwargs):
         code = 'ORDER_PLACED'

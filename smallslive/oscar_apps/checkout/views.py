@@ -19,6 +19,8 @@ from oscar_apps.order.models import Order
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.mixins import PayPalMixin
 from .forms import PaymentForm, BillingAddressForm
+from oscar_apps.basket.models import Basket
+
 
 OrderTotalCalculator = get_class(
     'checkout.calculators', 'OrderTotalCalculator')
@@ -134,15 +136,13 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         if request.POST.get('action', '') == 'place_order':
             self.token = self.request.POST.get('card_token')
             return self.handle_place_order_submission(request)
-        print('4')
         return self.handle_payment_details_submission(request)
 
     def handle_payment_details_submission(self, request):
         form = PaymentForm(self.request.user, request.POST)
         shipping_address = self.get_shipping_address(self.request.basket)
         payment_method = request.POST.get('payment_method')
-        print(payment_method)
-        print(form)
+
         user = self.request.user
         if user.is_authenticated():
             billing_address_form = BillingAddressForm(shipping_address, user, request.POST)
@@ -155,14 +155,12 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
                         address = billing_address_form.save()
                         self.checkout_session.bill_to_user_address(address)
             else:
-                print('3')
                 return self.render_payment_details(request, form=form,
                                                    billing_address_form=billing_address_form)
         else:
             billing_address_form = None
 
         if payment_method == 'paypal':
-            print('4')
             return self.render_preview(request, billing_address_form=billing_address_form,
                                        payment_method='paypal')
         else:
@@ -172,7 +170,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
                     'name': form.cleaned_data['name'],
                     'last_4': form.cleaned_data['number'][-4:],
                 })
-                print('5')
                 print(request)
                 return self.render_preview(request, card_token=form.token, form=form,
                                            payment_method=payment_method,
@@ -489,6 +486,19 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         items['order_number'] = order_number
         return items
 
+    def get_payment_URL(self, basket_lines):
+        basket = Basket.objects.filter(pk=basket_lines[0].basket.pk).first()
+        if basket:
+            url = 'become_supporter'
+            if basket.has_tickets():
+                url = 'become_supporter'
+            if basket.has_digital_products():
+                url = 'become_supporter'
+            if basket.has_physical_products():
+                url = 'become_supporter'
+            if basket.has_gifts():
+                url = 'become_supporter'
+        return url
 
 class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
     """
