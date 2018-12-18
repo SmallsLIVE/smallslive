@@ -270,13 +270,13 @@ class TicketAddForm(forms.Form):
                 self._errors['set_name'] = self.error_class(["This field is required"])
         return cleaned_data
 
-    def save(self, event):
+    def save(self, event_set):
         tickets_category, created = Category.objects.get_or_create(name="Tickets")
         product_class, created = ProductClass.objects.get_or_create(name="Tickets", requires_shipping=False)
         product = Product.objects.create(
-            title=event.title,
+            title=event_set.event.title,
             product_class=product_class,
-            event_id=event.id,
+            event_set_id=event_set.id,
             set=self.cleaned_data.get('set_name'),
         )
         ProductCategory.objects.create(

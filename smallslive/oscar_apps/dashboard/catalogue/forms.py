@@ -28,7 +28,7 @@ class ProductForm(oscar_forms.ProductForm):
             'featured',
             'gift',
             'gift_price',
-            'event',
+            'event_set',
             'set',
             'ordering'
         ]
@@ -49,7 +49,7 @@ class ProductForm(oscar_forms.ProductForm):
             del self.fields['gift_price']
             del self.fields['ordering']
         else:
-            del self.fields['event']
+            del self.fields['event_set']
             del self.fields['set']
 
         if parent:
@@ -75,7 +75,7 @@ class ProductForm(oscar_forms.ProductForm):
                 attrs={'autocomplete': 'off'})
 
     def clean_event(self):
-        event_id = self.cleaned_data['event']
+        event_id = self.cleaned_data['event_set']
         if event_id:
             try:
                 event = Event.objects.get(id=event_id)

@@ -18,7 +18,7 @@ class Product(AbstractProduct):
     gift_price = models.DecimalField(help_text="Set the gift price",
                                      decimal_places=2, max_digits=12, blank=True, null=True)
 
-    event = models.ForeignKey('events.Event', related_name='products', null=True)
+    event_set = models.ForeignKey('events.EventSet', related_name='tickets', null=True)
     set = models.CharField(max_length=50, blank=True)
 
     class Meta(AbstractProduct.Meta):
