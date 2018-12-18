@@ -304,7 +304,10 @@ class Event(TimeStampedModel):
         if qs.count():
             seconds_total = qs[0]['seconds_played']
 
-        return str(timedelta(seconds=seconds_total))
+        hours, remainder = divmod(seconds_total, 60 * 60)
+        minutes, seconds = divmod(remainder, 60)
+
+        return '{}:{:02d}:{:02d}'.format(hours, minutes, seconds)
 
     def get_set_hours_display(self):
 
@@ -883,6 +886,7 @@ class Venue(models.Model):
         if 'mezzrow' in self.name.lower():
             return 'rgb(241, 187, 83)'
         return '#D21535'
+
 
 class ShowDefaultTime(models.Model):
     venue = models.ForeignKey('Venue', on_delete=models.CASCADE, blank=False)
