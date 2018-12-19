@@ -1,0 +1,34 @@
+<div class="modal fade" id="buy-tickets-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content custom-modal">
+      <a href="#" class="close-button"></a>
+      <div class="modal-body">
+        <p class="title2 accent-color">Buy tickets for {{ event.venue.name }}</p>
+                <p class="title3">{{ event.title }}</p>
+                <p class="text4 text-grey">
+                        {{ event.description }}
+                </p>
+
+                <p class="text5 text-grey">
+                        Buy tickets?
+                </p>
+                <div>
+                <button id="cancel-buy-tickets" class="white-border-button">Cancel</button><button id="confirm-buy-tickets" class="white-border-button">Buy</button>
+                </div>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('click', function () {
+    $('#streamingNotAvailableDialog').hide();
+  });
+  $(document).ready(function () {
+    var ticketsDialog = $('#buy-tickets-dialog');
+    var $ticketsCloseButton = $(ticketsDialog.find('.close-button')[0]);
+    $ticketsCloseButton.click(function () {
+      ticketsDialog.modal('hide');
+    });
+  });
+</script>
