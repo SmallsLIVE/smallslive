@@ -231,6 +231,7 @@ $(document).ready(function () {
 
   var buttons = $('#supporterSteps > *');
   var monthlyButtons = $("#monthlyPledge > button");
+  var yearlyButtons = $("#yearlyPledge > button");
   var giftsButtons = $('.select-gift');
 
   var resetButtons = function () {
@@ -297,14 +298,15 @@ $(document).ready(function () {
 
     checkConfirmButton()
   };
-
-  monthlyButtons.each(function (index, el) {
-    $(el).on('click', function () {
+  $(document).on('click',  '#monthlyPledge > button', function () {
+    $(this).on('click', function () {
+      $("#monthlyPledge > button").removeClass("active");
+      $(this).addClass("active");
       $('#confirmSelectionButton').prop('disabled', false);
-      var amount = monthlyAmounts[index];
+      var amount = $(this).val()
       resetButtons();
       resetCustom();
-      $(el).addClass("active");
+      $(this).addClass("active");
       setSelected('month', amount);
       var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
       $selectionConfirmationDialog.find('.title').text('become a supporter');
@@ -316,14 +318,15 @@ $(document).ready(function () {
     })
   });
 
-  var yearlyButtons = $("#yearlyPledge > button");
-  yearlyButtons.each(function (index, el) {
-    $(el).on('click', function () {
+  
+  $(document).on('click',  '#yearlyPledge > button', function () {
+    $(this).on('click', function () {
+      $("#yearlyPledge > button").removeClass("active");
+      $(this).addClass("active");
       $('#confirmSelectionButton').prop('disabled', false);
-      var amount = yearlyAmounts[index];
+      var amount = $(this).val()
       resetButtons();
       resetCustom();
-      $(el).addClass("active");
       setSelected('year', amount);
       var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
       $selectionConfirmationDialog.modal('show');
@@ -466,9 +469,9 @@ $(document).ready(function () {
 
   var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
   var $selectionConfirmationCloseButton = $selectionConfirmationDialog.find('.close-button');
-  $('#confirmSelectionButton').click(function () {
-    $("#confirmButton").show();
-    $selectionConfirmationDialog.modal('hide');
+
+  $(document).on('click',  '#confirmSelectionButton', function () {
+    $('#selectionConfirmationDialog').modal('hide');
     var $variantSelect = $selectionConfirmationDialog.find('select');
     if ($variantSelect.length != 0) {
       giftSelected($variantSelect.val());

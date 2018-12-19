@@ -106,63 +106,6 @@ class ContributeFlowView(TemplateView):
         context = super(ContributeFlowView, self).get_context_data(**kwargs)
         return context
 
-
-class DonateView(ContributeFlowView):
-    def get_context_data(self, **kwargs):
-        context = super(DonateView, self).get_context_data(**kwargs)
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-        context['form_action'] = reverse('donate')
-        context['redirect_url'] = self.request.META.get('HTTP_REFERER')
-        context['flow_type'] = "donate"
-
-        return context
-
-    def post(self, request, *args, **kwargs):
-
-        redirect_url = self.request.POST.get('redirect_url')
-
-        paypal_payment_id = self.request.POST.get('paypal_payment_id')
-        if paypal_payment_id:
-            pass
-        else:
-            stripe_token = self.request.POST.get('stripe_token')
-            amount = int(self.request.POST.get('quantity'))
-
-            try:
-                customer, created = Customer.get_or_create(
-                    subscriber=subscriber_request_callback(request))
-                one_time_donation(customer, stripe_token, amount)
-            except stripe.StripeError as e:
-                print 'Except -->'
-                print e
-                # add form error here
-                return _ajax_response(request, JsonResponse({
-                    'error': e.args[0]
-                }, status=500))
-
-        return _ajax_response(
-            request, redirect(reverse(
-                'donate_complete') + '?redirect_url={}'.format(redirect_url))
-        )
-
-
-donate = DonateView.as_view()
-
-
-class DonateCompleteView(DonateView):
-    def get_context_data(self, **kwargs):
-        context = super(
-            DonateCompleteView, self
-        ).get_context_data(**kwargs)
-        context['completed'] = True
-        context['redirect_url'] = self.request.GET.get('redirect_url')
-
-        return context
-
-
-donate_complete = DonateCompleteView.as_view()
-
-
 class BecomeSupporterView(ContributeFlowView, PayPalMixin):
     def get_context_data(self, **kwargs):
         context = super(BecomeSupporterView, self).get_context_data(**kwargs)
@@ -255,6 +198,62 @@ class UpdatePledgeView(BecomeSupporterView):
 
 
 update_pledge = UpdatePledgeView.as_view()
+
+
+class DonateView(BecomeSupporterView):
+    def get_context_data(self, **kwargs):
+        context = super(DonateView, self).get_context_data(**kwargs)
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['form_action'] = reverse('donate')
+        context['redirect_url'] = self.request.META.get('HTTP_REFERER')
+        context['flow_type'] = "donate"
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+
+        redirect_url = self.request.POST.get('redirect_url')
+
+        paypal_payment_id = self.request.POST.get('paypal_payment_id')
+        if paypal_payment_id:
+            pass
+        else:
+            stripe_token = self.request.POST.get('stripe_token')
+            amount = int(self.request.POST.get('quantity'))
+
+            try:
+                customer, created = Customer.get_or_create(
+                    subscriber=subscriber_request_callback(request))
+                one_time_donation(customer, stripe_token, amount)
+            except stripe.StripeError as e:
+                print 'Except -->'
+                print e
+                # add form error here
+                return _ajax_response(request, JsonResponse({
+                    'error': e.args[0]
+                }, status=500))
+
+        return _ajax_response(
+            request, redirect(reverse(
+                'donate_complete') + '?redirect_url={}'.format(redirect_url))
+        )
+
+
+donate = DonateView.as_view()
+
+class DonateCompleteView(DonateView):
+    def get_context_data(self, **kwargs):
+        context = super(
+            DonateCompleteView, self
+        ).get_context_data(**kwargs)
+        context['completed'] = True
+        context['redirect_url'] = self.request.GET.get('redirect_url')
+
+        return context
+
+
+donate_complete = DonateCompleteView.as_view()
+
 
 
 class BecomeSupporterCompleteView(BecomeSupporterView):
