@@ -736,6 +736,12 @@ class Event(TimeStampedModel):
                 'absolute_url': gig.artist.get_absolute_url()})
         return event_artists_info
 
+    def get_tickets(self):
+        tickets = []
+        for event_set in self.sets.all():
+            tickets += list(event_set.tickets.all())
+
+        return tickets
 
 class RecordingQuerySet(models.QuerySet):
     def video(self):
