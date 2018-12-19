@@ -254,7 +254,7 @@ $player-height:  25.3vw;
 
   .event-overlay-artists {
     height: 65%;
-    column-count: 3;
+    column-count: 2;
     column-fill: auto;
     .title5 {
       font-size: 1.3vw;
@@ -385,10 +385,29 @@ $player-height:  25.3vw;
 }
 
 .event-video-placeholder {
+
+  height: 25vw;
+
   .event-video-placeholder-picture {
     filter: $sepia-filter;
     height: 100%;
     width: 100%;
+
+    img {
+      width: 100%;
+
+      &:before {
+        content: ' ';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 25vw;
+        width: 100%;
+        background-image: url('../image/no-event-image-placeholder.jpg');
+        background-size: cover;
+      }
+    }
   }
 }
 
