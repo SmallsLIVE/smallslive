@@ -173,10 +173,14 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
         # We need to clear the basket in case the user has anything in there.
         self.request.basket.flush()
-        print Product.objects.filter(product_class__slug='gift').order_by('gift_price')
+
         context['gifts'] = []
-        for product in Product.objects.filter(product_class__slug='gift').order_by('gift_price'):
+        selector = Selector()
+        strategy = selector.strategy(request=self.request, user=self.request.user)
+        for product in Product.objects.filter(product_class__slug='gift'):
             context['gifts'].append(product)
+
+        context['gifts'].sort(key = lambda x: float(strategy.fetch_for_product(product=x).price.excl_tax))
 
         return context
 

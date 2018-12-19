@@ -223,10 +223,10 @@
                   {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
                     <div class="buy-button-container">
                       {% if user.is_authenticated %}
-                        <a class="tracks-table__button"
-                           data-toggle="dropdown" aria-expanded="false"
-                           href="">Buy track <i
-                                class="fa fa-caret-down"></i></a>
+                         <a class="white-border-button"
+                                       data-toggle="dropdown" aria-expanded="false"
+                                       href="">Buy track <i
+                                            class="fa fa-caret-down"></i></a>
                       {% else %}
                         <a class="tracks-table__button" href="#"
                            data-toggle="modal" data-target="#logIn">Buy
