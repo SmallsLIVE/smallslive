@@ -284,6 +284,9 @@ $(document).ready(function () {
     $(monthlyCustom).removeClass('active');
   };
 
+
+
+
   var setSelected = function (type, amount) {
     selectedData.type = type;
     selectedData.amount = amount;
@@ -339,6 +342,15 @@ $(document).ready(function () {
   var yearlyCustom = $("#yearlyPledge").find("input")[0];
   var monthlyCustom = $("#monthlyPledge").find("input")[0];
   var yearlyCustom = $("#yearlyPledge").find("input")[0];
+
+
+  $(monthlyCustom).on('focusout', function(){
+    resetCustom()
+  })
+
+  $(yearlyCustom).on('focusout', function(){
+    resetCustom()
+  })
 
   function isPositiveInteger(s) {
     return /^\+?[1-9][\d]*$/.test(s);
