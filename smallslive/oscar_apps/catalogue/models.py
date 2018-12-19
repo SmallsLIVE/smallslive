@@ -98,4 +98,5 @@ class Product(AbstractProduct):
             raise ValidationError(
                 _("A child product can't have options."))
 
-from oscar.apps.catalogue.models import *
+
+from oscar.apps.catalogue.models import *  # noqa

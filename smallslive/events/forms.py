@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 from extra_views import InlineFormSet
 import floppyforms
 from haystack.forms import SearchForm
+from oscar.apps.catalogue.models import ProductImage
 
 from .models import EventSet, Event, GigPlayed, Comment
 
@@ -271,10 +272,11 @@ class TicketAddForm(forms.Form):
         return cleaned_data
 
     def save(self, event_set):
+        event = event_set.event
         tickets_category, created = Category.objects.get_or_create(name="Tickets")
         product_class, created = ProductClass.objects.get_or_create(name="Ticket", requires_shipping=False)
         product = Product.objects.create(
-            title=event_set.event.title,
+            title=event.title,
             product_class=product_class,
             event_set_id=event_set.id,
             set=self.cleaned_data.get('set_name'),
@@ -283,20 +285,22 @@ class TicketAddForm(forms.Form):
             product=product,
             category=tickets_category
         )
-        partner, created = Partner.objects.get_or_create(name="Mezzrow")
+        partner_name = event.venue.name
+        partner, created = Partner.objects.get_or_create(name=partner_name)
         last_stockrecord = StockRecord.objects.order_by('-id').first()
         if last_stockrecord:
             last_id = last_stockrecord.id
         else:
             last_id = 0
-        print '******** save cleaned data'
-        print self.cleaned_data
-        stock = StockRecord.objects.create(
+        StockRecord.objects.create(
             partner=partner,
             product=product,
             partner_sku=last_id + 1,
             num_in_stock=self.cleaned_data.get('seats'),
             price_excl_tax=self.cleaned_data.get('price'),
         )
-        print stock
-        print stock.pk
+        if event.photo:
+            ProductImage.objects.create(
+                product=product,
+                original=event.photo
+            )

@@ -7,14 +7,13 @@ from django.core.exceptions import ValidationError
 from django.forms import inlineformset_factory
 from django.utils.translation import ugettext_lazy as _
 from oscar.apps.dashboard.catalogue import forms as oscar_forms
-from events.models import Event
+from events.models import Event, EventSet
 from multimedia.models import MediaFile
 from oscar_apps.partner.models import StockRecord, Partner
 from oscar_apps.catalogue.models import Product, ProductClass
 
 
 class ProductForm(oscar_forms.ProductForm):
-    event = forms.IntegerField(required=False)
 
     class Meta(oscar_forms.ProductForm.Meta):
         fields = [
@@ -38,7 +37,7 @@ class ProductForm(oscar_forms.ProductForm):
 
         self.set_initial(product_class, parent, kwargs)
         super(oscar_forms.ProductForm, self).__init__(data, *args, **kwargs)
-        if product_class.slug == 'tickets':
+        if product_class.slug == 'ticket':
             del self.fields['subtitle']
             del self.fields['upc']
             del self.fields['short_description']
@@ -48,6 +47,10 @@ class ProductForm(oscar_forms.ProductForm):
             del self.fields['gift']
             del self.fields['gift_price']
             del self.fields['ordering']
+            product = kwargs.get('instance')
+            if product:
+                event_set = product.event_set
+                self.fields['event_set'].queryset = EventSet.objects.filter(event=event_set.event)
         else:
             del self.fields['event_set']
             del self.fields['set']
