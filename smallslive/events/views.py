@@ -281,10 +281,15 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
         response = super(EventAddView, self).post(request, *args, **kwargs)
         check_staff_picked(self.object, self.request.POST.get('staff_pick', 'off') == 'on')
         ticket_forms = self.construct_ticket_forms(data=request.POST)
-        for ticket_form in ticket_forms:
+        event_sets = self.object.sets.all()
+        event_sets = sorted(event_sets, Event.sets_order)
+        count = 0
+        for event_set in event_sets:
+            ticket_form = ticket_forms[count]
+            count += 1
             if ticket_form.is_valid():
                 if ticket_form.cleaned_data.get('form_enabled'):
-                    ticket_form.save(event=self.object)
+                    ticket_form.save(event_set=event_set)
         return response
 
     def construct_ticket_forms(self, data=None):
@@ -361,14 +366,7 @@ class EventDetailView(DetailView):
                 'event_url': event_url,
                 'start': start
             }
-            context['products'] = self.object.products.all()
-            set_time = []
-            set_number = 0
-            for product in self.object.products.all():
-                set_time.append(product.event.get_set_start(set_number))
-                set_number += 1
-            print set_time
-            context['set_time'] = set_time
+            context['products'] = self.object.get_tickets()
 
         context['sets'] = event.get_sets_info_dict()
         context['event_artists'] = event.get_artists_info_dict()
@@ -435,18 +433,28 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
         response = super(EventEditView, self).post(*args, **kwargs)
         check_staff_picked(self.object, self.request.POST.get('staff_pick', 'off') == 'on')
         ticket_forms = self.construct_ticket_forms(data=self.request.POST)
-        for ticket_form in ticket_forms:
+
+        event_sets = self.object.sets.all()
+        event_sets = sorted(event_sets, Event.sets_order)
+        count = 0
+        for event_set in event_sets:
+            ticket_form = ticket_forms[count]
+            count += 1
             if ticket_form.is_valid():
                 if ticket_form.cleaned_data.get('form_enabled'):
-                    ticket_form.save(event=self.object)
+                    ticket_form.save(event_set=event_set)
         return response
 
     # TODO: remove duplicate code
     def construct_ticket_forms(self, data=None):
+        count = len(self.object.get_tickets())
         ticket_forms = []
         for i in range(1, TICKETS_NUMBER_OF_SETS + 1):
+            if i < count and not data:
+                continue
             ticket_form = TicketAddForm(data, prefix="set{0}".format(i), number=i)
             ticket_forms.append(ticket_form)
+
         return ticket_forms
 
 
