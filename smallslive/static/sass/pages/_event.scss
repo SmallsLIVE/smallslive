@@ -254,7 +254,7 @@ $player-height:  25.3vw;
 
   .event-overlay-artists {
     height: 65%;
-    column-count: 3;
+    column-count: 2;
     column-fill: auto;
     .title5 {
       font-size: 1.3vw;
@@ -385,6 +385,7 @@ $player-height:  25.3vw;
 }
 
 .event-video-placeholder {
+
   .event-video-placeholder-picture {
     filter: $sepia-filter;
     height: 100%;

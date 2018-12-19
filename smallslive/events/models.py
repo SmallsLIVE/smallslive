@@ -304,7 +304,10 @@ class Event(TimeStampedModel):
         if qs.count():
             seconds_total = qs[0]['seconds_played']
 
-        return str(timedelta(seconds=seconds_total))
+        hours, remainder = divmod(seconds_total, 60 * 60)
+        minutes, seconds = divmod(remainder, 60)
+
+        return '{}:{:02d}:{:02d}'.format(hours, minutes, seconds)
 
     def get_set_hours_display(self):
 
@@ -733,6 +736,12 @@ class Event(TimeStampedModel):
                 'absolute_url': gig.artist.get_absolute_url()})
         return event_artists_info
 
+    def get_tickets(self):
+        tickets = []
+        for event_set in self.sets.all():
+            tickets += list(event_set.tickets.all())
+
+        return tickets
 
 class RecordingQuerySet(models.QuerySet):
     def video(self):
@@ -883,6 +892,7 @@ class Venue(models.Model):
         if 'mezzrow' in self.name.lower():
             return 'rgb(241, 187, 83)'
         return '#D21535'
+
 
 class ShowDefaultTime(models.Model):
     venue = models.ForeignKey('Venue', on_delete=models.CASCADE, blank=False)

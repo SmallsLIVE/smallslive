@@ -123,30 +123,7 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
             elif order == 'oldest':
                 queryset = queryset.order_by('event__date')
             elif order == 'popular':
-                # Get all events ids
-                artist_event_ids = list(queryset.values_list('event_id', flat=True).distinct())
-
-                # Get ordered event play count
-                page = int(self.request.GET.get('page'))
-                most_popular_ids = list(UserVideoMetric.objects.filter(event_id__in=artist_event_ids).values(
-                    'event_id'
-                ).annotate(
-                    count=Sum('seconds_played')
-                ).order_by('-count')[(page - 1) * self.paginate_by: self.paginate_by])
-
-                ordered_metrics_ids = [
-                    row.get('event_id') for row in most_popular_ids
-                ]
-
-                unordered = dict([
-                    (gig.event_id, gig) for gig in queryset.filter(event_id__in=ordered_metrics_ids)
-                ])
-
-                response = []
-                for event_id in ordered_metrics_ids:
-                    response.append(unordered.get(event_id))
-
-                return response
+                queryset = queryset.order_by('-event__seconds_played')
             else:
                 queryset = queryset.order_by('-event__date')
 
@@ -257,7 +234,7 @@ class MyPastEventsInfoView(DetailView):
             'event_set': self.object.sets.all()[set_id]
         })
         context['is_admin'] = self.object.artists_gig_info.get(
-            artist_id=artist.id).is_admin
+            artist_id=artist.id).is_leader
         context['sidemen'] = self.object.artists_gig_info.filter(
             is_leader=False)
         context['leaders'] = self.object.artists_gig_info.filter(

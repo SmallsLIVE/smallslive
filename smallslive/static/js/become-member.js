@@ -436,7 +436,6 @@ $(document).ready(function () {
     }
     var $content = $('#selectionConfirmationDialog').find('#giftContent');
     $itemForm = $(this).parent().parent().parent().find('form');
-    $('#confirmButton').show();
     var $item = $(this).parent().parent().find('.modal-content').clone();
     var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
     $selectionConfirmationDialog.find('.title').text('Become a supporter');
@@ -472,7 +471,6 @@ $(document).ready(function () {
     $selectionConfirmationDialog.modal('hide');
     var $variantSelect = $selectionConfirmationDialog.find('select');
     if ($variantSelect.length != 0) {
-
       giftSelected($variantSelect.val());
     } else {
       giftSelected($("#single-product").val())
@@ -618,7 +616,6 @@ $(document).ready(function () {
   }
 
   $(document).on('click', '#confirmButton', function (event) {
-
     var $that = $(this);
 
     if (selectedData.type == 'gift') {

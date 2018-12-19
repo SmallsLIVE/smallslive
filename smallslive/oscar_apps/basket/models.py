@@ -16,6 +16,10 @@ class Basket(AbstractBasket):
     def has_tickets(self):
         tickets_count = self.all_lines().filter(product__product_class__name='Tickets').count()
         return tickets_count > 0
+    
+    def has_gifts(self):
+        gifts_count =  self.all_lines().filter(product__product_class__name='Gift').count()
+        return gifts_count > 0
 
     def digital_lines(self):
         return self.all_lines().select_related('product').filter(product__product_class__requires_shipping=False)

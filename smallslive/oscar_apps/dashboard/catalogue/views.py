@@ -13,6 +13,7 @@ ProductClass = get_model('catalogue', 'ProductClass')
 
 
 class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
+
     def get_context_data(self, **kwargs):
         if self.product_class.slug == 'album':
             self.formsets['track_formset'] = TrackFormSet
@@ -108,8 +109,11 @@ class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
 class ProductListView(oscar_views.ProductListView):
 
     def get_queryset(self):
-        qs = super(ProductListView, self).get_queryset()
-        qs = qs.exclude(product_class__slug='track')
+        qs = Product.objects.base_queryset()
+        qs = qs.select_related('product_class')
+        qs = self.filter_queryset(qs)
+        qs = self.apply_search(qs)
+
         return qs
 
     def get_table_class(self):

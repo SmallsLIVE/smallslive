@@ -9,17 +9,26 @@
   <h1 class="admin-interface__main-title">Add/Edit gig:</h1>
     <form method="post"  class="admin-interface__form" enctype="multipart/form-data">
       {% crispy form %}
-      <div class="alert alert-warning">
-        <div id="div_id_state" class="form-group">
-          <label for="id_state" class="control-label">Add tickets</label>
+      {% if event.get_tickets %}
+        <ul><strong>Tickets:</strong>
+        {% for product in event.get_tickets %}
+          <li><a href="{% url 'dashboard:catalogue-product' pk=product.id %}">{{ product.title }}</a></li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+      {% if event.get_tickets|length < event.sets.count %}
+        <div class="alert alert-warning">
+          <div id="div_id_state" class="form-group">
+            <label for="id_state" class="control-label">Add tickets to sets (create sets as needed)</label>
 
-          <div class="controls ">
-            {% for ticket_form in ticket_forms %}
-              {% crispy ticket_form %}
-            {% endfor %}
+            <div class="controls ">
+              {% for ticket_form in ticket_forms %}
+                {% crispy ticket_form %}
+              {% endfor %}
+            </div>
           </div>
         </div>
-      </div>
+      {% endif %}
       <div class="buttonHolder">
         <input type="submit" name="submit" value="Save event" class="admin-interface__form__button" id="submit-id-submit">
         <input type="button" name="delete" value="Delete event" class="admin-interface__form__button danger" id="button-id-delete" data-target="#deleteModal" data-toggle="modal">
