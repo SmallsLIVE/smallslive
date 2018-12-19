@@ -702,7 +702,10 @@ $(document).ready(function () {
     if(currentStep == 'Shipping'){
       $('#confirmButton').hide();
     }
-
+    
+    if(currentStep == 'SelectType'){
+      $('#confirmButton').show();
+    }
     if (currentStep === 'Intro') return;
     $('#confirmButton').text('Confirm');
 
