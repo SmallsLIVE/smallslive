@@ -10,6 +10,7 @@
 {% block event_content %}
 {% include 'events/streaming_not_available_dialog.html' %}
 {% include 'events/tickets_dialog.html' %}
+{% include 'events/buy_tickets_dialog.html' %}
 <div class="event-video-placeholder flex-column content-space-between" style="flex: initial;">
   <span class="event-video-placeholder-picture">
     {% if event.photo %}
@@ -57,6 +58,16 @@
     $('#btn-tickets').click(function () {
       $('#ticketsDialog').modal('show');
     });
+    $('#buy-tickets').click(function(e){
+      e.preventDefault()
+      $('#buy-tickets-dialog').modal('show');
+    })
+    $('#confirm-buy-tickets').click(function(){
+      $(".reservation_form").submit()
+    })
+    $('#cancel-buy-ticket').click(function(){
+      $('#buy-tickets-dialog').modal('hide');
+    })
     $('#btn-play-event').click(function () {
       var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
       if (moment() - allowStreamingTime > 0) {

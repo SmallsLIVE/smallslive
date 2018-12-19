@@ -76,7 +76,7 @@
             {% endif %}
             {% if not event.is_live and event.is_past %}
               {% if user.has_archive_access %}
-              <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">Donate</button>
+                <button id="one-time-donation-btn" class="white-border-button" style="display: inline;">Donate</button>
               {% endif %}
             {% endif %}
             {% if not event.is_live and event.is_future %}
@@ -90,7 +90,7 @@
               {{ basket_form.as_p }}
               <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
               {% if session.availability.num_available > 0 %}
-                <button type="submit" class="white-border-button" style="display: inline;">Tickets for the {{ product.set }} show ({{ session.availability.num_available }} available)</button>
+                <button type='submit' id="buy-tickets" class="white-border-button" style="display: inline;">Tickets for the {{ product.set }} show ({{ session.availability.num_available }} available)</button>
               {% else %}
                 <button class="white-border-button" disabled style="display: inline;">Tickets sold out)</button>
               {% endif %}
@@ -98,7 +98,7 @@
             
             {% endfor %}
             {% else %}
-            <button id="btn-tickets" class="white-border-button" style="display: inline;">Tickets</button>
+              <button id="btn-tickets" class="white-border-button" style="display: inline;">Tickets</button>
             {% endif %}
             {% endif %}
           </div>
@@ -205,6 +205,7 @@
   var showRegister = function() {
     $('#becomeMemberDialog').modal('show');
   };
+
   </script>
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   <script src="{% static 'js/jquery.form.js' %}"></script>
@@ -226,6 +227,7 @@
       var subpages = window.subpages;
       subpages.register();
       subpages.loadAll();
+      
 
       $('#one-time-donation-btn').on('click', function () {
         $('#donate-setting-steps-complete').html("")
