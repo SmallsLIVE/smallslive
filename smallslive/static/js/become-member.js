@@ -1,5 +1,7 @@
 $(document).ready(function () {
-
+  if (typeof window.completeSubpage === "undefined"){
+    window.completeSubpage = "";
+  }
 
   var currentStep = 'Intro';
 
@@ -219,9 +221,7 @@ $(document).ready(function () {
     });
   }
 
-  if (typeof completeSubpage == "undefined") {
-    var completeSubpage;
-  }
+  
 
   var buttons = $('#supporterSteps > *');
   var monthlyButtons = $("#monthlyPledge > button");
@@ -273,6 +273,8 @@ $(document).ready(function () {
   };
 
   var resetCustom = function () {
+    yearlyCustom = $("#yearlyCustom");
+    monthlyCustom = $("#monthlyCustom");
     $(yearlyCustom).val('');
     $(yearlyCustom).removeClass('active');
     $(monthlyCustom).val('');
@@ -333,12 +335,16 @@ $(document).ready(function () {
   });
 
   var oneTimePayment = $("#oneTimePayment").find("input")[0];
-  var monthlyCustom = $("#monthlyPledge").find("input")[0];
-  var yearlyCustom = $("#yearlyPledge").find("input")[0];
+  var monthlyCustom = $("#monthlyCustom");
+  var yearlyCustom = $("#yearlyCustom");
 
   function isPositiveInteger(s) {
     return /^\+?[1-9][\d]*$/.test(s);
   }
+
+
+
+
   $(oneTimePayment).on('keyup', function (event) {
     var value = $(oneTimePayment).val();
     if (value && isPositiveInteger(value)) {
@@ -351,7 +357,9 @@ $(document).ready(function () {
     }
   });
 
-  $(monthlyCustom).on('keyup', function (event) {
+  $(document).on('keyup',  '#monthlyCustom', function (event) {
+    monthlyCustom = $("#monthlyCustom");
+    yearlyCustom = $("#yearlyCustom");
     var value = $(monthlyCustom).val();
     if (value && isPositiveInteger(value)) {
       resetButtons();
@@ -379,7 +387,9 @@ $(document).ready(function () {
     }
   });
 
-  $(yearlyCustom).on('keyup', function (event) {
+  $(document).on('keyup',  '#yearlyCustom', function (event) {
+    monthlyCustom = $("#monthlyCustom");
+    yearlyCustom = $("#yearlyCustom");
     var value = $(yearlyCustom).val();
     if (value && isPositiveInteger(value)) {
       resetButtons();
@@ -613,6 +623,7 @@ $(document).ready(function () {
   }
 
   $(document).on('click', '#confirmButton', function (event) {
+    console.log(currentStep)
     var $that = $(this);
 
     if (selectedData.type == 'gift') {
@@ -625,7 +636,6 @@ $(document).ready(function () {
     }
 
     if (currentStep === 'PaymentInfo') {
-
       var method = $('#payment-method').val();
       if (method == 'credit-card') {
         var $inputs = $('.supporter-card-data .form-control');
@@ -676,7 +686,6 @@ $(document).ready(function () {
 
  
   $(document).on('click', '#backButton', function () {
-    console.log(currentStep)
     if(currentStep == 'PaymentInfo'){
       $('#confirmButton').hide();
     }

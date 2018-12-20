@@ -84,14 +84,14 @@ function startStripePayment($form, action_url, completeSubpage) {
       // Insert the token into the form so it gets submitted to the server
       $form.append($('<input type="hidden" name="stripe_token" />').val(token));
       // and submit
-
       $.ajax({
         type: "POST",
         url: action_url,
         data: $form.serialize(),
         success: function (data) {
           if(typeof completeSubpage !== "undefined" && completeSubpage){
-            //notCompleteContainer.html("")
+            window.notCompleteContainer.html("")
+            currentStep = 'Intro';
             var flowCompleteSubpage = window.subpages.get(completeSubpage);
             flowCompleteSubpage.load();
           }
