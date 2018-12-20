@@ -299,6 +299,9 @@
     input:hover + label {
       visibility:hidden
     }
+    input:focus + label {
+      visibility:hidden
+    }
     .no-spinners{
       & + label{
         z-index: -1;
