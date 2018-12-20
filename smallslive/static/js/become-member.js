@@ -1,13 +1,7 @@
 $(document).ready(function () {
 
-  var monthlyAmounts = [10, 20, 50];
-  var yearlyAmounts = [100, 500, 1000];
 
-  var panels;
   var currentStep = 'Intro';
-  var backButton = $("#backButton");
-  var confirmButton = $("#confirmButton");
-  var sentHint = $('#sentHint');
 
   var selectedData = {
     type: '',
@@ -190,7 +184,7 @@ $(document).ready(function () {
           window.location = data.success_url;
         } else if (data && data.error) {
           // go back to previous step
-          backButton.click();
+          $("#backButton").click();
         } else {
           submitComplete();
         }
@@ -339,7 +333,6 @@ $(document).ready(function () {
   });
 
   var oneTimePayment = $("#oneTimePayment").find("input")[0];
-  var yearlyCustom = $("#yearlyPledge").find("input")[0];
   var monthlyCustom = $("#monthlyPledge").find("input")[0];
   var yearlyCustom = $("#yearlyPledge").find("input")[0];
 
@@ -471,6 +464,7 @@ $(document).ready(function () {
   var $selectionConfirmationCloseButton = $selectionConfirmationDialog.find('.close-button');
 
   $(document).on('click',  '#confirmSelectionButton', function () {
+    $('#confirmButton').show();
     $('#selectionConfirmationDialog').modal('hide');
     var $variantSelect = $selectionConfirmationDialog.find('select');
     if ($variantSelect.length != 0) {
@@ -582,9 +576,9 @@ $(document).ready(function () {
     }
 
     if (currentStep === 'Intro') {
-      $(backButton).hide();
+      $("#backButton").hide();
     } else {
-      $(backButton).show();
+      $("#backButton").show();
     }
   };
 
@@ -642,9 +636,9 @@ $(document).ready(function () {
             errors = true;
           }
         });
-        sentHint.show();
+        $('#sentHint').show();
         if (errors) {
-          sentHint.hide();
+          $('#sentHint').hide();
           $('#form-general-error').text('Please correct errors above');
         } else {
           $that.prop('disabled', true);
@@ -680,11 +674,16 @@ $(document).ready(function () {
 
   });
 
-  backButton.on('click', function () {
+ 
+  $(document).on('click', '#backButton', function () {
+    console.log(currentStep)
     if(currentStep == 'PaymentInfo'){
       $('#confirmButton').hide();
     }
-
+ 
+    if(currentStep == 'SelectType'){
+      $('#confirmButton').show();
+    }
     if(currentStep == 'Shipping'){
       $('#confirmButton').hide();
     }
