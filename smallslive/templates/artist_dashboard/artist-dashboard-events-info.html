@@ -19,7 +19,7 @@
                     {% endif %}
                 {% endif %}
             {% else %}
-                {% if event.is_future and is_admin %}
+                {% if is_admin %}
                     <a href="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
                         <button class="set-button">Edit</button>
                     </a>

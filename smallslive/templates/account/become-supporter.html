@@ -47,22 +47,25 @@
 
     <div class="text9">You are making a tax deductible donation to the SmallsLIVE Foundation.<br>
       You may download your tax receipt letter in your account settings. Please choose one of the following:</div>
-
+    {% if not flow_type = "one_time_donation" %}
     <div class="flex-column items-center supporter-plan-input">
       <div class="section-title section-title-no-padded">
         <div class="title1">Monthly Pledge</div>
       </div>
       <p class="text9">Monthly pledges are billed automatically and can be cancelled at any time in your account settings.<br>You will receive access to our audio/video library for as long as you are a Supporting Member of SmallsLIVE.</p>
       <div id="monthlyPledge" class="button-row button-row-big button-row-margin">
-        <button>$10</button>
-        <button>$20</button>
-        <button>$50</button>
+        <button value=10>$10</button>
+        <button value=20>$20</button>
+        <button value=50>$50</button>
         <div class="custom-input text4">
-          <input type="number" pattern="\d*" class="no-spinners transparent" value="supporter-monthly-pledge">
+          <input type="number" pattern="\d*" class="no-spinners transparent" id="monthlyCustom" value="supporter-monthly-pledge">
           <label><div>SET YOUR OWN <br> (MIN $10)</div></label>
         </div>
       </div>
     </div>
+    {% endif %}
+            {% if not flow_type = "update_pledge" %}
+
     <div class="flex-column items-center  supporter-plan-input">
       <div class="section-title section-title-no-padded">
         <div class="title1">One Time Donation</div>
@@ -70,15 +73,18 @@
       <p class="text9">This is a one time tax deductible donation to The SmallsLIVE Foundation. You will receive access to our audio/video archive for the remainder of the tax year.<br>
         If you would like to make a customized donation or donate to us directly, please contact us at foundation@smallslive.com</p>
       <div id="yearlyPledge" class="button-row button-row-big button-row-margin">
-        <button>$100</button>
-        <button>$500</button>
-        <button>$1000</button>
+        <button value=100>$100</button>
+        <button value=500>$500</button>
+        <button value=1000>$1000</button>
         <div class="custom-input text4">
-          <input type="number" pattern="\d*" class="no-spinners transparent" value="supporter-yearly-pledge">
+          <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
           <label><div>ENTER  AMOUNT<br>(MIN  $100)</div></label>
         </div>
       </div>
     </div>
+    {% endif %}
+        {% if not flow_type = "update_pledge" %}
+
     <div class="flex-column items-center  supporter-plan-input">
       <div class="section-title section-title-no-padded">
         <div class="title1">Choose a Gift Tier</div>
@@ -161,11 +167,12 @@
 
             <!-- End of single store item -->
           {% endfor %}
-
-
+           
+        
       </div>
-
+    
     </div>
+    {% endif %}
   </div>
 
   <div id="supporterStepPaymentInfo" class="supporter-step" style="display: none"

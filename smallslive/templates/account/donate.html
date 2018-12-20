@@ -1,4 +1,4 @@
-{% extends "account/contribute-flow.html" %}
+{% extends "account/become-supporter.html" %}
 {% load static from staticfiles %}
 {% load full_static %}
 {% load djstripe_tags %}
@@ -12,35 +12,73 @@
 {% endblock %}
 
 {% block flow_steps %}
+
   <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover">
     <div class="{% if not completed %}active{% endif %} step-button"></div>
     <div class="step-button"></div>
+    <div class="step-button"></div>
+    <div class="step-button hidden gift"></div>
+    <div class="step-button hidden gift"></div>
     <div class="{% if completed %}active{% endif %} step-button"></div>
   </div>
   {% if not completed %}
-  <div id="supporterStep1" class="supporter-step">
+
+  <div id="supporterStep" class="supporter-step hidden">
+
+  </div>
+
+
+  <div id="supporterStepIntro" class="supporter-step">
     <div class="supporter-text flex-column">
         <p class="title7"><span class="big-letter">T</span>HE <span class='accent-color'>SMALLSLIVE FOUNDATION</span> IS A <span class='accent-color'>NOT-FOR-PROFIT</span> ORGANIZED FOR THE PURPOSE OF THE <span class='accent-color'>DISSEMINATION OF JAZZ MUSIC</span> THROUGH OUR ARCHIVE, LIVE STREAMS, SPONSORSHIP OF INDIVIDUAL JAZZ PROJECTS & TOURS, EDUCATION, AND LIVE PERFORMACES AT SMALLS & MEZZROW. WE ARE SUPPORTED BY OUR MEMBERS THROUGH <span class='accent-color'><span class="underline">TAX DEDUCTIBLE DONATIONS</span>.</span></p>
 
     </div>
   </div>
-  <div id="supporterStep2" class="supporter-step" style="display: none">
-    <div class="text9">You are making a tax deductible donation to the SmallsLIVE Foundation.<br> You may download your tax receipt letter in your account settings.</div>
-    <div class="flex-column items-center supporter-plan-input">
+
+  <div id="supporterStepSelectType" class="supporter-step" style="display: none">
+
+    <div class="text9">You are making a tax deductible donation to the SmallsLIVE Foundation.<br>
+      You may download your tax receipt letter in your account settings. Please choose one of the following:</div>
+
+    <div class="flex-column items-center  supporter-plan-input">
       <div class="section-title section-title-no-padded">
         <div class="title1">One Time Donation</div>
       </div>
-      <p class="text9">This is a one time tax deductible donation to The SmallsLIVE Foundation. Enter any amount of you choice to support Jazz music</p>
-      <div id="oneTimePayment" class="button-row button-row-big button-row-margin">
+      <div id="yearlyPledge" class="button-row button-row-big button-row-margin">
+        <button value=100>$100</button>
+        <button value=500>$500</button>
+        <button value=1000>$1000</button>
         <div class="custom-input text4">
-          <input type="number" class="no-spinners" value="one_time_payment">
-          <label><div>Enter amount</div></label>
+          <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
+          <label><div>ENTER  AMOUNT<br>(MIN  $100)</div></label>
         </div>
       </div>
     </div>
   </div>
+
+  <div id="supporterStepPaymentInfo" class="supporter-step" style="display: none"
+       data-payment-info-url="{{ payment_info_url }}"
+       data-payment-info-complete-url="{% url 'become_supporter' %}">
+
+  </div>
+
+  <div id="supporterStepShipping" class="supporter-step" style="display: none">
+
+  </div>
+
+  <div id="supporterStepBilling" class="supporter-step" style="display: none">
+
+  </div>
+
+  <div id="supporterStepPreview" class="supporter-step" style="display: none">
+
+  </div>
+
+
   {% endif %}
+
 {% endblock %}
+
 {% block flow_completed %}
   <div id="supporterStep4" class="flex-column items-center supporter-text-container">
     <div class="supporter-text">
@@ -59,5 +97,3 @@
       <button onclick="endDonation()">Continue</button>
   {% endif %}
 {% endblock %}
-
-

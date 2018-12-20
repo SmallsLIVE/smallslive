@@ -1,13 +1,9 @@
 $(document).ready(function () {
+  if (typeof window.completeSubpage === "undefined"){
+    window.completeSubpage = "";
+  }
 
-  var monthlyAmounts = [10, 20, 50];
-  var yearlyAmounts = [100, 500, 1000];
-
-  var panels;
-  var currentStep = 'Intro';
-  var backButton = $("#backButton");
-  var confirmButton = $("#confirmButton");
-  var sentHint = $('#sentHint');
+  currentStep = 'Intro';
 
   var selectedData = {
     type: '',
@@ -190,7 +186,7 @@ $(document).ready(function () {
           window.location = data.success_url;
         } else if (data && data.error) {
           // go back to previous step
-          backButton.click();
+          $("#backButton").click();
         } else {
           submitComplete();
         }
@@ -225,12 +221,11 @@ $(document).ready(function () {
     });
   }
 
-  if (typeof completeSubpage == "undefined") {
-    var completeSubpage;
-  }
+  
 
   var buttons = $('#supporterSteps > *');
   var monthlyButtons = $("#monthlyPledge > button");
+  var yearlyButtons = $("#yearlyPledge > button");
   var giftsButtons = $('.select-gift');
 
   var resetButtons = function () {
@@ -278,6 +273,8 @@ $(document).ready(function () {
   };
 
   var resetCustom = function () {
+    yearlyCustom = $("#yearlyCustom");
+    monthlyCustom = $("#monthlyCustom");
     $(yearlyCustom).val('');
     $(yearlyCustom).removeClass('active');
     $(monthlyCustom).val('');
@@ -297,14 +294,15 @@ $(document).ready(function () {
 
     checkConfirmButton()
   };
-
-  monthlyButtons.each(function (index, el) {
-    $(el).on('click', function () {
+  $(document).on('click',  '#monthlyPledge > button', function () {
+    $(this).on('click', function () {
+      $("#monthlyPledge > button").removeClass("active");
+      $(this).addClass("active");
       $('#confirmSelectionButton').prop('disabled', false);
-      var amount = monthlyAmounts[index];
+      var amount = $(this).val()
       resetButtons();
       resetCustom();
-      $(el).addClass("active");
+      $(this).addClass("active");
       setSelected('month', amount);
       var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
       $selectionConfirmationDialog.find('.title').text('become a supporter');
@@ -316,14 +314,15 @@ $(document).ready(function () {
     })
   });
 
-  var yearlyButtons = $("#yearlyPledge > button");
-  yearlyButtons.each(function (index, el) {
-    $(el).on('click', function () {
+  
+  $(document).on('click',  '#yearlyPledge > button', function () {
+    $(this).on('click', function () {
+      $("#yearlyPledge > button").removeClass("active");
+      $(this).addClass("active");
       $('#confirmSelectionButton').prop('disabled', false);
-      var amount = yearlyAmounts[index];
+      var amount = $(this).val()
       resetButtons();
       resetCustom();
-      $(el).addClass("active");
       setSelected('year', amount);
       var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
       $selectionConfirmationDialog.modal('show');
@@ -336,13 +335,16 @@ $(document).ready(function () {
   });
 
   var oneTimePayment = $("#oneTimePayment").find("input")[0];
-  var yearlyCustom = $("#yearlyPledge").find("input")[0];
-  var monthlyCustom = $("#monthlyPledge").find("input")[0];
-  var yearlyCustom = $("#yearlyPledge").find("input")[0];
+  var monthlyCustom = $("#monthlyCustom");
+  var yearlyCustom = $("#yearlyCustom");
 
   function isPositiveInteger(s) {
     return /^\+?[1-9][\d]*$/.test(s);
   }
+
+
+
+
   $(oneTimePayment).on('keyup', function (event) {
     var value = $(oneTimePayment).val();
     if (value && isPositiveInteger(value)) {
@@ -355,7 +357,9 @@ $(document).ready(function () {
     }
   });
 
-  $(monthlyCustom).on('keyup', function (event) {
+  $(document).on('keyup',  '#monthlyCustom', function (event) {
+    monthlyCustom = $("#monthlyCustom");
+    yearlyCustom = $("#yearlyCustom");
     var value = $(monthlyCustom).val();
     if (value && isPositiveInteger(value)) {
       resetButtons();
@@ -383,7 +387,9 @@ $(document).ready(function () {
     }
   });
 
-  $(yearlyCustom).on('keyup', function (event) {
+  $(document).on('keyup',  '#yearlyCustom', function (event) {
+    monthlyCustom = $("#monthlyCustom");
+    yearlyCustom = $("#yearlyCustom");
     var value = $(yearlyCustom).val();
     if (value && isPositiveInteger(value)) {
       resetButtons();
@@ -466,9 +472,10 @@ $(document).ready(function () {
 
   var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
   var $selectionConfirmationCloseButton = $selectionConfirmationDialog.find('.close-button');
-  $('#confirmSelectionButton').click(function () {
-    $("#confirmButton").show();
-    $selectionConfirmationDialog.modal('hide');
+
+  $(document).on('click',  '#confirmSelectionButton', function () {
+    $('#confirmButton').show();
+    $('#selectionConfirmationDialog').modal('hide');
     var $variantSelect = $selectionConfirmationDialog.find('select');
     if ($variantSelect.length != 0) {
       giftSelected($variantSelect.val());
@@ -579,9 +586,9 @@ $(document).ready(function () {
     }
 
     if (currentStep === 'Intro') {
-      $(backButton).hide();
+      $("#backButton").hide();
     } else {
-      $(backButton).show();
+      $("#backButton").show();
     }
   };
 
@@ -633,6 +640,7 @@ $(document).ready(function () {
   buttonsSizeOrder();
 
   $(document).on('click', '#confirmButton', function (event) {
+    console.log(currentStep)
     var $that = $(this);
 
     if (selectedData.type == 'gift') {
@@ -645,7 +653,6 @@ $(document).ready(function () {
     }
 
     if (currentStep === 'PaymentInfo') {
-
       var method = $('#payment-method').val();
       if (method == 'credit-card') {
         var $inputs = $('.supporter-card-data .form-control');
@@ -656,9 +663,9 @@ $(document).ready(function () {
             errors = true;
           }
         });
-        sentHint.show();
+        $('#sentHint').show();
         if (errors) {
-          sentHint.hide();
+          $('#sentHint').hide();
           $('#form-general-error').text('Please correct errors above');
         } else {
           $that.prop('disabled', true);
@@ -694,11 +701,15 @@ $(document).ready(function () {
 
   });
 
-  backButton.on('click', function () {
+ 
+  $(document).on('click', '#backButton', function () {
     if(currentStep == 'PaymentInfo'){
       $('#confirmButton').hide();
     }
-
+ 
+    if(currentStep == 'SelectType'){
+      $('#confirmButton').show();
+    }
     if(currentStep == 'Shipping'){
       $('#confirmButton').hide();
     }
