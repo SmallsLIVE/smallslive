@@ -62,10 +62,6 @@
     @include bordered-input;
     background-color: white;
 
-    &:hover {
-      border: none;
-    }
-
     &.jp-card-invalid {
       border-color: $accent-color;
     }
@@ -300,7 +296,7 @@
   .custom-input {
     font-size: 1em;
     position: relative;
-    input:focus + label {
+    input:hover + label {
       visibility:hidden
     }
     .no-spinners{
