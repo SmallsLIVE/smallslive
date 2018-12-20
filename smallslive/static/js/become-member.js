@@ -450,7 +450,7 @@ $(document).ready(function () {
     $itemForm = $(this).parent().parent().parent().find('form');
     var $item = $(this).parent().parent().find('.modal-content').clone();
     var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
-    $selectionConfirmationDialog.find('.title').text('Become a supporter');
+    $selectionConfirmationDialog.find('.title').text($(this).text());
     $selectionConfirmationDialog.find('.subtitle').text('Gift Tier: ' + $(this).attr("data-type") );
     let price =  $(this).children('.price-tag').text();
     $selectionConfirmationDialog.find('.text').html('You have selected a one time, gift tier donation of <span class="smalls-color">'+price+'</span> You will receive access to ou Audio/Video Archive for the remainder of the tax year. One tima, gift-tier donations are partially tax deductible.<br> Please select your size below.');
