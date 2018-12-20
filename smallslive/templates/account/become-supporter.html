@@ -64,7 +64,8 @@
       </div>
     </div>
     {% endif %}
-    {% if not flow_type = "update_pledge" %}
+            {% if not flow_type = "update_pledge" %}
+
     <div class="flex-column items-center  supporter-plan-input">
       <div class="section-title section-title-no-padded">
         <div class="title1">One Time Donation</div>
@@ -81,6 +82,9 @@
         </div>
       </div>
     </div>
+    {% endif %}
+        {% if not flow_type = "update_pledge" %}
+
     <div class="flex-column items-center  supporter-plan-input">
       <div class="section-title section-title-no-padded">
         <div class="title1">Choose a Gift Tier</div>
@@ -163,11 +167,12 @@
 
             <!-- End of single store item -->
           {% endfor %}
-
-
+           
+        
       </div>
-      {% endif %}
+    
     </div>
+    {% endif %}
   </div>
 
   <div id="supporterStepPaymentInfo" class="supporter-step" style="display: none"
