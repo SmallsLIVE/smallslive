@@ -1375,9 +1375,10 @@
 .store-cart {
 
   &__empty {
+    text-align: center;
     padding: 60px 30px;
-    background-color: #fff;
-    border-bottom: 8px solid $main-accent-color;
+
+
 
     & h2 {
       @include lato-italic;
