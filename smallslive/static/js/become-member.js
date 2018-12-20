@@ -284,6 +284,9 @@ $(document).ready(function () {
     $(monthlyCustom).removeClass('active');
   };
 
+
+
+
   var setSelected = function (type, amount) {
     selectedData.type = type;
     selectedData.amount = amount;
@@ -340,6 +343,15 @@ $(document).ready(function () {
   var monthlyCustom = $("#monthlyPledge").find("input")[0];
   var yearlyCustom = $("#yearlyPledge").find("input")[0];
 
+
+  $(monthlyCustom).on('focusout', function(){
+    resetCustom()
+  })
+
+  $(yearlyCustom).on('focusout', function(){
+    resetCustom()
+  })
+
   function isPositiveInteger(s) {
     return /^\+?[1-9][\d]*$/.test(s);
   }
@@ -372,7 +384,7 @@ $(document).ready(function () {
           var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
           $selectionConfirmationDialog.modal('show');
           $selectionConfirmationDialog.find('.title').text('become a supporter');
-          $selectionConfirmationDialog.find('.subtitle').text('One time donation');
+          $selectionConfirmationDialog.find('.subtitle').text('Monthly pledge');
           $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a one time donation of <span class="smalls-color">$'+amount+'.</span> You will receive access to our Audio/Video Archive for the remainder of the tax year. Onetime donations are tax deductible.   ');
           $selectionConfirmationDialog.find('.gift-content');
         }
@@ -438,7 +450,7 @@ $(document).ready(function () {
     $itemForm = $(this).parent().parent().parent().find('form');
     var $item = $(this).parent().parent().find('.modal-content').clone();
     var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
-    $selectionConfirmationDialog.find('.title').text('Become a supporter');
+    $selectionConfirmationDialog.find('.title').text($(this).text());
     $selectionConfirmationDialog.find('.subtitle').text('Gift Tier: ' + $(this).attr("data-type") );
     let price =  $(this).children('.price-tag').text();
     $selectionConfirmationDialog.find('.text').html('You have selected a one time, gift tier donation of <span class="smalls-color">'+price+'</span> You will receive access to ou Audio/Video Archive for the remainder of the tax year. One tima, gift-tier donations are partially tax deductible.<br> Please select your size below.');
@@ -702,7 +714,10 @@ $(document).ready(function () {
     if(currentStep == 'Shipping'){
       $('#confirmButton').hide();
     }
-
+    
+    if(currentStep == 'SelectType'){
+      $('#confirmButton').show();
+    }
     if (currentStep === 'Intro') return;
     $('#confirmButton').text('Confirm');
 

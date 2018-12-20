@@ -180,7 +180,8 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         for product in Product.objects.filter(product_class__slug='gift'):
             context['gifts'].append(product)
 
-        context['gifts'].sort(key = lambda x: float(strategy.fetch_for_product(product=x).price.excl_tax))
+        context['gifts'].sort(key = lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
+
 
         return context
 
