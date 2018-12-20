@@ -207,7 +207,8 @@ def user_settings_view_new(request):
    
     charges_value =0
     for charge in customer_charges:
-        charges_value += charge.amount
+        if charge.amount:
+            charges_value = charges_value + charge.amount
  
         artist_info_form = ArtistInfoForm(instance=request.user)
     customer_detail = CustomerDetail.get(id=request.user.customer.stripe_id)

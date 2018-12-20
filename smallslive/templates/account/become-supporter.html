@@ -47,7 +47,7 @@
 
     <div class="text9">You are making a tax deductible donation to the SmallsLIVE Foundation.<br>
       You may download your tax receipt letter in your account settings. Please choose one of the following:</div>
-
+    {% if not flow_type = "one_time_donation" %}
     <div class="flex-column items-center supporter-plan-input">
       <div class="section-title section-title-no-padded">
         <div class="title1">Monthly Pledge</div>
@@ -63,6 +63,8 @@
         </div>
       </div>
     </div>
+    {% endif %}
+    {% if not flow_type = "update_pledge" %}
     <div class="flex-column items-center  supporter-plan-input">
       <div class="section-title section-title-no-padded">
         <div class="title1">One Time Donation</div>
@@ -164,7 +166,7 @@
 
 
       </div>
-
+      {% endif %}
     </div>
   </div>
 

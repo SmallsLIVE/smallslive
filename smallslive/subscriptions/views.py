@@ -112,7 +112,8 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         context['payment_info_url'] = reverse('payment_info')
         context['form_action'] = reverse('become_supporter')
-        context['flow_type'] = "become_supporter"
+        context['flow_type'] = self.request.GET.get('flow_type', "become_supporter")
+        print self.request.GET.get('flow_type', "become_supporter")
 
         # We need to clear the basket in case the user has anything in there.
         self.request.basket.flush()

@@ -84,16 +84,16 @@
           {% elif customer_detail.subscription.plan and not cancelled %}
             <div class="flex-row supporter-options">  
             <button class="white-border-button" onclick="$('#cancel-subscription').modal('toggle')">Cancel</button>    
-            <button class="white-border-button update-pledge">Update Pledge</button>  
+            <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Update Pledge</a>  
             </div>  
           {% else  %}
-            <button class="white-border-button update-pledge">Make a Recurring Monthly Pledge</button>    
+            <a href="/subscriptions/supporter/?flow_type=update_pledge" class="white-border-button">Make a Recurring Monthly Pledge</a>    
           {% endif %}
         </div>
       
         <div class="account-settings-info ">
           {% if customer_detail.subscription.plan or user_archive_access_until %}
-          <button class="white-border-button" id="one-time-donation-btn">Make a One Time Donation</button>
+          <a href="/subscriptions/supporter/?flow_type=one_time_donation" class="white-border-button">Make a One Time Donation</a>
           {% endif %}
         </div>
         <div class="account-settings-info">
