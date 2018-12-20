@@ -6,11 +6,8 @@
             <p class="form-error-text">{{ error  }}</p>
         {% endfor %}
     </div>
-    <input type="submit" class="white-border-button" name="change_email" value="Change email">
-</form>
-<form class="custom-form" role="form" id="edit-profile-form" method="post" action="{% url "user_settings_new" %}">
-    {% csrf_token %}
     <div class="form-group {% if change_profile_form.first_name.errors  %}has-error{% endif %}">
+
         {{ change_profile_form.first_name }}
         {% for error in change_profile_form.first_name.errors %}
             <p class="form-error-text">{{ error  }}</p>
@@ -22,10 +19,7 @@
             <p class="form-error-text">{{ error  }}</p>
         {% endfor %}
     </div>
-    <input type="submit" class="white-border-button" name="edit_profile" value="Change name">
-</form>
-<form class="custom-form" role="form" id="change-password-form" method="post" action="{% url "user_settings_new" %}">
-    {% csrf_token %}
+
     <div class="form-group {% if change_password_form.oldpassword.errors  %}has-error{% endif %}">
         <input type="password" class="form-control" name="oldpassword" id="oldpassword" placeholder="Current password">
         {% for error in change_password_form.oldpassword.errors %}
@@ -44,5 +38,36 @@
             <p class="form-error-text">{{ error  }}</p>
         {% endfor %}
     </div>
-    <input type="submit" class="white-border-button" name="change_password" value="Change password">
+    <input type="hidden" id="change-password" name="not_password" value="Change password">
+    <input type="hidden" id="edit-profile" name="not_profile" value="Change name">
+    <input type="hidden" id="change-mail" name="not_email" value="Change email">
 </form>
+<button id="save-changes" class="white-border-button" name="edit_profile" value="Change name">save</button>
+
+<script>
+
+
+    $('#save-changes').click(function(){
+        $('#change-email-form').submit()
+    })
+        $(document).on('change', '#id_email',function(){
+          $('#change-mail').attr('name', 'change_email')
+        })
+        $(document).on('change', '#id_first_name',function(){
+          $('#change-mail').attr('name', 'edit_profile')
+        })
+        $(document).on('change', '#id_last_name',function(){
+          $('#change-mail').attr('name', 'edit_profile')
+        })
+        $('#password2').change(function(){
+          $('#change-password').attr('name', 'change_password')
+        })
+        $('#password1').change(function(){
+          $('#change-password').attr('name', 'change_password')
+        })
+        $('#oldpassword').change(function(){
+          $('#change-password').attr('name', 'change_password')
+        })
+
+
+</script>
