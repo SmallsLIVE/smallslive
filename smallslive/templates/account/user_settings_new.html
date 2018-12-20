@@ -101,7 +101,7 @@
           <div class="text9 text-grey">
             {% with customer_charges|first as first_charge%}
             {% if not customer_charges %}
-            You haven't made an invoice yet
+            You have not yet made a donation
             {% else %}
             {{ first_charge.created|date:"d/m/Y"  }} ${{ first_charge.amount }}
             {% endif %}
