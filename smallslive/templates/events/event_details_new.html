@@ -231,10 +231,11 @@
       subpages.loadAll();
 
       $('#one-time-donation-btn').on('click', function () {
+        currentStep = 'Intro';
         $('#donate-setting-steps-complete').html("")
         $('#one-time-donation').modal('show');
         var donationSubpage = window.subpages.get("make-donation");
-        
+        window.currentStep = 'Intro';
         window.notCompleteContainer = $('#donate-setting-steps')
         donationSubpage.load();
 

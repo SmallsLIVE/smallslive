@@ -3,7 +3,7 @@ $(document).ready(function () {
     window.completeSubpage = "";
   }
 
-  var currentStep = 'Intro';
+  currentStep = 'Intro';
 
   var selectedData = {
     type: '',

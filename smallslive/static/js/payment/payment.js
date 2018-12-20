@@ -91,7 +91,6 @@ function startStripePayment($form, action_url, completeSubpage) {
         success: function (data) {
           if(typeof completeSubpage !== "undefined" && completeSubpage){
             window.notCompleteContainer.html("")
-            currentStep = 'Intro';
             var flowCompleteSubpage = window.subpages.get(completeSubpage);
             flowCompleteSubpage.load();
           }
