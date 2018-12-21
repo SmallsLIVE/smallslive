@@ -40,6 +40,7 @@ class IndexView(checkout_views.IndexView):
             self.checkout_session.set_reservation_name(first_name, last_name)
         return super(IndexView, self).form_valid(form)
 
+
 class ShippingAddressView(checkout_views.ShippingAddressView):
 
     def get_template_names(self):
@@ -101,13 +102,11 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             kwargs['form'] = PaymentForm(self.request.user)
         if 'billing_address_form' not in kwargs and self.request.user.is_authenticated():
             shipping_address = self.get_shipping_address(self.request.basket)
-            if self.request.user.is_authenticated():
-                billing_initial = self.get_billing_initial()
-            else:
-                billing_initial = {}
+            billing_initial = self.get_billing_initial()
+            kwargs['billing_address_form'] = BillingAddressForm(
+                shipping_address, self.request.user,
+                initial=billing_initial)
 
-            kwargs['billing_address_form'] = BillingAddressForm(shipping_address, self.request.user,
-                                                                initial=billing_initial)
         if hasattr(self, 'token'):
             kwargs['stripe_token'] = self.token
 
@@ -383,7 +382,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         # Send confirmation message (normally an email)
         order_type_code = 'ORDER_PLACED'
         first_element_type = order.lines.first().product.get_product_class().name
-        if first_element_type == 'Tickets':
+        if first_element_type == 'Ticket':
             order_type_code = 'TICKET_PLACED'
         self.send_confirmation_message(order, order_type_code)
 

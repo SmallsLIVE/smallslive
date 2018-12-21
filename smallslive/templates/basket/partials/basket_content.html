@@ -81,13 +81,24 @@
                                                         {% endthumbnail %}
                                                         {% endwith %}
                                                     {% else %}
-                                                        {% with image=product.album.primary_image %}
-                                                        {% thumbnail image.original "100x100" upscale=False as thumb %}
-                                                            <a class="square-container" href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
-                                                                                                      src="{{ thumb.url }}"
-                                                                                                      alt="{{ product.get_title }}"></a>
-                                                        {% endthumbnail %}
-                                                        {% endwith %}
+                                                        {% if product.album %}
+
+                                                            {% with image=product.album.primary_image %}
+                                                                {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                                                    <a class="square-container" href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                                              src="{{ thumb.url }}"
+                                                                                                              alt="{{ product.get_title }}"></a>
+                                                                {% endthumbnail %}
+                                                            {% endwith %}
+                                                        {% else %}
+                                                            {% with image=product.primary_image %}
+                                                                {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                                                    <a class="square-container" href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                                              src="{{ thumb.url }}"
+                                                                                                              alt="{{ product.get_title }}"></a>
+                                                                {% endthumbnail %}
+                                                            {% endwith %}
+                                                        {% endif %}
                                                     {% endif %}
 
                                                 </div>
