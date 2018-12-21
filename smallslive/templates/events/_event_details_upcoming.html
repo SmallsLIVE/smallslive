@@ -66,8 +66,8 @@
     $('#confirm-buy-tickets').click(function(){
       $(".reservation_form").submit()
     })
-    $('#cancel-buy-ticket').click(function(){
-      $('#buy-tickets-dialog').modal('hide');
+    $('#cancel-buy-tickets').click(function(){
+      $('#buy-tickets-dialog').modal('toggle');
     })
     $('#btn-play-event').click(function () {
       var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
