@@ -21,11 +21,11 @@
                     </div>
                     {% if not is_future %}
                     <div class="text2 ">
-                        <span id="event-plays">{{event.get_play_total}}</span> plays /<span id="event-time">{{event.get_seconds_total}}</span>
+                        <span id="event-plays">{{ event.get_play_total }}</span> plays /<span id="event-time">{{ event.get_seconds_total }}</span>
                     </div>
                     {% else %}
                     <div class="text2 ">
-                        <span class="accent-color">{{event.venue}}</span>
+                        <span class="{{ event.venue|lower }}-color">{{ event.venue }}</span>
                     </div>
                     {% endif %}
                   </div>
@@ -50,6 +50,7 @@
         url: infoUrl,
           success: function (data) {
             var $target;
+            console.log(data);
             if( viewPortLength("width") > 425) {
               $('#event-info-mobile-card').html("")
               $target = $('#artistEventsInfo');
