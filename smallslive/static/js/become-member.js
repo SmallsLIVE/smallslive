@@ -519,6 +519,7 @@ $(document).ready(function () {
   };
 
   $(document).on('keyup', '#payment-form input', function (e) {
+    flowKind = $('#supporterSteps').data('flow')
     checkConfirmButton();
 
     if (e.which > 90 || e.which < 48) {
@@ -570,9 +571,10 @@ $(document).ready(function () {
     if (currentStep === 'SelectType') {
       if (
         selectedData.type === 'month' && selectedData.amount >= 10 ||
-        selectedData.type === 'year' && selectedData.amount >= 100 ||
+        selectedData.type === 'year' && selectedData.amount >= 100 || 
         selectedData.type === 'one-time' ||
-        selectedData.type === 'gift'
+        selectedData.type === 'gift' ||
+        flowKind !== 'become_supporter'
       ) {
         $confirmButton.prop('disabled', false);
       } else {
