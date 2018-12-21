@@ -2,7 +2,6 @@ $(document).ready(function () {
   if (typeof window.completeSubpage === "undefined"){
     window.completeSubpage = "";
   }
-
   currentStep = 'Intro';
 
   var selectedData = {
@@ -403,6 +402,7 @@ $(document).ready(function () {
     monthlyCustom = $("#monthlyCustom");
     yearlyCustom = $("#yearlyCustom");
     var value = $(yearlyCustom).val();
+    flowKind = $('#supporterSteps').data('flow')
     if (value && isPositiveInteger(value)) {
       resetButtons();
       $(monthlyCustom).val('');
@@ -411,7 +411,7 @@ $(document).ready(function () {
       $(monthlyCustom).removeClass('active');
       if (event.keyCode == 13) {
         var amount = $(this).val();
-        if(amount > 99){
+        if(amount > 99 || flowKind !== 'become_supporter'){
           resetButtons();
           resetCustom();
           setSelected('year', amount);
