@@ -2,7 +2,7 @@ from decimal import Decimal as D
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from oscar.apps.basket.abstract_models import AbstractBasket
-
+from oscar_apps.order.models import Order
 
 class Basket(AbstractBasket):
     def has_physical_products(self):
@@ -27,6 +27,16 @@ class Basket(AbstractBasket):
     def physical_lines(self):
         return self.all_lines().select_related('product').filter(Q(product__product_class__requires_shipping=True) |
                                                                  Q(product__parent__product_class__requires_shipping=True))
+
+    def get_order_type(self):
+
+        order_type = Order.REGULAR
+        if self.has_gifts():
+            order_type = Order.GIFT
+        elif self.has_tickets():
+            order_type = Order.TICKET
+
+        return order_type
 
     def _get_digital_total(self, property):
         total = D('0.00')

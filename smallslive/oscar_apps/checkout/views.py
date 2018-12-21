@@ -275,7 +275,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         try:
             print 'try handle payment: '
             print order_number
-            print  order_total
+            print order_total
             self.handle_payment(order_number, order_total, basket_lines, **payment_kwargs)
         except RedirectRequired as e:
             # Redirect required (eg PayPal, 3DS)
@@ -357,6 +357,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         try:
             print user
             print 'Handle order placement'
+
+            order_kwargs.update({'order_type': basket.get_order_type()})
             return self.handle_order_placement(
                 order_number, user, basket, shipping_address, shipping_method,
                 shipping_charge, billing_address, order_total, **order_kwargs)
@@ -500,6 +502,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
                 url = 'become_supporter'
         return url
 
+
 class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
     """
     """
@@ -560,7 +563,8 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
             basket, shipping_charge=shipping_charge)
         billing_address = self.get_billing_address(shipping_address)
         # Place order
+        order_kwargs = {'order_type': basket.get_order_type()}
         super(ExecutePayPalPaymentView, self).handle_order_placement(
             order_number, self.request.user, basket,
             shipping_address, shipping_method, shipping_charge,
-            billing_address, order_total)
+            billing_address, order_total, order_kwargs)
