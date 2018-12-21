@@ -11,8 +11,19 @@ CommunicationEventType = get_model('customer', 'CommunicationEventType')
 
 class Order(AbstractOrder):
 
+    GIFT = 'gift'
+    REGULAR = 'regular'
+    TICKET = 'ticket'
+
+    ORDER_TYPE_CHOICES = (
+        (GIFT, 'gift'),
+        (REGULAR, 'regular'),
+        (TICKET, 'ticket'),
+    )
+
     first_name = models.CharField(max_length=150, blank=True)
     last_name = models.CharField(max_length=150, blank=True)
+    order_type = models.CharField(max_length=32, choices=ORDER_TYPE_CHOICES, default=REGULAR)
 
     def has_physical_products(self):
         physical_count = self.lines.filter(product__product_class__requires_shipping=True).count()
