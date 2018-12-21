@@ -33,7 +33,10 @@
     border-color: $text-grey;
   }
 }
-
+.pp-btn{
+  border: 0px;
+  background: #f0f0eb;
+}
 .white-border-button {
   @include white-border-button;
 

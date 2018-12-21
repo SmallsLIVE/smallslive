@@ -1,4 +1,4 @@
-function renderPayPal(paypal) {
+function renderPayPal(paypal, ammount) {
   paypal.Button.render({
     // Configure environment
     env: 'sandbox',
@@ -9,17 +9,18 @@ function renderPayPal(paypal) {
     // Customize button (optional)
     locale: 'en_US',
     style: {
-      label: 'pay',
-      size: 'responsive',
-      color: 'white',
+      size: 'small',
+      color: 'silver',
       shape: 'rect',
-    },
+      label: '',
+      tagline: 'false'
+      },
     // Set up a payment
     payment: function(data, actions) {
       return actions.payment.create({
         transactions: [{
           amount: {
-            total: '0.01',
+            total: ammount,
             currency: 'USD'
           }
         }]
@@ -28,6 +29,14 @@ function renderPayPal(paypal) {
     // Execute the payment
     onAuthorize: function(data, actions) {
       return actions.payment.execute().then(function() {
+        if(typeof completeSubpage !== "undefined"){
+          notCompleteContainer.html("")
+          var flowCompleteSubpage = window.subpages.get(completeSubpage);
+          flowCompleteSubpage.load();
+        }
+        else{
+          window.location = data.location
+        }
         $('#place-order').submit();
         return;
 

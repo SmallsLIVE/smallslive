@@ -625,6 +625,7 @@ $(document).ready(function () {
         updatePaymentInfo();
         replaceWhiteSelects($('#supporterStepPaymentInfo')[0]);
         renderCardAnimation('#payment-form');
+        renderPayPal(paypal, selectedData.amount);
         showPanel(getNextStep());
       },
       error: function( xhr, err ) {
