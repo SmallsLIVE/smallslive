@@ -8,12 +8,10 @@
 
     </div>
     <div class="hidden-xs hidden-sm col-md-10 col-lg-11 no-padding">
-      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-5 store-cart__table__cell">
-        Event
+      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-7 store-cart__table__cell">
+        Tickets to buy now
       </div>
-      <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 store-cart__table__cell option">
-        Set
-      </div>
+     
       <div class="store-cart__mobile-quantity col-md-6 col-lg-4">
         <div class="store-cart__mobile-quantity__half">
           <div class="col-xs-12 store-cart__table__cell quantity">
@@ -48,18 +46,18 @@
                   <div class="col-xs-3 col-sm-3 col-md-2 col-lg-1 store-cart__table__cell image">
                   {% with image=product.event_set.event.get_photo_url %}
 
-                          <a href="{{ product.event.get_absolute_url }}"><img class="defineImageRatio"
-                                                                    src="{{ image }}"
+                          <a href="{{ product.event_set.event.get_absolute_url }}"><img class="defineImageRatio"
+                                                                    src="{% if image %} {{image}} {% else %} {% static 'image/no-event-image-placeholder.jpg' %} {% endif %}"
                                                                     alt="{{ product.get_title }}"></a>
 
                   {% endwith %}
                 </div>
-                <div class="col-xs-8 col-sm-8 col-md-10 col-lg-11 no-padding">
+                <div class="col-xs-8 col-sm-8 col-md-10 col-lg-10 no-padding">
                   <div class="col-xs-12 col-sm-12 col-md-3 col-lg-5 store-cart__table__cell name">
-                      <a href="{{ product.get_absolute_url }}">{{ product.get_title }}</a>
+                      <a href="{{ product.get_absolute_url }}">{{ product.get_title }} {{ product.set }} at {{ product.event_set.event.venue }}</a>
                   </div>
                   <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 store-cart__table__cell set">
-                    {{ product.set }}
+                    
                   </div>
                   <div class="store-cart__mobile-quantity col-md-6 col-lg-4">
                     <div class="store-cart__mobile-quantity__half">
