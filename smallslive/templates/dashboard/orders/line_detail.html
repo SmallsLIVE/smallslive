@@ -170,8 +170,7 @@
       </table>
     </div>
   </div>
-  <pre>{{ line.order.order_type }}</pre>
-  {% if line.status == "Completed" %}
+  {% if line.order.order_type == "ticket" %}
     <div class="row-fluid">
       <div class="span4">
         <div class="table-header">
