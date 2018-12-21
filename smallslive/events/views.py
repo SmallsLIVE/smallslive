@@ -126,32 +126,34 @@ def _get_most_popular(range=None):
     return context
 
 
-def _get_most_popular_uploaded(range_size=None):
+def _get_most_popular_uploaded(range_size=RANGE_MONTH):
 
-    range_start, range_end = calculate_query_range(range_size)
+    range_end = timezone.now()
 
-    qs = UserVideoMetric.objects.all()
+    if range_size == RANGE_MONTH:
+        range_start = range_end - timedelta(days=30)
+    if range_size == RANGE_WEEK:
+        range_start = range_end - timedelta(days=7)
+    if range_size == RANGE_YEAR:
+        range_start = range_end - timedelta(days=365)
+
+    qs = Event.objects.all()
     if range_size:
         qs = qs.filter(
-            event_date__gte=range_start,
-            event_date__lte=range_end
+            date__gte=range_start,
+            date__lte=range_end
         )
 
-    print qs.query
-
-    event_values = qs.values('event_id').annotate(
+    event_values = qs.values('id').annotate(
         count=Sum('seconds_played')
     ).order_by('-count')[:10]
 
-    event_ids = [e['event_id'] for e in event_values]
+    items = []
+    for item in event_values:
+        event = Event.objects.get(pk=item['id'])
+        items.append(event)
 
-    sqs = Event.objects.filter(
-        id__in=event_ids,
-        recordings__media_file__isnull=False,
-        recordings__state=Recording.STATUS.Published
-    ).distinct()
-
-    return sqs
+    return items
 
 
 def order_events_by_popular(sqs):
@@ -186,7 +188,7 @@ class HomepageView(ListView, UpcomingEventMixin):
         context = super(HomepageView, self).get_context_data(**kwargs)
         context = self.get_upcoming_events_context_data(context)
         context['popular_in_archive'] = _get_most_popular_uploaded()
-        context['popular_select'] = 'alltime'
+        context['popular_select'] = 'month'
         context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
 
@@ -221,7 +223,7 @@ class MostPopularEventsAjaxView(AJAXMixin, ListView):
 
     def get_queryset(self):
         metrics_range = RANGE_WEEK
-        received_range = self.request.GET.get('range', 'weekly')
+        received_range = self.request.GET.get('range', 'week')
         if received_range:
             if received_range == 'week':
                 metrics_range = RANGE_WEEK
@@ -229,10 +231,10 @@ class MostPopularEventsAjaxView(AJAXMixin, ListView):
                 metrics_range = RANGE_MONTH
             if received_range == 'year':
                 metrics_range = RANGE_YEAR
-            if received_range == 'alltime':
-                metrics_range = None
 
-        most_popular = _get_most_popular_uploaded(metrics_range)
+            most_popular = _get_most_popular_uploaded(range_size=metrics_range)
+        else:
+            most_popular = _get_most_popular_uploaded()
 
         return most_popular
 
