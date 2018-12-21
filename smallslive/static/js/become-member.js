@@ -180,11 +180,8 @@ $(document).ready(function () {
       data: $(this).serialize(),
       success: function( data ) {
         if (data && data.payment_url) {
-          alert("bbb")
           window.location = data.payment_url;
         } else if (data && data.success_url) {
-          alert("ccc")
-
           window.location = data.success_url;
         } else if (data && data.error) {
           // go back to previous step
@@ -215,7 +212,6 @@ $(document).ready(function () {
           flowCompleteSubpage.load();
         }
         else{
-          alert("aaa")
           window.location = data.location
         }
       },
