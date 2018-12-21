@@ -100,7 +100,7 @@
                     </div>
                 </div>
                 {% endif %}
-                {% if basket.has_digital_products or basket.has_tickets %}
+                {% if basket.has_digital_products %}
                     <div class="store-overview__group">
                     <h4 class="store-overview__group__table__heading">Digital downloads:</h4>
                     <div class="store-overview__group__table">
@@ -194,7 +194,7 @@
                     {% endif %}
                 </div>
                 <div class="store-overview__return-button__container">
-                    <a href="{% url "checkout:shipping-address" %}" class="white-border-button"><i class="fa fa-angle-double-left"></i> Back to shipping</a>
+                    <a href="{% url "checkout:shipping-address" %}" class="white-border-button">Back to shipping </a>
                 </div>
                 <div class="store-overview__group">
                     <h3 class="store-overview__group__heading">Billing information:</h3>
@@ -213,7 +213,7 @@
                         <p>xxxx xxxx xxxx {{ card_info.last_4 }}</p>
                     </div>
                     <div class="store-overview__return-button__container">
-                    <a href="{% url "checkout:payment-details" %}" class="white-border-button"><i class="fa fa-angle-double-left"></i> Back to billing</a>
+                    <a href="{% url "checkout:payment-details" %}" class="white-border-button"> Back to billing</a>
                 </div>
                 </div>
             </div>
