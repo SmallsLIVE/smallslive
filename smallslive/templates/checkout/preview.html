@@ -28,6 +28,9 @@
                 {% if basket.has_digital_products %}
                     {% include 'checkout/digital_products.html' %}
                 {% endif %}
+                {% if basket.has_tickets %}
+                    {% include 'checkout/tickets_products.html' %}
+                {% endif %}
                 <div class="store-overview__return-button__container">
                     <a href="{% url "basket:summary" %}" class="white-border-button checkout-white right"> Back to cart</a>
                 </div>
