@@ -5,7 +5,6 @@ from natsort import natsorted
 from oscar.core.loading import get_class
 from oscar.apps.dashboard.reports.views import IndexView
 from events.models import Event
-from datetime import date 
 
 
 Line = get_class('order.models', 'Line')
@@ -13,11 +12,9 @@ Line = get_class('order.models', 'Line')
 
 from django.http import HttpResponseForbidden, Http404
 from django.template.response import TemplateResponse
-from django.views.generic import ListView
 from django.utils.translation import ugettext_lazy as _
-
 from oscar.core.loading import get_class
-ReportForm = get_class('dashboard.reports.forms', 'ReportForm')
+from oscar_apps.dashboard.reports.forms import ReportForm
 GeneratorRepository = get_class('dashboard.reports.utils',
                                 'GeneratorRepository')
 
