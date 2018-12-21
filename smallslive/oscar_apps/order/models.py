@@ -23,7 +23,7 @@ class Order(AbstractOrder):
         return digital_count > 0
     
     def has_tickets(self):
-        tickets_count = self.lines.filter(product__product_class__name='Tickets').count()
+        tickets_count = self.lines.filter(product__product_class__name='Ticket').count()
         return tickets_count > 0
     
     def has_gift(self):

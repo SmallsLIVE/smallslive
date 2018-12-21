@@ -19,8 +19,7 @@
       {% if event.get_tickets|length < event.sets.count %}
         <div class="alert alert-warning">
           <div id="div_id_state" class="form-group">
-            <label for="id_state" class="control-label">Add tickets to sets (create sets as needed)</label>
-
+            <label class="control-label">Add tickets to sets (create sets as needed)</label>
             <div class="controls ">
               {% for ticket_form in ticket_forms %}
                 {% crispy ticket_form %}

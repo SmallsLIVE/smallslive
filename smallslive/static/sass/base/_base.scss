@@ -162,6 +162,13 @@ a:hover {
   margin-bottom: 0;
   padding: 10px;
 }
+.alert-buttons {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
 
 p.unavailable {
     opacity: 0.6;

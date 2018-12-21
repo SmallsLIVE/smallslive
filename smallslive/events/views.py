@@ -371,6 +371,8 @@ class EventDetailView(DetailView):
         context['sets'] = event.get_sets_info_dict()
         context['event_artists'] = event.get_artists_info_dict()
         context['donate_url'] = reverse('donate')
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+
 
         return context
 

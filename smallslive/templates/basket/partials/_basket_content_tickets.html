@@ -46,7 +46,7 @@
               <div class="store-cart__table__row__container">
                 {{ form.id }}
                   <div class="col-xs-3 col-sm-3 col-md-2 col-lg-1 store-cart__table__cell image">
-                  {% with image=product.event.get_photo_url %}
+                  {% with image=product.event_set.event.get_photo_url %}
 
                           <a href="{{ product.event.get_absolute_url }}"><img class="defineImageRatio"
                                                                     src="{{ image }}"

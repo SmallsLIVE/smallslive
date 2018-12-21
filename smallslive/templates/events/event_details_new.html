@@ -216,7 +216,10 @@
   <script src="{% static 'js/payment/payment.js' %}"></script>
   <script src="https://js.stripe.com/v2/"></script>
   <script>
+    window.completeSubpage = "make-donation-complete"
+
     $(document).ready(function () {
+      Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
 
       function renderObjects() {
         // in payment.js
@@ -230,11 +233,12 @@
       
 
       $('#one-time-donation-btn').on('click', function () {
+        currentStep = 'Intro';
         $('#donate-setting-steps-complete').html("")
         $('#one-time-donation').modal('show');
         var donationSubpage = window.subpages.get("make-donation");
-        completeSubpage = "make-donation-complete"
-        notCompleteContainer = $('#donate-setting-steps')
+        window.currentStep = 'Intro';
+        window.notCompleteContainer = $('#donate-setting-steps')
         donationSubpage.load();
 
       });

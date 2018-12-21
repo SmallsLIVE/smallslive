@@ -131,7 +131,7 @@ def user_settings_view(request):
 
 @login_required
 def user_settings_view_new(request):
-
+    profile_updated = False
     # if this is a POST request we need to process the form data
     if 'edit_profile' in request.POST:
         # create a form instance and populate it with data from the request:
@@ -140,7 +140,7 @@ def user_settings_view_new(request):
         if edit_profile_form.is_valid():
             edit_profile_form.save(request)
             messages.success(request, "You've successfully updated your profile.")
-            return HttpResponseRedirect('/accounts/settings/')
+            profile_updated = True
     # if a GET (or any other method) we'll create a blank form
     else:
         edit_profile_form = EditProfileForm(user=request.user)
@@ -158,6 +158,7 @@ def user_settings_view_new(request):
             }, status=500))
 
         messages.success(request, 'Your account card has been changed successfully.')
+        profile_updated = True
     
 
     if 'change_email' in request.POST:
@@ -165,7 +166,7 @@ def user_settings_view_new(request):
         if change_email_form.is_valid():
             change_email_form.save(request)
             messages.success(request, 'Your email address has been changed successfully.')
-            return HttpResponseRedirect(reverse('account_email_verification_sent'))
+            profile_updated = True
     else:
         change_email_form = ChangeEmailForm(user=request.user)
 
@@ -174,7 +175,7 @@ def user_settings_view_new(request):
         if change_password_form.is_valid():
             change_password_form.save()
             messages.success(request, 'Your password has been changed successfully.')
-            return HttpResponseRedirect('/accounts/settings/')
+            profile_updated = True
     else:
         change_password_form = ChangePasswordForm(user=request.user)
     
@@ -186,12 +187,14 @@ def user_settings_view_new(request):
         if artist_info_form.is_valid():
             artist_info_form.save(request)
             messages.success(request, "You've successfully updated your profile.")
-            return HttpResponseRedirect('/accounts/settings/')
+            profile_updated = True
     # if a GET (or any other method) we'll create a blank form
     else:
         artist_info_form = ArtistInfoForm(instance=request.user)
     #Context for strip info
-
+    if profile_updated:
+        return HttpResponseRedirect('/accounts/settings/')
+        
     plan = None
     period_end = {}
     period_end["date"] = None
@@ -207,7 +210,8 @@ def user_settings_view_new(request):
    
     charges_value =0
     for charge in customer_charges:
-        charges_value += charge.amount
+        if charge.amount:
+            charges_value = charges_value + charge.amount
  
         artist_info_form = ArtistInfoForm(instance=request.user)
     customer_detail = CustomerDetail.get(id=request.user.customer.stripe_id)

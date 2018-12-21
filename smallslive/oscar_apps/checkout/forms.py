@@ -162,7 +162,6 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
         pass
 
 
-
 class GatewayForm(CoreGatewayForm):
     username = forms.EmailField(required=True,widget=forms.TextInput(attrs={'placeholder': 'Email'}))
     first_name = forms.CharField(max_length=150, required=True,

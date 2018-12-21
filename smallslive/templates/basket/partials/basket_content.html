@@ -73,21 +73,34 @@
                                                 <div class="col-xs-3 col-sm-3 col-md-2 col-lg-1 store-cart__table__cell image">
                                                     {{ form.id }}
                                                     {% if product.parent %}
-                                                        {% with image=product.parent.primary_image %}
-                                                        {% thumbnail image.original "100x100" upscale=False as thumb %}
-                                                            <a class="square-container" href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
-                                                                                                      src="{{ thumb.url }}"
-                                                                                                      alt="{{ product.get_title }}"></a>
-                                                        {% endthumbnail %}
-                                                        {% endwith %}
+                                                        {% if product.parent.primary_image  %}
+                                                            {% with image=product.parent.primary_image %}
+                                                            {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                                                <a class="square-container" href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                                        src="{{ thumb.url }}"
+                                                                                                        alt="{{ product.get_title }}"></a>
+                                                            {% endthumbnail %}
+                                                            {% endwith %}
+                                                        {% endif %}
                                                     {% else %}
-                                                        {% with image=product.album.primary_image %}
-                                                        {% thumbnail image.original "100x100" upscale=False as thumb %}
-                                                            <a class="square-container" href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
-                                                                                                      src="{{ thumb.url }}"
-                                                                                                      alt="{{ product.get_title }}"></a>
-                                                        {% endthumbnail %}
-                                                        {% endwith %}
+                                                        {% if product.album %}
+
+                                                            {% with image=product.album.primary_image %}
+                                                                {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                                                    <a class="square-container" href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                                              src="{{ thumb.url }}"
+                                                                                                              alt="{{ product.get_title }}"></a>
+                                                                {% endthumbnail %}
+                                                            {% endwith %}
+                                                        {% else %}
+                                                            {% with image=product.primary_image %}
+                                                                {% thumbnail image.original "100x100" upscale=False as thumb %}
+                                                                    <a class="square-container" href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
+                                                                                                              src="{{ thumb.url }}"
+                                                                                                              alt="{{ product.get_title }}"></a>
+                                                                {% endthumbnail %}
+                                                            {% endwith %}
+                                                        {% endif %}
                                                     {% endif %}
 
                                                 </div>
@@ -191,6 +204,7 @@
                                                         {% endthumbnail %}
                                                     {% endwith %}
                                                 {% else %}
+                                                    {% if product.album.primary_image  %}
                                                     {% with image=product.primary_image %}
                                                         {% thumbnail image.original "100x100" upscale=False as thumb %}
                                                             <a href="{{ product.get_absolute_url }}"><img class="defineImageRatio"
@@ -198,6 +212,7 @@
                                                                                                       alt="{{ product.get_title }}"></a>
                                                         {% endthumbnail %}
                                                     {% endwith %}
+                                                    {% endif %}
                                                 {% endif %}
                                                 </div>
                                                 <div class="col-xs-8 col-sm-8 col-md-10 col-lg-11 no-padding">
