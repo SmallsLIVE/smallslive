@@ -567,7 +567,7 @@ $(document).ready(function () {
   var checkConfirmButton = function () {
 
     var $confirmButton = $('#confirmButton');
-
+    flowKind = $('#supporterSteps').data('flow')
     if (currentStep === 'SelectType') {
       if (
         selectedData.type === 'month' && selectedData.amount >= 10 ||
