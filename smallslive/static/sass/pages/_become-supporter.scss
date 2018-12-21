@@ -296,10 +296,10 @@
   .custom-input {
     font-size: 1em;
     position: relative;
-    input:hover + label {
+    input:focus + label {
       visibility:hidden
     }
-    input:focus + label {
+    input:hover + label {
       visibility:hidden
     }
     .no-spinners{
