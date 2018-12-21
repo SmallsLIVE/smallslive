@@ -21,7 +21,7 @@
 {% endblock %}
 {% block flow_steps %}
 
-  <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover">
+  <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover" data-flow="{{flow_type}}">
     <div class="{% if not completed %}active{% endif %} step-button"></div>
     <div class="step-button"></div>
     <div class="step-button"></div>
@@ -220,5 +220,5 @@
       <button>Access the archive</button>
     </a>
   {% endif %}
-
+  
 {% endblock %}
