@@ -144,7 +144,7 @@
                            id="card-number" placeholder="XXXX XXXX XXXX XXXX" size="20" pattern="[\d ]*"
                            data-stripe="number"
                            autocomplete="off"
-                           name="number" {% if payment_form.number.value %}value="{{ payment_form.number.value }}"{% endif %}
+                           name="number" {% if form.number.value %}value="{{ payment_form.number.value }}"{% endif %}
                            placeholder="Credit Card Number">
                     {% for error in payment_form.number.errors %}
                         <span class="store__form__field-error">{{ error }}</span>
@@ -155,9 +155,9 @@
                     <input type="text" class="store__form__input"
                            data-stripe="exp-month"
                            id="expiry-month" placeholder="MM" size="2" pattern="\d*"
-                           autocomplete="off" name="exp_month" {% if payment_form.exp_month.value %}value="{{ payment_form.exp_month.value }}"{% endif %}
+                           autocomplete="off" name="exp_month" {% if form.exp_month.value %}value="{{ payment_form.exp_month.value }}"{% endif %}
                            placeholder="Valid thru">
-                    {% for error in payment_form.exp_month.errors %}
+                    {% for error in form.exp_month.errors %}
                     <span class="store__form__field-error">{{ error }}</span>
                   {% endfor %}
                   </div>
@@ -167,7 +167,7 @@
                                id="expiry-year" placeholder="YY" size="2"
                                pattern="\d*" autocomplete="off"
                                name="exp_year" {% if payment_form.exp_year.value %}value="{{ payment_form.exp_year.value }}"{% endif %}>
-                        {% for error in payment_form.exp_year.errors %}
+                        {% for error in form.exp_year.errors %}
                       <span class="store__form__field-error">{{ error }}</span>
                   {% endfor %}
                     </div>
@@ -180,15 +180,15 @@
                            placeholder="Name on card"
                            data-stripe="name"
                            autocomplete="off"
-                           name="name" {% if payment_form.name.value %}value="{{ payment_form.name.value }}"{% endif %}>
+                           name="name" {% if form.name.value %}value="{{ payment_form.name.value }}"{% endif %}>
                   </div>
                   <div class="col-xs-3">
                     <input type="text" class="store__form__input"
                            id="cvc" placeholder="xxx" size="4"
                            data-stripe="cvc"
                            pattern="\d*" autocomplete="off"
-                           name="cvc" {% if payment_form.cvc.value %}value="{{ payment_form.cvc.value }}"{% endif %}>
-                    {% for error in payment_form.cvc.errors %}
+                           name="cvc" {% if form.cvc.value %}value="{{ payment_form.cvc.value }}"{% endif %}>
+                    {% for error in form.cvc.errors %}
                     <span class="store__form__field-error">{{ error }}</span>
                     {% endfor %}
                   </div>

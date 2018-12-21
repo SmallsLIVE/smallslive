@@ -31,11 +31,11 @@ class ShippingAddressForm(checkout_forms.ShippingAddressForm):
 class PaymentForm(forms.Form):
     PAYMENT_CHOICES = Choices('paypal', 'credit-card')
     payment_method = forms.ChoiceField(required=True, choices=PAYMENT_CHOICES, initial='credit-card')
-    number = forms.CharField(required=False, min_length=16, max_length=20)
-    exp_month = forms.CharField(required=False, max_length=2)
-    exp_year = forms.CharField(required=False, min_length=2, max_length=4)
-    cvc = forms.CharField(required=False, min_length=3, max_length=4)
-    name = forms.CharField(required=False)
+    number = forms.CharField(required=True, min_length=16, max_length=20)
+    exp_month = forms.CharField(required=True, max_length=2)
+    exp_year = forms.CharField(required=True, min_length=2, max_length=4)
+    cvc = forms.CharField(required=True, min_length=3, max_length=4)
+    name = forms.CharField(required=True)
 
     def __init__(self, user, *args, **kwargs):
         super(PaymentForm, self).__init__(*args, **kwargs)
