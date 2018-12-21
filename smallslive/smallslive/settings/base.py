@@ -114,6 +114,7 @@ INSTALLED_APPS = [
     'oscar_apps.dashboard',
     'oscar_apps.dashboard.catalogue',
     'oscar_apps.dashboard.files',
+    'oscar_apps.dashboard.orders',
     'oscar_apps.dashboard.reports',
     'oscar_apps.order',
     'oscar_apps.partner',
@@ -470,6 +471,9 @@ PAYPAL_API_USERNAME = os.environ.get('PAYPAL_API_USERNAME')
 PAYPAL_API_PASSWORD = os.environ.get('PAYPAL_API_PASSWORD')
 PAYPAL_API_SIGNATURE = os.environ.get('PAYPAL_API_SIGNATURE')
 PAYPAL_CURRENCY = 'USD'
+PAYPAL_MODE = os.environ.get('PAYPAL_MODE')
+PAYPAL_CLIENT_ID = os.environ.get('PAYPAL_CLIENT_ID')
+PAYPAL_CLIENT_SECRET = os.environ.get('PAYPAL_CLIENT_SECRET')
 
 STRIPE_PUBLISHABLE_KEY = STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
