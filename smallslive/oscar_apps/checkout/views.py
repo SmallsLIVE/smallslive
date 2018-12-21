@@ -567,4 +567,4 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
         super(ExecutePayPalPaymentView, self).handle_order_placement(
             order_number, self.request.user, basket,
             shipping_address, shipping_method, shipping_charge,
-            billing_address, order_total, order_kwargs)
+            billing_address, order_total, **order_kwargs)
