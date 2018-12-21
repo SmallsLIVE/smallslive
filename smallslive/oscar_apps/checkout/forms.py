@@ -29,7 +29,7 @@ class ShippingAddressForm(checkout_forms.ShippingAddressForm):
 
 
 class PaymentForm(forms.Form):
-    PAYMENT_CHOICES = Choices('paypal', 'credit-card')
+    PAYMENT_CHOICES = Choices('paypal', 'credit-card', 'existing-credit-card')
     payment_method = forms.ChoiceField(required=True, choices=PAYMENT_CHOICES, initial='credit-card')
     number = forms.CharField(required=True, min_length=16, max_length=20)
     exp_month = forms.CharField(required=True, max_length=2)
@@ -52,11 +52,8 @@ class PaymentForm(forms.Form):
             pass
 
     def clean(self):
+        print 'Clean ------------------->'
         existing_cc = self.data.get('payment_method', None) == 'existing-credit-card'
-        if self.data and not existing_cc:
-            for field in self.fields:
-                if field != 'payment_method':
-                    self.fields[field].required = True
         data = super(PaymentForm, self).clean()
         if not self.errors:
             if existing_cc:

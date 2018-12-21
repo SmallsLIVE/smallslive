@@ -163,6 +163,10 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             return self.render_preview(request, billing_address_form=billing_address_form,
                                        payment_method='paypal')
         else:
+            if payment_method == 'existing-credit-card':
+                for field in form.fields:
+                    if field != 'payment_method':
+                        form.fields[field].required = False
             if form.is_valid():
                 self.token = form.token
                 self.checkout_session._set('payment', 'card_info', {
