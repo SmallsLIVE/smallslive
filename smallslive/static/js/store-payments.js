@@ -34,7 +34,9 @@ $(document).ready(function () {
             flowCompleteSubpage.load();
           }
           else{
-            window.location = data.location
+            alert("ddd")
+
+            window.location = data.location 
           }
         },
         error: function () {
@@ -51,6 +53,8 @@ $(document).ready(function () {
           if (data && data.payment_url) {
             window.location = data.payment_url;
           } else if (data && data.success_url) {
+            alert(data.success_url)
+
             window.location = data.success_url;
           } else if (data && data.error) {
             // go back to previous step
