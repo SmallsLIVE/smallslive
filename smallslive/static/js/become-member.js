@@ -314,43 +314,37 @@ $(document).ready(function () {
     checkConfirmButton()
   };
   $(document).on('click',  '#monthlyPledge > button', function () {
-    $(this).on('click', function () {
-      $("#monthlyPledge > button").removeClass("active");
-      $(this).addClass("active");
-      $('#confirmSelectionButton').prop('disabled', false);
-      var amount = $(this).val()
-      resetButtons();
-      resetCustom();
-      $(this).addClass("active");
-      setSelected('month', amount);
-      var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
-      $selectionConfirmationDialog.find('.title').text('become a supporter');
-      $selectionConfirmationDialog.find('.subtitle').text('Monthly pledge');
-      $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a monthly pledge of <span class="smalls-color">$'+amount+'.</span> Monthly pldeges are billed automatically and can be cancelled at any time in your Account Settings. You will recieve access to our audio/video library for as long as you are a Supporting SmallsLIVE');
-      $selectionConfirmationDialog.find('.gift-content');
-      $selectionConfirmationDialog.modal('show');
-
-    })
+    $("#monthlyPledge > button").removeClass("active");
+    $(this).addClass("active");
+    $('#confirmSelectionButton').prop('disabled', false);
+    var amount = $(this).val()
+    resetButtons();
+    resetCustom();
+    $(this).addClass("active");
+    setSelected('month', amount);
+    var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
+    $selectionConfirmationDialog.find('.title').text('become a supporter');
+    $selectionConfirmationDialog.find('.subtitle').text('Monthly pledge');
+    $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a monthly pledge of <span class="smalls-color">$'+amount+'.</span> Monthly pldeges are billed automatically and can be cancelled at any time in your Account Settings. You will recieve access to our audio/video library for as long as you are a Supporting SmallsLIVE');
+    $selectionConfirmationDialog.find('.gift-content');
+    $selectionConfirmationDialog.modal('show');
   });
 
   
   $(document).on('click',  '#yearlyPledge > button', function () {
-    $(this).on('click', function () {
-      $("#yearlyPledge > button").removeClass("active");
-      $(this).addClass("active");
-      $('#confirmSelectionButton').prop('disabled', false);
-      var amount = $(this).val()
-      resetButtons();
-      resetCustom();
-      setSelected('year', amount);
-      var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
-      $selectionConfirmationDialog.modal('show');
-      $selectionConfirmationDialog.find('.title').text('become a supporter');
-      $selectionConfirmationDialog.find('.subtitle').text('One time donation');
-      $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a one time donation of <span class="smalls-color">$'+amount+'.</span> You will receive access to our Audio/Video Archive for the remainder of the tax year. Onetime donations are tax deductible.   ');
-      $selectionConfirmationDialog.find('.gift-content');
-
-    })
+    $("#yearlyPledge > button").removeClass("active");
+    $(this).addClass("active");
+    $('#confirmSelectionButton').prop('disabled', false);
+    var amount = $(this).val()
+    resetButtons();
+    resetCustom();
+    setSelected('year', amount);
+    var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
+    $selectionConfirmationDialog.modal('show');
+    $selectionConfirmationDialog.find('.title').text('become a supporter');
+    $selectionConfirmationDialog.find('.subtitle').text('One time donation');
+    $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a one time donation of <span class="smalls-color">$'+amount+'.</span> You will receive access to our Audio/Video Archive for the remainder of the tax year. Onetime donations are tax deductible.   ');
+     $selectionConfirmationDialog.find('.gift-content');
   });
 
   var oneTimePayment = $("#oneTimePayment").find("input")[0];
