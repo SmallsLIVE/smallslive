@@ -13,15 +13,14 @@
   <meta name="author" content="">
   <title>{{ event.title }} ticket details | Mezzrow</title>
   <!-- Bootstrap core CSS -->
-  <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
 </head>
 <body class="no-background">
 <div class="container">
   <div class="row">
-    <h1>{{ event.title }}
-    at {{ event.venue.name }}
-      <small>{{ event.start|date:"F jS, g:i A" }} </small>
-      
+    <h1>{{ event_set.event.title }}
+    at {{ event_set.event.venue.name }}
+      <small>{{ event_set.event.date }} </small>
     </h1>
   </div>
   {% for set, lines in ticket_data.items %}
@@ -48,7 +47,6 @@
         </tbody>
       </table>
     </div>
-
   {% endfor %}
 </div>
 </body>

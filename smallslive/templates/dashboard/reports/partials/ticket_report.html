@@ -25,7 +25,7 @@
                     <td>{{ event_set.start }}</td>
                     <td>{{ event_set.event.venue.name }}</td>
                     <td>
-                        <a class="btn btn-info" href="{% url 'dashboard:ticket_details' pk=event_set.event.id %}">Report</a>
+                        <a class="btn btn-info" href="{% url 'dashboard:ticket_details' pk=event_set.id %}">Report</a>
                     </td>
                 </tr>
             {% endfor %}

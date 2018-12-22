@@ -4,7 +4,7 @@ from django.views.generic.detail import DetailView
 from natsort import natsorted
 from oscar.core.loading import get_class
 from oscar.apps.dashboard.reports.views import IndexView
-from events.models import Event
+from events.models import EventSet
 
 
 Line = get_class('order.models', 'Line')
@@ -73,21 +73,19 @@ class TicketsIndexView(IndexView):
 
 class TicketDetailsView(DetailView):
     template_name = 'dashboard/ticket_details.html'
-    context_object_name = 'event'
-    model = Event
+    context_object_name = 'event_set'
+    model = EventSet
 
     def get_context_data(self, **kwargs):
         data = super(TicketDetailsView, self).get_context_data(**kwargs)
         sets = OrderedDict()
-        products = list(self.object.products.all())
-        products = natsorted(products, key=attrgetter('set'))
-        for idx, product in enumerate(products):
-            set_start = str(product.event.get_set_start(idx).strftime('%I:%M %p'))
-            person_list = []
-            for line in Line.objects.filter(product=product).exclude(
-                    status="Cancelled").exclude(status="Exchanged").order_by('order__last_name'):
-                person_list.append(line)
-            sets[set_start] = person_list
-        data['ticket_data'] = sets
 
+        set_start = self.object.start
+        set_start = set_start.strftime('%I:%M %p')
+        person_list = []
+        for line in Line.objects.filter(product=self.object.tickets.all()[0]).exclude(
+                status="Cancelled").exclude(status="Exchanged").order_by('order__last_name'):
+            person_list.append(line)
+        sets[set_start] = person_list
+        data['ticket_data'] = sets
         return data
