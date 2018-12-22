@@ -299,17 +299,16 @@
     input:focus + label {
       visibility:hidden
     }
-    input:hover + label {
-      visibility:hidden
-    }
+
     .no-spinners{
       & + label{
-        z-index: -1;
+        z-index: 1;
         top: 20%;
         left: 50%;
         height: auto;
         margin: auto 0;
         text-align: center;
+        pointer-events: none;
         position: absolute;
         &>div{
           left: -50%;
@@ -440,6 +439,11 @@
   input {
     &.transparent {
       background: none;
+
+      &:hover {
+        background-color:  $white-transparent;
+      }
     }
+
   }
 }

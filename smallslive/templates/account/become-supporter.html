@@ -46,9 +46,35 @@
   <div id="supporterStepSelectType" class="supporter-step" style="display: none">
 
     <div class="text9">You are making a tax deductible donation to the SmallsLIVE Foundation.<br>
-      You may download your tax receipt letter in your account settings. Please choose one of the following:</div>
-    {% if not flow_type = "one_time_donation" %}
-    <div class="flex-column items-center supporter-plan-input">
+      You may download your tax receipt letter in your account settings. Please choose one of the following:
+    </div>
+
+    {% if not flow_type = 'update_pledge' %}
+      <div id="select-type-row" class="row" style="margin-top: 20px;">
+        <div class="button-row button-row-margin">
+          {% if not flow_type = 'one_time_donation' %}
+            <div class="store__form__selection__option">
+              <button class="select-supporter-type-toggle {% if not flow_type = 'one_time_donation' %}active{% endif %}" data-id="monthly">
+                Monthly Pledge
+              </button>
+            </div>
+          {% endif %}
+          <div class="store__form__selection__option">
+            <button class="select-supporter-type-toggle {% if flow_type = 'one_time_donation' %}active{% endif %}" data-id="one-time">
+              One Time Donation
+            </button>
+          </div>
+          <div class="store__form__selection__option">
+            <button class="select-supporter-type-toggle" data-id="gift">
+              Choose a Gift Tier
+            </button>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if not flow_type = 'one_time_donation' %}
+    <div class="flex-column items-center supporter-plan-input" id="monthly-input">
       <div class="section-title section-title-no-padded">
         <div class="title1">Monthly Pledge</div>
       </div>
@@ -64,9 +90,8 @@
       </div>
     </div>
     {% endif %}
-            {% if not flow_type = "update_pledge" %}
-
-    <div class="flex-column items-center  supporter-plan-input">
+    {% if not flow_type = 'update_pledge' %}
+    <div class="flex-column items-center  supporter-plan-input {% if not flow_type = 'one_time_donation' %}hidden{% endif %}" id="one-time-input">
       <div class="section-title section-title-no-padded">
         <div class="title1">One Time Donation</div>
       </div>
@@ -85,9 +110,8 @@
       </div>
     </div>
     {% endif %}
-        {% if not flow_type = "update_pledge" %}
-
-    <div class="flex-column items-center  supporter-plan-input">
+    {% if not flow_type = "update_pledge" %}
+    <div class="flex-column items-center  supporter-plan-input hidden" id="gift-input">
       <div class="section-title section-title-no-padded">
         <div class="title1">Choose a Gift Tier</div>
       </div>

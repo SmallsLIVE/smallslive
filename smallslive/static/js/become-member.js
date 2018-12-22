@@ -96,6 +96,23 @@ $(document).ready(function () {
     return false;
   });
 
+  $(document).on('click', '.select-supporter-type-toggle', function (event) {
+    // toggle payment method buttons and forms visibility. Set input value.
+
+    event.preventDefault();
+    if ($(this).hasClass('active')) {
+      return false;
+    }
+    $(this).addClass('active');
+    $('.select-supporter-type-toggle').not(this).removeClass('active');
+    var supporterType = $(this).data('id');
+    var selector = '#' + supporterType + '-input.supporter-plan-input';
+
+    $(selector).removeClass('hidden');
+    $('.supporter-plan-input').not(selector).addClass('hidden');
+
+    return false;
+  });
 
   $(document).on('submit', '#new_shipping_address', function () {
 
