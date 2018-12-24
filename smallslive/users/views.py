@@ -295,7 +295,7 @@ class ConfirmEmailView(CoreConfirmEmailView):
         if 'login' in url:
             parts = list(urlparse.urlparse(url))
             query = urlparse.parse_qs(parts[4])
-            query['next'] = '{}?offer=subscribe'.format(
+            query['next'] = '{}?show_modal=email_confirmed'.format(
                 settings.LOGIN_REDIRECT_URL
             )
             parts[4] = urlencode(query)
@@ -303,7 +303,7 @@ class ConfirmEmailView(CoreConfirmEmailView):
         else:
             parts = list(urlparse.urlparse(url))
             query = urlparse.parse_qs(parts[4])
-            query.update({'offer': 'subscribe'})
+            query.update({'show_modal': 'email_confirmed'})
             parts[4] = urlencode(query)
             url = urlparse.urlunparse(parts)
         return url

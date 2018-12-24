@@ -66,6 +66,10 @@
     align-items: center;
     justify-content: center;
 
+    content {
+      align-items: flex-start;
+    }
+
     form {
       @include form-styles;
       width: 70%;

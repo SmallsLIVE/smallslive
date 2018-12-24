@@ -1,2 +1,2 @@
-def offer_modal(request):
-    return {'offer_modal': request.GET.get('offer')}
+def show_modal(request):
+    return {'show_modal': request.GET.get('show_modal')}
