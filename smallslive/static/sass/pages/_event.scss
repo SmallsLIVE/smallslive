@@ -83,6 +83,11 @@ $player-height:  25.3vw;
     flex-direction: row;
   }
 
+  .current-event {
+    &.text7 {
+      font-size: 2.4em;
+    }
+  }
   .event-title {
     margin-bottom: 5px;
     @media(max-width: $screen-sm-max) {
@@ -102,6 +107,10 @@ $player-height:  25.3vw;
 
   .info-container {
     width: 40%;
+
+    .event-overlay-venue {
+      margin-bottom: 2em;
+    }
   }
 
   .buttons-container {
@@ -122,7 +131,7 @@ $player-height:  25.3vw;
 }
 
 .event-band {
-  margin: 2em 0;
+  margin: 0 0 2em 0;
 
   & > div {
     margin-right: 30px;
@@ -131,7 +140,7 @@ $player-height:  25.3vw;
   .artist-link {
     @include text1();
     text-transform: capitalize;
-    font-size: 1.5em;
+    font-size: 2em;
     color: black;
     letter-spacing: 0;
   }
