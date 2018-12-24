@@ -76,7 +76,7 @@ $(document).ready(function () {
     e.preventDefault();
 
     function checkout() {
-      $.get('/store/checkout', function(data) {
+      $.get('/store/checkout/', function(data) {
         $('#supporterStepShipping').html(data);
         showPanel('Shipping');
         replaceWhiteSelects($('#supporterStepShipping')[0]);
