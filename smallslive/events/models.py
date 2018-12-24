@@ -178,8 +178,7 @@ class EventQuerySet(models.QuerySet):
         days = 2
         if just_today:
             days = 1
-        date_range_start = get_today_start()
-
+        date_range_start = timezone.localtime(timezone.now())
         date_range_end = date_range_start + timedelta(days=days)
 
         # Initial range. This includes all events from the day
@@ -909,8 +908,6 @@ class ShowDefaultTime(models.Model):
 
     def __unicode__(self):
         return self.sets_readable_start() + "    " + self.venue.name
-
-
 
 
 class StaffPick(models.Model):
