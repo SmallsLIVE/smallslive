@@ -33,15 +33,28 @@ class BasketAddView(basket_views.BasketAddView):
         # Need to run some logic before adding
         self._clean_basket(form)
 
-        self.request.basket.add_product(
+        basket = self.request.basket
+        basket.add_product(
             form.product, form.cleaned_data['quantity'],
             form.cleaned_options(), stockrecord)
 
-        messages.success(self.request, self.get_success_message(form),
-                         extra_tags='safe noicon')
+        # Do not show 'Added to your basket' message
+        # for tickets and gifts
+        if not basket.has_tickets() and not basket.has_gifts():
+            messages.success(self.request, self.get_success_message(form),
+                             extra_tags='safe noicon')
 
-        # Check for additional offer messages
-        apply_messages(self.request, offers_before)
+        if basket.has_tickets() or basket.has_gifts():
+            print 'Cleaning messages'
+            # Clear any other messages for tickets of gifts
+            storage = messages.get_messages(self.request)
+            for _ in storage:
+                pass
+            storage.used = True
+
+        if not basket.has_tickets() and not basket.has_gifts():
+            # Check for additional offer messages
+            apply_messages(self.request, offers_before)
 
         # Send signal for basket addition
         self.add_signal.send(

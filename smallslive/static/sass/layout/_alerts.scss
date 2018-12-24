@@ -47,9 +47,15 @@
   height: 100vh;
   z-index: 10;
 
-
   div {
-    width: 50%;
+    width: auto;
+
+    .alert-buttons {
+      a {
+        margin:  0 5px;
+      }
+    }
+
   }
 }
 

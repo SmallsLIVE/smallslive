@@ -1,6 +1,7 @@
 import logging
 from django import http
 from django.conf import settings
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
 from django.shortcuts import redirect

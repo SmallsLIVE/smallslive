@@ -668,6 +668,7 @@ $(document).ready(function () {
   $(document).on('click', '#confirmButton', function (event) {
     console.log(currentStep)
     var $that = $(this);
+    $that.prop('disabled', true);
 
     if (selectedData.type == 'gift') {
       event.preventDefault();
@@ -694,13 +695,11 @@ $(document).ready(function () {
           $('#sentHint').hide();
           $('#form-general-error').text('Please correct errors above');
         } else {
-          $that.prop('disabled', true);
           startStripePayment($('#payment-form'),
             $('#supporterStepPaymentInfo').data('payment-info-complete-url'),
             completeSubpage);
         }
       } else if (method == 'paypal') {
-        $that.prop('disabled', true);
         startPayPalPayment($('#payment-form'),
           $('#supporterStepPaymentInfo').data('payment-info-complete-url'),
           completeSubpage);

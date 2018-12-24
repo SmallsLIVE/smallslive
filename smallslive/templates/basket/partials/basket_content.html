@@ -23,21 +23,20 @@
             <form action="." method="post" class="basket_summary" id="basket_formset">
                 {% csrf_token %}
                 {{ formset.management_form }}
-                <section class="store-cart__table container">
-                    <div class="row">
-                        {% if basket.has_physical_products %}
-                            {% include 'basket/partials/_basket_content_physical.html' %}
-                        {% endif %}
-                        {% if basket.has_digital_products %}
-                            {% include 'basket/partials/_basket_content_digital.html' %}
-                        {% endif %}
-                        {% if basket.has_tickets %}
-                            {% include 'basket/partials/_basket_content_tickets.html' %}
-                        {% endif %}
-                    </div>
+                <section class="store-cart__table container text9">
+
+                    {% if basket.has_physical_products %}
+                        {% include 'basket/partials/_basket_content_physical.html' %}
+                    {% endif %}
+                    {% if basket.has_digital_products %}
+                        {% include 'basket/partials/_basket_content_digital.html' %}
+                    {% endif %}
+                    {% if basket.has_tickets %}
+                        {% include 'basket/partials/_basket_content_tickets.html' %}
+                    {% endif %}
 
                 </section>
-                <section class="store-cart__footer container">
+                <section class="store-cart__footer container text9">
                     <!--<div class="col-xs-12 col-sm-6 store-cart__footer__left">
                         <p class="store-cart__footer__left__text">We accept the following payment options:</p>
                         <div class="store-cart__footer__card-icons">

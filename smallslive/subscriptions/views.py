@@ -105,7 +105,9 @@ class ContributeFlowView(TemplateView):
         context = super(ContributeFlowView, self).get_context_data(**kwargs)
         return context
 
+
 class BecomeSupporterView(ContributeFlowView, PayPalMixin):
+
     def get_context_data(self, **kwargs):
         context = super(BecomeSupporterView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
@@ -246,6 +248,7 @@ class DonateView(BecomeSupporterView):
 
 donate = DonateView.as_view()
 
+
 class DonateCompleteView(DonateView):
     def get_context_data(self, **kwargs):
         context = super(
@@ -258,7 +261,6 @@ class DonateCompleteView(DonateView):
 
 
 donate_complete = DonateCompleteView.as_view()
-
 
 
 class BecomeSupporterCompleteView(BecomeSupporterView):
@@ -281,6 +283,9 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
     """
 
     def get_context_data(self, **kwargs):
+        print '*******************'
+        print 'CompleteView: '
+
         context = super(
             BecomeSupporterCompleteView, self
         ).get_context_data(**kwargs)
