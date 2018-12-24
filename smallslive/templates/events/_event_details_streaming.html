@@ -21,7 +21,7 @@
 {% endblock %}
 {% block extra_js %}
 {{ block.super }}
-
+<script>
   $(document).ready(function () {
     {% if next_event %}
       var changeTime = moment("{{ next_event.start.isoformat }}");
@@ -35,4 +35,5 @@
       }, waitTime);
     {% endif %}
   });
+</script>
 {% endblock %}
