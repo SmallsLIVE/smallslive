@@ -126,7 +126,7 @@ def _get_most_popular(range=None):
     return context
 
 
-def _get_most_popular_uploaded(range_size=RANGE_MONTH):
+def _get_most_popular_uploaded(range_size=None):
 
     range_end = timezone.now()
 
@@ -188,7 +188,7 @@ class HomepageView(ListView, UpcomingEventMixin):
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
         context = self.get_upcoming_events_context_data(context)
-        context['popular_in_archive'] = _get_most_popular_uploaded()
+        context['popular_in_archive'] = _get_most_popular_uploaded(RANGE_MONTH)
         context['popular_select'] = 'month'
         context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
@@ -225,7 +225,7 @@ class MostPopularEventsAjaxView(AJAXMixin, ListView):
     def get_queryset(self):
         metrics_range = RANGE_WEEK
         received_range = self.request.GET.get('range', 'week')
-        if received_range:
+        if received_range and received_range in ['week', 'month', 'year']:
             if received_range == 'week':
                 metrics_range = RANGE_WEEK
             if received_range == 'month':
