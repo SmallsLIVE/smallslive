@@ -71,7 +71,9 @@ $(document).ready(function () {
 
   });
 
-  $(document).on('submit', '.add-to-basket', function () {
+  $(document).on('submit', '.add-to-basket', function (e) {
+
+    e.preventDefault();
 
     function checkout() {
       $.get('/store/checkout', function(data) {
