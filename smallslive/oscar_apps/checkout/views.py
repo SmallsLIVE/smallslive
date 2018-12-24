@@ -34,6 +34,7 @@ logger = logging.getLogger('oscar.checkout')
 
 
 class IndexView(checkout_views.IndexView):
+
     def form_valid(self, form):
         if form.is_guest_checkout():
             first_name = form.cleaned_data['first_name']
@@ -41,6 +42,9 @@ class IndexView(checkout_views.IndexView):
             self.checkout_session.set_reservation_name(first_name, last_name)
         return super(IndexView, self).form_valid(form)
 
+    def get_success_url(self):
+        return reverse('checkout:shipping-address')
+    
 
 class ShippingAddressView(checkout_views.ShippingAddressView):
 
