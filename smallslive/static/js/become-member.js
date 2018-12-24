@@ -76,6 +76,7 @@ $(document).ready(function () {
     e.preventDefault();
 
     function checkout() {
+      // TODO: fix hardcoded URL
       $.get('/store/checkout/', function(data) {
         $('#supporterStepShipping').html(data);
         showPanel('Shipping');
