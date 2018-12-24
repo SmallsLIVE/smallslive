@@ -177,12 +177,13 @@ def order_events_by_popular(sqs):
 
 class HomepageView(ListView, UpcomingEventMixin):
     template_name = 'home_new.html'
-    context_object_name = 'events_today'
 
     def get_queryset(self):
-        qs = Event.objects.get_today_and_tomorrow_events()
+        return Event.objects.get_today_and_tomorrow_events()
 
-        return qs
+    def get_today_events(self):
+        events = list(self.get_queryset())
+        return [x for x in events if not x.is_past]
 
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
@@ -191,7 +192,7 @@ class HomepageView(ListView, UpcomingEventMixin):
         context['popular_select'] = 'month'
         context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
-
+        context['events_today'] = self.get_today_events()
         return context
 
 
@@ -332,8 +333,9 @@ class EventDetailView(DetailView):
                 context['count_metrics'] = True
 
         context['related_videos'] = Event.objects.event_related_videos(event)
-
-        context['streaming_tonight_videos'] = Event.objects.get_today_and_tomorrow_events(just_today=True)
+        events = Event.objects.get_today_and_tomorrow_events(just_today=True)
+        events = [x for x in events if not x.is_past]
+        context['streaming_tonight_videos'] = events
 
         event_url = None
         start = None

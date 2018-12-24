@@ -16,14 +16,9 @@
               </p>
               <div class="text4 text-centered" style="margin-top: 40px">
                 <button class="white-border-button" onclick="" style="display: inline; margin-right: 25px;">More Info</button>
-                <button class="white-border-button" onclick="window.location = '{% url 'become_supporter' %}'" style="display: inline;">
-                  {% comment %}
-                    Sorry but I'm not refactoring the onClick thing,
-                    if you want a better world for the children of the future
-                    then stop using <button> for links.
-                  {% endcomment %}
+                <a class="white-border-button" ahref="{% url 'become_supporter' %}" style="display: inline;">
                   Become a Supporting Member
-                </button>
+                </a>
               </div>
           </div>
           <div>
@@ -31,11 +26,6 @@
         </div>
     </div>
   </div>
-  <script>
-      document.addEventListener('click', function () {
-        $('#become-a-supporter-dialog').modal("hide");
-      });
-  </script>
 {% endif %}
 
 

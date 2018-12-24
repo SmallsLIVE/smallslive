@@ -1,6 +1,6 @@
 {% load account %}
 {% load pipeline %}
-{% load offer_modal %}
+{% load show_modal %}
 {% load static from staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +44,7 @@
   {% endblock %}
 </head>
 <body class="{% block body_class %}default{% endblock %} {% if user.is_superuser %}admin-header{% endif %}">
-{% offer %}
+{% show_modal %}
 {% include "account/ajax_login.html" %}
 {% include "account/ajax_become_member.html" %}
 

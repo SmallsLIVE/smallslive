@@ -4,13 +4,13 @@ from django.template import loader
 register = template.Library()
 
 @register.simple_tag(takes_context=True)
-def offer(context):
+def show_modal(context):
     modal = {
-        'subscribe': 'become_a_supporter_dialog.html'
-    }.get(context.get('offer_modal'))
+        'email_confirmed': 'email_confirmed_dialog.html'
+    }.get(context.get('show_modal'))
 
     if not modal:
         return ''
 
-    context['offer_visible'] = True
+    context['modal_visible'] = True
     return loader.render_to_string(modal, context_instance=context)
