@@ -8,15 +8,33 @@ from oscar_apps.partner.models import StockRecord
 class BasketAddView(basket_views.BasketAddView):
 
     def _clean_basket(self, form):
-        """If user is buying tickets, we need to clear up any previous items"""
-        # TODO: handle different baskets if possible
+        """Remove other types of items depending on what's being added.
 
-        print '**************'
-        print 'BasketAddView: '
-        print form.product
-        if form.product.product_class and 'ticket' in form.product.product_class.slug:
-            print 'Ticket found -> clearing basket'
-            self.request.basket.flush()
+        If user has added any item -> remove tickets, gift
+        if user has added a gift -> remove tickets, items
+        if user has added a ticket -> remove items, gifts, tickets from other venues.
+
+        Basically, there can be only one of three 'types':
+
+        1. Gift
+        2. Ticket (from the same venue)
+        3. Any other item (merchandise, cd's, etc.)
+
+        """
+
+        basket = self.request.basket
+
+        added_class = form.product.product_class
+        if added_class.name == 'Gift':
+            basket.lines.exclude(product__product_class__name='Gift').delete()
+        elif added_class.name == 'Ticket':
+            # Remove anything from other venue
+            venue_name = form.product.event_set.event.venue.name
+            basket.lines.exclude(product__event_set__event__venue__name=venue_name).delete()
+        else:
+            # Remove tickets and gifts
+            basket.lines.filter(product__product_class__name='Ticket').delete()
+            basket.lines.filter(product__product_class__name='Gift').delete()
 
     def form_valid(self, form):
         print '****************************'
