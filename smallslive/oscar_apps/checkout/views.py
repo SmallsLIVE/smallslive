@@ -8,6 +8,7 @@ from django.shortcuts import redirect
 from django.utils import six
 from django.utils.translation import ugettext as _
 from django.views.generic import RedirectView, View
+from oscar.apps.address.models import Country
 from oscar.apps.checkout import views as checkout_views
 from oscar.apps.checkout import signals
 from oscar.apps.checkout.views import OrderPlacementMixin
@@ -98,11 +99,24 @@ class ShippingAddressView(checkout_views.ShippingAddressView):
             request=self.request)
     
     def get_initial(self):
-        initial = super(ShippingAddressView, self).get_initial()
+
+        initial = self.checkout_session.new_shipping_address_fields()
+        if initial:
+            initial = initial.copy()
+            # Convert the primary key stored in the session into a Country
+            # instance
+            try:
+                initial['country'] = Country.objects.get(
+                    iso_3166_1_a2=initial.pop('country_id'))
+            except Country.DoesNotExist:
+                # Hmm, the previously selected Country no longer exists. We
+                # ignore this.
+                pass
         if not initial:
             address = self.get_available_addresses().first()
             if address:
                 initial = model_to_dict(address)
+
         return initial
 
 

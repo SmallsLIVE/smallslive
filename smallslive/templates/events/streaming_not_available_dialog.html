@@ -6,8 +6,11 @@
     <div class="modal-content custom-modal">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
-        <p class="title2 accent-color">Streaming not available yet</p>
-        <p>Streaming for this event will be available 15 minutes before it begins</p>
+        {% if sets %}
+          <p class="title2 accent-color">This event will begin streaming at {{ sets.0.start|time:"g:iA" }}</p>
+        {% else %}
+          <p>Streaming for this event will be available 15 minutes before it begins</p>
+        {% endif %}
       </div>
     </div>
   </div>
