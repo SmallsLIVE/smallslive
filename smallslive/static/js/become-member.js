@@ -126,16 +126,24 @@ $(document).ready(function () {
       type: $(this).attr('method'),
       data: $(this).serialize(),
       success: function( data ) {
-        $.get(data.url, function (data) {
+        if (data.url) {
           $.get(data.url, function (data) {
+
             $.get(data.url, function (data) {
-            $('#supporterStepBilling').html(data);
-              showPanel('Billing');
-              replaceWhiteSelects($('#supporterStepBilling')[0]);
-              renderCardAnimation('#payment-form');
+              $.get(data.url, function (data) {
+              $('#supporterStepBilling').html(data);
+                showPanel('Billing');
+                replaceWhiteSelects($('#supporterStepBilling')[0]);
+                renderCardAnimation('#payment-form');
+              });
             });
+
           });
-        });
+        } else {
+          $('#supporterStepShipping').html(data);
+          $('#confirmButton').prop('disabled', false);
+          replaceWhiteSelects($('#supporterStepShipping')[0]);
+        }
       },
       error: function( xhr, err ) {
         console.log(err);
