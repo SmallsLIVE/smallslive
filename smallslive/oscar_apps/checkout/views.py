@@ -53,6 +53,7 @@ class IndexView(checkout_views.IndexView):
 class ShippingMethodView(checkout_views.ShippingMethodView):
 
     def get_success_response(self):
+        print 'Shipping method  success response'
         url = reverse('checkout:payment-method')
         if self.request.is_ajax():
             return http.JsonResponse({'url': url})
@@ -69,7 +70,7 @@ class ShippingAddressView(checkout_views.ShippingAddressView):
         self.checkout_session.ship_to_new_address(address_fields)
         url = self.get_success_url()
         if self.request.is_ajax():
-            print 'return json'
+            return http.JsonResponse({'url': url})
         else:
             return redirect(url)
 
