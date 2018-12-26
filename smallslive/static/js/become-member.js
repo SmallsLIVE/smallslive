@@ -126,7 +126,6 @@ $(document).ready(function () {
       type: $(this).attr('method'),
       data: $(this).serialize(),
       success: function( data ) {
-        console.log(data);
         $.get(data.url, function (data) {
           $.get(data.url, function (data) {
             $.get(data.url, function (data) {
