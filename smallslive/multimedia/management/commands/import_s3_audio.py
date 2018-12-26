@@ -77,7 +77,7 @@ class Command(BaseCommand):
 
         logger.info('Starting audio import')
         count = Event.objects.filter(**filter_cond).count()
-        for event in Event.objects.filter(**filter_cond).order_by('-start')[:100]:
+        for event in Event.objects.filter(**filter_cond).order_by('start'):
             count -= 1
             if different_source:
                 event_id = event.original_id
