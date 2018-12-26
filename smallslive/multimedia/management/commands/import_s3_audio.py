@@ -77,7 +77,7 @@ class Command(BaseCommand):
 
         logger.info('Starting audio import')
         count = Event.objects.filter(**filter_cond).count()
-        for event in Event.objects.filter(**filter_cond).order_by('start'):
+        for event in Event.objects.filter(**filter_cond).order_by('-start')[:100]:
             count -= 1
             if different_source:
                 event_id = event.original_id
@@ -87,6 +87,7 @@ class Command(BaseCommand):
 
             # Retrieve sets in the right order
             event_sets = sorted(list(event.sets.all()), Event.sets_order)
+            print event_sets
 
             for set_num in range(1, 7):
                 no_zero_padded = '{0.year}-{0.month}-{0.day}/{1}-{2}.mp3'.format(
@@ -107,10 +108,23 @@ class Command(BaseCommand):
                         except Recording.DoesNotExist:
                             recording = Recording(event_id=event.id, set_number=set_num)
                         if not recording.media_file_id:
-                            media_file, created = MediaFile.objects.get_or_create(media_type="audio", file=filename, size=key.size)
-                            recording.media_file = media_file
-                            recording.save()
-                            new_files_imported += 1
+                            media_file, created = MediaFile.objects.get_or_create(
+                                media_type='audio', file=filename, size=key.size)
+                            if hasattr(media_file, 'recording') and media_file.recording:
+                                print 'File belongs to  another recording -> skipping'
+                                print media_file.recording
+                            else:
+                                recording.media_file = media_file
+                                recording.save()
+
+                                # Link to EventSet object.
+                                if len(event_sets) >= set_num:
+                                    event_set = event_sets[set_num - 1]
+                                    event_set.audio_recording = recording
+                                    event_set.save()
+                                    print 'Saved: ', event_set
+
+                                new_files_imported += 1
                         else:
                             try:
                                 recording.media_file.file = filename
@@ -120,9 +134,5 @@ class Command(BaseCommand):
                                 # Media file already there
                                 pass
 
-                        # Link to EventSet object.
-                        event_set = event_sets[set_num - 1]
-                        event_set.audio_recording = recording
-                        event_set.save()
 
         logger.info("{0} new files imported".format(new_files_imported))
