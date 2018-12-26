@@ -34,6 +34,7 @@ logger = logging.getLogger('oscar.checkout')
 
 
 class IndexView(checkout_views.IndexView):
+
     def form_valid(self, form):
         if form.is_guest_checkout():
             first_name = form.cleaned_data['first_name']
@@ -41,8 +42,32 @@ class IndexView(checkout_views.IndexView):
             self.checkout_session.set_reservation_name(first_name, last_name)
         return super(IndexView, self).form_valid(form)
 
+    def get_success_response(self):
+        url = self.get_success_url()
+        if self.request.is_ajax():
+            return http.JsonResponse({'url': url})
+        else:
+            return redirect(url)
+
+
+class ShippingMethodView(checkout_views.ShippingMethodView):
+
+    def get_success_response(self):
+        url = reverse('checkout:payment-method')
+        if self.request.is_ajax():
+            return http.JsonResponse({'url': url})
+        else:
+            return redirect(url)
+
 
 class ShippingAddressView(checkout_views.ShippingAddressView):
+
+    def form_valid(self, form):
+        url = self.get_success_url()
+        if self.request.is_ajax():
+            return http.JsonResponse({'url': url})
+        else:
+            return redirect(url)
 
     def get_template_names(self):
         if self.request.is_ajax():
@@ -73,6 +98,16 @@ class ShippingAddressView(checkout_views.ShippingAddressView):
             if address:
                 initial = model_to_dict(address)
         return initial
+
+
+class PaymentMethodView(checkout_views.PaymentMethodView):
+
+    def get_success_response(self):
+        url = reverse('checkout:payment-details')
+        if self.request.is_ajax():
+            return http.JsonResponse({'url': url})
+        else:
+            return redirect(url)
 
 
 class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):

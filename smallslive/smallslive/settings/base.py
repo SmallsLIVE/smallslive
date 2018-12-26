@@ -153,6 +153,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'oscar.apps.checkout.context_processors.checkout',
     'oscar.apps.customer.notifications.context_processors.notifications',
     'oscar.core.context_processors.metadata',
+    'users.context_processors.check_account_status',
     'users.context_processors.show_modal',
 )
 
@@ -175,9 +176,6 @@ AUTHENTICATION_BACKENDS = (
     'oscar.apps.customer.auth_backends.EmailBackend',
 
 )
-
-# As per Aslan's request
-ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
@@ -432,6 +430,8 @@ AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN', "")
 
 # Allauth config
 ACCOUNT_ADAPTER = 'users.adapter.SmallsLiveAdapter'
+# As per Aslan's request
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_VERIFICATION = "optional"

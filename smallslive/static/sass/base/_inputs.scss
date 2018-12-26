@@ -47,6 +47,19 @@
     }
     height: 70px;
   }
+
+  &.separated {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+}
+
+a {
+  &.white-border-button {
+    display: inline-block;
+    line-height: 33px;
+    vertical-align: middle;
+  }
 }
 
 @mixin bordered-input {
@@ -102,6 +115,10 @@
 .button-row {
   display: flex;
   flex-wrap: wrap;
+
+  &.margin-top {
+    margin-top: 20px;
+  }
 
   input {
     @include bordered-input;

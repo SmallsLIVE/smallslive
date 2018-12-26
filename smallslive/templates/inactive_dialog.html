@@ -1,4 +1,4 @@
-{% if user.is_authenticated and not user.has_activated_account %}
+{% if user.is_authenticated and show_email_confirmation_dialog %}
   <div class="modal fade in" role="dialog" id="inactive-dialog" >
     <div class="modal-dialog">
         <div class="modal-content  custom-modal">
@@ -49,7 +49,6 @@
             $('#inactive-dialog').hide();
         });
          $(document).ready(function () {
-            console.log('Ready1');
             $('#inactive-dialog').show();
         });
         loginModal = document.getElementById('inactive-dialog')

@@ -71,13 +71,18 @@ $(document).ready(function () {
 
   });
 
-  $(document).on('submit', '.add-to-basket', function () {
+  $(document).on('submit', '.add-to-basket', function (e) {
+
+    e.preventDefault();
 
     function checkout() {
-      $.get('/store/checkout/', function(data) {
-        $('#supporterStepShipping').html(data);
-        showPanel('Shipping');
-        replaceWhiteSelects($('#supporterStepShipping')[0]);
+      // TODO: fix hardcoded URL
+      $.get('/store/checkout/', function (data) {
+        $.get(data.url, function (data) {
+          $('#supporterStepShipping').html(data);
+          showPanel('Shipping');
+          replaceWhiteSelects($('#supporterStepShipping')[0]);
+        });
       });
     }
 
@@ -121,10 +126,16 @@ $(document).ready(function () {
       type: $(this).attr('method'),
       data: $(this).serialize(),
       success: function( data ) {
-        $('#supporterStepBilling').html(data);
-        showPanel('Billing');
-        replaceWhiteSelects($('#supporterStepBilling')[0]);
-        renderCardAnimation('#payment-form');
+        $.get(data.url, function (data) {
+          $.get(data.url, function (data) {
+            $.get(data.url, function (data) {
+            $('#supporterStepBilling').html(data);
+              showPanel('Billing');
+              replaceWhiteSelects($('#supporterStepBilling')[0]);
+              renderCardAnimation('#payment-form');
+            });
+          });
+        });
       },
       error: function( xhr, err ) {
         console.log(err);

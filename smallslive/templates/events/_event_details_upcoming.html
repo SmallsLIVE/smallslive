@@ -70,13 +70,20 @@
       $('#buy-tickets-dialog').modal('toggle');
     })
     $('#btn-play-event').click(function () {
-      var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
-      if (moment() - allowStreamingTime > 0) {
-        window.location = "{{ streaming.event_url }}";
-      } else {
-        $('#streamingNotAvailableDialog').modal('show');
-      }
+      /* Show 'sign in' modal if user is not logged in. Otherwise, redirect
+      to the live stream view if the show is about to start. */
 
+      if (smallsConfig.user.isAuthenticated) {
+        var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
+        if (moment() - allowStreamingTime > 0) {
+          window.location = "{{ streaming.event_url }}";
+        } else {
+          $('#streamingNotAvailableDialog').modal('show');
+        }
+      } else {
+        var $modal = $('#becomeMemberDialog');
+        $modal.modal('show');
+      }
     });
   });
 
