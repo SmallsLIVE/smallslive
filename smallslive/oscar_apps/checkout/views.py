@@ -82,8 +82,9 @@ class ShippingAddressView(checkout_views.ShippingAddressView):
         return [template_name]
 
     def get_context_data(self, **kwargs):
-
+        
         context = super(ShippingAddressView, self).get_context_data(**kwargs)
+        print context
         method = self.get_default_shipping_method(self.request.basket)
         shipping_charge = method.calculate(self.request.basket)
         context['shipping_charge'] = shipping_charge

@@ -1,5 +1,10 @@
 .supporter-main-container, .payment-main-container {
-
+  .minimum-error{
+    position: absolute;
+    margin-top: 10px;
+    width: 100%;
+    text-align: center;
+  }
   .store-overview {
     background: transparent;
   }
