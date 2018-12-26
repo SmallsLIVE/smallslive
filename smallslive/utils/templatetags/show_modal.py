@@ -3,6 +3,7 @@ from django.template import loader
 
 register = template.Library()
 
+
 @register.simple_tag(takes_context=True)
 def show_modal(context):
     modal = {

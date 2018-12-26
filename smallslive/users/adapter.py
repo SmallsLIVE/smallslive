@@ -8,6 +8,11 @@ import floppyforms as forms
 
 
 class SmallsLiveAdapter(DefaultAccountAdapter):
+
+    def add_message(self, *args, **kwargs):
+        """Avoid messages"""
+        pass
+
     def clean_email(self, email):
         try:
             v = validate_email(email)

@@ -1,5 +1,16 @@
 from datetime import datetime, date
+from urllib import urlencode
+import urlparse
+import stripe
 from wkhtmltopdf.views import PDFTemplateView
+from django.conf import settings
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect, Http404, JsonResponse
+from django.shortcuts import render, redirect
+from django.views.generic import TemplateView, FormView, ListView, View
+from allauth.account.app_settings import EmailVerificationMethod
 from allauth.account.forms import ChangePasswordForm
 from allauth.account.models import EmailAddress
 from allauth.account.utils import complete_signup
@@ -8,28 +19,14 @@ from allauth.account.views import SignupView as AllauthSignupView, \
     LoginView as CoreLoginView, _ajax_response
 import braces.views
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin
-from django.conf import settings
-from django.core.urlresolvers import reverse, reverse_lazy
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
-from django.forms.models import model_to_dict
-from django.http import HttpResponseRedirect, Http404, JsonResponse
-from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, FormView, ListView, View
 from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
-from allauth.account.app_settings import EmailVerificationMethod
-from urllib import urlencode
-import urlparse
-import stripe
 
 from artist_dashboard.forms import ArtistInfoForm
 from custom_stripe.models import CustomPlan, CustomerDetail
-from users.models import SmallsUser
 from users.utils import charge, grant_access_to_archive, \
     one_time_donation, subscribe_to_plan,  update_active_card
-from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm, PlanForm, ReactivateSubscriptionForm
-
+from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
 
 
 class SignupLandingView(TemplateView):
@@ -312,6 +309,7 @@ confirm_email = ConfirmEmailView.as_view()
 
 
 class LoginView(CoreLoginView):
+
     def get_template_names(self):
         if self.request.is_ajax():
             return ["account/ajax_login.html"]
