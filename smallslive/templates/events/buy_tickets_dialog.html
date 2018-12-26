@@ -23,11 +23,4 @@
   document.addEventListener('click', function () {
     $('#streamingNotAvailableDialog').hide();
   });
-  $(document).ready(function () {
-    var ticketsDialog = $('#buy-tickets-dialog');
-    var $ticketsCloseButton = $(ticketsDialog.find('.close-button')[0]);
-    $ticketsCloseButton.click(function () {
-      ticketsDialog.modal('hide');
-    });
-  });
 </script>
