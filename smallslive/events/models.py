@@ -742,6 +742,7 @@ class Event(TimeStampedModel):
 
         return tickets
 
+
 class RecordingQuerySet(models.QuerySet):
     def video(self):
         return self.filter(media_file__media_type='video')
