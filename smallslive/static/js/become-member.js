@@ -74,7 +74,7 @@ $(document).ready(function () {
   $(document).on('submit', '.add-to-basket', function () {
 
     function checkout() {
-      $.get('/store/checkout', function(data) {
+      $.get('/store/checkout/', function(data) {
         $('#supporterStepShipping').html(data);
         showPanel('Shipping');
         replaceWhiteSelects($('#supporterStepShipping')[0]);
@@ -143,7 +143,7 @@ $(document).ready(function () {
       success: function( data ) {
         $('#supporterStepPreview').html(data);
         showPanel('Preview');
-        $('#confirmButton').text('Place Order');
+        $('#confirmButton').text('Confirm');
       },
       error: function( xhr, err ) {
         console.log(err);
@@ -325,7 +325,7 @@ $(document).ready(function () {
     var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
     $selectionConfirmationDialog.find('.title').text('become a supporter');
     $selectionConfirmationDialog.find('.subtitle').text('Monthly pledge');
-    $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a monthly pledge of <span class="smalls-color">$'+amount+'.</span> Monthly pldeges are billed automatically and can be cancelled at any time in your Account Settings. You will recieve access to our audio/video library for as long as you are a Supporting SmallsLIVE');
+    $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You have selected a monthly pledge of $'+amount+'. Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation.');
     $selectionConfirmationDialog.find('.gift-content');
     $selectionConfirmationDialog.modal('show');
   });
@@ -343,8 +343,8 @@ $(document).ready(function () {
     $selectionConfirmationDialog.modal('show');
     $selectionConfirmationDialog.find('.title').text('become a supporter');
     $selectionConfirmationDialog.find('.subtitle').text('One time donation');
-    $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a one time donation of <span class="smalls-color">$'+amount+'.</span> You will receive access to our Audio/Video Archive for the remainder of the tax year. Onetime donations are tax deductible.   ');
-     $selectionConfirmationDialog.find('.gift-content');
+    $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You have selected a One Time Donation of $'+ amount +'. One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings. You will receive access to The SmallsLIVE Archive for the remainder of the tax year.');
+    $selectionConfirmationDialog.find('.gift-content');
   });
 
   var oneTimePayment = $("#oneTimePayment").find("input")[0];
@@ -399,7 +399,7 @@ $(document).ready(function () {
           $selectionConfirmationDialog.modal('show');
           $selectionConfirmationDialog.find('.title').text('become a supporter');
           $selectionConfirmationDialog.find('.subtitle').text('Monthly pledge');
-          $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a one time donation of <span class="smalls-color">$'+amount+'.</span> You will receive access to our Audio/Video Archive for the remainder of the tax year. Onetime donations are tax deductible.   ');
+          $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You have selected a monthly pledge of $'+amount+'. Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation.');
           $selectionConfirmationDialog.find('.gift-content');
         }
       }
@@ -430,7 +430,7 @@ $(document).ready(function () {
           $selectionConfirmationDialog.modal('show');
           $selectionConfirmationDialog.find('.title').text('become a supporter');
           $selectionConfirmationDialog.find('.subtitle').text('One time donation');
-          $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You\'ve selected a one time donation of <span class="smalls-color">$'+amount+'.</span> You will receive access to our Audio/Video Archive for the remainder of the tax year. Onetime donations are tax deductible.   ');
+          $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You have selected a One Time Donation of $'+ amount +'. One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings. You will receive access to The SmallsLIVE Archive for the remainder of the tax year.');
           $selectionConfirmationDialog.find('.gift-content');
         }
       }
@@ -468,9 +468,11 @@ $(document).ready(function () {
     var $item = $(this).parent().parent().find('.modal-content').clone();
     var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
     $selectionConfirmationDialog.find('.title').text($(this).text());
-    $selectionConfirmationDialog.find('.subtitle').text('Gift Tier: ' + $(this).attr("data-type") );
+    var giftTier = $(this).attr("data-type");
+    $selectionConfirmationDialog.find('.subtitle').text('Gift Tier: ' + giftTier);
     let price =  $(this).children('.price-tag').text();
-    $selectionConfirmationDialog.find('.text').html('You have selected a one time, gift tier donation of <span class="smalls-color">'+price+'</span> You will receive access to ou Audio/Video Archive for the remainder of the tax year. One tima, gift-tier donations are partially tax deductible.<br> Please select your size below.');
+    let taxInc = $(this).children('.price-tag').attr('inclTax'); //WIP
+    $selectionConfirmationDialog.find('.text').html('You have selected a one time donation of <span class="smalls-color">'+price+'</span>  of which <span class="smalls-color">'+price+'</span> is tax deductible. You will receive access to The SmallsLIVE Archive for the remainder of the tax year. You have also chosen to receive a '+ giftTier +' as a gift for your contribution..<br> Please select your size below.');
     var $giftContent = $selectionConfirmationDialog.find('.gift-content');
     $giftContent.html($item);
     $item.removeClass('hidden');
