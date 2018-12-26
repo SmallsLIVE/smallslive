@@ -63,9 +63,13 @@ class ShippingMethodView(checkout_views.ShippingMethodView):
 class ShippingAddressView(checkout_views.ShippingAddressView):
 
     def form_valid(self, form):
+        address_fields = dict(
+            (k, v) for (k, v) in form.instance.__dict__.items()
+            if not k.startswith('_'))
+        self.checkout_session.ship_to_new_address(address_fields)
         url = self.get_success_url()
         if self.request.is_ajax():
-            return http.JsonResponse({'url': url})
+            print 'return json'
         else:
             return redirect(url)
 
