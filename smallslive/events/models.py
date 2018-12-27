@@ -1,3 +1,4 @@
+import pytz
 from django.db.models import Count, Max, Q, Sum
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta, get_default_timezone
@@ -276,10 +277,18 @@ class Event(TimeStampedModel):
         current_timezone = timezone.get_current_timezone()
 
         ny_start = datetime.combine(self.date, sets[0].start)
-        ny_start = timezone.make_aware(ny_start, timezone=current_timezone)
+        try:
+            ny_start = timezone.make_aware(ny_start, timezone=current_timezone)
+        except (pytz.NonExistentTimeError, pytz.AmbiguousTimeError):
+            tzone = pytz.timezone(current_timezone)
+            ny_start = tzone.localize(datetime.fromtimestamp(ny_start), is_dst=False)
 
         ny_end = datetime.combine(self.date, sets[-1].end)
-        ny_end = timezone.make_aware(ny_end, timezone=current_timezone)
+        try:
+            ny_end = timezone.make_aware(ny_end, timezone=current_timezone)
+        except (pytz.NonExistentTimeError, pytz.AmbiguousTimeError):
+            tzone = pytz.timezone(current_timezone)
+            ny_end = tzone.localize(datetime.fromtimestamp(ny_end), is_dst=False)
 
         return ny_start, ny_end
 
@@ -743,7 +752,6 @@ class Event(TimeStampedModel):
             tickets += list(event_set.tickets.all())
 
         return tickets
-
 
 class RecordingQuerySet(models.QuerySet):
     def video(self):
