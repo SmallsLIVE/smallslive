@@ -27,6 +27,9 @@ from custom_stripe.models import CustomPlan, CustomerDetail
 from users.utils import charge, grant_access_to_archive, \
     one_time_donation, subscribe_to_plan,  update_active_card
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
+from oscar_apps.checkout.forms import BillingAddressForm
+from oscar.apps.address.models import UserAddress
+
 
 
 class SignupLandingView(TemplateView):
@@ -188,7 +191,16 @@ def user_settings_view_new(request):
     # if a GET (or any other method) we'll create a blank form
     else:
         artist_info_form = ArtistInfoForm(instance=request.user)
-    #Context for strip info
+
+    if 'billing_info' in request.POST:
+        billing_address_form = BillingAddressForm(None, request.user, request.POST)
+        if billing_address_form.is_valid():
+            billing_address_form.save()
+            profile_updated = True
+        else:
+            billing_address_form = BillingAddressForm(None, request.user, None)
+
+
     if profile_updated:
         return HttpResponseRedirect('/accounts/settings/')
         
@@ -224,6 +236,14 @@ def user_settings_view_new(request):
     else:
         cancel_at = False
 
+    try:
+        billing_address = request.user.addresses.get(is_default_for_billing=True)
+    except UserAddress.DoesNotExist:
+        billing_adress = None
+
+
+    
+
     return render(request, 'account/user_settings_new.html', {
         'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
         'change_email_form': change_email_form,
@@ -239,7 +259,8 @@ def user_settings_view_new(request):
         'user_archive_access_until': user_archive_access_until,
         'monthly_pledge_in_dollars': monthly_pledge_in_dollars,
         'cancelled': cancel_at,
-        'donate_url': reverse('donate')
+        'donate_url': reverse('donate'),
+        'billing_address': billing_address
     })
 
 

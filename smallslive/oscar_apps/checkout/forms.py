@@ -150,6 +150,13 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
                 address = UserAddress.objects.get(
                     user=self.instance.user,
                     hash=address.generate_hash())
+                    
+                last_address = UserAddress.objects.get(user=self.instance.user, is_default_for_billing=True)
+                last_address.is_default_for_billing = False
+                
+                address.is_default_for_billing = True
+                address.save()
+                
             except UserAddress.DoesNotExist:
                 address.is_default_for_billing = True
                 address.save()
