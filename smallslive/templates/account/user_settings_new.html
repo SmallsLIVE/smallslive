@@ -147,19 +147,23 @@
           </div>
           <div class="account-settings-info">
             <div class="text5">Billing address</div>
-            {% if user.address_1 or user.address_2 or user.city %}
-              <div class="text9 text-grey">{{ user.address_1 }}</div>
-              <div class="text9 text-grey">{{ user.address_2 }}</div>
-              <div class="text9 text-grey">{{user.city }}</div>
-            {% else %}
-              <div class="text9 text-grey">There is no address assigned</div>
-            {% endif %}
-          
-          <button class="white-border-button">Update</button>  
-        </div>
+            <div id='billing-change' style='display:none'>
+              {% include 'account/billing-change-form.html' %}
+            </div>
+            <div id="billing-address">
+              {% if user.address_1 or user.address_2 or user.city %}
+                <div class="text9 text-grey">{{ billing_address.line1  }}</div>
+                <div class="text9 text-grey">{{ billing_address.line2 }}</div>
+                <div class="text9 text-grey">{{ billing_address.line4 }}</div>
+              {% else %}
+                <div class="text9 text-grey">There is no address assigned</div>
+              {% endif %}
+              <button id='update-billing' class="white-border-button">Update</button> 
+            <div>
+          </div>
+        </div>    
       </div>
     </div>
-  </div>
   <div class="modal fade" id="cancel-subscription" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content custom-modal">
@@ -289,7 +293,12 @@
       updatePledgeSubpage.setCallback(renderObjects);
       updatePledgeSubpage.load();
     });
-  
+
+    $('#update-billing').click(function(){
+      $('#billing-change').css('display', 'inherit');
+      $('#billing-address').hide();
+      
+    })
 
     $('.close-button').bind("click", ToggleDisplay);
 
