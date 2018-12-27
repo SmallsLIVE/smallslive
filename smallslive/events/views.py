@@ -139,7 +139,7 @@ def _get_most_popular_uploaded(range_size=None):
     if range_size == RANGE_YEAR:
         range_start = range_end - timedelta(days=365)
 
-    qs = Event.objects.all()
+    qs = Event.objects.exclude(recordings=None)
     if range_size:
         qs = qs.filter(
             date__gte=range_start,
