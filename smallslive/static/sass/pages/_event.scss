@@ -4,7 +4,7 @@ $player-height:  25.3vw;
   min-height: 95vh;
   .modal-content.custom-modal{
       padding: 0 45px;
-      min-height: 95vh;
+      min-height: 75vh;
       @media(max-width: $screen-md-max) {
           padding: 0px;
           .close-button{
@@ -29,6 +29,9 @@ $player-height:  25.3vw;
               }
           }
       }
+  }
+  .modal-content.custom-modal .modal-content.custom-modal{
+    min-height: 45vh;
   }
   .donate-setting-container{
       .supporter-main-container{
