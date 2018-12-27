@@ -26,7 +26,7 @@ class BasketAddView(basket_views.BasketAddView):
 
         added_class = form.product.product_class
         if added_class.name == 'Gift':
-            basket.lines.exclude(product__product_class__name='Gift').delete()
+            basket.lines.all().delete()
         elif added_class.name == 'Ticket':
             # Remove anything from other venue
             venue_name = form.product.event_set.event.venue.name
