@@ -284,7 +284,7 @@ class Event(TimeStampedModel):
             tzone = pytz.timezone(current_timezone_name)
             try:
                 ny_start = tzone.localize(datetime.fromtimestamp(ny_start), is_dst=False)
-            except TypeError:
+            except (TypeError, pytz.NonExistentTimeError, pytz.AmbiguousTimeError):
                 pass
 
         ny_end = datetime.combine(self.date, sets[-1].end)
@@ -294,7 +294,7 @@ class Event(TimeStampedModel):
             tzone = pytz.timezone(current_timezone_name)
             try:
                 ny_end = tzone.localize(datetime.fromtimestamp(ny_end), is_dst=False)
-            except TypeError:
+            except (TypeError, pytz.NonExistentTimeError, pytz.AmbiguousTimeError):
                 pass
 
         return ny_start, ny_end
