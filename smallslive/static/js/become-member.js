@@ -27,6 +27,9 @@ $(document).ready(function () {
   var getPreviousStep = function () {
     var steps = getSteps();
     var index = steps.indexOf(currentStep);
+    if(index == -1){
+      return steps[1];
+    }
     return steps[index - 1];
   };
 
@@ -527,12 +530,14 @@ $(document).ready(function () {
     $('#confirmButton').show();
     $('#selectionConfirmationDialog').modal('hide');
     var $variantSelect = $selectionConfirmationDialog.find('select');
+
     if ($variantSelect.length != 0) {
       giftSelected($variantSelect.val());
     } else {
       giftSelected($("#single-product").val())
     }
   });
+
   $('#cancelSelectionButton').click(function () {
     resetButtons();
     $selectionConfirmationDialog.modal('hide');
@@ -771,10 +776,12 @@ $(document).ready(function () {
     }
     if (currentStep === 'Intro') return;
     $('#confirmButton').text('Confirm');
+    
 
 
-
+    setSelected('', 0);
     showPanel(getPreviousStep());
+    $itemForm = null;
     var $currentButton = $('.step-button.active');
     $currentButton.removeClass('active');
     $currentButton.prev().addClass('active');

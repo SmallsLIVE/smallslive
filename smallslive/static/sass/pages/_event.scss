@@ -4,7 +4,7 @@ $player-height:  25.3vw;
   min-height: 95vh;
   .modal-content.custom-modal{
       padding: 0 45px;
-      min-height: 95vh;
+      min-height: 75vh;
       @media(max-width: $screen-md-max) {
           padding: 0px;
           .close-button{
@@ -29,6 +29,9 @@ $player-height:  25.3vw;
               }
           }
       }
+  }
+  .modal-content.custom-modal .modal-content.custom-modal{
+    min-height: 45vh;
   }
   .donate-setting-container{
       .supporter-main-container{
@@ -63,7 +66,7 @@ $player-height:  25.3vw;
     }
   }
 
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     display: block;
     padding: 0 2vw;
 
@@ -90,7 +93,7 @@ $player-height:  25.3vw;
   }
   .event-title {
     margin-bottom: 5px;
-    @media(max-width: $screen-sm-max) {
+    @media(max-width: $screen-md-max) {
       font-size: 2.5em;
     }
   }
@@ -405,10 +408,10 @@ $player-height:  25.3vw;
 .event-container {
 
 
-  @media (min-width: $screen-md-min) {
+  @media (min-width: $screen-md-max) {
     max-width: 45vw;
   }
-  @media (max-width: $screen-md-min) {
+  @media (max-width: $screen-md-max) {
     max-width: 100%;
 
     &.flex-column {
