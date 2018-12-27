@@ -86,6 +86,7 @@
         <div class="custom-input text4">
           <input type="number" pattern="\d*" class="no-spinners transparent" id="monthlyCustom" value="supporter-monthly-pledge">
           <label><div>SET YOUR OWN <br> (MIN $10)</div></label>
+          <div id="monthly-less" class="text9 accent-color minimum-error"></div>
         </div>
       </div>
     </div>
@@ -105,6 +106,7 @@
           <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
           {% if flow_type = "become_supporter" %}
           <label><div>ENTER  AMOUNT<br>(MIN  $100)</div></label>
+           <div id="yearly-less" class="text9 accent-color minimum-error"></div>
           {% endif %}
         </div>
       </div>
