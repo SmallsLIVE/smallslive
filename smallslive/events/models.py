@@ -909,9 +909,10 @@ class ShowDefaultTime(models.Model):
 
     def sets_readable_start(self):
         if self.second_set:
-            return self.first_set.strftime('%I:%M %p') + " - " + self.second_set.strftime('%I:%M %p') 
+            return self.first_set.strftime('%I:%M %p') + " & " + self.second_set.strftime('%I:%M %p') 
         else:
-            return self.first_set.strftime('%H:%M')
+            first_set_end = datetime.combine(datetime.now(), self.first_set) + timedelta(hours=self.set_duration)
+            return self.first_set.strftime('%I:%M %p') + " - " + first_set_end.strftime('%I:%M %p')
 
     def __unicode__(self):
         return self.sets_readable_start() + "    " + self.venue.name
