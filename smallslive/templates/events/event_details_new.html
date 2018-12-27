@@ -197,6 +197,22 @@
         </div>
       </div>
     </div>
+    <div class="modal fade flow-modal" id="remove-comment" aria-hidden="true">
+      <div class="modal-dialog remove-comment-modal">
+        <div class="modal-content custom-modal">
+          <a href="#" class="close-button"></a>
+          <div class="modal-body">
+             <div class="title1">Removing comments</div>
+              <div class="current-event accent-color text7">Are you sure to remove this comment?</div>
+             <form action="{% url 'remove_comment'%}" method="post">
+                {% csrf_token %}
+                <button type="submit" name="id" value="" class="white-border-button">Confirm</button>
+                <button onclick="$('#remove-comment').modal('hide')" class="white-border-button">Cancel</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
 {% endblock %}
 
 {% block extra_js %}
@@ -232,6 +248,11 @@
       subpages.register();
       subpages.loadAll();
       
+      $(document).on('click', '.remove-comment', function () {
+        $('#remove-comment').modal('show',true)
+        $('#remove-comment button').val($(this).data("value"))
+      })
+
 
       $('#one-time-donation-btn').on('click', function () {
         currentStep = 'Intro';
@@ -259,6 +280,7 @@
         }
     });
 
+    
   </script>
   <script>
       

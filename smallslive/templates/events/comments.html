@@ -1,8 +1,7 @@
 <div class="text1">
     <span>Comments</span>
     <span class="text-grey text-lowercase">{{ object_list|length }} comment{{ object_list|length|pluralize }}</span>
-    {% if user.can_watch_video %}
-        {% include 'events/comment_form.html' %}
-    {% endif %}
+    {% include 'events/comment_form.html' %}
+
 </div>
 {% include 'events/comment_list.html' %}
