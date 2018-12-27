@@ -125,6 +125,7 @@
         var $videoContainer = $('#videoContainer');
         if ($videoContainer.hasClass('forbidden')) {
           videoPlayer.stop();
+          audioPlayer.stop();
           var modal = '#becomeMemberDialog';
           if (smallsConfig.user.isAuthenticated) {
             modal = '#become-a-supporter-dialog';
@@ -198,8 +199,8 @@
         videoPlayer.on('play', function () {
             var $videoContainer = $('#videoContainer');
             if ($videoContainer.hasClass('forbidden')) {
-              videoPlayer.stop(true);
-
+              videoPlayer.stop();
+              audioPlayer.stop();
               var modal = '#becomeMemberDialog';
               if (smallsConfig.user.isAuthenticated) {
                 modal = '#become-a-supporter-dialog';
