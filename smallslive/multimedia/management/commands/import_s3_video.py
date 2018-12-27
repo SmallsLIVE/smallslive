@@ -81,9 +81,6 @@ class Command(BaseCommand):
             print count
             count -= 1
 
-            if count > 2000:
-                continue
-
             if different_source:
                 event_id = event.original_id
             else:
