@@ -76,13 +76,18 @@ class Command(BaseCommand):
             filter_cond['venue__name'] = venue_name
 
         logger.info('Starting audio import')
+        logger.info('Venue: {}'.format(venue_name))
         count = Event.objects.filter(**filter_cond).count()
+        logger.info('Count: {}'.format(count))
         for event in Event.objects.filter(**filter_cond).order_by('start'):
             count -= 1
+            if count > 2458:
+                continue
             if different_source:
                 event_id = event.original_id
             else:
                 event_id = event.id
+
             print '(Count, id, original): ', count, event.id, event_id
 
             # Retrieve sets in the right order
@@ -102,37 +107,38 @@ class Command(BaseCommand):
                 for filename in filenames:
                     key = bucket.get_key(filename)
                     if key:
+
                         try:
-                            recording = Recording.objects.get(event_id=event.id, set_number=set_num,
+                            recording = Recording.objects.get(event_id=event.id,
+                                                              set_number=set_num,
                                                               media_file__media_type='audio')
                         except Recording.DoesNotExist:
                             recording = Recording(event_id=event.id, set_number=set_num)
                         if not recording.media_file_id:
-                            media_file, created = MediaFile.objects.get_or_create(
-                                media_type='audio', file=filename, size=key.size)
-                            if hasattr(media_file, 'recording') and media_file.recording:
-                                print 'File belongs to  another recording -> skipping'
-                                print media_file.recording
+                            if different_source:
+                                # Initial import from Mezzrow
+                                media_file = MediaFile.objects.create(category='set',
+                                                                      media_type='audio',
+                                                                      file=filename,
+                                                                      size=key.size)
                             else:
-                                recording.media_file = media_file
-                                recording.save()
+                                media_file, created = MediaFile.objects.get_or_create(media_type='audio',
+                                                                                      file=filename,
+                                                                                      size=key.size)
+                            recording.media_file = media_file
+                            recording.save()
+                            new_files_imported += 1
 
-                                # Link to EventSet object.
-                                if len(event_sets) >= set_num:
-                                    event_set = event_sets[set_num - 1]
-                                    event_set.audio_recording = recording
-                                    event_set.save()
-                                    print 'Saved: ', event_set
+                            if len(event_sets) >= set_num:
+                                event_set = event_sets[set_num - 1]
+                                event_set.audio_recording = recording
+                                event_set.save()
+                                print 'Saved: ', event_set
 
-                                new_files_imported += 1
                         else:
-                            try:
-                                recording.media_file.file = filename
-                                recording.media_file.size = key.size
-                                recording.media_file.save()
-                            except IntegrityError:
-                                # Media file already there
-                                pass
+                            recording.media_file.file = filename
+                            recording.media_file.size = key.size
+                            recording.media_file.save()
 
 
         logger.info("{0} new files imported".format(new_files_imported))
