@@ -275,19 +275,20 @@ class Event(TimeStampedModel):
         sets = sorted(sets, Event.sets_order)
 
         current_timezone = timezone.get_current_timezone()
+        current_timezone_name = timezone.get_current_timezone_name()
 
         ny_start = datetime.combine(self.date, sets[0].start)
         try:
             ny_start = timezone.make_aware(ny_start, timezone=current_timezone)
         except (pytz.NonExistentTimeError, pytz.AmbiguousTimeError):
-            tzone = pytz.timezone(current_timezone)
+            tzone = pytz.timezone(current_timezone_name)
             ny_start = tzone.localize(datetime.fromtimestamp(ny_start), is_dst=False)
 
         ny_end = datetime.combine(self.date, sets[-1].end)
         try:
             ny_end = timezone.make_aware(ny_end, timezone=current_timezone)
         except (pytz.NonExistentTimeError, pytz.AmbiguousTimeError):
-            tzone = pytz.timezone(current_timezone)
+            tzone = pytz.timezone(current_timezone_name)
             ny_end = tzone.localize(datetime.fromtimestamp(ny_end), is_dst=False)
 
         return ny_start, ny_end
