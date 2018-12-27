@@ -273,11 +273,13 @@ class Event(TimeStampedModel):
         sets = list(self.sets.all())
         sets = sorted(sets, Event.sets_order)
 
+        current_timezone = timezone.get_current_timezone()
+
         ny_start = datetime.combine(self.date, sets[0].start)
-        ny_start = timezone.make_aware(ny_start, timezone=(timezone.get_current_timezone()))
+        ny_start = timezone.make_aware(ny_start, timezone=current_timezone)
 
         ny_end = datetime.combine(self.date, sets[-1].end)
-        ny_end = timezone.make_aware(ny_end, timezone=(timezone.get_current_timezone()))
+        ny_end = timezone.make_aware(ny_end, timezone=current_timezone)
 
         return ny_start, ny_end
 
@@ -741,6 +743,7 @@ class Event(TimeStampedModel):
             tickets += list(event_set.tickets.all())
 
         return tickets
+
 
 class RecordingQuerySet(models.QuerySet):
     def video(self):

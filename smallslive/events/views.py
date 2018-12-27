@@ -5,13 +5,15 @@ import datetime
 from datetime import time as std_time
 from dateutil.relativedelta import relativedelta
 from cacheops import cached
+from django.contrib import messages
 from django.core import signing
 from django.db.models import Count, F, Q, Sum
 import monthdelta
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import connection
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponse
 from django.http.response import Http404
 from django.utils import timezone
 from django.utils.http import urlencode
@@ -137,7 +139,7 @@ def _get_most_popular_uploaded(range_size=None):
     if range_size == RANGE_YEAR:
         range_start = range_end - timedelta(days=365)
 
-    qs = Event.objects.all()
+    qs = Event.objects.exclude(recordings=None)
     if range_size:
         qs = qs.filter(
             date__gte=range_start,
@@ -969,3 +971,13 @@ class CommentListView(FormView):
         return context
 
 event_comments = CommentListView.as_view()
+
+
+
+@login_required
+def remove_comment(request):
+    comment = Comment.objects.get(pk=request.POST.get('id'))
+    success_url = comment.event_set.event.get_absolute_url()
+    comment.delete()
+    messages.info(request,"Comment deleted")
+    return HttpResponseRedirect(success_url)

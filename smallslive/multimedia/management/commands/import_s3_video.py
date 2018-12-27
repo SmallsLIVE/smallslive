@@ -80,10 +80,18 @@ class Command(BaseCommand):
         for event in Event.objects.filter(**filter_cond).order_by('start'):
             print count
             count -= 1
+
+            if count > 2000:
+                continue
+
             if different_source:
                 event_id = event.original_id
             else:
                 event_id = event.id
+
+            # Retrieve sets in the right order
+            event_sets = sorted(list(event.sets.all()), Event.sets_order)
+            print event_sets
 
             for set_num in range(1, 7):
                 filename = '{0.year}-{0.month:02}-{0.day:02}/360p/{1}-{2}_360p.mp4'.format(
@@ -100,11 +108,19 @@ class Command(BaseCommand):
                         recording = Recording(event_id=event.id, set_number=set_num)
                     if not recording.media_file_id:
                         media_file, created = MediaFile.objects.get_or_create(category='set',
-                                                                              media_type="video",
+                                                                              media_type='video',
                                                                               sd_video_file=filename,
                                                                               size=key.size)
+                        print 'Created: ', created
                         recording.media_file = media_file
                         recording.save()
+
                         self.files_imported += 1
+
+                    if len(event_sets) >= set_num:
+                        event_set = event_sets[set_num - 1]
+                        event_set.video_recording = recording
+                        event_set.save()
+                        print 'Saved: ', event_set
 
         self.stdout.write("{0} new files imported".format(self.files_imported))

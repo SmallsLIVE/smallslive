@@ -5,8 +5,8 @@ from optparse import make_option
 import os
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.db.utils import IntegrityError
 from django.utils import timezone
-from boto.s3.connection import S3Connection
 from events.models import Event, Recording
 from multimedia.models import MediaFile
 
@@ -76,14 +76,23 @@ class Command(BaseCommand):
             filter_cond['venue__name'] = venue_name
 
         logger.info('Starting audio import')
+        logger.info('Venue: {}'.format(venue_name))
         count = Event.objects.filter(**filter_cond).count()
+        logger.info('Count: {}'.format(count))
         for event in Event.objects.filter(**filter_cond).order_by('start'):
-            print count
             count -= 1
+            if count > 2458:
+                continue
             if different_source:
                 event_id = event.original_id
             else:
                 event_id = event.id
+
+            print '(Count, id, original): ', count, event.id, event_id
+
+            # Retrieve sets in the right order
+            event_sets = sorted(list(event.sets.all()), Event.sets_order)
+            print event_sets
 
             for set_num in range(1, 7):
                 no_zero_padded = '{0.year}-{0.month}-{0.day}/{1}-{2}.mp3'.format(
@@ -98,20 +107,38 @@ class Command(BaseCommand):
                 for filename in filenames:
                     key = bucket.get_key(filename)
                     if key:
-                        print filename
+
                         try:
-                            recording = Recording.objects.get(event_id=event_id, set_number=set_num,
+                            recording = Recording.objects.get(event_id=event.id,
+                                                              set_number=set_num,
                                                               media_file__media_type='audio')
                         except Recording.DoesNotExist:
-                            recording = Recording(event_id=event_id, set_number=set_num)
+                            recording = Recording(event_id=event.id, set_number=set_num)
                         if not recording.media_file_id:
-                            media_file, created = MediaFile.objects.get_or_create(media_type="audio", file=filename, size=key.size)
+                            if different_source:
+                                # Initial import from Mezzrow
+                                media_file = MediaFile.objects.create(category='set',
+                                                                      media_type='audio',
+                                                                      file=filename,
+                                                                      size=key.size)
+                            else:
+                                media_file, created = MediaFile.objects.get_or_create(media_type='audio',
+                                                                                      file=filename,
+                                                                                      size=key.size)
                             recording.media_file = media_file
                             recording.save()
                             new_files_imported += 1
+
+                            if len(event_sets) >= set_num:
+                                event_set = event_sets[set_num - 1]
+                                event_set.audio_recording = recording
+                                event_set.save()
+                                print 'Saved: ', event_set
+
                         else:
                             recording.media_file.file = filename
                             recording.media_file.size = key.size
                             recording.media_file.save()
+
 
         logger.info("{0} new files imported".format(new_files_imported))

@@ -497,8 +497,16 @@ $player-height:  25.3vw;
 }
 
 .comment {
+  position: relative;
   margin-bottom: 10px;
   border-bottom: 1px solid $white-transparent;
+  .remove-comment{
+    background-color: transparent;
+    top:0;
+    &::before,&::after{
+      background-color: gray;
+    }
+  }
   .comment-head {
     i {
       color: $background-color;
@@ -512,5 +520,20 @@ $player-height:  25.3vw;
   }
   .comment-body {
     padding: 10px 25px;
+    word-wrap: break-word;
+  }
+}
+
+.remove-comment-modal{
+  .custom-modal{
+    min-height:auto;
+    .modal-body form{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      .white-border-button:last-child{
+        margin-left: 10px;
+      }
+    }
   }
 }
