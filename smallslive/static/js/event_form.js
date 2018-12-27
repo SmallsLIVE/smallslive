@@ -87,10 +87,7 @@ EventForm = {
             var end = newEnd.format(date_format);
             $end.data("DateTimePicker").setDate(end);
 
-            // if the day of the week changes, add appropriate slot buttons
-            if (redrawSlotButtons) {
-                EventForm.addSlotButtons(start.isoWeekday());
-            }
+          
         };
 
         $start.on('dp.hide', function (ev) {
@@ -145,10 +142,7 @@ EventForm = {
                 start.minutes(parseInt(split_start_time[1]));
             }
 
-            if (!endDate.val()) {
-                end = moment(times[1], "H:mm");
-            }
-            else {
+            if (times[1]) {
                 var split_end_time = times[1].split(':');
                 end = EventForm.selectedDate.clone();
                 end.hour(parseInt(split_end_time[0]));
