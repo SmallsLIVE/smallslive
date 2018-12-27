@@ -81,8 +81,7 @@ class Command(BaseCommand):
         logger.info('Count: {}'.format(count))
         for event in Event.objects.filter(**filter_cond).order_by('start'):
             count -= 1
-            if count > 2458:
-                continue
+
             if different_source:
                 event_id = event.original_id
             else:
