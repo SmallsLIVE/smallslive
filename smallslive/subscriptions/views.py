@@ -169,7 +169,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
             }, status=500))
 
     def post(self, request, *args, **kwargs):
-
+        flow_type = self.request.POST.get('flow_type')
         stripe_token = self.request.POST.get('stripe_token')
         plan_type = self.request.POST.get('type')
         amount = self.request.POST.get('quantity')
@@ -179,7 +179,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         if stripe_token:
             self.execute_stripe_payment(stripe_token, amount, plan_type)
             return _ajax_response(
-                self.request, redirect(reverse('become_supporter_complete'))
+                self.request, redirect(reverse('become_supporter_complete')+ "?flow_type=" + flow_type)
             )
         else:
             try:
