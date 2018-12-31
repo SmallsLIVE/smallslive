@@ -156,17 +156,16 @@ EventForm = {
 
             // if both start and end are early in the morning, add 1 day to the start and end date,
             // otherwise, if only the end is after midnight, add 1 day to the end
-            if (start.hour() < 6 && end.hour() < 6) {
-                start.add('days', 1);
-                if(times[1]){
+            if (times[1]){
+                if (start.hour() < 6 &&  end.hour() < 6) {
+                    start.add('days', 1);
                     end.add('days', 1);
                 }
-            }
-            else if (start.isAfter(end)) {
-                if(times[1]){
+                else if (start.isAfter(end)) {
                     end.add('days', 1);
-                }
-            }
+                    
+                }            
+            }      
             startDate.data("DateTimePicker").setDate(start.format(date_format));
             if(times[1]){
                 endDate.data("DateTimePicker").setDate(end.format(date_format));
