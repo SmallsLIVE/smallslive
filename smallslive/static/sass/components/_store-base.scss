@@ -1996,8 +1996,8 @@
     margin-bottom: 30px;
 
     &__heading {
-      @include lato-black;
-      font-size: 18px;
+      @include reen-kufi-normal;
+      font-size: 22px;
       margin: 0 0 20px;
     }
 
@@ -2017,7 +2017,7 @@
     &__table {
 
       &__heading {
-        @include lato-bold;
+        @include reen-kufi-normal;
         font-size: 16px;
         margin: 0 0 15px;
       }

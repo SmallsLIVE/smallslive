@@ -476,8 +476,14 @@ class Event(TimeStampedModel):
     def get_range(self):
         sets = list(self.sets.all())
         sets = sorted(sets, Event.sets_order)
-        start = sets[0].start
-        end = sets[-1].end
+        if sets:
+            start = sets[0].start
+            end = sets[-1].end
+        else:
+            # If no sets (should not be possible)
+            # let's return  the event  time to avoid an error.
+            start = datetime.time(self.start)
+            end = datetime.time(self.end)
 
         return start, end
 
@@ -756,6 +762,7 @@ class Event(TimeStampedModel):
             tickets += list(event_set.tickets.all())
 
         return tickets
+
 
 class RecordingQuerySet(models.QuerySet):
     def video(self):
