@@ -6,8 +6,10 @@
         <div class="flex-row">
         <input type="submit" class="white-border-button" value="Comment"  {% if not user.can_watch_video %} disabled {% endif %} />
         {% csrf_token %}
-        {% if not user.can_watch_video %}
-        <div class="accent-color text7">Log in to comment</div>
+        {% if not request.user.is_authenticated %}
+          <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
+            Sign In
+          </button>
         {% endif %}
         </div>
     </p>
