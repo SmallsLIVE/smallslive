@@ -482,8 +482,8 @@ class Event(TimeStampedModel):
         else:
             # If no sets (should not be possible)
             # let's return  the event  time to avoid an error.
-            start = datetime.time(self.start())
-            end = datetime.time(self.end())
+            start = datetime.time(self.start)
+            end = datetime.time(self.end)
 
         return start, end
 
