@@ -51,12 +51,16 @@
   <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
   <script>
     function loadInfo(infoUrl){
+      if( viewPortLength("width") > 425) {
+      $('#artistEventsInfo').html("");
+      $('#artistEventsInfo').addClass("artist-loading-gif");
+      }
       $.ajax({
         url: infoUrl,
           success: function (data) {
             var $target;
-            console.log(data);
             if( viewPortLength("width") > 425) {
+              $('#artistEventsInfo').removeClass("artist-loading-gif");
               $('#event-info-mobile-card').html("")
               $target = $('#artistEventsInfo');
               $target.html(data);
