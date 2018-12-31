@@ -1,7 +1,5 @@
 {% load account %}{% user_display user as user_display %}{% load i18n %}{% autoescape off %}{% with current_site.name as site_name %}{%if not user.artist %}
-Hello {% if user.first_name %}{{user.first_name}}{% endif %}
-
-Welcome to SmallsLIVE and thank you for registering as a {{ user.get_subscription_plan.name }} Member. Please click the link below to complete the registration process and access your account.
+Please click this link to confirm your e-mail address and complete your registration as a member of The SmallsLIVE Foundation for Jazz Arts and Education.
 
 {{ activate_url }}
 
