@@ -27,7 +27,7 @@
                         {% for error in form.first_name.errors %}
                             <span class="store__form__field-error">{{ error }}</span>
                         {% endfor %}
-                        <label for="last_name" class="store__form__label">Surname</label>
+                        <label for="last_name" class="store__form__label">Last name</label>
                         <input type="text" name="last_name" class="store__form__input" id="last_name" {% if form.last_name.value %}value="{{ form.last_name.value }}"{% endif %}>
                         {% for error in form.last_name.errors %}
                             <span class="store__form__field-error">{{ error }}</span>
@@ -60,6 +60,7 @@
                                 {% endfor %}
                             </div>
                         </div>
+                        <label class="store__form__label">State</label>
                         <div class="white-border-select">
                             <select name="state" id="state" class="store__form__select">
                                 {% for val, choice in form.fields.state.widget.choices %}
@@ -70,6 +71,7 @@
                         {% for error in form.state.errors %}
                             <span class="store__form__field-error">{{ error }}</span>
                         {% endfor %}
+                        <label class="store__form__label">Country</label>
                         <div class="white-border-select">
                             <select name="country" id="country" class="store__form__select">
                                 {% for val, choice in form.fields.country.choices %}
