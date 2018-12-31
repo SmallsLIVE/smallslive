@@ -44,9 +44,17 @@
   </div>
 
   <div id="supporterStepSelectType" class="supporter-step" style="display: none">
-
-    <div class="text9">You are making a tax deductible donation to the SmallsLIVE Foundation for Jazz Arts and Education.<br>
-     All tax information is available from your account settings. Please choose one of the following:
+    
+    <div class="text9">You are
+      {% if flow_type = 'update_pledge' %}
+      updating your pledge
+      {% elif flow_type = 'one_time_donation' %}
+      making a one time donation
+      {% else %}
+      making a tax deductible donation 
+      {% endif %}
+      to the SmallsLIVE Foundation for Jazz Arts and Education.<br>
+      {% if not flow_type = 'update_pledge' %}All tax information is available from your account settings. {% endif %}Please choose one of the following:
     </div>
 
     {% if not flow_type = 'update_pledge' %}

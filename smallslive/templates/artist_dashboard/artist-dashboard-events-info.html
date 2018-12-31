@@ -8,7 +8,7 @@
         
         <div class="button-row button-row-margin">
             {% if is_admin and set.has_media %}
-                <a href="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
+                 <a href="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
                         <button class="set-button">Edit</button>
                 </a>
                 {% if not event.is_future %}

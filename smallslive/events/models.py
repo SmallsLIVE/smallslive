@@ -275,21 +275,24 @@ class Event(TimeStampedModel):
         sets = sorted(sets, Event.sets_order)
 
         current_timezone = timezone.get_current_timezone()
-        current_timezone_name = timezone.get_current_timezone_name()
 
         ny_start = datetime.combine(self.date, sets[0].start)
         try:
             ny_start = timezone.make_aware(ny_start, timezone=current_timezone)
         except (pytz.NonExistentTimeError, pytz.AmbiguousTimeError):
-            tzone = pytz.timezone(current_timezone_name)
-            ny_start = tzone.localize(datetime.fromtimestamp(ny_start), is_dst=False)
+            ny_start = timezone.make_aware(
+                ny_start + timedelta(hours=1),
+                timezone=current_timezone
+            )
 
         ny_end = datetime.combine(self.date, sets[-1].end)
         try:
             ny_end = timezone.make_aware(ny_end, timezone=current_timezone)
         except (pytz.NonExistentTimeError, pytz.AmbiguousTimeError):
-            tzone = pytz.timezone(current_timezone_name)
-            ny_end = tzone.localize(datetime.fromtimestamp(ny_end), is_dst=False)
+            ny_end = timezone.make_aware(
+                ny_end + timedelta(hours=1),
+                timezone=current_timezone
+            )
 
         return ny_start, ny_end
 
@@ -908,15 +911,22 @@ class Venue(models.Model):
 class ShowDefaultTime(models.Model):
     venue = models.ForeignKey('Venue', on_delete=models.CASCADE, blank=False)
     first_set = models.TimeField(blank=False)
-    second_set = models.TimeField(blank=False)
+    second_set = models.TimeField(blank=True,null=True)
     set_duration = models.IntegerField(default=1)
     title = models.CharField(max_length=100, default='Set duration')
 
     def sets_start(self):
-        return self.first_set.strftime('%H:%M') + "-" + self.second_set.strftime('%H:%M') 
+        if self.second_set:
+            return self.first_set.strftime('%H:%M') + "-" + self.second_set.strftime('%H:%M') 
+        else:
+            return self.first_set.strftime('%H:%M')
 
     def sets_readable_start(self):
-        return self.first_set.strftime('%I:%M %p') + " - " + self.second_set.strftime('%I:%M %p') 
+        if self.second_set:
+            return self.first_set.strftime('%I:%M %p') + " & " + self.second_set.strftime('%I:%M %p') 
+        else:
+            first_set_end = datetime.combine(datetime.now(), self.first_set) + timedelta(hours=self.set_duration)
+            return self.first_set.strftime('%I:%M %p') + " - " + first_set_end.strftime('%I:%M %p')
 
     def __unicode__(self):
         return self.sets_readable_start() + "    " + self.venue.name

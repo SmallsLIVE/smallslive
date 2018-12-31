@@ -87,10 +87,7 @@ EventForm = {
             var end = newEnd.format(date_format);
             $end.data("DateTimePicker").setDate(end);
 
-            // if the day of the week changes, add appropriate slot buttons
-            if (redrawSlotButtons) {
-                EventForm.addSlotButtons(start.isoWeekday());
-            }
+          
         };
 
         $start.on('dp.hide', function (ev) {
@@ -145,28 +142,35 @@ EventForm = {
                 start.minutes(parseInt(split_start_time[1]));
             }
 
-            if (!endDate.val()) {
-                end = moment(times[1], "H:mm");
-            }
-            else {
-                var split_end_time = times[1].split(':');
-                end = EventForm.selectedDate.clone();
-                end.hour(parseInt(split_end_time[0]));
-                end.minutes(parseInt(split_end_time[1]));
+            if(times[1]){
+                if (!endDate.val()) {
+                    end = moment(times[1], "H:mm");
+                }
+                else {
+                    var split_end_time = times[1].split(':');
+                    end = EventForm.selectedDate.clone();
+                    end.hour(parseInt(split_end_time[0]));
+                    end.minutes(parseInt(split_end_time[1]));
+                }
             }
 
             // if both start and end are early in the morning, add 1 day to the start and end date,
             // otherwise, if only the end is after midnight, add 1 day to the end
             if (start.hour() < 6 && end.hour() < 6) {
                 start.add('days', 1);
-                end.add('days', 1);
+                if(times[1]){
+                    end.add('days', 1);
+                }
             }
             else if (start.isAfter(end)) {
-                end.add('days', 1);
+                if(times[1]){
+                    end.add('days', 1);
+                }
             }
             startDate.data("DateTimePicker").setDate(start.format(date_format));
-            endDate.data("DateTimePicker").setDate(end.format(date_format));
-           
+            if(times[1]){
+                endDate.data("DateTimePicker").setDate(end.format(date_format));
+            }
             EventForm.propagateSets(start, end, setDuration);
 
         });
@@ -193,7 +197,7 @@ EventForm = {
 
         });
     },
-    propagateSets: function(first, second, duration=1){
+    propagateSets: function(first, second=undefined, duration=1){
         var $setsTable = $(".event-set-list-form .formset_table");
         var $setsTableBody = $(".event-set-list-form .formset_table tbody");
         // Keep first row
@@ -224,19 +228,25 @@ EventForm = {
         $total.val(total);
 
         var firstRow = EventForm.cloneMore($firstClone, undefined, 'sets');
-        var secondRow = EventForm.cloneMore($firstClone, undefined, 'sets');
-
         firstRow.appendTo($setsTableBody);
-        secondRow.appendTo($setsTableBody);
-
         this.configureTimePicker(firstRow);
-        this.configureTimePicker(secondRow);
-
-
         firstRow.find('#id_sets-' + total + '-start').data("DateTimePicker").setDate(first);
         firstRow.find('#id_sets-' + total + '-end').data("DateTimePicker").setDate(first.add(duration, 'h'));
-        secondRow.find('#id_sets-' + (total + 1) + '-start').data("DateTimePicker").setDate(second);
-        secondRow.find('#id_sets-' + (total + 1) + '-end').data("DateTimePicker").setDate(second.add(duration, 'h'));
+
+        if(second){
+            var secondRow = EventForm.cloneMore($firstClone, undefined, 'sets');
+            secondRow.appendTo($setsTableBody);
+            this.configureTimePicker(secondRow);
+            secondRow.find('#id_sets-' + (total + 1) + '-start').data("DateTimePicker").setDate(second);
+            secondRow.find('#id_sets-' + (total + 1) + '-end').data("DateTimePicker").setDate(second.add(duration, 'h'));
+        }
+
+        
+        
+
+
+        
+       
 
         this.fixTableWidths($setsTable);
     },
