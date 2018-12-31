@@ -56,7 +56,9 @@ class SearchMixin(object):
             results_per_page = 24
 
             sqs = search.search_event(main_search, order, date_from, date_to,
-                                      artist_pk=artist_pk, venue=venue)
+                                    artist_pk=artist_pk, venue=venue)
+            if not self.request.user.is_superuser:
+                sqs = sqs.filter(Q(state=Event.STATUS.Published) | Q(state=Event.STATUS.Cancelled))
 
         blocks = []
         block = []

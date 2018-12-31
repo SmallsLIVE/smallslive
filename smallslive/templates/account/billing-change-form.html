@@ -1,0 +1,69 @@
+<form class="custom-form" role="form" id="change-billing-form" method="post" action="{% url "user_settings_new" %}">
+    {% csrf_token %}
+    <div class="form-group {% if change_email_form.email.errors  %}has-error{% endif %}">
+        <input type="text" class="form-control" name="first_name" id="" value="{{ billing_address.first_name }}" placeholder="First name">
+    </div>
+    <div class="form-group">
+          <input type="text" class="form-control" name="last_name" id="" value="{{ billing_address.last_name }}" placeholder="Last name">
+    </div>
+   <div class="form-group">
+          <input type="text" class="form-control" name="line1" id="" value="{{ billing_address.line1 }}" placeholder="Address Line 1">
+    </div>
+    <div class="form-group">
+          <input  type="text" class="form-control" name="line2" id="" value="{{ billing_address.line2 }}" placeholder="Address Line 2">
+    </div>
+    <div class="form-group">
+          <input  type="text" class="form-control" name="line4" id="" value="{{ billing_address.line4 }}" placeholder="City">
+    </div>
+    <div class="form-group">
+          <input  type="text" class="form-control" name="postcode" id="" value="{{ billing_address.postcode }}" placeholder="Zip code">
+    </div>
+    <div>
+        <div class="white-border-select" style="width: 100%;">
+              {{ artist_info_form.state }}
+              {% for error in artist_info_form.state.errors %}
+                  <p class="form-error-text">{{ error  }}</p>
+              {% endfor %}
+        </div>
+    </div>
+    <div>
+        <div class="white-border-select" style="width: 100%;">
+            {{ artist_info_form.country }}
+            {% for error in artist_info_form.country.errors %}
+                <p class="form-error-text">{{ error  }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <input type="hidden" name="billing_option" value="different-address">
+    <input type="hidden" id="change-billing" name="billing_info" value="Change billing">
+</form>
+<button id="save" class="white-border-button" name="edit_billing">save</button>
+
+<script>
+
+
+    $('#save').click(function(){
+        $('#change-billing-form').submit()
+    })
+        $(document).on('change', '#id_email',function(){
+          $('#change-mail').attr('name', 'change_email')
+        })
+        $(document).on('change', '#id_first_name',function(){
+          $('#change-mail').attr('name', 'edit_profile')
+        })
+        $(document).on('change', '#id_last_name',function(){
+          $('#change-mail').attr('name', 'edit_profile')
+        })
+        $('#password2').change(function(){
+          $('#change-password').attr('name', 'change_password')
+        })
+        $('#password1').change(function(){
+          $('#change-password').attr('name', 'change_password')
+        })
+        $('#oldpassword').change(function(){
+          $('#change-password').attr('name', 'change_password')
+        })
+
+
+</script>
