@@ -239,7 +239,7 @@ def user_settings_view_new(request):
     try:
         billing_address = request.user.addresses.get(is_default_for_billing=True)
     except UserAddress.DoesNotExist:
-        billing_adress = None
+        billing_address = UserAddress()
 
 
     
