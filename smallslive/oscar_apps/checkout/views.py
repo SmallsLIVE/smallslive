@@ -68,7 +68,7 @@ class ShippingAddressView(checkout_views.ShippingAddressView):
         address_fields = dict(
             (k, v) for (k, v) in form.instance.__dict__.items()
             if not k.startswith('_'))
-        self.checkout_session.ship_to_new_address(address_fields)
+        self.checkout_session. (address_fields)
         url = self.get_success_url()
         if self.request.is_ajax():
             return http.JsonResponse({'url': url})
@@ -614,11 +614,11 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
                         reference=payment_id)
         self.add_payment_source(source)
 
-        shipping_address = self.get_shipping_address(self.request.basket)
+        shipping_address = self.get_shipping_address(basket)
         shipping_method = Repository().get_default_shipping_method(
-            basket=self.request.basket, user=self.request.user,
+            basket=basket, user=self.request.user,
             request=self.request)
-        shipping_charge = shipping_method.calculate(self.request.basket)
+        shipping_charge = shipping_method.calculate(basket)
         order_total = self.get_order_totals(
             basket, shipping_charge=shipping_charge)
         billing_address = self.get_billing_address(shipping_address)
