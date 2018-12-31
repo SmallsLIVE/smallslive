@@ -12,6 +12,7 @@ from django.utils.timezone import timedelta
 from django.views.generic import View
 from django.views.generic.base import TemplateView
 from haystack.query import SearchQuerySet
+from django.db.models import Q
 
 from artists.models import Artist, Instrument
 from events.models import Event, Venue
