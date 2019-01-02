@@ -319,6 +319,8 @@ $(document).ready(function () {
     $(monthlyCustom).removeClass('active');
     $("#yearly-less").text("");
     $("#monthly-less").text("")
+    $("#yearlyCustomConfirm").hide()
+    $("#monthlyCustomConfirm").hide()
   };
 
 
@@ -407,6 +409,10 @@ $(document).ready(function () {
     monthlyCustom = $("#monthlyCustom");
     yearlyCustom = $("#yearlyCustom");
     var value = $(monthlyCustom).val();
+    if(value > 9){
+      $("#monthlyCustomConfirm").data("value", value)
+      $("#monthlyCustomConfirm").show()
+    }
     if (value && isPositiveInteger(value)) {
       resetButtons();
       $(yearlyCustom).val('');
@@ -435,6 +441,8 @@ $(document).ready(function () {
     }
   });
 
+
+
   $(document).on('keyup',  '#yearlyCustom', function (event) {
     monthlyCustom = $("#monthlyCustom");
     yearlyCustom = $("#yearlyCustom");
@@ -446,6 +454,10 @@ $(document).ready(function () {
       setSelected('year', value);
       $(yearlyCustom).addClass('active');
       $(monthlyCustom).removeClass('active');
+      if(value > 99 || flowKind !== 'become_supporter'){
+        $("#yearlyCustomConfirm").data("value", value)
+        $("#yearlyCustomConfirm").show()
+      }
       if (event.keyCode == 13) {
         var amount = $(this).val();
         if(amount > 99 || flowKind !== 'become_supporter'){
@@ -786,6 +798,20 @@ $(document).ready(function () {
     $currentButton.removeClass('active');
     $currentButton.prev().addClass('active');
   });
+
+
+  $(document).on('click',  '.confirm-custom', function () {
+    setSelected($(this).data("type"), $(this).data("value"));
+    resetButtons();
+    resetCustom();
+    var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
+    $selectionConfirmationDialog.modal('show');
+    $selectionConfirmationDialog.find('.title').text('become a supporter');
+    $selectionConfirmationDialog.find('.subtitle').text('Monthly pledge');
+    $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You have selected a monthly pledge of $'+amount+'. Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation.');
+    $selectionConfirmationDialog.find('.gift-content');
+  })
+
 
   checkConfirmButton();
 });
