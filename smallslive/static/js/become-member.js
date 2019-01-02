@@ -376,10 +376,11 @@ $(document).ready(function () {
   $(document).on('click', '.confirm-custom', function () {
     $type = $(this).data("type");
     $value = $(this).data("value");
+    console.log($type, $value)
     setSelected($type, $value);
     resetButtons();
     resetCustom();
-    if($type = 'month'){
+    if($type == 'month'){
       var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
       $selectionConfirmationDialog.modal('show');
       $selectionConfirmationDialog.find('.title').text('become a supporter');
@@ -403,7 +404,7 @@ $(document).ready(function () {
   $(document).on('focusout', '.custom-out', function(){
     resetCustom()
   })
-  
+
   function isPositiveInteger(s) {
     return /^\+?[1-9][\d]*$/.test(s);
   }

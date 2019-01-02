@@ -91,7 +91,7 @@
         <button value=10>$10</button>
         <button value=20>$20</button>
         <button value=50>$50</button>
-        <div class="flex-row" class="custom-out">
+        <div class="flex-row custom-out">
           <div class="custom-input text4">
             <input type="number" pattern="\d*" class="no-spinners transparent" id="monthlyCustom" value="supporter-monthly-pledge">
             <label><div>SET YOUR OWN <br> (MIN $10)</div></label>
@@ -116,7 +116,7 @@
         <button value=100>$100</button>
         <button value=500>$500</button>
         <button value=1000>$1000</button>
-        <div class="flex-row" class="custom-out">
+        <div class="flex-row custom-out">
           <div class="custom-input text4">
             <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
             {% if flow_type = "become_supporter" %}
@@ -124,7 +124,7 @@
             <div id="yearly-less" class="text9 accent-color minimum-error"></div>
             {% endif %}
           </div>
-          <button class="confirm-custom" id="yearlyCustomConfirm" data-type="month" data-value="" style="display: none;">
+          <button class="confirm-custom" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
             <span class="bar bar-1"></span>
             <span class="bar bar-2"></span>				
           </button>
