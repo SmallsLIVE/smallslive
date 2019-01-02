@@ -113,7 +113,6 @@ def one_time_donation(customer, stripe_token, amount,
     charge(customer, amount)
     if grant_access:
         user = customer.subscriber
-        print user.archive_access_until
         # As per Spike request, grant access until then next fiscal year end
         # In this  case, 1/1
         grant_access_to_archive(user, commit=False)

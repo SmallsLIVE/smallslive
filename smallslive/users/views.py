@@ -241,9 +241,6 @@ def user_settings_view_new(request):
     except UserAddress.DoesNotExist:
         billing_address = UserAddress()
 
-
-    
-
     return render(request, 'account/user_settings_new.html', {
         'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
         'change_email_form': change_email_form,
@@ -252,9 +249,9 @@ def user_settings_view_new(request):
         'current_user': request.user,
         'artist_info_form': artist_info_form,
         'plan': plan,
-        'customer_charges': customer_charges,
+        'donations': request.user.get_donations(),
         'customer_detail': customer_detail,
-        'charges_value': charges_value,
+        'charges_value': request.user.get_donation_amount(),
         'period_end': period_end,
         'user_archive_access_until': user_archive_access_until,
         'monthly_pledge_in_dollars': monthly_pledge_in_dollars,

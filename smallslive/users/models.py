@@ -6,6 +6,7 @@ from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import Sum
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -190,6 +191,24 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
     def is_first_login(self):
         return self.date_joined == self.last_login
+
+    def get_donations(self, this_year=True):
+        # Assume always USD.
+        qs = self.donations.filter(user=self)
+        if this_year:
+            current_date = timezone.now()
+            first_day = current_date.replace(month=1, day=1, hour=0,
+                                             minute=0, second=0, microsecond=0)
+            qs = qs.filter(date__gte=first_day)
+
+        return qs
+
+    def get_donation_amount(self, this_year=True):
+
+        qs = self.get_donations(this_year=this_year)
+
+        return qs.values('amount').annotate(total_donations=Sum('amount'))
+
 
     @cached_property
     def has_institutional_subscription(self):
