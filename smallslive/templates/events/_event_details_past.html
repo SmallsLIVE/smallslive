@@ -83,8 +83,26 @@
           data: data,
           xhrFields: {
               withCredentials: true
+          },
+          success: function () {
+            $.ajax({
+              url: "{{ event_metrics_update_url }}",
+              method: 'POST',
+              data: data,
+              success: function (response) {
+                console.log(response);
+              },
+              error: function (xhr, ajaxOptions, thrownError)  {
+                console.log(xhr.responseText);
+              }
+            });
+          },
+          error: function (xhr, ajaxOptions, thrownError)  {
+            console.log(xhr.responseText);
           }
-        })
+        });
+        // Additionally update totals in the Event model.
+
       };
 
       function setUpTimerForMedia(mediaId) {

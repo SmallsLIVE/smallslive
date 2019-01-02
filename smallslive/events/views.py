@@ -20,7 +20,7 @@ from django.utils.http import urlencode
 from django.utils.text import slugify
 from django.utils.timezone import timedelta
 from django.contrib.admin.views.decorators import staff_member_required
-from django.views.generic import DeleteView, TemplateView
+from django.views.generic import DeleteView, TemplateView, View
 from django.views.generic.list import ListView
 from django.views.generic.detail import BaseDetailView
 from django.views.generic import DetailView, FormView
@@ -322,6 +322,7 @@ class EventDetailView(DetailView):
         context['metrics_ping_interval'] = settings.PING_INTERVAL
         context['metrics_server_url'] = settings.METRICS_SERVER_URL
         context['metrics_signed_data'] = self._generate_metrics_data()
+        context['event_metrics_update_url'] = reverse('event_update_metrics', kwargs={'pk': event.pk})
         if self.request.user.is_authenticated():
             context['user_token'] = Token.objects.get(user=self.request.user)
             user_is_artist = (
@@ -509,6 +510,18 @@ class EventCloneView(StaffuserRequiredMixin, BaseDetailView):
         pass
 
 event_clone = EventCloneView.as_view()
+
+
+class EventUpdateMetricsView(View):
+
+    def post(self, request, pk):
+
+        event = Event.objects.get(pk=pk)
+        event.update_metrics()
+
+        return JsonResponse({'success': True})
+
+event_update_metrics = EventUpdateMetricsView.as_view()
 
 
 class EventSearchView(SearchView):
