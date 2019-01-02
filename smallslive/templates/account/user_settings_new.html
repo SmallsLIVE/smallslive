@@ -80,7 +80,7 @@
           {% endif %}
 
           {% if not customer_detail.subscription.plan and not user_archive_access_until or cancelled %}
-            <button class="white-border-button" id="become-supporter">Become a Supporting Member</button>  
+            <a href="/subscriptions/supporter/" class="white-border-button">Become a Supporting Member</a>  
           {% elif customer_detail.subscription.plan and not cancelled %}
             <div class="flex-row supporter-options">  
             <button class="white-border-button" onclick="$('#cancel-subscription').modal('toggle')">Cancel</button>    
