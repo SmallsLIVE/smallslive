@@ -233,7 +233,10 @@
   <script>
     window.completeSubpage = "make-donation-complete"
     window.paypalTest = true;
-    
+    {% if not user.get_subscription_plan.type %}
+        var modal = '#becomeMemberDialog';
+        $(modal).modal('show');
+    {% endif %}
 
     $(document).ready(function () {
       Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
