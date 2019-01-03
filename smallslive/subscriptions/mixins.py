@@ -18,11 +18,12 @@ class PayPalMixin(object):
         print total
         print currency
 
+        print 'configure'
         paypalrestsdk.configure({
             'mode': settings.PAYPAL_MODE,  # sandbox or live
             'client_id': settings.PAYPAL_CLIENT_ID,
             'client_secret': settings.PAYPAL_CLIENT_SECRET})
-
+        print 'payment data'
         payment_data = {
             'intent': 'sale',
             'payer': {'payment_method': 'paypal'},
@@ -35,11 +36,14 @@ class PayPalMixin(object):
                     'total': total,
                     'currency': currency},
                 'description': 'SmallsLIVE'}]}
+        print 'paypal restsdk'
         payment = paypalrestsdk.Payment(payment_data)
+        print 'payment_id'
         payment_id = payment.create()
+        print payment_id
         if payment_id:
-
-            if donation:
+            print donation
+            if donation and self.request.user.is_authenticated():
                 # Create Donation even though the payment is not yet authorized.
                 donation = {
                     'user': self.request.user,
@@ -47,6 +51,7 @@ class PayPalMixin(object):
                     'amount': total,
                     'reference': payment_id
                 }
+                print donation
                 Donation.objects.create(**donation)
 
             for link in payment.links:
@@ -60,6 +65,8 @@ class PayPalMixin(object):
             else:
                 raise RedirectRequired(approval_url)
         else:
+            print payment
+            print payment.error
             raise UnableToTakePayment(payment.error)
 
     def execute_payment(self):

@@ -18,7 +18,7 @@
                 <tr>
                     <td><a href="{% url 'event_detail' pk=event_set.event.id slug=event_set.event.title|slugify %}">{{ event_set.event.id }}</a></td>
                     <td>
-                        <a href="{% url 'event_detail' pk=event_set.event.id slug=event_set.event.title|slugify %}">{{ event_set.event.title }}</a>
+                        <a href="{% url 'event_detail' pk=event_set.event.id slug=event_set.event.title|slugify %}">{{ event_set.event.title }}  {{ event_set }}</a>
                     </td>
                     <td>{{ event_set.event.subtitle }}</td>
                     <td>{{ event_set.event.date }}</pre></td>

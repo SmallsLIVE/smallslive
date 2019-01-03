@@ -286,6 +286,8 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
         print '*******************'
         print 'CompleteView: '
 
+        user = self.request.user
+
         context = super(
             BecomeSupporterCompleteView, self
         ).get_context_data(**kwargs)
@@ -295,10 +297,10 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
         if payment_id:
             # Donated by selecting a gift in the store
             source = Source.objects.filter(reference=payment_id).first()
-            if source:
+            if source and user.is_authenticated():
                 # Create Donation
                 donation = {
-                    'user': self.request.user,
+                    'user': user,
                     'currency': source.currency,
                     'amount': source.amount_allocated,
                     'reference': payment_id,
@@ -313,7 +315,7 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
                     source.confirmed = True
                     source.save()
             if source:
-                grant_access_to_archive(self.request.user)
+                grant_access_to_archive(user)
 
         if not payment_id or not source:
             context['error'] = 'We could not find your payment reference. Contact our support'

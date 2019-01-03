@@ -23,9 +23,9 @@
       <small>{{ event_set.event.date }} </small>
     </h1>
   </div>
-  {% for set, lines in ticket_data.items %}
+  {% for item in show_data %}
     <div class="row">
-      <h4>{{ set }}</h4>
+      <h4>{{ item.event_set.start|time:'f A' }}</h4>
       <table class="table table-condensed">
         <thead>
         <tr>
@@ -36,7 +36,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for line in lines %}
+        {% for line in item.tickets %}
           <tr>
             <td>{{ line.order.number }}</td>
             <td><strong>{{ line.order.last_name }}, {{ line.order.first_name }}</strong></td>

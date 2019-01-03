@@ -9,27 +9,30 @@
 {% endblock %}
 
 {% block tabs %}
-    <div class="span3">
-        <div data-spy="affix" class="affix-top" data-offset-top="200">
-            <div class="table-header">
-                <h3>{% trans "Sections" %}</h3>
-            </div>
-            <ul class="nav nav-list bs-docs-sidenav" id="product_update_tabs">
-                {% if product %}
-                    <li class="active"><a href="#overview" data-toggle="tab">{% trans 'Overview' %}</a></li>
-                {% endif %}
-                <li{% if not product %} class="active"{% endif %}><a href="#product_details" data-toggle="tab">{% trans 'Product details' %}</a></li>
-                <li><a href="#product_recommended" data-toggle="tab">{% trans 'Recommended Products' %}</a></li>
-                {% if product.variants.exists %}
-                    <li><a href="#product_variants" data-toggle="tab">{% trans 'Product variants' %}</a></li>
-                {% endif %}
-                <li><a href="#product_attributes" data-toggle="tab">{% trans 'Product attributes' %}</a></li>
-                <li><a href="#product_category" data-toggle="tab">{% trans 'Product category' %}</a></li>
-                <li><a href="#product_images" data-toggle="tab">{% trans 'Product images' %}</a></li>
-                <li><a href="#product_stock" data-toggle="tab">{% trans 'Product stock' %}</a></li>
-            </ul>
-        </div>
-    </div>
+
+    {% if product %}
+        <li class="active"><a href="#overview" data-toggle="tab">{% trans 'Overview' %}</a></li>
+    {% endif %}
+    <li><a href="#product_details" data-toggle="tab">{% trans 'Product details' %}</a></li>
+    {% if not parent %}
+        <li><a href="#product_category" data-toggle="tab">{% trans 'Categories' %}</a></li>
+    {% endif %}
+    {% if product_class.has_attributes %}
+        <li><a href="#product_attributes" data-toggle="tab">{% trans 'Attributes' %}</a></li>
+    {% endif %}
+    {% if not parent %}
+        <li><a href="#product_images" data-toggle="tab">{% trans 'Images' %}</a></li>
+    {% endif %}
+    {% if not product.is_parent %}
+        <li><a href="#product_stock" data-toggle="tab">{% trans 'Stock and pricing' %}</a></li>
+    {% endif %}
+    {% if user.is_staff and not parent %}
+        <li><a href="#child_products" data-toggle="tab">{% trans 'Variants' %}</a></li>
+    {% endif %}
+    {% if not parent %}
+        <li><a href="#product_recommended" data-toggle="tab">{% trans 'Upselling' %}</a></li>
+    {% endif %}
+
     {% if track_formset %}
         <li><a href="#tracks" data-toggle="tab">Tracks</a></li>
     {% endif %}

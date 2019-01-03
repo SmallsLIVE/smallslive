@@ -25,7 +25,8 @@ class TicketExchangeView(SingleObjectMixin, BaseFormView):
         self.object = self.get_object()
         response = super(TicketExchangeView, self).post(request, *args, **kwargs)
         old_ticket = Line.objects.get(id=self.old_ticket_id)
-        if self.new_ticket.stockrecord.net_stock_level >= old_ticket.quantity:
+        # https://github.com/django-oscar/django-oscar/blob/0.7.2/oscar/apps/catalogue/abstract_models.py#L397
+        if self.new_ticket.stockrecords.first().net_stock_level >= old_ticket.quantity:
             exchange_event, created = PaymentEventType.objects.get_or_create(name="Exchanged")
             sold_event, created = PaymentEventType.objects.get_or_create(name="Sold")
             old_ticket.set_status("Exchanged")

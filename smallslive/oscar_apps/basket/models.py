@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from oscar.apps.basket.abstract_models import AbstractBasket
 from oscar_apps.order.models import Order
 
+
 class Basket(AbstractBasket):
     def has_physical_products(self):
         physical_items = [item for item in self.all_lines() if item.product.is_shipping_required]

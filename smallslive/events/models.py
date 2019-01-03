@@ -341,6 +341,21 @@ class Event(TimeStampedModel):
 
         return sets_display
 
+    def update_metrics(self):
+        qs = UserVideoMetric.objects.filter(event_id=self.pk)
+        qs = qs.values('event_id')
+        qs = qs.annotate(play_count=Sum('play_count'),
+                         seconds_played=Sum('seconds_played'))
+
+        data = list(qs)
+        print data
+        if data:
+            event_data = data[0]
+            self.play_count = event_data['play_count']
+            self.seconds_played = event_data['seconds_played']
+            self.save()
+            print '--> Save!', self, self.seconds_played
+
     def get_absolute_url(self):
         return reverse('event_detail', kwargs={'pk': self.id, 'slug': slugify(self.title)})
 

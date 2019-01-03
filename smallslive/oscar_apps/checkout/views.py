@@ -189,8 +189,11 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         # this case, the form needs validating and the order preview shown.
         print(request.POST)
         if request.POST.get('action', '') == 'place_order':
+
             self.token = self.request.POST.get('card_token')
+
             return self.handle_place_order_submission(request)
+
         return self.handle_payment_details_submission(request)
 
     def handle_payment_details_submission(self, request):
@@ -443,10 +446,13 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         """
         # Send confirmation message (normally an email)
         order_type_code = 'ORDER_PLACED'
-        first_element_type = order.lines.first().product.get_product_class().name
-        if first_element_type == 'Ticket':
+        if order.has_tickets():
             order_type_code = 'TICKET_PLACED'
         self.send_confirmation_message(order, order_type_code)
+
+        order.set_status('Completed')
+        for line in order.lines.all():
+            line.set_status('Completed')
 
         # Flush all session data
         self.checkout_session.flush()
@@ -598,11 +604,36 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
         basket.strategy = strategy
         self.handle_order_placement(basket, payment_id)
 
-        return http.HttpResponseRedirect(reverse(
-            'become_supporter_complete') + '?payment_id={}'.format(payment_id))
+        if basket.has_gifts():
+            return http.HttpResponseRedirect(reverse(
+                'become_supporter_complete') + '?payment_id={}'.format(payment_id))
+        else:
+            return http.HttpResponseRedirect(reverse(
+                'checkout:thank-you') + '?payment_id={}'.format(payment_id))
 
     def handle_order_placement(self, basket, payment_id):
+
         order_number = self.checkout_session.get_order_number()
+        order_kwargs = {'order_type': basket.get_order_type()}
+        if basket.has_tickets():
+            order_kwargs['status'] = 'Completed'
+            # Need to set 'Completed' status in lines too after the order is created.
+
+        user = self.request.user
+        if not user.is_anonymous():
+            first_name, last_name = user.first_name, user.last_name
+            print first_name, last_name
+        else:
+            user = None
+            first_name, last_name = self.checkout_session.get_reservation_name()
+            print first_name, last_name
+            guest_email = self.checkout_session.get_guest_email()
+            order_kwargs['guest_email'] = guest_email
+        if first_name and last_name:
+            order_kwargs.update({
+                'first_name': first_name,
+                'last_name': last_name
+            })
 
         total_incl_tax = basket.total_incl_tax
         # Record payment source
@@ -616,15 +647,24 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
 
         shipping_address = self.get_shipping_address(basket)
         shipping_method = Repository().get_default_shipping_method(
-            basket=basket, user=self.request.user,
+            basket=basket, user=user,
             request=self.request)
         shipping_charge = shipping_method.calculate(basket)
         order_total = self.get_order_totals(
             basket, shipping_charge=shipping_charge)
         billing_address = self.get_billing_address(shipping_address)
         # Place order
-        order_kwargs = {'order_type': basket.get_order_type()}
-        super(ExecutePayPalPaymentView, self).handle_order_placement(
-            order_number, self.request.user, basket,
+        response = super(ExecutePayPalPaymentView, self).handle_order_placement(
+            order_number, user, basket,
             shipping_address, shipping_method, shipping_charge,
             billing_address, order_total, **order_kwargs)
+
+        # Set status to completed for lines if it's a ticket.
+        # 'create_lines_models' method is not passed the order status unfortunately.
+        order = Order.objects.get(number=order_number)
+        if order.has_tickets():
+            lines = order.lines.all()
+            for line in lines:
+                line.set_status('Completed')
+
+        return response

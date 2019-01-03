@@ -681,10 +681,13 @@ OSCAR_DASHBOARD_NAVIGATION.append(
 OSCAR_INITIAL_ORDER_STATUS = 'Pending'
 OSCAR_INITIAL_LINE_STATUS = 'Pending'
 OSCAR_ORDER_STATUS_PIPELINE = {
-    'Pending': ('Being processed', 'Shipped',),
-    'Being processed': ('Shipped',),
+    'Pending': ('Refunded', 'Shipped', 'Completed'),  # Completed would be for tickets
+    'Completed': ('Refunded', 'Exchanged', ),
+    'Refunded': (),
+    'Exchanged': (),
     'Shipped': (),
 }
+OSCAR_LINE_STATUS_PIPELINE = OSCAR_ORDER_STATUS_PIPELINE
 
 ELASTICSEARCH_INDEX_SETTINGS = {
     'settings': {
