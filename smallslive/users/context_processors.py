@@ -23,6 +23,6 @@ def check_account_status(request):
 def check_if_event_confimed_user(request):
     try:
         event = request.is_event and not request.user.has_activated_account
-        return {'is_event': event}
+        return {'is_event_user_not_confirmed': event}
     except Exception as e:
-        return {'is_event': False}
+        return {'is_event_user_not_confirmed': False}

@@ -254,12 +254,12 @@
           if (smallsConfig.user.isAuthenticated) {
             modal = '#become-a-supporter-dialog';
           }
-          if ('{{is_event}}') {
+          if ('{{ is_event_user_not_confirmed }}') {
             modal = '#inactive-dialog';
           }
           $(modal).modal('show');
         }
-        cannotWatchModalOpen()
+        
         $(document).on('click', '.not-auth-container', function (event) {
           cannotWatchModalOpen()
         })
