@@ -176,7 +176,12 @@ $player-height:  25.3vw;
       filter: $sepia-filter
     }
   }
-
+  .not-auth-container{
+    img{
+      filter: $sepia-filter;
+      width: 100%;
+    }
+  }
   .wrapper {
     padding-bottom: 56.25%;
     position: relative;
