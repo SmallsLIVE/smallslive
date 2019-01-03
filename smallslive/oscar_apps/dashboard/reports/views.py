@@ -4,7 +4,7 @@ from django.views.generic.detail import DetailView
 from natsort import natsorted
 from oscar.core.loading import get_class
 from oscar.apps.dashboard.reports.views import IndexView
-from events.models import EventSet
+from events.models import Event, EventSet
 
 
 Line = get_class('order.models', 'Line')
@@ -77,15 +77,33 @@ class TicketDetailsView(DetailView):
     model = EventSet
 
     def get_context_data(self, **kwargs):
+        """
+            Each product is now linked  to an EventSet (as tickets are sold for sets)
+            Return context for the event so we can generate the report for all set
+        """
         data = super(TicketDetailsView, self).get_context_data(**kwargs)
-        sets = OrderedDict()
 
-        set_start = self.object.start
-        set_start = set_start.strftime('%I:%M %p')
-        person_list = []
-        for line in Line.objects.filter(product=self.object.tickets.all()[0]).exclude(
-                status="Cancelled").exclude(status="Exchanged").order_by('order__last_name'):
-            person_list.append(line)
-        sets[set_start] = person_list
-        data['ticket_data'] = sets
+        # Populate products corresponding to each set of the event
+        event = self.object.event
+        event_sets = sorted(list(event.sets.all()), Event.sets_order)
+        products = []
+        for event_set in event_sets:
+            for ticket in event_set.tickets.all():
+                products.append(ticket)
+
+        # Get line objects so we can get the tickets name for the show
+        show_data = []
+        # Loop to keep the order and build a list of lists
+        # [[person 1, person 2, ...], [person 1, ..] ]
+        # One list per set.
+        for product in products:
+            set_list = []
+            for line in Line.objects.filter(product=product).exclude(
+                    status="Cancelled").exclude(status="Exchanged").order_by('order__last_name'):
+                set_list.append(line)
+
+            show_data.append({'event_set': product.event_set, 'tickets': set_list})
+
+        data['show_data'] = show_data
+
         return data

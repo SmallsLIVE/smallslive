@@ -22,3 +22,6 @@ class Donation(models.Model):
     confirmed = models.BooleanField(default=False)
 
 
+
+
+

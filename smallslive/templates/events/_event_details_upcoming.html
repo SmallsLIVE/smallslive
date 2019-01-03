@@ -59,14 +59,18 @@
     $('#btn-tickets').click(function () {
       $('#ticketsDialog').modal('show');
     });
-    $('#buy-tickets').click(function(e){
-      e.preventDefault()
+    var $form;
+    $('.buy-tickets').click(function(e){
+      e.preventDefault();
+      // Remember form to be submitted
+      $form = $(this).closest('form');
       $('#buy-tickets-dialog').modal('show');
     })
     $('#confirm-buy-tickets').click(function(){
-      $(".reservation_form").submit()
+      $form.submit();
     })
     $('#cancel-buy-tickets').click(function(){
+      $form = null;
       $('#buy-tickets-dialog').modal('toggle');
     })
     $('#btn-play-event').click(function () {

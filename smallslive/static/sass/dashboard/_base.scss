@@ -3,6 +3,10 @@ body {
   background-repeat: repeat;
   background-color: $background-color;
   text-rendering: optimizeLegibility;
+
+  &.no-background {
+    background: none;
+  }
 }
 
 button, input[type="submit"] {

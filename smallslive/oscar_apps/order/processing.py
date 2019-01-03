@@ -6,7 +6,9 @@ from paypal.express.gateway import DO_EXPRESS_CHECKOUT, refund_txn
 
 
 class EventHandler(CoreEventHandler):
+
     def handle_order_status_change(self, order, new_status):
+
         if new_status == "Cancelled":
             payment_source = order.sources.first()
             if payment_source.source_type.name == "Credit Card":
