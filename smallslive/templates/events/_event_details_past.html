@@ -17,6 +17,9 @@
           {% else %}
             {% include 'partials/thumbored_picture.html' %}
           {% endif %}
+          <div class="icon-overlay">
+            <i class="fa fa-play fa-thin-circle"></i>
+          </div>
         </div>
       {% endif%}
       <div id="player-video"></div>
@@ -245,11 +248,18 @@
             $(this).toggleClass('active');
         });
     {% else %}
-        var modal = '#becomeMemberDialog';
-        if (smallsConfig.user.isAuthenticated) {
-          modal = '#become-a-supporter-dialog';
+        function cannotWatchModalOpen(){
+          var modal = '#becomeMemberDialog';
+          if (smallsConfig.user.isAuthenticated) {
+            modal = '#become-a-supporter-dialog';
+          }
+          $(modal).modal('show');
         }
-        $(modal).modal('show');
+        cannotWatchModalOpen()
+        $(document).on('click', '.not-auth-container', function (event) {
+          cannotWatchModalOpen()
+        })
+      
     {% endif %}
 
     $(document).ready(function () {
