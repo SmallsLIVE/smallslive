@@ -11,7 +11,7 @@
 {% block title %}Preview your order{% endblock %}
 
 {% block content %}
-    <div class="content-wrapper borderless">
+    <div class="content-wrapper borderless text1">
 
         <section class="store-header container">
             <div class="store-header__content">
@@ -22,6 +22,9 @@
         </section>
         <section class="store-overview container">
             <div class="col-xs-12 col-sm-8 store-overview__left-column">
+             <div class="white-line-bottom">
+                    <div class="title1 center">Ordered items:</div>
+            </div>
                 {% if basket.has_physical_products %}
                     {% include 'checkout/physical_products.html' %}
                 {% endif %}
@@ -37,9 +40,11 @@
             </div>
             <div class="col-xs-12 col-sm-4 store-overview__right-column">
                 <div class="store-overview__group">
-                    <h3 class="store-overview__group__heading">Shipping information:</h3>
+                <div class="section-title section-title-no-padded">
+                  <div class="title1">Shipping Information</div>
+                </div>
                     {% if shipping_address %}
-                        <div class="store-overview__group__textblock">
+                        <div class="store-overview__group__textblock text1">
                             <p>{{ shipping_address.name }}</p>
                             <p>{{ shipping_address.line1 }}</p>
                             <p>{{ shipping_address.line2 }}</p>
@@ -49,7 +54,7 @@
                     {% endif %}
 
                     {% if shipping_method %}
-                        <div class="store-overview__group__textblock">
+                        <div class="store-overview__group__textblock text1">
                             <p>Shipping method: {{ shipping_method.name }}</p>
                         </div>
                     {% endif %}
@@ -58,9 +63,11 @@
                     <a href="{% url "checkout:shipping-address" %}" class="white-border-button">Back to shipping </a>
                 </div>
                 <div class="store-overview__group">
-                    <h3 class="store-overview__group__heading">Billing information:</h3>
+                    <div class="section-title section-title-no-padded">
+                        <div class="title1">Billing Information</div>
+                     </div>
                     {% if billing_address %}
-                    <div class="store-overview__group__textblock">
+                    <div class="store-overview__group__textblock text1">
                         <p>{{ billing_address.name }}</p>
                         <p>{{ billing_address.line1 }}</p>
                         <p>{{ billing_address.line2 }}</p>
@@ -68,7 +75,7 @@
                         <p>{{ billing_address.country }}</p>
                     </div>
                     {% endif %}
-                    <div class="store-overview__group__textblock">
+                    <div class="store-overview__group__textblock text1">
                         <p class="small-heading">Credit card:</p>
                         <p>{{ card_info.name }}</p>
                         <p>xxxx xxxx xxxx {{ card_info.last_4 }}</p>
