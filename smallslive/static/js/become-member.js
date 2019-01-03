@@ -373,7 +373,7 @@ $(document).ready(function () {
     $selectionConfirmationDialog.find('.gift-content');
   });
 
-  $(document).on('click', '.confirm-custom', function () {
+  $(document).on('mousedown', '.confirm-custom', function () {
     $type = $(this).data("type");
     $value = $(this).data("value");
     console.log($type, $value)
@@ -569,9 +569,9 @@ $(document).ready(function () {
     }
   });
 
-  $('#cancelSelectionButton').click(function () {
+  $(document).on('click',  '#cancelSelectionButton', function () {
     resetButtons();
-    $selectionConfirmationDialog.modal('hide');
+    $('#selectionConfirmationDialog').modal('hide');
   });
   $('.close-action').click(function () {
     $selectionConfirmationDialog.modal('hide');

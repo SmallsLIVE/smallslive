@@ -48,9 +48,14 @@
         <button value=100>$100</button>
         <button value=500>$500</button>
         <button value=1000>$1000</button>
-        <div class="custom-input text4">
-          <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
-          <label><div>ENTER  AMOUNT<br>(MIN  $100)</div></label>
+        <div class="flex-row custom-out">
+          <div class="custom-input text4">
+            <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
+          </div>
+          <button class="confirm-custom" id="yearlyCustomConfirm" data-type="year" data-value="" style="display: none;">
+              <span class="bar bar-1"></span>
+              <span class="bar bar-2"></span>				
+            </button>
         </div>
       </div>
     </div>
