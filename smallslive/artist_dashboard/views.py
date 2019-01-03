@@ -719,19 +719,15 @@ def artist_settings(request):
         'change_password_form': change_password_form,
     })
 
-class DashboardLoginView(allauth_views.LoginView):
-    success_url = reverse_lazy('artist_dashboard:home')
-    template_name = 'artist_dashboard/login.html'
+class DashboardLoginView(TemplateView):
+    template_name = 'home_new.html'
+    def get(self, request):
+        url = '?' + self.request.get_full_path().split('?')[1]
+        return redirect(reverse("home")+url)
 
-    def form_valid(self, form):
-        response = super(DashboardLoginView, self).form_valid(form)
-        form.user.last_login = timezone.now()
-        form.user.save()
-        return response
-
-    def get_authenticated_redirect_url(self):
-        return reverse('artist_dashboard:home')
-
+    def post(self, request):
+        return redirect(reverse("home"))
+    
 login = DashboardLoginView.as_view()
 
 

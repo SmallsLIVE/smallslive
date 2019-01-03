@@ -28,6 +28,6 @@ urlpatterns = patterns('artist_dashboard.views',
         'password_reset_from_key', name="reset_password_from_key"),
     url(r"^password/reset/done/$",
         'password_reset_from_key_done', name="reset_password_from_key_done"),
-    url(r'^login/$', 'login', name='login'),
-    url(r'^$', 'dashboard', name='home'),
+    url(r'^$', 'login', name='login'),
+    url(r'^$', 'dashboard', name='home')
 )

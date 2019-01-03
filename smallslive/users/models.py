@@ -199,7 +199,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
             current_date = timezone.now()
             first_day = current_date.replace(month=1, day=1, hour=0,
                                              minute=0, second=0, microsecond=0)
-            qs = qs.filter(date__gte=first_day)
+            qs = qs.filter(date__gte=first_day, confirmed=True)
 
         return qs
 
@@ -226,8 +226,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     @cached_property
     def has_archive_access(self):
         # One Time Donations are new  "one year subscriptions"
-        return self.archive_access_until and \
-               self.archive_access_until > timezone.now() or \
+        return self.self.get_donation_amount() > timezone.now() or \
                self.has_active_subscription
 
     @cached_property
