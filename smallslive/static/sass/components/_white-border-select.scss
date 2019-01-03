@@ -18,7 +18,7 @@
         border-right: 5px solid transparent;
         border-top: 5px solid black;
         position: absolute;
-        right: 4px;
+        right: 10%;
         top: 16px;
         transition: all 0.3s linear;
         cursor: pointer;
@@ -65,10 +65,13 @@
   align-items: center;
   padding: 1em 3em 1em 1em;
 
+
   &:not(.no-arrow) {
     padding: 1em;
   }
-
+  &.select-selected{
+    max-width: 20vw;
+  }
   /*
   @media (max-width: $screen-sm-max) {
     height: 35px;

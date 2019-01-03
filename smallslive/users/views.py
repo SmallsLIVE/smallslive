@@ -129,7 +129,7 @@ def user_settings_view(request):
         'current_user' : request.user,
     })
 
-@login_required
+@login_required(login_url='home')
 def user_settings_view_new(request):
     profile_updated = False
     # if this is a POST request we need to process the form data
