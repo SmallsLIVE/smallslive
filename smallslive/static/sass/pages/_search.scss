@@ -71,7 +71,7 @@ body.headers-1 {
     z-index: -1;
 
     @media(max-width: $screen-md-max) {
-      top: 4.5vw;
+      top: 2.5vw;
     }
     @media (max-width: $screen-xs) {
       display: none;
@@ -80,6 +80,7 @@ body.headers-1 {
 }
 
 .hover-fade:hover {
+  border-color: #e0e0dc;
   background-color: $white-transparent;
 }
 
@@ -469,24 +470,33 @@ body.headers-1 {
         padding: 0.5em;
         border: 3px solid rgba(255, 255, 255, 0.9);
         font-size: 2.5vw;
-        height: 11vw;
+        height: 6vw;
         line-height: 2.5vw;
         margin-right: 5px;
         margin-top: 10px;
         vertical-align: top;
       }
+      &:hover {
+        border-color: #e0e0dc;
+        border-width: 3px;
+      }
       &:after {
         @media (max-width: $screen-md-max) {
-          top: 6.8vw;
+          top: 4vw;
         }
         @media (max-width: $screen-xs) {
           display: none;
         }
       }
+      &.select-arrow-active{
+        border-color: #e0e0dc;
+        border-width: 3px;
+        background: $white-transparent;
+      }
     }
   }
   }
-
+  
   @media (min-width: $screen-lg-min) {
     .white-border-select, .custom-date-picker {
       width: 120px;
@@ -494,7 +504,6 @@ body.headers-1 {
 
     > .white-border-button {
       margin-right: 20px;
-      border: 2px solid $white-transparent;
     }
 
     > .white-border-select,
@@ -1110,13 +1119,19 @@ body.headers-1 {
   margin-left: 20px;
   align-self: center;
   text-align: center;
+  
+  &.select-arrow-active{
+    border-color: #e0e0dc;
+    border-width: 3px;
+    background: $white-transparent;
+  }
 
   &.white-border-button {
     @media(max-width: $screen-md-max) {
       width: $mobile-filter-button-width;
       margin-left: 5px;
-      padding: 1.5em;
-      height: 11vw;
+      padding: 0.5em;
+      height: 6vw;
       line-height: 2.5vw;
       font-size: 2.5vw;
       margin-right: 1vw;
