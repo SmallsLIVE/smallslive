@@ -452,3 +452,42 @@
 
   }
 }
+
+
+.confirm-custom {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border: white 3px solid;
+  cursor: pointer;
+  transition: border 0.1s ease-in-out;
+  
+  &:hover {
+    border: #333 3px solid;
+    .bar {
+      background-color: #333;	
+    }
+  } 
+
+  .bar {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 3px;
+    height: 20px;
+    border-radius: 3px;
+    background-color: #333;
+    transform-origin: center;
+    transition: transform 0.4s ease-in-out, background 0.1s ease-in-out;
+  }
+
+ 
+    .bar-1 {
+      transform: translateX(20px) translateY(-5px) rotate(-55deg);
+    }
+    .bar-2 {
+      transform: translateX(20px) translateY(5px) rotate(-125deg);
+    }
+  
+}

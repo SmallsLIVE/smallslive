@@ -319,6 +319,8 @@ $(document).ready(function () {
     $(monthlyCustom).removeClass('active');
     $("#yearly-less").text("");
     $("#monthly-less").text("")
+    $("#yearlyCustomConfirm").hide()
+    $("#monthlyCustomConfirm").hide()
   };
 
 
@@ -371,16 +373,35 @@ $(document).ready(function () {
     $selectionConfirmationDialog.find('.gift-content');
   });
 
+  $(document).on('mousedown', '.confirm-custom', function () {
+    $type = $(this).data("type");
+    $value = $(this).data("value");
+    console.log($type, $value)
+    setSelected($type, $value);
+    resetButtons();
+    resetCustom();
+    if($type == 'month'){
+      var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
+      $selectionConfirmationDialog.modal('show');
+      $selectionConfirmationDialog.find('.title').text('become a supporter');
+      $selectionConfirmationDialog.find('.subtitle').text('Monthly pledge');
+      $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You have selected a monthly pledge of $'+ $value +'. Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation.');
+      $selectionConfirmationDialog.find('.gift-content');
+    }else{
+      var $selectionConfirmationDialog = $('#selectionConfirmationDialog');
+      $selectionConfirmationDialog.modal('show');
+      $selectionConfirmationDialog.find('.title').text('become a supporter');
+      $selectionConfirmationDialog.find('.subtitle').text('One time donation');
+      $selectionConfirmationDialog.find('.text').html('Thank you for choosing to help jazz music and musicians all over the world. You have selected a One Time Donation of $'+ $value +'. One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings. You will receive access to The SmallsLIVE Archive for the remainder of the tax year.');
+      $selectionConfirmationDialog.find('.gift-content');
+    }
+  })
+
   var oneTimePayment = $("#oneTimePayment").find("input")[0];
   var monthlyCustom = $("#monthlyCustom");
   var yearlyCustom = $("#yearlyCustom");
 
-
-  $(monthlyCustom).on('focusout', function(){
-    resetCustom()
-  })
-
-  $(yearlyCustom).on('focusout', function(){
+  $(document).on('focusout', '.custom-out', function(){
     resetCustom()
   })
 
@@ -407,6 +428,10 @@ $(document).ready(function () {
     monthlyCustom = $("#monthlyCustom");
     yearlyCustom = $("#yearlyCustom");
     var value = $(monthlyCustom).val();
+    if(value > 9){
+      $("#monthlyCustomConfirm").data("value", value)
+      $("#monthlyCustomConfirm").show()
+    }
     if (value && isPositiveInteger(value)) {
       resetButtons();
       $(yearlyCustom).val('');
@@ -435,6 +460,8 @@ $(document).ready(function () {
     }
   });
 
+
+
   $(document).on('keyup',  '#yearlyCustom', function (event) {
     monthlyCustom = $("#monthlyCustom");
     yearlyCustom = $("#yearlyCustom");
@@ -446,6 +473,10 @@ $(document).ready(function () {
       setSelected('year', value);
       $(yearlyCustom).addClass('active');
       $(monthlyCustom).removeClass('active');
+      if(value > 99 || flowKind !== 'become_supporter'){
+        $("#yearlyCustomConfirm").data("value", value)
+        $("#yearlyCustomConfirm").show()
+      }
       if (event.keyCode == 13) {
         var amount = $(this).val();
         if(amount > 99 || flowKind !== 'become_supporter'){
@@ -538,9 +569,9 @@ $(document).ready(function () {
     }
   });
 
-  $('#cancelSelectionButton').click(function () {
+  $(document).on('click',  '#cancelSelectionButton', function () {
     resetButtons();
-    $selectionConfirmationDialog.modal('hide');
+    $('#selectionConfirmationDialog').modal('hide');
   });
   $('.close-action').click(function () {
     $selectionConfirmationDialog.modal('hide');

@@ -176,7 +176,27 @@ $player-height:  25.3vw;
       filter: $sepia-filter
     }
   }
-
+  .not-auth-container{
+    .icon-overlay {
+      .fa-thin-circle.fa{    
+        height: 88px;
+        width: 88px;
+        border-radius: 44px;
+        &::before{
+          font-size: 40px;
+        }
+      }
+      @include icon-overlay;
+      transition: none;
+      &:hover{
+        opacity: 1;
+      }
+    }
+    img{
+      filter: $sepia-filter;
+      width: 100%;
+    }
+  }
   .wrapper {
     padding-bottom: 56.25%;
     position: relative;

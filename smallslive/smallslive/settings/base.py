@@ -154,6 +154,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'oscar.apps.customer.notifications.context_processors.notifications',
     'oscar.core.context_processors.metadata',
     'users.context_processors.check_account_status',
+    'users.context_processors.check_if_event_confimed_user',
     'users.context_processors.show_modal',
 )
 
