@@ -19,3 +19,10 @@ def check_account_status(request):
     session['show_email_confirmation_dialog'] = False
 
     return {'show_email_confirmation_dialog': show}
+
+def check_if_event_confimed_user(request):
+    try:
+        event = request.is_event and not request.user.has_activated_account
+        return {'is_event': event}
+    except Exception as e:
+        return {'is_event': False}

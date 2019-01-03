@@ -1,4 +1,4 @@
-{% if user.is_authenticated and show_email_confirmation_dialog %}
+{% if is_event or user.is_authenticated and show_email_confirmation_dialog %}
   <div class="modal fade in" role="dialog" id="inactive-dialog" >
     <div class="modal-dialog">
         <div class="modal-content  custom-modal">
@@ -48,9 +48,11 @@
         document.addEventListener('click', function () {
             $('#inactive-dialog').hide();
         });
-         $(document).ready(function () {
-            $('#inactive-dialog').show();
-        });
+        {% if user.is_authenticated and show_email_confirmation_dialog %}
+            $(document).ready(function () {
+                $('#inactive-dialog').show();
+            });
+        {% endif %}
         loginModal = document.getElementById('inactive-dialog')
         closeButton = loginModal.getElementsByClassName('close-button')[0]
         closeButton.addEventListener('click', function () {

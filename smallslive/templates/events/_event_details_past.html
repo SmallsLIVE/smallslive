@@ -8,6 +8,7 @@
 {% load basket_tags %}
 {% load crispy_forms_tags %}
 {% block event_content %}
+{% include 'inactive_dialog.html' %}
   {% if event.published_videos %}
     <div id="videoContainer" class="player-container {% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}">
       {% if not user.can_watch_video %}
@@ -252,6 +253,9 @@
           var modal = '#becomeMemberDialog';
           if (smallsConfig.user.isAuthenticated) {
             modal = '#become-a-supporter-dialog';
+          }
+          if ('{{is_event}}') {
+            modal = '#inactive-dialog';
           }
           $(modal).modal('show');
         }
