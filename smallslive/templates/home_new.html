@@ -137,5 +137,13 @@
       {% endif %}
     });
   </script>
+  <script>
+    $().ready(function(){
+      {% if request.GET.next %}
+        $('.sign-in-button').click()
+      {% endif %}
+    })
+
+  </script>
   <script type="javascript" src="{% static 'js/slider.js' %}"></script>
 {% endblock extra_js %}
