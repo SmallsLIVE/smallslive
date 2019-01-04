@@ -43,9 +43,9 @@ class PayPalMixin(object):
         print 'paypal restsdk'
         payment = paypalrestsdk.Payment(payment_data)
         print 'payment_id'
-        payment_id = payment.create()
-        print payment_id
-        if payment_id:
+        success = payment.create()
+        if success:
+            payment_id = payment.id
             print donation
             if donation and self.request.user.is_authenticated():
                 # Create Donation even though the payment is not yet authorized.
@@ -53,7 +53,8 @@ class PayPalMixin(object):
                     'user': self.request.user,
                     'currency': 'USD',
                     'amount': total,
-                    'reference': payment_id
+                    'reference': payment_id,
+                    'confirmed': False,
                 }
                 print donation
                 Donation.objects.create(**donation)

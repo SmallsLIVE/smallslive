@@ -537,6 +537,8 @@ class Event(TimeStampedModel):
         if local_time.hour <= 5:
             local_date -= timedelta(days=1)
 
+        if not self.date:
+            self.date = self.start.date()
         match_date = local_date <= self.date
         time_before_start = local_date < self.date or \
                             local_time < start or \

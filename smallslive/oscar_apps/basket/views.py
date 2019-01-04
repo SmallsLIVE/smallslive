@@ -24,7 +24,11 @@ class BasketAddView(basket_views.BasketAddView):
 
         basket = self.request.basket
 
-        added_class = form.product.product_class
+        product = form.product
+        if product.parent:
+            added_class = product.parent.product_class
+        else:
+            added_class = form.product.product_class
         if added_class.name == 'Gift':
             basket.lines.all().delete()
         elif added_class.name == 'Ticket':

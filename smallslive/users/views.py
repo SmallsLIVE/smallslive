@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, FormView, ListView, View
+from django.utils import timezone
 from allauth.account.app_settings import EmailVerificationMethod
 from allauth.account.forms import ChangePasswordForm
 from allauth.account.models import EmailAddress
@@ -24,7 +25,7 @@ from djstripe.settings import subscriber_request_callback
 
 from artist_dashboard.forms import ArtistInfoForm
 from custom_stripe.models import CustomPlan, CustomerDetail
-from users.utils import charge, grant_access_to_archive, \
+from users.utils import charge, \
     one_time_donation, subscribe_to_plan,  update_active_card
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
 from oscar_apps.checkout.forms import BillingAddressForm
@@ -200,7 +201,6 @@ def user_settings_view_new(request):
         else:
             billing_address_form = BillingAddressForm(None, request.user, None)
 
-
     if profile_updated:
         return HttpResponseRedirect('/accounts/settings/')
         
@@ -215,7 +215,7 @@ def user_settings_view_new(request):
         plan_id = request.user.customer.current_subscription.plan
         plan = stripe.Plan.retrieve(id=plan_id)
     
-    customer_charges = customer.charges.all()
+    customer_charges = request.user.get_donations()
    
     charges_value =0
     for charge in customer_charges:
@@ -241,6 +241,7 @@ def user_settings_view_new(request):
     except UserAddress.DoesNotExist:
         billing_address = UserAddress()
 
+
     return render(request, 'account/user_settings_new.html', {
         'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
         'change_email_form': change_email_form,
@@ -251,7 +252,8 @@ def user_settings_view_new(request):
         'plan': plan,
         'donations': request.user.get_donations(),
         'customer_detail': customer_detail,
-        'charges_value': request.user.get_donation_amount(),
+        'customer_charges': customer_charges,
+        'charges_value': request.user.get_donation_amount,
         'period_end': period_end,
         'user_archive_access_until': user_archive_access_until,
         'monthly_pledge_in_dollars': monthly_pledge_in_dollars,
@@ -268,13 +270,14 @@ class UserTaxLetterHtml(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserTaxLetterHtml, self).get_context_data(**kwargs)
         customer = self.request.user.customer
-        customer_charges = customer.charges.all()
+        customer_charges = customer.subscriber.get_donations()
         charges_value = 0
         for charge in customer_charges:
             charges_value += charge.amount
         context['customer'] = customer
         context['charges_value'] = charges_value
-        context['year'] = 1964
+        context['year'] = timezone.now().year
+
         return context
 
 user_tax_letter_html = UserTaxLetterHtml.as_view()
@@ -288,15 +291,13 @@ class UserTaxLetter(PDFTemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserTaxLetter, self).get_context_data(**kwargs)
         customer = self.request.user.customer
-        start_date =date(date.today().year, 1, 1)
-        end_date = date(date.today().year, 12, 31)
-        customer_charges = customer.charges.filter(created__range=(start_date, end_date))
+        customer_charges = self.request.user.get_donations()
         charges_value = 0
         for charge in customer_charges:
             charges_value += charge.amount
         context['customer'] = customer
         context['charges_value'] = charges_value
-        context['year'] = 1964
+        context['year'] = timezone.now().year
         return context
 
 user_tax_letter = UserTaxLetter.as_view()
