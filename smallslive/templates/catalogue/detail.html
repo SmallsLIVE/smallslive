@@ -53,7 +53,7 @@
             <div class="store-single__item flex-row">
                 <div class="store-single__item__images">
                     {% with all_images=product.images.all %}
-                        <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
+                        <div class="store-single__item__images__carousel" id="store-single__item__images__carousel" style="width:20vw">
                             {% for image in all_images %}
                                 {% if not image.is_missing %}
                                     <a href="{% thumbor_url image.original.url|urlencode height=300 width=300 smart=True %}" class="fancybox"><img
