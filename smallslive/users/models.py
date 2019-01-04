@@ -202,12 +202,16 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
             qs = qs.filter(date__gte=first_day, confirmed=True)
 
         return qs
-
+    @cached_property
     def get_donation_amount(self, this_year=True):
 
         qs = self.get_donations(this_year=this_year)
 
-        return qs.values('amount').annotate(total_donations=Sum('amount'))
+        amount_data = qs.values('amount').annotate(total_donations=Sum('amount'))
+        if amount_data:
+            return amount_data[0].amount
+        else:
+            return 0
 
 
     @cached_property
@@ -225,9 +229,11 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
     @cached_property
     def has_archive_access(self):
+        print 'aa'
         # One Time Donations are new  "one year subscriptions"
-        return self.self.get_donation_amount() > timezone.now() or \
-               self.has_active_subscription
+        print self.get_subscription_plan
+        return self.get_donation_amount > 100 or \
+                self.get_subscription_plan['type'] != 'free'
 
     @cached_property
     def get_subscription_plan(self):
@@ -270,14 +276,12 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
     @cached_property
     def can_watch_video(self):
         return self.has_activated_account and \
-               (self.has_archive_access or
-                self.get_subscription_plan['type'] != 'free')
+               self.has_archive_access
 
     @cached_property
     def can_listen_to_audio(self):
         return self.has_activated_account and \
-               (self.has_archive_access or
-                self.get_subscription_plan['type'] != 'free')
+               self.has_archive_access
 
 
 class SmallsEmailConfirmation(EmailConfirmation):
