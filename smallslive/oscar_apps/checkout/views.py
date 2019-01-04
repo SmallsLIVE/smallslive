@@ -524,18 +524,23 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             for line in basket_lines:
                 print line
                 print dir(line)
-                cost += line.stockrecord.cost_price
+                print line.stockrecord
+                if line.stockrecord and line.stockrecord.cost_price:
+                    cost += line.stockrecord.cost_price
 
-            donation = {
-                'user': self.request.user,
-                'currency': currency,
-                'amount': total.incl_tax - cost,
-                'reference': stripe_ref,
-                'confirmed': True,
 
-            }
-            print donation
-            Donation.objects.create(**donation)
+            if not basket_lines.first().basket.has_tickets():
+
+                donation = {
+                    'user': self.request.user,
+                    'currency': currency,
+                    'amount': total.incl_tax - cost,
+                    'reference': stripe_ref,
+                    'confirmed': True,
+
+                }
+                print donation
+                Donation.objects.create(**donation)
 
         elif payment_method == 'paypal':
             item_list = self.get_item_list(basket_lines)
