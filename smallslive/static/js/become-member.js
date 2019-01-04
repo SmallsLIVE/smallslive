@@ -538,7 +538,7 @@ $(document).ready(function () {
     let price =  $(this).children('.price-tag').text();
     let cost = $(this).attr('data-cost');
     let tax = parseInt(price.substring(1)) - parseInt(cost);
-    $selectionConfirmationDialog.find('.text').html('You have selected a one time donation of <span class="smalls-color">'+price+'</span>  of which <span class="smalls-color">$'+tax+'</span> is tax deductible. You will receive access to The SmallsLIVE Archive for the remainder of the tax year. You have also chosen to receive a '+ giftTier +' as a gift for your contribution..<br> Please select your size below.');
+    $selectionConfirmationDialog.find('.text').html('You have selected a one time donation of <span class="smalls-color">'+price+'</span>  of which <span class="smalls-color">$'+tax+'</span> is tax deductible. You will receive access to The SmallsLIVE Archive for the remainder of the tax year. You have also chosen to receive a '+ giftTier +' as a gift for your contribution..<br> Please select your option below.');
     var $giftContent = $selectionConfirmationDialog.find('.gift-content');
     $giftContent.html($item);
     $item.removeClass('hidden');
