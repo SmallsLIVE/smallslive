@@ -120,10 +120,13 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         self.request.basket.flush()
 
         context['gifts'] = []
+        context['costs'] = []
         selector = Selector()
         strategy = selector.strategy(request=self.request, user=self.request.user)
         for product in Product.objects.filter(product_class__slug='gift'):
+            product.cost_price = product.stockrecords.first().cost_price
             context['gifts'].append(product)
+            context['costs'].append(product.stockrecords.first().cost_price)
 
         context['gifts'].sort(key = lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
 
