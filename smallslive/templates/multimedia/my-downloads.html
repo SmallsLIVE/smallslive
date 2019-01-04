@@ -44,14 +44,17 @@
                             <h3 class="my-downloads-album__tracks-table__heading">Tracks bought:</h3>
                             <!-- tracks table header -->
                             <div class="my-downloads-album__tracks-table__header row">
-                                <div class="col-xs-7 col-sm-5 col-md-5 col-lg-6 my-downloads-album__tracks-table__column title">
+                                <div class="col-xs-7 col-sm-5 col-md-5 col-lg-2 my-downloads-album__tracks-table__column title">
                                     Title
                                 </div>
-                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 my-downloads-album__tracks-table__column composer">
                                     Composer
                                 </div>
                                 <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
                                     Duration
+                                </div>
+                                <div class="hidden-xs hidden-sm col-md-2 col-lg-5 my-downloads-album__tracks-table__column duration">
+                                    Play
                                 </div>
                                 <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
 
@@ -62,14 +65,21 @@
                             {% for track in track_list %}
                               <!-- tracks table row -->
                               <div class="my-downloads-album__tracks-table__row row">
-                                  <div class="col-xs-7 col-sm-5 col-md-5 col-lg-6 my-downloads-album__tracks-table__column title">
+                                  <div class="col-xs-7 col-sm-5 col-md-5 col-lg-2 my-downloads-album__tracks-table__column title">
                                       {{ track.grouper.title }}
                                   </div>
-                                  <div class="hidden-xs col-sm-3 col-md-2 col-lg-3 my-downloads-album__tracks-table__column composer">
+                                  <div class="hidden-xs col-sm-3 col-md-2 col-lg-2 my-downloads-album__tracks-table__column composer">
                                       {{ track.grouper.attr.composer }}
                                   </div>
                                   <div class="hidden-xs hidden-sm col-md-2 col-lg-1 my-downloads-album__tracks-table__column duration">
                                       {{ track.grouper.attr.duration }}
+                                  </div>
+                                  <div class="hidden-xs hidden-sm col-md-2 col-lg-5 my-downloads-album__tracks-table__column duration">
+                                    <audio class="audio-player" controls>
+                                        {% for line in track.list %}
+                                        <source src="{{ line.stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                                        {% endfor %}
+                                    </audio>
                                   </div>
                                   <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
                                       <div class="buy-button-container">
@@ -104,9 +114,13 @@
 
 {% block extra_js %}
 <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
-
 <script>
-
+    $('.audio-player').on('ended', function() {
+        songIndex = $('.audio-player').index(this) + 1
+        if( $('.audio-player')[songIndex]){
+            $('.audio-player')[songIndex].play();
+        }
+    });
 </script>
 
 {% endblock %}
