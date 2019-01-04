@@ -431,6 +431,9 @@ $(document).ready(function () {
     if(value > 9){
       $("#monthlyCustomConfirm").data("value", value)
       $("#monthlyCustomConfirm").show()
+    }else{
+      $("#monthlyCustomConfirm").data("value", "")
+      $("#monthlyCustomConfirm").hide()
     }
     if (value && isPositiveInteger(value)) {
       resetButtons();
@@ -476,6 +479,9 @@ $(document).ready(function () {
       if(value > 99 || flowKind !== 'become_supporter'){
         $("#yearlyCustomConfirm").data("value", value)
         $("#yearlyCustomConfirm").show()
+      }else{
+        $("#yearlyCustomConfirm").data("value", "")
+        $("#yearlyCustomConfirm").hide()
       }
       if (event.keyCode == 13) {
         var amount = $(this).val();
