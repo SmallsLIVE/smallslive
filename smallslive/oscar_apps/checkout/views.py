@@ -549,7 +549,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             # and the flow will be completed in ExecutePaypalPayment
             self.handle_paypal_payment(currency, total, item_list,
                                        payment_execute_url, payment_cancel_url,
-                                       donation=not basket_lines.basket.has_tickets())
+                                       donation=not basket_lines.first().basket.has_tickets())
             source_name = 'PayPal'
             reference = ''
             currency = 'USD'
