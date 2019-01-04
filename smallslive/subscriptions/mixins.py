@@ -1,4 +1,5 @@
 import paypalrestsdk
+import stripe
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from oscar.apps.payment.exceptions import RedirectRequired, \
@@ -9,6 +10,12 @@ from subscriptions.models import Donation
 
 class PayPalMixin(object):
 
+    def configure_paypal(self):
+        paypalrestsdk.configure({
+            'mode': settings.PAYPAL_MODE,  # sandbox or live
+            'client_id': settings.PAYPAL_CLIENT_ID,
+            'client_secret': settings.PAYPAL_CLIENT_SECRET})
+
     def handle_paypal_payment(self, currency, total, item_list,
                               payment_execute_url, payment_cancel_url,
                               donation=False):
@@ -18,11 +25,8 @@ class PayPalMixin(object):
         print total
         print currency
 
-        print 'configure'
-        paypalrestsdk.configure({
-            'mode': settings.PAYPAL_MODE,  # sandbox or live
-            'client_id': settings.PAYPAL_CLIENT_ID,
-            'client_secret': settings.PAYPAL_CLIENT_SECRET})
+        self.configure_paypal()
+
         print 'payment data'
         payment_data = {
             'intent': 'sale',
@@ -79,3 +83,33 @@ class PayPalMixin(object):
             raise UnableToTakePayment(payment.error)
 
         return payment_id
+
+    def refund_paypal_payment(self, payment_id, total, currency):
+        self.configure_paypal()
+        payment = paypalrestsdk.Payment.find(payment_id)
+        sale_id = payment.transactions[0].related_resources[0].sale.id
+        sale = paypalrestsdk.Sale.find(sale_id)
+        refund_data = {
+            'amount': {
+                'total': '%.2f' % float(total),
+                'currency': currency
+            }
+        }
+        print refund_data
+        refund = sale.refund(refund_data)
+        if refund.success():
+            refund_id = refund.id
+        else:
+            print refund.error
+            refund_id = 'Error: {}'.format(refund.error)[:64]
+
+        return refund_id
+
+
+class StripeMixin(object):
+
+    def refund_stripe_payment(self, charge_id, total):
+        charge = stripe.Charge.retrieve(id=charge_id)
+        refund = charge.refund()
+
+        return refund.id

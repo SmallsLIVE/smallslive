@@ -1,3 +1,4 @@
+import stripe
 from allauth.account.views import _ajax_response
 from braces.views import FormValidMessageMixin, LoginRequiredMixin, StaffuserRequiredMixin
 from django.conf import settings
@@ -13,14 +14,13 @@ from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
 from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView,\
     CancelSubscriptionView as BaseCancelSubscriptionView
-import stripe
 from custom_stripe.models import CustomPlan, CustomerDetail
 from oscar_apps.catalogue.models import Product
 from oscar_apps.checkout.forms import BillingAddressForm
 from oscar.apps.payment.exceptions import RedirectRequired, \
     UnableToTakePayment, PaymentError
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
-from oscar.apps.partner.strategy import Selector
+from oscar_apps.partner.strategy import Selector
 from oscar.apps.payment.models import SourceType, Source
 from users.models import SmallsUser
 from users.utils import charge, grant_access_to_archive, \
@@ -125,8 +125,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         for product in Product.objects.filter(product_class__slug='gift'):
             context['gifts'].append(product)
 
-        context['gifts'].sort(key = lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
-
+        context['gifts'].sort(key=lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
 
         return context
 
