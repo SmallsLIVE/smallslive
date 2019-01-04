@@ -272,7 +272,8 @@
           if (smallsConfig.user.isAuthenticated) {
             modal = '#become-a-supporter-dialog';
           }
-          if ('{{ is_event_user_not_confirmed }}') {
+          inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
+          if (inactive === 'true'){
             modal = '#inactive-dialog';
           }
           $(modal).modal('show');

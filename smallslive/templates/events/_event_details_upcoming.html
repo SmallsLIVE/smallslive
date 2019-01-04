@@ -77,7 +77,8 @@
     $('#btn-play-event').click(function () {
       /* Show 'sign in' modal if user is not logged in. Otherwise, redirect
       to the live stream view if the show is about to start. */
-      if("{{is_event_user_not_confirmed}}") {
+      inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
+      if (inactive === 'true'){
         modal = '#inactive-dialog';
         $(modal).modal('show');
       } else if (smallsConfig.user.isAuthenticated) {

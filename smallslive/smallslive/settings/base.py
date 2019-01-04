@@ -683,9 +683,9 @@ OSCAR_INITIAL_ORDER_STATUS = 'Pending'
 OSCAR_INITIAL_LINE_STATUS = 'Pending'
 OSCAR_ORDER_STATUS_PIPELINE = {
     'Pending': ('Refunded', 'Shipped', 'Completed'),  # Completed would be for tickets
-    'Completed': ('Refunded', 'Exchanged', ),
-    'Refunded': (),
-    'Exchanged': (),
+    'Completed': ('Exchanged', 'Cancelled'),
+    'Cancelled': ('Refunded', ),
+    'Exchanged': ('Refunded', ),
     'Shipped': (),
 }
 OSCAR_LINE_STATUS_PIPELINE = OSCAR_ORDER_STATUS_PIPELINE

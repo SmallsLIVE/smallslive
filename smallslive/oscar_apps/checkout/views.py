@@ -525,6 +525,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             total = str(total.incl_tax)
             # Donation will be set to True  if user is selecting gifts
             # For Tickets and  other goods, there will  be no donation.
+            # 'handle_paypal_payment' returns a RedirectRequiredException
+            # and the flow will be completed in ExecutePaypalPayment
             self.handle_paypal_payment(currency, total, item_list,
                                        payment_execute_url, payment_cancel_url,
                                        donation=True)
@@ -541,7 +543,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             reference=reference)
         self.add_payment_source(source)
 
-        self.add_payment_event('Purchase', total.incl_tax)
+        self.add_payment_event('Purchase', total.incl_tax, reference=reference)
 
     def payment_description(self, order_number, total, **kwargs):
         return 'Order #{0} at SmallsLIVE'.format(order_number)
@@ -583,7 +585,6 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
 
         try:
             payment_id = self.execute_payment()
-
         except UnableToTakePayment as e:
             # Something went wrong with payment but in an anticipated way.  Eg
             # their bankcard has expired, wrong card number - that kind of
@@ -644,6 +645,7 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
                         amount_debited=total_incl_tax,
                         reference=payment_id)
         self.add_payment_source(source)
+        self.add_payment_event('Purchase', total_incl_tax, reference=payment_id)
 
         shipping_address = self.get_shipping_address(basket)
         shipping_method = Repository().get_default_shipping_method(
