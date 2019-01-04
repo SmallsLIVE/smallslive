@@ -48,7 +48,7 @@
 
                           <a href="{{ product.event_set.event.get_absolute_url }}"><img class="defineImageRatio"
                                                                     src="{% if image %} {{image}} {% else %} {% static 'image/no-event-image-placeholder.jpg' %} {% endif %}"
-                                                                    alt="{{ product.get_title }}"></a>
+                                                                    alt="{{ product.get_title }}" style="height:auto"></a>
 
                   {% endwith %}
                 </div>
