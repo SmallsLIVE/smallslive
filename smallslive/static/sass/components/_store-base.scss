@@ -2112,12 +2112,12 @@ img.defineImageRatio {
   max-height: 100%;
   margin: 15px 0;
   &.wide {
-    width: 100%;
+    width: auto;
     height: auto;
   }
 
   &.tall {
-    height: 100%;
+    height: auto;
     width: auto;
     margin: 0 auto;
   }
