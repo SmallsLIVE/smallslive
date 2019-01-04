@@ -67,8 +67,8 @@
           </div>
           <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
             <div class="buy-button-container">
-              <a class="tracks-table__button" data-toggle="dropdown" aria-expanded="false" href="">Download <i
-                      class="fa fa-caret-down"></i></a>
+              <a class="white-border-button flex-button" data-toggle="dropdown" aria-expanded="false" href="">
+                      <span>Download</span> <i class="fa fa-caret-down"></i></a>
               <ul class="dropdown-menu" role="menu">
                 {% if is_hd %}
                   <li><a href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download
