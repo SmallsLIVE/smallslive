@@ -96,8 +96,16 @@
           window.location = '{% url 'become_supporter' %}';
         },
         canClose: false
+      },
+      store: {
+        class: 'supporter',
+        text: 'Purchases from this catalog are tax deductible. The revenue collected is directly shared with the artists involved. Members can stream their purchases directly',
+        button: 'go to cart',
+        infoButton: false,
+        canClose: false
       }
     };
+
 
     var bannerContainer = $('#banner-container');
     var bannerOptions = $('#banner-options');
@@ -120,8 +128,7 @@
 
     function setContainerBanner(src) {
       bannerImage = bannerContainer.find('.banner-background').find('img')[0]
-      $(bannerImage).attr('src','static/image/banners/'+ src + '_text.jpg')
-      
+      $(bannerImage).attr('src','/static/image/banners/'+ src + '_text.jpg')
       var banner = bannerText[src];
       bannerContainer.find('#banner-text').html(banner.text);
       var find = bannerContainer.find('#banner-title');
