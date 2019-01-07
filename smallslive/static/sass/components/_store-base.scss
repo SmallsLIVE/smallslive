@@ -593,6 +593,7 @@
 
   .white-border-select{
     .select-selected, .select-items div{
+      padding-top: 8px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
