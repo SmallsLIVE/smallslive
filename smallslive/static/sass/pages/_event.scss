@@ -185,6 +185,9 @@ $player-height:  25.3vw;
         &::before{
           font-size: 40px;
         }
+        &:hover {
+          cursor: pointer;
+        }
       }
       @include icon-overlay;
       transition: none;
