@@ -1,6 +1,5 @@
 from datetime import datetime, date
-from urllib import urlencode
-import urlparse
+
 import stripe
 from wkhtmltopdf.views import PDFTemplateView
 from django.conf import settings
@@ -16,7 +15,6 @@ from allauth.account.forms import ChangePasswordForm
 from allauth.account.models import EmailAddress
 from allauth.account.utils import complete_signup
 from allauth.account.views import SignupView as AllauthSignupView, \
-    ConfirmEmailView as CoreConfirmEmailView, \
     LoginView as CoreLoginView, _ajax_response
 import braces.views
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin
@@ -30,7 +28,6 @@ from users.utils import charge, \
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
 from oscar_apps.checkout.forms import BillingAddressForm
 from oscar.apps.address.models import UserAddress
-
 
 
 class SignupLandingView(TemplateView):
@@ -130,6 +127,7 @@ def user_settings_view(request):
         'current_user' : request.user,
     })
 
+
 @login_required(login_url='home')
 def user_settings_view_new(request):
     profile_updated = False
@@ -160,7 +158,6 @@ def user_settings_view_new(request):
 
         messages.success(request, 'Your account card has been changed successfully.')
         profile_updated = True
-    
 
     if 'change_email' in request.POST:
         change_email_form = ChangeEmailForm(data=request.POST, user=request.user)
@@ -209,7 +206,9 @@ def user_settings_view_new(request):
     period_end["date"] = None
     monthly_pledge_in_dollars = None
     customer = request.user.customer
-    user_archive_access_until = request.user.archive_access_until
+    user_archive_access_until = None
+    if request.user.has_archive_access:
+        user_archive_access_until = date(date.today().year, 12, 31)
 
     if customer.has_active_subscription():
         plan_id = request.user.customer.current_subscription.plan
@@ -217,7 +216,7 @@ def user_settings_view_new(request):
     
     customer_charges = request.user.get_donations()
    
-    charges_value =0
+    charges_value = 0
     for charge in customer_charges:
         if charge.amount:
             charges_value = charges_value + charge.amount
@@ -225,7 +224,7 @@ def user_settings_view_new(request):
         artist_info_form = ArtistInfoForm(instance=request.user)
     customer_detail = CustomerDetail.get(id=request.user.customer.stripe_id)
     if customer_detail.subscription:
-        monthly_pledge_in_dollars = customer_detail.subscription.plan.amount/100
+        monthly_pledge_in_dollars = customer_detail.subscription.plan.amount / 100
 
     if customer_detail.subscription:
         period_end["date"] = datetime.fromtimestamp(customer_detail.subscription.current_period_end).strftime("%d/%m/%y")
@@ -240,7 +239,6 @@ def user_settings_view_new(request):
         billing_address = request.user.addresses.get(is_default_for_billing=True)
     except UserAddress.DoesNotExist:
         billing_address = UserAddress()
-
 
     return render(request, 'account/user_settings_new.html', {
         'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,

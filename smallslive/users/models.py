@@ -203,7 +203,7 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
         return qs
 
-    @cached_property
+    @property
     def get_donation_amount(self, this_year=True):
 
         qs = self.get_donations(this_year=this_year)
@@ -213,7 +213,6 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
             return amount_data[0]['total_donations']
         else:
             return 0
-
 
     @cached_property
     def has_institutional_subscription(self):
@@ -230,10 +229,8 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
     @cached_property
     def has_archive_access(self):
-        print 'aa'
         # One Time Donations are new  "one year subscriptions"
-        print self.get_subscription_plan
-        return self.get_donation_amount > 100 or \
+        return self.get_donation_amount >= 100 or \
                 self.get_subscription_plan['type'] != 'free'
 
     @cached_property

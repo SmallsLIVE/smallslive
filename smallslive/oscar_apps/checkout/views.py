@@ -672,7 +672,7 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
         self.add_payment_source(source)
         self.add_payment_event('Purchase', total_incl_tax, reference=payment_id)
 
-        if not basket.has_tickets:
+        if not basket.has_tickets():
             donation = {
                 'user': user,
                 'currency': source.currency,
