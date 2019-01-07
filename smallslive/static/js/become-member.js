@@ -454,7 +454,7 @@ $(document).ready(function () {
           $selectionConfirmationDialog.find('.text').html('You have selected a monthly pledge of $'+amount+'. Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation.');
           $selectionConfirmationDialog.find('.gift-content');
         }else{
-          $("#monthly-less").text("The minimun donation is $10 dolars")
+          $("#monthly-less").text("The minimun monthly pledge is $10 dolars")
         }
       }
     } else {
