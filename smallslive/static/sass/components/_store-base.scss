@@ -591,6 +591,25 @@
   @include flex-wrap(nowrap);
   padding-right: 15px;
 
+  .white-border-select{
+    .select-selected, .select-items div{
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      padding-right: 40px;
+    }
+    .select-selected{
+      border: 3px solid rgba(255, 255, 255, 0.9);
+    }
+    .select-items{
+      top:95%;
+      div{
+        width: 20vw;
+      }
+    } 
+  }
+
   &__options {
     padding: 0 5px;
     float: left;
