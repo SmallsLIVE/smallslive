@@ -24,11 +24,19 @@
           </p>
         </div>
 
+        {% if user.is_authenticated %}
         <div class="text4 text-centered">
           <a class="white-border-button" href="{% url 'become_supporter' %}">
             Become a Supporting Member
           </a>
         </div>
+        {% else %}
+          <div class="text4 text-centered">
+            <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
+              Sign in to become a Supporter Member
+            </button>
+          </div>
+        {% endif %}
       </div>
       <div>
       </div>

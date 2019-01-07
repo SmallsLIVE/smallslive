@@ -303,28 +303,22 @@ class UserTaxLetter(PDFTemplateView):
 user_tax_letter = UserTaxLetter.as_view()
 
 
-class ConfirmEmailView(CoreConfirmEmailView):
+class EmailConfirmedView(TemplateView):
+    template_name = 'account/email_confirmed.html'
 
-    def get_redirect_url(self):
-        # Add offer parameter to url, or `next` if it's login.
-        url = super(ConfirmEmailView, self).get_redirect_url()
-        if 'login' in url:
-            parts = list(urlparse.urlparse(url))
-            query = urlparse.parse_qs(parts[4])
-            query['next'] = '{}?show_modal=email_confirmed'.format(
-                settings.LOGIN_REDIRECT_URL
-            )
-            parts[4] = urlencode(query)
-            url = urlparse.urlunparse(parts)
+
+email_confirmed = EmailConfirmedView.as_view()
+
+
+class LoginView(CoreLoginView):
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return ["account/ajax_login.html"]
         else:
-            parts = list(urlparse.urlparse(url))
-            query = urlparse.parse_qs(parts[4])
-            query.update({'show_modal': 'email_confirmed'})
-            parts[4] = urlencode(query)
-            url = urlparse.urlunparse(parts)
-        return url
+            return ["account/login.html"]
 
-confirm_email = ConfirmEmailView.as_view()
+login_view = LoginView.as_view()
 
 
 class LoginView(CoreLoginView):
