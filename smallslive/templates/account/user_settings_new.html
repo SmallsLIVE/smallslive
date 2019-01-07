@@ -79,7 +79,7 @@
           <div class="text9 accent-color">None{% if cancelled %} (cancelled) {% endif %}</div>
           {% endif %}
 
-          {% if not customer_detail.subscription.plan and not user_archive_access_until or cancelled %}
+          {% if not user.has_archive_access %}
             <a href="/subscriptions/supporter/" class="white-border-button">Become a Supporting Member</a>  
           {% elif customer_detail.subscription.plan and not cancelled %}
             <div class="flex-row supporter-options">  
@@ -92,7 +92,7 @@
         </div>
       
         <div class="account-settings-info ">
-          {% if customer_detail.subscription.plan or user_archive_access_until %}
+          {% if user.has_archive_access %}
           <a href="/subscriptions/supporter/?flow_type=one_time_donation" class="white-border-button">Make a One Time Donation</a>
           {% endif %}
         </div>
@@ -125,7 +125,7 @@
             {% if customer_detail.subscription.plan and not cancelled %}
             <div class="text9 text-grey">There is no expiration date until the monthly pledge is cancelled</div>
             {% elif user_archive_access_until %}
-            <div class="text9 text-grey"> {{ user_archive_access_until|date:"d/m/Y" }} Because of a one time donation.</div>
+            <div class="text9 text-grey"> {{ user_archive_access_until|date:"m/d/Y" }} Because of your donations.</div>
             {% elif not customer_detail.subscription.plan and not period_end.due  %}
             <div class="text9 text-grey">{{ period_end.date }}</div>      
             {% else %}
