@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 
 from oscar.apps.dashboard.catalogue import views as oscar_views
 from oscar.core.loading import get_model
-from .forms import TrackFormSet
+from .forms import TrackFormSet, ArtistMemberFormSet
 from .tables import ProductTable
 
 Product = get_model('catalogue', 'Product')
@@ -13,6 +13,17 @@ ProductClass = get_model('catalogue', 'ProductClass')
 
 
 class ProductCreateUpdateView(oscar_views.ProductCreateUpdateView):
+
+    artist_formset = ArtistMemberFormSet
+
+    def __init__(self, *args, **kwargs):
+        super(ProductCreateUpdateView, self).__init__(*args, **kwargs)
+        self.formsets = {'category_formset': self.category_formset,
+                         'image_formset': self.image_formset,
+                         'recommended_formset': self.recommendations_formset,
+                         'stockrecord_formset': self.stockrecord_formset,
+                         'artist_formset': self.artist_formset}
+
 
     def get_context_data(self, **kwargs):
         if self.product_class.slug == 'album':

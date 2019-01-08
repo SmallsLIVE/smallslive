@@ -15,7 +15,7 @@
     {% endif %}
     <li><a href="#product_details" data-toggle="tab">{% trans 'Product details' %}</a></li>
     {% if not parent %}
-        <li><a href="#product_category" data-toggle="tab">{% trans 'Categories' %}</a></li>
+        <li><a href="#product_category" data-toggle="tab">{% trans 'Categories' %} </a></li>
     {% endif %}
     {% if product_class.has_attributes %}
         <li><a href="#product_attributes" data-toggle="tab">{% trans 'Attributes' %}</a></li>
@@ -34,7 +34,10 @@
     {% endif %}
 
     {% if track_formset %}
-        <li><a href="#tracks" data-toggle="tab">Tracks</a></li>
+        <li><a href="#tracks" data-toggle="tab">{% trans 'Tracks' %}</a></li>
+    {% endif %}
+    {% if product_class.name = "Album" or product_class.name = "Track" %}
+        <li><a href="#artist" data-toggle="tab">{% trans 'Artist List' %}</a></li>
     {% endif %}
 {% endblock %}
 
@@ -121,6 +124,22 @@
             {% endblock product_overview_content %}
         </div>
     {% endif %}
+    <div class="tab-pane" id="artist">
+        {% block artist_content %}
+            <table class="table table-striped table-bordered form-inline">
+                <caption>{% trans "Artist" %}</caption>
+                {{ artist_formset.management_form }}
+                {{ artist_formset.non_form_errors }}
+                {% for artist_form in artist_formset %}
+                    <tr>
+                        <td>
+                            {% include "partials/form_fields_inline.html" with form=artist_form %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endblock artist_content %}
+    </div>
     {{ block.super }}
 {% endblock %}
 {% block child_products %}
