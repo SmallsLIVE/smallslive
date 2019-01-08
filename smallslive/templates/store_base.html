@@ -89,12 +89,17 @@
                 </ul>
             </div>
             <div>
-                {% block store_content %}{% endblock %}
             </div>
         </section>
+
     </div>
-    {% block store_extra %}
-    {% endblock store_extra %}
+        <div id="store-home">
+            {% block store_extra %}
+            {% endblock store_extra %}
+            {% block store_content %}{% endblock %}
+        </div>
+        <div id="artist-store">
+        </div>
 
 {% endblock home_content %}
 

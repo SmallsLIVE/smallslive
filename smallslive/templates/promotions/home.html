@@ -16,19 +16,19 @@
 {% block store_content %}
     <div class="store-listing__content">
         <div class="section-title">
-          <div class="title1">newest recordings in the store</div>
+          <div class="title1">newest recordings</div>
         </div>
           <main class="newest-recordings-container">
             <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
             <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'events/event_row.html' with events=newest_recordings secondary=False %}
+            {% include 'promotions/featured_row.html' with events=newest_recordings secondary=False %}
           </main>
     </div>
 {% endblock store_content %}
 
 
 {% block store_extra %}
-  <div class="">
+  <div class="featured-recordings">
     {% if featured_recordings %}
       <div class="section-title">
         <div class="title1">Featured Recordings</div>
@@ -130,11 +130,11 @@
                   </form>
                 </div>
                 <div>
-                  <h2 class="store-featured-music__single__title hidden-xs">
+                  <h2 class="store-featured-music__single__title hidden-featured ">
                     <a href="{{ album.get_absolute_url }}">{{ album.title }}</a>
                   </h2>
                   <!-- tracks table -->
-                  <div class="store-featured-music__single__tracks-table hidden-xs">
+                  <div class="store-featured-music__single__tracks-table hidden-featured">
                     <h4 class="store-featured-music__single__tracks-table__title">
                       Track listing:
                     </h4>

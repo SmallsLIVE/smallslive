@@ -190,9 +190,10 @@ $event-row-padding: 3.5vw;
   }
 
   @media (max-width: $screen-sm-max) {
-    width: 45.7vw;
+    width: 20.7vw;
   }
 }
+
 
 
 @mixin event-card ($event-card-width, $event-card-height) {
@@ -214,6 +215,16 @@ $event-row-padding: 3.5vw;
       height: $event-card-height;
       width: $event-card-width;
       position: relative;
+
+      &.featured {
+        height: 21.71vw;
+        width: 21.85vw;
+        
+        @media (max-width: 960px) {
+          height: 21.66vw;
+          width: 25.1vw;
+        }
+      }
 
       img {
         width: 100%;
@@ -327,5 +338,15 @@ $event-row-padding: 3.5vw;
         }
       }
     }
+  }
+}
+
+@media (max-width: 960px){
+  
+  .event-card, .event-info, .album-row {
+    font-size: 1.4vw;
+    min-height: 8.66vw;
+    position: relative;
+
   }
 }

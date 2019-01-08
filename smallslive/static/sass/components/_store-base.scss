@@ -219,8 +219,7 @@
 }
 .store-nav {
   padding: 20px 30px;
-  border-right: 1px solid #ddd;
-  position: relative;
+  position: fixed;
   z-index: 10;
 
   &.landing-nav {
@@ -331,6 +330,11 @@
     }
   }
 }
+.hidden-featured {
+  @media (max-width: 1210px) {
+    display: none !important;
+  }
+}
 
 .store-listing {
   padding: 0;
@@ -345,8 +349,12 @@
 
   &__content {
     padding: 40px 30px;
+    margin-left: 350px;
     //background-color: #fff;
-
+    
+    @media (max-width: 767px) {
+      margin-left: 0px;
+    }
     @media(max-width: $screen-xs-max) {
       min-height: 300px;
     }
@@ -2205,7 +2213,41 @@ img.defineImageRatio {
   margin-top: 30px;
 }
 
+.newest-recordings-container {
+  overflow: hidden;
+  position: relative;
+  width: 70vw;
 
+  &.slide-btn.prev , .slide-btn.next{
+    height: 21.7vw;
+  }
+  &.slide-btn.next, .slide-btn.prev {
+    height: 21.7vw;
+  }
+  @media (max-width: 1200px) {
+    width: 68vw;
+  }
+  @media (max-width: 1100px) {
+    width: 60vw;
+  }
+  @media (max-width: 960px) {
+    width: 55vw;
+    overflow-x: auto;
+  }
+  @media(max-width:768px){
+    width: 90vw;
+  }
+
+}
+  
+.featured-recordings{
+  margin-left: 350px;
+
+  @media (max-width: 767px) {
+    margin-left: 0px;
+  }
+
+}
 .store-error {
   background-color: #eee;
   border-bottom: 1px solid #ddd;
