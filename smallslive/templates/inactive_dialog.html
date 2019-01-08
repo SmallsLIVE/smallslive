@@ -4,21 +4,12 @@
         <div class="modal-content  custom-modal">
                 <a href="#" class="close-button"></a>
           <div class="modal-body">
-              <p class="title2 accent-color">Confirmation</p>
-              <p class="title1">Your membership is not yet confirmed</p>
-              <p class="text9 text-justified">You have been sent a confirmation
-                  e-mail to <span class="accent-color">{{ user.email }}</span>.
-                  Please check yout email and confirm your membership by clicking the
-                  link
-                  you receive. If you do not received this in the next 10 min, please
-                  click
-                  the link below to re-send the confirmation e-mail. Be sure to check
-                  your
-                  spam folder as well.
+              <p class="title1">Please confirm your email address</p>
+              <p class="text9 text-justified">
+                You will receive an e-mail to <span class="accent-color">{{ user.email }}</span> within 10 minutes. Click the link in the e-mail to confirm your address.
               </p>
               <div class="text4 text-centered" style="margin-top: 40px">
                   <div>
-                      <span class="text-grey">Didn't get an email?</span>
                       <form id="resendConfirmationForm"
                             action="{% url 'account_email' %}"
                             method="post" style="display: inline">
@@ -32,8 +23,9 @@
                           </a>
                       </form>
                   </div>
+                  <br>
                   <p>
-                      <span class="text-grey">Or contact support at</span> <a class="accent-color hover-underline" href="mailto:accountsupport@smallslive.com">
+                      <a class="accent-color hover-underline" href="mailto:accountsupport@smallslive.com">
                           accountsupport@smallslive.com
                       </a>
                   </p>

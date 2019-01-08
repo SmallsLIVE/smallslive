@@ -9,23 +9,23 @@
                 <th>{% trans "ID" %}</th>
                 <th>{% trans "Event title" %}</th>
                 <th>{% trans "Event subtitle" %}</th>
-                <th>{% trans "start" %}</th>
-                <th>{% trans "Set" %}</th>
+                <th>{% trans "Date" %}</th>
+                <th>{% trans "Start" %}</th>
                 <th>{% trans "Venue" %}</th>
                 <th></th>
             </tr>
-            {% for event_set in objects %}
+            {% for event in objects %}
                 <tr>
-                    <td><a href="{% url 'event_detail' pk=event_set.event.id slug=event_set.event.title|slugify %}">{{ event_set.event.id }}</a></td>
+                    <td><a href="{% url 'event_detail' pk=event.id slug=event.title|slugify %}">{{ event.id }}</a></td>
                     <td>
-                        <a href="{% url 'event_detail' pk=event_set.event.id slug=event_set.event.title|slugify %}">{{ event_set.event.title }}  {{ event_set }}</a>
+                        <a href="{% url 'event_detail' pk=event.id slug=event.title|slugify %}">{{ event.title }}</a>
                     </td>
-                    <td>{{ event_set.event.subtitle }}</td>
-                    <td>{{ event_set.event.date }}</pre></td>
-                    <td>{{ event_set.start }}</td>
-                    <td>{{ event_set.event.venue.name }}</td>
+                    <td>{{ event.subtitle }}</td>
+                    <td>{{ event.date }}</pre></td>
+                    <td>{{ event.get_range.0 }}</td>
+                    <td>{{ event.venue.name }}</td>
                     <td>
-                        <a class="btn btn-info" href="{% url 'dashboard:ticket_details' pk=event_set.id %}">Report</a>
+                        <a class="btn btn-info" href="{% url 'dashboard:ticket_details' pk=event.sets.first.id %}">Report</a>
                     </td>
                 </tr>
             {% endfor %}

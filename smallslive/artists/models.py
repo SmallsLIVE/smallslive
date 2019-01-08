@@ -153,23 +153,15 @@ class Artist(models.Model):
         return Recording.objects.filter(event__performers=self.id).order_by('id').values_list('id', flat=True)
 
     def albums(self):
-        return Product.objects.filter(
-            (
-                Q(description__icontains=self.full_name()) |
-                Q(title__icontains=self.full_name())
-            ) &
-            Q(categories__name='SmallsLIVE Catalog')
-        ).distinct()
+        return self.product.filter(product_class='Album')
 
     def tracks(self):
-        return Product.objects.filter(
-            (
-                Q(description__icontains=self.full_name()) |
-                Q(title__icontains=self.full_name())
-            ) &
-            Q(categories__name='SmallsLIVE Tracks')
-        ).distinct()
+        return self.product.filter(product_class='Track')
 
+    def has_music(self):
+        print self.tracks
+        print self.albums
+        return self.tracks or self.albums
 
 
     def event_id_list(self):

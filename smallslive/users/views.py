@@ -1,6 +1,5 @@
 from datetime import datetime, date
-from urllib import urlencode
-import urlparse
+
 import stripe
 from wkhtmltopdf.views import PDFTemplateView
 from django.conf import settings
@@ -10,12 +9,12 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, FormView, ListView, View
+from django.utils import timezone
 from allauth.account.app_settings import EmailVerificationMethod
 from allauth.account.forms import ChangePasswordForm
 from allauth.account.models import EmailAddress
 from allauth.account.utils import complete_signup
 from allauth.account.views import SignupView as AllauthSignupView, \
-    ConfirmEmailView as CoreConfirmEmailView, \
     LoginView as CoreLoginView, _ajax_response
 import braces.views
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin
@@ -24,12 +23,11 @@ from djstripe.settings import subscriber_request_callback
 
 from artist_dashboard.forms import ArtistInfoForm
 from custom_stripe.models import CustomPlan, CustomerDetail
-from users.utils import charge, grant_access_to_archive, \
+from users.utils import charge, \
     one_time_donation, subscribe_to_plan,  update_active_card
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
 from oscar_apps.checkout.forms import BillingAddressForm
 from oscar.apps.address.models import UserAddress
-
 
 
 class SignupLandingView(TemplateView):
@@ -129,6 +127,7 @@ def user_settings_view(request):
         'current_user' : request.user,
     })
 
+
 @login_required(login_url='home')
 def user_settings_view_new(request):
     profile_updated = False
@@ -159,7 +158,6 @@ def user_settings_view_new(request):
 
         messages.success(request, 'Your account card has been changed successfully.')
         profile_updated = True
-    
 
     if 'change_email' in request.POST:
         change_email_form = ChangeEmailForm(data=request.POST, user=request.user)
@@ -200,7 +198,6 @@ def user_settings_view_new(request):
         else:
             billing_address_form = BillingAddressForm(None, request.user, None)
 
-
     if profile_updated:
         return HttpResponseRedirect('/accounts/settings/')
         
@@ -209,15 +206,17 @@ def user_settings_view_new(request):
     period_end["date"] = None
     monthly_pledge_in_dollars = None
     customer = request.user.customer
-    user_archive_access_until = request.user.archive_access_until
+    user_archive_access_until = None
+    if request.user.has_archive_access:
+        user_archive_access_until = date(date.today().year, 12, 31)
 
     if customer.has_active_subscription():
         plan_id = request.user.customer.current_subscription.plan
         plan = stripe.Plan.retrieve(id=plan_id)
     
-    customer_charges = customer.charges.all()
+    customer_charges = request.user.get_donations()
    
-    charges_value =0
+    charges_value = 0
     for charge in customer_charges:
         if charge.amount:
             charges_value = charges_value + charge.amount
@@ -225,7 +224,7 @@ def user_settings_view_new(request):
         artist_info_form = ArtistInfoForm(instance=request.user)
     customer_detail = CustomerDetail.get(id=request.user.customer.stripe_id)
     if customer_detail.subscription:
-        monthly_pledge_in_dollars = customer_detail.subscription.plan.amount/100
+        monthly_pledge_in_dollars = customer_detail.subscription.plan.amount / 100
 
     if customer_detail.subscription:
         period_end["date"] = datetime.fromtimestamp(customer_detail.subscription.current_period_end).strftime("%d/%m/%y")
@@ -251,7 +250,8 @@ def user_settings_view_new(request):
         'plan': plan,
         'donations': request.user.get_donations(),
         'customer_detail': customer_detail,
-        'charges_value': request.user.get_donation_amount(),
+        'customer_charges': customer_charges,
+        'charges_value': request.user.get_donation_amount,
         'period_end': period_end,
         'user_archive_access_until': user_archive_access_until,
         'monthly_pledge_in_dollars': monthly_pledge_in_dollars,
@@ -268,13 +268,14 @@ class UserTaxLetterHtml(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserTaxLetterHtml, self).get_context_data(**kwargs)
         customer = self.request.user.customer
-        customer_charges = customer.charges.all()
+        customer_charges = customer.subscriber.get_donations()
         charges_value = 0
         for charge in customer_charges:
             charges_value += charge.amount
         context['customer'] = customer
         context['charges_value'] = charges_value
-        context['year'] = 1964
+        context['year'] = timezone.now().year
+
         return context
 
 user_tax_letter_html = UserTaxLetterHtml.as_view()
@@ -288,42 +289,34 @@ class UserTaxLetter(PDFTemplateView):
     def get_context_data(self, **kwargs):
         context = super(UserTaxLetter, self).get_context_data(**kwargs)
         customer = self.request.user.customer
-        start_date =date(date.today().year, 1, 1)
-        end_date = date(date.today().year, 12, 31)
-        customer_charges = customer.charges.filter(created__range=(start_date, end_date))
+        customer_charges = self.request.user.get_donations()
         charges_value = 0
         for charge in customer_charges:
             charges_value += charge.amount
         context['customer'] = customer
         context['charges_value'] = charges_value
-        context['year'] = 1964
+        context['year'] = timezone.now().year
         return context
 
 user_tax_letter = UserTaxLetter.as_view()
 
 
-class ConfirmEmailView(CoreConfirmEmailView):
+class EmailConfirmedView(TemplateView):
+    template_name = 'account/email_confirmed.html'
 
-    def get_redirect_url(self):
-        # Add offer parameter to url, or `next` if it's login.
-        url = super(ConfirmEmailView, self).get_redirect_url()
-        if 'login' in url:
-            parts = list(urlparse.urlparse(url))
-            query = urlparse.parse_qs(parts[4])
-            query['next'] = '{}?show_modal=email_confirmed'.format(
-                settings.LOGIN_REDIRECT_URL
-            )
-            parts[4] = urlencode(query)
-            url = urlparse.urlunparse(parts)
+
+email_confirmed = EmailConfirmedView.as_view()
+
+
+class LoginView(CoreLoginView):
+
+    def get_template_names(self):
+        if self.request.is_ajax():
+            return ["account/ajax_login.html"]
         else:
-            parts = list(urlparse.urlparse(url))
-            query = urlparse.parse_qs(parts[4])
-            query.update({'show_modal': 'email_confirmed'})
-            parts[4] = urlencode(query)
-            url = urlparse.urlunparse(parts)
-        return url
+            return ["account/login.html"]
 
-confirm_email = ConfirmEmailView.as_view()
+login_view = LoginView.as_view()
 
 
 class LoginView(CoreLoginView):

@@ -194,25 +194,25 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
     def get_donations(self, this_year=True):
         # Assume always USD.
-        qs = self.donations.filter(user=self)
+        qs = self.donations.filter(user=self, confirmed=True)
         if this_year:
             current_date = timezone.now()
             first_day = current_date.replace(month=1, day=1, hour=0,
                                              minute=0, second=0, microsecond=0)
-            qs = qs.filter(date__gte=first_day, confirmed=True)
+            qs = qs.filter(date__gte=first_day)
 
         return qs
-    @cached_property
+
+    @property
     def get_donation_amount(self, this_year=True):
 
         qs = self.get_donations(this_year=this_year)
 
-        amount_data = qs.values('amount').annotate(total_donations=Sum('amount'))
+        amount_data = qs.values('user_id').annotate(total_donations=Sum('amount'))
         if amount_data:
-            return amount_data[0].amount
+            return amount_data[0]['total_donations']
         else:
             return 0
-
 
     @cached_property
     def has_institutional_subscription(self):
@@ -229,10 +229,8 @@ class SmallsUser(AbstractBaseUser, PermissionsMixin):
 
     @cached_property
     def has_archive_access(self):
-        print 'aa'
         # One Time Donations are new  "one year subscriptions"
-        print self.get_subscription_plan
-        return self.get_donation_amount > 100 or \
+        return self.get_donation_amount >= 100 or \
                 self.get_subscription_plan['type'] != 'free'
 
     @cached_property

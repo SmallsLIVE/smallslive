@@ -57,6 +57,12 @@
 a {
   &.white-border-button {
     display: inline-block;
+    &.flex-button{
+      display: flex;
+      i{
+        padding-left: 3px;
+      }
+    }
     line-height: 33px;
     vertical-align: middle;
   }

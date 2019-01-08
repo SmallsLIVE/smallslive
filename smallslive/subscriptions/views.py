@@ -23,8 +23,8 @@ from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from oscar_apps.partner.strategy import Selector
 from oscar.apps.payment.models import SourceType, Source
 from users.models import SmallsUser
-from users.utils import charge, grant_access_to_archive, \
-    one_time_donation, subscribe_to_plan,  update_active_card
+from users.utils import charge, one_time_donation, \
+    subscribe_to_plan,  update_active_card
 from subscriptions.models import Donation
 from .forms import PlanForm, ReactivateSubscriptionForm
 from .mixins import PayPalMixin
@@ -86,6 +86,7 @@ class ExecutePayPalPaymentView(PayPalMixin, View):
 
         # Access will be granted in Complete view if payment_id matches.
         payment_id = self.execute_payment()
+
         return redirect(reverse(
             'become_supporter_complete') + '?payment_id={}'.format(payment_id))
 
@@ -124,9 +125,11 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         selector = Selector()
         strategy = selector.strategy(request=self.request, user=self.request.user)
         for product in Product.objects.filter(product_class__slug='gift'):
-            product.cost_price = product.stockrecords.first().cost_price
             context['gifts'].append(product)
-            context['costs'].append(product.stockrecords.first().cost_price)
+            if product.variants.count():
+                context['costs'].append(product.variants.first().stockrecords.first().cost_price)
+            else:
+                context['costs'].append(product.stockrecords.first().cost_price)
 
         context['gifts'].sort(key=lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
 
@@ -146,7 +149,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
             'quantity': 1}
         item_list = [item]
         self.handle_paypal_payment('USD', amount, item_list,
-                                   payment_execute_url, payment_cancel_url)
+                                   payment_execute_url, payment_cancel_url, donation=True)
 
     def execute_stripe_payment(self, stripe_token, amount, plan_type):
         print '********************************'
@@ -160,9 +163,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
             if plan_type == 'month':
                 subscribe_to_plan(customer, stripe_token, amount, plan_type)
             else:
-                grant = amount >= 100
-                one_time_donation(customer, stripe_token, amount,
-                                  grant_access=grant)
+                one_time_donation(customer, stripe_token, amount)
         except stripe.StripeError as e:
             # add form error here
             print e
@@ -296,6 +297,7 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
         context['completed'] = True
 
         payment_id = self.request.GET.get('payment_id')
+        print payment_id
         if payment_id:
             # Donated by selecting a gift in the store
             source = Source.objects.filter(reference=payment_id).first()
@@ -316,8 +318,6 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
                 if source:
                     source.confirmed = True
                     source.save()
-            if source:
-                grant_access_to_archive(user)
 
         if not payment_id or not source:
             context['error'] = 'We could not find your payment reference. Contact our support'

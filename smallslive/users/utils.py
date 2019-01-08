@@ -14,6 +14,8 @@ from allauth.account.adapter import get_adapter
 from allauth.account.utils import user_email
 from django.contrib import messages
 
+from subscriptions.models import Donation
+
 
 def add_years(d, years):
     """Return a date that's `years` years after the date (or datetime)
@@ -107,23 +109,18 @@ def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
             assert email_address
 
 
-def one_time_donation(customer, stripe_token, amount,
-                      grant_access=False):
+def one_time_donation(customer, stripe_token, amount):
     customer.update_card(stripe_token)
-    charge(customer, amount)
-    if grant_access:
-        user = customer.subscriber
-        # As per Spike request, grant access until then next fiscal year end
-        # In this  case, 1/1
-        grant_access_to_archive(user, commit=False)
-        user.save()
-
-
-def grant_access_to_archive(user, commit=True):
-    next_year = add_years(now(), 1)
-    user.archive_access_until = next_year.replace(month=1, day=1)
-    if commit:
-        user.save()
+    charge_id = charge(customer, amount).id
+    donation = {
+        'user': customer.subscriber,
+        'currency': 'USD',
+        'amount': amount,
+        'reference': charge_id,
+        'confirmed': True,
+    }
+    print donation
+    Donation.objects.create(**donation)
 
 
 def update_active_card(customer, stripe_token):

@@ -10,7 +10,8 @@ from oscar.apps.dashboard.catalogue import forms as oscar_forms
 from events.models import Event, EventSet
 from multimedia.models import MediaFile
 from oscar_apps.partner.models import StockRecord, Partner
-from oscar_apps.catalogue.models import Product, ProductClass
+from oscar_apps.catalogue.models import Product, ProductClass, ArtistProduct
+from artists.models import Artist
 
 
 class ProductForm(oscar_forms.ProductForm):
@@ -282,3 +283,21 @@ class ProductSearchForm(forms.Form):
         cleaned_data['upc'] = cleaned_data['upc'].strip()
         cleaned_data['title'] = cleaned_data['title'].strip()
         return cleaned_data
+
+
+class ProductArtistClassSelectForm(forms.ModelForm):
+
+    class Meta:
+        model = ArtistProduct
+        fields = ('artist', )
+        
+
+BaseArtistFormSet = inlineformset_factory(
+    Product, ArtistProduct, form=ProductArtistClassSelectForm, extra=15, max_num=25, can_order=True)
+
+
+class ArtistMemberFormSet(BaseArtistFormSet):
+
+    def __init__(self, product_class, user, *args, **kwargs):
+        # This function just exists to drop the extra arguments
+        super(ArtistMemberFormSet, self).__init__(*args, **kwargs)

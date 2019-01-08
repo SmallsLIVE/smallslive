@@ -20,6 +20,7 @@ from oscar_stripe.facade import Facade
 from oscar_apps.order.models import Order
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.mixins import PayPalMixin
+from subscriptions.models import Donation
 from .forms import PaymentForm, BillingAddressForm
 from oscar_apps.basket.models import Basket
 
@@ -217,7 +218,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
                                                    billing_address_form=billing_address_form)
         else:
             billing_address_form = None
-        
+
         if payment_method == 'paypal':
             return self.render_preview(request, billing_address_form=billing_address_form,
                                        payment_method='paypal')
@@ -232,7 +233,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
                     'name': form.cleaned_data['name'],
                     'last_4': form.cleaned_data['number'][-4:],
                 })
-                print(request)
                 return self.render_preview(request, card_token=form.token, form=form,
                                            payment_method=payment_method,
                                            billing_address_form=billing_address_form)
@@ -496,6 +496,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         print 'Card token: ', card_token
         print 'Payment method: ', payment_method
         print total
+        print kwargs
 
         if card_token:
             if card_token.startswith('card_'):
@@ -517,6 +518,30 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             source_name = 'Credit Card'
             reference = stripe_ref
             currency = settings.STRIPE_CURRENCY
+
+            print '******************)))))))'
+            cost = 0
+            for line in basket_lines:
+                print line
+                print dir(line)
+                print line.stockrecord
+                if line.stockrecord and line.stockrecord.cost_price:
+                    cost += line.stockrecord.cost_price
+
+
+            if not basket_lines.first().basket.has_tickets():
+
+                donation = {
+                    'user': self.request.user,
+                    'currency': currency,
+                    'amount': total.incl_tax - cost,
+                    'reference': stripe_ref,
+                    'confirmed': True,
+
+                }
+                print donation
+                Donation.objects.create(**donation)
+
         elif payment_method == 'paypal':
             item_list = self.get_item_list(basket_lines)
             payment_execute_url = self.request.build_absolute_uri(reverse('checkout:paypal_execute'))
@@ -529,7 +554,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             # and the flow will be completed in ExecutePaypalPayment
             self.handle_paypal_payment(currency, total, item_list,
                                        payment_execute_url, payment_cancel_url,
-                                       donation=True)
+                                       donation=not basket_lines.first().basket.has_tickets())
             source_name = 'PayPal'
             reference = ''
             currency = 'USD'
@@ -646,6 +671,17 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
                         reference=payment_id)
         self.add_payment_source(source)
         self.add_payment_event('Purchase', total_incl_tax, reference=payment_id)
+
+        if not basket.has_tickets():
+            donation = {
+                'user': user,
+                'currency': source.currency,
+                'amount': source.amount_allocated,
+                'reference': payment_id,
+                'confirmed': True,
+
+            }
+            Donation.objects.create(**donation)
 
         shipping_address = self.get_shipping_address(basket)
         shipping_method = Repository().get_default_shipping_method(

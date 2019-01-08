@@ -16,6 +16,17 @@
 
   &:nth-child(odd) {
     background-color:#f0f0eb;
+    .buy-button-container ul li{
+      padding: 2px;
+    }
+  }
+  &:nth-child(even) {
+    .white-border-button{
+      border: 3px solid rgba(0, 0, 0, 0.9);
+    }
+    .buy-button-container ul li{
+      padding: 2px;
+    }
   }
 
   &__list {

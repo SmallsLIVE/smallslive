@@ -1,6 +1,9 @@
 import itertools
+from artists.models import Artist
+from django.db.models import Count
 from oscar.apps.promotions import views as promotions_views
 from oscar_apps.catalogue.models import Product
+from artists.models import Artist
 
 
 class HomeView(promotions_views.HomeView):
@@ -13,4 +16,6 @@ class HomeView(promotions_views.HomeView):
         context['featured_physical_products'] = Product.objects.filter(
             product_class__slug="merchandise", featured=True)[:4]
         context['preview_track_id_counter'] = itertools.count()
+        context['artist_with_media'] = Artist.objects.annotate(media_count=Count('product')).filter(media_count__gt=0)
+                            
         return context

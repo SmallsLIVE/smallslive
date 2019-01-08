@@ -1,0 +1,67 @@
+{% extends "home_new.html" %}
+{% load djstripe_tags %}
+{% load static from staticfiles %}
+{% load socialaccount %}
+
+{% block extra_head %}
+    {% providers_media_js %}
+{% endblock %}
+
+{% block title %}EMAIL CONFIRMED{% endblock %}
+
+{% block content %}
+  {% include 'sign_in_to_become_a_supporter_dialog.html' %}
+  <div class="container">
+    <div class="flex-column items-center">
+      <p class="title2 accent-color">EMAIL CONFIRMED</p>
+      <p class="title1">WHY BECOME A SUPPORTING MEMBER?</p>
+
+      <div class="content">
+        <p class="text9 text-justified">
+          Thank you for becoming a member of The SmallsLIVE Foundation for Jazz Arts and Education.
+          You now have access to our live stream.
+        </p>
+        <p class="text9 text-justified">
+          Please consider becoming a supporting member.
+        </p>
+        <p class="text9 text-justified\">
+          By making a tax deductible donation to The SmallsLIVE Foundation you
+          will be given access to our extensive audio/video archive and directly
+          support the musicians and clubs. The mission of the SmallsLIVE Foundation
+          for Jazz Arts and Education is to disseminate jazz music through recordings
+          and live streams. Also to sponsor individual jazz projects, tours
+          and educational classes and to subsidize operating expenses for Smalls and Mezzrow jazz clubs.
+        </p>
+      </div>
+
+      <div class="text4 text-centered button-row margin-top">
+        {% if not user.is_authenticated %}
+        <button class="white-border-button sign-in-button separated" href="#logIn" data-toggle="modal">
+          Sign in
+        </button>
+        {% endif %}
+        <a id="become-a-supporter-btn" class="white-border-button" href="{% url 'become_supporter' %}">
+          Become a Supporting Member
+        </a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  {% if not user.is_authenticated %}
+  <script>
+    $(document).ready(function(){
+      $('#become-a-supporter-btn').click(function (e) {
+        e.preventDefault();
+        $('#sign-in-to-become-a-supporter-dialog').modal('show');
+        $('#sign-in-to-become-a-supporter-dialog .sign-in-button').click(function () {
+          $('#sign-in-to-become-a-supporter-dialog').modal('hide');
+        });
+      });
+    });
+  </script>
+  {% endif %}
+{% endblock extra_js %}
+
+

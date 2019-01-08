@@ -315,7 +315,11 @@
     & ul {
       padding-left: 20px;
       margin-top: 10px;
-
+      
+      &.artist-category{
+        text-align: center;
+        padding-left: 0;
+      }
       & li {
         font-size: 16px;
 
@@ -598,6 +602,26 @@
   @include display(flex);
   @include flex-wrap(nowrap);
   padding-right: 15px;
+
+  .white-border-select{
+    .select-selected, .select-items div{
+      padding-top: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      padding-right: 40px;
+    }
+    .select-selected{
+      border: 3px solid rgba(255, 255, 255, 0.9);
+    }
+    .select-items{
+      top:95%;
+      div{
+        width: 20vw;
+      }
+    } 
+  }
 
   &__options {
     padding: 0 5px;
@@ -2120,12 +2144,12 @@ img.defineImageRatio {
   max-height: 100%;
   margin: 15px 0;
   &.wide {
-    width: 100%;
+    width: auto;
     height: auto;
   }
 
   &.tall {
-    height: 100%;
+    height: auto;
     width: auto;
     margin: 0 auto;
   }

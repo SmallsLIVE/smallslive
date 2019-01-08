@@ -69,25 +69,12 @@
                             </button>
                         </li>
                     </form>
-                    {% category_tree as tree_categories %}
-                    {% if tree_categories %}
-                        {% for tree_category, info in tree_categories %}
-                            {% if tree_category.slug != 'gifts' and tree_category.slug != 'tickets' %}
-                            <li class="store-nav__category {% if tree_category.pk == category.pk %}active{% endif %}">
-                                {% if tree_category.pk == category.pk %}
-                                    {{ tree_category.name }}
-                                {% else %}
-                                    <a href="{{ tree_category.get_absolute_url }}">{{ tree_category.name }}</a>
-                                {% endif %}
-
-                                {% if info.has_children %}
-                                    <ul>{% else %}</li>{% endif %}
-                            {% for n in info.num_to_close %}
-                                </ul></li>
-                            {% endfor %}
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
+                    <li class="store-nav__category artist-list">
+                        <ul class="artist-category">Featured</ul>
+                        {% for artist in artist_with_media %}
+                            <ul class="artist-category" data-url="/{{artist.pk}}">{{artist.full_name}}</ul>
+                        {% endfor%}
+                    </li>
                 </ul>
             </div>
             <div>
@@ -108,4 +95,31 @@
 {% block extra_js %}
     <script src="{% static "oscar/js/oscar/ui.js" %}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'js/store-base.js' %}"></script>
+    <script>
+    function loadInfo(infoUrl){
+      $('#artist-container').html("");
+      $('#artist-container').addClass("artist-loading-gif");
+      $.ajax({
+        url: infoUrl,
+          success: function (data) {
+            var $target;
+            $('#artist-container').removeClass("artist-loading-gif");
+            $target = $('#artist-container');
+            $target.html(data);
+            $target.data('url', infoUrl);
+          }
+      });
+    }
+    $(document).on('click', ".artist-category", function(){
+        let url = $(this).data("url")
+        if(url){
+            $("#main-container").hide()
+            $("#artist-container").show()
+            loadInfo(url)
+        }else{
+            $("#artist-container").hide()
+            $("#main-container").show()
+        }
+    })
+    </script>
 {% endblock %}
