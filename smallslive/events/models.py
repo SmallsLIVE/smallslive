@@ -182,15 +182,17 @@ class EventQuerySet(models.QuerySet):
         date_range_start = get_today_start()
         date_range_end = date_range_start + timedelta(days=days)
 
-        # Initial range. This includes all events from the day
-        # even if they have already concluded
+        # from 6:00 to 6:00 (date range)
+        # also make sure events have not finished already. (end > now)
         filter_data = {
             'start__gte': date_range_start,
             'end__lte': date_range_end,
+            'end__gte': timezone.now()
         }
 
         if venue_id:
             filter_data['venue_id'] = venue_id
+
         qs = self.filter(**filter_data).order_by('start')
 
         return qs
@@ -556,6 +558,8 @@ class Event(TimeStampedModel):
         local_date = local_datetime.date()
         local_time = local_datetime.time()
 
+        # Get start and end. First set start - last set end
+        # This should be synced with 'self.start' and 'self.end'
         start, end = self.get_range()
 
         if about_to_begin:
@@ -579,7 +583,6 @@ class Event(TimeStampedModel):
         # start <= current time <= end if both start and end <= 5 or > 5
         # if start = 22:30 <= current time <= end = 2:00, that's the 'difficult' case.
         # current time can be before of after midnight.
-
         match_date = local_date == self.date
         time_after_start_and_before_end = start <= local_time <= end and \
                                           end.hour > start.hour > 5
@@ -636,6 +639,7 @@ class Event(TimeStampedModel):
         next_events = list(Event.objects.get_today_and_tomorrow_events(
             venue_id=self.venue_id))
 
+        # Find current event in the list and return the next one.
         next_event = None
         while next_events and not next_event:
             item = next_events.pop(0)
@@ -965,6 +969,8 @@ def get_today_start():
     """ Day actually starts at 6 am"""
 
     start = timezone.localtime(timezone.now())
+    if start.hour < 6:
+        start = start - timedelta(days=1)
     start = start.replace(hour=6, minute=0)
 
     return start
