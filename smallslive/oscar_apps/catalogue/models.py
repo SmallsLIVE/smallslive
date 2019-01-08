@@ -4,6 +4,7 @@ from django.utils.functional import cached_property
 from oscar.apps.catalogue.abstract_models import AbstractProduct
 
 
+
 class Product(AbstractProduct):
     subtitle = models.CharField(max_length=50, blank=True)
     short_description = models.TextField(blank=True)
@@ -19,6 +20,8 @@ class Product(AbstractProduct):
                                      decimal_places=2, max_digits=12, blank=True, null=True)
 
     event_set = models.ForeignKey('events.EventSet', related_name='tickets', null=True)
+    artist = models.ManyToManyField('artists.Artist', through='ArtistProduct', verbose_name=("Attributes"), blank=True, null=True)
+
     set = models.CharField(max_length=50, blank=True)
 
     class Meta(AbstractProduct.Meta):
@@ -97,6 +100,18 @@ class Product(AbstractProduct):
         if self.pk and self.product_options.exists():
             raise ValidationError(
                 _("A child product can't have options."))
+
+class ArtistProduct(models.Model):
+    artist = models.ForeignKey("artists.Artist", verbose_name=(""), on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, verbose_name=(""), on_delete=models.CASCADE)
+    
+    class Meta:
+        #abstract = True
+        app_label = 'catalogue'
+        ordering = ['product', 'artist']
+        unique_together = ('product', 'artist')
+        verbose_name = ('Artist')
+        verbose_name_plural = ('Artist list')
 
 
 from oscar.apps.catalogue.models import *  # noqa
