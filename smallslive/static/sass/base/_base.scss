@@ -243,6 +243,12 @@ p.unavailable {
   }
 }
 
+.newest-recordings-container {
+  overflow: hidden;
+  position: relative;
+  width: 70vw;
+}
+  
 @for $i from 1 through 8 {
 
   body.headers-#{$i} {

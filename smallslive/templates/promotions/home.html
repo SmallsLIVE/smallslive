@@ -18,11 +18,11 @@
         <div class="section-title">
           <div class="title1">newest recordings in the store</div>
         </div>
-        <div class="flex flex-row">
-            {% for product in newest_recordings %}
-                {% include "catalogue/partials/product.html" with product=product %}
-            {% endfor %}
-        </div>
+          <main class="newest-recordings-container">
+            <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+            <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+            {% include 'events/event_row.html' with events=newest_recordings secondary=False %}
+          </main>
     </div>
 {% endblock store_content %}
 
@@ -309,6 +309,7 @@
                 }
                 $(this).find('i').toggleClass('fa-play').toggleClass('fa-pause');
             })
+                
         });
     </script>
 {% endblock %}
