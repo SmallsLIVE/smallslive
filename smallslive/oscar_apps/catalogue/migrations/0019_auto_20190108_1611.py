@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('artists', '0021_artist_public_email'),
-        ('catalogue', '0024_auto_20190108_0917'),
+        ('catalogue', '0018_auto_20181219_0846'),
     ]
 
     operations = [
@@ -20,12 +20,15 @@ class Migration(migrations.Migration):
                 ('product', models.ForeignKey(verbose_name=b'', to='catalogue.Product')),
             ],
             options={
+                'ordering': ['product', 'artist'],
+                'verbose_name': 'Artist',
+                'verbose_name_plural': 'Artist list',
             },
             bases=(models.Model,),
         ),
-        migrations.RemoveField(
-            model_name='product',
-            name='artist',
+        migrations.AlterUniqueTogether(
+            name='artistproduct',
+            unique_together=set([('product', 'artist')]),
         ),
         migrations.AddField(
             model_name='product',
