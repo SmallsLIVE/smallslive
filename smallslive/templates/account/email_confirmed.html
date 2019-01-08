@@ -10,6 +10,7 @@
 {% block title %}EMAIL CONFIRMED{% endblock %}
 
 {% block content %}
+  {% include 'sign_in_to_become_a_supporter_dialog.html' %}
   <div class="container">
     <div class="flex-column items-center">
       <p class="title2 accent-color">EMAIL CONFIRMED</p>
@@ -33,19 +34,34 @@
         </p>
       </div>
 
-      {% if user.is_authenticated %}
-      <div class="text4 text-centered">
-        <a class="white-border-button" href="{% url 'become_supporter' %}">
+      <div class="text4 text-centered button-row margin-top">
+        {% if not user.is_authenticated %}
+        <button class="white-border-button sign-in-button separated" href="#logIn" data-toggle="modal">
+          Sign in
+        </button>
+        {% endif %}
+        <a id="become-a-supporter-btn" class="white-border-button" href="{% url 'become_supporter' %}">
           Become a Supporting Member
         </a>
       </div>
-      {% else %}
-        <div class="text4 text-centered">
-          <button class="white-border-button sign-in-button" href="#logIn" data-toggle="modal">
-            Sign in to become a Supporter Member
-          </button>
-        </div>
-      {% endif %}
     </div>
   </div>
 {% endblock %}
+
+{% block extra_js %}
+  {% if not user.is_authenticated %}
+  <script>
+    $(document).ready(function(){
+      $('#become-a-supporter-btn').click(function (e) {
+        e.preventDefault();
+        $('#sign-in-to-become-a-supporter-dialog').modal('show');
+        $('#sign-in-to-become-a-supporter-dialog .sign-in-button').click(function () {
+          $('#sign-in-to-become-a-supporter-dialog').modal('hide');
+        });
+      });
+    });
+  </script>
+  {% endif %}
+{% endblock extra_js %}
+
+
