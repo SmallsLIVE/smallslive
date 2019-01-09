@@ -50,7 +50,7 @@
         <section class="store-header flex-row content-centered">
             <div class="store-header__content">
                 <span class="store-header__title">
-                    <a href="{% url "promotions:home" %}">SmallsLIVE Store</a>
+                    <a id="storeTitle" href="{% url "promotions:home" %}">SmallsLIVE Store</a>
                     {% block breadcrumbs %}
                     {% endblock breadcrumbs %}
                 </span>
@@ -69,52 +69,30 @@
                             </button>
                         </li>
                     </form>
+                    <ul class="artist-featured artist-category" style="background-color: white; padding:15px">Featured</ul>
                     <li class="store-nav__category artist-list">
-                        <ul class="artist-category">Featured</ul>
                         {% for artist in artist_with_media %}
-                            <ul class="artist-category" data-url="/{{artist.pk}}">{{artist.full_name}}</ul>
+                            <ul class="artist-category" data-url="/{{artist.pk}}"><span><img class="artist-image" src='{{ artist.photo.url }}'> </span><p class="artist-name">{{artist.full_name}}</p> <span><img class="artist-red-arrow" src='/static/image/arrow-right-red.svg'></span></ul>
                         {% endfor%}
                     </li>
                 </ul>
             </div>
             <div>
-                {% block store_content %}{% endblock %}
             </div>
         </section>
-    </div>
-    {% block store_extra %}
-    {% endblock store_extra %}
 
+    </div>
+        <div id="store-home">
+            {% block store_extra %}
+            {% endblock store_extra %}
+            {% block store_content %}{% endblock %}
+        </div>
+        <div id="artist-store">
+        </div>
+        <script src="{% static 'js/store-loader.js' %}"></script>
 {% endblock home_content %}
 
 {% block extra_js %}
     <script src="{% static "oscar/js/oscar/ui.js" %}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'js/store-base.js' %}"></script>
-    <script>
-    function loadInfo(infoUrl){
-      $('#artist-container').html("");
-      $('#artist-container').addClass("artist-loading-gif");
-      $.ajax({
-        url: infoUrl,
-          success: function (data) {
-            var $target;
-            $('#artist-container').removeClass("artist-loading-gif");
-            $target = $('#artist-container');
-            $target.html(data);
-            $target.data('url', infoUrl);
-          }
-      });
-    }
-    $(document).on('click', ".artist-category", function(){
-        let url = $(this).data("url")
-        if(url){
-            $("#main-container").hide()
-            $("#artist-container").show()
-            loadInfo(url)
-        }else{
-            $("#artist-container").hide()
-            $("#main-container").show()
-        }
-    })
-    </script>
 {% endblock %}
