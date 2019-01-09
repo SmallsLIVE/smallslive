@@ -97,7 +97,7 @@
   <div class="musicians-results white-line-bottom">
     <div class="title1 shows-results-title">Smallslive Tracks</div>
   </div>
-  <div class="artist-tracks">
+  <div class="artist-tracks flex-row">
     {% if artist.albums %}
       {% for artistproduct in artist.albums %}
                 {% include "catalogue/partials/product.html" with product=artistproduct.product %}
