@@ -97,9 +97,11 @@
   <div class="musicians-results white-line-bottom">
     <div class="title1 shows-results-title">Smallslive Tracks</div>
   </div>
-  <div>
+  <div class="artist-tracks">
     {% if artist.tracks %}
-      {% include 'artists/album_row.html' with events=artist.tracks hidde_event_date=False show_event_venue=True %}
+      {% for artistproduct in artist.tracks %}
+                {% include "catalogue/partials/product.html" with product=artistproduct.product %}
+      {% endfor %}
     {% else %}
       <div class="no-result-container text2">No results</div>
     {% endif %}

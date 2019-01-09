@@ -72,7 +72,15 @@
                     <ul class="artist-featured artist-category" style="background-color: white; padding:15px">Featured</ul>
                     <li class="store-nav__category artist-list">
                         {% for artist in artist_with_media %}
-                            <ul class="artist-category" data-url="/{{artist.pk}}"><span><img class="artist-image" src='{{ artist.photo.url }}'> </span><p class="artist-name">{{artist.full_name}}</p> <span><img class="artist-red-arrow" src='/static/image/arrow-right-red.svg'></span></ul>
+                            <ul class="artist-category" data-url="/{{artist.pk}}">
+                                <span>
+                                    <img class="artist-image" src='{% if artist.photo %}{{ artist.photo.url }}{% else %} {% static "image/no-artist-photo-thumbnail.jpg" %} {% endif %}'> 
+                                </span>
+                                <p class="artist-name">{{artist.full_name}}</p> 
+                                <span>
+                                    <img class="artist-red-arrow" src='/static/image/arrow-right-red.svg'>
+                                </span>
+                            </ul>
                         {% endfor%}
                     </li>
                 </ul>
