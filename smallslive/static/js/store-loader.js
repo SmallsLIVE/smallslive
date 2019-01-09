@@ -1,23 +1,24 @@
-function loadInfo(infoUrl){
-    $('#artist-container').html("");
-    $('#artist-container').addClass("artist-loading-gif");
+console.log("a")
+function loadInfo(infoId){
+    $('#artist-store').html("");
+    $('#artist-store').addClass("artist-loading-gif");
     $.ajax({
-        url: infoUrl,
+        url: "/store/artist-catalogue/",
+        data:{id: infoId},
         success: function (data) {
             var $target;
-            $('#artist-container').removeClass("artist-loading-gif");
-            $target = $('#artist-container');
-            $target.html(data);
-            $target.data('url', infoUrl);
+            $('#artist-store').removeClass("artist-loading-gif");
+            $target = $('#artist-store');
+            $target.html(data.template);
         }
     });
 }
 $(document).on('click', ".artist-category", function(){
-        let url = $(this).data("url");
-        if(url){
+        let id = $(this).data("id");
+        if(id){
             $("#store-home").hide()
             $("#artist-store").show()
-            loadInfo(url)
+            loadInfo(id)
         }else{
             $("#artist-store").hide()
             $("#store-home").show()
