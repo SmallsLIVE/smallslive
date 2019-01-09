@@ -13,10 +13,9 @@ from image_cropping import ImageRatioField
 from model_utils import Choices
 from sortedm2m.fields import SortedManyToManyField
 from tinymce import models as tinymce_models
-
 from events.models import Event, GigPlayed, Recording
 from multimedia.s3_storages import get_payouts_storage_object
-from oscar_apps.catalogue.models import Product
+from oscar_apps.catalogue.models import Product, ArtistProduct
 from users.models import SmallsEmailAddress
 
 
@@ -153,14 +152,12 @@ class Artist(models.Model):
         return Recording.objects.filter(event__performers=self.id).order_by('id').values_list('id', flat=True)
 
     def albums(self):
-        return self.product.filter(product_class='Album')
+        return ArtistProduct.objects.filter(artist=self, product__product_class__name="Album")
 
     def tracks(self):
-        return self.product.filter(product_class='Track')
+        return ArtistProduct.objects.filter(artist=self, product__product_class__name="Track")
 
     def has_music(self):
-        print self.tracks
-        print self.albums
         return self.tracks or self.albums
 
 

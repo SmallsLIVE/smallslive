@@ -833,7 +833,12 @@ body.headers-1 {
 
   width: 100%;
   position: relative;
-
+  .artist-tracks .store-list-item .store-list-item-image img{
+    height: 6.735vw;
+    width: 11.225vw;
+    min-width: auto;
+    min-height: auto;
+  }
   .close-button {
     top: 0;
   }
