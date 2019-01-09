@@ -219,7 +219,7 @@
 }
 .store-nav {
   padding: 20px 30px;
-  position: fixed;
+  position: absolute;
   z-index: 10;
 
   &.landing-nav {
@@ -316,9 +316,20 @@
       padding-left: 20px;
       margin-top: 10px;
       
-      &.artist-category{
-        text-align: center;
+      &.artist-category {
+        text-align: left;
         padding-left: 0;
+        padding: 10px 0;
+        margin-top: 0px;
+        border-bottom: 2px solid white;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    
+         &:hover {
+          background-color: #fdfdfd;
+         }
       }
       & li {
         font-size: 16px;
@@ -339,7 +350,38 @@
     display: none !important;
   }
 }
+.artist-list {
+  overflow-y: auto;
+  height: 60vw;
+}
 
+.artist-image{ 
+  width: 60px;
+  height: 60px;
+}
+
+.artist-featured {
+  margin-top: 10px;
+  text-align: center;
+  font-family: 'Reem Kufi', sans-serif;
+  font-weight: 400;
+  font-size: 1.2em;
+  letter-spacing: 0.04em;
+  list-style-type: none;
+  font-size: 18px
+}
+
+.artist-red-arrow {
+  width: 10px;
+  float: right;
+  margin-right: 10px;
+}
+.artist-name {
+  display: inline-block;
+  text-align: left;
+  padding-left: 10px;
+  margin: 0px;
+}
 .store-listing {
   padding: 0;
   //@include display(flex);
