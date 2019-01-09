@@ -12,6 +12,7 @@ from paypal.express.dashboard.app import application as paypal_application
 from oscar.app import application
 from django.contrib.sitemaps import views as sitemaps_views
 from django.views.decorators.cache import cache_page
+from oscar_apps.catalogue.views import ArtistCatalogue
 from utils.views import OldSiteRedirectView
 from .sitemaps import sitemaps
 

@@ -1,4 +1,7 @@
 from artists.models import Artist
+from django.http import JsonResponse
+from django.template import RequestContext
+from django.template.loader import render_to_string
 from oscar.apps.catalogue import views as catalogue_views
 from oscar_apps.catalogue.models import Product
 from oscar.apps.catalogue.views import ProductCategoryView
