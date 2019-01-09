@@ -14,7 +14,7 @@
       {% endif %}">
     <div class="event-picture-container">
       <div class="picture-border">
-        <div class="event-picture featured">
+        <div class="event-picture">
           {% if event.primary_image.original.url %}
             {% include 'partials/thumbored_picture.html' with photo_url=event.primary_image.original.url crop_box=False %}
           {% else %}

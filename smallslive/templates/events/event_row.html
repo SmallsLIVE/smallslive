@@ -1,4 +1,5 @@
-<div class="event-row"> {% for event in events %}
+<div class="event-row">
+  {% for event in events %}
   <article class="event-display"> {% include 'events/event_card.html' with event=event secondary=secondary hide_play=True%}
     <div class="event-info">
       <div>
@@ -9,5 +10,6 @@
         {% endif %}
       </div>
     </div>
-  </article> {% endfor %}
+  </article> 
+  {% endfor %}
 </div>

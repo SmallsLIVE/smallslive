@@ -2289,10 +2289,10 @@ img.defineImageRatio {
   width: 70vw;
 
   &.slide-btn.prev , .slide-btn.next{
-    height: 21.7vw;
+    height: 9vw;
   }
   &.slide-btn.next, .slide-btn.prev {
-    height: 21.7vw;
+    height: 9vw;
   }
   @media (max-width: 1200px) {
     width: 68vw;
