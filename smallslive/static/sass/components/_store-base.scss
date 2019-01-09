@@ -221,6 +221,7 @@
   padding: 20px 30px;
   position: absolute;
   z-index: 10;
+  background: #f0f0eb;
 
   &.landing-nav {
     padding: 40px 30px 10px;
@@ -1090,6 +1091,7 @@
   &__content {
     //background-color: #fff;
     padding: 40px 30px;
+    margin-left: 350px;
   }
 
   &__item {
@@ -2280,6 +2282,7 @@ img.defineImageRatio {
 }
 
 .newest-recordings-container {
+  border-radius: 15px;
   overflow: hidden;
   position: relative;
   width: 70vw;
