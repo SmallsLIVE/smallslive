@@ -1,8 +1,10 @@
-function loadInfo(infoUrl){
+console.log("a")
+function loadInfo(infoId){
     $('#artist-container').html("");
     $('#artist-container').addClass("artist-loading-gif");
     $.ajax({
-        url: infoUrl,
+        url: "/store/artist-catalogue/",
+        data:{id: infoId},
         success: function (data) {
             var $target;
             $('#artist-container').removeClass("artist-loading-gif");
@@ -13,11 +15,11 @@ function loadInfo(infoUrl){
     });
 }
 $(document).on('click', ".artist-category", function(){
-        let url = $(this).data("url");
-        if(url){
+        let id = $(this).data("id");
+        if(id){
             $("#store-home").hide()
             $("#artist-store").show()
-            loadInfo(url)
+            loadInfo(id)
         }else{
             $("#artist-store").hide()
             $("#store-home").show()
