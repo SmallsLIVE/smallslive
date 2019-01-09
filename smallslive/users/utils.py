@@ -149,7 +149,7 @@ def subscribe(customer, plan):
     print plan
     cu = customer.stripe_customer
     print cu
-    cu.update_subscription(plan=plan.stripe_id)
+    cu.update_subscription(plan=plan.stripe_id, prorate=False)
     try:
         current_subscription = customer.current_subscription
         print current_subscription
