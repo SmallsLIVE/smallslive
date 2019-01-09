@@ -1,4 +1,3 @@
-console.log("a")
 function loadInfo(infoId){
     $('#artist-store').html("");
     $('#artist-store').addClass("artist-loading-gif");
