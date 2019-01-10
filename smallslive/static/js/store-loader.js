@@ -80,3 +80,23 @@ if($('.store-header__title__divider')){
     }
 }
 })
+
+function storeLoadMore(container){
+
+}
+
+$.expr[":"].contains = $.expr.createPseudo(function(arg) {
+    return function( elem ) {
+        return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+    };
+});
+
+$(document).on('keyup', ".artist-search", function(){
+    if($(this)[0].value == ""){
+        $( ".artist-category").show()
+    }else{
+        $(".artist-category").hide()
+        $(".artist-featured").show()
+        $( ".artist-category:contains('" + $(this)[0].value + "')" ).show();
+    }
+})
