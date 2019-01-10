@@ -83,25 +83,23 @@ if($('.store-header__title__divider')){
 
 $(document).on('click', ".load-more-btn", function(){
     let artistId = $(this).data("artist")
-    let pageNumer = $(this).data("page")
+    let pageNumber = $(this).data("page")
     if(artistId){
         $.ajax({
-            url: "/store/artist-catalogue/",
-            data:{artist: artistId, page: pageNumer},
+            url: "/store/album-list/",
+            data:{artist: artistId, page: pageNumber},
             success: function (data) {
                 var $target;
-                $('#artist-store').removeClass("artist-loading-gif");
                 $target = $('#artist-albums');
                 $target.html(data.template);
             }
         });
     }else{
         $.ajax({
-            url: "/store/artist-catalogue/",
-            data:{page: pageNumer},
+            url: "/store/album-list/",
+            data:{page: pageNumber},
             success: function (data) {
                 var $target;
-                $('#artist-store').removeClass("artist-loading-gif");
                 $target = $('#all-recordings-container');
                 $target.append(data.template);
             }
