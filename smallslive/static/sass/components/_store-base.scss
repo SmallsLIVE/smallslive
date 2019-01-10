@@ -535,6 +535,7 @@
 
   .store-list-item-image {
     img {
+      max-width: 260px;
       min-width: 260px;
       min-height: 260px;
       position: relative;
@@ -2280,7 +2281,19 @@ img.defineImageRatio {
 .store-pagination {
   margin-top: 30px;
 }
-
+.all-recordings-container{
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  > *{
+    flex: 1 0 21%;
+  }
+}
+.load-more-btn{
+  width: 200px;
+  margin: 0 auto;
+}
 .newest-recordings-container {
   border-radius: 15px;
   overflow: hidden;

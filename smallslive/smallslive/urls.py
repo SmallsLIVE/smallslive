@@ -12,7 +12,7 @@ from paypal.express.dashboard.app import application as paypal_application
 from oscar.app import application
 from django.contrib.sitemaps import views as sitemaps_views
 from django.views.decorators.cache import cache_page
-from oscar_apps.catalogue.views import ArtistCatalogue
+from oscar_apps.catalogue.views import ArtistCatalogue, get_album_catalog
 from utils.views import OldSiteRedirectView
 from .sitemaps import sitemaps
 
@@ -76,6 +76,7 @@ urlpatterns = patterns('',
     url(r'^store/accounts/login/$', RedirectView.as_view(url=reverse_lazy('accounts_login'))),
     url(r'^store/', include(application.urls)),
     url(r'^store/artist-catalogue/', ArtistCatalogue.as_view(), name='artist_store'),
+    url(r'^store/album-list/', get_album_catalog , name='album_list'),
     url(r'^sitemap\.xml$', cache_page(86400)(sitemaps_views.index),
         {'sitemaps': sitemaps, 'sitemap_url_name': 'sitemaps'}),
     url(r'^sitemap-(?P<section>.+)\.xml$', cache_page(86400)(sitemaps_views.sitemap),
