@@ -1,4 +1,3 @@
-console.log("a")
 function loadInfo(infoId){
     $('#artist-store').html("");
     $('#artist-store').addClass("artist-loading-gif");
@@ -69,15 +68,5 @@ $(document).scroll(function(){
             $('.store-nav').css('position', 'fixed')
             $('.store-nav').css('top', '0px')
         }
-}
-if($('.store-header__title__divider')){
-    var isElementInView = Utils.isElementInView($('.store-header__title__divider'), false);
-    if (isElementInView) {
-        $('.store-nav').css('position', 'absolute')
-        $('.store-nav').css('top', 'auto')
-    } else {
-        $('.store-nav').css('position', 'fixed')
-        $('.store-nav').css('top', '0px')
-    }
 }
 })
