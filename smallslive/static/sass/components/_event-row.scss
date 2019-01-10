@@ -178,15 +178,15 @@ $event-row-padding: 3.5vw;
   white-space: nowrap;
 
   @media (min-width: 1366px) {
-    width: 14.85vw;
+    width: 10.85vw;
   }
 
   @media (max-width: 1365px) and (min-width: 1024px) {
-    width: 20.7vw;
+    width: 14.7vw;
   }
 
   @media (max-width: 1023px) and (min-width: 961px) {
-    width: 20.7vw;
+    width: 14.7vw;
   }
 
   @media (max-width: $screen-sm-max) {
