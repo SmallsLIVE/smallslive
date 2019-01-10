@@ -13,7 +13,7 @@
 
 
 {% block home_content %}
-    <div class="">
+    <div>
         <div class="store-nav store-nav--category landing-nav col-xs-12 visible-xs">
             <span class="visible-xs store-nav__title store-nav__title--category expand-toggle" id="store-nav-cat-expand">Store Categories<i class="fa fa-caret-down"></i></span>
                 <ul class="store-nav__categories" id="store-nav-cat">
@@ -45,14 +45,12 @@
                     {% endif %}
             </ul>
         </div>
+
         {% include 'home_banners.html' with active='catalog' %}
-        {% include 'home_banners_mobile.html'  with active='catalog' %}
+        {% include 'home_banners_mobile.html'  with active='catalog'%}
         <section class="store-header flex-row content-centered">
             <div class="store-header__content">
-                <span class="store-header__title">
-                    <a id="storeTitle" href="{% url "promotions:home" %}">SmallsLIVE Store</a>
-                    {% block breadcrumbs %}
-                    {% endblock breadcrumbs %}
+                <span id="storeTitle" class="store-header__title">
                 </span>
             </div>
         </section>
