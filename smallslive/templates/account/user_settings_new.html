@@ -141,8 +141,14 @@
             {% if not customer_detail.active_card %}
               <div class="text9 text-grey">There is no credit card assigned</div>
             {% else %}
+            <div id="credit-card-info">
               <div class="text9 text-grey">xxxx-xxxx-xxxx-{{customer_detail.active_card.last4}}</div>
               <div class="text9 text-grey">exp: {{customer_detail.active_card.exp_month}}/{{customer_detail.active_card.exp_year}}</div>
+              <button id='update-credit-card' class="white-border-button">Update</button> 
+            </div>
+            <div id="credit-card-update">
+              {% include 'account/credit-card-update-form.html' %}
+            </div>
             {% endif %}
           </div>
           <div class="account-settings-info">
@@ -297,6 +303,11 @@
     $('#update-billing').click(function(){
       $('#billing-change').css('display', 'inherit');
       $('#billing-address').hide();
+      
+    })
+    $('#update-credit-card').click(function(){
+      $('#credit-card-update').css('display', 'inherit');
+      $('#credit-card-info').hide();
       
     })
 
