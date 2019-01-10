@@ -82,29 +82,27 @@ if($('.store-header__title__divider')){
 })
 
 $(document).on('click', ".load-more-btn", function(){
-    let artistId = $(this).data("artist")
-    let pageNumber = $(this).data("page")
-    if(artistId){
-        $.ajax({
-            url: "/store/album-list/",
-            data:{artist: artistId, page: pageNumber},
-            success: function (data) {
-                var $target;
+    let loadBtn = $(this)
+    let artistId = loadBtn.data("artist")
+    let pageNumber = loadBtn.data("page")
+    $.ajax({
+        url: "/store/album-list/",
+        data:{artist: artistId, page: pageNumber},
+        success: function (data) {
+            if(data.last_page){
+                loadBtn.hide()
+            }else{
+                loadBtn.data("page", pageNumber + 1)
+            }
+            var $target;
+            if(artistId){
                 $target = $('#artist-albums');
-                $target.html(data.template);
-            }
-        });
-    }else{
-        $.ajax({
-            url: "/store/album-list/",
-            data:{page: pageNumber},
-            success: function (data) {
-                var $target;
+            }else{
                 $target = $('#all-recordings-container');
-                $target.append(data.template);
             }
-        });
-    }
+            $target.append(data.template);
+        }
+    });
 })
 
 $.expr[":"].contains = $.expr.createPseudo(function(arg) {
