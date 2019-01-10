@@ -56,7 +56,7 @@
                       {% endif %}
                     {% endwith %}
                   </div>
-                  <h2 class="store-featured-music__single__title hidden-sm hidden-md hidden-lg">
+                  <h2 class="store-featured-music__single__title">
                     <a href="{{ album.get_absolute_url }}">{{ album.title }}</a>
                   </h2>
                   <p class="store-featured-music__single__details">
@@ -130,110 +130,6 @@
                   </form>
                 </div>
                 <div>
-                  <h2 class="store-featured-music__single__title hidden-featured ">
-                    <a href="{{ album.get_absolute_url }}">{{ album.title }}</a>
-                  </h2>
-                  <!-- tracks table -->
-                  <div class="store-featured-music__single__tracks-table hidden-featured">
-                    <h4 class="store-featured-music__single__tracks-table__title">
-                      Track listing:
-                    </h4>
-                    <!-- tracks table header -->
-                    <div class="table-responsive">
-                      <table class="table">
-                        <thead>
-                        <tr>
-                          <th>Preview</th>
-                          <th>Title</th>
-                          <th>Duration</th>
-                          <th>Mp3 / HD</th>
-                          <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for track in album.tracks.all|dictsort:"ordering" %}
-                          <tr>
-                            <td>
-                              {% if track.preview %}
-                                <a href="#" class="playback-control"
-                                   data-playlist-id="{{ preview_track_id_counter.next }}"><i
-                                        class="fa fa-play"></i></a>
-                              {% else %}
-                                <!-- {{ preview_track_id_counter.next }} -->
-                              {% endif %}
-                            </td>
-                            <td>{{ track.title }}</td>
-                            <td>{{ track.attr.duration }}</td>
-                            <td>
-                              {% if track.get_track_stockrecord %}$
-                                {{ track.get_track_stockrecord.price_excl_tax }}{% else %}
-                                -{% endif %} / {% if track.get_hd_track_stockrecord %}$
-                              {{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}
-                              -{% endif %}
-                            </td>
-                            <td>
-
-                              {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
-                                <div class="buy-button-container">
-                                  {% if user.is_authenticated %}
-                                    <a class="white-border-button"
-                                       data-toggle="dropdown" aria-expanded="false"
-                                       href="">Buy track <i
-                                            class="fa fa-caret-down"></i></a>
-                                  {% else %}
-                                    <a class="white-border-button" href="#"
-                                       data-toggle="modal" data-target="#logIn">Buy
-                                      track <i class="fa fa-caret-down"></i></a>
-                                  {% endif %}
-                                  <ul class="dropdown-menu" role="menu">
-                                    {% if track.get_track_stockrecord %}
-                                      <li>
-                                        {% basket_form request track 'single' as basket_form %}
-                                        <form id="add_to_basket_form"
-                                              action="{% url 'basket:add' pk=track.pk %}"
-                                              method="post"
-                                              class="add-to-basket">
-                                          {% csrf_token %}
-                                          {{ basket_form.quantity }}
-                                          {{ basket_form.child_id }}
-                                          <input type="hidden"
-                                                 name="stockrecord_id"
-                                                 value="{{ track.get_track_stockrecord.id }}"/>
-                                          <input type="submit"
-                                                 value="Buy mp3 (${{ track.get_track_stockrecord.price_excl_tax }})">
-                                        </form>
-                                      </li>
-                                    {% endif %}
-                                    {% if track.get_hd_track_stockrecord %}
-                                      <li>
-                                        {% basket_form request track 'single' as basket_form %}
-                                        <form id="add_to_basket_form"
-                                              action="{% url 'basket:add' pk=track.pk %}"
-                                              method="post"
-                                              class="add-to-basket">
-                                          {% csrf_token %}
-                                          {{ basket_form.quantity }}
-                                          {{ basket_form.child_id }}
-                                          <input type="hidden"
-                                                 name="stockrecord_id"
-                                                 value="{{ track.get_hd_track_stockrecord.id }}"/>
-                                          <input type="submit"
-                                                 value="Buy HD (${{ track.get_hd_track_stockrecord.price_excl_tax }})">
-                                        </form>
-                                      </li>
-                                    {% endif %}
-                                  </ul>
-                                </div>
-                              {% endif %}
-
-                            </td>
-                          </tr>
-                        {% endfor %}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <!-- end of tracks table -->
                 </div>
               </div>
             </div>
