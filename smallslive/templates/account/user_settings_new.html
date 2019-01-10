@@ -125,7 +125,7 @@
             {% if customer_detail.subscription.plan and not cancelled %}
             <div class="text9 text-grey">There is no expiration date until the monthly pledge is cancelled</div>
             {% elif user_archive_access_until %}
-            <div class="text9 text-grey"> {{ user_archive_access_until|date:"m/d/Y" }} Because of your donations.</div>
+            <div class="text9 text-grey"> {{ user_archive_access_until|date:"m/d/Y" }}</div>
             {% elif not customer_detail.subscription.plan and not period_end.due  %}
             <div class="text9 text-grey">{{ period_end.date }}</div>      
             {% else %}
