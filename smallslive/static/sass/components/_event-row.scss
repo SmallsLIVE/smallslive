@@ -190,7 +190,7 @@ $event-row-padding: 3.5vw;
   }
 
   @media (max-width: $screen-sm-max) {
-    width: 20.7vw;
+    width: 40.7vw;
   }
 }
 
@@ -344,7 +344,7 @@ $event-row-padding: 3.5vw;
 @media (max-width: 960px){
   
   .event-card, .event-info, .album-row {
-    font-size: 1.4vw;
+    font-size: 2.4vw;
     min-height: 8.66vw;
     position: relative;
 

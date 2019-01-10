@@ -37,6 +37,7 @@ class ArtistCatalogue(ProductCategoryView):
 
         return JsonResponse(data)
 
+<<<<<<< HEAD
 def get_album_catalog(request):
     template = 'catalogue/album-list.html'
     artist_id = content=request.GET.get('artist', '')
@@ -60,3 +61,14 @@ def get_album_catalog(request):
     }
 
     return JsonResponse(data)
+=======
+class ProductDetailView(catalogue_views.ProductDetailView):
+
+    def get_context_data(self, **kwargs):
+        ctx = super(ProductDetailView, self).get_context_data(**kwargs)
+        ctx['reviews'] = self.get_reviews()
+        ctx['alert_form'] = self.get_alert_form()
+        ctx['artist_with_media'] = Artist.objects.exclude(artistproduct=None)
+        ctx['has_active_alert'] = self.get_alert_status()
+        return ctx
+>>>>>>> ec5a2b13780264b82673451b4d2f03029232e07c

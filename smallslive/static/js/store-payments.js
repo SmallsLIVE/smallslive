@@ -1,10 +1,9 @@
 $(document).ready(function () {
-  
-  
+
     var checks = {
       '#card-number':  19, //4444 4444 4444 4444
       '#expiry-month':  2,
-      '#expiry-year':  2,
+      '#expiry-year':  parseInt($('#expiry-year').attr('size')),
       '#cvc':  3,
     };
   
