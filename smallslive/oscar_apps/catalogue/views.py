@@ -1,5 +1,6 @@
 from artists.models import Artist
 from django.core.paginator import Paginator
+from django.db.models import Count
 from django.http import JsonResponse
 from django.template import RequestContext
 from django.template.loader import render_to_string
@@ -21,8 +22,8 @@ class ArtistCatalogue(ProductCategoryView):
         id = request.GET.get('id', None)
 
         artist = Artist.objects.filter(pk=id).first()
-
-        context = {'artist': artist}
+        above_limit = Count(artist.albums) > 8
+        context = {'artist': artist, 'above_limit':above_limit}
         template = 'catalogue/artist-category.html'
 
         temp = render_to_string(template,

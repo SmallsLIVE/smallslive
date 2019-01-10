@@ -23,6 +23,9 @@
             {% if artist.albums %}
                 {% include 'catalogue/album-list.html' with pagenumber=1 album_page=artist.albums|slice:":8" artist_page=True %}
                 {% include "partials/pagination-store-front.html" %}
+                {% if above_limit %}
+                    <div id="load-more-btn" class="white-border-button" data-page="2" data-artist="{{artist.pk}}">Load More</div>
+                {% endif %}
             {% else %}
                 <p class="nonefound">{% trans "No products found." %}</p>
             {% endif %}
