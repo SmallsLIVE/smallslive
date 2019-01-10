@@ -396,7 +396,7 @@ subscription_settings = SubscriptionSettingsView.as_view()
 
 class UpdateCardView(ChangeCardView):
     def get_post_success_url(self):
-        return reverse('subscription_settings')
+        return reverse('user_settings_new')
 
     def get(self, request, *args, **kwargs):
         # only POST
