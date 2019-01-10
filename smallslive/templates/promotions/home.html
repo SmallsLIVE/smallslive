@@ -255,21 +255,6 @@
         </div>
       </section>
     {% endif %}
-
-    {% if featured_physical_products %}
-      <div class="section-title">
-        <div class="title1">Featured merchandise</div>
-      </div>
-
-      <section class="store-featured-merch">
-        <div class="flex-row">
-          {% for product in featured_physical_products %}
-            {% include "catalogue/partials/product.html" with product=product full_width=True %}
-          {% endfor %}
-        </div>
-      </section>
-    {% endif %}
-
   </div>
 
 {% endblock store_extra %}
