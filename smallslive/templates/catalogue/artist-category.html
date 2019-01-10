@@ -21,9 +21,7 @@
         </div>
         <div class="row store-listing__products-container">
             {% if artist.albums %}
-                {% for artistproduct in artist.albums %}
-                    {% render_product artistproduct.product %}
-                {% endfor %}
+                {% include 'catalogue/album-list.html' with pagenumber=1 album_page=artist.albums|slice:":8" artist_page=True %}
                 {% include "partials/pagination-store-front.html" %}
             {% else %}
                 <p class="nonefound">{% trans "No products found." %}</p>

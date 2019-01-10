@@ -1,7 +1,9 @@
 from artists.models import Artist
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.template import RequestContext
 from django.template.loader import render_to_string
+from django.shortcuts import render
 from oscar.apps.catalogue import views as catalogue_views
 from oscar_apps.catalogue.models import Product
 from oscar.apps.catalogue.views import ProductCategoryView
@@ -34,3 +36,16 @@ class ArtistCatalogue(ProductCategoryView):
 
         return JsonResponse(data)
 
+def get_album_catalog(request):
+    artist_id = content=request.GET.get('artist', '')
+    if artist_id:
+        artist =  Artist.objects.filter(pk=artist_id)
+        album_list =  artist.albums
+        artist_page = True
+    else:
+        album_list =  Product.objects.filter(product_class__slug="album")
+        artist_page = False
+    paginator = Paginator(album_list, 8)
+    page = int(request.GET.get('page', 1))
+    album_page = paginator.page(page)
+    return render(request, 'catalogue/album-list.html', {'album_page': album_page, 'pagenumber':page, 'artist_page':artist_page})
