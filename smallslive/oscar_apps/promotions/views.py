@@ -18,7 +18,7 @@ class HomeView(promotions_views.HomeView):
         context['featured_physical_products'] = Product.objects.filter(
             product_class__slug="merchandise", featured=True)[:4]
         context['preview_track_id_counter'] = itertools.count()
-        context['artist_with_media'] = Artist.objects.exclude(artistproduct=None)
-        context['above_limit'] = Count(context['all_recordings']) > 8
+        context['artist_with_media'] = Artist.objects.exclude(artistproduct=None) 
+        context['above_limit'] = Product.objects.filter(product_class__slug="album").count() > 8
 
         return context

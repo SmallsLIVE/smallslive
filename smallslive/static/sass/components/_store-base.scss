@@ -2284,11 +2284,14 @@ img.defineImageRatio {
 }
 .all-recordings-container{
   position: relative;
-  width: 70vw;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-around;
 }
-
+.load-more-btn{
+  width: 200px;
+  margin: 0 auto;
+}
 .newest-recordings-container {
   border-radius: 15px;
   overflow: hidden;

@@ -26,11 +26,11 @@
       <div class="section-title">
         <div class="title1">All recordings</div>
       </div>
-      <main class="all-recordings-container">
+      <main class="all-recordings-container" id="all-recordings-container">
         {% include 'catalogue/album-list.html' with pagenumber=1 album_page=all_recordings %}
       </main>
       {% if above_limit %}
-        <div id="load-more-btn" class="white-border-button" data-page="2">Load More</div>
+        <div class="white-border-button load-more-btn" data-page="2">Load More</div>
       {% endif %}
     </div>
 ]
