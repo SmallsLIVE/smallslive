@@ -15,15 +15,22 @@
 
 {% block store_content %}
     <div class="store-listing__content">
-        <div class="section-title">
-          <div class="title1">newest recordings</div>
-        </div>
-          <main class="newest-recordings-container">
-            <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-            <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'promotions/featured_row.html' with events=newest_recordings secondary=False %}
-          </main>
+      <div class="section-title">
+        <div class="title1">newest recordings</div>
+      </div>
+      <main class="newest-recordings-container">
+        <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+        <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+        {% include 'promotions/featured_row.html' with events=newest_recordings secondary=False %}
+      </main>
+      <div class="section-title">
+        <div class="title1">All recordings</div>
+      </div>
+      <main class="all-recordings-container">
+        {% include 'catalogue/album-list.html' with pagenumber=1 album_page=all_recordings %}
+      </main>
     </div>
+]
 {% endblock store_content %}
 
 
