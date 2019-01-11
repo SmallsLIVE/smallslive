@@ -535,9 +535,6 @@
 
   .store-list-item-image {
     img {
-      max-width: 260px;
-      min-width: 260px;
-      min-height: 260px;
       position: relative;
 
       &:before {
@@ -2295,16 +2292,33 @@ img.defineImageRatio {
     margin: 0;
     
     .store-list-item-image img{
+    @media (min-width: 1366px) {
+      height: 9.06vw;
+      width: 15.1vw;
       min-height: 9.06vw;
-      max-height: 9.06vw;
-      @media (min-width: $screen-lg) {
-        max-width: 14vw;
-        min-width: 14vw;
-      }
-      @media (min-width: 1200px) {
-        max-width: 15vw;
-        min-width: 15vw;
-      }
+      min-width: 15.1vw;
+    }
+  
+    @media (max-width: 1365px) and (min-width: 1024px) {
+      height: 13.71vw;
+      width: 22.85vw;
+      min-height: 13.71vw;
+      min-width: 22.85vw;
+    }
+  
+    @media (max-width: 1023px) and (min-width: 961px) {
+      height: 13.71vw;
+      width: 22.85vw;
+      min-height: 13.71vw;
+      min-width: 22.85vw;
+    }
+  
+    @media (max-width: $screen-sm-max) {
+      height: 27.66vw;
+      width: 46.1vw;
+      min-height: 27.66vw;
+      min-width: 46.1vw;
+    }
     }
     .store-list-item-tile{
       @media (min-width: $screen-sm) {
