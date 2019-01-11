@@ -535,6 +535,9 @@
 
   .store-list-item-image {
     img {
+      max-width: 260px;
+      min-width: 260px;
+      min-height: 260px;
       position: relative;
 
       &:before {
@@ -2290,35 +2293,37 @@ img.defineImageRatio {
   }
   .store-list-item{
     margin: 0;
-    
     .store-list-item-image img{
-    @media (min-width: 1366px) {
-      height: 9.06vw;
-      width: 15.1vw;
-      min-height: 9.06vw;
-      min-width: 15.1vw;
-    }
-  
-    @media (max-width: 1365px) and (min-width: 1024px) {
-      height: 13.71vw;
-      width: 22.85vw;
-      min-height: 13.71vw;
-      min-width: 22.85vw;
-    }
-  
-    @media (max-width: 1023px) and (min-width: 961px) {
-      height: 13.71vw;
-      width: 22.85vw;
-      min-height: 13.71vw;
-      min-width: 22.85vw;
-    }
-  
-    @media (max-width: $screen-sm-max) {
-      height: 27.66vw;
-      width: 46.1vw;
-      min-height: 27.66vw;
-      min-width: 46.1vw;
-    }
+      @media (min-width: $screen-xs) {
+        max-width: 46vw;
+        min-width: 46vw;
+        min-height: 46vw;
+      }
+      @media (min-width: $screen-sm) {
+        max-width: 30vw;
+        min-width: 30vw;
+        min-height: 30vw;
+      }
+      @media (min-width: $screen-md) {
+        max-width: 22vw;
+        min-width: 22vw;
+        min-height: 22vw;
+      }
+      @media (min-width: $screen-lg) {
+        max-width: 22vw;
+        min-width: 22vw;
+        min-height: 22vw;
+      }
+      @media (min-width: 1200px) {
+        max-width: 13vw;
+        min-width: 13vw;
+        min-height: 13vw;
+      }
+      @media (min-width: 1300px) {
+        max-width: 14vw;
+        min-width: 14vw;
+        min-height: 14vw;
+      }
     }
     .store-list-item-tile{
       @media (min-width: $screen-sm) {
@@ -2329,9 +2334,6 @@ img.defineImageRatio {
       }
       @media (min-width: $screen-lg) {
         max-width: 180px;
-      }
-      @media (min-width: 1200px) {
-        max-width: 200px;
       }
     }
   }
