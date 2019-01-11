@@ -2286,7 +2286,7 @@ img.defineImageRatio {
   flex-wrap: wrap;
   justify-content: space-around;
   > *{
-    flex: 1 0 21%;
+    flex: 1 0 -1%;
   }
 }
 .load-more-btn{
