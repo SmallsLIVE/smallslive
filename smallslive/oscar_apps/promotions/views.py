@@ -10,7 +10,7 @@ class HomeView(promotions_views.HomeView):
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
         context['newest_recordings'] = Product.objects.filter(
-            product_class__slug="album").order_by('-id')[:10]
+            product_class__slug="album").order_by('-id')[:12]
         context['all_recordings'] = Product.objects.filter(
             product_class__slug="album")[:12]
         context['featured_recordings'] = Product.objects.filter(
