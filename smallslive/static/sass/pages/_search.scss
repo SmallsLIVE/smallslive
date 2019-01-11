@@ -676,6 +676,17 @@ body.headers-1 {
 
 
 .search-artist-box-container {
+  &.store{
+    @media (max-width: $screen-md-max) {
+    display: flex;
+    }
+    .search-artist-box{
+      margin: 0 auto;
+    }
+    img{
+      left: 27%;
+    }
+  }
   @media (max-width: $screen-md-max) {
     display: none;
   }

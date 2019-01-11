@@ -2400,8 +2400,9 @@ img.defineImageRatio {
   padding: 10px;
 }
 .reset-search{
-  position: relative;
+  position: absolute;
   top: 4px;
+  left: 75%;
   margin-left: 20px;
   &:before, &:after {
     height: 34px;
