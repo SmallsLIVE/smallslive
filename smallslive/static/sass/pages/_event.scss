@@ -570,5 +570,8 @@ $player-height:  25.3vw;
   }
 }
 .event-overlay-info {
-  float: right;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  font-size: 2.2em;
 }
