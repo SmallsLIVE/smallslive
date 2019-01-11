@@ -2295,24 +2295,19 @@ img.defineImageRatio {
     margin: 0;
     .store-list-item-image img{
       @media (min-width: 0px) {
-        max-width: 46vw;
-        min-width: 46vw;
-        min-height: 46vw;
+        max-width: 46.1vw;
+        min-width: 46.1vw;
+        min-height: 46.1vw;
       }
       @media (min-width: $screen-md) {
-        max-width: 23vw;
-        min-width: 23vw;
-        min-height: 23vw;
-      }
-      @media (min-width: $screen-lg) {
-        max-width: 23vw;
-        min-width: 23vw;
-        min-height: 23vw;
+        max-width: 22.85vw;
+        min-width: 22.85vw;
+        min-height: 22.85vw;
       }
       @media (min-width: 1366px) {
-        max-width: 15vw;
-        min-width: 15vw;
-        min-height: 15vw;
+        max-width: 15.1vw;
+        min-width: 15.1vw;
+        min-height: 15.1vw;
       }
     }
     .store-list-item-tile{
@@ -2338,16 +2333,47 @@ img.defineImageRatio {
   width: auto;
 
   &.slide-btn.prev , .slide-btn.next{
-    height: 9vw;
+    @media (min-width: 0px) {
+      height: 46.1vw;
+    }
+    @media (min-width: $screen-md) {
+      height: 22.85vw;
+    }
+    @media (min-width: 1366px) {
+      height: 15.1vw;
+    }
   }
   &.slide-btn.next, .slide-btn.prev {
-    height: 9vw;
+    @media (min-width: 0px) {
+      height: 46.1vw;
+    }
+    @media (min-width: $screen-md) {
+      height: 22.85vw;
+    }
+    @media (min-width: 1366px) {
+      height: 15.1vw;
+    }
   }
 
   @media (max-width: 960px) {
     overflow-x: auto;
   }
 
+
+  .event-card .event-picture-container .event-picture{
+    @media (min-width: 0px) {
+      height: 46.1vw;
+      min-height: 15.1vw;
+    }
+    @media (min-width: $screen-md) {
+      height: 22.85vw;
+      min-height: 15.1vw;
+    }
+    @media (min-width: 1366px) {
+      height: 15.1vw;
+      min-height: 15.1vw;
+    }
+  }
 }
 .store-error {
   background-color: #eee;
