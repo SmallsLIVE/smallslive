@@ -2361,6 +2361,9 @@ img.defineImageRatio {
 }
 .artist-bar-search{
   display: none;
+  overflow-y: auto;
+  max-height: 100px;
+  text-align: center;
   position: absolute;
   background-color: #f0f0eb;
   border-color: white;

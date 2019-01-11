@@ -23,7 +23,11 @@
         <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
         {% include 'promotions/featured_row.html' with events=newest_recordings secondary=False %}
       </main>
-      <div  class="search-artist-box-container hidden-xs">
+    
+      <div class="section-title">
+        <div class="title1">All recordings</div>
+      </div>
+        <div  class="search-artist-box-container hidden-xs">
         <img src="{% static 'image/search-icon.svg' %}">
         <input id="artist-search-all"
             class="search-artist-box"
@@ -31,9 +35,6 @@
             placeholder="SEARCH FOR AN ARTIST"
             autocomplete="off">
         {% include "promotions/artist-bar.html" with artist_list=artist_with_media %}
-      </div>
-      <div class="section-title">
-        <div class="title1">All recordings</div>
       </div>
       <main class="all-recordings-container" id="all-recordings-container">
         {% include 'catalogue/album-list.html' with pagenumber=1 album_page=all_recordings %}

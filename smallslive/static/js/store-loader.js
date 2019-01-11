@@ -112,7 +112,7 @@ $(document).on('keyup', ".artist-search", function(){
     }
 })
 $(document).on('keyup', "#artist-search-all", function(){
-    artistList = $( "#artist-list").hide()
+    artistList = $( "#artist-list")
     if($(this)[0].value == ""){
         artistList.hide()
     }else{
@@ -146,6 +146,7 @@ function loadInfo(artistId){
         url: "/store/album-list/",
         data:{artist: artistId, page: 1},
         success: function (data) {
+            $( "#artist-list").hide()
             var $target;
             $('#artist-store').removeClass("artist-loading-gif");
             $target = $('#all-recordings-container');
@@ -153,3 +154,7 @@ function loadInfo(artistId){
         }
     });
 }
+
+$("#artist-search-all").focusout(function () {
+    setTimeout(function(){ $("#artist-list").css("display", "none"); }, 300);
+});
