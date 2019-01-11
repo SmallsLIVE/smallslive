@@ -22,7 +22,7 @@
         <div class="row store-listing__products-container">
             {% if artist.albums %}
                 <div id="artist-albums">
-                    {% include 'catalogue/album-list.html' with pagenumber=1 album_page=artist.albums|slice:":8" artist_page=True %}
+                    {% include 'catalogue/album-list.html' with pagenumber=1 album_page=artist.albums|slice:":12" artist_page=True %}
                     {% include "partials/pagination-store-front.html" %}
                 </div>
                 {% if above_limit %}

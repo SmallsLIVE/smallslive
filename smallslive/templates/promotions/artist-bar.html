@@ -1,0 +1,8 @@
+<div class="flex-column artist-bar-search" id="artist-list">
+    {% for artist in artist_list %}
+        {% if artist.albums %}
+            <div data-id="{{ artist.pk }}" class="search-bar-result-text text2 search-bar-text text-grey artist-result">{{artist.full_name}}</div>
+        {% endif %}
+    {% endfor %}
+    <div id="no-results" class="search-bar-result-text text2 search-bar-text text-grey">No results</div>
+</div>
