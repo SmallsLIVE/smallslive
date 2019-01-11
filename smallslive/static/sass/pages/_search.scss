@@ -679,6 +679,7 @@ body.headers-1 {
   @media (max-width: $screen-md-max) {
     display: none;
   }
+  display: flex;
   position: relative;
   width: 700px;
   margin: 30px auto 10px auto;

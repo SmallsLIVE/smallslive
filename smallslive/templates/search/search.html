@@ -46,14 +46,18 @@
              data-toggle-tab-group="search-results">
       {% if artists_blocks %}
         <div  class="search-artist-box-container hidden-xs">
-          <img src="{% static 'image/search-icon.svg' %}">
+         <!--<img src="{% static 'image/search-icon.svg' %}">-->
           <input id="artist-search"
                  class="search-artist-box"
-                 name="q" type="text"
+                 name="q" type="hidden"
                  placeholder="START TYPING AN ARTIST NAME"
                  autocomplete="off">
+           <!--<div class="instrument-btn white-border-button caret">Instrument</div> -->
+           <div class="white-border-button scroll-right"><</div>
+           <div id="a-z-search">
+           </div>
+           <div class="white-border-button scroll-left">></div>
 
-          <div class="instrument-btn white-border-button caret">Instrument</div>
         </div>
         <div class="instruments-container">
           <a href="#" class="close-button"></a>
@@ -113,6 +117,29 @@
   </script>
   <script>
       $(document).ready(function(){
+        const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+"q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+        buttons = {
+
+        }
+        alphabet.map((leter) => {
+          buttons[leter] = document.createElement('div');
+          $(buttons[leter]).addClass('white-border-button')
+              .html(leter)
+              .appendTo($("#a-z-search")).click(() => {
+                  $('#artist-search').val($(buttons[leter]).text())
+                  $("#artist-search").change()
+              })
+          })
+
+          $('.scroll-left').click(() => {
+            $( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 68)
+          })
+          $('.scroll-right').click(() => {
+            $( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 68)
+          })
+
+
         foundArtistNumber = $(".artist-mobile").length
         if ( foundArtistNumber === 1 ){
           $uniqueArtist = $(".artist-mobile")[0];
@@ -121,7 +148,6 @@
        }) 
     $('.instruments-container .close-button').on('click', function() {
       $(this).closest('.instruments-container').hide();
-    
     });
   </script>
   <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>

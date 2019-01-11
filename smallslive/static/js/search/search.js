@@ -419,7 +419,7 @@ $(document).ready(function () {
         };
     })();
 
-    $("#artist-search").keyup(function () {
+    $("#artist-search").on('change', function () {
         delay(function () {
             artistPageNum = 1;
             artistSearchTerm = $('#artist-search').val();

@@ -89,7 +89,22 @@ div.event-strip {
   }
 
 }
-
+#a-z-search {
+  text-align: left;
+  width: 89%;
+  overflow-x: auto;
+  display: flex;
+  .white-border-button {
+    display: inline-block;
+    line-height: 300%;
+  }
+}
+.scroll-right, .scroll-left {
+  line-height: 200%;
+  background-color: white;
+  display: inline-block;
+  width: 5%;
+}
 .sign-in-button,
 .user-menu {
   margin-left: 20px;
