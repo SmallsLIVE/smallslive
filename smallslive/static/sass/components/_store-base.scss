@@ -395,8 +395,7 @@
   }
 
   &__content {
-    padding: 40px 30px;
-    margin-left: 350px;
+    padding: 40px 0;
     //background-color: #fff;
     
     @media (max-width: 767px) {
@@ -2287,7 +2286,7 @@ img.defineImageRatio {
   flex-wrap: wrap;
   justify-content: space-around;
   > *{
-    flex: 1 0 21%;
+    flex: 1 0 -1%;
   }
 }
 .load-more-btn{
@@ -2295,10 +2294,9 @@ img.defineImageRatio {
   margin: 0 auto;
 }
 .newest-recordings-container {
-  border-radius: 15px;
   overflow: hidden;
   position: relative;
-  width: 70vw;
+  width: auto;
 
   &.slide-btn.prev , .slide-btn.next{
     height: 9vw;
@@ -2318,15 +2316,6 @@ img.defineImageRatio {
   }
   @media(max-width:768px){
     width: 90vw;
-  }
-
-}
-  
-.featured-recordings{
-  margin-left: 350px;
-
-  @media (max-width: 767px) {
-    margin-left: 0px;
   }
 
 }
