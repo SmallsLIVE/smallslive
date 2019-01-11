@@ -70,3 +70,43 @@ $(document).scroll(function(){
         }
 }
 })
+
+$(document).on('click', ".load-more-btn", function(){
+    let loadBtn = $(this)
+    let artistId = loadBtn.data("artist")
+    let pageNumber = loadBtn.data("page")
+    $.ajax({
+        url: "/store/album-list/",
+        data:{artist: artistId, page: pageNumber},
+        success: function (data) {
+            if(data.last_page){
+                loadBtn.hide()
+            }else{
+                loadBtn.data("page", pageNumber + 1)
+            }
+            var $target;
+            if(artistId){
+                $target = $('#artist-albums');
+            }else{
+                $target = $('#all-recordings-container');
+            }
+            $target.append(data.template);
+        }
+    });
+})
+
+$.expr[":"].contains = $.expr.createPseudo(function(arg) {
+    return function( elem ) {
+        return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+    };
+});
+
+$(document).on('keyup', ".artist-search", function(){
+    if($(this)[0].value == ""){
+        $( ".artist-category").show()
+    }else{
+        $(".artist-category").hide()
+        $(".artist-featured").show()
+        $( ".artist-category:contains('" + $(this)[0].value + "')" ).show();
+    }
+})
