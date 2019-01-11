@@ -2376,3 +2376,11 @@ img.defineImageRatio {
   left: 100px;
   padding: 10px;
 }
+.reset-search{
+  position: relative;
+  top: 4px;
+  margin-left: 20px;
+  &:before, &:after {
+    height: 34px;
+  }
+}
