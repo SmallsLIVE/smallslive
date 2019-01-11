@@ -52,11 +52,12 @@
                  name="q" type="hidden"
                  placeholder="START TYPING AN ARTIST NAME"
                  autocomplete="off">
-           <!--<div class="instrument-btn white-border-button caret">Instrument</div> -->
-           <div class="white-border-button scroll-right"><</div>
+           <div class="white-border-button scroll-left"><</div>
            <div id="a-z-search">
            </div>
-           <div class="white-border-button scroll-left">></div>
+           <div class="white-border-button scroll-right">></div>
+          <br>
+           <div class="instrument-btn white-border-button caret">Instrument</div> 
 
         </div>
         <div class="instruments-container">
@@ -117,6 +118,7 @@
   </script>
   <script>
       $(document).ready(function(){
+        $('.scroll-left').hide()
         const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
 "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
         buttons = {
@@ -132,11 +134,21 @@
               })
           })
 
-          $('.scroll-left').click(() => {
-            $( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 68)
-          })
           $('.scroll-right').click(() => {
+            $( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 68)
+            if($( "#a-z-search" ).scrollLeft() < 888){
+              $('.scroll-left').show()
+            }else{
+              $('.scroll-right').hide()
+            }
+          })
+          $('.scroll-left').click(() => {
             $( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 68)
+            if($( "#a-z-search" ).scrollLeft() > 0){
+              $('.scroll-right').show()
+            }else{
+              $('.scroll-left').hide()
+            }
           })
 
 

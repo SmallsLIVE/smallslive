@@ -573,5 +573,7 @@ $player-height:  25.3vw;
   position: absolute;
   right: 20px;
   bottom: 20px;
-  font-size: 2.2em;
+  @media (max-width: $screen-md-min) {
+    font-size: 3vw;
+  } 
 }
