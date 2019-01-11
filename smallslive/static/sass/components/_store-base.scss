@@ -2360,23 +2360,22 @@ img.defineImageRatio {
     overflow-x: auto;
   }
 
-
+  .event-card .event-picture-container .event-picture, .event-card .event-picture-container .event-picture img::before{
+    @media (min-width: 0px) {
+      height: 46.1vw;
+      min-height: 15.1vw;
+    }
+    @media (min-width: $screen-md) {
+      height: 22.85vw;
+      min-height: 15.1vw;
+    }
+    @media (min-width: 1366px) {
+      height: 15.1vw;
+      min-height: 15.1vw;
+    }
+  }
   .event-card .event-picture-container{
     border-radius: 0px;
-    .event-picture, .event-card .event-picture-container .event-picture img::before{
-      @media (min-width: 0px) {
-        height: 46.1vw;
-        min-height: 15.1vw;
-      }
-      @media (min-width: $screen-md) {
-        height: 22.85vw;
-        min-height: 15.1vw;
-      }
-      @media (min-width: 1366px) {
-        height: 15.1vw;
-        min-height: 15.1vw;
-      }
-    }
   } 
 }
 .store-error {
