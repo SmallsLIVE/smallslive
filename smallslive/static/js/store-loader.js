@@ -165,6 +165,7 @@ $("#artist-search-all").focusout(function () {
 $(document).on('click', ".reset-search", function(){
     let loadBtn = $("#store-load-btn")
     loadBtn.data("artist", "")
+    loadBtn.show()
     $("#artist-search-all").val("")
     loadInfo()
 })

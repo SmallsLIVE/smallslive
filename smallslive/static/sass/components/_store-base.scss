@@ -2282,6 +2282,8 @@ img.defineImageRatio {
   margin-top: 30px;
 }
 .all-recordings-container{
+  margin-left: 3.5vw;
+  margin-right: 3.5vw;
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -2291,23 +2293,17 @@ img.defineImageRatio {
   }
   .store-list-item{
     margin: 0;
+    
     .store-list-item-image img{
-      @media (min-width: $screen-sm) {
-        width: 55vw;
-        overflow-x: auto;
-      }
-      @media (min-width: $screen-md) {
-        width: 60vw;
-      }
+      min-height: 9.06vw;
+      max-height: 9.06vw;
       @media (min-width: $screen-lg) {
         max-width: 14vw;
         min-width: 14vw;
-        min-height: 14vw;
       }
       @media (min-width: 1200px) {
-        max-width: 16vw;
-        min-width: 16vw;
-        min-height: 16vw;
+        max-width: 15vw;
+        min-width: 15vw;
       }
     }
     .store-list-item-tile{
