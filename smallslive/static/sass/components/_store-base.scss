@@ -2294,35 +2294,25 @@ img.defineImageRatio {
   .store-list-item{
     margin: 0;
     .store-list-item-image img{
-      @media (min-width: $screen-xs) {
+      @media (min-width: 0px) {
         max-width: 46vw;
         min-width: 46vw;
         min-height: 46vw;
       }
-      @media (min-width: $screen-sm) {
-        max-width: 30vw;
-        min-width: 30vw;
-        min-height: 30vw;
-      }
       @media (min-width: $screen-md) {
-        max-width: 22vw;
-        min-width: 22vw;
-        min-height: 22vw;
+        max-width: 23vw;
+        min-width: 23vw;
+        min-height: 23vw;
       }
       @media (min-width: $screen-lg) {
-        max-width: 22vw;
-        min-width: 22vw;
-        min-height: 22vw;
+        max-width: 23vw;
+        min-width: 23vw;
+        min-height: 23vw;
       }
-      @media (min-width: 1200px) {
-        max-width: 13vw;
-        min-width: 13vw;
-        min-height: 13vw;
-      }
-      @media (min-width: 1300px) {
-        max-width: 14vw;
-        min-width: 14vw;
-        min-height: 14vw;
+      @media (min-width: 1366px) {
+        max-width: 15vw;
+        min-width: 15vw;
+        min-height: 15vw;
       }
     }
     .store-list-item-tile{
