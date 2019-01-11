@@ -12,7 +12,7 @@ class HomeView(promotions_views.HomeView):
         context['newest_recordings'] = Product.objects.filter(
             product_class__slug="album").order_by('-id')[:10]
         context['all_recordings'] = Product.objects.filter(
-            product_class__slug="album")[:8]
+            product_class__slug="album")[:12]
         context['featured_recordings'] = Product.objects.filter(
             product_class__slug="album", featured=True)[:4]
         context['featured_physical_products'] = Product.objects.filter(

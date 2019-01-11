@@ -15,52 +15,57 @@
 
 {% block store_content %}
     <div class="store-listing__content">
-        <div class="section-title">
-          <div class="title1">featured and newest recordings</div>
-        </div>
-          <main class="newest-recordings-container">
-            <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-            <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'promotions/featured_row.html' with events=newest_recordings extra_events=featured_recordings secondary=False %}
-          </main>
-           <div class="section-title">
+      <div class="section-title">
+        <div class="title1">newest recordings</div>
+      </div>
+      <main class="newest-recordings-container">
+        <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+        <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+        {% include 'promotions/featured_row.html' with events=newest_recordings secondary=False %}
+      </main>
+    
+      <div class="section-title">
         <div class="title1">All recordings</div>
+      </div>
+        <div  class="search-artist-box-container hidden-xs flex-row">
+        <img src="{% static 'image/search-icon.svg' %}">
+        <input id="artist-search-all"
+            class="search-artist-box"
+            name="q" type="text"
+            placeholder="SEARCH FOR AN ARTIST"
+            autocomplete="off">
+        <div class="reset-search"></div>
+        {% include "promotions/artist-bar.html" with artist_list=artist_with_media %}
       </div>
       <main class="all-recordings-container" id="all-recordings-container">
         {% include 'catalogue/album-list.html' with pagenumber=1 album_page=all_recordings %}
       </main>
       {% if above_limit %}
-        <div class="white-border-button load-more-btn" data-page="2">Load More</div>
+        <div class="white-border-button load-more-btn"  id="store-load-btn"data-page="2">Load More</div>
       {% endif %}
     </div>
 ]
 {% endblock store_content %}
+
+
+{% block store_extra %}
+    <div class="store-listing__content">
+        <div class="section-title">
+            <div class="title1">featured</div>
+        </div>
+        <main class="newest-recordings-container">
+            <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+            <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+            {% include 'promotions/featured_row.html' with events=featured_recordings secondary=False %}
+        </main>
+    </div>
+{% endblock store_extra %}
 
 {% block extra_js %}
     <script src="{% static 'js/store-base.js' %}"></script>
     <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            var audioPlayer = jwplayer("player-audio").setup({
-                primary: 'html5',
-                playlist: [
-                    {% for album in featured_recordings %}
-                        {% for track in album.tracks.all|dictsort:"ordering" %}
-                            {
-                                sources: [{
-                                    file: "{{ track.get_track_preview_url|safe }}",
-                                    type: "mp3"
-                                }],
-                                mediaid: {{ track.id }}
-                            }{% if not forloop.last %},{% endif %}
-                        {% endfor %}
-                        {% if not forloop.last %},{% endif %}
-                    {% endfor %}
-                ],
-                skin: "https:{% static "jwplayer-skin/smalls.xml" %}",
-                width: "100%",
-                height: 0
-            });
             $(".playback-control").on('click', function (e) {
                 e.preventDefault();
                 if (audioPlayer.getPlaylistIndex() == $(this).data('playlist-id')) {

@@ -522,6 +522,7 @@
       display: none;
     }
   }
+  
 }
 
 .store-list-item {
@@ -2346,4 +2347,29 @@ img.defineImageRatio {
 }
 #store-home {
   height: 120vh;
+}
+.artist-bar-search{
+  display: none;
+  overflow-y: auto;
+  max-height: 100px;
+  text-align: center;
+  position: absolute;
+  background-color: #f0f0eb;
+  border-color: white;
+  border-style: solid;
+  border-radius: 8px;
+  border-width: 2px;
+  width: 350px;
+  z-index: 9999;
+  top: 40px;
+  left: 100px;
+  padding: 10px;
+}
+.reset-search{
+  position: relative;
+  top: 4px;
+  margin-left: 20px;
+  &:before, &:after {
+    height: 34px;
+  }
 }
