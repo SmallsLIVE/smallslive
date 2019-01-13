@@ -677,9 +677,11 @@ body.headers-1 {
 
 .search-artist-box-container {
   @media (max-width: $screen-md-max) {
-    display: none;
+    display: flex;
+    #a-z-search .scroll-right, #a-z-search .scroll-left {
+      width: 10vw;
+    }
   }
-  display: flex;
   position: relative;
   width: 700px;
   margin: 30px auto 10px auto;
