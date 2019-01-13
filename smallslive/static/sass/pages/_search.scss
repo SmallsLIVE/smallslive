@@ -673,15 +673,18 @@ body.headers-1 {
 }
 
 
-
-
+.search-artist-box-container {::-webkit-scrollbar { 
+  display: none;  
+}
 .search-artist-box-container {
   @media (max-width: $screen-md-max) {
-    display: flex;
     #a-z-search .scroll-right, #a-z-search .scroll-left {
       width: 10vw;
     }
   }
+  -ms-overflow-style: none; 
+  overflow: -moz-scrollbars-none; 
+  display: flex;
   position: relative;
   width: 700px;
   margin: 30px auto 10px auto;
