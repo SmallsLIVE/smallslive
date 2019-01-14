@@ -12,7 +12,7 @@
             Become a Member
           </a>
         </p>
-        <form role="form" id="form-login" method="post" action="{% url "accounts_login" %}?next={{ request.path }}">
+        <form role="form" id="form-login" method="post" action="{% url 'accounts_login' %}">
           {% csrf_token %}
           <div class="form-group">
             <input type="email" class="form-control" name="login" placeholder="Email">

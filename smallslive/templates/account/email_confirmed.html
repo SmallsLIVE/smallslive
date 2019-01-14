@@ -40,9 +40,12 @@
           Sign in
         </button>
         {% endif %}
-        <a id="become-a-supporter-btn" class="white-border-button" href="{% url 'become_supporter' %}">
+        <button id="email-confirmed-become-supporter-btn"
+                class="white-border-button sign-in-button separated"
+                href="#logIn"
+                data-toggle="modal">
           Become a Supporting Member
-        </a>
+        </button>
       </div>
     </div>
   </div>
@@ -52,12 +55,12 @@
   {% if not user.is_authenticated %}
   <script>
     $(document).ready(function(){
-      $('#become-a-supporter-btn').click(function (e) {
-        e.preventDefault();
-        $('#sign-in-to-become-a-supporter-dialog').modal('show');
-        $('#sign-in-to-become-a-supporter-dialog .sign-in-button').click(function () {
-          $('#sign-in-to-become-a-supporter-dialog').modal('hide');
-        });
+      $('#email-confirmed-become-supporter-btn').click(function () {
+        var $form = $('#form-login');
+        var action = $form.attr('action');
+        // TODO: Use URL from backend
+        action = action + '?next='  + '/subscriptions/supporter';
+        $form.attr('action', action);
       });
     });
   </script>

@@ -80,10 +80,12 @@ div.event-strip {
   main {
     overflow: hidden;
     position: relative;
-    width: 100vw;
+    width: auto;
 
     @media (max-width: $screen-sm-max) {
-      overflow: scroll;
+      .event-row{
+        overflow: auto;
+      }
     }
 
   }

@@ -571,8 +571,10 @@ $player-height:  25.3vw;
 }
 .event-overlay-info {
   position: absolute;
-  right: 20px;
-  bottom: 20px;
+  right: 2.9vw;
+  bottom: 2.9vw;
+  line-height: 1.51em;
+
   @media (max-width: $screen-md-min) {
     font-size: 3vw;
   } 

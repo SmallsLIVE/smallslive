@@ -98,8 +98,9 @@
         canClose: false
       },
       catalog: {
+        title: '<strong>SmallsLIVE</strong><br> <strong>Catalog</strong></span>',
         class: 'supporter',
-        text: 'Purchases from this catalog are tax deductible. The revenue collected is directly shared with the artists involved. Members can stream their purchases directly',
+        text: 'The SmallsLIVE Catalog is a collection of recorded projects live from the clubs. Limited edition CDs as well as HD and MP3 tracks are available that members can stream and download directly from their account. Purchases from the SmallsLIVE Catalog are tax deductible. The revenue is shared directly with the artists involved and supports the SmallsLIVE Foundation.',
         button: 'go to cart',
         infoButton: false,
         canClose: false
@@ -132,6 +133,11 @@
       bannerContainer.find('#banner-text').html(banner.text);
       var find = bannerContainer.find('#banner-title');
       if (banner.title) {
+        if(banner.title == '<strong>SmallsLIVE</strong><br> <strong>Catalog</strong></span>'){
+          find.css('text-align', 'center')
+          find.css('font-size', '3.35vw')
+          find.css('line-height', '3.35vw')
+        }
         find.html(banner.title);
         find.addClass('custom-banner-text');
         if (banner.class) {

@@ -45,7 +45,7 @@
              class="search-tab-content {% if musician_search %}active{% endif %}"
              data-toggle-tab-group="search-results">
       {% if artists_blocks %}
-        <div  class="search-artist-box-container hidden-xs">
+        <div  class="search-artist-box-container">
          <!--<img src="{% static 'image/search-icon.svg' %}">-->
           <input id="artist-search"
                  class="search-artist-box"
@@ -135,20 +135,32 @@
           })
 
           $('.scroll-right').click(() => {
-            $( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 68)
-            if($( "#a-z-search" ).scrollLeft() < 888){
-              $('.scroll-left').show()
-            }else{
-              $('.scroll-right').hide()
-            }
+            let scrollF = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 30)}, 10)
+            setTimeout(() => {clearInterval(scrollF)}, 120)
+            let scrollS = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 10)}, 80)
+            setTimeout(() => {clearInterval(scrollS)}, 320)
+            setTimeout(function(){
+              if($( "#a-z-search" ).scrollLeft() < 888){
+                $('.scroll-left').css('visibility', 'initial')
+              }else{
+                $('.scroll-right').css('visibility', 'hidden')
+              }
+            }, 310)
+            
           })
           $('.scroll-left').click(() => {
-            $( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 68)
-            if($( "#a-z-search" ).scrollLeft() > 0){
-              $('.scroll-right').show()
-            }else{
-              $('.scroll-left').hide()
-            }
+            let scrollF = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 30)}, 10)
+            setTimeout(() => {clearInterval(scrollF)}, 120)
+            let scrollS = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 10)}, 10)
+            setTimeout(() => {clearInterval(scrollS)}, 300)
+            setTimeout(() => {
+              if($( "#a-z-search" ).scrollLeft() > 0){
+                $('.scroll-right').css('visibility', 'initial')
+              }else{
+                $('.scroll-left').css('visibility', 'hidden')
+              }
+            }, 310)
+
           })
 
 
