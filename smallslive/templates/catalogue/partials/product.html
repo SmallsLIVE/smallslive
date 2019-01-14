@@ -29,17 +29,6 @@
         {% if product.product_class.slug == "album" %}
             <p class="text4">{% if product.has_physical_media %}CD / {% endif %}{% if product.has_digital_media %}Digital download / {% endif %}{% if product.has_tracks %}Tracks{% endif %}</p>{% endif %}
         <span class="text4">
-        {% if session.price.exists %}
-            {% if session.price.excl_tax == 0 %}
-                {% trans "Free" %}
-            {% elif session.price.is_tax_known %}
-                {{ session.price.incl_tax|currency:session.price.currency }}
-            {% else %}
-                {{ session.price.excl_tax|currency:session.price.currency }}
-            {% endif %}
-        {% else %}
-            &nbsp;
-        {% endif %}
         </span>
         <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
           {% if session.availability.is_available_to_buy %}

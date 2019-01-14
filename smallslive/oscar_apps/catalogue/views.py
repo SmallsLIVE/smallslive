@@ -47,7 +47,7 @@ def get_album_catalog(request):
     else:
         album_list =  Product.objects.filter(product_class__slug="album")
         artist_page = False
-    paginator = Paginator(album_list, 8)
+    paginator = Paginator(album_list, 12)
     page = int(request.GET.get('page', 1))
     album_page = paginator.page(page)
     temp = render_to_string(template,
@@ -60,7 +60,7 @@ def get_album_catalog(request):
     }
 
     return JsonResponse(data)
-    
+
 class ProductDetailView(catalogue_views.ProductDetailView):
 
     def get_context_data(self, **kwargs):

@@ -235,7 +235,7 @@ body.headers-1 {
    
     .datepicker-container.noclick{
       top: 12.5vw !important;
-      left: -2vw !important;
+      left: -9.5vw !important;
       width: 100vw;
       .datepicker.datepicker-orient-right.datepicker-orient-top{
         
@@ -673,12 +673,30 @@ body.headers-1 {
 }
 
 
-
-
+.search-artist-box-container {::-webkit-scrollbar { 
+  display: none;  
+}
+}
 .search-artist-box-container {
-  @media (max-width: $screen-md-max) {
-    display: none;
+  &.store{
+    @media (max-width: $screen-md-max) {
+    display: flex;
+    }
+    .search-artist-box{
+      margin: 0 auto;
+    }
+    img{
+      left: 27%;
+    }
   }
+  @media (max-width: $screen-md-max) {
+    #a-z-search .scroll-right, #a-z-search .scroll-left {
+      width: 10vw;
+    }
+  }
+  -ms-overflow-style: none; 
+  overflow: -moz-scrollbars-none; 
+  display: flex;
   position: relative;
   width: 700px;
   margin: 30px auto 10px auto;

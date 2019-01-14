@@ -522,6 +522,7 @@
       display: none;
     }
   }
+  
 }
 
 .store-list-item {
@@ -2281,12 +2282,46 @@ img.defineImageRatio {
   margin-top: 30px;
 }
 .all-recordings-container{
+  margin-left: 3.5vw;
+  margin-right: 3.5vw;
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
   > *{
     flex: 1 0 -1%;
+  }
+  .store-list-item{
+    margin: 0;
+    .store-list-item-image img{
+      border-radius: 0px;
+      @media (min-width: 0px) {
+        max-width: 46.1vw;
+        min-width: 46.1vw;
+        min-height: 46.1vw;
+      }
+      @media (min-width: $screen-md) {
+        max-width: 22.85vw;
+        min-width: 22.85vw;
+        min-height: 22.85vw;
+      }
+      @media (min-width: 1366px) {
+        max-width: 15.1vw;
+        min-width: 15.1vw;
+        min-height: 15.1vw;
+      }
+    }
+    .store-list-item-tile{
+      @media (min-width: $screen-sm) {
+        max-width: 200px;
+      }
+      @media (min-width: $screen-md) {
+        max-width: 160px;
+      }
+      @media (min-width: $screen-lg) {
+        max-width: 180px;
+      }
+    }
   }
 }
 .load-more-btn{
@@ -2299,25 +2334,50 @@ img.defineImageRatio {
   width: auto;
 
   &.slide-btn.prev , .slide-btn.next{
-    height: 9vw;
+    @media (min-width: 0px) {
+      height: 46.1vw;
+    }
+    @media (min-width: $screen-md) {
+      height: 22.85vw;
+    }
+    @media (min-width: 1366px) {
+      height: 15.1vw;
+    }
   }
   &.slide-btn.next, .slide-btn.prev {
-    height: 9vw;
-  }
-  @media (max-width: 1200px) {
-    width: 68vw;
-  }
-  @media (max-width: 1100px) {
-    width: 60vw;
-  }
-  @media (max-width: 960px) {
-    width: 55vw;
-    overflow-x: auto;
-  }
-  @media(max-width:768px){
-    width: 90vw;
+    @media (min-width: 0px) {
+      height: 46.1vw;
+    }
+    @media (min-width: $screen-md) {
+      height: 22.85vw;
+    }
+    @media (min-width: 1366px) {
+      height: 15.1vw;
+    }
   }
 
+  @media (max-width: 960px) {
+    overflow-x: auto;
+  }
+
+
+  .event-card .event-picture-container{
+    border-radius: 0px;
+    .event-picture, .event-card .event-picture-container .event-picture img::before{
+      @media (min-width: 0px) {
+        height: 46.1vw;
+        min-height: 15.1vw;
+      }
+      @media (min-width: $screen-md) {
+        height: 22.85vw;
+        min-height: 15.1vw;
+      }
+      @media (min-width: 1366px) {
+        height: 15.1vw;
+        min-height: 15.1vw;
+      }
+    }
+  } 
 }
 .store-error {
   background-color: #eee;
@@ -2344,9 +2404,30 @@ img.defineImageRatio {
     }
   }
 }
-#store-home {
-  height: 120vh;
-}
-.catalog-title { 
+
+.artist-bar-search{
+  display: none;
+  overflow-y: auto;
+  max-height: 100px;
   text-align: center;
+  position: absolute;
+  background-color: #f0f0eb;
+  border-color: white;
+  border-style: solid;
+  border-radius: 8px;
+  border-width: 2px;
+  width: 350px;
+  z-index: 9999;
+  top: 40px;
+  left: 25%;
+  padding: 10px;
+}
+.reset-search{
+  position: absolute;
+  top: 4px;
+  left: 75%;
+  margin-left: 20px;
+  &:before, &:after {
+    height: 34px;
+  }
 }

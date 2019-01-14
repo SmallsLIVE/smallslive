@@ -1,17 +1,17 @@
-function loadInfo(infoId){
-    $('#artist-store').html("");
-    $('#artist-store').addClass("artist-loading-gif");
-    $.ajax({
-        url: "/store/artist-catalogue/",
-        data:{id: infoId},
-        success: function (data) {
-            var $target;
-            $('#artist-store').removeClass("artist-loading-gif");
-            $target = $('#artist-store');
-            $target.html(data.template);
-        }
-    });
-}
+// function loadInfo(infoId){
+//     $('#artist-store').html("");
+//     $('#artist-store').addClass("artist-loading-gif");
+//     $.ajax({
+//         url: "/store/artist-catalogue/",
+//         data:{id: infoId},
+//         success: function (data) {
+//             var $target;
+//             $('#artist-store').removeClass("artist-loading-gif");
+//             $target = $('#artist-store');
+//             $target.html(data.template);
+//         }
+//     });
+// }
 $(document).on('click', ".artist-category", function(){
         let id = $(this).data("id");
         if(id){
@@ -86,7 +86,8 @@ $(document).on('click', ".load-more-btn", function(){
             }
             var $target;
             if(artistId){
-                $target = $('#artist-albums');
+                //$target = $('#artist-albums');
+                $target = $('#all-recordings-container');
             }else{
                 $target = $('#all-recordings-container');
             }
@@ -110,3 +111,63 @@ $(document).on('keyup', ".artist-search", function(){
         $( ".artist-category:contains('" + $(this)[0].value + "')" ).show();
     }
 })
+$(document).on('keyup', "#artist-search-all", function(){
+    artistList = $( "#artist-list")
+    if($(this)[0].value == ""){
+        artistList.hide()
+    }else{
+        $(".artist-result").hide()
+        artistResults = $( ".artist-result:contains('" + $(this)[0].value + "')" )
+        noResults = $("#no-results")
+        if( artistResults.length > 0){
+            artistList.show()
+            noResults.hide()
+            artistResults.show();
+        }else{
+            artistList.show()
+            noResults.show()
+        }
+        
+    }
+})
+
+$(document).on('click', ".artist-result", function(){
+    let artistId = $(this).data("id");
+    loadInfo(artistId)
+})
+
+function loadInfo(artistId){
+    let loadBtn = $("#store-load-btn")
+    loadBtn.data("page", 2)
+    loadBtn.data("artist", artistId)
+    $('#artist-store').html("");
+    $('#artist-store').addClass("artist-loading-gif");
+    $.ajax({
+        url: "/store/album-list/",
+        data:{artist: artistId, page: 1},
+        success: function (data) {
+            if(data.last_page){
+                loadBtn.hide()
+            }
+            $( "#artist-list").hide()
+            var $target;
+            $('#artist-store').removeClass("artist-loading-gif");
+            $target = $('#all-recordings-container');
+            $target.html(data.template);
+        }
+    });
+}
+
+$("#artist-search-all").focusout(function () {
+    setTimeout(function(){ $("#artist-list").css("display", "none"); }, 300);
+});
+
+$(document).on('click', ".reset-search", function(){
+    let loadBtn = $("#store-load-btn")
+    loadBtn.data("artist", "")
+    loadBtn.show()
+    $("#artist-search-all").val("")
+    loadInfo()
+})
+
+    
