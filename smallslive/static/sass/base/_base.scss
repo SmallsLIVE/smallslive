@@ -93,16 +93,16 @@ a {
   color: $black;
 }
 
-a:focus {
-  color: rgba(254, 254, 254, 0.8);
-  text-decoration: none;
-  box-shadow: none;
-  outline: none;
-}
-
 a:hover {
   color: $accent-color-dark;
   text-decoration: none;
+}
+
+a:active {
+  color: rgba(254, 254, 254, 0.8) ;
+  text-decoration: none;
+  box-shadow: none;
+  outline: none;
 }
 
 .vcenter {
