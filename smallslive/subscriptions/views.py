@@ -115,7 +115,10 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         context['payment_info_url'] = reverse('payment_info')
         context['form_action'] = reverse('become_supporter')
         context['flow_type'] = self.request.GET.get('flow_type', "become_supporter")
-        context['can_free_donate'] = self.request.user.get_donation_amount >= 100 
+        if not self.request.user.is_anonymous():
+            context['can_free_donate'] = self.request.user.get_donation_amount >= 100 
+        else: 
+            context['can_free_donate'] = False
         print self.request.GET.get('flow_type', "become_supporter")
 
         # We need to clear the basket in case the user has anything in there.
