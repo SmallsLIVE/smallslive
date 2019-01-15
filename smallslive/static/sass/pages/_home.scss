@@ -96,6 +96,14 @@ div.event-strip {
   width: 89%;
   overflow-x: auto;
   display: flex;
+  @media(max-width: $screen-sm-max){
+    width: 100%;
+    
+    .white-border-button{
+      padding: 15px;
+      line-height: 5px !important;
+    }
+  }
   .white-border-button {
     display: inline-block;
     line-height: 300%;

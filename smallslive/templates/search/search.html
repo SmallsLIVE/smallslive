@@ -52,10 +52,12 @@
                  name="q" type="hidden"
                  placeholder="START TYPING AN ARTIST NAME"
                  autocomplete="off">
+            <div class="artist-search-a-z">
            <div class="white-border-button scroll-left"><</div>
            <div id="a-z-search">
            </div>
            <div class="white-border-button scroll-right">></div>
+           </div>
           <br>
            <div class="instrument-btn white-border-button caret">Instrument</div> 
 
@@ -67,8 +69,6 @@
             <div data-instrument="{{ instrument }}" class="instrument text4 text-grey">{{ instrument }}</div>
           {% endfor %}
         </div>
-        <div class="instrument-btn white-border-button visible-sm visible-xs visible-md caret">Instrument</div>
-
 
         <div class="container-list-article">
 
