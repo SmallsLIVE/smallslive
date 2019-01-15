@@ -1211,7 +1211,7 @@ Card = (function() {
     if (this.options.width) {
       $cardContainer = QJ(this.options.cardSelectors.cardContainer)[0];
       baseWidth = parseInt($cardContainer.clientWidth);
-      $cardContainer.style.transform = "scale(" + (this.options.width / baseWidth) + ")";
+      //$cardContainer.style.transform = "scale(" + (this.options.width / baseWidth) + ")";
     }
     if (typeof navigator !== "undefined" && navigator !== null ? navigator.userAgent : void 0) {
       ua = navigator.userAgent.toLowerCase();
