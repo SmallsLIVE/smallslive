@@ -682,9 +682,10 @@ body.headers-1 {
 }
 }
 .search-artist-box-container {
-  @media (max-width: $screen-sm-max){
+  @media (max-width: $screen-md-max){
     flex-direction: column;
     justify-content: center;
+    width: 95%;
   }
   &.store{
     @media (max-width: $screen-md-max) {
