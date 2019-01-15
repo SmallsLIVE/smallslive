@@ -110,7 +110,9 @@ $player-height:  25.3vw;
 
   .info-container {
     width: 40%;
-
+    @media(max-width: $screen-md-max) {
+      margin-top: 30px;
+    }
     .event-overlay-venue {
       margin-bottom: 2em;
     }
@@ -578,4 +580,11 @@ $player-height:  25.3vw;
   @media (max-width: $screen-md-min) {
     font-size: 3vw;
   } 
+}
+
+.event-change-buttons{
+  @media(max-width: $screen-md-max) {
+  margin-top: -170px;
+  margin-bottom: 90px;
+  }
 }

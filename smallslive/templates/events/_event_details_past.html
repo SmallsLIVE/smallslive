@@ -40,6 +40,7 @@
 {% endblock %}
 
 {% block control_buttons %}
+<div class="event-player-buttons event-change-buttons">
 {% if event.is_past and user.can_watch_video %}
   {% for set in sets %}
     <button class="set-select-button white-border-button {{ forloop.counter0|yesno:',active' }}"
@@ -60,6 +61,7 @@
     </button>
   {% endif %}
 {% endif %}
+</div>
 {% endblock %}
 {% block extra_js %}
 {{ block.super }}
