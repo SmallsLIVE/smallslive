@@ -595,9 +595,15 @@ $(document).ready(function () {
 
   var checks = {
     '#card-number':  19, //4444 4444 4444 4444
-    '#expiry-month':  2,
     '#expiry-year':  2,
     '#cvc':  3,
+    '#expiry-month':  2
+  };
+  var checksFlow = {
+    '#card-number':  19, //4444 4444 4444 4444
+    '#expiry-month':  2,
+    '#expiry-year':  2,
+    '#cvc':  3
   };
 
   $(document).on('keyup', '#payment-form input', function (e) {
@@ -609,9 +615,9 @@ $(document).ready(function () {
     }
 
     var id = '#' + $(this).attr('id');
-    var keys = Object.keys(checks);
+    var keys = Object.keys(checksFlow);
     var pos = keys.indexOf(id);
-    if (pos + 1 < keys.length && $(this).val().length  == checks[id]) {
+    if (pos + 1 < keys.length && $(this).val().length  == checksFlow[id]) {
       if (id == '#expiry-year') {
         $('#name-on-card').focus();
       } else  {
@@ -629,9 +635,15 @@ $(document).ready(function () {
     var check = true;
     $.each(checks, function(selector, value){
       if (!checkInput(selector, value)) {
-        check = false;
-        return;
-      }
+        if(selector == '#expiry-month'){
+          if(parseInt($input.val()) < 13 && $input.val().trim() != ''){
+            return;
+            }
+          }
+          console.log('No ' + selector )
+          check = false;
+          return;
+        }
     });
 
     if (!check) {

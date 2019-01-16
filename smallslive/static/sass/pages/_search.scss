@@ -144,7 +144,11 @@ body.headers-1 {
     }
   }
 }
-
+.artist-search-a-z{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
 .no-result-container {
   flex: 1;
   display: flex;
@@ -678,6 +682,11 @@ body.headers-1 {
 }
 }
 .search-artist-box-container {
+  @media (max-width: $screen-md-max){
+    flex-direction: column;
+    justify-content: center;
+    width: 95%;
+  }
   &.store{
     @media (max-width: $screen-md-max) {
     display: flex;

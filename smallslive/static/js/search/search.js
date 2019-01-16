@@ -85,6 +85,15 @@ function loadMoreArtistButton(){
         sendArtistRequest();
     }
 }
+$(window).resize(function(){
+    $('#artists').animate(
+        {left: (0) + 'px'},
+        200,
+        'linear',
+    function() {
+        toggleArrows();
+    });
+})
 
 function sendArtistRequest(callback) {
     callback = callback || function () {};
