@@ -190,6 +190,15 @@ class HomepageView(ListView, UpcomingEventMixin):
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
         context = self.get_upcoming_events_context_data(context)
+
+        anonymous = self.request.user.is_anonymous()
+        if not anonymous:
+            a = datetime.datetime.strftime(self.request.user.date_joined ,"%Y-%m-%d")
+            b = datetime.datetime.strftime(timezone.now() ,"%Y-%m-%d")
+            context['email_sent'] = a == b
+
+
+
         context['popular_in_archive'] = _get_most_popular_uploaded(RANGE_MONTH)
         context['popular_select'] = 'month'
         context['staff_picks'] = Event.objects.last_staff_picks()
