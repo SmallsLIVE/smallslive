@@ -53,10 +53,13 @@
                  placeholder="START TYPING AN ARTIST NAME"
                  autocomplete="off">
             <div class="artist-search-a-z">
-           <div class="white-border-button scroll-left"><</div>
+           <div class="white-border-button scroll-left"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
            <div id="a-z-search">
+            <div id="a-z-refresh" class="white-border-button">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </div>
            </div>
-           <div class="white-border-button scroll-right">></div>
+           <div class="white-border-button scroll-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
            </div>
           <br>
            <div class="instrument-btn white-border-button caret">Instrument</div> 
@@ -119,7 +122,7 @@
   <script>
       $(document).ready(function(){
         $('.scroll-left').css('visibility', 'initial')
-        const alphabet = ["", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+        const alphabet = [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
 "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
         buttons = {
 
@@ -129,18 +132,21 @@
           $(buttons[leter]).addClass('white-border-button')
               .html(leter)
               .appendTo($("#a-z-search")).click(() => {
-                  $('#artist-search').val($(buttons[leter]).text())
+                  $('#artist-search').val($('#artist-search').val() + $(buttons[leter]).text())
                   $("#artist-search").change()
               })
           })
-
+          $('#a-z-refresh').click(function() {
+              $('#artist-search').val('')
+              $("#artist-search").change()
+          })
           $('.scroll-right').click(() => {
             let scrollF = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 30)}, 10)
             setTimeout(() => {clearInterval(scrollF)}, 120)
             let scrollS = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 10)}, 80)
             setTimeout(() => {clearInterval(scrollS)}, 320)
             setTimeout(function(){
-              if($( "#a-z-search" ).scrollLeft() < 888){
+              if($( "#a-z-search" ).scrollLeft() < 819){
                 $('.scroll-left').css('visibility', 'initial')
               }else{
                 $('.scroll-right').css('visibility', 'hidden')
