@@ -21,7 +21,7 @@
 {% endblock %}
 {% block flow_steps %}
 
-  <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover" data-flow="{{flow_type}}">
+  <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover" data-flow="{{flow_type}}"  data-free-donate="{{can_free_donate}}">
     <div class="{% if not completed %}active{% endif %} step-button"></div>
     <div class="step-button"></div>
     <div class="step-button"></div>
@@ -119,7 +119,7 @@
         <div class="flex-row custom-out">
           <div class="custom-input text4">
             <input type="number" pattern="\d*" class="no-spinners transparent" id="yearlyCustom" value="supporter-yearly-pledge">
-            {% if flow_type = "become_supporter" %}
+            {% if flow_type = "become_supporter" or not can_free_donate %}
             <label><div>ENTER  AMOUNT<br>(MIN  $100)</div></label>
             <div id="yearly-less" class="text9 accent-color minimum-error"></div>
             {% endif %}

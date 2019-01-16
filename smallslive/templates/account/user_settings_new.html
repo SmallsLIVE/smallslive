@@ -100,24 +100,24 @@
           <div class="text5">Last donation</div>
           <div class="text9 text-grey">
             {% with customer_charges|first as first_charge%}
-            {% if not customer_charges %}
-              You have not yet made a donation
-          </div>  
-        </div>
+              {% if not customer_charges %}
+                You have not yet made a donation
+                </div>  
+                </div>
 
-        <button href="{% url 'user_tax_letter' %}" class="white-border-button disabled" disabled>Download tax document</button>
-            {% else %}
-            {{ first_charge.created|date:"d/m/Y"  }} ${{ first_charge.amount }}
-        </div>
-        </div>
-        <div class="account-settings-info">
-            <div class="text5">Total donations this year</div>
-            <div class="text9 accent-color">${{ charges_value }}</div>
-        </div>
-        <br>
-        <br>
-        <a href="{% url 'user_tax_letter' %}" class="white-border-button">Download tax document</a>
-        {% endif %}
+                <button href="{% url 'user_tax_letter' %}" class="white-border-button disabled" disabled>Download tax document</button>
+              {% else %}
+                {{ first_charge.created|date:"d/m/Y"  }} ${{ first_charge.amount }}
+                </div>
+                </div>
+                <div class="account-settings-info">
+                  <div class="text5">Total donations this year</div>
+                  <div class="text9 accent-color">${{ charges_value }}</div>
+                </div>
+                <br>
+                <br>
+                <a href="{% url 'user_tax_letter' %}" class="white-border-button">Download tax document</a>
+              {% endif %}
         {% endwith %}
         
         <div class="account-settings-info ">

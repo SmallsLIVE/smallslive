@@ -470,13 +470,14 @@ $(document).ready(function () {
     yearlyCustom = $("#yearlyCustom");
     var value = $(yearlyCustom).val();
     flowKind = $('#supporterSteps').data('flow')
+    freeDonate = $('#supporterSteps').data('free-donate')
     if (value && isPositiveInteger(value)) {
       resetButtons();
       $(monthlyCustom).val('');
       setSelected('year', value);
       $(yearlyCustom).addClass('active');
       $(monthlyCustom).removeClass('active');
-      if(value > 99 || flowKind !== 'become_supporter'){
+      if(value > 99 || flowKind !== 'become_supporter' && freeDonate !== "False"){
         $("#yearlyCustomConfirm").data("value", value)
         $("#yearlyCustomConfirm").show()
       }else{
@@ -485,7 +486,7 @@ $(document).ready(function () {
       }
       if (event.keyCode == 13) {
         var amount = $(this).val();
-        if(amount > 99 || flowKind !== 'become_supporter'){
+        if(amount > 99 || flowKind !== 'become_supporter' && freeDonate !== "False"){
           resetButtons();
           resetCustom();
           setSelected('year', amount);
