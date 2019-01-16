@@ -224,6 +224,7 @@ class Event(TimeStampedModel):
     event_type = models.ForeignKey('EventType', blank=True, null=True)
     link = models.CharField(max_length=255, blank=True)
     active = models.BooleanField(default=False)
+    streamable = models.BooleanField(default=True)
     date_freeform = models.TextField(blank=True)
     photo = CustomImageField(upload_to='event_images', storage=ImageS3Storage(), max_length=150, blank=True)
     cropping = ImageRatioField('photo', '600x360', help_text="Enable cropping", allow_fullsize=True)

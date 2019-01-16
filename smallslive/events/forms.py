@@ -134,7 +134,7 @@ class EventAddForm(forms.ModelForm):
         model = Event
         fields = (
             'venue', 'date', 'start', 'end', 'id', 'title', 'subtitle', 'photo',
-            'description', 'state', 'staff_pick', 'tickets_url'
+            'description', 'state', 'staff_pick', 'streamable', 'tickets_url'
         )
         widgets = {
             'state': EventStatusWidget,
@@ -182,7 +182,7 @@ class EventEditForm(EventAddForm):
         fields = (
             'venue', 'title', 'subtitle', 'date', 'start', 'end',
             'start_streaming_before_minutes', 'photo', 'cropping',
-            'description', 'state', 'staff_pick', 'tickets_url')
+            'description', 'state', 'staff_pick', 'streamable', 'tickets_url')
 
 
 class EventSearchForm(SearchForm):
