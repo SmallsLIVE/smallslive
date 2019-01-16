@@ -201,6 +201,9 @@ $player-height:  25.3vw;
       filter: $sepia-filter;
       width: 100%;
     }
+    .not-streaming{
+      filter: none;
+    }
   }
   .wrapper {
     padding-bottom: 56.25%;
@@ -570,6 +573,9 @@ $player-height:  25.3vw;
       }
     }
   }
+}
+.not-streaming {
+  filter: none;
 }
 .event-overlay-info {
   position: absolute;
