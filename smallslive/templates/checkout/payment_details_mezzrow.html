@@ -70,7 +70,7 @@
                           id="expiry-month" placeholder="MM" size="2" pattern="\d*"
                           autocomplete="off" name="expiry_month_0" {% if form.exp_month.value %}value="{{ bankcard_form.expiry_month.value }}"{% endif %}
                           placeholder="Valid thru">
-                    {% for error in form.exp_month.errors %}
+                    {% for error in bankcard_form.start_month.errors %}
                     <span class="store__form__field-error">{{ error }}</span>
                   {% endfor %}
                   </div>
@@ -80,7 +80,7 @@
                               id="expiry-year" placeholder="YYYY" size="4"
                               pattern="\d*" autocomplete="off"
                               name="expiry_month_1" {% if bankcard_form.exp_year.value %}value="{{ bankcard_form.expiry_year.value }}"{% endif %}>
-                        {% for error in form.exp_year.errors %}
+                        {% for error in bankcard_form.expiry_month.errors %}
                       <span class="store__form__field-error">{{ error }}</span>
                   {% endfor %}
                     </div>
@@ -101,7 +101,7 @@
                           data-stripe="cvc"
                           pattern="\d*" autocomplete="off"
                           name="ccv" {% if form.cvc.value %}value="{{ bankcard_form.ccv.value }}"{% endif %}>
-                    {% for error in form.cvc.errors %}
+                    {% for error in bankcard_form.ccv.errors %}
                     <span class="store__form__field-error">{{ error }}</span>
                     {% endfor %}
                   </div>

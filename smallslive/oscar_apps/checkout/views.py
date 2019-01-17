@@ -232,7 +232,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         if basket.has_tickets(): # TODO: add parameter venue_name='Mezzrow'
             bankcard_form = BankcardForm(request.POST)
             if not bankcard_form.is_valid():
-                assert False, bankcard_form.errors
                 # Form validation failed, render page again with errors
                 self.preview = False
                 return self.render_payment_details(request, bankcard_form=bankcard_form,
