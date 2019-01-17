@@ -300,7 +300,8 @@ $(document).ready(function () {
       $('#pledge-type').html('You’ve  selected  to  pledge <span class="accent-color">$' + pledgeAmount +'.00 per month</span> . ');
       $('#payment-type').html('Your  card  will  be  billed  monthly  until  you  choose  to  cancel.');
       // Do not show select payment section.
-      $('#select-payment-row').hide();
+      $('#select-payment-row').show();
+      $('.payment-method-toggle').last().hide()
     } else {
       $('#pledge-type').html('You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' + pledgeAmount +'</span> .');
       $('#payment-type').html('Your  card  will  be  charged  in  this  amount.');
