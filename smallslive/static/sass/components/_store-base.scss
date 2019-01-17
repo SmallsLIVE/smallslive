@@ -1895,16 +1895,19 @@
   justify-content: center;
 }
 .checkout-white {
-  position: relative;
   float: right;
+  position: relative;
   margin-top: 10px;
-    width: 200px;
+  width: 200px;
+}
+.center {
+  text-align: center;
 }
 .back-white {
   position: relative;
-  float: left;
+  text-align: center;
   margin-top: 10px;
-    width: 200px;
+  width: 200px;
 }
 .store-shipping, .store-billing {
   padding: 30px;
