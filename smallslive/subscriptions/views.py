@@ -16,7 +16,7 @@ from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView,\
     CancelSubscriptionView as BaseCancelSubscriptionView
 from custom_stripe.models import CustomPlan, CustomerDetail
 from oscar_apps.catalogue.models import Product
-from oscar_apps.checkout.forms import BillingAddressForm
+from oscar_apps.checkout.forms import PaymentForm, BillingAddressForm
 from oscar.apps.payment.exceptions import RedirectRequired, \
     UnableToTakePayment, PaymentError
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
@@ -50,6 +50,8 @@ class PaymentInfoView(TemplateView):
         billing_address_form = BillingAddressForm(None, self.request.user,
                                                   initial=self.get_billing_initial())
         context['billing_address_form'] = billing_address_form
+        context['payment_form'] = PaymentForm(self.request.user)
+
 
         return context
 
