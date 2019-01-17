@@ -1,3 +1,14 @@
+html {
+  overflow: scroll;
+  overflow-x: hidden;
+}
+html::-webkit-scrollbar {
+  width: 0px;  
+  background: transparent; 
+}
+html::-webkit-scrollbar-thumb {
+  background: #FF0000;
+}
 body {
   &.admin-header{
     @media(max-width:$screen-xs-max) {
