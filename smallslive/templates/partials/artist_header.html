@@ -35,7 +35,7 @@
               Profile
           </button>
       </a>
-        <a href="/terms-and-conditions">
+        <a href="{% url 'terms-and-conditions' %}">
             <button class="no-border">
                 Agreement
             </button>
@@ -109,7 +109,7 @@
       <a href="{% url 'artist_dashboard:metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}active{% endif %}">Metrics</a>
       <a href="{% url 'artist_dashboard:edit_profile' %}" class="{% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">Public Profile</a>
       {% comment %} <a href="">Smallslive Tracks</a> {% endcomment %}
-      <a href="/terms-and-conditions">Agreement</a>
+      <a href="{% url 'terms-and-conditions' %}">Agreement</a>
     </div>
   </div>
 </div>
