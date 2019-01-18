@@ -280,6 +280,7 @@
                 dataType: 'json',
                 success: function (data) {
                     $("#event-load-gif").hide();
+                    $('#artistEventsList').removeClass("artist-loading-gif");
                     $('.concerts-footer').show();
                     if (data.template) {
                         if (currentPage > 1) {
@@ -306,12 +307,16 @@
             currentPage = 0;
             totalPages = 1;
             loadMore(false);
+            $('#artistEventsList').html("")
+            $('#artistEventsList').addClass("artist-loading-gif");
         });
 
         $('#artist_archive_order').on('change', function () {
             currentPage = 0;
             totalPages = 1;
             loadMore(false);
+            $('#artistEventsList').html("")
+            $('#artistEventsList').addClass("artist-loading-gif");
         });
 
         loadMore(false);
@@ -376,6 +381,8 @@
             $("body").removeClass("hidden-body");
               currentPage = 0;
               totalPages = 1;
+              $('#artistEventsList').html("")
+              $('#artistEventsList').addClass("artist-loading-gif");
               loadMore(true)
               $(".refine-overlay").hide();
 
@@ -417,6 +424,8 @@
             $(".event-filter-select .select-items div[value='newest']").click()
             currentPage = 0;
             totalPages = 1;
+            $('#artistEventsList').html("")
+            $('#artistEventsList').addClass("artist-loading-gif");
             loadMore(true)
           });
           //////////
@@ -559,8 +568,10 @@
         });
         currentPage = 0;
         totalPages = 1;
+        $('#artistEventsList').html("")
+        $('#artistEventsList').addClass("artist-loading-gif");
         loadMore(false);
-
+        
     });
 
     $("#dashboard-desktop-reset").click(function () {
@@ -576,6 +587,8 @@
         $("#search-date-picker-to-dashboard").find(".date-picker-text").val("")
         currentPage = 0;
         totalPages = 1;
+        $('#artistEventsList').html("")
+        $('#artistEventsList').addClass("artist-loading-gif");
         loadMore(false);
     });
     /////////////

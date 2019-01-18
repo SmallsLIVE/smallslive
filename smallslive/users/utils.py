@@ -109,9 +109,9 @@ def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
             assert email_address
 
 
-def one_time_donation(customer, stripe_token, amount):
+def one_time_donation(customer, stripe_token, amount, flow="Charge"):
     customer.update_card(stripe_token)
-    charge_id = charge(customer, amount).id
+    charge_id = charge(customer, amount, flow).id
     donation = {
         'user': customer.subscriber,
         'currency': 'USD',
@@ -127,7 +127,7 @@ def update_active_card(customer, stripe_token):
     customer.update_card(stripe_token)
 
 
-def subscribe_to_plan(customer, stripe_token, amount, plan_type):
+def subscribe_to_plan(customer, stripe_token, amount, plan_type, flow="Charge"):
 
     plan_data = {
         'amount': amount,
@@ -140,10 +140,10 @@ def subscribe_to_plan(customer, stripe_token, amount, plan_type):
     plan = plan or CustomPlan.create(**plan_data)
 
     customer.update_card(stripe_token)
-    subscribe(customer, plan)
+    subscribe(customer, plan, flow)
 
 
-def subscribe(customer, plan):
+def subscribe(customer, plan, flow):
     print 'subscribe: '
     print customer
     print plan
@@ -181,7 +181,7 @@ def subscribe(customer, plan):
         return cs
 
 
-def charge(customer, amount):
+def charge(customer, amount, flow):
     print 'charge: ---->'
     print amount
     print type(amount)

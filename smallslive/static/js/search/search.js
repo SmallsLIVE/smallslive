@@ -361,9 +361,6 @@ $(document).ready(function() {
     }
 
     var left = parseInt(style.replace("px", ""));
-    if (left % columnWidth) {
-      return;
-    }
     var pseudoPage = parseInt(-left / columnWidth);
     $("#artists").animate(
       { left: left - columnWidth + "px" },
