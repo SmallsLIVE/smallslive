@@ -42,7 +42,9 @@
         {% endif %}
         <button id="email-confirmed-become-supporter-btn"
                 class="white-border-button sign-in-button separated"
-                href="#logIn"
+                {% if not user.is_authenticated %}
+                  href="#logIn"
+                {% endif %}
                 data-toggle="modal">
           Become a Supporting Member
         </button>
@@ -64,7 +66,14 @@
       });
     });
   </script>
+  {% else %}
+  <script>
+    $(document).on('click', '#email-confirmed-become-supporter-btn', function(){
+      window.location = '/subscriptions/supporter';
+    })
+  </script>
   {% endif %}
+
 {% endblock extra_js %}
 
 
