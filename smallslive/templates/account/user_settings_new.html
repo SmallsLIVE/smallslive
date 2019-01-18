@@ -80,7 +80,7 @@
           {% endif %}
 
           {% if not user.has_archive_access %}
-            <a href="/subscriptions/supporter/" class="white-border-button">Become a Supporting Member</a>  
+            <button onclick="becomeSupporter()" class="white-border-button">Become a Supporting Member</button>  
           {% elif customer_detail.subscription.plan and not cancelled %}
             <div class="flex-row supporter-options">  
             <button class="white-border-button" onclick="$('#cancel-subscription').modal('toggle')">Cancel</button>    
@@ -331,6 +331,15 @@
       window.location = "{{ redirect_url }}"
     }else{
       $('#one-time-donation').modal('hide');
+    }
+  }
+  function becomeSupporter(){
+    inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
+
+    if (inactive === 'true'){
+      $('#inactive-dialog').modal('show');
+    }else{
+      window.location = '{% url 'become_supporter' %}';
     }
   }
 </script>
