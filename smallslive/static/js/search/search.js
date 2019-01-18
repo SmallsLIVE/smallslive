@@ -334,20 +334,21 @@ $(document).ready(function() {
       columnWidth *= 4;
     }
     var left = parseInt(style.replace("px", ""));
-    if (left % columnWidth) {
-      return;
+    if (canScroll) {
+      canScroll = false;
+      $("#artists").animate(
+        { left: left + document.documentElement.clientWidth + "px" },
+        200,
+        "linear",
+        function() {
+          toggleArrows();
+          canScroll = true;
+        }
+      );
     }
-    $("#artists").animate(
-      { left: left + columnWidth + "px" },
-      200,
-      "linear",
-      function() {
-        toggleArrows();
-      }
-    );
     showQuantityDisplay(artistSubheader, false, true);
   });
-
+  var canScroll = true;
   $(document).on("click", ".right_arrow", function() {
     var style = $("#artists").css("left");
     var columnWidth = parseInt(
@@ -362,17 +363,21 @@ $(document).ready(function() {
 
     var left = parseInt(style.replace("px", ""));
     if (left % columnWidth) {
-      return;
     }
     var pseudoPage = parseInt(-left / columnWidth);
-    $("#artists").animate(
-      { left: left - columnWidth + "px" },
-      200,
-      "linear",
-      function() {
-        toggleArrows();
-      }
-    );
+    if (canScroll) {
+      canScroll = false;
+      $("#artists").animate(
+        { left: left - document.documentElement.clientWidth + "px" },
+        200,
+        "linear",
+        function() {
+          toggleArrows();
+          canScroll = true;
+        }
+      );
+    }
+
     artistSubheader = $("#artist-subheader");
     showQuantityDisplay(artistSubheader, true, true);
     if (artistPageNum !== artistMaxPageNum && maxPseudopage - pseudoPage <= 4) {
