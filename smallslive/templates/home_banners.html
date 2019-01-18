@@ -56,6 +56,7 @@
     window.location = '{% url 'terms-and-conditions' %}';
   }
   $(document).ready(function(){
+    inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
 
     var showBecomeMemberModal = function() {
       var becomeMember = $('#becomeMemberButton');
@@ -93,7 +94,11 @@
         infoButton: true,
         title: 'Why <strong>become</strong> a<br><span class="accent-color">supporting member</span> <span class="last"><br>of <strong>SmallsLIVE</strong></span>?',
         click: function() {
-          window.location = '{% url 'become_supporter' %}';
+          if (inactive === 'true'){
+            $('#inactive-dialog').modal('show');
+          }else{
+            window.location = '{% url 'become_supporter' %}';
+          }
         },
         canClose: false
       },

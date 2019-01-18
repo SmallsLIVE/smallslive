@@ -26,7 +26,7 @@ def check_if_event_confimed_user(request):
     else:
         user_activated = request.user.has_activated_account
     try:
-        event = request.is_event and not request.user.has_activated_account
+        event = not request.user.has_activated_account
         return {'is_event_user_not_confirmed': event}
     except Exception as e:
         return {'is_event_user_not_confirmed': False}
