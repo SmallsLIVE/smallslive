@@ -99,10 +99,6 @@
       </a>
     </div>
     <div class="flex-column text2">
-      <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
-      {% if request.user.artist %}
-        <a href="{% url 'artist_dashboard:my_past_events' %}" class="{% if request.resolver_match.url_name == 'my_past_events' %}active{% endif %}">My dashboard</a>
-      {% endif %}
       <a href="{% url 'schedule' %}" class="{% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">Calendar</a>
       <a href="{% url 'search' %}" class="{% if request.resolver_match.url_name == 'search' %}active{% endif %}">Archive</a>
       <a href="{% url 'contact-and-info' %}" class="{% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</a>

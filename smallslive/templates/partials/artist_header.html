@@ -105,9 +105,9 @@
     </div>
     <div class="flex-column text2">
       <a href="{% url 'artist_dashboard:my_past_events' %}" class="{% if request.resolver_match.url_name == 'my_past_events' %}active{% endif %}">Archived</a>
+      <a href="{% url 'artist_dashboard:metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}active{% endif %}">Payout</a>
       <a href="{% url 'artist_dashboard:my_future_events' %}" class="{% if request.resolver_match.url_name == 'my_future_events' %}active{% endif %}">Upcoming</a>
-      <a href="{% url 'artist_dashboard:metrics' %}" class="{% if request.resolver_match.url_name == 'metrics' %}active{% endif %}">Metrics</a>
-      <a href="{% url 'artist_dashboard:edit_profile' %}" class="{% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">Public Profile</a>
+      <a href="{% url 'artist_dashboard:edit_profile' %}" class="{% if request.resolver_match.url_name == 'edit_profile' %}active{% endif %}">Profile</a>
       {% comment %} <a href="">Smallslive Tracks</a> {% endcomment %}
       <a href="{% url 'terms-and-conditions' %}">Agreement</a>
     </div>
