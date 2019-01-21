@@ -29,7 +29,7 @@ import allauth.account.views as allauth_views
 from metrics.models import UserVideoMetric
 from rest_framework.authtoken.models import Token
 
-from artists.models import Artist, ArtistEarnings, CurrentPayoutPeriod
+from artists.models import Artist, ArtistEarnings, CurrentPayoutPeriod, PastPayoutPeriod
 from events.models import Recording, Event
 import events.views as event_views
 import users.forms as user_forms

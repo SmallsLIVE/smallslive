@@ -99,7 +99,7 @@ $player-height:  25.3vw;
   }
 
   @media(max-width: $screen-md-max) {
-    flex-direction: column;
+    flex-direction: column-reverse;
     width: 100%;
   }
 
@@ -588,10 +588,10 @@ $player-height:  25.3vw;
   } 
 }
 
-.event-change-buttons{
+.flex-colum.buttons-container{
   @media(max-width: $screen-md-max) {
-  margin-top: -170px;
-  margin-bottom: 90px;
+    display: flex;
+    justify-content: space-between;
   }
 }
 .upcoming-logo {
