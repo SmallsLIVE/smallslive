@@ -2316,6 +2316,9 @@ img.defineImageRatio {
   }
   .store-list-item {
     margin: 0;
+    @media (max-width: 430px) {
+      width: 48%;
+    }
     .store-list-item-image img {
       border-radius: 0px;
       @media (min-width: 0px) {
@@ -2460,4 +2463,18 @@ img.defineImageRatio {
 }
 .catalog-title {
   text-align: center;
+}
+.store-single__item {
+  justify-content: center;
+
+  @media (max-width: $screen-md) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.store-single__item__images {
+  max-width: auto;
+  @media (max-width: $screen-md) {
+    width: auto;
+  }
 }
