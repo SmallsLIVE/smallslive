@@ -56,7 +56,7 @@
                   <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
                       {% for image in all_images %}
                           {% if not image.is_missing %}
-                              <a href="{% thumbor_url image.original.url|urlencode height=300 width=auto smart=True %}"
+                              <a href="{% thumbor_url image.original.url|urlencode height=300 smart=True %}"
                                  class="fancybox"><img
                                       src="{% thumbor_url image.original.url|urlencode height=300 width=auto smart=True %}"
                                       alt="{{ product.get_title }}" class="defineImageRatio"></a>
