@@ -743,7 +743,6 @@ $(document).ready(function() {
     } else {
       to = '<span class="from accent-color">-</span>';
     }
-    $(".datepicker-btn").html("From " + from + " to " + to);
   });
 
   $(".datepicker-reset").click(function() {
