@@ -452,7 +452,7 @@ $(document).ready(function() {
 
     if (eventDateTo) {
       $(".datepicker-btn").html(
-        'From <span class="from accent-color"></span> to <span class="to accent-color"></span>'
+        'Froms <span class="from accent-color"></span> to <span class="to accent-color"></span>'
       );
       $(".datepicker-btn span.from").text(eventDateFrom.toLocaleDateString());
       $(".datepicker-btn span.to").text(eventDateTo.toLocaleDateString());
@@ -745,7 +745,6 @@ $(document).ready(function() {
     } else {
       to = '<span class="from accent-color">-</span>';
     }
-    $(".datepicker-btn").html("From " + from + " to " + to);
   });
 
   $(".datepicker-reset").click(function() {
