@@ -2464,3 +2464,17 @@ img.defineImageRatio {
 .catalog-title {
   text-align: center;
 }
+.store-single__item {
+  justify-content: center;
+
+  @media (max-width: $screen-md) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+.store-single__item__images {
+  max-width: auto;
+  @media (max-width: $screen-md) {
+    width: auto;
+  }
+}
