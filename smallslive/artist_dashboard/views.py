@@ -275,27 +275,20 @@ class MyPastEventsInfoView(DetailView):
 
         today = timezone.datetime.today().replace(day=1)
 
-        ranges = []
-        ranges.append({
+        payout_ranges = []
+        payout_ranges.append({
             'content': 'All Time',
             'date': 'all'
         })
-        ranges.append({
+        payout_ranges.append({
             'content': 'This Period',
             'date': 'period'
         })
-
-        for i in range(1, 7):
-            start = (today - relativedelta(years=i)).replace(day=1, month=1)
-            end = start.replace(day=31, month=12)
-            ranges.append({
-                'content': start.strftime('%m/%d/%Y') + ' - ' + end.strftime('%m/%d/%y'),
-                'date': start.year,
-                'start': int(time.mktime(start.timetuple())) * 1000,
-                'end': int(time.mktime(end.timetuple())) * 1000
-            })
+        for period in PastPayoutPeriod.objects.all():
+            print period
+        old_payout_ranges = PastPayoutPeriod.objects.all()[:6]
         
-        context['datepicker_ranges'] = ranges
+        context['datepicker_ranges'] = payout_ranges
         
         return context
 
