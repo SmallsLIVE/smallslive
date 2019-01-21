@@ -174,17 +174,17 @@
     }
 
     .labeled-select .white-border-select .select-items {
-        margin-top: 0;
-        left: initial;
+      margin-top: 0;
+      left: initial;
     }
-   
+
     .artist-dashboard-payout-title {
-        padding-left: 0;
-        display: flex;
-        align-items: flex-end;
-        text-decoration: none;
-        border-bottom: 5px solid #fff;
-        margin-bottom: 30px;
+      padding-left: 0;
+      display: flex;
+      align-items: flex-end;
+      text-decoration: none;
+      border-bottom: 5px solid #fff;
+      margin-bottom: 30px;
     }
 
     .payout-bar-button {
@@ -223,10 +223,10 @@
       flex-direction: column;
     }
     border-top: 3px solid $white-transparent;
-    height: auto;
+    height: 800px;
     @media (max-width: 1024px) {
       justify-content: center;
-      height: auto;
+      height: 800px;
     }
   }
   .artist-event-details {
@@ -965,4 +965,34 @@
 }
 .reset {
   margin-right: 10px;
+}
+
+.artist-event-row {
+  position: relative;
+  border-bottom: 2px solid $white-transparent;
+  .artist-event-card {
+    margin-right: 40px;
+  }
+}
+.artist-events-container {
+  @media (max-width: 425px) {
+    flex-direction: column;
+  }
+  border-top: 3px solid $white-transparent;
+  height: 700px;
+  @media (max-width: 1024px) {
+    justify-content: center;
+    height: auto;
+  }
+}
+.artist-events-list {
+  width: 30%;
+  @media (max-width: 1024px) {
+    width: 40%;
+  }
+  @media (max-width: 768px) {
+    width: 50%;
+    padding-left: 20px;
+    height: 800px;
+  }
 }
