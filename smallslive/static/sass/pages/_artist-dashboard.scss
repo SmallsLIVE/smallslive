@@ -216,7 +216,7 @@
         height: 700px;
         @media (max-width: 1024px) {
             justify-content: center;
-            height: 800px;
+            height: auto;
         }
     }
     .artist-event-details {
@@ -245,6 +245,7 @@
         @media (max-width: 768px) {
             width: 50%;
             padding-left: 20px;
+            height: 800px;
         }
         @media (max-width: 425px) {
             width: 100%;
@@ -608,6 +609,7 @@
             }
         }
     }
+    
     .artist-event-row {
         position: relative;
         border-bottom: 2px solid $white-transparent;

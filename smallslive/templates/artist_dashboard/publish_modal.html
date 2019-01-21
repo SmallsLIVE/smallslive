@@ -3,10 +3,13 @@
         <div class="modal-content custom-modal">
             <div class="modal-body">
                 <p class="title2 accent-color">Publish</p>
-                <p class="title1">Are you sure?</p>
+                <p class="title1">This set is currently private</p>
+                <p class="text4 text-justify">
+                    Making your performance public will add it from the archive making it avaliable to the SmallsLIVE supporting members. You will be able to generate residual money from your performance as is laid out in the Artist Agreement. Learn more about the <span class="accent-color">Revenue Share</span>
+                </p>
                 <div class="button-row button-row-margin">
-                    <button onclick="hidePublish()">Back</button>
-                    <button onclick="publishSet()">Confirm</button>
+                    <button onclick="hidePublish()">Cancel</button>
+                    <button onclick="publishSet()">Make Public</button>
                 </div>
             </div>
         </div>
@@ -24,8 +27,8 @@
                 </p>
 
                 <div class="button-row button-row-margin">
-                    <button onclick="makeSetPrivate()">Make Private</button>
                     <button onclick="hideMakePrivate()">Cancel</button>
+                    <button onclick="makeSetPrivate()">Make Private</button>
                 </div>
             </div>
         </div>
