@@ -284,7 +284,7 @@
                     </div>
             </div>
 
-            <div class="modal fade edit-event-mobile-form" id="edit-event-form" style="width:80%; height:80%;" >
+            <div class="modal fade edit-event-mobile-form" id="edit-event-form" >
                     <div class="edit-event-mobile-form-body">
                             <a href="#" class="close-button"></a>
                             <img class="smalls-form-logo" src="{% static 'logo-black.svg' %}">
@@ -317,23 +317,14 @@
         $('#edit-event-form .close-button').click(() => { $('#edit-event-form').modal('toggle') })
 
         $('#table-event-edit').on('click', function () {
-              window.subpages.register();
-              if( viewPortLength("width") > 425){
-                $('#edit-event-form').modal('show');
-                var tabletSubpage = window.subpages.get("tablet-edit");
-                tabletSubpage.setCallback(() => {         
-                    EventForm.init(false);
-                    })
-                tabletSubpage.load();
-              }else{
-                $("#mobile-option-container > *")
-                $("#mobile-option-container > #mobile-option-edit").show()
-                var mobileSubpage = window.subpages.get("mobile-edit");
-                mobileSubpage.setCallback(() => {         
-                    EventForm.init(false);
-                    })
-                mobileSubpage.load();
-              }
+            window.subpages.register();
+            $('#edit-event-form').modal('show');
+            var tabletSubpage = window.subpages.get("tablet-edit");
+            tabletSubpage.setCallback(() => {         
+            EventForm.init(false);
+            })
+            tabletSubpage.load();
+              
         })
         $('.set-changer').on('click', function () {
             loadInfo($(this).data('url'));
