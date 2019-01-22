@@ -55,7 +55,7 @@ $player-height:  25.3vw;
 
   .white-border-button {
     margin-bottom: 5px;
-    padding: 5px 25px;
+    padding: 5px 15px;
     display: inline;
     margin-right: 2px;
   }
@@ -99,7 +99,7 @@ $player-height:  25.3vw;
   }
 
   @media(max-width: $screen-md-max) {
-    flex-direction: column;
+    flex-direction: column-reverse;
     width: 100%;
   }
 
@@ -181,7 +181,21 @@ $player-height:  25.3vw;
   }
   .not-auth-container{
     .icon-overlay {
+      opacity: 0;
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      z-index: 10;
+      color: red;
+      width: 100%;
+      height: 100%;
+      align-items: center;
       .fa-thin-circle.fa{    
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px red solid;
         height: 88px;
         width: 88px;
         border-radius: 44px;
@@ -588,10 +602,16 @@ $player-height:  25.3vw;
   } 
 }
 
-.event-change-buttons{
+.flex-column.buttons-container{
   @media(max-width: $screen-md-max) {
-  margin-top: -170px;
-  margin-bottom: 90px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  @media(max-width: $screen-xs-min) {
+    flex-direction: column;
+    .text-right {
+      text-align: left;
+    }
   }
 }
 .upcoming-logo {

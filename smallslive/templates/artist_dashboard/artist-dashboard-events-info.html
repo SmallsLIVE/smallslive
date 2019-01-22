@@ -104,7 +104,13 @@
             <div class="datepicker-container noclick datepicker-dashboard-container">
                 <div class="datepicker-dashboard-left-panel">
                     {% for range in datepicker_ranges %}
-                    <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</div>
+                    <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">
+                    {% if range.period_start %}
+                    {{range.period_start}} - {{range.period_end}}
+                    {% else %}
+                    {{ range.content }}
+                    {% endif %}
+                    </div>
                     {% endfor %}
                 </div>
 
