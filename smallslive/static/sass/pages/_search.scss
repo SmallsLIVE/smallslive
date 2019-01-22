@@ -63,7 +63,7 @@ body.headers-1 {
     border-right: 5px solid transparent;
     border-top: 5px solid black;
     position: absolute;
-    right: 16px;
+    right: 6px;
     top: 14px;
     transition: all 0.3s linear;
     cursor: pointer;
@@ -1581,4 +1581,9 @@ body.headers-1 {
   .datepicker {
     left: 56px !important;
   }
+}
+
+.right_arrow {
+  position: absolute;
+  left: 92vw;
 }
