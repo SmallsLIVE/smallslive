@@ -183,8 +183,12 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         amount = self.request.POST.get('quantity')
         existing_cc = self.request.POST.get('payment_method')
         if existing_cc:
-                stripe_customer = self.request.user.customer.stripe_customer
-                stripe_token = stripe_customer.get('default_source')
+            stripe_customer = self.request.user.customer.stripe_customer
+            stripe_token = stripe_customer.get('default_source')
+
+        if self.request.POST.get('stripe_token'):
+            stripe_token = self.request.POST.get('stripe_token')
+
         if amount:
             amount = int(amount)
 
