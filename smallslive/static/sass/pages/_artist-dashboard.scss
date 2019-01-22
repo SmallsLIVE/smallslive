@@ -996,3 +996,32 @@
     height: 800px;
   }
 }
+
+
+@media (max-width: 960px){
+  #apply-button{
+    height: 35px;
+  }
+  .datepicker-dashboard-container{
+    top: 84px;
+    .custom-date-picker {
+      min-width: 140px;
+      max-width: 180px;
+      width: 18.2vw;
+      .datepicker.dropdown-menu td.day {
+        padding: 0;
+      }
+    }
+  } 
+  .datepicker-dashboard-left-panel {
+    min-width: 105px;
+    max-width: 150px;
+    width: 14.2vw;
+  }
+  .datepicker-dashboard-container .custom-date-picker .dropdown-menu.datepicker {
+    left: 14.9vw !important;
+    min-width: 200px !important;
+    max-width: 256px !important;
+    width: 25vw;
+  }
+}
