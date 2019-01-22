@@ -919,7 +919,7 @@
 .datepicker-dashboard-container {
   top: 60px;
   .datepicker {
-    left: 158px !important;
+    left: 168px !important;
   }
   .custom-date-picker {
     &#search-date-picker-from .date-picker-text {
@@ -936,7 +936,7 @@
   top: 40px;
   border-right: solid 2px white;
   height: calc(100% - 40px);
-  width: 140px;
+  width: 150px;
   > div:nth-child(-n + 2) {
     font-weight: bold;
   }
