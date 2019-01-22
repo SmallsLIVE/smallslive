@@ -865,6 +865,12 @@ $(document).ready(function() {
           $("#supporterStepPaymentInfo").data("payment-info-complete-url"),
           completeSubpage
         );
+      } else if (method == "existing-credit-card") {
+        startStripePayment(
+          $("#payment-form"),
+          $("#supporterStepPaymentInfo").data("payment-info-complete-url"),
+          completeSubpage
+        );
       }
     } else if (currentStep === "SelectType" && selectedData.type == "gift") {
       $(".step-button").removeClass("hidden");

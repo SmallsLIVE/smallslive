@@ -35,7 +35,6 @@ class PaymentInfoView(TemplateView):
     Shows payment form with options. Typically credit card form and PayPal.
     Shows billing address form. Uses Oscar for storing billing address.
     """
-
     def get_template_names(self):
         if self.request.is_ajax():
             template_name = 'partials/_payment_info.html'
@@ -178,10 +177,14 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
             }, status=500))
 
     def post(self, request, *args, **kwargs):
-        flow_type = self.request.POST.get('flow_type')
+        flow_type = self.request.POST.get('flow_type', "become_supporter")
         stripe_token = self.request.POST.get('stripe_token')
         plan_type = self.request.POST.get('type')
         amount = self.request.POST.get('quantity')
+        existing_cc = self.request.POST.get('payment_method')
+        if existing_cc:
+                stripe_customer = self.request.user.customer.stripe_customer
+                stripe_token = stripe_customer.get('default_source')
         if amount:
             amount = int(amount)
 
