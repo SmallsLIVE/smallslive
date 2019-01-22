@@ -5,11 +5,11 @@
 .artist-profile-container {
   margin-bottom: 40px;
   padding: 0 15vw;
-  @media (max-width: 1024px) {
+  @media (max-width: 1023px) {
     padding: 20px 0;
   }
   &.metrics-profile-container {
-    @media (max-width: 1024px) {
+    @media (max-width: 1023px) {
       padding: 20px 15vw;
       .title1 {
         font-size: 30px;
@@ -219,12 +219,12 @@
     margin-bottom: 30px;
   }
   .artist-events-container {
+    border-top: 3px solid $white-transparent;
+    height: 635px;
     @media (max-width: 425px) {
       flex-direction: column;
     }
-    border-top: 3px solid $white-transparent;
-    height: 800px;
-    @media (max-width: 1024px) {
+    @media (max-width: 1023px) {
       justify-content: center;
       height: 800px;
     }
@@ -249,7 +249,7 @@
   }
   .artist-events-list {
     width: 30%;
-    @media (max-width: 1024px) {
+    @media (max-width: 1023px) {
       width: 40%;
     }
     @media (max-width: 768px) {
@@ -274,10 +274,10 @@
   }
   .artist-events-list-info,
   .event-mobile-info {
-    padding-left: 60px;
+    padding-left: 30px;
     padding-top: 30px;
     width: 70%;
-    @media (max-width: 1024px) {
+    @media (max-width: 1023px) {
       width: 40%;
     }
     @media (max-width: 768px) {
@@ -297,7 +297,7 @@
     .artist-set-main {
       padding-right: 3.13vw;
       width: 40%;
-      @media (max-width: 1024px) {
+      @media (max-width: 1023px) {
         width: 100%;
         padding-right: 0px;
       }
@@ -350,7 +350,7 @@
     .header-metrics-container {
       display: flex;
       flex-direction: row;
-      @media (max-width: 1024px) {
+      @media (max-width: 1023px) {
         flex-direction: column;
       }
     }
@@ -363,7 +363,7 @@
     }
     .artist-set-leader {
       padding: 10px 0;
-      @media (max-width: 1024px) {
+      @media (max-width: 1023px) {
         padding: 10px 0 30px 0;
       }
       @media (max-width: 768px) {
@@ -398,7 +398,7 @@
     .artist-metrics-container {
       position: relative;
       width: 60%;
-      @media (max-width: 1024px) {
+      @media (max-width: 1023px) {
         width: 100%;
         .title1 {
           line-height: initial;
@@ -637,7 +637,7 @@
     }
     .artist-event-info {
       padding: 10px 0;
-      @media (max-width: 1024px) {
+      @media (max-width: 1023px) {
         padding: 20px 0;
         .button-row {
           margin-top: 20px;
@@ -739,7 +739,7 @@
     }
   }
   margin-bottom: 30px;
-  @media (max-width: 1024px) {
+  @media (max-width: 1023px) {
     margin-left: 115px;
   }
   @media (max-width: 768px) {
@@ -980,14 +980,14 @@
   }
   border-top: 3px solid $white-transparent;
   height: 700px;
-  @media (max-width: 1024px) {
+  @media (max-width: 1023px) {
     justify-content: center;
     height: auto;
   }
 }
 .artist-events-list {
   width: 30%;
-  @media (max-width: 1024px) {
+  @media (max-width: 1023px) {
     width: 40%;
   }
   @media (max-width: 768px) {
