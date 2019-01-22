@@ -5,11 +5,11 @@
 .artist-profile-container {
   margin-bottom: 40px;
   padding: 0 15vw;
-  @media (max-width: 1024px) {
+  @media (max-width: 1023px) {
     padding: 20px 0;
   }
   &.metrics-profile-container {
-    @media (max-width: 1024px) {
+    @media (max-width: 1023px) {
       padding: 20px 15vw;
       .title1 {
         font-size: 30px;
@@ -219,12 +219,12 @@
     margin-bottom: 30px;
   }
   .artist-events-container {
+    border-top: 3px solid $white-transparent;
+    height: 635px;
     @media (max-width: 425px) {
       flex-direction: column;
     }
-    border-top: 3px solid $white-transparent;
-    height: 800px;
-    @media (max-width: 1024px) {
+    @media (max-width: 1023px) {
       justify-content: center;
       height: 800px;
     }
@@ -249,7 +249,7 @@
   }
   .artist-events-list {
     width: 30%;
-    @media (max-width: 1024px) {
+    @media (max-width: 1023px) {
       width: 40%;
     }
     @media (max-width: 768px) {
@@ -274,10 +274,10 @@
   }
   .artist-events-list-info,
   .event-mobile-info {
-    padding-left: 60px;
+    padding-left: 30px;
     padding-top: 30px;
     width: 70%;
-    @media (max-width: 1024px) {
+    @media (max-width: 1023px) {
       width: 40%;
     }
     @media (max-width: 768px) {
@@ -297,7 +297,7 @@
     .artist-set-main {
       padding-right: 3.13vw;
       width: 40%;
-      @media (max-width: 1024px) {
+      @media (max-width: 1023px) {
         width: 100%;
         padding-right: 0px;
       }
@@ -350,7 +350,7 @@
     .header-metrics-container {
       display: flex;
       flex-direction: row;
-      @media (max-width: 1024px) {
+      @media (max-width: 1023px) {
         flex-direction: column;
       }
     }
@@ -363,7 +363,7 @@
     }
     .artist-set-leader {
       padding: 10px 0;
-      @media (max-width: 1024px) {
+      @media (max-width: 1023px) {
         padding: 10px 0 30px 0;
       }
       @media (max-width: 768px) {
@@ -398,7 +398,7 @@
     .artist-metrics-container {
       position: relative;
       width: 60%;
-      @media (max-width: 1024px) {
+      @media (max-width: 1023px) {
         width: 100%;
         .title1 {
           line-height: initial;
@@ -637,7 +637,7 @@
     }
     .artist-event-info {
       padding: 10px 0;
-      @media (max-width: 1024px) {
+      @media (max-width: 1023px) {
         padding: 20px 0;
         .button-row {
           margin-top: 20px;
@@ -739,7 +739,7 @@
     }
   }
   margin-bottom: 30px;
-  @media (max-width: 1024px) {
+  @media (max-width: 1023px) {
     margin-left: 115px;
   }
   @media (max-width: 768px) {
@@ -919,7 +919,7 @@
 .datepicker-dashboard-container {
   top: 60px;
   .datepicker {
-    left: 158px !important;
+    left: 168px !important;
   }
   .custom-date-picker {
     &#search-date-picker-from .date-picker-text {
@@ -936,7 +936,7 @@
   top: 40px;
   border-right: solid 2px white;
   height: calc(100% - 40px);
-  width: 140px;
+  width: 150px;
   > div:nth-child(-n + 2) {
     font-weight: bold;
   }
@@ -980,19 +980,48 @@
   }
   border-top: 3px solid $white-transparent;
   height: 700px;
-  @media (max-width: 1024px) {
+  @media (max-width: 1023px) {
     justify-content: center;
     height: auto;
   }
 }
 .artist-events-list {
   width: 30%;
-  @media (max-width: 1024px) {
+  @media (max-width: 1023px) {
     width: 40%;
   }
   @media (max-width: 768px) {
     width: 50%;
     padding-left: 20px;
     height: 800px;
+  }
+}
+
+
+@media (max-width: 960px){
+  #apply-button{
+    height: 35px;
+  }
+  .datepicker-dashboard-container{
+    top: 84px;
+    .custom-date-picker {
+      min-width: 140px;
+      max-width: 180px;
+      width: 18.2vw;
+      .datepicker.dropdown-menu td.day {
+        padding: 0;
+      }
+    }
+  } 
+  .datepicker-dashboard-left-panel {
+    min-width: 105px;
+    max-width: 150px;
+    width: 14.2vw;
+  }
+  .datepicker-dashboard-container .custom-date-picker .dropdown-menu.datepicker {
+    left: 14.9vw !important;
+    min-width: 200px !important;
+    max-width: 256px !important;
+    width: 25vw;
   }
 }
