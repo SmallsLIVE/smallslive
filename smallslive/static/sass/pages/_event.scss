@@ -55,7 +55,7 @@ $player-height:  25.3vw;
 
   .white-border-button {
     margin-bottom: 5px;
-    padding: 5px 25px;
+    padding: 5px 15px;
     display: inline;
     margin-right: 2px;
   }
@@ -602,10 +602,16 @@ $player-height:  25.3vw;
   } 
 }
 
-.flex-colum.buttons-container{
+.flex-column.buttons-container{
   @media(max-width: $screen-md-max) {
-    display: flex;
+    flex-direction: row;
     justify-content: space-between;
+  }
+  @media(max-width: $screen-xs-min) {
+    flex-direction: column;
+    .text-right {
+      text-align: left;
+    }
   }
 }
 .upcoming-logo {
