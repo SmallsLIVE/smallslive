@@ -1,12 +1,7 @@
 html {
   overflow: scroll;
   overflow-x: hidden;
-}
-@-moz-document url-prefix() {
-  html,
-  body {
-    overflow: hidden !important;
-  }
+  scrollbar-width: none;
 }
 html::-webkit-scrollbar {
   width: 0px;
