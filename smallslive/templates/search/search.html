@@ -146,10 +146,16 @@
             let scrollS = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 10)}, 80)
             setTimeout(() => {clearInterval(scrollS)}, 320)
             setTimeout(function(){
-              if($( "#a-z-search" ).scrollLeft() < 819){
+              if($( "#a-z-search" ).scrollLeft() == 0){
+                $('.scroll-right').css('visibility', 'initial')
+                $('.scroll-left').css('visibility', 'hidden')
+
+              }else if( $( "#a-z-search" ).scrollLeft() == 819 ){
+                $('.scroll-right').css('visibility', 'hidden')
                 $('.scroll-left').css('visibility', 'initial')
               }else{
-                $('.scroll-right').css('visibility', 'hidden')
+                $('.scroll-left').css('visibility', 'initial')
+                $('.scroll-right').css('visibility', 'initial')
               }
             }, 310)
             
@@ -160,10 +166,16 @@
             let scrollS = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 10)}, 10)
             setTimeout(() => {clearInterval(scrollS)}, 300)
             setTimeout(() => {
-              if($( "#a-z-search" ).scrollLeft() > 0){
+              if($( "#a-z-search" ).scrollLeft() == 0){
                 $('.scroll-right').css('visibility', 'initial')
-              }else{
                 $('.scroll-left').css('visibility', 'hidden')
+
+              }else if( $( "#a-z-search" ).scrollLeft() == 819 ){
+                $('.scroll-right').css('visibility', 'hidden')
+                $('.scroll-left').css('visibility', 'initial')
+              }else{
+                $('.scroll-left').css('visibility', 'initial')
+                $('.scroll-right').css('visibility', 'initial')
               }
             }, 310)
 
