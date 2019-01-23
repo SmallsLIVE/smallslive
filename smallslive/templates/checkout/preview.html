@@ -103,7 +103,7 @@
               {% block place_order %}
                 <form action="{% url "checkout:preview" %}" method="post">
                   {% csrf_token %}
-                  <a href="{% url "checkout:payment-details" %}" class="white-border-button left"> Back to
+                  <a href="{% url "checkout:payment-details" %}" class="white-border-button left back-to-payment-btn"> Back to
                     payment information</a>
                   <button class="white-border-button checkout-white">Pay and order</button>
                   <input type="hidden" name="action" value="place_order"/>

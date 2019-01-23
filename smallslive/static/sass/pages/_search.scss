@@ -705,7 +705,13 @@ body.headers-1 {
       margin: 0 auto;
     }
     img {
-      left: 27%;
+      left: calc(50% - 163px);
+      @media (max-width: $screen-xs) {
+        left: calc(50% - 170px);
+      }
+      @media (max-width: 360px) {
+        left: calc(50% - 140px);
+      }
     }
   }
   @media (max-width: $screen-md-max) {
