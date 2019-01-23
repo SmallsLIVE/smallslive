@@ -1919,8 +1919,10 @@
 .checkout-white {
   float: right;
   position: relative;
-  margin-top: 10px;
-  width: 200px;
+  width: 120px;
+  @media (min-width: $screen-xs) {
+    width: 200px;
+  }
 }
 .center {
   text-align: center;
