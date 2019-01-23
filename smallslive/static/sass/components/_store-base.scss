@@ -1930,8 +1930,12 @@
 .back-white {
   position: relative;
   text-align: center;
-  margin-top: 10px;
+  display: flex;
   width: 200px;
+  @media (max-width: 420px) {
+    margin-bottom: 10px;
+    width: 30%;
+  }
 }
 .store-shipping,
 .store-billing {
@@ -2483,4 +2487,15 @@ img.defineImageRatio {
 
 .slick-track a {
   width: auto;
+}
+
+form .back-to-payment-btn {
+  text-align: center;
+  line-break: 33px;
+  display: flex;
+  padding: 10px;
+  @media (max-width: 400px) {
+    margin-bottom: 10px;
+    width: 100%;
+  }
 }
