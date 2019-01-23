@@ -104,10 +104,11 @@
             <div class="datepicker-container noclick datepicker-dashboard-container">
                 <div class="datepicker-dashboard-left-panel">
                     {% for range in datepicker_default_ranges %}
-                    <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</div>
+                        <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</div>
                     {% endfor %}
+                    <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ datepicker_current_range.date }}" data-start="{{ datepicker_current_range.period_start }}" data-end="{{ datepicker_current_range.period_end }}">Current pay period</div>
                     {% for range in datepicker_old_payout_ranges %}
-                        <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.period_start }}" data-end="{{ range.period_end }}">{{ range.period_start|date:"m/d/Y" }} - {{ range.period_start|date:"m/d/Y" }}  </div>
+                        <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.period_start }}" data-end="{{ range.period_end }}">{{ range.period_start|date:"m/d/Y" }} - {{ range.period_end|date:"m/d/Y" }}  </div>
                     {% endfor %}
                 </div>
 
@@ -253,8 +254,9 @@
                             {% for range in datepicker_default_ranges %}
                                 <option value="{{ range.content }}" class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</option>
                             {% endfor %}
+                            <option value="{{ datepicker_current_range.content }}" class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ datepicker_current_range.date }}" data-start="{{ datepicker_current_range.period_start }}" data-end="{{ datepicker_current_range.period_end }}">Current pay period</option>
                             {% for range in datepicker_old_payout_ranges %}
-                                <option value="{{ range.content }}" class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.period_start }}" data-end="{{ range.period_end }}">{{ range.period_start|date:"m/d/Y" }} - {{ range.period_start|date:"m/d/Y" }} </option>
+                                <option value="{{ range.content }}" class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.period_start }}" data-end="{{ range.period_end }}">{{ range.period_start|date:"m/d/Y" }} - {{ range.period_end|date:"m/d/Y" }} </option>
                             {% endfor %}
                             <option value="custom">Custom</option>
                     </select>
