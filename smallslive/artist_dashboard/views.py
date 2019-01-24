@@ -602,6 +602,8 @@ class AdminMetricsView(SuperuserRequiredMixin, TemplateView):
 admin_metrics = AdminMetricsView.as_view()
 
 
+
+
 class ChangePayoutPeriodView(SuperuserRequiredMixin, UpdateView):
     success_url = reverse_lazy('artist_dashboard:change_payout_period')
     template_name = "artist_dashboard/change_payout_period.html"
@@ -785,3 +787,18 @@ def payout_form(request):
     return render(request, 'artist_dashboard/artist-payout-form.html', {
         'artist_info_form': artist_info_form,
     })
+
+@login_required
+def metrics_ajax_display(request):
+    start = request.query_params.get('start')
+    end = request.query_params.get('end')
+    set_id = (request.query_params.get('set_id'),"")
+    metrics_data = UserVideoMetric.objects.date_counts(month, year, set_id)
+    data = {
+            'dates': metrics_data.dates,
+            'audio_totals': metrics_data.audio_minutes_list,
+            'video_totals': metrics_data.video_minutes_list,
+            'all_totals': metrics_data.total_minutes_list,
+        }
+
+    return JsonResponse(data)
