@@ -170,11 +170,11 @@
               </div>
               {% elif session.price.is_tax_known %}
                 <div class="button-row button-row-big button-row-margin gift-button">
-                  <button class="select-gift white-border-button" data-cost={{ session.stockrecord.cost_price }} data-inclTax={{ session.price.incl_tax }} data-type={{ product.categories.all.first }}><span class="price-tag">{{ session.price.incl_tax|currency:session.price.currency }} </span><span class="gift-title">{{ product.get_title }}</span></button>
+                  <button class="select-gift white-border-button" data-cost="{{ session.stockrecord.cost_price }}" data-inclTax="{{ session.price.incl_tax }}" data-type="{{ product.title }}"><span class="price-tag">{{ session.price.incl_tax|currency:session.price.currency }} </span><span class="gift-title">{{ product.get_title }}</span></button>
                 </div>
               {% else %}
               <div class="button-row button-row-big button-row-margin gift-button">
-                   <button class="select-gift white-border-button" data-cost={{ session.stockrecord.cost_price }} data-inclTax={{ session.price.incl_tax }} data-type={{ product.categories.all.first }}><span class="price-tag">{{ session.price.excl_tax|currency:session.price.currency }} </span><span class="gift-title">{{ product.get_title }}</span></button>
+                   <button class="select-gift white-border-button" data-cost="{{ session.stockrecord.cost_price }}" data-inclTax="{{ session.price.incl_tax }}" data-type="{{ product.title }}"><span class="price-tag">{{ session.price.excl_tax|currency:session.price.currency }} </span><span class="gift-title">{{ product.get_title }}</span></button>
               </div>
               {% endif %}
              

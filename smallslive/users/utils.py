@@ -142,6 +142,8 @@ def subscribe_to_plan(customer, stripe_token, amount, plan_type, flow="Charge"):
     customer.update_card(stripe_token)
     subscribe(customer, plan, flow)
 
+    # Donation will come through Stripe's webhook
+
 
 def subscribe(customer, plan, flow):
     print 'subscribe: '

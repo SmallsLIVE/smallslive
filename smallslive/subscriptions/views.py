@@ -1,10 +1,10 @@
 import stripe
 from allauth.account.views import _ajax_response
 from braces.views import FormValidMessageMixin, LoginRequiredMixin, StaffuserRequiredMixin
+
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.forms.models import model_to_dict
 from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render, redirect
@@ -14,7 +14,6 @@ from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
 from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView,\
     CancelSubscriptionView as BaseCancelSubscriptionView
-from custom_stripe.models import CustomPlan, CustomerDetail
 from oscar_apps.catalogue.models import Product
 from oscar_apps.checkout.forms import PaymentForm, BillingAddressForm
 from oscar.apps.payment.exceptions import RedirectRequired, \

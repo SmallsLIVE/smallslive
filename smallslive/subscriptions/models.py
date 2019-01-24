@@ -14,6 +14,7 @@ class Donation(models.Model):
     amount = models.DecimalField(
         decimal_places=2, max_digits=12,
         default=Decimal('0.00'))
+
     # No need to have a payment source model for the moment.
     payment_source = models.CharField(max_length=64)
     reference = models.CharField(max_length=128, blank=True)

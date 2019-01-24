@@ -11,7 +11,7 @@
 {% block content %}
 
     <div class="payment-main-container"> 
-        <form id="z" method="post" action="{% url 'checkout:preview' %}">
+        <form id="payment-form" method="post" action="{% url 'checkout:preview' %}">
     {% if error %}
       <section class="store-error container">
         <span class="store-error__message">{{ error|safe }}</span>

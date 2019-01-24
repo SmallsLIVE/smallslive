@@ -9,7 +9,7 @@
         <div class="button-row button-row-margin">
             {% if is_admin and set.has_media %}
                  <a href="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
-                        <button class="set-button">Edit</button>
+                        <button class="set-button event-edit-button">Edit</button>
                 </a>
                 {% if not event.is_future %}
                     {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
@@ -21,7 +21,7 @@
             {% else %}
                 {% if is_admin %}
                     <a href="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
-                        <button class="set-button">Edit</button>
+                        <button class="set-button .event-edit-button">Edit</button>
                     </a>
                 {% else %}
                     <button disabled class="set-button">Edit</button>
