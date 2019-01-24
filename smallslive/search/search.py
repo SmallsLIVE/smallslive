@@ -77,11 +77,9 @@ class SearchObject(object):
             if main_search.split()[-1] in posible_number_of_performers:
                 main_search = ' '.join(main_search.split()[:-1])
 
-
         words, instruments, partial_instruments = self.process_input(main_search, artist_search, instrument)
 
         sqs = Artist.objects.all()
-
         
         if instruments:
             condition = Q(instruments__name__istartswith=instruments[0])
@@ -154,7 +152,19 @@ class SearchObject(object):
     
         # sets number_of_performers_searched based in the last word from main_seach
         number_of_performers_searched = None
-        possible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
+        # TODO: move this to search settings
+        possible_number_of_performers = [
+            'solo',
+            'duo',
+            'trio',
+            'quartet',
+            'quintet',
+            'sextet',
+            'septet',
+            'octet',
+            'nonet',
+            'dectet'
+        ]
         if main_search != '':
             if main_search.split()[-1] in possible_number_of_performers:
                 number_of_performers_searched = possible_number_of_performers.index(main_search.split()[-1]) + 1
@@ -173,20 +183,15 @@ class SearchObject(object):
             if main_search in possible_number_of_performers:
                 just_by_qty = True
             sqs = filter_quantity_of_performers(number_of_performers_searched, main_search, just_by_qty)
-            sqs = sqs.order_by(order)
-            sqs.distinct()
-            return sqs
-
-        if artist_pk:
+        elif artist_pk:
             sqs = Event.objects.filter(performers__pk=artist_pk)
         else:
             if not number_of_performers_searched and not len(main_search.split()) == 1:
                 sqs = Event.objects.all()
-            instruments = []
             main_search, instruments = self.filter_sax(main_search)
             words = main_search.strip().split()
             all_instruments = self.get_instruments()
-            instruments += [i for i in words if i.upper() in all_instruments]
+            instruments = [i for i in words if i.upper() in all_instruments]
 
             if instruments:
                 condition = Q(artists_gig_info__role__name__icontains=instruments[0],
