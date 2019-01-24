@@ -790,15 +790,23 @@ def payout_form(request):
 
 @login_required
 def metrics_ajax_display(request):
-    start = request.query_params.get('start')
-    end = request.query_params.get('end')
-    set_id = (request.query_params.get('set_id'),"")
-    metrics_data = UserVideoMetric.objects.date_counts(month, year, set_id)
-    data = {
-            'dates': metrics_data.dates,
-            'audio_totals': metrics_data.audio_minutes_list,
-            'video_totals': metrics_data.video_minutes_list,
-            'all_totals': metrics_data.total_minutes_list,
-        }
+    month = request.GET.get('month')
+    year = request.GET.get('year')
+    set_id = request.GET.get('set_id', None)
+    data = {}
+    if month and year:
+        if set_id:
+            metrics_data = UserVideoMetric.objects.date_counts(int(month), int(year), int(set_id))
+        else:
+            metrics_data = UserVideoMetric.objects.date_counts(int(month), int(year))
+        data={
+                'dates': metrics_data['dates'],
+                'audio_minutes_list': metrics_data['audio_minutes_list'],
+                'video_minutes_list': metrics_data['video_minutes_list'],
+                'total_minutes_list': metrics_data['total_minutes_list'],
+                'audio_plays_list': metrics_data['audio_plays_list'],
+                'video_plays_list': metrics_data['video_plays_list'],
+                'total_plays_list': metrics_data['total_plays_list'],
+            }
 
     return JsonResponse(data)
