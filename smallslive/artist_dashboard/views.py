@@ -283,9 +283,6 @@ class MyPastEventsInfoView(DetailView):
         context['datepicker_current_range'] = CurrentPayoutPeriod.objects.first()
         context['datepicker_default_ranges'] = default_ranges
         old_payout_ranges = PastPayoutPeriod.objects.order_by('-period_start')[:6]
-        for period in old_payout_ranges:
-            print period.period_start
-        print old_payout_ranges
         context['datepicker_old_payout_ranges'] = old_payout_ranges
         
         return context
