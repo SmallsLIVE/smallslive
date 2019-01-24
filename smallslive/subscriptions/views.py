@@ -156,7 +156,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         self.handle_paypal_payment('USD', amount, item_list,
                                    payment_execute_url, payment_cancel_url, donation=True)
 
-    def execute_stripe_payment(self, stripe_token, amount, plan_type):
+    def execute_stripe_payment(self, stripe_token, amount, plan_type, flow_type):
         print '********************************'
         print 'execute stripe payment'
         print 'Amount: ', amount
@@ -166,9 +166,9 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
             customer, created = Customer.get_or_create(
                 subscriber=subscriber_request_callback(self.request))
             if plan_type == 'month':
-                subscribe_to_plan(customer, stripe_token, amount, plan_type)
+                subscribe_to_plan(customer, stripe_token, amount, plan_type, flow_type)
             else:
-                one_time_donation(customer, stripe_token, amount)
+                one_time_donation(customer, stripe_token, amount, flow_type)
         except stripe.StripeError as e:
             # add form error here
             print e
@@ -178,6 +178,9 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
     def post(self, request, *args, **kwargs):
         flow_type = self.request.POST.get('flow_type', "become_supporter")
+        print "FLOW"
+        print flow_type
+        print "FLOW"
         stripe_token = self.request.POST.get('stripe_token')
         plan_type = self.request.POST.get('type')
         amount = self.request.POST.get('quantity')
@@ -193,7 +196,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
             amount = int(amount)
 
         if stripe_token:
-            self.execute_stripe_payment(stripe_token, amount, plan_type)
+            self.execute_stripe_payment(stripe_token, amount, plan_type, flow_type)
             return _ajax_response(
                 self.request, redirect(reverse('become_supporter_complete')+ "?flow_type=" + flow_type)
             )

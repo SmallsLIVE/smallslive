@@ -119,7 +119,8 @@ def one_time_donation(customer, stripe_token, amount, flow="Charge"):
         'reference': charge_id,
         'confirmed': True,
     }
-    print donation
+    print flow
+    print flow
     Donation.objects.create(**donation)
 
 
@@ -128,7 +129,8 @@ def update_active_card(customer, stripe_token):
 
 
 def subscribe_to_plan(customer, stripe_token, amount, plan_type, flow="Charge"):
-
+    print flow
+    print flow
     plan_data = {
         'amount': amount,
         'currency': 'usd',
