@@ -602,6 +602,8 @@ class AdminMetricsView(SuperuserRequiredMixin, TemplateView):
 admin_metrics = AdminMetricsView.as_view()
 
 
+
+
 class ChangePayoutPeriodView(SuperuserRequiredMixin, UpdateView):
     success_url = reverse_lazy('artist_dashboard:change_payout_period')
     template_name = "artist_dashboard/change_payout_period.html"
@@ -785,3 +787,26 @@ def payout_form(request):
     return render(request, 'artist_dashboard/artist-payout-form.html', {
         'artist_info_form': artist_info_form,
     })
+
+@login_required
+def metrics_ajax_display(request):
+    month = request.GET.get('month')
+    year = request.GET.get('year')
+    set_id = request.GET.get('set_id', None)
+    data = {}
+    if month and year:
+        if set_id:
+            metrics_data = UserVideoMetric.objects.date_counts(int(month), int(year), int(set_id))
+        else:
+            metrics_data = UserVideoMetric.objects.date_counts(int(month), int(year))
+        data={
+                'dates': metrics_data['dates'],
+                'audio_minutes_list': metrics_data['audio_minutes_list'],
+                'video_minutes_list': metrics_data['video_minutes_list'],
+                'total_minutes_list': metrics_data['total_minutes_list'],
+                'audio_plays_list': metrics_data['audio_plays_list'],
+                'video_plays_list': metrics_data['video_plays_list'],
+                'total_plays_list': metrics_data['total_plays_list'],
+            }
+
+    return JsonResponse(data)

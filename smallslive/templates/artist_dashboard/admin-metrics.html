@@ -349,7 +349,7 @@
 
                 window.onload = drawGraph(playsDataArchive, 'plays');
                 $datePicker.on('changeMonth', function (d) {
-                      var countsURL = "{{ metrics_server_url }}/event_counts/";
+                      var countsURL = "{% url 'artist_dashboard:metrics_ajax_display' %}";
                       var data = {
                           month: d.date.getMonth() + 1,
                           year: d.date.getFullYear()
