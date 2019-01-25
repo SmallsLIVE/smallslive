@@ -99,6 +99,7 @@
                     payment information</a>
                   <button class="white-border-button checkout-white">Pay and order</button>
                   <input type="hidden" name="action" value="place_order"/>
+                  <input type="hidden" name="payment_method" value="{{ payment_method }}">
                   <div class="hidden">
                     {{ bankcard_form.as_p }}
                   </div>

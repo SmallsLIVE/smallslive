@@ -16,10 +16,9 @@ from oscar.apps.order.exceptions import UnableToPlaceOrder
 from oscar.apps.payment.exceptions import RedirectRequired, UnableToTakePayment, PaymentError
 from oscar.apps.payment.models import SourceType, Source
 from oscar.core.loading import get_class
-from oscar_stripe.facade import Facade
 from oscar_apps.order.models import Order
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
-from subscriptions.mixins import PayPalMixin
+from subscriptions.mixins import PayPalMixin, StripeMixin
 from subscriptions.models import Donation
 from .forms import PaymentForm, BillingAddressForm
 
@@ -133,7 +132,8 @@ class PaymentMethodView(checkout_views.PaymentMethodView):
             return redirect(url)
 
 
-class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
+class PaymentDetailsView(checkout_views.PaymentDetailsView,
+                         PayPalMixin, StripeMixin):
     """
     In the case of AJAX  (new become a supporter flow - gifts), we need to
     split billing from payment to match the existing payment design.
@@ -209,6 +209,27 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
 
         return self.handle_payment_details_submission(request)
 
+    def _handle_payment_details_submission_for_mezzrow(self,
+                                                       request,
+                                                       billing_address_form,
+                                                       payment_method):
+        """Customer can pay for Mezzrow tickets with PayPal or Credit Card.
+        If CC, it is processed with PayPal PayFlow Pro"""
+        if payment_method == 'paypal':
+            return self.render_preview(request,
+                                       billing_address_form=billing_address_form,
+                                       payment_method=payment_method)
+        else:
+            bankcard_form = BankcardForm(request.POST)
+            if not bankcard_form.is_valid():
+                # Form validation failed, render page again with errors
+                self.preview = False
+                return self.render_payment_details(request, bankcard_form=bankcard_form,
+                                                   billing_address_form=billing_address_form)
+            else:
+                return self.render_preview(request,
+                                           bankcard_form=bankcard_form)
+
     def handle_payment_details_submission(self, request):
         """"""
 
@@ -230,15 +251,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             billing_address_form = None
 
         if basket.has_tickets(): # TODO: add parameter venue_name='Mezzrow'
-            bankcard_form = BankcardForm(request.POST)
-            if not bankcard_form.is_valid():
-                # Form validation failed, render page again with errors
-                self.preview = False
-                return self.render_payment_details(request, bankcard_form=bankcard_form,
-                                                   billing_address_form=billing_address_form)
-            else:
-                return self.render_preview(request,
-                                           bankcard_form=bankcard_form)
+            return self._handle_payment_details_submission_for_mezzrow(
+                request, billing_address_form, payment_method)
         else:
 
             form = PaymentForm(self.request.user, request.POST)
@@ -281,11 +295,12 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         submission = self.build_submission()
         submission['payment_kwargs']['payment_method'] = payment_method
         if basket.has_tickets():
-            bankcard_form = BankcardForm(request.POST)
-            if bankcard_form.is_valid():
-                submission['payment_kwargs']['bankcard'] = bankcard_form.bankcard
-            else:
-                assert False, bankcard_form.errors
+            if payment_method == 'credit-card':
+                bankcard_form = BankcardForm(request.POST)
+                if bankcard_form.is_valid():
+                    submission['payment_kwargs']['bankcard'] = bankcard_form.bankcard
+                else:
+                    assert False, bankcard_form.errors
         print 'Submission: '
         print submission
         return self.submit(**submission)
@@ -507,7 +522,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         # Save order id in session so thank-you page can load it
         self.request.session['checkout_order_id'] = order.id
         if self.request.is_ajax():
-            print self.get_payment_URL(order)
             response = http.JsonResponse({'success_url': reverse('become_supporter_complete')})
         else:
             response = http.HttpResponseRedirect(self.get_success_url())
@@ -533,12 +547,41 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
 
         return items
 
+    def handle_tickets_payment(self, order_number, total, basket_lines, **kwargs):
+        """Handle payment for Mezzrow tickets
+           Mezzrow is processed either with PayPal or with PayPal Payflow Pro
+        """
+
+        payment_method = kwargs.get('payment_method')
+        if payment_method == 'paypal':
+            item_list = self.get_item_list(basket_lines)
+            currency = total.currency
+            total = str(total.incl_tax)
+            self.handle_paypal_payment(currency, total, item_list,
+                                       donation=False)
+        else:
+            payment_method = 'credit-card'
+            bankcard = kwargs['bankcard']
+            facade.sale(order_number, total.incl_tax, bankcard)
+
+        # Record payment source and event
+        source_type, is_created = SourceType.objects.get_or_create(
+            name=payment_method)
+        source = source_type.sources.model(
+            source_type=source_type,
+            amount_allocated=total.incl_tax,
+            amount_debited=total.incl_tax,
+            currency=total.currency,
+            label=bankcard.obfuscated_number)
+        self.add_payment_source(source)
+        self.add_payment_event('Sold', total.incl_tax)
+
     def handle_payment(self, order_number, total, basket_lines, **kwargs):
 
         basket = basket_lines.first().basket
-
         card_token = self.request.POST.get('card_token')
         payment_method = kwargs.get('payment_method')
+        self.mezzrow = False
 
         print '*******************'
         print 'handle_payment: '
@@ -549,97 +592,36 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
         print 'Basket has tickets: ', basket.has_tickets()
 
         if basket.has_tickets():
-            bankcard = kwargs['bankcard']
-            print bankcard
-            print 'Dir bankcard ....'
-            print dir(bankcard)
-            print 'facade:sale -> '
-            facade.sale(order_number, total.incl_tax, bankcard)
-            print 'ok'
-
-            # Record payment source and event
-            source_type, is_created = SourceType.objects.get_or_create(
-                name='Credit Card')
-            source = source_type.sources.model(
-                source_type=source_type,
-                amount_allocated=total.incl_tax,
-                amount_debited=total.incl_tax,
-                currency=total.currency,
-                label=bankcard.obfuscated_number)
-            self.add_payment_source(source)
-            self.add_payment_event('Sold', total.incl_tax)
+            self.mezzrow = True
+            self.handle_tickets_payment(
+                order_number,
+                total, basket_lines, **kwargs)
         else:
-
+            currency = total.currency
             if card_token:
-                if card_token.startswith('card_'):
-                    stripe_ref = Facade().charge(
-                        order_number,
-                        total,
-                        card=card_token,
-                        description=self.payment_description(order_number, total, **kwargs),
-                        metadata=self.payment_metadata(order_number, total, basket_lines, **kwargs),
-                        customer=self.request.user.customer.stripe_id)
-                else:
-                    stripe_ref = Facade().charge(
-                        order_number,
-                        total,
-                        card=card_token,
-                        description=self.payment_description(order_number, total, **kwargs),
-                        metadata=self.payment_metadata(order_number, total, basket_lines, **kwargs))
-
-                source_name = 'Credit Card'
-                reference = stripe_ref
-                currency = settings.STRIPE_CURRENCY
-
-                print '******************)))))))'
-                cost = 0
-                for line in basket_lines:
-                    print line
-                    print dir(line)
-                    print line.stockrecord
-                    if line.stockrecord and line.stockrecord.cost_price:
-                        cost += line.stockrecord.cost_price
-
-                if not basket.has_tickets():
-
-                    donation = {
-                        'user': self.request.user,
-                        'currency': currency,
-                        'amount': total.incl_tax - cost,
-                        'reference': stripe_ref,
-                        'confirmed': True,
-
-                    }
-                    print donation
-                    Donation.objects.create(**donation)
-
+                reference = self.handle_stripe_payment(
+                    card_token, order_number,
+                    total, basket, basket_lines, **kwargs)
+                source_name = 'Stripe Credit Card'
+                source_type, __ = SourceType.objects.get_or_create(name=source_name)
+                source = Source(
+                    source_type=source_type,
+                    currency=currency,
+                    amount_allocated=total.incl_tax,
+                    amount_debited=total.incl_tax,
+                    reference=reference)
+                self.add_payment_source(source)
+                self.add_payment_event('Purchase', total.incl_tax, reference=reference)
             elif payment_method == 'paypal':
                 item_list = self.get_item_list(basket_lines)
-                payment_execute_url = self.request.build_absolute_uri(reverse('checkout:paypal_execute'))
-                payment_cancel_url = self.request.build_absolute_uri(reverse('become_supporter'))
-                currency = total.currency
                 total = str(total.incl_tax)
                 # Donation will be set to True  if user is selecting gifts
                 # For Tickets and  other goods, there will  be no donation.
                 # 'handle_paypal_payment' returns a RedirectRequiredException
                 # and the flow will be completed in ExecutePaypalPayment
-                self.handle_paypal_payment(currency, total, item_list,
-                                           payment_execute_url, payment_cancel_url,
-                                           donation=not basket_lines.first().basket.has_tickets())
-                source_name = 'PayPal'
-                reference = ''
-                currency = 'USD'
-
-            source_type, __ = SourceType.objects.get_or_create(name=source_name)
-            source = Source(
-                source_type=source_type,
-                currency=currency,
-                amount_allocated=total.incl_tax,
-                amount_debited=total.incl_tax,
-                reference=reference)
-            self.add_payment_source(source)
-
-            self.add_payment_event('Purchase', total.incl_tax, reference=reference)
+                self.handle_paypal_payment(
+                    currency, total, item_list,
+                    donation=not basket_lines.first().basket.has_tickets())
 
     def payment_description(self, order_number, total, **kwargs):
         return 'Order #{0} at SmallsLIVE'.format(order_number)
@@ -650,21 +632,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin):
             item_key = u'item{0}'.format(idx)
             items[item_key] = u'{0}, qty: {1}'.format(item.product.get_title(), item.quantity)
         items['order_number'] = order_number
-        return items
 
-    def get_payment_URL(self, order):
-        basket = order.basket
-        if basket:
-            url = 'become_supporter'
-            if basket.has_tickets():
-                url = 'become_supporter'
-            if basket.has_digital_products():
-                url = 'become_supporter'
-            if basket.has_physical_products():
-                url = 'become_supporter'
-            if basket.has_gifts():
-                url = 'become_supporter'
-        return url
+        return items
 
 
 class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
@@ -714,8 +683,11 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
         order_kwargs = {'order_type': basket.get_order_type()}
         if basket.has_tickets():
             order_kwargs['status'] = 'Completed'
-            # Need to set 'Completed' status in lines too after the order is created.
-
+            payment_source = 'Mezzrow PayPal'
+            payment_event = 'Sold'
+        else:
+            payment_source = 'PayPal'
+            payment_event = 'Purchase'
         user = self.request.user
         if not user.is_anonymous():
             first_name, last_name = user.first_name, user.last_name
@@ -734,14 +706,16 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
 
         total_incl_tax = basket.total_incl_tax
         # Record payment source
-        source_type, is_created = SourceType.objects.get_or_create(name='PayPal')
+        source_type, is_created = SourceType.objects.get_or_create(
+            name=payment_source)
         source = Source(source_type=source_type,
                         currency='USD',
                         amount_allocated=total_incl_tax,
                         amount_debited=total_incl_tax,
                         reference=payment_id)
         self.add_payment_source(source)
-        self.add_payment_event('Purchase', total_incl_tax, reference=payment_id)
+        self.add_payment_event(
+            payment_event, total_incl_tax, reference=payment_id)
 
         if not basket.has_tickets():
             donation = {
@@ -777,3 +751,10 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
                 line.set_status('Completed')
 
         return response
+
+
+class ExecuteMezzrowPayPalPaymentView(ExecutePayPalPaymentView):
+    """Class ready override PayPal payment for Mezzrow if necessary"""
+    pass
+
+

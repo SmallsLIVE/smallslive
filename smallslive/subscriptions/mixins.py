@@ -1,5 +1,6 @@
 import paypalrestsdk
 import stripe
+from oscar_stripe.facade import Facade
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from oscar.apps.payment.exceptions import RedirectRequired, \
@@ -10,25 +11,19 @@ from subscriptions.models import Donation
 
 class PayPalMixin(object):
 
-    def configure_paypal(self):
-        paypalrestsdk.configure({
-            'mode': settings.PAYPAL_MODE,  # sandbox or live
-            'client_id': settings.PAYPAL_CLIENT_ID,
-            'client_secret': settings.PAYPAL_CLIENT_SECRET})
+    def get_payment_data(self, item_list, total, currency):
 
-    def handle_paypal_payment(self, currency, total, item_list,
-                              payment_execute_url, payment_cancel_url,
-                              donation=False):
-        print '******************************'
-        print 'PayPal Mixin handle PayPal payment'
+        if self.mezzrow:
+            execute_uri = 'checkout:mezzrow_paypal_execute'
+            cancel_uri = 'checkout:payment-details'
+        else:
+            execute_uri = 'checkout:paypal_execute'
+            cancel_uri = 'checkout:payment-details'
 
-        print total
-        print currency
+        payment_execute_url = self.request.build_absolute_uri(reverse(execute_uri))
+        payment_cancel_url = self.request.build_absolute_uri(reverse(cancel_uri))
 
-        self.configure_paypal()
-
-        print 'payment data'
-        payment_data = {
+        return {
             'intent': 'sale',
             'payer': {'payment_method': 'paypal'},
             'redirect_urls': {
@@ -40,6 +35,32 @@ class PayPalMixin(object):
                     'total': total,
                     'currency': currency},
                 'description': 'SmallsLIVE'}]}
+
+    def configure_paypal(self):
+        if self.mezzrow:
+            paypalrestsdk.configure({
+                'mode': settings.PAYPAL_MODE,  # sandbox or live
+                'client_id': settings.PAYPAL_MEZZROW_CLIENT_ID,
+                'client_secret': settings.PAYPAL_MEZZROW_CLIENT_SECRET})
+        else:
+            paypalrestsdk.configure({
+                'mode': settings.PAYPAL_MODE,  # sandbox or live
+                'client_id': settings.PAYPAL_CLIENT_ID,
+                'client_secret': settings.PAYPAL_CLIENT_SECRET})
+
+    def handle_paypal_payment(self, currency, total, item_list,
+                              donation=False):
+        print '******************************'
+        print 'PayPal Mixin handle PayPal payment'
+
+        print total
+        print currency
+
+        self.configure_paypal()
+
+        print 'payment data'
+        payment_data = self.get_payment_data(item_list, total, currency)
+
         print 'paypal restsdk'
         payment = paypalrestsdk.Payment(payment_data)
         print 'payment_id'
@@ -108,6 +129,50 @@ class PayPalMixin(object):
 
 
 class StripeMixin(object):
+
+    def handle_stripe_payment(self, card_token,
+                               order_number, total, basket,
+                               basket_lines, **kwargs):
+        if card_token.startswith('card_'):
+            stripe_ref = Facade().charge(
+                order_number,
+                total,
+                card=card_token,
+                description=self.payment_description(order_number, total, **kwargs),
+                metadata=self.payment_metadata(order_number, total, basket_lines, **kwargs),
+                customer=self.request.user.customer.stripe_id)
+        else:
+            stripe_ref = Facade().charge(
+                order_number,
+                total,
+                card=card_token,
+                description=self.payment_description(order_number, total, **kwargs),
+                metadata=self.payment_metadata(order_number, total, basket_lines, **kwargs))
+
+        currency = settings.STRIPE_CURRENCY
+
+        print '******************)))))))'
+        cost = 0
+        for line in basket_lines:
+            print line
+            print dir(line)
+            print line.stockrecord
+            if line.stockrecord and line.stockrecord.cost_price:
+                cost += line.stockrecord.cost_price
+
+        if not basket.has_tickets():
+            donation = {
+                'user': self.request.user,
+                'currency': currency,
+                'amount': total.incl_tax - cost,
+                'reference': stripe_ref,
+                'confirmed': True,
+
+            }
+            print donation
+            Donation.objects.create(**donation)
+
+        return stripe_ref
 
     def refund_stripe_payment(self, charge_id, total):
         charge = stripe.Charge.retrieve(id=charge_id)

@@ -186,6 +186,9 @@ def subscribe(customer, plan, flow):
 
 
 def charge(customer, amount, flow):
+    """Just charge the customer
+    The web hook will take care of updating donations if necessary"""
+
     print 'charge: ---->'
     print amount
     print type(amount)

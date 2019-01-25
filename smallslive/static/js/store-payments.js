@@ -87,7 +87,7 @@ $(document).ready(function () {
 
     // Set new value to input - payment-method
     $('#payment-method').val(paymentMethod);
-    checkConfirmButton();
+    //checkConfirmButton();
 
     return false;
   });

@@ -613,7 +613,7 @@ $(document).ready(function() {
           tax +
           "</span> is tax deductible. You will receive access to The SmallsLIVE Archive for the remainder of the tax year. You have also chosen to receive a " +
           giftTier +
-          " as a gift for your contribution..<br> Please select your option below."
+          " as a gift for your contribution." //<br> Please select your option below.
       );
     var $giftContent = $selectionConfirmationDialog.find(".gift-content");
     $giftContent.html($item);

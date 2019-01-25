@@ -1,3 +1,4 @@
+from paypal.payflow import facade as payflow_facade
 from subscriptions.mixins import PayPalMixin
 from subscriptions.mixins import StripeMixin
 from oscar.apps.order.models import PaymentEventType
@@ -8,16 +9,27 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
 
     def handle_order_status_change(self, order, new_status, note_msg):
 
-        if new_status == "Cancelled":
+        if new_status == 'Cancelled':
             payment_source = order.sources.first()
             reference = payment_source.reference
             amount = payment_source.amount_allocated
             currency = payment_source.currency
-            if payment_source.source_type.name == "Credit Card":
+            if payment_source.source_type.name == 'Mezzrow PayPal':
+                self.mezzrow = True
+                refund_reference = self.refund_paypal_payment(
+                    reference,
+                    amount,
+                    currency)
+            elif payment_source.source_type.name == 'Mezzrow Credit Card':
+                self.mezzrow = True
+                payflow_facade.credit(order.number, amt=order.total_incl_tax)
+            elif payment_source.source_type.name == 'Stripe Credit Card':
+                self.mezzrow = False
                 refund_reference = self.refund_stripe_payment(
                     reference,
                     amount)
-            else:
+            elif payment_source.source_type.name == 'PayPal':
+                self.mezzrow = False
                 refund_reference = self.refund_paypal_payment(
                     reference,
                     amount,
