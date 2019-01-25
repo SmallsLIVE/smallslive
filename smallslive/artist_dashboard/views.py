@@ -472,8 +472,8 @@ class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
 
     form_class = EventEditForm
     success_url = reverse_lazy('artist_dashboard:my_past_events')
-    inlines = [ArtistGigPlayedAddInlineFormSet]
-    inlines_names = ['artists']
+    #inlines = [ArtistGigPlayedAddInlineFormSet]
+    #inlines_names = ['artists']
 
     def get_template_names(self):
         if self.request.is_ajax():
@@ -494,7 +494,6 @@ class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
             response = HttpResponse(status=200)
 
         return response
-
 
 
 event_edit = EventEditView.as_view()

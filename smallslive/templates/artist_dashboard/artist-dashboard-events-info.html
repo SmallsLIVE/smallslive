@@ -8,9 +8,10 @@
         
         <div class="button-row button-row-margin">
             {% if is_admin and set.has_media %}
-                 <a href="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
-                        <button class="set-button event-edit-button">Edit</button>
-                </a>
+                <button class="set-button event-edit-button white-border-button"
+                        data-ajax-edit-url="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}">
+                    Edit
+                </button>
                 {% if not event.is_future %}
                     {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
                     <button id="private-button" class="publish-button set-button" onclick="askPrivate({{ set.id }})"> Public </button>
@@ -20,9 +21,10 @@
                 {% endif %}
             {% else %}
                 {% if is_admin %}
-                    <a href="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
-                        <button class="set-button .event-edit-button">Edit</button>
-                    </a>
+                    <button class="set-button event-edit-button white-border-button"
+                            data-ajax-edit-url="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}">
+                        Edit
+                    </button>
                 {% else %}
                     <button disabled class="set-button">Edit</button>
                 {% endif %}

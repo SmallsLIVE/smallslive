@@ -328,7 +328,7 @@
         $(document).ready(function() {
 
           $(document).on('click', '.event-edit-button', function () {
-            var url = $(this).data('url');
+            var url = $(this).data('ajax-edit-url');
             $('#event_edit_modal').modal('show');
 
             $.ajax({

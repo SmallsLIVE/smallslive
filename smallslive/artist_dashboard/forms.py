@@ -61,7 +61,7 @@ class EventEditForm(event_forms.EventEditForm):
     def get_layout(self):
         return Layout(
             'title',
-            Formset('artists', template='form_widgets/formset_layout.html'),
+            #Formset('artists', template='form_widgets/formset_layout.html'),
             'photo',
             'cropping'
         )
