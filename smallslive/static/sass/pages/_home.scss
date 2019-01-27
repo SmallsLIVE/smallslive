@@ -114,6 +114,9 @@ div.event-strip {
   background-color: white;
   display: flex;
   width: 5%;
+  @media(max-width: $screen-sm-max) {
+    width: 15%;
+  }
 }
 .sign-in-button,
 .user-menu {
