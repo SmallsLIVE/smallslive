@@ -66,16 +66,7 @@
                                 {% endif %}
                             {% endfor %}
                         </div>
-                        <span class="store-single__item__images__helper">(Click/tap on the image to zoom.)</span>
-                        <ul class="store-single__item__images__thumbnails">
-                            {% for image in all_images %}
-                                <li data-slickPosition="{{ forloop.counter0 }}"
-                                    class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}">
-                                    <img class="defineImageRatio" src="{% thumbor_url image.original.url|urlencode height=300 width=300 smart=True %}"
-                                         alt="{{ product.get_title }} thumbnail">
-                                </li>
-                            {% endfor %}
-                        </ul>
+                        
                     {% endwith %}
                 </div>
                 <div class="store-single__item__content">
