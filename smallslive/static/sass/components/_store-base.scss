@@ -917,6 +917,10 @@
         @include title2;
         font-size: 18px;
         margin: 0 0 20px -10px;
+
+        @media (max-width: $screen-sm-max) {
+          margin-left: 0;
+        }
       }
 
       &__header,
@@ -1100,6 +1104,10 @@
   &__content {
     //background-color: #fff;
     padding: 40px 30px;
+
+    @media (max-width: $screen-sm-max) {
+      padding: 40px 0;
+    }
   }
 
   &__item {
