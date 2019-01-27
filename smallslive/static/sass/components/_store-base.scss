@@ -1115,6 +1115,13 @@
     &__images {
       padding: 0 20px;
 
+      img {
+        &.defineImageRatio {
+          border-radius: 0;
+          margin: 0;
+        }
+      }
+
       &__big-image {
         @include display(flex);
         @include align-items(center);
@@ -2387,6 +2394,15 @@ img.defineImageRatio {
     }
     @media (min-width: 1366px) {
       height: 15.1vw;
+    }
+  }
+
+  .event-card {
+    &:hover {
+      .event-picture {
+        filter: gray;
+        -webkit-filter: grayscale(100%);
+      }
     }
   }
 
