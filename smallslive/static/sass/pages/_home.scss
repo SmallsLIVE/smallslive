@@ -94,7 +94,7 @@ div.event-strip {
 #a-z-search {
   text-align: left;
   width: 89%;
-  overflow-x: auto;
+  overflow: hidden;
   display: flex;
   @media(max-width: $screen-sm-max){
     width: 100%;
