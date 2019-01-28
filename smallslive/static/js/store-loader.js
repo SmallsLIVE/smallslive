@@ -133,6 +133,7 @@ $(document).on('keyup', "#artist-search-all", function(){
 
 $(document).on('click', ".artist-result", function(){
     let artistId = $(this).data("id");
+    $("#artist-search-all").val($(this).text())
     loadInfo(artistId)
 })
 
@@ -176,5 +177,7 @@ $(document).ready(function() {
     artistId = artistId ? artistId : "";
     if(artistId){
         loadInfo(artistId)   
+
+        $("#artist-search-all").val($(".search-bar-result-text[data-id=" + artistId + "]").text())
     }
 })
