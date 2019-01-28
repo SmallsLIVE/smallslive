@@ -410,7 +410,7 @@ LOGGING = {
         },
         'paypal.payflow': {
             'handlers': ['console',],
-            'level': 'INFO'
+            'level': 'DEBUG'
         }
     }
 }
