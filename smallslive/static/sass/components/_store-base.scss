@@ -1125,6 +1125,7 @@
 
       img {
         &.defineImageRatio {
+          width: 100%;
           border-radius: 0;
           margin: 0;
         }
@@ -2503,7 +2504,9 @@ img.defineImageRatio {
   }
 }
 .store-single__item__images {
-  max-width: auto;
+  width: 320px;
+  height: 320px;
+  max-width: 320px;
   @media (max-width: $screen-md) {
     width: auto;
   }
