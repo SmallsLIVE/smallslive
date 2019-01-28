@@ -308,11 +308,11 @@ function sendEventRequest() {
 }
 
 $(document).ready(function() {
-  var instrument=  getUrlParameter("instrument")
-  if (instrument){
-    $(".instrument-btn").text(instrument)
-  }
-  artistInstrument = (instrument ? instrument : "")
+  var instrument=  getUrlParameter("instrument");
+  if (instrument) {
+    $(".instrument-btn").text(instrument);
+  };
+  artistInstrument = (instrument ? instrument : "");
   searchTerm = getUrlParameter("q");
   searchTerm = searchTerm ? searchTerm.replace(/\+/g, " ") : "";
   artistSearchTerm = "";
@@ -905,8 +905,8 @@ $(document).ready(function() {
 });
 
 $(document).on("click", ".artist-search-profile-container.pad-content .close-button", function(){
-  if(!artistInstrument){
-    $(".instrument[data-instrument='']").click()
-  }
+  if (!artistInstrument) {
+    $(".instrument[data-instrument='']").click();
+  };
 
-})
+});
