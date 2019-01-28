@@ -170,4 +170,11 @@ $(document).on('click', ".reset-search", function(){
     loadInfo()
 })
 
-    
+
+$(document).ready(function() {
+    artistId = getUrlParameter("artist_pk");
+    artistId = artistId ? artistId : "";
+    if(artistId){
+        loadInfo(artistId)   
+    }
+})
