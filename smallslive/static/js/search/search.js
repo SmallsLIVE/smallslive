@@ -905,8 +905,8 @@ $(document).ready(function() {
 });
 
 $(document).on("click", ".artist-search-profile-container.pad-content .close-button", function(){
-
-  
-
+  if(!artistInstrument){
+    $(".instrument[data-instrument='']").click()
+  }
 
 })
