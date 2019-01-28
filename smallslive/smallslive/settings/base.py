@@ -407,6 +407,10 @@ LOGGING = {
         'cron': {
             'handlers': ['console',],
             'level': 'INFO'
+        },
+        'paypal.payflow': {
+            'handlers': ['console',],
+            'level': 'DEBUG'
         }
     }
 }
