@@ -160,18 +160,6 @@ class StripeMixin(object):
             if line.stockrecord and line.stockrecord.cost_price:
                 cost += line.stockrecord.cost_price
 
-        if not basket.has_tickets():
-            donation = {
-                'user': self.request.user,
-                'currency': currency,
-                'amount': total.incl_tax - cost,
-                'reference': stripe_ref,
-                'confirmed': True,
-
-            }
-            print donation
-            Donation.objects.create(**donation)
-
         return stripe_ref
 
     def refund_stripe_payment(self, charge_id, total):

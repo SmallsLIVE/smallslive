@@ -719,17 +719,6 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
         self.add_payment_event(
             payment_event, total_incl_tax, reference=payment_id)
 
-        if not basket.has_tickets():
-            donation = {
-                'user': user,
-                'currency': source.currency,
-                'amount': source.amount_allocated,
-                'reference': payment_id,
-                'confirmed': True,
-
-            }
-            Donation.objects.create(**donation)
-
         shipping_address = self.get_shipping_address(basket)
         shipping_method = Repository().get_default_shipping_method(
             basket=basket, user=user,

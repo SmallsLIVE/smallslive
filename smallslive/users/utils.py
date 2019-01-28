@@ -111,17 +111,7 @@ def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
 
 def one_time_donation(customer, stripe_token, amount, flow="Charge"):
     customer.update_card(stripe_token)
-    charge_id = charge(customer, amount, flow).id
-    donation = {
-        'user': customer.subscriber,
-        'currency': 'USD',
-        'amount': amount,
-        'reference': charge_id,
-        'confirmed': True,
-    }
-    print flow
-    print flow
-    Donation.objects.create(**donation)
+    charge(customer, amount, flow).id
 
 
 def update_active_card(customer, stripe_token):
