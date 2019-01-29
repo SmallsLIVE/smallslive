@@ -239,6 +239,7 @@
                     <button class="white-border-button" onclick="makeSetPrivateMobile({{ set.id }})">Make Private</button>
                 </div>
             {% endif %}
+            {% if not event.is_future %}
             <div id="mobile-option-metrics" class="mobile-option-metrics flex-column">
                 <div class="event-metrics-mobile-container flex-row">
                     <div class="event-metrics-mobile-container-plays event-metrics-container-data">
@@ -276,6 +277,7 @@
                                 </div>
                 </div>
             </div>
+            {% endif %}
             <div id="not-authorized-text">
                     <div class="text2 accent-color">
                         LEADERSHIP STATUS
