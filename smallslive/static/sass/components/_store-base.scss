@@ -2117,6 +2117,9 @@
   }
 
   &__left-column {
+    .white-line-bottom{
+      margin: 4px 0 20px 0;
+    }
     @media (min-width: $screen-sm-min) {
       padding-right: 30px;
       border-right: 1px solid #ddd;
