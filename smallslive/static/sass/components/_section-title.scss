@@ -102,3 +102,22 @@
     }
   }
 }
+
+@media(max-width: $screen-md-max) {
+  .store-overview__group .section-title{
+    padding-bottom: 0;
+    background-size: 750px 5px;
+    div.title1 {
+      font-size: 30px;
+      line-height: 46px;
+    }
+  }
+  .store-overview .white-line-bottom > .title1{
+    font-size: 30px;
+  }
+}
+@media (max-width: 960px){
+  .store-header__content .title1.center{
+    padding-bottom: 8px;
+  }
+} 

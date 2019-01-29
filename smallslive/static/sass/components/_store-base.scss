@@ -2224,11 +2224,14 @@
     font-size: 14px;
     color: lighten($base-text-color, 60%);
     @include lato-bold;
-
+    &__container .white-border-button{
+      @media (max-width: 960px){
+        padding: 0 18px;
+      }
+    }
     & i {
       @include transition(all 0.3s ease-in-out);
     }
-
     &:hover,
     &:focus {
       color: lighten($base-text-color, 50%);
