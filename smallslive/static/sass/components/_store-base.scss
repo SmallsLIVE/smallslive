@@ -662,11 +662,16 @@
     }
     .select-selected {
       border: 3px solid rgba(255, 255, 255, 0.9);
+      margin-right: 15px;
     }
     .select-items {
       top: 95%;
+      margin-right: 15px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       div {
-        width: 20vw;
+        width: 114%;
       }
     }
   }
