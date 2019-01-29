@@ -397,6 +397,9 @@
   }
 
   &__content {
+    .slide-btn.prev, .slide-btn.next {
+      border-radius: 0;
+    }
     padding: 40px 0;
     //background-color: #fff;
 
@@ -662,11 +665,16 @@
     }
     .select-selected {
       border: 3px solid rgba(255, 255, 255, 0.9);
+      margin-right: 15px;
     }
     .select-items {
       top: 95%;
+      margin-right: 15px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       div {
-        width: 20vw;
+        width: 114%;
       }
     }
   }
@@ -1246,6 +1254,9 @@
 
     &__description {
       @include text4;
+      * {
+        font-family: 'Reem Kufi', sans-serif !important;
+      }
       font-size: 14px;
       margin: 20px 0;
       //padding-right: 20px;
@@ -1253,11 +1264,17 @@
 
     &__details {
       @include text4;
+      * {
+        font-family: 'Reem Kufi', sans-serif !important;
+      }
       //margin-bottom: 15px;
       //padding-right: 20px;
 
       &__title {
         @include text4;
+        * {
+          font-family: 'Reem Kufi', sans-serif !important;
+        }
         display: block;
         margin: 0 0 5px;
         //@include lato-bold;
@@ -2103,6 +2120,9 @@
   }
 
   &__left-column {
+    .white-line-bottom{
+      margin: 4px 0 20px 0;
+    }
     @media (min-width: $screen-sm-min) {
       padding-right: 30px;
       border-right: 1px solid #ddd;
@@ -2207,11 +2227,14 @@
     font-size: 14px;
     color: lighten($base-text-color, 60%);
     @include lato-bold;
-
+    &__container .white-border-button{
+      @media (max-width: 960px){
+        padding: 0 18px;
+      }
+    }
     & i {
       @include transition(all 0.3s ease-in-out);
     }
-
     &:hover,
     &:focus {
       color: lighten($base-text-color, 50%);
@@ -2271,7 +2294,6 @@ img.defineImageRatio {
 }
 
 .store-done {
-  background-color: #fff;
   padding: 60px 30px;
 
   @media (max-width: $screen-xs-max) {

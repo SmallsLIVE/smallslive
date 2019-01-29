@@ -34,14 +34,11 @@
                 {% if basket.has_tickets %}
                     {% include 'checkout/tickets_products.html' %}
                 {% endif %}
-                <div class="store-overview__return-button__container">
-                    <a href="{% url "basket:summary" %}" class="white-border-button checkout-white right"> Back to cart</a>
-                </div>
             </div>
             <div class="col-xs-12 col-sm-4 store-overview__right-column">
                 <div class="store-overview__group">
                 <div class="section-title section-title-no-padded">
-                  <div class="title1">Shipping Information</div>
+                  <div class="title1">Shipping</div>
                 </div>
                     {% if shipping_address %}
                         <div class="store-overview__group__textblock text1">
@@ -66,7 +63,7 @@
                 </div>
                 <div class="store-overview__group">
                     <div class="section-title section-title-no-padded">
-                        <div class="title1">Billing Information</div>
+                        <div class="title1">Billing</div>
                      </div>
                     {% if billing_address %}
                     <div class="store-overview__group__textblock text1">
@@ -83,7 +80,7 @@
                         <p>xxxx xxxx xxxx {{ card_info.last_4 }}</p>
                     </div>
                     <div class="store-overview__return-button__container">
-                    <a href="{% url "checkout:payment-details" %}" class="white-border-button"> Back to billing</a>
+                    <a href="{% url "checkout:payment-details" %}" class="white-border-button">Edit</a>
                 </div>
                 </div>
             </div>
@@ -105,8 +102,7 @@
               {% block place_order %}
                 <form action="{% url "checkout:preview" %}" method="post">
                   {% csrf_token %}
-                  <a href="{% url "checkout:payment-details" %}" class="white-border-button left back-to-payment-btn"> Back to
-                    payment information</a>
+                  <a href="{% url 'basket:summary' %}" class="white-border-button left back-to-payment-btn"> Back to cart</a>
                   <button class="white-border-button checkout-white">Pay and order</button>
                   <input type="hidden" name="action" value="place_order"/>
                   <input type="hidden" name="payment_method" value="{{ payment_method }}">

@@ -308,10 +308,14 @@ function sendEventRequest() {
 }
 
 $(document).ready(function() {
+  var instrument=  getUrlParameter("instrument");
+  if (instrument) {
+    $(".instrument-btn").text(instrument);
+  };
+  artistInstrument = (instrument ? instrument : "");
   searchTerm = getUrlParameter("q");
   searchTerm = searchTerm ? searchTerm.replace(/\+/g, " ") : "";
   artistSearchTerm = "";
-  artistInstrument = "";
   artistPageNum = eventPageNum = 1;
   artistMaxPageNum = eventMaxPageNum = 2;
   apply = false;
@@ -898,4 +902,11 @@ $(document).ready(function() {
       $datePickerCalendar.datepicker("show");
     }
   });
+});
+
+$(document).on("click", ".artist-search-profile-container.pad-content .close-button", function(){
+  if (!artistInstrument) {
+    $(".instrument[data-instrument='']").click();
+  };
+
 });
