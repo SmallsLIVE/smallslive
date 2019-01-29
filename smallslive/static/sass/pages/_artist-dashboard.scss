@@ -9,6 +9,12 @@
     padding: 20px 0;
   }
   &.metrics-profile-container {
+    .alert{
+          top: 20%;
+    position: fixed;
+    left: 5%;
+    width: 90%;
+    }
     @media (max-width: 1023px) {
       padding: 20px 15vw;
       .title1 {
@@ -36,6 +42,7 @@
         border: 3px solid $white-transparent;
         @media (max-width: 650px) {
           width: 100%;
+          padding: 0px 20px;
         }
       }
     }
