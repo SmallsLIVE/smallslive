@@ -238,9 +238,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="store-overview__return-button__container">
-                    <a href="#" class="store-overview__return-button"> Back to cart</a>
-                </div>
             </div>
             <div class="col-xs-12 col-sm-4 store-overview__right-column">
                 <div class="store-overview__group">
@@ -256,7 +253,7 @@
                     </div>
                 </div>
                 <div class="store-overview__return-button__container">
-                    <a href="#" class="store-overview__return-button">Back to shipping</a>
+                    <a href="#" class="store-overview__return-button">Edit</a>
                 </div>
                 <div class="store-overview__group">
                     <h3 class="store-overview__group__heading">Billing:</h3>
@@ -273,7 +270,7 @@
                         <p>Matej Grozdanovic</p>
                     </div>
                     <div class="store-overview__return-button__container">
-                    <a href="#" class="store-overview__return-button"> Back to billing</a>
+                    <a href="#" class="store-overview__return-button">Edit</a>
                 </div>
                 </div>
             </div>
@@ -292,7 +289,7 @@
                 </div>
             </div>
             <div class="col-xs-12 store-cart__footer__buttons">
-                <a href="#" class="store-cart__footer__button-back"> Back to payment information</a>
+                <a href="{% url 'basket:summary' %}" class="white-border-button left back-to-payment-btn"> Back to cart</a>
                 <a href="#" class="store-cart__footer__button-next">Pay and order</a>
             </div>
         </section>
