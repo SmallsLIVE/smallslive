@@ -64,14 +64,17 @@
     </section>
     <div class="flex-column settings-right artist-payout-data">
         <div id="payout-form" style="display: none;" data-subpage-url="{% url 'artist_dashboard:payout_form'%}" data-subpage-name="payout-form">
+         
         </div>
         <div class="flex-column" id="payout-address-info">
             <div class="text1 artist-payout-data-text">Mailing address</div>
             <div class="text9 text-grey artist-payout-data-text">
                 {% if user.address_1 or user.address_2 or user.city %}
-                    {{ user.address_1 }} <br>
-                    {{ user.address_2 }} <br>  
-                    {{user.city }} 
+                    <span id="address-1">{{ user.address_1 }}</span>
+                    <br>
+                    <span id="address-2">{{ user.address_2 }}</span>
+                    <br>  
+                    <span id="city">{{user.city }}</span>
                 {% else %}
                     There is no address assigned
                 {% endif %}
@@ -97,6 +100,18 @@
                     </div>
                 </div>
             </div>
+      <div class="modal fade" id="succeful-edit" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content custom-modal">
+                        <i class="close-button"></i>
+                        <div class="modal-body">
+                            <div class="text-grey text4 payout-info-text">
+                                You've successfully updated your profile.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 </div>
 {% endblock content %}
 {% block extra_js %}
@@ -110,6 +125,9 @@
         subpages.register();
         subpages.get('payout-form').setCallback(function() {
             replaceWhiteSelects($('[data-subpage-name="payout-form"]')[0]);
+            payoutForm = $("#payout-form")[0];
+            $("#submit-button").remove()
+            $(payoutForm).append("<button class='white-border-button payout-info-button' onclick='submitPayoutForm()'>Save</button>")
         });
         subpages.loadAll();
 
@@ -191,5 +209,23 @@
             eventsSeconds.innerHTML = formattedPayout(eventsSecondsValue)
 
         });
+        function submitPayoutForm(){
+            payoutForm = $("#payout-form .custom-form")[0];
+            $.ajax({
+                type: "POST",
+                url: "{% url 'artist_dashboard:payout_form'%}",
+                data: $(payoutForm).serialize()+"&artist_info=Save",
+                success: function(data) {
+                    $payoutForm = document.getElementById('payout-form')
+                    $payoutAddressInfo = document.getElementById('payout-address-info')
+                    $($payoutAddressInfo).show()
+                    $($payoutForm).hide()
+                    $('#succeful-edit').modal('show')
+                    $("#address-1").html(data['address-1'])
+                    $("#address-2").html(data['address-2'])
+                    $("#city").html(data['city'])
+                    }
+                })
+        }
     </script> 
 {% endblock %}
