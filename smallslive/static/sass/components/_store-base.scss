@@ -1246,6 +1246,9 @@
 
     &__description {
       @include text4;
+      * {
+        font-family: 'Reem Kufi', sans-serif !important;
+      }
       font-size: 14px;
       margin: 20px 0;
       //padding-right: 20px;
@@ -1253,11 +1256,17 @@
 
     &__details {
       @include text4;
+      * {
+        font-family: 'Reem Kufi', sans-serif !important;
+      }
       //margin-bottom: 15px;
       //padding-right: 20px;
 
       &__title {
         @include text4;
+        * {
+          font-family: 'Reem Kufi', sans-serif !important;
+        }
         display: block;
         margin: 0 0 5px;
         //@include lato-bold;
