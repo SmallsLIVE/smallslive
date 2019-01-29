@@ -397,6 +397,9 @@
   }
 
   &__content {
+    .slide-btn.prev, .slide-btn.next {
+      border-radius: 0;
+    }
     padding: 40px 0;
     //background-color: #fff;
 
