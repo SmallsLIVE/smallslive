@@ -15,8 +15,10 @@
                 {% if not event.is_future %}
                     {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
                     <button id="private-button" class="publish-button set-button" onclick="askPrivate({{ set.id }})"> Public </button>
+                    <button id="public-button" class="publish-button set-button hidden" onclick="askPublish({{ set.id }})"> Private </button>
                     {% else %}
                     <button id="public-button" class="publish-button set-button" onclick="askPublish({{ set.id }})"> Private </button>
+                    <button id="private-button" class="publish-button set-button hidden" onclick="askPrivate({{ set.id }})"> Public </button>
                     {% endif %}
                 {% endif %}
             {% else %}
@@ -183,8 +185,11 @@
                     {% if not event.is_future%}    
                         {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
                             <div id="mobile-private-button" class="white-border-button" data-id="mobile-option-private"> Public </div>
+                            <div id="mobile-public-button"  class="white-border-button hidden" data-id="mobile-option-publish"> Private </div>
                         {% else %}
                             <div id="mobile-public-button" class="white-border-button" data-id="mobile-option-publish"> Private </div>
+                            <div id="mobile-private-button" class="white-border-button hidden" data-id="mobile-option-private"> Public </div>
+
                         {% endif %}
                         <div class="white-border-button" id="table-event-edit" data-pk=event.id data-slug=event.slug>Edit</div>
                     {% endif %}
