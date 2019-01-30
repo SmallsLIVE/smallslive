@@ -118,6 +118,9 @@
       $("#mobile-user-option-menu").slideUp("fast");
     }
   }
+  $("#mobile-user-option-menu .sign-in-button").on("click", function(){
+    $("#mobile-user-option-menu").hide();
+  })
   function toggleSearch() {
      
       if(!($('#search-bar').hasClass('mobile-search-header-shown'))){
