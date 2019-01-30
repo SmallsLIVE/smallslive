@@ -775,10 +775,12 @@ def payout_form(request):
         # check whether it's valid:
         if artist_info_form.is_valid():
             artist_info_form.save(request)
-            messages.success(
-                request,
-                'You\'ve successfully updated your profile.'
-            )
+            data={
+               'address-1':artist_info_form['address_1'].value(),
+               'address-2':artist_info_form['address_2'].value(),
+               'city':artist_info_form['city'].value(),
+            }
+            return JsonResponse(data)
     # if a GET (or any other method) we'll create a blank form
     else:
         artist_info_form = ArtistInfoForm(instance=request.user)

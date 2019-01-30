@@ -9,22 +9,40 @@
     padding: 20px 0;
   }
   &.metrics-profile-container {
+    .alert{
+          top: 20%;
+    position: fixed;
+    left: 5%;
+    width: 90%;
+    }
     @media (max-width: 1023px) {
       padding: 20px 15vw;
       .title1 {
         font-size: 30px;
       }
     }
-
+    .labeled-select{
+      @media (max-width: 960px){
+        flex-direction: row;
+      }
+      @media (max-width: 650px) {
+        flex-direction: column;
+      }
+    }
     #artist_payout_select ~ {
       .select-items {
+        width: 100%;
         border: 3px solid $white-transparent;
         top: 92%;
-        padding: 0px 18px;
+        div{
+          padding-left: 38px;
+        }
       }
       .select-selected {
         border: 3px solid $white-transparent;
-        border-style: solid solid solid none;
+        @media (max-width: 650px) {
+          width: 100%;
+          padding: 0px 20px;
         &::after{
           @media(min-width: 992px){
             right: 9%;
@@ -156,10 +174,14 @@
       margin-top: 10px;
       flex-direction: row;
       max-width: 335px;
-      width: 100%;
+      min-width: 220px;
+      width: 45%;
       justify-content: space-between;
     }
-
+    @media (max-width: 650px) {
+      margin-top: 10px;
+      width: 100%;
+    }
     .select-selected {
       width: 100%;
     }
@@ -197,12 +219,14 @@
     .payout-bar-button {
       font-size: $text-font-size-smaller;
       padding: 0px 35px;
-      @media (max-width: 991px) {
+      @media (max-width: $screen-sm-max) {
         height: 35px;
+        padding: 0px 20px;
       }
 
       @media (min-width: $screen-md-min) {
         margin-left: 30px;
+        
       }
     }
     .payout-bar-button:hover {

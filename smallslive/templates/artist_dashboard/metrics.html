@@ -11,9 +11,7 @@
         <div class="title1">Pay Period</div>
     </section>
     <div class="labeled-select flex-row">
-    
         <div class="white-border-select white-border-select-left flex-row">
-                <button class="white-border-button">Select Period</button>
             <select id="artist_payout_select">
                 <option value="current" class="text-grey">
                     {{ current_payout_period.period_start|date:"b j, Y" }} - Current
@@ -66,14 +64,17 @@
     </section>
     <div class="flex-column settings-right artist-payout-data">
         <div id="payout-form" style="display: none;" data-subpage-url="{% url 'artist_dashboard:payout_form'%}" data-subpage-name="payout-form">
+         
         </div>
         <div class="flex-column" id="payout-address-info">
             <div class="text1 artist-payout-data-text">Mailing address</div>
             <div class="text9 text-grey artist-payout-data-text">
                 {% if user.address_1 or user.address_2 or user.city %}
-                    {{ user.address_1 }} <br>
-                    {{ user.address_2 }} <br>  
-                    {{user.city }} 
+                    <span id="address-1">{{ user.address_1 }}</span>
+                    <br>
+                    <span id="address-2">{{ user.address_2 }}</span>
+                    <br>  
+                    <span id="city">{{user.city }}</span>
                 {% else %}
                     There is no address assigned
                 {% endif %}
@@ -89,11 +90,23 @@
                         <i class="close-button"></i>
                         <div class="modal-body">
                             <div class="text-grey text4 payout-info-text">
-                                These numbers reflect the total usage of the archive in minutes and seconds for the selected pay period, as well as your
-                                own personal usage and your payout ratio percentage. The payout ration percentage is your total time
-                                divided by the archive total time. This ratio is the percent-age of the archive revenue that is paid
-                                to you as royalty. If you earned less than $20 in the pay period it is carried over to the next pay period
-                                and reflected as a previous balance.
+                                These numbers reflect the total usage of the archive in minutes and seconds for the selected pay period, 
+                                as well as your own personal usage and your payout ratio percentage. The payout ratio percentage is your 
+                                total time divided by the archive total time. This ratio is the percentage of the archive revenue that 
+                                is paid to you as a royalty. If you earned less than $20 in the pay period it is carried over to the next 
+                                pay period and reflected as a previous balance.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+      <div class="modal fade" id="succeful-edit" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content custom-modal">
+                        <i class="close-button"></i>
+                        <div class="modal-body">
+                            <div class="text-grey text4 payout-info-text">
+                                You've successfully updated your profile.
                             </div>
                         </div>
                     </div>
@@ -112,6 +125,9 @@
         subpages.register();
         subpages.get('payout-form').setCallback(function() {
             replaceWhiteSelects($('[data-subpage-name="payout-form"]')[0]);
+            payoutForm = $("#payout-form")[0];
+            $("#submit-button").remove()
+            $(payoutForm).append("<button class='white-border-button payout-info-button' onclick='submitPayoutForm()'>Save</button>")
         });
         subpages.loadAll();
 
@@ -193,5 +209,23 @@
             eventsSeconds.innerHTML = formattedPayout(eventsSecondsValue)
 
         });
+        function submitPayoutForm(){
+            payoutForm = $("#payout-form .custom-form")[0];
+            $.ajax({
+                type: "POST",
+                url: "{% url 'artist_dashboard:payout_form'%}",
+                data: $(payoutForm).serialize()+"&artist_info=Save",
+                success: function(data) {
+                    $payoutForm = document.getElementById('payout-form')
+                    $payoutAddressInfo = document.getElementById('payout-address-info')
+                    $($payoutAddressInfo).show()
+                    $($payoutForm).hide()
+                    $('#succeful-edit').modal('show')
+                    $("#address-1").html(data['address-1'])
+                    $("#address-2").html(data['address-2'])
+                    $("#city").html(data['city'])
+                    }
+                })
+        }
     </script> 
 {% endblock %}
