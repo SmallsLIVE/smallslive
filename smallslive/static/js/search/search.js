@@ -92,7 +92,7 @@ $(window).resize(function() {
   pages -= 1;
   console.log(pages);
   $("#artists").animate(
-    { left: -100 * pages + "vw" },
+    { left: -88 * pages + "vw" },
     200,
     "linear",
     function() {
@@ -341,7 +341,9 @@ $(document).ready(function() {
     if (canScroll) {
       canScroll = false;
       $("#artists").animate(
-        { left: left + document.documentElement.clientWidth + "px" },
+        {
+          left: left + (document.documentElement.clientWidth / 100) * 88 + "px"
+        },
         200,
         "linear",
         function() {
@@ -370,7 +372,9 @@ $(document).ready(function() {
     if (canScroll) {
       canScroll = false;
       $("#artists").animate(
-        { left: left - document.documentElement.clientWidth + "px" },
+        {
+          left: left - (document.documentElement.clientWidth / 100) * 88 + "px"
+        },
         200,
         "linear",
         function() {
