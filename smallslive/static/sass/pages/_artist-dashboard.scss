@@ -43,6 +43,11 @@
         @media (max-width: 650px) {
           width: 100%;
           padding: 0px 20px;
+        &::after{
+          @media(min-width: 992px){
+            right: 9%;
+            top: 17px;
+          }
         }
       }
     }
@@ -166,6 +171,8 @@
     width: 25%;
     flex-direction: row-reverse;
     @media (max-width: $screen-sm-max) {
+      margin-top: 10px;
+      flex-direction: row;
       max-width: 335px;
       min-width: 220px;
       width: 45%;

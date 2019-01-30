@@ -13,7 +13,19 @@
 .my-downloads-album {
   list-style-type: none;
   padding: 40px 20px;
+  .dropdown-menu{
+    min-width: 0px;
+  }
 
+  .buy-button-container a.white-border-button{
+    text-align: center;
+    font-size: 11px;
+    padding: 0px 8px;
+    line-height: 16px;
+    @media(max-width: 580px){
+      display: none;
+    }
+  }
   &:nth-child(odd) {
     background-color:#f0f0eb;
     .buy-button-container ul li{
@@ -81,7 +93,14 @@
   float: left;
   width: 100%;
   margin-top: 20px;
-
+  audio{
+    @media (max-width:960px) and (min-width:768px) {
+      width:256px
+    }
+    @media(max-width: 580px){
+      width: 99%;
+    }
+  }
   &__heading {
     @include lato-black;
     font-size: 18px;
@@ -94,8 +113,6 @@
     border-bottom: 1px solid rgba(#000, 0.1);
     @include display(flex);
     @include align-items(center);
-    @include flex-wrap(wrap);
-
     &:before, &:after {
       display: none;
     }
@@ -106,8 +123,6 @@
     border-bottom: 1px solid rgba(#000, 0.1);
     @include display(flex);
     @include align-items(center);
-    @include flex-wrap(wrap);
-
     &:before, &:after {
       display: none;
     }
@@ -129,6 +144,9 @@
 
     &.title, &.buy-track {
       text-align: left;
+      @media(max-width: 580px){
+        width: 36%;
+      }
     }
 
     &.buy-track {
@@ -136,6 +154,9 @@
       @include display(flex);
       @include align-items(center);
       @include justify-content(flex-end);
+      @media(max-width: 580px){
+        display: none;
+      }
     }
 
     &.duration {
