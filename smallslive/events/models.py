@@ -555,45 +555,14 @@ class Event(TimeStampedModel):
         'about_to_begin' considers the actual start date minus X minutes (typically 15) set
         in the database as 'start_streaming_before_minutes'
         """
-        local_datetime = timezone.localtime(timezone.now())
-        local_date = local_datetime.date()
-        local_time = local_datetime.time()
 
-        # Get start and end. First set start - last set end
-        # This should be synced with 'self.start' and 'self.end'
-        start, end = self.get_range()
-
+        start = self.start
         if about_to_begin:
-            # convert to datetime temporarily to subtract minutes
-            start = datetime.combine(local_date, start)
-            start = timezone.make_aware(start, timezone=(timezone.get_current_timezone()))
-            start = start - timedelta(
-                minutes=self.start_streaming_before_minutes)
-            start = start.time()
+            start = start - timedelta(minutes=self.start_streaming_before_minutes)
 
-        # After midnight events always have the previous date
-        if local_time.hour <= 5:
-            local_date -= timedelta(days=1)
+        is_live = start <= timezone.now() <= self.end
 
-        # Start - End examples:
-        # 19:30 - 22:30
-        # 23:00 - 1:00
-        # 1:00 - 4:00
-        # local time can be in between of any of those
-        # 1. date has  to match
-        # start <= current time <= end if both start and end <= 5 or > 5
-        # if start = 22:30 <= current time <= end = 2:00, that's the 'difficult' case.
-        # current time can be before of after midnight.
-        match_date = local_date == self.date
-        time_after_start_and_before_end = start <= local_time <= end and \
-                                          end.hour > start.hour > 5
-        start_before_midnight_and_end_after = (start <= local_time or
-                                               local_time <= end) \
-                                               and end.hour <= 5 < start.hour
-
-        return match_date and \
-               (time_after_start_and_before_end or
-                start_before_midnight_and_end_after)
+        return is_live
 
     @property
     def show_streaming(self):
