@@ -785,6 +785,12 @@ class Event(TimeStampedModel):
 
         return tickets
 
+    def is_public_event(self):
+        public_list = self.recordings.all().published().count()
+        is_public = public_list > 0
+
+        return is_public
+
 
 class RecordingQuerySet(models.QuerySet):
     def video(self):

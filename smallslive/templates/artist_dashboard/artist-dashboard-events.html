@@ -13,15 +13,15 @@
                         
                         </div>
                       <div class="artist-event-details">
-                        <div class="text2">
-                          {{ event.get_date|date:'m/d/Y' }}
+                      <div class="text2">
+                         {{ event.get_date|date:'m/d/Y' }} 
                       </div>
                       <div class="text2">
                           {{ event.title }}
                       </div>
                       {% if not is_future %}
                       <div class="text2 ">
-                          <span id="event-plays">{{ event.get_play_total }}</span> plays /<span id="event-time">{{ event.get_seconds_total }}</span>
+                           <span class="accent-color">{% if event.is_public_event %} Public {% else %} Private {% endif %}</span><span id="event-plays">{{ event.get_play_total }}</span> plays /<span id="event-time">{{ event.get_seconds_total }}</span>
                       </div>
                       {% else %}
                       <div class="text2 ">
