@@ -970,12 +970,13 @@ body.headers-1 {
   line-height: 20px;
   margin-top: 15px;
   max-height: 100vh;
-  overflow: hidden;
+  overflow: auto;
   padding-right: 4vw;
   transition: max-height 0.15s ease-out;
   width: 45vw;
 
   &.collapsed {
+    overflow: hidden;
     max-height: 172px;
     transition: max-height 0.15s ease-in;
   }
@@ -1000,6 +1001,21 @@ body.headers-1 {
 
   button {
     margin: 10px 0;
+  }
+  a{
+    line-height: 1.42857; 
+    text-align: center;
+    &:hover{
+      color : black;
+    }
+    &:active{
+      color : black;
+    }
+    &:focus{
+      color : black;
+      text-decoration: none;
+      border: 3px solid rgba(255, 255, 255, 0.9);
+    }
   }
 }
 
