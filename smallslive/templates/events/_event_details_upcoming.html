@@ -76,7 +76,7 @@
       $form = null;
       $('#buy-tickets-dialog').modal('toggle');
     })
-    $('#btn-play-event').click(function () {
+    $('#btn-play-event, .event-overlay').click(function () {
       /* Show 'sign in' modal if user is not logged in. Otherwise, redirect
       to the live stream view if the show is about to start. */
       inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')

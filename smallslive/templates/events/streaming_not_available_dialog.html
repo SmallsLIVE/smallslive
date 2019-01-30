@@ -1,13 +1,12 @@
 <div class="modal fade" id="streamingNotAvailableDialog"
      tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
-  <div class="modal-dialog">
-
+  <div class="modal-dialog medium">
     <div class="modal-content custom-modal">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
         {% if sets %}
-          <p class="title2 accent-color">This event will begin streaming at {{ sets.0.start|time:"g:iA" }}</p>
+          <p class="title2 accent-color nowrap">This event will begin streaming {% if not event.is_today %} on {{ event.date|date:"m/d/Y" }} {% endif %} at {{ sets.0.start|time:"g:iA" }}</p>
         {% else %}
           <p>Streaming for this event will be available 15 minutes before it begins</p>
         {% endif %}
@@ -16,9 +15,6 @@
   </div>
 </div>
 <script>
-  document.addEventListener('click', function () {
-    $('#streamingNotAvailableDialog').hide();
-  });
   $(document).ready(function () {
     var $streamingDialog = $('#streamingNotAvailableDialog');
     var $streamingCloseButton = $($streamingDialog.find('.close-button')[0]);

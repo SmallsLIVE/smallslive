@@ -1,10 +1,33 @@
 $(document).ready(function () {
 
+    // There are different versions of CC form
+    // with different ids.
+    // This makes it generic.
     var checks = {
-      '#card-number':  19, //4444 4444 4444 4444
-      '#expiry-month':  2,
-      '#expiry-year':  parseInt($('#expiry-year').attr('size')),
-      '#cvc':  3,
+      '#card-number':  {
+        'length': 19, // 16 cc numbers + 3 white spaces
+        'next': ['#expiry-month']
+      },
+      '#expiry-month':  {
+        'length': 2,
+        'next': ['#expiry-year', '#expiry-year-placeholder'],
+      },
+      '#expiry-year':  {
+        'length': parseInt($('#expiry-year').attr('size')),
+        'next': ['#name-on-card']
+      },
+      '#expiry-year-placeholder':  {
+        'length': parseInt($('#expiry-year-placeholder').attr('size')),
+        'next': ['#name-on-card']
+      },
+      '#cvc':  {
+        'length': 3,
+        'next': []
+      },
+      '#ccv':  {
+        'length': 3,
+        'next': []
+      }
     };
   
     $(document).on('change', 'input[name="payment_method"]', function(event) {
@@ -33,9 +56,7 @@ $(document).ready(function () {
             flowCompleteSubpage.load();
           }
           else{
-            alert("ddd")
-
-            window.location = data.location 
+            window.location = data.location
           }
         },
         error: function () {
@@ -100,12 +121,9 @@ $(document).ready(function () {
       var id = '#' + $(this).attr('id');
       var keys = Object.keys(checks);
       var pos = keys.indexOf(id);
-      if (pos + 1 < keys.length && $(this).val().length  == checks[id]) {
-        if (id == '#expiry-year') {
-          $('#name-on-card').focus();
-        } else  {
-          $(keys[pos + 1]).focus();
-        }
+      if (pos + 1 < keys.length && $(this).val().length  == checks[id]['length']) {
+        // set focus on next element
+        $(checks[id]['next'].join(', ')).focus();
       }
     });
   

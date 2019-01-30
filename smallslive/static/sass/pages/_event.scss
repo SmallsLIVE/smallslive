@@ -1,49 +1,65 @@
 $player-height:  25.3vw;
-.modal-dialog.donate-dialog{
-  width: 95vw;
-  min-height: 95vh;
-  .modal-content.custom-modal{
-      padding: 0 45px;
-      min-height: 75vh;
-      @media(max-width: $screen-md-max) {
+
+.modal-dialog {
+  &.donate-dialog {
+    width: 95vw;
+    min-height: 95vh;
+    .modal-content {
+      &.custom-modal {
+        padding: 0 45px;
+        min-height: 75vh;
+
+        .donate-setting-container{
+          .supporter-main-container{
+            margin:0;
+            min-height: 0;
+          }
+        }
+
+        .modal-content {
+          &.custom-modal {
+            min-height: 45vh;
+          }
+        }
+
+        .modal-body {
+          form {
+            width: 100%;
+            .form-control:first-child{
+                margin-top: 10px;
+            }
+          }
+        }
+
+        @media(max-width: $screen-md-max) {
           padding: 0px;
-          .close-button{
-              z-index: 3;
+          .close-button {
+            z-index: 3;
           }
           > .modal-body{
-              padding: 0;
+            padding: 0;
           }
           .items-wrapper {
               width: 80vw;
           }
           .no-spinners{
-              min-width: 0px;
+            min-width: 0px;
           }
           .title1{
-              margin-bottom: 0px;
+            margin-bottom: 0px;
           }
-          #supporterStep3{
-              .section-title{
-                  margin: 0 auto 20px;
-                  min-width: 100%;
-              }
+          #supporterStep3 {
+            .section-title {
+                margin: 0 auto 20px;
+                min-width: 100%;
+            }
           }
+        }
       }
+    }
   }
-  .modal-content.custom-modal .modal-content.custom-modal{
-    min-height: 45vh;
-  }
-  .donate-setting-container{
-      .supporter-main-container{
-          margin:0;
-          min-height: 0;
-      }
-  }
-  .custom-modal .modal-body form{
-      width: 100%;
-      .form-control:first-child{
-          margin-top: 10px;
-      }
+  &.medium {
+    width: 50%;
   }
 }
 
