@@ -116,7 +116,7 @@ body.headers-1 {
     flex-direction: column;
     flex-wrap: wrap;
     align-content: space-between;
-    width: 25vw;
+    width: 22vw;
     margin: 0;
     padding: 0;
 
@@ -128,7 +128,7 @@ body.headers-1 {
     .artist-row {
       display: block;
       margin-bottom: 6px;
-      font-size: 0.68vw;
+      font-size: 11px;
       line-height: 22px;
       @media (max-width: $screen-md-min) {
         font-size: 11px;
@@ -207,8 +207,10 @@ body.headers-1 {
 
 .search-container {
   .container-list-article {
+    overflow-y: hidden;
     overflow-x: hidden;
     height: 200px;
+    width: 90%;
     @media (max-width: $screen-md-max) {
       height: auto;
     }
@@ -216,6 +218,16 @@ body.headers-1 {
     justify-content: center;
     align-items: center;
     position: relative;
+
+    &:before {
+      content: "";
+      position: absolute;
+      left: 0px;
+      width: 6vw;
+      z-index: 3;
+      background: #f0f0eb;
+      height: 100%;
+    }
   }
   #showsContent {
     margin-top: 30px;
