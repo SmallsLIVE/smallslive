@@ -1,8 +1,9 @@
 .close-button, .remove-comment, .reset-search {
+  cursor: pointer;
   position: absolute;
-  right: 0.8vw;
-  top: 15px;
-  width: 28px;
+  right: 4px;
+  top: 4px;
+  width: 32px;
   height: 32px;
   opacity: 0.3;
 
@@ -12,7 +13,7 @@
 
   &:before, &:after {
     position: absolute;
-    left: 1vw;
+    left: 16px;
     content: ' ';
     height: 30px;
     width: 2px;
