@@ -144,6 +144,9 @@
 
     &.title, &.buy-track {
       text-align: left;
+      @media(max-width: 580px){
+        width: 36%;
+      }
     }
 
     &.buy-track {
@@ -151,6 +154,9 @@
       @include display(flex);
       @include align-items(center);
       @include justify-content(flex-end);
+      @media(max-width: 580px){
+        display: none;
+      }
     }
 
     &.duration {
