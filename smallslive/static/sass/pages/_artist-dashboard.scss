@@ -43,10 +43,11 @@
         @media (max-width: 650px) {
           width: 100%;
           padding: 0px 20px;
-        &::after{
-          @media(min-width: 992px){
-            right: 9%;
-            top: 17px;
+          &::after{
+            @media(min-width: 992px){
+              right: 9%;
+              top: 17px;
+            }
           }
         }
       }
