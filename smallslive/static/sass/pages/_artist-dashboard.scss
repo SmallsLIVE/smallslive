@@ -25,6 +25,12 @@
       .select-selected {
         border: 3px solid $white-transparent;
         border-style: solid solid solid none;
+        &::after{
+          @media(min-width: 992px){
+            right: 9%;
+            top: 17px;
+          }
+        }
       }
     }
     #payout-form {
@@ -147,6 +153,7 @@
     width: 25%;
     flex-direction: row-reverse;
     @media (max-width: $screen-sm-max) {
+      margin-top: 10px;
       flex-direction: row;
       max-width: 335px;
       width: 100%;
