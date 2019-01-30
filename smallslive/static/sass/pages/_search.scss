@@ -1621,3 +1621,10 @@ body.headers-1 {
   position: absolute;
   left: 92vw;
 }
+body.home.admin-header{
+  @media (max-width: 960px){
+      .search-bar-autocomplete-container {
+        top:175px;
+    }
+  }
+}
