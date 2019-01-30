@@ -22,11 +22,18 @@
   .form-group {
     width: 100%;
 
-    label {
+    label, .login-agreement {
       @include text2;
       color: $text-grey;
     }
-
+    a.login-agreement{
+      &:focus{
+        text-decoration: none;
+      }
+      &:hover{
+        color:black;
+      }
+    }
     input[type="text"], input[type="password"], input[type="email"] {
       @include bordered-input;
       @include place-holder-color($black);
