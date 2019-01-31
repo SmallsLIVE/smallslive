@@ -36,7 +36,7 @@
             {% purchase_info_for_line request line as session %}
             <!-- Cart table row -->
             <div class="store-cart__table__row clearfix">
-                <div class="store-cart__table__row__remove col-lg-1 ">
+                <div class="store-cart__table__row__remove ">
                     <a class="store-cart__table__remove-button" data-behaviours="remove" data-id="{{ forloop.counter0 }}"><i class="fa fa-remove"></i></a>
                 </div>
                 <div class="store-cart__table__row__container">
@@ -63,9 +63,9 @@
                     <div class="col-xs-8 col-sm-8 col-md-10 col-lg-10 no-padding">
                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell name">
                           {% if product.parent_id %}
-                              {{ product.parent.title }}
+                              <a href="{{ product.parent.get_absolute_url }}"> {{ product.parent.title }} </a>
                           {% else %}
-                              {{ product.title }}
+                              <a href="{{ product.parent.get_absolute_url }}"> {{ product.title }} </a>
                           {% endif %}
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 store-cart__table__cell album physical">
@@ -88,6 +88,9 @@
                                   {{ line.line_price_excl_tax|currency:line.price_currency }}
                             </div>
                         </div>
+                    </div>
+                    <div class="col-xs-1 hidden-md hidden-lg store-cart__table__cell remove">
+                        <a class="store-cart__table__remove-button" data-behaviours="remove" data-id="{{ forloop.counter0 }}"><i class="fa fa-remove"></i></a>
                     </div>
                 </div>
             </div>
