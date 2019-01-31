@@ -1612,7 +1612,7 @@
 
     &__cell {
       &.physical{
-        margin-left: 22px;
+        padding-left: 32px;
         @media (max-width: 960px) {
           margin-top: 10px;
           width: 23%;
@@ -1621,7 +1621,7 @@
       &.image {
         @include transition(all 0.3s ease-in-out);
         @include flex-shrink(0);
-        margin-left: 5.5%;
+        padding-left: 5.5%;
         & a {
           display: block;
           padding: 5px;
