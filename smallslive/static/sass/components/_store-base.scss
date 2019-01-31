@@ -1611,6 +1611,13 @@
     }
 
     &__cell {
+      &.physical{
+        margin-left: 22px;
+        @media (max-width: 960px) {
+          margin-top: 10px;
+          width: 23%;
+        }
+      }
       &.image {
         @include transition(all 0.3s ease-in-out);
         @include flex-shrink(0);
@@ -1760,6 +1767,9 @@
 
     &.physical{
       margin-left: 22px;
+      @media (max-width: 960px) {
+        width: 23%;
+      }
     }
     &__label {
       width: 30px;

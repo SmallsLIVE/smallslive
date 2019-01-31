@@ -68,8 +68,8 @@
                               {{ product.title }}
                           {% endif %}
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 store-cart__table__cell album">
-                          <div class="store-cart__quantity-control physical">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 store-cart__table__cell album physical">
+                          <div class="store-cart__quantity-control">
                             <button class="store-cart__quantity-control__button control-decrease {% if form.quantity.value <= 1 %}disabled{% endif %}" {% if form.quantity.value <= 1 %}disabled{% endif %} data-behaviour="decrease"><i
                               class="fa fa-minus-circle"></i></button>
                               <span class="store-cart__quantity-control__label">{{ form.quantity.value }}</span>
@@ -80,7 +80,7 @@
                             </button>
                           </div>
                         </div>
-                        <div class="store-cart__mobile-quantity col-md-4 col-lg-3">
+                        <div class="store-cart__mobile-quantity col-md-4 col-lg-3 physical">
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell text-center">
                                 {{ line.unit_price_excl_tax|currency:line.price_currency }}
                             </div>
