@@ -168,7 +168,6 @@
             $publishSuccess.find('.success-state').text(state);
             $publishSuccess.modal('show')
             $("#hide-scss-btn").data("type", state)
-            console.log($("#hide-scss-btn").data("type"))
         }
 
         function publishSet() {
@@ -196,14 +195,14 @@
             $('#publishSuccess').modal('hide');
             var $currentSet = $(".artist-active-set.accent-color.set-changer")[0];
             var successType = $("#hide-scss-btn").data("type");
-            if (successType === "public"){
+            if (successType === "public" || data ==="public"){
                 $("#private-button").removeClass("hidden")
                 $("#public-button").addClass("hidden")
                 $("#mobile-private-button").removeClass("hidden")
                 $("#mobile-public-button").addClass("hidden")
                 $("#mobile-private-button").click()
             };
-            if (successType === "private"){
+            if (successType === "private" || data ==="private"){
                 $("#private-button").addClass("hidden")
                 $("#public-button").removeClass("hidden")
                 $("#mobile-private-button").addClass("hidden")

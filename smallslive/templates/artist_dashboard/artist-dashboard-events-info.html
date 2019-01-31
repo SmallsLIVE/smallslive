@@ -577,7 +577,7 @@
             '<button class="publish-button" onclick="askPublish(' + selectedSetId + ')">Publish</button>'
         )
         $("#set-id-" + selectedSetId).find('.set-status').text('Hidden')
-        showSuccess('private')
+        hideSuccess('private')
     }
   
     function publishSetMobile(eventId) {
@@ -589,7 +589,7 @@
             '<button class="publish-button" onclick="askPrivate(' + selectedSetId + ')">Make Private</button>'
         )
         $("#set-id-" + selectedSetId).find('.set-status').text('Published');
-        showSuccess('public')
+        hideSuccess('public')
     }
     ////////
     function closeEvent(){
