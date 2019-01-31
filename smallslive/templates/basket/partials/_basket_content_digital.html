@@ -7,20 +7,20 @@
 <!-- Cart table header -->
 <div class="basket-header clearfix">
     <div class="col-xs-12 store-cart__table__header__title">
-        <span>Digital downloads</span> <span class="smaller">Upon purchase your Digital downloads will be available to you in your <a
+        <span>Digital downloads:</span> <span class="smaller">Upon purchase your Digital downloads will be available to you in your <a
             class="smalls-color" href="#">My downloads</a> section.</span>
     </div>
-    <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-cart__table__cell image">
+    <div class="hidden-xs hidden-sm col-md-2 col-lg-2 store-cart__table__cell image">
         Cover
     </div>
-    <div class="hidden-xs hidden-sm col-md-10 col-lg-11 no-padding">
+    <div class="hidden-xs hidden-sm col-md-10 col-lg-9 no-padding">
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell">
             Title
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell album">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 store-cart__table__cell album">
             Album
         </div>
-        <div class="store-cart__mobile-quantity col-md-4 col-lg-2">
+        <div class="store-cart__mobile-quantity col-md-4 col-lg-3">
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell text-center">
                 Option
             </div>
@@ -42,7 +42,7 @@
                 </div>
                 <div class="store-cart__table__row__container">
                     {{ form.id }}
-                    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-1 store-cart__table__cell image">
+                    <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 image">
                     {% if product.parent_id %}
                         {% with image=product.parent.primary_image %}
                             {% thumbnail image.original "100x100" upscale=False as thumb %}
@@ -67,12 +67,12 @@
                         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell name">
                             <a href="{{ product.album.get_absolute_url }}">{% if product.parent %}{{ product.parent.title }} - {% endif %}{{ product.get_title }}</a>
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell album">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 store-cart__table__cell album">
                             {% if product.album %}
                                 <a href="{{ product.album.get_absolute_url }}">{{ product.album.get_title }}</a>
                             {% endif %}
                         </div>
-                        <div class="store-cart__mobile-quantity col-md-4 col-lg-2">
+                        <div class="store-cart__mobile-quantity col-md-4 col-lg-3">
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell text-center">
                                 {% if line.stockrecord.is_hd %}
                                     HD
