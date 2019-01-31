@@ -224,7 +224,6 @@ class Event(TimeStampedModel):
     event_type = models.ForeignKey('EventType', blank=True, null=True)
     link = models.CharField(max_length=255, blank=True)
     active = models.BooleanField(default=False)
-    streamable = models.BooleanField(default=True)
     date_freeform = models.TextField(blank=True)
     photo = CustomImageField(upload_to='event_images', storage=ImageS3Storage(), max_length=150, blank=True)
     cropping = ImageRatioField('photo', '600x360', help_text="Enable cropping", allow_fullsize=True)
@@ -238,7 +237,6 @@ class Event(TimeStampedModel):
     #past = QueryManager(start__lt=datetime.now()).order_by('-start')
     #upcoming = QueryManager(start__gte=datetime.now()).order_by('start')
     date = models.DateField(blank=True, null=True)
-    start_streaming_before_minutes = models.IntegerField(default=15)
 
     # Import information (Mezzrow - possibly other in the future)
     original_id = models.CharField(blank=True, max_length=4096, null=True)
@@ -248,6 +246,14 @@ class Event(TimeStampedModel):
     # Otherwise it'd be impossible to resolve search queries.
     seconds_played = models.IntegerField(default=0)
     play_count = models.IntegerField(default=0)
+
+    # Streaming info
+    streamable = models.BooleanField(default=True)
+    #not_streamable_message = models.TextField(
+    #    default='This event will not be live streamed at the request of the artist')
+    start_streaming_before_minutes = models.IntegerField(default=15)
+    #not_yet_streaming_message = models.TextField(
+    #    default='Streaming for this event will be available 15 minutes before it begins')
 
     class Meta:
         ordering = ['-start']
@@ -510,44 +516,14 @@ class Event(TimeStampedModel):
         """
         Checks if the event happened in the past and already ended.
         """
-        local_datetime = timezone.localtime(timezone.now())
-        local_date = local_datetime.date()
-        local_time = local_datetime.time()
-
-        start, end = self.get_range()
-
-        if self.date < local_date - timedelta(days=1):
-            return True
-        if self.date < local_date and end.hour > 5:
-            return True
-        elif self.date == local_date - timedelta(days=1) and end.hour <= 5:
-            return end < local_time
-        elif self.date == local_date:
-            return end < local_time and end.hour > 5
+        return self.end < timezone.now()
 
     @property
     def is_future(self):
         """
         Checks if the event will happen in the future and hasn't yet started.
         """
-        local_datetime = timezone.localtime(timezone.now())
-        local_date = local_datetime.date()
-        local_time = local_datetime.time()
-
-        start, end = self.get_range()
-
-        # After midnight events always have the previous date
-        if local_time.hour <= 5:
-            local_date -= timedelta(days=1)
-
-        if not self.date:
-            self.date = self.start.date()
-        match_date = local_date <= self.date
-        time_before_start = local_date < self.date or \
-                            local_time < start or \
-                            local_time.hour < 5 < start.hour
-
-        return match_date and time_before_start
+        return timezone.now() < self.start
 
     def is_live_or_about_to_begin(self, about_to_begin=False):
         """

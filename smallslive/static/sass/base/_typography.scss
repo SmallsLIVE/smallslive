@@ -199,6 +199,11 @@ $text-font-size-big: 1.4em;
   font-size: 18px;
   letter-spacing: 2px;
   text-transform: uppercase;
+
+  &.nowrap {
+    white-space: nowrap;
+  }
+
 }
 
 .title2 {
