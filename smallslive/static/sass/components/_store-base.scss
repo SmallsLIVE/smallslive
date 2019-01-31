@@ -1758,6 +1758,9 @@
     @include display(flex);
     @include align-items(center);
 
+    &.physical{
+      margin-left: 22px;
+    }
     &__label {
       width: 30px;
       display: block;
