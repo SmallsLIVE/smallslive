@@ -397,7 +397,8 @@
   }
 
   &__content {
-    .slide-btn.prev, .slide-btn.next {
+    .slide-btn.prev,
+    .slide-btn.next {
       border-radius: 0;
     }
     padding: 40px 0;
@@ -709,7 +710,6 @@
 }
 
 .store-add-small .select-selected {
-  margin-bottom: 18px;
   width: 200px;
 }
 
@@ -1255,7 +1255,7 @@
     &__description {
       @include text4;
       * {
-        font-family: 'Reem Kufi', sans-serif !important;
+        font-family: "Reem Kufi", sans-serif !important;
       }
       font-size: 14px;
       margin: 20px 0;
@@ -1265,7 +1265,7 @@
     &__details {
       @include text4;
       * {
-        font-family: 'Reem Kufi', sans-serif !important;
+        font-family: "Reem Kufi", sans-serif !important;
       }
       //margin-bottom: 15px;
       //padding-right: 20px;
@@ -1273,7 +1273,7 @@
       &__title {
         @include text4;
         * {
-          font-family: 'Reem Kufi', sans-serif !important;
+          font-family: "Reem Kufi", sans-serif !important;
         }
         display: block;
         margin: 0 0 5px;
@@ -2120,7 +2120,7 @@
   }
 
   &__left-column {
-    .white-line-bottom{
+    .white-line-bottom {
       margin: 4px 0 20px 0;
     }
     @media (min-width: $screen-sm-min) {
@@ -2227,8 +2227,8 @@
     font-size: 14px;
     color: lighten($base-text-color, 60%);
     @include lato-bold;
-    &__container .white-border-button{
-      @media (max-width: 960px){
+    &__container .white-border-button {
+      @media (max-width: 960px) {
         padding: 0 18px;
       }
     }
@@ -2348,7 +2348,8 @@ img.defineImageRatio {
 .store-pagination {
   margin-top: 30px;
 }
-.all-recordings-container, .all-artist-tracks{
+.all-recordings-container,
+.all-artist-tracks {
   margin-left: 3.5vw;
   margin-right: 3.5vw;
   position: relative;
