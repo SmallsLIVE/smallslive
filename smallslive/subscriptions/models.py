@@ -14,7 +14,9 @@ class Donation(models.Model):
     amount = models.DecimalField(
         decimal_places=2, max_digits=12,
         default=Decimal('0.00'))
-
+    deductable_amount = models.DecimalField(
+        decimal_places=2, max_digits=12,
+        default=Decimal('0.00'))
     # No need to have a payment source model for the moment.
     payment_source = models.CharField(max_length=64)
     reference = models.CharField(max_length=128, blank=True)
@@ -22,7 +24,11 @@ class Donation(models.Model):
     label = models.CharField(max_length=128, blank=True)
     confirmed = models.BooleanField(default=False)
 
-
+    def save(self, *args, **kwargs):
+        if self.deductable_amount == 0.00:
+            self.deductable_amount = self.amount
+        
+        super(Donation, self).save(*args, **kwargs)
 
 
 

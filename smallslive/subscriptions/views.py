@@ -152,8 +152,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
             'currency': 'USD',
             'quantity': 1}
         item_list = [item]
-        self.handle_paypal_payment('USD', amount, item_list,
-                                   payment_execute_url, payment_cancel_url, donation=True)
+        self.handle_paypal_payment('USD', amount, item_list, donation=True)
 
     def execute_stripe_payment(self, stripe_token, amount, plan_type, flow_type):
         print '********************************'
@@ -316,6 +315,7 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
         if payment_id:
             # Donated by selecting a gift in the store
             source = Source.objects.filter(reference=payment_id).first()
+            print "AAAAAA"
             if source and user.is_authenticated():
                 # Create Donation
                 donation = {

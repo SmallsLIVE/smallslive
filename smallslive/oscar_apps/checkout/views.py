@@ -616,14 +616,16 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                 self.add_payment_event('Purchase', total.incl_tax, reference=reference)
             elif payment_method == 'paypal':
                 item_list = self.get_item_list(basket_lines)
+                print "aaaaa"
                 total = str(total.incl_tax)
+                total_deductable = total.excl_tax - total.incl_tax
                 # Donation will be set to True  if user is selecting gifts
                 # For Tickets and  other goods, there will  be no donation.
                 # 'handle_paypal_payment' returns a RedirectRequiredException
                 # and the flow will be completed in ExecutePaypalPayment
                 self.handle_paypal_payment(
                     currency, total, item_list,
-                    donation=not basket_lines.first().basket.has_tickets())
+                    donation=not basket_lines.first().basket.has_tickets(), deductable_total=total_deductable)
 
     def payment_description(self, order_number, total, **kwargs):
         return 'Order #{0} at SmallsLIVE'.format(order_number)

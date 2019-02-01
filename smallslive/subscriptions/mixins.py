@@ -49,7 +49,7 @@ class PayPalMixin(object):
                 'client_secret': settings.PAYPAL_CLIENT_SECRET})
 
     def handle_paypal_payment(self, currency, total, item_list,
-                              donation=False):
+                              donation=False, deductable_total=0.00):
         print '******************************'
         print 'PayPal Mixin handle PayPal payment'
 
@@ -76,6 +76,7 @@ class PayPalMixin(object):
                     'amount': total,
                     'reference': payment_id,
                     'confirmed': False,
+                    'deductable_amount': deductable_total
                 }
                 print donation
                 Donation.objects.create(**donation)
