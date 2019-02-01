@@ -616,9 +616,11 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                 self.add_payment_event('Purchase', total.incl_tax, reference=reference)
             elif payment_method == 'paypal':
                 item_list = self.get_item_list(basket_lines)
-                print "aaaaa"
+                print "DEDUCTABLE"
+                print 
+                total_deductable = basket._get_deductable_physical_total()
+                print total_deductable
                 total = str(total.incl_tax)
-                total_deductable = total.excl_tax - total.incl_tax
                 # Donation will be set to True  if user is selecting gifts
                 # For Tickets and  other goods, there will  be no donation.
                 # 'handle_paypal_payment' returns a RedirectRequiredException

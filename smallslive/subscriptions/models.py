@@ -25,9 +25,10 @@ class Donation(models.Model):
     confirmed = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
+        print self.deductable_amount
         if self.deductable_amount == 0.00:
             self.deductable_amount = self.amount
-        
+        print self.deductable_amount
         super(Donation, self).save(*args, **kwargs)
 
 

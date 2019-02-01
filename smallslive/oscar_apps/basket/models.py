@@ -65,6 +65,18 @@ class Basket(AbstractBasket):
                 pass
         return total
 
+    def _get_deductable_physical_total(self):
+        total = D('0.00')
+        for line in self.physical_lines():
+            try:
+                print dir(line)
+                total += getattr(line, 'line_price_excl_tax_incl_discounts')
+                total -= line.stockrecord.cost_price
+            except ObjectDoesNotExist:
+                # Handle situation where the product may have been deleted
+                pass
+        return total
+
     @property
     def physical_total_excl_tax(self):
         """

@@ -65,6 +65,7 @@ class PayPalMixin(object):
         payment = paypalrestsdk.Payment(payment_data)
         print 'payment_id'
         success = payment.create()
+        print deductable_total
         if success:
             payment_id = payment.id
             print donation
