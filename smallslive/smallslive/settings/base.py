@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import ast
 import os
 from django.core.exceptions import ImproperlyConfigured
 from oscar import get_core_apps, OSCAR_MAIN_TEMPLATE_DIR
@@ -488,9 +489,8 @@ PAYPAL_CLIENT_SECRET = os.environ.get('PAYPAL_CLIENT_SECRET')
 PAYPAL_PAYFLOW_VENDOR_ID = os.environ.get('PAYPAL_PAYFLOW_VENDOR_ID')
 PAYPAL_PAYFLOW_USER = os.environ.get('PAYPAL_PAYFLOW_USER')
 PAYPAL_PAYFLOW_PASSWORD = os.environ.get('PAYPAL_PAYFLOW_PASSWORD')
-PAYPAL_PAYFLOW_PRODUCTION_MODE = os.environ.get('PAYPAL_PAYFLOW_PRODUCTION_MODE')
+PAYPAL_PAYFLOW_PRODUCTION_MODE = ast.literal_eval(os.environ.get('PAYPAL_PAYFLOW_PRODUCTION_MODE'))
 PAYPAL_PAYFLOW_DASHBOARD_FORMS = True
-
 
 STRIPE_PUBLISHABLE_KEY = STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
