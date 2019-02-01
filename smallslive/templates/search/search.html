@@ -137,7 +137,7 @@
           $(buttons[leter]).addClass('white-border-button')
               .html(leter)
               .appendTo($("#a-z-search")).click(() => {
-                  $('#artist-search').val($('#artist-search').val() + $(buttons[leter]).text())
+                  $('#artist-search').val($(buttons[leter]).text())
                   $("#artist-search").change()
               })
           })
@@ -164,6 +164,10 @@
               }
             }, 310)
             
+          })
+          $('#a-z-refresh').click(()=>
+          {
+            window.location = '/search/';
           })
           $('.scroll-left').click(() => {
             let scrollF = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 30)}, 10)
