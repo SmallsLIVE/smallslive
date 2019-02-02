@@ -187,11 +187,15 @@
   width: 100%;
   left: 0;
   top: 0;
-  font-size: 25px;
+  font-size: 1.8vw;
   opacity: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media(max-width: $screen-md-max) {
+    font-size: 3vw;
+  }
 
   .fa-thin-circle {
     display: flex;
