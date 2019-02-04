@@ -124,6 +124,10 @@
     var defaultFromDate;
     var defaultToDate = '{{ default_to_date }}';
   </script>
+  <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+  <script src="{% static 'js/tabs.js' %}"></script>
+  <script src="{% static 'js/search/search.js' %}"></script>
   <script>
       $(document).ready(function(){
         $('.scroll-left').css('visibility', 'initial')
@@ -137,10 +141,19 @@
           $(buttons[leter]).addClass('white-border-button')
               .html(leter)
               .appendTo($("#a-z-search")).click(() => {
-                  $('#a-z-search .white-border-button').css('background-color', '#f0f0eb')
-                  $(buttons[leter]).css('background-color', '#fff')
+                $('#a-z-search .white-border-button').css('background-color', '#f0f0eb')
+                $(buttons[leter]).css('background-color', '#fff')
+                if(searchTerm.trim() != ""){
+                  searchTerm = "";
+                  sendArtistRequest(()=>{
                   $('#artist-search').val($(buttons[leter]).text())
                   $("#artist-search").change()
+                  });
+                }else{
+                  $('#artist-search').val($(buttons[leter]).text())
+                  $("#artist-search").change()
+                }
+               
               })
           })
           $('#a-z-refresh').click(function() {
@@ -166,11 +179,6 @@
               }
             }, 310)
             
-          })
-          $('#a-z-refresh').click(()=>
-          {
-            artistSearchTerm = '';
-            sendArtistRequest();
           })
           $('.scroll-left').click(() => {
             let scrollF = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 30)}, 10)
@@ -204,10 +212,6 @@
       $(this).closest('.instruments-container').hide();
     });
   </script>
-  <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
-  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-  <script src="{% static 'js/tabs.js' %}"></script>
-  <script src="{% static 'js/search/search.js' %}"></script>
 {% endblock %}
 
 {% block footer %}
