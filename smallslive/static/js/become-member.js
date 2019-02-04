@@ -596,6 +596,7 @@ $(document).ready(function() {
     var $selectionConfirmationDialog = $("#selectionConfirmationDialog");
     $selectionConfirmationDialog.find(".title").text($(this).text());
     var giftTier = $(this).attr("data-type");
+    var hasVariants = $(this).data("variants") && $(this).data("variants") != "0";
     $selectionConfirmationDialog
       .find(".subtitle")
       .text("Gift Tier: " + giftTier);
@@ -603,18 +604,25 @@ $(document).ready(function() {
       .children(".price-tag")
       .text();
     let cost = $(this).attr("data-cost");
-    let tax = parseInt(price.substring(1)) - parseInt(cost);
-    $selectionConfirmationDialog
-      .find(".text")
-      .html(
-        'You have selected a one time donation of <span class="smalls-color">' +
+    var tax = 0;
+    if (cost &&  typeof cost != "undefined") {
+      tax = parseInt(price.substring(1)) - parseInt(cost);
+    } else {
+      tax = parseInt(price.substring(1));
+    }
+    var content = 'You have selected a one time donation of <span class="smalls-color">' +
           price +
           '</span>  of which <span class="smalls-color">$' +
           tax +
           "</span> is tax deductible. You will receive access to The SmallsLIVE Archive for the remainder of the tax year. You have also chosen to receive a " +
           giftTier +
-          " as a gift for your contribution." //<br> Please select your option below.
-      );
+          " as a gift for your contribution.";
+    if (hasVariants) {
+      content = content + '<br> Please select your option below.'
+    }
+    $selectionConfirmationDialog
+      .find(".text")
+      .html(content);
     var $giftContent = $selectionConfirmationDialog.find(".gift-content");
     $giftContent.html($item);
     $item.removeClass("hidden");
