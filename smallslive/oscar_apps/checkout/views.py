@@ -616,10 +616,23 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                     reference=reference)
                 self.add_payment_source(source)
                 self.add_payment_event('Purchase', total.incl_tax, reference=reference)
+                #Set a ongoing donation, finished when payment is confirmed
+                total_deductable = basket._get_deductable_physical_total()
+                donation = {
+                    'user': self.request.user,
+                    'currency': currency,
+                    'amount': total.incl_tax,
+                    'reference': reference,
+                    'confirmed': False,
+                    'deductable_amount': str(total_deductable)
+                }
+                Donation.objects.create(**donation)
+
+
+
+
             elif payment_method == 'paypal':
                 item_list = self.get_item_list(basket_lines)
-                print "DEDUCTABLE"
-                print 
                 total_deductable = basket._get_deductable_physical_total()
                 print total_deductable
                 total = str(total.incl_tax)

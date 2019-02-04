@@ -13,8 +13,6 @@ from decimal import *
 class PayPalMixin(object):
 
     def get_payment_data(self, item_list, total, currency, shipping_charge=0.00):
-        print 'payment c'
-        print dir(total)
         subtotal =  Decimal(total) - Decimal(shipping_charge)
         if self.mezzrow:
             execute_uri = 'checkout:mezzrow_paypal_execute'
@@ -69,7 +67,6 @@ class PayPalMixin(object):
         print 'payment data'
         payment_data = self.get_payment_data(item_list, total, currency, shipping_charge)
 
-        print 'paypal restsdk'
         payment = paypalrestsdk.Payment(payment_data)
         print 'payment_id'
         success = payment.create()
