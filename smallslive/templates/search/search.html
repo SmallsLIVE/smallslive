@@ -127,7 +127,7 @@
   <script>
       $(document).ready(function(){
         $('.scroll-left').css('visibility', 'initial')
-        const alphabet = [" ", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+        const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
 "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
         buttons = {
 
@@ -137,6 +137,8 @@
           $(buttons[leter]).addClass('white-border-button')
               .html(leter)
               .appendTo($("#a-z-search")).click(() => {
+                  $('#a-z-search .white-border-button').css('background-color', '#f0f0eb')
+                  $(buttons[leter]).css('background-color', '#fff')
                   $('#artist-search').val($(buttons[leter]).text())
                   $("#artist-search").change()
               })
@@ -167,7 +169,8 @@
           })
           $('#a-z-refresh').click(()=>
           {
-            window.location = '/search/';
+            artistSearchTerm = '';
+            sendArtistRequest();
           })
           $('.scroll-left').click(() => {
             let scrollF = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 30)}, 10)
