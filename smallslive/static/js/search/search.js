@@ -100,7 +100,10 @@ $(window).resize(function() {
     }
   );
 });
-
+$("#a-z-refresh").click(() => {
+  searchTerm = "";
+  sendArtistRequest();
+});
 function sendArtistRequest(callback) {
   callback = callback || function() {};
   $.ajax({
@@ -308,11 +311,11 @@ function sendEventRequest() {
 }
 
 $(document).ready(function() {
-  var instrument=  getUrlParameter("instrument");
+  var instrument = getUrlParameter("instrument");
   if (instrument) {
     $(".instrument-btn").text(instrument);
-  };
-  artistInstrument = (instrument ? instrument : "");
+  }
+  artistInstrument = instrument ? instrument : "";
   searchTerm = getUrlParameter("q");
   searchTerm = searchTerm ? searchTerm.replace(/\+/g, " ") : "";
   artistSearchTerm = "";
@@ -908,9 +911,12 @@ $(document).ready(function() {
   });
 });
 
-$(document).on("click", ".artist-search-profile-container.pad-content .close-button", function(){
-  if (!artistInstrument) {
-    $(".instrument[data-instrument='']").click();
-  };
-
-});
+$(document).on(
+  "click",
+  ".artist-search-profile-container.pad-content .close-button",
+  function() {
+    if (!artistInstrument) {
+      $(".instrument[data-instrument='']").click();
+    }
+  }
+);
