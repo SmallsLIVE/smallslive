@@ -390,7 +390,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             print 'try handle payment: '
             print order_number
             print order_total
-            self.handle_payment(order_number, order_total, basket_lines, **payment_kwargs)
+            print str(shipping_charge.incl_tax)
+            self.handle_payment(order_number, order_total, basket_lines, shipping_charge=str(shipping_charge.incl_tax), **payment_kwargs)
         except RedirectRequired as e:
             # Redirect required (eg PayPal, 3DS)
             logger.info("Order #%s: redirecting to %s", order_number, e.url)
@@ -557,6 +558,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         if payment_method == 'paypal':
             item_list = self.get_item_list(basket_lines)
             currency = total.currency
+            
             total = str(total.incl_tax)
             # This will redirect to PayPal and circle back to
             # the ExecutePayPalPayment class.
@@ -578,7 +580,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             self.add_payment_source(source)
             self.add_payment_event('Sold', total.incl_tax)
 
-    def handle_payment(self, order_number, total, basket_lines, **kwargs):
+    def handle_payment(self, order_number, total, basket_lines, shipping_charge=0.00, **kwargs):
 
         basket = basket_lines.first().basket
         card_token = self.request.POST.get('card_token')
@@ -627,7 +629,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                 # and the flow will be completed in ExecutePaypalPayment
                 self.handle_paypal_payment(
                     currency, total, item_list,
-                    donation=not basket_lines.first().basket.has_tickets(), deductable_total=total_deductable)
+                    donation=not basket_lines.first().basket.has_tickets(), deductable_total=total_deductable, shipping_charge=shipping_charge)
 
     def payment_description(self, order_number, total, **kwargs):
         return 'Order #{0} at SmallsLIVE'.format(order_number)

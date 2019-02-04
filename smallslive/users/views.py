@@ -214,8 +214,7 @@ def user_settings_view_new(request):
         plan_id = request.user.customer.current_subscription.plan
         plan = stripe.Plan.retrieve(id=plan_id)
     
-    customer_charges = request.user.get_donations()
-   
+    customer_charges = request.user.get_donations().order_by("-date")
     charges_value = 0
     for charge in customer_charges:
         if charge.amount:
