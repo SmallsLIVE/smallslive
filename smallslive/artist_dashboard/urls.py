@@ -4,7 +4,7 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('artist_dashboard.views',
     url(r'^toggle_recording_state/(?P<pk>\d+)/$', 'toggle_recording_state', name='recording_toggle'),
     url(r'^event/(?P<pk>\d+)-(?P<slug>[-\w]+)/edit/$', 'event_edit', name='event_edit'),
-    url(r'^event/(?P<pk>\d+)-(?P<slug>[-\w]+)/edit/ajax$', 'event_edit_ajax', name='event_edit_ajax'),
+    url(r'^event/(?P<pk>\d+)-(?P<slug>[-\w]+)/edit-ajax/$', 'event_edit_ajax', name='event_edit_ajax'),
     url(r'^event/(?P<pk>\d+)-(?P<slug>[-\w]+)/metrics/$', 'event_metrics', name='event_metrics'),
     url(r'^event/(?P<pk>\d+)-(?P<slug>[-\w]+)/$', 'event_detail', name='event_detail'),
     url(r'^edit-profile/$', 'edit_profile', name='edit_profile'),

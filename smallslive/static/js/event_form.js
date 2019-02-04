@@ -258,18 +258,17 @@ EventForm = {
 
         var addButtonSelector = '#add_more_sets';
         var tableType = 'sets';
-        var buttonRemove = $setsTable.find(".artist_remove");
 
         this.fixTableWidths($setsTable);
 
-        $(addButtonSelector).click(function () {
+        $(document).on('click', addButtonSelector, function () {
             var $lastRow = $setsTable.find('tbody tr:last');
             var newRow = EventForm.cloneMore($set_row, $lastRow, tableType);
             EventForm.fixTableWidths($setsTable);
             EventForm.configureTimePicker(newRow);
         });
 
-        buttonRemove.on("click", function (e) {
+        $(document).on("click", '.artist_remove', function (e) {
             // hide the entry and set the DELETE value to true so Django knows to delete it
             $(this).parents('tr').hide();
             var del = $(this).parents('tr').find('input[id$="DELETE"]')[0];
@@ -310,7 +309,7 @@ EventForm = {
 
         this.fixTableWidths($artistTable);
 
-        $(addButtonSelector).click(function () {
+        $(document).on('click', addButtonSelector, function () {
             var $lastRow = $artistTable.find('tbody tr:last');
             EventForm.cloneMore(
                 $artist_row, $lastRow, tableType
@@ -360,7 +359,7 @@ EventForm = {
             $('#id_end').datetimepicker('update');
         }
         this.initVenueSelectFunctionality();
-        this.initInlineArtistsFunctionality();
+        //this.initInlineArtistsFunctionality();
     }
 };
 

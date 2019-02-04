@@ -29,7 +29,8 @@ import allauth.account.views as allauth_views
 from metrics.models import UserVideoMetric
 from rest_framework.authtoken.models import Token
 
-from artists.models import Artist, ArtistEarnings, CurrentPayoutPeriod, PastPayoutPeriod
+from artists.models import Artist, ArtistEarnings, \
+    CurrentPayoutPeriod, Instrument, PastPayoutPeriod
 from events.models import Recording, Event
 import events.views as event_views
 import users.forms as user_forms
@@ -472,12 +473,10 @@ class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
 
     form_class = EventEditForm
     success_url = reverse_lazy('artist_dashboard:my_past_events')
-    #inlines = [ArtistGigPlayedAddInlineFormSet]
-    #inlines_names = ['artists']
+    inlines = [ArtistGigPlayedAddInlineFormSet]
+    inlines_names = ['artists']
 
     def get_template_names(self):
-        if self.request.is_ajax():
-            return 'artist_dashboard/mobile_event_edit_form.html'
         return 'artist_dashboard/event_edit.html'
 
     def get_context_data(self, **kwargs):
@@ -500,9 +499,16 @@ event_edit = EventEditView.as_view()
 
 
 class EventEditAjaxView(EventEditView):
-    pass
 
-event_edit_ajax = EventEditView.as_view()
+    def get_context_data(self, **kwargs):
+        context = super(EventEditAjaxView, self).get_context_data(**kwargs)
+        context['instruments'] = Instrument.objects.all()
+        return context
+
+    def get_template_names(self):
+        return 'artist_dashboard/mobile_event_edit_form.html'
+
+event_edit_ajax = EventEditAjaxView.as_view()
 
 
 class ToggleRecordingStateView(HasArtistAssignedMixin, UpdateView):
