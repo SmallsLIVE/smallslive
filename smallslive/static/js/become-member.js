@@ -604,17 +604,15 @@ $(document).ready(function() {
       .text();
     let cost = $(this).attr("data-cost");
     let tax = parseInt(price.substring(1)) - parseInt(cost);
-    $selectionConfirmationDialog
-      .find(".text")
-      .html(
-        'You have selected a one time donation of <span class="smalls-color">' +
-          price +
-          '</span>  of which <span class="smalls-color">$' +
-          tax +
-          "</span> is tax deductible. You will receive access to The SmallsLIVE Archive for the remainder of the tax year. You have also chosen to receive a " +
-          giftTier +
-          " as a gift for your contribution." //<br> Please select your option below.
-      );
+    $selectionConfirmationDialog.find(".text").html(
+      'You have selected a one time donation of <span class="smalls-color">' +
+        price +
+        '</span>  of which <span class="smalls-color">$' +
+        tax +
+        "</span> is tax deductible. You will receive access to The SmallsLIVE Archive for the remainder of the tax year. You have also chosen to receive a " +
+        giftTier +
+        " as a gift for your contribution." //<br> Please select your option below.
+    );
     var $giftContent = $selectionConfirmationDialog.find(".gift-content");
     $giftContent.html($item);
     $item.removeClass("hidden");
@@ -806,19 +804,21 @@ $(document).ready(function() {
   }
 
   function buttonsSizeOrder() {
-    var upperButtonWidth = 0;
-    $(".select-gift").each(function(index) {
-      if (index > 0) {
-        $(this).css("width", upperButtonWidth);
-      }
-      upperButtonWidth = $(this).css("width");
-      upperButtonWidth = upperButtonWidth.substring(
-        0,
-        upperButtonWidth.length - 2
-      );
-      upperButtonWidth = parseInt(upperButtonWidth) + 100;
-      upperButtonWidth = upperButtonWidth + "px";
-    });
+    if (document.body.clientWidth > 768) {
+      var upperButtonWidth = 0;
+      $(".select-gift").each(function(index) {
+        if (index > 0) {
+          $(this).css("width", upperButtonWidth);
+        }
+        upperButtonWidth = $(this).css("width");
+        upperButtonWidth = upperButtonWidth.substring(
+          0,
+          upperButtonWidth.length - 2
+        );
+        upperButtonWidth = parseInt(upperButtonWidth) + 100;
+        upperButtonWidth = upperButtonWidth + "px";
+      });
+    }
   }
 
   buttonsSizeOrder();
