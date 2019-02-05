@@ -45,9 +45,10 @@
                     {% endif %}
             </ul>
         </div>
-
-        {% include 'home_banners.html' with active='catalog' %}
-        {% include 'home_banners_mobile.html'  with active='catalog'%}
+        {% if not product %}
+          {% include 'home_banners.html' with active='catalog' %}
+          {% include 'home_banners_mobile.html'  with active='catalog'%}
+        {% endif %}
         <section class="store-header flex-row content-centered">
             <div class="store-header__content">
                 <span id="storeTitle" class="store-header__title">
