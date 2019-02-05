@@ -1,7 +1,114 @@
 {% load crispy_forms_tags static %}
-<form method="post" class="admin-interface__form" enctype="multipart/form-data" action="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
-  {% crispy form %}
-  <div class="buttonHolder">
-    <button id="event-edit-save-button" class="white-border-button">Save</button>
-  </div>
+<form method="post" class="admin-interface__form" enctype="multipart/form-data" action="/dashboard/event/14800-the-spike-wilner-trio/edit/">
+   <input type="hidden" name="csrfmiddlewaretoken" value="cb8xfgMjz9TF19s8o7UD6n6GQrDAa2Pu">
+   <div id="div_id_title" class="form-group">
+      <label for="id_title" class="control-label  requiredField">
+      Title<span class="asteriskField">*</span></label>
+      <div class="controls "><input class="textinput textInput form-control" id="id_title" maxlength="500" name="title" type="text" value="{{ event.title }}"> </div>
+   </div>
+   <div class="form-group artist-list-form">
+      <div><input id="id_artists_gig_info-TOTAL_FORMS" name="artists_gig_info-TOTAL_FORMS" type="hidden" value="1"> <input id="id_artists_gig_info-INITIAL_FORMS" name="artists_gig_info-INITIAL_FORMS" type="hidden" value="1"> <input id="id_artists_gig_info-MIN_NUM_FORMS" name="artists_gig_info-MIN_NUM_FORMS" type="hidden" value="0"> <input id="id_artists_gig_info-MAX_NUM_FORMS" name="artists_gig_info-MAX_NUM_FORMS" type="hidden" value="1000"> </div>
+      <table class="table formset_table">
+         <thead>
+            <tr class="table_row">
+               <th></th>
+               <th for="id_artists_gig_info-0-artist" class="col-md-4 control-label requiredField">
+                  Artist<span class="asteriskField">*</span>
+               </th>
+               <th for="id_artists_gig_info-0-role" class="col-md-4 control-label requiredField">
+                  Role<span class="asteriskField">*</span>
+               </th>
+               <th for="id_artists_gig_info-0-is_leader" class="col-md-2 control-label ">
+                  Leader
+               </th>
+               <th class="col-md-1">Remove</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for gig in event.artists_gig_info.all %}
+            <tr>
+               <td><i class="fa fa-bars"></i></td>
+               <input class="sort_order_field"
+                      id="id_artists_gig_info-{{ forloop.counter0 }}-sort_order"
+                      name="artists_gig_info-{{ forloop.counter0 }}-sort_order"
+                      type="hidden"
+                      value="0">
+               <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-artist" class="">
+                  <select class="artist_field select form-control"
+                          id="id_artists_gig_info-{{ forloop.counter0 }}-artist"
+                          name="artists_gig_info-{{ forloop.counter0 }}-artist">
+                     <option value="">Artist</option>
+                     {% for artist in artists %}
+                        <option value="{{ artist.id }}" {% if gig.artist == artist %} selected {% endif %}>{{ artist.full_name }}</option>
+                     {% endfor %}
+                  </select>
+               </td>
+               <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-role" class="">
+                  <select class="role_field select form-control"
+                          id="id_artists_gig_info-{{ forloop.counter0 }}-role"
+                          name="artists_gig_info-{{ forloop.counter0 }}-role">
+                     <option value="">Role</option>
+                     {% for instrument in instruments %}
+                        <option value="{{ instrument.id }}">{{ instrument.name }}</option>
+                     {% endfor %}
+                  </select>
+               </td>
+               <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-is_leader">
+                  <input checked="checked"
+                         class="checkboxinput"
+                         id="id_artists_gig_info-{{ forloop.counter0 }}-is_leader"
+                         name="artists_gig_info-{{ forloop.counter0 }}-is_leader"
+                         type="checkbox">
+               </td>
+               <input id="id_artists_gig_info-{{ forloop.counter0 }}-id"
+                      name="artists_gig_info-{{ forloop.counter0 }}-id"
+                      type="hidden"
+                      value="103704">
+               <input id="id_artists_gig_info-{{ forloop.counter0 }}-event"
+                      name="artists_gig_info-{{ forloop.counter0 }}-event"
+                      type="hidden"
+                      value="14800">
+               <td><a href="" class="artist_remove"><span class="fa fa-trash"></span></a></td>
+            </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+      <button type="button" class="white-border-button artists-table__button" name="add" id="add_more_artists"> Add another
+      </button>
+   </div>
+   <div id="div_id_photo" class="form-group">
+      <label for="id_photo" class="control-label ">
+      Flyer or Band Photo (JPG, PNG)
+      </label>
+      <div class="controls ">
+         <div>
+            <a target="_blank" href="" alt=""> </a>
+            <div class="checkbox"><label for="photo-clear_id"><input type="checkbox" name="photo-clear" id="photo-clear_id">Delete this photo
+               </label>
+            </div>
+            <input type="file" name="photo"
+                   data-max-width="5037" data-max-height="3358" data-org-width="5037" data-field-name="photo"
+                   id="id_photo"
+                   data-thumbnail-url="" data-org-height="3358" class="crop-thumb">
+         </div>
+      </div>
+   </div>
+   <div id="div_id_cropping" class="form-group">
+      <label for="id_cropping" class="control-label ">
+      Cropping
+      </label>
+      <div class="controls ">
+         <input class="image-ratio textinput textInput form-control" data-adapt-rotation="false" data-allow-fullsize="true" data-box-max-height="300" data-box-max-width="300" data-image-field="photo" data-min-height="360" data-min-width="600" data-my-name="cropping" data-ratio="1.66666666667" data-size-warning="false" id="id_cropping" maxlength="255" name="cropping" type="text" value="420,235,3862,2300">
+         <p id="hint_id_cropping" class="help-block">Enable cropping</p>
+      </div>
+   </div>
+   <div id="div_id_description" class="form-group">
+      <label for="id_description" class="control-label ">
+      Description
+      </label>
+      <div class="controls "><textarea class="tinymce" cols="40" data-mce-conf="{&quot;spellchecker_languages&quot;: &quot;+English=en&quot;, &quot;elements&quot;: &quot;id_description&quot;, &quot;language&quot;: &quot;en&quot;, &quot;statusbar&quot;: false, &quot;plugins&quot;: &quot;link&quot;, &quot;directionality&quot;: &quot;ltr&quot;, &quot;theme&quot;: &quot;modern&quot;, &quot;strict_loading_mode&quot;: 1, &quot;mode&quot;: &quot;exact&quot;, &quot;skin&quot;: &quot;light&quot;, &quot;toolbar&quot;: &quot;bold italic | link&quot;, &quot;menubar&quot;: false}" id="id_description" name="description" rows="10"></textarea></div>
+   </div>
+   <div class="buttonHolder">
+      <button id="event-edit-save-button" class="white-border-button">Save</button>
+   </div>
 </form>

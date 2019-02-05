@@ -128,6 +128,7 @@ def subscribe_to_plan(customer, stripe_token, amount, plan_type, flow="Charge"):
     }
 
     plan = Plan.objects.filter(**plan_data).first()
+    # TODO: move this to settings.
     plan_data['product'] = 'prod_D01wWC6DLGhq3U'
     plan = plan or CustomPlan.create(**plan_data)
 
