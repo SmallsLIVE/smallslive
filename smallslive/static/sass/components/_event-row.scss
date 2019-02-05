@@ -12,7 +12,8 @@ $event-row-padding: 3.5vw;
 
 .live {
   .slide-btn {
-    &.prev, &.next {
+    &.prev,
+    &.next {
       @media (min-width: 1366px) {
         height: $live-card-width-large * 0.6;
       }
@@ -30,40 +31,39 @@ $event-row-padding: 3.5vw;
     }
   }
 
-    .event-info-title {
-      @media (min-width: 1366px) {
-        width: 14vw;
-      }
+  .event-info-title {
+    @media (min-width: 1366px) {
+      width: 14vw;
+    }
 
-      @media (max-width: 1365px) and (min-width: 1024px) {
-        width: 20vw;
-      }
+    @media (max-width: 1365px) and (min-width: 1024px) {
+      width: 20vw;
+    }
 
-      @media (max-width: 1023px) and (min-width: 961px) {
-        width: 20vw;
-      }
+    @media (max-width: 1023px) and (min-width: 961px) {
+      width: 20vw;
+    }
 
-      @media (max-width: $screen-sm-max) {
-        width: 44vw;
-      }
+    @media (max-width: $screen-sm-max) {
+      width: 44vw;
     }
   }
-
-
+}
 
 .slide-btn {
-  &.prev, &.next {
+  &.prev,
+  &.next {
     border-radius: 10px 0 0 10px;
     background-color: rgba(0, 0, 0, 0.5);
-    background-image: url('/static/image/arrow-right-red.svg');
+    background-image: url("/static/image/arrow-right-red.svg");
     background-repeat: no-repeat;
-    background-position: center; 
+    background-position: center;
     background-size: 20px;
     cursor: pointer;
     position: absolute;
     top: 0;
     z-index: 1000;
-    transition: .2s ease all;
+    transition: 0.2s ease all;
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.9);
@@ -84,7 +84,6 @@ $event-row-padding: 3.5vw;
     @media (max-width: $screen-sm-max) {
       display: none;
     }
-
   }
   &.prev {
     transform: scaleX(-1);
@@ -92,18 +91,18 @@ $event-row-padding: 3.5vw;
     left: 0;
 
     b:before {
-      content: '\002b';
+      content: "\002b";
       position: absolute;
       right: 0.78vw;
       top: -0%;
     }
   }
   &.next {
-    width: $content-left-padding;;
+    width: $content-left-padding;
     right: 0;
 
     b:before {
-      content: '\002b';
+      content: "\002b";
       left: 0.78vw;
       position: absolute;
       top: 0;
@@ -120,29 +119,26 @@ $event-row-padding: 3.5vw;
     align-self: center;
     color: $accent-color;
     font-size: 10vh;
-    -webkit-transition: -webkit-transform .1s ease-out 0s;
-    transition: -webkit-transform .1s ease-out 0s;
-    -o-transition: -o-transform .1s ease-out 0s;
-    -moz-transition: transform .1s ease-out 0s,-moz-transform .1s ease-out 0s;
-    transition: transform .1s ease-out 0s;
-    transition: transform .1s ease-out 0s,-webkit-transform .1s ease-out 0s,-moz-transform .1s ease-out 0s,-o-transform .1s ease-out 0s;
-
+    -webkit-transition: -webkit-transform 0.1s ease-out 0s;
+    transition: -webkit-transform 0.1s ease-out 0s;
+    -o-transition: -o-transform 0.1s ease-out 0s;
+    -moz-transition: transform 0.1s ease-out 0s, -moz-transform 0.1s ease-out 0s;
+    transition: transform 0.1s ease-out 0s;
+    transition: transform 0.1s ease-out 0s, -webkit-transform 0.1s ease-out 0s,
+      -moz-transform 0.1s ease-out 0s, -o-transform 0.1s ease-out 0s;
   }
 }
 
 .event-row {
-
   display: flex;
-  padding-left: $content-left-padding;;
+  padding-left: $content-left-padding;
 
   @media (min-width: $screen-sm-max) {
-    padding-left: $content-left-padding;;
+    padding-left: $content-left-padding;
   }
-
 }
 
 .event-display {
-
   margin-right: $event-card-margin;
 }
 
@@ -160,7 +156,8 @@ $event-row-padding: 3.5vw;
   }
 }
 
-.event-info, .album-row {
+.event-info,
+.album-row {
   @include links1;
   margin-top: 10px;
   margin-bottom: 15px;
@@ -194,20 +191,19 @@ $event-row-padding: 3.5vw;
   }
 }
 
-
-
-@mixin event-card ($event-card-width, $event-card-height) {
+@mixin event-card($event-card-width, $event-card-height) {
   min-height: $event-card-height;
   position: relative;
 
-  .event-picture-container{
+  .event-picture-container {
     $picture-border-radius: 10px;
     border-radius: $picture-border-radius;
   }
 
-  .event-picture-container, .event-picture-container-dashboard{
+  .event-picture-container,
+  .event-picture-container-dashboard {
     position: relative;
-    
+
     overflow: hidden;
 
     .event-picture {
@@ -219,7 +215,7 @@ $event-row-padding: 3.5vw;
       &.featured {
         height: 21.71vw;
         width: 21.85vw;
-        
+
         @media (max-width: 960px) {
           height: 21.66vw;
           width: 25.1vw;
@@ -230,14 +226,14 @@ $event-row-padding: 3.5vw;
         width: 100%;
 
         &:before {
-          content: ' ';
+          content: " ";
           display: block;
           position: absolute;
           top: 0;
           left: 0;
           height: $event-card-height;
           width: 100%;
-          background-image: url('../image/no-event-image-placeholder.jpg');
+          background-image: url("../image/no-event-image-placeholder.jpg");
           background-size: cover;
         }
       }
@@ -278,7 +274,7 @@ $event-row-padding: 3.5vw;
 
       &.accent-box {
         background-color: $accent-color;
-        color: $white-transparent
+        color: $white-transparent;
       }
     }
   }
@@ -304,17 +300,29 @@ $event-row-padding: 3.5vw;
 
 .event-card-secondary {
   @media (min-width: 1366px) {
-    @include event-card($regular-card-width-large, $regular-card-width-large * 0.6);
+    @include event-card(
+      $regular-card-width-large,
+      $regular-card-width-large * 0.6
+    );
   }
 
   @media (max-width: 1365px) and (min-width: 1024px) {
-    @include event-card($regular-card-width-medium, $regular-card-width-medium * 0.6);
-  } 
+    @include event-card(
+      $regular-card-width-medium,
+      $regular-card-width-medium * 0.6
+    );
+  }
   @media (max-width: $screen-md-max) and (min-width: $screen-md-min) {
-    @include event-card($regular-card-width-medium, $regular-card-width-medium * 0.6);
-  } 
+    @include event-card(
+      $regular-card-width-medium,
+      $regular-card-width-medium * 0.6
+    );
+  }
   @media (max-width: $screen-sm-max) {
-    @include event-card($regular-card-width-mobile, $regular-card-width-mobile * 0.6);
+    @include event-card(
+      $regular-card-width-mobile,
+      $regular-card-width-mobile * 0.6
+    );
   }
 }
 
@@ -334,19 +342,29 @@ $event-row-padding: 3.5vw;
       @include event-card(300px, 300px);
       .event-picture-container {
         .event-picture {
-          filter: none
+          filter: none;
         }
       }
     }
   }
 }
 
-@media (max-width: 960px){
-  
-  .event-card, .event-info, .album-row {
+@media (max-width: 960px) {
+  .event-card,
+  .event-info,
+  .album-row {
     font-size: 2.4vw;
     min-height: 8.66vw;
     position: relative;
-
   }
+}
+.newest-recordings-container
+  .event-row
+  .event-display
+  a
+  .event-card
+  .event-picture-container
+  .picture-border
+  .event-picture {
+  @include cross-browser-nofilter;
 }
