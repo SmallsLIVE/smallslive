@@ -182,8 +182,8 @@
             <tr>
               <th>Preview</th>
               <th>Title</th>
-              <th>Duration</th>
-              <th>Mp3 / HD</th>
+              <th class="hidden-sm hidden-xs">Duration</th>
+              <th class="hidden-sm hidden-xs">Mp3 / HD</th>
               <th></th>
             </tr>
             </thead>
@@ -200,8 +200,8 @@
                   {% endif %}
                 </td>
                 <td>{{ track.title }}</td>
-                <td>{{ track.attr.duration }}</td>
-                <td>
+                <td class="hidden-sm hidden-xs">{{ track.attr.duration }}</td>
+                <td class="hidden-sm hidden-xs">
                   {% if track.get_track_stockrecord %}$
                     {{ track.get_track_stockrecord.price_excl_tax }}{% else %}
                     -{% endif %} / {% if track.get_hd_track_stockrecord %}$
