@@ -80,8 +80,10 @@
 }
 /*style items (options):*/
 .select-items {
+  position: absolute;
   border: 2px solid $white-transparent;
-  height: 200px;
+  max-height: 225px;
+  overflow: auto;
   background-color: $background-color;
   top: 77%;
   left: 0;

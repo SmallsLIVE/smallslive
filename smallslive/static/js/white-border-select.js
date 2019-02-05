@@ -1,6 +1,6 @@
 function replaceWhiteSelects(divElement){
     divElement = divElement || document;
-    var x, i, j, selElmnt, a, b, c, option;
+    var x, i, j, selElmnt, a, b, c, option, idx, lastLetter, currentLetter;
     /*look for any elements with the class "white-border-select":*/
     x = divElement.getElementsByClassName("white-border-select");
     for (i = 0; i < x.length; i++) {
@@ -71,7 +71,12 @@ function replaceWhiteSelects(divElement){
           closeAllSelect(this);
           this.nextSibling.classList.toggle("select-hide");
           this.classList.toggle("select-arrow-active");
-      });
+          document.removeEventListener('keyup', goToSelection);
+          if($(this).hasClass("select-arrow-active")){
+            idx = 0;
+            document.addEventListener('keyup', goToSelection);
+          }
+        });
     }
     function closeAllSelect(elmnt) {
       /*a function that will close all select boxes in the document,
@@ -92,10 +97,37 @@ function replaceWhiteSelects(divElement){
         }
       }
     }
+    function goToSelection(event) {
+        currentLetter = String.fromCharCode(event.keyCode)
+        if (lastLetter == undefined || currentLetter != lastLetter){
+            idx = 0
+        } else{
+            idx = idx + 1
+        }
+        currentLetter = String.fromCharCode(event.keyCode)
+        let activeSelect = $(".select-arrow-active")
+        let activeItemsList = activeSelect.next( ".select-items" )
+        let activeItems = activeItemsList.find("div")
+        let outerSize = $(activeItems[0]).outerHeight()
+        let newList = []
+        newList = activeItems.map(function(element) {
+            if($(this).text().startsWith(currentLetter)){
+                return element
+            }
+        });
+        if(newList.length != 0){
+            if(idx != newList.length){
+                offset = newList[idx] 
+            }else{
+                idx = 0
+                offset = newList[idx] 
+            }
+            activeItemsList.scrollTop(offset * outerSize)
+        }
+        lastLetter = currentLetter
+    }
     /*if the user clicks anywhere outside the select box,
     then close all select boxes:*/
     divElement.addEventListener("click", closeAllSelect);
-    
-
 }
 replaceWhiteSelects();
