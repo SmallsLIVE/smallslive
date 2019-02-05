@@ -604,6 +604,7 @@ $(document).ready(function() {
       .children(".price-tag")
       .text();
     let cost = $(this).attr("data-cost");
+
     var tax = 0;
     if (cost &&  typeof cost != "undefined") {
       tax = parseInt(price.substring(1)) - parseInt(cost);
@@ -623,6 +624,7 @@ $(document).ready(function() {
     $selectionConfirmationDialog
       .find(".text")
       .html(content);
+
     var $giftContent = $selectionConfirmationDialog.find(".gift-content");
     $giftContent.html($item);
     $item.removeClass("hidden");
@@ -814,19 +816,21 @@ $(document).ready(function() {
   }
 
   function buttonsSizeOrder() {
-    var upperButtonWidth = 0;
-    $(".select-gift").each(function(index) {
-      if (index > 0) {
-        $(this).css("width", upperButtonWidth);
-      }
-      upperButtonWidth = $(this).css("width");
-      upperButtonWidth = upperButtonWidth.substring(
-        0,
-        upperButtonWidth.length - 2
-      );
-      upperButtonWidth = parseInt(upperButtonWidth) + 100;
-      upperButtonWidth = upperButtonWidth + "px";
-    });
+    if (document.body.clientWidth > 768) {
+      var upperButtonWidth = 0;
+      $(".select-gift").each(function(index) {
+        if (index > 0) {
+          $(this).css("width", upperButtonWidth);
+        }
+        upperButtonWidth = $(this).css("width");
+        upperButtonWidth = upperButtonWidth.substring(
+          0,
+          upperButtonWidth.length - 2
+        );
+        upperButtonWidth = parseInt(upperButtonWidth) + 100;
+        upperButtonWidth = upperButtonWidth + "px";
+      });
+    }
   }
 
   buttonsSizeOrder();

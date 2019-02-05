@@ -81,7 +81,7 @@
 /*style items (options):*/
 .select-items {
   border: 2px solid $white-transparent;
-  height: 200px;
+  max-height: 200px;
   background-color: $background-color;
   top: 77%;
   left: 0;

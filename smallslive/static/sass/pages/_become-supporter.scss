@@ -1,5 +1,6 @@
-.supporter-main-container, .payment-main-container {
-  .accent-color.minimum-error{
+.supporter-main-container,
+.payment-main-container {
+  .accent-color.minimum-error {
     position: absolute;
     margin-top: 10px;
     width: 100%;
@@ -32,7 +33,7 @@
   }
 
   .price-tag {
-    font-family: 'Oswald', sans-serif;
+    font-family: "Oswald", sans-serif;
     font-weight: 300;
     font-size: 3.35em;
     letter-spacing: 1px;
@@ -40,8 +41,8 @@
     text-shadow: 0.001em 0.001em;
     margin-right: 12px;
   }
-  
-  .gift-title{
+
+  .gift-title {
     font-size: 16px;
   }
 
@@ -55,7 +56,7 @@
   }
 
   .store-add-small {
-      padding: 0;
+    padding: 0;
   }
 
   .select-gift {
@@ -72,8 +73,8 @@
     }
   }
 
-  #supporterStep3{
-    @media(max-width:$screen-md-max) {
+  #supporterStep3 {
+    @media (max-width: $screen-md-max) {
       .section-title {
         background-size: 100vw 10px;
         padding-bottom: 9px;
@@ -82,8 +83,8 @@
       }
     }
   }
-  .payment-information{
-    margin-top:60px;
+  .payment-information {
+    margin-top: 60px;
   }
 
   .items-wrapper {
@@ -93,27 +94,28 @@
       width: 100%;
     }
   }
-  .supporter-plan-input{
-    .section-title{
+  .supporter-plan-input {
+    .section-title {
       width: 320px;
     }
     padding: 20px 0;
-    @media(max-width:$screen-md-max) {
+    @media (max-width: $screen-md-max) {
       .section-title > div.title1 {
-          font-size: 30px;
-          line-height: 36px;
+        font-size: 30px;
+        line-height: 36px;
       }
-      #monthlyPledge,#yearlyPledge{
-        button{
+      #monthlyPledge,
+      #yearlyPledge {
+        button {
           margin: 0 10px 0 0;
-          font-size:14px;
+          font-size: 14px;
         }
-        .no-spinners{
+        .no-spinners {
           font-size: 9px;
         }
-        .custom-input{
-          label div{
-            font-size:0.8em;
+        .custom-input {
+          label div {
+            font-size: 0.8em;
           }
         }
       }
@@ -122,17 +124,16 @@
   .text9 {
     font-size: 1.7em;
     text-align: center;
-
   }
 
-  .step-button{
+  .step-button {
     margin-right: 20px;
     border-radius: 50%;
     height: 15px;
     width: 15px;
     background-color: $gray-light;
-    &.active{
-      background-color: #fff; 
+    &.active {
+      background-color: #fff;
     }
   }
   padding: 20px;
@@ -144,11 +145,12 @@
   min-height: 680px;
 
   #supporterSteps {
-    padding-bottom: 30px;}
-  @media(max-width:$screen-md-max) {
+    padding-bottom: 30px;
+  }
+  @media (max-width: $screen-md-max) {
     margin: 0;
   }
-  .text2{
+  .text2 {
     letter-spacing: 0.3em;
   }
   .supporter-image {
@@ -157,22 +159,22 @@
     position: absolute;
     top: 0;
     left: 0;
-  
+
     z-index: -1;
     img {
       width: 100%;
     }
-  
+
     .banner-container {
       &::before {
-        content: ' ';
+        content: " ";
         display: flex;
         position: absolute;
         top: 0;
         left: 0;
         height: 100%;
         width: 100%;
-        background-image: url('../image/supporter-blur.png');
+        background-image: url("../image/supporter-blur.png");
         background-size: cover;
       }
     }
@@ -182,20 +184,20 @@
     text-align: center;
     padding: 30px 0 10px 0;
   }
-  .title7{
-    @media(max-width:$screen-md-max) {
+  .title7 {
+    @media (max-width: $screen-md-max) {
       font-size: 4vw;
     }
-    margin:0 auto;
+    margin: 0 auto;
   }
-  .title1{
-    margin:0 auto;
+  .title1 {
+    margin: 0 auto;
   }
   .confirm-button {
     margin-top: 50px;
-    .button-bordered{
+    .button-bordered {
       padding: 0 30px;
-      @media(max-width:$screen-md-max) {
+      @media (max-width: $screen-md-max) {
         padding: 0 20px;
       }
     }
@@ -243,10 +245,9 @@
     margin: 25px auto;
     width: 50%;
 
-    @media(max-width:$screen-md-max) {
-      width: 100%
+    @media (max-width: $screen-md-max) {
+      width: 100%;
     }
-
   }
 
   .white-border-select {
@@ -257,7 +258,6 @@
   .button-row {
     justify-content: center;
   }
-
 }
 
 .supporter-text-container {
@@ -271,8 +271,8 @@
   text-align: justify;
   padding: 130px 100px 20px;
 
-  @media(max-width:$screen-md-max) {
-    padding:0px;
+  @media (max-width: $screen-md-max) {
+    padding: 0px;
 
     h1 {
       margin-bottom: 150px;
@@ -294,7 +294,7 @@
 }
 
 .form-control::placeholder {
-  color:black;
+  color: black;
 }
 
 .button-row {
@@ -302,11 +302,11 @@
     font-size: 1em;
     position: relative;
     input:focus + label {
-      visibility:hidden
+      visibility: hidden;
     }
 
-    .no-spinners{
-      & + label{
+    .no-spinners {
+      & + label {
         z-index: 1;
         top: 20%;
         left: 50%;
@@ -315,15 +315,15 @@
         text-align: center;
         pointer-events: none;
         position: absolute;
-        &>div{
+        & > div {
           left: -50%;
           position: relative;
         }
       }
     }
-    
+
     .no-spinners::placeholder {
-      color:black;
+      color: black;
     }
     &:before {
       top: 2px;
@@ -335,7 +335,8 @@
   }
 
   input {
-    &.active, &:focus-within {
+    &.active,
+    &:focus-within {
       border: 1px solid $accent-color;
       background-color: white;
     }
@@ -348,7 +349,6 @@
   }
 
   .store-list-item {
-
     position: relative;
 
     button {
@@ -361,7 +361,7 @@
     }
 
     .overlay {
-      background-color: rgba(120,120,120, .4);
+      background-color: rgba(120, 120, 120, 0.4);
       border-radius: 10px;
       height: 86%;
       margin-top: 69px;
@@ -371,7 +371,6 @@
     }
 
     .store-list-item-image {
-
       img {
         width: 15vw;
       }
@@ -380,7 +379,6 @@
         border: 2px solid;
         border-radius: 10px;
       }
-
     }
 
     .store-list-item-tile {
@@ -402,20 +400,14 @@
           &.alert {
             border: 1px solid $accent-color;
           }
-
         }
-
       }
     }
-
   }
-
 }
 
 #selectionConfirmationDialog {
-
-  .gift-content  {
-
+  .gift-content {
     .modal-content {
       background-color: inherit;
       border: none;
@@ -436,7 +428,6 @@
         padding: 0;
       }
     }
-
   }
 }
 
@@ -446,13 +437,11 @@
       background: none;
 
       &:hover {
-        background-color:  $white-transparent;
+        background-color: $white-transparent;
       }
     }
-
   }
 }
-
 
 .confirm-custom {
   position: relative;
@@ -461,13 +450,13 @@
   border: white 3px solid;
   cursor: pointer;
   transition: border 0.1s ease-in-out;
-  
+
   &:hover {
     border: #333 3px solid;
     .bar {
-      background-color: #333;	
+      background-color: #333;
     }
-  } 
+  }
 
   .bar {
     display: inline-block;
@@ -482,12 +471,40 @@
     transition: transform 0.4s ease-in-out, background 0.1s ease-in-out;
   }
 
- 
-    .bar-1 {
-      transform: translateX(20px) translateY(-5px) rotate(-55deg);
-    }
-    .bar-2 {
-      transform: translateX(20px) translateY(5px) rotate(-125deg);
-    }
-  
+  .bar-1 {
+    transform: translateX(20px) translateY(-5px) rotate(-55deg);
+  }
+  .bar-2 {
+    transform: translateX(20px) translateY(5px) rotate(-125deg);
+  }
+}
+.supporter-type-select {
+  flex-flow: nowrap;
+}
+
+.supporter-main-container .supporter-plan-input #monthlyPledge button,
+.supporter-main-container .supporter-plan-input #yearlyPledge button {
+  @media (max-width: 425px) {
+    margin: 0 0 35px 0px;
+    width: 80%;
+  }
+  @media (min-width: 426px) {
+    width: 65px;
+  }
+}
+#monthlyCustom,
+#yearlyCustom {
+  @media (max-width: 425px) {
+    width: 308px;
+  }
+  @media (max-width: 375px) {
+    width: 268px;
+  }
+  @media (max-width: 320px) {
+    width: 256px;
+  }
+
+  @media (min-width: 465px) {
+    width: 50px;
+  }
 }
