@@ -84,14 +84,11 @@
           </div>
           {% endif %}
           <div class="store-single__item__description">
-            {{ product.short_description|safe }}
+          {% for artist in  product.artist.all %}
+            <a href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }}</a><br>
+          {% endfor %}
           </div>
-          <div class="store-single__item__details">
-              {% if product.description %}
-                  <span class="store-single__item__details__title">Detailed description:</span>
-                  {{ product.description|safe }}
-              {% endif %}
-          </div>
+
           {% purchase_info_for_product request product as session %}
           <span class="store-single__item__price">
               {% if session.price.exists %}

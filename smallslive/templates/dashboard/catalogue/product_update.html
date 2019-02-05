@@ -55,12 +55,10 @@
                     {% block product_overview_content_image %}
                     <div class="span4">
                         {% if product.primary_image.original.url %}
-                            {% with image=product.primary_image %}
-                                {% thumbnail image.original "240" upscale=False as thumb %}
+                            {% with image=product.primary_image %}        
                                     <a href="{{ image.original.url }}" rel="lightbox_{{ product.upc|default:"-" }}" class="thumbnail">
                                         <img src="{{ thumb.url }}" class="row-fluid" alt="{{ product.get_title }}" data-description="{% if image.caption %}{{ image.caption }}{% endif %}">
                                     </a>
-                                {% endthumbnail %}
                             {% endwith %}
                         {% endif %}
                     </div>
