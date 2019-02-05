@@ -313,26 +313,30 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
         payment_id = self.request.GET.get('payment_id')
         print payment_id
         if payment_id:
-            # Donated by selecting a gift in the store
-            source = Source.objects.filter(reference=payment_id).first()
-            print "AAAAAA"
-            if source and user.is_authenticated():
-                # Create Donation
-                donation = {
-                    'user': user,
-                    'currency': source.currency,
-                    'amount': source.amount_allocated,
-                    'reference': payment_id,
-                    'confirmed': True,
-
-                }
-                Donation.objects.create(**donation)
+            # Donated directly  by PayPal or Stripe
+            source = Donation.objects.filter(reference=payment_id).first()
+            if source:
+                source.confirmed = True
+                source.save()
+             # Donated by selecting a gift in the store
             else:
-                # Donated directly  by PayPal or Stripe
-                source = Donation.objects.filter(reference=payment_id).first()
-                if source:
-                    source.confirmed = True
-                    source.save()
+                source = Source.objects.filter(reference=payment_id).first()
+                if source and user.is_authenticated():
+                    # Create Donation
+                    donation = {
+                        'user': user,
+                        'currency': source.currency,
+                        'amount': source.amount_allocated,
+                        'reference': payment_id,
+                        'confirmed': True,
+
+                    }
+                    Donation.objects.create(**donation)
+
+           
+            
+     
+                
 
         if not payment_id or not source:
             context['error'] = 'We could not find your payment reference. Contact our support'

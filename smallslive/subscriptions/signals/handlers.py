@@ -13,8 +13,11 @@ def charge_succeeded(sender, **kwargs):
     if event:
         customer = event.customer
         charge = Charge.objects.filter(customer=customer).order_by('-id').first()
-        donation = Donation.objects.filter(reference=charge.stripe_id).first()
+        donation = Donation.objects.filter(reference=charge.reference).first()
         if donation:
+            donation.confirmed = True
+            donation.save()
+            # Donated by selecting a gift in the store
             pass
         else:
             donation = {

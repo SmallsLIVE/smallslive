@@ -7,12 +7,13 @@ from oscar.apps.payment.exceptions import RedirectRequired, \
     UnableToTakePayment, PaymentError
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.models import Donation
+from decimal import *
 
 
 class PayPalMixin(object):
 
-    def get_payment_data(self, item_list, total, currency):
-
+    def get_payment_data(self, item_list, total, currency, shipping_charge=0.00):
+        subtotal =  Decimal(total) - Decimal(shipping_charge)
         if self.mezzrow:
             execute_uri = 'checkout:mezzrow_paypal_execute'
             cancel_uri = 'checkout:payment-details'
@@ -22,10 +23,10 @@ class PayPalMixin(object):
 
         payment_execute_url = self.request.build_absolute_uri(reverse(execute_uri))
         payment_cancel_url = self.request.build_absolute_uri(reverse(cancel_uri))
-
         return {
             'intent': 'sale',
             'payer': {'payment_method': 'paypal'},
+            
             'redirect_urls': {
                 'return_url': payment_execute_url,
                 'cancel_url': payment_cancel_url},
@@ -33,7 +34,12 @@ class PayPalMixin(object):
                 'item_list': {'items': item_list},
                 'amount': {
                     'total': total,
-                    'currency': currency},
+                    'currency': currency,
+                    'details':{
+                        'shipping':shipping_charge,
+                        'subtotal': str(subtotal)
+                        }
+                    },
                 'description': 'SmallsLIVE'}]}
 
     def configure_paypal(self):
@@ -49,19 +55,18 @@ class PayPalMixin(object):
                 'client_secret': settings.PAYPAL_CLIENT_SECRET})
 
     def handle_paypal_payment(self, currency, total, item_list,
-                              donation=False, deductable_total=0.00):
+                              donation=False, deductable_total=0.00, shipping_charge=0.00):
         print '******************************'
         print 'PayPal Mixin handle PayPal payment'
-
+        print shipping_charge
         print total
         print currency
 
         self.configure_paypal()
 
         print 'payment data'
-        payment_data = self.get_payment_data(item_list, total, currency)
+        payment_data = self.get_payment_data(item_list, total, currency, shipping_charge)
 
-        print 'paypal restsdk'
         payment = paypalrestsdk.Payment(payment_data)
         print 'payment_id'
         success = payment.create()
@@ -77,7 +82,7 @@ class PayPalMixin(object):
                     'amount': total,
                     'reference': payment_id,
                     'confirmed': False,
-                    'deductable_amount': deductable_total
+                    'deductable_amount': str(deductable_total)
                 }
                 print donation
                 Donation.objects.create(**donation)

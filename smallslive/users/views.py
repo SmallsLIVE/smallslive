@@ -214,8 +214,7 @@ def user_settings_view_new(request):
         plan_id = request.user.customer.current_subscription.plan
         plan = stripe.Plan.retrieve(id=plan_id)
     
-    customer_charges = request.user.get_donations()
-   
+    customer_charges = request.user.get_donations().order_by("-date")
     charges_value = 0
     for charge in customer_charges:
         if charge.amount:
@@ -270,8 +269,11 @@ class UserTaxLetterHtml(TemplateView):
         customer = self.request.user.customer
         customer_charges = customer.subscriber.get_donations()
         charges_value = 0
+        deductable_value = 0
         for charge in customer_charges:
             charges_value += charge.amount
+        for charge in customer_charges:
+            deductable_value += charge.deductable_amount
         context['customer'] = customer
         context['charges_value'] = charges_value
         context['year'] = timezone.now().year
@@ -291,10 +293,14 @@ class UserTaxLetter(PDFTemplateView):
         customer = self.request.user.customer
         customer_charges = self.request.user.get_donations()
         charges_value = 0
+        deductable_value = 0
         for charge in customer_charges:
-            charges_value += charge.amount
+            charges_value += charge.amount       
+        for charge in customer_charges:
+            deductable_value += charge.deductable_amount
         context['customer'] = customer
         context['charges_value'] = charges_value
+        context['deductable_value'] = deductable_value
         context['year'] = timezone.now().year
         return context
 
