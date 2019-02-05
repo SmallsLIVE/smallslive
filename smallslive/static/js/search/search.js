@@ -106,6 +106,7 @@ $("#a-z-refresh").click(() => {
 });
 function sendArtistRequest(callback) {
   callback = callback || function() {};
+  console.log('/search/ajax/artist');
   $.ajax({
     url: "/search/ajax/artist/",
     data: {
@@ -203,6 +204,11 @@ $(document).on("click", "#artists .artist-row", function() {
 
 function toggleArrows() {
   if ($(".artist-column").length) {
+
+    var max = parseInt($('#total-artist').text());
+    var range = $('#artist-subheader').text().split('-');
+    var current = parseInt(range[1]);
+
     var style = $("#artists").css("left");
     var columnWidth = parseInt(
       $(".artist-column")
@@ -223,7 +229,7 @@ function toggleArrows() {
     $(".left_arrow").css("visibility", pseudoPage == 0 ? "hidden" : "visible");
     $(".right_arrow").css(
       "visibility",
-      pseudoPage == lastPseudoPage ? "hidden" : "visible"
+      current >= max ? "hidden" : "visible"
     );
   }
 }
@@ -328,8 +334,22 @@ $(document).ready(function() {
   $("[name='q']").val(searchTerm);
   $("#artist-search").val("");
 
-  $(document).on("click", ".left_arrow", function() {
-    $("#artist-subheader").html();
+  var queryBusy = false;
+  var animationBusy = false;
+
+  $(document).on("click", ".artist-arrow-search", function () {
+
+    var $that = $(this);
+
+    var artistSubheader = $("#artist-subheader");
+
+    if (animationBusy || queryBusy) {
+      console.log(animationBusy);
+      console.log(queryBusy);
+      return;
+    }
+
+    // Get column width
     var style = $("#artists").css("left");
     var columnWidth = parseInt(
       $(".artist-column")
@@ -341,59 +361,41 @@ $(document).ready(function() {
       columnWidth *= 4;
     }
     var left = parseInt(style.replace("px", ""));
-    if (canScroll) {
-      canScroll = false;
-      $("#artists").animate(
-        {
-          left: left + (document.documentElement.clientWidth / 100) * 88 + "px"
-        },
-        200,
-        "linear",
-        function() {
-          toggleArrows();
-          canScroll = true;
-        }
-      );
+    var offset = (document.documentElement.clientWidth / 100) * 88;
+    if ($that.hasClass('right_arrow')) {
+      offset = offset * -1;
     }
-    showQuantityDisplay(artistSubheader, false, true);
-  });
-  var canScroll = true;
-  $(document).on("click", ".right_arrow", function() {
-    var style = $("#artists").css("left");
-    var columnWidth = parseInt(
-      $(".artist-column")
-        .first()
-        .css("width")
-        .replace("px", "")
+
+    animationBusy = true;
+    $("#artists").animate(
+      {
+        left: left + offset + "px"
+      },
+      200,
+      "linear",
+      function () {
+        toggleArrows();
+        animationBusy = false;
+      }
     );
-    if (!smallsConfig.display.isMobile()) {
-      columnWidth *= 4;
+
+    if ($that.hasClass('left_arrow')) {
+      showQuantityDisplay(artistSubheader, false, true);
     }
 
-    var left = parseInt(style.replace("px", ""));
-    var pseudoPage = parseInt(-left / columnWidth);
-    if (canScroll) {
-      canScroll = false;
-      $("#artists").animate(
-        {
-          left: left - (document.documentElement.clientWidth / 100) * 88 + "px"
-        },
-        200,
-        "linear",
-        function() {
-          toggleArrows();
-          canScroll = true;
-        }
-      );
-    }
-
-    artistSubheader = $("#artist-subheader");
-    showQuantityDisplay(artistSubheader, true, true);
-    if (artistPageNum !== artistMaxPageNum && maxPseudopage - pseudoPage <= 4) {
-      artistPageNum += 1;
-      sendArtistRequest(function() {
-        maxPseudopage += 4;
-      });
+    if ($that.hasClass('right_arrow')) {
+      var pseudoPage = parseInt(-left / columnWidth);
+      showQuantityDisplay(artistSubheader, true, true);
+      if (artistPageNum !== artistMaxPageNum && maxPseudopage - pseudoPage <= 4) {
+        artistPageNum += 1;
+        $that.addClass("loading");
+        queryBusy = true;
+        sendArtistRequest(function () {
+          maxPseudopage += 4;
+          queryBusy = false;
+          $that.removeClass("loading");
+        });
+      }
     }
   });
 

@@ -576,6 +576,13 @@ body.headers-1 {
     &.left_arrow {
       transform: scaleX(-1);
     }
+
+    &.loading {
+      background-image: url(/static/image/loading.gif);
+      background-repeat: no-repeat;
+      background-size: 50px;
+      width: 100px;
+    }
   }
 }
 
