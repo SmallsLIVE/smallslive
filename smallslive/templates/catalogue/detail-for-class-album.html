@@ -83,9 +83,9 @@
             <span class="arrow"></span>
           </div>
           {% endif %}
-          <div class="store-single__item__description">
+          <div class="store-single__item__description .event-band ">
           {% for artist in  product.artist.all %}
-            <a href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }}</a><br>
+            <a class="artist-link " href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }} / {{ artist.instruments.first }}</a><br>
           {% endfor %}
           </div>
 
