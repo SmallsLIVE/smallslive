@@ -15,8 +15,8 @@ def charge_succeeded(sender, **kwargs):
         charge = Charge.objects.filter(customer=customer).order_by('-id').first()
         print 'Charge ->', charge
         print 'Customer ->', customer
-        print 'Reference ->', charge.reference
-        donation = Donation.objects.filter(reference=charge.reference).first()
+        print 'Reference ->', charge.stripe_id
+        donation = Donation.objects.filter(reference=charge.stripe_id).first()
         print 'Donation:', donation
         if donation:
             donation.confirmed = True
