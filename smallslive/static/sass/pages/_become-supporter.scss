@@ -480,6 +480,11 @@
 }
 .supporter-type-select {
   flex-flow: nowrap;
+  @media (max-width: 340px) {
+    div button {
+      padding: 0;
+    }
+  }
 }
 
 .supporter-main-container .supporter-plan-input #monthlyPledge button,
@@ -506,5 +511,10 @@
 
   @media (min-width: 465px) {
     width: 50px;
+  }
+}
+#backButton {
+  @media (max-width: 425px) {
+    margin: 0;
   }
 }
