@@ -18,7 +18,7 @@
                   {% for record in album.list %}
                   {% with album=record.product is_hd=record.stockrecord.is_hd %}
                     <div class="my-downloads-album row big-player">
-                    <div class="my-downloads-album__cover flex-column player-containter " data-album="{{ forloop.counter0 }}" data-track=0>
+                    <div class="my-downloads-album__cover flex-column player-containter " data-track=0>
                         {% with image=album.primary_image %}
                         {% if album.parent_id %}
                             {% with image=album.parent.primary_image %}
@@ -100,7 +100,7 @@
                   {% endfor %}
                 {% else %}
                   <div class="my-downloads-album row big-player">
-                    <div class="my-downloads-album__cover flex-column player-containter" data-single="{{ forloop.counter0 }}" data-track=0>
+                    <div class="my-downloads-album__cover flex-column player-containter" data-track=0>
                       {% with image=album.grouper.primary_image %}
                           {% if not image.is_missing %}
                             <div style="position: relative">
@@ -190,35 +190,29 @@
         $(playerContainer).data("track", audioPlayerTrack)
         //make active track color red, toggles player button and remove previous track color
         var trackInfo = $(this).find(".track-info")
+        lastPlayerContainerButton = $(lastPlayerContainer).find(".purchases-player-button ")
+        playerContainerButton = $(playerContainer).find(".purchases-player-button")
         if( $(trackInfo).hasClass("active-track")){
             $(".active-track").removeClass("active-track")
             play = false
-            $(lastPlayerContainer).removeClass("mypause-btn")
-            $(lastPlayerContainer).addClass("myplay-btn")
+            $(playerContainerButton).removeClass("mypause-btn")
+            $(playerContainerButton).addClass("myplay-btn")
         }else{
             $(".active-track").removeClass("active-track")
             $(this).find(".track-info").addClass("active-track")
             play = true
-            $(playerContainer).addClass("mypause-btn")
-            $(playerContainer).removeClass("myplay-btn")
-            $(lastPlayerContainer).addClass("myplay-btn")
-            $(lastPlayerContainer).removeClass("mypause-btn")
-        }
-        //set player container id for verification
-        if($(playerContainer).data("album") != undefined){
-            playerContainerId = $(playerContainer).data("album") + "" + $(playerContainer).data("track")
-        }else{
-           playerContainerId = $(playerContainer).data("single") + "" + $(playerContainer).data("track")
+            $(lastPlayerContainerButton).addClass("myplay-btn")
+            $(lastPlayerContainerButton).removeClass("mypause-btn")
+            $(playerContainerButton).addClass("mypause-btn")
+            $(playerContainerButton).removeClass("myplay-btn")
         }
         //toggles player
         if(lastPlayer != undefined){
             lastPlayer.pause()
         }
-        if( playerContainerId != lastplayerContainerId){
-            togglePlayer(audioPlayer, play)
-        }
+        togglePlayer(audioPlayer, play)
+        
         lastPlayerContainer = playerContainer
-        lastplayerContainerId = playerContainerId
         lastPlayer = audioPlayer
     });
     function togglePlayer(playerContainer, play){
@@ -228,8 +222,9 @@
             audioPlayer.pause()
         }
     }
-    $(".big-player").on("click", function(){
-        console.log("player")
+    $(".purchases-player-button").on("click", function(){
+        playerContainer = $(this).closest(".player-container")[0]
+        $()
     })
 </script>
 

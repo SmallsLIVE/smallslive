@@ -96,7 +96,8 @@
       }
     }
     
-    .myplay-btn {
+    .purchases-player-button {
+      opacity: 0;
       display: flex;
       justify-content: center;
       position: absolute;
@@ -107,7 +108,10 @@
       width: 100%;
       height: 100%;
       align-items: center;
-      .fa-thin-circle.fa{    
+      &:hover{
+        opacity: 1;
+      }
+      .fa-thin-circle.fa{       
         z-index: 10;
         display: flex;
         justify-content: center;
