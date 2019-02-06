@@ -921,12 +921,14 @@
           .white-border-button{
             padding: 0 18px;
           }
-          border: none;
-          tr, td, th{
-            .table-button{
-              padding: 0 0 5px 0;
-            }
+          @media (max-width: 425px) {
             border: none;
+            tr, td, th{
+              .table-button{
+                padding: 0 0 5px 0;
+              }
+              border: none;
+            }
           }
       }
       @media(max-width:425px){
