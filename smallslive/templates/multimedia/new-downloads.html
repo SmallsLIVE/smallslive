@@ -18,22 +18,33 @@
                   {% for record in album.list %}
                   {% with album=record.product is_hd=record.stockrecord.is_hd %}
                     <div class="my-downloads-album row big-player">
-                    <div class="my-downloads-album__cover flex-column player-containter" data-album="{{ forloop.counter0 }}" data-track=0>
+                    <div class="my-downloads-album__cover flex-column player-containter " data-album="{{ forloop.counter0 }}" data-track=0>
                         {% with image=album.primary_image %}
                         {% if album.parent_id %}
                             {% with image=album.parent.primary_image %}
                                 {% thumbnail image.original "245x245" upscale=False as thumb %}
-                                <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ album.get_title }}">
+                                    <div style="position: relative">
+                                        <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ album.get_title }}">
+                                        <div class="purchases-player-button myplay-btn">
+                                            <div class="fa-thin-circle fa" ></div>
+                                        </div>
+                                    </div>
                                 {% endthumbnail %}
                             {% endwith %}
                         {% else %}
                             {% with image=album.primary_image %}
                                 {% thumbnail image.original "245x245" upscale=False as thumb %}
-                                    <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ album.get_title }}">
+                                    <div style="position: relative">
+                                        <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ album.get_title }}">
+                                         <div class="purchases-player-button myplay-btn">
+                                            <div class="fa-thin-circle fa" ></div>
+                                        </div>
+                                    </div>
                                 {% endthumbnail %}
                             {% endwith %}
                         {% endif %}
                         {% endwith %}
+
                         <a class="title6" href="{{ album.get_absolute_url }}">{% if album.parent %}{{ album.parent.title }} - {% endif %}{{ album.title }}</a>
                     </div>
                     <div class="song-container">
@@ -92,12 +103,22 @@
                     <div class="my-downloads-album__cover flex-column player-containter" data-single="{{ forloop.counter0 }}" data-track=0>
                       {% with image=album.grouper.primary_image %}
                           {% if not image.is_missing %}
-                           <img src="{% thumbor_url image.original.url|urlencode height=245 width=245 smart=True %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio">
+                            <div style="position: relative">
+                                <img src="{% thumbor_url image.original.url|urlencode height=245 width=245 smart=True %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio">
+                                <div class="purchases-player-button myplay-btn">
+                                    <div class="fa-thin-circle fa" ></div>
+                                </div>
+                            </div>
                           {% else %}
-                            <img src="{% static "image/image_not_found.jpg" %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio">
+                            <div style="position: relative">
+                                <img src="{% static "image/image_not_found.jpg" %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio">
+                                <div class="purchases-player-button myplay-btn">
+                                    <div class="fa-thin-circle fa" ></div>
+                                </div>
+                            </div>
                           {% endif %}
                       {% endwith %}
-                            <a class="title6" href="{{ album.grouper.get_absolute_url }}">{{ album.grouper.title }}</a>
+                    <a class="title6" href="{{ album.grouper.get_absolute_url }}">{{ album.grouper.title }}</a>
                     </div>
                     <div class="song-container">
                         <div class="my-downloads-album__tracks-table">
@@ -159,38 +180,30 @@
 {% block extra_js %}
 <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
 <script>
-    var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastplayerContainerId, play;
-    {% comment %} $('.audio-player').on('ended', function() {
-        songIndex = $('.audio-player').index(this) + 1
-        if( $('.audio-player')[songIndex]){
-            $('.audio-player')[songIndex].play();
-        }
-    }); {% endcomment %}
+    var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
     $(".my-downloads-album__tracks-table__row.flex-row").on("click", function(){
-        function togglePlayer(playerContainer, play){
-            if(play){
-                audioPlayer.play()
-            }else{
-                audioPlayer.pause()
-            }
-        }
-        //make active track color red and remove previous track color
-        if($(this).find(".track-info").hasClass("active-track")){
-            console.log("a")
-            $(".active-track").removeClass("active-track")
-            play = false
-        }else{
-            console.log("b")
-            $(".active-track").removeClass("active-track")
-            $(this).find(".track-info").addClass("active-track")
-            play = true
-        }
         //find audio player, its track number and change the big player track number
         audioPlayer = $(this).find(".audio audio")[0]
         audioPlayerTrack = $(audioPlayer).data("track")
         mainContainer = $(this).closest(".big-player")[0]
         playerContainer =$(mainContainer).find(".player-containter")[0]
         $(playerContainer).data("track", audioPlayerTrack)
+        //make active track color red, toggles player button and remove previous track color
+        var trackInfo = $(this).find(".track-info")
+        if( $(trackInfo).hasClass("active-track")){
+            $(".active-track").removeClass("active-track")
+            play = false
+            $(lastPlayerContainer).removeClass("mypause-btn")
+            $(lastPlayerContainer).addClass("myplay-btn")
+        }else{
+            $(".active-track").removeClass("active-track")
+            $(this).find(".track-info").addClass("active-track")
+            play = true
+            $(playerContainer).addClass("mypause-btn")
+            $(playerContainer).removeClass("myplay-btn")
+            $(lastPlayerContainer).addClass("myplay-btn")
+            $(lastPlayerContainer).removeClass("mypause-btn")
+        }
         //set player container id for verification
         if($(playerContainer).data("album") != undefined){
             playerContainerId = $(playerContainer).data("album") + "" + $(playerContainer).data("track")
@@ -204,11 +217,20 @@
         if( playerContainerId != lastplayerContainerId){
             togglePlayer(audioPlayer, play)
         }
+        lastPlayerContainer = playerContainer
         lastplayerContainerId = playerContainerId
         lastPlayer = audioPlayer
     });
-
-  
+    function togglePlayer(playerContainer, play){
+        if(play){
+            audioPlayer.play()
+        }else{
+            audioPlayer.pause()
+        }
+    }
+    $(".big-player").on("click", function(){
+        console.log("player")
+    })
 </script>
 
 {% endblock %}
