@@ -177,7 +177,8 @@
           <table class="table">
             <thead>
             <tr>
-              <th>Preview</th>
+              <th class="hidden-xs">Preview</th>
+              <th class="hidden-sm hhidden-md hidden-lg"></th>
               <th>Title</th>
               <th class="hidden-sm hidden-xs">Duration</th>
               <th class="hidden-sm hidden-xs">Mp3 / HD</th>
@@ -196,7 +197,7 @@
                     <!-- {{ preview_track_id_counter.next }} -->
                   {% endif %}
                 </td>
-                <td>{{ track.title }}</td>
+                <td class="store-td-title">{{ track.title }}</td>
                 <td class="hidden-sm hidden-xs">{{ track.attr.duration }}</td>
                 <td class="hidden-sm hidden-xs">
                   {% if track.get_track_stockrecord %}$
