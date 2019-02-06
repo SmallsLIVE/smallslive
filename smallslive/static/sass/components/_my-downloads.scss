@@ -61,7 +61,7 @@
   }
 
   &__cover {
-    padding-right: 20px;
+    padding: 0 10px;
     width: 33%;
     @media(max-width: 1023px){
       width: 100%;
@@ -132,7 +132,6 @@
   padding: 0 10px;
   float: left;
   width: 100%;
-  margin-top: 20px;
   audio{
     @media (max-width:960px) and (min-width:768px) {
       width:256px

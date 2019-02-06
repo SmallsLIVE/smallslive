@@ -17,8 +17,8 @@
                 {% if not album.grouper %}
                   {% for record in album.list %}
                   {% with album=record.product is_hd=record.stockrecord.is_hd %}
-                    <div class="my-downloads-album row">
-                    <div class="my-downloads-album__cover flex-column" data-album="{{ forloop.counter0 }}" data-track=0>
+                    <div class="my-downloads-album row big-player">
+                    <div class="my-downloads-album__cover flex-column player-containter" data-album="{{ forloop.counter0 }}" data-track=0>
                         {% with image=album.primary_image %}
                         {% if album.parent_id %}
                             {% with image=album.parent.primary_image %}
@@ -41,7 +41,7 @@
                         {% for track in album.parent.get_tracks %}
                             <!-- tracks table row -->
                             <div class="my-downloads-album__tracks-table__row flex-row">
-                            <div class="hidden my-downloads-album__tracks-table__column duration">
+                            <div class="hidden my-downloads-album__tracks-table__column audio">
                                 <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
                                 {% if is_hd %}
                                     <source src="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
@@ -88,8 +88,8 @@
                     {% endwith %}
                   {% endfor %}
                 {% else %}
-                  <div class="my-downloads-album row">
-                    <div class="my-downloads-album__cover flex-column" data-single="{{ forloop.counter0 }}" data-track=0>
+                  <div class="my-downloads-album row big-player">
+                    <div class="my-downloads-album__cover flex-column player-containter" data-single="{{ forloop.counter0 }}" data-track=0>
                       {% with image=album.grouper.primary_image %}
                           {% if not image.is_missing %}
                            <img src="{% thumbor_url image.original.url|urlencode height=245 width=245 smart=True %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio">
@@ -159,12 +159,30 @@
 {% block extra_js %}
 <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
 <script>
+    var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer;
     {% comment %} $('.audio-player').on('ended', function() {
         songIndex = $('.audio-player').index(this) + 1
         if( $('.audio-player')[songIndex]){
             $('.audio-player')[songIndex].play();
         }
     }); {% endcomment %}
+    $(".my-downloads-album__tracks-table__row.flex-row").on("click", function(){
+        audioPlayer = $(this).find(".audio audio")[0]
+        audioPlayerTrack = $(audioPlayer).data("track")
+        mainContainer = $(this).closest(".big-player")[0]
+        playerContainer =$(mainContainer).find(".player-containter")[0]
+        $(playerContainer).data("track", audioPlayerTrack)
+        console.log(lastPlayer)
+        console.log(audioPlayer)
+        if(lastPlayer != undefined){
+            console.log("works?")
+        }
+        if(audioPlayerTrack != $(lastPlayer).data("track")){
+            audioPlayer.play()
+        }
+        lastPlayer = audioPlayer
+        console.log($(playerContainer).data("track"))
+    });
 </script>
 
 {% endblock %}
