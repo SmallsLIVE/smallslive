@@ -181,7 +181,7 @@
               <th class="hidden-sm hhidden-md hidden-lg"></th>
               <th>Title</th>
               <th class="hidden-sm hidden-xs">Duration</th>
-              <th class="hidden-sm hidden-xs">Mp3 / HD</th>
+              <th >Mp3 / HD</th>
               <th></th>
             </tr>
             </thead>
@@ -206,7 +206,7 @@
                   {{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}
                   -{% endif %}
                 </td>
-                <td>
+                <td class="table-button">
 
                   {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
                     <div class="buy-button-container">

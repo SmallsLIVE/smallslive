@@ -923,6 +923,9 @@
           }
           border: none;
           tr, td, th{
+            .table-button{
+              padding: 0 0 5px 0;
+            }
             border: none;
           }
       }
@@ -938,6 +941,7 @@
             border-top: none;
           }
         }
+
       }
       table {
         thead {
@@ -1023,7 +1027,11 @@
         //color: #fff;
         .fa-play{
           color: black;
-          transition: color 2s;
+          transition: color 0.5s;
+        }
+        .fa-pause{
+          color: $accent-color;
+          transition: color 0.5s;
         }
         &:hover,
         &:focus {
