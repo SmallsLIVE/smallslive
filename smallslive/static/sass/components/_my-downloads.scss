@@ -169,6 +169,9 @@
       justify-content: space-between;
       .track-info{
         width: 65%;
+        &.active-track{
+          color: $accent-color;
+        }
       }
     }
     &:before, &:after {

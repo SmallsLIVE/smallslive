@@ -159,7 +159,7 @@
 {% block extra_js %}
 <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
 <script>
-    var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer;
+    var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastplayerContainerId, play;
     {% comment %} $('.audio-player').on('ended', function() {
         songIndex = $('.audio-player').index(this) + 1
         if( $('.audio-player')[songIndex]){
@@ -167,22 +167,48 @@
         }
     }); {% endcomment %}
     $(".my-downloads-album__tracks-table__row.flex-row").on("click", function(){
+        function togglePlayer(playerContainer, play){
+            if(play){
+                audioPlayer.play()
+            }else{
+                audioPlayer.pause()
+            }
+        }
+        //make active track color red and remove previous track color
+        if($(this).find(".track-info").hasClass("active-track")){
+            console.log("a")
+            $(".active-track").removeClass("active-track")
+            play = false
+        }else{
+            console.log("b")
+            $(".active-track").removeClass("active-track")
+            $(this).find(".track-info").addClass("active-track")
+            play = true
+        }
+        //find audio player, its track number and change the big player track number
         audioPlayer = $(this).find(".audio audio")[0]
         audioPlayerTrack = $(audioPlayer).data("track")
         mainContainer = $(this).closest(".big-player")[0]
         playerContainer =$(mainContainer).find(".player-containter")[0]
         $(playerContainer).data("track", audioPlayerTrack)
-        console.log(lastPlayer)
-        console.log(audioPlayer)
+        //set player container id for verification
+        if($(playerContainer).data("album") != undefined){
+            playerContainerId = $(playerContainer).data("album") + "" + $(playerContainer).data("track")
+        }else{
+           playerContainerId = $(playerContainer).data("single") + "" + $(playerContainer).data("track")
+        }
+        //toggles player
         if(lastPlayer != undefined){
-            console.log("works?")
+            lastPlayer.pause()
         }
-        if(audioPlayerTrack != $(lastPlayer).data("track")){
-            audioPlayer.play()
+        if( playerContainerId != lastplayerContainerId){
+            togglePlayer(audioPlayer, play)
         }
+        lastplayerContainerId = playerContainerId
         lastPlayer = audioPlayer
-        console.log($(playerContainer).data("track"))
     });
+
+  
 </script>
 
 {% endblock %}
