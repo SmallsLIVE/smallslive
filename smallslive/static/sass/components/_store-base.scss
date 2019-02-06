@@ -983,7 +983,7 @@
           @include align-items(center);
           @include justify-content(flex-end);
         }
-
+        
         &.duration,
         &.price {
           text-align: right;
@@ -992,7 +992,10 @@
 
       & a {
         //color: #fff;
-
+        .fa-play{
+          color: black;
+          transition: color 2s;
+        }
         &:hover,
         &:focus {
           color: $accent-color;
