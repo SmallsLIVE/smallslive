@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load add_get_parameter %}
 {% load static from staticfiles %}
 {% load thumbor_tags %}
@@ -9,8 +9,8 @@
 
 {% block content %}
 
-    <div class="content-wrapper">
-        <section class="page-heading container">
+    <div class="content-wrapper" style="border:none">
+        <section class="page-heading container" style="width: 100%;">
             <h1>Artists list:</h1>
         </section>
         <section class="artists-list__search">
@@ -51,7 +51,7 @@
                 </ul>
             </form>
         </section>
-        <section class="artists-list__list container">
+        <section class="artists-list__list container" style="width: 100%;">
             <div class="artists-list__list__header row">
                 <div class="hidden-xs col-sm-2 col-md-1">
                     Image

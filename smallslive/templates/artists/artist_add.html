@@ -1,4 +1,4 @@
-{% extends "smalls_base.html" %}
+{% extends "home_new.html" %}
 {% load crispy_forms_tags %}
 {% load static from staticfiles %}
 
@@ -13,7 +13,7 @@
 {% block title %}{{ action_name|capfirst }} artist{% endblock title %}
 
 {% block content %}
-  <div class="content-wrapper">
+  <div class="content-wrapper" style="border:none">
     <section class="admin-interface container">
       <h1 class="admin-interface__main-title">{{ action_name|capfirst }} artist</h1>
       <form method="post" class="admin-interface__form" role="form" enctype="multipart/form-data">
