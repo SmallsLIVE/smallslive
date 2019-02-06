@@ -537,14 +537,11 @@ $player-height:  25.3vw;
     opacity: 1;
   }
   .jw-svg-icon {
-    height: 1.5vw;
-    width: 1.5vw;
+    height: 70%;
+    width: 70%;
     color: $accent-color;
 
-    @media (max-width: $screen-md-max) {
-      height: 2.5vw;
-      width: 2.5vw;
-    }
+   
   }
 
 
