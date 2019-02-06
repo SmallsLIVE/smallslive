@@ -18,7 +18,7 @@
                   {% for record in album.list %}
                   {% with album=record.product is_hd=record.stockrecord.is_hd %}
                     <div class="my-downloads-album row">
-                    <div class="my-downloads-album__cover flex-column">
+                    <div class="my-downloads-album__cover flex-column" data-album="{{ forloop.counter0 }}" data-track=0>
                         {% with image=album.primary_image %}
                         {% if album.parent_id %}
                             {% with image=album.parent.primary_image %}
@@ -42,7 +42,7 @@
                             <!-- tracks table row -->
                             <div class="my-downloads-album__tracks-table__row flex-row">
                             <div class="hidden my-downloads-album__tracks-table__column duration">
-                                <audio class="audio-player" controls>
+                                <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
                                 {% if is_hd %}
                                     <source src="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
                                 {% else %}
@@ -89,7 +89,7 @@
                   {% endfor %}
                 {% else %}
                   <div class="my-downloads-album row">
-                    <div class="my-downloads-album__cover flex-column">
+                    <div class="my-downloads-album__cover flex-column" data-single="{{ forloop.counter0 }}" data-track=0>
                       {% with image=album.grouper.primary_image %}
                           {% if not image.is_missing %}
                            <img src="{% thumbor_url image.original.url|urlencode height=245 width=245 smart=True %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio">
@@ -106,8 +106,8 @@
                             {% for track in track_list %}
                               <!-- tracks table row -->
                               <div class="my-downloads-album__tracks-table__row flex-row">
-                                <div class="hidden my-downloads-album__tracks-table__column duration">
-                                    <audio class="audio-player" controls>
+                                <div class="hidden my-downloads-album__tracks-table__column audio">
+                                    <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{ track.grouper.attr.duration }}">
                                         {% for line in track.list %}
                                         <source src="{{ line.stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
                                         {% endfor %}
