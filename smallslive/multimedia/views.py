@@ -225,4 +225,4 @@ class NewMyDownloadsView(LoginRequiredMixin, ListView):
             product__product_class__slug='track') | Q(product__product_class__slug='digital-album'),
             order__user=self.request.user).distinct('stockrecord')
 
-my_downloads = MyDownloadsView.as_view()
+new_downloads = MyDownloadsView.as_view()

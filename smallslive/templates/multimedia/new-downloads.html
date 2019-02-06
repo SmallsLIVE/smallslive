@@ -13,69 +13,35 @@
         <section class="my-downloads-album__list container">
           {% if lines %}
             {% regroup lines by product.album as album_list %}
-            <ul>
               {% for album in album_list %}
                 {% if not album.grouper %}
                   {% for record in album.list %}
                   {% with album=record.product is_hd=record.stockrecord.is_hd %}
-                    <li class="my-downloads-album row">
-                    <div class="hidden-xs col-sm-4 col-md-3 my-downloads-album__cover">
+                    <div class="my-downloads-album row">
+                    <div class="my-downloads-album__cover flex-column">
                         {% with image=album.primary_image %}
                         {% if album.parent_id %}
                             {% with image=album.parent.primary_image %}
                                 {% thumbnail image.original "245x245" upscale=False as thumb %}
-                                    <a href="{{ album.parent.get_absolute_url }}"><img class="defineImageRatio"
-                                                                                src="{{ thumb.url }}"
-                                                                                alt="{{ album.get_title }}"></a>
+                                <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ album.get_title }}">
                                 {% endthumbnail %}
                             {% endwith %}
                         {% else %}
                             {% with image=album.primary_image %}
                                 {% thumbnail image.original "245x245" upscale=False as thumb %}
-                                    <a href="{{ album.get_absolute_url }}"><img class="defineImageRatio"
-                                                                                src="{{ thumb.url }}"
-                                                                                alt="{{ album.get_title }}"></a>
+                                    <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ album.get_title }}">
                                 {% endthumbnail %}
                             {% endwith %}
                         {% endif %}
                         {% endwith %}
+                        <a class="title6" href="{{ album.get_absolute_url }}">{% if album.parent %}{{ album.parent.title }} - {% endif %}{{ album.title }}</a>
                     </div>
-                    <div class="col-xs-12 col-sm-8 col-md-9">
-                        <h2 class="my-downloads-album__name">
-                        <a href="{{ album.get_absolute_url }}">{% if album.parent %}{{ album.parent.title }} - {% endif %}{{ album.title }}</a>
-                        </h2>
-                        {% if album.event %}
-                        <div class="my-downloads-album__event-link">
-                            <a href="{{ album.grouper.event.get_absolute_url }}">View event in our Archive</a>
-                            <span class="arrow"></span>
-                        </div>
-                        {% endif %}
+                    <div class="song-container">
                         <div class="my-downloads-album__tracks-table">
-                        <h3 class="my-downloads-album__tracks-table__heading">Tracks bought:</h3>
-                        <!-- tracks table header -->
-                        <div class="my-downloads-album__tracks-table__header row">
-                            <div class="col-xs-12 col-sm-8 col-md-7 col-lg-5 my-downloads-album__tracks-table__column duration">
-                            Play
-                            </div>
-                            <div class="col-xs-2 col-sm-4 col-md-2 col-lg-2 my-downloads-album__tracks-table__column title">
-                            Title
-                            </div>
-                            <div class="col-sm-3 col-md-2 hidden-xs hidden-sm hidden-md col-lg-2 my-downloads-album__tracks-table__column composer">
-                            Composer
-                            </div>
-                            <div class="col-md-2 col-lg-1 hidden-xs hidden-sm hidden-md my-downloads-album__tracks-table__column duration">
-                            Duration
-                            </div>
-                            
-                            <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
-
-                            </div>
-                        </div>
-                        <!-- end of tracks table header -->
                         {% for track in album.parent.get_tracks %}
                             <!-- tracks table row -->
-                            <div class="my-downloads-album__tracks-table__row row">
-                            <div class="col-xs-12 col-sm-8 col-md-7 col-lg-5 my-downloads-album__tracks-table__column duration">
+                            <div class="my-downloads-album__tracks-table__row flex-row">
+                            <div class="hidden my-downloads-album__tracks-table__column duration">
                                 <audio class="audio-player" controls>
                                 {% if is_hd %}
                                     <source src="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
@@ -85,16 +51,18 @@
 
                                 </audio>
                             </div>
-                            <div class="col-xs-2 col-sm-4 col-md-2 col-lg-2 my-downloads-album__tracks-table__column title">
+                            <div class="flex-column track-info">
+                                <div class="my-downloads-album__tracks-table__column title2">
                                 {{ track.title }}
+                                </div>
+                                <div class="my-downloads-album__tracks-table__column composer text1">
+                                    {{ track.attr.composer }}
+                                </div>
                             </div>
-                            <div class="col-sm-3 col-md-2 hidden-xs hidden-sm hidden-md col-lg-2 my-downloads-album__tracks-table__column composer">
-                                {{ track.attr.composer }}
-                            </div>
-                            <div class="col-md-2 col-lg-1 hidden-xs hidden-sm hidden-md my-downloads-album__tracks-table__column duration">
+                            <div class="my-downloads-album__tracks-table__column duration">
                                 {{ track.attr.duration }}
                             </div>
-                            <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                            <div class="my-downloads-album__tracks-table__column buy-track">
                                 <div class="buy-button-container">
                                 <a class="white-border-button flex-button" data-toggle="dropdown" aria-expanded="false" href="">
                                         <span>Download</span> <i class="fa fa-caret-down"></i></a>
@@ -116,73 +84,48 @@
                         </div>
                         <!-- end of tracks table -->
                     </div>
-                    </li>
+                    </div>
                     {% endwith %}
                   {% endfor %}
                 {% else %}
-                  <li class="my-downloads-album row">
-                    <div class="hidden-xs col-sm-4 col-md-3 my-downloads-album__cover">
+                  <div class="my-downloads-album row">
+                    <div class="my-downloads-album__cover flex-column">
                       {% with image=album.grouper.primary_image %}
                           {% if not image.is_missing %}
-                            <a href="{{ album.grouper.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=245 width=245 smart=True %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio"></a>
+                           <img src="{% thumbor_url image.original.url|urlencode height=245 width=245 smart=True %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio">
                           {% else %}
-                            <a href="{{ album.grouper.get_absolute_url }}"><img src="{% static "image/image_not_found.jpg" %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio"></a>
+                            <img src="{% static "image/image_not_found.jpg" %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio">
                           {% endif %}
                       {% endwith %}
+                            <a class="title6" href="{{ album.grouper.get_absolute_url }}">{{ album.grouper.title }}</a>
                     </div>
-                    <div class="col-xs-12 col-sm-8 col-md-9">
-                        <h2 class="my-downloads-album__name">
-                            <a href="{{ album.grouper.get_absolute_url }}">{{ album.grouper.title }}</a>
-                        </h2>
-                        {% if album.grouper.event %}
-                          <div class="my-downloads-album__event-link">
-                              <a href="{{ album.grouper.event.get_absolute_url }}">View event in our Archive</a>
-                              <span class="arrow"></span>
-                          </div>
-                        {% endif %}
+                    <div class="song-container">
                         <div class="my-downloads-album__tracks-table">
-                            <h3 class="my-downloads-album__tracks-table__heading">Tracks bought:</h3>
-                            <!-- tracks table header -->
-                            <div class="my-downloads-album__tracks-table__header row">
-                                <div class="col-xs-12 col-sm-8 col-md-7 col-lg-5 my-downloads-album__tracks-table__column duration">
-                                    Play
-                                </div>
-                                <div class="col-xs-2 col-sm-4 col-md-2 col-lg-2 my-downloads-album__tracks-table__column title">
-                                    Title
-                                </div>
-                                <div class="col-sm-3 col-md-2 hidden-xs hidden-sm hidden-md col-lg-2 my-downloads-album__tracks-table__column composer">
-                                    Composer
-                                </div>
-                                <div class="col-md-2 col-lg-1 hidden-xs hidden-sm hidden-md my-downloads-album__tracks-table__column duration">
-                                    Duration
-                                </div>
-                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
-
-                                </div>
-                            </div>
                             {% regroup album.list by product as track_list %}
                             <!-- end of tracks table header -->
                             {% for track in track_list %}
                               <!-- tracks table row -->
-                              <div class="my-downloads-album__tracks-table__row row">
-                                <div class="col-xs-12 col-sm-8 col-md-7 col-lg-5 my-downloads-album__tracks-table__column duration">
+                              <div class="my-downloads-album__tracks-table__row flex-row">
+                                <div class="hidden my-downloads-album__tracks-table__column duration">
                                     <audio class="audio-player" controls>
                                         {% for line in track.list %}
                                         <source src="{{ line.stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
                                         {% endfor %}
                                     </audio>
                                 </div>
-                                <div class="col-xs-2 col-sm-4 col-md-2 col-lg-2 my-downloads-album__tracks-table__column title">
+                                <div class="flex-column track-info">
+                                    <div class="my-downloads-album__tracks-table__column title2">
                                     {{ track.grouper.title }}
+                                    </div>
+                                    <div class="my-downloads-album__tracks-table__column composer text1">
+                                        {{ track.grouper.attr.composer }}
+                                    </div>
                                 </div>
-                                <div class="col-sm-3 col-md-2 col-lg-2 hidden-xs hidden-sm hidden-md my-downloads-album__tracks-table__column composer">
-                                    {{ track.grouper.attr.composer }}
-                                </div>
-                                <div class="col-md-2 col-lg-1 hidden-xs hidden-sm hidden-md my-downloads-album__tracks-table__column duration">
+                                <div class="my-downloads-album__tracks-table__column duration">
                                     {{ track.grouper.attr.duration }}
                                 </div>
                                 
-                                <div class="col-xs-5 col-sm-4 col-md-3 col-lg-2 my-downloads-album__tracks-table__column buy-track">
+                                <div class="my-downloads-album__tracks-table__column buy-track">
                                     <div class="buy-button-container">
                                         <a class="white-border-button flex-button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
                                         <div class="dropdown-menu" role="menu">
@@ -198,10 +141,10 @@
                         </div>
                         <!-- end of tracks table -->
                     </div>
-                </li>
+                </div>
                 {% endif %}
               {% endfor %}
-            </ul>
+       
           {% else %}
               <div class="my-downloads__nothing-bought row">
                   <h3>You haven't bought any digital downloads yet. Check out the <a class="my-downloads__nothing-bought__store-link" href="{% url "promotions:home" %}">store</a> and buy some music!</h3>
@@ -216,12 +159,12 @@
 {% block extra_js %}
 <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
 <script>
-    $('.audio-player').on('ended', function() {
+    {% comment %} $('.audio-player').on('ended', function() {
         songIndex = $('.audio-player').index(this) + 1
         if( $('.audio-player')[songIndex]){
             $('.audio-player')[songIndex].play();
         }
-    });
+    }); {% endcomment %}
 </script>
 
 {% endblock %}
