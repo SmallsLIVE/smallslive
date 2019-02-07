@@ -355,28 +355,35 @@
                 EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
                 EventForm.init(false);
                 $('.artist_field').selectize({
+                     onType: function(str) {
+                        var data;
+                        console.log(this)
+                        if(str.length > 1){
+                            loadArtist(str).then((data) => {
+                                artistData = data
+                                artistData.artist_list.forEach(function(artist) {
+                                    //this.addOption({ value: artist.val , text: artist.full_name});
+                                    console.log( { value: artist.val , text: artist.full_name})
+                                })
+
+                            })
+                        }
+                    }
                 });
                 $('.role_field').selectize({
                 });
-                function loadArtist(value, select, selectize){
-                     $.ajax({
+                function loadArtist(value){
+                     return new Promise((resolve) => {
+                         $.ajax({
                         type: 'GET',
                         url: '/search/artist_form_autoconplete/?artist-start='+value,
                         success: function(data){
-                            console.log(data)
-                            //$(select).html("")
-                            //$(selectize).html("")
-                            data.artist_list.forEach(function(artist) {
-                                var newOption = "<option value='" + artist.val + "'>" + artist.full_name + "</option>"
-                                var newOptionDiv = "<div data-value="+ artist.val +" data-selectable='' class='option'>" + artist.full_name + "</div>"
-                                $(select).append(newOption)
-                                $(selectize).append(newOptionDiv)
-                            })
-                           
+                           resolve(data)
                         }
                      })
+                     })
                 }
-                $(".artist_field .selectize-input input").keyup(function(){
+                $(".artist_field .selectize-input inaput").keyup(function(){
                     artistSelectorContainer = $(this).closest(".artist-selector")
                     selectElement = $(artistSelectorContainer).find("select")[0]
                     selectizeElement = $(artistSelectorContainer).find(".selectize-dropdown-content")[0]
