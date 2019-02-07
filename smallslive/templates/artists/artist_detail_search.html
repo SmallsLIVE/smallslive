@@ -100,21 +100,8 @@
   <div class="all-artist-tracks flex-row">
     {% if artist.tracks %}
       {% for artistproduct in artist.tracks %}
-                {% include "catalogue/partials/product.html" with product=artistproduct.product %}
+        {% include "catalogue/partials/product.html" with product=artistproduct.product %}
       {% endfor %}
-    {% else %}
-      <div class="no-result-container text2">No results</div>
-    {% endif %}
-  </div>
-</div>
-
-<div id="upcoming-shows" data-toggle-tab="upcoming-shows" data-toggle-tab-group="search-results" style="display: none;">
-  <div class="musicians-results white-line-bottom">
-    <div class="title1 shows-results-title">Upcoming Shows</div>
-  </div>
-  <div>
-    {% if artist.upcoming_events  %}
-      {% include 'events/event_row.html' with events=artist.upcoming_events hidde_event_date=False show_event_venue=True %}
     {% else %}
       <div class="no-result-container text2">No results</div>
     {% endif %}

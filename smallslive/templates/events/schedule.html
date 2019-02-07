@@ -15,7 +15,7 @@
   <div class="event-stripe">
     {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
   </div>
-  {% include 'events/shows.html' with upcoming=True show_event_venue=True hide_play=True%}
+  {% include 'events/shows.html' with upcoming=True show_event_venue=True hide_play=True %}
 </main>{% endblock home_content %}
 
 {% block extra_js %}
@@ -30,7 +30,7 @@
   var setToDate = false;
   var datePickerLeft = 222;
   var datePickerTop = 42;
-  var eventDateFrom = new Date();
+  var upcomingEventDateFrom = new Date();
   var defaultFromDate = '{{ default_from_date }}';
   var defaultToDate;
 </script>

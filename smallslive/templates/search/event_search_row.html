@@ -1,5 +1,6 @@
 <div class="shows-container">
-    {% for event in events %}
+    {% if not placeholder %}
+      {% for event in events %}
         <article class="event-display" onclick="window.location='{{ event.get_absolute_url }}';">
 
           {% include 'events/event_card.html' with event=event secondary=secondary hide_play=hide_play %}
@@ -12,10 +13,9 @@
               {% if show_event_venue %}
                 <div class="{{ event.venue.name|lower}}-color">{{ event.venue.name }}</div>
               {% endif %}
-
            </div>
           </div>
         </article>
-      
-    {% endfor %}
+      {% endfor %}
+    {% endif %}
 </div>

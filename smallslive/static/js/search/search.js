@@ -1,17 +1,31 @@
+"use strict";
+
 var searchTerm,
   artistSearchTerm,
   artistInstrument,
   artistPageNum,
   artistMaxPageNum,
-  eventPageNum,
-  eventMaxPageNum,
+  archivedEventPageNum,
+  archivedEventMaxPageNum,
+  upcomingEventPageNum,
+  upcomingEventMaxPageNum,
   venueFilter,
   eventFilter,
-  eventDateFrom,
-  eventDateTo,
+  archivedEventDateFrom,
+  archivedEventDateTo,
+  upcomingEventDateFrom,
+  upcomingEventDateTo,
   apply,
   artist_pk,
   show_event_venue;
+
+function incNumPages(mode) {
+  if (mode == 'Upcoming') {
+    upcomingEventPageNum += 1;
+  } else {
+    archivedEventPageNum += 1;
+  }
+}
 
 function fromYearClick() {
   $datePickerFrom = $("#search-date-picker-from input");
@@ -21,7 +35,7 @@ function fromYearClick() {
 function viewPortLength(viewPort) {
   var browserName = navigator.userAgent.toLowerCase();
   if (browserName.indexOf("safari") != -1) {
-    windowOrientation = (window.orientation, 90);
+    var windowOrientation = (window.orientation, 90);
     switch (windowOrientation) {
       case 0:
         if (viewPort === "height") return window.innerWidth;
@@ -49,10 +63,10 @@ function viewPortLength(viewPort) {
   }
 }
 function showQuantityDisplay(element, addition, slider) {
-  paginatorValue = $(element).data("paginator-number");
-  maxValue = $(element).data("max-number");
-  leftValue = $(element).data("left-number");
-  rightValue = $(element).data("right-number");
+  var paginatorValue = $(element).data("paginator-number");
+  var maxValue = $(element).data("max-number");
+  var leftValue = $(element).data("left-number");
+  var rightValue = $(element).data("right-number");
   if (addition) {
     if (rightValue + paginatorValue > maxValue) {
       rightValue = maxValue;
@@ -87,6 +101,7 @@ function loadMoreArtistButton() {
     sendArtistRequest();
   }
 }
+var rightValue;
 $(window).resize(function() {
   let pages = rightValue / 6 / 4;
   pages -= 1;
@@ -151,22 +166,34 @@ function sendArtistRequest(callback) {
 
 function changePage(param) {
   eventPageNum = parseInt(param.getAttribute("data-page-number"));
-  sendEventRequest();
+  sendEventRequest('#showsArchivedContent');
 }
 
-function loadMoreEvents() {
+function loadMoreEvents(mode) {
   if ($("main.calendar").length > 0) {
     show_event_venue = true;
   }
-  eventPageNum += 1;
-  $("#load-more-btn").hide();
+  incNumPages(mode);
+  var selector = "#load-more-archived-btn";
+  var $eventSubheader = $("#archived-event-subheader");
+  if (mode == 'Upcoming'){
+    selector = "#load-more-upcoming-btn";
+    $eventSubheader = $("#upcoming-event-subheader");
+  }
+  $(selector).hide();
   $("#event-load-gif").css("display", "block");
-  sendEventRequest();
-  let eventSubheader = $("#event-subheader");
-  showQuantityDisplay(eventSubheader, true, false);
+  sendEventRequest(mode);
+
+  showQuantityDisplay($eventSubheader, true, false);
 }
 
 $(document).on("click", "#artists .artist-row", function() {
+
+  var sendRequestCallback = function () {
+    // eventFromDate = now
+    sendEventRequest('Upcoming', new Date());
+  }
+
   var artistId = $(this).data("id");
   $.ajax({
     url: "/search/ajax/artist-info/",
@@ -191,12 +218,15 @@ $(document).on("click", "#artists .artist-row", function() {
           '*[data-toggle-tab-group="search-results"][data-toggle-tab="archived-shows"]'
         ).show();
 
-        eventDateFrom = eventDateTo = null;
+        archivedEventDateFrom = archivedEventDateTo = null;
+        upcomingEventDateFrom = upcomingEventDateTo = null;
         artist_pk = artistId;
 
+        // Trick to filter both upcoming and archived when viewing artist profile.
         apply = true;
-        eventPageNum = 1;
-        sendEventRequest();
+        archivedEventPageNum = upcomingEventPageNum = 1;
+        sendEventRequest('Archived', null, null, sendRequestCallback);
+
       }
     }
   });
@@ -238,9 +268,24 @@ if ($("#artists .artist-column").length) {
   toggleArrows();
 }
 
-function sendEventRequest() {
+function sendEventRequest(mode, dateFrom, dateTo, callback) {
+  var selector = '#shows' + mode + 'Content';
   var utcDateFrom = null;
   var utcDateTo = null;
+  var eventPageNum;
+
+  var eventDateFrom;
+  var eventDateTo;
+
+  if (mode == 'Upcoming') {
+    eventDateFrom = dateFrom || upcomingEventDateFrom;
+    eventDateTo = dateTo || upcomingEventDateTo;
+    eventPageNum = upcomingEventPageNum;
+  } else {
+    eventDateFrom = dateFrom || archivedEventDateFrom;
+    eventDateTo = dateTo || archivedEventDateTo;
+    eventPageNum = archivedEventPageNum;
+  }
   if (eventDateFrom) {
     utcDateFrom =
       eventDateFrom.getFullYear() +
@@ -257,7 +302,7 @@ function sendEventRequest() {
       "/" +
       eventDateTo.getDate();
   }
-  searchFilters = {
+  var searchFilters = {
     main_search: searchTerm,
     page: eventPageNum,
     order: eventOrderFilter,
@@ -277,40 +322,61 @@ function sendEventRequest() {
     success: function(data) {
       if (data.template) {
         if (eventPageNum === 1) {
-          if (typeof data.showingResults !== "number") {
-            $("#event-subheader").text("0-0");
-          } else if (data.showingResults < 24) {
-            $("#event-subheader").text("1-" + data.showingResults);
-          } else {
-            $("#event-subheader").text("1-24");
+          var $eventSubheader = $("#archived-event-subheader");
+          if (mode == 'Upcoming') {
+            $eventSubheader = $("#upcoming-event-subheader");
           }
-          $("#event-subheader").data("max-number", data.showingResults);
-          $("#event-subheader").data("left-number", 1);
-          $("#event-subheader").data("right-number", 24);
+          if (typeof data.showingResults !== "number") {
+            $eventSubheader.text("0-0");
+          } else if (data.showingResults < 24) {
+            $eventSubheader.text("1-" + data.showingResults);
+          } else {
+            $eventSubheader.text("1-24");
+          }
+          $eventSubheader.data("max-number", data.showingResults);
+          $eventSubheader.data("left-number", 1);
+          $eventSubheader.data("right-number", 24);
         }
 
-        var $showsContainer = $(".search-content .shows-container");
+        var selector = '#showsArchivedContent';
+        if (mode == 'Upcoming') {
+          selector = '#showsUpcomingContent';
+        }
+        var $showsContainer = $(selector + " .shows-container");
         $("#events").removeClass("artist-loading-gif");
-        $("#event-totals").html(data.showingResults);
-        $("#event-subheader-footer").html(data.showingResults);
+        var $eventSubHeaderFooter = ("#archived-event-subheader-footer");
+        var $totals = $("#archived-event-totals");
+        if (mode == 'Upcoming') {
+          $totals = $("#upcoming-event-totals");
+        }
+        $totals.html(data.showingResults);
         if (apply || eventFilter) {
           apply = false;
           eventFilter = false;
           $showsContainer.html("");
-          $("#events .shows-container").html("");
         }
         var article = $(data.template).find("article");
         if (!article.length) {
-          $("#events .shows-container").html(data.template);
           $showsContainer.html(data.template);
         }
         article.each(function(index) {
-          $("#events .shows-container").append($(this));
           $showsContainer.append($(this));
         });
-        eventMaxPageNum = data.numPages;
+        if (mode == 'Upcoming') {
+          upcomingEventMaxPageNum = data.numPages;
+        } else {
+          archivedEventMaxPageNum = data.numPages;
+        }
+
         $("#event-load-gif").css("display", "none");
-        $("#load-more-btn").toggle(data.numPages != eventPageNum);
+        var selector = "#load-more-archived-btn";
+        if (mode == 'Upcoming'){
+          selector = "#load-more-upcoming-btn";
+        }
+        $(selector).toggle(data.numPages != eventPageNum);
+        if (callback) {
+          callback();
+        }
       }
     }
   });
@@ -325,8 +391,8 @@ $(document).ready(function() {
   searchTerm = getUrlParameter("q");
   searchTerm = searchTerm ? searchTerm.replace(/\+/g, " ") : "";
   artistSearchTerm = "";
-  artistPageNum = eventPageNum = 1;
-  artistMaxPageNum = eventMaxPageNum = 2;
+  artistPageNum = archivedEventPageNum = upcomingEventPageNum = 1;
+  artistMaxPageNum = archivedEventMaxPageNum = upcomingEventMaxPageNum = 2;
   apply = false;
   eventFilter = false;
   var maxPseudopage = 4;
@@ -402,7 +468,7 @@ $(document).ready(function() {
   $("#next-page-btn").click(function() {
     if (eventPageNum !== eventMaxPageNum) {
       eventPageNum += 1;
-      sendEventRequest();
+      sendEventRequest('');
     }
   });
 
@@ -410,17 +476,17 @@ $(document).ready(function() {
     eventFilter = true;
     eventOrderFilter = $(this).val();
     venueFilter = "all";
-    eventPageNum = 1;
+    archivedEventPageNum = 1;
 
-    sendEventRequest();
+    sendEventRequest('Archived');
   });
 
   $("#club-filter").change(function() {
     eventFilter = true;
     venueFilter = $(this).val();
-    eventPageNum = 1;
+    upcomingEventPageNum = 1;
 
-    sendEventRequest();
+    sendEventRequest('Upcoming');
   });
 
   $("#period-filter, #refine-period-filter").change(function() {
@@ -480,7 +546,7 @@ $(document).ready(function() {
     }
 
     eventPageNum = 1;
-    sendEventRequest();
+    sendEventRequest('#showsArchivedContent');
   });
 
   var delay = (function() {
@@ -699,7 +765,7 @@ $(document).ready(function() {
         $(".search-tabs").removeClass("hidden");
         artist_pk = null;
         apply = true;
-        eventPageNum = 1;
+        archivedEventPageNum = 1;
         $(
           '[data-toggle-tab-group="search-results"][data-toggle-tab-target]'
         ).show();
@@ -709,30 +775,49 @@ $(document).ready(function() {
         $(
           '[data-toggle-tab-group="search-results"][data-toggle-tab="musicians"]'
         ).show();
-        sendEventRequest();
+        sendEventRequest('#showsArchivedContent');
       }
     }
   );
 
   $("#apply-button").click(function() {
-    $("#load-more-btn").hide();
-    $("#events .shows-container").html("");
+
+    var eventDateFrom = datePickerFromDate;
+    var eventDateTo = datePickerToDate;
+
+
+    if ($(this).hasClass('archived')) {
+      var mode = 'Archived';
+      $("#load-more-archived-btn").hide();
+      var selector = '#showsArchivedContent';
+      archivedEventPageNum = 1;
+      archivedEventDateFrom = eventDateFrom;
+      archivedEventDateTo = eventDateTo;
+    } else {
+      var mode = 'Upcoming';
+      var selector = '#showsUpcomingContent';
+      upcomingEventPageNum = 1;
+      upcomingEventDateFrom = 1;
+      upcomingEventDateTo = 1;
+      $("#load-more-upcoming-btn").hide();
+    }
+
+    var $showsContainer = $(selector + " .shows-container");
+    $showsContainer.html("");
     if ($(this).closest(".calendar").length > 0) {
       show_event_venue = true;
     }
-    eventDateFrom = datePickerFromDate;
-    eventDateTo = datePickerToDate;
+
     apply = true;
-    eventPageNum = 1;
     toggleDisplay(this);
     $("#events").addClass("artist-loading-gif");
-    sendEventRequest();
+    sendEventRequest(mode, eventDateFrom, eventDateTo);
 
     if (!eventDateTo || !eventDateFrom) {
       $(".datepicker-btn").html("DATE");
     }
     if (eventDateFrom) {
-      from =
+      var from =
         datePickerFromDate.getMonth() +
         1 +
         "/" +
@@ -745,7 +830,7 @@ $(document).ready(function() {
     }
 
     if (eventDateTo) {
-      to =
+      var to =
         datePickerToDate.getMonth() +
         1 +
         "/" +
@@ -856,7 +941,7 @@ $(document).ready(function() {
     apply = true;
     eventPageNum = 1;
     $(".refine-overlay").hide();
-    sendEventRequest();
+    sendEventRequest('#showsArchivedContent');
   });
 
   $(".reset-all").click(function() {
@@ -886,21 +971,42 @@ $(document).ready(function() {
     datePickerFromDate = new Date(defaultFromDate);
   }
 
+  function getCurrentMode($element) {
+    var $container  = $element.closest('.search-tab-content');
+    if ($container.hasClass('archived')) {
+      return 'Archived';
+    } else {
+      return 'Upcoming';
+    }
+  }
+
   $datePickerCalendar.on("changeDate", function(newDate) {
+
+    var mode = getCurrentMode($(this));
+
     datePickerFromDate = newDate.date;
     if (!datePickerToDate || datePickerFromDate > datePickerToDate) {
       datePickerToDate = datePickerFromDate;
       $datePickerTo.datepicker("setDate", datePickerToDate);
     }
+
     apply = true;
-    eventDateFrom = datePickerFromDate;
-    eventDateTo = null;
-    eventPageNum = 1;
+    if (mode == 'Upcoming') {
+      upcomingEventDateFrom = datePickerFromDate;
+      upcomingEventDateTo = null;
+      upcomingEventPageNum = 1;
+      var eventDateFrom = upcomingEventDateFrom;
+    } else  {
+      archivedEventDateFrom = datePickerFromDate;
+      archivedEventDateTo = null;
+      archivedEventPageNum = 1;
+      var eventDateFrom = archivedEventDateFrom;
+    }
     $("#calendar-date-range .title2").html(
       eventDateFrom.toLocaleDateString() + " - "
     );
     toggleDisplay(this);
-    sendEventRequest();
+    sendEventRequest(mode);
   });
 
   $datePickerCalendar.on("click", function() {

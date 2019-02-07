@@ -229,7 +229,7 @@ body.headers-1 {
       height: 100%;
     }
   }
-  #showsContent {
+  #showsArchivedContent, #showUpcomingContent {
     margin-top: 30px;
     @media (max-width: $screen-md-max) {
       margin-top: 0px;
