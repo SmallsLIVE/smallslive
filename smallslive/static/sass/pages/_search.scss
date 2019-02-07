@@ -130,6 +130,10 @@ body.headers-1 {
       margin-bottom: 6px;
       font-size: 11px;
       line-height: 22px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 18vw;
       @media (max-width: $screen-md-min) {
         font-size: 11px;
       }
