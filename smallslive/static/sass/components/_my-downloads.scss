@@ -97,7 +97,6 @@
     }
     
     .purchases-player-button {
-      opacity: 0;
       display: flex;
       justify-content: center;
       position: absolute;
@@ -108,15 +107,21 @@
       width: 100%;
       height: calc(100% - 30px);
       align-items: center;
-      &:hover{
-        opacity: 1;
+      &.myplay-btn{
+        .fa-thin-circle.fa{       
+          border: 1px black solid;
+        }
+      }
+      &.mypause-btn{
+        .fa-thin-circle.fa{       
+          border: 1px red solid;
+        }
       }
       .fa-thin-circle.fa{       
         z-index: 10;
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 1px red solid;
         height: 88px;
         width: 88px;
         border-radius: 44px;
@@ -205,7 +210,7 @@
         width: 0%;
         position: absolute;
         top: 0;
-        background-color: white;
+        background-color: black;
       }
       justify-content: space-between;
       .track-info{

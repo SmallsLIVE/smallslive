@@ -188,7 +188,7 @@
 <script>
     var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
     $(".my-downloads-album__tracks-table__row.flex-row").on("click", function(event){
-        calculateProgress($(this),event)
+        progess = calculateProgress($(this),event)
         //find audio player, its track number and change the big player track number
         audioPlayer = $(this).find(".audio audio")[0]
         audioPlayerTrack = $(audioPlayer).data("track")
@@ -199,12 +199,18 @@
         var trackInfo = $(this).find(".track-info")
         lastPlayerContainerButton = $(lastPlayerContainer).find(".purchases-player-button ")
         playerContainerButton = $(playerContainer).find(".purchases-player-button")
+        audioProgress = audioPlayer.currentTime / audioPlayer.duration * 100
         if( $(trackInfo).hasClass("active-track")){
-            $(".active-track").removeClass("active-track")
-            play = false
-            $(playerContainerButton).removeClass("mypause-btn")
-            $(playerContainerButton).addClass("myplay-btn")
+            if(Math.abs(progess - audioProgress) > 5 ){
+                changeProgress(progess, audioPlayer)
+            }else{
+                $(".active-track").removeClass("active-track")
+                play = false
+                $(playerContainerButton).removeClass("mypause-btn")
+                $(playerContainerButton).addClass("myplay-btn")
+            }
         }else{
+            $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red" )
             $(".active-track").removeClass("active-track")
             $(this).find(".track-info").addClass("active-track")
             play = true
@@ -243,13 +249,14 @@
             $(playerContainerButton).removeClass("mypause-btn")
             $(playerContainerButton).addClass("myplay-btn")
         }else{
+            $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red" )
             $(".active-track").removeClass("active-track")
             $(trackInfo).addClass("active-track")
             play = true
-            $(playerContainerButton).addClass("mypause-btn")
-            $(playerContainerButton).removeClass("myplay-btn")
             $(lastPlayerContainerButton).addClass("myplay-btn")
             $(lastPlayerContainerButton).removeClass("mypause-btn")
+            $(playerContainerButton).addClass("mypause-btn")
+            $(playerContainerButton).removeClass("myplay-btn")
         }
         if(lastPlayer != undefined){
             lastPlayer.pause()
@@ -265,15 +272,24 @@
         player.addEventListener("play", function(){
                 setTime = setInterval( t=> {
                 currentTime = Math.floor(player.currentTime)
+                $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red")
                 timeTracker = $(player).closest(".my-downloads-album__tracks-table__row").find(".my-downloads-album__tracks-table__column.duration")[0]
+                progress = player.currentTime / player.duration * 100
+                progressWidth = progress + "%"
+                $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", progressWidth )
                 $(timeTracker).html(readableTime(currentTime)) 
             },1000)
                
         });
         player.addEventListener("pause", function(){
             clearInterval(setTime)
+            $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "black" )
         });
         player.addEventListener("ended", function(){
+            $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "black" );
+            $(player).closest(".big-player").find(".progress-bar").find(".purchases-player-button").removeClass("mypause-btn");
+            $(player).closest(".big-player").find(".progress-bar").find(".purchases-player-button").addClass("myplay-btn");
+            player.currentTime = 0;
             clearInterval(setTime)
         });
     });
@@ -302,9 +318,13 @@
     
     mX = position.pageX;
     mY = position.pageY;
-    distance = calculateDistance($element, mX, mY) / element.width() * 100;   
+    distance = Math.floor(calculateDistance($element, mX, mY) / element.width() * 100); 
+    return distance  
     };
-
+    function changeProgress(progress, player){
+        newProgress = Math.floor(player.duration) * progress / 100
+        player.currentTime = newProgress;
+    }
 
 </script>
 
