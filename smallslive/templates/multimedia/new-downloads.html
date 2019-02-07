@@ -229,24 +229,32 @@
         trackNumber = $(playerContainer).data("track")
         trackInfo = $(bigContainer).find(".track-info[data-track='" + trackNumber +  "']")[0]
         audioPlayer = $(bigContainer).find(".audio audio[data-track='" + trackNumber +  "']")[0]
+        lastPlayerContainerButton = $(lastPlayerContainer).find(".purchases-player-button ")
         if( $(trackInfo).hasClass("active-track")){
             $(trackInfo).removeClass("active-track")
             play = false
             $(playerContainerButton).removeClass("mypause-btn")
             $(playerContainerButton).addClass("myplay-btn")
         }else{
+            $(".active-track").removeClass("active-track")
             $(trackInfo).addClass("active-track")
             play = true
             $(playerContainerButton).addClass("mypause-btn")
             $(playerContainerButton).removeClass("myplay-btn")
+            $(lastPlayerContainerButton).addClass("myplay-btn")
+            $(lastPlayerContainerButton).removeClass("mypause-btn")
+        }
+        if(lastPlayer != undefined){
+            lastPlayer.pause()
         }
         togglePlayer(audioPlayer, play)
-        
+        lastPlayerContainer = playerContainer
+        lastPlayer = audioPlayer
+
     })
     var audioPlayers = document.getElementsByClassName("audio-player");
     Array.prototype.forEach.call(audioPlayers, function(player) {
         var setTime
-        // Do stuff here
         player.addEventListener("play", function(){
                 setTime = setInterval( t=> {
                 currentTime = Math.floor(player.currentTime)
