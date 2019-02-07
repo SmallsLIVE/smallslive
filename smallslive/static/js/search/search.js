@@ -490,6 +490,9 @@ $(document).ready(function() {
   });
 
   $("#period-filter, #refine-period-filter").change(function() {
+    var eventDateFrom;
+    var eventDateTo;
+
     eventFilter = true;
 
     if (datePickerFromDate) {
@@ -545,8 +548,17 @@ $(document).ready(function() {
       );
     }
 
-    eventPageNum = 1;
-    sendEventRequest('#showsArchivedContent');
+    var mode = getCurrentMode($(this));
+    if (mode == 'Upcoming') {
+      upcomingEventPageNum = 1;
+      upcomingEventDateFrom = eventDateFrom;
+      upcomingEventDateTo = eventDateTo;
+    } else {
+      archivedEventPageNum = 1;
+      archivedEventDateFrom = eventDateFrom;
+      archivedEventDateTo = eventDateTo;
+    }
+    sendEventRequest(mode);
   });
 
   var delay = (function() {
