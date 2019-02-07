@@ -40,6 +40,20 @@ def search_autocomplete(request):
     resp = HttpResponse(the_data, content_type='application/json')
     return resp
 
+def artist_form_autoconplete(request):
+    artist_start = request.GET.get('artist-start', None)
+    print artist_start
+    artist_qs = Artist.objects.filter(first_name__startswith=artist_start)
+    artist_list = []
+    for artist in artist_qs:
+        artist_data = {'full_name' : artist.full_name(), 'val': artist.pk}
+        artist_list.append(artist_data)
+    # Make sure you return a JSON object, not a bare list.
+    # Otherwise, you could be vulnerable to an XSS attack.
+    data = {
+            'artist_list': artist_list
+        }
+    return JsonResponse(data)
 
 class SearchMixin(object):
 
