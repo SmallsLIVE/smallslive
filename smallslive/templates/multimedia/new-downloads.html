@@ -243,6 +243,34 @@
         togglePlayer(audioPlayer, play)
         
     })
+    var audioPlayers = document.getElementsByClassName("audio-player");
+    Array.prototype.forEach.call(audioPlayers, function(player) {
+        // Do stuff here
+        player.addEventListener("play", function(){
+            
+        });
+        player.addEventListener("pause", function(){
+          
+        });
+    });
+    function readableTime(seconds) {
+        var hr = ~~(seconds / 3600);
+        var min = ~~((seconds % 3600) / 60);
+        var sec = seconds % 60;
+        var sec_min = "";
+        if (hr > 0) {
+            sec_min += "" + hr + ":" + (min < 10 ? "0" : "");
+        }
+        sec_min += "" + min + ":" + (sec < 10 ? "0" : "");
+        sec_min += "" + sec;
+        return sec_min;
+    }
+    function setTime(){
+        currentTime = Math.floor(player.currentTime)
+        timeTracker = $(player).closest(".my-downloads-album__tracks-table__row").find(".my-downloads-album__tracks-table__column.duration")[0]
+        $(timeTracker).html(readableTime(currentTime))    
+    }
+
 </script>
 
 {% endblock %}
