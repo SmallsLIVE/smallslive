@@ -1,19 +1,19 @@
 body {
   // TODO Remove
   &.home {
-    &.absolute{
-      .mobile-header{
-      position: absolute;
+    &.absolute {
+      .mobile-header {
+        position: absolute;
       }
     }
-    &.admin-header{
+    &.admin-header {
       @media (max-width: $screen-md-max) {
-        &.headers-1{
-          .main-container{
+        &.headers-1 {
+          .main-container {
             padding-top: 100px;
           }
         }
-        .main-container{
+        .main-container {
           padding-top: 50px;
         }
       }
@@ -26,7 +26,7 @@ body {
       overflow-x: hidden;
     }
   }
-  
+
   &.no-scroll {
     overflow: hidden;
   }
@@ -60,7 +60,7 @@ div.event-strip {
   margin-top: 0;
 }
 .event-stripe {
-  &.live{
+  &.live {
     margin-top: 20px;
   }
   margin-bottom: 30px;
@@ -83,23 +83,21 @@ div.event-strip {
     width: auto;
 
     @media (max-width: $screen-sm-max) {
-      .event-row{
+      .event-row {
         overflow: auto;
       }
     }
-
   }
-
 }
 #a-z-search {
   text-align: left;
   width: 89%;
   overflow: hidden;
   display: flex;
-  @media(max-width: $screen-sm-max){
+  @media (max-width: $screen-sm-max) {
     width: 100%;
-    
-    .white-border-button{
+
+    .white-border-button {
       padding: 15px;
       line-height: 5px !important;
     }
@@ -109,12 +107,13 @@ div.event-strip {
     line-height: 300%;
   }
 }
-.scroll-right, .scroll-left {
+.scroll-right,
+.scroll-left {
   line-height: 200%;
   background-color: white;
   display: flex;
   width: 5%;
-  @media(max-width: $screen-sm-max) {
+  @media (max-width: $screen-sm-max) {
     width: 15%;
   }
 }
@@ -132,4 +131,12 @@ div.event-strip {
       font-size: 0.9em;
     }
   }
+}
+.user-menu .select-selected {
+  display: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 20ch;
+  min-width: 15ch;
 }
