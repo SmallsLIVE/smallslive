@@ -414,7 +414,7 @@ body.headers-1 {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          padding: 0 40px;
+          padding: 0 64px;
           margin-bottom: 20px;
           > a {
             color: grey;
@@ -876,7 +876,6 @@ body.headers-1 {
     div.artist-search-profile-container {
       &.pad-content {
         transition: padding-top 0.5s;
-        padding-top: 0px;
       }
     }
   }
