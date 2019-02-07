@@ -204,6 +204,10 @@ $text-font-size-big: 1.4em;
     white-space: nowrap;
   }
 
+  @media(max-width: $screen-md-min)  {
+    font-size: 15px;
+  }
+
 }
 
 .title2 {

@@ -135,6 +135,7 @@ div.event-strip {
 .user-menu .select-selected {
   display: inherit;
   white-space: nowrap;
+  line-height: 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 20ch;

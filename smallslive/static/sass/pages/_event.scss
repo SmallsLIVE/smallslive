@@ -59,7 +59,21 @@ $player-height:  25.3vw;
     }
   }
   &.medium {
-    width: 50%;
+    width: 60%;
+
+    @media(max-width: $screen-md-max) {
+      width: 90%;
+    }
+    .title2 {
+      font-size: 15px;
+
+      @media(max-width: $screen-sm-max) {
+        font-size: 11px;
+        text-align: center;
+        white-space: normal;
+      }
+
+    }
   }
 }
 
