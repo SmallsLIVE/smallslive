@@ -194,13 +194,19 @@
 
   &__row {
     padding: 7px 0;
-    border-bottom: 1px solid rgba(#000, 0.1);
     @include display(flex);
     @include align-items(center);
     &:first-of-type{
       border-top: 1px solid rgba(0, 0, 0, 0.1);
     }
     &.flex-row{
+      .progress-bar{
+        height: 1px;
+        width: 0%;
+        position: absolute;
+        top: 0;
+        background-color: white;
+      }
       justify-content: space-between;
       .track-info{
         width: 65%;

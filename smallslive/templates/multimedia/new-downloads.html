@@ -51,44 +51,47 @@
                         <div class="my-downloads-album__tracks-table">
                         {% for track in album.parent.get_tracks %}
                             <!-- tracks table row -->
-                            <div class="my-downloads-album__tracks-table__row flex-row">
-                            <div class="hidden my-downloads-album__tracks-table__column audio">
-                                <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
-                                {% if is_hd %}
-                                    <source src="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
-                                {% else %}
-                                    <source src="{{ track.get_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
-                                {% endif %}
+                            <div style="position:relative">
+                                <div class="my-downloads-album__tracks-table__row flex-row">
+                                    <div class="progress-bar"></div>
+                                    <div class="hidden my-downloads-album__tracks-table__column audio">
+                                        <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
+                                        {% if is_hd %}
+                                            <source src="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                                        {% else %}
+                                            <source src="{{ track.get_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                                        {% endif %}
 
-                                </audio>
-                            </div>
-                            <div class="flex-column track-info" data-track="{{ forloop.counter0 }}">
-                                <div class="my-downloads-album__tracks-table__column title2">
-                                {{ track.title }}
-                                </div>
-                                <div class="my-downloads-album__tracks-table__column composer text1">
-                                    {{ track.attr.composer }}
-                                </div>
-                            </div>
-                            <div class="my-downloads-album__tracks-table__column duration text1">
-                                {{ track.attr.duration }}
-                            </div>
-                            <div class="my-downloads-album__tracks-table__column buy-track">
-                                <div class="buy-button-container">
-                                <a class="white-border-button flex-button" data-toggle="dropdown" aria-expanded="false" href="">
-                                        <span>Download</span> <i class="fa fa-caret-down"></i></a>
-                                <div class="dropdown-menu" role="menu">
-                                    {% if is_hd %}
-                                    <a class="white-border-button flex" href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download
-                                        HD</a>
-                                    {% else %}
-                                    <a class="white-border-button flex" href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download
-                                        mp3</a>
-                                    {% endif %}
+                                        </audio>
+                                    </div>
+                                    <div class="flex-column track-info" data-track="{{ forloop.counter0 }}">
+                                        <div class="my-downloads-album__tracks-table__column title2">
+                                        {{ track.title }}
+                                        </div>
+                                        <div class="my-downloads-album__tracks-table__column composer text1">
+                                            {{ track.attr.composer }}
+                                        </div>
+                                    </div>
+                                    <div class="my-downloads-album__tracks-table__column duration text1">
+                                        {{ track.attr.duration }}
+                                    </div>
+                                    <div class="my-downloads-album__tracks-table__column buy-track">
+                                        <div class="buy-button-container">
+                                        <a class="white-border-button flex-button" data-toggle="dropdown" aria-expanded="false" href="">
+                                                <span>Download</span> <i class="fa fa-caret-down"></i></a>
+                                        <div class="dropdown-menu" role="menu">
+                                            {% if is_hd %}
+                                            <a class="white-border-button flex" href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download
+                                                HD</a>
+                                            {% else %}
+                                            <a class="white-border-button flex" href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download
+                                                mp3</a>
+                                            {% endif %}
 
+                                        </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                </div>
-                            </div>
                             </div>
                             <!-- end of tracks table row -->
                         {% endfor %}
@@ -126,33 +129,36 @@
                             <!-- end of tracks table header -->
                             {% for track in track_list %}
                               <!-- tracks table row -->
-                              <div class="my-downloads-album__tracks-table__row flex-row">
-                                <div class="hidden my-downloads-album__tracks-table__column audio">
-                                    <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{ track.grouper.attr.duration }}">
-                                        {% for line in track.list %}
-                                        <source src="{{ line.stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
-                                        {% endfor %}
-                                    </audio>
-                                </div>
-                                <div class="flex-column track-info" data-track="{{ forloop.counter0 }}">
-                                    <div class="my-downloads-album__tracks-table__column title2">
-                                    {{ track.grouper.title }}
-                                    </div>
-                                    <div class="my-downloads-album__tracks-table__column composer text1">
-                                        {{ track.grouper.attr.composer }}
-                                    </div>
-                                </div>
-                                <div class="my-downloads-album__tracks-table__column duration text1">
-                                    {{ track.grouper.attr.duration }}
-                                </div>
-                                
-                                <div class="my-downloads-album__tracks-table__column buy-track">
-                                    <div class="buy-button-container">
-                                        <a class="white-border-button flex-button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
-                                        <div class="dropdown-menu" role="menu">
+                              <div style="position:relative">
+                                <div class="my-downloads-album__tracks-table__row flex-row">
+                                    <div class="progress-bar"></div>
+                                    <div class="hidden my-downloads-album__tracks-table__column audio">
+                                        <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{ track.grouper.attr.duration }}">
                                             {% for line in track.list %}
-                                            <a class="white-border-button flex" href="{{ line.stockrecord.digital_download.get_downloadable_file_url }}" download="{{ line.stockrecord.digital_download.file.name }}">Download {% if line.stockrecord.is_hd %}HD{% else %}mp3{% endif %}</a>
+                                            <source src="{{ line.stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
                                             {% endfor %}
+                                        </audio>
+                                    </div>
+                                    <div class="flex-column track-info" data-track="{{ forloop.counter0 }}">
+                                        <div class="my-downloads-album__tracks-table__column title2">
+                                        {{ track.grouper.title }}
+                                        </div>
+                                        <div class="my-downloads-album__tracks-table__column composer text1">
+                                            {{ track.grouper.attr.composer }}
+                                        </div>
+                                    </div>
+                                    <div class="my-downloads-album__tracks-table__column duration text1">
+                                        {{ track.grouper.attr.duration }}
+                                    </div>
+                                    
+                                    <div class="my-downloads-album__tracks-table__column buy-track">
+                                        <div class="buy-button-container">
+                                            <a class="white-border-button flex-button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                            <div class="dropdown-menu" role="menu">
+                                                {% for line in track.list %}
+                                                <a class="white-border-button flex" href="{{ line.stockrecord.digital_download.get_downloadable_file_url }}" download="{{ line.stockrecord.digital_download.file.name }}">Download {% if line.stockrecord.is_hd %}HD{% else %}mp3{% endif %}</a>
+                                                {% endfor %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -181,7 +187,8 @@
 <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
 <script>
     var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
-    $(".my-downloads-album__tracks-table__row.flex-row").on("click", function(){
+    $(".my-downloads-album__tracks-table__row.flex-row").on("click", function(event){
+        calculateProgress($(this),event)
         //find audio player, its track number and change the big player track number
         audioPlayer = $(this).find(".audio audio")[0]
         audioPlayerTrack = $(audioPlayer).data("track")
@@ -282,6 +289,22 @@
         sec_min += "" + sec;
         return sec_min;
     }
+
+
+    function calculateProgress(element, position) {
+    
+    var mX, mY, distance,
+        $element  = $(element);
+
+    function calculateDistance(elem, mouseX, mouseY) {
+        return Math.floor(mouseX - (elem.offset().left), 2);
+    }
+    
+    mX = position.pageX;
+    mY = position.pageY;
+    distance = calculateDistance($element, mX, mY) / element.width() * 100;   
+    };
+
 
 </script>
 
