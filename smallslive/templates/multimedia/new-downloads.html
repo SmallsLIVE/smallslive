@@ -18,7 +18,7 @@
                   {% for record in album.list %}
                   {% with album=record.product is_hd=record.stockrecord.is_hd %}
                     <div class="my-downloads-album row big-player">
-                    <div class="my-downloads-album__cover flex-column player-containter " data-track=0>
+                    <div class="my-downloads-album__cover flex-column player-container " data-track=0>
                         {% with image=album.primary_image %}
                         {% if album.parent_id %}
                             {% with image=album.parent.primary_image %}
@@ -62,7 +62,7 @@
 
                                 </audio>
                             </div>
-                            <div class="flex-column track-info">
+                            <div class="flex-column track-info" data-track="{{ forloop.counter0 }}">
                                 <div class="my-downloads-album__tracks-table__column title2">
                                 {{ track.title }}
                                 </div>
@@ -100,7 +100,7 @@
                   {% endfor %}
                 {% else %}
                   <div class="my-downloads-album row big-player">
-                    <div class="my-downloads-album__cover flex-column player-containter" data-track=0>
+                    <div class="my-downloads-album__cover flex-column player-container" data-track=0>
                       {% with image=album.grouper.primary_image %}
                           {% if not image.is_missing %}
                             <div style="position: relative">
@@ -134,7 +134,7 @@
                                         {% endfor %}
                                     </audio>
                                 </div>
-                                <div class="flex-column track-info">
+                                <div class="flex-column track-info" data-track="{{ forloop.counter0 }}">
                                     <div class="my-downloads-album__tracks-table__column title2">
                                     {{ track.grouper.title }}
                                     </div>
@@ -186,7 +186,7 @@
         audioPlayer = $(this).find(".audio audio")[0]
         audioPlayerTrack = $(audioPlayer).data("track")
         mainContainer = $(this).closest(".big-player")[0]
-        playerContainer =$(mainContainer).find(".player-containter")[0]
+        playerContainer =$(mainContainer).find(".player-container")[0]
         $(playerContainer).data("track", audioPlayerTrack)
         //make active track color red, toggles player button and remove previous track color
         var trackInfo = $(this).find(".track-info")
@@ -223,8 +223,25 @@
         }
     }
     $(".purchases-player-button").on("click", function(){
-        playerContainer = $(this).closest(".player-container")[0]
-        $()
+        bigContainer = $(this).closest(".big-player")[0]
+        playerContainer = $(bigContainer).find(".player-container")[0]
+        playerContainerButton = $(playerContainer).find(".purchases-player-button")[0]
+        trackNumber = $(playerContainer).data("track")
+        trackInfo = $(bigContainer).find(".track-info[data-track='" + trackNumber +  "']")[0]
+        audioPlayer = $(bigContainer).find(".audio audio[data-track='" + trackNumber +  "']")[0]
+        if( $(trackInfo).hasClass("active-track")){
+            $(trackInfo).removeClass("active-track")
+            play = false
+            $(playerContainerButton).removeClass("mypause-btn")
+            $(playerContainerButton).addClass("myplay-btn")
+        }else{
+            $(trackInfo).addClass("active-track")
+            play = true
+            $(playerContainerButton).addClass("mypause-btn")
+            $(playerContainerButton).removeClass("myplay-btn")
+        }
+        togglePlayer(audioPlayer, play)
+        
     })
 </script>
 
