@@ -70,7 +70,7 @@
                                     {{ track.attr.composer }}
                                 </div>
                             </div>
-                            <div class="my-downloads-album__tracks-table__column duration">
+                            <div class="my-downloads-album__tracks-table__column duration text1">
                                 {{ track.attr.duration }}
                             </div>
                             <div class="my-downloads-album__tracks-table__column buy-track">
@@ -142,7 +142,7 @@
                                         {{ track.grouper.attr.composer }}
                                     </div>
                                 </div>
-                                <div class="my-downloads-album__tracks-table__column duration">
+                                <div class="my-downloads-album__tracks-table__column duration text1">
                                     {{ track.grouper.attr.duration }}
                                 </div>
                                 
@@ -245,12 +245,21 @@
     })
     var audioPlayers = document.getElementsByClassName("audio-player");
     Array.prototype.forEach.call(audioPlayers, function(player) {
+        var setTime
         // Do stuff here
         player.addEventListener("play", function(){
-            
+                setTime = setInterval( t=> {
+                currentTime = Math.floor(player.currentTime)
+                timeTracker = $(player).closest(".my-downloads-album__tracks-table__row").find(".my-downloads-album__tracks-table__column.duration")[0]
+                $(timeTracker).html(readableTime(currentTime)) 
+            },1000)
+               
         });
         player.addEventListener("pause", function(){
-          
+            clearInterval(setTime)
+        });
+        player.addEventListener("ended", function(){
+            clearInterval(setTime)
         });
     });
     function readableTime(seconds) {
@@ -264,11 +273,6 @@
         sec_min += "" + min + ":" + (sec < 10 ? "0" : "");
         sec_min += "" + sec;
         return sec_min;
-    }
-    function setTime(){
-        currentTime = Math.floor(player.currentTime)
-        timeTracker = $(player).closest(".my-downloads-album__tracks-table__row").find(".my-downloads-album__tracks-table__column.duration")[0]
-        $(timeTracker).html(readableTime(currentTime))    
     }
 
 </script>
