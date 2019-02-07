@@ -358,19 +358,32 @@
                 });
                 $('.role_field').selectize({
                 });
-                function loadArist(){
+                function loadArtist(value, select, selectize){
                      $.ajax({
                         type: 'GET',
-                        url: url,
+                        url: '/search/artist_form_autoconplete/?artist-start='+value,
                         success: function(data){
                             console.log(data)
+                            //$(select).html("")
+                            //$(selectize).html("")
+                            data.artist_list.forEach(function(artist) {
+                                var newOption = "<option value='" + artist.val + "'>" + artist.full_name + "</option>"
+                                var newOptionDiv = "<div data-value="+ artist.val +" data-selectable='' class='option'>" + artist.full_name + "</div>"
+                                $(select).append(newOption)
+                                $(selectize).append(newOptionDiv)
+                            })
+                           
                         }
                      })
                 }
                 $(".artist_field .selectize-input input").keyup(function(){
-                    console.log($(this).value)
-                    loadArist($(this).value)
-                    
+                    artistSelectorContainer = $(this).closest(".artist-selector")
+                    selectElement = $(artistSelectorContainer).find("select")[0]
+                    selectizeElement = $(artistSelectorContainer).find(".selectize-dropdown-content")[0]
+                    console.log(selectElement)
+                    if($(this).val().length > 1){
+                        loadArtist($(this).val(), selectElement, selectizeElement)
+                    }
                 });
               },
               error: function() {

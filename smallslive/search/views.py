@@ -42,8 +42,7 @@ def search_autocomplete(request):
 
 def artist_form_autoconplete(request):
     artist_start = request.GET.get('artist-start', None)
-    print artist_start
-    artist_qs = Artist.objects.filter(first_name__startswith=artist_start)
+    artist_qs = Artist.objects.filter(first_name__istartswith=artist_start)
     artist_list = []
     for artist in artist_qs:
         artist_data = {'full_name' : artist.full_name(), 'val': artist.pk}
