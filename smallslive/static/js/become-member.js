@@ -212,6 +212,10 @@ $(document).ready(function() {
   });
 
   $(document).on("submit", "#place-order", function() {
+    var flow_type = $("#supporterSteps").data("flow");
+    $(this).append(
+      $('<input type="hidden" name="flow_type" />').val(flow_type)
+    );
     $.ajax({
       url: $(this).attr("action"),
       type: $(this).attr("method"),
