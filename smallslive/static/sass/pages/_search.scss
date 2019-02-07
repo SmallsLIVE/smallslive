@@ -130,6 +130,10 @@ body.headers-1 {
       margin-bottom: 6px;
       font-size: 11px;
       line-height: 22px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 18vw;
       @media (max-width: $screen-md-min) {
         font-size: 11px;
       }
@@ -229,7 +233,7 @@ body.headers-1 {
       height: 100%;
     }
   }
-  #showsContent {
+  #showsArchivedContent, #showUpcomingContent {
     margin-top: 30px;
     @media (max-width: $screen-md-max) {
       margin-top: 0px;

@@ -1,7 +1,11 @@
 @mixin cross-browser-grayscale {
-  filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
+  filter: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='grayscale'><feColorMatrix type='matrix' values='0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0'/></filter></svg>#grayscale"); /* Firefox 10+, Firefox on Android */
   filter: gray; /* IE6-9 */
   -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+}
+@mixin cross-browser-nofilter {
+  filter: none;
+  -webkit-filter: none;
 }
 
 @mixin bottom-section-border {
@@ -15,9 +19,9 @@
 }
 
 @mixin animated {
-  -webkit-transition: all .2s ease-in-out;
-  -moz-transition: all .2s ease-in-out;
-  transition: all .2s ease-in-out;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
 
 @mixin red-button {
@@ -33,7 +37,7 @@
   padding: 4px 10px 4px 7px;
 
   &:hover {
-    color: rgba(255,255,255,0.6);
+    color: rgba(255, 255, 255, 0.6);
     text-decoration: none;
     outline: none;
   }
@@ -43,7 +47,6 @@
   background-color: $black;
 }
 
-
 @mixin black-button {
   @include red-button;
   background-color: $black;
@@ -52,10 +55,10 @@
 @mixin flexbox-vertical-center {
   @include display(flex);
   -webkit-box-align: center;
-    -webkit-flex-align: center;
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-    align-content: center;
+  -webkit-flex-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-content: center;
   @include flex-wrap(wrap);
 }
 
@@ -64,11 +67,13 @@
     color: $color;
   }
 
-  &:-moz-placeholder { /* Firefox 18- */
+  &:-moz-placeholder {
+    /* Firefox 18- */
     color: $color;
   }
 
-  &::-moz-placeholder { /* Firefox 19+ */
+  &::-moz-placeholder {
+    /* Firefox 19+ */
     color: $color;
   }
 
@@ -89,7 +94,7 @@
   }
 
   &:after {
-    content: '\A';
+    content: "\A";
     position: absolute;
     width: 100%;
     height: 100%;
@@ -103,7 +108,7 @@
   cursor: pointer;
   position: relative;
 
-  &:after{
+  &:after {
     content: " ";
     height: 0;
     width: 0;
@@ -133,7 +138,7 @@
       padding: 16px 0;
       padding-left: 12px;
       border-bottom: solid 2px white;
-      background-image: url('/static/image/arrow-right-red.svg');
+      background-image: url("/static/image/arrow-right-red.svg");
       background-repeat: no-repeat;
       background-position: 94% 50%;
       background-size: 16px;

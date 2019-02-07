@@ -83,15 +83,12 @@
             <span class="arrow"></span>
           </div>
           {% endif %}
-          <div class="store-single__item__description">
-            {{ product.short_description|safe }}
+          <div class="store-single__item__description .event-band ">
+          {% for artist in  product.artist.all %}
+            <a class="artist-link " href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }} / {{ artist.instruments.first }}</a><br>
+          {% endfor %}
           </div>
-          <div class="store-single__item__details">
-              {% if product.description %}
-                  <span class="store-single__item__details__title">Detailed description:</span>
-                  {{ product.description|safe }}
-              {% endif %}
-          </div>
+
           {% purchase_info_for_product request product as session %}
           <span class="store-single__item__price">
               {% if session.price.exists %}
@@ -180,10 +177,11 @@
           <table class="table">
             <thead>
             <tr>
-              <th>Preview</th>
+              <th class="hidden-xs">Preview</th>
+              <th class="hidden-sm hhidden-md hidden-lg"></th>
               <th>Title</th>
-              <th>Duration</th>
-              <th>Mp3 / HD</th>
+              <th class="hidden-sm hidden-xs">Duration</th>
+              <th >Mp3 / HD</th>
               <th></th>
             </tr>
             </thead>
@@ -199,16 +197,16 @@
                     <!-- {{ preview_track_id_counter.next }} -->
                   {% endif %}
                 </td>
-                <td>{{ track.title }}</td>
-                <td>{{ track.attr.duration }}</td>
-                <td>
+                <td class="store-td-title">{{ track.title }}</td>
+                <td class="hidden-sm hidden-xs">{{ track.attr.duration }}</td>
+                <td class="hidden-sm hidden-xs">
                   {% if track.get_track_stockrecord %}$
                     {{ track.get_track_stockrecord.price_excl_tax }}{% else %}
                     -{% endif %} / {% if track.get_hd_track_stockrecord %}$
                   {{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}
                   -{% endif %}
                 </td>
-                <td>
+                <td class="table-button">
 
                   {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
                     <div class="buy-button-container">

@@ -61,7 +61,7 @@
 
   .select-gift {
     margin-bottom: 10px;
-    width: 300px;
+    min-width: 300px;
   }
 
   input {
@@ -489,16 +489,28 @@
 
 .supporter-main-container .supporter-plan-input #monthlyPledge button,
 .supporter-main-container .supporter-plan-input #yearlyPledge button {
+  @media (max-width: 1023px) {
+    width: 106px;
+  }
+  @media (max-width: 520px) {
+    width: 75px;
+  }
   @media (max-width: 425px) {
     margin: 0 0 35px 0px;
     width: 80%;
   }
-  @media (min-width: 426px) {
-    width: 65px;
-  }
 }
 #monthlyCustom,
 #yearlyCustom {
+  @media (max-width: 960px) {
+    width: 400px;
+  }
+  @media (max-width: 790px) {
+    width: 300px;
+  }
+  @media (max-width: 690px) {
+    width: 120px;
+  }
   @media (max-width: 425px) {
     width: 308px;
   }
@@ -507,10 +519,6 @@
   }
   @media (max-width: 320px) {
     width: 256px;
-  }
-
-  @media (min-width: 465px) {
-    width: 50px;
   }
 }
 #backButton {

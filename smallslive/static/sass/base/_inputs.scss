@@ -33,7 +33,7 @@
     border-color: $text-grey;
   }
 }
-.pp-btn{
+.pp-btn {
   border: 0px;
   background: #f0f0eb;
 }
@@ -57,9 +57,9 @@
 a {
   &.white-border-button {
     display: inline-block;
-    &.flex-button{
+    &.flex-button {
       display: flex;
-      i{
+      i {
         padding-left: 3px;
       }
     }
@@ -93,18 +93,17 @@ a {
   &::before {
     background-repeat: no-repeat;
     content: $content;
-    font-family: 'FontAwesome', serif;
+    font-family: "FontAwesome", serif;
     color: $color;
     position: absolute;
     left: 11px;
     font-size: 1.8em;
     top: 7px;
     z-index: 1;
-  };
+  }
 }
 
 .search-input {
-  
   background-image: url(/static/image/search-icon.svg);
   background-repeat: no-repeat;
   background-size: 20px;
@@ -112,9 +111,12 @@ a {
   input {
     @include bordered-input;
     background-color: transparent;
-    width: 28vw;
+    width: 30vw;
     padding-left: 38px;
     text-transform: uppercase;
+    @media(max-width: 1300px) {
+      width: 22vw;
+    }
   }
 }
 
@@ -196,7 +198,9 @@ a {
   }
 
   &.button-row-margin {
-    & > button, & > a, & > p {
+    & > button,
+    & > a,
+    & > p {
       margin: 0 10px;
 
       &:first-child {

@@ -4,19 +4,19 @@ $accent-color: #ed1c24;
 $accent-color-dark: darken($accent-color, 10%);
 $border-color: $white-transparent;
 $black: black;
-$light-grey: #AEAEAE;
+$light-grey: #aeaeae;
 $text-grey: #808080;
-$background-grey: #E0E0DC;
+$background-grey: #e0e0dc;
 $mezzrow: #f1bb53;
-$smallslive: #D21535;
+$smallslive: #d21535;
 
 .accent-color {
   color: $accent-color;
 }
-.smalls-color{
+.smalls-color {
   color: $smallslive !important;
 }
-.mezzrow-color{
+.mezzrow-color {
   color: $mezzrow;
 }
 .text-grey {
@@ -25,4 +25,5 @@ $smallslive: #D21535;
 
 $underline-height: 3px;
 
-$sepia-filter: grayscale(100%) brightness(50%) sepia(100%) saturate(20%) hue-rotate(335deg);
+$sepia-filter: grayscale(100%) brightness(50%) sepia(100%) saturate(20%)
+  hue-rotate(335deg);

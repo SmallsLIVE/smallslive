@@ -82,6 +82,14 @@ function renderCardAnimation(selector) {
 }
 
 function startStripePayment($form, action_url, completeSubpage) {
+  console.log('Send Stripe API Request ->');
+  var flow_type = $("#supporterSteps").data("flow");
+      // Insert the token into the form so it gets submitted to the server
+  // and submit
+  $form.append(
+    $('<input type="hidden" name="flow_type" />').val(flow_type)
+  );
+
   var stripeResponseHandler = function(status, response) {
     if (response.error) {
       // Show the errors on the form
@@ -94,13 +102,7 @@ function startStripePayment($form, action_url, completeSubpage) {
     } else {
       // token contains id, last4, and card type
       var token = response.id;
-      var flow_type = $("#supporterSteps").data("flow");
-      // Insert the token into the form so it gets submitted to the server
       $form.append($('<input type="hidden" name="stripe_token" />').val(token));
-      // and submit
-      $form.append(
-        $('<input type="hidden" name="flow_type" />').val(flow_type)
-      );
       $.ajax({
         type: "POST",
         url: action_url,

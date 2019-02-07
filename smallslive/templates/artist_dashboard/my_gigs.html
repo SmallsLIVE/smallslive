@@ -354,6 +354,31 @@
                 $('#event_edit_modal').find('.modal-body').html(data);
                 EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
                 EventForm.init(false);
+                $('.artist_field').selectize({
+                });
+                $('.role_field').selectize({
+                });
+                function loadArtist(value, select){
+                     $.ajax({
+                        type: 'GET',
+                        url: '/search/artist_form_autoconplete/?artist-start='+value,
+                        success: function(data){
+                            data.artist_list.forEach(function(artist) {
+                                select.selectize.addOption({ value: artist.val, text: artist.full_name })
+                                select.selectize.refreshOptions() 
+                            })
+                           
+                        }
+                     })
+                }
+                $(".artist_field .selectize-input input").keyup(function(){
+                    artistSelectorContainer = $(this).closest(".artist-selector")
+                    selectElement = $(artistSelectorContainer).find("select")[0]
+                    selectizeElement = $(artistSelectorContainer).find(".selectize-dropdown-content")[0]
+                    if($(this).val().length > 1){
+                        loadArtist($(this).val(), selectElement)
+                    }
+                });
               },
               error: function() {
 
@@ -614,7 +639,9 @@
         $('.refine-dashboard-buttons .btngroup--btn').css("background-color", "")
         $(this).css( "background-color", 'white' );
     })
-
+    ///////////////
 
     </script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/selectize.bootstrap3.css' %}">
+
 {% endblock %}
