@@ -214,16 +214,6 @@
           <section class="store-cart__footer container">
               
               <div class="col-xs-12 col-sm-6 store-cart__footer__right">
-                  <div class="store-cart__footer__price-container">
-                    <span class="store-cart__footer__price-container__value">{{ basket.total_excl_tax|currency:basket.currency }}</span>
-                    <span class="store-cart__footer__price-container__label">Basket total:</span>
-                    <span class="store-cart__footer__price-container__value">{{ shipping_charge.excl_tax|currency:basket.currency }}</span>
-                    <span class="store-cart__footer__price-container__label">Shipping:</span>
-                    <div class="store-cart__footer__price-container__total">
-                        <span class="store-cart__footer__price-container__value">{{ order_total.excl_tax|currency:basket.currency }}</span>
-                        <span class="store-cart__footer__price-container__label">Total:</span>
-                    </div>
-                  </div>
               </div>
               <div class="col-xs-12 store-cart__footer__buttons">
                   <a href="/store/basket/" class="white-border-button back-white">Back</a>
