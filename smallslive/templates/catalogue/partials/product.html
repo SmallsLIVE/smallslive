@@ -22,6 +22,7 @@
               {% else %}
                 <a href="{{ product.get_absolute_url }}"><img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
               {% endif %}
+            {% endwith %}
           {% else %}
             {% with image=product.primary_image %}
                 {% if not image.is_missing %}
