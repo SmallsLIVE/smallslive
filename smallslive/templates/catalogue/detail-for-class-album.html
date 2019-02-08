@@ -61,13 +61,12 @@
                                       src="{% thumbor_url image.original.url|urlencode height=300 width=auto smart=True %}"
                                       alt="{{ product.get_title }}" class="defineImageRatio"></a>
                           {% else %}
-                              <a href="{% static "image/image_not_found.jpg" %}" class="fancybox"><img
-                                      src="{% static "image/image_not_found.jpg" %}" alt="{{ product.get_title }}"
+                              <a href="{% static 'image/image_not_found.jpg' %}" class="fancybox"><img
+                                      src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}"
                                       class="defineImageRatio"></a>
                           {% endif %}
                       {% endfor %}
                   </div>
-
               {% endwith %}
           </div>
         <div class="store-single__item__content">

@@ -22,60 +22,138 @@
         </div>
       </div>
     {% else %}
-    <div class="wrapper">
-      <iframe id="UstreamIframe"
-              width="100%" height="100%"
-              src="{{ event.get_live_stream }}"
-              frameborder="0"
-              style="position:absolute; top:0; left: 0" allowfullscreen allowautoplay
-              webkitallowfullscreen></iframe>
-    </div>
+      <div class="wrapper">
+        <iframe id="UstreamIframe"
+                width="100%" height="100%"
+                src="{{ event.get_live_stream }}"
+                frameborder="0"
+                style="position:absolute; top:0; left: 0" allowfullscreen allowautoplay
+                webkitallowfullscreen></iframe>
+      </div>
     {% endif %}
   {% else %}
   <div class="not-auth-container">
       <img class="not-streaming" width="100%" height="100%"
-              src="{% static 'image/streaming/not-streaming.jpg' %}">
+           src="{% static 'image/streaming/not-streaming.jpg' %}">
     </div>
   {% endif %}
 </div>
 {% endblock %}
 {% block extra_js %}
 {{ block.super }}
+<script src="https://developers.video.ibm.com/js/ustream-embedapi.min.js"></script>
 <script>
   $(document).ready(function () {
-    {% if next_event %}
-      var changeTime = moment("{{ next_event.start.isoformat }}");
-      var waitTime = changeTime.diff(moment(), 'miliseconds');
-      var intervalId = setInterval(function () {
-          clearInterval(intervalId);
-          $('.current-event').addClass('hidden');
-          $('.next-event').removeClass('hidden');
-          $('.related-video.selected').removeClass('selected');
-          $('.related-video.next-up').addClass('selected');
-      }, waitTime);
-    {% endif %}
-  });
 
-  {% if is_event_user_not_confirmed %}
+    {% if is_event_user_not_confirmed %}
 
-  function cannotWatchModalOpen(){
-          var modal = '#becomeMemberDialog';
-          if (smallsConfig.user.isAuthenticated) {
-            modal = '#become-a-supporter-dialog';
-          }
-          inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
-          if (inactive === 'true'){
-            modal = '#inactive-dialog';
-          }
-          $(modal).modal('show');
+      function cannotWatchModalOpen() {
+        var modal = '#becomeMemberDialog';
+        if (smallsConfig.user.isAuthenticated) {
+          modal = '#become-a-supporter-dialog';
         }
-        
-        $(document).on('click', '.not-auth-container', function (event) {
-          cannotWatchModalOpen()
-        })
+        inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
+        if (inactive === 'true'){
+          modal = '#inactive-dialog';
+        }
+        $(modal).modal('show');
+      }
 
-  {% endif %}
+      $(document).on('click', '.not-auth-container', function (event) {
+        cannotWatchModalOpen()
+      })
 
+    {% else %}
+
+      {% if next_event %}
+        var changeTime = moment("{{ next_event.start.isoformat }}");
+        var waitTime = changeTime.diff(moment(), 'miliseconds');
+        var intervalId = setInterval(function () {
+            clearInterval(intervalId);
+            $('.current-event').addClass('hidden');
+            $('.next-event').removeClass('hidden');
+            $('.related-video.selected').removeClass('selected');
+            $('.related-video.next-up').addClass('selected');
+        }, waitTime);
+      {% endif %}
+
+
+      {% if count_metrics %}
+        function playCallback(event, playing) {
+          console.log(playing);
+          if (playing) {
+
+          } else {
+
+          }
+        }
+
+        var viewer = UstreamEmbed('UstreamIframe');
+        viewer.addListener('playing', playCallback);
+
+        var playsCountSent = [];
+        var activeTracker = null;
+
+        function updateViewCount(player) {
+          var id = player.getPlaylistItem(player.getPlaylistIndex()).mediaid;
+          if (playsCountSent.indexOf(id) === -1) {
+            playsCountSent.push(id);
+            $.post('/multimedia/update_media_viewcount/', {
+              recording_id: id,
+              csrfmiddlewaretoken: '{{ csrf_token }}'
+            });
+          }
+        }
+
+        var metricsSignedData = {{ metrics_signed_data|safe }};
+
+        var pingMetricsServer = function(mediaId) {
+          var data = {};
+          data.signed_data = metricsSignedData[mediaId];
+          data.csrfmiddlewaretoken = '{{ csrf_token }}';
+          $.ajax({
+            url: "{{ metrics_server_url }}/metric/",
+            method: 'POST',
+            headers: {
+                "Authorization": "Token {{ user_token }}"
+            },
+            data: data,
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function () {
+              $.ajax({
+                url: "{{ event_metrics_update_url }}",
+                method: 'POST',
+                data: data,
+                success: function (response) {
+                  console.log(response);
+                },
+                error: function (xhr, ajaxOptions, thrownError)  {
+                  console.log(xhr.responseText);
+                }
+              });
+            },
+            error: function (xhr, ajaxOptions, thrownError)  {
+              console.log(xhr.responseText);
+            }
+          });
+          // Additionally update totals in the Event model.
+        };
+
+        function setUpTimerForMedia(mediaId) {
+          pingMetricsServer(mediaId);
+          if (!activeTracker) {
+            activeTracker = window.setInterval(function () {
+              pingMetricsServer(mediaId);
+            }, {{ metrics_ping_interval }} * 1000);
+          }
+        }
+      {% endif %}
+
+    {% endif %}
+
+  });
 
 
 

@@ -2577,6 +2577,10 @@ img.defineImageRatio {
   top: 40px;
   left: 25%;
   padding: 10px;
+
+  @media (max-width: $screen-xs) {
+    left: 16%;
+  }
 }
 .reset-search {
   position: absolute;
@@ -2600,9 +2604,9 @@ img.defineImageRatio {
   }
 }
 .store-single__item__images {
-  width: 320px;
-  height: 320px;
-  max-width: 320px;
+  width: auto;
+  height: auto;
+  max-width: 400px;
   @media (max-width: $screen-md) {
     width: auto;
   }
