@@ -275,6 +275,7 @@ class UserTaxLetterHtml(TemplateView):
         for charge in customer_charges:
             deductable_value += charge.deductable_amount
         context['customer'] = customer
+        context['deductable_value'] = deductable_value
         context['charges_value'] = charges_value
         context['year'] = timezone.now().year
 
