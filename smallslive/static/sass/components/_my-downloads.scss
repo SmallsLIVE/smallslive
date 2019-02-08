@@ -109,46 +109,6 @@
       width: 100%;
       height: calc(100% - 30px);
       align-items: center;
-      @keyframes playButton {
-        0% {
-          border-width: 0 0 0 0;
-        }
-        16% {
-          border-width: 1px 0 0 0;
-        }
-        32% {
-          border-width: 2px 1px 0 0;
-        }
-        52% {
-          border-width: 3px 2px 1px 0;
-        }
-        66% {
-          border-width: 3px 3px 2px 1px;
-        }
-        80% {
-          border-width: 3px 3px 3px 2px;
-        }
-        100% {
-          border-width: 3px 3px 3px 3px;
-        }
-      }
-      @keyframes stopButton {
-        0% {
-          border-width: 0 0 0 0;
-        }
-        16% {
-          border-width: 1px 0 1px 0;
-        }
-        32% {
-          border-width: 2px 1px 2px 1px;
-        }
-        52% {
-          border-width: 3px 2px 3px 2px;
-        }
-        66% {
-          border-width: 3px 3px 3px 3px;
-        }
-      }
       &.myplay-btn,
       &.mypause-btn {
         .fa-thin-circle.fa {
@@ -399,5 +359,45 @@
   & h3 {
     @include lato-bold;
     font-size: 18px;
+  }
+}
+@keyframes playButton {
+  0% {
+    border-width: 0 0 0 0;
+  }
+  16% {
+    border-width: 1px 0 0 0;
+  }
+  32% {
+    border-width: 2px 1px 0 0;
+  }
+  52% {
+    border-width: 3px 2px 1px 0;
+  }
+  66% {
+    border-width: 3px 3px 2px 1px;
+  }
+  80% {
+    border-width: 3px 3px 3px 2px;
+  }
+  100% {
+    border-width: 3px 3px 3px 3px;
+  }
+}
+@keyframes stopButton {
+  0% {
+    border-width: 0 0 0 0;
+  }
+  16% {
+    border-width: 1px 0 1px 0;
+  }
+  32% {
+    border-width: 2px 1px 2px 1px;
+  }
+  52% {
+    border-width: 3px 2px 3px 2px;
+  }
+  66% {
+    border-width: 3px 3px 3px 3px;
   }
 }
