@@ -335,7 +335,7 @@ $event-row-padding: 3.5vw;
 }
 
 //TODO Move
-.newest-recordings-container .event-row {
+.album-row {
   .event-display {
     max-width: 100%;
     .event-card {
@@ -348,6 +348,15 @@ $event-row-padding: 3.5vw;
     }
   }
 }
+.newest-recordings-container
+  .event-row
+  .event-display
+  .event-card
+  .event-picture-container
+  .event-picture {
+  filter: none;
+}
+
 @media (max-width: 960px) {
   .event-card,
   .event-info,
