@@ -403,8 +403,9 @@
             return false;
           });
 
-            $("#dashboard-status-filter .select-selected").text("Status")
-          $('.refine-dashboard-buttons button[value="all"]').click()
+          $("#dashboard-status-filter .select-selected").text("Status");
+          $("#dashboard-sort-filter .select-selected").text("Sort By");
+          $('.refine-dashboard-buttons button[value="all"]').click();
           $("#apply-button").click(function () {
             apply = true;
             eventPageNum = 1;
