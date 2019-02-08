@@ -26,14 +26,16 @@
       <div class="white-line-bottom ">
         <div class="title1 catalog-title">SmallsLIVE Catalog</div>
       </div>
-        <div  class="search-artist-box-container store flex-row">
-        <img src="{% static 'image/search-icon.svg' %}">
-        <input id="artist-search-all"
-            class="search-artist-box"
-            name="q" type="text"
-            placeholder="SEARCH FOR AN ARTIST"
-            autocomplete="off">
-        <div class="reset-search"></div>
+      <div  class="search-artist-box-container store flex-row">
+        <div class="search-container">
+          <img src="{% static 'image/search-icon.svg' %}">
+          <input id="artist-search-all"
+              class="search-artist-box"
+              name="q" type="text"
+              placeholder="SEARCH FOR AN ARTIST"
+              autocomplete="off">
+          <div class="reset-search"></div>
+        </div>
         {% include "promotions/artist-bar.html" with artist_list=artist_with_media %}
       </div>
       <main class="all-recordings-container" id="all-recordings-container">

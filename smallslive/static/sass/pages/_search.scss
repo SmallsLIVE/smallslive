@@ -724,18 +724,45 @@ body.headers-1 {
     @media (max-width: $screen-md-max) {
       display: flex;
     }
-    .search-artist-box {
+
+    .search-container {
+
       margin: 0 auto;
-    }
-    img {
-      left: calc(50% - 163px);
+      text-align: center;
+      position: relative;
+      width: 500px;
+
       @media (max-width: $screen-xs) {
-        left: calc(50% - 170px);
+        width: 390px;
       }
-      @media (max-width: 360px) {
-        left: calc(50% - 140px);
+
+      img {
+        left: 90px;
+        @media (max-width: $screen-xs) {
+          left: 50px;
+        }
+      }
+
+      .search-artist-box {
+        margin: 0;
+
+        @media (max-width: $screen-xs) {
+          width: 310px;
+        }
+      }
+
+      .reset-search {
+        margin: 0;
+        right: 40px;
+        left: initial;
+
+        @media (max-width: $screen-xs) {
+          left: initial;
+          right: 1px;
+        }
       }
     }
+
   }
   @media (max-width: $screen-md-max) {
     #a-z-search .scroll-right,
