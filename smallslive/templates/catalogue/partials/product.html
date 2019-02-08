@@ -15,6 +15,14 @@
     <!-- Single store item -->
     <div class="store-list-item flex-column items-flex-stretch">
         <div class="store-list-item-image">
+          {% if product.parent_id %}
+            {% with image=product.parent.primary_image %}
+              {% if not image.is_missing %}
+                <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=260 width=0 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+              {% else %}
+                <a href="{{ product.get_absolute_url }}"><img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+              {% endif %}
+          {% else %}
             {% with image=product.primary_image %}
                 {% if not image.is_missing %}
                   <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=260 width=0 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
@@ -22,6 +30,7 @@
                   <a href="{{ product.get_absolute_url }}"><img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
                 {% endif %}
             {% endwith %}
+          {% endif %}
         </div>
         <span class="text2 store-list-item-tile">
             <a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title }}</a>
