@@ -137,6 +137,6 @@ div.event-strip {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 20ch;
+  max-width: calc(20ch - 2px);
   min-width: 15ch;
 }

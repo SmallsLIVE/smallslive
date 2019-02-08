@@ -358,13 +358,4 @@ $event-row-padding: 3.5vw;
     position: relative;
   }
 }
-.newest-recordings-container
-  .event-row
-  .event-display
-  a
-  .event-card
-  .event-picture-container
-  .picture-border
-  .event-picture {
-  @include cross-browser-nofilter;
-}
+

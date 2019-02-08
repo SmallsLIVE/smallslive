@@ -16,7 +16,9 @@
   {% if not completed %}
     <p class="text2 accent-color">Become a supporting member</p>
   {% else %}
-    <p class="text2 accent-color">You are now a supporting member</p>
+    {% if flow_type = "become_supporter" %}
+      <p class="text2 accent-color">You are now a supporting member</p>
+    {% endif %}
   {% endif %}
 {% endblock %}
 {% block flow_steps %}
