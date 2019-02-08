@@ -653,15 +653,15 @@
   @include display(flex);
   @include flex-wrap(nowrap);
   padding-right: 15px;
-  @media(max-width:425px){
+  @media (max-width: 425px) {
     flex-direction: column;
-    .white-border-button{
+    .white-border-button {
       margin-top: 15px;
       margin-right: 15px;
       width: 100%;
     }
   }
-  
+
   .white-border-select {
     .select-selected,
     .select-items div {
@@ -917,33 +917,34 @@
 
     &__tracks-table {
       padding: 0 10px;
-      .table-responsive{
-          .white-border-button{
-            padding: 0 18px;
-          }
-          @media (max-width: 425px) {
-            border: none;
-            tr, td, th{
-              .table-button{
-                padding: 0 0 5px 0;
-              }
-              border: none;
+      .table-responsive {
+        .white-border-button {
+          padding: 0 18px;
+        }
+        @media (max-width: 425px) {
+          border: none;
+          tr,
+          td,
+          th {
+            .table-button {
+              padding: 0 0 5px 0;
             }
+            border: none;
           }
+        }
       }
-      @media(max-width:425px){
-        .store-td-title{
+      @media (max-width: 425px) {
+        .store-td-title {
           display: block;
           overflow: hidden;
           text-overflow: ellipsis;
           min-width: 150px;
           max-width: 290px;
-          width: 46vw ;
-          &:first-of-type{
+          width: 46vw;
+          &:first-of-type {
             border-top: none;
           }
         }
-
       }
       table {
         thead {
@@ -1018,7 +1019,7 @@
           @include align-items(center);
           @include justify-content(flex-end);
         }
-        
+
         &.duration,
         &.price {
           text-align: right;
@@ -1027,11 +1028,11 @@
 
       & a {
         //color: #fff;
-        .fa-play{
+        .fa-play {
           color: black;
           transition: color 0.5s;
         }
-        .fa-pause{
+        .fa-pause {
           color: $accent-color;
           transition: color 0.5s;
         }
@@ -1655,7 +1656,7 @@
     }
 
     &__cell {
-      &.physical{
+      &.physical {
         padding-left: 32px;
         @media (max-width: 960px) {
           margin-top: 10px;
@@ -1809,7 +1810,7 @@
     @include display(flex);
     @include align-items(center);
 
-    &.physical{
+    &.physical {
       margin-left: 22px;
       @media (max-width: 960px) {
         width: 23%;
@@ -2336,20 +2337,20 @@ img.defineImageRatio {
 
 .buy-button-container {
   position: relative;
-  .dropdown-menu{
+  .dropdown-menu {
     min-width: 78px;
     background: $background-color;
     border: 3px solid rgba(255, 255, 255, 0.9);
-    li{
+    li {
       padding: 5px 19px;
     }
-    input{
+    input {
       padding: 0;
       font-size: 10px;
       font-family: "Reem Kufi", sans-serif;
       text-transform: uppercase;
     }
-  } 
+  }
   & ul li {
     padding: 5px;
 
@@ -2428,12 +2429,12 @@ img.defineImageRatio {
   position: relative;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   > * {
     flex: 1 0 -1%;
   }
   .store-list-item {
-    margin: 0;
+    margin: 0 4px;
     @media (max-width: 430px) {
       width: 48%;
     }

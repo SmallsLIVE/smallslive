@@ -144,8 +144,22 @@
 
     $(document).ready(function () {
 
+      function fixMonthSingleDigit(){
+
+        if($('#expiry-month').val() < 10 && !$('#expiry-month').val().startsWith('0')){
+          $('#expiry-month').val('0' + $('#expiry-month').val())
+        }
+      }
+      
       var $yearPlaceholder = $('#expiry-year-placeholder');
       var $yearInput = $('#expiry-year');
+
+      var $form = $('#payment-form');
+
+      $form.submit(function(){
+        fixMonthSingleDigit()
+      })
+
 
       $yearPlaceholder.on("input", function() {
         $yearInput.val('20' + this.value);
