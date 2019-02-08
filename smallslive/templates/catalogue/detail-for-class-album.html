@@ -84,7 +84,7 @@
           {% endif %}
           <div class="store-single__item__description">
           {% for artist in  product.artist.all %}
-            <a class="artist-link " href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }} / {{ artist.instruments.first }}</a><br>
+            <a class="artist-link " href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }} {{ artist.last_name }} / {{ artist.instruments.first }}</a><br>
           {% endfor %}
           </div>
 
