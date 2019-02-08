@@ -6,7 +6,6 @@
 
 
     <div>
-        {{ form.errors }}
 
         <form action="{% url 'checkout:shipping-address' %}" method="post" id="new_shipping_address">
             {% csrf_token %}
