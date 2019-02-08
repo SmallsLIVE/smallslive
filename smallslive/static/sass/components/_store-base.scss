@@ -2575,8 +2575,12 @@ img.defineImageRatio {
   width: 350px;
   z-index: 9999;
   top: 40px;
-  left: 530px;
+  left: 25%;
   padding: 10px;
+
+  @media (max-width: $screen-xs) {
+    left: 16%;
+  }
 }
 .reset-search {
   position: absolute;
