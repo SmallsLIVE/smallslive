@@ -1678,7 +1678,11 @@ body.home.admin-header{
     }
   }
 }
-.home.headers-4.admin-header div.artist-search-profile-container.pad-content {
-  transition: padding-top 0.2s;
-  padding-top:112px;
+
+
+@media (max-width: $screen-sm-max) {
+  .home.headers-4.admin-header div.artist-search-profile-container.pad-content {
+    transition: padding-top 0.2s;
+    padding-top:112pxg;
+  }
 }
