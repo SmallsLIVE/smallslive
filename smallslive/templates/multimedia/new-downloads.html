@@ -212,16 +212,18 @@
                 play = false
                 $(playerContainerButton).removeClass("mypause-btn")
                 $(playerContainerButton).addClass("myplay-btn")
+                $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
             }
         }else{
             $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red" )
             $(".active-track").removeClass("active-track")
             $(this).find(".track-info").addClass("active-track")
-            play = true
+            play = true;
             $(lastPlayerContainerButton).addClass("myplay-btn")
             $(lastPlayerContainerButton).removeClass("mypause-btn")
             $(playerContainerButton).addClass("mypause-btn")
             $(playerContainerButton).removeClass("myplay-btn")
+            $(playerContainerButton).find('div').html('<i class="fas fa-pause"></i>')
         }
         //toggles player
         if(lastPlayer != undefined){
@@ -296,6 +298,7 @@
             $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "black" );
             $(player).closest(".big-player").find(".purchases-player-button").removeClass("mypause-btn");
             $(player).closest(".big-player").find(".purchases-player-button").addClass("myplay-btn");
+            $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
             $(".active-track").removeClass("active-track");
             player.currentTime = 0;
             clearInterval(setTime)
