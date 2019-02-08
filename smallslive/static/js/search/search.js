@@ -211,7 +211,7 @@ $(document).on("click", "#artists .artist-row", function() {
         $("#musicianContent").hide();
         $(".artist-search-profile-container").html(data.template);
         $(".artist-search-profile-container")[0].style.display = "block";
-        $("#artist-subheader").html("SHOWING 1 - 1 OF 1 RESULTS");
+        $("#artist-subheader").text("");
         $(".artist-search-profile-container .close-button-parent").show();
         $(".search-tabs").addClass("hidden");
         $(

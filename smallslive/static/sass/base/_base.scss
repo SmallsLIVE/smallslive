@@ -270,10 +270,10 @@ p.unavailable {
           }
         }
       }
-    }
-    @media (max-width: $screen-xs-max) {
-      .pad-content {
-        padding-top: $mobile-bar-height * $i;
+      @media (max-width: $screen-xs-max) {
+        .pad-content {
+          padding-top: $mobile-bar-height * $i;
+        }
       }
     }
   }

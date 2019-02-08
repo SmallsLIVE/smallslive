@@ -825,7 +825,7 @@ body.headers-1 {
 
 .search-bar-autocomplete-container {
   &.mobile-search-container {
-    @media (min-width: $screen-md-max) {
+    @media (min-width: $screen-lg-min) {
       display: none !important;
     }
   }
@@ -853,9 +853,9 @@ body.headers-1 {
     padding: 6px 0;
   }
 
-  @media (max-width: $screen-sm-max) {
+  @media (max-width: $screen-md-max) {
     left: 0;
-    top: 120px;
+    top: 108px;
     border-radius: 0;
     background-color: white;
     width: 100%;
@@ -1672,9 +1672,17 @@ body.headers-1 {
   left: 92vw;
 }
 body.home.admin-header{
-  @media (max-width: 960px){
+  @media (max-width: $screen-md-max){
       .search-bar-autocomplete-container {
-        top:175px;
+        top:162px;
     }
+  }
+}
+
+
+@media (max-width: $screen-sm-max) {
+  .home.headers-4.admin-header div.artist-search-profile-container.pad-content {
+    transition: padding-top 0.2s;
+    padding-top:112pxg;
   }
 }

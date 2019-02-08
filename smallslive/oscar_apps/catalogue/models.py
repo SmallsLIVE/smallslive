@@ -40,6 +40,10 @@ class Product(AbstractProduct):
         return is_album and has_physical_child
 
     @cached_property
+    def get_artist_list(self):
+        return self.artist.all()
+
+    @cached_property
     def has_digital_media(self):
         is_album = self.product_class.slug == "album"
         has_physical_child = self.children.filter(product_class__slug="digital-album").exists()
