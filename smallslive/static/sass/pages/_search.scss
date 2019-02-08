@@ -233,7 +233,8 @@ body.headers-1 {
       height: 100%;
     }
   }
-  #showsArchivedContent, #showUpcomingContent {
+  #showsArchivedContent,
+  #showUpcomingContent {
     margin-top: 30px;
     @media (max-width: $screen-md-max) {
       margin-top: 0px;
@@ -726,20 +727,19 @@ body.headers-1 {
     }
 
     .search-container {
-
       margin: 0 auto;
       text-align: center;
       position: relative;
       width: 500px;
 
       @media (max-width: $screen-xs) {
-        width: 390px;
+        width: 100%;
       }
 
       img {
         left: 90px;
         @media (max-width: $screen-xs) {
-          left: 50px;
+          left: 15px;
         }
       }
 
@@ -747,7 +747,7 @@ body.headers-1 {
         margin: 0;
 
         @media (max-width: $screen-xs) {
-          width: 310px;
+          width: 100%;
         }
       }
 
@@ -762,7 +762,6 @@ body.headers-1 {
         }
       }
     }
-
   }
   @media (max-width: $screen-md-max) {
     #a-z-search .scroll-right,
@@ -798,6 +797,7 @@ body.headers-1 {
 .instrument-btn {
   display: inline-block;
   width: 200px;
+  height: auto;
   padding-top: 10px;
   margin-left: 30px;
   align-self: center;
@@ -1064,17 +1064,17 @@ body.headers-1 {
   button {
     margin: 10px 0;
   }
-  a{
-    line-height: 1.42857; 
+  a {
+    line-height: 1.42857;
     text-align: center;
-    &:hover{
-      color : black;
+    &:hover {
+      color: black;
     }
-    &:active{
-      color : black;
+    &:active {
+      color: black;
     }
-    &:focus{
-      color : black;
+    &:focus {
+      color: black;
       text-decoration: none;
       border: 3px solid rgba(255, 255, 255, 0.9);
     }
@@ -1671,18 +1671,17 @@ body.headers-1 {
   position: absolute;
   left: 92vw;
 }
-body.home.admin-header{
-  @media (max-width: $screen-md-max){
-      .search-bar-autocomplete-container {
-        top:162px;
+body.home.admin-header {
+  @media (max-width: $screen-md-max) {
+    .search-bar-autocomplete-container {
+      top: 162px;
     }
   }
 }
 
-
 @media (max-width: $screen-sm-max) {
   .home.headers-4.admin-header div.artist-search-profile-container.pad-content {
     transition: padding-top 0.2s;
-    padding-top:112pxg;
+    padding-top: 112pxg;
   }
 }
