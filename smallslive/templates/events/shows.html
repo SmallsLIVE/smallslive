@@ -2,24 +2,33 @@
 {% load thumbor_tags %}
 {% load i18n %}
 
-<section id="showsContent" class="search-tab-content {% if not musician_search %}active{% endif %} {{ archived|yesno:',shows-calendar' }}" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
+<section id="shows{% if archived %}Archived{% else %}Upcoming{% endif %}Content"
+         class="search-tab-content {% if archived %}archived{% else %}upcoming{% endif %} {{ archived|yesno:',shows-calendar' }} "
+         data-toggle-tab="{% if archived %}archived{% else %}upcoming{% endif %}-shows"
+         data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
   {% if archived or upcoming %}
   <div class="musicians-results white-line-bottom">
       <div class="title1 shows-results-title">      
       {% if archived %}
-        <span id="event-totals" class='accent-color' >{{ showing_event_results }}</span>
+        <span id="archived-event-totals" class='accent-color' >{{ showing_event_results }}</span>
       {% endif %}
       {{ archived|yesno:'Archived,Upcoming' }} Shows</div>
       {% if archived %}
-        <div id="event-subheader" class="showing-results text1" style="margin-top: -13px;" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>1-24</div>
+        <div id="archived-event-subheader"
+             class="showing-results text1"
+             style="margin-top: -13px;"
+             data-max-number='{{ showing_artist_results }}'
+             data-paginator-number=24
+             data-left-number=1
+             data-right-number=24>1-24</div>
       {% endif %}
   </div>
   {% endif %}
   {% if archived %}
       {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
   {% endif %}
-  {% if upcoming %}
-  <div class="flex-row calendar-filters">
+  {% if upcoming and not hide_filters %}
+    <div class="flex-row calendar-filters">
       {% include 'events/upcoming_filters.html' %}
     </div>
   {% endif %}
@@ -29,7 +38,9 @@
 
   <div class="concerts-footer flex-column items-center">
     {% if last_page != actual_page %}
-        <button id="load-more-btn" class="white-border-button load-more-btn" onclick="loadMoreEvents()">
+        <button id="load-more-{% if archived %}archived{% else %}upcoming{% endif %}-btn"
+                class="white-border-button load-more-btn"
+                onclick="loadMoreEvents('{% if archived %}Archived{% else %}Upcoming{% endif %}')">
           <span>Load More</span>
         </button>
     {% endif %}

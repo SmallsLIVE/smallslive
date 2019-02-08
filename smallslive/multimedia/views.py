@@ -207,7 +207,7 @@ upload_track = UploadTrackView.as_view()
 
 class MyDownloadsView(LoginRequiredMixin, ListView):
     context_object_name = 'lines'
-    template_name = 'multimedia/my-downloads.html'
+    template_name = 'multimedia/new-downloads.html'
 
     def get_queryset(self):
         return Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter(Q(
@@ -215,3 +215,14 @@ class MyDownloadsView(LoginRequiredMixin, ListView):
             order__user=self.request.user).distinct('stockrecord')
 
 my_downloads = MyDownloadsView.as_view()
+
+class NewMyDownloadsView(LoginRequiredMixin, ListView):
+    context_object_name = 'lines'
+    template_name = 'multimedia/new-downloads.html'
+
+    def get_queryset(self):
+        return Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter(Q(
+            product__product_class__slug='track') | Q(product__product_class__slug='digital-album'),
+            order__user=self.request.user).distinct('stockrecord')
+
+new_downloads = MyDownloadsView.as_view()

@@ -111,9 +111,12 @@ a {
   input {
     @include bordered-input;
     background-color: transparent;
-    width: 22vw;
+    width: 30vw;
     padding-left: 38px;
     text-transform: uppercase;
+    @media(max-width: 1300px) {
+      width: 22vw;
+    }
   }
 }
 

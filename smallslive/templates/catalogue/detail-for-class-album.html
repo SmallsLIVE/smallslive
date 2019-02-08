@@ -177,10 +177,11 @@
           <table class="table">
             <thead>
             <tr>
-              <th>Preview</th>
+              <th class="hidden-xs">Preview</th>
+              <th class="hidden-sm hhidden-md hidden-lg"></th>
               <th>Title</th>
               <th class="hidden-sm hidden-xs">Duration</th>
-              <th class="hidden-sm hidden-xs">Mp3 / HD</th>
+              <th >Mp3 / HD</th>
               <th></th>
             </tr>
             </thead>
@@ -196,7 +197,7 @@
                     <!-- {{ preview_track_id_counter.next }} -->
                   {% endif %}
                 </td>
-                <td>{{ track.title }}</td>
+                <td class="store-td-title">{{ track.title }}</td>
                 <td class="hidden-sm hidden-xs">{{ track.attr.duration }}</td>
                 <td class="hidden-sm hidden-xs">
                   {% if track.get_track_stockrecord %}$
@@ -205,7 +206,7 @@
                   {{ track.get_hd_track_stockrecord.price_excl_tax }}{% else %}
                   -{% endif %}
                 </td>
-                <td>
+                <td class="table-button">
 
                   {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
                     <div class="buy-button-container">

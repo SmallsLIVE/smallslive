@@ -2,6 +2,7 @@ import logging
 from paypal.payflow import facade
 from django import http
 from django.conf import settings
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django import forms
 from django.forms.models import model_to_dict
@@ -293,6 +294,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
 
         basket = request.basket
         payment_method = request.POST.get('payment_method')
+        flow_type = request.POST.get('flow_type')
         submission = self.build_submission()
         submission['payment_kwargs']['payment_method'] = payment_method
         if basket.has_tickets():
@@ -302,6 +304,11 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                     submission['payment_kwargs']['bankcard'] = bankcard_form.bankcard
                 else:
                     assert False, bankcard_form.errors
+
+        if flow_type:
+            # Set flow_type in session b/c there's no easy way
+            # of passing it through the order.
+            request.session['flow_type'] = flow_type
         print 'Submission: '
         print submission
         return self.submit(**submission)
@@ -337,6 +344,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         print 'Submit: '
         print order_total
         print payment_kwargs
+        print order_kwargs
 
         if payment_kwargs is None:
             payment_kwargs = {}
@@ -486,9 +494,10 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             print 'Handle order placement'
 
             order_kwargs.update({'order_type': basket.get_order_type()})
-            return self.handle_order_placement(
+            response = self.handle_order_placement(
                 order_number, user, basket, shipping_address, shipping_method,
                 shipping_charge, billing_address, order_total, **order_kwargs)
+            return response
         except UnableToPlaceOrder as e:
             # It's possible that something will go wrong while trying to
             # actually place an order.  Not a good situation to be in as a
@@ -521,10 +530,26 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         # Flush all session data
         self.checkout_session.flush()
 
+        # Get flow type from session
+        flow_type = self.request.session.get('flow_type')
+
         # Save order id in session so thank-you page can load it
         self.request.session['checkout_order_id'] = order.id
         if self.request.is_ajax():
-            response = http.JsonResponse({'success_url': reverse('become_supporter_complete')})
+            success_url = reverse('become_supporter_complete')
+            if flow_type:
+                success_url += '?flow_type=' + flow_type
+                # remove flow_type from session
+                del self.request.session['flow_type']
+
+                #remove messages
+                storage = messages.get_messages(self.request)
+                for _ in storage:
+                    pass
+                storage.used = True
+
+            response = http.JsonResponse({'success_url': success_url})
+
         else:
             response = http.HttpResponseRedirect(self.get_success_url())
             self.send_signal(self.request, response, order)
@@ -628,9 +653,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                 }
                 Donation.objects.create(**donation)
 
-
-
-
             elif payment_method == 'paypal':
                 item_list = self.get_item_list(basket_lines)
                 total_deductable = basket._get_deductable_physical_total()
@@ -691,9 +713,18 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
         basket.strategy = strategy
         self.handle_order_placement(basket, payment_id)
 
-        if basket.has_gifts():
+        # Get flow type from session
+        flow_type = self.request.session.get('flow_type')
+        if flow_type:
+
+            storage = messages.get_messages(self.request)
+            for _ in storage:
+                pass
+            storage.used = True
+
             return http.HttpResponseRedirect(reverse(
-                'become_supporter_complete') + '?payment_id={}'.format(payment_id))
+                'become_supporter_complete') + '?payment_id={}&flow_type={}'.format(
+                payment_id, flow_type))
         else:
             return http.HttpResponseRedirect(reverse(
                 'checkout:thank-you') + '?payment_id={}'.format(payment_id))
