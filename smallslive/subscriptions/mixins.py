@@ -1,3 +1,4 @@
+from decimal import *
 import paypalrestsdk
 import stripe
 from oscar_stripe.facade import Facade
@@ -7,7 +8,7 @@ from oscar.apps.payment.exceptions import RedirectRequired, \
     UnableToTakePayment, PaymentError
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.models import Donation
-from decimal import *
+from users.utils import charge
 
 
 class PayPalMixin(object):
@@ -103,7 +104,6 @@ class PayPalMixin(object):
             raise UnableToTakePayment(payment.error)
 
     def execute_payment(self):
-
         payment_id = self.request.GET.get('paymentId')
         payer_id = self.request.GET.get('PayerID')
         payment = paypalrestsdk.Payment.find(payment_id)
@@ -140,23 +140,23 @@ class StripeMixin(object):
     def handle_stripe_payment(self, card_token,
                                order_number, total, basket,
                                basket_lines, **kwargs):
-        if card_token.startswith('card_'):
-            stripe_ref = Facade().charge(
-                order_number,
-                total,
-                card=card_token,
-                description=self.payment_description(order_number, total, **kwargs),
-                metadata=self.payment_metadata(order_number, total, basket_lines, **kwargs),
-                customer=self.request.user.customer.stripe_id)
+        customer = self.request.user.customer
+        if not card_token.startswith('card_'):
+            customer.update_card(card_token)
+            charge = customer.charge(
+                Decimal(total.incl_tax),
+                description=self.payment_description(order_number, total, **kwargs))
+            stripe_ref = charge.stripe_id
+
         else:
             stripe_ref = Facade().charge(
                 order_number,
                 total,
                 card=card_token,
                 description=self.payment_description(order_number, total, **kwargs),
-                metadata=self.payment_metadata(order_number, total, basket_lines, **kwargs))
+                metadata=self.payment_metadata(order_number, total, basket_lines, **kwargs),
+                customer=customer.stripe_id)
 
-        currency = settings.STRIPE_CURRENCY
 
         print '******************)))))))'
         cost = 0

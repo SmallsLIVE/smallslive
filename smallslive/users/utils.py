@@ -1,7 +1,6 @@
 import decimal
 from datetime import date, timedelta
 from djstripe.models import Customer, Charge, Plan
-from djstripe.settings import subscriber_request_callback
 from custom_stripe.models import CustomPlan, CustomerDetail
 from djstripe.models import Charge, CurrentSubscription, convert_tstamp
 
@@ -13,8 +12,6 @@ except ImportError:
 from allauth.account.adapter import get_adapter
 from allauth.account.utils import user_email
 from django.contrib import messages
-
-from subscriptions.models import Donation
 
 
 def add_years(d, years):
@@ -176,7 +173,7 @@ def subscribe(customer, plan, flow):
         return cs
 
 
-def charge(customer, amount, flow):
+def charge(customer, amount, currency='USD', description='', send_receipt=True):
     """Just charge the customer
     The web hook will take care of updating donations if necessary"""
 
@@ -184,7 +181,7 @@ def charge(customer, amount, flow):
     print amount
     print type(amount)
 
-    charge = customer.charge(decimal.Decimal(amount))
+    charge = customer.charge(decimal.Decimal(amount), currency, description, send_receipt)
     print charge
 
     return charge
