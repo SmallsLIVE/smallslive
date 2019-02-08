@@ -1031,6 +1031,7 @@ $(document).on(
   ".artist-search-profile-container.pad-content .close-button",
   function() {
     if (!artistInstrument) {
+      searchTerm = '';
       $(".instrument[data-instrument='']").click();
     }
   }
