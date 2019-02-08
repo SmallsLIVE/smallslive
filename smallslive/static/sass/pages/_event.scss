@@ -320,6 +320,13 @@ $player-height: 25.3vw;
     color: white;
     height: 100%;
     padding: 2.9vw;
+    padding-top: 3.5vw;
+
+    @media(max-width: $screen-md-max) {
+      padding: 9.5vw;
+      padding-top: 10.5vw;
+    }
+
     .title5 {
       font-weight: 200;
       letter-spacing: 0.09em;
