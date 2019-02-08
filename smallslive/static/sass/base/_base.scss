@@ -16,6 +16,9 @@ body {
       .pad-content {
         padding-top: 40px;
       }
+      .artist-search-profile-container{
+        padding-top: 54px;
+      }
     }
   }
   @include background-image(
@@ -262,6 +265,9 @@ p.unavailable {
       @media (max-width: $screen-xs-max) {
         .pad-content {
           padding-top: $mobile-bar-height * $i + 30px;
+          &.artist-search-profile-container{
+            padding-top: 54px;
+          }
         }
       }
     }

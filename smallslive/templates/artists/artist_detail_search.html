@@ -77,7 +77,7 @@
     <div class="artist-search-profile-bio-buttons flex-column">
         <button data-toggle-tab-group="search-results" data-toggle-tab-target="archived-shows" id="archive-shows-button" class="white-border-button hover-fade active">Archived Shows</button>
         <button data-toggle-tab-group="search-results" data-toggle-tab-target="upcoming-shows" id="upcoming-shows-button" class="white-border-button hover-fade">Upcoming Shows</button>
-        <a href="/store/?artist_pk={{artist.pk}}" id="smallslive-tracks-button" class="white-border-button hover-fade {% if not artist.albums %} hidden {% endif %}">Smallslive Tracks</a>
+        <button data-toggle-tab-group="search-results" data-toggle-tab-target="smallslive-tracks" id="smallslive-tracks-button" class="white-border-button hover-fade {% if not artist.tracks %} hidden {% endif %}">Smallslive Tracks</button>
     </div>
   </div>
 </div>
@@ -99,7 +99,7 @@
   </div>
   <div class="all-artist-tracks flex-row">
     {% if artist.tracks %}
-      {% for artistproduct in artist.tracks %}
+      {% for artistproduct in artist.albums %}
         {% include "catalogue/partials/product.html" with product=artistproduct.product %}
       {% endfor %}
     {% else %}

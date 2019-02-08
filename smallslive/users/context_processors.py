@@ -20,13 +20,13 @@ def check_account_status(request):
 
     return {'show_email_confirmation_dialog': show}
 
-def check_if_event_confimed_user(request):
-    if request.user.is_anonymous:
+
+def check_if_event_confirmed_user(request):
+    if request.user.is_anonymous():
         user_activated = False
     else:
         user_activated = request.user.has_activated_account
     try:
-        event = not request.user.has_activated_account
-        return {'is_event_user_not_confirmed': event}
+        return {'is_event_user_not_confirmed': not user_activated}
     except Exception as e:
         return {'is_event_user_not_confirmed': False}
