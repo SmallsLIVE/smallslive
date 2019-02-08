@@ -997,6 +997,19 @@ body.headers-1 {
   transition: max-height 0.15s ease-out;
   width: 45vw;
 
+  p {
+    color: inherit !important;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    letter-spacing: inherit !important;
+
+    a {
+      background: inherit !important;
+      text-decoration-line: inherit !important;
+      color: inherit !important;
+    }
+  }
+
   &.collapsed {
     overflow: hidden;
     max-height: 172px;
