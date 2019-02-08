@@ -108,7 +108,7 @@ def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
 
 def one_time_donation(customer, stripe_token, amount, flow="Charge"):
     customer.update_card(stripe_token)
-    charge(customer, amount, flow).id
+    charge(customer, amount)
 
 
 def update_active_card(customer, stripe_token):
