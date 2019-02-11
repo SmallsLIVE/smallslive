@@ -301,6 +301,11 @@
       &.duration {
         text-align: center;
         margin: 0 5px;
+        @media (max-width: 580px) {
+          &.store-buy{
+            display: none;
+          }
+        }
       }
     }
 
