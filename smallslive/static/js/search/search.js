@@ -776,6 +776,8 @@ $(document).ready(function() {
         $(".artist-search-profile-resume .close-button").show();
         $(".search-tabs").removeClass("hidden");
         artist_pk = null;
+        $("#artist-search").val("");
+        searchTerm = "";
         apply = true;
         archivedEventPageNum = 1;
         $(
