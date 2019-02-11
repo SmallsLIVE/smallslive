@@ -20,6 +20,8 @@
   }
   .dropdown-menu {
     min-width: 0px;
+    width: 100%;
+    padding:0;
   }
   .song-container {
     @media (max-width: 1023px) {
@@ -28,7 +30,8 @@
     }
     width: 60%;
   }
-  .buy-button-container a.white-border-button {
+  .buy-button-container .white-border-button {
+    width: 100%;
     text-align: center;
     font-size: 11px;
     padding: 0px 8px;
@@ -70,6 +73,13 @@
     }
     @media (max-width: 425px) {
       flex-direction: column;
+    }
+    .artist-link{
+      font-size: 16px;
+      color: black ;
+      &:hover{
+        color: $accent-color;
+      }
     }
     .title6 {
       transform: none;
@@ -273,7 +283,9 @@
         @include align-items(center);
         @include justify-content(flex-end);
         @media (max-width: 580px) {
-          display: none;
+          &:not(.store-buy){
+            display: none;
+          }
         }
       }
 

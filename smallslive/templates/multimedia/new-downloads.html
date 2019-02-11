@@ -83,10 +83,10 @@
                                                 <span>Download</span> <i class="fa fa-caret-down"></i></a>
                                         <div class="dropdown-menu" role="menu">
                                             {% if is_hd %}
-                                            <a class="white-border-button flex" href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download
+                                            <a class="white-border-button no-border flex" href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download
                                                 HD</a>
                                             {% else %}
-                                            <a class="white-border-button flex" href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download
+                                            <a class="white-border-button no-border flex" href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download
                                                 mp3</a>
                                             {% endif %}
 
@@ -157,10 +157,10 @@
                                     
                                     <div class="my-downloads-album__tracks-table__column buy-track">
                                         <div class="buy-button-container">
-                                            <a class="white-border-button flex-button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
+                                            <a class="white-border-button no-border flex-button" data-toggle="dropdown" aria-expanded="false" href="">Download <i class="fa fa-caret-down"></i></a>
                                             <div class="dropdown-menu" role="menu">
                                                 {% for line in track.list %}
-                                                <a class="white-border-button flex" href="{{ line.stockrecord.digital_download.get_downloadable_file_url }}" download="{{ line.stockrecord.digital_download.file.name }}">Download {% if line.stockrecord.is_hd %}HD{% else %}mp3{% endif %}</a>
+                                                <a class="white-border-button  no-border flex" href="{{ line.stockrecord.digital_download.get_downloadable_file_url }}" download="{{ line.stockrecord.digital_download.file.name }}">Download {% if line.stockrecord.is_hd %}HD{% else %}mp3{% endif %}</a>
                                                 {% endfor %}
                                             </div>
                                         </div>
@@ -206,7 +206,7 @@
         audioProgress = audioPlayer.currentTime / audioPlayer.duration * 100
         if( $(trackInfo).hasClass("active-track")){
             if(Math.abs(progess - audioProgress) > 5 ){
-                changeProgress(progess, audioPlayer)
+                {% comment %} changeProgress(progess, audioPlayer) {% endcomment %}
             }else{
                 $(".active-track").removeClass("active-track")
                 play = false

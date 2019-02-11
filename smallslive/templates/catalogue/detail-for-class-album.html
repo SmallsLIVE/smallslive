@@ -46,7 +46,26 @@
     {% endif %}
     {% endwith %}
 
-    <a class="title6" href="{{ product.get_absolute_url }}">{% if product.parent %}{{ product.parent.title }} - {% endif %}{{ product.title }}</a>
+    <a class="store-single__item__name" href="{{ product.get_absolute_url }}">{% if product.parent %}{{ product.parent.title }} - {% endif %}{{ product.title }}</a>
+    <br>
+    {% for artist in  product.artist.all %}
+      <a class="artist-link " href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }} {{ artist.last_name }} / {{ artist.instruments.first }}</a><br>
+    {% endfor %}
+    <div class="store-single__item__name" style="color:black"> 
+    {% purchase_info_for_product request product as session %}
+    {% if session.price.exists %}
+        {% if session.price.excl_tax == 0 %}
+            {% trans "Free" %}
+        {% elif session.price.is_tax_known %}
+            {{ session.price.incl_tax|currency:session.price.currency }}
+        {% else %}
+            {{ session.price.excl_tax|currency:session.price.currency }}
+        {% endif %}
+    {% else %}
+        &nbsp;
+    {% endif %}
+    
+    </div>
 </div>
 <div class="song-container">
     <div class="my-downloads-album__tracks-table">
@@ -76,20 +95,120 @@
                 <div class="my-downloads-album__tracks-table__column duration text1">
                     {{ track.attr.duration }}
                 </div>
-                <div class="my-downloads-album__tracks-table__column buy-track">
+                <div class="my-downloads-album__tracks-table__column buy-track store-buy">
                     <div class="buy-button-container">
-                    <a class="white-border-button flex-button" data-toggle="dropdown" aria-expanded="false" href="">
-                            <span>Download</span> <i class="fa fa-caret-down"></i></a>
-                    <div class="dropdown-menu" role="menu">
-                        {% if is_hd %}
-                        <a class="white-border-button flex" href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download
-                            HD</a>
-                        {% else %}
-                        <a class="white-border-button flex" href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download
-                            mp3</a>
-                        {% endif %}
+                      {% if user.is_authenticated %}
+                        <a class="white-border-button  flex-button"
+                                      data-toggle="dropdown" aria-expanded="false"
+                                      href="">Buy track <i
+                                          class="fa fa-caret-down"></i></a>
+                      {% else %}
+                        <a class="tracks-table__button" href="#"
+                           data-toggle="modal" data-target="#logIn">Buy
+                          track <i class="fa fa-caret-down"></i></a>
+                      {% endif %}
+                      <div class="dropdown-menu" role="menu">
+                          {% if track.get_track_stockrecord %}
 
+                           {% basket_form request track 'single' as basket_form %}
+                            <form id="add_to_basket_form"
+                                  action="{% url 'basket:add' pk=track.pk %}"
+                                  method="post"
+                                  class="add-to-basket">
+                              {% csrf_token %}
+                              {{ basket_form.quantity }}
+                              {{ basket_form.child_id }}
+                              <input type="hidden"
+                                     name="stockrecord_id"
+                                     value="{{ track.get_track_stockrecord.id }}"/>
+                              <input class="white-border-button flex no-border" type="submit"
+                                     value="Buy mp3 (${{ track.get_track_stockrecord.price_excl_tax }})">
+                            </form>
+
+
+
+                          {% comment %} <a class="white-border-button flex border-not" href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download {% endcomment %}
+                          {% else %}
+
+                          {% basket_form request track 'single' as basket_form %}
+                            <form id="add_to_basket_form"
+                                  action="{% url 'basket:add' pk=track.pk %}"
+                                  method="post"
+                                  class="add-to-basket">
+                              {% csrf_token %}
+                              {{ basket_form.quantity }}
+                              {{ basket_form.child_id }}
+                              <input type="hidden"
+                                     name="stockrecord_id"
+                                     value="{{ track.get_hd_track_stockrecord.id }}"/>
+                              <input class="white-border-button flex no-border" type="submit"
+                                     value="Buy HD (${{ track.get_hd_track_stockrecord.price_excl_tax }})">
+                            </form>
+
+
+
+
+                          {% comment %} <a class="white-border-button flex border-not" href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download {% endcomment %}
+                          {% endif %}
+
+                      </div>
+
+
+                      {% comment %} {% if track.get_track_stockrecord or track.get_hd_track_stockrecord %}
+                    <div class="buy-button-container">
+                      {% if user.is_authenticated %}
+                         <a class="white-border-button"
+                                       data-toggle="dropdown" aria-expanded="false"
+                                       href="">Buy track <i
+                                            class="fa fa-caret-down"></i></a>
+                      {% else %}
+                        <a class="tracks-table__button" href="#"
+                           data-toggle="modal" data-target="#logIn">Buy
+                          track <i class="fa fa-caret-down"></i></a>
+                      {% endif %}
+                      <ul class="dropdown-menu" role="menu">
+                        {% if track.get_track_stockrecord %}
+                          <li>
+                            {% basket_form request track 'single' as basket_form %}
+                            <form id="add_to_basket_form"
+                                  action="{% url 'basket:add' pk=track.pk %}"
+                                  method="post"
+                                  class="add-to-basket">
+                              {% csrf_token %}
+                              {{ basket_form.quantity }}
+                              {{ basket_form.child_id }}
+                              <input type="hidden"
+                                     name="stockrecord_id"
+                                     value="{{ track.get_track_stockrecord.id }}"/>
+                              <input type="submit"
+                                     value="Buy mp3 (${{ track.get_track_stockrecord.price_excl_tax }})">
+                            </form>
+                          </li>
+                        {% endif %}
+                        {% if track.get_hd_track_stockrecord %}
+                          <li>
+                            {% basket_form request track 'single' as basket_form %}
+                            <form id="add_to_basket_form"
+                                  action="{% url 'basket:add' pk=track.pk %}"
+                                  method="post"
+                                  class="add-to-basket">
+                              {% csrf_token %}
+                              {{ basket_form.quantity }}
+                              {{ basket_form.child_id }}
+                              <input type="hidden"
+                                     name="stockrecord_id"
+                                     value="{{ track.get_hd_track_stockrecord.id }}"/>
+                              <input type="submit"
+                                     value="Buy HD (${{ track.get_hd_track_stockrecord.price_excl_tax }})">
+                            </form>
+                          </li>
+                        {% endif %}
+                      </ul>
                     </div>
+                  {% endif %}
+ {% endcomment %}
+
+
                     </div>
                 </div>
             </div>
@@ -122,7 +241,12 @@
         audioProgress = audioPlayer.currentTime / audioPlayer.duration * 100
         if( $(trackInfo).hasClass("active-track")){
             if(Math.abs(progess - audioProgress) > 5 ){
-                changeProgress(progess, audioPlayer)
+                {% comment %} changeProgress(progess, audioPlayer) {% endcomment %}
+                $(".active-track").removeClass("active-track")
+                play = false
+                $(playerContainerButton).removeClass("mypause-btn")
+                $(playerContainerButton).addClass("myplay-btn")
+                $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
             }else{
                 $(".active-track").removeClass("active-track")
                 play = false
@@ -256,3 +380,71 @@
 </script>
 
 {% endblock %}
+
+{% comment %} 
+
+<div class="store-single__item__content">
+          <div class="store-single__item__name">
+            <a href="#">{{ product.title }}</a>
+          </div>
+          <div class="store-single__item__subtitle">
+              {{ product.subtitle }}
+          </div>
+          {% if product.event %}
+          <div class="store-single__item__event-link">
+            <a href="{{ product.event.get_absolute_url }}">View event in our Archive</a>
+            <span class="arrow"></span>
+          </div>
+          {% endif %}
+          <div class="store-single__item__description">
+          {% for artist in  product.artist.all %}
+            <a class="artist-link " href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }} {{ artist.last_name }} / {{ artist.instruments.first }}</a><br>
+          {% endfor %}
+          </div>
+
+          {% purchase_info_for_product request product as session %}
+          <span class="store-single__item__price">
+              {% if session.price.exists %}
+                  {% if session.price.excl_tax == 0 %}
+                      {% trans "Free" %}
+                  {% elif session.price.is_tax_known %}
+                      {{ session.price.incl_tax|currency:session.price.currency }}
+                  {% else %}
+                      {{ session.price.excl_tax|currency:session.price.currency }}
+                  {% endif %}
+              {% else %}
+                  &nbsp;
+              {% endif %}
+          </span>
+        <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
+          {% if session.availability.is_available_to_buy %}
+            {% basket_form request product 'single' as basket_form %}
+            <div class="store-add-large">
+                {% csrf_token %}
+                {{ basket_form.quantity }}
+                {% if basket_form.fields.child_id.choices %}
+                  <div class='white-border-select'>
+                    <select class="store-add-large__options" name="child_id">
+                        {% for variant in product.variants.all %}
+                        {% purchase_info_for_product request variant as variant_session %}
+                            {% if session.availability.is_available_to_buy %}
+                                  <option data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}" value="{{ variant.id }}">{{ variant.title }} ({{ variant_session.price.excl_tax|currency:variant_session.price.currency }})</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                  </div>
+                  {% if user.is_authenticated %}
+                    <div class="arrow-button-container"><button type="submit" class="white-border-button">Add to cart</button></div>
+                  {% else %}
+                    <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="white-border-button">Add to cart</a></div>
+                  {% endif %}
+                {% else %}
+                  {{ basket_form.child_id }}
+                  {% if user.is_authenticated %}
+                    <div class="arrow-button-container"><button type="submit" class="white-border-button">Add to cart</button></div>
+                  {% else %}
+                    <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="white-border-button">Add to cart</a></div>
+                  {% endif %}
+                {% endif %}
+            </div>
+          {% endif %} {% endcomment %}
