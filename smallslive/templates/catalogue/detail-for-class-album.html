@@ -7,7 +7,6 @@
 {% load purchase_info_tags %}
 {% load basket_tags %}
 
-{% block store_nav_active %}active{% endblock %}
 
 {% block title %}{{ product.get_title }} - {{ block.super }}{% endblock %}
 
@@ -45,26 +44,60 @@
         {% endwith %}
     {% endif %}
     {% endwith %}
-
-    <a class="store-single__item__name" href="{{ product.get_absolute_url }}">{% if product.parent %}{{ product.parent.title }} - {% endif %}{{ product.title }}</a>
-    <br>
-    {% for artist in  product.artist.all %}
-      <a class="artist-link " href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }} {{ artist.last_name }} / {{ artist.instruments.first }}</a><br>
-    {% endfor %}
-    <div class="store-single__item__name" style="color:black"> 
-    {% purchase_info_for_product request product as session %}
-    {% if session.price.exists %}
-        {% if session.price.excl_tax == 0 %}
-            {% trans "Free" %}
-        {% elif session.price.is_tax_known %}
-            {{ session.price.incl_tax|currency:session.price.currency }}
-        {% else %}
-            {{ session.price.excl_tax|currency:session.price.currency }}
+    <div class="flex-column">
+      <a class="store-single__item__name" href="{{ product.get_absolute_url }}">{% if product.parent %}{{ product.parent.title }} - {% endif %}{{ product.title }}</a>
+      <br>
+      {% for artist in  product.artist.all %}
+        <a class="artist-link " href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }} {{ artist.last_name }} / {{ artist.instruments.first }}</a><br>
+      {% endfor %}
+      <div class="store-single__item__name" style="color:black"> 
+      {% purchase_info_for_product request product as session %}
+      {% if session.price.exists %}
+          {% if session.price.excl_tax == 0 %}
+              {% trans "Free" %}
+          {% elif session.price.is_tax_known %}
+              {{ session.price.incl_tax|currency:session.price.currency }}
+          {% else %}
+              {{ session.price.excl_tax|currency:session.price.currency }}
+          {% endif %}
+      {% else %}
+          &nbsp;
+      {% endif %}
+      </div>
+      <br>
+      <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
+        {% if session.availability.is_available_to_buy %}
+          {% basket_form request product 'single' as basket_form %}
+          <div class="store-add-large">
+              {% csrf_token %}
+              {{ basket_form.quantity }}
+              {% if basket_form.fields.child_id.choices %}
+                <div class='white-border-select'>
+                  <select class="store-add-large__options" name="child_id">
+                      {% for variant in product.variants.all %}
+                      {% purchase_info_for_product request variant as variant_session %}
+                          {% if session.availability.is_available_to_buy %}
+                                <option data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}" value="{{ variant.id }}">{{ variant.title }} ({{ variant_session.price.excl_tax|currency:variant_session.price.currency }})</option>
+                          {% endif %}
+                      {% endfor %}
+                  </select>
+                </div>
+                {% if user.is_authenticated %}
+                  <div class="arrow-button-container"><button type="submit" class="white-border-button">Add to cart</button></div>
+                {% else %}
+                  <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="white-border-button">Add to cart</a></div>
+                {% endif %}
+              {% else %}
+                {{ basket_form.child_id }}
+                {% if user.is_authenticated %}
+                  <div class="arrow-button-container"><button type="submit" class="white-border-button">Add to cart</button></div>
+                {% else %}
+                  <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="white-border-button">Add to cart</a></div>
+                {% endif %}
+              {% endif %}
+          </div>
         {% endif %}
-    {% else %}
-        &nbsp;
-    {% endif %}
-    
+      </form>
     </div>
 </div>
 <div class="song-container">

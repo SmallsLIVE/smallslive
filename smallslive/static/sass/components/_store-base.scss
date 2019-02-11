@@ -653,7 +653,7 @@
   @include display(flex);
   @include flex-wrap(nowrap);
   padding-right: 15px;
-  @media (max-width: 425px) {
+  @media (max-width: 622px) {
     flex-direction: column;
     .white-border-button {
       margin-top: 15px;
