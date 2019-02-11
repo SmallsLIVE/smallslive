@@ -67,10 +67,12 @@
   input {
     @include bordered-input;
     background-color: white;
+    letter-spacing: 0.01em;
 
     &.jp-card-invalid {
       border-color: $accent-color;
     }
+
   }
 
   #supporterStep3 {

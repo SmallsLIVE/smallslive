@@ -99,6 +99,7 @@ function startStripePayment($form, action_url, completeSubpage) {
         .find(".submit-button")
         .prop("disabled", false)
         .removeClass("disabled");
+      $('#confirmButton').prop("disabled", false);
     } else {
       // token contains id, last4, and card type
       var token = response.id;
@@ -108,7 +109,14 @@ function startStripePayment($form, action_url, completeSubpage) {
         url: action_url,
         data: $form.serialize(),
         success: function(data) {
-          if (typeof completeSubpage !== "undefined" && completeSubpage) {
+          if (data.error) {
+            $("#form-general-error").text(data.error);
+            $form
+              .find(".submit-button")
+              .prop("disabled", false)
+              .removeClass("disabled");
+            $('#confirmButton').prop("disabled", false);
+          } else if (typeof completeSubpage !== "undefined" && completeSubpage) {
             window.notCompleteContainer.html("");
             var flowCompleteSubpage = window.subpages.get(completeSubpage);
             flowCompleteSubpage.load();
