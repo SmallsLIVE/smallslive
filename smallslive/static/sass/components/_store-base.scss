@@ -653,13 +653,11 @@
   @include display(flex);
   @include flex-wrap(nowrap);
   padding-right: 15px;
-  @media (max-width: 622px) {
-    flex-direction: column;
-    .white-border-button {
-      margin-top: 15px;
-      margin-right: 15px;
-      width: 100%;
-    }
+  flex-direction: column;
+  .white-border-button {
+    margin-top: 15px;
+    margin-right: 15px;
+    width: 100%;
   }
 
   .white-border-select {
@@ -670,21 +668,20 @@
       overflow: hidden;
       text-overflow: ellipsis;
       display: block;
-      padding-right: 40px;
     }
     .select-selected {
+      text-align: center;
       border: 3px solid rgba(255, 255, 255, 0.9);
       margin-right: 15px;
     }
     .select-items {
+      text-align: center;
       top: 95%;
       margin-right: 15px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      div {
-        width: 114%;
-      }
+
     }
   }
 
