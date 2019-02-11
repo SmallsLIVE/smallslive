@@ -26,7 +26,8 @@
                                     <div style="position: relative">
                                         <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ album.get_title }}">
                                         <div class="purchases-player-button myplay-btn">
-                                            <div class="fa-thin-circle fa" ></div>
+                                            <div class="fa-thin-circle fa" >
+                                            <i class="fas fa-play"></i></div>
                                         </div>
                                     </div>
                                 {% endthumbnail %}
@@ -37,7 +38,8 @@
                                     <div style="position: relative">
                                         <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ album.get_title }}">
                                          <div class="purchases-player-button myplay-btn">
-                                            <div class="fa-thin-circle fa" ></div>
+                                            <div class="fa-thin-circle fa" >
+                                            <i class="fas fa-play"></i></div>
                                         </div>
                                     </div>
                                 {% endthumbnail %}
@@ -109,14 +111,16 @@
                             <div style="position: relative">
                                 <img src="{% thumbor_url image.original.url|urlencode height=245 width=245 smart=True %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio">
                                 <div class="purchases-player-button myplay-btn">
-                                    <div class="fa-thin-circle fa" ></div>
+                                    <div class="fa-thin-circle fa" >
+                                    <i class="fas fa-play"></i></div>
                                 </div>
                             </div>
                           {% else %}
                             <div style="position: relative">
                                 <img src="{% static "image/image_not_found.jpg" %}" alt="{{ album.grouper.get_title }}" class="defineImageRatio">
                                 <div class="purchases-player-button myplay-btn">
-                                    <div class="fa-thin-circle fa" ></div>
+                                    <div class="fa-thin-circle fa" >
+                                        <i class="fas fa-play"></i></div>
                                 </div>
                             </div>
                           {% endif %}
@@ -208,16 +212,18 @@
                 play = false
                 $(playerContainerButton).removeClass("mypause-btn")
                 $(playerContainerButton).addClass("myplay-btn")
+                $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
             }
         }else{
             $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red" )
             $(".active-track").removeClass("active-track")
             $(this).find(".track-info").addClass("active-track")
-            play = true
+            play = true;
             $(lastPlayerContainerButton).addClass("myplay-btn")
             $(lastPlayerContainerButton).removeClass("mypause-btn")
             $(playerContainerButton).addClass("mypause-btn")
             $(playerContainerButton).removeClass("myplay-btn")
+            $(playerContainerButton).find('div').html('<i class="fas fa-pause"></i>')
         }
         //toggles player
         if(lastPlayer != undefined){
@@ -248,6 +254,7 @@
             play = false
             $(playerContainerButton).removeClass("mypause-btn")
             $(playerContainerButton).addClass("myplay-btn")
+            $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
         }else{
             $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red" )
             $(".active-track").removeClass("active-track")
@@ -257,6 +264,8 @@
             $(lastPlayerContainerButton).removeClass("mypause-btn")
             $(playerContainerButton).addClass("mypause-btn")
             $(playerContainerButton).removeClass("myplay-btn")
+            $(playerContainerButton).find('div').html('<i class="fas fa-pause"></i>')
+
         }
         if(lastPlayer != undefined){
             lastPlayer.pause()
@@ -289,6 +298,7 @@
             $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "black" );
             $(player).closest(".big-player").find(".purchases-player-button").removeClass("mypause-btn");
             $(player).closest(".big-player").find(".purchases-player-button").addClass("myplay-btn");
+            $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
             $(".active-track").removeClass("active-track");
             player.currentTime = 0;
             clearInterval(setTime)

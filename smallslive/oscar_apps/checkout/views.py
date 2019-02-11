@@ -626,6 +626,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                 order_number,
                 total, basket_lines, **kwargs)
         else:
+            self.mezzrow = False
             currency = total.currency
             if card_token:
                 reference = self.handle_stripe_payment(

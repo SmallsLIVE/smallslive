@@ -158,6 +158,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         print '********************************'
         print 'execute stripe payment'
         print 'Amount: ', amount
+        print 'Token: ', stripe_token
         try:
             # As per Aslan's request
             # Yearly donations will no longer exist. They are One Time Donations  now.

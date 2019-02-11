@@ -348,6 +348,14 @@ $event-row-padding: 3.5vw;
     }
   }
 }
+.newest-recordings-container
+  .event-row
+  .event-display
+  .event-card
+  .event-picture-container
+  .event-picture {
+  filter: none;
+}
 
 @media (max-width: 960px) {
   .event-card,
@@ -357,14 +365,4 @@ $event-row-padding: 3.5vw;
     min-height: 8.66vw;
     position: relative;
   }
-}
-.newest-recordings-container
-  .event-row
-  .event-display
-  a
-  .event-card
-  .event-picture-container
-  .picture-border
-  .event-picture {
-  @include cross-browser-nofilter;
 }
