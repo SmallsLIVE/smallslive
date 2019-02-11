@@ -116,8 +116,8 @@ body.headers-1 {
     flex-direction: column;
     flex-wrap: wrap;
     align-content: space-between;
-    width: 22vw;
-    margin: 0;
+    width: 13vw;
+    margin: 0 4.5vw;
     padding: 0;
 
     @media (max-width: $screen-md-min) {
@@ -128,12 +128,12 @@ body.headers-1 {
     .artist-row {
       display: block;
       margin-bottom: 6px;
-      font-size: 11px;
+      font-size: 12px;
       line-height: 22px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      width: 18vw;
+      width: 13vw;
       @media (max-width: $screen-md-min) {
         font-size: 11px;
       }
@@ -419,6 +419,7 @@ body.headers-1 {
           margin-bottom: 20px;
           > a {
             color: grey;
+            margin-left: 6vw;
           }
         }
       }
@@ -798,6 +799,7 @@ body.headers-1 {
   display: inline-block;
   width: 200px;
   height: auto;
+  padding-bottom: 10px;
   padding-top: 10px;
   margin-left: 30px;
   align-self: center;
@@ -1669,7 +1671,7 @@ body.headers-1 {
 
 .right_arrow {
   position: absolute;
-  left: 92vw;
+  left: 94vw;
 }
 body.home.admin-header {
   @media (max-width: $screen-md-max) {

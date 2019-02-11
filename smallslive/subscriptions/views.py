@@ -74,7 +74,7 @@ payment_info = PaymentInfoView.as_view()
 
 class ExecutePayPalPaymentView(PayPalMixin, View):
     """
-    Receives the callback from Paypal in order to execute the payment.
+    Receives the callback from PayPal in order to execute the payment.
     """
 
     def get(self, request, *args, **kwargs):
@@ -159,21 +159,15 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         print 'execute stripe payment'
         print 'Amount: ', amount
         print 'Token: ', stripe_token
-        try:
-            # As per Aslan's request
-            # Yearly donations will no longer exist. They are One Time Donations  now.
-            customer, created = Customer.get_or_create(
-                subscriber=subscriber_request_callback(self.request))
-            if plan_type == 'month':
-                subscribe_to_plan(customer, stripe_token, amount, plan_type, flow_type)
-            else:
-                one_time_donation(customer, stripe_token, amount, flow_type)
-        except stripe.StripeError as e:
-            # add form error here
-            print e
-            return _ajax_response(self.request, JsonResponse({
-                'error': e.args[0]
-            }, status=500))
+
+        # As per Aslan's request
+        # Yearly donations will no longer exist. They are One Time Donations  now.
+        customer, created = Customer.get_or_create(
+            subscriber=subscriber_request_callback(self.request))
+        if plan_type == 'month':
+            subscribe_to_plan(customer, stripe_token, amount, plan_type, flow_type)
+        else:
+            one_time_donation(customer, stripe_token, amount, flow_type)
 
     def post(self, request, *args, **kwargs):
         flow_type = self.request.POST.get('flow_type', "become_supporter")
@@ -195,10 +189,15 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
             amount = int(amount)
 
         if stripe_token:
-            self.execute_stripe_payment(stripe_token, amount, plan_type, flow_type)
-            return _ajax_response(
-                self.request, redirect(reverse('become_supporter_complete')+ "?flow_type=" + flow_type)
-            )
+            try:
+                self.execute_stripe_payment(stripe_token, amount, plan_type, flow_type)
+                return _ajax_response(
+                    self.request, redirect(reverse('become_supporter_complete') + "?flow_type=" + flow_type)
+                )
+            except stripe.StripeError as e:
+                # add form error here
+                print e
+                return JsonResponse({'error' :str(e)})
         else:
             try:
                 self._handle_paypal_payment(amount, plan_type)
