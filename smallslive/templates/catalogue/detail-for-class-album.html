@@ -21,7 +21,7 @@
     {% if product.parent_id %}
         {% with image=product.parent.primary_image %}
             {% thumbnail image.original "245x245" upscale=False as thumb %}
-                <div style="position: relative">
+                <div style="position: relative; min-width:255px">
                     <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }}">
                     <div class="purchases-player-button myplay-btn">
                         <div class="fa-thin-circle fa" >
@@ -33,7 +33,7 @@
     {% else %}
         {% with image=product.primary_image %}
             {% thumbnail image.original "245x245" upscale=False as thumb %}
-                <div style="position: relative">
+                <div style="position: relative; min-width:255px">
                     <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }}">
                         <div class="purchases-player-button myplay-btn">
                         <div class="fa-thin-circle fa" >
