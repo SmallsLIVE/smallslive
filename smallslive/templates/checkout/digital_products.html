@@ -4,7 +4,11 @@
 {% load purchase_info_tags %}
  
  <div class="store-overview__group">
-    <h4 class="store-overview__group__table__heading">Digital downloads:</h4>
+    <h4 class="store-overview__group__table__heading" style="margin:0px">Digital downloads:</h4>
+    <div style="margin: 0 0 15px;" >
+    <span >Digital downloads:</span> <span class="smaller">Upon purchase your Digital downloads will be available to you in your <a
+            class="smalls-color" href="{% url 'my-downloads' %}">My downloads</a> section.</span>
+    </div>
     <div class="store-overview__group__table">
         <!-- table header start -->
         <div class="basket-header clearfix">
