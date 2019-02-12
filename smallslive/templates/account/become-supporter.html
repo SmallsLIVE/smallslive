@@ -13,13 +13,7 @@
 {% load basket_tags %}
 
 {% block flow_title %}
-  {% if not completed %}
-    <p class="text2 accent-color">Become a supporting member</p>
-  {% else %}
-    {% if flow_type == 'become_supporter' %}
-      <p class="text2 accent-color">You are now a supporting member</p>
-    {% endif %}
-  {% endif %}
+  
 {% endblock %}
 {% block flow_steps %}
 
