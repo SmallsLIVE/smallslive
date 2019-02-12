@@ -1687,3 +1687,22 @@ body.home.admin-header {
     padding-top: 112pxg;
   }
 }
+
+#showsUpcomingContent {
+  @media (max-width: 1023px){
+    .event-info{
+      font-size: 15px;
+    }
+  }
+  .extend-date{
+    display: none;
+    @media (max-width: 1023px){
+      display: inline-block;
+    }
+  }
+  .event-card-secondary .event-dates {
+    @media (max-width: 1023px){
+      display: none;
+    }
+  }
+}

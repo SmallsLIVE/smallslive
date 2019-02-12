@@ -33,7 +33,7 @@
     </div>
   {% endif %}
   <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
-    {% include 'search/event_search_result.html' with events=event_results show_event_venue=show_event_venue secondary=True hide_play=hide_play %}
+    {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming events=event_results show_event_venue=show_event_venue secondary=True hide_play=hide_play %}
   </main>
 
   <div class="concerts-footer flex-column items-center">
