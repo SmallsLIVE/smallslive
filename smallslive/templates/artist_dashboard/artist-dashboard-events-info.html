@@ -31,7 +31,7 @@
                     <button disabled class="set-button">Edit</button>
                 {% endif %}
                 {% if not event.is_future %}    
-                    {% if set.video_recording and set.video_recording.is_published %}
+                    {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
                         <button disabled class="set-button">Public</button>
                     {% else %}
                         <button disabled class="set-button">Private</button>
@@ -195,7 +195,7 @@
                     {% endif %}
                 {% else %}
                     {% if not event.is_future%}    
-                        {% if set.video_recording and set.video_recording.is_published %}
+                        {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
                             <div class="white-border-button disabled">Public</div>
                         {% else %}
                             <div class="white-border-button disabled">Private</div>
