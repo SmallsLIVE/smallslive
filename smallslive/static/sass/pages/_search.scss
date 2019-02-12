@@ -754,12 +754,11 @@ body.headers-1 {
 
       .reset-search {
         margin: 0;
-        right: -33px;
+        right: 4px;
         left: initial;
 
         @media (max-width: $screen-xs) {
           left: initial;
-          right: -33px;
         }
       }
     }
@@ -792,6 +791,7 @@ body.headers-1 {
   margin-left: 100px;
   border-radius: 10px;
   padding-left: 40px;
+  padding-right: 40px;
   text-transform: uppercase;
 }
 

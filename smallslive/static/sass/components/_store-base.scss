@@ -2606,12 +2606,12 @@ img.defineImageRatio {
 }
 .reset-search {
   position: absolute;
-  top: 4px;
+  top: 8px;
   left: 75%;
   margin-left: 20px;
   &:before,
   &:after {
-    height: 34px;
+    height: 24px;
   }
 }
 .catalog-title {
