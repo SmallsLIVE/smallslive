@@ -136,11 +136,11 @@
             <div class="event-metrics-container flex-row">
                 <div class="event-metrics-container-plays event-metrics-container-data">
                     <div class="text3">Plays</div>
-                    <div id="play-value" class="title1"></div>
+                    <div id="time-value" class="title1"></div>
                 </div>
                 <div class="event-metrics-container-time event-metrics-container-data">
                     <div class="text3">Time Listened</div>
-                    <div id="time-value" class="title1"></div>
+                    <div id="play-value" class="title1"></div>
                 </div>
             </div>
             
@@ -249,11 +249,11 @@
                 <div class="event-metrics-mobile-container flex-row">
                     <div class="event-metrics-mobile-container-plays event-metrics-container-data">
                         <div class="text3">Plays</div>
-                        <div id="mobile-time-value" class="title1 mobile-value-metrics"></div>
+                        <div id="mobile-play-value" class="title1 mobile-value-metrics"></div>
                     </div>
                     <div class="event-metrics-mobile-container-time event-metrics-container-data">
                         <div class="text3">Time Listened</div>
-                        <div id="mobile-play-value" class="title1 mobile-value-metrics"></div>
+                        <div id="mobile-time-value" class="title1 mobile-value-metrics"></div>
                     </div>
                 </div>
                 <div class="text3">Select Metrics Period</div>
@@ -594,7 +594,6 @@
     ////////
     function closeEvent(){
         $("#artistEventsContainer").show();
-        $("#refine-container").show();
         $("#event-info-mobile-card").hide();
     }
     //////////
