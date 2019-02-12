@@ -45,7 +45,7 @@ def get_album_catalog(request):
         album_list =  artist.albums()
         artist_page = True
     else:
-        album_list =  Product.objects.filter(product_class__slug="Album").exclude(product_class__slug="Track")
+        album_list =  Product.objects.filter(product_class__name="Album")
         artist_page = False
     paginator = Paginator(album_list, 12)
     page = int(request.GET.get('page', 1))
