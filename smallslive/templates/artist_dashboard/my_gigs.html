@@ -164,10 +164,11 @@
         }
 
         function showSuccess(state) {
-            var $publishSuccess = $('#publishSuccess');
-            $publishSuccess.find('.success-state').text(state);
-            $publishSuccess.modal('show')
+            //var $publishSuccess = $('#publishSuccess');
+            //$publishSuccess.find('.success-state').text(state);
+            //$publishSuccess.modal('show')
             $("#hide-scss-btn").data("type", state)
+            hideSuccess()
         }
 
         function publishSet() {
