@@ -623,7 +623,7 @@ $(document).ready(function() {
           giftTier +
           " as a gift for your contribution.";
     if (hasVariants) {
-      content = content + '<br> Please select your option below.'
+      content = content + '<br> Please select an option below.'
     }
     $selectionConfirmationDialog
       .find(".text")
