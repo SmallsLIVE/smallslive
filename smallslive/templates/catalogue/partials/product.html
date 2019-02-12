@@ -36,8 +36,6 @@
         <span class="text2 store-list-item-tile">
             <a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title }}</a>
         </span>
-        {% if product.product_class.slug == "album" %}
-            <p class="text4">{% if product.has_physical_media %}CD / {% endif %}{% if product.has_digital_media %}Digital download / {% endif %}{% if product.has_tracks %}Tracks{% endif %}</p>{% endif %}
         <span class="text4">
         </span>
         <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">

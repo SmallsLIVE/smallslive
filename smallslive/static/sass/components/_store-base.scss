@@ -397,6 +397,11 @@
   }
 
   &__content {
+    .white-line-bottom{
+      .title1{
+        font-size: 30px;
+      }
+    }
     .slide-btn.prev,
     .slide-btn.next {
       border-radius: 0;
@@ -536,7 +541,6 @@
   margin: 20px;
 
   .store-list-item-tile {
-    margin-top: 20px;
     max-width: 200px;
   }
 
@@ -2432,7 +2436,7 @@ img.defineImageRatio {
   .store-list-item {
     margin: 0 4px;
     @media (max-width: 430px) {
-      width: 48%;
+      width: 44%;
     }
     .store-list-item-image img {
       border-radius: 0px;
@@ -2453,27 +2457,49 @@ img.defineImageRatio {
       }
     }
     .store-list-item-tile {
-      @media (min-width: $screen-sm) {
-        max-width: 200px;
+      @media (min-width: 0px) {
+        max-width: 46.1vw;
+        min-width: 46.1vw;
       }
       @media (min-width: $screen-md) {
-        max-width: 160px;
+        max-width: 22.85vw;
+        min-width: 22.85vw;
       }
-      @media (min-width: $screen-lg) {
-        max-width: 180px;
+      @media (min-width: 1366px) {
+        max-width: 15.1vw;
+        min-width: 15.1vw;
       }
     }
   }
 }
 .load-more-btn {
   width: 200px;
-  margin: 0 auto;
+  margin: 15px auto 0;
 }
 .newest-recordings-container {
   overflow: hidden;
   position: relative;
   width: auto;
 
+  .event-display {
+    .event-info{
+      min-height: 0px;
+    }
+    .event-info-title{
+      @media (min-width: 0px) {
+        max-width: 46.1vw;
+        min-width: 46.1vw;
+      }
+      @media (min-width: $screen-md) {
+        max-width: 22.85vw;
+        min-width: 22.85vw;
+      }
+      @media (min-width: 1366px) {
+        max-width: 15.1vw;
+        min-width: 15.1vw;
+      }
+    }
+  }
   &.slide-btn.prev,
   .slide-btn.next {
     @media (min-width: 0px) {
@@ -2516,13 +2542,16 @@ img.defineImageRatio {
   .event-card .event-picture-container .event-picture img::before {
     @media (min-width: 0px) {
       height: 46.1vw;
-      min-height: 15.1vw;
+      width: 46.1vw;
+      min-height: 46.1vw;
     }
     @media (min-width: $screen-md) {
       height: 22.85vw;
-      min-height: 15.1vw;
+      min-height: 22.85vw;
+      width: 22.85vw;
     }
     @media (min-width: 1366px) {
+      width: 15.1vw;
       height: 15.1vw;
       min-height: 15.1vw;
     }
