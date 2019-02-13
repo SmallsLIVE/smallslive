@@ -53,7 +53,7 @@
   <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
   <script>
     function loadInfo(infoUrl){
-      if( viewPortLength("width") > 425) {
+      if( viewPortLength("width") > 768) {
       $('#artistEventsInfo').html("");
       $('#artistEventsInfo').addClass("artist-loading-gif");
       }
@@ -61,7 +61,7 @@
         url: infoUrl,
           success: function (data) {
             var $target;
-            if( viewPortLength("width") > 425) {
+            if( viewPortLength("width") > 768) {
               $('#artistEventsInfo').removeClass("artist-loading-gif");
               $('#event-info-mobile-card').html("")
               $target = $('#artistEventsInfo');
@@ -96,7 +96,7 @@
         $("#artistEventsInfo").html("");
         return ;
       }
-      if( viewPortLength("width") > 425){
+      if( viewPortLength("width") > 768){
         loadInfo(eventUrl+"?set_id=0")
       }
       
