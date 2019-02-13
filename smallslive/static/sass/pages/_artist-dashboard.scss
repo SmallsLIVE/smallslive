@@ -399,8 +399,12 @@
     .header-metrics-container {
       display: flex;
       flex-direction: row;
-      @media (max-width: 1023px) {
+      @media (max-width: 1360px) {
         flex-direction: column;
+
+        .artist-set-main {
+          width: 67%;
+        }
       }
     }
     .artist-set-actions {
