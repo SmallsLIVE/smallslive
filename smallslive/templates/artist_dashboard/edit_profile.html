@@ -15,23 +15,24 @@
 {% block title %}Edit my public profile{% endblock title %}
 
 {% block content %}
-    <div class="artist-profile-container flex-column items-flex-stretch">
+    <div class="artist-profile-container edit flex-column items-flex-stretch">
         <div class="flex-column">
-            <div>
-                <a target="_blank" class="pull-right white-border-button"
-                   href="{{ request.user.artist.get_absolute_url }}">
-                    View on live site
-                </a>
-            </div>
-            <section class="section-title">
-                <div class="title1">Edit Public profile</div>
+            
+            <section class="section-title" style="justify-content: space-between;     padding-right: 3.5vw;">
+                <div class="title1">Public profile</div>
+                <div>
+                    <a target="_blank" class="pull-right white-border-button"
+                    href="{{ request.user.artist.get_absolute_url }}">
+                        View on live site
+                    </a>
+                </div>
             </section>
         </div>
         <section class="artist-form">
             <form class="custom-form" action="{% url "artist_dashboard:edit_profile" %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="flex-column">
-                    <div class="flex-row content-centered">
+                    <div class="flex-row content-centered artist-info-container">
                         <div class="flex-column flex-grow artist-profile-picture">
                             <div class="text2 text-grey">
                                 {{ form.photo.label_tag }}

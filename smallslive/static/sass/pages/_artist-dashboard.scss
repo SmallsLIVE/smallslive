@@ -680,7 +680,11 @@
       }
     }
   }
+
   .artist-form {
+    .title1{
+      font-size: 30px;
+    }
     padding: 0 10%;
     margin-bottom: 40px;
     .profile-first-name {
@@ -1114,4 +1118,41 @@
 }
 .datepicker-dashboard-main-btn{
   font-size: 12px;
+}
+
+.artist-profile-container.edit{
+  .pull-right.white-border-button{
+    @media (max-width: 960px){
+      padding: 0 18px;
+    }
+  }
+  .title1{
+    font-size: 30px;
+    line-height: 46px;
+  }
+  .section-title{
+    background-size: 50vw 5px;
+    @media (max-width: 1023px){
+      background-size: 70vw 5px;
+      width: auto;
+      padding-bottom: 0px;
+      @media (max-width: 550px){
+        background-size: 48vw 3px;
+        .title1{
+          font-size: 6vw;
+          line-height: 9vw;
+        }
+      }
+    }   
+  }
+  .artist-form{
+    @media (max-width: 600px){
+      padding: 0 3%;
+      .custom-form{
+        .artist-info-container{
+              flex-direction: column;
+        }
+      }
+    } 
+  }
 }
