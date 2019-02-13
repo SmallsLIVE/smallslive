@@ -6,7 +6,11 @@
           <div class="modal-body">
               <p class="title1">Please confirm your email address</p>
               <p class="text9 text-justified">
-                You will receive an e-mail to <span class="accent-color">{{ user.email }}</span> {% if email_sent %} within 10 minutes {% else %} was sent on {{ user.date_joined|date:"d/m" }} {% endif %} .  Click the link in the e-mail to confirm your address.
+                {% if email_sent %}
+                  You will receive an e-mail to <span class="accent-color">{{ user.email }}</span> within 10 minutes.  Click the link in the e-mail to confirm your address.
+                {% else %}
+                  A confirmation e-mail was sent on {{ user.date_joined|date:"d/m" }} to <span class="accent-color">{{ user.email }}</span>. Click the link in the e-mail to confirm your address.
+                {% endif %}
               </p>
               <div class="text4 text-centered" style="margin-top: 40px">
                   <div>

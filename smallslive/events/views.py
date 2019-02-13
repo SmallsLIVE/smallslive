@@ -191,19 +191,17 @@ class HomepageView(ListView, UpcomingEventMixin):
         context = super(HomepageView, self).get_context_data(**kwargs)
         context = self.get_upcoming_events_context_data(context)
 
-        anonymous = self.request.user.is_anonymous()
-        if not anonymous:
-            a = datetime.datetime.strftime(self.request.user.date_joined ,"%Y-%m-%d")
-            b = datetime.datetime.strftime(timezone.now() ,"%Y-%m-%d")
+        if self.request.user.is_authenticated():
+            a = datetime.datetime.strftime(self.request.user.date_joined,'%Y-%m-%d')
+            b = datetime.datetime.strftime(timezone.now(), '%Y-%m-%d')
             context['email_sent'] = a == b
-
-
 
         context['popular_in_archive'] = _get_most_popular_uploaded(RANGE_MONTH)
         context['popular_select'] = 'month'
         context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
         context['events_today'] = self.get_today_events()
+
         return context
 
 
@@ -322,6 +320,8 @@ class EventDetailView(DetailView):
     context_object_name = 'event'
 
     def get_context_data(self, **kwargs):
+
+        current_user = self.request.user
         context = super(EventDetailView, self).get_context_data(**kwargs)
         event = self.object
         performers = event.get_performers()
@@ -335,11 +335,10 @@ class EventDetailView(DetailView):
         if self.request.user.is_authenticated():
             context['user_token'] = Token.objects.get(user=self.request.user)
             user_is_artist = (
-                self.request.user.is_artist and
-                self.request.user.artist in event.performers.all()
+                current_user.is_artist and
+                current_user.artist in event.performers.all()
             )
-            user_is_staff = self.request.user.is_staff
-            if user_is_artist or user_is_staff:
+            if user_is_artist or current_user.is_staff or not current_user.has_activated_account:
                 context['count_metrics'] = False
             else:
                 context['count_metrics'] = True
