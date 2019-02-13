@@ -127,9 +127,14 @@ $player-height: 25.3vw;
     }
   }
 
-  @media (max-width: 425px) {
+  @media (max-width: $screen-md-max) {
     flex-direction: column-reverse;
     width: 100%;
+
+    .event-player-buttons  {
+      text-align: left;
+    }
+
   }
 
   .event-set-info {
@@ -138,12 +143,15 @@ $player-height: 25.3vw;
   }
 
   .info-container {
-    width: 40%;
+    width: 70%;
+    @media (max-width: $screen-sm-max) {
+      margin-top: 15px;
+    }
     @media (max-width: 425px) {
-      margin-top: 30px;
+      margin-top: 20px;
     }
     .event-overlay-venue {
-      margin-bottom: 2em;
+      /*  margin-bottom: 2em; */
     }
   }
 
