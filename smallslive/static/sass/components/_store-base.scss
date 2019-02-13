@@ -2601,17 +2601,17 @@ img.defineImageRatio {
   width: 350px;
   z-index: 9999;
   top: 40px;
-  left: 530px;
+  left: 0;
   padding: 10px;
 }
 .reset-search {
   position: absolute;
-  top: 4px;
+  top: 8px;
   left: 75%;
   margin-left: 20px;
   &:before,
   &:after {
-    height: 34px;
+    height: 24px;
   }
 }
 .catalog-title {
