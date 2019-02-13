@@ -12,6 +12,9 @@
 .artist-profile-container {
   margin-bottom: 40px;
   padding: 0 15vw;
+  @media (max-width: 1360px) {
+    padding: 0 5vw;
+  }
   @media (max-width: 1023px) {
     padding: 20px 0;
   }
@@ -404,6 +407,13 @@
 
         .artist-set-main {
           width: 67%;
+        }
+      }
+      @media (max-width: 1023px) {
+        flex-direction: column;
+
+        .artist-set-main {
+          width: 100%;
         }
       }
     }
