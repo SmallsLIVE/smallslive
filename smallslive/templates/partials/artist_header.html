@@ -87,7 +87,7 @@
       </button>
     {% else %}
       {% if request.user.artist %}
-        <div class="text2"><a href="{% url 'artist_dashboard:my_past_events' %}">Artist Dashboard</a></div>
+        <div class="text2"><a href="{% url 'artist_dashboard:my_past_events' %}">Dashboard</a></div>
       {% endif %}
         <div class="text2"><a href="{% url 'user_settings_new' %}">Account</a></div>
         <div class="text2"><a href="{% url 'account_logout' %}">Sign Out</a></div>

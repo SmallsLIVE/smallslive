@@ -269,12 +269,22 @@
     }
   }
   .artist-event-details {
-    width: 11vw;
-    @media (max-width: 1024px) {
-      width: 25vw;
+    width: 45%;
+
+    @media (min-width: 1450px) {
+      width:  60%;
+    }
+    @media (max-width: 1023px) {
+      width:  65%;
+    }
+    @media (max-width: 768px) {
+      width: 55%;
+    }
+    @media (max-width: 540px) {
+      width: 55%;
     }
     @media (max-width: 425px) {
-      width: 50vw;
+      width: 50%;
     }
   }
   .artist-event-arrow {
@@ -437,13 +447,8 @@
     .artist-metrics-container {
       position: relative;
       width: 60%;
-      @media (max-width: 1023px) {
-        width: 100%;
-        .title1 {
-          line-height: initial;
-        }
-      }
-      @media (max-width: 768px) {
+
+      @media (max-width: $screen-md-max) {
         display: none;
       }
       .title1.datepicker-dashboard-btn {
@@ -463,7 +468,7 @@
     }
     .mobile-event-menu {
       display: none;
-      @media (max-width: 768px) {
+      @media (max-width: $screen-md-max) {
         padding-top: 30px;
         display: block;
         .mobile-event-opt {
@@ -791,9 +796,10 @@
     &:not(.datepicker-dashboard-main-btn):before {
       content: "x";
       color: red;
-      right: 20px;
+      left: 17px;
       cursor: pointer;
       pointer-events: inherit;
+      position: absolute;
       z-index: -1;
     }
   }
@@ -1115,6 +1121,7 @@
 
 #dashboard-desktop-reset{
   font-size: 12px;
+  position: relative;
 }
 .datepicker-dashboard-main-btn{
   font-size: 12px;
