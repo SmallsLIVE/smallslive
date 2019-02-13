@@ -17,7 +17,9 @@ var searchTerm,
   upcomingEventDateTo,
   apply,
   artist_pk,
-  show_event_venue;
+  is_upcoming,
+  show_event_venue,
+  show_event_setTime;
 var rightValue;
 function incNumPages(mode) {
   if (mode == "Upcoming") {
@@ -172,6 +174,7 @@ function changePage(param) {
 function loadMoreEvents(mode) {
   if ($("main.calendar").length > 0) {
     show_event_venue = true;
+    show_event_setTime = true;
   }
   incNumPages(mode);
   var selector = "#load-more-archived-btn";
@@ -306,7 +309,9 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
     date_to: utcDateTo ? utcDateTo : null,
     artist_pk: artist_pk ? artist_pk : null,
     partial: true,
-    show_event_venue: show_event_venue ? show_event_venue : null
+    show_event_venue: show_event_venue ? show_event_venue : null,
+    show_event_setTime: show_event_setTime ? show_event_setTime : null,
+    is_upcoming: is_upcoming ? is_upcoming : null
   };
   if (venueFilter) {
     searchFilters["venue"] = venueFilter;
@@ -816,6 +821,7 @@ $(document).ready(function() {
     $showsContainer.html("");
     if ($(this).closest(".calendar").length > 0) {
       show_event_venue = true;
+      show_event_setTime = true;
     }
 
     apply = true;

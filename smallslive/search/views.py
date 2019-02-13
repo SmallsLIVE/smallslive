@@ -159,6 +159,8 @@ class MainSearchView(View, SearchMixin):
         venue = request.GET.get('venue', None)
         partial = request.GET.get('partial', False)
         show_venue = request.GET.get('show_event_venue', False)
+        show_sets = request.GET.get('show_event_setTime', False)
+        upcoming = request.GET.get('is_upcoming', False)
 
         if date_from:
             date_from = parser.parse(date_from, fuzzy=True)
@@ -190,6 +192,8 @@ class MainSearchView(View, SearchMixin):
                 'events': events[0] if events else [],
                 'secondary': True,
                 'show_event_venue':show_venue,
+                'show_extend_date': show_sets,
+                'upcoming':  upcoming
             }
             template = ('search/event_search_row.html' if partial
                         else 'search/event_search_result.html')
