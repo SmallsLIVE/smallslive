@@ -126,7 +126,7 @@ div.event-strip {
   &.white-border-select {
     width: 150px;
 
-    @media (max-width: $screen-sm-max) {
+    @media (max-width: $screen-sm-min) {
       width: 100px;
       font-size: 0.9em;
     }
