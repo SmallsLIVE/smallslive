@@ -98,7 +98,7 @@
     <div class="title1 shows-results-title">Smallslive Tracks</div>
   </div>
   <div class="all-artist-tracks flex-row">
-    {% if artist.tracks %}
+    {% if artist.albums %}
       {% for artistproduct in artist.albums %}
         {% include "catalogue/partials/product.html" with product=artistproduct.product %}
       {% endfor %}

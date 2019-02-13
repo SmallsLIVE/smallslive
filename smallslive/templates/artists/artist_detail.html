@@ -70,15 +70,15 @@
               </main>
             </section>
           {% endif %}
-            {% if artist.albums%}
+            {% if artist.tracks%}
               <section class="event-stripe">
                 <div class="section-title">
                   <div class="title1">
-                    Smallslive Albums
+                    Smallslive tracks
                   </div>
                 </div>
                 <main>
-                  {% include 'artists/album_row.html' with events=artist.albums hidde_event_date=False show_event_venue=True %}
+                  {% include 'artists/album_row.html' with events=artist.tracks hidde_event_date=False show_event_venue=True %}
                 </main>
               </section>
             {% endif %}
