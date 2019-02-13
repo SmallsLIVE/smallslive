@@ -905,6 +905,7 @@ body.headers-1 {
     div.artist-search-profile-container {
       &.pad-content {
         transition: padding-top 0.5s;
+        padding-top: 60px;
       }
     }
   }
@@ -1092,8 +1093,9 @@ body.headers-1 {
     display: block;
   }
   @media (min-width: $screen-md-min) {
+    display: block;
     font-size: 15px;
-    height: 10vw;
+    height: auto;
   }
   .no-photo {
     @media (max-width: $screen-sm-max) {
