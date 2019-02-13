@@ -65,149 +65,150 @@
 {% endblock %}
 {% block extra_js %}
 {{ block.super }}
-
   <script>
-    
-    var playsCountSent = [];
-    var activeTracker = null;
 
-    function updateViewCount(player) {
-      var id = player.getPlaylistItem(player.getPlaylistIndex()).mediaid;
-      if (playsCountSent.indexOf(id) === -1) {
-        playsCountSent.push(id);
-        $.post('/multimedia/update_media_viewcount/', {
-          recording_id: id,
-          csrfmiddlewaretoken: '{{ csrf_token }}'
-        });
-      }
-    }
-
-    {% if count_metrics %}
-      var metricsSignedData = {{ metrics_signed_data|safe }};
-
-      var pingMetricsServer = function(mediaId) {
-        var data = {};
-        data.signed_data = metricsSignedData[mediaId];
-        data.csrfmiddlewaretoken = '{{ csrf_token }}';
-        $.ajax({
-          url: "{{ metrics_server_url }}/metric/",
-          method: 'POST',
-          headers: {
-              "Authorization": "Token {{ user_token }}"
-          },
-          data: data,
-          xhrFields: {
-              withCredentials: true
-          },
-          success: function () {
-            $.ajax({
-              url: "{{ event_metrics_update_url }}",
-              method: 'POST',
-              data: data,
-              success: function (response) {
-                console.log(response);
-              },
-              error: function (xhr, ajaxOptions, thrownError)  {
-                console.log(xhr.responseText);
-              }
-            });
-          },
-          error: function (xhr, ajaxOptions, thrownError)  {
-            console.log(xhr.responseText);
-          }
-        });
-        // Additionally update totals in the Event model.
-
-      };
-
-      function setUpTimerForMedia(mediaId) {
-        pingMetricsServer(mediaId);
-        if (!activeTracker) {
-          activeTracker = window.setInterval(function () {
-            pingMetricsServer(mediaId);
-          }, {{ metrics_ping_interval }} * 1000);
-        }
-      }
-    {% endif %}
-
-    {% if event.published_audio and user.can_watch_video %}
-      audioPlayer = jwplayer("player-audio").setup({
-        primary: 'html5',
-        playlist: [
-          {% for audio in event.published_audio %}
-            {
-              sources: [{
-                file: "{{ audio.media_file.get_file_url|safe }}",
-                type: "mp3"
-              }],
-              image:   {% if event.photo %}
-                          {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
-                        {% else %}
-                          {% include 'partials/thumbor_url.html' %}
-                        {% endif %}
-                       
-              ,
-              mediaid: {{ audio.id }}
-            }{% if not forloop.last %},{% endif %}
-          {% endfor %}
-        ],
-        width: "100%",
-        height: "45.3vw", // If you change this please be kind and change the corresponding css.
-        aspectratio: "16:9"
-      });
-      audioPlayer.on('play', function () {
-        var $videoContainer = $('#videoContainer');
-        if ($videoContainer.hasClass('forbidden')) {
-          videoPlayer.stop();
-          audioPlayer.stop();
-          var modal = '#becomeMemberDialog';
-          if (smallsConfig.user.isAuthenticated) {
-            modal = '#become-a-supporter-dialog';
-          }
-          $(modal).modal('show');
-        } else {
-          {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
-          updateViewCount(this);
-          {% if count_metrics %}
-          if (! activeTracker) {
-            setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);
-          }
-          {% endif %}
-        }
-      });
+    $(document).ready(function () {
 
       {% if count_metrics %}
-      audioPlayer.on('pause', function() {
-          window.clearInterval(activeTracker);
-          activeTracker = null;
-      });
+        var playsCountSent = [];
+        var activeTracker = null;
+
+        function updateViewCount(player) {
+          var id = player.getPlaylistItem(player.getPlaylistIndex()).mediaid;
+          if (playsCountSent.indexOf(id) === -1) {
+            playsCountSent.push(id);
+            $.post('/multimedia/update_media_viewcount/', {
+              recording_id: id,
+              csrfmiddlewaretoken: '{{ csrf_token }}'
+            });
+          }
+        }
+
+        var metricsSignedData = {{ metrics_signed_data|safe }};
+
+        var pingMetricsServer = function(mediaId) {
+          var data = {};
+          data.signed_data = metricsSignedData[mediaId];
+          data.csrfmiddlewaretoken = '{{ csrf_token }}';
+          $.ajax({
+            url: "{{ metrics_server_url }}/metric/",
+            method: 'POST',
+            headers: {
+                "Authorization": "Token {{ user_token }}"
+            },
+            data: data,
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function () {
+              $.ajax({
+                url: "{{ event_metrics_update_url }}",
+                method: 'POST',
+                data: data,
+                success: function (response) {
+                  console.log(response);
+                },
+                error: function (xhr, ajaxOptions, thrownError)  {
+                  console.log(xhr.responseText);
+                }
+              });
+            },
+            error: function (xhr, ajaxOptions, thrownError)  {
+              console.log(xhr.responseText);
+            }
+          });
+          // Additionally update totals in the Event model.
+
+        };
+
+        function setUpTimerForMedia(mediaId) {
+          pingMetricsServer(mediaId);
+          if (!activeTracker) {
+            activeTracker = window.setInterval(function () {
+              pingMetricsServer(mediaId);
+            }, {{ metrics_ping_interval }} * 1000);
+          }
+        }
       {% endif %}
 
-      audioPlayer.on('ready', function () {
-        var playlist = audioPlayer.getPlaylist();
-        var playlistItems = "";
-        $.each(playlist, function (index, item) {
-          playlistItems += '<button class="';
-          if (index === 0) {
-            playlistItems += ' active';
-          }
-          playlistItems += '" data-comments-page="' + '{% url 'event_comments' pk=event.id slug=event.slug %}?set=' + index;
-          playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</button>';
+      {% if event.published_audio and user.can_watch_video %}
+        audioPlayer = jwplayer("player-audio").setup({
+          primary: 'html5',
+          playlist: [
+            {% for audio in event.published_audio %}
+              {
+                sources: [{
+                  file: "{{ audio.media_file.get_file_url|safe }}",
+                  type: "mp3"
+                }],
+                image:   {% if event.photo %}
+                            {% include 'partials/thumbor_url.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                          {% else %}
+                            {% include 'partials/thumbor_url.html' %}
+                          {% endif %}
+
+                ,
+                mediaid: {{ audio.id }}
+              }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+          ],
+          width: "100%",
+          height: "45.3vw", // If you change this please be kind and change the corresponding css.
+          aspectratio: "16:9"
         });
-        $("#audio-sets-list").html(playlistItems);
-      });
+        audioPlayer.on('play', function () {
+          var $videoContainer = $('#videoContainer');
+          if ($videoContainer.hasClass('forbidden')) {
+            videoPlayer.stop();
+            audioPlayer.stop();
+            var modal = '#becomeMemberDialog';
+            if (smallsConfig.user.isAuthenticated) {
+              modal = '#become-a-supporter-dialog';
+            }
+            $(modal).modal('show');
+          } else {
+            {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
+            updateViewCount(this);
+            {% if count_metrics %}
+            if (! activeTracker) {
+              setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);
+            }
+            {% endif %}
+          }
+        });
 
-      $('#audio-sets-list').on('click', 'button', function () {
-        var currentIndex = audioPlayer.getPlaylistIndex();
-        var selectedIndex = $(this).data('playlist-index');
-        audioPlayer.playlistItem(selectedIndex);
-        $('#set-number').html(selectedIndex + 1);
-        $(this).toggleClass('active');
-        $('#audio-sets-list button[data-playlist-index=' + currentIndex + ']').toggleClass('active');
-      });
-    {% endif %}
+        {% if count_metrics %}
+        audioPlayer.on('pause', function() {
+            window.clearInterval(activeTracker);
+            activeTracker = null;
+        });
+        {% endif %}
 
-    {% if event.published_videos and user.can_watch_video %}
+        audioPlayer.on('ready', function () {
+          var playlist = audioPlayer.getPlaylist();
+          var playlistItems = "";
+          $.each(playlist, function (index, item) {
+            playlistItems += '<button class="';
+            if (index === 0) {
+              playlistItems += ' active';
+            }
+            playlistItems += '" data-comments-page="' + '{% url 'event_comments' pk=event.id slug=event.slug %}?set=' + index;
+            playlistItems += '" data-playlist-index="' + index + '">Set ' + (index + 1) + '</button>';
+          });
+          $("#audio-sets-list").html(playlistItems);
+        });
+
+        $('#audio-sets-list').on('click', 'button', function () {
+          var currentIndex = audioPlayer.getPlaylistIndex();
+          var selectedIndex = $(this).data('playlist-index');
+          audioPlayer.playlistItem(selectedIndex);
+          $('#set-number').html(selectedIndex + 1);
+          $(this).toggleClass('active');
+          $('#audio-sets-list button[data-playlist-index=' + currentIndex + ']').toggleClass('active');
+        });
+      {% endif %}
+
+      {% if event.published_videos and user.can_watch_video %}
         videoPlayer = jwplayer("player-video").setup({
             primary: 'html5',
             playlist: [
@@ -269,32 +270,33 @@
             $('.set-select-button').removeClass('active');
             $(this).toggleClass('active');
         });
-    {% else %}
-        function cannotWatchModalOpen(){
+      {% else %}
+        function cannotWatchModalOpen() {
           var modal = '#becomeMemberDialog';
           if (smallsConfig.user.isAuthenticated) {
             modal = '#become-a-supporter-dialog';
-          }
-          inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
-          if (inactive === 'true'){
-            modal = '#inactive-dialog';
+          } else {
+            inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}');
+            if (inactive === 'true') {
+              modal = '#inactive-dialog';
+            }
           }
           $(modal).modal('show');
         }
-        
-        $(document).on('click', '.not-auth-container', function (event) {
-          cannotWatchModalOpen()
-        })
-      
-    {% endif %}
 
-    $(document).ready(function () {
-      if($("#videoContainer").length === 0){
+        $(document).on('click', '.not-auth-container .icon-overlay', function (event) {
+          cannotWatchModalOpen()
+        });
+
+      {% endif %}
+
+      if ($("#videoContainer").length === 0) {
         $('#videoContainer').hide();
         $('#audioContainer').show()
         $this = $('.white-border-button.audio.togglePlayer');
         $this.hide();
       }
+
       $('.togglePlayer').click(function () {
 
         $this = $(this);
@@ -308,7 +310,7 @@
           $('#audioContainer').hide()
         } else {
           if($("#videoContainer").length > 0){
-          jwplayer("player-video").pause(true)
+            jwplayer("player-video").pause(true)
           }
           $this.parent().find('.video').css('display', 'inline');
           $this.hide();
