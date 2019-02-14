@@ -72,9 +72,10 @@ class SearchObject(object):
 
     def search_artist(self, main_search=None, artist_search=None, instrument=None):
 
-        posible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
+        # TODO: use settings to store values
+        possible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
         if main_search != '':
-            if main_search.split()[-1] in posible_number_of_performers:
+            if main_search.split()[-1] in possible_number_of_performers:
                 main_search = ' '.join(main_search.split()[:-1])
 
         words, instruments, partial_instruments = self.process_input(main_search, artist_search, instrument)
@@ -237,8 +238,10 @@ class SearchObject(object):
             if venue != 'all':
                 sqs = sqs.filter(venue__pk=venue)
                 
-        #FIXME: compare to code in  "today_and_tomorrow_events"
-        today = timezone.now().replace(hour=0, minute=0, second=0)
+        # FIXME: compare to code in "today_and_tomorrow_events"
+        today = timezone.localtime(
+            timezone.now().replace(hour=0, minute=0, second=0))
+
         if not start_date or start_date.date() < today.date():
             sqs = sqs.filter(recordings__media_file__isnull=False,
                              recordings__state=Recording.STATUS.Published)

@@ -54,6 +54,7 @@ def artist_form_autoconplete(request):
         }
     return JsonResponse(data)
 
+
 class SearchMixin(object):
 
     def search(self, entity, main_search, page=1, order=None,
