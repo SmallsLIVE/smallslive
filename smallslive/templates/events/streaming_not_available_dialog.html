@@ -5,10 +5,12 @@
     <div class="modal-content custom-modal">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
-        {% if sets %}
+        {% if not event.streamable %}
+          <p class="title2 accent-color nowrap">This event will not be live streamed at the request of the artist</p>
+        {% elif sets %}
           <p class="title2 accent-color nowrap">This event will begin streaming {% if not event.is_today %} on {{ event.date|date:"m/d/Y" }} {% endif %} at {{ sets.0.start|time:"g:iA" }}</p>
         {% else %}
-          <p>Streaming for this event will be available 15 minutes before it begins</p>
+          <p class="title2 accent-color nowrap">Streaming for this event will be available 15 minutes before it begins</p>
         {% endif %}
       </div>
     </div>

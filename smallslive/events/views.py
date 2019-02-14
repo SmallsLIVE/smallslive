@@ -398,7 +398,7 @@ class EventDetailView(DetailView):
                 return ['events/_event_details_upcoming.html']
         elif event.is_past:
             return ['events/_event_details_past.html']
-        if event.is_future:
+        if event.is_future or not event.streamable:
             return ['events/_event_details_upcoming.html']
         else:  # Not sure if there will be another option.
             if self.request.user.is_authenticated():

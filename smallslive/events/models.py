@@ -542,7 +542,7 @@ class Event(TimeStampedModel):
 
     @property
     def show_streaming(self):
-        return self.is_live_or_about_to_begin(about_to_begin=True)
+        return self.is_live_or_about_to_begin(about_to_begin=True) and self.streamable
 
     @property
     def is_live(self):
