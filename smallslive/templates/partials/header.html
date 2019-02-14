@@ -28,7 +28,7 @@
       {% else %}
         <div class="user-menu white-border-select no-arrow">
           <select id="userMenu">
-            <option value="current" noSelect="1" selected="selected">
+            <option value="current" noSelect="1" selected="selected" title="{{ request.user.email }}">
               {% if request.user.first_name or request.user.last_name%}
                 {% if request.user.first_name %}{{ request.user.first_name }}{% endif %}
                 {% if request.user.last_name %} {{ request.user.last_name }}{% endif %}
