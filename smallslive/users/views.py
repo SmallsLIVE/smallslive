@@ -1,12 +1,12 @@
 from datetime import datetime, date
-
+import json
 import stripe
 from wkhtmltopdf.views import PDFTemplateView
 from django.conf import settings
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, Http404, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, FormView, ListView, View
 from django.utils import timezone
@@ -328,6 +328,27 @@ class LoginView(CoreLoginView):
             return ["account/login.html"]
 
 login_view = LoginView.as_view()
+
+
+class EmailConfirmResendAjaxView(View):
+
+    def post(self, request, *args, **kwargs):
+        email = request.POST['email']
+        try:
+            email_address = EmailAddress.objects.get(
+                user=request.user,
+                email=email,
+            )
+            email_address.send_confirmation(request)
+            response = json.dumps({'success': True})
+        except EmailAddress.DoesNotExist:
+            response = json.dumps({'success': False,
+                                   'message': "Email address not found"})
+
+        return HttpResponse(response, content_type="application/json")
+
+
+email_confirm_resend_ajax = EmailConfirmResendAjaxView.as_view()
 
 
 class LoginView(CoreLoginView):

@@ -4,13 +4,17 @@
         <div class="modal-content  custom-modal">
                 <a href="#" class="close-button"></a>
           <div class="modal-body">
-              <p class="title1">Please confirm your email address</p>
-              <p class="text9 text-justified">
+              <p class="title1 send">Please confirm your email address</p>
+              <p class="text9 text-justified send">
                 {% if email_sent %}
                   You will receive an e-mail to <span class="accent-color">{{ user.email }}</span> within 10 minutes.  Click the link in the e-mail to confirm your address.
                 {% else %}
                   A confirmation e-mail was sent on {{ user.date_joined|date:"d/m" }} to <span class="accent-color">{{ user.email }}</span>. Click the link in the e-mail to confirm your address.
                 {% endif %}
+              </p>
+              <p class="title1 sent hidden">Confirmation email re-sent</p>
+              <p class="text9 text-justified sent hidden">
+                Your confirmation e-mail has been re-sent to <span class="accent-color">{{ user.email }}</span> and should appear in your inbox within 10 minutes. Click the link in your e-mail to confirm your address.
               </p>
               <div class="text4 text-centered" style="margin-top: 40px">
                   <div>
@@ -20,14 +24,12 @@
                           {% csrf_token %}
                           <input id="user_email_hidden" type="hidden" name="email" value="{{ user.email }}">
                           <input id="action_send" type="hidden" name="action_send" value="">
-                          <a class="accent-color hover-underline"
-                             href="javascript:{}"
-                             onclick="document.getElementById('resendConfirmationForm').submit(); return false;">
-                              Resend confirmation email
-                          </a>
+                          <input id="submitConfirmationButton" type="submit" class="white-border-button" value="Re-send confirmation email">
                       </form>
                   </div>
-                  <br>
+                  <p>
+
+                  </p>
                   <p>
                       <a class="accent-color hover-underline" href="mailto:accountsupport@smallslive.com">
                           accountsupport@smallslive.com
@@ -40,21 +42,54 @@
         </div>
     </div>
   </div>
-    <script>
-        document.addEventListener('click', function () {
-            $('#inactive-dialog').hide();
-        });
-        {% if user.is_authenticated and show_email_confirmation_dialog %}
-            $(document).ready(function () {
-                $('#inactive-dialog').show();
-            });
-        {% endif %}
-        loginModal = document.getElementById('inactive-dialog')
-        closeButton = loginModal.getElementsByClassName('close-button')[0]
-        closeButton.addEventListener('click', function () {
-            $('#inactive-dialog').hide();
-        });
-    </script>
+  <script>
+    function resendConfirmation($form) {
+      var $content = $('#inactive-dialog .modal-body');
+      $content.find('.send').addClass('hidden');
+      var $submitButton = $('#submitConfirmationButton');
+      $submitButton.hide();
+      $.ajax({
+        url: "{% url 'email_confirm_resend_ajax' %}",
+        method: 'POST',
+        data: $form.serialize(),
+        success: function (data) {
+          if (data.success) {
+            $content.find('.sent').removeClass('hidden');
+            $submitButton.show();
+          } else {
+            $submitButton.show();
+          }
+        },
+        error: function (xhr, ajaxOptions, thrownError)  {
+          console.log(xhr.responseText);
+          $submitButton.show();
+        }
+      });
+    }
+    $(document).ready(function () {
+      $('#resendConfirmationForm').submit(function (event) {
+        event.preventDefault();
+        resendConfirmation($(this));
+        return false;
+      });
+
+      var $inactiveModal = $('#inactive-dialog');
+      {% if user.is_authenticated and show_email_confirmation_dialog %}
+        $inactiveModal.modal('show');
+      {% endif %}
+      var $closeButton = $inactiveModal.find('.close-button');
+      $closeButton.click(function () {
+         $inactiveModal.modal('hide');
+      });
+      $inactiveModal.on('hidden.bs.modal', function () {
+        var $content = $('#inactive-dialog .modal-body');
+        $content.find('.send').removeClass('hidden');
+        if (!$content.find('.sent').hasClass('hidden')) {
+          $content.find('.sent').addClass('hidden');
+        }
+      })
+    });
+  </script>
 {% endif %}
 
 
