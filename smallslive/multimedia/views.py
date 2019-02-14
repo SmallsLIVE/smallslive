@@ -218,11 +218,11 @@ my_downloads = MyDownloadsView.as_view()
 
 class NewMyDownloadsView(LoginRequiredMixin, ListView):
     context_object_name = 'lines'
-    template_name = 'multimedia/new-downloads.html'
+    template_name = 'multimedia/library.html'
 
     def get_queryset(self):
         return Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter(Q(
             product__product_class__slug='track') | Q(product__product_class__slug='digital-album'),
             order__user=self.request.user).distinct('stockrecord')
 
-new_downloads = MyDownloadsView.as_view()
+new_downloads = NewMyDownloadsView.as_view()

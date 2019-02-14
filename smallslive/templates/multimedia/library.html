@@ -1,0 +1,86 @@
+
+{% extends "home_new.html" %}
+{% load static from staticfiles %}
+{% load thumbnail %}
+{% load thumbor_tags %}
+
+{% block title %}My downloads{% endblock %}
+
+{% block content %}
+
+<div class="white-line-bottom">
+    <div class="title1 center">Library</div>
+</div>
+
+<main class="newest-recordings-container downloads">
+    <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+    <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+    <div class="event-row"> 
+        {% if lines %}
+            {% regroup lines by product.album as album_list %}
+            {% for album in album_list %}
+                {% if not album.grouper %}
+                    {% for record in album.list %}
+                        {% with album=record.product is_hd=record.stockrecord.is_hd %}
+                            {% with image=album.primary_image %}
+                                {% if album.parent_id %}
+                                    {% with image=album.parent %}
+                                        <article class="event-display" data-type="single"> {% include 'promotions/featured_card.html' with event=image redirect=True secondary=secondary hide_play=True%}
+                                            <div class="event-info">
+                                                <div>
+                                                    <div class="event-info-title">{{ image.title }}</div>
+                                                </div>
+                                            </div>
+                                        </article> 
+                                    {% endwith %}
+                                {% else %}
+                                    {% with image=album %}
+                                        <article class="event-display"  data-type="single"> {% include 'promotions/featured_card.html' with event=image redirect=True secondary=secondary hide_play=True%}
+                                            <div class="event-info">
+                                                <div>
+                                                    <div class="event-info-title">{{ image.title }}</div>
+                                                </div>
+                                            </div>
+                                        </article> 
+                                    {% endwith %}
+                                {% endif %}
+                            {% endwith %}
+                        {% endwith %}
+                    {% endfor %}
+                {% else %}
+                    {% with image=album.grouper %}
+                    <article class="event-display"  data-type="grouper" > {% include 'promotions/featured_card.html' with event=image secondary=secondary redirect=True hide_play=True%}
+                            <div class="event-info">
+                                <div>
+                                    <div class="event-info-title">{{ image.title }}</div>
+                                </div>
+                            </div>
+                        </article> 
+                    {% endwith %}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="my-downloads__nothing-bought row">
+                <h3>You haven't bought any digital downloads yet. Check out the <a class="my-downloads__nothing-bought__store-link" href="{% url "promotions:home" %}">store</a> and buy some music!</h3>
+            </div>
+        {% endif %}
+    </div>
+</main>
+
+{% endblock content %}
+
+
+{% block extra_js %}
+<script>
+function loadAlbum(albumId){
+   $.ajax({
+    url: eventsUrl,
+    data: params,
+    dataType: 'json',
+    success: function (data) {
+ 
+    }
+});
+}
+</script>
+{% endblock %}
