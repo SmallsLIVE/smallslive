@@ -1,4 +1,4 @@
-{% extends "artist_dashboard/base.html" %}
+{% extends "artist_dashboard/home.html" %}
 {% load static from staticfiles %}
 
 {% block legal-active %}active{% endblock %}
@@ -11,7 +11,7 @@
   </section>
   <section class="legal-page__full-contract container">
     <div class="row">
-      <div class="hidden-xs hidden-sm col-md-4 scrollspy contract-bulletpoints">
+      <div class="hidden">
         <ul id="nav" class="nav" data-spy="affix" data-offset-top="300" data-offset-bottom="200">
           <li><a href="#section-1">The SmallsLIVE Archive is the entire collection of audio and videos recordings
             documenting every show at Smalls Jazz Club since September of 2007. </a></li>
@@ -44,7 +44,7 @@
           <li class="bulletpoint-clear"><a href="#section-clear"></a></li>
         </ul>
       </div>
-      <div class="col-xs-12 col-md-7 col-md-offset-1 contract-content">
+      <div class="col-xs-12 col-md-12 contract-content">
         <h1>The SmallsLIVE artist revenue share agreement</h1>
         <p>This Agreement (the “Agreement”) is between SmallsLIVE LLC (“SmallsLIVE”) and you in regard to the SmallsLIVE
           Archive and the Artist Revenue Share Project.</p>
@@ -442,10 +442,15 @@
       </div>
     </div>
   </section>
-  <section class="legal-page__download container">
+  <section class="legal-page__download container text-center">
     <div>
-      <a href="#" class="legal-page__button secondary print"><i class="fa fa-print"></i> Print out</a>
-      <a href="{% static "SmallsLIVE_artist_revenue_share_agreement.pdf" %}" class="legal-page__button secondary"><i class="fa fa-download"></i> Download as PDF</a>
+      <a href="#" class="legal-page__button secondary print white-border-button">
+        <i class="fa fa-print"></i> Print out
+      </a>
+      <a href="{% static 'SmallsLIVE_artist_revenue_share_agreement.pdf' %}"
+         class="legal-page__button secondary white-border-button">
+        <i class="fa fa-download"></i> Download as PDF
+      </a>
     </div>
   </section>
   <section class="legal-page__bullets container">
@@ -487,13 +492,13 @@
     </div>
     <div class="col-xs-12">
       {% if not user_signed %}
-        <form action="{% url "artist_dashboard:legal" %}" method="post">
+        <form action="{% url 'artist_dashboard:legal' %}" method="post">
           {% csrf_token %}
           <button type="submit" name="sign-agreement" class="legal-page__button sign"><i class="fa fa-check-circle"></i><span></span>
           </button>
         </form>
       {% else %}
-        <button class="legal-page__button signed" disabled><i class="fa fa-check-circle"></i><span></span></button>
+        <button class="legal-page__button signed white-border-button" disabled><i class="fa fa-check-circle"></i><span></span></button>
         <div class="legal-page__sign__text col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
           Legal agreement was signed on {{ request.user.legal_agreement_acceptance.date|date:"F j, Y g:i A" }}
         </div>
@@ -506,6 +511,7 @@
 {% endblock content %}
 
 {% block extra_js %}
+
     <script>
         $('.print').click(function () {
             window.print();

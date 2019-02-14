@@ -1178,3 +1178,31 @@
     } 
   }
 }
+
+.legal-page__full-contract {
+  @include reen-kufi-normal;
+  font-size: 16px;
+}
+
+.legal-page__download {
+  @include reen-kufi-normal;
+  font-size: 16px;
+}
+
+.legal-page__bullets {
+  @include reen-kufi-normal;
+  font-size: 16px;
+}
+
+.legal-page__sign__text {
+  @include reen-kufi-normal;
+  font-size: 18px;
+}
+
+.legal-page__button {
+  display: block;
+  margin: 20px auto;
+  width: 200px;
+}
+
+
