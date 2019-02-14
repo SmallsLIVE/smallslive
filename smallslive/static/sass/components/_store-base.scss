@@ -2010,9 +2010,21 @@
 .justify-content-center {
   justify-content: center;
 }
+
+.store-cart__footer__buttons {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  .white-border-button {
+    display: flex;
+    margin: 0 5px;
+  }
+}
 .checkout-white {
-  float: right;
+  display: inline-block;
   position: relative;
+  vertical-align: bottom;
   width: 120px;
   @media (min-width: $screen-xs) {
     width: 200px;

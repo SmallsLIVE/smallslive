@@ -85,7 +85,9 @@
                           <select name="state" class="store__form__select">
                             <option value="">Select State</option>
                             {% for val, choice in billing_address_form.fields.state.widget.choices %}
+                              {% if val %}
                                 <option value="{{ val }}" {% if val == billing_address_form.state.value %}selected{% endif %}>{{ choice }}</option>
+                              {% endif %}
                             {% endfor %}
                           </select>
                         </div>
@@ -96,7 +98,9 @@
                           <select name="country" class="store__form__select">
                             <option value="">Select Country</option>
                             {% for val, choice in billing_address_form.fields.country.choices %}
-                            <option value="{{ val }}" {% if val == billing_address_form.country.value %}selected{% endif %}>{{ choice }}</option>
+                              {% if val %}
+                                <option value="{{ val }}" {% if val == billing_address_form.country.value %}selected{% endif %}>{{ choice }}</option>
+                              {% endif %}
                             {% endfor %}
                           </select>
                           {% for error in billing_address_form.country.errors %}

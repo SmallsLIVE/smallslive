@@ -49,9 +49,11 @@
                         </div>
                         <div class="white-border-select">
                             <select name="state" id="state" class="store__form__select">
-                                    <option value="">Select State</option>
+                                <option value="">Select State</option>
                                 {% for val, choice in form.fields.state.widget.choices %}
+                                  {% if val %}
                                     <option value="{{ val }}" {% if val == form.state.value %}selected{% endif %}>{{ choice }}</option>
+                                  {% endif %}
                                 {% endfor %}
                             </select>
                         </div>
@@ -62,7 +64,9 @@
                             <select name="country" id="country" class="store__form__select">
                                 <option value="">Select Country</option>
                                 {% for val, choice in form.fields.country.choices %}
+                                  {% if val %}
                                     <option value="{{ val }}" {% if val == form.country.value %}selected{% endif %}>{{ choice }}</option>
+                                  {% endif %}
                                 {% endfor %}
                             </select>
                         </div>
