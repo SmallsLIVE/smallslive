@@ -34,7 +34,7 @@
         {% endif %}
     </div>
 </main>
-<section class="my-downloads-album__list container"></section>
+<section id="my-downloads-album__list"></section>
 
 {% endblock content %}
 
@@ -51,7 +51,7 @@ function loadAlbum(productId, bought_tracks="", album_type){
         url: "/multimedia/library/" + productId,
         data: params,
         success: function (data) {
-            albumContainer = $(".my-downloads-album__list.container")[0]
+            albumContainer = $("#my-downloads-album__list")
             $(albumContainer).html(data)
         }
     });
