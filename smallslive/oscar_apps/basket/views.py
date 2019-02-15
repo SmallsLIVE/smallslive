@@ -5,6 +5,35 @@ from oscar.apps.basket.views import apply_messages
 from oscar_apps.partner.models import StockRecord
 
 
+class BasketView(basket_views.BasketView):
+
+    def get_context_data(self, **kwargs):
+        # We're not allowing gifts here. They live only under supporter flow.
+        basket = self.request.basket
+        count = basket.lines.filter(product__product_class__name='Gift').count()
+        if count:
+            basket.lines.filter(product__product_class__name='Gift').delete()
+        else:
+            count = basket.lines.filter(product__parent__product_class__name='Gift').count()
+            if count:
+                basket.lines.filter(product__parent__product_class__name='Gift').delete()
+        if count:
+            basket.save()
+            if basket.is_empty:
+                print '************************'
+                storage = messages.get_messages(self.request)
+                for _ in storage:
+                    pass
+                    storage.used = True
+
+                while len(storage._loaded_messages) > 0:
+                    del storage._loaded_messages[0]
+
+        context = super(BasketView, self).get_context_data(**kwargs)
+
+        return context
+
+
 class BasketAddView(basket_views.BasketAddView):
 
     def _clean_basket(self, form):
@@ -39,6 +68,7 @@ class BasketAddView(basket_views.BasketAddView):
             # Remove tickets and gifts
             basket.lines.filter(product__product_class__name='Ticket').delete()
             basket.lines.filter(product__product_class__name='Gift').delete()
+            basket.lines.filter(product__parent__product_class__name='Gift').delete()
 
     def form_valid(self, form):
         print '****************************'
