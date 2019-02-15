@@ -225,4 +225,38 @@ class NewMyDownloadsView(LoginRequiredMixin, ListView):
             product__product_class__slug='track') | Q(product__product_class__slug='digital-album'),
             order__user=self.request.user).distinct('stockrecord')
 
+    def get_context_data(self, **kwargs):
+        context = super(NewMyDownloadsView, self).get_context_data(**kwargs)
+
+        digital_album_list = Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter( Q(product__product_class__slug='digital-album'),order__user=self.request.user).distinct('stockrecord')
+        track_list = Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter(Q(
+            product__product_class__slug='track') ,
+            order__user=self.request.user).distinct('stockrecord')
+        album_list = []
+        ##pass full albums
+        for album in digital_album_list:
+            album = {"parent":album.product.pk,"bought_tracks":[],"album_type":"full_album"}
+            album_list.append(album)
+
+        ##pass tracks to album    
+        track_to_album_list = []
+        album = {"parent":None,"bought_tracks":[]}
+        last_parent_id = 0
+        for track in track_list:
+            track_parent_id = track.product.album.pk
+            if track_parent_id == last_parent_id:
+                album["bought_tracks"].append(track.product.pk)
+            else:
+                if album["parent"] == None:
+                    album = {"parent":track.product.album.pk,"bought_tracks":[track.product.pk],"album_type":"track_album"}
+                else:
+                    track_to_album_list.append(album)
+                    album = {"parent":track.product.album.pk,"bought_tracks":[track.product.pk],"album_type":"track_album"}
+            last_parent_id = track_parent_id
+        track_to_album_list.append(album)
+        album_list += track_to_album_list
+        print album_list
+            
+        return context
+
 new_downloads = NewMyDownloadsView.as_view()
