@@ -529,6 +529,16 @@
   }
 }
 .gift-content .modal-content .store-add-small .select .select-items {
-  position: relative;
-  top: 0;
+  display: flex;
+  overflow: visible;
+  flex-direction: column-reverse;
+  position: absolute;
+  bottom: 38px;
+  z-index: 1000;
+  top: auto;
+
+  &.select-hide {
+    display: none;
+  }
 }
+
