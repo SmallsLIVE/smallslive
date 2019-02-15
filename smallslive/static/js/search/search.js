@@ -19,6 +19,7 @@ var searchTerm,
   artist_pk,
   is_upcoming,
   show_event_venue,
+  is_mobile,
   show_event_setTime;
 var rightValue;
 function incNumPages(mode) {
@@ -154,6 +155,16 @@ function sendArtistRequest(callback) {
   });
 }
 $(window).resize(function() {
+  if( viewPortLength("width") < 1024 && is_mobile == false ){
+    $("div[data-toggle-tab-target='archived-shows'")[0].click();
+    is_mobile = true;
+  }
+  if( viewPortLength("width") >= 1024 && is_mobile == true ){
+    if($(".artist-search-profile-container").css('display') !=  "block"){
+      $(".search-tab-content").show()
+      is_mobile = false;
+    }
+  }
   let pages = rightValue / 6 / 4;
   pages -= 1;
   console.log(pages);
@@ -1044,3 +1055,12 @@ $(document).on(
     }
   }
 );
+
+$( document ).ready(function() {
+  if(viewPortLength("width") < 1024 && $("div[data-toggle-tab-target='archived-shows'").length != 0){
+    $("div[data-toggle-tab-target='archived-shows'")[0].click();
+    is_mobile = true;
+  }else{
+    is_mobile = false;
+  }
+});
