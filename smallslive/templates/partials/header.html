@@ -40,7 +40,7 @@
               <option value="artist_dashboard">Dashboard</option>
             {% endif %}
             <option value="shopping_cart">Cart</option>
-            <option value="my_downloads">Purchases</option>
+            <option value="my_downloads">Library</option>
             <option value="account_info">Account</option>
             <option value="logout">Sign Out</option>
           </select>
@@ -75,7 +75,7 @@
         <div class="text2"><a href="{% url 'artist_dashboard:my_past_events' %}">Dashboard</a></div>
       {% endif %}
         <div class="text2"><a href="{% url 'basket:summary' %}">Cart</a></div> 
-        <div class="text2"><a href="{% url 'my-downloads' %}">Purchases</a></div>
+        <div class="text2"><a href="{% url 'my-downloads' %}">Library</a></div>
         <div class="text2"><a href="{% url 'user_settings_new' %}">Account</a></div>
         <div class="text2"><a href="{% url 'account_logout' %}">Sign Out</a></div>
     {% endif %}
