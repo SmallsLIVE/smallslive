@@ -34,6 +34,7 @@
         {% endif %}
     </div>
 </main>
+<section class="my-downloads-album__list container"></section>
 
 {% endblock content %}
 
@@ -41,14 +42,17 @@
 {% block extra_js %}
 <script>
 function loadAlbum(productId, bought_tracks="", album_type){
+    console.log("a")
     var params = {};
+    params.productId = productId;
     params.bought_tracks = bought_tracks;
     params.album_type = album_type;
     $.ajax({
         url: "/multimedia/library/" + productId,
         data: params,
-        dataType: 'json',
         success: function (data) {
+            albumContainer = $(".my-downloads-album__list.container")[0]
+            $(albumContainer).html(data)
         }
     });
 }
@@ -56,7 +60,7 @@ function loadAlbum(productId, bought_tracks="", album_type){
 <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
 <script>
     var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
-    $(".my-downloads-album__tracks-table__row.flex-row").on("click", function(event){
+    $(document).on('click', ".my-downloads-album__tracks-table__row.flex-row", function(event){
         progess = calculateProgress($(this),event)
         //find audio player, its track number and change the big player track number
         audioPlayer = $(this).find(".audio audio")[0]
@@ -106,7 +110,7 @@ function loadAlbum(productId, bought_tracks="", album_type){
             audioPlayer.pause()
         }
     }
-    $(".purchases-player-button").on("click", function(){
+    $(document).on('click', ".purchases-player-button", function(){
         bigContainer = $(this).closest(".big-player")[0]
         playerContainer = $(bigContainer).find(".player-container")[0]
         playerContainerButton = $(playerContainer).find(".purchases-player-button")[0]
