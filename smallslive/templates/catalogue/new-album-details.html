@@ -3,15 +3,14 @@
     {% with image=product.primary_image %}
     {% if product.parent_id %}
         {% with image=product.parent.primary_image %}
-            {% thumbnail image.original "245x245" upscale=False as thumb %}
                 <div style="position: relative">
-                    <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }}">
+                    <img class="defineImageRatio" src="{{ image.original.url }}" alt="{{ product.get_title }}">
                     <div class="purchases-player-button myplay-btn">
                         <div class="fa-thin-circle fa" >
                         <i class="fas fa-play"></i></div>
                     </div>
                 </div>
-            {% endthumbnail %}
+
         {% endwith %}
     {% else %}
         {% with image=product.primary_image %}

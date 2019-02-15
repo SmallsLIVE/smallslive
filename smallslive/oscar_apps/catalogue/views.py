@@ -16,6 +16,7 @@ class ProductCategoryView(catalogue_views.ProductCategoryView):
         context['featured_product'] = Product.objects.filter(featured=True, categories__in=self.get_categories()).first()
         return context
 
+
 class ArtistCatalogue(ProductCategoryView):
 
     def get(self, request, *args, **kwargs):
@@ -37,12 +38,13 @@ class ArtistCatalogue(ProductCategoryView):
 
         return JsonResponse(data)
 
+
 def get_album_catalog(request):
     template = 'catalogue/album-list.html'
-    artist_id = content=request.GET.get('artist', '')
+    artist_id = request.GET.get('artist', '')
     if artist_id:
-        artist =  Artist.objects.filter(pk=artist_id).first()
-        album_list =  artist.albums()
+        artist = Artist.objects.filter(pk=artist_id).first()
+        album_list = artist.albums()
         artist_page = True
     else:
         album_list =  Product.objects.filter(product_class__name="Album")
@@ -50,16 +52,17 @@ def get_album_catalog(request):
     paginator = Paginator(album_list, 12)
     page = int(request.GET.get('page', 1))
     album_page = paginator.page(page)
-    temp = render_to_string(template,
-                                {'album_page': album_page, 'pagenumber':page, 'artist_page':artist_page},
-                                context_instance=RequestContext(request)
-                                )
+    temp = render_to_string(
+        template,
+        {'album_page': album_page, 'pagenumber': page, 'artist_page': artist_page},
+        context_instance=RequestContext(request))
 
     data = {
         'template': temp, 'last_page': paginator.num_pages == page
     }
 
     return JsonResponse(data)
+
 
 class ProductDetailView(catalogue_views.ProductDetailView):
 
