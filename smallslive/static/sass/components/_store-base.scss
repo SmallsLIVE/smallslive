@@ -400,6 +400,9 @@
     .white-line-bottom{
       .title1{
         font-size: 30px;
+        &.text-left{
+          padding-left: 3.5vw;
+        }
       }
     }
     .slide-btn.prev,
