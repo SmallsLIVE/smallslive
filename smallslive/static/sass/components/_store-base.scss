@@ -397,6 +397,10 @@
   }
 
   &__content {
+
+    margin-top: 20px;
+    padding: 0 0 40px 0;
+
     .white-line-bottom{
       .title1{
         font-size: 30px;
@@ -409,8 +413,6 @@
     .slide-btn.next {
       border-radius: 0;
     }
-    padding: 0 0 40px 0;
-    //background-color: #fff;
 
     @media (max-width: 767px) {
       margin-left: 0px;
