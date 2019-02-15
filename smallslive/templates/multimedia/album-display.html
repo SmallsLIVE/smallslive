@@ -20,7 +20,7 @@
         {% with image=album_product.parent.primary_image %}
             {% thumbnail image.original "245x245" upscale=False as thumb %}
                 <div style="position: relative; min-width:255px">
-                    <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ album_product.get_title }}">
+                    <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ album_product.get_title }}" style="border-radius: 0px">
                     <div class="purchases-player-button myplay-btn">
                         <div class="fa-thin-circle fa" >
                         <i class="fas fa-play"></i></div>
@@ -32,7 +32,7 @@
         {% with image=album_product.primary_image %}
             {% thumbnail image.original "245x245" upscale=False as thumb %}
                 <div style="position: relative; min-width:255px">
-                    <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ album_product.get_title }}">
+                    <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ album_product.get_title }}" style="border-radius: 0px">
                         <div class="purchases-player-button myplay-btn">
                         <div class="fa-thin-circle fa" >
                         <i class="fas fa-play"></i></div>
