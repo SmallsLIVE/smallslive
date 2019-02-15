@@ -19,7 +19,7 @@
                   {% with album=record.product is_hd=record.stockrecord.is_hd %}
                     <div class="my-downloads-album row big-player">
                     <div class="my-downloads-album__cover flex-column player-container " data-track=0>
-                        {% with image=album.primary_image %}
+                    {% with image=album.primary_image %}
                         {% if album.parent_id %}
                             {% with image=album.parent.primary_image %}
                                 {% thumbnail image.original "245x245" upscale=False as thumb %}
@@ -45,7 +45,7 @@
                                 {% endthumbnail %}
                             {% endwith %}
                         {% endif %}
-                        {% endwith %}
+                    {% endwith %}
 
                         <a class="title6" href="{{ album.get_absolute_url }}">{% if album.parent %}{{ album.parent.title }} - {% endif %}{{ album.title }}</a>
                     </div>

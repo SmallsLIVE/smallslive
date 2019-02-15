@@ -1,4 +1,3 @@
-
 {% extends "home_new.html" %}
 {% load static from staticfiles %}
 {% load thumbnail %}
@@ -16,40 +15,10 @@
     <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
     <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
     <div class="event-row"> 
-        {% if lines %}
-            {% regroup lines by product.album as album_list %}
+        {% if album_list %}
             {% for album in album_list %}
-                {% if not album.grouper %}
-                    {% for record in album.list %}
-                        {% with album=record.product is_hd=record.stockrecord.is_hd %}
-                            {% with image=album.primary_image %}
-                                {% if album.parent_id %}
-                                    {% with image=album.parent %}
-                                        <article class="event-display" data-type="single"> {% include 'promotions/featured_card.html' with event=image redirect=True secondary=secondary hide_play=True%}
-                                            <div class="event-info">
-                                                <div>
-                                                    <div class="event-info-title">{{ image.title }}</div>
-                                                </div>
-                                            </div>
-                                        </article> 
-                                    {% endwith %}
-                                {% else %}
-                                    {% with image=album %}
-                                        <article class="event-display"  data-type="single"> {% include 'promotions/featured_card.html' with event=image redirect=True secondary=secondary hide_play=True%}
-                                            <div class="event-info">
-                                                <div>
-                                                    <div class="event-info-title">{{ image.title }}</div>
-                                                </div>
-                                            </div>
-                                        </article> 
-                                    {% endwith %}
-                                {% endif %}
-                            {% endwith %}
-                        {% endwith %}
-                    {% endfor %}
-                {% else %}
-                    {% with image=album.grouper %}
-                    <article class="event-display"  data-type="grouper" > {% include 'promotions/featured_card.html' with event=image secondary=secondary redirect=True hide_play=True%}
+                    {% with image=album.parent %}
+                        <article class="event-display" data-parent-pk="{{ album.parent.pk }}" data-type="{{ album.album_type }}" data-bought="{{ album.bought_tracks }}" > {% include 'promotions/featured_card.html' with event=image redirect=True secondary=secondary hide_play=True%}
                             <div class="event-info">
                                 <div>
                                     <div class="event-info-title">{{ image.title }}</div>
@@ -57,8 +26,7 @@
                             </div>
                         </article> 
                     {% endwith %}
-                {% endif %}
-            {% endfor %}
+            {% endfor %} 
         {% else %}
             <div class="my-downloads__nothing-bought row">
                 <h3>You haven't bought any digital downloads yet. Check out the <a class="my-downloads__nothing-bought__store-link" href="{% url "promotions:home" %}">store</a> and buy some music!</h3>
@@ -66,21 +34,185 @@
         {% endif %}
     </div>
 </main>
+<section class="my-downloads-album__list container"></section>
 
 {% endblock content %}
 
 
 {% block extra_js %}
 <script>
-function loadAlbum(albumId){
-   $.ajax({
-    url: eventsUrl,
-    data: params,
-    dataType: 'json',
-    success: function (data) {
- 
-    }
-});
+function loadAlbum(productId, bought_tracks="", album_type){
+    console.log("a")
+    var params = {};
+    params.productId = productId;
+    params.bought_tracks = bought_tracks;
+    params.album_type = album_type;
+    $.ajax({
+        url: "/multimedia/library/" + productId,
+        data: params,
+        success: function (data) {
+            albumContainer = $(".my-downloads-album__list.container")[0]
+            $(albumContainer).html(data)
+        }
+    });
 }
 </script>
+<script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+<script>
+    var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
+    $(document).on('click', ".my-downloads-album__tracks-table__row.flex-row", function(event){
+        progess = calculateProgress($(this),event)
+        //find audio player, its track number and change the big player track number
+        audioPlayer = $(this).find(".audio audio")[0]
+        audioPlayerTrack = $(audioPlayer).data("track")
+        mainContainer = $(this).closest(".big-player")[0]
+        playerContainer =$(mainContainer).find(".player-container")[0]
+        $(playerContainer).data("track", audioPlayerTrack)
+        //make active track color red, toggles player button and remove previous track color
+        var trackInfo = $(this).find(".track-info")
+        lastPlayerContainerButton = $(lastPlayerContainer).find(".purchases-player-button ")
+        playerContainerButton = $(playerContainer).find(".purchases-player-button")
+        audioProgress = audioPlayer.currentTime / audioPlayer.duration * 100
+        if( $(trackInfo).hasClass("active-track")){
+            if(Math.abs(progess - audioProgress) > 5 ){
+                {% comment %} changeProgress(progess, audioPlayer) {% endcomment %}
+            }else{
+                $(".active-track").removeClass("active-track")
+                play = false
+                $(playerContainerButton).removeClass("mypause-btn")
+                $(playerContainerButton).addClass("myplay-btn")
+                $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
+            }
+        }else{
+            $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red" )
+            $(".active-track").removeClass("active-track")
+            $(this).find(".track-info").addClass("active-track")
+            play = true;
+            $(lastPlayerContainerButton).addClass("myplay-btn")
+            $(lastPlayerContainerButton).removeClass("mypause-btn")
+            $(playerContainerButton).addClass("mypause-btn")
+            $(playerContainerButton).removeClass("myplay-btn")
+            $(playerContainerButton).find('div').html('<i class="fas fa-pause"></i>')
+        }
+        //toggles player
+        if(lastPlayer != undefined){
+            lastPlayer.pause()
+        }
+        togglePlayer(audioPlayer, play)
+        
+        lastPlayerContainer = playerContainer
+        lastPlayer = audioPlayer
+    });
+    function togglePlayer(playerContainer, play){
+        if(play){
+            audioPlayer.play()
+        }else{
+            audioPlayer.pause()
+        }
+    }
+    $(document).on('click', ".purchases-player-button", function(){
+        bigContainer = $(this).closest(".big-player")[0]
+        playerContainer = $(bigContainer).find(".player-container")[0]
+        playerContainerButton = $(playerContainer).find(".purchases-player-button")[0]
+        trackNumber = $(playerContainer).data("track")
+        trackInfo = $(bigContainer).find(".track-info[data-track='" + trackNumber +  "']")[0]
+        audioPlayer = $(bigContainer).find(".audio audio[data-track='" + trackNumber +  "']")[0]
+        lastPlayerContainerButton = $(lastPlayerContainer).find(".purchases-player-button ")
+        if( $(trackInfo).hasClass("active-track")){
+            $(trackInfo).removeClass("active-track")
+            play = false
+            $(playerContainerButton).removeClass("mypause-btn")
+            $(playerContainerButton).addClass("myplay-btn")
+            $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
+        }else{
+            $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red" )
+            $(".active-track").removeClass("active-track")
+            $(trackInfo).addClass("active-track")
+            play = true
+            $(lastPlayerContainerButton).addClass("myplay-btn")
+            $(lastPlayerContainerButton).removeClass("mypause-btn")
+            $(playerContainerButton).addClass("mypause-btn")
+            $(playerContainerButton).removeClass("myplay-btn")
+            $(playerContainerButton).find('div').html('<i class="fas fa-pause"></i>')
+
+        }
+        if(lastPlayer != undefined){
+            lastPlayer.pause()
+        }
+        togglePlayer(audioPlayer, play)
+        lastPlayerContainer = playerContainer
+        lastPlayer = audioPlayer
+
+    })
+    var audioPlayers = document.getElementsByClassName("audio-player");
+    Array.prototype.forEach.call(audioPlayers, function(player) {
+        var setTime
+        player.addEventListener("play", function(){
+                setTime = setInterval( t=> {
+                currentTime = Math.floor(player.currentTime)
+                $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red")
+                timeTracker = $(player).closest(".my-downloads-album__tracks-table__row").find(".my-downloads-album__tracks-table__column.duration")[0]
+                progress = player.currentTime / player.duration * 100
+                progressWidth = progress + "%"
+                $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", progressWidth )
+                $(timeTracker).html(readableTime(currentTime)) 
+            },1000)
+               
+        });
+        player.addEventListener("pause", function(){
+            clearInterval(setTime)
+            $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "black" )
+        });
+        player.addEventListener("ended", function(){
+            $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "black" );
+            $(player).closest(".big-player").find(".purchases-player-button").removeClass("mypause-btn");
+            $(player).closest(".big-player").find(".purchases-player-button").addClass("myplay-btn");
+            $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
+            $(".active-track").removeClass("active-track");
+            player.currentTime = 0;
+            clearInterval(setTime)
+        });
+    });
+    function readableTime(seconds) {
+        var hr = ~~(seconds / 3600);
+        var min = ~~((seconds % 3600) / 60);
+        var sec = seconds % 60;
+        var sec_min = "";
+        if (hr > 0) {
+            sec_min += "" + hr + ":" + (min < 10 ? "0" : "");
+        }
+        sec_min += "" + min + ":" + (sec < 10 ? "0" : "");
+        sec_min += "" + sec;
+        return sec_min;
+    }
+
+
+    function calculateProgress(element, position) {
+    
+    var mX, mY, distance,
+        $element  = $(element);
+
+    function calculateDistance(elem, mouseX, mouseY) {
+        return Math.floor(mouseX - (elem.offset().left), 2);
+    }
+    
+    mX = position.pageX;
+    mY = position.pageY;
+    distance = Math.floor(calculateDistance($element, mX, mY) / element.width() * 100); 
+    return distance  
+    };
+    function changeProgress(progress, player){
+        newProgress = Math.floor(player.duration) * progress / 100
+        player.currentTime = newProgress;
+    }
+
+    $(".event-display").on("click", function(){
+        albumId = $(this).data("parent-pk")
+        bought_album = $(this).data("bought")
+        album_type = $(this).data("type")
+        loadAlbum(albumId, bought_album, album_type)
+    })
+
+</script>
+
 {% endblock %}
