@@ -14,7 +14,7 @@
              href="#">Sign In</a>
         </p>
         <form role="form" id="form-become-member" method="post"
-              action="{% url 'accounts_signup' plan_name='free' %}">
+              action="{% url 'accounts_signup' plan_name='free' %}?next={{ request.path }}">
           {% csrf_token %}
           <div class="form-group">
             <input type="text" class="form-control" name="first_name" placeholder="First Name">
