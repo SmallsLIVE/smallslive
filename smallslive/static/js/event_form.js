@@ -359,7 +359,7 @@ EventForm = {
             $('#id_end').datetimepicker('update');
         }
         this.initVenueSelectFunctionality();
-        //this.initInlineArtistsFunctionality();
+        this.initInlineArtistsFunctionality();
     }
 };
 
