@@ -698,6 +698,13 @@
   }
 
   .artist-form {
+    .artist-profile-picture {
+      margin-right: 20px;
+      .allow-fullsize {
+        display: none;
+      }
+    }
+
     .title1{
       font-size: 30px;
     }
@@ -758,11 +765,6 @@
   }
 }
 
-.artist-profile-picture {
-  .allow-fullsize {
-    display: none;
-  }
-}
 
 .hide-original {
   img {
@@ -1204,5 +1206,4 @@
   margin: 20px auto;
   width: 200px;
 }
-
 
