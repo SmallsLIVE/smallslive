@@ -13,7 +13,8 @@ function replaceWhiteSelects(divElement){
       a = document.createElement("DIV");
       a.setAttribute("class", "select-selected");
       a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
-      a.setAttribute("title", a.innerHTML.trim());
+      // Set tooltip while getting rid of any extra white spaces
+      a.setAttribute("title", a.innerHTML.replace(/\s+/g,' ').trim());
       currentSelect.appendChild(a);
       /*for each element, create a new DIV that will contain the option list:*/
       b = document.createElement("DIV");

@@ -207,7 +207,7 @@
                   {% if basket_form.fields.child_id.choices %}
                     <div class="select">
                       <select class="store-add-small__options" name="child_id" style="height: 50px;">
-                        <option data-price="0" value="none">Select option</option>
+                        <option noSelect="1" data-price="0" value="none" class="hidden">Select option</option>
                         {% for variant in product.variants.all %}
                         {% purchase_info_for_product request variant as variant_session %}
                           {% if session.availability.is_available_to_buy %}
