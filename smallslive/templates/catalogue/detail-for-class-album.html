@@ -16,7 +16,7 @@
 
 {% block store_content %}
 <div class="my-downloads-album row big-player">
-<div class="my-downloads-album__cover flex-column player-container " data-track=0>
+<div class="my-downloads-album__cover flex-column player-container " data-track=0 style="border-radius: 0px;">
     {% with image=product.primary_image %}
     {% if product.parent_id %}
         {% with image=product.parent.primary_image %}
@@ -34,7 +34,7 @@
         {% with image=product.primary_image %}
             {% thumbnail image.original "245x245" upscale=False as thumb %}
                 <div style="position: relative; min-width:255px">
-                    <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }}">
+                    <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }}" style="border-radius: 0px;">
                         <div class="purchases-player-button myplay-btn">
                         <div class="fa-thin-circle fa" >
                         <i class="fas fa-play"></i></div>
