@@ -409,7 +409,7 @@
     .slide-btn.next {
       border-radius: 0;
     }
-    padding: 40px 0;
+    padding: 0 0 40px 0;
     //background-color: #fff;
 
     @media (max-width: 767px) {
@@ -2661,5 +2661,10 @@ form .back-to-payment-btn {
   @media (max-width: 400px) {
     margin-bottom: 10px;
     width: 100%;
+  }
+}
+.store-banner{
+  .banners{
+    margin-bottom: 0px;
   }
 }

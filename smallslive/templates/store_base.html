@@ -13,7 +13,7 @@
 
 
 {% block home_content %}
-    <div class="hidden">
+    <div class="">
         <div class="store-nav store-nav--category landing-nav col-xs-12 visible-xs">
             <span class="visible-xs store-nav__title store-nav__title--category expand-toggle" id="store-nav-cat-expand">Store Categories<i class="fa fa-caret-down"></i></span>
                 <ul class="store-nav__categories" id="store-nav-cat">
@@ -45,10 +45,12 @@
                     {% endif %}
             </ul>
         </div>
+        <div class="store-banner">
         {% if not product %}
           {% include 'home_banners.html' with active='catalog' %}
           {% include 'home_banners_mobile.html'  with active='catalog'%}
         {% endif %}
+        </div>
         <section class="store-header flex-row content-centered">
             <div class="store-header__content">
                 <span id="storeTitle" class="store-header__title">
