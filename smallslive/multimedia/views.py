@@ -4,9 +4,10 @@ from cacheops import cached, cached_view
 from django.db.models import F, Q, Max
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, TemplateView
 from metrics.models import UserVideoMetric
 from oscar.apps.order.models import Line
+from oscar_apps.catalogue.models import Product
 from events.models import Recording, Event
 from .forms import TrackFileForm
 from .models import MediaFile
@@ -235,7 +236,7 @@ class NewMyDownloadsView(LoginRequiredMixin, ListView):
         album_list = []
         ##pass full albums
         for album in digital_album_list:
-            album = {"parent":album.product.pk,"bought_tracks":[],"album_type":"full_album"}
+            album = {"parent":album.product.parent,"bought_tracks":[],"album_type":"full_album"}
             album_list.append(album)
 
         ##pass tracks to album    
@@ -248,15 +249,35 @@ class NewMyDownloadsView(LoginRequiredMixin, ListView):
                 album["bought_tracks"].append(track.product.pk)
             else:
                 if album["parent"] == None:
-                    album = {"parent":track.product.album.pk,"bought_tracks":[track.product.pk],"album_type":"track_album"}
+                    album = {"parent":track.product.album,"bought_tracks":[track.product.pk],"album_type":"track_album"}
                 else:
                     track_to_album_list.append(album)
-                    album = {"parent":track.product.album.pk,"bought_tracks":[track.product.pk],"album_type":"track_album"}
+                    album = {"parent":track.product.album,"bought_tracks":[track.product.pk],"album_type":"track_album"}
             last_parent_id = track_parent_id
         track_to_album_list.append(album)
         album_list += track_to_album_list
-        print album_list
-            
+        context["album_list"] = album_list
+ 
         return context
 
 new_downloads = NewMyDownloadsView.as_view()
+
+
+
+
+class AlbumView(TemplateView):
+    model = Product
+    pk_url_kwarg = 'pk'
+    template_name = 'multimedia/album-display.html'
+    context_object_name = 'album'
+
+    def get_context_data(self, **kwargs):
+        context = super(AlbumView, self).get_context_data(**kwargs)
+        context["bought_tracks"] = self.request.GET.get('bought_tracks', '')
+        context["is_full"] = self.request.GET.get('album_type', '')
+        context["album_product"] = Product.objects.filter(pk = self.request.GET.get('productId', '')).first()
+        print context["album_product"].title
+        return context
+
+album_view = AlbumView.as_view()
+
