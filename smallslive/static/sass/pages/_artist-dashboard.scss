@@ -281,13 +281,16 @@
       width:  65%;
     }
     @media (max-width: 768px) {
-      width: 55%;
+      width: 78%;
     }
     @media (max-width: 540px) {
-      width: 55%;
+      width: 70%;
     }
     @media (max-width: 425px) {
       width: 75%;
+    }
+    @media (max-width: 340px) {
+      width: 60%;
     }
   }
   .artist-event-arrow {
@@ -741,11 +744,12 @@
       padding: 10px 0;
       @media (max-width: 1023px) {
         padding: 20px 0;
+
         .button-row {
           margin-top: 20px;
         }
       }
-      @media (max-width: 425px) {
+      @media (max-width: 768px) {
         padding-left: 20px;
       }
     }
