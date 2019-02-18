@@ -211,14 +211,12 @@ function loadAlbum(productId, bought_tracks, album_type){
 
     var mouseEventHandler = function(ev) {
         dragabbleProgess = calculateProgress($(this),ev) + "%"
-        console.log(dragabbleProgess)
         $(this).find(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", dragabbleProgess )
 
     }
     $(document).on( "mousedown",  ".length-bar", function(event){
         maincontainer = $(this).closest(".track-container")[0]
-        active = $(container).find(".track-info.active-track")
-        console.log( active.length ) 
+        active = $(maincontainer).find(".track-info.active-track")
         if( active.length > 0){
             el.addEventListener("mousemove", mouseEventHandler)
             clearInterval(setTime)
@@ -226,11 +224,13 @@ function loadAlbum(productId, bought_tracks, album_type){
      
     });
     $(document).on( "mouseup",  ".length-bar", function(ev){
-        container = $(this).closest(".track-container")[0]
-        if($(container).find(".track-info.active-track").length > 0){
+        maincontainer = $(this).closest(".track-container")[0]
+        active = $(maincontainer).find(".track-info.active-track")
+        if(active.length > 0){
             el.removeEventListener("mousemove", mouseEventHandler);
-            player = container.getElementsByClassName("audio-player");
-            changeProgress(calculateProgress($(container),ev), player[0])
+            player = maincontainer.getElementsByClassName("audio-player")[0];
+            console.log(player)
+            changeProgress(calculateProgress($(maincontainer),ev), player)
             setTime = setInterval( t=> {
                 currentTime = Math.floor(player.currentTime)
                 $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")

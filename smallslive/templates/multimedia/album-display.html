@@ -102,16 +102,18 @@
             <div class="length-bar"></div>
             <div class="my-downloads-album__tracks-table__row flex-row {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}">
                 <div class="progress-bar"></div>
-                <div class="hidden my-downloads-album__tracks-table__column audio">
-                    <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
-                   {% if track.get_hd_track_stockrecord %}
-                        <source src="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
-                    {% else %}
-                        <source src="{{ track.get_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
-                    {% endif %}
+                {% if track.pk in bought_tracks or is_full = 'full_album' %} 
+                    <div class="hidden my-downloads-album__tracks-table__column audio">
+                        <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
+                        {% if track.get_hd_track_stockrecord %}
+                            <source src="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                        {% else %}
+                            <source src="{{ track.get_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
+                        {% endif %}
 
-                    </audio>
-                </div>
+                        </audio>
+                    </div>
+                {% endif %}
                 <div class="flex-column track-info {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}" data-track="{{ forloop.counter0 }}">
                     <div class="my-downloads-album__tracks-table__column title2">
                     {{ track.title }}
