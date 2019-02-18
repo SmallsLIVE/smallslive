@@ -18,7 +18,7 @@
         {% if album_list %}
             {% for album in album_list %}
                     {% with image=album.parent %}
-                        <article class="event-display" data-parent-pk="{{ album.parent.pk }}" data-type="{{ album.album_type }}"> {% include 'promotions/featured_card.html' with event=image redirect=True secondary=secondary hide_play=True%}
+                        <article class="event-display" data-parent-pk="{{ album.parent.pk }}" data-type="{{ album.album_type }}" data-bought="{{ album.bought_tracks }}"> {% include 'promotions/featured_card.html' with event=image redirect=True secondary=secondary hide_play=True%}
                             <div class="event-info">
                                 <div>
                                     <div class="event-info-title">{{ image.title }}</div>
@@ -42,10 +42,11 @@
 {% block extra_js %}
 <script>
 var el, setTime;
-function loadAlbum(productId, album_type){
+function loadAlbum(productId, bought_tracks, album_type){
     var params = {};
     params.productId = productId;
     params.album_type = album_type;
+    params.bought_tracks = JSON.stringify(bought_tracks);
     $.ajax({
         url: "/multimedia/library/" + productId,
         data: params,
@@ -87,7 +88,7 @@ function loadAlbum(productId, album_type){
 <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
 <script>
     var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
-    $(document).on('click', ".my-downloads-album__tracks-table__row.flex-row", function(event){
+    $(document).on('click', ".my-downloads-album__tracks-table__row.flex-row:not(.disabled)", function(event){
         progess = calculateProgress($(this),event)
         //find audio player, its track number and change the big player track number
         audioPlayer = $(this).find(".audio audio")[0]
@@ -204,7 +205,8 @@ function loadAlbum(productId, album_type){
     $(".event-display").on("click", function(){
         albumId = $(this).data("parent-pk")
         album_type = $(this).data("type")
-        loadAlbum(albumId, album_type)
+        bought_tracks = $(this).data("bought")
+        loadAlbum(albumId, bought_tracks, album_type)
     })
 
     var mouseEventHandler = function(ev) {

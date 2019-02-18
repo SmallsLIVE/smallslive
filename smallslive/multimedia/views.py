@@ -1,4 +1,5 @@
 import json
+import ast
 from braces.views import LoginRequiredMixin
 from cacheops import cached, cached_view
 from django.db.models import F, Q, Max
@@ -273,11 +274,12 @@ class AlbumView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(AlbumView, self).get_context_data(**kwargs)
-        context["bought_tracks"] = self.request.GET.get('bought_tracks', '')
+        bought_tracks = self.request.GET.get('bought_tracks', '')
+        context["bought_tracks"] = ast.literal_eval(bought_tracks)
         context["is_full"] = self.request.GET.get('album_type', '')
         context["album_product"] = Product.objects.filter(pk = self.request.GET.get('productId', '')).first()
         print context["album_product"].title
-        print context["bought_tracks"]
+        print context["bought_tracks"][0]
         return context
 
 album_view = AlbumView.as_view()

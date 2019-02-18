@@ -101,9 +101,9 @@
     <div class="my-downloads-album__tracks-table">
     {% for track in album_product.tracks.all|dictsort:"ordering" %}
         <!-- tracks table row -->
-        <div class="track-container {{ track.pk }} {% if not track.pk in bought_tracks and not is_full %} BUUUUY {% endif %}" style="position:relative">
+        <div class="track-container" style="position:relative">
             <div class="length-bar"></div>
-            <div class="my-downloads-album__tracks-table__row flex-row">
+            <div class="my-downloads-album__tracks-table__row flex-row {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}">
                 <div class="progress-bar"></div>
                 <div class="hidden my-downloads-album__tracks-table__column audio">
                     <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
@@ -115,7 +115,7 @@
 
                     </audio>
                 </div>
-                <div class="flex-column track-info" data-track="{{ forloop.counter0 }}">
+                <div class="flex-column track-info {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}" data-track="{{ forloop.counter0 }}">
                     <div class="my-downloads-album__tracks-table__column title2">
                     {{ track.title }}
                     </div>
@@ -126,17 +126,19 @@
                 <div class="store-buy my-downloads-album__tracks-table__column duration text1">
                     {{ track.attr.duration }}
                 </div>
+          
                 <div class="my-downloads-album__tracks-table__column buy-track store-buy">
-                    <div class="buy-button-container">
+                {% if not track.pk in bought_tracks and not is_full = 'full_album' %} 
+                
+                          <div class="buy-button-container">
                       {% if user.is_authenticated %}
                         <a class="white-border-button  flex-button"
                                       data-toggle="dropdown" aria-expanded="false"
-                                      href="">Buy track <i
+                                      href="">Add to library<i
                                           class="fa fa-caret-down"></i></a>
                       {% else %}
                         <a class="tracks-table__button" href="#"
-                           data-toggle="modal" data-target="#logIn">Buy
-                          track <i class="fa fa-caret-down"></i></a>
+                           data-toggle="modal" data-target="#logIn">Add to library <i class="fa fa-caret-down"></i></a>
                       {% endif %}
                       <div class="dropdown-menu" role="menu">
                           {% if track.get_track_stockrecord %}
@@ -182,13 +184,29 @@
                           {% comment %} <a class="white-border-button flex border-not" href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download {% endcomment %}
                           {% endif %}
 
-                      </div>
+                        </div>
 
 
              
                    
 
                     </div>
+                {% else %}
+                      <div class="buy-button-container">
+                        <a class="white-border-button flex-button" data-toggle="dropdown" aria-expanded="false" href="">
+                                <span>Download</span> <i class="fa fa-caret-down"></i></a>
+                        <div class="dropdown-menu" role="menu">
+                            {% if is_hd %}
+                            <a class="white-border-button no-border flex" href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download
+                                HD</a>
+                            {% else %}
+                            <a class="white-border-button no-border flex" href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download
+                                mp3</a>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                {% endif %}
                 </div>
             </div>
         </div>

@@ -15,21 +15,26 @@
   justify-content: space-between;
   list-style-type: none;
   padding: 40px 20px;
+
   @media (max-width: 1023px) {
     flex-direction: column;
   }
+
   .dropdown-menu {
     min-width: 0px;
     width: 100%;
-    padding:0;
+    padding: 0;
   }
+
   .song-container {
     @media (max-width: 1023px) {
       margin: 0 auto;
       width: 100%;
     }
+
     width: 60%;
   }
+
   .buy-button-container .white-border-button {
     width: 100%;
     text-align: center;
@@ -37,16 +42,20 @@
     padding: 0px 8px;
     line-height: 16px;
   }
+
   &:nth-child(odd) {
     background-color: #f0f0eb;
+
     .buy-button-container ul li {
       padding: 2px;
     }
   }
+
   &:nth-child(even) {
     .white-border-button {
       border: 3px solid rgba(0, 0, 0, 0.9);
     }
+
     .buy-button-container ul li {
       padding: 2px;
     }
@@ -67,42 +76,52 @@
     overflow: visible;
     padding: 0 10px;
     width: 33%;
+
     @media (max-width: 1023px) {
       width: 100%;
       margin: 0 auto;
       flex-direction: row;
     }
+
     @media (max-width: 500px) {
       flex-direction: column;
     }
-    .artist-link{
+
+    .artist-link {
       font-size: 16px;
-      color: black ;
-      &:hover{
+      color: black;
+
+      &:hover {
         color: $accent-color;
       }
     }
+
     .title6 {
       transform: none;
+
       @media (max-width: 1023px) {
         margin: 15px 0;
         width: 58%;
       }
+
       @media (max-width: 500px) {
         width: 100%;
         margin: 0;
       }
     }
+
     img.defineImageRatio,
     img.defineImageRatio.wide,
     img.defineImageRatio.tall {
       position: relative;
       margin: 0 30px 30px 0;
       width: 100%;
+
       @media (max-width: 1023px) {
         width: 225px;
         height: 225px;
       }
+
       @media (max-width: 500px) {
         width: 100%;
         height: 100%;
@@ -120,14 +139,17 @@
       height: calc(100% - 30px);
       align-items: center;
       width: 100%;
+
       @media (max-width: 1023px) {
         width: 225px;
         height: 225px;
       }
+
       @media (max-width: 500px) {
         width: 100%;
         height: 100%;
       }
+
       &.myplay-btn,
       &.mypause-btn {
         .fa-thin-circle.fa {
@@ -135,6 +157,7 @@
           animation-duration: 0.6s;
           border: red solid;
           border-width: 3px 3px 3px 3px;
+
           i {
             font-size: 35px;
             font-style: normal;
@@ -148,12 +171,14 @@
           animation-duration: 0.6s;
           border: red solid;
           border-width: 3px 3px 3px 3px;
+
           i {
             font-size: 35px;
             font-style: normal;
           }
         }
       }
+
       .fa-thin-circle.fa {
         z-index: 10;
         display: flex;
@@ -162,13 +187,16 @@
         height: 88px;
         width: 88px;
         border-radius: 44px;
+
         &::before {
           font-size: 40px;
         }
+
         &:hover {
           cursor: pointer;
         }
       }
+
       transition: none;
     }
   }
@@ -210,14 +238,17 @@
     padding: 0 10px;
     float: left;
     width: 100%;
+
     audio {
       @media (max-width: 960px) and (min-width: 768px) {
         width: 256px;
       }
+
       @media (max-width: 580px) {
         width: 99%;
       }
     }
+
     &__heading {
       @include lato-black;
       font-size: 18px;
@@ -230,6 +261,7 @@
       border-bottom: 1px solid rgba(#000, 0.1);
       @include display(flex);
       @include align-items(center);
+
       &:before,
       &:after {
         display: none;
@@ -240,29 +272,40 @@
       padding: 7px 0;
       @include display(flex);
       @include align-items(center);
+
       &:first-of-type {
         border-top: 1px solid rgba(0, 0, 0, 0.1);
       }
+
       &.flex-row {
+        &.disabled {
+          color: gray;
+        }
+
         .progress-bar {
           height: 1px;
           width: 0%;
           position: absolute;
           top: 0;
           background-color: black;
-          &.active-bar{
+
+          &.active-bar {
             background-color: $accent-color;
-           
+
           }
         }
+
         justify-content: space-between;
+
         .track-info {
           width: 65%;
+
           &.active-track {
             color: $accent-color;
           }
         }
       }
+
       &:before,
       &:after {
         display: none;
@@ -285,6 +328,7 @@
       &.title,
       &.buy-track {
         text-align: left;
+
         @media (max-width: 580px) {
           width: 36%;
         }
@@ -295,8 +339,9 @@
         @include display(flex);
         @include align-items(center);
         @include justify-content(flex-end);
+
         @media (max-width: 580px) {
-          &:not(.store-buy){
+          &:not(.store-buy) {
             display: none;
           }
         }
@@ -305,8 +350,9 @@
       &.duration {
         text-align: center;
         margin: 0 5px;
+
         @media (max-width: 580px) {
-          &.store-buy{
+          &.store-buy {
             display: none;
           }
         }
@@ -392,78 +438,93 @@
     font-size: 18px;
   }
 }
+
 @keyframes playButton {
   0% {
     border-width: 0 0 0 0;
   }
+
   16% {
     border-width: 1px 0 0 0;
   }
+
   32% {
     border-width: 2px 1px 0 0;
   }
+
   52% {
     border-width: 3px 2px 1px 0;
   }
+
   66% {
     border-width: 3px 3px 2px 1px;
   }
+
   80% {
     border-width: 3px 3px 3px 2px;
   }
+
   100% {
     border-width: 3px 3px 3px 3px;
   }
 }
+
 @keyframes stopButton {
   0% {
     border-width: 0 0 0 0;
   }
+
   16% {
     border-width: 1px 0 1px 0;
   }
+
   32% {
     border-width: 2px 1px 2px 1px;
   }
+
   52% {
     border-width: 3px 2px 3px 2px;
   }
+
   66% {
     border-width: 3px 3px 3px 3px;
   }
 }
-.newest-recordings-container.downloads{
-  .event-picture img{
+
+.newest-recordings-container.downloads {
+  .event-picture img {
     height: 100%;
   }
 }
-.song-container .my-downloads-album__tracks-table .track-container:hover{
-  .length-bar{
+
+.song-container .my-downloads-album__tracks-table .track-container:hover {
+  .length-bar {
     height: 5px;
     transition: height 0.2s;
   }
-  .progress-bar{
+
+  .progress-bar {
     height: 5px;
-    
-    &.active-bar::after{
-        transition: all 0.15s;
-        z-index: 10;
-        content: "\A";
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: $accent-color;
-        display: block;
-        position: absolute;
-        right: -6px;
-        top: -2px;
-        transition: height 0.2s;
+
+    &.active-bar::after {
+      transition: all 0.15s;
+      z-index: 10;
+      content: "\A";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: $accent-color;
+      display: block;
+      position: absolute;
+      right: -6px;
+      top: -2px;
+      transition: height 0.2s;
     }
   }
 }
 
 
-.length-bar{
+.length-bar {
   z-index: 10;
   height: 1px;
   width: 100%;
