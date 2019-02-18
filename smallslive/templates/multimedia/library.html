@@ -41,7 +41,7 @@
 
 {% block extra_js %}
 <script>
-var el;
+var el, setTime;
 function loadAlbum(productId, bought_tracks="", album_type){
     console.log("a")
     var params = {};
@@ -55,7 +55,6 @@ function loadAlbum(productId, bought_tracks="", album_type){
             albumContainer = $("#my-downloads-album__list")
             $(albumContainer).html(data)
               Array.prototype.forEach.call(audioPlayers, function(player) {
-                var setTime
                 player.addEventListener("play", function(){
                         setTime = setInterval( t=> {
                         currentTime = Math.floor(player.currentTime)
@@ -223,11 +222,26 @@ function loadAlbum(productId, bought_tracks="", album_type){
     $(document).on( "mousedown",  ".track-container", function(event){
         if($(this).find(".track-info.active-track").length > 0){
             el.addEventListener("mousemove", mouseEventHandler)
+            clearInterval(setTime)
         }
      
     });
     $(document).on( "mouseup",  ".track-container", function(){
-        el.removeEventListener("mousemove", mouseEventHandler);
+        if($(this).find(".track-info.active-track").length > 0){
+            el.removeEventListener("mousemove", mouseEventHandler);
+            container = $(this)[0]
+            player = container.getElementsByClassName("audio-player");
+            console.log(player)
+            setTime = setInterval( t=> {
+                currentTime = Math.floor(player.currentTime)
+                $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")
+                timeTracker = $(player).closest(".my-downloads-album__tracks-table__row").find(".my-downloads-album__tracks-table__column.duration")[0]
+                progress = player.currentTime / player.duration * 100
+                progressWidth = progress + "%"
+                $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", progressWidth )
+                $(timeTracker).html(readableTime(currentTime)) 
+            },100)
+        }
     });
  
 
