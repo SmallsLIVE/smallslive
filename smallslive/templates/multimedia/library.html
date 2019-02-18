@@ -101,12 +101,11 @@ function loadAlbum(productId, album_type){
         playerContainerButton = $(playerContainer).find(".purchases-player-button")
         audioProgress = audioPlayer.currentTime / audioPlayer.duration * 100
         if( $(trackInfo).hasClass("active-track")){
-                {% comment %} $(".active-track").removeClass("active-track")
-                play = false
-                $(playerContainerButton).removeClass("mypause-btn")
-                $(playerContainerButton).addClass("myplay-btn")
-                $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>') {% endcomment %}
-
+            $(".active-track").removeClass("active-track")
+            play = false
+            $(playerContainerButton).removeClass("mypause-btn")
+            $(playerContainerButton).addClass("myplay-btn")
+            $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
         }else{
             $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")
             $(".active-track").removeClass("active-track")
@@ -215,8 +214,10 @@ function loadAlbum(productId, album_type){
 
     }
     $(document).on( "mousedown",  ".length-bar", function(event){
-        console.log("a")
-        if($(this).next(".track-info.active-track").length > 0){
+        maincontainer = $(this).closest(".track-container")[0]
+        active = $(container).find(".track-info.active-track")
+        console.log( active.length ) 
+        if( active.length > 0){
             el.addEventListener("mousemove", mouseEventHandler)
             clearInterval(setTime)
         }
