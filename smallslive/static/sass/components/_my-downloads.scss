@@ -499,12 +499,13 @@
 
 .song-container .my-downloads-album__tracks-table .track-container:hover {
   .length-bar {
-    height: 5px;
+    height: 6px;
     transition: height 0.2s;
   }
 
   .progress-bar {
-    height: 5px;
+    height: 6px;
+    transition: height 0.2s;
 
     &.active-bar::after {
       transition: all 0.15s;
@@ -517,7 +518,7 @@
       display: block;
       position: absolute;
       right: -6px;
-      top: -2px;
+      top: -1px;
       transition: height 0.2s;
     }
   }
