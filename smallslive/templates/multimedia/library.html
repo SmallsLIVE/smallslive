@@ -41,6 +41,7 @@
 
 {% block extra_js %}
 <script>
+var el;
 function loadAlbum(productId, bought_tracks="", album_type){
     console.log("a")
     var params = {};
@@ -58,21 +59,21 @@ function loadAlbum(productId, bought_tracks="", album_type){
                 player.addEventListener("play", function(){
                         setTime = setInterval( t=> {
                         currentTime = Math.floor(player.currentTime)
-                        $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red")
+                        $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")
                         timeTracker = $(player).closest(".my-downloads-album__tracks-table__row").find(".my-downloads-album__tracks-table__column.duration")[0]
                         progress = player.currentTime / player.duration * 100
                         progressWidth = progress + "%"
                         $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", progressWidth )
                         $(timeTracker).html(readableTime(currentTime)) 
-                    },1000)
+                    },100)
                     
                 });
                 player.addEventListener("pause", function(){
                     clearInterval(setTime)
-                    $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "black" )
+                    $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").removeClass("active-bar")
                 });
                 player.addEventListener("ended", function(){
-                    $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "black" );
+                    $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").removeClass("active-bar");
                     $(player).closest(".big-player").find(".purchases-player-button").removeClass("mypause-btn");
                     $(player).closest(".big-player").find(".purchases-player-button").addClass("myplay-btn");
                     $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
@@ -81,6 +82,8 @@ function loadAlbum(productId, bought_tracks="", album_type){
                     clearInterval(setTime)
                 });
             });
+            el = document.querySelector(".track-container");
+            console.log(el)
         }
     });
 }
@@ -112,7 +115,7 @@ function loadAlbum(productId, bought_tracks="", album_type){
                 $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
             }
         }else{
-            $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red" )
+            $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")
             $(".active-track").removeClass("active-track")
             $(this).find(".track-info").addClass("active-track")
             play = true;
@@ -153,7 +156,7 @@ function loadAlbum(productId, bought_tracks="", album_type){
             $(playerContainerButton).addClass("myplay-btn")
             $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
         }else{
-            $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("background-color", "red" )
+            $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")
             $(".active-track").removeClass("active-track")
             $(trackInfo).addClass("active-track")
             play = true
@@ -170,7 +173,6 @@ function loadAlbum(productId, bought_tracks="", album_type){
         togglePlayer(audioPlayer, play)
         lastPlayerContainer = playerContainer
         lastPlayer = audioPlayer
-
     })
     var audioPlayers = document.getElementsByClassName("audio-player");
   
@@ -213,6 +215,21 @@ function loadAlbum(productId, bought_tracks="", album_type){
         album_type = $(this).data("type")
         loadAlbum(albumId, bought_album, album_type)
     })
+
+    var mouseEventHandler = function(ev) {
+        progess = calculateProgress($(this),ev) + "%"
+        $(this).find(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", progess )
+    }
+    $(document).on( "mousedown",  ".track-container", function(event){
+        if($(this).find(".track-info.active-track").length > 0){
+            el.addEventListener("mousemove", mouseEventHandler)
+        }
+     
+    });
+    $(document).on( "mouseup",  ".track-container", function(){
+        el.removeEventListener("mousemove", mouseEventHandler);
+    });
+ 
 
 </script>
 

@@ -250,6 +250,10 @@
           position: absolute;
           top: 0;
           background-color: black;
+          &.active-bar{
+            background-color: $accent-color;
+           
+          }
         }
         justify-content: space-between;
         .track-info {
@@ -433,3 +437,18 @@
     height: 100%;
   }
 }
+.song-container .my-downloads-album__tracks-table .track-container:hover{
+  .active-bar::after{
+    content: "\A";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $accent-color;
+    display: block;
+    position: absolute;
+    right: -6px;
+    top: -3.8px;
+  }
+}
+
+
