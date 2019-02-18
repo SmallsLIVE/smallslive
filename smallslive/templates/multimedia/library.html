@@ -18,7 +18,7 @@
         {% if album_list %}
             {% for album in album_list %}
                     {% with image=album.parent %}
-                        <article class="event-display" data-parent-pk="{{ album.parent.pk }}" data-type="{{ album.album_type }}" data-bought="{{ album.bought_tracks }}" > {% include 'promotions/featured_card.html' with event=image redirect=True secondary=secondary hide_play=True%}
+                        <article class="event-display" data-parent-pk="{{ album.parent.pk }}" data-type="{{ album.album_type }}"> {% include 'promotions/featured_card.html' with event=image redirect=True secondary=secondary hide_play=True%}
                             <div class="event-info">
                                 <div>
                                     <div class="event-info-title">{{ image.title }}</div>
@@ -42,11 +42,9 @@
 {% block extra_js %}
 <script>
 var el, setTime;
-function loadAlbum(productId, bought_tracks="", album_type){
-    console.log("a")
+function loadAlbum(productId, album_type){
     var params = {};
     params.productId = productId;
-    params.bought_tracks = bought_tracks;
     params.album_type = album_type;
     $.ajax({
         url: "/multimedia/library/" + productId,
@@ -82,7 +80,6 @@ function loadAlbum(productId, bought_tracks="", album_type){
                 });
             });
             el = document.querySelector(".track-container");
-            console.log(el)
         }
     });
 }
@@ -104,15 +101,12 @@ function loadAlbum(productId, bought_tracks="", album_type){
         playerContainerButton = $(playerContainer).find(".purchases-player-button")
         audioProgress = audioPlayer.currentTime / audioPlayer.duration * 100
         if( $(trackInfo).hasClass("active-track")){
-            if(Math.abs(progess - audioProgress) > 5 ){
-                changeProgress(progess, audioPlayer)
-            }else{
-                $(".active-track").removeClass("active-track")
+                {% comment %} $(".active-track").removeClass("active-track")
                 play = false
                 $(playerContainerButton).removeClass("mypause-btn")
                 $(playerContainerButton).addClass("myplay-btn")
-                $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
-            }
+                $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>') {% endcomment %}
+
         }else{
             $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")
             $(".active-track").removeClass("active-track")
@@ -210,14 +204,13 @@ function loadAlbum(productId, bought_tracks="", album_type){
 
     $(".event-display").on("click", function(){
         albumId = $(this).data("parent-pk")
-        bought_album = $(this).data("bought")
         album_type = $(this).data("type")
-        loadAlbum(albumId, bought_album, album_type)
+        loadAlbum(albumId, album_type)
     })
 
     var mouseEventHandler = function(ev) {
-        progess = calculateProgress($(this),ev) + "%"
-        $(this).find(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", progess )
+        dragabbleProgess = calculateProgress($(this),ev) + "%"
+        $(this).find(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", dragabbleProgess )
     }
     $(document).on( "mousedown",  ".track-container", function(event){
         if($(this).find(".track-info.active-track").length > 0){
@@ -226,12 +219,12 @@ function loadAlbum(productId, bought_tracks="", album_type){
         }
      
     });
-    $(document).on( "mouseup",  ".track-container", function(){
+    $(document).on( "mouseup",  ".track-container", function(ev){
         if($(this).find(".track-info.active-track").length > 0){
             el.removeEventListener("mousemove", mouseEventHandler);
-            container = $(this)[0]
+            container = $(this)[0];
             player = container.getElementsByClassName("audio-player");
-            console.log(player)
+            changeProgress(calculateProgress($(this),ev), player[0])
             setTime = setInterval( t=> {
                 currentTime = Math.floor(player.currentTime)
                 $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")

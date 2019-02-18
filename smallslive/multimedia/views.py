@@ -277,6 +277,7 @@ class AlbumView(TemplateView):
         context["is_full"] = self.request.GET.get('album_type', '')
         context["album_product"] = Product.objects.filter(pk = self.request.GET.get('productId', '')).first()
         print context["album_product"].title
+        print context["bought_tracks"]
         return context
 
 album_view = AlbumView.as_view()

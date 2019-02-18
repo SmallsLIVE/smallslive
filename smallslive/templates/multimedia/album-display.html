@@ -101,7 +101,7 @@
     <div class="my-downloads-album__tracks-table">
     {% for track in album_product.tracks.all|dictsort:"ordering" %}
         <!-- tracks table row -->
-        <div class="track-container" style="position:relative">
+        <div class="track-container {{ track.pk }} {% if not track.pk in bought_tracks and not is_full %} BUUUUY {% endif %}" style="position:relative">
             <div class="my-downloads-album__tracks-table__row flex-row">
                 <div class="progress-bar"></div>
                 <div class="hidden my-downloads-album__tracks-table__column audio">
