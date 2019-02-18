@@ -438,17 +438,36 @@
   }
 }
 .song-container .my-downloads-album__tracks-table .track-container:hover{
-  .active-bar::after{
-    content: "\A";
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: $accent-color;
-    display: block;
-    position: absolute;
-    right: -6px;
-    top: -3.8px;
+  .length-bar{
+    height: 5px;
+    transition: height 0.2s;
+  }
+  .progress-bar{
+    height: 5px;
+    
+    &.active-bar::after{
+        transition: all 0.15s;
+        z-index: 10;
+        content: "\A";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: $accent-color;
+        display: block;
+        position: absolute;
+        right: -6px;
+        top: -2px;
+        transition: height 0.2s;
+    }
   }
 }
 
 
+.length-bar{
+  z-index: 10;
+  height: 1px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+}

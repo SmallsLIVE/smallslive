@@ -210,21 +210,24 @@ function loadAlbum(productId, album_type){
 
     var mouseEventHandler = function(ev) {
         dragabbleProgess = calculateProgress($(this),ev) + "%"
+        console.log(dragabbleProgess)
         $(this).find(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", dragabbleProgess )
+
     }
-    $(document).on( "mousedown",  ".track-container", function(event){
-        if($(this).find(".track-info.active-track").length > 0){
+    $(document).on( "mousedown",  ".length-bar", function(event){
+        console.log("a")
+        if($(this).next(".track-info.active-track").length > 0){
             el.addEventListener("mousemove", mouseEventHandler)
             clearInterval(setTime)
         }
      
     });
-    $(document).on( "mouseup",  ".track-container", function(ev){
-        if($(this).find(".track-info.active-track").length > 0){
+    $(document).on( "mouseup",  ".length-bar", function(ev){
+        container = $(this).closest(".track-container")[0]
+        if($(container).find(".track-info.active-track").length > 0){
             el.removeEventListener("mousemove", mouseEventHandler);
-            container = $(this)[0];
             player = container.getElementsByClassName("audio-player");
-            changeProgress(calculateProgress($(this),ev), player[0])
+            changeProgress(calculateProgress($(container),ev), player[0])
             setTime = setInterval( t=> {
                 currentTime = Math.floor(player.currentTime)
                 $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")
