@@ -14,91 +14,20 @@
 
 {% block home_content %}
     <div class="">
-        <div class="store-nav store-nav--category landing-nav col-xs-12 visible-xs">
-            <span class="visible-xs store-nav__title store-nav__title--category expand-toggle" id="store-nav-cat-expand">Store Categories<i class="fa fa-caret-down"></i></span>
-                <ul class="store-nav__categories" id="store-nav-cat">
-                <form method="get" action="{% url 'search:search' %}">
-                    <li class="store-search__container small">
-                        <i class="fa fa-search store-search__small__icon"></i>
-                        <input type="text" class="store-search__small__input" name="q"
-                               placeholder="Search the store...">
-                        <button type="submit" class="store-search__small__button"><i class="fa fa-arrow-circle-right"></i>
-                        </button>
-                    </li>
-                </form>
-                {% category_tree as tree_categories %}
-                {% if tree_categories %}
-                    {% for tree_category, info in tree_categories %}
-                        <li class="store-nav__category {% if tree_category.pk == category.pk %}active{% endif %}">
-                            {% if tree_category.pk == category.pk %}
-                                {{ tree_category.name }}
-                            {% else %}
-                                <a href="{{ tree_category.get_absolute_url }}">{{ tree_category.name }}</a>
-                            {% endif %}
-
-                            {% if info.has_children %}
-                                <ul>{% else %}</li>{% endif %}
-                        {% for n in info.num_to_close %}
-                                </ul></li>
-                            {% endfor %}
-                        {% endfor %}
-                    {% endif %}
-            </ul>
-        </div>
+      
         <div class="store-banner">
         {% if not product %}
           {% include 'home_banners.html' with active='catalog' %}
           {% include 'home_banners_mobile.html'  with active='catalog'%}
         {% endif %}
         </div>
-        <section class="store-header flex-row content-centered">
-            <div class="store-header__content">
-                <span id="storeTitle" class="store-header__title">
-                </span>
-            </div>
-        </section>
 
-        <!--<section class="store-listing flex-row">
-            <div class="store-nav landing-nav hidden-xs">
-                <ul class="store-nav__categories" id="store-nav-cat">
-                    <form method="get" action="{% url 'search:search' %}">
-                        <li class="store-search__container small">
-                            <i class="fa fa-search store-search__small__icon"></i>
-                            <input type="text" class="store-search__small__input artist-search" name="q"
-                                   placeholder="Search the Artists...">
-                            <button type="submit" class="store-search__small__button"><i class="fa fa-arrow-circle-right"></i>
-                            </button>
-                        </li>
-                    </form>
-                    <ul class="artist-featured artist-category" style="background-color: white; padding:15px">Featured</ul>
-                    <li class="store-nav__category artist-list">
-                        {% for artist in artist_with_media %}
-                            {% if artist.albums %}
-                            <ul class="artist-category" data-id="{{artist.pk}}">
-                                <span>
-                                    <img class="artist-image" src='{% if artist.photo %}{{ artist.photo.url }}{% else %} {% static "image/no-artist-photo-thumbnail.jpg" %} {% endif %}'> 
-                                </span>
-                                <p class="artist-name">{{artist.full_name}}</p> 
-                                <span>
-                                    <img class="artist-red-arrow" src='/static/image/arrow-right-red.svg'>
-                                </span>
-                            </ul>
-                            {% endif %}
-                        {% endfor%}
-                    </li>
-                </ul>
-            </div>
-            <div>
-            </div>
-        </section>-->
-
-    </div>
         <div id="store-home">
             {% block store_content %}{% endblock %}
         </div>
-        <div id="artist-store">
-        </div>
         <script src="{% static 'js/store-loader.js' %}"></script>
+    </div>
+
 {% endblock home_content %}
 
 {% block extra_js %}
