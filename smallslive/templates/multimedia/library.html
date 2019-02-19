@@ -221,28 +221,39 @@ function loadAlbum(productId, bought_tracks, album_type){
         $(this).find(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", dragabbleProgess )
 
     }
-    $(document).on( "touchstart",  ".length-bar", function(event){
+    startProgressHold =  function(event){
         maincontainer = $(this).closest(".track-container")[0]
         active = $(maincontainer).find(".track-info.active-track")
         if( active.length > 0){
-            el.addEventListener("touchmove", mouseEventHandler)
+            if(event.type == "mousedown"){
+                el.addEventListener("mousemove", mouseEventHandler)
+            }else{
+                el.addEventListener("touchmove", mouseEventHandler)
+            }
+            
             clearInterval(setTime)
         }
      
-    });
-    $(document).on( "touchend",  ".length-bar", function(ev){
+    }
+    $(document).on( "touchstart",  ".length-bar", startProgressHold);
+    $(document).on( "mousedown",  ".length-bar", startProgressHold);
+
+    endProgressHold =  function(ev){
         if(ev.type == "mouseup"){
             var position = ev
         }else{
             var position = {};
             position.pageX = ev.originalEvent.changedTouches[0].pageX
             position.pagey = ev.originalEvent.changedTouches[0].pageY
-            console.log(ev)
         }
         maincontainer = $(this).closest(".track-container")[0]
         active = $(maincontainer).find(".track-info.active-track")
         if(active.length > 0){
-            el.removeEventListener("touchmove", mouseEventHandler);
+             if(event.type == "mouseup"){
+                el.removeEventListener("mousemove", mouseEventHandler)
+            }else{
+                el.removeEventListener("touchmove", mouseEventHandler)
+            }
             player = maincontainer.getElementsByClassName("audio-player")[0];
             changeProgress(calculateProgress($(maincontainer), position), player)
             setTime = setInterval( t=> {
@@ -255,7 +266,10 @@ function loadAlbum(productId, bought_tracks, album_type){
                 $(timeTracker).html(readableTime(currentTime)) 
             },100)
         }
-    });
+    }
+
+    $(document).on( "touchend",  ".length-bar", endProgressHold);
+    $(document).on( "mouseup",  ".length-bar", endProgressHold);
  
 
 </script>
