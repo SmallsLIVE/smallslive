@@ -87,6 +87,9 @@ class ProductDetailView(catalogue_views.ProductDetailView):
             ##pass full albums
             for album in digital_album_list:
                 album_list.append(album.product.parent.pk)
+            
+            if self.object.pk in album_list:
+                ctx['is_full'] = "full_album"
 
             ##pass tracks to album    
             track_to_album_list = []
@@ -109,7 +112,6 @@ class ProductDetailView(catalogue_views.ProductDetailView):
             if track_album:
                 ctx['bought_tracks'] = track_album["bought_tracks"]
             
-            ctx['is_full'] = self.object.pk in album_list
 
 
         return ctx
