@@ -191,7 +191,6 @@ function loadAlbum(productId, bought_tracks, album_type){
     function calculateDistance(elem, mouseX, mouseY) {
         return Math.floor(mouseX - (elem.offset().left), 2);
     }
-    
     mX = position.pageX;
     mY = position.pageY;
     distance = Math.floor(calculateDistance($element, mX, mY) / element.width() * 100); 
@@ -210,27 +209,42 @@ function loadAlbum(productId, bought_tracks, album_type){
     })
 
     var mouseEventHandler = function(ev) {
-        dragabbleProgess = calculateProgress($(this),ev) + "%"
+        if(ev.type == "mousemove"){
+            var position = ev
+        }else{
+            var position = {};
+            position.pageX = ev.changedTouches[0].pageX
+            position.pagey = ev.changedTouches[0].pageY
+        }
+
+        dragabbleProgess = calculateProgress($(this), position) + "%"
         $(this).find(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", dragabbleProgess )
 
     }
-    $(document).on( "mousedown",  ".length-bar", function(event){
+    $(document).on( "touchstart",  ".length-bar", function(event){
         maincontainer = $(this).closest(".track-container")[0]
         active = $(maincontainer).find(".track-info.active-track")
         if( active.length > 0){
-            el.addEventListener("mousemove", mouseEventHandler)
+            el.addEventListener("touchmove", mouseEventHandler)
             clearInterval(setTime)
         }
      
     });
-    $(document).on( "mouseup",  ".length-bar", function(ev){
+    $(document).on( "touchend",  ".length-bar", function(ev){
+        if(ev.type == "mouseup"){
+            var position = ev
+        }else{
+            var position = {};
+            position.pageX = ev.originalEvent.changedTouches[0].pageX
+            position.pagey = ev.originalEvent.changedTouches[0].pageY
+            console.log(ev)
+        }
         maincontainer = $(this).closest(".track-container")[0]
         active = $(maincontainer).find(".track-info.active-track")
         if(active.length > 0){
-            el.removeEventListener("mousemove", mouseEventHandler);
+            el.removeEventListener("touchmove", mouseEventHandler);
             player = maincontainer.getElementsByClassName("audio-player")[0];
-            console.log(player)
-            changeProgress(calculateProgress($(maincontainer),ev), player)
+            changeProgress(calculateProgress($(maincontainer), position), player)
             setTime = setInterval( t=> {
                 currentTime = Math.floor(player.currentTime)
                 $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")

@@ -498,28 +498,59 @@
 }
 
 .song-container .my-downloads-album__tracks-table .track-container:hover {
-  .length-bar {
-    height: 6px;
-    transition: height 0.2s;
-  }
-
-  .progress-bar {
-    height: 6px;
-    transition: height 0.2s;
-
-    &.active-bar::after {
-      transition: all 0.15s;
-      z-index: 10;
-      content: "\A";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: $accent-color;
-      display: block;
-      position: absolute;
-      right: -6px;
-      top: -1px;
+  @media(min-width: 1024px) {
+    .length-bar {
+      height: 6px;
       transition: height 0.2s;
+    }
+
+    .progress-bar {
+      height: 6px;
+      transition: height 0.2s;
+
+      &.active-bar::after {
+        transition: all 0.15s;
+        z-index: 10;
+        content: "\A";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: $accent-color;
+        display: block;
+        position: absolute;
+        right: -6px;
+        top: -1px;
+        transition: height 0.2s;
+      }
+    }
+  }
+}
+
+.song-container .my-downloads-album__tracks-table .track-container {
+  @media(max-width: 1023px) {
+    .length-bar {
+      height: 6px;
+      transition: height 0.2s;
+    }
+
+    .progress-bar {
+      height: 6px;
+      transition: height 0.2s;
+
+      &.active-bar::after {
+        transition: all 0.15s;
+        z-index: 10;
+        content: "\A";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: $accent-color;
+        display: block;
+        position: absolute;
+        right: -6px;
+        top: -1px;
+        transition: height 0.2s;
+      }
     }
   }
 }
