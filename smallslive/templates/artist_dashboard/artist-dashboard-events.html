@@ -68,6 +68,7 @@
               $target.html(data);
               $target.data('url', infoUrl);
             } else {
+              $(".refine-container").css("display", "none")
               $('#artistEventsInfo').html("")
               $target = $('#event-info-mobile-card');
               $target.html(data);
