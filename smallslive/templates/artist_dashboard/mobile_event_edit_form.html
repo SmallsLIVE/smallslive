@@ -1,5 +1,5 @@
 {% load crispy_forms_tags static %}
-<form method="post" class="admin-interface__form" enctype="multipart/form-data" action="/dashboard/event/14800-the-spike-wilner-trio/edit/">
+<form method="post" class="admin-interface__form" enctype="multipart/form-data" action="{% url 'event_edit' pk=event.id slug=event.slug %}">
    <input type="hidden" name="csrfmiddlewaretoken" value="cb8xfgMjz9TF19s8o7UD6n6GQrDAa2Pu">
    <div id="div_id_title" class="form-group">
       <label for="id_title" class="control-label  requiredField">
