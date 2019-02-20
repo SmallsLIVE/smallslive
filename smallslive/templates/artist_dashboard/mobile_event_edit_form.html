@@ -3,7 +3,7 @@
    <input type="hidden" name="csrfmiddlewaretoken" value="cb8xfgMjz9TF19s8o7UD6n6GQrDAa2Pu">
    <div id="div_id_title" class="form-group">
       <label for="id_title" class="control-label  requiredField">
-      Title<span class="asteriskField">*</span></label>
+      Band Title</label>
       <div class="controls "><input class="textinput textInput form-control" id="id_title" maxlength="500" name="title" type="text" value="{{ event.title }}"> </div>
    </div>
    <div class="form-group artist-list-form">
@@ -12,16 +12,13 @@
          <thead>
             <tr class="table_row">
                <th></th>
-               <th for="id_artists_gig_info-0-artist" class="col-md-4 control-label requiredField">
-                  Artist<span class="asteriskField">*</span>
+               <th for="id_artists_gig_info-0-artist" class="mobile-edit-title col-md-8 control-label requiredField">
+                  Artist
                </th>
-               <th for="id_artists_gig_info-0-role" class="col-md-4 control-label requiredField">
-                  Role<span class="asteriskField">*</span>
-               </th>
-               <th for="id_artists_gig_info-0-is_leader" class="col-md-2 control-label ">
+               <th for="id_artists_gig_info-0-is_leader" class="mobile-edit-title col-md-2 control-label ">
                   Leader
                </th>
-               <th class="col-md-1">Remove</th>
+               <th class="mobile-edit-title col-md-1">Remove</th>
             </tr>
          </thead>
          <tbody>
@@ -34,25 +31,21 @@
                       type="hidden"
                       value="0">
                <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-artist" class="artist-selector">
-                  <select class="artist_field select form-control"
+                    <select class="artist_field select form-control"
                           id="id_artists_gig_info-{{ forloop.counter0 }}-artist"
                           name="artists_gig_info-{{ forloop.counter0 }}-artist">
-                     <option value="">Artist</option>
-                     {% for artist in artists %}
-                        <option value="{{ artist.id }}" {% if gig.artist == artist %} selected {% endif %}>{{ artist.full_name }}</option>
-                     {% endfor %}
+                     <option value="gig.artist.id" selected>{{gig.artist.full_name}}</option>
                   </select>
-               </td>
-               <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-role" class="">
                   <select class="role_field select form-control"
                           id="id_artists_gig_info-{{ forloop.counter0 }}-role"
                           name="artists_gig_info-{{ forloop.counter0 }}-role">
-                     <option value="">Role</option>
-                     {% for instrument in instruments %}
+                     <option value="{{ gig.role.id }}" selected>{{ gig.role.name }}</option>
+                     {% for instrument in gig_instruments %}
                         <option value="{{ instrument.id }}">{{ instrument.name }}</option>
                      {% endfor %}
                   </select>
                </td>
+          
                <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-is_leader">
                   <input checked="checked"
                          class="checkboxinput"
@@ -77,13 +70,13 @@
       </button>
    </div>
    <div id="div_id_photo" class="form-group">
-      <label for="id_photo" class="control-label ">
-      Flyer or Band Photo (JPG, PNG)
+      <label for="id_photo" class="control-label" style="text-transform: none;">
+      Upload or change event photo
       </label>
       <div class="controls ">
          <div>
             <a target="_blank" href="" alt=""> </a>
-            <div class="checkbox"><label for="photo-clear_id"><input type="checkbox" name="photo-clear" id="photo-clear_id">Delete this photo
+            <div class="checkbox"><label for="photo-clear_id"style="text-transform: none;"><input type="checkbox" name="photo-clear" id="photo-clear_id">Delete this photo
                </label>
             </div>
             <input type="file" name="photo"
@@ -94,16 +87,16 @@
       </div>
    </div>
    <div id="div_id_cropping" class="form-group">
-      <label for="id_cropping" class="control-label ">
-      Cropping
+      <label for="id_cropping" class="control-label" style="text-transform: none;">
+      Tap and drag to crop photo.
       </label>
       <div class="controls ">
          <input class="image-ratio textinput textInput form-control" data-adapt-rotation="false" data-allow-fullsize="true" data-box-max-height="300" data-box-max-width="300" data-image-field="photo" data-min-height="360" data-min-width="600" data-my-name="cropping" data-ratio="1.66666666667" data-size-warning="false" id="id_cropping" maxlength="255" name="cropping" type="text" value="420,235,3862,2300">
          <p id="hint_id_cropping" class="help-block">Enable cropping</p>
       </div>
    </div>
-   <div id="div_id_description" class="form-group">
-      <label for="id_description" class="control-label ">
+   <div id="div_id_description" class="form-group hidden">
+      <label for="id_description" class="control-label" style="text-transform: none;">
       Description
       </label>
       <div class="controls "><textarea class="tinymce" cols="40" data-mce-conf="{&quot;spellchecker_languages&quot;: &quot;+English=en&quot;, &quot;elements&quot;: &quot;id_description&quot;, &quot;language&quot;: &quot;en&quot;, &quot;statusbar&quot;: false, &quot;plugins&quot;: &quot;link&quot;, &quot;directionality&quot;: &quot;ltr&quot;, &quot;theme&quot;: &quot;modern&quot;, &quot;strict_loading_mode&quot;: 1, &quot;mode&quot;: &quot;exact&quot;, &quot;skin&quot;: &quot;light&quot;, &quot;toolbar&quot;: &quot;bold italic | link&quot;, &quot;menubar&quot;: false}" id="id_description" name="description" rows="10"></textarea></div>

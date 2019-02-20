@@ -354,10 +354,6 @@
                 $('#event_edit_modal').find('.modal-body').html(data);
                 EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
                 EventForm.init(false);
-                $('.artist_field').selectize({
-                });
-                $('.role_field').selectize({
-                });
                 function loadArtist(value, select){
                      $.ajax({
                         type: 'GET',

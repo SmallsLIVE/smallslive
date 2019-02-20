@@ -14,7 +14,10 @@ EventForm = {
             if ($(this).attr('id')) {
                 var name = $(this).attr('name').replace('-0-', '-' + total + '-');
                 var id = 'id_' + name;
-                $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+                $(this).attr({
+                    'name': name,
+                    'id': id
+                }).val('').removeAttr('checked');
             }
         });
         newElement.find('.sort_order_field').val(total);
@@ -23,7 +26,9 @@ EventForm = {
         if (destination) {
             destination.after(newElement);
         }
-        newElement.find("select").selectize({create: false});
+        newElement.find("select").selectize({
+            create: false
+        });
         newElement.find(".artist_remove").on('click', function () {
             $(this).parents('tr').remove();
             return false;
@@ -31,18 +36,18 @@ EventForm = {
 
         return newElement;
     },
-    addSlotButtons: function(dayOfTheWeek){
+    addSlotButtons: function (dayOfTheWeek) {
         $slotButtons = $('.slot-buttons');
         $slotButtons.html("");
         var buttons = [];
         var todaysSchedule = show_times;
-        $.each(todaysSchedule, function(idx, val) {
+        $.each(todaysSchedule, function (idx, val) {
             var button = $("<input>", {
                 type: "button",
                 class: "btn btn-success slot",
                 "data-time": val['set-starts'],
-                title:  val['set-title'],
-                value:  val['set-redeable-starts'],
+                title: val['set-title'],
+                value: val['set-redeable-starts'],
                 "data-set-duration": val['set-duration'],
                 "data-venue": val['set-venue']
             });
@@ -51,7 +56,7 @@ EventForm = {
         $slotButtons.append(buttons);
         $('.btn.btn-success.slot').hide()
     },
-    initDateTimeFunctionality: function() {
+    initDateTimeFunctionality: function () {
         var $start = $('#id_start');
         var $end = $('#id_end');
         var date_format = "MM/DD/YYYY HH:mm:ss";
@@ -73,7 +78,7 @@ EventForm = {
             EventForm.selectedDate = start;
 
             // auto set event end to 1 hour later
-            var newEnd  = moment(
+            var newEnd = moment(
                 new Date(start.year(), start.month(), start.date(), oldEnd.hour(), oldEnd.minute())
             );
 
@@ -87,7 +92,7 @@ EventForm = {
             var end = newEnd.format(date_format);
             $end.data("DateTimePicker").setDate(end);
 
-          
+
         };
 
         $start.on('dp.hide', function (ev) {
@@ -110,7 +115,7 @@ EventForm = {
             var start = moment($(this).data("DateTimePicker").getDate());
             var oldStart = moment(EventForm.selectedDate);
 
-            var newStart  = moment(
+            var newStart = moment(
                 new Date(start.year(), start.month(), start.date(), oldStart.hour(), oldStart.minute())
             );
 
@@ -128,25 +133,23 @@ EventForm = {
         $('.slot-buttons').on("click", ".slot", function () {
             var times = $(this).data('time').split('-');
             var start, end;
-            
+
             let setDuration = $(this).data('set-duration')
             var startDate = $('#id_start');
             var endDate = $('#id_end');
             if (!startDate.val()) {
                 start = moment(times[0], "H:mm");
-            }
-            else {
+            } else {
                 var split_start_time = times[0].split(':');
                 start = EventForm.selectedDate.clone();
                 start.hour(parseInt(split_start_time[0]));
                 start.minutes(parseInt(split_start_time[1]));
             }
 
-            if(times[1]){
+            if (times[1]) {
                 if (!endDate.val()) {
                     end = moment(times[1], "H:mm");
-                }
-                else {
+                } else {
                     var split_end_time = times[1].split(':');
                     end = EventForm.selectedDate.clone();
                     end.hour(parseInt(split_end_time[0]));
@@ -156,18 +159,17 @@ EventForm = {
 
             // if both start and end are early in the morning, add 1 day to the start and end date,
             // otherwise, if only the end is after midnight, add 1 day to the end
-            if (times[1]){
-                if (start.hour() < 6 &&  end.hour() < 6) {
+            if (times[1]) {
+                if (start.hour() < 6 && end.hour() < 6) {
                     start.add('days', 1);
                     end.add('days', 1);
-                }
-                else if (start.isAfter(end)) {
+                } else if (start.isAfter(end)) {
                     end.add('days', 1);
-                    
-                }            
-            }      
+
+                }
+            }
             startDate.data("DateTimePicker").setDate(start.format(date_format));
-            if(times[1]){
+            if (times[1]) {
                 endDate.data("DateTimePicker").setDate(end.format(date_format));
             }
             EventForm.propagateSets(start, end, setDuration);
@@ -196,7 +198,7 @@ EventForm = {
 
         });
     },
-    propagateSets: function(first, second=undefined, duration=1){
+    propagateSets: function (first, second = undefined, duration = 1) {
         var $setsTable = $(".event-set-list-form .formset_table");
         var $setsTableBody = $(".event-set-list-form .formset_table tbody");
         // Keep first row
@@ -232,7 +234,7 @@ EventForm = {
         firstRow.find('#id_sets-' + total + '-start').data("DateTimePicker").setDate(first);
         firstRow.find('#id_sets-' + total + '-end').data("DateTimePicker").setDate(first.add(duration, 'h'));
 
-        if(second){
+        if (second) {
             var secondRow = EventForm.cloneMore($firstClone, undefined, 'sets');
             secondRow.appendTo($setsTableBody);
             this.configureTimePicker(secondRow);
@@ -240,21 +242,20 @@ EventForm = {
             secondRow.find('#id_sets-' + (total + 1) + '-end').data("DateTimePicker").setDate(second.add(duration, 'h'));
         }
 
-        
-        
 
 
-        
-       
+
+
+
+
 
         this.fixTableWidths($setsTable);
     },
-    initSetsTimePickers: function() {
+    initSetsTimePickers: function () {
         var $setsTable = $(".event-set-list-form .formset_table");
         var $set_row = $setsTable.find("tbody tr:first").clone(true);
         this.configureTimePicker($setsTable);
-        $setsTable.find('input.timeinput').each(function () {
-        });
+        $setsTable.find('input.timeinput').each(function () {});
 
         var addButtonSelector = '#add_more_sets';
         var tableType = 'sets';
@@ -278,7 +279,7 @@ EventForm = {
         });
 
     },
-    initInlineArtistsFunctionality: function() {
+    initInlineArtistsFunctionality: function () {
         var $artistTable = $(".artist-list-form .formset_table");
         var addButtonSelector = '#add_more_artists';
         var tableType = 'artists_gig_info';
@@ -292,9 +293,15 @@ EventForm = {
         // Dynamically sets the default instrument for an artist
         $(document).on('change', '.artist_field', function (e) {
             var $role_field = $(e.currentTarget).parent().next().find("select");
+            var $ajax_role_field = $(e.currentTarget.parentElement).find("select.role_field")
             var value = $(e.currentTarget).val();
             $.get("//" + EventForm.SITE_URL + "/artists/" + value + "/instrument_ajax/", function (data) {
-                $role_field[0].selectize.setValue(data);
+                if ($role_field.length > 1) {
+                    $role_field[0].selectize.setValue(data);
+                } else {
+                    $ajax_role_field[0].selectize.setValue(data);
+                }
+
             });
         });
 
@@ -344,11 +351,11 @@ EventForm = {
     initVenueSelectFunctionality: function () {
         $('#div_id_venue select').selectize({
             create: false,
-            onChange: function(value) {
+            onChange: function (value) {
                 venue = $('#div_id_venue .selectize-dropdown-content [data-value~=' + value + ']').text()
                 $('.btn.btn-success.slot').hide()
                 $('.btn.btn-success.slot[data-venue~=' + venue + ']').show()
-           }
+            }
         });
     },
     init: function (datepicker) {
@@ -362,4 +369,3 @@ EventForm = {
         this.initInlineArtistsFunctionality();
     }
 };
-

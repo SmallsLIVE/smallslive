@@ -502,7 +502,7 @@ class EventEditAjaxView(EventEditView):
 
     def get_context_data(self, **kwargs):
         context = super(EventEditAjaxView, self).get_context_data(**kwargs)
-        context['instruments'] = Instrument.objects.all()
+        context['gig_instruments'] = Instrument.objects.all()
         return context
 
     def get_template_names(self):

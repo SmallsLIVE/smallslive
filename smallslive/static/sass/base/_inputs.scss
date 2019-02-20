@@ -33,18 +33,22 @@
     border-color: $text-grey;
   }
 }
+
 .pp-btn {
   border: 0px;
   background: #f0f0eb;
 }
+
 .white-border-button {
   @include white-border-button;
 
   &.button-title1 {
     padding: 0 60px;
+
     div {
       @include title1;
     }
+
     height: 70px;
   }
 
@@ -56,17 +60,24 @@
   &.inline {
     display: inline-block;
   }
+
+  &::placeholder {
+    font-size: 30px;
+  }
 }
 
 a {
   &.white-border-button {
     display: inline-block;
+
     &.flex-button {
       display: flex;
+
       i {
         padding-left: 3px;
       }
     }
+
     line-height: 33px;
     vertical-align: middle;
   }
@@ -112,12 +123,14 @@ a {
   background-repeat: no-repeat;
   background-size: 20px;
   background-position: 10px;
+
   input {
     @include bordered-input;
     background-color: transparent;
     width: 30vw;
     padding-left: 38px;
     text-transform: uppercase;
+
     @media(max-width: 1300px) {
       width: 22vw;
     }
@@ -155,6 +168,7 @@ a {
   }
 
   &:not(.button-row-no-hover) {
+
     p,
     button {
       &:hover:enabled {
@@ -169,6 +183,7 @@ a {
   }
 
   &:not(.button-row-big) {
+
     button,
     p {
       @include button1;
@@ -176,6 +191,7 @@ a {
   }
 
   &.button-row-big {
+
     button,
     p,
     input {
@@ -202,9 +218,10 @@ a {
   }
 
   &.button-row-margin {
-    & > button,
-    & > a,
-    & > p {
+
+    &>button,
+    &>a,
+    &>p {
       margin: 0 10px;
 
       &:first-child {

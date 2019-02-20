@@ -113,7 +113,7 @@ $text-font-size-big: 1.4em;
 
 @mixin oswald-light {
   font-family: 'Oswald', sans-serif;
-      @include light;
+  @include light;
 }
 
 @mixin reen-kufi-normal {
@@ -125,6 +125,7 @@ $text-font-size-big: 1.4em;
   font-family: 'Reem Kufi', sans-serif;
   @include light;
 }
+
 .title-big {
   @include oswald-regular();
   font-size: 30px;
@@ -134,6 +135,7 @@ $text-font-size-big: 1.4em;
   line-height: 36px;
   margin: 30px 0;
 }
+
 // Font sizes
 @mixin title-banner {
   @include oswald-light();
@@ -204,7 +206,7 @@ $text-font-size-big: 1.4em;
     white-space: nowrap;
   }
 
-  @media(max-width: $screen-md-min)  {
+  @media(max-width: $screen-md-min) {
     font-size: 15px;
   }
 
@@ -259,9 +261,11 @@ $text-font-size-big: 1.4em;
   text-transform: uppercase;
   transform: scaleY(1.3);
 }
+
 .justifyed-text {
   text-align: justify;
 }
+
 @mixin title7 {
   @include oswald-light;
   font-size: 3.35em;
@@ -349,10 +353,11 @@ $text-font-size-big: 1.4em;
 
 .text9 {
   @include reen-kufi-normal;
-  
+
   letter-spacing: 0.02em;
   font-size: $text-font-size-big;
 }
+
 @mixin text10 {
   @include reen-kufi-normal;
   letter-spacing: 0;
@@ -451,4 +456,13 @@ $text-font-size-big: 1.4em;
 
 .hover-underline:hover {
   text-decoration: underline;
+}
+
+.mobile-edit-title {
+  font-family: 'Reem Kufi', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 1.2em;
+  color: #808080;
 }
