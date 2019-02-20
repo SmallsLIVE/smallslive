@@ -66,7 +66,7 @@
     <div>
       <div class="artist-search-profile-bio collapsed text4">
         {% if artist.biography %}
-            {{ artist.biography|safe }}
+            {{ artist.biography|safe|striptags }}
         {% else %}
             This artist does not have a bio yet.
         {% endif %}
