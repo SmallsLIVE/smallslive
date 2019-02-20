@@ -3,31 +3,37 @@ html {
   overflow-x: hidden;
   scrollbar-width: none;
 }
+
 html::-webkit-scrollbar {
   width: 0px;
   background: transparent;
 }
+
 html::-webkit-scrollbar-thumb {
   background: #ff0000;
 }
+
 body {
   &.admin-header {
     @media (max-width: $screen-xs-max) {
       .pad-content {
         padding-top: 40px;
       }
-      .artist-search-profile-container{
+
+      .artist-search-profile-container {
         padding-top: 54px;
       }
     }
   }
-  @include background-image(
-    url("../image/header_bg.jpg"),
-    url("../image/background-tile.png")
-  );
-  background-position: center top, 0 0;
-  background-repeat: no-repeat, repeat;
-  background-size: 100% 404px, 10px 10px;
+
+  @include background-image(url("../image/header_bg.jpg"),
+  url("../image/background-tile.png"));
+  background-position: center top,
+  0 0;
+  background-repeat: no-repeat,
+  repeat;
+  background-size: 100% 404px,
+  10px 10px;
   background-color: $background-color;
   text-rendering: optimizeLegibility;
   color: $black;
@@ -35,13 +41,17 @@ body {
   @media (max-width: $screen-md-max) {
     padding-top: 54px;
   }
+
   .no-backgound {
     background-image: none;
   }
 }
+
 .hidden-body {
   overflow: hidden;
+  height: 100vh;
 }
+
 button,
 input[type="submit"] {
   border: none;
@@ -61,17 +71,19 @@ input[type="submit"] {
     box-shadow: none;
   }
 }
+
 .pp-btn {
   border: 0px;
   background: #f0f0eb;
 }
+
 .row.no-gutters {
   margin-right: 0;
   margin-left: 0;
 }
 
-.row.no-gutters > [class^="col-"],
-.row.no-gutters > [class*=" col-"] {
+.row.no-gutters>[class^="col-"],
+.row.no-gutters>[class*=" col-"] {
   padding-right: 0;
   padding-left: 0;
 }
@@ -183,6 +195,7 @@ a:active {
   margin-bottom: 0;
   padding: 10px;
 }
+
 .alert-buttons {
   margin-top: 50px;
   display: flex;
@@ -265,11 +278,13 @@ p.unavailable {
       @media (max-width: $screen-xs-max) {
         .pad-content {
           padding-top: $mobile-bar-height * $i + 30px;
-          &.artist-search-profile-container{
+
+          &.artist-search-profile-container {
             padding-top: 54px;
           }
         }
       }
+
       @media (max-width: $screen-xs-max) {
         .pad-content {
           padding-top: $mobile-bar-height * $i;

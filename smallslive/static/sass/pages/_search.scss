@@ -929,7 +929,7 @@ body.headers-1 {
     width: 100%;
     box-shadow: 0 9px 9px 0 rgba(145, 140, 145, 1);
     overflow: scroll;
-    max-height: 450px;
+    max-height: calc(100vh - 170px);
   }
 }
 
