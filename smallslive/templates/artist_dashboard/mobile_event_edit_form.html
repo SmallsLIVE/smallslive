@@ -31,17 +31,18 @@
                       type="hidden"
                       value="0">
                <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-artist" class="artist-selector">
-                    <select class="artist_field select form-control"
+                  <select class="artist_field select form-control"
                           id="id_artists_gig_info-{{ forloop.counter0 }}-artist"
                           name="artists_gig_info-{{ forloop.counter0 }}-artist">
+                     <option value="">Artist</option>
                      <option value="gig.artist.id" selected>{{gig.artist.full_name}}</option>
                   </select>
                   <select class="role_field select form-control"
                           id="id_artists_gig_info-{{ forloop.counter0 }}-role"
                           name="artists_gig_info-{{ forloop.counter0 }}-role">
-                     <option value="{{ gig.role.id }}" selected>{{ gig.role.name }}</option>
+                      <option value="">Role</option>
                      {% for instrument in gig_instruments %}
-                        <option value="{{ instrument.id }}">{{ instrument.name }}</option>
+                        <option value="{{ instrument.id }}" {% if gig.role.id == instrument.id %} selected {% endif %}>{{ instrument.name }}</option>
                      {% endfor %}
                   </select>
                </td>

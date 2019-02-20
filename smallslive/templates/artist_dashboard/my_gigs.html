@@ -354,27 +354,6 @@
                 $('#event_edit_modal').find('.modal-body').html(data);
                 EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
                 EventForm.init(false);
-                function loadArtist(value, select){
-                     $.ajax({
-                        type: 'GET',
-                        url: '/search/artist_form_autoconplete/?artist-start='+value,
-                        success: function(data){
-                            data.artist_list.forEach(function(artist) {
-                                select.selectize.addOption({ value: artist.val, text: artist.full_name })
-                                select.selectize.refreshOptions() 
-                            })
-                           
-                        }
-                     })
-                }
-                $(".artist_field .selectize-input input").keyup(function(){
-                    artistSelectorContainer = $(this).closest(".artist-selector")
-                    selectElement = $(artistSelectorContainer).find("select")[0]
-                    selectizeElement = $(artistSelectorContainer).find(".selectize-dropdown-content")[0]
-                    if($(this).val().length > 1){
-                        loadArtist($(this).val(), selectElement)
-                    }
-                });
               },
               error: function() {
 
@@ -637,6 +616,31 @@
         $(this).css( "background-color", 'white' );
     })
     ///////////////
+
+
+    $(document).on('keyup', '.artist_field .selectize-input input',function(){
+        console.log("a")
+        artistSelectorContainer = $(this).closest(".artist-selector")
+        selectElement = $(artistSelectorContainer).find("select")[0]
+        selectizeElement = $(artistSelectorContainer).find(".selectize-dropdown-content")[0]
+        if($(this).val().length > 1){
+            loadArtist($(this).val(), selectElement)
+        }
+    });
+    function loadArtist(value, select){
+            $.ajax({
+            type: 'GET',
+            url: '/search/artist_form_autoconplete/?artist-start='+value,
+            success: function(data){
+                data.artist_list.forEach(function(artist) {
+                    select.selectize.addOption({ value: artist.val, text: artist.full_name })
+                    select.selectize.refreshOptions() 
+                })
+                
+            }
+            })
+    }
+    //////////
 
     </script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/selectize.bootstrap3.css' %}">
