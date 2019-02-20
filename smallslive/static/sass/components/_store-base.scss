@@ -2624,7 +2624,8 @@ img.defineImageRatio {
   }
 
   .event-card .event-picture-container .event-picture,
-  .event-card .event-picture-container .event-picture img::before {
+  .event-card .event-picture-container .event-picture img {
+
     @media (min-width: 0px) {
       height: 46.1vw;
       width: 46.1vw;
