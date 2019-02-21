@@ -140,6 +140,7 @@
         var selectedSetId;
         var currentPage = 0;
         var totalPages = 1;
+
         function askPrivate(setId) {
             $('#privateConfirm').modal('show');
             selectedSetId=setId;
@@ -365,12 +366,10 @@
             e.preventDefault();
 
             var $form = $(this).closest('form');
-            data_save =  $form.serializeArray()
-            data_save[0].value= '{{ csrf_token }}'
             $.ajax({
               type: "POST",
               url: $form.attr('action'),
-              data: data_save,
+              data: $form.serialize(),
               success: function (data) {
                 console.log(data);
               },

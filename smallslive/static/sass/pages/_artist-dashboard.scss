@@ -1277,6 +1277,15 @@
     .modal-body {
       form {
         width: 100%;
+
+        .logo-container {
+          width: 100%;
+
+          img {
+            margin: 0 auto;
+            display: block;
+          }
+        }
       }
 
       table {
@@ -1447,4 +1456,34 @@
   display: block;
   margin: 20px auto;
   width: 200px;
+}
+
+#event_edit_modal {
+  .close-button {
+    margin-top: 20px;
+    margin-right: 20px;
+  }
+
+  .custom-modal {
+    padding: 10px 35px 35px 35px;
+
+    .modal-body {
+      padding: 0px 15px 15px 15px;
+    }
+  }
+
+  .title-container {
+    text-align: center;
+
+    .text2 {
+      font-size: 2.4em;
+      padding-top: 40px;
+    }
+
+    .title1 {
+      font-size: 4.5em;
+      padding: 50px 0;
+      margin-bottom: 0px;
+    }
+  }
 }

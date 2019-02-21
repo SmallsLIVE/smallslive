@@ -1,6 +1,13 @@
 {% load crispy_forms_tags static %}
 <form method="post" class="admin-interface__form" enctype="multipart/form-data" action="{% url 'event_edit' pk=event.id slug=event.slug %}">
-   <input type="hidden" name="csrfmiddlewaretoken" value="cb8xfgMjz9TF19s8o7UD6n6GQrDAa2Pu">
+   <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+   <div class="logo-container">
+      <img src="{% static 'logo-black.svg' %}" alt=""/>
+   </div>
+   <div class="title-container">
+      <div class="text2 accent-color">Archived Show</div>
+      <div class="title1">Edit event info</div>
+   </div>
    <div id="div_id_title" class="form-group">
       <label for="id_title" class="control-label  requiredField">
       Band Title</label>
