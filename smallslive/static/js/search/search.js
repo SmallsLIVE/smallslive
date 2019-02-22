@@ -108,8 +108,13 @@ function loadMoreArtistButton() {
 
 $("#a-z-refresh").click(() => {
   searchTerm = "";
-  sendArtistRequest();
+  artistSearchTerm = "";
+  $('#artist-search').val('');
+  $("#artist-search").change();
+  $('#a-z-search .white-border-button').css('background-color', '#f0f0eb');
+  $(this).css('background-color', '#fff');
 });
+
 function sendArtistRequest(callback) {
   callback = callback || function() {};
   console.log("/search/ajax/artist");
