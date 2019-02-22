@@ -34,20 +34,23 @@ def check_if_event_confirmed_user(request):
 
 
 def clean_messages(request):
-    basket = request.basket
-    count = basket.lines.filter(product__product_class__name='Gift').count()
-    if not count:
-        count = basket.lines.filter(product__parent__product_class__name='Gift').count()
 
-    if count:
-        storage = messages.get_messages(request)
-        if storage:
-            print 'Cleaning storage'
-            for _ in storage:
-                pass
-                storage.used = True
+    if hasattr(request, 'basket'):
+        basket = request.basket
+        if basket:
+            count = basket.lines.filter(product__product_class__name='Gift').count()
+            if not count:
+                count = basket.lines.filter(product__parent__product_class__name='Gift').count()
 
-            while len(storage._loaded_messages) > 0:
-                del storage._loaded_messages[0]
+            if count:
+                storage = messages.get_messages(request)
+                if storage:
+                    print 'Cleaning storage'
+                    for _ in storage:
+                        pass
+                        storage.used = True
+
+                    while len(storage._loaded_messages) > 0:
+                        del storage._loaded_messages[0]
 
     return {}
