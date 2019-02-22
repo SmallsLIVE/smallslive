@@ -134,8 +134,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'oscar.apps.basket.middleware.BasketMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'oscar.apps.basket.middleware.BasketMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -157,6 +157,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'users.context_processors.check_account_status',
     'users.context_processors.check_if_event_confirmed_user',
     'users.context_processors.show_modal',
+    'users.context_processors.clean_messages',
 )
 
 ROOT_URLCONF = 'smallslive.urls'

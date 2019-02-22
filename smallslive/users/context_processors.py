@@ -1,3 +1,4 @@
+from django.contrib import messages
 
 
 def show_modal(request):
@@ -30,3 +31,23 @@ def check_if_event_confirmed_user(request):
         return {'is_event_user_not_confirmed': not user_activated}
     except Exception as e:
         return {'is_event_user_not_confirmed': False}
+
+
+def clean_messages(request):
+    basket = request.basket
+    count = basket.lines.filter(product__product_class__name='Gift').count()
+    if not count:
+        count = basket.lines.filter(product__parent__product_class__name='Gift').count()
+
+    if count:
+        storage = messages.get_messages(request)
+        if storage:
+            print 'Cleaning storage'
+            for _ in storage:
+                pass
+                storage.used = True
+
+            while len(storage._loaded_messages) > 0:
+                del storage._loaded_messages[0]
+
+    return {}
