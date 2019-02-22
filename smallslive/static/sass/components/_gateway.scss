@@ -1,14 +1,29 @@
-.gateway{
-    .form-group > *{
+.gateway {
+    .guest-input {
+        display: flex !important;
+        justify-content: center;
+
+        #id_first_name {
+            margin-right: 15px;
+        }
+    }
+
+    .form-group>* {
         margin-top: 15px;
     }
-    .white-border-button, .controls input{
-    width: 220px;
+
+    .white-border-button,
+    .controls input {
+        width: 220px;
     }
-    .radio label, .custom-form label, .radio .form-group{
+
+    .radio label,
+    .custom-form label,
+    .radio .form-group {
         display: none;
     }
-    #id_password{
+
+    #id_password {
         margin-top: 0;
     }
 
