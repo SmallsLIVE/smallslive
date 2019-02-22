@@ -197,6 +197,9 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         # submissions should use the preview URL.
         if not self.preview:
             return http.HttpResponseBadRequest()
+        
+        self.ticket_first_name = self.request.POST.get('guest_first_name')
+        self.ticket_last_name = self.request.POST.get('guest_last_name')
 
         # We use a custom parameter to indicate if this is an attempt to place
         # an order (normally from the preview page).  Without this, we assume a
@@ -357,10 +360,10 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         else:
             first_name, last_name = self.checkout_session.get_reservation_name()
             print first_name, last_name
-        if first_name and last_name:
+        if self.ticket_first_name and self.ticket_last_name:
             order_kwargs.update({
-                'first_name': first_name,
-                'last_name': last_name
+                'first_name': self.ticket_first_name,
+                'last_name': self.ticket_last_name
             })
 
         # Taxes must be known at this point

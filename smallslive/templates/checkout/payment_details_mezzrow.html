@@ -22,6 +22,18 @@
         <div class="section-title section-title-no-padded">
           <div class="title1 center">Payment information</div>
         </div>
+        <div class="flex-row col-xs-12 col-md-4 col-md-offset-4">
+          <input style="margin-right: 15px;" type="text" class="store__form__input"
+          id="guest-name" required placeholder="Guest list first name" size="20" 
+          autocomplete="off"
+          name="guest_first_name" value=" {% if user.first_name %} {{ user.first_name }} {% elif guest.first_name %} {{ guest.first_name }} {% endif %} "
+          placeholder="Credit Card Number">
+          <input type="text" class="store__form__input"
+          id="guest-name" required placeholder="Guest list last name" size="20" 
+          autocomplete="off"
+          name="guest_last_name" value="{% if user.last_name %} {{ user.last_name }} {% elif guest.last_name %} {{ guest.last_name }} {% endif %}"
+          placeholder="Credit Card Number">
+        </div>
         <div id="select-payment-row" class="row" style="margin-bottom: 20px;">
           <div class="col-xs-12 col-sm-8 col-sm-offset-2">
             <div class="button-row justify-content-center button-row-margin">
@@ -48,7 +60,7 @@
         </div>
         <div class="row">
           <div class="store__form__group clearfix payment-method-form" id="credit-card-form">
-            <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+            <div class="col-xs-12 col-md-4 col-md-offset-4">
               <div class="signup__payment__card__info">
                 {% csrf_token %}
                 <div class="row">
