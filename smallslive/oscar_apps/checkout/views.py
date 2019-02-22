@@ -163,7 +163,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         return [template_name]
 
     def get_context_data(self, **kwargs):
-
+        print kwargs
         basket = self.request.basket
 
         if basket.has_tickets():  # TODO: add parameter venue_name='Mezzrow'
@@ -198,31 +198,30 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         if not self.preview:
             return http.HttpResponseBadRequest()
         
-        self.ticket_first_name = self.request.POST.get('guest_first_name')
-        self.ticket_last_name = self.request.POST.get('guest_last_name')
+        self.ticket_name = {}
+        self.ticket_name["first"] = self.request.POST.get('guest_first_name',"")
+        self.ticket_name["last"] = self.request.POST.get('guest_last_name',"")
 
         # We use a custom parameter to indicate if this is an attempt to place
         # an order (normally from the preview page).  Without this, we assume a
         # payment form is being submitted from the payment details view. In
         # this case, the form needs validating and the order preview shown.
         if request.POST.get('action', '') == 'place_order':
-
             self.token = self.request.POST.get('card_token')
-
-            return self.handle_place_order_submission(request)
-
-        return self.handle_payment_details_submission(request)
+            return self.handle_place_order_submission(request, ticket_name=self.ticket_name)
+        return self.handle_payment_details_submission(request, ticket_name=self.ticket_name)
 
     def _handle_payment_details_submission_for_mezzrow(self,
                                                        request,
                                                        billing_address_form,
-                                                       payment_method):
+                                                       payment_method, ticket_name=None): 
         """Customer can pay for Mezzrow tickets with PayPal or Credit Card.
         If CC, it is processed with PayPal PayFlow Pro"""
+        self.ticket_name = ticket_name
         if payment_method == 'paypal':
             return self.render_preview(request,
                                        billing_address_form=billing_address_form,
-                                       payment_method=payment_method)
+                                       payment_method=payment_method,ticket_name=ticket_name)
         else:
             bankcard_form = BankcardForm(request.POST)
             if not bankcard_form.is_valid():
@@ -233,9 +232,9 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             else:
                 return self.render_preview(request,
                                            bankcard_form=bankcard_form,
-                                           payment_method=payment_method)
+                                           payment_method=payment_method,ticket_name=ticket_name)
 
-    def handle_payment_details_submission(self, request):
+    def handle_payment_details_submission(self, request, ticket_name=None):
         """"""
 
         basket = request.basket
@@ -257,7 +256,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
 
         if basket.has_tickets(): # TODO: add parameter venue_name='Mezzrow'
             return self._handle_payment_details_submission_for_mezzrow(
-                request, billing_address_form, payment_method)
+                request, billing_address_form, payment_method, ticket_name)
         else:
 
             form = PaymentForm(self.request.user, request.POST)
@@ -288,7 +287,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                     return self.render_payment_details(request, form=form,
                                                        billing_address_form=billing_address_form)
 
-    def handle_place_order_submission(self, request):
+    def handle_place_order_submission(self, request, ticket_name=None):
         print '****************************'
         print 'handle_place_order_submission'
         print 'Basket: ', request.basket
@@ -314,12 +313,12 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             request.session['flow_type'] = flow_type
         print 'Submission: '
         print submission
-        return self.submit(**submission)
+        return self.submit(ticket_name=ticket_name, **submission)
 
     def submit(self, user, basket,
                shipping_address, shipping_method,  # noqa (too complex (10))
                shipping_charge, billing_address, order_total,
-               payment_kwargs=None, order_kwargs=None):
+               payment_kwargs=None, order_kwargs=None, ticket_name=None):
 
         """
         Submit a basket for order placement.
@@ -360,10 +359,11 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         else:
             first_name, last_name = self.checkout_session.get_reservation_name()
             print first_name, last_name
-        if self.ticket_first_name and self.ticket_last_name:
+      
+        if ticket_name["first"] and ticket_name["last"]:
             order_kwargs.update({
-                'first_name': self.ticket_first_name,
-                'last_name': self.ticket_last_name
+                'first_name': ticket_name["first"],
+                'last_name': ticket_name["last"]
             })
 
         # Taxes must be known at this point

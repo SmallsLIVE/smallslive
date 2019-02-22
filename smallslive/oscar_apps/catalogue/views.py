@@ -79,10 +79,13 @@ class ProductDetailView(catalogue_views.ProductDetailView):
             ctx['album_product'] = Product.objects.filter(pk = self.object.pk ).first()
 
 
-            digital_album_list = Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter( Q(product__product_class__slug='digital-album'),order__user=self.request.user).distinct('stockrecord')
-            track_list = Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter(Q(
-                product__product_class__slug='track') ,
-                order__user=self.request.user).distinct('stockrecord')
+            if self.request.user.is_authenticated():
+                digital_album_list = Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter( Q(product__product_class__slug='digital-album'),order__user=self.request.user).distinct('stockrecord')
+                track_list = Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter(Q( product__product_class__slug='track') , order__user=self.request.user).distinct('stockrecord')
+            else:
+                digital_album_list = []
+                track_list = []
+
             album_list = []
             ##pass full albums
             for album in digital_album_list:
