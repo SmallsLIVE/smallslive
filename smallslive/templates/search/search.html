@@ -158,12 +158,6 @@
                
               })
           })
-          $('#a-z-refresh').click(function() {
-              $('#artist-search').val('');
-              $("#artist-search").change();
-              $('#a-z-search .white-border-button').css('background-color', '#f0f0eb');
-              $(this).css('background-color', '#fff');
-          })
           $('.scroll-right').click(() => {
             let scrollF = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 30)}, 10)
             setTimeout(() => {clearInterval(scrollF)}, 120)
