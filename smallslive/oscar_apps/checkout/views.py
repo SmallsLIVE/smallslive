@@ -293,7 +293,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         print 'Basket: ', request.basket
         print request.basket.pk
         print '****************************'
-
+            
         basket = request.basket
         payment_method = request.POST.get('payment_method')
         flow_type = request.POST.get('flow_type')
@@ -359,7 +359,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         else:
             first_name, last_name = self.checkout_session.get_reservation_name()
             print first_name, last_name
-      
+
+
         if ticket_name["first"] and ticket_name["last"]:
             order_kwargs.update({
                 'first_name': ticket_name["first"],
