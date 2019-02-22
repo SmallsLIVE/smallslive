@@ -163,9 +163,9 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         return [template_name]
 
     def get_context_data(self, **kwargs):
-        print kwargs
         basket = self.request.basket
-
+        if not self.request.user.is_authenticated():
+            kwargs["guest"] = {"first_name":self.checkout_session.get_reservation_name()[0],"last_name":self.checkout_session.get_reservation_name()[1]}
         if basket.has_tickets():  # TODO: add parameter venue_name='Mezzrow'
             kwargs['bankcard_form'] = kwargs.get('bankcard_form', BankcardForm())
         else:
