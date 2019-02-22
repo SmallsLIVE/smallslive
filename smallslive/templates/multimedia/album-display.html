@@ -127,14 +127,22 @@
                 </div>
           
                 <div class="my-downloads-album__tracks-table__column buy-track store-buy">
-                {% if not track.pk in bought_tracks and not is_full = 'full_album' %} 
-                
-                          <div class="buy-button-container">
+                {% if not track.pk in bought_tracks and not is_full = 'full_album' %}
+                  <div class="buy-button-container">
                       {% if user.is_authenticated %}
-                        <a class="white-border-button  flex-button"
-                                      data-toggle="dropdown" aria-expanded="false"
-                                      href="">Add to library<i
-                                          class="fa fa-caret-down"></i></a>
+                        <form id="add_to_basket_form"
+                                action="{% url 'basket:add' pk=track.pk %}"
+                                method="post"
+                                class="add-to-basket">
+                            {% csrf_token %}
+                            {{ basket_form.quantity }}
+                            {{ basket_form.child_id }}
+                            <input type="hidden"
+                                   name="stockrecord_id"
+                                   value="{{ track.get_track_stockrecord.id }}"/>
+                            <input class="white-border-button flex" type="submit"
+                                   value="Add to Library">
+                          </form>
                       {% else %}
                         <a class="tracks-table__button" href="#"
                            data-toggle="modal" data-target="#logIn">Add to library <i class="fa fa-caret-down"></i></a>
@@ -143,19 +151,7 @@
                           {% if track.get_track_stockrecord %}
 
                            {% basket_form request track 'single' as basket_form %}
-                            <form id="add_to_basket_form"
-                                  action="{% url 'basket:add' pk=track.pk %}"
-                                  method="post"
-                                  class="add-to-basket">
-                              {% csrf_token %}
-                              {{ basket_form.quantity }}
-                              {{ basket_form.child_id }}
-                              <input type="hidden"
-                                     name="stockrecord_id"
-                                     value="{{ track.get_track_stockrecord.id }}"/>
-                              <input class="white-border-button flex no-border" type="submit"
-                                     value="Buy mp3 (${{ track.get_track_stockrecord.price_excl_tax }})">
-                            </form>
+
 
 
 
@@ -217,3 +213,29 @@
 </div>
 
 {% endblock store_content %}
+{% block extra_js %}
+
+
+  <script>
+    $(document).ready(function () {
+
+      $('.add-to-basket').submit(function (event) {
+        var $form = $(this);
+        event.preventDefault();
+        var url = $(this).attr('action');
+        $.ajax({
+          type: "POST",
+          url: url,
+          data: $(this).serialize(),
+          success: function(data) {
+            console.log(data);
+            $form.find('.white-border-button').addClass('no-border').addClass('active');
+          }
+        });
+        return false;
+      });
+    });
+  </script>
+
+{% endblock %}
+

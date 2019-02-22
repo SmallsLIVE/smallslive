@@ -114,7 +114,17 @@ class BasketAddView(basket_views.BasketAddView):
             request=self.request)
 
         if self.request.is_ajax():
-            print 'return  200 (ajax)'
+            # TODO: remove duplicate code
+            storage = messages.get_messages(self.request)
+            if storage:
+                print 'Cleaning storage'
+                for _ in storage:
+                    pass
+                    storage.used = True
+
+                while len(storage._loaded_messages) > 0:
+                    del storage._loaded_messages[0]
+
             return HttpResponse(status=200)
         else:
             return HttpResponseRedirect(self.get_success_url())
