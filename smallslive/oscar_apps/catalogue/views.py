@@ -67,55 +67,103 @@ def get_album_catalog(request):
     return JsonResponse(data)
 
 
-class ProductDetailView(catalogue_views.ProductDetailView):
+class PurchasedProductsInfoMixin():
+
+    def __init__(self):
+
+        self.digital_album_list = []
+        self.physical_album_list = []
+        self.track_list = []
+        self.album_list = []
+
+    def get_purchased_products(self):
+        """ Retrieve products purchased by current user:
+            Tracks, CD, or Digital HD. Info comes from the order lines.
+            Set up a list of all Albums with Tracks bought.
+            CD and HD gives access to all Tracks.
+
+        """
+        self.digital_album_list = Line.objects.select_related(
+            'product', 'stockrecord', 'product__event', 'product__album').filter(
+            product__product_class__slug='digital-album',
+            order__user=self.request.user).distinct('stockrecord')
+        self.physical_album_list = Line.objects.select_related(
+            'product', 'stockrecord', 'product__event', 'product__album').filter(
+            product__product_class__slug='physical-album',
+            order__user=self.request.user).distinct('stockrecord')
+        self.track_list = Line.objects.select_related(
+            'product', 'stockrecord', 'product__event', 'product__album').filter(
+            product__product_class__slug='track',
+            order__user=self.request.user).distinct('stockrecord')
+
+        self.album_list = []
+        for album in list(self.digital_album_list) + list(self.physical_album_list):
+            album_info = {
+                'parent': album.product.parent,
+                'bought_tracks': [track.pk for track in album.product.parent.tracks.all()],
+                'album_type': 'full_album',
+            }
+            # Avoid duplicates
+            album = [a for a in self.album_list if a['parent'] == album.product.parent]
+            if not album:
+                self.album_list.append(album_info)
+
+        # Iterate tracks and accumulate for album
+        for track in self.track_list:
+            print '--------------------------------------------'
+            print 'Track: ', track, track.product.album
+            # Search album_list to see if already in list
+            print self.album_list
+            print track.product.album
+            # Find the position of the album in the list, if it exists
+            albums_matched = [a for a in enumerate(self.album_list)
+                              if a[1]['parent'] == track.product.album]
+            if albums_matched:
+                index = albums_matched[0][0]
+                # Add the track to purchased tracks it's not there already.
+                album = albums_matched[0][1]
+                bought_tracks = album['bought_tracks']
+                if track.product.pk not in bought_tracks:
+                    bought_tracks.append(track.product.pk)
+                    # Update the bought track.
+                    self.album_list[index]['bought_tracks'] = bought_tracks
+            else:
+                album_info = {
+                    'parent': track.product.album,
+                    'bought_tracks': [track.product.pk],
+                    'album_type': 'track_album',
+                }
+                self.album_list.append(album_info)
+
+        self.album_list = sorted(self.album_list, key=lambda k: k['parent'].title)
+
+
+class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfoMixin):
 
     def get_context_data(self, **kwargs):
         ctx = super(ProductDetailView, self).get_context_data(**kwargs)
+        self.get_purchased_products()
         ctx['reviews'] = self.get_reviews()
         ctx['alert_form'] = self.get_alert_form()
         ctx['artist_with_media'] = Artist.objects.exclude(artistproduct=None)
         ctx['has_active_alert'] = self.get_alert_status()
+        ctx['is_catalogue'] = True
         if self.object.get_product_class().slug == 'album':
-            ctx['album_product'] = Product.objects.filter(pk = self.object.pk ).first()
-
-
-            digital_album_list = Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter( Q(product__product_class__slug='digital-album'),order__user=self.request.user).distinct('stockrecord')
-            track_list = Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter(Q(
-                product__product_class__slug='track') ,
-                order__user=self.request.user).distinct('stockrecord')
-            album_list = []
-            ##pass full albums
-            for album in digital_album_list:
-                album_list.append(album.product.parent.pk)
-            
-            if self.object.pk in album_list:
+            album_product = Product.objects.filter(pk=self.object.pk ).first()
+            ctx['album_product'] = album_product
+            if self.object.pk in self.album_list:
                 ctx['is_full'] = "full_album"
-
-            ##pass tracks to album    
-            track_to_album_list = []
-            album = {"parent":None,"bought_tracks":[]}
-            last_parent_id = 0
-            for track in track_list:
-                track_parent_id = track.product.album.pk
-                if track_parent_id == last_parent_id:
-                    album["bought_tracks"].append(track.product.pk)
-                else:
-                    if album["parent"] == None:
-                        album = {"parent":track.product.album.pk,"bought_tracks":[track.product.pk],"album_type":"track_album"}
-                    else:
-                        track_to_album_list.append(album)
-                        album = {"parent":track.product.album.pk,"bought_tracks":[track.product.pk],"album_type":"track_album"}
-                last_parent_id = track_parent_id
-            track_to_album_list.append(album)
-            track_album = next((item for item in track_to_album_list if item["parent"] == self.object.pk),None)
+            track_album = next((item for item in self.album_list if item['parent'] == self.object), None)
             ctx['bought_tracks'] = None
             if track_album:
                 ctx['bought_tracks'] = track_album["bought_tracks"]
-            
-
+            variant = Product.objects.filter(parent=album_product, product_class__slug__in=[
+                'physical-album',
+                'digital-album'
+            ]).first()
+            ctx['child_product'] = variant
 
         return ctx
-
 
     def get_template_names(self):
         """

@@ -25,5 +25,6 @@ urlpatterns = patterns('multimedia.views',
     url(r"^my-downloads/$", 'new_downloads', name="my-downloads"),
     url(r"^new-downloads/$", 'new_downloads', name="new-downloads"),
     url(r'^library/(?P<pk>\d+)$', 'album_view', name='album_view'),
+    url(r'^library/add-tracks$', 'add_tracks', name='add_tracks'),
 
 )

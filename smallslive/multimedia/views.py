@@ -6,9 +6,11 @@ from django.db.models import F, Q, Max
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView, CreateView, TemplateView
-from metrics.models import UserVideoMetric
 from oscar.apps.order.models import Line
+from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import Product
+from oscar_apps.catalogue.views import PurchasedProductsInfoMixin
+from custom_stripe.models import CustomerDetail
 from events.models import Recording, Event
 from .forms import TrackFileForm
 from .models import MediaFile
@@ -218,52 +220,24 @@ class MyDownloadsView(LoginRequiredMixin, ListView):
 
 my_downloads = MyDownloadsView.as_view()
 
-class NewMyDownloadsView(LoginRequiredMixin, ListView):
+
+class NewMyDownloadsView(LoginRequiredMixin, ListView, PurchasedProductsInfoMixin):
     context_object_name = 'lines'
     template_name = 'multimedia/library.html'
 
     def get_queryset(self):
-        return Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter(Q(
-            product__product_class__slug='track') | Q(product__product_class__slug='digital-album'),
+        return Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter(
+            product__product_class__slug__in=['digital-album', 'physical-album', 'track'],
             order__user=self.request.user).distinct('stockrecord')
 
     def get_context_data(self, **kwargs):
         context = super(NewMyDownloadsView, self).get_context_data(**kwargs)
-
-        digital_album_list = Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter( Q(product__product_class__slug='digital-album'),order__user=self.request.user).distinct('stockrecord')
-        track_list = Line.objects.select_related('product', 'stockrecord', 'product__event', 'product__album').filter(Q(
-            product__product_class__slug='track') ,
-            order__user=self.request.user).distinct('stockrecord')
-        album_list = []
-        ##pass full albums
-        for album in digital_album_list:
-            album = {"parent":album.product.parent,"bought_tracks":[],"album_type":"full_album"}
-            album_list.append(album)
-
-        ##pass tracks to album    
-        track_to_album_list = []
-        album = {"parent":None,"bought_tracks":[]}
-        last_parent_id = 0
-        for track in track_list:
-            track_parent_id = track.product.album.pk
-            if track_parent_id == last_parent_id:
-                album["bought_tracks"].append(track.product.pk)
-            else:
-                if album["parent"] == None:
-                    album = {"parent":track.product.album,"bought_tracks":[track.product.pk],"album_type":"track_album"}
-                else:
-                    track_to_album_list.append(album)
-                    album = {"parent":track.product.album,"bought_tracks":[track.product.pk],"album_type":"track_album"}
-            last_parent_id = track_parent_id
-        track_to_album_list.append(album)
-        album_list += track_to_album_list
-        context["album_list"] = album_list
+        self.get_purchased_products()
+        context['album_list'] = self.album_list
  
         return context
 
 new_downloads = NewMyDownloadsView.as_view()
-
-
 
 
 class AlbumView(TemplateView):
@@ -275,10 +249,40 @@ class AlbumView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(AlbumView, self).get_context_data(**kwargs)
         bought_tracks = self.request.GET.get('bought_tracks', '')
-        context["bought_tracks"] = ast.literal_eval(bought_tracks)
-        context["is_full"] = self.request.GET.get('album_type', '')
-        context["album_product"] = Product.objects.filter(pk = self.request.GET.get('productId', '')).first()
+        context['bought_tracks'] = ast.literal_eval(bought_tracks)
+        context['is_full'] = self.request.GET.get('album_type', '')
+        album_product = Product.objects.filter(pk=self.request.GET.get('productId', '')).first()
+        context['album_product'] = album_product
+        variant = Product.objects.filter(parent=album_product, product_class__slug__in=[
+            'physical-album',
+            'digital-album'
+        ]).first()
+        context['child_product'] = variant
+
         return context
 
 album_view = AlbumView.as_view()
 
+
+class AddTracksView(TemplateView):
+    template_name = 'multimedia/basket-items.html'
+
+    def get_context_data(self, **kwargs):
+
+        tracks = self.request.GET.getlist('trackId', [])
+        print tracks
+        products = Product.objects.filter(pk__in=tracks)
+        print products
+        for product in products:
+            print product
+        context = super(AddTracksView, self).get_context_data(**kwargs)
+        context['products'] = products
+
+        customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
+        print  customer_detail
+        print customer_detail.active_card
+        context['active_card'] = customer_detail.active_card
+
+        return context
+
+add_tracks = AddTracksView.as_view()

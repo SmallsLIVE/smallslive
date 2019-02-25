@@ -8,25 +8,29 @@
 {% block content %}
 
 <div class="white-line-bottom">
-    <div class="title1 center">Library</div>
+  <div class="title1 center">Library</div>
 </div>
 
 <main class="newest-recordings-container downloads">
     <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
     <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-    <div class="event-row"> 
+    <div class="event-row">
         {% if album_list %}
             {% for album in album_list %}
-                    {% with image=album.parent %}
-                        <article class="event-display" data-parent-pk="{{ album.parent.pk }}" data-type="{{ album.album_type }}" data-bought="{{ album.bought_tracks }}"> {% include 'promotions/featured_card.html' with event=image redirect=True secondary=secondary hide_play=True%}
-                            <div class="event-info">
-                                <div>
-                                    <div class="event-info-title">{{ image.title }}</div>
-                                </div>
+                {% with image=album.parent %}
+                    <article class="event-display"
+                             data-parent-pk="{{ album.parent.pk }}"
+                             data-type="{{ album.album_type }}"
+                             data-bought="{{ album.bought_tracks }}">
+                        {% include 'promotions/featured_card.html' with event=image redirect=True secondary=secondary hide_play=True%}
+                        <div class="event-info">
+                            <div>
+                                <div class="event-info-title">{{ image.title }}</div>
                             </div>
-                        </article> 
-                    {% endwith %}
-            {% endfor %} 
+                        </div>
+                    </article>
+                {% endwith %}
+            {% endfor %}
         {% else %}
             <div class="my-downloads__nothing-bought row">
                 <h3>You haven't bought any digital downloads yet. Check out the <a class="my-downloads__nothing-bought__store-link" href="{% url "promotions:home" %}">store</a> and buy some music!</h3>

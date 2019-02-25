@@ -6,38 +6,33 @@
 {% load purchase_info_tags %}
 {% load basket_tags %}
 
-
-
-
-
-
-
 {% block store_content %}
 <div class="my-downloads-album row big-player">
-<div class="my-downloads-album__cover flex-column player-container " data-track=0>
+  <div class="my-downloads-album__cover flex-column player-container " data-track=0>
     {% with image=album_product.primary_image %}
-    {% if album_product.parent_id %}
+      {% if album_product.parent_id %}
         {% with image=album_product.parent.primary_image %}
-            <div style="position: relative; min-width:255px">
-                <img class="defineImageRatio" src="{{ image.original.url }}" alt="{{ album_product.get_title }}" style="border-radius: 0px">
-                <div class="purchases-player-button myplay-btn">
-                    <div class="fa-thin-circle fa" >
-                    <i class="fas fa-play"></i></div>
-                </div>
+          <div style="position: relative; min-width:255px">
+            <img class="defineImageRatio" src="{{ image.original.url }}" alt="{{ album_product.get_title }}" style="border-radius: 0px">
+            <div class="purchases-player-button myplay-btn">
+              <div class="fa-thin-circle fa" >
+                <i class="fas fa-play"></i>
+              </div>
             </div>
-
+          </div>
         {% endwith %}
-    {% else %}
+      {% else %}
         {% with image=album_product.primary_image %}
-            <div style="position: relative; min-width:255px">
-                <img class="defineImageRatio" src="{{ image.original.url }}" alt="{{ album_product.get_title }}" style="border-radius: 0px">
-                    <div class="purchases-player-button myplay-btn">
-                    <div class="fa-thin-circle fa" >
-                    <i class="fas fa-play"></i></div>
+          <div style="position: relative; min-width:255px">
+              <img class="defineImageRatio" src="{{ image.original.url }}" alt="{{ album_product.get_title }}" style="border-radius: 0px">
+                <div class="purchases-player-button myplay-btn">
+                <div class="fa-thin-circle fa" >
+                  <i class="fas fa-play"></i>
                 </div>
-            </div>
+              </div>
+          </div>
         {% endwith %}
-    {% endif %}
+      {% endif %}
     {% endwith %}
     <div class="flex-column">
       <a class="store-single__item__name" href="{{ album_product.get_absolute_url }}">{% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }}</a>
@@ -45,195 +40,208 @@
       {% for artist in  album_product.artist.all %}
         <a class="artist-link " href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }} {{ artist.last_name }} / {{ artist.instruments.first }}</a><br>
       {% endfor %}
-      <div class="store-single__item__name" style="color:black"> 
-      {% if session.price.exists %}
-          {% if session.price.excl_tax == 0 %}
-              {% trans "Free" %}
-          {% elif session.price.is_tax_known %}
-              {{ session.price.incl_tax|currency:session.price.currency }}
-          {% else %}
-              {{ session.price.excl_tax|currency:session.price.currency }}
-          {% endif %}
-      {% else %}
-          &nbsp;
-      {% endif %}
-      </div>
       <br>
-      <form id="add_to_basket_form" action="{% url 'basket:add' pk=album_product.pk  %}" method="post" class="add-to-basket">
+      {% purchase_info_for_product request child_product as session %}
+      <form id="add_to_basket_form" action="{% url 'basket:add' pk=child_product.pk  %}" method="post" class="add-to-basket">
         {% if session.availability.is_available_to_buy %}
-          {% basket_form request product 'single' as basket_form %}
+          {% basket_form request child_product 'single' as basket_form %}
           <div class="store-add-large">
-              {% csrf_token %}
-              {{ basket_form.quantity }}
-              {% if basket_form.fields.child_id.choices %}
-                <div class='white-border-select'>
-                  <select class="store-add-large__options" name="child_id">
-                      {% for variant in album_product.variants.all %}
-                      {% purchase_info_for_product request variant as variant_session %}
-                          {% if session.availability.is_available_to_buy %}
-                                <option data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}" value="{{ variant.id }}">{{ variant.title }} ({{ variant_session.price.excl_tax|currency:variant_session.price.currency }})</option>
-                          {% endif %}
-                      {% endfor %}
-                  </select>
-                </div>
-                {% if user.is_authenticated %}
-                  <div class="arrow-button-container"><button type="submit" class="white-border-button">Add to cart</button></div>
-                {% else %}
-                  <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="white-border-button">Add to cart</a></div>
-                {% endif %}
-              {% else %}
-                {{ basket_form.child_id }}
-                {% if user.is_authenticated %}
-                  <div class="arrow-button-container"><button type="submit" class="white-border-button">Add to cart</button></div>
-                {% else %}
-                  <div class="arrow-button-container"><a href="#" data-toggle="modal" data-target="#logIn" class="white-border-button">Add to cart</a></div>
-                {% endif %}
-              {% endif %}
+            {% csrf_token %}
+            {{ basket_form.quantity }}
+            {{ basket_form.child_id }}
+            <div class="arrow-button-container">
+              <button type="submit" class="white-border-button">Buy {{ child_product.title }} {{ session.price.excl_tax|currency:session.price.currency }}</button>
+            </div>
           </div>
         {% endif %}
       </form>
     </div>
-</div>
-<div class="song-container">
+  </div>
+  <div class="song-container">
     <div class="my-downloads-album__tracks-table">
     {% for track in album_product.tracks.all|dictsort:"ordering" %}
-        <!-- tracks table row -->
-        <div class="track-container" style="position:relative">
-            <div class="length-bar"></div>
-            <div class="my-downloads-album__tracks-table__row flex-row {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}">
-                <div class="progress-bar"></div>
-                {% if track.pk in bought_tracks or is_full = 'full_album' %} 
-                    <div class="hidden my-downloads-album__tracks-table__column audio">
-                        <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
-                        {% if track.get_hd_track_stockrecord %}
-                            <source src="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
-                        {% else %}
-                            <source src="{{ track.get_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
-                        {% endif %}
-
-                        </audio>
-                    </div>
-                {% endif %}
-                <div class="flex-column track-info {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}" data-track="{{ forloop.counter0 }}">
-                    <div class="my-downloads-album__tracks-table__column title2">
-                    {{ track.title }}
-                    </div>
-                    <div class="my-downloads-album__tracks-table__column composer text1">
-                        {{ track.attr.composer }}
-                    </div>
-                </div>
-                <div class="store-buy my-downloads-album__tracks-table__column duration text1">
-                    {{ track.attr.duration }}
-                </div>
-          
-                <div class="my-downloads-album__tracks-table__column buy-track store-buy">
-                {% if not track.pk in bought_tracks and not is_full = 'full_album' %}
-                  <div class="buy-button-container">
-                      {% if user.is_authenticated %}
-                        <form id="add_to_basket_form"
-                                action="{% url 'basket:add' pk=track.pk %}"
-                                method="post"
-                                class="add-to-basket">
-                            {% csrf_token %}
-                            {{ basket_form.quantity }}
-                            {{ basket_form.child_id }}
-                            <input type="hidden"
-                                   name="stockrecord_id"
-                                   value="{{ track.get_track_stockrecord.id }}"/>
-                            <input class="white-border-button flex" type="submit"
-                                   value="Add to Library">
-                          </form>
-                      {% else %}
-                        <a class="tracks-table__button" href="#"
-                           data-toggle="modal" data-target="#logIn">Add to library <i class="fa fa-caret-down"></i></a>
-                      {% endif %}
-                      <div class="dropdown-menu" role="menu">
-                          {% if track.get_track_stockrecord %}
-
-                           {% basket_form request track 'single' as basket_form %}
-
-
-
-
-                          {% comment %} <a class="white-border-button flex border-not" href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download {% endcomment %}
-                          {% else %}
-
-                          {% basket_form request track 'single' as basket_form %}
-                            <form id="add_to_basket_form"
-                                  action="{% url 'basket:add' pk=track.pk %}"
-                                  method="post"
-                                  class="add-to-basket">
-                              {% csrf_token %}
-                              {{ basket_form.quantity }}
-                              {{ basket_form.child_id }}
-                              <input type="hidden"
-                                     name="stockrecord_id"
-                                     value="{{ track.get_hd_track_stockrecord.id }}"/>
-                              <input class="white-border-button flex no-border" type="submit"
-                                     value="Buy HD (${{ track.get_hd_track_stockrecord.price_excl_tax }})">
-                            </form>
-
-
-
-
-                          {% comment %} <a class="white-border-button flex border-not" href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download {% endcomment %}
-                          {% endif %}
-
-                        </div>
-
-
-             
-                   
-
-                    </div>
+      <!-- tracks table row -->
+      <div class="track-container" style="position:relative">
+        <div class="length-bar"></div>
+        <div class="my-downloads-album__tracks-table__row flex-row {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}">
+          <div class="progress-bar"></div>
+          {% if track.pk in bought_tracks or is_full = 'full_album' %}
+            <div class="hidden my-downloads-album__tracks-table__column audio">
+              <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
+                {% if track.get_hd_track_stockrecord %}
+                  <source src="{{ track.get_hd_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
                 {% else %}
-                      <div class="buy-button-container">
-                        <a class="white-border-button flex-button" data-toggle="dropdown" aria-expanded="false" href="">
-                                <span>Download</span> <i class="fa fa-caret-down"></i></a>
-                        <div class="dropdown-menu" role="menu">
-                            {% if is_hd %}
-                            <a class="white-border-button no-border flex" href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download
-                                HD</a>
-                            {% else %}
-                            <a class="white-border-button no-border flex" href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}" download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download
-                                mp3</a>
-                            {% endif %}
-
-                        </div>
-                    </div>
+                  <source src="{{ track.get_track_stockrecord.digital_download.get_file_url }}" type="audio/mpeg">
                 {% endif %}
-                </div>
+              </audio>
             </div>
+          {% endif %}
+          <div class="flex-column track-info {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}" data-track="{{ forloop.counter0 }}">
+            <div class="my-downloads-album__tracks-table__column title2">
+              {{ track.title }}
+            </div>
+            <div class="my-downloads-album__tracks-table__column composer text1">
+              {{ track.attr.composer }}
+            </div>
+          </div>
+          <div class="store-buy my-downloads-album__tracks-table__column duration text1">
+            {{ track.attr.duration }}
+          </div>
+
+          <div class="my-downloads-album__tracks-table__column buy-track store-buy">
+            {% if not track.pk in bought_tracks and not is_full = 'full_album' %}
+              <div class="buy-button-container">
+                {% if user.is_authenticated %}
+                  <button class="white-border-button add-to-library" data-track-id="{{ track.pk }}">Add to Library</button>
+                {% else %}
+                  <a class="tracks-table__button" href="#"
+                     data-toggle="modal" data-target="#logIn">Add to library <i class="fa fa-caret-down"></i></a>
+                {% endif %}
+              </div>
+            {% else %}
+              {% if is_catalogue %}
+                <button class="white-border-button">Added to Library</button>
+              {% else %}
+                {% if is_full == 'full_album' %}
+                  <a class="white-border-button flex"
+                     href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}"
+                     download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download mp3
+                  </a>
+                {% else %}
+                  <button class="white-border-button download"
+                          data-mp3-href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}"
+                          data-mp3-name="{{ track.get_track_stockrecord.digital_download.file.name }}"
+                          data-hd-href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}"
+                          data-hd-name="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download</button>
+                {% endif %}
+              {% endif %}
+            {% endif %}
+          </div>
         </div>
-        <!-- end of tracks table row -->
+
+      </div>
+
+      <!-- end of tracks table row -->
     {% endfor %}
     </div>
+    <div>
+      <button id="btnCheckout" class="white-border-button">Confirm puchase</button>
+    </div>
     <!-- end of tracks table -->
+  </div>
 </div>
+<div class="modal fade" id="downloadFormat" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content custom-modal">
+      <div class="modal-body">
+        <p class="title2 accent-color">Download</p>
+        <p class="title1">Select a format</p>
+        <div class="button-row button-row-margin">
+          <a id="downloadFormatMp3Url" href="" download>
+              <button>Mp3</button>
+          </a>
+          <a id="downloadFormatHdUrl" href="" download>
+              <button>HD</button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="confirmCheckout" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content custom-modal">
+      <a href="#" class="close-button"></a>
+      <div class="modal-body">
+        <p class="title2 accent-color title">Library</p>
+        <p class="text3 justifyed-text text">
+          You've selected tracks
+        </p>
+        <p id="purchase-content"></p>
+        <div class="text4 text-centered" style="display: flex; justify-content: center;">
+          <button id="confirmSelectionButton" class="white-border-button confirm" style="margin-right: 5px;">Confirm</button>
+          <button id="cancelSelectionButton" class="white-border-button cancel" style="margin-left: 5px;">Cancel</button>
+          <form type="post" id="frmCheckout" class="hidden">
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock store_content %}
 {% block extra_js %}
 
-
   <script>
     $(document).ready(function () {
 
-      $('.add-to-basket').submit(function (event) {
-        var $form = $(this);
-        event.preventDefault();
-        var url = $(this).attr('action');
+      $(document).on('click', '.add-to-library', function (event) {
+        if ($(this).hasClass('add-to-library')) {
+          $(this).removeClass('add-to-library');
+          $(this).addClass('added-to-library');
+          $(this).text('Added to Library');
+          $(this).addClass('no-border');
+          $(this).addClass('active');
+        } else {
+          $(this).removeClass('added-to-library');
+          $(this).addClass('add-to-library');
+          $(this).text('Add to Library');
+          $(this).removeClass('no-border');
+          $(this).removeClass('active');
+        }
+      });
+
+      $(document).on('click', '.download', function (event) {
+        var mp3Url = $(this).data('mp3-href');
+        var mp3Name = $(this).data('mp3-name');
+        var hdUrl = $(this).data('hd-href');
+        var hdName = $(this).data('hd-name');
+        $('#downloadFormatMp3Url').attr('href', mp3Url);
+        $('#downloadFormatMp3Url').attr('download', mp3Name);
+        $('#downloadFormatHdUrl').attr('href', hdUrl);
+        $('#downloadFormatHdUrl').attr('download', hdName);
+        $('#downloadFormat').modal('show');
+
+      });
+
+      $(document).on('click', '#btnCheckout', function (event) {
+        var $form = $('#frmCheckout');
+        $(this).attr('disabled', 'disabled');
+        $('.added-to-library').each(function () {
+          var id = $(this).data('track-id');
+          $('<input>').attr({
+            'type': 'hidden',
+            'name': 'trackId',
+            'value': id
+          }).appendTo($form);
+        });
         $.ajax({
-          type: "POST",
-          url: url,
-          data: $(this).serialize(),
-          success: function(data) {
-            console.log(data);
-            $form.find('.white-border-button').addClass('no-border').addClass('active');
+          url: "/multimedia/library/add-tracks",
+          data: $form.serialize(),
+          success: function (data) {
+            // Append all forms  to content
+            $('#purchase-content').html(data);
+            $('#confirmCheckout').modal('show');
+            $(this).removeAttr('disabled');
           }
         });
-        return false;
       });
+
+      $("#confirmCheckout").on("hidden.bs.modal", function () {
+        var $btn = $('#btnCheckout');
+
+        $btn.removeAttr('disabled');
+        $('.added-to-library').each(function () {
+          $(this).removeClass('added-to-library');
+          $(this).addClass('add-to-library');
+          $(this).text('Add to Library');
+          $(this).removeClass('no-border');
+          $(this).removeClass('active');
+        });
+
+      });
+
     });
   </script>
 
