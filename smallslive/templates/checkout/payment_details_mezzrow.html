@@ -26,7 +26,7 @@
           <input style="margin-right: 15px;" type="text" class="store__form__input"
           id="guest-name" required placeholder="Guest list first name" size="20" 
           autocomplete="off"
-          name="guest_first_name" value=" {% if user.first_name %} {{ user.first_name }} {% elif guest.first_name %} {{ guest.first_name }} {% endif %} "
+          name="guest_first_name" value="{% if user.first_name %} {{ user.first_name }} {% elif guest.first_name %} {{ guest.first_name }} {% endif %}"
           placeholder="Credit Card Number">
           <input type="text" class="store__form__input"
           id="guest-name" required placeholder="Guest list last name" size="20" 

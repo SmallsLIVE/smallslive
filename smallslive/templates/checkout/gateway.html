@@ -16,17 +16,6 @@
             <span class="title1">{% trans "Who are you?" %}</span>
         </div>
     </section>
-        <div class="control-group">
-            <div class="controls">
-                <div class="radio custom-form">
-                    {{ form.options.0 }}
-                    <div class="form-inline form-group guest-input" data-type='anonymous'>
-                        {% include "partials/form_field.html" with field=form.first_name %}
-                        {% include "partials/form_field.html" with field=form.last_name %}
-                    </div>
-                </div>
-            </div>
-        </div>
         <form action="." method="post" class="form-stacked well">
             {% csrf_token %}
             <div class="control-group error">
@@ -52,6 +41,10 @@
                 <div class="controls">
                     <div class="radio custom-form">
                         {{ form.options.0 }}
+                        <div class="form-inline form-group" data-type='anonymous'>
+                            {% include "partials/form_field.html" with field=form.first_name %}
+                            {% include "partials/form_field.html" with field=form.last_name %}
+                        </div>
                     </div>
                 </div>
             </div>

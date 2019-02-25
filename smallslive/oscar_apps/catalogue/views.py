@@ -83,59 +83,62 @@ class PurchasedProductsInfoMixin():
             CD and HD gives access to all Tracks.
 
         """
-        self.digital_album_list = Line.objects.select_related(
-            'product', 'stockrecord', 'product__event', 'product__album').filter(
-            product__product_class__slug='digital-album',
-            order__user=self.request.user).distinct('stockrecord')
-        self.physical_album_list = Line.objects.select_related(
-            'product', 'stockrecord', 'product__event', 'product__album').filter(
-            product__product_class__slug='physical-album',
-            order__user=self.request.user).distinct('stockrecord')
-        self.track_list = Line.objects.select_related(
-            'product', 'stockrecord', 'product__event', 'product__album').filter(
-            product__product_class__slug='track',
-            order__user=self.request.user).distinct('stockrecord')
+        if not self.request.user.is_authenticated():
+            self.album_list = []
+        else:
+            self.digital_album_list = Line.objects.select_related(
+                'product', 'stockrecord', 'product__event', 'product__album').filter(
+                product__product_class__slug='digital-album',
+                order__user=self.request.user).distinct('stockrecord')
+            self.physical_album_list = Line.objects.select_related(
+                'product', 'stockrecord', 'product__event', 'product__album').filter(
+                product__product_class__slug='physical-album',
+                order__user=self.request.user).distinct('stockrecord')
+            self.track_list = Line.objects.select_related(
+                'product', 'stockrecord', 'product__event', 'product__album').filter(
+                product__product_class__slug='track',
+                order__user=self.request.user).distinct('stockrecord')
 
-        self.album_list = []
-        for album in list(self.digital_album_list) + list(self.physical_album_list):
-            album_info = {
-                'parent': album.product.parent,
-                'bought_tracks': [track.pk for track in album.product.parent.tracks.all()],
-                'album_type': 'full_album',
-            }
-            # Avoid duplicates
-            album = [a for a in self.album_list if a['parent'] == album.product.parent]
-            if not album:
-                self.album_list.append(album_info)
-
-        # Iterate tracks and accumulate for album
-        for track in self.track_list:
-            print '--------------------------------------------'
-            print 'Track: ', track, track.product.album
-            # Search album_list to see if already in list
-            print self.album_list
-            print track.product.album
-            # Find the position of the album in the list, if it exists
-            albums_matched = [a for a in enumerate(self.album_list)
-                              if a[1]['parent'] == track.product.album]
-            if albums_matched:
-                index = albums_matched[0][0]
-                # Add the track to purchased tracks it's not there already.
-                album = albums_matched[0][1]
-                bought_tracks = album['bought_tracks']
-                if track.product.pk not in bought_tracks:
-                    bought_tracks.append(track.product.pk)
-                    # Update the bought track.
-                    self.album_list[index]['bought_tracks'] = bought_tracks
-            else:
+            self.album_list = []
+            for album in list(self.digital_album_list) + list(self.physical_album_list):
                 album_info = {
-                    'parent': track.product.album,
-                    'bought_tracks': [track.product.pk],
-                    'album_type': 'track_album',
+                    'parent': album.product.parent,
+                    'bought_tracks': [track.pk for track in album.product.parent.tracks.all()],
+                    'album_type': 'full_album',
                 }
-                self.album_list.append(album_info)
+                # Avoid duplicates
+                album = [a for a in self.album_list if a['parent'] == album.product.parent]
+                if not album:
+                    self.album_list.append(album_info)
 
-        self.album_list = sorted(self.album_list, key=lambda k: k['parent'].title)
+            # Iterate tracks and accumulate for album
+            for track in self.track_list:
+                print '--------------------------------------------'
+                print 'Track: ', track, track.product.album
+                # Search album_list to see if already in list
+                print self.album_list
+                print track.product.album
+                # Find the position of the album in the list, if it exists
+                albums_matched = [a for a in enumerate(self.album_list)
+                                  if a[1]['parent'] == track.product.album]
+                if albums_matched:
+                    index = albums_matched[0][0]
+                    # Add the track to purchased tracks it's not there already.
+                    album = albums_matched[0][1]
+                    bought_tracks = album['bought_tracks']
+                    if track.product.pk not in bought_tracks:
+                        bought_tracks.append(track.product.pk)
+                        # Update the bought track.
+                        self.album_list[index]['bought_tracks'] = bought_tracks
+                else:
+                    album_info = {
+                        'parent': track.product.album,
+                        'bought_tracks': [track.product.pk],
+                        'album_type': 'track_album',
+                    }
+                    self.album_list.append(album_info)
+
+                self.album_list = sorted(self.album_list, key=lambda k: k['parent'].title)
 
 
 class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfoMixin):
