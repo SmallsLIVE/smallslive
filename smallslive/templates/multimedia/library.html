@@ -38,7 +38,12 @@
         {% endif %}
     </div>
 </main>
-<section id="my-downloads-album__list"></section>
+<div class="catalogue-container">
+  <section id="my-downloads-album__list"></section>
+  <div id="event-load-gif" class="loading-image events-gif">
+    <img src="{% static 'image/loading.gif' %}" alt="">
+  </div>
+</div>
 
 {% endblock content %}
 
@@ -51,12 +56,15 @@ function loadAlbum(productId, bought_tracks, album_type){
     params.productId = productId;
     params.album_type = album_type;
     params.bought_tracks = JSON.stringify(bought_tracks);
+    var $albumContainer = $("#my-downloads-album__list");
+    $albumContainer.html('');
+    $('#event-load-gif').show();
     $.ajax({
         url: "/multimedia/library/" + productId,
         data: params,
         success: function (data) {
-            albumContainer = $("#my-downloads-album__list")
-            $(albumContainer).html(data)
+            $('#event-load-gif').show();
+            $albumContainer.html(data)
               Array.prototype.forEach.call(audioPlayers, function(player) {
                 player.addEventListener("play", function(){
                         setTime = setInterval( t=> {

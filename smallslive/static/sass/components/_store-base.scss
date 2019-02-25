@@ -2558,6 +2558,9 @@ img.defineImageRatio {
   width: auto;
 
   .event-display {
+
+    cursor: pointer;
+
     .event-info {
       min-height: 0px;
     }
@@ -2743,5 +2746,12 @@ form .back-to-payment-btn {
   @media (max-width: 400px) {
     margin-bottom: 10px;
     width: 100%;
+  }
+}
+
+.catalogue-container {
+  .events-gif {
+    margin: 50px auto;
+    width: 50px;
   }
 }
