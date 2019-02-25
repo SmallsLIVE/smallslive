@@ -160,7 +160,7 @@
         <div class="text4 text-centered" style="display: flex; justify-content: center;">
           <button id="confirmSelectionButton" class="white-border-button confirm" style="margin-right: 5px;">Confirm</button>
           <button id="cancelSelectionButton" class="white-border-button cancel" style="margin-left: 5px;">Cancel</button>
-          <form type="post" id="frmCheckout" class="hidden">
+          <form id="frmCheckout" type="post"  class="hidden">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
           </form>
         </div>
@@ -195,13 +195,11 @@
         if ($(this).hasClass('add-to-library')) {
           $(this).removeClass('add-to-library');
           $(this).addClass('added-to-library');
-          $(this).text('Added to Library');
           $(this).addClass('no-border');
           $(this).addClass('active');
         } else {
           $(this).removeClass('added-to-library');
           $(this).addClass('add-to-library');
-          $(this).text('Add to Library');
           $(this).removeClass('no-border');
           $(this).removeClass('active');
         }
@@ -251,6 +249,26 @@
         }
       });
 
+      $(document).on('click', '#confirmSelectionButton', function (event) {
+        var $matches =  $('#confirmCheckout .add-to-basket');
+        var count = $matches.length;
+        $matches.each(function () {
+          var $form = $(this);
+          $.ajax({
+            url: $form.attr('action'),
+            type: "post",
+            data: $form.serialize(),
+            success: function (data) {
+              console.log(data);
+              count--;
+              if (count == 0) {
+                checkout();
+              }
+            }
+          });
+        });
+      });
+
       $("#confirmCheckout").on("hidden.bs.modal", function () {
         var $btn = $('#btnCheckout');
 
@@ -264,6 +282,80 @@
         });
 
       });
+
+      /* Store functions */
+
+      function checkout() {
+
+        $.ajax({
+          url: "/store/checkout",
+          success: function (data) {
+            selectShippingAddress();
+          }
+        });
+
+      }
+
+      function selectShippingAddress() {
+        $.ajax({
+          url: "/store/checkout/shipping-address/",
+          success: function (data) {
+            selectShippingMethod();
+          }
+        });
+      }
+
+      function selectShippingMethod() {
+        $.ajax({
+          url: "/store/checkout/shipping-method/",
+          success: function (data) {
+            selectPaymentMethod();
+          }
+        });
+      }
+
+      function selectPaymentMethod() {
+        $.ajax({
+          url: "/store/checkout/payment-method/",
+          success: function (data) {
+            selectPaymentDetails(data);
+          }
+        });
+      }
+
+      function selectPaymentDetails(data)  {
+        var url = data.url;
+        $.ajax({
+          url: url,
+          success: function (data) {
+            var $form = $(data).find('#payment-form');
+
+            $.ajax({
+              url: '/store/checkout/preview/',
+              type: "POST",
+              data: $form.serialize(),
+              success: function (data) {
+                placeOrder(data);
+              }
+            });
+
+          }
+        });
+      }
+
+      function placeOrder(data) {
+        var $form = $(data).find('#place-order');
+        $.ajax({
+          url: $form.attr('action'),
+          type: "POST",
+          data: $form.serialize(),
+          success: function (data) {
+            window.location.reload();
+          }
+        });
+      }
+
+
 
     });
   </script>

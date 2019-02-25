@@ -166,6 +166,9 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
             ]).first()
             ctx['child_product'] = variant
 
+        # Clean basket
+        self.request.basket.flush()
+
         return ctx
 
     def get_template_names(self):
