@@ -270,17 +270,11 @@ class AddTracksView(TemplateView):
     def get_context_data(self, **kwargs):
 
         tracks = self.request.GET.getlist('trackId', [])
-        print tracks
         products = Product.objects.filter(pk__in=tracks)
-        print products
-        for product in products:
-            print product
         context = super(AddTracksView, self).get_context_data(**kwargs)
         context['products'] = products
 
         customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
-        print  customer_detail
-        print customer_detail.active_card
         context['active_card'] = customer_detail.active_card
 
         return context
