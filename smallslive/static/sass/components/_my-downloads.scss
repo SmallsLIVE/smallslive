@@ -297,7 +297,6 @@
 
           &.active-bar {
             background-color: $accent-color;
-
           }
         }
 
@@ -502,38 +501,77 @@
     height: 100%;
   }
 }
-
+@keyframes progress-in {
+  from {
+    height: 0px;
+  }
+  to {
+    height: 5px;
+  }
+}
+@keyframes progress-out {
+  from {
+    height: 5px;
+  }
+  to {
+    height: 0px;
+  }
+}
 .song-container .my-downloads-album__tracks-table .track-container:hover {
-  @media(min-width: 1024px) {
-    .length-bar {
-      height: 6px;
-      transition: height 0.2s;
+  @media (min-width: 425px) {
+    .progress-bar {
+      transition: height 0.6s;
+      animation-name: progress-in;
+      animation-duration: 0.3s;
+      height: 5px;
+    }
+  }
+}
+
+.progress-holder {
+  cursor: pointer;
+  background: #f3f3f3;
+  margin: 0px 0;
+
+  .progress-bar {
+    height: 5px;
+    width: 0%;
+    background: red;
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+
+    &.paused {
+      @media (min-width: 425px) {
+        animation-name: progress-out;
+        animation-duration: 0.3s;
+      }
+      height: 0px;
+      background: #9e9b9b;
+      .progress-btn {
+        display: none;
+      }
     }
 
-    .progress-bar {
-      height: 6px;
-      transition: height 0.2s;
+    .progress-btn {
+      background-color: $smallslive;
+      border-radius: 50%;
+      position: absolute;
+      top: -4px;
+      right: -5px;
+      width: 13px;
+      height: 13px;
 
-      &.active-bar::after {
-        transition: all 0.15s;
-        z-index: 10;
-        content: "\A";
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: $accent-color;
-        display: block;
-        position: absolute;
-        right: -6px;
-        top: -1px;
-        transition: height 0.2s;
+      &:active {
+        background: #a01129;
       }
     }
   }
 }
 
 .song-container .my-downloads-album__tracks-table .track-container {
-  @media(max-width: 1023px) {
+  cursor: pointer;
+  @media (max-width: 1023px) {
     .length-bar {
       height: 6px;
       transition: height 0.2s;
@@ -560,7 +598,6 @@
     }
   }
 }
-
 
 .length-bar {
   z-index: 10;

@@ -63,7 +63,7 @@ function loadAlbum(productId, bought_tracks, album_type){
         url: "/multimedia/library/" + productId,
         data: params,
         success: function (data) {
-            $('#event-load-gif').show();
+            $('#event-load-gif').hide();
             $albumContainer.html(data)
               Array.prototype.forEach.call(audioPlayers, function(player) {
                 player.addEventListener("play", function(){
@@ -98,6 +98,7 @@ function loadAlbum(productId, bought_tracks, album_type){
 }
 </script>
 <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+<script src="{% static 'js/progress-bar.js' %}"></script>
 <script>
     var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
     $(document).on('click', ".my-downloads-album__tracks-table__row.flex-row:not(.disabled)", function(event){
@@ -105,6 +106,7 @@ function loadAlbum(productId, bought_tracks, album_type){
         //find audio player, its track number and change the big player track number
         audioPlayer = $(this).find(".audio audio")[0]
         audioPlayerTrack = $(audioPlayer).data("track")
+        console.log(audioPlayerTrack)
         mainContainer = $(this).closest(".big-player")[0]
         playerContainer =$(mainContainer).find(".player-container")[0]
         $(playerContainer).data("track", audioPlayerTrack)
@@ -133,6 +135,10 @@ function loadAlbum(productId, bought_tracks, album_type){
         //toggles player
         if(lastPlayer != undefined){
             lastPlayer.pause()
+            console.log('switch')
+                $("#" + $(lastPlayer).data("track"))
+      .children(".progress-bar")
+      .addClass("paused");
         }
         togglePlayer(audioPlayer, play)
         
@@ -142,8 +148,14 @@ function loadAlbum(productId, bought_tracks, album_type){
     function togglePlayer(playerContainer, play){
         if(play){
             audioPlayer.play()
+            $("#" + $(playerContainer).data("track"))
+            .children(".progress-bar")
+            .removeClass("paused");
         }else{
             audioPlayer.pause()
+                       $("#" + $(playerContainer).data("track"))
+            .children(".progress-bar")
+            .addClass("paused");
         }
     }
     $(document).on('click', ".purchases-player-button", function(){
@@ -174,6 +186,9 @@ function loadAlbum(productId, bought_tracks, album_type){
         }
         if(lastPlayer != undefined){
             lastPlayer.pause()
+                            $("#" + $(lastPlayer).data("track"))
+      .children(".progress-bar")
+      .addClass("paused");
         }
         togglePlayer(audioPlayer, play)
         lastPlayerContainer = playerContainer
@@ -211,6 +226,7 @@ function loadAlbum(productId, bought_tracks, album_type){
     function changeProgress(progress, player){
         newProgress = Math.floor(player.duration) * progress / 100
         player.currentTime = newProgress;
+        updateProgressTrack('player', newProgress)
     }
 
     $(".event-display").on("click", function(){
@@ -287,3 +303,4 @@ function loadAlbum(productId, bought_tracks, album_type){
 </script>
 
 {% endblock %}
+
