@@ -201,7 +201,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         self.ticket_name = {}
         self.ticket_name["first"] = self.request.POST.get('guest_first_name',"")
         self.ticket_name["last"] = self.request.POST.get('guest_last_name',"")
-
         # We use a custom parameter to indicate if this is an attempt to place
         # an order (normally from the preview page).  Without this, we assume a
         # payment form is being submitted from the payment details view. In
@@ -236,7 +235,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
 
     def handle_payment_details_submission(self, request, ticket_name=None):
         """"""
-
         basket = request.basket
         shipping_address = self.get_shipping_address(basket)
         payment_method = request.POST.get('payment_method')
@@ -293,7 +291,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         print 'Basket: ', request.basket
         print request.basket.pk
         print '****************************'
-            
         basket = request.basket
         payment_method = request.POST.get('payment_method')
         flow_type = request.POST.get('flow_type')
@@ -359,7 +356,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         else:
             first_name, last_name = self.checkout_session.get_reservation_name()
             print first_name, last_name
-
 
         if ticket_name["first"] and ticket_name["last"]:
             order_kwargs.update({
