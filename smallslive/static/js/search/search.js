@@ -1073,4 +1073,5 @@ $(document).ready(function () {
   } else {
     is_mobile = false;
   }
+  $("body").removeClass("hidden-body");
 });
