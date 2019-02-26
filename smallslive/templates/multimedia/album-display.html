@@ -94,11 +94,18 @@
           <div class="my-downloads-album__tracks-table__column buy-track store-buy">
             {% if not track.pk in bought_tracks and not is_full = 'full_album' %}
               {% if user.is_authenticated %}
-                <button class="white-border-button add-to-library" data-track-id="{{ track.pk }}">Add to Library</button>
+                <button class="white-border-button add-to-library"
+                        data-track-id="{{ track.pk }}"
+                        data-price="{{ track.get_track_stockrecord.price_excl_tax }}">Add to Library
+                </button>
               {% else %}
                 <a class="white-border-button" href="#"
-                   data-toggle="modal" data-target="#logIn">Add to library <i class="fa fa-caret-down"></i></a>
-                {% endif %}
+                   data-toggle="modal"
+                   data-target="#logIn"
+                   data-price="{{ track.get_track_stockrecord.price_excl_tax }}">Add to library
+                  <i class="fa fa-caret-down"></i>
+                </a>
+              {% endif %}
 
             {% else %}
               {% if is_catalogue %}
@@ -194,7 +201,12 @@
   <script>
     $(document).ready(function () {
 
-      $(document).on('click', '.add-to-library', function (event) {
+      $(document).on('click', '.add-to-library, .added-to-library', function (event) {
+        /* Add to Library (Mark as ready to be added to basket
+          This does not add the item to the basket just yet.
+          Just change a few classes to prepare what's going to be
+          added when the confirmation is received.
+        */
         if ($(this).hasClass('add-to-library')) {
           $(this).removeClass('add-to-library');
           $(this).addClass('added-to-library');
@@ -205,6 +217,22 @@
           $(this).addClass('add-to-library');
           $(this).removeClass('no-border');
           $(this).removeClass('active');
+        }
+
+        // update total in Confirm button:
+        var total = 0;
+        $('.added-to-library').each(function () {
+          var price = $(this).data('price');
+          if (price) {
+            price = parseFloat(price);
+            total += price
+          }
+        });
+
+        if (total > 0) {
+          $('#btnCheckout').text('Confirm $' + total + ' donation');
+        } else {
+          $('#btnCheckout').text('Confirm donation');
         }
       });
 
