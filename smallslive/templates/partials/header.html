@@ -159,11 +159,13 @@
       } else {
           searchTerm = '';
       }
-
-      if (searchTerm) {
-          $('.mobile-menu-icons .fa-search').click();
+      if (viewPortLength("width") < 1024) {
+        if (searchTerm) {
+            $('.mobile-menu-icons .fa-search').click();
+        }
       }
   })
 
 </script>
 <script type="text/javascript" src="{% static 'js/search/search-bar.js' %}"></script>
+<script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
