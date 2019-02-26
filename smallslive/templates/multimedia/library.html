@@ -38,12 +38,7 @@
         {% endif %}
     </div>
 </main>
-<div class="catalogue-container">
-  <section id="my-downloads-album__list"></section>
-  <div id="event-load-gif" class="loading-image events-gif">
-    <img src="{% static 'image/loading.gif' %}" alt="">
-  </div>
-</div>
+<section id="my-downloads-album__list"></section>
 
 {% endblock content %}
 
@@ -56,15 +51,12 @@ function loadAlbum(productId, bought_tracks, album_type){
     params.productId = productId;
     params.album_type = album_type;
     params.bought_tracks = JSON.stringify(bought_tracks);
-    var $albumContainer = $("#my-downloads-album__list");
-    $albumContainer.html('');
-    $('#event-load-gif').show();
     $.ajax({
         url: "/multimedia/library/" + productId,
         data: params,
         success: function (data) {
-            $('#event-load-gif').hide();
-            $albumContainer.html(data)
+            albumContainer = $("#my-downloads-album__list")
+            $(albumContainer).html(data)
               Array.prototype.forEach.call(audioPlayers, function(player) {
                 player.addEventListener("play", function(){
                         setTime = setInterval( t=> {
@@ -72,6 +64,7 @@ function loadAlbum(productId, bought_tracks, album_type){
                         $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")
                         timeTracker = $(player).closest(".my-downloads-album__tracks-table__row").find(".my-downloads-album__tracks-table__column.duration")[0]
                         progress = player.currentTime / player.duration * 100
+                        updateProgressTrack( $(player).data('track'), progress)
                         progressWidth = progress + "%"
                         $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", progressWidth )
                         $(timeTracker).html(readableTime(currentTime)) 
