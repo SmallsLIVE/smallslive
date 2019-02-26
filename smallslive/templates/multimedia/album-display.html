@@ -80,6 +80,15 @@
                 {% endif %}
               </audio>
             </div>
+          {% else %}
+            {% if is_catalogue %}
+              <div class="hidden my-downloads-album__tracks-table__column audio">
+                <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
+                  {% if track.get_track_preview_url %}
+                    <source src="{{ track.get_track_preview_url|safe }}" type="audio/mpeg">
+                </audio>
+              </div>
+            {% endif %}
           {% endif %}
           <div class="flex-column track-info {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}" data-track="{{ forloop.counter0 }}">
             <div class="my-downloads-album__tracks-table__column title2">
