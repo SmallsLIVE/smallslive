@@ -86,6 +86,7 @@
                 <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
                   {% if track.get_track_preview_url %}
                     <source src="{{ track.get_track_preview_url|safe }}" type="audio/mpeg">
+                  {% endif %}
                 </audio>
               </div>
             {% endif %}
