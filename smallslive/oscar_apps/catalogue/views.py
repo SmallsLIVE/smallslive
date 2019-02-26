@@ -160,6 +160,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
             ctx['bought_tracks'] = None
             if track_album:
                 ctx['bought_tracks'] = track_album["bought_tracks"]
+            ctx['mp3_available'] = album_product.tracks.filter(stockrecords__is_hd=False).count() > 0
             variant = Product.objects.filter(parent=album_product, product_class__slug__in=[
                 'physical-album',
                 'digital-album'

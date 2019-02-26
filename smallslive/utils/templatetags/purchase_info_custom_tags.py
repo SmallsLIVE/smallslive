@@ -7,5 +7,10 @@ register = template.Library()
 @register.assignment_tag
 def purchase_info_for_track(request, product):
 
-    return Selector().track_strategy().fetch_for_product(product)
+    stock_record = product.get_track_stockrecord
+    strategy = Selector().track_strategy().fetch_for_product(product, stock_record)
+    print '************************************'
+    print strategy
+    print strategy.availability
+    return strategy
 

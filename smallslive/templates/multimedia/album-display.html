@@ -41,20 +41,22 @@
         <a class="artist-link " href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }} {{ artist.last_name }} / {{ artist.instruments.first }}</a><br>
       {% endfor %}
       <br>
-      {% purchase_info_for_product request child_product as session %}
-      <form id="add_to_basket_form" action="{% url 'basket:add' pk=child_product.pk  %}" method="post" class="add-to-basket">
-        {% if session.availability.is_available_to_buy %}
-          {% basket_form request child_product 'single' as basket_form %}
-          <div class="store-add-large">
-            {% csrf_token %}
-            {{ basket_form.quantity }}
-            {{ basket_form.child_id }}
-            <div class="arrow-button-container">
-              <button type="submit" class="white-border-button">Buy {{ child_product.title }} {{ session.price.excl_tax|currency:session.price.currency }}</button>
+      {% if child_product %}
+        {% purchase_info_for_product request child_product as session %}
+        <form id="add_to_basket_form" action="{% url 'basket:add' pk=child_product.pk  %}" method="post" class="add-to-basket">
+          {% if session.availability.is_available_to_buy %}
+            {% basket_form request child_product 'single' as basket_form %}
+            <div class="store-add-large">
+              {% csrf_token %}
+              {{ basket_form.quantity }}
+              {{ basket_form.child_id }}
+              <div class="arrow-button-container">
+                <button type="submit" class="white-border-button">Buy {{ child_product.title }} {{ session.price.excl_tax|currency:session.price.currency }}</button>
+              </div>
             </div>
-          </div>
-        {% endif %}
-      </form>
+          {% endif %}
+        </form>
+      {% endif  %}
     </div>
   </div>
   <div class="song-container">
@@ -93,20 +95,23 @@
 
           <div class="my-downloads-album__tracks-table__column buy-track store-buy">
             {% if not track.pk in bought_tracks and not is_full = 'full_album' %}
-              {% if user.is_authenticated %}
-                <button class="white-border-button add-to-library"
-                        data-track-id="{{ track.pk }}"
-                        data-price="{{ track.get_track_stockrecord.price_excl_tax }}">Add to Library
-                </button>
+              {% if track.get_track_stockrecord %}
+                {% if user.is_authenticated %}
+                  <button class="white-border-button add-to-library"
+                          data-track-id="{{ track.pk }}"
+                          data-price="{{ track.get_track_stockrecord.price_excl_tax }}">Add to Library
+                  </button>
+                {% else %}
+                  <a class="white-border-button" href="#"
+                     data-toggle="modal"
+                     data-target="#logIn"
+                     data-price="{{ track.get_track_stockrecord.price_excl_tax }}">Add to library
+                    <i class="fa fa-caret-down"></i>
+                  </a>
+                {% endif %}
               {% else %}
-                <a class="white-border-button" href="#"
-                   data-toggle="modal"
-                   data-target="#logIn"
-                   data-price="{{ track.get_track_stockrecord.price_excl_tax }}">Add to library
-                  <i class="fa fa-caret-down"></i>
-                </a>
+                <label>No Mp3 available</label>
               {% endif %}
-
             {% else %}
               {% if is_catalogue %}
                 <button class="white-border-button">Added to Library</button>
@@ -133,9 +138,11 @@
       <!-- end of tracks table row -->
     {% endfor %}
     </div>
+    {% if mp3_available %}
     <div>
-      <button id="btnCheckout" class="white-border-button checkout">Confirm puchase</button>
+      <button id="btnCheckout" class="white-border-button checkout">Confirm donation</button>
     </div>
+    {% endif %}
     <!-- end of tracks table -->
   </div>
 </div>

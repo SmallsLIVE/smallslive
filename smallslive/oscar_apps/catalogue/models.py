@@ -55,7 +55,7 @@ class Product(AbstractProduct):
         has_physical_child = self.tracks.exists()
         return is_album and has_physical_child
 
-    @cached_property
+    @property
     def get_track_stockrecord(self):
         if self.product_class.slug == "track":
             return self.stockrecords.filter(is_hd=False).first()

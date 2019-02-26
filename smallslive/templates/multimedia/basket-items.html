@@ -9,14 +9,14 @@
 
 {% for product in products %}
   {% purchase_info_for_track request product as session %}
-  <p>{{ product.title }} {{ session.price.excl_tax|currency:session.price.currency }}</p>
-  <form action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
-    {% if session.availability.is_available_to_buy %}
-      {% basket_form request product 'single' as basket_form %}
+    <p>{{ product.title }} {{ session.price.excl_tax|currency:session.price.currency }}</p>
+    <form action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
+      {% if session.availability.is_available_to_buy %}
+        {% basket_form request product 'single' as basket_form %}
           {% csrf_token %}
           {{ basket_form.quantity }}
-    {% endif %}
-  </form>
+      {% endif %}
+    </form>
 {% endfor %}
 {% if active_card %}
   <div class="button-row justify-content-center button-row-margin">
