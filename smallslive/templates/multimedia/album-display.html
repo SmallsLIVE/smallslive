@@ -288,6 +288,10 @@
       });
 
       $(document).on('click', '#confirmSelectionButton', function (event) {
+
+        var $that = $(this);
+        $(document.body).css('cursor', 'wait');
+        $that.attr('disabled', 'disabled');
         var $matches =  $('#confirmCheckout .add-to-basket');
         var count = $matches.length;
         $matches.each(function () {
@@ -309,7 +313,7 @@
 
       $("#confirmCheckout").on("hidden.bs.modal", function () {
         var $btn = $('#btnCheckout');
-
+        $(document.body).css('cursor', 'initial');
         $btn.removeAttr('disabled');
         $('.added-to-library').each(function () {
           $(this).removeClass('added-to-library');
@@ -321,14 +325,33 @@
 
       });
 
+      $(document).on('click', '.payment-method-toggle', function () {
+        $('.payment-method-toggle').toggleClass('active');
+      });
+
       /* Store functions */
 
       function checkout() {
-
         $.ajax({
           url: "/store/checkout",
           success: function (data) {
+            // If there is no active card, we'll need to take the
+            // user to the usual flow, except for the basket view.
+            {% if not active_card %}
+              window.location.href = '/store/checkout/shipping-address/';
+              return;
+            {% endif %}
+
+            // User has selected not to use existing credit card.
+            $paymentMethod = $('.payment-method-toggle.active').data('id');
+            if ($paymentMethod == 'other') {
+              window.location.href = '/store/checkout/shipping-address/';
+              return;
+            }
+
+            // Continue via ajax so that everything the user sees is one popup.
             selectShippingAddress();
+
           }
         });
 
@@ -392,8 +415,6 @@
           }
         });
       }
-
-
 
     });
   </script>

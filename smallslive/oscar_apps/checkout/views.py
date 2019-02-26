@@ -710,6 +710,8 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
 
         # request.basket doesn't work b/c the basket is frozen
         basket = self.get_submitted_basket()
+        # TODO: check that the strategy is correct for Tracks (right stock record).
+        # If basket has tracks, it's probably to use custom strategy.
         strategy = selector.strategy(request=request, user=request.user)
         basket.strategy = strategy
         self.handle_order_placement(basket, payment_id)
@@ -769,6 +771,11 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
         self.add_payment_source(source)
         self.add_payment_event(
             payment_event, total_incl_tax, reference=payment_id)
+
+        if not basket.has_tickets():
+            donation = Donation.objects.filter(reference=payment_id).first()
+            donation.confirmed = True
+            donation.save()
 
         shipping_address = self.get_shipping_address(basket)
         shipping_method = Repository().get_default_shipping_method(

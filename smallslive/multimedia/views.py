@@ -257,7 +257,11 @@ class AlbumView(TemplateView):
             'physical-album',
             'digital-album'
         ]).first()
+        context['mp3_available'] = album_product.tracks.filter(stockrecords__is_hd=False).count() > 0
         context['child_product'] = variant
+        customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
+        if customer_detail:
+            context['active_card'] = customer_detail.active_card
 
         return context
 

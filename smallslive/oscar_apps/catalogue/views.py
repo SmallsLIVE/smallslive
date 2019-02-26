@@ -10,7 +10,7 @@ from oscar_apps.catalogue.models import Product
 from oscar.apps.catalogue.views import ProductCategoryView
 from oscar.apps.order.models import Line
 from django.db.models import F, Q, Max
-
+from custom_stripe.models import CustomerDetail
 
 
 class ProductCategoryView(catalogue_views.ProductCategoryView):
@@ -151,6 +151,10 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
         ctx['artist_with_media'] = Artist.objects.exclude(artistproduct=None)
         ctx['has_active_alert'] = self.get_alert_status()
         ctx['is_catalogue'] = True
+        customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
+        if customer_detail:
+            ctx['active_card'] = customer_detail.active_card
+
         if self.object.get_product_class().slug == 'album':
             album_product = Product.objects.filter(pk=self.object.pk ).first()
             ctx['album_product'] = album_product
