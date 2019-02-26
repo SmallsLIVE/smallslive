@@ -97,14 +97,14 @@
                  {% if ticket_name %}
                       <div class="flex-row col-xs-12 col-md-4 col-md-offset-4 hidden">
                         <input style="margin-right: 15px;" type="text" class="store__form__input"
-                        id="guest-name" required placeholder="Guest list first name" size="20" 
+                        id="guest-first-name" required placeholder="Guest list first name" size="20" 
                         autocomplete="off"
-                        name="guest_first_name" value=" {% if user.first_name %}{{ user.first_name }}{% elif guest.first_name %}{{ guest.first_name }}{% endif %} "
+                        name="guest_first_name" value="{{ ticket_name.first }}"
                         placeholder="Credit Card Number">
                         <input type="text" class="store__form__input"
-                        id="guest-name" required placeholder="Guest list last name" size="20" 
+                        id="guest-last-name" required placeholder="Guest list last name" size="20" 
                         autocomplete="off"
-                        name="guest_last_name" value="{% if user.last_name %}{{ user.last_name }}{% elif guest.last_name %}{{ guest.last_name }}{% endif %}"
+                        name="guest_last_name" value=" {{ ticket_name.last }}"
                         placeholder="Credit Card Number">
                     </div>
 
