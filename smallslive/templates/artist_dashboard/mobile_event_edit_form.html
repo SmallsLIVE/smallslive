@@ -1,116 +1,94 @@
-{% load crispy_forms_tags static %}
-<form method="post" class="admin-interface__form" enctype="multipart/form-data" action="{% url 'event_edit' pk=event.id slug=event.slug %}">
-   <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-   <div class="logo-container">
-      <img src="{% static 'logo-black.svg' %}" alt=""/>
-   </div>
-   <div class="title-container">
-      <div class="text2 accent-color">Archived Show</div>
-      <div class="title1">Edit event info</div>
-   </div>
-   <div id="div_id_title" class="form-group">
-      <label for="id_title" class="control-label  requiredField">
+{% load static from staticfiles %}
+<form method="post" class="admin-interface__form" enctype="multipart/form-data" action="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
+  {% csrf_token %}
+  <div class="logo-container">
+    <img src="{% static 'logo-black.svg' %}" alt=""/>
+  </div>
+  <div class="title-container">
+    <div class="text2 accent-color">Archived Show</div>
+    <div class="title1">Edit event info</div>
+  </div>
+  <div id="div_id_title" class="form-group">
+    <label class="control-label  requiredField">
       Band Title</label>
-      <div class="controls "><input class="textinput textInput form-control" id="id_title" maxlength="500" name="title" type="text" value="{{ event.title }}"> </div>
-   </div>
-   <div class="form-group artist-list-form">
-      <div><input id="id_artists_gig_info-TOTAL_FORMS" name="artists_gig_info-TOTAL_FORMS" type="hidden" value="1"> <input id="id_artists_gig_info-INITIAL_FORMS" name="artists_gig_info-INITIAL_FORMS" type="hidden" value="1"> <input id="id_artists_gig_info-MIN_NUM_FORMS" name="artists_gig_info-MIN_NUM_FORMS" type="hidden" value="0"> <input id="id_artists_gig_info-MAX_NUM_FORMS" name="artists_gig_info-MAX_NUM_FORMS" type="hidden" value="1000"> </div>
-      <table class="table formset_table">
-         <thead>
-            <tr class="table_row">
-               <th></th>
-               <th for="id_artists_gig_info-0-artist" class="mobile-edit-title col-md-8 control-label requiredField">
-                  Artist
-               </th>
-               <th for="id_artists_gig_info-0-is_leader" class="mobile-edit-title col-md-2 control-label ">
-                  Leader
-               </th>
-               <th class="mobile-edit-title col-md-1">Remove</th>
-            </tr>
-         </thead>
-         <tbody>
-            {% for gig in event.artists_gig_info.all %}
-            <tr>
-               <td><i class="fa fa-bars"></i></td>
-               <input class="sort_order_field"
-                      id="id_artists_gig_info-{{ forloop.counter0 }}-sort_order"
-                      name="artists_gig_info-{{ forloop.counter0 }}-sort_order"
-                      type="hidden"
-                      value="0">
-               <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-artist" class="artist-selector">
-                  <select class="artist_field select form-control"
-                          id="id_artists_gig_info-{{ forloop.counter0 }}-artist"
-                          name="artists_gig_info-{{ forloop.counter0 }}-artist">
-                     <option value="">Artist</option>
-                     <option value="gig.artist.id" selected>{{gig.artist.full_name}}</option>
-                  </select>
-                  <select class="role_field select form-control"
-                          id="id_artists_gig_info-{{ forloop.counter0 }}-role"
-                          name="artists_gig_info-{{ forloop.counter0 }}-role">
-                      <option value="">Role</option>
-                     {% for instrument in gig_instruments %}
-                        <option value="{{ instrument.id }}" {% if gig.role.id == instrument.id %} selected {% endif %}>{{ instrument.name }}</option>
-                     {% endfor %}
-                  </select>
-               </td>
-          
-               <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-is_leader">
-                  <input checked="checked"
-                         class="checkboxinput"
-                         id="id_artists_gig_info-{{ forloop.counter0 }}-is_leader"
-                         name="artists_gig_info-{{ forloop.counter0 }}-is_leader"
-                         type="checkbox">
-               </td>
-               <input id="id_artists_gig_info-{{ forloop.counter0 }}-id"
-                      name="artists_gig_info-{{ forloop.counter0 }}-id"
-                      type="hidden"
-                      value="103704">
-               <input id="id_artists_gig_info-{{ forloop.counter0 }}-event"
-                      name="artists_gig_info-{{ forloop.counter0 }}-event"
-                      type="hidden"
-                      value="14800">
-               <td><a href="" class="artist_remove"><span class="fa fa-trash"></span></a></td>
-            </tr>
-            {% endfor %}
-         </tbody>
-      </table>
-      <button type="button" class="white-border-button artists-table__button" name="add" id="add_more_artists"> Add another
-      </button>
-   </div>
-   <div id="div_id_photo" class="form-group">
-      <label for="id_photo" class="control-label" style="text-transform: none;">
-      Upload or change event photo
-      </label>
-      <div class="controls ">
-         <div>
-            <a target="_blank" href="" alt=""> </a>
-            <div class="checkbox"><label for="photo-clear_id"style="text-transform: none;"><input type="checkbox" name="photo-clear" id="photo-clear_id">Delete this photo
-               </label>
-            </div>
-            <input type="file" name="photo"
-                   data-max-width="5037" data-max-height="3358" data-org-width="5037" data-field-name="photo"
-                   id="id_photo"
-                   data-thumbnail-url="" data-org-height="3358" class="crop-thumb">
-         </div>
-      </div>
-   </div>
-   <div id="div_id_cropping" class="form-group">
-      <label for="id_cropping" class="control-label" style="text-transform: none;">
-      Tap and drag to crop photo.
-      </label>
-      <div class="controls ">
-         <input class="image-ratio textinput textInput form-control" data-adapt-rotation="false" data-allow-fullsize="true" data-box-max-height="300" data-box-max-width="300" data-image-field="photo" data-min-height="360" data-min-width="600" data-my-name="cropping" data-ratio="1.66666666667" data-size-warning="false" id="id_cropping" maxlength="255" name="cropping" type="text" value="420,235,3862,2300">
-         <p id="hint_id_cropping" class="help-block">Enable cropping</p>
-      </div>
-   </div>
-   <div id="div_id_description" class="form-group hidden">
-      <label for="id_description" class="control-label" style="text-transform: none;">
-      Description
-      </label>
-      <div class="controls "><textarea class="tinymce" cols="40" data-mce-conf="{&quot;spellchecker_languages&quot;: &quot;+English=en&quot;, &quot;elements&quot;: &quot;id_description&quot;, &quot;language&quot;: &quot;en&quot;, &quot;statusbar&quot;: false, &quot;plugins&quot;: &quot;link&quot;, &quot;directionality&quot;: &quot;ltr&quot;, &quot;theme&quot;: &quot;modern&quot;, &quot;strict_loading_mode&quot;: 1, &quot;mode&quot;: &quot;exact&quot;, &quot;skin&quot;: &quot;light&quot;, &quot;toolbar&quot;: &quot;bold italic | link&quot;, &quot;menubar&quot;: false}" id="id_description" name="description" rows="10"></textarea></div>
-   </div>
-   <div class="buttonHolder">
-      <button id="event-edit-save-button" class="white-border-button">Save</button>
-   </div>
-</form>
+    <div class="controls ">
+      {{ form.title }}
+    </div>
+  </div>
 
+  <div class="form-group artist-list-form">
+  {% for formset in inlines %}
+    {{ formset.management_form }}
+    <table class="table formset_table">
+      <thead>
+        <tr class="table_row">
+          <th></th>
+          <th for="id_artists_gig_info-0-artist" class="mobile-edit-title col-md-8 control-label requiredField">
+            Artist
+          </th>
+          <th for="id_artists_gig_info-0-is_leader" class="mobile-edit-title col-md-2 control-label ">
+            Leader
+          </th>
+          <th class="mobile-edit-title col-md-1">Remove</th>
+        </tr>
+       </thead>
+        <tbody>
+          {% for gig in event.artists_gig_info.all %}
+          <tr>
+             <td><i class="fa fa-bars"></i></td>
+             <input class="sort_order_field"
+                    id="id_artists_gig_info-{{ forloop.counter0 }}-sort_order"
+                    name="artists_gig_info-{{ forloop.counter0 }}-sort_order"
+                    type="hidden"
+                    value="0">
+             <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-artist" class="artist-selector">
+                <select class="artist_field select form-control"
+                        id="id_artists_gig_info-{{ forloop.counter0 }}-artist"
+                        name="artists_gig_info-{{ forloop.counter0 }}-artist">
+                   <option value="">Artist</option>
+                   <option value="gig.artist.id" selected>{{gig.artist.full_name}}</option>
+                </select>
+                <select class="role_field select form-control"
+                        id="id_artists_gig_info-{{ forloop.counter0 }}-role"
+                        name="artists_gig_info-{{ forloop.counter0 }}-role">
+                    <option value="">Role</option>
+                   {% for instrument in gig_instruments %}
+                      <option value="{{ instrument.id }}" {% if gig.role.id == instrument.id %} selected {% endif %}>{{ instrument.name }}</option>
+                   {% endfor %}
+                </select>
+             </td>
+
+             <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-is_leader">
+                <input checked="checked"
+                       class="checkboxinput"
+                       id="id_artists_gig_info-{{ forloop.counter0 }}-is_leader"
+                       name="artists_gig_info-{{ forloop.counter0 }}-is_leader"
+                       type="checkbox">
+             </td>
+             <input id="id_artists_gig_info-{{ forloop.counter0 }}-id"
+                    name="artists_gig_info-{{ forloop.counter0 }}-id"
+                    type="hidden"
+                    value="103704">
+             <input id="id_artists_gig_info-{{ forloop.counter0 }}-event"
+                    name="artists_gig_info-{{ forloop.counter0 }}-event"
+                    type="hidden"
+                    value="14800">
+             <td><a href="" class="artist_remove"><span class="fa fa-trash"></span></a></td>
+          </tr>
+          {% endfor %}
+       </tbody>
+    </table>
+    <button type="button" class="white-border-button artists-table__button" name="add" id="add_more_artists"> Add another
+    </button>
+  {% endfor %}
+  </div>
+  <div id="div_id_photo" class="form-group">
+    <div class="controls ">
+      {{ form.photo }}
+    </div>
+  </div>
+  <div class="buttonHolder">
+    <input type="submit" name="submit" value="Save event" class="white-border-button inline separated"
+           id="submit-id-submit">
+  </div>
+</form>

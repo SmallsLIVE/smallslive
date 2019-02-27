@@ -16,7 +16,7 @@ from extra_views import InlineFormSet
 from localflavor.us.forms import USStateField
 from localflavor.us.us_states import STATE_CHOICES
 from artists.forms import ArtistAddForm
-from artists.models import CurrentPayoutPeriod
+from artists.models import Artist, CurrentPayoutPeriod
 from events import forms as event_forms
 from events.forms import Formset
 from events.models import Recording, GigPlayed
@@ -54,6 +54,24 @@ class ArtistGigPlayedAddInlineFormSet(InlineFormSet):
         return formset
 
 
+class ArtistGigPlayedAddLazyInlineFormSet(ArtistGigPlayedAddInlineFormSet):
+    """
+    Filter the dropdowns so we can use selectize and autocomplete instead
+    of loading the full artist list.
+    """
+
+    def construct_formset(self):
+        formset = super(ArtistGigPlayedAddLazyInlineFormSet, self).construct_formset()
+        for form in formset:
+            artist_pk = form.initial.get('artist')
+            if artist_pk:
+                form.fields['artist'].queryset = Artist.objects.filter(pk=artist_pk)
+                for field in form.fields:
+                    form.fields[field].widget.attrs = {'class': 'form-control'}
+
+        return formset
+
+
 class EventEditForm(event_forms.EventEditForm):
     class Meta(event_forms.EventEditForm.Meta):
         pass
@@ -74,6 +92,14 @@ class EventEditForm(event_forms.EventEditForm):
         del self.fields['start']
         del self.fields['end']
         del self.fields['date']
+
+
+class EventAjaxEditForm(EventEditForm):
+
+    def __init__(self, *args, **kwargs):
+        super(EventAjaxEditForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
 
 
 class ArtistInfoForm(forms.ModelForm):

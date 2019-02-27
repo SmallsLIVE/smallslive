@@ -37,9 +37,10 @@ import users.forms as user_forms
 from users.models import LegalAgreementAcceptance
 from users.views import HasArtistAssignedMixin, \
     HasArtistAssignedOrIsSuperuserMixin
-from .forms import ToggleRecordingStateForm, EventEditForm, ArtistInfoForm, \
+from .forms import ToggleRecordingStateForm, EventAjaxEditForm,  \
+    EventEditForm, ArtistInfoForm, \
     EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm, \
-    ArtistGigPlayedAddInlineFormSet
+    ArtistGigPlayedAddInlineFormSet, ArtistGigPlayedAddLazyInlineFormSet
 from artist_dashboard.tasks import generate_payout_sheet_task,\
     update_current_period_metrics_task
 
@@ -285,6 +286,9 @@ class MyPastEventsInfoView(DetailView):
         context['datepicker_default_ranges'] = default_ranges
         old_payout_ranges = PastPayoutPeriod.objects.order_by('-period_start')[:6]
         context['datepicker_old_payout_ranges'] = old_payout_ranges
+
+        form = EventEditForm()
+        context['form'] = form
         
         return context
 
@@ -499,6 +503,10 @@ event_edit = EventEditView.as_view()
 
 
 class EventEditAjaxView(EventEditView):
+
+    form_class = EventAjaxEditForm
+    inlines = [ArtistGigPlayedAddLazyInlineFormSet]
+    inlines_names = ['artists']
 
     def get_context_data(self, **kwargs):
         context = super(EventEditAjaxView, self).get_context_data(**kwargs)
