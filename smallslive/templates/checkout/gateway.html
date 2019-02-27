@@ -15,6 +15,9 @@
         <div class="white-line-bottom">
             <span class="title1">{% trans "Who are you?" %}</span>
         </div>
+        <p class="text4 accent-color" id="already-member" style="display:none; text-align:center">
+            A user with that e-mail address already exists. Please enter your password.
+        </p>
     </section>
         <form action="." method="post" class="form-stacked well">
             {% csrf_token %}
@@ -23,9 +26,7 @@
                 <div class='white-border-button gateway-option' data-gateway-type="existing">sign in</div>
                 <div class='white-border-button gateway-option' data-gateway-type="new">Become a member</div>
             </div>
-             <p class="text4 accent-color" id="already-member" style="display:none; text-align:center">
-                A user with that e-mail address already exists. Please enter your password.
-            </p>
+           
             <div class="control-group user">
                 <div class="controls">
                     <div class="custom-form">
