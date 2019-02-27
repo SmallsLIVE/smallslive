@@ -112,7 +112,7 @@ $("#a-z-refresh").click(() => {
   $('#artist-search').val('');
   $("#artist-search").change();
   $('#a-z-search .white-border-button').css('background-color', '#f0f0eb');
-  $(this).css('background-color', '#fff');
+  $("#a-z-refresh").css('background-color', '#fff');
 });
 
 function sendArtistRequest(callback) {
