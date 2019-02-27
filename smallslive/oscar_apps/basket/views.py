@@ -36,6 +36,28 @@ class BasketView(basket_views.BasketView):
 
 class BasketAddView(basket_views.BasketAddView):
 
+    def _get_stock_record(self, form):
+        """ If product is track, user's will have access only to purchase
+        mp3s. Since there are 2 stock records per track, we need to make sure
+        only the one containing the mp3 is attached to the basket.
+        """
+        stockrecord_id = form.cleaned_data.get('stockrecord_id')
+        try:
+            stockrecord = StockRecord.objects.get(id=stockrecord_id)
+        except StockRecord.DoesNotExist:
+            stockrecord = None
+
+        product = form.product
+        if product.parent:
+            added_class = product.parent.product_class
+        else:
+            added_class = form.product.product_class
+
+        if added_class.name == 'Track':
+            stockrecord = product.get_track_stockrecord
+
+        return stockrecord
+
     def _clean_basket(self, form):
         """Remove other types of items depending on what's being added.
 
@@ -76,11 +98,7 @@ class BasketAddView(basket_views.BasketAddView):
 
         offers_before = self.request.basket.applied_offers()
 
-        stockrecord_id = form.cleaned_data.get('stockrecord_id')
-        try:
-            stockrecord = StockRecord.objects.get(id=stockrecord_id)
-        except StockRecord.DoesNotExist:
-            stockrecord = None
+        stock_record = self._get_stock_record(form)
 
         # Need to run some logic before adding
         self._clean_basket(form)
@@ -88,7 +106,7 @@ class BasketAddView(basket_views.BasketAddView):
         basket = self.request.basket
         basket.add_product(
             form.product, form.cleaned_data['quantity'],
-            form.cleaned_options(), stockrecord)
+            form.cleaned_options(), stock_record)
 
         # Do not show 'Added to your basket' message
         # for tickets and gifts

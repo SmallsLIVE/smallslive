@@ -54,6 +54,8 @@
                 <button type="submit" class="white-border-button">Buy {{ child_product.title }} {{ session.price.excl_tax|currency:session.price.currency }}</button>
               </div>
             </div>
+          {% else %}
+            <label>Out of stock</label>
           {% endif %}
         </form>
       {% endif  %}
