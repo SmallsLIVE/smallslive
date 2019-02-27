@@ -19,6 +19,7 @@
             {% for album in album_list %}
                 {% with image=album.parent %}
                     <article class="event-display"
+                            id='{{ album.parent.pk }}'
                              data-parent-pk="{{ album.parent.pk }}"
                              data-type="{{ album.album_type }}"
                              data-bought="{{ album.bought_tracks }}">
@@ -45,12 +46,27 @@
 
 {% block extra_js %}
 <script>
+ var getUrlParameter = function getUrlParameter(sParam) {
+            var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+            for (i = 0; i < sURLVariables.length; i++) {
+                sParameterName = sURLVariables[i].split('=');
+
+                if (sParameterName[0] === sParam) {
+                    return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+                    }
+                }
+            };
 var el, setTime;
 function loadAlbum(productId, bought_tracks, album_type){
     var params = {};
     params.productId = productId;
     params.album_type = album_type;
     params.bought_tracks = JSON.stringify(bought_tracks);
+    
     $.ajax({
         url: "/multimedia/library/" + productId,
         data: params,
@@ -294,6 +310,15 @@ function loadAlbum(productId, bought_tracks, album_type){
  
 
 </script>
+  <script>
+    $().ready(function(){
+      if(getUrlParameter('album')){
+          $('#'+getUrlParameter('album')).click()
+      }else{
+            $('.event-display:first').click()
+      }
+    })
+  </script>
 
 {% endblock %}
 
