@@ -54,6 +54,8 @@
                 <button type="submit" class="white-border-button">Buy {{ child_product.title }} {{ session.price.excl_tax|currency:session.price.currency }}</button>
               </div>
             </div>
+          {% else %}
+            <label>Out of stock</label>
           {% endif %}
         </form>
       {% endif  %}
@@ -93,7 +95,7 @@
           {% endif %}
           <div class="flex-column track-info {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}" data-track="{{ forloop.counter0 }}">
             <div class="my-downloads-album__tracks-table__column title2">
-              {{ track.title }}
+              {{ track.title }} {% if not track.pk in bought_tracks and not is_full = 'full_album' %} <span style="font-size: 10px;">(preview)</span>{% endif %}
             </div>
             <div class="my-downloads-album__tracks-table__column composer text1">
               {{ track.attr.composer }}

@@ -151,9 +151,10 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
         ctx['artist_with_media'] = Artist.objects.exclude(artistproduct=None)
         ctx['has_active_alert'] = self.get_alert_status()
         ctx['is_catalogue'] = True
-        customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
-        if customer_detail:
-            ctx['active_card'] = customer_detail.active_card
+        if self.request.user.is_authenticated():
+            customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
+            if customer_detail:
+                ctx['active_card'] = customer_detail.active_card
 
         if self.object.get_product_class().slug == 'album':
             album_product = Product.objects.filter(pk=self.object.pk ).first()
