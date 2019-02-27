@@ -26,7 +26,7 @@
              <p class="text4 accent-color" id="already-member" style="display:none; text-align:center">
                 A user with that e-mail address already exists. Please enter your password.
             </p>
-            <div class="control-group">
+            <div class="control-group user">
                 <div class="controls">
                     <div class="custom-form">
                         <div class="form-group" id="username-field">
@@ -57,12 +57,12 @@
                         {{ form.options.2 }}
                         <div class="form-inline form-group" data-type='existing'>
                             {{ form.password }}
-                            <div class="error">
+                            <div class="error" style="text-align: center;">
                                 {% for error in form.non_field_errors %}
-                                    <span class="accent-color error-block">{{ error }}</span>
+                                    <span class="accent-color error-block text4">{{ error }}</span>
                                 {% endfor %}
                             </div>
-                            <div class="flex-column items-center" style="width: 220px;">
+                            <div class="flex-column items-center" style="width: 220px;     margin-top: 0;">
                                 <a class="forgot-password text4 text-grey"
                                 href="{% url "account_reset_password" %}">
                                 Forgot Your Password?
@@ -87,7 +87,7 @@
             <div class="form-actions" data-type='new'>
                 <div class="row-fluid">
                     <div class="span3">
-                        <button type="submit" class="btn btn-large btn-block  white-border-button" style='margin: 0 auto'>{% trans "Continue" %}</button>
+                        <button type="submit" class="btn btn-large btn-block  white-border-button" >{% trans "Continue" %}</button>
                     </div>
                 </div>
             </div>
@@ -115,7 +115,7 @@
         console.log($radioButton.val())
         formGroup = $($radioButton).parents('label').siblings('.form-group')
         if(formGroup){
-            formGroup.show()
+            formGroup.css("display","flex")
         }
 	});
     {% if form.username.errors %}
@@ -126,7 +126,7 @@
     $(document).ready(function(){
         $('.radio input[type="radio"]').each(function(){
             if($(this).prop("checked")){
-                $(this).parents('.custom-form').find('.form-group').show()
+                $(this).parents('.custom-form').find('.form-group').css("display","flex")
                 $('.gateway-option[data-gateway-type="' + $(this).val() + '"]').css( "background-color", 'white' );
             }
 
