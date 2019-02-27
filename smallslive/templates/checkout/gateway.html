@@ -18,25 +18,25 @@
     </section>
         <form action="." method="post" class="form-stacked well">
             {% csrf_token %}
-            <div class="control-group error">
-            {{ form.non_field_errors }}
-            </div>
             <div class='flex-row' style='margin: 0 auto; justify-content: center'>
                 <div class='white-border-button gateway-option' data-gateway-type="anonymous">checkout as a guest</div>
-                <div class='white-border-button gateway-option' data-gateway-type="existing">log in</div>
+                <div class='white-border-button gateway-option' data-gateway-type="existing">sign in</div>
                 <div class='white-border-button gateway-option' data-gateway-type="new">Become a member</div>
             </div>
-
+             <p class="text4 accent-color" id="already-member" style="display:none; text-align:center">
+                A user with that e-mail address already exists. Please enter your password.
+            </p>
             <div class="control-group">
                 <div class="controls">
                     <div class="custom-form">
-                        <div class="form-group">
-                            {% include "partials/form_field.html" with field=form.username %}
+                        <div class="form-group" id="username-field">
+                           
+                            {% include "partials/form_field.html" with field=form.username %}    
                         </div>
                     </div>
                 </div>
             </div>
-
+        
             <div class="control-group">
                 <div class="controls">
                     <div class="radio custom-form">
@@ -48,38 +48,48 @@
                     </div>
                 </div>
             </div>
-
-
+            
             <div class="control-group {% if form.password.errors %}error{% endif %}">
-            {{ form.options.errors }}
-            <div class="controls">
-                <div class="radio custom-form">
-                    
-                    {{ form.options.2 }}
-                    <div class="form-inline form-group" data-type='existing'>
-                        {{ form.password }}
-                        <small><a href="{% url 'password-reset' %}" tabindex="-1">{% trans "Forgot Your Password?" %}</a></small>
-                        {% for error in form.password.errors %}
-                        <span class="error-block">{{ error }}</span>
-                        {% endfor %}
+                {{ form.options.errors }}
+                <div class="controls">
+                    <div class="radio custom-form">
+                        
+                        {{ form.options.2 }}
+                        <div class="form-inline form-group" data-type='existing'>
+                            {{ form.password }}
+                            <div class="error">
+                                {% for error in form.non_field_errors %}
+                                    <span class="accent-color error-block">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="flex-column items-center" style="width: 220px;">
+                                <a class="forgot-password text4 text-grey"
+                                href="{% url "account_reset_password" %}">
+                                Forgot Your Password?
+                                </a>
+                            </div>
+                            {% for error in form.password.errors %}
+                                <span class="error-block">{{ error }}</span>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
-            </div>
 
             <div class="control-group">
-            <div class="controls">
-                <div class="radio">
-                {{ form.options.1 }}
+                <div class="controls">
+                    <div class="radio">
+                    {{ form.options.1 }}
+                    </div>
                 </div>
             </div>
-            </div>
+
             <div class="form-actions" data-type='new'>
-            <div class="row-fluid">
-                <div class="span3">
-                <button type="submit" class="btn btn-large btn-block  white-border-button" style='margin: 0 auto'>{% trans "Continue" %}</button>
+                <div class="row-fluid">
+                    <div class="span3">
+                        <button type="submit" class="btn btn-large btn-block  white-border-button" style='margin: 0 auto'>{% trans "Continue" %}</button>
+                    </div>
                 </div>
-            </div>
             </div>
         </form>
     </div>
@@ -102,12 +112,17 @@
         let $radioButton = $('input[value="' + $(this).data('gateway-type') + '"]')
         $($radioButton).prop("checked", true);
         $('.radio .form-group').hide()
-        console.log($radioButton)
+        console.log($radioButton.val())
         formGroup = $($radioButton).parents('label').siblings('.form-group')
         if(formGroup){
             formGroup.show()
         }
 	});
+    {% if form.username.errors %}
+        $("#already-member").show()
+        $('input[value="existing"]').click()
+        $('#username-field .error-block').hide()
+    {% endif %}
     $(document).ready(function(){
         $('.radio input[type="radio"]').each(function(){
             if($(this).prop("checked")){
