@@ -65,13 +65,13 @@
     <div class="my-downloads-album__tracks-table">
     {% for track in album_product.tracks.all|dictsort:"ordering" %}
       <!-- tracks table row -->
-      <div class="track-container" style="position:relative">
+      <div class="track-container" style="position:relative" {% if not track.pk in bought_tracks and not is_full = 'full_album' %}  href='none' {% else %} href='{% url "my-downloads" %}?album={{ album_product.pk }}' {% endif %}   >
     <div class="progress-holder" id='{{ forloop.counter0 }}' data-progress="0">
       <div class="progress-bar paused">
         <span class="progress-btn"></span>
       </div>
     </div>
-        <div class="my-downloads-album__tracks-table__row flex-row {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}">
+        <div id='t{{ forloop.counter0 }}' class="my-downloads-album__tracks-table__row flex-row {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}">
           {% if track.pk in bought_tracks or is_full = 'full_album' %}
             <div class="hidden my-downloads-album__tracks-table__column audio">
               <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
@@ -93,7 +93,7 @@
               </div>
             {% endif %}
           {% endif %}
-          <div class="flex-column track-info {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}" data-track="{{ forloop.counter0 }}">
+          <div class="flex-column track-info   {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}" data-track="{{ forloop.counter0 }}">
             <div class="my-downloads-album__tracks-table__column title2">
               {{ track.title }} {% if not track.pk in bought_tracks and not is_full = 'full_album' %} <span style="font-size: 10px;">(preview)</span>{% endif %}
             </div>
@@ -219,6 +219,12 @@
 
   <script>
     $(document).ready(function () {
+      {% if is_catalogue %}
+        $(document).on('click', '.track-container', function(e){
+          if($(e.currentTarget).attr('href') != 'none')
+            document.location = $(e.currentTarget).attr('href')
+    })
+    {% endif %}
 
       $(document).on('click', '.add-to-library, .added-to-library', function (event) {
         /* Add to Library (Mark as ready to be added to basket
