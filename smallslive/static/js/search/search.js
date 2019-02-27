@@ -166,6 +166,7 @@ $(window).resize(function () {
   }
   if (viewPortLength("width") >= 1024 && is_mobile == true) {
     if ($(".artist-search-profile-container").css('display') != "block") {
+      $("#musicianContent").css("display", "block")
       $(".search-tab-content").show()
       is_mobile = false;
     }
