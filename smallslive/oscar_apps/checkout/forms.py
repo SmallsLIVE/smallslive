@@ -168,10 +168,10 @@ class BillingAddressForm(payment_forms.BillingAddressForm):
 
 class GatewayForm(CoreGatewayForm):
     username = forms.EmailField(required=True,widget=forms.TextInput(attrs={'placeholder': 'Email'}))
-    first_name = forms.CharField(max_length=150, required=True,
-                                       widget=forms.TextInput(attrs={'placeholder': 'First name for the guest list'}))
-    last_name = forms.CharField(max_length=150, required=True,
-                                       widget=forms.TextInput(attrs={'placeholder': 'Last name for the guest list'}))
+    first_name = forms.CharField(max_length=150, required=False,
+                                       widget=forms.TextInput(attrs={'placeholder': 'First name'}))
+    last_name = forms.CharField(max_length=150, required=False,
+                                       widget=forms.TextInput(attrs={'placeholder': 'Last name'}))
     password = forms.CharField(label=("Password"), widget=forms.PasswordInput(attrs={'placeholder': 'Password'}))
 
     

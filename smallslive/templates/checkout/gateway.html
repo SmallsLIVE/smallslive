@@ -27,16 +27,7 @@
                 <div class='white-border-button gateway-option' data-gateway-type="new">Become a member</div>
             </div>
            
-            <div class="control-group user">
-                <div class="controls">
-                    <div class="custom-form">
-                        <div class="form-group" id="username-field">
-                           
-                            {% include "partials/form_field.html" with field=form.username %}    
-                        </div>
-                    </div>
-                </div>
-            </div>
+       
         
             <div class="control-group">
                 <div class="controls">
@@ -45,6 +36,17 @@
                         <div class="form-inline form-group" data-type='anonymous'>
                             {% include "partials/form_field.html" with field=form.first_name %}
                             {% include "partials/form_field.html" with field=form.last_name %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group user">
+                <div class="controls">
+                    <div class="custom-form">
+                        <div class="form-group" id="username-field">
+                           
+                            {% include "partials/form_field.html" with field=form.username %}    
                         </div>
                     </div>
                 </div>
