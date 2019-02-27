@@ -3,6 +3,7 @@ from paypal.payflow import facade
 from django import http
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import login
 from django.core.urlresolvers import reverse
 from django import forms
 from django.forms.models import model_to_dict
@@ -39,19 +40,48 @@ logger = logging.getLogger('oscar.checkout')
 
 class IndexView(checkout_views.IndexView):
 
-    def form_valid(self, form):
-        if form.is_guest_checkout():
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            self.checkout_session.set_reservation_name(first_name, last_name)
-        return super(IndexView, self).form_valid(form)
-
     def get_success_response(self):
         url = self.get_success_url()
         if self.request.is_ajax():
             return http.JsonResponse({'url': url})
         else:
             return redirect(url)
+    
+    def form_valid(self, form):
+        if form.is_guest_checkout():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            self.checkout_session.set_reservation_name(first_name, last_name)
+
+        if form.is_guest_checkout() or form.is_new_account_checkout():
+            email = form.cleaned_data['username']
+            self.checkout_session.set_guest_email(email)
+
+            # We raise a signal to indicate that the user has entered the
+            # checkout process by specifying an email address.
+            signals.start_checkout.send_robust(
+                sender=self, request=self.request, email=email)
+
+            if form.is_new_account_checkout():
+                messages.info(
+                    self.request,
+                    ("Create your account and then you will be redirected "
+                      "back to the checkout process"))
+                self.success_url = "%s?next=%s&email=%s" % (
+                    reverse('customer:register'),
+                    reverse('checkout:shipping-address'),
+                    email
+                )
+        else:
+            user = form.get_user()
+            login(self.request, user)
+
+            # We raise a signal to indicate that the user has entered the
+            # checkout process.
+            signals.start_checkout.send_robust(
+                sender=self, request=self.request)
+
+        return redirect(self.get_success_url())
 
 
 class ShippingMethodView(checkout_views.ShippingMethodView):

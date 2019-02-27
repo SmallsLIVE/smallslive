@@ -40,17 +40,15 @@
                             </div>
                         </div>
                     </div>
-                    <button name="registration_submit" type="submit" value="Register" class="btn white-border-button btn-large js-disable-on-click" data-loading-text="{%trans 'Registering...' %}">{% trans 'Register' %}</button>
+                    <button name="registration_submit" type="submit" value="Register" class="btn white-border-button btn-large js-disable-on-click" style="margin:15px 0" data-loading-text="{%trans 'Registering...' %}">{% trans 'Register' %}</button>
                     {% if cancel_url %}
-                        {% trans "or" %} <a href="{{ cancel_url }}">{% trans "cancel" %}</a>.
+                    <a  class="btn white-border-button btn-large" href="{{ cancel_url }}">{% trans "cancel" %}</a>.
                     {% endif %}
                 </form>
             </div>
         </div>
     </div>
-    <script>
-    $("label").hide()
-    </script>
+ 
 {% endblock content %}
 
 
