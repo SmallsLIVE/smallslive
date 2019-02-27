@@ -166,6 +166,7 @@ $(window).resize(function () {
   }
   if (viewPortLength("width") >= 1024 && is_mobile == true) {
     if ($(".artist-search-profile-container").css('display') != "block") {
+      $("#musicianContent").css("display", "block")
       $(".search-tab-content").show()
       is_mobile = false;
     }
@@ -608,9 +609,7 @@ $(document).ready(function () {
 
   $(".instrument-btn").click(function () {
     if (!$(".instruments-container").is(":visible")) {
-      if (viewPortLength("width") < 1024) {
-        $("body").addClass("hidden-body");
-      }
+
       $(".instruments-container").css("display", "flex");
     } else {
       if (viewPortLength("width") < 1024) {
