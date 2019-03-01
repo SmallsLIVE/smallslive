@@ -4,6 +4,7 @@ $player-height: 25.3vw;
   &.donate-dialog {
     width: 95vw;
     min-height: 95vh;
+
     .modal-content {
       &.custom-modal {
         padding: 0 45px;
@@ -25,6 +26,7 @@ $player-height: 25.3vw;
         .modal-body {
           form {
             width: 100%;
+
             .form-control:first-child {
               margin-top: 10px;
             }
@@ -33,21 +35,27 @@ $player-height: 25.3vw;
 
         @media (max-width: $screen-md-max) {
           padding: 0px;
+
           .close-button {
             z-index: 3;
           }
-          > .modal-body {
+
+          >.modal-body {
             padding: 0;
           }
+
           .items-wrapper {
             width: 80vw;
           }
+
           .no-spinners {
             min-width: 0px;
           }
+
           .title1 {
             margin-bottom: 0px;
           }
+
           #supporterStep3 {
             .section-title {
               margin: 0 auto 20px;
@@ -58,12 +66,14 @@ $player-height: 25.3vw;
       }
     }
   }
+
   &.medium {
     width: 60%;
 
     @media (max-width: $screen-md-max) {
       width: 90%;
     }
+
     .title2 {
       font-size: 15px;
 
@@ -120,8 +130,10 @@ $player-height: 25.3vw;
       font-size: 2.4em;
     }
   }
+
   .event-title {
     margin-bottom: 5px;
+
     @media (max-width: $screen-md-max) {
       font-size: 2.5em;
     }
@@ -131,7 +143,7 @@ $player-height: 25.3vw;
     flex-direction: column-reverse;
     width: 100%;
 
-    .event-player-buttons  {
+    .event-player-buttons {
       text-align: left;
     }
 
@@ -144,21 +156,31 @@ $player-height: 25.3vw;
 
   .info-container {
     width: 70%;
+
     @media (max-width: $screen-sm-max) {
       margin-top: 15px;
     }
+
     @media (max-width: 425px) {
       margin-top: 20px;
     }
+
     .event-overlay-venue {
-      /*  margin-bottom: 2em; */
+      .title5 {
+        font-size: 2.4em;
+      }
     }
   }
 
   .buttons-container {
     flex-grow: 1;
     text-align: right;
-    width: 60%;
+    width: 50%;
+
+    @media (max-width: 480px) {
+      width: 100%;
+    }
+
     @media (max-width: $screen-md-max) {
       text-align: left;
     }
@@ -175,7 +197,7 @@ $player-height: 25.3vw;
 .event-band {
   margin: 0 0 2em 0;
 
-  & > div {
+  &>div {
     margin-right: 30px;
   }
 
@@ -203,21 +225,20 @@ $player-height: 25.3vw;
   overflow: hidden;
 
   &:hover {
-    .jw-display
-      .jw-reset
-      .jw-display-icon-container.jw-display-icon-display.jw-reset
-      > div {
+    .jw-display .jw-reset .jw-display-icon-container.jw-display-icon-display.jw-reset>div {
       opacity: 1;
       animation-name: play-overlay;
       animation-duration: 0.3s;
     }
   }
+
   .jwplayer {
     .jw-preview {
       background-size: cover;
       filter: $sepia-filter;
     }
   }
+
   .not-auth-container {
     .icon-overlay {
       opacity: 0;
@@ -230,6 +251,7 @@ $player-height: 25.3vw;
       height: 100%;
       align-items: center;
       top: 0;
+
       .fa-thin-circle.fa {
         z-index: 10;
         display: flex;
@@ -239,26 +261,33 @@ $player-height: 25.3vw;
         height: 88px;
         width: 88px;
         border-radius: 44px;
+
         &::before {
           font-size: 40px;
         }
+
         &:hover {
           cursor: pointer;
         }
       }
+
       transition: none;
+
       &:hover {
         opacity: 1;
       }
     }
+
     img {
       filter: $sepia-filter;
       width: 100%;
     }
+
     .not-streaming {
       filter: none;
     }
   }
+
   .wrapper {
     padding-bottom: 56.25%;
     position: relative;
@@ -272,6 +301,7 @@ $player-height: 25.3vw;
 
 .event-video-placeholder {
   flex: 1;
+
   .player-info {
     color: $white-transparent;
   }
@@ -317,14 +347,17 @@ $player-height: 25.3vw;
     top: 1px;
     left: 0;
   }
+
   @keyframes play-overlay {
     0% {
       opacity: 0;
     }
+
     100% {
       opacity: 1;
     }
   }
+
   .event-overlay {
     color: white;
     height: 100%;
@@ -347,6 +380,7 @@ $player-height: 25.3vw;
       }
     }
   }
+
   .event-overlay-logo {
     position: absolute;
     right: 15px;
@@ -361,10 +395,12 @@ $player-height: 25.3vw;
     height: 65%;
     column-count: 2;
     column-fill: auto;
+
     .title5 {
       font-size: 1.3vw;
       line-height: 1.5;
       white-space: nowrap;
+
       @media (max-width: $screen-md-max) {
         width: 47vw;
         font-size: 3vw;
@@ -411,9 +447,11 @@ $player-height: 25.3vw;
     }
   }
 }
+
 .event-overlay-venue-set:not(:last-child)::after {
   content: "&";
 }
+
 .event-overlay-venue {
   .title5 {
     font-weight: 400;
@@ -422,6 +460,7 @@ $player-height: 25.3vw;
     text-transform: uppercase;
     transform: scaleY(1.3);
     line-height: 38px;
+
     @media (max-width: $screen-md-max) {
       font-size: 3.5vw;
     }
@@ -450,7 +489,7 @@ $player-height: 25.3vw;
     padding-left: 0;
   }
 
-  > div:not(.section-title) {
+  >div:not(.section-title) {
     overflow-y: auto;
     max-height: 435px;
   }
@@ -502,6 +541,7 @@ $player-height: 25.3vw;
   @media (min-width: $screen-md-max) {
     max-width: 45vw;
   }
+
   @media (max-width: $screen-md-max) {
     max-width: 100%;
 
@@ -550,16 +590,15 @@ $player-height: 25.3vw;
   }
 }
 
-.jw-display
-  .jw-reset
-  .jw-display-icon-container.jw-display-icon-display.jw-reset
-  > div {
+.jw-display .jw-reset .jw-display-icon-container.jw-display-icon-display.jw-reset>div {
   border-radius: 44px;
   border: 1px solid $accent-color;
   opacity: 0;
+
   @media (max-width: $screen-md-max) {
     opacity: 1;
   }
+
   .jw-svg-icon {
     height: 70%;
     width: 70%;
@@ -571,12 +610,14 @@ $player-height: 25.3vw;
   border-top: 4px solid white;
   padding-top: 20px;
 
-  > div > span {
+  >div>span {
     font-size: 1.4em;
+
     &:first-child {
       padding-right: 5px;
     }
   }
+
   textarea {
     padding: 20px;
     resize: none;
@@ -585,6 +626,7 @@ $player-height: 25.3vw;
     border: none;
   }
 }
+
 @media (max-width: $screen-md-min) {
   .comments-container {
     padding: 20px;
@@ -595,25 +637,30 @@ $player-height: 25.3vw;
   position: relative;
   margin-bottom: 10px;
   border-bottom: 1px solid $white-transparent;
+
   .remove-comment {
     background-color: transparent;
     top: 0;
+
     &::before,
     &::after {
       background-color: gray;
     }
   }
+
   .comment-head {
     i {
       color: $background-color;
       font-size: 1.5em;
       text-shadow: 0 0 1px black;
     }
+
     .comment-head-user {
       margin-left: 5px;
       text-transform: capitalize;
     }
   }
+
   .comment-body {
     padding: 10px 25px;
     word-wrap: break-word;
@@ -623,19 +670,23 @@ $player-height: 25.3vw;
 .remove-comment-modal {
   .custom-modal {
     min-height: auto;
+
     .modal-body form {
       display: flex;
       flex-direction: row;
       justify-content: center;
+
       .white-border-button:last-child {
         margin-left: 10px;
       }
     }
   }
 }
+
 .not-streaming {
   filter: none;
 }
+
 .event-overlay-info {
   position: absolute;
   right: 2.9vw;
@@ -652,13 +703,16 @@ $player-height: 25.3vw;
     flex-direction: row;
     justify-content: space-between;
   }
+
   @media (max-width: $screen-xs-min) {
     flex-direction: column;
+
     .text-right {
       text-align: left;
     }
   }
 }
+
 .upcoming-logo {
   position: absolute;
   right: 20px;
