@@ -279,9 +279,6 @@
       @include display(flex);
       @include align-items(center);
 
-      &:first-of-type {
-        border-top: 1px solid rgba(0, 0, 0, 0.1);
-      }
 
       &.flex-row {
         &.disabled {
@@ -501,22 +498,27 @@
     height: 100%;
   }
 }
+
 @keyframes progress-in {
   from {
     height: 0px;
   }
+
   to {
     height: 5px;
   }
 }
+
 @keyframes progress-out {
   from {
     height: 5px;
   }
+
   to {
     height: 0px;
   }
 }
+
 .song-container .my-downloads-album__tracks-table .track-container:hover {
   @media (min-width: 425px) {
     .progress-bar {
@@ -546,8 +548,10 @@
         animation-name: progress-out;
         animation-duration: 0.3s;
       }
+
       height: 0px;
       background: #9e9b9b;
+
       .progress-btn {
         display: none;
       }
@@ -571,6 +575,7 @@
 
 .song-container .my-downloads-album__tracks-table .track-container {
   cursor: pointer;
+
   @media (max-width: 1023px) {
     .length-bar {
       height: 6px;
@@ -606,4 +611,10 @@
   position: absolute;
   top: 0;
   background-color: rgba(0, 0, 0, 0.1);
+}
+
+.newest-recordings-container.downloads {
+  .slide-btn {
+    border-radius: 0;
+  }
 }

@@ -44,32 +44,30 @@ def send_email_confirmation(request, user, signup=False, **kwargs):
     email = user_email(user)
     if email:
         try:
-            email_address = SmallsEmailAddress.objects.get(user=user, email__iexact=email)
+            email_address = SmallsEmailAddress.objects.get(
+                user=user, email__iexact=email)
             if not email_address.verified:
                 send_email = not SmallsEmailConfirmation.objects \
                     .filter(sent__gt=now() - COOLDOWN_PERIOD,
                             email_address=email_address) \
                     .exists()
                 if send_email:
-                    email_address.send_confirmation(request,
-                                                    signup=signup, activate_view=kwargs.get('activate_view'))
+                    email_address.send_confirmation(
+                        request,
+                        signup=signup,
+                        activate_view=kwargs.get('activate_view'))
             else:
                 send_email = False
         except SmallsEmailAddress.DoesNotExist:
             send_email = True
-            email_address = SmallsEmailAddress.objects.add_email(request,
-                                                           user,
-                                                           email,
-                                                           signup=signup,
-                                                           confirm=True)
+            email_address = SmallsEmailAddress.objects.add_email(
+                request, user, email, signup=signup, confirm=True)
             assert email_address
         # At this point, if we were supposed to send an email we have sent it.
         if send_email:
-            get_adapter().add_message(request,
-                                      messages.INFO,
-                                      'account/messages/'
-                                      'email_confirmation_sent.txt',
-                                      {'email': email})
+            get_adapter().add_message(
+                request, messages.INFO, 'account/messages/'
+                'email_confirmation_sent.txt', {'email': email})
     if signup:
         request.session['account_user'] = user.pk
 
@@ -85,37 +83,42 @@ def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
     email = user_email(user)
     if email:
         try:
-            email_address = SmallsEmailAddress.objects.get(user=user, email__iexact=email)
+            email_address = SmallsEmailAddress.objects.get(
+                user=user, email__iexact=email)
             if not email_address.verified:
                 send_email = not SmallsEmailConfirmation.objects \
                     .filter(sent__gt=now() - COOLDOWN_PERIOD,
                             email_address=email_address) \
                     .exists()
                 if send_email:
-                    email_address.send_confirmation(request,
-                                                    signup=signup, activate_view=kwargs.get('activate_view'))
+                    email_address.send_confirmation(
+                        request,
+                        signup=signup,
+                        activate_view=kwargs.get('activate_view'))
             else:
                 send_email = False
         except SmallsEmailAddress.DoesNotExist:
             send_email = True
-            email_address = SmallsEmailAddress.objects.add_email(request,
-                                                           user,
-                                                           email,
-                                                           signup=signup,
-                                                           confirm=True)
+            email_address = SmallsEmailAddress.objects.add_email(
+                request, user, email, signup=signup, confirm=True)
             assert email_address
 
 
 def one_time_donation(customer, stripe_token, amount, flow="Charge"):
     customer.update_card(stripe_token)
-    charge(customer, amount)
+    charge(customer, amount, send_receipt=False)
+    custom_receipt = {}
+    custom_receipt["customer"] = customer
+    custom_receipt["amount"] = amount
+    custom_send_receipt(custom_receipt)
 
 
 def update_active_card(customer, stripe_token):
     customer.update_card(stripe_token)
 
 
-def subscribe_to_plan(customer, stripe_token, amount, plan_type, flow="Charge"):
+def subscribe_to_plan(customer, stripe_token, amount, plan_type,
+                      flow="Charge"):
     print flow
     print flow
     plan_data = {
@@ -131,6 +134,10 @@ def subscribe_to_plan(customer, stripe_token, amount, plan_type, flow="Charge"):
 
     customer.update_card(stripe_token)
     subscribe(customer, plan, flow)
+    custom_receipt = {}
+    custom_receipt["customer"] = customer
+    custom_receipt["plan"] = plan
+    custom_send_receipt(custom_receipt)
 
     # Donation will come through Stripe's webhook
 
@@ -155,25 +162,21 @@ def subscribe(customer, plan, flow):
         cs = CurrentSubscription.objects.create(
             customer=customer,
             plan=plan.stripe_id,
-            current_period_start=convert_tstamp(
-                sub.current_period_start
-            ),
-            current_period_end=convert_tstamp(
-                sub.current_period_end
-            ),
+            current_period_start=convert_tstamp(sub.current_period_start),
+            current_period_end=convert_tstamp(sub.current_period_end),
             amount=sub.plan.amount,
             status=sub.status,
             cancel_at_period_end=sub.cancel_at_period_end,
             canceled_at=convert_tstamp(sub, 'canceled_at'),
             start=convert_tstamp(sub.start),
-            quantity=sub.quantity
-        )
+            quantity=sub.quantity)
 
         print cs
         return cs
 
 
-def charge(customer, amount, currency='USD', description='', send_receipt=True):
+def charge(customer, amount, currency='USD', description='',
+           send_receipt=True):
     """Just charge the customer
     The web hook will take care of updating donations if necessary"""
 
@@ -181,7 +184,31 @@ def charge(customer, amount, currency='USD', description='', send_receipt=True):
     print amount
     print type(amount)
 
-    charge = customer.charge(decimal.Decimal(amount), currency, description, send_receipt)
+    charge = customer.charge(
+        decimal.Decimal(amount), currency, description, send_receipt)
     print charge
 
     return charge
+
+
+def custom_send_receipt(receipt_info):
+    print receipt_info
+    if False:
+        site = Site.objects.get_current()
+        protocol = getattr(settings, "DEFAULT_HTTP_PROTOCOL", "http")
+        ctx = {
+            "charge": self,
+            "site": site,
+            "protocol": protocol,
+        }
+        subject = render_to_string("djstripe/email/subject.txt", ctx)
+        subject = subject.strip()
+        message = render_to_string(
+            "djstripe/email/body_base_" + donation_type + ".txt", ctx)
+        num_sent = EmailMessage(
+            subject,
+            message,
+            to=[self.customer.subscriber.email],
+            from_email=INVOICE_FROM_EMAIL).send()
+        self.receipt_sent = num_sent > 0
+        self.save()
