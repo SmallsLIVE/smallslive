@@ -5,7 +5,8 @@ from cacheops import cached, cached_view
 from django.db.models import F, Q, Max
 from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import ListView, CreateView, TemplateView
+from django.views.generic import ListView, CreateView, TemplateView, View
+from django_thumbor import generate_url
 from oscar.apps.order.models import Line
 from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import Product
@@ -13,7 +14,7 @@ from oscar_apps.catalogue.views import PurchasedProductsInfoMixin
 from custom_stripe.models import CustomerDetail
 from events.models import Recording, Event
 from .forms import TrackFileForm
-from .models import MediaFile
+from .models import ImageMediaFile, MediaFile
 
 
 def json_error_response(error_message):
@@ -207,6 +208,33 @@ class UploadTrackView(CreateView):
         return ""
 
 upload_track = UploadTrackView.as_view()
+
+
+class UploadImagePreview(View):
+
+    def post(self, *args, **kwargs):
+        image = self.request.FILES['photo']
+        image_file = ImageMediaFile.objects.create(photo=image)
+
+        filters = {
+            'height': 300,
+            'width': 300,
+            'smart': True,
+        }
+        url = generate_url(image_url=image_file.photo.url, **filters)
+
+        data = {
+            'success': True,
+            'src': url,
+            'id': image_file.pk
+        }
+        response = json.dumps(data)
+
+        return HttpResponse(response, content_type="application/json")
+
+
+
+upload_image_preview = UploadImagePreview.as_view()
 
 
 class MyDownloadsView(LoginRequiredMixin, ListView):

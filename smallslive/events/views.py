@@ -440,6 +440,7 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
             default_sets.append({"set-venue" : str(default_set.venue.name), "set-starts": default_set.sets_start(), "set-redeable-starts":  default_set.sets_readable_start(), "set-duration": default_set.set_duration, "set-title": str(default_set.title)})
         context['show_times'] = default_sets
         context['ticket_forms'] = self.construct_ticket_forms()
+
         return context
 
     def get_form(self, form_class):

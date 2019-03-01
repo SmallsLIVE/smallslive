@@ -10,7 +10,7 @@ from extra_views import InlineFormSet
 import floppyforms
 from haystack.forms import SearchForm
 from oscar.apps.catalogue.models import ProductImage
-
+from multimedia.models import ImageMediaFile
 from .models import EventSet, Event, GigPlayed, Comment
 
 from utils.widgets import ImageCropWidget
@@ -129,12 +129,20 @@ class EventAddForm(forms.ModelForm):
     end = forms.DateTimeField(label="End time", required=True, input_formats=settings.DATETIME_INPUT_FORMATS)
     date = forms.DateField(label="Event Date", required=True)
     staff_pick = forms.BooleanField(label="Staff Pick", required=False)
+    # File object as a helper to upload files. They are uploaded
+    # to a temporary model so the user can view and crop on the fly,
+    # and then copied into the model.
+    # It's not required because we need to support the previous
+    # mechanism to upload images (regular ImageField)
+    image_id = forms.IntegerField(required=False, widget=forms.HiddenInput())
+    start_streaming_before_minutes = forms.IntegerField(initial=15)
 
     class Meta:
         model = Event
         fields = (
             'venue', 'date', 'start', 'end', 'id', 'title', 'subtitle', 'photo',
-            'description', 'state', 'staff_pick', 'streamable', 'tickets_url'
+            'image_id', 'description', 'state', 'staff_pick', 'streamable',
+            'tickets_url'
         )
         widgets = {
             'state': EventStatusWidget,
@@ -157,6 +165,20 @@ class EventAddForm(forms.ModelForm):
 
         self.fields['start'].widget = forms.HiddenInput()
         self.fields['end'].widget = forms.HiddenInput()
+        self.fields['start_streaming_before_minutes'].initial = 15
+
+    def save(self, commit=True):
+        """Override save so that we can set the image file uploaded previously
+                if it exists."""
+        instance = super(EventAddForm, self).save(commit=False)
+
+        image = ImageMediaFile.objects.filter(pk=self.cleaned_data['image_id']).first()
+        if image:
+            instance.photo = image.photo
+        if commit:
+            instance.save()
+
+        return instance
 
     def get_layout(self):
         return Layout(
@@ -181,7 +203,7 @@ class EventEditForm(EventAddForm):
     class Meta(EventAddForm.Meta):
         fields = (
             'venue', 'title', 'subtitle', 'date', 'start', 'end',
-            'start_streaming_before_minutes', 'photo', 'cropping',
+            'start_streaming_before_minutes', 'photo', 'image_id', 'cropping',
             'description', 'state', 'staff_pick', 'streamable', 'tickets_url')
 
 

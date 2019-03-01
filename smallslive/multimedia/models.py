@@ -16,6 +16,11 @@ def media_file_path(instance, filename):
     return os.path.join(path, filename)
 
 
+class ImageMediaFile(models.Model):
+
+    photo = models.ImageField(upload_to='user_photos', blank=True)
+
+
 class MediaFile(models.Model):
     CATEGORY = Choices('set', 'track', 'preview')
     MEDIA_TYPE = Choices('video', 'audio')

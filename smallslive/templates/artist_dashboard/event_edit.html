@@ -32,6 +32,27 @@
     $(document).ready(function() {
       EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
       EventForm.init(false);
+
+      $('input[type="file"]').change(function (event)  {
+        var $form = $('#event-edit-frm');
+        var data = new FormData($form.get(0));
+        $.ajax({
+            url: "{% url 'upload_image_preview' %}",
+            type: "POST",
+            data: data,
+            enctype: 'multipart/form-data',
+            processData: false,  // Important!
+            contentType: false,
+            cache: false,
+            success: function (data) {
+              if (data.success) {
+                $('#div_id_photo img').attr('src', data.src);
+              }
+            }
+        });
+      });
+
+
     });
   </script>
 {% endblock %}

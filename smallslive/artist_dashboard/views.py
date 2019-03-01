@@ -477,7 +477,7 @@ class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
 
     form_class = EventEditForm
     success_url = reverse_lazy('artist_dashboard:my_past_events')
-    inlines = [ArtistGigPlayedAddInlineFormSet]
+    inlines = [ArtistGigPlayedAddLazyInlineFormSet]
     inlines_names = ['artists']
 
     def get_template_names(self):
@@ -490,14 +490,6 @@ class EventEditView(HasArtistAssignedMixin, event_views.EventEditView):
         context['video'] = self.object.recordings.video()
         return context
 
-    def post(self, *args, **kwargs):
-        response = super(EventEditView, self).post(*args, **kwargs)
-
-        if self.request.is_ajax():
-            response = HttpResponse(status=200)
-
-        return response
-
 
 event_edit = EventEditView.as_view()
 
@@ -509,12 +501,32 @@ class EventEditAjaxView(EventEditView):
     inlines_names = ['artists']
 
     def get_context_data(self, **kwargs):
+        print 'Get context data: '
         context = super(EventEditAjaxView, self).get_context_data(**kwargs)
         context['gig_instruments'] = Instrument.objects.all()
+
         return context
 
     def get_template_names(self):
         return 'artist_dashboard/mobile_event_edit_form.html'
+
+    def post(self, *args, **kwargs):
+        response = super(EventEditAjaxView, self).post(*args, **kwargs)
+
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+
+        if self.request.is_ajax():
+            if form.is_valid():
+                event_data = {
+                    'eventId': form.instance.pk,
+                    'title': form.instance.title,
+                    'photoUrl': form.instance.photo.url,
+                }
+                data = {'success': True, 'data': event_data}
+                response = JsonResponse(data)
+
+        return response
 
 event_edit_ajax = EventEditAjaxView.as_view()
 
@@ -789,7 +801,7 @@ def payout_form(request):
         # check whether it's valid:
         if artist_info_form.is_valid():
             artist_info_form.save(request)
-            data={
+            data = {
                'address-1':artist_info_form['address_1'].value(),
                'address-2':artist_info_form['address_2'].value(),
                'city':artist_info_form['city'].value(),
