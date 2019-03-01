@@ -51,7 +51,7 @@
               {{ basket_form.quantity }}
               {{ basket_form.child_id }}
               <div class="arrow-button-container">
-                <button type="submit" class="white-border-button">Buy {{ child_product.title }} {{ session.price.excl_tax|currency:session.price.currency }}</button>
+                <button type="submit" class="white-border-button"> {{ child_product.title }} {{ session.price.excl_tax|currency:session.price.currency }}</button>
               </div>
             </div>
           {% else %}
