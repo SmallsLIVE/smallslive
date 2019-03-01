@@ -25,6 +25,8 @@ var el, setTime;
 el = document.querySelector(".track-container");
 </script>
 <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+<script src="{% static 'js/progress-bar.js' %}"></script>
+
 <script>
     var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
     $(document).on('click', ".my-downloads-album__tracks-table__row.flex-row:not(.disabled)", function(event){
@@ -60,6 +62,9 @@ el = document.querySelector(".track-container");
         //toggles player
         if(lastPlayer != undefined){
             lastPlayer.pause()
+            $("#" + $(lastPlayer).data("track"))
+            .children(".progress-bar")
+            .addClass("paused");
         }
         togglePlayer(audioPlayer, play)
         
@@ -69,8 +74,15 @@ el = document.querySelector(".track-container");
     function togglePlayer(playerContainer, play){
         if(play){
             audioPlayer.play()
+             $("#" + $(playerContainer).data("track"))
+            .children(".progress-bar")
+            .removeClass("paused");
         }else{
             audioPlayer.pause()
+             $("#" + $(playerContainer).data("track"))
+            .children(".progress-bar")
+            .addClass("paused");
+            
         }
     }
     $(document).on('click', ".purchases-player-button", function(){
@@ -101,6 +113,9 @@ el = document.querySelector(".track-container");
         }
         if(lastPlayer != undefined){
             lastPlayer.pause()
+             $("#" + $(lastPlayer).data("track"))
+            .children(".progress-bar")
+            .addClass("paused");
         }
         togglePlayer(audioPlayer, play)
         lastPlayerContainer = playerContainer
@@ -138,6 +153,7 @@ el = document.querySelector(".track-container");
     function changeProgress(progress, player){
         newProgress = Math.floor(player.duration) * progress / 100
         player.currentTime = newProgress;
+        updateProgressTrack(player, newProgress)
     }
 
     $(".event-display").on("click", function(){
@@ -217,6 +233,7 @@ el = document.querySelector(".track-container");
                 timeTracker = $(player).closest(".my-downloads-album__tracks-table__row").find(".my-downloads-album__tracks-table__column.duration")[0]
                 progress = player.currentTime / player.duration * 100
                 progressWidth = progress + "%"
+                updateProgressTrack( $(player).data('track'), progress)
                 $(player).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", progressWidth )
                 $(timeTracker).html(readableTime(currentTime)) 
             },100)
