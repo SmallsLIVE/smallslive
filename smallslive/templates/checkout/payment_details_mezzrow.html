@@ -5,13 +5,13 @@
 {% load purchase_info_tags %}
 
 
-{% include 'inactive_dialog.html' %}
 
 {% block store_nav_active %}active{% endblock %}
 
 {% block title %}Payment details{% endblock %}
 
 {% block content %}
+    {% include 'inactive_dialog.html' %}
 
     <div class="payment-main-container">
         <form id="payment-form" method="post" action="{% url 'checkout:preview' %}">
@@ -216,5 +216,11 @@
         debug: false // optional - default false
       });
     });
+    inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
+    console.log(inactive)
+    if (inactive === 'true'){
+      $('#inactive-dialog').modal('show');
+    }
+  
   </script>
 {% endblock %}
