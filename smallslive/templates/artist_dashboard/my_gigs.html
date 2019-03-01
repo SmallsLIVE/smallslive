@@ -3,6 +3,14 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
+{% block extra_head %}
+  <script>
+    var django = {jQuery: jQuery};
+  </script>
+  {{ form.media }}
+  <link href="{% static 'css/selectize.bootstrap3.css' %}" rel="stylesheet">
+{% endblock extra_head %}
+
 {% block my-events-active %}active{% endblock %}
 
 {% block title %}My events{% endblock %}
@@ -346,11 +354,12 @@
           $(document).on('click', '.event-edit-button', function () {
             var url = $(this).data('ajax-edit-url');
             $('#event_edit_modal').modal('show');
-
+            $('#event-popup-load-gif').removeClass('hidden');
             $.ajax({
               type: 'GET',
               url: url,
               success: function(data) {
+                $('#event-popup-load-gif').addClass('hidden');
                 $('#event_edit_modal').find('.modal-body').html(data);
                 EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
                 EventForm.init(false);
@@ -362,16 +371,63 @@
 
           });
 
-          $(document).on('click', '#event-edit-save-button', function (e) {
-            e.preventDefault();
+          // Ajax upload image
+          $(document).on('change', '#mobile-event-edit-frm input[type="file"]', function () {
+            var $form = $(this).closest('form');
+            var data = new FormData($form.get(0));
+            $('#div_id_photo img').toggleClass('hidden');
+            $('#image-load-gif').toggleClass('hidden');
+            $('#event_edit_modal').find('.modal-body').html('');
+            $.ajax({
+                url: "{% url 'upload_image_preview' %}",
+                type: "POST",
+                data: data,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function (data) {
+                  if (data.success) {
+                    $('#div_id_photo img').attr('src', data.src);
+                    $('#div_id_photo img').toggleClass('hidden');
+                    $('#image-load-gif').toggleClass('hidden');
+                    $('#id_image_id').val(data.id);
+                  }
+                }
+            });
+          });
 
+          $(document).on('click', '.artist_remove', function () {
+            var selector = $(this).data('remove');
+            $(selector).val('true');
+          });
+
+          $(document).on('click', '#submit-id-submit', function (e) {
+            e.preventDefault();
+            $('#event_edit_modal').find('.modal-body').html('');
+            $('#event-popup-load-gif').removeClass('hidden');
             var $form = $(this).closest('form');
             $.ajax({
               type: "POST",
               url: $form.attr('action'),
               data: $form.serialize(),
               success: function (data) {
-                console.log(data);
+                $('#event-popup-load-gif').addClass('hidden');
+                if (data.success) {
+                  var eventId = data.data.eventId;
+                  var title = data.data.title;
+                  var photoUrl = data.data.photoUrl;
+                  var $element = $('#artist-event-row-' + eventId);
+                  $element.find('.artist-event-picture img').attr('src', photoUrl);
+                  $element.find('.title').text(title);
+                  $('#event_edit_modal').modal('hide');
+                  $('#event_edit_modal').find('.modal-body').html('');
+                  $('#event-popup-load-gif').addClass('hidden');
+                } else {
+                  $('#event_edit_modal').find('.modal-body').html(data);
+                  EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
+                  EventForm.init(false);
+                }
               },
               error: function () {
               }

@@ -1,5 +1,8 @@
 {% load static from staticfiles %}
-<form method="post" class="admin-interface__form" enctype="multipart/form-data" action="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
+<form id="mobile-event-edit-frm"
+      method="post" class="admin-interface__form"
+      enctype="multipart/form-data"
+      action="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}">
   {% csrf_token %}
   <div class="logo-container">
     <img src="{% static 'logo-black.svg' %}" alt=""/>
@@ -13,6 +16,7 @@
       Band Title</label>
     <div class="controls ">
       {{ form.title }}
+      {{ form.title.errors }}
     </div>
   </div>
 
@@ -36,17 +40,12 @@
           {% for gig in event.artists_gig_info.all %}
           <tr>
              <td><i class="fa fa-bars"></i></td>
-             <input class="sort_order_field"
-                    id="id_artists_gig_info-{{ forloop.counter0 }}-sort_order"
-                    name="artists_gig_info-{{ forloop.counter0 }}-sort_order"
-                    type="hidden"
-                    value="0">
              <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-artist" class="artist-selector">
                 <select class="artist_field select form-control"
                         id="id_artists_gig_info-{{ forloop.counter0 }}-artist"
                         name="artists_gig_info-{{ forloop.counter0 }}-artist">
                    <option value="">Artist</option>
-                   <option value="gig.artist.id" selected>{{gig.artist.full_name}}</option>
+                   <option value="{{ gig.artist.id }}" selected>{{ gig.artist.full_name }}</option>
                 </select>
                 <select class="role_field select form-control"
                         id="id_artists_gig_info-{{ forloop.counter0 }}-role"
@@ -65,15 +64,23 @@
                        name="artists_gig_info-{{ forloop.counter0 }}-is_leader"
                        type="checkbox">
              </td>
+             <input class="sort_order_field"
+                    id="id_artists_gig_info-{{ forloop.counter0 }}-sort_order"
+                    name="artists_gig_info-{{ forloop.counter0 }}-sort_order"
+                    type="hidden"
+                    value="0">
              <input id="id_artists_gig_info-{{ forloop.counter0 }}-id"
                     name="artists_gig_info-{{ forloop.counter0 }}-id"
                     type="hidden"
-                    value="103704">
+                    value="{{ gig.pk }}">
+             <input id="id_artists_gig_info-{{ forloop.counter0 }}-DELETE"
+                    name="artists_gig_info-{{ forloop.counter0 }}-DELETE"
+                    type="hidden">
              <input id="id_artists_gig_info-{{ forloop.counter0 }}-event"
                     name="artists_gig_info-{{ forloop.counter0 }}-event"
                     type="hidden"
-                    value="14800">
-             <td><a href="" class="artist_remove"><span class="fa fa-trash"></span></a></td>
+                    value="{{ gig.event.pk }}">
+             <td><span class="fa fa-trash artist_remove" data-remove="id_artists_gig_info-{{ forloop.counter0 }}-DELETE" style="cursor: pointer;"></span></td>
           </tr>
           {% endfor %}
        </tbody>
@@ -82,11 +89,16 @@
     </button>
   {% endfor %}
   </div>
+  <div class="hidden" id="image-load-gif" class="loading-image events-gif">
+    <img src="{% static 'image/loading.gif' %}" alt="" style="width: 30px; margin-bottom: 20px;">
+  </div>
   <div id="div_id_photo" class="form-group">
     <div class="controls ">
       {{ form.photo }}
     </div>
   </div>
+  {{ form.image_id }}
+  {{ form.start_streaming_before_minutes }}
   <div class="buttonHolder">
     <input type="submit" name="submit" value="Save event" class="white-border-button inline separated"
            id="submit-id-submit">
