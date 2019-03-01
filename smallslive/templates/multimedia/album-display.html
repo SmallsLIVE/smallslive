@@ -71,7 +71,7 @@
         <span class="progress-btn"></span>
       </div>
     </div>
-        <div id='t{{ forloop.counter0 }}' class="my-downloads-album__tracks-table__row flex-row {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}">
+        <div id='t{{ forloop.counter0 }}' class="my-downloads-album__tracks-table__row flex-row {% if is_catalogue and track.get_track_preview_url == 'blank.mp3' %} {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}{% endif %}">
           {% if track.pk in bought_tracks or is_full = 'full_album' %}
             <div class="hidden my-downloads-album__tracks-table__column audio">
               <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
@@ -93,7 +93,7 @@
               </div>
             {% endif %}
           {% endif %}
-          <div class="flex-column track-info   {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}" data-track="{{ forloop.counter0 }}">
+          <div class="flex-column track-info   {% if is_catalogue and track.get_track_preview_url == 'blank.mp3'  %} {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}{% endif %}" data-track="{{ forloop.counter0 }}">
             <div class="my-downloads-album__tracks-table__column title2">
               {{ track.title }} {% if not track.pk in bought_tracks and not is_full = 'full_album' %} <span style="font-size: 10px;">(preview)</span>{% endif %}
             </div>
