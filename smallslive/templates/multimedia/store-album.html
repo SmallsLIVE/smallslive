@@ -29,6 +29,13 @@ el = document.querySelector(".track-container");
 
 <script>
     var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
+    
+     $(document).on('click', ".white-border-button.add-to-library", function(event){
+         event.stopPropagation()
+     });
+     $(document).on('click', ".white-border-button.added-to-library", function(event){
+         event.stopPropagation()
+     });
     $(document).on('click', ".my-downloads-album__tracks-table__row.flex-row:not(.disabled)", function(event){
         progess = calculateProgress($(this),event)
         //find audio player, its track number and change the big player track number
@@ -253,6 +260,8 @@ el = document.querySelector(".track-container");
             clearInterval(setTime)
         });
     });
+
+
 
 </script>
 

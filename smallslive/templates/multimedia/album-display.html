@@ -134,7 +134,7 @@
                 <button class="white-border-button">Added to Library</button>
               {% else %}
                 {% if is_full == 'full_album' %}
-                  <a class="white-border-button flex"
+                  <a class="white-border-button flex download-btn"
                      href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}"
                      download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download mp3
                   </a>
