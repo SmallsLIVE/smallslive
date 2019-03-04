@@ -3,7 +3,7 @@
 {% load thumbnail %}
 {% load thumbor_tags %}
 
-{% block title %}My downloads{% endblock %}
+{% block title %}Library{% endblock %}
 
 {% block content %}
 
@@ -192,7 +192,7 @@
 <script>
     var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
     $(".my-downloads-album__tracks-table__row.flex-row").on("click", function(event){
-        progess = calculateProgress($(this),event)
+        progress = calculateProgress($(this),event)
         //find audio player, its track number and change the big player track number
         audioPlayer = $(this).find(".audio audio")[0]
         audioPlayerTrack = $(audioPlayer).data("track")
@@ -205,8 +205,8 @@
         playerContainerButton = $(playerContainer).find(".purchases-player-button")
         audioProgress = audioPlayer.currentTime / audioPlayer.duration * 100
         if( $(trackInfo).hasClass("active-track")){
-            if(Math.abs(progess - audioProgress) > 5 ){
-                {% comment %} changeProgress(progess, audioPlayer) {% endcomment %}
+            if(Math.abs(progress - audioProgress) > 5 ){
+                {% comment %} changeProgress(progress, audioPlayer) {% endcomment %}
             }else{
                 $(".active-track").removeClass("active-track")
                 play = false

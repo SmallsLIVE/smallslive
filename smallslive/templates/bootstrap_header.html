@@ -44,7 +44,7 @@
                 {% if request.user.artist %}
                   <li><a href="{% url "artist_dashboard:home" %}">Artist Dashboard</a></li>
                 {% endif %}
-                <li><a href="{% url "my-downloads" %}">My Downloads</a></li>
+                <li><a href="{% url "my-downloads" %}">Library</a></li>
                 <li><a href="{% url "user_settings" %}">User Settings</a></li>
                 {% if not request.user.is_staff %}
                   <li><a href="{% url "subscription_settings" %}">My Subscription / Upgrade</a></li>
@@ -119,7 +119,7 @@
         <a href="#" class="dropdown-toggle header-login__user-name" data-toggle="dropdown" role="button" aria-expanded="false">{% user_display user %}{% if basket.num_lines  %}<span class="badge header-user">{{ basket.num_lines }}</span>{% endif %} <span class="caret"></span></a>
         <ul class="dropdown-menu header-login__user-dropdown" role="menu">
             {% if request.user.artist %}
-              <li><a href="{% url "artist_dashboard:home" %}">Artist Dashboard</a></li>
+              <li><a href="{% url "artist_dashboard:home" %}">Library</a></li>
             {% endif %}
             <li><a href="{% url 'basket:summary' %}">Shopping Cart {% if basket.num_lines  %}<span class="badge header-user">{{ basket.num_lines }}</span>{% endif %}</a></li>
             <li><a href="{% url "my-downloads" %}">My Downloads</a></li>

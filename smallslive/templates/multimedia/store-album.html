@@ -37,7 +37,7 @@ el = document.querySelector(".track-container");
          event.stopPropagation()
      });
     $(document).on('click', ".my-downloads-album__tracks-table__row.flex-row:not(.disabled)", function(event){
-        progess = calculateProgress($(this),event)
+        progress = calculateProgress($(this),event)
         //find audio player, its track number and change the big player track number
         audioPlayer = $(this).find(".audio audio")[0]
         audioPlayerTrack = $(audioPlayer).data("track")
