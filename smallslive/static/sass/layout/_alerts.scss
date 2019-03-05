@@ -16,10 +16,10 @@
   justify-content: center;
   align-items: center;
   padding: 35px;
-  -webkit-box-shadow: 0px 0px 113px -16px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 0px 113px -16px rgba(0,0,0,0.75);
-  box-shadow: 0px 0px 113px -16px rgba(0,0,0,0.75);
-  
+  -webkit-box-shadow: 0px 0px 113px -16px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 113px -16px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 113px -16px rgba(0, 0, 0, 0.75);
+
 
   & p {
     margin: 0;
@@ -28,13 +28,14 @@
   & button.close {
     opacity: 0.5;
     @include transition(all 0.3s ease-in-out);
-    
-    &:hover, &:focus {
+
+    &:hover,
+    &:focus {
       opacity: 1;
     }
   }
 
-  }
+}
 
 
 .messages {
@@ -42,21 +43,19 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute;
+  position: fixed;
   width: 100vw;
   height: 100vh;
-  z-index: 10;
+  z-index: 20;
 
   div {
     width: auto;
 
     .alert-buttons {
       a {
-        margin:  0 5px;
+        margin: 0 5px;
       }
     }
 
   }
 }
-
-

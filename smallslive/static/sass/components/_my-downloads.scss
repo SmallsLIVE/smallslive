@@ -285,6 +285,10 @@
           color: gray;
         }
 
+        .white-border-button {
+          width: 170px;
+        }
+
         .progress-bar {
           height: 1px;
           width: 0%;
@@ -575,6 +579,7 @@
 
 .song-container .my-downloads-album__tracks-table .track-container {
   cursor: pointer;
+
   &.disabled {
     cursor: initial;
   }
