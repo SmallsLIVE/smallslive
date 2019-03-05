@@ -426,10 +426,6 @@
     @media (max-width: 767px) {
       margin-left: 0px;
     }
-
-    @media (max-width: $screen-xs-max) {
-      min-height: 300px;
-    }
   }
 
   &__big-item {
@@ -2503,7 +2499,7 @@ img.defineImageRatio {
     margin: 0 4px;
 
     @media (max-width: 430px) {
-      width: 44%;
+      width: 45.5%;
     }
 
     .store-list-item-image img {
@@ -2549,7 +2545,7 @@ img.defineImageRatio {
 
 .load-more-btn {
   width: 200px;
-  margin: 15px auto 0;
+  margin: 30px auto;
 }
 
 .newest-recordings-container {

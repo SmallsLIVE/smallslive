@@ -287,6 +287,11 @@
 
         .white-border-button {
           width: 170px;
+
+          @media (min-width: 1023px) {
+            font-size: 12px;
+
+          }
         }
 
         .progress-bar {
