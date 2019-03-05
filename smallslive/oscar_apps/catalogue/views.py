@@ -173,7 +173,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
             ctx['child_product'] = variant
 
         # Clean basket
-        self.request.basket.flush()
+        # self.request.basket.flush()
 
         return ctx
 

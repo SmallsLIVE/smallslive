@@ -284,15 +284,24 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
         context['sets'].helper = EventSetInlineFormsetHelper()
         default_sets = []
         for default_set in ShowDefaultTime.objects.all():
-            default_sets.append({"set-venue" : str(default_set.venue.name), "set-starts": default_set.sets_start(), "set-redeable-starts":  default_set.sets_readable_start(), "set-duration": default_set.set_duration, "set-title": str(default_set.title)})
+            default_sets.append({
+                'set-venue':
+                    str(default_set.venue.name),
+                'set-starts': default_set.sets_start(),
+                'set-redeable-starts': default_set.sets_readable_start(),
+                'set-duration': default_set.set_duration,
+                'set-title': str(default_set.title),
+            })
         context['show_times'] = default_sets
         context['ticket_forms'] = self.construct_ticket_forms()
+
         return context
 
-    def post(self, request, *args, **kwargs):
-        response = super(EventAddView, self).post(request, *args, **kwargs)
+    def forms_valid(self, form, inlines):
+        response = super(EventAddView, self).forms_valid(form, inlines)
+
         check_staff_picked(self.object, self.request.POST.get('staff_pick', 'off') == 'on')
-        ticket_forms = self.construct_ticket_forms(data=request.POST)
+        ticket_forms = self.construct_ticket_forms(data=self.request.POST)
         event_sets = self.object.sets.all()
         event_sets = sorted(event_sets, Event.sets_order)
         count = 0
@@ -302,6 +311,14 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
             if ticket_form.is_valid():
                 if ticket_form.cleaned_data.get('form_enabled'):
                     ticket_form.save(event_set=event_set)
+
+        return response
+
+    def forms_invalid(self, form, inlines):
+        response = super(EventAddView, self).forms_invalid(form, inlines)
+        print form
+        for inline in inlines:
+            print inline
         return response
 
     def construct_ticket_forms(self, data=None):
