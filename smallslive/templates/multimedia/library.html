@@ -3,7 +3,7 @@
 {% load thumbnail %}
 {% load thumbor_tags %}
 
-{% block title %}My downloads{% endblock %}
+{% block title %}Libray{% endblock %}
 
 {% block content %}
 
@@ -115,7 +115,7 @@ function loadAlbum(productId, bought_tracks, album_type){
      });
     var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
     $(document).on('click', ".my-downloads-album__tracks-table__row.flex-row:not(.disabled)", function(event){
-        progess = calculateProgress($(this),event)
+        progress = calculateProgress($(this),event)
         //find audio player, its track number and change the big player track number
         audioPlayer = $(this).find(".audio audio")[0]
         audioPlayerTrack = $(audioPlayer).data("track")
@@ -159,6 +159,9 @@ function loadAlbum(productId, bought_tracks, album_type){
         lastPlayer = audioPlayer
     });
     function togglePlayer(playerContainer, play){
+        if (!audioPlayer) {
+            return;
+        }
         if(play){
             audioPlayer.play()
             $("#" + $(playerContainer).data("track"))
@@ -175,8 +178,12 @@ function loadAlbum(productId, bought_tracks, album_type){
         bigContainer = $(this).closest(".big-player")[0]
         playerContainer = $(bigContainer).find(".player-container")[0]
         playerContainerButton = $(playerContainer).find(".purchases-player-button")[0]
-        trackNumber = $(playerContainer).data("track")
-        trackInfo = $(bigContainer).find(".track-info[data-track='" + trackNumber +  "']")[0]
+        var trackNumber = $(playerContainer).data("track");
+        var trackInfo = $(bigContainer).find(".track-info:not(.disabled)");
+        var $trackInfo = $(trackInfo);
+        if (!trackNumber) {
+            trackNumber = $(trackInfo).data('track');
+        }
         audioPlayer = $(bigContainer).find(".audio audio[data-track='" + trackNumber +  "']")[0]
         lastPlayerContainerButton = $(lastPlayerContainer).find(".purchases-player-button ")
         if( $(trackInfo).hasClass("active-track")){

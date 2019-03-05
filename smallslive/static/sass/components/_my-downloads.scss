@@ -575,6 +575,16 @@
 
 .song-container .my-downloads-album__tracks-table .track-container {
   cursor: pointer;
+  &.disabled {
+    cursor: initial;
+  }
+
+  div {
+    .disabled {
+      color: grey;
+      cursor: initial;
+    }
+  }
 
   @media (max-width: 1023px) {
     .length-bar {

@@ -8,7 +8,7 @@
 
 {% block store_content %}
 <div class="my-downloads-album row big-player">
-  <div class="my-downloads-album__cover flex-column player-container " data-track=0>
+  <div class="my-downloads-album__cover flex-column player-container ">
     {% with image=album_product.primary_image %}
       {% if album_product.parent_id %}
         {% with image=album_product.parent.primary_image %}
@@ -66,17 +66,17 @@
     {% for track in album_product.tracks.all|dictsort:"ordering" %}
       <!-- tracks table row -->
       <div class="track-container" style="position:relative" {% if not track.pk in bought_tracks and not is_full = 'full_album' %}  href='none' {% else %} href='{% url "my-downloads" %}?album={{ album_product.pk }}' {% endif %}   >
- {% if is_catalogue and track.get_track_preview_url != 'blank.mp3'  %}
-   {% if not track.pk in bought_tracks and not is_full = 'full_album' %} 
-    <div class="progress-holder" id='{{ forloop.counter0 }}' data-progress="0">
-        <div class="progress-bar paused">
-          <span class="progress-btn"></span>
-        </div>
-      </div>
-    {% endif %}
-  {% endif %}
+      {% if not is_catalogue %}
+       {% if track.pk in bought_tracks or is_full = 'full_album' %}
+        <div class="progress-holder" id='{{ forloop.counter0 }}' data-progress="0">
+            <div class="progress-bar paused">
+              <span class="progress-btn"></span>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
 
-        <div id='t{{ forloop.counter0 }}' class="my-downloads-album__tracks-table__row flex-row {% if is_catalogue and track.get_track_preview_url == 'blank.mp3' %} {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}{% endif %}">
+        <div id='t{{ forloop.counter0 }}' class="my-downloads-album__tracks-table__row flex-row {% if track.get_track_preview_url == 'blank.mp3' %} {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}{% endif %}">
           {% if track.pk in bought_tracks or is_full = 'full_album' %}
             <div class="hidden my-downloads-album__tracks-table__column audio">
               <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
@@ -98,7 +98,7 @@
               </div>
             {% endif %}
           {% endif %}
-          <div class="flex-column track-info   {% if is_catalogue and track.get_track_preview_url == 'blank.mp3'  %} {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}{% endif %}" data-track="{{ forloop.counter0 }}">
+          <div class="flex-column track-info {% if not is_catalogue %} {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}{% endif %}" data-track="{{ forloop.counter0 }}">
             <div class="my-downloads-album__tracks-table__column title2">
               {{ track.title }} {% if is_catalogue and track.get_track_preview_url != 'blank.mp3'  %} {% if not track.pk in bought_tracks and not is_full = 'full_album' %} <span style="font-size: 10px;">(preview)</span>{% endif %} {% endif %}
             </div>
@@ -106,7 +106,7 @@
               {{ track.attr.composer }}
             </div>
           </div>
-          <div class="store-buy my-downloads-album__tracks-table__column duration text1">
+          <div class="store-buy my-downloads-album__tracks-table__column duration text1 {% if not is_catalogue %} {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}{% endif %}">
             {{ track.attr.duration }}
           </div>
 
@@ -166,6 +166,7 @@
 <div class="modal fade" id="downloadFormat" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content custom-modal">
+      <a href="#" class="close-button"></a>
       <div class="modal-body">
         <p class="title2 accent-color">Download</p>
         <p class="title1">Select a format</p>
@@ -207,7 +208,7 @@
     <div class="modal-content custom-modal">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
-        <p class="title2 accent-color title">Add tracks to buy</p>
+        <p class="title2 accent-color title">Add tracks to your Library</p>
         <p class="text3 justifyed-text text">
           Please select tracks and then confirm.
         </p>
@@ -267,6 +268,7 @@
       });
 
       $(document).on('click', '.download', function (event) {
+        event.stopPropagation();
         var mp3Url = $(this).data('mp3-href');
         var mp3Name = $(this).data('mp3-name');
         var hdUrl = $(this).data('hd-href');
