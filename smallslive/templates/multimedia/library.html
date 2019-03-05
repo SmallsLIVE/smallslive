@@ -109,6 +109,10 @@ function loadAlbum(productId, bought_tracks, album_type){
 <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
 <script src="{% static 'js/progress-bar.js' %}"></script>
 <script>
+
+     $(document).on('click', ".white-border-button.download-btn", function(event){
+         event.stopPropagation()
+     });
     var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
     $(document).on('click', ".my-downloads-album__tracks-table__row.flex-row:not(.disabled)", function(event){
         progess = calculateProgress($(this),event)
