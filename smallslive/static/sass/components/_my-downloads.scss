@@ -497,6 +497,15 @@
   }
 }
 
+.white-line-bottom {
+  @media (max-width: 960px) {
+    div.title1 {
+      font-size: 7vw;
+      line-height: 9vw;
+    }
+  }
+}
+
 .newest-recordings-container.downloads {
   .event-picture img {
     height: 100%;
