@@ -23,50 +23,53 @@
 {#    TODO Move container to dashboard base#}
     <div class="artist-profile-container flex-column">
         <div class="event-mobile-info" id="event-info-mobile-card" style="display:none;width:100%;padding:0"></div>
-        <div class="refine-container flex-row" id="refine-container">
-            <div class="refine text1 flex-grow"><span id="filter-number" class="accent-color">(0)</span>Refine</div>
-            <div class="reset text1" id="dashboard-mobile-refine-reset">Reset</div>
-        </div>
-        <div class="artist-archive-filter flex-row">
-            <div class="dashboard-datepicker-container">
-            <div class="white-border-button datepicker-dashboard-main-btn" >
-              Date
+        {% if not is_future %}
+            <div class="refine-container flex-row" id="refine-container">
+                <div class="refine text1 flex-grow"><span id="filter-number" class="accent-color">(0)</span>Refine</div>
+                <div class="reset text1" id="dashboard-mobile-refine-reset">Reset</div>
             </div>
-            <div class="datepicker-container noclick" id="dashboard-desktop-datepicker">
-                <div class="custom-date-picker" id="search-date-picker-from-dashboard">
-                    <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+            <div class="artist-archive-filter flex-row">
+                <div class="dashboard-datepicker-container">
+                <div class="white-border-button datepicker-dashboard-main-btn" >
+                Date
                 </div>
-        
-                <div class="custom-date-picker" id="search-date-picker-to-dashboard">
-                    <input class="date-picker-text" type="text" placeholder="Select date" readonly>
-                </div>
-        
-                <div class="white-border-button" id="dashboard-apply-button">Apply</div>
-                <div class="datepicker-reset text2 text-grey">Reset</div>
-            </div>
-          </div>
-            <div class="white-border-select" id="dashboard-status-filter">
-                <select id="artist_archive_status_filter">
-                    <option value="all">All</option>
-                    <option value="leader">Leader</option>
-                    <option value="sidemusician">Sidemusician</option>
-                </select>
-            </div>
-            <div class="white-border-select" id="dashboard-sort-filter">
-                <select id="artist_archive_order">
-                    <option value="newest">Newest</option>
-                    <option value="oldest">Oldest</option>
-                    <option value="popular">Popular</option>
-                </select>
-            </div>
-            <div class="white-border-button" id="dashboard-desktop-reset">
-                 
-                    Reset all
-                
-               
-            </div>
+                <div class="datepicker-container noclick" id="dashboard-desktop-datepicker">
+                    <div class="custom-date-picker" id="search-date-picker-from-dashboard">
+                        <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+                    </div>
             
-        </div>
+                    <div class="custom-date-picker" id="search-date-picker-to-dashboard">
+                        <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+                    </div>
+            
+                    <div class="white-border-button" id="dashboard-apply-button">Apply</div>
+                    <div class="datepicker-reset text2 text-grey">Reset</div>
+                </div>
+            </div>
+                <div class="white-border-select" id="dashboard-status-filter">
+                    <select id="artist_archive_status_filter">
+                        <option value="all">All</option>
+                        <option value="leader">Leader</option>
+                        <option value="sidemusician">Sidemusician</option>
+                    </select>
+                </div>
+                <div class="white-border-select" id="dashboard-sort-filter">
+                    <select id="artist_archive_order">
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="popular">Popular</option>
+                    </select>
+                </div>
+                <div class="white-border-button" id="dashboard-desktop-reset">
+                    
+                        Reset all
+                    
+                
+                </div>
+            
+            </div>
+        {% endif %}
+       
         <div id="artistEventsContainer" class="flex-row items-flex-stretch artist-events-container">
             <div class="flex-column items-flex-stretch artist-events-list">
               <div id="artistEventsList" ></div>
