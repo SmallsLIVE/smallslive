@@ -1,3 +1,4 @@
+from datetime import datetime
 from oscar.core.loading import get_class
 from crispy_forms.bootstrap import FormActions
 from crispy_forms.helper import FormHelper
@@ -106,9 +107,13 @@ class EventSetInlineFormset(InlineFormSet):
         formset = super(EventSetInlineFormset, self).construct_formset()
         for num, form in enumerate(formset):
             form.fields['DELETE'].widget = forms.HiddenInput()
+            # https://stackoverflow.com/questions/3901931/make-inlineformset-in-django-required
+            now = datetime.now().strftime('%I:%M %p')
             form.fields['start'].widget = forms.TimeInput(format='%I:%M %p')
+            form.fields['start'].initial = now
             form.fields['start'].input_formats = ['%I:%M %p']
             form.fields['end'].widget = forms.TimeInput(format='%I:%M %p')
+            form.fields['end'].initial = now
             form.fields['end'].input_formats = ['%I:%M %p']
 
         return formset
@@ -135,13 +140,13 @@ class EventAddForm(forms.ModelForm):
     # It's not required because we need to support the previous
     # mechanism to upload images (regular ImageField)
     image_id = forms.IntegerField(required=False, widget=forms.HiddenInput())
-    start_streaming_before_minutes = forms.IntegerField(initial=15)
+    start_streaming_before_minutes = forms.IntegerField(initial=15, required=False)
 
     class Meta:
         model = Event
         fields = (
             'venue', 'date', 'start', 'end', 'id', 'title', 'subtitle', 'photo',
-            'image_id', 'description', 'state', 'staff_pick', 'streamable',
+            'image_id', 'cropping', 'description', 'state', 'staff_pick', 'streamable',
             'tickets_url'
         )
         widgets = {

@@ -13,7 +13,7 @@ class Command(BaseCommand):
         qs = UserVideoMetric.objects.values('event_id')
         qs = qs.annotate(play_count=Sum('play_count'), seconds_played=Sum('seconds_played'))
         count = 0
-        for item in qs.order_by('event_id'):
+        for item in qs.order_by('-event_id'):
             count += 1
             print 'Processing:', count, item
             event = Event.objects.filter(pk=item['event_id']).first()

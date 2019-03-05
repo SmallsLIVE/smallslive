@@ -44,7 +44,6 @@
   <script src="{% static "js/event_form.js" %}"></script>
   <script>
 
-
     function checkTicketFormVisibility(element) {
       $full_form = $(element).parents(".form-group").next();
         if($(element).is(':checked')) {
@@ -55,6 +54,7 @@
     }
     var show_times = {{ show_times|safe }};
     $(document).ready(function() {
+
       $toggle = $(".toggle");
       $toggle.click(function() {
         checkTicketFormVisibility(this)
@@ -62,6 +62,33 @@
       checkTicketFormVisibility($toggle);
       EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
       EventForm.init(true);
+
+      // Ajax upload image
+      $(document).on('change', 'form.admin-interface__form input[type="file"]', function () {
+        var $form = $(this).closest('form');
+        var data = new FormData($form.get(0));
+        $('#div_id_photo img').toggleClass('hidden');
+        $('#image-load-gif').toggleClass('hidden');
+        $('#event_edit_modal').find('.modal-body').html('');
+        $.ajax({
+            url: "{% url 'upload_image_preview' %}",
+            type: "POST",
+            data: data,
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (data) {
+              if (data.success) {
+                $('#div_id_photo img').attr('src', data.src);
+                $('#div_id_photo img').toggleClass('hidden');
+                $('#image-load-gif').toggleClass('hidden');
+                $('#id_image_id').val(data.id);
+              }
+            }
+        });
+      });
+
     });
   </script>
 {% endblock %}

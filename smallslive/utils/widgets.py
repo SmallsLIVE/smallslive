@@ -13,12 +13,16 @@ class ImageSelectWidget(floppyforms.Select):
 
 class ImageCropWidget(ImageThumbnailWidget, CropWidget):
     def render(self, name, value, attrs=None):
+
         if not attrs:
             attrs = {}
         if value:
             new_attrs = get_attrs(value, name)
             # fix to make it work with thumbor instead of easy_thumbnails
             if hasattr(value, 'url'):
-                new_attrs['data-thumbnail-url'] = generate_url(value.url, width=300)
+                # Hack to get rid of the signature which we don't need
+                # TODO: find a better way
+                url = value.url.split('?')[0]
+                new_attrs['data-thumbnail-url'] = generate_url(url, width=300)
             attrs.update(new_attrs)
         return super(ImageThumbnailWidget, self).render(name, value, attrs)
