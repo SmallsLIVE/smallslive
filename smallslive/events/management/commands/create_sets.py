@@ -11,37 +11,42 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        count = 0
-        for event in Event.objects.filter(venue__name='Mezzrow'):
-            count += 1
+        def create_set(set_number, start, end):
+
+            video = event.recordings.filter(set_number=set_number).filter(media_file__media_type='video').first()
+            audio = event.recordings.filter(set_number=set_number).filter(media_file__media_type='audio').first()
+
+            event_set = EventSet.objects.create(
+                event=event, start=start, end=end,
+                video_recording=video, audio_recording=audio
+            )
+
+            print 'Created Set: ', event_set.start, event_set.end
+
+        for event in Event.objects.filter(venue__name='Mezzrow').order_by('-id'):
+            print 'Processing event: ', event.pk
+
             if event.sets.all().count() > 0:
                 print 'Skipping'
                 continue
 
-            print 'Processing: {}'.format(count)
             default_timezone = timezone.get_default_timezone()
             ny_start = timezone.make_naive(event.start, default_timezone)
-            ny_end = timezone.make_naive(event.end, default_timezone)
+            print 'Start: ', ny_start
             event.date = ny_start.date()
             event.save()
 
             first_set_start = ny_start.time()
-            second_set_start = ny_end.time()
+            if 1 <= first_set_start.hour <= 5:
+                # After hours: only one 3 hour set.
+                first_set_end = (ny_start + timedelta(hours=3)).time()
+                create_set(1, first_set_start, first_set_end)
 
-            first_set_end = (ny_start + timedelta(hours=1)).time()
-            second_set_end = (ny_end + timedelta(hours=1)).time()
+            else:
+                # Regular hours, 2 sets (1 h + break 30 mins + 1 h)
+                first_set_end = (ny_start + timedelta(hours=1)).time()
+                create_set(1, first_set_start, first_set_end)
 
-            video_1 = event.recordings.filter(set_number=1).filter(media_file__media_type='video').first()
-            audio_1 = event.recordings.filter(set_number=1).filter(media_file__media_type='audio').first()
-
-            EventSet.objects.create(
-                event=event, start=first_set_start, end=first_set_end,
-                video_recording=video_1, audio_recording=audio_1
-            )
-
-            video_2 = event.recordings.filter(set_number=2).filter(media_file__media_type='video').first()
-            audio_2 = event.recordings.filter(set_number=2).filter(media_file__media_type='audio').first()
-            EventSet.objects.create(
-                event=event, start=second_set_start, end=second_set_end,
-                video_recording=video_2, audio_recording=audio_2
-            )
+                second_set_start = (ny_start + timedelta(hours=1, minutes=30)).time()
+                second_set_end = (ny_start + timedelta(hours=2, minutes=30)).time()
+                create_set(2, second_set_start, second_set_end)

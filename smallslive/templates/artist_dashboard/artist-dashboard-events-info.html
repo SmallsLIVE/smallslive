@@ -91,13 +91,11 @@
                 
             </div>
         <div class="artist-set-list flex-row">
-            {% if not event.is_future %}
-                {% for set in event.sets.all %}
-                    {% if set.has_media %}
-                        <div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}?set_id={{ forloop.counter0 }}" class="{% if set.id == event_set.id %} artist-active-set accent-color {% endif %}set-changer">
-                            <div class="text2 flex-column flex-grow "> Set {{ forloop.counter0|add:"1" }} </div>
-                        </div>
-                    {% endif %}
+            {% if not event.is_future and event.sets.with_media.count > 1 %}
+                {% for set in event.sets.with_media %}
+                    <div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}?set_id={{ forloop.counter0 }}" class="{% if set.id == event_set.id %} artist-active-set accent-color {% endif %}set-changer">
+                        <div class="text2 flex-column flex-grow "> Set {{ forloop.counter0|add:"1" }} </div>
+                    </div>
                 {% endfor %}
             {% endif %}
         </div>

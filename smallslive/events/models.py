@@ -807,12 +807,20 @@ class EventType(models.Model):
         return self.name
 
 
+class EventSetManager(models.Manager):
+
+    def with_media(self):
+        return self.filter(Q(video_recording__isnull=False) | Q(audio_recording__isnull=False))
+
+
 class EventSet(models.Model):
     start = models.TimeField()
     end = models.TimeField(blank=True, null=True)
     event = models.ForeignKey('events.Event', related_name='sets')
     video_recording = models.OneToOneField('events.Recording', related_name='set_is_video', blank=True, null=True)
     audio_recording = models.OneToOneField('events.Recording', related_name='set_is_audio', blank=True, null=True)
+
+    objects = EventSetManager()
 
     def __unicode__(self):
         return '{} - {}'.format(self.start, self.end)
