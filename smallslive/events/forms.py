@@ -196,7 +196,7 @@ class EventAddForm(forms.ModelForm):
             FormActions(css_class='form-group slot-buttons'),
             Formset('sets', template='form_widgets/set_formset_layout.html'),
             Formset('artists', template='form_widgets/formset_layout.html'),
-            'photo',
+            Field('photo', accept='image/x-png,image/gif,image/jpeg'),
             'cropping',
             'description',
             'state',

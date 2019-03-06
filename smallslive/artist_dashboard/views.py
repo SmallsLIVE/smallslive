@@ -501,7 +501,6 @@ class EventEditAjaxView(EventEditView):
     inlines_names = ['artists']
 
     def get_context_data(self, **kwargs):
-        print 'Get context data: '
         context = super(EventEditAjaxView, self).get_context_data(**kwargs)
         context['gig_instruments'] = Instrument.objects.all()
 

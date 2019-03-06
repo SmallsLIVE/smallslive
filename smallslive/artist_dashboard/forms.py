@@ -93,7 +93,17 @@ class EventAjaxEditForm(EventEditForm):
     def __init__(self, *args, **kwargs):
         super(EventAjaxEditForm, self).__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs['class'] = 'form-control'
+            print '----------> '
+            print field
+            print self.fields[field].widget.attrs
+            if 'class' in self.fields[field].widget.attrs:
+                class_names = self.fields[field].widget.attrs['class'].split(' ')
+                if 'form-control' not in class_names:
+                    class_names.append('form-control')
+                    print class_names
+                    self.fields[field].widget.attrs['class'] = ' '.join(class_names)
+            else:
+                self.fields[field].widget.attrs['class'] = 'form-control'
 
 
 class ArtistInfoForm(forms.ModelForm):

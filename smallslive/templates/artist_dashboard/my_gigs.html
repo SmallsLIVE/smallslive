@@ -9,6 +9,12 @@
   </script>
   {{ form.media }}
   <link href="{% static 'css/selectize.bootstrap3.css' %}" rel="stylesheet">
+  <link href="/static/image_cropping/css/jquery.Jcrop.min.css" type="text/css" media="all" rel="stylesheet" />
+  <link href="/static/image_cropping/css/image_cropping.css" type="text/css" media="all" rel="stylesheet" />
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/image_cropping/js/jquery.Jcrop.min.js"></script>
+  <script type="text/javascript" src="/static/image_cropping/image_cropping.js"></script>
+
 {% endblock extra_head %}
 
 {% block my-events-active %}active{% endblock %}
@@ -366,6 +372,7 @@
                 $('#event_edit_modal').find('.modal-body').html(data);
                 EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
                 EventForm.init(false);
+                image_cropping.init();
               },
               error: function() {
 
