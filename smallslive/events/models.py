@@ -810,7 +810,7 @@ class EventType(models.Model):
 class EventSetManager(models.Manager):
 
     def with_media(self):
-        return self.filter(Q(video_recording__isnull=False) | Q(audio_recording__isnull=False))
+        return self.filter(Q(video_recording__isnull=False) | Q(audio_recording__isnull=False)).order_by('id')
 
 
 class EventSet(models.Model):
