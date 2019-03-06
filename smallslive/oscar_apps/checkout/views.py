@@ -551,6 +551,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         order_type_code = 'ORDER_PLACED'
         if order.has_tickets():
             order_type_code = 'TICKET_PLACED'
+        if order.basket.has_gifts():
+            order_type_code = 'GIFT_PLACED'
         self.send_confirmation_message(order, order_type_code)
 
         order.set_status('Completed')
@@ -646,9 +648,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         print 'handle_payment: '
         print 'Card token: ', card_token
         print 'Payment method: ', payment_method
-        print total
-        print kwargs
-        print 'Basket has tickets: ', basket.has_tickets()
+       
 
         if basket.has_tickets():
             self.mezzrow = True
