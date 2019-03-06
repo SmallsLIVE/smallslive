@@ -233,7 +233,7 @@ class MyPastEventsInfoView(DetailView):
         artist = self.request.user.artist
         set_id = int(self.request.GET.get('set_id', 0))
         context.update({
-            'event_set': self.object.sets.all()[set_id]
+            'event_set': self.object.sets.with_media()[set_id]
         })
         context['is_admin'] = self.object.artists_gig_info.get(
             artist_id=artist.id).is_leader
