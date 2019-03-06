@@ -3,7 +3,11 @@ from datetime import date, timedelta
 from djstripe.models import Customer, Charge, Plan
 from custom_stripe.models import CustomPlan, CustomerDetail
 from djstripe.models import Charge, CurrentSubscription, convert_tstamp
-
+from django.conf import settings
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from django.contrib.sites.models import Site
+from djstripe.settings import PAYMENTS_PLANS, INVOICE_FROM_EMAIL, SEND_INVOICE_RECEIPT_EMAILS
 try:
     from django.utils.timezone import now
 except ImportError:
@@ -110,6 +114,7 @@ def one_time_donation(customer, stripe_token, amount, flow="Charge"):
     custom_receipt = {}
     custom_receipt["customer"] = customer
     custom_receipt["amount"] = amount
+    custom_receipt["type"] = "one_time"
     custom_send_receipt(custom_receipt)
 
 
@@ -137,6 +142,8 @@ def subscribe_to_plan(customer, stripe_token, amount, plan_type,
     custom_receipt = {}
     custom_receipt["customer"] = customer
     custom_receipt["plan"] = plan
+    custom_receipt["type"] = "subscribe"
+    print "aa"
     custom_send_receipt(custom_receipt)
 
     # Donation will come through Stripe's webhook
@@ -192,23 +199,37 @@ def charge(customer, amount, currency='USD', description='',
 
 
 def custom_send_receipt(receipt_info):
-    print receipt_info
-    if False:
-        site = Site.objects.get_current()
-        protocol = getattr(settings, "DEFAULT_HTTP_PROTOCOL", "http")
+    site = Site.objects.get_current()
+    protocol = getattr(settings, "DEFAULT_HTTP_PROTOCOL", "http")
+    if receipt_info["type"] == "subscribe":
         ctx = {
-            "charge": self,
+            "charge": {
+                "amount": receipt_info["plan"].amount,
+                "customer": receipt_info["customer"]
+            },
             "site": site,
             "protocol": protocol,
         }
         subject = render_to_string("djstripe/email/subject.txt", ctx)
-        subject = subject.strip()
-        message = render_to_string(
-            "djstripe/email/body_base_" + donation_type + ".txt", ctx)
-        num_sent = EmailMessage(
-            subject,
-            message,
-            to=[self.customer.subscriber.email],
-            from_email=INVOICE_FROM_EMAIL).send()
-        self.receipt_sent = num_sent > 0
-        self.save()
+        message = render_to_string("djstripe/email/body_base_pledge.txt", ctx)
+    if receipt_info["type"] == "one_time":
+        ctx = {
+            "charge": {
+                "amount": receipt_info["amount"],
+                "customer": receipt_info["customer"]
+            },
+            "site": site,
+            "protocol": protocol,
+        }
+        subject = render_to_string("djstripe/email/subject.txt", ctx)
+        message = render_to_string("djstripe/email/body_base_onetime.txt", ctx)
+    if receipt_info["type"] == "gift":
+        pass
+    subject = subject.strip()
+    num_sent = EmailMessage(
+        subject,
+        message,
+        to=[receipt_info["customer"].subscriber.email],
+        from_email=INVOICE_FROM_EMAIL).send()
+    receipt_info["customer"].receipt_sent = num_sent > 0
+    receipt_info["customer"].save()
