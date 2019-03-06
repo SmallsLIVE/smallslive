@@ -30,6 +30,12 @@
 
   &__form {
 
+    #div_id_photo {
+      a {
+        display: none;
+      }
+    }
+
     &__heading {
       @include lato-black;
       font-size: 18px;
@@ -194,6 +200,7 @@
         text-align: center;
       }
     }
+
   }
 
   & .artists-table__button, & .event-sets-table__button {

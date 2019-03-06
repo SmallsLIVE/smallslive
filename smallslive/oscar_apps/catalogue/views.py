@@ -113,11 +113,7 @@ class PurchasedProductsInfoMixin():
 
             # Iterate tracks and accumulate for album
             for track in self.track_list:
-                print '--------------------------------------------'
-                print 'Track: ', track, track.product.album
                 # Search album_list to see if already in list
-                print self.album_list
-                print track.product.album
                 # Find the position of the album in the list, if it exists
                 albums_matched = [a for a in enumerate(self.album_list)
                                   if a[1]['parent'] == track.product.album]

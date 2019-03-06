@@ -93,9 +93,6 @@ class EventAjaxEditForm(EventEditForm):
     def __init__(self, *args, **kwargs):
         super(EventAjaxEditForm, self).__init__(*args, **kwargs)
         for field in self.fields:
-            print '----------> '
-            print field
-            print self.fields[field].widget.attrs
             if 'class' in self.fields[field].widget.attrs:
                 class_names = self.fields[field].widget.attrs['class'].split(' ')
                 if 'form-control' not in class_names:
