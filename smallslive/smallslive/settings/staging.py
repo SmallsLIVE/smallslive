@@ -120,7 +120,7 @@ ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'http'
 
 # Metrics
-METRICS_SERVER_URL = "https://metrics-staging.smallslive.com"  # no trailing slash
+METRICS_SERVER_URL = "https://smallslive-metrics-staging.herokuapp.com"  # no trailing slash
 
 # Paypal
 PAYPAL_SANDBOX_MODE = env_var("PAYPAL_SANDBOX_MODE", True)

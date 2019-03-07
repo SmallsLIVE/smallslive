@@ -232,8 +232,13 @@ class MyPastEventsInfoView(DetailView):
         context = super(MyPastEventsInfoView, self).get_context_data(**kwargs)
         artist = self.request.user.artist
         set_id = int(self.request.GET.get('set_id', 0))
+        events_with_media = self.object.sets.with_media()
+        if events_with_media.count():
+            event_set = events_with_media[set_id]
+        else:
+            event_set = None
         context.update({
-            'event_set': self.object.sets.all()[set_id]
+            'event_set': event_set
         })
         context['is_admin'] = self.object.artists_gig_info.get(
             artist_id=artist.id).is_leader
@@ -501,7 +506,6 @@ class EventEditAjaxView(EventEditView):
     inlines_names = ['artists']
 
     def get_context_data(self, **kwargs):
-        print 'Get context data: '
         context = super(EventEditAjaxView, self).get_context_data(**kwargs)
         context['gig_instruments'] = Instrument.objects.all()
 
