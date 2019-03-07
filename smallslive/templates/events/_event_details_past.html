@@ -80,7 +80,9 @@
             $.post('/multimedia/update_media_viewcount/', {
               recording_id: id,
               csrfmiddlewaretoken: '{{ csrf_token }}'
-            });
+            }).fail(function(response) {
+                console.log('Error: ' + response.responseText);
+            });;
           }
         }
 
