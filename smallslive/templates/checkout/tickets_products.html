@@ -8,10 +8,10 @@
     <div class="store-overview__group__table">
         <!-- table header start -->
         <div class="basket-header clearfix">
-            <div class="col-xs-2 image">
+            <div class="col-xs-3 image">
                 Event
             </div>
-            <div class="col-xs-7 details">
+            <div class="col-xs-6 details">
                 Details
             </div>
             <div class="col-xs-3 total">
@@ -23,7 +23,7 @@
             {% with product=line.product  %}
                 <!-- table row start -->
                 <div class="store-overview__group__table__row clearfix">
-                    <div class="col-xs-2 image">
+                    <div class="col-xs-3 image">
                        {% with image=product.event_set.event.get_photo_url %}
 
                           <a href="{{ product.event_set.event.get_absolute_url }}"><img class="defineImageRatio"
@@ -32,7 +32,7 @@
 
                   {% endwith %}
                     </div>
-                    <div class="col-xs-7 details">
+                    <div class="col-xs-6 details">
                         <p class="store-overview__group__table__product-name">
                            {{ product.get_title }} {{ product.set }} at {{ product.event_set.event.venue }}
                         </p>

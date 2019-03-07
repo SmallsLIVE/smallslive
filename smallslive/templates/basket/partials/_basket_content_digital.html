@@ -7,24 +7,24 @@
 <!-- Cart table header -->
 <div class="basket-header clearfix">
     <div class="col-xs-12 store-cart__table__header__title">
-        <span>Digital downloads:</span> <span class="smaller">Upon purchase your Digital downloads will be available to you in your <a
+        <span>Digital downloads:</span> <span class="digital-info smaller">Upon purchase your Digital downloads will be available to you in your <a
             class="smalls-color" href="{% url 'my-downloads' %}">Library</a>.</span>
     </div>
     <div class="hidden-xs hidden-sm col-md-2 col-lg-2 store-cart__table__cell image">
         Cover
     </div>
-    <div class="hidden-xs hidden-sm col-md-10 col-lg-9 no-padding">
+    <div class="hidden-xs hidden-sm col-md-10 col-lg-10 no-padding"  style="padding: 0px 30px;">
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-5 store-cart__table__cell">
             Title
         </div>
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 store-cart__table__cell album">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 store-cart__table__cell album"  style="padding: 0px 30px;">
             Album
         </div>
         <div class="store-cart__mobile-quantity col-md-4 col-lg-3">
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell text-center">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell">
                 Option
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell price">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell">
                 Price
             </div>
         </div>
@@ -72,15 +72,15 @@
                                 <a href="{{ product.album.get_absolute_url }}">{{ product.album.get_title }}</a>
                             {% endif %}
                         </div>
-                        <div class="store-cart__mobile-quantity col-md-4 col-lg-3">
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell text-center">
+                        <div class="store-cart__mobile-quantity col-md-4 col-lg-3 digital">
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell">
                                 {% if line.stockrecord.is_hd %}
                                     HD
                                 {% else %}
                                     Mp3
                                 {% endif %}
                             </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell">
                                 <input type="hidden" name="form-{{ forloop.counter0 }}-quantity"  value="{{ form.quantity.value }}"/>
                                 {{ line.unit_price_excl_tax|currency:line.price_currency }}
                                 <div style="display: none;"><input id="id_form-{{ forloop.counter0 }}-DELETE" name="form-{{ forloop.counter0 }}-DELETE" type="checkbox"></div>
