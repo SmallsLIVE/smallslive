@@ -1645,7 +1645,7 @@
         padding: 10px 20px;
 
         @media(max-width: 960px) {
-          padding: 10px 0;
+          padding: 0px 0;
         }
 
         width: 100%;
@@ -2776,6 +2776,35 @@ form .back-to-payment-btn {
     .back-to-payment-btn {
       width: 45%;
     }
+  }
+
+}
+
+.content-wrapper.basket {
+  @media(max-width: 1023px) {
+    padding-top: 50px
+  }
+}
+
+
+
+@media (min-width: 1024px) {
+  .store-cart__table__header__title span.smaller.digital-info {
+    float: unset;
+  }
+}
+
+
+
+@media(max-width: 480px) {
+
+  .album.physical,
+  div.store-cart__table__cell {
+    padding-right: 0px;
+  }
+
+  .store-cart__mobile-quantity.physical {
+    padding: 0;
   }
 
 }
