@@ -5,16 +5,16 @@
 {% load purchase_info_tags %}
 
 <div id="content_inner">
-    <div class="content-wrapper borderless mt-5">
+    <div class="content-wrapper borderless mt-5" style="padding-top:50px">
         <section class="store-header container">
             <div class="store-header__content">
                 {% if basket.has_tickets %}
-                  <div class="white-line-bottom">
+                  <div class="white-line-bottom" style="font-size: 30px;">
                     <div class="title1 center">Purchase tickets</div>
                  </div>
                 {% else %}
                   <div class="white-line-bottom">
-                    <div class="title1 center">Shopping cart</div>
+                    <div class="title1 center" style="font-size: 30px;">Shopping cart</div>
                   </div>
                 {% endif %}
             </div>
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                     <div class="col-xs-12 store-cart__footer__buttons">
-                        <a href="{% url 'checkout:index' %}" class="white-border-button checkout-white">Continue checkout</a>
+                        <a href="{% url 'checkout:index' %}" class="white-border-button checkout-white">Continue</a>
                     </div>
                 </section>
             </form>

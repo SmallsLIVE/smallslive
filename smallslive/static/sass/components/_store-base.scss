@@ -1643,6 +1643,11 @@
 
       &__container {
         padding: 10px 20px;
+
+        @media(max-width: 960px) {
+          padding: 10px 0;
+        }
+
         width: 100%;
         @include display(flex);
         @include align-items(center);
@@ -1686,8 +1691,9 @@
         padding-left: 32px;
 
         @media (max-width: 960px) {
+          padding-left: 2px;
           margin-top: 10px;
-          width: 23%;
+          width: auto;
         }
       }
 
@@ -1716,6 +1722,12 @@
 
       &.name {
         @include flex-shrink(1);
+
+        @media(max-width: 640px) {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
 
         & a {
           @include lato-bold;
@@ -1882,7 +1894,14 @@
 
   &__mobile-quantity {
     float: left;
-    padding: 0;
+    padding: 0 10px;
+
+    @media (max-width: 960px) {
+      &.digital {
+        padding-left: 0px;
+      }
+    }
+
     @include flex-shrink(0);
 
     @media (max-width: $screen-sm-max) {
@@ -2750,4 +2769,13 @@ form .back-to-payment-btn {
     margin: 50px auto;
     width: 50px;
   }
+}
+
+.store-cart__footer.container {
+  @media (max-width: 400px) {
+    .back-to-payment-btn {
+      width: 45%;
+    }
+  }
+
 }
