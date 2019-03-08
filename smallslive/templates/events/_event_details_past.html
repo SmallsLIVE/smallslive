@@ -77,10 +77,15 @@
           var id = player.getPlaylistItem(player.getPlaylistIndex()).mediaid;
           if (playsCountSent.indexOf(id) === -1) {
             playsCountSent.push(id);
-            $.post('/multimedia/update_media_viewcount/', {
+            var url = '{% url 'update_media_viewcount' %}';
+            $.post(url, {
               recording_id: id,
               csrfmiddlewaretoken: '{{ csrf_token }}'
-            });
+            }, function (data) {
+              console.log(data);
+            }).fail(function(response) {
+                console.log('Error: ' + response.responseText);
+            });;
           }
         }
 
