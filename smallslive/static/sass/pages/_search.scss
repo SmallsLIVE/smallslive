@@ -1839,3 +1839,14 @@ body.home.admin-header {
     margin-bottom: 45px;
   }
 }
+
+
+.main-container .calendar .custom-date-picker .datepicker.dropdown-menu .table-condensed>thead>tr>th.datepicker-switch {
+  &>.years-dropdown {
+    display: none;
+  }
+
+  >div:first-of-type::after {
+    content: ""
+  }
+}
