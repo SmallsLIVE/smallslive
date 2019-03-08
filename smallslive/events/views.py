@@ -430,6 +430,7 @@ class EventDetailView(DetailView):
                 'recording_id': rec.id,
                 'recording_type': rec.media_file.media_type.upper()[0],
                 'event_id': self.object.id,
+                'event_date': self.object.start,
                 'user_id': self.request.user.id,
             }
             signed_value = signing.dumps(rec_data)
