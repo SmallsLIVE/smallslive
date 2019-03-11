@@ -39,10 +39,6 @@ def update_media_viewcount(request):
     recording.view_count = F('view_count') + 1
     recording.save()
 
-    event = Event.objects.get(recordings__pk=recording_id)
-    event.view_count = F('view_count') + 1
-    event.save()
-
     response = json.dumps({'status': True})
     return HttpResponse(response, content_type="application/json")
 
