@@ -1074,3 +1074,15 @@ $(document).ready(function () {
   }
   $("body").removeClass("hidden-body");
 });
+
+
+
+var startingArtist;
+$(document).ready(function () {
+  startingArtist = getUrlParameter("artist_pk");
+  startingArtist = startingArtist ? startingArtist : "";
+  if (startingArtist) {
+    $(".search-tabs div[data-toggle-tab-target='archived-shows']").removeClass("active")
+    $(".search-tabs div[data-toggle-tab-target='musicians']").addClass("active")
+  }
+})

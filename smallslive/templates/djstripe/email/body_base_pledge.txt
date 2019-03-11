@@ -1,4 +1,4 @@
-Dear {% block customer_name %}{{ charge.customer.subscriber }}{% endblock %},
+Dear {% block customer_name %}{{ charge.customer.subscriber.get_full_name }}{% endblock %},
 
 Thank you for contributing to the SmallsLIVE Foundation for Jazz Arts and Education.
 
@@ -8,4 +8,4 @@ You will receive access to The SmallsLIVE Archive for as long as you are a Suppo
 
 Thank you for your support,
 
-The {{ site.name }} Team
+The SmallsLIVE Team

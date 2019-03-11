@@ -166,6 +166,9 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
                 'physical-album',
                 'digital-album'
             ]).first()
+           
+            if variant.product_class.slug == 'digital-album' and variant.pk == 1 :
+                print variant.pk
             ctx['child_product'] = variant
 
         # Clean basket
