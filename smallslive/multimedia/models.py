@@ -72,9 +72,9 @@ class MediaFile(models.Model):
     def get_file_url(self):
         if not settings.DEBUG or settings.FORCE_S3_SECURE:
             if self.media_type == self.MEDIA_TYPE.audio:
-                self.file.storage = AudioS3Storage(bucket_name=self.audio_bucket_name)
+                self.file.storage = AudioS3Storage(bucket=self.audio_bucket_name)
             else:
-                self.file.storage = VideoS3Storage(bucket_name=self.video_bucket_name)
+                self.file.storage = VideoS3Storage(bucket=self.video_bucket_name)
 
         return self.file.url
 
@@ -85,18 +85,18 @@ class MediaFile(models.Model):
         }
         if not settings.DEBUG or settings.FORCE_S3_SECURE:
             if self.media_type == 'audio':
-                storage = AudioS3Storage(bucket_name=self.audio_bucket_name)
+                storage = AudioS3Storage(bucket=self.audio_bucket_name)
             else:
-                storage = VideoS3Storage(bucket_name=self.video_bucket_name)
+                storage = VideoS3Storage(bucket=self.video_bucket_name)
             return storage.url(self.file.name, response_headers=response_headers)
         return self.file.url
 
     def get_sd_video_url(self):
         if not settings.DEBUG or settings.FORCE_S3_SECURE:
             if self.media_type == 'audio':
-                self.sd_video_file.storage = AudioS3Storage(bucket_name=self.audio_bucket_name)
+                self.sd_video_file.storage = AudioS3Storage(bucket=self.audio_bucket_name)
             else:
-                self.sd_video_file.storage = VideoS3Storage(bucket_name=self.video_bucket_name)
+                self.sd_video_file.storage = VideoS3Storage(bucket=self.video_bucket_name)
 
         return self.sd_video_file.url
 
@@ -107,9 +107,9 @@ class MediaFile(models.Model):
         }
         if not settings.DEBUG or settings.FORCE_S3_SECURE:
             if self.media_type == 'audio':
-                storage = AudioS3Storage(bucket_name=self.audio_bucket_name)
+                storage = AudioS3Storage(bucket=self.audio_bucket_name)
             else:
-                storage = VideoS3Storage(bucket_name=self.video_bucket_name)
+                storage = VideoS3Storage(bucket=self.video_bucket_name)
             return storage.url(self.sd_video_file.name, response_headers=response_headers)
         return self.sd_video_file.url
 

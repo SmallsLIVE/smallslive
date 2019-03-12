@@ -5,6 +5,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Layout, Field, LayoutObject, TEMPLATE_PACK
 from django import forms
 from django.conf import settings
+from django.core.files.base import ContentFile
 from django.template import Context
 from django.template.loader import render_to_string
 from extra_views import InlineFormSet
@@ -12,7 +13,8 @@ import floppyforms
 from haystack.forms import SearchForm
 from oscar.apps.catalogue.models import ProductImage
 from multimedia.models import ImageMediaFile
-from .models import EventSet, Event, GigPlayed, Comment
+from multimedia.s3_storages import ImageS3Storage
+from .models import EventSet, Event, GigPlayed, Comment, CustomImageField
 
 from utils.widgets import ImageCropWidget
 
@@ -179,7 +181,20 @@ class EventAddForm(forms.ModelForm):
 
         image = ImageMediaFile.objects.filter(pk=self.cleaned_data['image_id']).first()
         if image:
-            instance.photo = image.photo
+            new_image = ContentFile(image.photo.read())
+            new_image.name = instance.photo.name
+            # Provide custom connection and bucket
+            # TODO: organize code
+            params = {}
+            if instance.venue.name == 'Mezzrow':
+                params['access_key'] = settings.AWS_ACCESS_KEY_ID_MEZZROW
+                params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_MEZZROW
+                params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
+
+            print params
+            instance.photo.storage = ImageS3Storage(**params)
+            instance.photo.save(new_image.name, new_image, save=False)
+
         if commit:
             instance.save()
 

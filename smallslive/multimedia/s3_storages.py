@@ -28,16 +28,16 @@ class ProtectedS3Storage(S3BotoStorage):
 class AudioS3Storage(ProtectedS3Storage):
     def __init__(self, *args, **kwargs):
 
-        bucket_name = kwargs.get('bucket_name', 'smallslivemp3')
-        kwargs['bucket'] = bucket_name
+        bucket = kwargs.get('bucket', 'smallslivemp3')
+        kwargs['bucket'] = bucket
         super(AudioS3Storage, self).__init__(*args, **kwargs)
 
 
 class VideoS3Storage(ProtectedS3Storage):
     def __init__(self, *args, **kwargs):
 
-        bucket_name = kwargs.get('bucket_name', 'smallslivevid')
-        kwargs['bucket'] = bucket_name
+        bucket = kwargs.get('bucket', 'smallslivevid')
+        kwargs['bucket'] = bucket
         super(VideoS3Storage, self).__init__(*args, **kwargs)
 
 
@@ -60,13 +60,17 @@ class ImageS3Storage(ProtectedS3Storage):
 
     def __init__(self, *args, **kwargs):
 
-        bucket_name = kwargs.get('bucket_name', 'smallslivevid')
-        kwargs['bucket'] = bucket_name
+        bucket = kwargs.get('bucket', 'smallslivestatic')
+        kwargs['bucket'] = bucket
+
         super(ImageS3Storage, self).__init__(*args, **kwargs)
 
-    def url(self, name, bucket_name='smallslivestatic'):
+    #def url(self, name, bucket='smallslivestatic'):
 
-        self.bucket_name = bucket_name
-        self._bucket = self._get_or_create_bucket(self.bucket_name)
+    #    print  dir(self)
+    #    print '*****************'
+    #    print 'ImageS3Storage.url: ', bucket
 
-        return super(ImageS3Storage, self).url(name)
+    #    self._bucket = self._get_or_create_bucket(bucket)
+
+    #    return super(ImageS3Storage, self).url(name)
