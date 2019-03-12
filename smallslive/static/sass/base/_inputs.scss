@@ -29,8 +29,6 @@
   &:disabled {
     color: $smallslive;
     cursor: pointer;
-
-    border-color: $smallslive;
   }
 }
 
@@ -168,6 +166,7 @@ a {
   }
 
   &:not(.button-row-no-hover) {
+
     p,
     button {
       &:hover:enabled {
@@ -182,6 +181,7 @@ a {
   }
 
   &:not(.button-row-big) {
+
     button,
     p {
       @include button1;
@@ -189,6 +189,7 @@ a {
   }
 
   &.button-row-big {
+
     button,
     p,
     input {
@@ -215,9 +216,10 @@ a {
   }
 
   &.button-row-margin {
-    & > button,
-    & > a,
-    & > p {
+
+    &>button,
+    &>a,
+    &>p {
       margin: 0 10px;
 
       &:first-child {

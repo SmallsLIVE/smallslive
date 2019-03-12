@@ -41,7 +41,7 @@
         <a class="artist-link " href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }} {{ artist.last_name }} / {{ artist.instruments.first }}</a><br>
       {% endfor %}
       <br>
-      {% if child_product %}
+      {% if child_product and is_full == "false" %}
         {% purchase_info_for_product request child_product as session %}
         <form id="add_to_basket_form" action="{% url 'basket:add' pk=child_product.pk  %}" method="post" class="add-to-basket">
           {% if session.availability.is_available_to_buy %}

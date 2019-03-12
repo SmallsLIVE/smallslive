@@ -155,8 +155,6 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
         if self.object.get_product_class().slug == 'album':
             album_product = Product.objects.filter(pk=self.object.pk ).first()
             ctx['album_product'] = album_product
-            if self.object.pk in self.album_list:
-                ctx['is_full'] = "full_album"
             track_album = next((item for item in self.album_list if item['parent'] == self.object), None)
             ctx['bought_tracks'] = None
             if track_album:
@@ -167,8 +165,10 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
                 'digital-album'
             ]).first()
             
-            if variant.product_class.slug == 'digital-album' and variant.pk == 1 :
-                print variant.pk
+            if variant.product_class.slug == 'digital-album':
+                for album in self.album_list:
+                    if self.object.pk == album["parent"].pk:
+                        ctx['is_full'] = "full_album"
             ctx['child_product'] = variant
 
         # Clean basket
