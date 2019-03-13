@@ -482,6 +482,7 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
             if ticket_form.is_valid():
                 if ticket_form.cleaned_data.get('form_enabled'):
                     ticket_form.save(event_set=event_set)
+
         return response
 
     # TODO: remove duplicate code

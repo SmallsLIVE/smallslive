@@ -2,8 +2,9 @@ import pytz
 from django.db.models import Count, Max, Q, Sum
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta, get_default_timezone
-from django.utils import timezone
+from django.utils import six, timezone
 from django.conf import settings
+from django.core.files.base import File
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property
@@ -200,13 +201,69 @@ class EventQuerySet(models.QuerySet):
 
 class CustomImageFieldFile(models.fields.files.ImageFieldFile):
 
-    def get_url(self, bucket_name):
-        return self.storage.url(self.name, bucket_name)
+    def get_url(self):
+        return self.storage.url(self.name)
+
+
+class CustomFileDescriptor(models.fields.files.FileDescriptor):
+
+    def __get__(self, instance=None, owner=None):
+
+
+
+        # Django code
+        if instance is None:
+            raise AttributeError(
+                "The '%s' attribute can only be accessed from %s instances."
+                % (self.field.name, owner.__name__))
+
+        self.field.storage = get_event_media_storage(instance)
+
+        file = instance.__dict__[self.field.name]
+
+        # Make sure to transform storage to a Storage instance.
+        if callable(self.field.storage):
+            self.field.storage = self.field.storage(instance)
+
+        # Copied from FileDescriptor
+        if self.field.name in instance.__dict__:
+            file = instance.__dict__[self.field.name]
+        else:
+            instance.refresh_from_db(fields=[self.field.name])
+            file = getattr(instance, self.field.name)
+
+        if isinstance(file, six.string_types) or file is None:
+            attr = self.field.attr_class(instance, self.field, file)
+            instance.__dict__[self.field.name] = attr
+        elif isinstance(file, File) and not isinstance(file, models.fields.files.FieldFile):
+            file_copy = self.field.attr_class(instance, self.field, file.name)
+            file_copy.file = file
+            file_copy._committed = False
+            instance.__dict__[self.field.name] = file_copy
+        elif isinstance(file, models.fields.files.FieldFile) and not hasattr(file, 'field'):
+
+            file.instance = instance
+            file.field = self.field
+            file.storage = self.field.storage
+
+        return instance.__dict__[self.field.name]
 
 
 class CustomImageField(models.ImageField):
 
     attr_class = CustomImageFieldFile
+    descriptor_class = CustomFileDescriptor
+
+
+def get_event_media_storage(instance):
+
+    params = {}
+    if instance.venue.name == 'Mezzrow':
+        params['access_key'] = settings.AWS_ACCESS_KEY_ID_MEZZROW
+        params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_MEZZROW
+        params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
+
+    return ImageS3Storage(**params)
 
 
 class Event(TimeStampedModel):
@@ -225,7 +282,7 @@ class Event(TimeStampedModel):
     link = models.CharField(max_length=255, blank=True)
     active = models.BooleanField(default=False)
     date_freeform = models.TextField(blank=True)
-    photo = CustomImageField(upload_to='event_images', storage=ImageS3Storage(), max_length=150, blank=True)
+    photo = CustomImageField(upload_to='event_images', storage=get_event_media_storage, max_length=150, blank=True)
     cropping = ImageRatioField('photo', '600x360', help_text="Enable cropping", allow_fullsize=True)
     performers = models.ManyToManyField('artists.Artist', through='GigPlayed', related_name='events')
     last_modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True, null=True)
@@ -272,6 +329,7 @@ class Event(TimeStampedModel):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
+
         if not self.slug:
             self.slug = slugify(self.title)
         super(Event, self).save(force_insert, force_update, using, update_fields)
@@ -372,14 +430,8 @@ class Event(TimeStampedModel):
         return u"{0} {1}".format(self.title, self.subtitle)
 
     def get_photo_url(self):
-        """Mezzrow has different buckets. S3 storage is overriden and bucket name has to be passed"""
-        # TODO: store bucket name in Venue
-        if self.venue and self.venue.name == 'Mezzrow':
-            bucket_name = 'mezzrowmedia'
-        else:
-            bucket_name = 'smallslivestatic'
-
-        return self.photo.get_url(bucket_name)
+        """Mezzrow has different buckets. S3 storage is overridden and bucket name has to be passed"""
+        return self.photo.get_url()
 
     def performers_string(self, separator=", "):
         "Returns the comma-separated list of performers (including the leader) as a string"

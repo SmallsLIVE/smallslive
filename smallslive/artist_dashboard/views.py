@@ -140,8 +140,8 @@ class MyFutureEventsView(MyEventsView):
         queryset = artist.gigs_played.select_related('event').prefetch_related('event__sets').filter(
             event__start__gte=now
         )
-
         queryset = self.apply_filters(queryset)
+
         return queryset
 
     def get_context_data(self, **kwargs):
