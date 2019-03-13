@@ -63,10 +63,6 @@ class IndexView(checkout_views.IndexView):
                 sender=self, request=self.request, email=email)
 
             if form.is_new_account_checkout():
-                messages.info(
-                    self.request,
-                    ("Create your account and then you will be redirected "
-                      "back to the checkout process"))
                 self.success_url = "%s?next=%s&email=%s" % (
                     reverse('customer:register'),
                     reverse('checkout:shipping-address'),

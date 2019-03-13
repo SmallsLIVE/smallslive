@@ -74,6 +74,14 @@
                 </div>
             
             </div>
+        {% else %}
+
+            <div class="white-border-select hidden" id="dashboard-status-filter">
+                <select id="artist_archive_status_filter">
+                    <option value="all">All</option>
+                </select>
+            </div>
+
         {% endif %}
        
         <div id="artistEventsContainer" class="flex-row items-flex-stretch artist-events-container">
@@ -274,6 +282,7 @@
    
             var isLeader = $('#artist_archive_status_filter').val();
             if (isLeader !== 'all') {
+                console.log(isLeader)
                 params.leader_filter = isLeader === 'leader';
             }
 
