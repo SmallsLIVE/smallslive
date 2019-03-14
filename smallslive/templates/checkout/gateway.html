@@ -180,15 +180,21 @@
             }
 
         })
-        $("#id_register_username").val($("#id_username").val())
+        if ($("#id_username").val() != ""){
+            $("#id_register_username").val($("#id_username").val())
+        }
     });
+    var formAction = "{% url 'customer:register' %}"
+    var next = "{% url 'checkout:shipping-address' %}"
+    var registerId =  $("#id_username")
+    var userGatewayId = $("#id_username")
     $(document).on( "keyup", "#id_register_username", register_delegate)
-    function register_delegate(){
-        var formAction = "{% url 'customer:register' %}"
-        var next = "{% url 'checkout:shipping-address' %}"
-        $("#become_member_gateway form").attr('action', formAction + '?next=' + next + '&email=' + $(this).val());
-        console.log($(this).val())
+    $(document).on( "keyup", "#id_username", register_delegate)
 
+    function register_delegate(){
+        var emailTo = $(this)[0] != $("#id_username")[0] ? $("#id_username")[0] : $("#id_register_username")[0]
+        $(emailTo).val($(this).val())
+        $("#become_member_gateway form").attr('action', formAction + '?next=' + next + '&email=' + $(this).val());
     }
     
 </script>
