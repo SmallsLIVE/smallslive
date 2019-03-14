@@ -7,10 +7,6 @@ from allauth.account.utils import complete_signup
 class AccountRegistrationView(CoreAccountRegistrationView):
     def form_valid(self, form):
         user = form.save(self.request)
-        # if self.kwargs['plan_name'] == 'free':
-        #     verification_method = EmailVerificationMethod.MANDATORY
-        # else:
-        #     verification_method = EmailVerificationMethod.OPTIONAL
         verification_method = EmailVerificationMethod.OPTIONAL
         complete_signup(self.request, user, verification_method,
                         form.cleaned_data['redirect_url'])

@@ -62,7 +62,10 @@
                             {{ form.password }}
                             <div class="error" style="text-align: center;">
                                 {% for error in form.non_field_errors %}
-                                    <span class="accent-color error-block text4">{{ error }}</span>
+                                    <span class="accent-color text4">{{ error }}</span>
+                                {% endfor %}
+                                 {% for error in form.password.errors %}
+                                    <span class="forgot-password text4 accent-color">Password is required</span>
                                 {% endfor %}
                             </div>
                             <div class="flex-column items-center" style="width: 220px;     margin-top: 0;">
@@ -71,9 +74,7 @@
                                 Forgot Your Password?
                                 </a>
                             </div>
-                            {% for error in form.password.errors %}
-                                <span class="error-block">{{ error }}</span>
-                            {% endfor %}
+                           
                         </div>
                     </div>
                 </div>
@@ -110,12 +111,12 @@
                             </div>
                             <div class="control-group">
                                 <div class="controls">
-                                    <input name="first_name" id="id_register_first_name" max-length placeholder="Your first name" type="text" required>
+                                    <input name="first_name" id="id_register_first_name" max-length placeholder="First name" type="text" required>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <div class="controls">
-                                    <input name="last_name" id="id_register_last_name" max-length placeholder="Your last name" type="text" required>
+                                    <input name="last_name" id="id_register_last_name" max-length placeholder="Last name" type="text" required>
                                 </div>
                             </div>
                             <div class="control-group">
