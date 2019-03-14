@@ -1,13 +1,11 @@
 $banners-height: 38vh;
 
 .banners {
-
   @media (max-width: $screen-md-max) {
     display: none;
   }
   margin-bottom: 30px;
   width: 100%;
-
 
   #banner-container {
     display: none;
@@ -15,7 +13,6 @@ $banners-height: 38vh;
     overflow: hidden;
     height: 15.065vw;
 
-    
     .banner-border {
       height: 100%;
       width: 100%;
@@ -24,8 +21,6 @@ $banners-height: 38vh;
       border: none;
 
       padding: 1vh 2vw;
-
-     
 
       .banner-title-button {
         padding: 1px 1px;
@@ -79,7 +74,6 @@ $banners-height: 38vh;
     }
 
     &.supporter {
-
       .banner-border {
         padding-left: 1.5vw;
         padding-right: 1.5vw;
@@ -89,7 +83,6 @@ $banners-height: 38vh;
           width: 25.5%;
 
           #banner-title {
-
             padding-left: 1.7vw;
             padding-right: 1.7vw;
             padding-top: 1.7vw;
@@ -112,13 +105,11 @@ $banners-height: 38vh;
                 letter-spacing: 0.47vw;
                 white-space: nowrap;
               }
-
             }
           }
         }
 
         .learnmore-container {
-
           margin-top: 1.5vw;
           text-align: center;
           whites-pace: nowrap;
@@ -130,7 +121,7 @@ $banners-height: 38vh;
             padding: 0;
             padding-left: 1%;
             vertical-align: top;
-            width: 50%
+            width: 50%;
           }
           .banner-learnmore-info {
             display: inline-block;
@@ -176,23 +167,23 @@ $banners-height: 38vh;
       #banner-live-box {
         margin-right: 0.94%;
       }
-
     }
   }
 
   &.mobile {
-    & + * + .event-stripe{
-      margin-top:0;
-      & > .live{
-        margin-top:0;
+    & + * + .event-stripe {
+      margin-top: 0;
+      & > .live {
+        margin-top: 0;
       }
     }
     margin-bottom: 0px;
     background-size: cover;
-    .slick-dots{
-      bottom:0;
-      li{
-        margin: 0 2.35px;}
+    .slick-dots {
+      bottom: 0;
+      li {
+        margin: 0 2.35px;
+      }
     }
     .slick-dots li button:before {
       font-size: 20px;
@@ -215,55 +206,52 @@ $banners-height: 38vh;
 
     .box {
       .banner-learnmore {
-        margin-top: 10px;}
+        margin-top: 10px;
+      }
       .banner-text-container {
-        .content{
+        .content {
           @include reen-kufi-normal;
         }
       }
       // .banner-text-container{
 
       // }
-      &.flex-column{
+      &.flex-column {
         display: flex;
-        height: 65vw;
+        height: 55vw;
         justify-content: center;
         padding: 2.6vw 0;
-
       }
       display: inline-block;
       filter: brightness(1.85);
-      font-family: 'Oswald', sans-serif;
+      font-family: "Oswald", sans-serif;
       justify-content: space-between;
-      
+
       margin-bottom: 40px;
-      vertical-align:top;
+      vertical-align: top;
       -webkit-filter: brightness(1.85);
       width: 100vw;
-      filter:none;
+      filter: none;
       &.archive {
-        background-image: url("/static/image/banners/archive_mobile_banner.jpg"); 
+        background-image: url("/static/image/banners/archive_mobile_banner.jpg");
         background-size: 100% 100%;
-
       }
 
       &.live {
-        background-image: url("/static/image/banners/live_mobile_banner.jpg"); 
+        background-image: url("/static/image/banners/live_mobile_banner.jpg");
         background-size: 100% 100%;
-
       }
 
       &.mission {
-        background-image: url("/static/image/banners/mission_mobile_banner.jpg"); 
+        background-image: url("/static/image/banners/mission_mobile_banner.jpg");
         background-size: 100% 100%;
-
       }
-      &.supporting{
-        background-image: url("/static/image/banners/supporter_mobile_banner.jpg"); 
+      &.supporting {
+        background-image: url("/static/image/banners/supporter_mobile_banner.jpg");
         background-size: 100% 100%;
         padding: 6.2vw 0;
         margin-bottom: 15px;
-        .text9{
+        .text9 {
           font-size: 3.84vw;
           text-align: justify;
         }
@@ -271,15 +259,16 @@ $banners-height: 38vh;
           padding-top: 3.1vw;
           display: flex;
           justify-content: space-evenly;
-          button, a{
+          button,
+          a {
             color: black;
             padding: 2vw 5vw;
           }
         }
-        .title7{
+        .title7 {
           font-size: 4.94vw;
           line-height: 1.68em;
-          .bold{
+          .bold {
             font-weight: 700;
           }
         }
@@ -287,7 +276,7 @@ $banners-height: 38vh;
 
       p.title {
         font-weight: 600;
-        font-size: 10.5vw;
+        font-size: 8.5vw;
         letter-spacing: 0;
         margin-top: 3px;
         text-transform: uppercase;
@@ -295,7 +284,7 @@ $banners-height: 38vh;
       }
 
       p.content {
-        font-size: 3.5vw;
+        font-size: 3vw;
         margin: 0 auto;
         text-align: left;
         white-space: initial;
@@ -305,7 +294,8 @@ $banners-height: 38vh;
         padding: 0 5vw;
       }
 
-      button, a {
+      button,
+      a {
         font-size: 3.5vw;
         border: 3px solid white;
         border-radius: 50px;
@@ -317,7 +307,6 @@ $banners-height: 38vh;
         letter-spacing: 3px;
       }
     }
-
   }
 }
 
@@ -330,7 +319,6 @@ $banners-height: 38vh;
 }
 
 .fake-image {
-
   width: 33vw;
 
   &:hover {
@@ -350,6 +338,3 @@ $banners-height: 38vh;
     margin-right: 0.5vw;
   }
 }
-
-
-
