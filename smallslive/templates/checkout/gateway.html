@@ -27,7 +27,6 @@
                 <div class='white-border-button gateway-option' data-gateway-type="new">Become a member</div>
             </div>
            
-       
         
             <div class="control-group">
                 <div class="controls">
@@ -51,7 +50,8 @@
                     </div>
                 </div>
             </div>
-            
+
+    
             <div class="control-group {% if form.password.errors %}error{% endif %}">
                 {{ form.options.errors }}
                 <div class="controls">
@@ -81,11 +81,13 @@
 
             <div class="control-group">
                 <div class="controls">
-                    <div class="radio">
-                    {{ form.options.1 }}
+                    <div class="radio custom-form">
+                        {{ form.options.1 }}
                     </div>
                 </div>
             </div>
+            
+           
 
             <div class="form-actions" data-type='new'>
                 <div class="row-fluid">
@@ -95,6 +97,49 @@
                 </div>
             </div>
         </form>
+        <div class="control-group" id="become_member_gateway">
+            <form action="." method="post" class="form-stacked well">
+                {% csrf_token %}
+                <div class="controls">
+                    <div class="custom-form">
+                        <div class="form-inline form-group" data-type='new'>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input name="email" id="id_register_username" max-length placeholder="Email address" type="text" required>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input name="first_name" id="id_register_first_name" max-length placeholder="Your first name" type="text" required>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input name="last_name" id="id_register_last_name" max-length placeholder="Your last name" type="text" required>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input name="password1" id="register_password1" max-length placeholder="Password" type="text" required>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="controls">
+                                    <input name="password2" id="register_password2" max-length placeholder="Confirm Password" type="text" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions" data-type='new'>
+                    <div class="row-fluid">
+                        <div class="span3">
+                            <button type="submit" class="btn btn-large btn-block  white-border-button" >{% trans "Register" %}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock content %}
@@ -134,6 +179,18 @@
             }
 
         })
+        $("#id_register_username").val($("#id_username").val())
     });
+    $(document).on( "keyup", "#id_register_username", register_delegate)
+    function register_delegate(){
+        var formAction = "{% url 'customer:register' %}"
+        var next = "{% url 'checkout:shipping-address' %}"
+        $("#become_member_gateway form").attr('action', formAction + '?next=' + next + '&email=' + $(this).val());
+        console.log($(this).val())
+
+    }
+    
 </script>
 {% endblock %}
+
+
