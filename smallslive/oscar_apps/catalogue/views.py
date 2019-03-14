@@ -86,18 +86,29 @@ class PurchasedProductsInfoMixin():
         if not self.request.user.is_authenticated():
             self.album_list = []
         else:
-            self.digital_album_list = Line.objects.select_related(
-                'product', 'stockrecord', 'product__event', 'product__album').filter(
-                product__product_class__slug='digital-album',
-                order__user=self.request.user).distinct('stockrecord')
-            self.physical_album_list = Line.objects.select_related(
-                'product', 'stockrecord', 'product__event', 'product__album').filter(
-                product__product_class__slug='physical-album',
-                order__user=self.request.user).distinct('stockrecord')
-            self.track_list = Line.objects.select_related(
-                'product', 'stockrecord', 'product__event', 'product__album').filter(
-                product__product_class__slug='track',
-                order__user=self.request.user).distinct('stockrecord')
+            if False:
+                self.digital_album_list = Line.objects.select_related(
+                    'product', 'stockrecord', 'product__event', 'product__album').filter(
+                    product__product_class__slug='digital-album').distinct('stockrecord')
+                self.physical_album_list = Line.objects.select_related(
+                    'product', 'stockrecord', 'product__event', 'product__album').filter(
+                    product__product_class__slug='physical-album').distinct('stockrecord')
+                self.track_list = Line.objects.select_related(
+                    'product', 'stockrecord', 'product__event', 'product__album').filter(
+                    product__product_class__slug='track').distinct('stockrecord')
+            else:
+                self.digital_album_list = Line.objects.select_related(
+                    'product', 'stockrecord', 'product__event', 'product__album').filter(
+                    product__product_class__slug='digital-album',
+                    order__user=self.request.user).distinct('stockrecord')
+                self.physical_album_list = Line.objects.select_related(
+                    'product', 'stockrecord', 'product__event', 'product__album').filter(
+                    product__product_class__slug='physical-album',
+                    order__user=self.request.user).distinct('stockrecord')
+                self.track_list = Line.objects.select_related(
+                    'product', 'stockrecord', 'product__event', 'product__album').filter(
+                    product__product_class__slug='track',
+                    order__user=self.request.user).distinct('stockrecord')
 
             self.album_list = []
             for album in list(self.digital_album_list) + list(self.physical_album_list):
