@@ -19,7 +19,7 @@
             A user with that e-mail address already exists. Please enter your password.
         </p>
     </section>
-        <form action="." method="post" class="form-stacked well">
+        <form action="." method="post" class="form-stacked well checkout-gateway">
             {% csrf_token %}
             <div class='flex-row' style='margin: 0 auto; justify-content: center'>
                 <div class='white-border-button gateway-option' data-gateway-type="anonymous">checkout as a guest</div>
@@ -97,8 +97,8 @@
                 </div>
             </div>
         </form>
-        <div class="control-group" id="become_member_gateway">
-            <form action="." method="post" class="form-stacked well">
+        <div class="control-group" id="become_member_gateway" style="display:none" >
+            <form action="." method="post" class="form-stacked well register-gateway">
                 {% csrf_token %}
                 <div class="controls">
                     <div class="custom-form">
@@ -162,9 +162,18 @@
         $($radioButton).prop("checked", true);
         $('.radio .form-group').hide()
         console.log($radioButton.val())
-        formGroup = $($radioButton).parents('label').siblings('.form-group')
-        if(formGroup){
-            formGroup.css("display","flex")
+        if($radioButton.val() === "new"){
+            $("#become_member_gateway").show()
+            $(".checkout-gateway .control-group.user").hide()
+            $(".checkout-gateway .form-actions").hide()
+        }else{
+            $("#become_member_gateway").hide()
+            $(".checkout-gateway .control-group.user").show()
+            $(".checkout-gateway .form-actions").show()
+            formGroup = $($radioButton).parents('label').siblings('.form-group')
+            if(formGroup){
+                formGroup.css("display","flex")
+            }
         }
 	});
     {% if form.username.errors %}
@@ -190,7 +199,6 @@
     var userGatewayId = $("#id_username")
     $(document).on( "keyup", "#id_register_username", register_delegate)
     $(document).on( "keyup", "#id_username", register_delegate)
-
     function register_delegate(){
         var emailTo = $(this)[0] != $("#id_username")[0] ? $("#id_username")[0] : $("#id_register_username")[0]
         $(emailTo).val($(this).val())
