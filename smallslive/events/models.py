@@ -202,7 +202,9 @@ class EventQuerySet(models.QuerySet):
 class CustomImageFieldFile(models.fields.files.ImageFieldFile):
 
     def get_url(self):
-        return self.storage.url(self.name)
+        url = self.storage.url(self.name)
+        url = url.split('?')[0]
+        return url
 
 
 class CustomFileDescriptor(models.fields.files.FileDescriptor):
