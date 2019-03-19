@@ -195,7 +195,13 @@ function loadAlbum(productId, bought_tracks, album_type){
         }else{
             $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")
             $(".active-track").removeClass("active-track")
-            $(trackInfo).addClass("active-track")
+            let tracknum = $(audioPlayer).data('track')
+            console.log(tracknum)
+            console.log($(trackInfo))
+            $(trackInfo).filter(function() { 
+                return $(this).data("track") == tracknum 
+            }).addClass("active-track")
+
             play = true
             $(lastPlayerContainerButton).addClass("myplay-btn")
             $(lastPlayerContainerButton).removeClass("mypause-btn")
