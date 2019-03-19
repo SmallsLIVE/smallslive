@@ -211,3 +211,5 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
             '%s/detail-for-class-%s.html' % (
                 self.template_folder, self.object.get_product_class().slug),
             '%s/detail.html' % (self.template_folder)]
+
+

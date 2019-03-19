@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.functional import cached_property
 
 from oscar.apps.catalogue.abstract_models import AbstractProduct
-
+from users.models import SmallsUser
 
 
 class Product(AbstractProduct):
@@ -118,4 +118,22 @@ class ArtistProduct(models.Model):
         verbose_name_plural = ('Artist list')
 
 
+class UserCatalogue(models.Model):
+    user = models.ForeignKey(SmallsUser, related_name='catalogue_access')
+    has_full_catalogue_access = models.BooleanField(default=False)
+    
+    class Meta:
+        #abstract = True
+        verbose_name = ('Full access user')
+
+class UserCatalogueProduct(models.Model):
+    user = models.ForeignKey(SmallsUser, related_name='product_access')
+    product = models.ForeignKey(Product, related_name='access')
+    
+    class Meta:
+        #abstract = True
+        verbose_name = ('Product access user')
+
 from oscar.apps.catalogue.models import *  # noqa
+
+
