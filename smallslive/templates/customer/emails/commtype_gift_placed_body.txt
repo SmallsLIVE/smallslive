@@ -11,7 +11,7 @@ You have made a donation of {{ order.basket_total_incl_tax }} of which {{ order.
 
 You will receive access to The SmallsLIVE Archive for the remainder of the tax year. You have also chosen to receive a {{order.lines.first.title}} as a gift for your contribution.
 
-Your order number is {{ order_number }} and will be processed shortly.
+Your order number is {{ order }} and will be processed shortly.
 
 Your order contains:
 
@@ -27,7 +27,11 @@ Shipping address:
     {{ field }}
 {% endfor %}
 
+Thank you for your support,
+
 The SmallsLIVE Team
 
 {% endblock %}
 
+{% block footer %}
+{% endblock %}
