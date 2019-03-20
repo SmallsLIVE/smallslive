@@ -111,3 +111,4 @@ class SmallsUserAdmin(UserAdmin, HijackUserAdminMixin):
     ordering = ['email', 'last_login']
 
 admin.site.register(SmallsUser, SmallsUserAdmin)
+
