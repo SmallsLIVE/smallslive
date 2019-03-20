@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 
 from oscar.apps.catalogue.abstract_models import AbstractProduct
@@ -105,34 +106,39 @@ class Product(AbstractProduct):
             raise ValidationError(
                 _("A child product can't have options."))
 
+
 class ArtistProduct(models.Model):
-    artist = models.ForeignKey("artists.Artist", verbose_name=(""), on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, verbose_name=(""), on_delete=models.CASCADE)
+    artist = models.ForeignKey("artists.Artist", verbose_name="", on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, verbose_name="", on_delete=models.CASCADE)
     
     class Meta:
-        #abstract = True
+        # abstract = True
         app_label = 'catalogue'
         ordering = ['product', 'artist']
         unique_together = ('product', 'artist')
-        verbose_name = ('Artist')
-        verbose_name_plural = ('Artist list')
+        verbose_name = 'Artist'
+        verbose_name_plural = 'Artist list'
 
 
 class UserCatalogue(models.Model):
-    user = models.ForeignKey(SmallsUser, related_name='catalogue_access')
+
+    user = models.ForeignKey(SmallsUser, related_name='catalogue_access', unique=True)
     has_full_catalogue_access = models.BooleanField(default=False)
     
     class Meta:
-        #abstract = True
-        verbose_name = ('Full access user')
+        verbose_name = 'Full access user'
+
 
 class UserCatalogueProduct(models.Model):
+
     user = models.ForeignKey(SmallsUser, related_name='product_access')
     product = models.ForeignKey(Product, related_name='access')
     
     class Meta:
-        #abstract = True
-        verbose_name = ('Product access user')
+        verbose_name = 'Product access user'
+        unique_together = [
+            ['user', 'product']
+        ]
 
 from oscar.apps.catalogue.models import *  # noqa
 
