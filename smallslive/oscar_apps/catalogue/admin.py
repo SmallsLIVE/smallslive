@@ -38,5 +38,6 @@ class UserCatalogueProductAdmin(ModelAdminMixin, admin.ModelAdmin):
 
 @admin.register(UserCatalogue)
 class UserCatalogueAdmin(admin.ModelAdmin):
-
+    
     raw_id_fields = ['user']
+    list_display = ['user', 'has_full_catalogue_access']
