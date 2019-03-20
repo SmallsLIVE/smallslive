@@ -537,23 +537,6 @@ $(document).ready(function () {
       eventDateFrom = start;
     }
 
-
-    if ($('#period-filter').val() == "All Upcoming") {
-      eventDateTo = null;
-      eventDateFrom = new Date();
-    } else if ($('#period-filter').val() == "One Day") {
-      eventDateTo = new Date(start.getTime() + 1 * 24 * 60 * 60 * 1000);
-      eventDateFrom = start;
-    } else if ($('#period-filter').val() == "One Week") {
-      eventDateTo = new Date(start.getTime() + 7 * 24 * 60 * 60 * 1000);
-      eventDateFrom = start;
-    } else if ($('#period-filter').val() == "One Month") {
-      eventDateTo = new Date(start.getTime() + 31 * 24 * 60 * 60 * 1000);
-      eventDateFrom = start;
-    }
-
-
-
     var $filter = $(this);
     if ($filter.attr("id").indexOf("refine") > -1) {
       $("#search-date-picker-from-refine input").datepicker(
@@ -1051,6 +1034,26 @@ $(document).ready(function () {
       archivedEventPageNum = 1;
       var eventDateFrom = archivedEventDateFrom;
     }
+    var eventDateTo;
+    var periodFilterElement = $('#period-filter');
+    if (periodFilterElement) {
+      if (periodFilterElement.val() == "All Upcoming") {
+        eventDateTo = null;
+        eventDateFrom = new Date();
+      } else if (periodFilterElement.val() == "One Day") {
+        eventDateTo = new Date(eventDateFrom.getTime() + 1 * 24 * 60 * 60 * 1000);
+      } else if (periodFilterElement.val() == "One Week") {
+        eventDateTo = new Date(eventDateFrom.getTime() + 7 * 24 * 60 * 60 * 1000);
+      } else if (periodFilterElement.val() == "One Month") {
+        eventDateTo = new Date(eventDateFrom.getTime() + 31 * 24 * 60 * 60 * 1000);
+      }
+    } else {
+      eventDateTo = null;
+    }
+
+    $("#calendar-date-range .title2").html(
+      eventDateFrom.toLocaleDateString() + " - " + (eventDateTo ? eventDateTo.toLocaleDateString() : "")
+    );
     toggleDisplay(this);
     sendEventRequest(mode);
   });
