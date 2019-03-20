@@ -1,10 +1,9 @@
 from django.contrib import admin
 from django.utils.html import mark_safe
-from oscar.core.loading import get_model
 from oscar.apps.catalogue import admin as oscar_admin
-
-from utils.admin import ModelAdminMixin
 from oscar_apps.catalogue.models import UserCatalogue, UserCatalogueProduct
+from oscar.core.loading import get_model
+from utils.admin import ModelAdminMixin
 
 
 # Override ProductAdmin
