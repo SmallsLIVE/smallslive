@@ -173,7 +173,6 @@ $(window).resize(function () {
   }
   let pages = rightValue / 6 / 4;
   pages -= 1;
-  console.log(pages);
   $("#artists").animate({
       left: -88 * pages + "vw"
     },
@@ -355,7 +354,6 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
           } else {
             $eventSubheader.text("1-24");
           }
-          console.log(data.showingResults);
           $eventSubheader.data("max-number", data.showingResults);
           $eventSubheader.data("left-number", 1);
           $eventSubheader.data("right-number", 24);
@@ -723,7 +721,6 @@ $(document).ready(function () {
     if (datePickerFromDate.getFullYear() != lastYearSelected.getFullYear()) {
       lastYearSelected = datePickerFromDate;
       lastYearSelected = new Date(lastYearSelected);
-      console.log(lastYearSelected);
     }
     if (!datePickerToDate || datePickerFromDate > datePickerToDate) {
       datePickerToDate = datePickerFromDate;
@@ -1047,6 +1044,7 @@ $(document).ready(function () {
       } else if (periodFilterElement.val() == "One Month") {
         eventDateTo = new Date(eventDateFrom.getTime() + 31 * 24 * 60 * 60 * 1000);
       }
+      upcomingEventDateTo = eventDateTo
     } else {
       eventDateTo = null;
     }
