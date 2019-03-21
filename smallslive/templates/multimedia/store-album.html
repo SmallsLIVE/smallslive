@@ -79,6 +79,11 @@ el = document.querySelector(".track-container");
         lastPlayer = audioPlayer
     });
     function togglePlayer(playerContainer, play){
+        if (!audioPlayer) {
+            audioPlayer = $(bigContainer).find(".audio audio[data-track='0']")[0]
+            $(trackInfo).first().addClass("active-track")
+
+        }
         if(play){
             audioPlayer.play()
              $("#" + $(playerContainer).data("track"))
@@ -89,7 +94,7 @@ el = document.querySelector(".track-container");
              $("#" + $(playerContainer).data("track"))
             .children(".progress-bar")
             .addClass("paused");
-            
+            $(".active-track").removeClass("active-track") 
         }
     }
     $(document).on('click', ".purchases-player-button", function(){
@@ -97,7 +102,7 @@ el = document.querySelector(".track-container");
         playerContainer = $(bigContainer).find(".player-container")[0]
         playerContainerButton = $(playerContainer).find(".purchases-player-button")[0]
         trackNumber = $(playerContainer).data("track")
-        trackInfo = $(bigContainer).find(".track-info[data-track='" + trackNumber +  "']")[0]
+        trackInfo = $(bigContainer).find(".track-info:not(.disabled)");
         audioPlayer = $(bigContainer).find(".audio audio[data-track='" + trackNumber +  "']")[0]
         lastPlayerContainerButton = $(lastPlayerContainer).find(".purchases-player-button ")
         if( $(trackInfo).hasClass("active-track")){
@@ -109,7 +114,10 @@ el = document.querySelector(".track-container");
         }else{
             $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")
             $(".active-track").removeClass("active-track")
-            $(trackInfo).addClass("active-track")
+            let tracknum = $(audioPlayer).data('track')
+            $(trackInfo).filter(function() { 
+                return $(this).data("track") == tracknum 
+            }).addClass("active-track")
             play = true
             $(lastPlayerContainerButton).addClass("myplay-btn")
             $(lastPlayerContainerButton).removeClass("mypause-btn")
@@ -160,7 +168,7 @@ el = document.querySelector(".track-container");
     function changeProgress(progress, player){
         newProgress = Math.floor(player.duration) * progress / 100
         player.currentTime = newProgress;
-        updateProgressTrack(player, newProgress)
+        updateProgressTrack('player', newProgress)
     }
 
     $(".event-display").on("click", function(){
