@@ -974,18 +974,18 @@ body.headers-1 {
         padding-top: 20px;
       }
     }
-  }
 
-  .home.admin-header {
-    &.headers-3 {
+    &.admin-header {
       div.artist-search-profile-container {
         &.pad-content {
           transition: padding-top 0.5s;
-          padding-top: 60px;
+          padding-top: 54px;
         }
       }
     }
   }
+
+
 
   &.headers-4 {
     div.artist-search-profile-container {

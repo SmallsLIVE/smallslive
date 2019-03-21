@@ -14,7 +14,8 @@ admin.site.unregister(Product)
 
 @admin.register(Product)
 class OverrideProductAdmin(oscar_admin.ProductAdmin):
-
+    
+    search_fields = ['title']
     list_filter = ['product_class']
 
 
