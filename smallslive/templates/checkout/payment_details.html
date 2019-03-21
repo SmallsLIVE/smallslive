@@ -39,7 +39,7 @@
                 id="billing-option" value="different-address">
           {% endif %}
         </div>
-        <div class="store__form__group clearfix {% if shipping_address %} hidden {% endif %}" id="custom-billing-address">
+        <div class="store__form__group clearfix {% if shipping_address %} hidden {% endif %}" style="padding: 55px 20px 25px;" id="custom-billing-address">
           <div class="col-xs-12 col-sm-6">
             <input type="text" id="first_name" name="first_name"
                   class="store__form__input" {% if billing_address_form.first_name.value %}value="{{ billing_address_form.first_name.value }}"{% endif %}
