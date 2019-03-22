@@ -42,3 +42,4 @@ class UserCatalogueAdmin(admin.ModelAdmin):
     
     raw_id_fields = ['user']
     list_display = ['user', 'has_full_catalogue_access']
+    search_fields = ['user__first_name',  'user__last_name', 'user__email']

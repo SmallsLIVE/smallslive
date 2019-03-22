@@ -90,20 +90,21 @@ class PurchasedProductsInfoMixin():
             if UserCatalogue.objects.filter(user=self.request.user).first().has_full_catalogue_access:
                 self.digital_album_list = Product.objects.filter(product_class__slug='digital-album')
                 self.physical_album_list = Product.objects.filter(product_class__slug='physical-album')
+                self.track_list = []
             else:
-                self.digital_album_list = UserCatalogueProduct.objects.filter(product__product_class__slug='digital-album',user=self.request.user)
-                self.physical_album_list = UserCatalogueProduct.objects.filter(product__product_class__slug='physical-album',user=self.request.user)
+                self.digital_album_list = Product.objects.filter(product_class__slug='digital-album',access__user=self.request.user)
+                self.physical_album_list = Product.objects.filter(product_class__slug='physical-album',access__user=self.request.user)
                 self.track_list = UserCatalogueProduct.objects.filter(product__product_class__slug='track',user=self.request.user)
 
             self.album_list = []
             for album in list(self.digital_album_list) + list(self.physical_album_list):
                 album_info = {
-                    'parent': album.product.parent,
-                    'bought_tracks': [track.pk for track in album.product.parent.tracks.all()],
+                    'parent': album.parent,
+                    'bought_tracks': [track.pk for track in album.parent.tracks.all()],
                     'album_type': 'full_album',
                 }
                 # Avoid duplicates
-                album = [a for a in self.album_list if a['parent'] == album.product.parent]
+                album = [a for a in self.album_list if a['parent'] == album.parent]
                 if not album:
                     self.album_list.append(album_info)
 
