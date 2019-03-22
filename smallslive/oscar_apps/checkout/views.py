@@ -19,6 +19,7 @@ from oscar.apps.payment.exceptions import RedirectRequired, UnableToTakePayment,
 from oscar.apps.payment.models import SourceType, Source
 from oscar.core.loading import get_class
 from oscar_apps.order.models import Order
+from oscar_apps.catalogue.models import UserCatalogue, UserCatalogueProduct
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.mixins import PayPalMixin, StripeMixin
 from subscriptions.models import Donation
@@ -523,6 +524,16 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             response = self.handle_order_placement(
                 order_number, user, basket, shipping_address, shipping_method,
                 shipping_charge, billing_address, order_total, **order_kwargs)
+            for line in basket_lines:
+                print line.product.product_class.slug
+                if line.product.product_class.slug == "full-access":
+                    if UserCatalogue.objects.filter(user=self.request.user).first():
+                        UserCatalogue.objects.filter(user=self.request.user).update(has_full_catalogue_access=True)
+                    else:
+                        UserCatalogue.objects.get_or_create(user=self.request.user, has_full_catalogue_access=True)
+                if line.product.product_class.slug in ["physical-album", "digital-album", "track"]:
+                    UserCatalogueProduct.objects.get_or_create(user=self.request.user, product=line.product)
+
             return response
         except UnableToPlaceOrder as e:
             # It's possible that something will go wrong while trying to
