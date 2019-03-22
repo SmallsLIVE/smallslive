@@ -86,8 +86,8 @@ class PurchasedProductsInfoMixin():
         if not self.request.user.is_authenticated():
             self.album_list = []
         else:
-            
-            if UserCatalogue.objects.filter(user=self.request.user).first().has_full_catalogue_access:
+            catalogue_access = UserCatalogue.objects.filter(user=self.request.user).first()
+            if catalogue_access and  catalogue_access.has_full_catalogue_access:
                 self.digital_album_list = Product.objects.filter(product_class__slug='digital-album')
                 self.physical_album_list = Product.objects.filter(product_class__slug='physical-album')
                 self.track_list = []

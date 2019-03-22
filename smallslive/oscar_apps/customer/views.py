@@ -12,4 +12,5 @@ class AccountRegistrationView(CoreAccountRegistrationView):
                         form.cleaned_data['redirect_url'])
         return redirect(form.cleaned_data['redirect_url'])
 
-    pass
+    def form_invalid(self, form):
+        assert False,form.errors
