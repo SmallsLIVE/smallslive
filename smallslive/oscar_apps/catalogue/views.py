@@ -161,7 +161,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
                 'digital-album'
             ]).first()
             
-            if variant.product_class.slug == 'digital-album':
+            if variant and variant.product_class.slug == 'digital-album':
                 for album in self.album_list:
                     if self.object.pk == album["parent"].pk:
                         ctx['is_full'] = "full_album"
