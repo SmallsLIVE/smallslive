@@ -28,7 +28,7 @@ class UserCatalogueProductAdmin(ModelAdminMixin, admin.ModelAdmin):
     list_display_links = ['id']
 
     def product_column(self, obj):
-        return mark_safe('<b>{1}</b> - {0}'.format(obj.product.product_class.name, obj.product.title))
+        return mark_safe('<b>{1}</b> - {0}'.format(obj.product.product_class.name, obj.product.get_title()))
     product_column.short_description = 'Product'
     product_column.strip_tags = False
 

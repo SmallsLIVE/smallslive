@@ -262,7 +262,7 @@ class NewMyDownloadsView(LoginRequiredMixin, ListView, PurchasedProductsInfoMixi
         context = super(NewMyDownloadsView, self).get_context_data(**kwargs)
         self.get_purchased_products()
         context['album_list'] = self.album_list
- 
+        print context['album_list']
         return context
 
 new_downloads = NewMyDownloadsView.as_view()
@@ -290,6 +290,7 @@ class AlbumView(TemplateView):
         customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
         if customer_detail:
             context['active_card'] = customer_detail.active_card
+        print context['bought_tracks']
 
         return context
 

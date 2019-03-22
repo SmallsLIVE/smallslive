@@ -87,13 +87,13 @@ class PurchasedProductsInfoMixin():
             self.album_list = []
         else:
             
-            if UserCatalogue.objects.filter(user=self.request.user).has_full_catalogue_access:
+            if UserCatalogue.objects.filter(user=self.request.user).first().has_full_catalogue_access:
                 self.digital_album_list = Product.objects.filter(product_class__slug='digital-album')
                 self.physical_album_list = Product.objects.filter(product_class__slug='physical-album')
             else:
-                self.digital_album_list = Product.objects.filter(product__product_class__slug='digital-album',user=self.request.user)
-                self.physical_album_list = Product.objects.filter(product__product_class__slug='physical-album',user=self.request.user)
-                self.track_list = Product.objects.filter(product__product_class__slug='track',user=self.request.user)
+                self.digital_album_list = UserCatalogueProduct.objects.filter(product__product_class__slug='digital-album',user=self.request.user)
+                self.physical_album_list = UserCatalogueProduct.objects.filter(product__product_class__slug='physical-album',user=self.request.user)
+                self.track_list = UserCatalogueProduct.objects.filter(product__product_class__slug='track',user=self.request.user)
 
             self.album_list = []
             for album in list(self.digital_album_list) + list(self.physical_album_list):
