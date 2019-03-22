@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.shortcuts import render
 from oscar.apps.catalogue import views as catalogue_views
-from oscar_apps.catalogue.models import Product
+from oscar_apps.catalogue.models import Product, UserCatalogue, UserCatalogueProduct
 from oscar.apps.catalogue.views import ProductCategoryView
 from oscar.apps.order.models import Line
 from django.db.models import F, Q, Max
@@ -86,29 +86,14 @@ class PurchasedProductsInfoMixin():
         if not self.request.user.is_authenticated():
             self.album_list = []
         else:
-            if False:
-                self.digital_album_list = Line.objects.select_related(
-                    'product', 'stockrecord', 'product__event', 'product__album').filter(
-                    product__product_class__slug='digital-album').distinct('stockrecord')
-                self.physical_album_list = Line.objects.select_related(
-                    'product', 'stockrecord', 'product__event', 'product__album').filter(
-                    product__product_class__slug='physical-album').distinct('stockrecord')
-                self.track_list = Line.objects.select_related(
-                    'product', 'stockrecord', 'product__event', 'product__album').filter(
-                    product__product_class__slug='track').distinct('stockrecord')
+            
+            if UserCatalogue.objects.filter(user=self.request.user).has_full_catalogue_access:
+                self.digital_album_list = Product.objects.filter(product_class__slug='digital-album')
+                self.physical_album_list = Product.objects.filter(product_class__slug='physical-album')
             else:
-                self.digital_album_list = Line.objects.select_related(
-                    'product', 'stockrecord', 'product__event', 'product__album').filter(
-                    product__product_class__slug='digital-album',
-                    order__user=self.request.user).distinct('stockrecord')
-                self.physical_album_list = Line.objects.select_related(
-                    'product', 'stockrecord', 'product__event', 'product__album').filter(
-                    product__product_class__slug='physical-album',
-                    order__user=self.request.user).distinct('stockrecord')
-                self.track_list = Line.objects.select_related(
-                    'product', 'stockrecord', 'product__event', 'product__album').filter(
-                    product__product_class__slug='track',
-                    order__user=self.request.user).distinct('stockrecord')
+                self.digital_album_list = Product.objects.filter(product__product_class__slug='digital-album',user=self.request.user)
+                self.physical_album_list = Product.objects.filter(product__product_class__slug='physical-album',user=self.request.user)
+                self.track_list = Product.objects.filter(product__product_class__slug='track',user=self.request.user)
 
             self.album_list = []
             for album in list(self.digital_album_list) + list(self.physical_album_list):
