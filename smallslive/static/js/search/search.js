@@ -1070,6 +1070,15 @@ $(document).on(
   "click",
   ".artist-search-profile-container.pad-content .close-button",
   function () {
+    if (viewPortLength("width") < 1024) {
+      $(".search-tabs div[data-toggle-tab-target='archived-shows']").removeClass(
+        "active"
+      );
+      $(".search-tabs div[data-toggle-tab-target='musicians']").addClass(
+        "active"
+      );
+    }
+
     if (!artistInstrument) {
       searchTerm = "";
       $(".instrument[data-instrument='']").click();
