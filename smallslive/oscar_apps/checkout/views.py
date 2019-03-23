@@ -525,8 +525,10 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                 order_number, user, basket, shipping_address, shipping_method,
                 shipping_charge, billing_address, order_total, **order_kwargs)
             for line in basket_lines:
-                print line.product.product_class.slug
-                if line.product.product_class.slug == "full-access":
+                category_list = []
+                for category in line.product.get_categories().all():
+                    category_list.append(category.name)
+                if 'Full Access' in category_list or line.product.product_class.slug == "full-access":
                     if UserCatalogue.objects.filter(user=self.request.user).first():
                         UserCatalogue.objects.filter(user=self.request.user).update(has_full_catalogue_access=True)
                     else:
