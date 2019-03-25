@@ -1,4 +1,5 @@
 from oscar.apps.customer.views import AccountRegistrationView as CoreAccountRegistrationView
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from allauth.account.app_settings import EmailVerificationMethod
 from allauth.account.utils import complete_signup
@@ -13,4 +14,7 @@ class AccountRegistrationView(CoreAccountRegistrationView):
         return redirect(form.cleaned_data['redirect_url'])
 
     def form_invalid(self, form):
-        assert False,form.errors
+        if self.request.is_ajax():
+            return JsonResponse(form.errors, status=400)
+        else:
+            return response

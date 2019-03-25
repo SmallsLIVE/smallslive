@@ -99,6 +99,9 @@
             </div>
         </form>
         <div class="control-group" id="become_member_gateway" style="display:none" >
+            <p class="text4 accent-color" id="existing-member" style="display:none; text-align:center">
+                A user with that e-mail address already exists. Please enter your password.
+            </p>
             <form action="." method="post" class="form-stacked well register-gateway">
                 {% csrf_token %}
                 <div class="controls">
@@ -205,6 +208,20 @@
         $(emailTo).val($(this).val())
         $("#become_member_gateway form").attr('action', formAction + '?next=' + next + '&email=' + $(this).val());
     }
+    $( "#become_member_gateway form" ).on( "submit", function( event ) {
+        event.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr("method"),
+            data : $( this ).serialize(),
+            success: function(data) {
+                window.location = data.url
+            },
+            error: function(err) {
+                $("#existing-member").show()
+            }
+        });
+    });
     
 </script>
 {% endblock %}
