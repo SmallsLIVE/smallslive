@@ -168,6 +168,7 @@ $(window).resize(function () {
     if ($(".artist-search-profile-container").css("display") != "block") {
       $("#musicianContent").css("display", "block");
       $(".search-tab-content").show();
+      $('[data-toggle-tab-group="search-results"][data-toggle-tab="upcoming-shows"]').hide();
       is_mobile = false;
     }
   }
@@ -800,9 +801,9 @@ $(document).ready(function () {
         searchTerm = "";
         apply = true;
         archivedEventPageNum = 1;
-        $(
-          '[data-toggle-tab-group="search-results"][data-toggle-tab-target]'
-        ).show();
+        $('[data-toggle-tab-group="search-results"][data-toggle-tab-target]').show();
+        $('[data-toggle-tab-group="search-results"][data-toggle-tab="archived-shows"]').show();
+        $('[data-toggle-tab-group="search-results"][data-toggle-tab="upcoming-shows"]').hide();
         if (viewPortLength("width") < 1024) {
           $('[data-toggle-tab-group="search-results"][data-toggle-tab]').hide();
         }
