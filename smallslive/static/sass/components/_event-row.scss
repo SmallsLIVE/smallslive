@@ -146,9 +146,10 @@ $event-row-padding: 3.5vw;
   background: white;
 
   .event-picture {
-    height: auto !important;
-    width: auto !important;
+    height: 500px !important;
+    width: 500px !important;
     max-width: 300px;
+    max-height: 200px;
   }
 
   .event-card .event-picture-container {
