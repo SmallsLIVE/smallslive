@@ -682,7 +682,15 @@ $(document).ready(function() {
 
     var $datePickerInput = $(datePickerInputSelector);
     $datePickerInput.click();
-    $datePickerInput.prop("disabled", true);
+    let isCalendar =
+      $(location)
+        .attr("href")
+        .split("/")
+        .reverse()[1] || false;
+
+    if (isCalendar) {
+      $datePickerInput.prop("disabled", true);
+    }
     $datePickerInput.focus();
   }
 
