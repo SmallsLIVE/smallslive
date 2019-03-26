@@ -12,6 +12,7 @@ $event-row-padding: 3.5vw;
 
 .live {
   .slide-btn {
+
     &.prev,
     &.next {
       @media (min-width: 1366px) {
@@ -21,6 +22,7 @@ $event-row-padding: 3.5vw;
       @media (max-width: 1365px) and (min-width: 1024px) {
         height: $live-card-width-medium * 0.6;
       }
+
       @media (max-width: $screen-md-max) {
         display: none;
       }
@@ -51,6 +53,7 @@ $event-row-padding: 3.5vw;
 }
 
 .slide-btn {
+
   &.prev,
   &.next {
     border-radius: 10px 0 0 10px;
@@ -85,6 +88,7 @@ $event-row-padding: 3.5vw;
       display: none;
     }
   }
+
   &.prev {
     transform: scaleX(-1);
     width: 3.1vw;
@@ -97,6 +101,7 @@ $event-row-padding: 3.5vw;
       top: -0%;
     }
   }
+
   &.next {
     width: $content-left-padding;
     right: 0;
@@ -141,7 +146,12 @@ $event-row-padding: 3.5vw;
 .event-display {
   margin-right: $event-card-margin;
 }
+
 .event-display-today-and-tomorrow {
+  img {
+    width: 300px;
+  }
+
   display: flex;
   background: white;
 
@@ -154,9 +164,11 @@ $event-row-padding: 3.5vw;
   .event-card .event-picture-container {
     border-radius: 0;
   }
+
   .event-info {
     font-size: 12px;
     padding: 10px 20px;
+
     .event-info-title {
       padding-top: 3px;
       width: fit-content;
@@ -167,6 +179,7 @@ $event-row-padding: 3.5vw;
       font-family: "Oswald", sans-serif;
       font-size: 23px;
     }
+
     .artists {
       margin-top: 15px;
       height: 50px;
@@ -184,6 +197,7 @@ $event-row-padding: 3.5vw;
         margin: 0;
         font-size: 12px;
         text-transform: none;
+
         &:hover {
           color: grey;
           text-decoration: underline;
@@ -191,9 +205,11 @@ $event-row-padding: 3.5vw;
       }
     }
   }
+
   @media (max-width: 720px) {
     flex-direction: column;
     max-width: 300px;
+
     .event-info {
       .event-info-title {
         max-width: 260px;
@@ -324,10 +340,11 @@ $event-row-padding: 3.5vw;
       @media (max-width: $screen-sm-max) {
         font-size: 12px;
       }
+
       line-height: normal;
     }
 
-    > span {
+    >span {
       color: $white-transparent;
       background-color: black;
       padding: 2px 10px;
@@ -360,29 +377,23 @@ $event-row-padding: 3.5vw;
 
 .event-card-secondary {
   @media (min-width: 1366px) {
-    @include event-card(
-      $regular-card-width-large,
-      $regular-card-width-large * 0.6
-    );
+    @include event-card($regular-card-width-large,
+    $regular-card-width-large * 0.6);
   }
 
   @media (max-width: 1365px) and (min-width: 1024px) {
-    @include event-card(
-      $regular-card-width-medium,
-      $regular-card-width-medium * 0.6
-    );
+    @include event-card($regular-card-width-medium,
+    $regular-card-width-medium * 0.6);
   }
+
   @media (max-width: $screen-md-max) and (min-width: $screen-md-min) {
-    @include event-card(
-      $regular-card-width-medium,
-      $regular-card-width-medium * 0.6
-    );
+    @include event-card($regular-card-width-medium,
+    $regular-card-width-medium * 0.6);
   }
+
   @media (max-width: $screen-sm-max) {
-    @include event-card(
-      $regular-card-width-mobile,
-      $regular-card-width-mobile * 0.6
-    );
+    @include event-card($regular-card-width-mobile,
+    $regular-card-width-mobile * 0.6);
   }
 }
 
@@ -398,8 +409,10 @@ $event-row-padding: 3.5vw;
 .album-row {
   .event-display {
     max-width: 100%;
+
     .event-card {
       @include event-card(300px, 300px);
+
       .event-picture-container {
         .event-picture {
           filter: none;
@@ -408,16 +421,13 @@ $event-row-padding: 3.5vw;
     }
   }
 }
-.newest-recordings-container
-  .event-row
-  .event-display
-  .event-card
-  .event-picture-container
-  .event-picture {
+
+.newest-recordings-container .event-row .event-display .event-card .event-picture-container .event-picture {
   filter: none;
 }
 
 @media (max-width: 960px) {
+
   .event-card,
   .event-info,
   .album-row {
