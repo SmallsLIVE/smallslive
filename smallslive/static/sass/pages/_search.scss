@@ -13,14 +13,13 @@ $mobile-filter-button-width: 40vw;
 
 body.headers-1 {
   .search-container {
-    @media (max-width: $screen-sm-max) {
-    }
+    @media (max-width: $screen-sm-max) {}
   }
 }
 
 .musicians-results.white-line-bottom {
-  ~ .artist-search-profile-container[style*="display: block"].pad-content {
-    ~ .search-container.pad-content {
+  ~.artist-search-profile-container[style*="display: block"].pad-content {
+    ~.search-container.pad-content {
       @media (max-width: $screen-md-max) {
         padding-top: 30px;
       }
@@ -193,12 +192,12 @@ body.headers-1 {
     &.artist-tabs {
       margin-top: 0px;
 
-      & > div {
+      &>div {
         background-color: $background-color;
       }
     }
 
-    & > div {
+    &>div {
       flex: 1;
       display: flex;
       align-items: center;
@@ -251,15 +250,12 @@ body.headers-1 {
       left: 0px;
       width: 6vw;
       z-index: 3;
-      background: #f0f0eb;
       height: 100%;
     }
   }
 
   #showsArchivedContent,
   #showUpcomingContent {
-    margin-top: 30px;
-
     @media (max-width: $screen-md-max) {
       margin-top: 0px;
     }
@@ -317,14 +313,7 @@ body.headers-1 {
           background-color: white;
         }
 
-        .dropdown-menu
-          .table-condensed
-          > thead
-          > tr
-          > th.datepicker-switch
-          > .years-dropdown
-          .years-choices
-          > div {
+        .dropdown-menu .table-condensed>thead>tr>th.datepicker-switch>.years-dropdown .years-choices>div {
           background-color: white;
         }
       }
@@ -417,13 +406,7 @@ body.headers-1 {
         }
       }
 
-      .custom-date-picker
-        .datepicker.dropdown-menu
-        .table-condensed
-        > thead
-        > tr
-        > th.datepicker-switch
-        > div:first-child::after {
+      .custom-date-picker .datepicker.dropdown-menu .table-condensed>thead>tr>th.datepicker-switch>div:first-child::after {
         content: "";
       }
     }
@@ -471,7 +454,7 @@ body.headers-1 {
           padding: 0 64px;
           margin-bottom: 20px;
 
-          > a {
+          >a {
             color: grey;
             margin-left: 6vw;
           }
@@ -541,7 +524,7 @@ body.headers-1 {
   flex-direction: row;
   justify-content: center;
 
-  > * {
+  >* {
     display: inline-block;
     vertical-align: top;
   }
@@ -595,23 +578,24 @@ body.headers-1 {
   }
 
   @media (min-width: $screen-lg-min) {
+
     .white-border-select,
     .custom-date-picker {
       width: 120px;
     }
 
-    > .white-border-button {
+    >.white-border-button {
       margin-right: 20px;
     }
 
-    > .white-border-select,
-    > .white-border-button {
+    >.white-border-select,
+    >.white-border-button {
       width: 200px;
     }
   }
 
   @media (max-width: 1366px) and (min-width: 1024px) {
-    > .white-border-select {
+    >.white-border-select {
       width: 14vw;
     }
   }
@@ -711,6 +695,7 @@ body.headers-1 {
 }
 
 .load-more-btn {
+  background: #f0f0eb;
   @include title1;
   font-size: 2.5em;
   width: auto;
@@ -743,7 +728,7 @@ body.headers-1 {
   color: black;
 }
 
-.change-page > li:hover {
+.change-page>li:hover {
   font-weight: 900;
   color: black;
 }
@@ -839,6 +824,7 @@ body.headers-1 {
   }
 
   @media (max-width: $screen-md-max) {
+
     #a-z-search .scroll-right,
     #a-z-search .scroll-left {
       width: 10vw;
@@ -850,7 +836,7 @@ body.headers-1 {
   display: flex;
   position: relative;
   width: 700px;
-  margin: 30px auto 10px auto;
+  margin: 0px auto 10px auto;
 
   img {
     width: 21px;
@@ -1045,7 +1031,7 @@ body.headers-1 {
   @media (max-width: $screen-md-max) {
     margin-left: 0;
 
-    .mobile-padding > .text1 {
+    .mobile-padding>.text1 {
       margin-top: 15px;
     }
 
@@ -1083,7 +1069,7 @@ body.headers-1 {
     width: auto;
     flex-direction: column-reverse;
 
-    > .visible-xs > div {
+    >.visible-xs>div {
       margin: 10px 0;
     }
 
@@ -1462,13 +1448,13 @@ body.headers-1 {
       }
     }
 
-    &:first-child > input {
+    &:first-child>input {
       border-top: none;
       border-left: none;
       border-right: none;
     }
 
-    &:nth-child(2) > input {
+    &:nth-child(2)>input {
       border-top: none;
       border-right: none;
     }
@@ -1592,7 +1578,7 @@ body.headers-1 {
       .section-title.home {
         margin-bottom: 0;
 
-        > .header-sub {
+        >.header-sub {
           margin: 10px auto 0;
         }
       }
@@ -1731,7 +1717,7 @@ body.headers-1 {
   }
 }
 
-.refine-overlay-content > p {
+.refine-overlay-content>p {
   margin-top: 40px;
   margin-bottom: 24px;
 }
@@ -1862,37 +1848,43 @@ body.home.admin-header {
   }
 }
 
-.main-container
-  .calendar
-  .custom-date-picker
-  .datepicker.dropdown-menu
-  .table-condensed
-  > thead
-  > tr
-  > th.datepicker-switch {
-  & > .years-dropdown {
+.main-container .calendar .custom-date-picker .datepicker.dropdown-menu .table-condensed>thead>tr>th.datepicker-switch {
+  &>.years-dropdown {
     display: none;
   }
 
-  > div:first-of-type::after {
+  >div:first-of-type::after {
     content: "";
   }
 }
-<<<<<<< Updated upstream
-=======
 
 
 
 
 .new_archive {
+  @media(max-width: 1023px) {
+    display: none;
+  }
+
   justify-content: space-evenly;
 
   .musicians-result {
     border: 3px solid white;
     border-radius: 15px 15px 0 0;
-    width: 25%;
-    padding: 15px 0;
+    padding: 15px 50px;
     position: relative;
+
+    &.active {
+      background-color: white;
+    }
+
+    .showing-results {
+      margin-right: 20px;
+    }
   }
 }
->>>>>>> Stashed changes
+
+#musicianContent,
+#search-content {
+  background-color: white;
+}

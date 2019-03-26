@@ -33,19 +33,22 @@
 
 
 <div class="flex-row new_archive">
-    <div class="musicians-result">
-        <div id="artist-subheader" class="showing-results text1" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>1-24</div>
-    <div class="title1 musicians-results-title">
-        {% if artists_blocks %} <span id="total-artist" class="accent-color">{{ showing_artist_results }}</span>
-        {% if showing_artist_results > 1 %}
-            Musicians
-        {% else %}
-            Musician
-        {% endif %}
-        {% else %} No musicians named "<span class="accent-color">{{ query_term }}</span>" found
-        {% endif%}</div>
+    <div class="musicians-result active" data-type="musicianContent">
+        <div id="artist-subheader" class="showing-results text1" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>
+            1-24
+        </div>
+        <div class="title1 musicians-results-title">
+            {% if artists_blocks %} <span id="total-artist" class="accent-color">{{ showing_artist_results }}</span>
+            {% if showing_artist_results > 1 %}
+                Musicians
+            {% else %}
+                Musician
+            {% endif %}
+            {% else %} No musicians named "<span class="accent-color">{{ query_term }}</span>" found
+            {% endif%}
+        </div>
     </div>
-    <div class="musicians-result">
+    <div class="musicians-result" data-type="search-content">
         <div class="title1 shows-results-title">      
         <span id="archived-event-totals" class='accent-color' >{{ showing_event_results }}</span>
         Archived Shows
@@ -124,7 +127,7 @@
         </div>
       {% endif %}
     </section>
-    <section class="search-content">
+    <section id="search-content" class="search-content" style="display:none">
       {% include 'events/new_shows.html' with archived=True default_to_date=default_to_date secondary=True %}
       <!-- include upcoming shows (as placeholder and hidden), so then can be toggled when viewing artists profile -->
       {% include 'events/new_shows.html' with upcoming=True default_from_date=default_from_date secondary=True placeholder=True hide_filters=True%}
@@ -228,6 +231,14 @@
     $('.instruments-container .close-button').on('click', function() {
       $(this).closest('.instruments-container').hide();
     });
+
+    $(".musicians-result").on("click", function(){
+        $(".musicians-result.active").removeClass("active")
+        $(this).addClass("active")
+        
+        $(".search-container.pad-content > section").hide()
+        $("#" + $(this).data("type")).show()
+    })
   </script>
 {% endblock %}
 
