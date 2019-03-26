@@ -680,11 +680,10 @@ $(document).ready(function () {
     $datePickerInput.click();
     let isCalendar =
       $(location)
-        .attr("href")
-        .split("/")
-        .reverse()[1] || false;
-
-    if (isCalendar) {
+      .attr("href")
+      .split("/")
+      .reverse()[1] || false;
+    if (isCalendar == 'calendar') {
       $datePickerInput.prop("disabled", true);
     }
     $datePickerInput.focus();
