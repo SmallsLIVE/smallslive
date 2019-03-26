@@ -13,6 +13,6 @@
   <main style="position: relative;">
     <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
     <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-    {% include 'events/event_row.html' with events=events_today show_time=True hidde_event_date=True show_event_venue=True custom_venue_style=custom_venue_style %}
+    {% include 'events/tonight_events.html' with events=events_today show_time=True hidde_event_date=True show_event_venue=True custom_venue_style=custom_venue_style %}
   </main>
 </section>
