@@ -141,6 +141,49 @@ $event-row-padding: 3.5vw;
 .event-display {
   margin-right: $event-card-margin;
 }
+.event-display-today-and-tomorrow {
+  display: flex;
+  background: white;
+
+  .event-card .event-picture-container {
+    border-radius: 0;
+  }
+  .event-info {
+    font-size: 12px;
+    padding: 10px 20px;
+    .event-info-title {
+      padding-top: 3px;
+      height: 28px;
+      margin-top: 5px;
+      font-weight: 300;
+      font-family: "Oswald", sans-serif;
+      font-size: 23px;
+    }
+    .artists {
+      margin-top: 15px;
+      height: 50px;
+      width: 330px;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+
+      a {
+        margin: 1%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 48%;
+        margin: 0;
+        font-size: 12px;
+        text-transform: none;
+        &:hover {
+          color: grey;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
 
 .album-row {
   display: flex;
