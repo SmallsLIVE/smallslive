@@ -1,0 +1,237 @@
+{% extends 'home_new.html' %}
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load i18n %}
+
+{% block homepage_nav_active %}active{% endblock %}
+
+{% block title %}Smalls Jazz Club{% endblock %}
+
+{# TODO Shouldn't be needed here #}
+{% block body_class %}home headers-3{% endblock %}
+
+{% block extra_nav %}
+  <div class="search-tabs tabs">
+    <div class="{% if not musician_search %}active{% endif %}" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
+      <span class="title1">Shows</span>
+    </div>
+    <div class="{% if musician_search %}active{% endif %}" data-toggle-tab-target="musicians" data-toggle-tab-group="search-results">
+      <span class="title1">Musicians</span>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_head %}
+  <meta name="description" content="This is the official website for Smalls Jazz Club in Greenwich Village, New York City!">
+{% endblock %}
+
+{% block content %}
+
+{% include 'inactive_dialog.html' %}
+{% include 'become_a_supporter_dialog.html' %}
+
+
+
+<div class="flex-row new_archive">
+    <div class="musicians-result">
+        <div id="artist-subheader" class="showing-results text1" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>1-24</div>
+    <div class="title1 musicians-results-title">
+        {% if artists_blocks %} <span id="total-artist" class="accent-color">{{ showing_artist_results }}</span>
+        {% if showing_artist_results > 1 %}
+            Musicians
+        {% else %}
+            Musician
+        {% endif %}
+        {% else %} No musicians named "<span class="accent-color">{{ query_term }}</span>" found
+        {% endif%}</div>
+    </div>
+    <div class="musicians-result">
+        <div class="title1 shows-results-title">      
+        <span id="archived-event-totals" class='accent-color' >{{ showing_event_results }}</span>
+        Archived Shows
+        </div>
+        <div id="archived-event-subheader"
+                class="showing-results text1"
+                style="margin-top: -13px;"
+                data-max-number='{{ showing_artist_results }}'
+                data-paginator-number=24
+                data-left-number=1
+                data-right-number=24>1-24
+        </div>
+    </div>
+</div>
+
+<div class="artist-search-profile-container pad-content"></div>
+
+<div class="search-container pad-content">
+    <section id="musicianContent"
+             data-toggle-tab="musicians"
+             class="search-tab-content {% if musician_search %}active{% endif %}"
+             data-toggle-tab-group="search-results">
+      {% if artists_blocks %}
+        <div  class="search-artist-box-container">
+         <!--<img src="{% static 'image/search-icon.svg' %}">-->
+          <input id="artist-search"
+                 class="search-artist-box"
+                 name="q" type="hidden"
+                 placeholder="START TYPING AN ARTIST NAME"
+                 autocomplete="off">
+            <div class="artist-search-a-z">
+           <div class="white-border-button scroll-left"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
+           <div id="a-z-search">
+            <div id="a-z-refresh" class="white-border-button">
+              ALL
+            </div>
+           </div>
+           <div class="white-border-button scroll-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
+           </div>
+          <br>
+           <div class="instrument-btn white-border-button caret">Instrument</div> 
+
+        </div>
+        <div class="instruments-container">
+          <a href="#" class="close-button"></a>
+          <div class="instrument text4" data-instrument="">All Instruments</div>
+          {% for instrument in instruments %}
+            <div data-instrument="{{ instrument }}" class="instrument text4 text-grey">{{ instrument }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="container-list-article">
+
+          <div class="left_arrow artist-arrow-search artist-arrow-disabled">
+
+          </div>
+
+          <div id="artist-load-gif" class="loading-image">
+            <img src="{% static 'image/loading.gif' %}" alt="">
+          </div>
+
+          <main id="artists" class="artists-container invisible">
+            {% include 'search/artist_results.html' %}
+          </main>
+
+          <div class="right_arrow artist-arrow-search"
+               style="{% if artist_num_pages == 1 %}visibility: hidden;{% endif %}">
+          </div>
+        </div>
+
+        <div class="white-border-button load-more-artist-button" onclick="loadMoreArtistButton()" style="{% if artist_num_pages == 1 %}visibility: hidden;{% endif %}">Load more</div>
+        <div hidden class="artist-loading-gif mobile-artist-loading" style="height: 50px; margin-bottom: 30px;"></div>
+        <div class="flex-row items-center content-space-between artist-arrows">
+          <div class="left_arrow artist-arrow-search"></div>
+          <div class="right_arrow artist-arrow-search"></div>
+        </div>
+      {% endif %}
+    </section>
+    <section class="search-content">
+      {% include 'events/new_shows.html' with archived=True default_to_date=default_to_date secondary=True %}
+      <!-- include upcoming shows (as placeholder and hidden), so then can be toggled when viewing artists profile -->
+      {% include 'events/new_shows.html' with upcoming=True default_from_date=default_from_date secondary=True placeholder=True hide_filters=True%}
+    </section>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+  <script>
+    var eventOrderFilter = 'newest';
+    var datePickerInputSelector = '#search-date-picker-from input';
+    var datePickerFromDate = null;
+    var datePickerToDate = '{{ default_to_date }}';
+    var setFromDate = false;
+    var setToDate = true;
+    var datePickerLeft = 45;
+    var datePickerTop = 38;
+    var defaultFromDate;
+    var defaultToDate = '{{ default_to_date }}';
+  </script>
+  <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+  <script src="{% static 'js/tabs.js' %}"></script>
+  <script src="{% static 'js/search/search.js' %}"></script>
+  <script>
+      $(document).ready(function(){
+        $('.scroll-left').css('visibility', 'initial')
+        const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+"q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+        buttons = {
+
+        }
+        alphabet.map((leter) => {
+          buttons[leter] = document.createElement('div');
+          $(buttons[leter]).addClass('white-border-button')
+              .html(leter)
+              .appendTo($("#a-z-search")).click(() => {
+                $('#a-z-search .white-border-button').css('background-color', '#f0f0eb')
+                $(buttons[leter]).css('background-color', '#fff')
+                if(searchTerm.trim() != ""){
+                  searchTerm = "";
+                  sendArtistRequest(()=>{
+                  $('#artist-search').val($(buttons[leter]).text())
+                  $("#artist-search").change()
+                  });
+                }else{
+                  $('#artist-search').val($(buttons[leter]).text())
+                  $("#artist-search").change()
+                }
+               
+              })
+          })
+          $('.scroll-right').click(() => {
+            let scrollF = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 30)}, 10)
+            setTimeout(() => {clearInterval(scrollF)}, 120)
+            let scrollS = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 10)}, 80)
+            setTimeout(() => {clearInterval(scrollS)}, 320)
+            setTimeout(function(){
+              if($( "#a-z-search" ).scrollLeft() == 0){
+                $('.scroll-right').css('visibility', 'initial')
+                $('.scroll-left').css('visibility', 'hidden')
+
+              }else if( $( "#a-z-search" ).scrollLeft() == 819 ){
+                $('.scroll-right').css('visibility', 'hidden')
+                $('.scroll-left').css('visibility', 'initial')
+              }else{
+                $('.scroll-left').css('visibility', 'initial')
+                $('.scroll-right').css('visibility', 'initial')
+              }
+            }, 310)
+            
+          })
+          $('.scroll-left').click(() => {
+            let scrollF = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 30)}, 10)
+            setTimeout(() => {clearInterval(scrollF)}, 120)
+            let scrollS = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 10)}, 10)
+            setTimeout(() => {clearInterval(scrollS)}, 300)
+            setTimeout(() => {
+              if($( "#a-z-search" ).scrollLeft() == 0){
+                $('.scroll-right').css('visibility', 'initial')
+                $('.scroll-left').css('visibility', 'hidden')
+
+              }else if( $( "#a-z-search" ).scrollLeft() == 819 ){
+                $('.scroll-right').css('visibility', 'hidden')
+                $('.scroll-left').css('visibility', 'initial')
+              }else{
+                $('.scroll-left').css('visibility', 'initial')
+                $('.scroll-right').css('visibility', 'initial')
+              }
+            }, 310)
+
+          })
+
+
+        foundArtistNumber = $(".artist-mobile").length
+        if ( foundArtistNumber === 1 ){
+          $uniqueArtist = $(".artist-mobile")[0];
+          $($uniqueArtist).find(".artist-row")[0].click()
+        }
+       }) 
+    $('.instruments-container .close-button').on('click', function() {
+      $(this).closest('.instruments-container').hide();
+    });
+  </script>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
+
+
