@@ -1,0 +1,42 @@
+{% extends "home_new.html" %}
+{% load static from staticfiles %}
+{% load addurlparameter %}
+
+{% block schedule_nav_active %}active{% endblock %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block extra_head %}
+
+{% endblock %}
+
+{% block home_content %}
+<main class="calendar">
+  <div class="event-stripe">
+    {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
+  </div>
+  {% include 'events/shows.html' with upcoming=True show_extend_date=True show_event_venue=True hide_play=True %}
+</main>{% endblock home_content %}
+
+{% block extra_js %}
+<script>
+  $("#club-filter ~ .select-selected").text("Club")
+  var eventOrderFilter = 'oldest';
+  var show_event_venue = true;
+  var show_event_setTime = true;
+  var datePickerInputSelector = '#search-date-picker-calendar > input';
+  var datePickerFromDate = '{{ default_from_date }}';
+  var datePickerToDate = null;
+  var setFromDate = true;
+  var setToDate = false;
+  var datePickerLeft = 222;
+  var datePickerTop = 42;
+  var is_upcoming = true;
+  var upcomingEventDateFrom = new Date();
+  var defaultFromDate = '{{ default_from_date }}';
+  var defaultToDate;
+</script>
+<script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/search/search.js' %}"></script>
+{% endblock extra_js %}

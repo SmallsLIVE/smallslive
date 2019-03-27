@@ -246,21 +246,19 @@ body.headers-1 {
 
     &:before {
       content: "";
-
-      @media(min-width: 1024px) {
-        background-color: white;
-      }
-
       position: absolute;
       left: 0px;
       width: 6vw;
       z-index: 3;
+      background: #f0f0eb;
       height: 100%;
     }
   }
 
   #showsArchivedContent,
   #showUpcomingContent {
+    margin-top: 30px;
+
     @media (max-width: $screen-md-max) {
       margin-top: 0px;
     }
@@ -595,7 +593,6 @@ body.headers-1 {
 
     >.white-border-select,
     >.white-border-button {
-      background-color: #f0f0eb;
       width: 200px;
     }
   }
@@ -701,7 +698,6 @@ body.headers-1 {
 }
 
 .load-more-btn {
-  background-color: #f0f0eb;
   @include title1;
   font-size: 2.5em;
   width: auto;
@@ -746,7 +742,6 @@ body.headers-1 {
   margin: 0 auto;
 
   .select-selected {
-    background-color: #f0f0eb;
     border: 3px solid rgba(255, 255, 255, 0.9);
   }
 
@@ -789,6 +784,7 @@ body.headers-1 {
   }
 
   &.store {
+
     width: 30vw;
 
     @media (max-width: $screen-md-min) {
@@ -843,7 +839,7 @@ body.headers-1 {
   display: flex;
   position: relative;
   width: 700px;
-  margin: 0px auto 10px auto;
+  margin: 30px auto 10px auto;
 
   img {
     width: 21px;
@@ -865,7 +861,6 @@ body.headers-1 {
 }
 
 .instrument-btn {
-  background-color: #f0f0eb;
   display: inline-block;
   width: 200px;
   height: auto;
@@ -1634,7 +1629,6 @@ body.headers-1 {
   }
 
   .white-line-bottom {
-    margin-top: 60px;
     border-bottom: 4px solid white;
 
     &.musicians-result {
@@ -1816,6 +1810,7 @@ body.home.admin-header {
 }
 
 #showsUpcomingContent {
+
   @media (max-width: 1023px) {
     .event-info {
       font-size: 15px;
@@ -1856,50 +1851,13 @@ body.home.admin-header {
   }
 }
 
+
 .main-container .calendar .custom-date-picker .datepicker.dropdown-menu .table-condensed>thead>tr>th.datepicker-switch {
   &>.years-dropdown {
     display: none;
   }
 
   >div:first-of-type::after {
-    content: "";
-  }
-}
-
-@media(max-width: 1023px) {
-  .new_archive {
-    display: none;
-  }
-}
-
-@media(min-width: 1024px) {
-  .new_archive {
-    justify-content: space-evenly;
-
-    .musicians-result {
-      border: 3px solid white;
-      border-radius: 15px 15px 0 0;
-      padding: 15px 50px;
-      position: relative;
-
-      &.active {
-        background-color: white;
-      }
-
-      .showing-results {
-        margin-right: 20px;
-      }
-    }
-  }
-
-  #musicianContent,
-  #search-content {
-    background-color: white;
-    padding: 20px 0;
-  }
-
-  #a-z-search>* {
-    background-color: #f0f0eb;
-
+    content: ""
   }
 }
