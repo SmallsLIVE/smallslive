@@ -384,7 +384,7 @@ class UpcomingSearchView(SearchMixin):
         for day in range (0, days):
             day_itinerary = {}
             day_start = starting_date + timedelta(days=day)
-            day_end = starting_date + timedelta(days=1)
+            day_end = day_start + timedelta(days=1)
             day_itinerary['day_start'] = day_start
             day_itinerary['day_events'] = Event.objects.filter(start__gte=day_start, start__lte=day_end).order_by('start')
             context["day_list"].append(day_itinerary)
