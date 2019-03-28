@@ -30,7 +30,11 @@
   {% endif %}
   <div class="flex-row upcoming-schedule">
     <div class="flex-row upcoming-datepicker">
-      {% include 'events/upcoming_filters.html' %}
+      <div  class="datepicker-container noclick" style="display:block;     top: 0 !important;">
+          <div class="custom-date-picker" id="search-date-picker-calendar">
+              <input id="upcoming-datepicker" class="date-picker-text" type="text" placeholder="Select date" readonly disabled>
+          </div>
+      </div>
     </div>
     {% include 'search/upcoming_calendar_dates.html' with day_list=day_list %}
     <div class="white-border-button">Load more</div>
@@ -98,5 +102,11 @@
 
 
   <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
+<script>
+console.log("a")
+ $(window).on('load', function () {
+    $("#upcoming-datepicker").click()
 
+  })
+</script>
   

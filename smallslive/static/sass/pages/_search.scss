@@ -1260,8 +1260,15 @@ body.headers-1 {
   position: relative;
   width: 100%;
 
-  >.white-border-select .select-selected {
-    padding: 0 40px;
+  >.white-border-select {
+    .select-selected {
+      width: 180px;
+      padding: 0;
+    }
+
+    .select-items {
+      top: 58%;
+    }
   }
 
   @media (max-width: $screen-md-max) {
@@ -1574,11 +1581,23 @@ body.headers-1 {
   flex-wrap: wrap;
   padding: 0 10%;
 
+  >*:nth-last-child(n+6)::before {
+    content: '';
+    position: absolute;
+    right: -140px;
+    bottom: 0;
+    left: -10px;
+    border: 2px solid white;
+  }
+
+
+
   .no-event {
     margin-top: 20px
   }
 
   .upcoming-datepicker {
+    position: relative;
     width: 38%;
     height: 800px;
     margin-right: 2%;
@@ -1586,10 +1605,14 @@ body.headers-1 {
 
   .day-list,
   >.white-border-button {
+    position: relative;
     width: 11%;
     height: 800px;
     margin-right: 9%;
+    margin-bottom: 30px;
+  }
 
+  .day-list {
     .day-event {
       margin-top: 20px;
       height: 125px;
