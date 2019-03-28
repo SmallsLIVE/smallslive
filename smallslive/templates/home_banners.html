@@ -89,10 +89,10 @@
       },
       supporter: {
         class: 'supporter',
-        text: 'the  mission  of  the  <span class="accent-color">smallslive  foundation</span>  for  jazz  arts  and  education  is  to  <span class="accent-color">disseminate  jazz  music</span>  through  recordings  and  live  streams.    we  sponsor  individual  jazz  projects,  tours  and  educational  classes,  and  subsidize  operating  expenses  for  smalls  and  mezzrow  jazz  clubs.    by  making  a  <span class="accent-color">tax  deductible  donation</span>  to  the  smallslive  foundation  you  will  get  access  to  our  extensive  <span class="accent-color">audio/video  archive</span>  and  directly  support  the  musicians  and  the  clubs.',
+        text: 'the  mission  of <span class="accent-color">  the  smallslive  foundation</span> <span class="banner-text"> is the dissemination of jass music through  our Achive  and  Live  Streams.  we  sponsor  individual  jazz  projects,  tours  and  educational  classes,  and  live performances at  Smalls  and  Mezzrow. We are member-suported through tax deductible donations.</span>',
         button: 'Become a supporter',
-        infoButton: true,
-        title: 'Why <strong>become</strong> a<br><span class="accent-color">supporting member</span> <span class="last"><br>of <strong>SmallsLIVE</strong></span>?',
+        infoButton: false,
+        title: '{% load static from staticfiles %}<img src="{% static 'logo-black.svg' %}" width="100%" height="100%" alt="logo"/>',
         click: function() {
           if (inactive === 'true'){
             $('#inactive-dialog').modal('show');

@@ -338,3 +338,18 @@ $banners-height: 38vh;
     margin-right: 0.5vw;
   }
 }
+.banner-text {
+  font-family: "Reem Kufi", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  text-transform: initial;
+}
+.custom-banner-text {
+  height: 80%;
+  div {
+    display: none;
+  }
+}
+.banner-title-button .learnmore-container {
+  display: none;
+}

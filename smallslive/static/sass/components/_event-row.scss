@@ -150,11 +150,35 @@ $event-row-padding: 3.5vw;
 .event-display-today-and-tomorrow {
   display: flex;
   background: white;
+  height: 13.065vw;
+  min-height: 180px;
+  margin-right: 25px;
+  min-width: 45vw;
+
+  @media (max-width: 1024px) {
+    width: 85vw;
+  }
+
+  a {
+    width: 40%;
+  }
+
+  .event-card,
+  .event-picture-container,
+  .picture-border {
+    height: 100%;
+  }
 
   .event-picture {
-    height: auto !important;
-    width: auto !important;
-    max-width: 300px;
+    height: inherit !important;
+    width: inherit !important;
+
+    img {
+      height: 100%;
+      width: 100%;
+      min-height: 220px;
+      max-width: 350px;
+    }
   }
 
   .event-card .event-picture-container {
@@ -162,53 +186,85 @@ $event-row-padding: 3.5vw;
   }
 
   .event-info {
-    font-size: 12px;
-    padding: 10px 20px;
+    div {
+      margin-bottom: 5px;
+    }
 
     .event-info-title {
-      padding-top: 3px;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    font-size: 14px;
+    padding: 15px 20px;
+
+    .event-info-title {
+      padding-top: 12px;
       width: fit-content;
-      max-width: 320px;
-      height: 28px;
-      margin-top: 5px;
-      font-weight: 300;
+      max-width: 25vw;
+      height: 42px;
+      font-weight: 400;
       font-family: "Oswald", sans-serif;
-      font-size: 23px;
+      font-size: 30px;
+      transform: scaleY(1.3);
     }
 
     .artists {
-      margin-top: 15px;
-      height: 50px;
-      width: 330px;
+      height: 40%;
+      width: auto;
       display: flex;
       flex-wrap: wrap;
       flex-direction: column;
+      overflow-x: auto;
 
       a {
         margin: 1%;
-        white-space: nowrap;
+
         overflow: hidden;
-        text-overflow: ellipsis;
-        width: 48%;
-        margin: 0;
-        font-size: 12px;
+
+        margin-right: 10px;
+        font-size: 16px;
         text-transform: none;
 
         &:hover {
           color: grey;
           text-decoration: underline;
         }
+
+        @media (max-width: 1365px) and (min-width: 1024px) {
+          font-size: 14px;
+        }
       }
     }
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 960px) {
+    height: initial;
     flex-direction: column;
     max-width: 300px;
+    min-width: 75vw;
+
+    .event-picture img {
+      min-width: 75vw;
+    }
+
+    a {
+      width: 100%;
+    }
 
     .event-info {
+      width: 100%;
+
       .event-info-title {
-        max-width: 260px;
+        overflow-x: hidden;
+        max-width: 60vw;
+        font-size: 22px;
       }
     }
   }
@@ -242,12 +298,8 @@ $event-row-padding: 3.5vw;
 }
 
 .event-info-title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
   @media (min-width: 1366px) {
-    width: 10.85vw;
+    width: 8.85vw;
   }
 
   @media (max-width: 1365px) and (min-width: 1024px) {
@@ -431,4 +483,57 @@ $event-row-padding: 3.5vw;
     min-height: 8.66vw;
     position: relative;
   }
+}
+
+.event-info.new {
+  margin-left: 20px;
+  position: absolute;
+  top: 25%;
+  font-size: 8px;
+  color: white;
+
+  @media (max-width: 1224px) {
+    margin-left: 5px;
+  }
+
+  @media (max-width: 960px) {
+    margin-left: 35px;
+    font-size: 18px;
+  }
+
+  @media (max-width: 720px) {
+    margin-left: 25px;
+    font-size: 16px;
+  }
+
+  @media (max-width: 530px) {
+    margin-left: 10px;
+    font-size: 10px;
+  }
+
+  @media (max-width: 420px) {
+    margin-left: 8px;
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 960px) {
+  .event-display {
+    position: relative;
+  }
+}
+
+.img-overlay {
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(128, 128, 128, 0.5);
+}
+
+.today-and-tomorrow-arrow {
+  height: 100% !important;
+  border-radius: 0 !important;
 }

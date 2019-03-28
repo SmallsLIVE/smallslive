@@ -2,7 +2,6 @@
   {% for event in events %}
   <article class="event-display-today-and-tomorrow"> {% include 'events/tonight_event_card.html' with event=event secondary=secondary hide_play=True%}
     <div class="event-info">
-      <div>
               {% if show_event_venue %}
           <div class="{{ event.venue.name|lower}}-color">Live at {{ event.venue.name }}</div>
         {% endif %}
@@ -15,8 +14,6 @@
                 {{ gig.artist }} / {{ gig.role }}</a>
           {% endfor %}
         </div>
-
-      </div>
     </div>
   </article> 
   {% endfor %}
