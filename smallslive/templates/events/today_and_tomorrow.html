@@ -4,15 +4,16 @@
 {% load i18n %}
 
 <section class="event-stripe live">
-  <div class="section-title home">
+  <div class="section-title home flex-row">
     <div class="title1">
-      Today & Tomorrow <span class="date-separator">/</span>
+      Live at the clubs tonight <span class="date-separator">/</span>
     </div>
-    <div class="header-sub title2">{% get_today_and_tomorrow_dates '%m/%d' %}</div>
-  </div>
+    <div class="title1">{% now 'D b d' %}</div>  
+    <a href='/events/calendar/' class="white-border-button">Full calendar</a>
+  </div>    
   <main style="position: relative;">
-    <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-    <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+    <div class="slide-btn prev today-and-tomorrow-arrow"><b class="indicator-icon icon-left-caret"></b></div>
+    <div class="slide-btn next today-and-tomorrow-arrow"><b class="indicator-icon icon-right-caret"></b></div>
     {% include 'events/tonight_events.html' with events=events_today show_time=True hidde_event_date=True show_event_venue=True custom_venue_style=custom_venue_style %}
   </main>
 </section>
