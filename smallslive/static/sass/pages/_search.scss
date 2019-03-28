@@ -1260,6 +1260,10 @@ body.headers-1 {
   position: relative;
   width: 100%;
 
+  >.white-border-select .select-selected {
+    padding: 0 40px;
+  }
+
   @media (max-width: $screen-md-max) {
     display: none;
   }
@@ -1574,13 +1578,40 @@ body.headers-1 {
     margin-top: 20px
   }
 
-  .day-list {
-    width: 18%;
+  .upcoming-datepicker {
+    width: 38%;
     height: 800px;
+    margin-right: 2%;
+  }
+
+  .day-list,
+  >.white-border-button {
+    width: 11%;
+    height: 800px;
+    margin-right: 9%;
 
     .day-event {
-      margin-top: 20px
+      margin-top: 20px;
+      height: 125px;
+
+      a:hover {
+        color: black;
+      }
+
+      .day_event_title {
+        height: 4em;
+        overflow-y: hidden;
+      }
+
+      .text2 {
+        font-size: 1.8em;
+      }
     }
+  }
+
+  .white-border-button {
+    margin-right: 0%;
+    margin-left: 9%;
   }
 }
 

@@ -28,12 +28,13 @@
   {% if archived %}
       {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
   {% endif %}
-  {% if upcoming and not hide_filters %}
-    <div class="flex-row calendar-filters">
+  <div class="flex-row upcoming-schedule">
+    <div class="flex-row upcoming-datepicker">
       {% include 'events/upcoming_filters.html' %}
     </div>
-  {% endif %}
-  {% include 'search/upcoming_calendar_dates.html' with day_list=day_list %}
+    {% include 'search/upcoming_calendar_dates.html' with day_list=day_list %}
+    <div class="white-border-button">Load more</div>
+  </div>
   {% comment %} <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
     {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming events=event_results show_event_venue=show_event_venue secondary=True hide_play=hide_play %}
   </main> {% endcomment %}
