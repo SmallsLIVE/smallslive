@@ -40,7 +40,7 @@ from events.models import get_today_start, StaffPick, EventSet,\
     Recording, Comment
 from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import Product
-from search.views import SearchMixin, UpcomingEventMixin
+from search.views import SearchMixin, UpcomingEventMixin, UpcomingSearchView
 from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
     GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
@@ -621,9 +621,9 @@ def annotate_events(events):
     })
 
 
-class GenericScheduleView(TemplateView, SearchMixin):
+class GenericScheduleView(TemplateView, UpcomingSearchView):
     context_object_name = 'dates'
-    template_name = 'events/schedule.html'
+    template_name = 'events/new_schedule.html'
 
     def get_context_data(self, **kwargs):
         context = super(GenericScheduleView, self).get_context_data(**kwargs)
@@ -639,7 +639,8 @@ class GenericScheduleView(TemplateView, SearchMixin):
         context['actual_page'] = page = 1
         context['last_page'] = num_pages
         context['default_from_date'] = timezone.now().strftime('%m/%d/%Y')
-
+        context.update(self.get_upcoming_context())
+        
         return context
 
 

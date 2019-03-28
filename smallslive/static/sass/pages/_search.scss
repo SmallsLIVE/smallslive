@@ -1566,6 +1566,27 @@ body.headers-1 {
   }
 }
 
+.upcoming-schedule {
+  flex-wrap: wrap;
+  padding: 0 10%;
+
+  .no-event {
+    margin-top: 20px
+  }
+
+  .day-list {
+    width: 18%;
+    height: 800px;
+
+    .day-event {
+      margin-top: 20px
+    }
+  }
+}
+
+
+
+
 @media (max-width: $screen-md-max) {
   .refine {
     display: block;

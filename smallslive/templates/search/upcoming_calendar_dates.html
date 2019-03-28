@@ -1,0 +1,18 @@
+<div class="flex-row upcoming-schedule">
+    {% for day in day_list %}
+        <div class="flex-column day-list">
+            <div class="title1">
+                {{ day.day_start|date:'D M d' }}
+            </div>
+            {% for event in day.day_events %}
+                <div class="flex-column day-event">
+                    <div class="{{ event.venue.name|lower}}-color text2"> {{event.venue}} </div>
+                    <div class="text-grey text2"> {{event.get_actual_start_end.0|date:'g:i A'}} - {{event.get_actual_start_end.1|date:'g:i A' }}</div>
+                    <div class="text2"> {{event.title}} </div>
+                </div>
+            {% empty %}
+                <div class="text6 no-event"> No event today </div>
+            {% endfor %}
+        </div>
+    {% endfor%}
+</div>

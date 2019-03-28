@@ -1,5 +1,6 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
+{% load common_tags %}
 {% load i18n %}
 
 <section id="shows{% if archived %}Archived{% else %}Upcoming{% endif %}Content"
@@ -7,6 +8,22 @@
          data-toggle-tab="{% if archived %}archived{% else %}upcoming{% endif %}-shows"
          data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
   {% if archived or upcoming %}
+   <div class="musicians-results flex-row">
+      <div class="section-title home" style="width: 950px;     background-size: 900px 5px;">
+          <div class="title1">
+              Upcoming Shows <span class="date-separator">/</span>
+          </div>
+          <div class="header-sub title1">{% get_today_and_tomorrow_dates '%a %b %d %Y' %}</div>
+      </div>
+      <div class="white-border-select club-filter-select">
+        <select id="club-filter">
+            <option value="all">All</option>
+          {% for venue in venues %}
+            <option value="{{venue.pk}}">{{venue.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+  </div> 
   {% endif %}
   {% if archived %}
       {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
@@ -16,9 +33,10 @@
       {% include 'events/upcoming_filters.html' %}
     </div>
   {% endif %}
-  <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
+  {% include 'search/upcoming_calendar_dates.html' with day_list=day_list %}
+  {% comment %} <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
     {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming events=event_results show_event_venue=show_event_venue secondary=True hide_play=hide_play %}
-  </main>
+  </main> {% endcomment %}
 
   <div class="concerts-footer flex-column items-center">
     {% if last_page != actual_page %}
@@ -78,4 +96,6 @@
   </div>
 
 
-<script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
+  <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
+
+  

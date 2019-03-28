@@ -1,7 +1,7 @@
 import json
 from collections import OrderedDict
 from itertools import chain, groupby
-
+import datetime
 from dateutil import parser
 from django.core.paginator import EmptyPage, Paginator
 from django.http import Http404, HttpResponse, JsonResponse
@@ -365,3 +365,27 @@ class ArtistInfo(View):
         }
 
         return JsonResponse(data)
+
+
+class UpcomingSearchView(SearchMixin):
+
+    template_name = 'search/upcoming_calendar_dates.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UpcomingSearchView, self).get_context_data(**kwargs)
+        context.update(self.get_upcoming_context)
+        return context
+
+    def get_upcoming_context(self):
+        context = {'day_list': []}
+        days = self.request.GET.get('days', 12)
+        starting_date = self.request.GET.get('starting_date', datetime.datetime.today())
+        starting_day = datetime.datetime(starting_date.year, starting_date.month, starting_date.day,3)
+        for day in range (0, days):
+            day_itinerary = {}
+            day_start = starting_date + timedelta(days=day)
+            day_end = starting_date + timedelta(days=1)
+            day_itinerary['day_start'] = day_start
+            day_itinerary['day_events'] = Event.objects.filter(start__gte=day_start, start__lte=day_end).order_by('start')
+            context["day_list"].append(day_itinerary)
+        return context
