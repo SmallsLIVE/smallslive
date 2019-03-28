@@ -639,6 +639,7 @@ class GenericScheduleView(TemplateView, UpcomingSearchView):
         context['actual_page'] = page = 1
         context['last_page'] = num_pages
         context['default_from_date'] = timezone.now().strftime('%m/%d/%Y')
+        context['upcoming_dates'] = {'first':datetime.datetime.today(), 'last': (datetime.datetime.today() + timedelta(days=12))}
         context.update(self.get_upcoming_context())
         
         return context

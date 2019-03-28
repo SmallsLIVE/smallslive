@@ -13,7 +13,7 @@
           <div class="title1">
               Upcoming Shows <span class="date-separator">/</span>
           </div>
-          <div class="header-sub title1">{% get_today_and_tomorrow_dates '%a %b %d %Y' %}</div>
+          <div class="header-sub title1">{{ upcoming_dates.first|date:'D M d Y' }} - {{ upcoming_dates.last|date:'D M d Y' }}</div>
       </div>
       <div class="white-border-select club-filter-select">
         <select id="club-filter">
