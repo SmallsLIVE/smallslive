@@ -350,6 +350,11 @@ $banners-height: 38vh;
     display: none;
   }
 }
-.banner-title-button .learnmore-container {
-  display: none;
+.home-banner-buttons {
+  position: absolute;
+  right: 0;
+  display: flex;
+  flex-direction: row-reverse;
+  width: 500px;
+  bottom: 20px;
 }
