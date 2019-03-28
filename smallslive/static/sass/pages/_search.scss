@@ -1580,6 +1580,7 @@ body.headers-1 {
 .upcoming-schedule {
   flex-wrap: wrap;
   padding: 0 10%;
+  margin-top: 40px;
 
   >*:nth-last-child(n+6)::before {
     content: '';
