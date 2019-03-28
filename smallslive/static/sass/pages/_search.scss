@@ -1601,6 +1601,23 @@ body.headers-1 {
     width: 38%;
     height: 800px;
     margin-right: 2%;
+
+    .flex-row.upcoming-datepicker {
+      display: block !important;
+      top: 0 !important;
+      left: 0px !important;
+      width: 80% !important;
+
+      .datepicker-container.noclick {
+        @media (max-width: 1366px) and (min-width: 1024px) {
+          left: 0 !important;
+        }
+      }
+
+      .datepicker-dropdown {
+        min-width: 90% !important;
+      }
+    }
   }
 
   .day-list,
