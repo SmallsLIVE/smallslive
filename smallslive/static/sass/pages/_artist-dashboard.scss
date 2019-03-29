@@ -146,6 +146,10 @@
     padding: 0;
     border: none;
 
+    @media(min-width: 769px) {
+      display: none !important;
+    }
+
     .header-metrics-container {
       text-align: center;
 
@@ -322,6 +326,10 @@
   .artist-events-container {
     border-top: 3px solid $white-transparent;
     height: 635px;
+
+    @media(min-width: 769px) {
+      display: flex !important;
+    }
 
     @media (max-width: 768px) {
       flex-direction: column;
