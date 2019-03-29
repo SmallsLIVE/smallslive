@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
   if (typeof window.completeSubpage === "undefined") {
     window.completeSubpage = "";
   }
@@ -9,7 +9,7 @@ $(document).ready(function() {
     amount: 0
   };
 
-  var getSteps = function() {
+  var getSteps = function () {
     var steps = ["Intro", "SelectType"];
 
     if (selectedData.type == "gift") {
@@ -23,7 +23,7 @@ $(document).ready(function() {
     return steps;
   };
 
-  var getPreviousStep = function() {
+  var getPreviousStep = function () {
     var steps = getSteps();
     var index = steps.indexOf(currentStep);
     if (index == -1) {
@@ -32,18 +32,18 @@ $(document).ready(function() {
     return steps[index - 1];
   };
 
-  var getNextStep = function() {
+  var getNextStep = function () {
     var steps = getSteps();
     var index = steps.indexOf(currentStep);
     return steps[index + 1];
   };
 
-  var activeStep = function(step) {
+  var activeStep = function (step) {
     $(buttons[step]).addClass("active");
     $(buttons[currentStep]).removeClass("active");
   };
 
-  var showPanel = function(step) {
+  var showPanel = function (step) {
     var $previous = $("#supporterStep" + currentStep);
     var $step = $("#supporterStep" + step);
 
@@ -56,7 +56,7 @@ $(document).ready(function() {
 
   var $itemForm;
 
-  $(document).on("change", ".gift-content select", function() {
+  $(document).on("change", ".gift-content select", function () {
     /* Add a border to the display selection on dropdown change.
      */
     var $that = $(this);
@@ -70,13 +70,13 @@ $(document).ready(function() {
     }
   });
 
-  $(document).on("submit", ".add-to-basket", function(e) {
+  $(document).on("submit", ".add-to-basket", function (e) {
     e.preventDefault();
 
     function checkout() {
       // TODO: fix hardcoded URL
-      $.get("/store/checkout/", function(data) {
-        $.get(data.url, function(data) {
+      $.get("/store/checkout/", function (data) {
+        $.get(data.url, function (data) {
           $("#supporterStepShipping").html(data);
           showPanel("Shipping");
           replaceWhiteSelects($("#supporterStepShipping")[0]);
@@ -88,10 +88,10 @@ $(document).ready(function() {
       url: $(this).attr("action"),
       type: $(this).attr("method"),
       data: $(this).serialize(),
-      success: function(data) {
+      success: function (data) {
         checkout();
       },
-      error: function(xhr, err) {
+      error: function (xhr, err) {
         console.log(err);
       }
     });
@@ -99,7 +99,7 @@ $(document).ready(function() {
     return false;
   });
 
-  $(document).on("click", ".select-supporter-type-toggle", function(event) {
+  $(document).on("click", ".select-supporter-type-toggle", function (event) {
     // toggle payment method buttons and forms visibility. Set input value.
 
     event.preventDefault();
@@ -121,16 +121,16 @@ $(document).ready(function() {
     return false;
   });
 
-  $(document).on("submit", "#new_shipping_address", function() {
+  $(document).on("submit", "#new_shipping_address", function () {
     $.ajax({
       url: $(this).attr("action"),
       type: $(this).attr("method"),
       data: $(this).serialize(),
-      success: function(data) {
+      success: function (data) {
         if (data.url) {
-          $.get(data.url, function(data) {
-            $.get(data.url, function(data) {
-              $.get(data.url, function(data) {
+          $.get(data.url, function (data) {
+            $.get(data.url, function (data) {
+              $.get(data.url, function (data) {
                 $("#supporterStepBilling").html(data);
                 showPanel("Billing");
                 replaceWhiteSelects($("#supporterStepBilling")[0]);
@@ -144,7 +144,7 @@ $(document).ready(function() {
           replaceWhiteSelects($("#supporterStepShipping")[0]);
         }
       },
-      error: function(xhr, err) {
+      error: function (xhr, err) {
         console.log(err);
       }
     });
@@ -152,17 +152,17 @@ $(document).ready(function() {
     return false;
   });
 
-  $(document).on("submit", "#payment-form", function() {
+  $(document).on("submit", "#payment-form", function () {
     $.ajax({
       url: $(this).attr("action"),
       type: $(this).attr("method"),
       data: $(this).serialize(),
-      success: function(data) {
+      success: function (data) {
         $("#supporterStepPreview").html(data);
         showPanel("Preview");
         $("#confirmButton").text("Confirm");
       },
-      error: function(xhr, err) {
+      error: function (xhr, err) {
         console.log(err);
       }
     });
@@ -170,7 +170,7 @@ $(document).ready(function() {
     return false;
   });
 
-  $(document).on("click", ".billing-address-toggle", function(event) {
+  $(document).on("click", ".billing-address-toggle", function (event) {
     event.preventDefault();
     if ($(this).hasClass("active")) {
       return false;
@@ -185,7 +185,7 @@ $(document).ready(function() {
     return false;
   });
 
-  $(document).on("click", ".payment-method-toggle", function(event) {
+  $(document).on("click", ".payment-method-toggle", function (event) {
     // toggle payment method buttons and forms visibility. Set input value.
 
     event.preventDefault();
@@ -211,7 +211,7 @@ $(document).ready(function() {
     return false;
   });
 
-  $(document).on("submit", "#place-order", function() {
+  $(document).on("submit", "#place-order", function () {
     var flow_type = $("#supporterSteps").data("flow");
     $(this).append(
       $('<input type="hidden" name="flow_type" />').val(flow_type)
@@ -220,7 +220,7 @@ $(document).ready(function() {
       url: $(this).attr("action"),
       type: $(this).attr("method"),
       data: $(this).serialize(),
-      success: function(data) {
+      success: function (data) {
         if (data && data.payment_url) {
           window.location = data.payment_url;
         } else if (data && data.success_url) {
@@ -232,7 +232,7 @@ $(document).ready(function() {
           submitComplete();
         }
       },
-      error: function(xhr, err) {
+      error: function (xhr, err) {
         console.log(err);
       }
     });
@@ -246,7 +246,7 @@ $(document).ready(function() {
       type: "POST",
       url: $supporterForm.attr("action"),
       data: $supporterForm.serialize(),
-      success: function(data) {
+      success: function (data) {
         if (typeof completeSubpage !== "undefined") {
           notCompleteContainer.html("");
           var flowCompleteSubpage = window.subpages.get(completeSubpage);
@@ -255,7 +255,7 @@ $(document).ready(function() {
           window.location = data.location;
         }
       },
-      error: function() {}
+      error: function () {}
     });
   }
 
@@ -264,15 +264,15 @@ $(document).ready(function() {
   var yearlyButtons = $("#yearlyPledge > button");
   var giftsButtons = $(".select-gift");
 
-  var resetButtons = function() {
-    [monthlyButtons, yearlyButtons, giftsButtons].forEach(function(buttons) {
-      buttons.each(function(index, el) {
+  var resetButtons = function () {
+    [monthlyButtons, yearlyButtons, giftsButtons].forEach(function (buttons) {
+      buttons.each(function (index, el) {
         $(el).removeClass("active");
       });
     });
   };
 
-  $(document).on("change", 'input[name="payment_method"]', function(event) {
+  $(document).on("change", 'input[name="payment_method"]', function (event) {
     event.stopPropagation();
     event.preventDefault();
     var $that = $(this);
@@ -286,14 +286,14 @@ $(document).ready(function() {
     }
   });
 
-  var updatePaymentInfo = function() {
+  var updatePaymentInfo = function () {
     var pledgeType = selectedData.type;
     var pledgeAmount = selectedData.amount;
     if (pledgeType === "year") {
       $("#pledge-type").html(
         'You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' +
-          pledgeAmount +
-          "</span> ."
+        pledgeAmount +
+        "</span> ."
       );
       $("#payment-type").html(
         "Your  card  will  be  charged  in  this  amount."
@@ -302,8 +302,8 @@ $(document).ready(function() {
     } else if (pledgeType === "month") {
       $("#pledge-type").html(
         'You’ve  selected  to  pledge <span class="accent-color">$' +
-          pledgeAmount +
-          ".00 per month</span> . "
+        pledgeAmount +
+        ".00 per month</span> . "
       );
       $("#payment-type").html(
         "Your  card  will  be  billed  monthly  until  you  choose  to  cancel."
@@ -316,8 +316,8 @@ $(document).ready(function() {
     } else {
       $("#pledge-type").html(
         'You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' +
-          pledgeAmount +
-          "</span> ."
+        pledgeAmount +
+        "</span> ."
       );
       $("#payment-type").html(
         "Your  card  will  be  charged  in  this  amount."
@@ -328,7 +328,7 @@ $(document).ready(function() {
     $("#hiddenTypeInput").val(pledgeType);
   };
 
-  var resetCustom = function() {
+  var resetCustom = function () {
     yearlyCustom = $("#yearlyCustom");
     monthlyCustom = $("#monthlyCustom");
     $(yearlyCustom).val("");
@@ -341,7 +341,7 @@ $(document).ready(function() {
     $("#monthlyCustomConfirm").hide();
   };
 
-  var setSelected = function(type, amount) {
+  var setSelected = function (type, amount) {
     selectedData.type = type;
     selectedData.amount = amount;
     if (amount) {
@@ -354,7 +354,7 @@ $(document).ready(function() {
 
     checkConfirmButton();
   };
-  $(document).on("click", "#monthlyPledge > button", function() {
+  $(document).on("click", "#monthlyPledge > button", function () {
     $("#monthlyPledge > button").removeClass("active");
     $(this).addClass("active");
     $("#confirmSelectionButton").prop("disabled", false);
@@ -370,14 +370,14 @@ $(document).ready(function() {
       .find(".text")
       .html(
         "You have selected a monthly pledge of $" +
-          amount +
-          ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
+        amount +
+        ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
       );
     $selectionConfirmationDialog.find(".gift-content");
     $selectionConfirmationDialog.modal("show");
   });
 
-  $(document).on("click", "#yearlyPledge > button", function() {
+  $(document).on("click", "#yearlyPledge > button", function () {
     $("#yearlyPledge > button").removeClass("active");
     $(this).addClass("active");
     $("#confirmSelectionButton").prop("disabled", false);
@@ -393,13 +393,13 @@ $(document).ready(function() {
       .find(".text")
       .html(
         "You have selected a One Time Donation of $" +
-          amount +
-          ". One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings. You will receive access to The SmallsLIVE Archive for the remainder of the tax year."
+        amount +
+        ". One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings. You will receive access to The SmallsLIVE Archive for the remainder of the tax year."
       );
     $selectionConfirmationDialog.find(".gift-content");
   });
 
-  $(document).on("mousedown", ".confirm-custom", function() {
+  $(document).on("mousedown", ".confirm-custom", function () {
     $type = $(this).data("type");
     $value = $(this).data("value");
     console.log($type, $value);
@@ -415,8 +415,8 @@ $(document).ready(function() {
         .find(".text")
         .html(
           "Thank you for choosing to help jazz music and musicians all over the world. You have selected a monthly pledge of $" +
-            $value +
-            ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
+          $value +
+          ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
         );
       $selectionConfirmationDialog.find(".gift-content");
     } else {
@@ -428,8 +428,8 @@ $(document).ready(function() {
         .find(".text")
         .html(
           "Thank you for choosing to help jazz music and musicians all over the world. You have selected a One Time Donation of $" +
-            $value +
-            ". One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings. You will receive access to The SmallsLIVE Archive for the remainder of the tax year."
+          $value +
+          ". One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings. You will receive access to The SmallsLIVE Archive for the remainder of the tax year."
         );
       $selectionConfirmationDialog.find(".gift-content");
     }
@@ -439,7 +439,7 @@ $(document).ready(function() {
   var monthlyCustom = $("#monthlyCustom");
   var yearlyCustom = $("#yearlyCustom");
 
-  $(document).on("focusout", ".custom-out", function() {
+  $(document).on("focusout", ".custom-out", function () {
     resetCustom();
   });
 
@@ -447,7 +447,7 @@ $(document).ready(function() {
     return /^\+?[1-9][\d]*$/.test(s);
   }
 
-  $(oneTimePayment).on("keyup", function(event) {
+  $(oneTimePayment).on("keyup", function (event) {
     var value = $(oneTimePayment).val();
     if (value && isPositiveInteger(value)) {
       resetButtons();
@@ -459,7 +459,7 @@ $(document).ready(function() {
     }
   });
 
-  $(document).on("keyup", "#monthlyCustom", function(event) {
+  $(document).on("keyup", "#monthlyCustom", function (event) {
     monthlyCustom = $("#monthlyCustom");
     yearlyCustom = $("#yearlyCustom");
     var value = $(monthlyCustom).val();
@@ -492,8 +492,8 @@ $(document).ready(function() {
             .find(".text")
             .html(
               "You have selected a monthly pledge of $" +
-                amount +
-                ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
+              amount +
+              ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
             );
           $selectionConfirmationDialog.find(".gift-content");
         } else {
@@ -506,7 +506,7 @@ $(document).ready(function() {
     }
   });
 
-  $(document).on("keyup", "#yearlyCustom", function(event) {
+  $(document).on("keyup", "#yearlyCustom", function (event) {
     monthlyCustom = $("#monthlyCustom");
     yearlyCustom = $("#yearlyCustom");
     var value = $(yearlyCustom).val();
@@ -549,8 +549,8 @@ $(document).ready(function() {
             .find(".text")
             .html(
               "You have selected a One Time Donation of $" +
-                amount +
-                ". One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings. You will receive access to The SmallsLIVE Archive for the remainder of the tax year."
+              amount +
+              ". One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings. You will receive access to The SmallsLIVE Archive for the remainder of the tax year."
             );
           $selectionConfirmationDialog.find(".gift-content");
         } else {
@@ -568,7 +568,7 @@ $(document).ready(function() {
   //   $supporterForm.trigger('submit');
   // };
 
-  $(document).on("click", ".select-gift", function() {
+  $(document).on("click", ".select-gift", function () {
     // fade other items and make this one active
     $(".select-gift").removeClass("active");
     $(this).addClass("active");
@@ -610,18 +610,20 @@ $(document).ready(function() {
     let cost = $(this).attr("data-cost");
 
     var tax = 0;
-    if (cost &&  typeof cost != "undefined") {
-      tax = parseInt(price.substring(1)) - parseInt(cost);
+    var priceInt = parseInt(price.substring(1).replace(/,/g, ""))
+
+    if (cost && typeof cost != "undefined") {
+      tax = priceInt - parseInt(cost);
     } else {
-      tax = parseInt(price.substring(1));
+      tax = priceInt;
     }
     var content = 'You have selected a one time donation of <span class="smalls-color">' +
-          price +
-          '</span>  of which <span class="smalls-color">$' +
-          tax +
-          "</span> is tax deductible. You will receive access to The SmallsLIVE Archive for the remainder of the tax year. You have also chosen to receive a " +
-          giftTier +
-          " as a gift for your contribution.";
+      price +
+      '</span>  of which <span class="smalls-color">$' +
+      tax +
+      "</span> is tax deductible. You will receive access to The SmallsLIVE Archive for the remainder of the tax year. You have also chosen to receive a " +
+      giftTier +
+      " as a gift for your contribution.";
     if (hasVariants) {
       content = content + '<br> Please select an option below.'
     }
@@ -657,7 +659,7 @@ $(document).ready(function() {
     ".close-button"
   );
 
-  $(document).on("click", "#confirmSelectionButton", function() {
+  $(document).on("click", "#confirmSelectionButton", function () {
     $("#confirmButton").show();
     $("#selectionConfirmationDialog").modal("hide");
     var $variantSelect = $selectionConfirmationDialog.find("select");
@@ -669,15 +671,15 @@ $(document).ready(function() {
     }
   });
 
-  $(document).on("click", "#cancelSelectionButton", function() {
+  $(document).on("click", "#cancelSelectionButton", function () {
     resetButtons();
     $("#selectionConfirmationDialog").modal("hide");
   });
-  $(".close-action").click(function() {
+  $(".close-action").click(function () {
     $selectionConfirmationDialog.modal("hide");
     resetButtons();
   });
-  $selectionConfirmationDialog.on("hidden.bs.modal", function() {
+  $selectionConfirmationDialog.on("hidden.bs.modal", function () {
     resetButtons();
     $selectionConfirmationDialog.find(".title").empty();
     $selectionConfirmationDialog.find(".subtitle").empty();
@@ -698,7 +700,7 @@ $(document).ready(function() {
     "#cvc": 3
   };
 
-  $(document).on("keyup", "#payment-form input", function(e) {
+  $(document).on("keyup", "#payment-form input", function (e) {
     flowKind = $("#supporterSteps").data("flow");
     checkConfirmButton();
 
@@ -725,7 +727,7 @@ $(document).ready(function() {
 
   function checkCreditCardForm() {
     var check = true;
-    $.each(checks, function(selector, value) {
+    $.each(checks, function (selector, value) {
       if (!checkInput(selector, value)) {
         if (selector == "#expiry-month") {
           if (parseInt($input.val()) < 13 && $input.val().trim() != "") {
@@ -749,7 +751,7 @@ $(document).ready(function() {
     return true;
   }
 
-  var checkConfirmButton = function() {
+  var checkConfirmButton = function () {
     var $confirmButton = $("#confirmButton");
     flowKind = $("#supporterSteps").data("flow");
     if (currentStep === "SelectType") {
@@ -790,7 +792,7 @@ $(document).ready(function() {
     }
   };
 
-  $(".supporter-card-data .form-control").on("keyup", function() {
+  $(".supporter-card-data .form-control").on("keyup", function () {
     $(this).removeClass("error");
 
     if ($(".supporter-card-data .form-control.error").length == 0) {
@@ -805,7 +807,7 @@ $(document).ready(function() {
     $.ajax({
       url: url,
       type: "get",
-      success: function(data) {
+      success: function (data) {
         $step.html(data);
         updatePaymentInfo();
         replaceWhiteSelects($("#supporterStepPaymentInfo")[0]);
@@ -813,7 +815,7 @@ $(document).ready(function() {
         renderPayPal(paypal, selectedData.amount);
         showPanel(getNextStep());
       },
-      error: function(xhr, err) {
+      error: function (xhr, err) {
         console.log(err);
       }
     });
@@ -822,7 +824,7 @@ $(document).ready(function() {
   function buttonsSizeOrder() {
     if (document.body.clientWidth > 768) {
       var upperButtonWidth = 0;
-      $(".select-gift").each(function(index) {
+      $(".select-gift").each(function (index) {
         if (index > 0) {
           $(this).css("width", upperButtonWidth);
         }
@@ -839,7 +841,7 @@ $(document).ready(function() {
 
   buttonsSizeOrder();
 
-  $(document).on("click", "#confirmButton", function(event) {
+  $(document).on("click", "#confirmButton", function (event) {
     console.log(currentStep);
     var $that = $(this);
     $that.prop("disabled", true);
@@ -858,7 +860,7 @@ $(document).ready(function() {
       if (method == "credit-card") {
         var $inputs = $(".supporter-card-data .form-control");
         var errors = false;
-        $inputs.each(function() {
+        $inputs.each(function () {
           if (!$(this).val()) {
             $(this).addClass("error");
             errors = true;
@@ -909,7 +911,7 @@ $(document).ready(function() {
     $currentButton.next().addClass("active");
   });
 
-  $(document).on("click", "#backButton", function() {
+  $(document).on("click", "#backButton", function () {
     if (currentStep == "PaymentInfo") {
       $("#confirmButton").hide();
     }
