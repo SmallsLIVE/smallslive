@@ -389,3 +389,13 @@ class UpcomingSearchView(SearchMixin):
             day_itinerary['day_events'] = Event.objects.filter(start__gte=day_start, start__lte=day_end).order_by('start')
             context["day_list"].append(day_itinerary)
         return context
+    
+class UpcomingSearchViewAjax(TemplateView, UpcomingSearchView):
+
+    template_name = 'search/upcoming_calendar_dates.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UpcomingSearchViewAjax, self).get_context_data(**kwargs)
+        context.update(self.get_upcoming_context())
+
+        return context

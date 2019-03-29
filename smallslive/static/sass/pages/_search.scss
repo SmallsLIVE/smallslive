@@ -1618,6 +1618,10 @@ body.headers-1 {
         min-width: calc(90% - 25px) !important;
       }
     }
+
+    .custom-date-picker .datepicker.dropdown-menu td.day {
+      padding: 25px 2px 2px;
+    }
   }
 
   .day-list,
@@ -1651,7 +1655,7 @@ body.headers-1 {
 
   .white-border-button {
     margin-right: 0%;
-    margin-left: 9%;
+    margin-left: 8%;
   }
 }
 
