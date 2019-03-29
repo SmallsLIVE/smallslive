@@ -42,19 +42,6 @@
   {% comment %} <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
     {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming events=event_results show_event_venue=show_event_venue secondary=True hide_play=hide_play %}
   </main> {% endcomment %}
-
-  <div class="concerts-footer flex-column items-center">
-    {% if last_page != actual_page %}
-        <button id="load-more-{% if archived %}archived{% else %}upcoming{% endif %}-btn"
-                class="white-border-button load-more-btn"
-                onclick="loadMoreEvents('{% if archived %}Archived{% else %}Upcoming{% endif %}')">
-          <span>Load More</span>
-        </button>
-    {% endif %}
-    <div id="event-load-gif" class="loading-image events-gif">
-        <img src="{% static 'image/loading.gif' %}" alt="">
-    </div>
-  </div>
 </section>
 
 <div id="myNav" class="refine-overlay">
@@ -103,7 +90,6 @@
 
   <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
 <script>
-console.log("a")
  $(window).on('load', function () {
     $("#upcoming-datepicker").click()
 

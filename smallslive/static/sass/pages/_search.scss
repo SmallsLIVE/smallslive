@@ -1608,6 +1608,7 @@ body.headers-1 {
       top: 0 !important;
       left: 0px !important;
       width: 80% !important;
+      height: 58%;
 
       @media (max-width: 1366px) and (min-width: 1024px) {
         left: 0 !important;
@@ -1622,9 +1623,9 @@ body.headers-1 {
   .day-list,
   >.white-border-button {
     position: relative;
-    width: 11%;
+    width: 12%;
     height: 800px;
-    margin-right: 9%;
+    margin-right: 8%;
     margin-bottom: 30px;
   }
 
@@ -1643,7 +1644,7 @@ body.headers-1 {
       }
 
       .text2 {
-        font-size: 1.8em;
+        font-size: 1.75em;
       }
     }
   }
