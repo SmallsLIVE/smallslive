@@ -5,7 +5,6 @@
   <article class="event-display-today-and-tomorrow"> 
     {% include 'events/tonight_event_card.html' with event=event secondary=secondary hide_play=True%}
     <div class="event-info">
-        <img class="upcoming-logo" src="{% static 'logo.svg' %}" alt="Smalls" class="img-circle" width="40" height="40"/>
         <p class="event-info-title">{{ event.title }}</p>
         <div class="sub-info">
             <div class="{{ event.venue.name|lower}}-color title5">Live at {{ event.venue.name }}</div>
