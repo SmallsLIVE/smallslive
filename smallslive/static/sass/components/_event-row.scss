@@ -162,6 +162,7 @@ $event-row-padding: 3.5vw;
 
   a {
     width: 100%;
+    height: calc(100% - 75px);
   }
 
   .event-card,
