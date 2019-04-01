@@ -145,6 +145,7 @@ $event-row-padding: 3.5vw;
 
 .event-display {
   margin-right: $event-card-margin;
+  position: relative;
 }
 
 .event-display-today-and-tomorrow {
@@ -508,33 +509,26 @@ $event-row-padding: 3.5vw;
 }
 
 .event-info.new {
-  margin-left: 20px;
   position: absolute;
-  top: 25%;
+  top: 20px;
+  left: 20px;
   font-size: 8px;
   color: white;
-
-  @media (max-width: 1224px) {
-    margin-left: 5px;
-  }
+  margin: 0;
 
   @media (max-width: 960px) {
-    margin-left: 35px;
     font-size: 18px;
   }
 
   @media (max-width: 720px) {
-    margin-left: 25px;
     font-size: 16px;
   }
 
   @media (max-width: 530px) {
-    margin-left: 10px;
     font-size: 10px;
   }
 
   @media (max-width: 420px) {
-    margin-left: 8px;
     font-size: 8px;
   }
 }
@@ -552,7 +546,7 @@ $event-row-padding: 3.5vw;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(128, 128, 128, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .today-and-tomorrow-arrow {
