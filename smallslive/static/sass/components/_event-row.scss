@@ -551,6 +551,6 @@ $event-row-padding: 3.5vw;
 }
 
 .today-and-tomorrow-arrow {
-  height: 100% !important;
+  height: calc(100% - 75px) !important;
   border-radius: 0 !important;
 }
