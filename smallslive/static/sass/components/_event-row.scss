@@ -186,6 +186,7 @@ $event-row-padding: 3.5vw;
   }
 
   .artists {
+    background-color: white;
     padding-left: 20px;
     height: 90px;
     width: auto;
@@ -196,6 +197,9 @@ $event-row-padding: 3.5vw;
     a {
       line-height: 32px;
       height: 33%;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       &:hover {
         color: black;
@@ -228,29 +232,19 @@ $event-row-padding: 3.5vw;
     }
 
     .event-info-title {
+      line-height: 2vw;
       font-size: 1.58vw;
       color: white;
-      overflow-x: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .event-info-title {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      padding-top: 12px;
+      margin: 0 0 5px 0;
+      padding-top: 3px;
       width: fit-content;
-      max-width: 25vw;
-      height: 50px;
       font-weight: 400;
       font-family: "Oswald", sans-serif;
-      font-size: 30px;
       transform: scaleY(1.3);
     }
 
     .sub-info {
-      top: 60px;
+      top: 20px;
       left: 20px;
       position: absolute;
       font-size: 0.7vw;

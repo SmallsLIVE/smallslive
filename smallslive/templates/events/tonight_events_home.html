@@ -5,8 +5,8 @@
   <article class="event-display-today-and-tomorrow"> 
     {% include 'events/tonight_event_card.html' with event=event secondary=secondary hide_play=True%}
     <div class="event-info">
-        <p class="event-info-title">{{ event.title }}</p>
         <div class="sub-info">
+            <p class="event-info-title">{{ event.title }}</p>
             <div class="{{ event.venue.name|lower}}-color title5">Live at {{ event.venue.name }}</div>
             <div class="title5 sets">Sets at {{ event.get_set_hours_display}}</div>
         </div>
