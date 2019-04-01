@@ -317,8 +317,6 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
     def forms_invalid(self, form, inlines):
         response = super(EventAddView, self).forms_invalid(form, inlines)
         print form
-        for inline in inlines:
-            print inline
         return response
 
     def construct_ticket_forms(self, data=None):

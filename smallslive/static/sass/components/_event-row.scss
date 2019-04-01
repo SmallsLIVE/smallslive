@@ -148,19 +148,19 @@ $event-row-padding: 3.5vw;
 }
 
 .event-display-today-and-tomorrow {
+  position: relative;
   display: flex;
-  background: white;
-  height: 13.065vw;
-  min-height: 180px;
+  flex-direction: column;
   margin-right: 25px;
-  min-width: 45vw;
+  width: 27vw;
+  min-width: 27vw;
 
   @media (max-width: 1024px) {
     width: 85vw;
   }
 
   a {
-    width: 40%;
+    width: 100%;
   }
 
   .event-card,
@@ -178,6 +178,26 @@ $event-row-padding: 3.5vw;
       width: 100%;
       min-height: 220px;
       max-width: 350px;
+      min-height: unset;
+      max-width: unset;
+    }
+  }
+
+  .artists {
+    padding-left: 20px;
+    height: 75px;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+
+    a {
+      line-height: 25px;
+      height: 33%;
+
+      &:hover {
+        color: black;
+      }
     }
   }
 
@@ -186,25 +206,36 @@ $event-row-padding: 3.5vw;
   }
 
   .event-info {
-    div {
-      margin-bottom: 5px;
-    }
-
-    .event-info-title {
-      overflow-x: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    width: 60%;
+    position: absolute;
+    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     font-size: 14px;
-    padding: 15px 20px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+
+    div {
+      margin-bottom: 5px;
+    }
+
+    .title5 {
+      color: white;
+    }
 
     .event-info-title {
+      font-size: 1.58vw;
+      color: white;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .event-info-title {
+      position: absolute;
+      top: 20px;
+      left: 20px;
       padding-top: 12px;
       width: fit-content;
       max-width: 25vw;
@@ -215,33 +246,24 @@ $event-row-padding: 3.5vw;
       transform: scaleY(1.3);
     }
 
-    .artists {
-      height: 40%;
-      width: auto;
-      display: flex;
-      flex-wrap: wrap;
-      flex-direction: column;
-      overflow-x: auto;
+    .sub-info {
+      top: 60px;
+      left: 20px;
+      position: absolute;
+      font-size: 0.7vw;
+      font-weight: bold;
+      margin-bottom: 0px;
 
-      a {
-        margin: 1%;
-
-        overflow: hidden;
-
-        margin-right: 10px;
-        font-size: 16px;
-        text-transform: none;
-
-        &:hover {
-          color: grey;
-          text-decoration: underline;
-        }
-
-        @media (max-width: 1365px) and (min-width: 1024px) {
-          font-size: 14px;
-        }
+      .title5 {
+        font-weight: 200;
+        letter-spacing: 0.09em;
+        line-height: 1.5;
+        text-transform: uppercase;
+        transform: scaleY(1.3);
       }
     }
+
+
   }
 
   @media (max-width: 960px) {

@@ -4,6 +4,7 @@ $banners-height: 38vh;
   @media (max-width: $screen-md-max) {
     display: none;
   }
+
   margin-bottom: 30px;
   width: 100%;
 
@@ -63,6 +64,7 @@ $banners-height: 38vh;
 
       .banner-text-container {
         flex: 1;
+
         #banner-text {
           @include title-banner;
           text-align: justify;
@@ -123,11 +125,13 @@ $banners-height: 38vh;
             vertical-align: top;
             width: 50%;
           }
+
           .banner-learnmore-info {
             display: inline-block;
             width: 35%;
           }
         }
+
         .banner-text-container {
           flex: none;
           width: 73.5%;
@@ -171,30 +175,37 @@ $banners-height: 38vh;
   }
 
   &.mobile {
-    & + * + .event-stripe {
+    &+*+.event-stripe {
       margin-top: 0;
-      & > .live {
+
+      &>.live {
         margin-top: 0;
       }
     }
+
     margin-bottom: 0px;
     background-size: cover;
+
     .slick-dots {
       bottom: 0;
+
       li {
         margin: 0 2.35px;
       }
     }
+
     .slick-dots li button:before {
       font-size: 20px;
       content: "○";
       opacity: 1;
     }
+
     .slick-dots .slick-active button:before {
       content: "●";
       opacity: 1;
       color: black;
     }
+
     display: none;
     white-space: nowrap;
     width: 100vw;
@@ -208,11 +219,13 @@ $banners-height: 38vh;
       .banner-learnmore {
         margin-top: 10px;
       }
+
       .banner-text-container {
         .content {
           @include reen-kufi-normal;
         }
       }
+
       // .banner-text-container{
 
       // }
@@ -222,9 +235,11 @@ $banners-height: 38vh;
         justify-content: center;
         padding: 2.6vw 0;
       }
+
       display: inline-block;
       filter: brightness(1.85);
-      font-family: "Oswald", sans-serif;
+      font-family: "Oswald",
+      sans-serif;
       justify-content: space-between;
 
       margin-bottom: 40px;
@@ -232,6 +247,7 @@ $banners-height: 38vh;
       -webkit-filter: brightness(1.85);
       width: 100vw;
       filter: none;
+
       &.archive {
         background-image: url("/static/image/banners/archive_mobile_banner.jpg");
         background-size: 100% 100%;
@@ -246,28 +262,34 @@ $banners-height: 38vh;
         background-image: url("/static/image/banners/mission_mobile_banner.jpg");
         background-size: 100% 100%;
       }
+
       &.supporting {
         background-image: url("/static/image/banners/supporter_mobile_banner.jpg");
         background-size: 100% 100%;
         padding: 6.2vw 0;
         margin-bottom: 15px;
+
         .text9 {
           font-size: 3.84vw;
           text-align: justify;
         }
+
         .banner-learnmore {
           padding-top: 3.1vw;
           display: flex;
           justify-content: space-evenly;
+
           button,
           a {
             color: black;
             padding: 2vw 5vw;
           }
         }
+
         .title7 {
           font-size: 4.94vw;
           line-height: 1.68em;
+
           .bold {
             font-weight: 700;
           }
@@ -338,23 +360,27 @@ $banners-height: 38vh;
     margin-right: 0.5vw;
   }
 }
+
 .banner-text {
   font-family: "Reem Kufi", sans-serif;
   font-weight: 400;
-  font-size: 20px;
+  font-size: 15px;
   text-transform: initial;
 }
+
 .custom-banner-text {
   height: 80%;
+
   div {
     display: none;
   }
 }
+
 .home-banner-buttons {
   position: absolute;
-  right: 0;
+  right: 40px;
+  bottom: 40px;
   display: flex;
   flex-direction: row-reverse;
   width: 500px;
-  bottom: 20px;
 }
