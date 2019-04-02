@@ -383,10 +383,11 @@ class UpcomingSearchView(SearchMixin):
         starting_date = self.request.GET.get('starting_date', datetime.datetime.today().strftime('%Y-%m-%d'))
         starting_date = datetime.datetime.strptime(starting_date, '%Y-%m-%d')
         starting_day = datetime.datetime(starting_date.year, starting_date.month, starting_date.day,3)
-        days = int(self.request.GET.get('venue', 'all'))
+        venue = self.request.GET.get('venue', 'all')
+        event_list = Event.objects.all()
         if venue:
             if venue != 'all':
-                event_list = Event.objects.filter(venue__pk=venue)
+                event_list = event_list.filter(venue__pk=venue)
         for day in range (0, days):
             day_itinerary = {}
             paged_day = day + days * upcoming_page 
