@@ -100,7 +100,7 @@ $("#load-more-calendar").data("starting-date", todayStr)
   function getCalendarAjax(pageNumber, calendarDate, days, filtered, venue="all"){
     $.ajax({
     url: '/search/upcoming-ajax/',
-    data: {'upcoming_page':pageNumber, 'starting_date': calendarDate, 'days':days},
+    data: {'upcoming_page':pageNumber, 'starting_date': calendarDate, 'days':days, 'venue':venue},
     dataType: "json",
     success: function (data) {
       if(filtered){
@@ -125,7 +125,7 @@ $("#load-more-calendar").data("starting-date", todayStr)
 
   $("#calendar-club-filter").change(function () {
     $("#load-more-calendar").data("calendar-page-number",1)
-    getCalendarAjax(0, $("#load-more-calendar").data("starting-date"), 15, true, $(this).find("option:selected").val())
+    getCalendarAjax(0, $("#load-more-calendar").data("starting-date"), 12, true, $(this).find("option:selected").val())
   });
 </script>
   
