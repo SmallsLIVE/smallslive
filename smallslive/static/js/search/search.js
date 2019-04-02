@@ -1120,3 +1120,20 @@ $(document).ready(function () {
     );
   }
 });
+
+
+var $CalendarPicker = $("#calendar-date-picker");
+$CalendarPicker.datepicker({
+  format: "mm/dd/yyyy",
+  autoclose: false,
+  onSelect: function (value) {
+    console.log(value)
+  },
+  container: "#calendar-date-picker",
+  showOnFocus: true,
+  startDate: defaultFromDate,
+  endDate: defaultToDate
+});
+$CalendarPicker.datepicker("show");
+
+//datepicker datepicker-dropdown dropdown-menu datepicker-orient-left datepicker-orient-top
