@@ -94,27 +94,32 @@
     $("#upcoming-datepicker").click()
 
   })
-  function getCalendarAjax(pageNumber, calendarDate){
-
+  function getCalendarAjax(pageNumber, calendarDate, days, datepicker){
     $.ajax({
     url: '/search/upcoming-ajax/',
-    data: {'upcoming_page':pageNumber, 'starting_date': calendarDate},
+    data: {'upcoming_page':pageNumber, 'starting_date': calendarDate, 'days':days},
     dataType: "json",
     success: function (data) {
-      console.log(data)
+      if(datepicker){
+
+      }else{
+        $("#load-more-calendar").data("calendar-page-number", pageNumber + 1)
+        $(".upcoming-schedule").find(".flex-column.day-list").last().after(data.template)
+      }
+    },
+    error: function(err){
+      console.log(err)
     }
     });
 
   }
   $("#load-more-calendar").on("click", function(){
-    console.log($(this).data("calendar-page-number"), $(this).data("starting-date"))
     if($(this).data("starting-date")=='none'){
       today = new Date()
-      todayStr =   today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()
-      $(this).data("starting-date", )
+      todayStr =   today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
+      $(this).data("starting-date", todayStr)
     }
-    console.log($(this).data("calendar-page-number"), $(this).data("starting-date"))
-    getCalendarAjax($(this).data("calendar-page-number"), $(this).data("starting-date"))
+    getCalendarAjax($(this).data("calendar-page-number"), $(this).data("starting-date"), 15, false)
 
   })
 </script>

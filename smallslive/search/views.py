@@ -393,7 +393,7 @@ class UpcomingSearchView(SearchMixin):
             context["day_list"].append(day_itinerary)
         return context
     
-class UpcomingSearchViewAjax(TemplateView, UpcomingSearchView):
+class UpcomingSearchViewAjax2(TemplateView, UpcomingSearchView):
 
     template_name = 'search/upcoming_calendar_dates.html'
 
@@ -402,3 +402,17 @@ class UpcomingSearchViewAjax(TemplateView, UpcomingSearchView):
         context.update(self.get_upcoming_context())
 
         return context
+
+class UpcomingSearchViewAjax(TemplateView, UpcomingSearchView):
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context.update(self.get_upcoming_context())
+        data = {
+            'template': render_to_string(
+                'search/upcoming_calendar_dates.html', context,
+                context_instance=RequestContext(request)
+            )
+        }
+        
+        return JsonResponse(data)
