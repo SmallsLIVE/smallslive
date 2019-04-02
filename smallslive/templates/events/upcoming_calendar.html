@@ -37,7 +37,7 @@
       </div>
     </div>
     {% include 'search/upcoming_calendar_dates.html' with day_list=day_list %}
-    <div class="white-border-button">Load more</div>
+    <div id="load-more-calendar" data-calendar-page-number=1 data-starting-date="none" class="white-border-button">Load more</div>
   </div>
   {% comment %} <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
     {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming events=event_results show_event_venue=show_event_venue secondary=True hide_play=hide_play %}
@@ -92,6 +92,29 @@
 <script>
  $(window).on('load', function () {
     $("#upcoming-datepicker").click()
+
+  })
+  function getCalendarAjax(pageNumber, calendarDate){
+
+    $.ajax({
+    url: '/search/upcoming-ajax/',
+    data: {'upcoming_page':pageNumber, 'starting_date': calendarDate},
+    dataType: "json",
+    success: function (data) {
+      console.log(data)
+    }
+    });
+
+  }
+  $("#load-more-calendar").on("click", function(){
+    console.log($(this).data("calendar-page-number"), $(this).data("starting-date"))
+    if($(this).data("starting-date")=='none'){
+      today = new Date()
+      todayStr =   today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate()
+      $(this).data("starting-date", )
+    }
+    console.log($(this).data("calendar-page-number"), $(this).data("starting-date"))
+    getCalendarAjax($(this).data("calendar-page-number"), $(this).data("starting-date"))
 
   })
 </script>
