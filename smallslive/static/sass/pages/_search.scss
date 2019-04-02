@@ -1600,23 +1600,70 @@ body.headers-1 {
   .upcoming-datepicker {
     position: relative;
     width: 38%;
-    height: auto;
+    height: 450px;
     margin-right: 2%;
     margin-bottom: 30px;
 
     .datepicker-container.noclick {
+      height: 410px;
       display: block !important;
       top: 0 !important;
       left: 0px !important;
       width: 80% !important;
-      height: 58%;
 
       @media (max-width: 1366px) and (min-width: 1024px) {
         left: 0 !important;
       }
 
-      .datepicker-dropdown {
+      .datepicker-switch {
+        position: relative;
+        padding: 10px 0;
+      }
+
+      .datepicker.datepicker-inline {
         min-width: calc(90% - 25px) !important;
+        background-color: #f0f0eb;
+        top: 25px !important;
+        padding: 0;
+        left: 2vw !important;
+        border: none !important;
+        position: absolute;
+        z-index: 1000;
+        margin: 2px 0 0;
+        list-style: none;
+        background-clip: padding-box;
+        text-align: left;
+
+        .years-choices {
+          background: white;
+          font-size: 1em;
+          padding: 2px;
+          position: absolute;
+          right: 35px;
+          top: 100%;
+
+          >div {
+            padding: 2px 20px;
+            line-height: 2em;
+            background: #f0f0eb;
+          }
+        }
+
+        .table-condensed>thead>tr>th.datepicker-switch>div:first-child {
+          font-family: 'Oswald', sans-serif;
+          font-weight: 400;
+          font-size: 30px;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          transform: scaleY(1.3);
+          line-height: 36px;
+          position: relative;
+        }
+
+        td.day {
+          background-color: #f0f0eb;
+          padding: 25px 2px 2px;
+        }
       }
     }
 
