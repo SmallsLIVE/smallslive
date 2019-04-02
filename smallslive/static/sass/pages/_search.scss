@@ -1600,8 +1600,9 @@ body.headers-1 {
   .upcoming-datepicker {
     position: relative;
     width: 38%;
-    height: 800px;
+    height: auto;
     margin-right: 2%;
+    margin-bottom: 30px;
 
     .datepicker-container.noclick {
       display: block !important;
@@ -1628,7 +1629,7 @@ body.headers-1 {
   >.white-border-button {
     position: relative;
     width: 12%;
-    height: 800px;
+    height: auto;
     margin-right: 8%;
     margin-bottom: 30px;
   }
@@ -1636,14 +1637,14 @@ body.headers-1 {
   .day-list {
     .day-event {
       margin-top: 20px;
-      height: 125px;
 
       a:hover {
         color: black;
       }
 
       .day_event_title {
-        height: 4em;
+        height: auto;
+        max-height: 4em;
         overflow-y: hidden;
       }
 
