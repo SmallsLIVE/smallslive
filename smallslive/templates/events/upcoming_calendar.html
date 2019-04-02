@@ -16,7 +16,7 @@
           <div class="header-sub title1">{{ upcoming_dates.first|date:'D M d Y' }} - {{ upcoming_dates.last|date:'D M d Y' }}</div>
       </div>
       <div class="white-border-select club-filter-select">
-        <select id="club-filter">
+        <select id="calendar-club-filter">
             <option value="all">All</option>
           {% for venue in venues %}
             <option value="{{venue.pk}}">{{venue.name}}</option>
@@ -90,18 +90,22 @@
 
   <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
 <script>
+today = new Date()
+todayStr =   today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
+$("#load-more-calendar").data("starting-date", todayStr)
  $(window).on('load', function () {
     $("#upcoming-datepicker").click()
 
   })
-  function getCalendarAjax(pageNumber, calendarDate, days, datepicker){
+  function getCalendarAjax(pageNumber, calendarDate, days, filtered, venue="all"){
     $.ajax({
     url: '/search/upcoming-ajax/',
     data: {'upcoming_page':pageNumber, 'starting_date': calendarDate, 'days':days},
     dataType: "json",
     success: function (data) {
-      if(datepicker){
-
+      if(filtered){
+        $(".flex-column.day-list").remove()
+        $(".upcoming-schedule").find(".flex-row.upcoming-datepicker").last().after(data.template)
       }else{
         $("#load-more-calendar").data("calendar-page-number", pageNumber + 1)
         $(".upcoming-schedule").find(".flex-column.day-list").last().after(data.template)
@@ -114,13 +118,14 @@
 
   }
   $("#load-more-calendar").on("click", function(){
-    if($(this).data("starting-date")=='none'){
-      today = new Date()
-      todayStr =   today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
-      $(this).data("starting-date", todayStr)
-    }
+
     getCalendarAjax($(this).data("calendar-page-number"), $(this).data("starting-date"), 15, false)
 
   })
+
+  $("#calendar-club-filter").change(function () {
+    $("#load-more-calendar").data("calendar-page-number",1)
+    getCalendarAjax(0, $("#load-more-calendar").data("starting-date"), 15, true, $(this).find("option:selected").val())
+  });
 </script>
   
