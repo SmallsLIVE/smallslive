@@ -2007,14 +2007,16 @@ body.home.admin-header {
   }
 }
 
-@media (max-width: 1023px) {
-  .new-calendar {
-    display: none;
+.calendar {
+  @media (max-width: 1023px) {
+    .new-calendar {
+      display: none;
+    }
   }
-}
 
-@media (min-width: 1024px) {
-  .old-calendar {
-    display: none;
+  @media (min-width: 1024px) {
+    .old-calendar {
+      display: none;
+    }
   }
 }
