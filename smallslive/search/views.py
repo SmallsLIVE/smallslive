@@ -381,6 +381,7 @@ class UpcomingSearchView(SearchMixin):
         days = int(self.request.GET.get('days', 12))
         upcoming_page = int(self.request.GET.get('upcoming_page', 0))
         starting_date = self.request.GET.get('starting_date', datetime.datetime.today().strftime('%Y-%m-%d'))
+        print starting_date
         starting_date = datetime.datetime.strptime(starting_date, '%Y-%m-%d')
         starting_day = datetime.datetime(starting_date.year, starting_date.month, starting_date.day,3)
         venue = self.request.GET.get('venue', 'all')

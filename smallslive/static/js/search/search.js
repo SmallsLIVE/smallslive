@@ -1122,18 +1122,25 @@ $(document).ready(function () {
 });
 
 
-var $CalendarPicker = $("#calendar-date-picker");
-$CalendarPicker.datepicker({
-  format: "mm/dd/yyyy",
-  autoclose: false,
-  onSelect: function (value) {
-    console.log(value)
+
+$("#calendar-date-picker").datepicker({
+  onSelect: function (dateText, inst) {
+    console.log("a")
   },
+  format: "mm/dd/yyyy",
   container: "#calendar-date-picker",
-  showOnFocus: true,
   startDate: defaultFromDate,
   endDate: defaultToDate
 });
-$CalendarPicker.datepicker("show");
+$("#calendar-date-picker").datepicker().on('changeDate', function (ev) {
+  var newStartingDate = $("#calendar-date-picker").datepicker("getDate");
+  var newStartingDateRefined = newStartingDate.getFullYear() + "-" + (newStartingDate.getMonth() + 1) + "-" + newStartingDate.getDate();
+  console.log(newStartingDateRefined);
+  $("#load-more-calendar").data("calendar-page-number", 1)
+  $(this).data("starting-date", newStartingDateRefined);
+  getCalendarAjax($(this).data("calendar-page-number"), $(this).data("starting-date"), 12, true, $("#load-more-calendar").data("venue"))
 
-//datepicker datepicker-dropdown dropdown-menu datepicker-orient-left datepicker-orient-top
+});
+
+
+//$( "#calendar-date-picker" ).datepicker( "getDate" );
