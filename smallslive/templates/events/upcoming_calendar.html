@@ -77,6 +77,7 @@ $("#load-more-calendar").data("starting-date", todayStr)
 
   $("#calendar-club-filter").change(function () {
     $("#load-more-calendar").data("venue",$(this).find("option:selected").val())
+    $("#load-more-calendar").data("starting-date",todayStr)
     getCalendarAjax($("#load-more-calendar").data("starting-date"), 12, true, $(this).find("option:selected").val())
   });
 </script>
