@@ -16,6 +16,7 @@
     {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
   </div>
   {% include 'events/upcoming_calendar.html' with upcoming=True show_extend_date=True show_event_venue=True hide_play=True day_list=day_list %}
+  {% include 'events/shows.html' with upcoming=True show_extend_date=True show_event_venue=True hide_play=True day_list=day_list %}
 </main>{% endblock home_content %}
 
 {% block extra_js %}
