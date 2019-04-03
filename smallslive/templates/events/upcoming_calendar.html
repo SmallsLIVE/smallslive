@@ -37,7 +37,7 @@
       </div>
     </div>
     {% include 'search/upcoming_calendar_dates.html' with day_list=day_list %}
-    <div id="load-more-calendar" data-calendar-page-number=1 data-starting-date="none" class="white-border-button">Load more</div>
+    <div id="load-more-calendar" data-calendar-page-number=1 data-starting-date="none" data-venue="all" class="white-border-button">Load more</div>
   </div>
   {% comment %} <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
     {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming events=event_results show_event_venue=show_event_venue secondary=True hide_play=hide_play %}
@@ -119,12 +119,13 @@ $("#load-more-calendar").data("starting-date", todayStr)
   }
   $("#load-more-calendar").on("click", function(){
 
-    getCalendarAjax($(this).data("calendar-page-number"), $(this).data("starting-date"), 15, false)
+    getCalendarAjax($(this).data("calendar-page-number"), $(this).data("starting-date"), 15, false,$("#load-more-calendar").data("venue"))
 
   })
 
   $("#calendar-club-filter").change(function () {
     $("#load-more-calendar").data("calendar-page-number",1)
+    $("#load-more-calendar").data("venue",$(this).find("option:selected").val())
     getCalendarAjax(0, $("#load-more-calendar").data("starting-date"), 12, true, $(this).find("option:selected").val())
   });
 </script>
