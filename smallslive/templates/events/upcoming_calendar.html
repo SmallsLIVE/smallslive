@@ -3,8 +3,7 @@
 {% load common_tags %}
 {% load i18n %}
 
-<section id="shows{% if archived %}Archived{% else %}Upcoming{% endif %}Content"
-         class=" new-calendar search-tab-content {% if archived %}archived{% else %}upcoming{% endif %} {{ archived|yesno:',shows-calendar' }} "
+<section class=" new-calendar search-tab-content {% if archived %}archived{% else %}upcoming{% endif %} {{ archived|yesno:',shows-calendar' }} "
          data-toggle-tab="{% if archived %}archived{% else %}upcoming{% endif %}-shows"
          data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
   <div id="new-calendar">

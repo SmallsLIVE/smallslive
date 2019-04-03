@@ -387,7 +387,7 @@ class UpcomingSearchView(SearchMixin):
         if venue:
             if venue != 'all':
                 event_list = event_list.filter(venue__pk=venue)
-        for day in range (1, days+1):
+        for day in range (0, days):
             day_itinerary = {}
             day_start = starting_date + timedelta(days=day, hours=3)
             day_end = day_start + timedelta(days=1)

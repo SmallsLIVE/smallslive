@@ -1139,6 +1139,3 @@ $("#calendar-date-picker").datepicker().on('changeDate', function (ev) {
   getCalendarAjax($("#load-more-calendar").data("starting-date"), 12, true, $("#load-more-calendar").data("venue"))
 
 });
-
-
-//$( "#calendar-date-picker" ).datepicker( "getDate" );
