@@ -1135,9 +1135,8 @@ $("#calendar-date-picker").datepicker({
 $("#calendar-date-picker").datepicker().on('changeDate', function (ev) {
   var newStartingDate = $("#calendar-date-picker").datepicker("getDate");
   var newStartingDateRefined = newStartingDate.getFullYear() + "-" + (newStartingDate.getMonth() + 1) + "-" + newStartingDate.getDate();
-  console.log(newStartingDateRefined);
   $("#load-more-calendar").data("starting-date", newStartingDateRefined);
-  getCalendarAjax($(this).data("starting-date"), 12, true, $("#load-more-calendar").data("venue"))
+  getCalendarAjax($("#load-more-calendar").data("starting-date"), 12, true, $("#load-more-calendar").data("venue"))
 
 });
 
