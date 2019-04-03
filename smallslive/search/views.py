@@ -300,7 +300,7 @@ class SearchBarView(View):
 
 
 class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
-    template_name = 'search/search.html'
+    template_name = 'search/new_search.html'
 
     def get_context_data(self, **kwargs):
         context = super(TemplateSearchView, self).get_context_data(**kwargs)

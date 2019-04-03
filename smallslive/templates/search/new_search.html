@@ -128,9 +128,9 @@
       {% endif %}
     </section>
     <section id="search-content" class="search-content" style="display:none">
-      {% include 'events/new_shows.html' with archived=True default_to_date=default_to_date secondary=True %}
+      {% include 'events/shows.html' with archived=True default_to_date=default_to_date secondary=True %}
       <!-- include upcoming shows (as placeholder and hidden), so then can be toggled when viewing artists profile -->
-      {% include 'events/new_shows.html' with upcoming=True default_from_date=default_from_date secondary=True placeholder=True hide_filters=True%}
+      {% include 'events/shows.html' with upcoming=True default_from_date=default_from_date secondary=True placeholder=True hide_filters=True%}
     </section>
   </div>
 {% endblock %}
