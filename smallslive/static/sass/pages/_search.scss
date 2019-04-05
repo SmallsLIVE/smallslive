@@ -1586,15 +1586,31 @@ body.headers-1 {
   padding: 0 10%;
   margin-top: 40px;
 
-  >*:nth-last-child(n+6)::before {
-    content: '';
-    position: absolute;
-    right: -140px;
-    bottom: 0;
-    left: -10px;
-    border: 2px solid white;
+  @media(min-width: 1201px) {
+    >*:nth-last-child(n+6)::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 167%;
+      border: 2px solid white;
+    }
   }
 
+  @media(max-width: 1200px) {
+    >*:nth-last-child(n+8)::before {
+      content: '';
+      position: absolute;
+      width: 125%;
+      bottom: 0;
+      border: 2px solid white;
+    }
+  }
+
+  @media(max-width: 1200px) {
+    >.flex-column.day-list:nth-last-of-type(-n+4) {
+      display: none;
+    }
+  }
 
 
   .no-event {
@@ -1605,9 +1621,14 @@ body.headers-1 {
   .upcoming-datepicker {
     position: relative;
     width: 38%;
-    height: 450px;
+    min-height: 450px;
+    height: auto;
     margin-right: 2%;
     margin-bottom: 30px;
+
+    @media(max-width: 1200px) {
+      width: 48%;
+    }
 
     .datepicker-container.noclick {
       height: 410px;
@@ -1684,6 +1705,11 @@ body.headers-1 {
     height: auto;
     margin-right: 8%;
     margin-bottom: 30px;
+
+    @media(max-width: 1200px) {
+      width: 20%;
+      margin-right: 5%;
+    }
   }
 
   .day-list {
@@ -1708,7 +1734,11 @@ body.headers-1 {
 
   .white-border-button {
     margin-right: 0%;
-    margin-left: 8%;
+    margin-left: 6%;
+
+    @media(max-width: 1200px) {
+      margin-left: 5%;
+    }
   }
 }
 
@@ -2013,6 +2043,10 @@ body.home.admin-header {
 }
 
 .calendar {
+  .section-title.home.flex-row>main {
+    margin: 25px 0;
+  }
+
   @media (max-width: 1023px) {
     .new-calendar {
       display: none;

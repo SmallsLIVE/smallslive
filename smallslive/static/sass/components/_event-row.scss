@@ -153,8 +153,8 @@ $event-row-padding: 3.5vw;
   display: flex;
   flex-direction: column;
   margin-right: 25px;
-  width: 27vw;
-  min-width: 27vw;
+  width: calc(30.7vw - 25px);
+  min-width: calc(30.7vw - 25px);
 
   @media (max-width: 1024px) {
     width: 85vw;
@@ -169,38 +169,40 @@ $event-row-padding: 3.5vw;
   .event-picture-container,
   .picture-border {
     height: 100%;
-  }
 
-  .event-picture {
-    height: inherit !important;
-    width: inherit !important;
 
-    img {
-      height: 100%;
-      width: 100%;
-      min-height: 220px;
-      max-width: 350px;
-      min-height: unset;
-      max-width: unset;
+    div.event-picture {
+      width: calc(30.7vw - 25px);
+      height: 15vw;
+
+      img {
+        height: 100%;
+        width: 100%;
+        min-height: 220px;
+        max-width: 350px;
+        min-height: unset;
+        max-width: unset;
+      }
     }
   }
 
   .artists {
     background-color: white;
-    padding-left: 20px;
-    padding-top: 12px;
+    padding: 12px 20px 18px;
     height: 110px;
     width: auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     overflow-y: auto;
 
     a {
       line-height: 32px;
+      width: 50%;
       height: 33%;
-      // overflow: hidden;
-      // text-overflow: ellipsis;
-      // white-space: nowrap;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
 
       &:hover {
         color: black;
