@@ -25,7 +25,7 @@
       </div>
   </div> 
   {% endif %}
-   <div class="flex-row upcoming-schedule">
+   <div class="flex-row upcoming-schedule calendar-hiding-4">
     <div class="flex-row upcoming-datepicker">
       <div  class="datepicker-container noclick" style="display:block;     top: 0 !important;">
           <div class="custom-date-picker" id="calendar-date-picker">
@@ -53,10 +53,22 @@ $("#load-more-calendar").data("starting-date", todayStr)
     data: {'starting_date': calendarDate, 'days':days, 'venue':venue},
     dataType: "json",
     success: function (data) {
+       var hidden = getHiddenCount();
+        function getNewHidder(hidden){
+          if(hidden==1)
+          return 4
+          else
+          return hidden-1
+        }
       if(filtered){
+        $(".flex-row.upcoming-schedule").removeClass("calendar-hiding-"+hidden)
+        $(".flex-row.upcoming-schedule").addClass("calendar-hiding-4")
+
         $(".flex-column.day-list").remove()
         $(".upcoming-schedule").find(".flex-row.upcoming-datepicker").last().after(data.template)
       }else{
+        $(".flex-row.upcoming-schedule").removeClass("calendar-hiding-"+hidden)
+        $(".flex-row.upcoming-schedule").addClass("calendar-hiding-"+getNewHidder(hidden))
         $(".upcoming-schedule").find(".flex-column.day-list").last().after(data.template)
       }
       $("#load-more-calendar").data("starting-date", data.new_date);
@@ -79,5 +91,10 @@ $("#load-more-calendar").data("starting-date", todayStr)
     $("#load-more-calendar").data("starting-date",todayStr)
     getCalendarAjax($("#load-more-calendar").data("starting-date"), 12, true, $(this).find("option:selected").val())
   });
+
+  function getHiddenCount() {
+  var numberStr = $($(".flex-row.upcoming-schedule")[0]).attr('class').split('calendar-hiding-')[1].split('')[0];
+  return parseInt(numberStr);
+  }
 </script>
   
