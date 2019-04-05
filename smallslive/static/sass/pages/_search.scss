@@ -1597,7 +1597,7 @@ body.headers-1 {
   }
 
   @media(max-width: 1200px) {
-    >*:nth-last-child(n+8)::before {
+    >*:nth-last-child(n+9)::before {
       content: '';
       position: absolute;
       width: 125%;
@@ -1605,13 +1605,6 @@ body.headers-1 {
       border: 2px solid white;
     }
   }
-
-  @media(max-width: 1200px) {
-    >.flex-column.day-list:nth-last-of-type(-n+4) {
-      display: none;
-    }
-  }
-
 
   .no-event {
     margin-top: 20px;
@@ -1701,9 +1694,9 @@ body.headers-1 {
   .day-list,
   >.white-border-button {
     position: relative;
-    width: 12%;
+    width: 17%;
     height: auto;
-    margin-right: 8%;
+    margin-right: 3%;
     margin-bottom: 30px;
 
     @media(max-width: 1200px) {
@@ -1734,7 +1727,7 @@ body.headers-1 {
 
   .white-border-button {
     margin-right: 0%;
-    margin-left: 6%;
+    margin-left: 3%;
 
     @media(max-width: 1200px) {
       margin-left: 5%;
@@ -2092,4 +2085,14 @@ body.home.admin-header {
     padding: 20px 0;
   }
 
+}
+
+@for $i from 1 through 4 {
+  .calendar-hiding-#{$i} {
+    @media(max-width: 1200px) {
+      >.flex-column.day-list:nth-last-of-type(-n+#{$i}) {
+        display: none;
+      }
+    }
+  }
 }
