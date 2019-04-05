@@ -1596,16 +1596,6 @@ body.headers-1 {
     }
   }
 
-  @media(max-width: 1200px) {
-    >*:nth-last-child(n+9)::before {
-      content: '';
-      position: absolute;
-      width: 125%;
-      bottom: -20px;
-      border: 2px solid white;
-    }
-  }
-
   .no-event {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -2094,5 +2084,51 @@ body.home.admin-header {
         display: none;
       }
     }
+  }
+}
+
+
+.upcoming-schedule {
+  @media(max-width: 1200px) {
+    &.calendar-hiding-1 {
+      >*:nth-last-child(n+5)::before {
+        content: '';
+        position: absolute;
+        width: 125%;
+        bottom: -20px;
+        border: 2px solid white;
+      }
+    }
+
+    &.calendar-hiding-2 {
+      >*:nth-last-child(n+6)::before {
+        content: '';
+        position: absolute;
+        width: 125%;
+        bottom: -20px;
+        border: 2px solid white;
+      }
+    }
+
+    &.calendar-hiding-3 {
+      >*:nth-last-child(n+7)::before {
+        content: '';
+        position: absolute;
+        width: 125%;
+        bottom: -20px;
+        border: 2px solid white;
+      }
+    }
+
+    &.calendar-hiding-4 {
+      >*:nth-last-child(n+8)::before {
+        content: '';
+        position: absolute;
+        width: 125%;
+        bottom: -20px;
+        border: 2px solid white;
+      }
+    }
+
   }
 }
