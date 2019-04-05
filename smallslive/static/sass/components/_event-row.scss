@@ -148,17 +148,13 @@ $event-row-padding: 3.5vw;
   position: relative;
 }
 
-.event-display-today-and-tomorrow {
+.event-row .event-display-today-and-tomorrow {
   position: relative;
   display: flex;
   flex-direction: column;
   margin-right: 25px;
   width: calc(30.7vw - 25px);
   min-width: calc(30.7vw - 25px);
-
-  @media (max-width: 1024px) {
-    width: 85vw;
-  }
 
   a {
     width: 100%;
@@ -168,12 +164,16 @@ $event-row-padding: 3.5vw;
   .event-card,
   .event-picture-container,
   .picture-border {
+    min-height: auto;
     height: 100%;
 
-
     div.event-picture {
-      width: calc(30.7vw - 25px);
-      height: 15vw;
+      width: 100%;
+      height: calc(30.7vw * 0.6 - 25px);
+
+      @media(max-width: 960px) {
+        height: calc(70.7vw * 0.6 - 25px);
+      }
 
       img {
         height: 100%;
@@ -196,6 +196,8 @@ $event-row-padding: 3.5vw;
     flex-wrap: wrap;
     overflow-y: auto;
 
+
+
     a {
       line-height: 32px;
       width: 50%;
@@ -206,6 +208,13 @@ $event-row-padding: 3.5vw;
 
       &:hover {
         color: black;
+      }
+
+      @media (max-width: 960px) {
+        &.title5 {
+          padding-right: 10px;
+          font-size: calc(8px + 1vw);
+        }
       }
     }
   }
@@ -225,6 +234,7 @@ $event-row-padding: 3.5vw;
     font-size: 14px;
     margin-top: 0px;
     margin-bottom: 0px;
+    min-height: auto;
 
     div {
       margin-bottom: 5px;
@@ -259,9 +269,21 @@ $event-row-padding: 3.5vw;
         line-height: 1.5;
         text-transform: uppercase;
         transform: scaleY(1.3);
+
+      }
+
+      @media (max-width: 960px) {
+        .event-info-title {
+          font-size: 4.5vw;
+          margin: 1.2vw 0 2.6vw 0;
+          overflow-x: visible;
+        }
+
+        .title5 {
+          font-size: 3.5vw;
+        }
       }
     }
-
 
   }
 
@@ -269,11 +291,7 @@ $event-row-padding: 3.5vw;
     height: initial;
     flex-direction: column;
     max-width: 300px;
-    min-width: 75vw;
-
-    .event-picture img {
-      min-width: 75vw;
-    }
+    min-width: calc(90vw - 25px);
 
     a {
       width: 100%;
@@ -501,7 +519,6 @@ $event-row-padding: 3.5vw;
   .event-info,
   .album-row {
     font-size: 2.4vw;
-    min-height: 8.66vw;
     position: relative;
   }
 }
