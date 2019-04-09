@@ -174,7 +174,7 @@ $banners-height: 38vh;
     }
   }
 
-  &.mobile {
+  &.carousel {
 
     display: none;
     white-space: nowrap;
@@ -254,48 +254,36 @@ $banners-height: 38vh;
       &.archive {
         background-image: url("/static/image/banners/archive_mobile_banner.jpg");
         background-size: 100% 100%;
+
+        @media(min-width: 1024px) {
+          background-image: url("/static/image/banners/archive_text_light.jpg");
+        }
       }
 
       &.live {
         background-image: url("/static/image/banners/live_mobile_banner.jpg");
         background-size: 100% 100%;
+
+        @media(min-width: 1024px) {
+          background-image: url("/static/image/banners/live_text_light.jpg");
+        }
       }
 
       &.mission {
         background-image: url("/static/image/banners/mission_mobile_banner.jpg");
         background-size: 100% 100%;
+
+        @media(min-width: 1024px) {
+          background-image: url("/static/image/banners/mission_text_light.jpg");
+        }
       }
 
       &.supporting {
         background-image: url("/static/image/banners/supporter_mobile_banner.jpg");
         background-size: 100% 100%;
-        padding: 6.2vw 0;
-        margin-bottom: 15px;
 
-        .text9 {
-          font-size: 3.84vw;
-          text-align: justify;
-        }
-
-        .banner-learnmore {
-          padding-top: 3.1vw;
-          display: flex;
-          justify-content: space-evenly;
-
-          button,
-          a {
-            color: black;
-            padding: 2vw 5vw;
-          }
-        }
-
-        .title7 {
-          font-size: 4.94vw;
-          line-height: 1.68em;
-
-          .bold {
-            font-weight: 700;
-          }
+        @media(min-width: 1024px) {
+          background-image: url("/static/image/banners/mission_text_light.jpg");
         }
       }
 
@@ -306,6 +294,12 @@ $banners-height: 38vh;
         margin-top: 3px;
         text-transform: uppercase;
         transform: scaleY(1.2);
+
+        @media(max-width: 1024px) {
+          font-size: 4.5vw;
+          line-height: 5vw;
+          white-space: normal;
+        }
       }
 
       p.content {
@@ -317,19 +311,30 @@ $banners-height: 38vh;
         vertical-align: middle;
         display: table-cell;
         padding: 0 5vw;
+
+        @media(max-width: 1024px) {
+          height: auto;
+          margin-bottom: 13px;
+          white-space: normal;
+        }
       }
 
       button,
       a {
-        font-size: 3.5vw;
+        font-size: 1vw;
         border: 3px solid white;
         border-radius: 50px;
-        padding: 2vw 8vw;
+        padding: 1vw;
 
         background-color: transparent;
         text-transform: uppercase;
         font-weight: 400;
         letter-spacing: 3px;
+
+        @media(max-width: 1024px) {
+          font-size: 3vw;
+
+        }
       }
     }
   }
@@ -389,7 +394,7 @@ $banners-height: 38vh;
   width: 500px;
 }
 
-.home-new .banners.mobile {
+.home-new .banners.carousel {
   display: block;
 
   @media (min-width: 1024px) {
