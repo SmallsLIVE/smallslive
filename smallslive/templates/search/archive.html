@@ -30,107 +30,63 @@
 {% include 'inactive_dialog.html' %}
 {% include 'become_a_supporter_dialog.html' %}
 
-
-
 <div class="flex-row new_archive">
-    <div class="musicians-result active" data-type="musicianContent">
-        <div id="artist-subheader" class="showing-results text1" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>
-            1-24
+    <div class="musicians-result active" data-type="search-content">
+        <div class="title1 shows-results-title">
+          Shows
         </div>
+    </div>
+    <div class="musicians-result" data-type="musicianContent">
         <div class="title1 musicians-results-title">
-            {% if artists_blocks %} <span id="total-artist" class="accent-color">{{ showing_artist_results }}</span>
-            {% if showing_artist_results > 1 %}
-                Musicians
-            {% else %}
-                Musician
-            {% endif %}
-            {% else %} No musicians named "<span class="accent-color">{{ query_term }}</span>" found
-            {% endif%}
+           Musicians
         </div>
     </div>
-    <div class="musicians-result" data-type="search-content">
-        <div class="title1 shows-results-title">      
-        <span id="archived-event-totals" class='accent-color' >{{ showing_event_results }}</span>
-        Archived Shows
-        </div>
-        <div id="archived-event-subheader"
-                class="showing-results text1"
-                style="margin-top: -13px;"
-                data-max-number='{{ showing_artist_results }}'
-                data-paginator-number=24
-                data-left-number=1
-                data-right-number=24>1-24
-        </div>
-    </div>
+
 </div>
 
 <div class="artist-search-profile-container pad-content"></div>
 
 <div class="search-container pad-content">
+    <section id="search-content" class="search-content">
+      <section class="event-stripe">
+        <div class="section-title home">
+          <div class="title1">Recently Added</div>
+        </div>
+        <main>
+          <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+          <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+          {% include 'events/event_row.html' with events=new_in_archive secondary=True %}
+        </main>
+
+      </section>
+      <section class="event-stripe">
+        <div class="section-title home">
+          <div class="title1">Most Popular</div>
+          <span class="select-container">
+            <div class="white-border-select home-filter">
+              <select id="most-popular-filter">
+                <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
+                <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
+                <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
+                <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
+              </select>
+            </div>
+          </span>
+        </div>
+        <main id="most-popular-container">
+          <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+          <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+          {% include 'events/event_row.html' with events=popular_in_archive secondary=True %}
+        </main>
+      </section>
+
+      {% include 'events/shows.html' with archived=True default_to_date=default_to_date secondary=True show_rows=True%}
+    </section>
     <section id="musicianContent"
              data-toggle-tab="musicians"
-             class="search-tab-content {% if musician_search %}active{% endif %}"
+             class="search-tab-content"
              data-toggle-tab-group="search-results">
-      {% if artists_blocks %}
-        <div  class="search-artist-box-container">
-         <!--<img src="{% static 'image/search-icon.svg' %}">-->
-          <input id="artist-search"
-                 class="search-artist-box"
-                 name="q" type="hidden"
-                 placeholder="START TYPING AN ARTIST NAME"
-                 autocomplete="off">
-            <div class="artist-search-a-z">
-           <div class="white-border-button scroll-left"><i class="fa fa-arrow-left" aria-hidden="true"></i></div>
-           <div id="a-z-search">
-            <div id="a-z-refresh" class="white-border-button">
-              ALL
-            </div>
-           </div>
-           <div class="white-border-button scroll-right"><i class="fa fa-arrow-right" aria-hidden="true"></i></div>
-           </div>
-          <br>
-           <div class="instrument-btn white-border-button caret">Instrument</div> 
-
-        </div>
-        <div class="instruments-container">
-          <a href="#" class="close-button"></a>
-          <div class="instrument text4" data-instrument="">All Instruments</div>
-          {% for instrument in instruments %}
-            <div data-instrument="{{ instrument }}" class="instrument text4 text-grey">{{ instrument }}</div>
-          {% endfor %}
-        </div>
-
-        <div class="container-list-article">
-
-          <div class="left_arrow artist-arrow-search artist-arrow-disabled">
-
-          </div>
-
-          <div id="artist-load-gif" class="loading-image">
-            <img src="{% static 'image/loading.gif' %}" alt="">
-          </div>
-
-          <main id="artists" class="artists-container invisible">
-            {% include 'search/artist_results.html' %}
-          </main>
-
-          <div class="right_arrow artist-arrow-search"
-               style="{% if artist_num_pages == 1 %}visibility: hidden;{% endif %}">
-          </div>
-        </div>
-
-        <div class="white-border-button load-more-artist-button" onclick="loadMoreArtistButton()" style="{% if artist_num_pages == 1 %}visibility: hidden;{% endif %}">Load more</div>
-        <div hidden class="artist-loading-gif mobile-artist-loading" style="height: 50px; margin-bottom: 30px;"></div>
-        <div class="flex-row items-center content-space-between artist-arrows">
-          <div class="left_arrow artist-arrow-search"></div>
-          <div class="right_arrow artist-arrow-search"></div>
-        </div>
-      {% endif %}
-    </section>
-    <section id="search-content" class="search-content" style="display:none">
-      {% include 'events/shows.html' with archived=True default_to_date=default_to_date secondary=True %}
-      <!-- include upcoming shows (as placeholder and hidden), so then can be toggled when viewing artists profile -->
-      {% include 'events/shows.html' with upcoming=True default_from_date=default_from_date secondary=True placeholder=True hide_filters=True%}
+      {% include 'search/artists.html' %}
     </section>
   </div>
 {% endblock %}

@@ -300,7 +300,7 @@ class SearchBarView(View):
 
 
 class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
-    template_name = 'search/new_search.html'
+    template_name = 'search/search.html'
 
     def get_context_data(self, **kwargs):
         context = super(TemplateSearchView, self).get_context_data(**kwargs)
@@ -343,6 +343,10 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         context['default_to_date'] = default_to_date
 
         return context
+
+
+class ArchiveView(TemplateSearchView):
+    template_name = 'search/archive.html'
 
 
 class ArtistInfo(View):

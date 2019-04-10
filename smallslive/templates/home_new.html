@@ -44,38 +44,7 @@
         {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
         <section class="event-stripe">
           <div class="section-title home">
-            <div class="title1">Recently Added</div>
-          </div>
-          <main>
-            <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-            <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'events/event_row.html' with events=new_in_archive secondary=True %}
-          </main>
-
-        </section>
-        <section class="event-stripe">
-          <div class="section-title home">
-            <div class="title1">Most Popular</div>
-            <span class="select-container">
-              <div class="white-border-select home-filter">
-                <select id="most-popular-filter">
-                  <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
-                  <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
-                  <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
-                  <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
-                </select>
-              </div>
-            </span>
-          </div>
-          <main id="most-popular-container">
-            <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-            <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'events/event_row.html' with events=popular_in_archive secondary=True %}
-          </main>
-        </section>
-        <section class="event-stripe">
-          <div class="section-title home">
-            <div class="title1">Staff Picks</div>
+            <div class="title1">Highlights from the Archive</div>
           </div>
           <main>
             <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>

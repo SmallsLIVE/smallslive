@@ -5,8 +5,8 @@ $live-card-width-medium: 22.85vw;
 $live-card-width-large: 15.1vw;
 $regular-card-width-mobile: 46.1vw;
 $regular-card-width-tablet: 15.1vw;
-$regular-card-width-medium: 15.1vw;
-$regular-card-width-large: 11.225vw;
+$regular-card-width-medium: 18.1vw;
+$regular-card-width-large: 15.1vw;
 $event-card-margin: 0.4vw;
 $event-row-padding: 3.5vw;
 
@@ -525,9 +525,9 @@ $event-row-padding: 3.5vw;
 
 .event-info.new {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  font-size: 10px;
+  top: 15px;
+  left: 15px;
+  font-size: 12px;
   color: white;
   margin: 0;
 
