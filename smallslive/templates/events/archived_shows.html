@@ -2,45 +2,46 @@
 {% load thumbor_tags %}
 {% load i18n %}
 
+{% block shows  %}
 <section id="shows{% if archived %}Archived{% else %}Upcoming{% endif %}Content"
-         class=" old-calendar search-tab-content {% if archived %}archived{% else %}upcoming{% endif %} {{ archived|yesno:',shows-calendar' }} "
+         class="archived-shows old-calendar search-tab-content archived event-stripe"
          data-toggle-tab="{% if archived %}archived{% else %}upcoming{% endif %}-shows"
          data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
-  {% if archived or upcoming %}
-  <div class="musicians-results white-line-bottom ">
-      <div class="title1 shows-results-title">
-      {% if archived %}
-        <span id="archived-event-totals" class='accent-color' >{{ showing_event_results }}</span>
-      {% endif %}
-      {{ archived|yesno:'Archived,Upcoming' }} Shows</div>
-      {% if archived %}
-        <div id="archived-event-subheader"
+    <div class="section-title home">
+      <span class="title1" id="date-from-label">All Time </span>
+      <span id="date-to-label" class="title1"> / </span>
+      <span id="number-of-shows-label" class="accent-color title1">{{ showing_event_results }} </span>
+      <span class="title1">  Shows </span>
+      <span id="archived-event-subheader"
              class="showing-results text1"
              style="margin-top: -13px;"
              data-max-number='{{ showing_artist_results }}'
              data-paginator-number=24
              data-left-number=1
-             data-right-number=24>1-24</div>
-      {% endif %}
-  </div>
-  {% endif %}
-  {% if archived %}
-      {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
-  {% endif %}
-  {% if upcoming and not hide_filters %}
-    <div class="flex-row calendar-filters">
-      {% include 'events/upcoming_filters.html' %}
+             data-right-number=24>1-24
+      </span>
+      <span class="select-container">
+        <div class="white-border-select home-filter">
+          <select id="events-filter">
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="popular">Popular</option>
+          </select>
+        </div>
+      </span>
     </div>
-  {% endif %}
+
+  {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
+
   <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
-    {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming events=event_results show_event_venue=show_event_venue secondary=True hide_play=hide_play %}
+    {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming events=event_results show_event_venue=show_event_venue secondary=True hide_play=hide_play with_date_picker=True %}
   </main>
 
   <div class="concerts-footer flex-column items-center">
     {% if last_page != actual_page %}
-        <button id="load-more-{% if archived %}archived{% else %}upcoming{% endif %}-btn"
+        <button id="load-more-archived-btn"
                 class="white-border-button load-more-btn"
-                onclick="loadMoreEvents('{% if archived %}Archived{% else %}Upcoming{% endif %}')">
+                onclick="loadMoreEvents('Archived')">
           <span>Load More</span>
         </button>
     {% endif %}
@@ -93,7 +94,6 @@
   </div>
 </div>
 
+<script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
 
-  <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
-
-  
+{% endblock %}

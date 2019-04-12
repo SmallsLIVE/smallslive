@@ -13,7 +13,7 @@
 {% block home_content %}
 <main class="calendar">
   <div class="event-stripe">
-    {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
+    {% include 'events/today_and_tomorrow.html' with custom_venue_style=True calendar_page=True%}
   </div>
   {% include 'events/upcoming_calendar.html' with upcoming=True show_extend_date=True show_event_venue=True hide_play=True day_list=day_list %}
   {% include 'events/shows.html' with upcoming=True show_extend_date=True show_event_venue=True hide_play=True day_list=day_list %}
@@ -21,10 +21,14 @@
 
 {% block extra_js %}
 <script>
-  $("#club-filter ~ .select-selected").text("Select Club")
-  $("#club-filter ~ .select-selected").css("padding: 1em 30px;")
 
-      
+  $(document).ready(function () {
+
+    $("#calendar-club-filter ~ .select-selected").text("Select Club")
+    $("#calendar-club-filter ~ .select-selected").css("padding: 1em 30px;")
+
+  });
+
   var eventOrderFilter = 'oldest';
   var show_event_venue = true;
   var show_event_setTime = true;

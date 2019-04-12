@@ -375,7 +375,7 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
         if (apply || eventFilter) {
           apply = false;
           eventFilter = false;
-          $showsContainer.html("");
+          $showsContainer.find('article').remove();
         }
         var article = $(data.template).find("article");
         if (!article.length) {
@@ -493,6 +493,7 @@ $(document).ready(function () {
     }
   });
 
+  $("#events-filter ~ .select-selected").text("Sort By");
   $("#events-filter").change(function () {
     eventFilter = true;
     eventOrderFilter = $(this).val();
@@ -1123,17 +1124,17 @@ $(document).ready(function () {
 
 
 
-$("#calendar-date-picker").datepicker({
+$("#archive-date-picker").datepicker({
   onSelect: function (dateText, inst) {
     console.log("a")
   },
   format: "mm/dd/yyyy",
-  container: "#calendar-date-picker",
+  container: "#archive-date-picker",
   startDate: defaultFromDate,
   endDate: defaultToDate
 });
-$("#calendar-date-picker").datepicker().on('changeDate', function (ev) {
-  var newStartingDate = $("#calendar-date-picker").datepicker("getDate");
+$("#archive-date-picker").datepicker().on('changeDate', function (ev) {
+  var newStartingDate = $("#archive-date-picker").datepicker("getDate");
   var newStartingDateRefined = newStartingDate.getFullYear() + "-" + (newStartingDate.getMonth() + 1) + "-" + newStartingDate.getDate();
   $("#load-more-calendar").data("starting-date", newStartingDateRefined);
   getCalendarAjax($("#load-more-calendar").data("starting-date"), 12, true, $("#load-more-calendar").data("venue"))

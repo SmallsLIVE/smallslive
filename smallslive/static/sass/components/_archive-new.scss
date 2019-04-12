@@ -294,7 +294,7 @@
 .custom-date-picker {
   @include display(flex);
   @include align-items(center);
-  width: 180px;
+  width: 100%;
 
   input {
     @include white-border-button;

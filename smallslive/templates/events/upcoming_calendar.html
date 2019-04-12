@@ -8,93 +8,83 @@
          data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
   <div id="new-calendar">
   {% if archived or upcoming %}
-   <div class="musicians-results flex-row">
-      <div class="section-title home" style="width: 950px;     background-size: 900px 5px;">
-          <div class="title1">
-              Upcoming Shows <span class="date-separator">/</span>
-          </div>
-          <div class="header-sub title1">{{ upcoming_dates.first|date:'D M d Y' }} - {{ upcoming_dates.last|date:'D M d Y' }}</div>
+    <div class="musicians-results flex-row" style="margin-top: 40px; flex-wrap: wrap;">
+      <div class="section-title home" style="width: 950px; background-size: 900px 5px; margin-right: -3.5vw;">
+        <div class="title1">
+            Upcoming Shows <span class="date-separator">/</span>
+        </div>
+        <div class="header-sub title1">{{ upcoming_dates.first|date:'D M d Y' }} - {{ upcoming_dates.last|date:'D M d Y' }}</div>
       </div>
-      <div class="white-border-select club-filter-select">
-        <select id="calendar-club-filter">
+      <div style="padding-left: 3.5vw; position: relative;">
+        <div class="white-border-select club-filter-select" style="display: inline-block; width: 150px;">
+          <select id="calendar-club-filter">
             <option value="all">All</option>
-          {% for venue in venues %}
-            <option value="{{venue.pk}}">{{venue.name}}</option>
-          {% endfor %}
-        </select>
-      </div>
-  </div> 
-  {% endif %}
-   <div class="flex-row upcoming-schedule calendar-hiding-4">
-    <div class="flex-row upcoming-datepicker">
-      <div  class="datepicker-container noclick" style="display:block;     top: 0 !important;">
-          <div class="custom-date-picker" id="calendar-date-picker">
+            {% for venue in venues %}
+              <option value="{{venue.pk}}">{{venue.name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="datepicker-container noclick">
+          <div class="custom-date-picker" id="search-date-picker-calendar">
+            <input class="date-picker-text" type="text" placeholder="Select date" readonly>
           </div>
+        </div>
+        <div class="datepicker-btn white-border-button caret hover-fade upcoming" style="display: inline-block; width: 150px;">Date</div>
       </div>
     </div>
-    {% include 'search/upcoming_calendar_dates.html' with day_list=day_list %}
-    <div id="load-more-calendar" data-starting-date="none" data-venue="all" class="white-border-button">Load more</div>
-  </div>
+  {% endif %}
+    <div class="flex-row upcoming-schedule calendar-hiding-4">
+      {% include 'search/upcoming_calendar_dates.html' with day_list=day_list %}
+      <input  type="hidden" id="load-more-calendar" data-starting-date="{{ upcoming_dates.last|date:'Y-m-d' }}" data-venue="all" class="white-border-button">
+    </div>
   </div>
 </section>
 
 <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
 <script>
-today = new Date()
-todayStr =   today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate()
-$("#load-more-calendar").data("starting-date", todayStr)
- $(window).on('load', function () {
-    $("#upcoming-datepicker").click()
 
-  })
-  function getCalendarAjax(calendarDate, days, filtered, venue="all"){
-    $.ajax({
-    url: '/search/upcoming-ajax/',
-    data: {'starting_date': calendarDate, 'days':days, 'venue':venue},
-    dataType: "json",
-    success: function (data) {
-       var hidden = getHiddenCount();
-        function getNewHidder(hidden){
-          if(hidden==1)
-          return 4
-          else
-          return hidden-1
-        }
-      if(filtered){
-        $(".flex-row.upcoming-schedule").removeClass("calendar-hiding-"+hidden)
-        $(".flex-row.upcoming-schedule").addClass("calendar-hiding-4")
-
-        $(".flex-column.day-list").remove()
-        $(".upcoming-schedule").find(".flex-row.upcoming-datepicker").last().after(data.template)
-      }else{
-        $(".flex-row.upcoming-schedule").removeClass("calendar-hiding-"+hidden)
-        $(".flex-row.upcoming-schedule").addClass("calendar-hiding-"+getNewHidder(hidden))
-        $(".upcoming-schedule").find(".flex-column.day-list").last().after(data.template)
-      }
-      $("#load-more-calendar").data("starting-date", data.new_date);
-
-    },
-    error: function(err){
-      console.log(err)
-    }
-    });
-
-  }
-  $("#load-more-calendar").on("click", function(){
-
-    getCalendarAjax($(this).data("starting-date"), 15, false,$("#load-more-calendar").data("venue"))
-
-  })
-
-  $("#calendar-club-filter").change(function () {
-    $("#load-more-calendar").data("venue",$(this).find("option:selected").val())
-    $("#load-more-calendar").data("starting-date",todayStr)
-    getCalendarAjax($("#load-more-calendar").data("starting-date"), 12, true, $(this).find("option:selected").val())
+  $(window).on('load', function () {
+    $("#upcoming-datepicker").click();
   });
 
-  function getHiddenCount() {
-  var numberStr = $($(".flex-row.upcoming-schedule")[0]).attr('class').split('calendar-hiding-')[1].split('')[0];
-  return parseInt(numberStr);
+  function getCalendarAjax(calendarDate, days, filtered, venue="all") {
+    var data = {'days': days, 'venue': venue};
+    if (calendarDate) {
+      data['starting_date'] = calendarDate;
+    }
+    $.ajax({
+      url: '/search/upcoming-ajax/',
+      data: data,
+      dataType: "json",
+      success: function (data) {
+        if (filtered)  {
+          $(".flex-row.upcoming-schedule").addClass("calendar-hiding-4")
+          $(".flex-column.day-list").remove()
+          $(".upcoming-schedule").find(".flex-row.upcoming-datepicker").last().after(data.template)
+        } else {
+          $(".upcoming-schedule").find(".flex-column.day-list").last().after(data.template)
+        }
+        $("#load-more-calendar").data("starting-date", data.new_date);
+      },
+      error: function(err) {
+        console.log(err);
+      }
+    });
   }
+
+  $(window).scroll(function () {
+    if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
+      $loadMore = $("#load-more-calendar");
+      var startDate = $loadMore.data("starting-date");
+      var venue  = $loadMore.data("venue");
+      getCalendarAjax(startDate, 15, false, venue);
+    };
+  });
+
+  $("#calendar-club-filter").change(function () {
+    $("#load-more-calendar").data("venue", $(this).find("option:selected").val());
+    getCalendarAjax(null, 12, true, $(this).find("option:selected").val());
+  });
+
 </script>
   

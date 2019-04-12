@@ -608,6 +608,10 @@ body.headers-1 {
     width: 100%;
     text-align: center;
   }
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
 }
 
 #musicianContent .artist-arrows {
@@ -893,6 +897,12 @@ body.headers-1 {
 
 .event-stripe {
   margin-bottom: 10px;
+
+  &.archive {
+    @media(max-width: 1024px) {
+      display: none;
+    }
+  }
 }
 
 .search-bar-autocomplete-container {
@@ -1324,6 +1334,12 @@ body.headers-1 {
   margin-top: 21px;
 }
 
+.archived-shows  {
+  .showing-results {
+    position: relative;
+  }
+}
+
 .shows-container {
   width: 100%;
   display: flex;
@@ -1332,8 +1348,23 @@ body.headers-1 {
   padding-left: $content-left-padding;
 
   .event-card-secondary {
-    margin-top: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+  }
+}
+
+.new-archive {
+  .shows-container {
+    display: block;
+
+      .archive-datepicker {
+        float: left;
+        height: 330px;
+        width: 46.5vw;
+
+        @media(min-width: 1366px) {
+          width: 35vw;
+        }
+      }
   }
 }
 
@@ -2026,9 +2057,6 @@ body.home.admin-header {
 }
 
 .calendar {
-  .event-row {
-    margin: 20px 0;
-  }
 
   .section-title.home.flex-row>main {
     margin: 25px 0;
@@ -2048,19 +2076,26 @@ body.home.admin-header {
 }
 
 
-@media(max-width: 1023px) {
-  .new_archive {
-    display: none;
+@media(max-width: 1024px) {
+  .new-archive {
+    .archive-datepicker  {
+      &.fixed {
+        display: none;
+      }
+    }
   }
 }
 
 @media(min-width: 1024px) {
-  .new_archive {
+  .new-archive {
+    border-bottom: 5px solid white;
     justify-content: space-evenly;
 
     .musicians-result {
       border: 3px solid white;
+      border-bottom: none;
       border-radius: 15px 15px 0 0;
+      cursor: pointer;
       padding: 15px 50px;
       position: relative;
 

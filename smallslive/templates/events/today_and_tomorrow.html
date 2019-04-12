@@ -6,14 +6,21 @@
 <section class="event-stripe live">
   <div class="section-title home flex-row">
     <div class="title1">
+      {% if calendar_page %}
+      Live Tonight + Tomorrow <span class="date-separator">/</span>
+      {% else %}
       Live at the clubs tonight <span class="date-separator">/</span>
+      {% endif %}
     </div>
-    <div class="title1">{% now 'D b d' %}</div>  
+
+    <div class="title1">{% if calendar_page %} {% get_today_and_tomorrow_dates '%a %m %d' %}  {% else %} {% now 'D b d' %} {% endif %}</div>
+    {% if not calendar_page %}
     <a href='/events/calendar/' class="white-border-button">Full calendar</a>
+    {% endif %}
   </div>    
   <main style="position: relative;">
     <div class="slide-btn prev today-and-tomorrow-arrow"><b class="indicator-icon icon-left-caret"></b></div>
     <div class="slide-btn next today-and-tomorrow-arrow"><b class="indicator-icon icon-right-caret"></b></div>
-    {% include 'events/tonight_events_home.html' with events=events_today show_time=True hidde_event_date=True show_event_venue=True custom_venue_style=custom_venue_style %}
+    {% include 'events/tonight_events_home.html' with events=events_today show_time=True hide_event_date=True show_event_venue=True custom_venue_style=custom_venue_style %}
   </main>
 </section>

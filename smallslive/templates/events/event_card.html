@@ -1,9 +1,8 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
-
 <a href="{{ event.get_absolute_url }}">
   <div class="
-      {% if not mini%}
+      {% if not mini  %}
         {% if not secondary %}
         event-card
         {% else %}

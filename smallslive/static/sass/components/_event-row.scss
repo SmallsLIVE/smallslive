@@ -5,8 +5,8 @@ $live-card-width-medium: 22.85vw;
 $live-card-width-large: 15.1vw;
 $regular-card-width-mobile: 46.1vw;
 $regular-card-width-tablet: 15.1vw;
-$regular-card-width-medium: 18.1vw;
-$regular-card-width-large: 15.1vw;
+$regular-card-width-medium: 15.1vw;
+$regular-card-width-large: 11.225vw;
 $event-card-margin: 0.4vw;
 $event-row-padding: 3.5vw;
 
@@ -207,7 +207,8 @@ $event-row-padding: 3.5vw;
       text-overflow: ellipsis;
 
       &:hover {
-        color: black;
+        color: $accent-color;
+        text-decoration: underline;
       }
 
       @media (max-width: 960px) {
@@ -235,6 +236,7 @@ $event-row-padding: 3.5vw;
     margin-top: 0px;
     margin-bottom: 0px;
     min-height: auto;
+    pointer-events: none;
 
     div {
       margin-bottom: 5px;
@@ -524,12 +526,13 @@ $event-row-padding: 3.5vw;
 }
 
 .event-info.new {
+  color: white;
+  font-size: 12px;
+  left: 15px;
+  margin: 0;
+  pointer-events: none;
   position: absolute;
   top: 15px;
-  left: 15px;
-  font-size: 12px;
-  color: white;
-  margin: 0;
 
   @media (max-width: 960px) {
     font-size: 18px;
@@ -567,4 +570,12 @@ $event-row-padding: 3.5vw;
 .today-and-tomorrow-arrow {
   height: calc(100% - 110px) !important;
   border-radius: 0 !important;
+}
+
+.new-archive {
+  .event-display {
+    cursor: pointer;
+    float: left;
+    vertical-align: top;
+  }
 }

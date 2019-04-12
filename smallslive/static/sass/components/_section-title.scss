@@ -20,12 +20,19 @@
   }
 
   &.home {
-    width: 800px;
+    width: 1024px;
+    z-index: 99;
     .white-border-button {
       position: absolute;
       left: 100%;
       width: 160px;
     }
+
+    span {
+      margin-right: 10px;
+      padding-bottom: 4px;
+    }
+
     @media (max-width: $screen-md-min) {
       background-size: 100vw 5px;
       padding-bottom: 3px;

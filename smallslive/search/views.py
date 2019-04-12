@@ -15,7 +15,7 @@ from haystack.query import SearchQuerySet
 from django.db.models import Q
 
 from artists.models import Artist, Instrument
-from events.models import Event, Venue
+from events.models import Event, Venue, RANGE_MONTH
 
 from .search import SearchObject
 from .utils import facets_by_model_name
@@ -95,11 +95,8 @@ class SearchMixin(object):
 
         if block:
             blocks.append(block)
-            block = []
 
         if paginator.count:
-            
-            actual_results = 1 + ((page - 1) * results_per_page) if entity == Artist else 1
             showing_results = paginator.count
         else:
             showing_results = 'NO RESULTS'
@@ -330,7 +327,8 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
 
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []
-
+        context['popular_in_archive'] = Event.objects.get_most_popular_uploaded(RANGE_MONTH)
+        context['popular_select'] = 'year'
         context['actual_page'] = page = 1
         context['last_page'] = num_pages
         context['range'] = range(
@@ -385,7 +383,6 @@ class UpcomingSearchView(SearchMixin):
         days = int(self.request.GET.get('days', 12))
         starting_date = self.request.GET.get('starting_date', datetime.datetime.today().strftime('%Y-%m-%d'))
         starting_date = datetime.datetime.strptime(starting_date, '%Y-%m-%d')
-        starting_day = datetime.datetime(starting_date.year, starting_date.month, starting_date.day,3)
         venue = self.request.GET.get('venue', 'all')
         event_list = Event.objects.all()
         if venue:
@@ -398,7 +395,8 @@ class UpcomingSearchView(SearchMixin):
             day_itinerary['day_start'] = day_start
             day_itinerary['day_events'] = event_list.filter(start__gte=day_start, start__lte=day_end).order_by('start')
             context["day_list"].append(day_itinerary)
-        context['new_date'] = day_start.strftime('%Y-%m-%d')
+
+        context['new_date'] = (day_start + timedelta(days=1)).strftime('%Y-%m-%d')
         return context
     
 class UpcomingSearchViewAjax2(TemplateView, UpcomingSearchView):

@@ -46,7 +46,7 @@ from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
     GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
     EventSearchForm, EventEditForm, EventSetInlineFormset, \
     EventSetInlineFormsetHelper, CommentForm, TicketAddForm
-from .models import Event, Venue, ShowDefaultTime
+from .models import Event, Venue, ShowDefaultTime, RANGE_MONTH
 
 RANGE_YEAR = 'year'
 RANGE_MONTH = 'month'
@@ -112,71 +112,6 @@ def calculate_query_range(range_size, weekly=None):
     return range_start, range_end
 
 
-def _get_most_popular(range=None):
-    context = {}
-    most_popular_ids = UserVideoMetric.objects.most_popular(
-        range_size=range, count=10
-    )
-    most_popular = []
-    for event_data in most_popular_ids:
-        try:
-            event = Event.objects.get(id=event_data['event_id'])
-            most_popular.append(event)
-        except Event.DoesNotExist:
-            pass
-    context['popular_in_archive'] = most_popular
-    return context
-
-
-def _get_most_popular_uploaded(range_size=None):
-
-    range_end = timezone.now()
-
-    if range_size == RANGE_MONTH:
-        range_start = range_end - timedelta(days=30)
-    if range_size == RANGE_WEEK:
-        range_start = range_end - timedelta(days=7)
-    if range_size == RANGE_YEAR:
-        range_start = range_end - timedelta(days=365)
-
-    qs = Event.objects.exclude(recordings=None)
-    if range_size:
-        qs = qs.filter(
-            date__gte=range_start,
-            date__lte=range_end
-        )
-
-    event_values = qs.values('id').annotate(
-        count=Sum('seconds_played')
-    ).order_by('-count')[:10]
-
-    items = []
-    for item in event_values:
-        event = Event.objects.get(pk=item['id'])
-        items.append(event)
-
-    return items
-
-
-def order_events_by_popular(sqs):
-    event_map = dict([(event.id, event) for event in sqs])
-    # Order metrics
-    most_popular_ids = UserVideoMetric.objects.filter(
-        event_id__in=event_map.keys()
-    ).values('event_id').annotate(
-        count=Sum('seconds_played')
-    ).order_by('-count')[:10]
-    if most_popular_ids:
-        most_popular = []
-        for event_data in most_popular_ids:
-            event_id = event_data['event_id']
-            most_popular.append(event_map[event_id])
-
-        return most_popular
-    else:
-        return list(sqs.order_by('-date')[:10])
-
-
 class HomepageView(ListView, UpcomingEventMixin):
     template_name = 'home_new.html'
 
@@ -196,8 +131,6 @@ class HomepageView(ListView, UpcomingEventMixin):
             b = datetime.datetime.strftime(timezone.now(), '%Y-%m-%d')
             context['email_sent'] = a == b
 
-        context['popular_in_archive'] = _get_most_popular_uploaded(RANGE_MONTH)
-        context['popular_select'] = 'month'
         context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
         context['events_today'] = self.get_today_events()
@@ -228,7 +161,7 @@ class MostPopularEventsAjaxView(AJAXMixin, ListView):
     def get_context_data(self, **kwargs):
         # Need to provide secondary = True for the event card
         context = super(MostPopularEventsAjaxView, self).get_context_data(**kwargs)
-        context['secondary'] = True
+        context['secondary'] = False
         return context
 
     def get_queryset(self):
@@ -242,9 +175,9 @@ class MostPopularEventsAjaxView(AJAXMixin, ListView):
             if received_range == 'year':
                 metrics_range = RANGE_YEAR
 
-            most_popular = _get_most_popular_uploaded(range_size=metrics_range)
+            most_popular = Event.objects.get_most_popular_uploaded(range_size=metrics_range)
         else:
-            most_popular = _get_most_popular_uploaded()
+            most_popular = Event.objects.get_most_popular_uploaded()
 
         return most_popular
 
@@ -637,7 +570,10 @@ class GenericScheduleView(TemplateView, UpcomingSearchView):
         context['actual_page'] = page = 1
         context['last_page'] = num_pages
         context['default_from_date'] = timezone.now().strftime('%m/%d/%Y')
-        context['upcoming_dates'] = {'first':datetime.datetime.today(), 'last': (datetime.datetime.today() + timedelta(days=12))}
+        context['upcoming_dates'] = {
+            'first': datetime.datetime.today(),
+            'last': (datetime.datetime.today() + timedelta(days=12))
+        }
         context.update(self.get_upcoming_context())
         
         return context
@@ -801,7 +737,7 @@ class ArchiveView(ListView):
 
         context['month'] = self.date_start.month - 1
         context['year'] = self.date_start.year
-        context.update(_get_most_popular())
+        context['popular_in_archive'] = Event.objects.get_most_popular_uploaded(RANGE_MONTH)
         context.update(self.get_pagination())
 
         venue = self.request.GET.get('venue')
