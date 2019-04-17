@@ -9,10 +9,11 @@ def migrate_lines(apps, schema_editor):
 
     for line in Line.objects.all().select_related('order__user', 'product__product_class'):
         if not line.product:
-            if not line.product.product_class:
-                if not line.order.user:
-                    if line.product.product_class.slug in ['physical-album', 'digital-album']:
-                        UserCatalogueProduct.objects.get_or_create(user=line.order.user, product=line.product)
+            if line.product:
+                if not line.product.product_class:
+                    if not line.order.user:
+                        if line.product.product_class.slug in ['physical-album', 'digital-album']:
+                            UserCatalogueProduct.objects.get_or_create(user=line.order.user, product=line.product)
 
 
 class Migration(migrations.Migration):
