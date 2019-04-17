@@ -35,11 +35,7 @@
   <div class="main-container pad-content home-new">
     {% block home_content %}
     <main>
-      {% if not request.user.is_authenticated %}
-        {% include 'home_banners_carousel.html' %}
-      {% elif not request.user.has_archive_access %}
-        {% include 'home_banners_carousel.html'  with active='supporter'%}
-      {% endif %}
+      {% include 'home_banners_carousel.html' %}
       <div class="event-stripe">
         {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
         <section class="event-stripe">

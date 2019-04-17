@@ -37,7 +37,7 @@
   </main>
 
   <div class="concerts-footer flex-column items-center">
-    {% if last_page != actual_page %}
+    {% if last_page != current_page %}
         <button id="load-more-{% if archived %}archived{% else %}upcoming{% endif %}-btn"
                 class="white-border-button load-more-btn"
                 onclick="loadMoreEvents('{% if archived %}Archived{% else %}Upcoming{% endif %}')">

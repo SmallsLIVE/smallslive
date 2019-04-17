@@ -4,13 +4,15 @@
       {% if with_date_picker %}
         <div class="archive-datepicker fixed">
           <div  class="datepicker-container noclick" style="display:block;     top: 0 !important;">
-            <div class="custom-date-picker" id="search-date-picker-from">
-              <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+            <div style="display: flex;">
+              <div class="custom-date-picker" id="search-date-picker-from">
+                <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+              </div>
+              <div class="custom-date-picker" id="search-date-picker-to">
+                <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+              </div>
+              <div class="white-border-button archived" id="apply-button"><span>Apply</span></div>
             </div>
-            <div class="custom-date-picker" id="search-date-picker-to">
-              <input class="date-picker-text" type="text" placeholder="Select date" readonly>
-            </div>
-            <div class="white-border-button archived" id="apply-button"><span>Apply</span></div>
             <div class="datepicker-reset text2 text-grey"><span>Reset</span></div>
           </div>
         </div>

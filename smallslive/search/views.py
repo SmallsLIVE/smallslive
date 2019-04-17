@@ -63,6 +63,8 @@ class SearchMixin(object):
 
         search = SearchObject()
 
+        first = None
+        last = None
         if entity == Artist:
             results_per_page = 60 * 4
             sqs = search.search_artist(main_search, artist_search, instrument)
@@ -70,10 +72,14 @@ class SearchMixin(object):
         elif entity == Event:
             results_per_page = 24
 
-            sqs = search.search_event(main_search, order, date_from, date_to,
-                                    artist_pk=artist_pk, venue=venue)
+            sqs = search.search_event(
+                main_search, order, date_from, date_to,
+                artist_pk=artist_pk, venue=venue)
             if not self.request.user.is_superuser:
                 sqs = sqs.filter(Q(state=Event.STATUS.Published) | Q(state=Event.STATUS.Cancelled))
+
+            first = sqs.first()
+            last = sqs.last()
 
         blocks = []
         block = []
@@ -101,7 +107,7 @@ class SearchMixin(object):
         else:
             showing_results = 'NO RESULTS'
 
-        return blocks, showing_results, paginator.num_pages
+        return blocks, showing_results, paginator.num_pages, first, last
 
 
 class UpcomingEventMixin(object):
@@ -212,7 +218,7 @@ class MainSearchView(View, SearchMixin):
 
         if entity == 'event':
             context = {
-                'actual_page': page,
+                'current_page': page,
                 'last_page': num_pages,
                 'range': range(1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2],
                 'has_last_page': (num_pages - page) >= 3
@@ -313,7 +319,7 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
             showing_artist_results = ''
             num_pages = 1
         else:
-            artists_blocks, showing_artist_results, num_pages = self.search(
+            artists_blocks, showing_artist_results, num_pages, first, last = self.search(
                 Artist, q, instrument=instrument)
         context['query_term'] = q
         instruments = [i.name for i in Instrument.objects.all()]
@@ -323,13 +329,13 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         context['artists_blocks'] = artists_blocks
         context['artist_num_pages'] = num_pages
 
-        event_blocks, showing_event_results, num_pages = self.search(Event, q)
+        event_blocks, showing_event_results, num_pages, first, last = self.search(Event, q)
 
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []
         context['popular_in_archive'] = Event.objects.get_most_popular_uploaded(RANGE_MONTH)
         context['popular_select'] = 'year'
-        context['actual_page'] = page = 1
+        context['current_page'] = page = 1
         context['last_page'] = num_pages
         context['range'] = range(
             1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2]
@@ -388,17 +394,19 @@ class UpcomingSearchView(SearchMixin):
         if venue:
             if venue != 'all':
                 event_list = event_list.filter(venue__pk=venue)
-        for day in range (0, days):
+        for day in range(0, days):
             day_itinerary = {}
             day_start = starting_date + timedelta(days=day, hours=3)
             day_end = day_start + timedelta(days=1)
             day_itinerary['day_start'] = day_start
             day_itinerary['day_events'] = event_list.filter(start__gte=day_start, start__lte=day_end).order_by('start')
-            context["day_list"].append(day_itinerary)
+            context['day_list'].append(day_itinerary)
 
         context['new_date'] = (day_start + timedelta(days=1)).strftime('%Y-%m-%d')
+
         return context
-    
+
+
 class UpcomingSearchViewAjax2(TemplateView, UpcomingSearchView):
 
     template_name = 'search/upcoming_calendar_dates.html'
