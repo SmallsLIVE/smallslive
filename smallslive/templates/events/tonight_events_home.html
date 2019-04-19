@@ -12,11 +12,10 @@
         </div>
     </div>
     <div class="artists">
-        {% for gig in event.artists_gig_info.all %}
-          <a class="title5" href="/search/?artist_pk={{ gig.artist.pk }}">
-
-                {{ gig.artist }} / {{ gig.role }}</a>
-        {% endfor %}
+      {% for gig in event.artists_gig_info.all %}
+        <a class="title5" href="/search/?artist_pk={{ gig.artist.pk }}">
+              {{ gig.artist }} / {{ gig.role }}</a>
+      {% endfor %}
     </div>
   </article> 
   {% endfor %}
