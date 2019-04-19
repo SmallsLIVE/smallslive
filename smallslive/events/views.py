@@ -116,7 +116,7 @@ class HomepageView(ListView, UpcomingEventMixin):
     template_name = 'home_new.html'
 
     def get_queryset(self):
-        return Event.objects.get_today_and_tomorrow_events()
+        return Event.objects.get_today_and_tomorrow_events(just_today=True)
 
     def get_today_events(self):
         events = list(self.get_queryset())
