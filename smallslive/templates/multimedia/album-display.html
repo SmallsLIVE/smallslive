@@ -41,9 +41,9 @@
         <a class="artist-link " href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }} {{ artist.last_name }} / {{ artist.instruments.first }}</a><br>
       {% endfor %}
       <br>
-      {% if child_product and is_full != "full_album" %}
+      {% for child_product in album_product.children.all %}
         {% purchase_info_for_product request child_product as session %}
-        <form id="add_to_basket_form" action="{% url 'basket:add' pk=child_product.pk  %}" method="post" class="add-to-basket">
+        <form action="{% url 'basket:add' pk=child_product.pk  %}" method="post" class="add-to-basket">
           {% if session.availability.is_available_to_buy %}
             {% basket_form request child_product 'single' as basket_form %}
             <div class="store-add-large">
@@ -58,10 +58,15 @@
             <label>Out of stock</label>
           {% endif %}
         </form>
-      {% endif  %}
+      {% endfor  %}
     </div>
   </div>
-  <div class="song-container">
+  <div class="description-container" style="font-size: 1.5vw;">
+    {{ album_product.description|safe }}
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4 col-md-offset-1 col-sm-12">
     <div class="my-downloads-album__tracks-table">
     {% for track in album_product.tracks.all|dictsort:"ordering" %}
       <!-- tracks table row -->
@@ -110,44 +115,6 @@
             {{ track.attr.duration }}
           </div>
 
-          <div class="my-downloads-album__tracks-table__column buy-track store-buy">
-            {% if not track.pk in bought_tracks and not is_full = 'full_album' %}
-              {% if track.get_track_stockrecord %}
-                {% if user.is_authenticated %}
-                  <button class="white-border-button add-to-library"
-                          data-track-id="{{ track.pk }}"
-                          data-price="{{ track.get_track_stockrecord.price_excl_tax }}">Add to Library
-                  </button>
-                {% else %}
-                  <a class="white-border-button" style="text-align:center" href="#"
-                     data-toggle="modal"
-                     data-target="#logIn"
-                     data-price="{{ track.get_track_stockrecord.price_excl_tax }}">Add to library
-                  </a>
-                {% endif %}
-              {% else %}
-                  <button class="white-border-button add-to-library no-border">No Mp3 available</button>
-
-              {% endif %}
-            {% else %}
-              {% if is_catalogue %}
-                <button class="white-border-button">Added to Library</button>
-              {% else %}
-                {% if is_full == 'full_album' %}
-                  <a class="white-border-button flex download-btn"
-                     href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}"
-                     download="{{ track.get_track_stockrecord.digital_download.file.name }}">Download mp3
-                  </a>
-                {% else %}
-                  <button class="white-border-button download"
-                          data-mp3-href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}"
-                          data-mp3-name="{{ track.get_track_stockrecord.digital_download.file.name }}"
-                          data-hd-href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}"
-                          data-hd-name="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download</button>
-                {% endif %}
-              {% endif %}
-            {% endif %}
-          </div>
         </div>
 
       </div>
