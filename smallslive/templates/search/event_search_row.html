@@ -2,7 +2,7 @@
     {% if not placeholder %}
 
       {% if with_date_picker %}
-        <div class="archive-datepicker fixed">
+        <div class="archive-datepicker fixed"  style="position: relative;">
           <div  class="datepicker-container noclick" style="display:block;     top: 0 !important;">
             <div style="display: flex;">
               <div class="custom-date-picker" id="search-date-picker-from">
@@ -15,7 +15,21 @@
             </div>
             <div class="datepicker-reset text2 text-grey"><span>Reset</span></div>
           </div>
+
+          <div style="position: absolute; right: 10px; top: 40px;">
+            <span class="select-container">
+              <div class="white-border-select home-filter">
+                <select id="events-filter">
+                  <option value="newest">Newest</option>
+                  <option value="oldest">Oldest</option>
+                  <option value="popular">Popular</option>
+                </select>
+              </div>
+            </span>
+          </div>
+
         </div>
+
       {% endif %}
 
       {% for event in events %}

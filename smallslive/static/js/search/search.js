@@ -493,7 +493,6 @@ $(document).ready(function () {
     }
   });
 
-  $("#events-filter ~ .select-selected").text("Sort By");
   $("#events-filter").change(function () {
     eventFilter = true;
     eventOrderFilter = $(this).val();

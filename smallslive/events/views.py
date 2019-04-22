@@ -746,6 +746,7 @@ class ArchiveView(ListView):
             context['venue_selected'] = venue_id
 
         context['venues'] = Venue.objects.all()
+
         return context
 
     def get_pagination(self):

@@ -2090,6 +2090,7 @@ body.home.admin-header {
   .new-archive {
     border-bottom: 5px solid white;
     justify-content: space-evenly;
+    margin-top: 30px;
 
     .musicians-result {
       border: 3px solid white;
@@ -2112,6 +2113,10 @@ body.home.admin-header {
   #musicianContent,
   #search-content {
     padding: 20px 0;
+  }
+
+  #musicianContent  {
+    height: 100vh;
   }
 
 }

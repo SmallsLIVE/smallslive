@@ -78,8 +78,8 @@ class SearchMixin(object):
             if not self.request.user.is_superuser:
                 sqs = sqs.filter(Q(state=Event.STATUS.Published) | Q(state=Event.STATUS.Cancelled))
 
-            first = sqs.first()
-            last = sqs.last()
+            last = sqs.first()
+            first = sqs.last()
 
         blocks = []
         block = []
@@ -107,7 +107,10 @@ class SearchMixin(object):
         else:
             showing_results = 'NO RESULTS'
 
-        return blocks, showing_results, paginator.num_pages, first, last
+        if entity == Event:
+            return blocks, showing_results, paginator.num_pages, first, last
+        else:
+            return blocks, showing_results, paginator.num_pages
 
 
 class UpcomingEventMixin(object):
@@ -319,7 +322,7 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
             showing_artist_results = ''
             num_pages = 1
         else:
-            artists_blocks, showing_artist_results, num_pages, first, last = self.search(
+            artists_blocks, showing_artist_results, num_pages = self.search(
                 Artist, q, instrument=instrument)
         context['query_term'] = q
         instruments = [i.name for i in Instrument.objects.all()]
@@ -345,6 +348,8 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
             default_to_date = event_blocks[0][0].date.strftime('%m/%d/%Y')
         context['default_from_date'] = timezone.now().strftime('%m/%d/%Y')
         context['default_to_date'] = default_to_date
+        context['first'] = first
+        context['last'] = last
 
         return context
 
