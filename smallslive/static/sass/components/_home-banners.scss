@@ -9,10 +9,17 @@ $banners-height: 38vh;
   width: 100%;
 
   #banner-container {
-    display: none;
     position: relative;
     overflow: hidden;
-    height: 15.065vw;
+    height: 23vw;
+    background-image: url("/static/image/banners/club.jpg");
+    background-size: 100% 100%;
+
+    .banner-background {
+      img {
+        width: 100%;
+      }
+    }
 
     .banner-border {
       height: 100%;
@@ -28,7 +35,7 @@ $banners-height: 38vh;
 
         #banner-title {
           @include title4;
-
+          color: white;
           padding-left: 2vw;
           padding-right: 2vw;
           padding-top: 0.7vw;
@@ -67,6 +74,7 @@ $banners-height: 38vh;
 
         #banner-text {
           @include title-banner;
+          color: white;
           text-align: justify;
           margin: 0;
           padding-left: 30px;
