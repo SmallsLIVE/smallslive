@@ -42,6 +42,10 @@
         <div class=" flex-column info-container">
           <div class="event-set-info">
             <div class="current-event event-title title1">{{ event.title }}</div>
+            {% if event.is_past %}
+              <div class="{{ event.venue.name|lower}}-color title2">{{ event.venue.name }}</div>
+            {% endif %}
+
             <div class="current-event accent-color text7" style="line-height: 2.3em;">
               {{ event.get_date|date:'m/d/Y' }}</div>
               {% if next_event %}
