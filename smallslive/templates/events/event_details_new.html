@@ -45,15 +45,23 @@
             {% if event.is_past %}
               <div class="{{ event.venue.name|lower}}-color title2">{{ event.venue.name }}</div>
             {% endif %}
+            {% if event.is_future %}
+              <div class="{{ event.venue.name|lower}}-color title2">Live at {{ event.venue.name }}</div>
+            {% endif %}
 
             <div class="current-event accent-color text7" style="line-height: 2.3em;">
-              {{ event.get_date|date:'m/d/Y' }}</div>
-              {% if next_event %}
-                <div class="next-event event-title title1 hidden">
-                  {{ next_event.title }}</div>
-                <div class="next-event accent-color text7 hidden">
-                  {{ next_event.get_date|date:'m/d/Y' }}</div>
+              {% if event.is_future %}
+                {{ event.get_date|date:'D d Y' }}
+              {% else %}
+                {{ event.get_date|date:'m/d/Y' }}
               {% endif %}
+            </div>
+            {% if next_event %}
+              <div class="next-event event-title title1 hidden">
+                {{ next_event.title }}</div>
+              <div class="next-event accent-color text7 hidden">
+                {{ next_event.get_date|date:'m/d/Y' }}</div>
+            {% endif %}
           </div>
           <div class="event-overlay-venue">
             {% if sets and event.is_future %}
@@ -65,7 +73,6 @@
                   </span>
                 {% endfor %}
               </div>
-              <div class="title5 accent-color" style="font-size: 2em;line-height: 2.3em;">LIVE AT {{event.venue.name }}</div>
             {% endif %}
           </div>
         </div>

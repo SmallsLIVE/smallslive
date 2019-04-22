@@ -362,7 +362,7 @@ $player-height: 25.3vw;
     color: white;
     height: 100%;
     padding: 2.9vw;
-    padding-top: 3.5vw;
+    padding-top: 3vw;
 
     @media(max-width: $screen-md-max) {
       padding: 9.5vw;
@@ -389,6 +389,49 @@ $player-height: 25.3vw;
 
   .event-overlay-title {
     margin-bottom: 35px;
+  }
+
+  .upcoming {
+
+    .event-info-title {
+      line-height: 2.8vw;
+      font-size: 2.5vw;
+      color: white;
+      margin: 0 0 5px 0;
+      width: fit-content;
+      font-weight: 400;
+      font-family: "Oswald", sans-serif;
+      text-transform: uppercase;
+      transform: scaleY(1.3);
+    }
+
+    .event-venue {
+      font-size: 2vw;
+      font-weight: 200;
+      letter-spacing: 0.09em;
+      line-height: 3vw;
+      text-transform: uppercase;
+      transform: scaleY(1.3);
+    }
+
+    .event-date {
+      font-size: 2vw;
+      font-weight: 200;
+      letter-spacing: 0.09em;
+      line-height: 3vw;
+      text-transform: uppercase;
+      transform: scaleY(1.3);
+    }
+
+    .event-sets {
+      font-size: 2vw;
+      font-weight: 200;
+      letter-spacing: 0.09em;
+      line-height: 3vw;
+      text-transform: uppercase;
+      transform: scaleY(1.3);
+    }
+
   }
 
   .event-overlay-artists {
