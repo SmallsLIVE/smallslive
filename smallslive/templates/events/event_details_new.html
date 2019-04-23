@@ -58,23 +58,22 @@
           </div>
           <div class="event-overlay-venue">
 
-
-              <div class="title5">
-                {% if event.is_future %}
-                {{ event.get_date|date:'D d Y' }}
+            <div class="title5">
+              {% if event.is_future %}
+                {{ event.get_date|date:'D d m' }}
               {% else %}
                 {{ event.get_date|date:'m/d/Y' }}
               {% endif %}
-                {% if sets and event.is_future %}
-            <span class="accent-color"> / </span>
+              {% if sets and event.is_future %}
+                <span class="accent-color"> / </span>
                 Sets at
                 {% for set in sets %}
                   <span class="event-overlay-venue-set">
                     {{ set.start|time:'g:iA'}}
                   </span>
                 {% endfor %}
-                {% endif %}
-              </div>
+              {% endif %}
+            </div>
 
           </div>
         </div>
