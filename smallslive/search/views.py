@@ -78,8 +78,8 @@ class SearchMixin(object):
             if not self.request.user.is_superuser:
                 sqs = sqs.filter(Q(state=Event.STATUS.Published) | Q(state=Event.STATUS.Cancelled))
 
-            last = sqs.first()
-            first = sqs.last()
+            first = sqs.first()
+            last = sqs.last()
 
         blocks = []
         block = []
@@ -400,8 +400,9 @@ class UpcomingSearchView(SearchMixin):
             if venue != 'all':
                 event_list = event_list.filter(venue__pk=venue)
         for day in range(0, days):
+            # list of events for one day
             day_itinerary = {}
-            day_start = starting_date + timedelta(days=day, hours=3)
+            day_start = starting_date + timedelta(days=day, hours=5)
             day_end = day_start + timedelta(days=1)
             day_itinerary['day_start'] = day_start
             day_itinerary['day_events'] = event_list.filter(start__gte=day_start, start__lte=day_end).order_by('start')
@@ -421,6 +422,7 @@ class UpcomingSearchViewAjax2(TemplateView, UpcomingSearchView):
         context.update(self.get_upcoming_context())
 
         return context
+
 
 class UpcomingSearchViewAjax(TemplateView, UpcomingSearchView):
 

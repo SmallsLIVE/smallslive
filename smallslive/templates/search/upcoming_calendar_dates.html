@@ -1,6 +1,7 @@
 {% for day in day_list %}
+    {% if day.day_start.date <= last_event.date %}
     <div class="flex-column day-list">
-        <div class="title1">
+        <div class="title1" data-date="{{ day.day_start.date }}">
             {{ day.day_start|date:'D M d' }}
         </div>
         {% for event in day.day_events %}
@@ -15,4 +16,5 @@
             <div class="text6 no-event"> To Be Announced </div>
         {% endfor %}
     </div>
+    {% endif %}
 {% endfor%}

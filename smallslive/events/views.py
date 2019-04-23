@@ -574,6 +574,7 @@ class GenericScheduleView(TemplateView, UpcomingSearchView):
             'first': datetime.datetime.today(),
             'last': (datetime.datetime.today() + timedelta(days=12))
         }
+        context['last_event'] = last_event
         context.update(self.get_upcoming_context())
         
         return context
