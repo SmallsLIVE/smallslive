@@ -391,7 +391,6 @@ $player-height: 25.3vw;
     margin-bottom: 35px;
   }
 
-  .upcoming {
 
     .event-info-title {
       line-height: 2.8vw;
@@ -410,6 +409,7 @@ $player-height: 25.3vw;
       font-weight: 200;
       letter-spacing: 0.09em;
       line-height: 3vw;
+      margin-top: 10px;
       text-transform: uppercase;
       transform: scaleY(1.3);
     }
@@ -432,7 +432,7 @@ $player-height: 25.3vw;
       transform: scaleY(1.3);
     }
 
-  }
+
 
   .event-overlay-artists {
     height: 65%;

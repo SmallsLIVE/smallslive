@@ -216,6 +216,10 @@ $event-row-padding: 3.5vw;
           padding-right: 10px;
           font-size: calc(8px + 1vw);
         }
+
+        &.full-width {
+          width: 100%;
+        }
       }
     }
   }

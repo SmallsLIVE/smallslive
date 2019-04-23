@@ -15,10 +15,12 @@
         </div>
     </div>
     <div class="artists">
-      {% for gig in event.artists_gig_info.all %}
-        <a class="title5" href="/search/?artist_pk={{ gig.artist.pk }}">
-              {{ gig.artist }} / {{ gig.role }}</a>
-      {% endfor %}
+      {% with event.artists_gig_info.count as artist_count %}
+        {% for gig in event.artists_gig_info.all %}
+          <a class="title5 {% if artist_count <= 3 %}full-width{% endif %}" href="/search/?artist_pk={{ gig.artist.pk }}">
+                {{ gig.artist }} / {{ gig.role }}</a>
+        {% endfor %}
+      {% endwith %}
     </div>
   </article> 
   {% endfor %}
