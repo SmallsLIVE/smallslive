@@ -277,6 +277,7 @@ $event-row-padding: 3.5vw;
       @media (max-width: 960px) {
         .event-info-title {
           font-size: 4.5vw;
+          line-height: 4.5vw;
           margin: 1.2vw 0 2.6vw 0;
           overflow-x: visible;
         }
@@ -338,7 +339,16 @@ $event-row-padding: 3.5vw;
   }
 }
 
+.calendar {
+  .event-info-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
 .event-info-title {
+
   @media (min-width: 1366px) {
     width: 8.85vw;
   }
@@ -526,28 +536,31 @@ $event-row-padding: 3.5vw;
 }
 
 .event-info.new {
-  color: white;
-  font-size: 12px;
-  left: 15px;
-  margin: 0;
-  pointer-events: none;
-  position: absolute;
-  top: 15px;
 
-  @media (max-width: 960px) {
-    font-size: 18px;
-  }
+  @media(min-width: 1024px) {
+    color: white;
+    font-size: 12px;
+    left: 15px;
+    margin: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 15px;
 
-  @media (max-width: 720px) {
-    font-size: 16px;
-  }
+    @media (max-width: 960px) {
+      font-size: 18px;
+    }
 
-  @media (max-width: 530px) {
-    font-size: 10px;
-  }
+    @media (max-width: 720px) {
+      font-size: 16px;
+    }
 
-  @media (max-width: 420px) {
-    font-size: 8px;
+    @media (max-width: 530px) {
+      font-size: 10px;
+    }
+
+    @media (max-width: 420px) {
+      font-size: 8px;
+    }
   }
 }
 

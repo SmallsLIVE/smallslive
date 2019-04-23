@@ -229,6 +229,10 @@ $banners-height: 38vh;
     .box {
       .banner-learnmore {
         margin-top: 10px;
+
+        @media(max-width: 960px) {
+          margin-top: 24vw;
+        }
       }
 
       .banner-text-container {
@@ -262,16 +266,25 @@ $banners-height: 38vh;
       &.live {
         background-image: url("/static/image/banners/roy.jpg");
         background-size: 100% 100%;
+        @media(max-width:  960px) {
+          background-size: cover;
+        }
       }
 
       &.archive {
         background-image: url("/static/image/banners/pianoplayer.jpg");
         background-size: 100% 100%;
+        @media(max-width:  960px) {
+          background-size: cover;
+        }
       }
 
       &.mission {
         background-image: url("/static/image/banners/club.jpg");
         background-size: 100% 100%;
+        @media(max-width:  960px) {
+          background-size: cover;
+        }
       }
 
       p.title {
@@ -381,6 +394,24 @@ $banners-height: 38vh;
     &.flex-column {
       height: 31.2vw;
       position: relative;
+
+      @media(max-width: 960px) {
+        height: 60vw;
+
+        .content {
+          color: white;
+          font-family: Oswald;
+          font-size: 4.5vw;
+          height: 26vw;
+          margin-top: 17px;
+          padding: 0px 8.5vw;
+          text-transform: uppercase;
+          /* letter-spacing: 0.1vw; */
+          letter-spacing: -1px;
+          font-weight: 400;
+          line-height: 5.5vw;
+        }
+      }
     }
 
     p {
@@ -398,10 +429,9 @@ $banners-height: 38vh;
         font-family: Oswald;
         font-size: 2.5vw;
         height: 8vw;
-        margin-top: 50px;
+        margin-top: 2.6vw;
         padding: 0px 8.5vw;
         text-transform: uppercase;
-        /* letter-spacing: 0.1vw; */
         letter-spacing: -1px;
         font-weight: 400;
         line-height: 3.5vw;
@@ -414,6 +444,15 @@ $banners-height: 38vh;
       font-family: "Reem Kufi", sans-serif;
       font-size: 0.9vw;
       margin: 0 14px;
+
+      @media(max-width: 960px) {
+        font-size: 13px;
+      }
+
+      @media(max-width: 400px) {
+        font-size: 10px;
+        line-height: 20px;
+      }
     }
   }
 

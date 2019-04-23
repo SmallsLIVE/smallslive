@@ -1272,7 +1272,10 @@ body.headers-1 {
 
 .musicians-results {
   position: relative;
-  width: 100%;
+
+  .calendar-filters {
+    position: absolute;
+  }
 
   >.white-border-select {
     .select-selected {
@@ -2117,6 +2120,10 @@ body.home.admin-header {
 
   #musicianContent  {
     height: 100vh;
+
+    &.search-page {
+      height: auto;
+    }
   }
 
 }

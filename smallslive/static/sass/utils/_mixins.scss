@@ -173,7 +173,7 @@
 
         .event-info-title {
           width: auto;
-          max-width: 180px;
+          max-width: calc(85vw - 110px);
         }
       }
     }

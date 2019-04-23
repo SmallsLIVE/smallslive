@@ -1,5 +1,28 @@
+.home {
+  .white-border-button {
+    &.mobile  {
+      @media (max-width: 1023px) {
+        display: block;
+        font-size: 13px;
+        width: 160px;
+        margin-left: 3.5vw;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      @media (min-width: 1024px) {
+        display: none;
+      }
+    }
+  }
+}
+
+.musicians-results .calendar-filters {
+    position: absolute;
+    left: calc(544px + 3.5vw);
+}
+
 .section-title {
-  $underline-length: 750px;
+  $underline-length: 600px;
   position: relative;
   margin-bottom: 20px;
   padding-bottom: 0;
@@ -9,7 +32,7 @@
   text-decoration: none;
   background: linear-gradient(to right, $white-transparent, $white-transparent)
     no-repeat bottom left;
-  background-size: $underline-length 5px;
+  background-size: calc(600px + 3.5vw) 5px;
 
   width: 100%;
 
@@ -19,13 +42,35 @@
     width: 500px;
   }
 
+  &.calendar {
+
+    background-size: calc(720px + 3.5vw) 5px;
+
+    &.upcoming-shows {
+      background-size: calc(520px + 3.5vw) 5px;
+    }
+
+  }
+
   &.home {
-    width: 900px;
+
     z-index: 99;
+
     .white-border-button {
       position: absolute;
-      left: 100%;
+      left: calc(625px + 3.5vw);
+      text-align: center;
       width: 160px;
+
+      @media (max-width: 960px) {
+        left: initial;
+        right: 3.5vw;
+        width: 20vw;
+      }
+
+      @media (max-width: 1023px) {
+        display: none;
+      }
     }
 
     span {

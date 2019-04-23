@@ -8,13 +8,13 @@
          data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
   <div id="new-calendar">
   {% if archived or upcoming %}
-    <div class="musicians-results flex-row" style="margin-top: 40px; flex-wrap: wrap;">
-      <div class="section-title home" style="width: 950px; background-size: 900px 5px; margin-right: -3.5vw;">
+    <div class="musicians-results flex-row">
+      <div class="section-title calendar upcoming-shows">
         <div class="title1">
             Upcoming Shows
         </div>
       </div>
-      <div style="padding-left: 3.5vw; position: relative;">
+      <div class="calendar-filters">
         <div class="white-border-select club-filter-select" style="display: inline-block; width: 150px;">
           <select id="calendar-club-filter">
             <option value="all">All</option>
