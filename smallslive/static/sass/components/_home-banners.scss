@@ -387,8 +387,11 @@ $banners-height: 38vh;
   .banner-text-container {
     height: 22vw;
     margin-top: 3.3vw;
-  }
 
+    @media(max-width: 960px) {
+      height: 40vw;
+    }
+  }
 
   .box {
     &.flex-column {
@@ -396,12 +399,12 @@ $banners-height: 38vh;
       position: relative;
 
       @media(max-width: 960px) {
-        height: 60vw;
+        height: 80vw;
 
         .content {
           color: white;
           font-family: Oswald;
-          font-size: 4.5vw;
+          font-size: 5.5vw;
           height: 26vw;
           margin-top: 17px;
           padding: 0px 8.5vw;
@@ -422,6 +425,12 @@ $banners-height: 38vh;
         line-height: 4.1vw;
         margin: 0 auto;
         width: 60%;
+
+        @media(max-width: 960px) {
+          font-size: 6vw;
+          line-height: 5.5vw;
+          width: 80%;
+        }
       }
 
       &.content {

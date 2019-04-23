@@ -9,6 +9,9 @@
         margin-bottom: 20px;
         text-align: center;
       }
+      @media (max-width: 450px) {
+        font-size: 10px;
+      }
       @media (min-width: 1024px) {
         display: none;
       }
@@ -167,6 +170,12 @@
       &.title2 {
         font-size: 3vw;
         line-height: 2.5vw;
+      }
+    }
+    @media (max-width: 450px) {
+      &.title1 {
+        font-size: 5vw;
+        line-height: 6vw;
       }
     }
 

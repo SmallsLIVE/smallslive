@@ -32,7 +32,7 @@
       </div>
     </div>
   {% endif %}
-    <div class="flex-row upcoming-schedule calendar-hiding-4">
+    <div class="flex-row upcoming-schedule">
       {% include 'search/upcoming_calendar_dates.html' with day_list=day_list %}
       <input  type="hidden" id="load-more-calendar" data-starting-date="{{ upcoming_dates.last|date:'Y-m-d' }}" data-venue="all" class="white-border-button">
     </div>
@@ -57,11 +57,10 @@
       dataType: "json",
       success: function (data) {
         if (filtered)  {
-          $(".flex-row.upcoming-schedule").addClass("calendar-hiding-4")
           $(".flex-column.day-list").remove()
-          $(".upcoming-schedule").find(".flex-row.upcoming-datepicker").last().after(data.template)
+          $(".upcoming-schedule").html(data.template);
         } else {
-          $(".upcoming-schedule").find(".flex-column.day-list").last().after(data.template)
+          $(".upcoming-schedule").find(".flex-column.day-list").last().after(data.template);
         }
         $("#load-more-calendar").data("starting-date", data.new_date);
       },

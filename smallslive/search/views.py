@@ -191,7 +191,7 @@ class MainSearchView(View, SearchMixin):
             template = 'search/artist_results.html'
 
         elif entity == 'event':
-            events, showing_results, num_pages = self.search(
+            events, showing_results, num_pages, first, last = self.search(
                 Event, main_search, page, order=order, date_from=date_from,
                 date_to=date_to, artist_pk=artist_pk, venue=venue)
 
@@ -399,6 +399,8 @@ class UpcomingSearchView(SearchMixin):
         if venue:
             if venue != 'all':
                 event_list = event_list.filter(venue__pk=venue)
+        event_list = event_list.order_by('start')
+        last_event = event_list.last()
         for day in range(0, days):
             # list of events for one day
             day_itinerary = {}
@@ -408,6 +410,7 @@ class UpcomingSearchView(SearchMixin):
             day_itinerary['day_events'] = event_list.filter(start__gte=day_start, start__lte=day_end).order_by('start')
             context['day_list'].append(day_itinerary)
 
+        context['last_event'] = last_event
         context['new_date'] = (day_start + timedelta(days=1)).strftime('%Y-%m-%d')
 
         return context
