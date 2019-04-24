@@ -653,6 +653,51 @@ $(document).ready(function () {
     $(".instruments-container").css("display", "none");
   });
 
+  ////////////////
+
+  $(".datepicker-btn").bind("click", toggleDisplay);
+
+  function toggleDisplay(event) {
+    if ($(".datepicker-container").data("shown")) hide(event);
+    else display();
+  }
+
+  function display() {
+    var $datePickerContainer = $(".datepicker-container");
+    $datePickerContainer.css({
+      left: datePickerLeft,
+      top: datePickerTop
+    });
+    $datePickerContainer
+      .css("display", "flex")
+      .hide()
+      .fadeIn(500, function () {
+        $(document).bind("click", hide);
+        $(".datepicker-container").data("shown", true);
+      });
+
+    var $datePickerInput = $(datePickerInputSelector);
+    $datePickerInput.click();
+    $datePickerInput.prop("disabled", true);
+    $datePickerInput.focus();
+  }
+
+  function hide(event) {
+    var $target = $(event.target);
+    if (
+      $target.closest(".noclick").length == 0 &&
+      !($target.hasClass("day") || $target.hasClass("year"))
+    ) {
+      $(".datepicker-container").fadeOut(500, function () {
+        $(document).unbind("click", hide);
+        $(".datepicker-container").data("shown", false);
+      });
+    }
+  }
+  ///////
+
+  /////////////////////
+
   var $datePickerFrom = $("#search-date-picker-from input");
   $datePickerFrom.datepicker({
     format: "mm/dd/yyyy",
@@ -1020,57 +1065,6 @@ $(document).ready(function () {
       $datePickerCalendar.datepicker("show");
     }
   });
-
-  $(".datepicker-btn").on("click", toggleDisplay);
-
-  function toggleDisplay(event) {
-
-    var $container = $(this).prev('.datepicker-container');
-    if ($container.data("shown")) {
-      hide(event, $container);
-    } else {
-      display($container);
-    }
-  }
-
-  function display($datePickerContainer) {
-    $datePickerContainer.css({
-      left: datePickerLeft,
-      top: datePickerTop
-    });
-    $datePickerContainer
-      .css("display", "flex")
-      .hide()
-      .fadeIn(500, function () {
-        $(document).bind("click", hide);
-        $datePickerContainer.data("shown", true);
-      });
-
-    var $datePickerInput = $datePickerContainer.find('input');
-    $datePickerInput.click();
-    let isCalendar =
-      $(location)
-      .attr("href")
-      .split("/")
-      .reverse()[1] || false;
-    if (isCalendar == 'calendar') {
-      $datePickerInput.prop("disabled", true);
-    }
-    $datePickerInput.focus();
-  }
-
-  function hide(event, $datePickerContainer) {
-    var $target = $(event.target);
-    if (
-      $target.closest(".noclick").length == 0 &&
-      !($target.hasClass("day") || $target.hasClass("year"))
-    ) {
-      $datePickerContainer.fadeOut(500, function () {
-        $(document).unbind("click", hide);
-        $datePickerContainer.data("shown", false);
-      });
-    }
-  }
 });
 
 $(document).on(

@@ -14,8 +14,8 @@
             Upcoming Shows
         </div>
       </div>
-      <div class="calendar-filters">
-        <div class="white-border-select club-filter-select" style="display: inline-block; width: 150px;">
+      <div class="calendar-filters desktop">
+        <div class="white-border-select club-filter-select" style="display: inline-block; width: 150px;  vertical-align: top; border-width: 3px;">
           <select id="calendar-club-filter">
             <option value="all">All</option>
             {% for venue in venues %}
@@ -24,7 +24,7 @@
           </select>
         </div>
         <div class="datepicker-container noclick">
-          <div class="custom-date-picker" id="search-date-picker-calendar">
+          <div class="custom-date-picker">
             <input class="date-picker-text desktop" type="text" placeholder="Select date" readonly>
           </div>
         </div>
@@ -42,15 +42,91 @@
 <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
 <script>
 
+  var $datePickerBtn = $(".calendar-filters:visible .datepicker-btn");
+  var containerSelector = ".calendar-filters:visible .datepicker-container";
+  var $datePickerContainer = $(containerSelector);
+  var $datePickerCalendar = $(".calendar-filters:visible .custom-date-picker input");
+  var startDate = new Date();
+  var venue = "all";
+
   $(window).on('load', function () {
-    $("#upcoming-datepicker").click();
+
+    $datePickerCalendar.datepicker({
+      format: "mm/dd/yyyy",
+      autoclose: true,
+      container: ".calendar-filters:visible .custom-date-picker",
+      showOnFocus: false,
+      startDate: startDate,
+      endDate: new Date("{{ last_event.date }}")
+    });
+
+    $datePickerCalendar.on("click", function () {
+      var dropdown = $(".calendar-filters:visible .datepicker-container .dropdown-menu");
+      if (dropdown[0] && dropdown[0].style.display === "block") {
+        $datePickerCalendar.datepicker("hide");
+      } else {
+        $datePickerCalendar.datepicker("show");
+      }
+    });
+
+    $datePickerCalendar.on("changeDate", function (event) {
+      startDate = event.date;
+      getCalendarAjax(15, true);
+      toggleDisplay(this);
+    });
+
+    $datePickerBtn.on("click", toggleDisplay);
+
+    function toggleDisplay(event) {
+      if ($datePickerContainer.data("shown")) {
+        hide(event);
+      } else {
+        display()
+      };
+    }
+
+    function display() {
+
+      $datePickerContainer.css({
+        left: datePickerLeft,
+        top: datePickerTop
+      });
+      $datePickerContainer
+        .css("display", "flex")
+        .hide()
+        .fadeIn(500, function () {
+          $(document).on("click", hide);
+          $datePickerContainer.data("shown", true);
+        });
+
+      $datePickerCalendar.click();
+      $datePickerCalendar.prop("disabled", true);
+      $datePickerCalendar.focus();
+    }
+
+    function hide(event) {
+      var $target = $(event.target);
+      if (
+        $target.closest(".noclick").length == 0 &&
+        !($target.hasClass("day") || $target.hasClass("year"))
+      ) {
+        $datePickerContainer.fadeOut(500, function () {
+          $(document).unbind("click", hide);
+          $datePickerContainer.data("shown", false);
+        });
+      }
+    }
   });
 
-  function getCalendarAjax(calendarDate, days, filtered, venue="all") {
+  function getCalendarAjax(days, filtered) {
     var data = {'days': days, 'venue': venue};
-    if (calendarDate) {
-      data['starting_date'] = calendarDate;
+    if (startDate) {
+      var day = startDate.getDate();
+      var monthIndex = startDate.getMonth() + 1;
+      var year = startDate.getFullYear();
+      data['starting_date'] = year + '-' + monthIndex + '-' + day;
     }
+
     $.ajax({
       url: '/search/upcoming-ajax/',
       data: data,
@@ -77,15 +153,15 @@
       lastEventDate = Date.parse(lastEventDate);
       var startDate = $loadMore.data("starting-date");
       if (Date.parse(startDate) < lastEventDate) {
-        var venue  = $loadMore.data("venue");
-        getCalendarAjax(startDate, 15, false, venue);
+        getCalendarAjax(15, false);
       }
     };
   });
 
   $("#calendar-club-filter").change(function () {
     $("#load-more-calendar").data("venue", $(this).find("option:selected").val());
-    getCalendarAjax(null, 12, true, $(this).find("option:selected").val());
+    venue = $(this).find("option:selected").val();
+    getCalendarAjax(12, true);
   });
 
 </script>
