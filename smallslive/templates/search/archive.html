@@ -31,7 +31,7 @@
 {% include 'become_a_supporter_dialog.html' %}
 
 <section class="event-stripe archive">
-  <div class="section-title home">
+  <div class="section-title home archive">
     <div class="title1">Recently Added</div>
   </div>
   <main>
@@ -42,9 +42,9 @@
 </section>
 
 <section class="event-stripe archive">
-  <div class="section-title home">
+  <div class="section-title home archive">
     <div class="title1">Most Popular</div>
-    <span class="select-container">
+    <span class="select-container" style="left: 690px; bottom: -4px;">
       <div class="white-border-select home-filter">
         <select id="most-popular-filter">
           <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
@@ -92,21 +92,79 @@
 
 {% block extra_js %}
   <script>
-    var eventOrderFilter = 'newest';
-    var datePickerInputSelector = '#search-date-picker-from input';
-    var datePickerFromDate = null;
-    var datePickerToDate = '{{ default_to_date }}';
-    var setFromDate = false;
-    var setToDate = true;
-    var datePickerLeft = 45;
-    var datePickerTop = 38;
-    var defaultFromDate;
-    var defaultToDate = '{{ default_to_date }}';
+
+    var $datePickerFrom = $(".archive-datepicker.fixed:visible .custom-date-picker.from input");
+    var $datePickerTo= $(".archive-datepicker.fixed:visible .custom-date-picker.to input");
+    var startDate = new Date();
+    var endDate = new Date();
+    var venue = "all";
+
+    $(window).on("load", function () {
+
+      $datePickerFrom.datepicker({
+        format: "mm/dd/yyyy",
+        autoclose: true,
+        container: ".archive-datepicker.fixed:visible .custom-date-picker.from",
+        showOnFocus: false,
+        startDate: startDate,
+        endDate: new Date("{{ last_event.date }}")
+      });
+
+      $datePickerFrom.on("click", function () {
+        var dropdown = $(".archive-datepicker.fixed:visible .custom-date-picker.from .dropdown-menu");
+        if (dropdown[0] && dropdown[0].style.display === "block") {
+          $datePickerFrom.datepicker("hide");
+        } else {
+          $datePickerFrom.datepicker("show");
+        }
+      });
+
+      $datePickerTo.datepicker({
+        format: "mm/dd/yyyy",
+        autoclose: true,
+        container: ".archive-datepicker.fixed:visible .custom-date-picker.to",
+        showOnFocus: false,
+        startDate: startDate,
+        endDate: new Date("{{ last_event.date }}")
+      });
+
+      $datePickerTo.on("click", function () {
+        var dropdown = $(".archive-datepicker.fixed:visible .custom-date-picker.to .dropdown-menu");
+        if (dropdown[0] && dropdown[0].style.display === "block") {
+          $datePickerTo.datepicker("hide");
+        } else {
+          $datePickerTo.datepicker("show");
+        }
+      });
+
+
+      $datePickerFrom.click();
+
+      $datePickerFrom.on('show', function() {
+        console.log('#foo is now visible');
+      });
+
+      $datePickerFrom.on('hide', function() {
+        console.log('#foo is now visible');
+      });
+
+    });
+
+    (function ($) {
+      $.each(['show', 'hide'], function (i, ev) {
+        var el = $.fn[ev];
+        $.fn[ev] = function () {
+          this.trigger(ev);
+          return el.apply(this, arguments);
+        };
+      });
+    })(jQuery);
+
   </script>
   <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
   <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
   <script src="{% static 'js/tabs.js' %}"></script>
-  <script src="{% static 'js/search/search.js' %}"></script>
+  <!--<script src="{% static 'js/search/search.js' %}"></script>-->
   <script>
     {% if popular_select %}
       var popularFilterDefaultValue = "{{ popular_select }}";

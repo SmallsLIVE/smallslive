@@ -1364,8 +1364,25 @@ body.headers-1 {
         height: 330px;
         width: 46.5vw;
 
-        @media(min-width: 1366px) {
-          width: 35vw;
+        @media (min-width: 1366px) {
+          height: 21.5vw;
+          width: 23.25vw;
+
+          .datepicker-container {
+            height: 100%;
+            width: 22.85vw;
+          }
+
+        }
+
+        @media (min-width: 1024px) and (max-width: 1365px) {
+          height: 29vw;
+          width: 31vw;
+
+          .datepicker-container {
+            height: 100%;
+            width: 30.6vw;
+          }
         }
       }
   }

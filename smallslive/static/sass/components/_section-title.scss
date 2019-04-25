@@ -55,8 +55,9 @@
 
   }
 
-  &.home {
+  &.home, &.archive, &.calendar {
 
+    position: relative;
     z-index: 99;
 
     .white-border-button {

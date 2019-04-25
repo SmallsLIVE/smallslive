@@ -59,7 +59,7 @@ class SearchMixin(object):
 
     def search(self, entity, main_search, page=1, order=None,
                instrument=None, date_from=None, date_to=None,
-               artist_search=None, artist_pk=None, venue=None):
+               artist_search=None, artist_pk=None, venue=None, results_per_page=24):
 
         search = SearchObject()
 
@@ -70,7 +70,6 @@ class SearchMixin(object):
             sqs = search.search_artist(main_search, artist_search, instrument)
 
         elif entity == Event:
-            results_per_page = 24
 
             sqs = search.search_event(
                 main_search, order, date_from, date_to,
@@ -332,7 +331,7 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         context['artists_blocks'] = artists_blocks
         context['artist_num_pages'] = num_pages
 
-        event_blocks, showing_event_results, num_pages, first, last = self.search(Event, q)
+        event_blocks, showing_event_results, num_pages, first, last = self.search(Event, q, results_per_page=60)
 
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []

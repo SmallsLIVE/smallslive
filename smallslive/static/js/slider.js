@@ -119,14 +119,14 @@ function controls(){
 
     $(document).on('click', 'div.slide-btn.next', function(){
         var $next = $(this);
+        var $row = $next.next();
         var $win = $(window);
         var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-        var margin = vw * 0.0078;
-        var frameWidth = vw - $next.width() * 2;
-        var $row = $next.next();
-        var left = - parseFloat($row.css('marginLeft')) + frameWidth;
+        var padding = $row.innerWidth() - $row.width();
+        var currentLeft = parseFloat($row.css("marginLeft"));
+        var left = vw - currentLeft;
         $row.animate({
-            marginLeft: - left
+            marginLeft: -left + 2 * padding
         }, 400, function(){
             var $prev = $row.prev().prev();
             $prev.css('visibility', 'visible');
