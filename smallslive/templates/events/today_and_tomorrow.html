@@ -15,7 +15,7 @@
 
     <div class="title1">{% if calendar_page %} {% get_today_and_tomorrow_dates '%a' %}  {% else %} {% now 'D b d' %} {% endif %}</div>
     {% if not calendar_page %}
-    <a href='/events/calendar/' class="white-border-button">Full calendar</a>
+    <a href='/events/calendar/' class="white-border-button" style="margin-left: 100px;">Full calendar</a>
     {% endif %}
   </div>
   {% if not calendar_page %}

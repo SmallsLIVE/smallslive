@@ -6,7 +6,7 @@
 <section class=" new-calendar search-tab-content {% if archived %}archived{% else %}upcoming{% endif %} {{ archived|yesno:',shows-calendar' }} "
          data-toggle-tab="{% if archived %}archived{% else %}upcoming{% endif %}-shows"
          data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
-  <div class="section-title home calendar upcoming-shows">
+  <div class="section-title home calendar upcoming-shows" style="margin-top: 30px;">
     <div id="upcoming-shows" class="title1" data-last-event-date="{{ last_event.date }}">
       Upcoming Shows <span class="accent-color">\</span>
       <span id="upcoming-shows-date-from">{{ first_event.date|date:"b j" }}</span>-
