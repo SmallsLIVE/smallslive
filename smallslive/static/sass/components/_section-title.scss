@@ -61,10 +61,6 @@
     z-index: 99;
 
     .white-border-button {
-      position: absolute;
-      left: calc(625px + 3.5vw);
-      text-align: center;
-      width: 160px;
 
       @media (max-width: 960px) {
         left: initial;
