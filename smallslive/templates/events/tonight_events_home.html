@@ -7,7 +7,7 @@
     <div class="event-info">
         <div class="sub-info">
             <p class="event-info-title">{{ event.title }}</p>
-            <div class="{{ event.venue.name|lower}}-color title5">Live at {{ event.venue.name }}</div>
+            <div class="{{ event.venue.name|lower}}-color title5 venue">Live at {{ event.venue.name }}</div>
             {% if show_date %}
               <div class="title5 sets">{{ event.get_date|date:'D M d' }}</div>
             {% endif %}

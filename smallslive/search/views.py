@@ -394,11 +394,12 @@ class UpcomingSearchView(SearchMixin):
         starting_date = self.request.GET.get('starting_date', datetime.datetime.today().strftime('%Y-%m-%d'))
         starting_date = datetime.datetime.strptime(starting_date, '%Y-%m-%d')
         venue = self.request.GET.get('venue', 'all')
-        event_list = Event.objects.all()
+        event_list = Event.objects.filter(start__gte=starting_date)
         if venue:
             if venue != 'all':
                 event_list = event_list.filter(venue__pk=venue)
         event_list = event_list.order_by('start')
+        first_event = event_list.first()
         last_event = event_list.last()
         for day in range(0, days):
             # list of events for one day
@@ -409,6 +410,7 @@ class UpcomingSearchView(SearchMixin):
             day_itinerary['day_events'] = event_list.filter(start__gte=day_start, start__lte=day_end).order_by('start')
             context['day_list'].append(day_itinerary)
 
+        context['first_event'] = first_event
         context['last_event'] = last_event
         context['new_date'] = (day_start + timedelta(days=1)).strftime('%Y-%m-%d')
 

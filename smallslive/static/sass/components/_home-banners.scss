@@ -231,7 +231,7 @@ $banners-height: 38vh;
         margin-top: 10px;
 
         @media(max-width: 960px) {
-          margin-top: 24vw;
+          margin-top: 10vw;
         }
       }
 
@@ -389,7 +389,7 @@ $banners-height: 38vh;
     margin-top: 3.3vw;
 
     @media(max-width: 960px) {
-      height: 40vw;
+      height: 22vw;
     }
   }
 
@@ -399,15 +399,15 @@ $banners-height: 38vh;
       position: relative;
 
       @media(max-width: 960px) {
-        height: 80vw;
+        height: 45vw;
 
         .content {
           color: white;
           font-family: Oswald;
-          font-size: 5.5vw;
+          font-size: 3vw;
           height: 26vw;
           margin-top: 17px;
-          padding: 0px 8.5vw;
+          padding: 0px 1.5vw;
           text-transform: uppercase;
           /* letter-spacing: 0.1vw; */
           letter-spacing: -1px;
@@ -440,10 +440,10 @@ $banners-height: 38vh;
         height: 8vw;
         margin-top: 2.6vw;
         padding: 0px 8.5vw;
-        text-transform: uppercase;
         letter-spacing: -1px;
         font-weight: 400;
         line-height: 3.5vw;
+        text-align: center;
 
       }
     }

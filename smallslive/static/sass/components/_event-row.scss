@@ -193,20 +193,21 @@ $event-row-padding: 3.5vw;
 
   .artists {
     background-color: white;
-    padding: 12px 20px 18px;
     height: 110px;
     width: auto;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     overflow-y: auto;
-
-
+    padding-bottom: 0.7vw;
+    padding-left: 0.7vw;
+    padding-top: 0.7vw;
 
     a {
       line-height: 32px;
-      width: 50%;
+      width: 48%;
       height: 33%;
+      margin-right: 2%;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
@@ -256,23 +257,25 @@ $event-row-padding: 3.5vw;
     }
 
     .event-info-title {
-      line-height: 2vw;
+      line-height: 1.7vw;
       font-size: 1.58vw;
       color: white;
       margin: 0 0 5px 0;
       width: fit-content;
       font-weight: 400;
       font-family: "Oswald", sans-serif;
+      padding-top: 0.3vw;
       transform: scaleY(1.3);
     }
 
     .sub-info {
-      top: 20px;
-      left: 20px;
+      top: 1vw;
+      left: 1vw;
       position: absolute;
       font-size: 0.7vw;
       font-weight: bold;
       margin-bottom: 0px;
+      width: 28vw;
 
       .title5 {
         font-weight: 200;
@@ -281,6 +284,11 @@ $event-row-padding: 3.5vw;
         text-transform: uppercase;
         transform: scaleY(1.3);
 
+      }
+
+      .venue {
+        margin-bottom: 10px;
+        margin-top: 15px;
       }
 
       @media (max-width: 960px) {
@@ -350,9 +358,7 @@ $event-row-padding: 3.5vw;
 
 .calendar {
   .event-info-title {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+
   }
 }
 

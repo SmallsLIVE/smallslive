@@ -11,7 +11,10 @@
     <div class="musicians-results flex-row">
       <div class="section-title calendar upcoming-shows">
         <div id="upcoming-shows" class="title1" data-last-event-date="{{ last_event.date }}">
-            Upcoming Shows
+          Upcoming Shows <span class="accent-color">\</span>
+          <span id="upcoming-shows-date-from">{{ first_event.date|date:"b j" }}</span>-
+          <span id="upcoming-shows-date-to">{{ last_event.date|date:"b j" }}</span>
+
         </div>
       </div>
       <div class="calendar-filters desktop">
