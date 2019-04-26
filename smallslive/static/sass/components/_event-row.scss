@@ -277,6 +277,10 @@ $event-row-padding: 3.5vw;
       margin-bottom: 0px;
       width: 28vw;
 
+      @media (max-width: 1024px) {
+        width:  98%;
+      }
+
       .title5 {
         font-weight: 200;
         letter-spacing: 0.09em;
