@@ -23,7 +23,7 @@ $event-row-padding: 3.5vw;
         height: $live-card-width-medium * 0.6;
       }
 
-      @media (max-width: $screen-md-max) {
+      @media (max-width: $screen-md-min) {
         display: none;
       }
     }

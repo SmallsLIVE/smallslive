@@ -16,11 +16,6 @@
   </div>
 </div>
 <script>
-
-  function moreInfo() {
-
-    window.location = '{% url 'terms-and-conditions' %}';
-  }
   $(document).ready(function(){
     inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
 

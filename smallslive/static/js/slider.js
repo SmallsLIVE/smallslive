@@ -70,7 +70,12 @@ $( window ).resize(function() {
     resizeTimeout = setTimeout(init, 300);
 });
 
-function init(){
+$( window ).scroll(function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(init, 300);
+});
+
+function init() {
 
     // reset slider to initial position
     var $rows = $('.event-row');
@@ -104,18 +109,6 @@ function controls(){
     var $win = $(window);
     var $prev = $('div.slide-btn.prev');
     var $next = $('div.slide-btn.next');
-
-    $prev.each(function () {
-        $(this).css('visibility', 'hidden');
-    });
-
-    $next.each(function () {
-        $(this).css('visibility', 'hidden');
-        var $last = $(this).next().find('article').last();
-        if ($last.is(':offscreen')) {
-            $(this).css('visibility', 'visible');
-        }
-    });
 
     $(document).on('click', 'div.slide-btn.next', function(){
         var $next = $(this);

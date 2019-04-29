@@ -447,11 +447,15 @@ $banners-height: 38vh;
       }
     }
 
-    button {
+    button, a {
       padding: 0.5vw 2.5vw;
       font-family: "Reem Kufi", sans-serif;
       font-size: 0.9vw;
       margin: 0 14px;
+
+      &:hover {
+        cursor: pointer;
+      }
 
       @media(max-width: 960px) {
         font-size: 13px;
