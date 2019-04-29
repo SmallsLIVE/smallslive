@@ -47,6 +47,10 @@
   var startDate = new Date();
   var venue = "all";
 
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+
   $(window).on('load', function () {
 
     $datePickerCalendar.datepicker({
@@ -137,6 +141,8 @@
           $(".upcoming-schedule").find(".flex-column.day-list").last().after(data.template);
         }
         $("#load-more-calendar").data("starting-date", data.new_date);
+        var dateLabel = monthNames[startDate.getMonth()] + " " + startDate.getDate();
+        $("#upcoming-shows-date-from").text(dateLabel);
       },
       error: function(err) {
         console.log(err);
