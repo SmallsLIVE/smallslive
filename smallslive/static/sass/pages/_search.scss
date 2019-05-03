@@ -2140,6 +2140,11 @@ body.home.admin-header {
 
     &.search-page {
       height: auto;
+
+      &.tall {
+        height: 40vw;
+      }
+
     }
   }
 
