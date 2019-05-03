@@ -59,7 +59,7 @@ class SearchMixin(object):
 
     def search(self, entity, main_search, page=1, order=None,
                instrument=None, date_from=None, date_to=None,
-               artist_search=None, artist_pk=None, venue=None, results_per_page=24):
+               artist_search=None, artist_pk=None, venue=None, results_per_page=60):
 
         search = SearchObject()
 
@@ -74,6 +74,9 @@ class SearchMixin(object):
             sqs = search.search_event(
                 main_search, order, date_from, date_to,
                 artist_pk=artist_pk, venue=venue)
+
+            print sqs.query
+
             if not self.request.user.is_superuser:
                 sqs = sqs.filter(Q(state=Event.STATUS.Published) | Q(state=Event.STATUS.Cancelled))
 
@@ -84,6 +87,9 @@ class SearchMixin(object):
         block = []
 
         paginator = Paginator(sqs, results_per_page)
+
+        print 'Page: ', page
+        print 'Page size: ', results_per_page
 
         try:
             objects = paginator.page(page).object_list
@@ -197,9 +203,10 @@ class MainSearchView(View, SearchMixin):
             context = {
                 'events': events[0] if events else [],
                 'secondary': True,
-                'show_event_venue':show_venue,
+                'show_event_venue': show_venue,
                 'show_extend_date': show_sets,
-                'upcoming':  upcoming
+                'upcoming':  upcoming,
+                'with_date_picker': False,
             }
             template = ('search/event_search_row.html' if partial
                         else 'search/event_search_result.html')
@@ -345,8 +352,8 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         default_to_date = 'now'
         if event_blocks and event_blocks[0] and event_blocks[0][0].date:
             default_to_date = event_blocks[0][0].date.strftime('%m/%d/%Y')
-        context['default_from_date'] = timezone.now().strftime('%m/%d/%Y')
-        context['default_to_date'] = default_to_date
+        context['first_event_date'] = last.get_date().strftime('%m/%d/%Y')
+        context['last_event_date'] = first.get_date().strftime('%m/%d/%Y')
         context['first'] = first
         context['last'] = last
 

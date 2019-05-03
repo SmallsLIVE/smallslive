@@ -190,24 +190,6 @@ function changePage(param) {
   sendEventRequest("#showsArchivedContent");
 }
 
-function loadMoreEvents(mode) {
-  if ($("main.calendar").length > 0) {
-    show_event_venue = true;
-    show_event_setTime = true;
-  }
-  incNumPages(mode);
-  var selector = "#load-more-archived-btn";
-  var $eventSubheader = $("#archived-event-subheader");
-  if (mode == "Upcoming") {
-    selector = "#load-more-upcoming-btn";
-    $eventSubheader = $("#upcoming-event-subheader");
-  }
-  $(selector).hide();
-  $("#event-load-gif").css("display", "block");
-  sendEventRequest(mode);
-
-  showQuantityDisplay($eventSubheader, true, false);
-}
 
 $(document).on("click", "#artists .artist-row", function () {
   var sendRequestCallback = function () {
@@ -292,7 +274,6 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
   var selector = "#shows" + mode + "Content";
   var utcDateFrom = null;
   var utcDateTo = null;
-  var eventPageNum;
 
   var eventDateFrom;
   var eventDateTo;
@@ -342,63 +323,8 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
     data: searchFilters,
     dataType: "json",
     success: function (data) {
-      if (data.template) {
-        if (eventPageNum === 1) {
-          var $eventSubheader = $("#archived-event-subheader");
-          if (mode == "Upcoming") {
-            $eventSubheader = $("#upcoming-event-subheader");
-          }
-          if (typeof data.showingResults !== "number") {
-            $eventSubheader.text("0-0");
-          } else if (data.showingResults < 24) {
-            $eventSubheader.text("1-" + data.showingResults);
-          } else {
-            $eventSubheader.text("1-24");
-          }
-          $eventSubheader.data("max-number", data.showingResults);
-          $eventSubheader.data("left-number", 1);
-          $eventSubheader.data("right-number", 24);
-        }
-
-        var selector = "#showsArchivedContent";
-        if (mode == "Upcoming") {
-          selector = "#showsUpcomingContent";
-        }
-        var $showsContainer = $(selector + " .shows-container");
-        $("#events").removeClass("artist-loading-gif");
-        var $eventSubHeaderFooter = "#archived-event-subheader-footer";
-        var $totals = $("#archived-event-totals");
-        if (mode == "Upcoming") {
-          $totals = $("#upcoming-event-totals");
-        }
-        $totals.html(data.showingResults);
-        if (apply || eventFilter) {
-          apply = false;
-          eventFilter = false;
-          $showsContainer.find('article').remove();
-        }
-        var article = $(data.template).find("article");
-        if (!article.length) {
-          $showsContainer.html(data.template);
-        }
-        article.each(function (index) {
-          $showsContainer.append($(this));
-        });
-        if (mode == "Upcoming") {
-          upcomingEventMaxPageNum = data.numPages;
-        } else {
-          archivedEventMaxPageNum = data.numPages;
-        }
-
-        $("#event-load-gif").css("display", "none");
-        var selector = "#load-more-archived-btn";
-        if (mode == "Upcoming") {
-          selector = "#load-more-upcoming-btn";
-        }
-        $(selector).toggle(data.numPages != eventPageNum);
-        if (callback) {
-          callback();
-        }
+      if (callback) {
+        callback(data);
       }
     }
   });
@@ -1132,3 +1058,144 @@ $("#archive-date-picker").datepicker().on('changeDate', function (ev) {
   getCalendarAjax($("#load-more-calendar").data("starting-date"), 12, true, $("#load-more-calendar").data("venue"))
 
 });
+
+var eventPageNum;
+
+function initializeSearch() {
+  apply = true;
+  eventPageNum = 1;
+  archivedEventPageNum = eventPageNum;
+}
+
+function loadMoreEvents(mode) {
+  if ($("main.calendar").length > 0) {
+    show_event_venue = true;
+    show_event_setTime = true;
+  }
+  incNumPages(mode);
+  var selector = "#load-more-archived-btn";
+  var $eventSubheader = $("#archived-event-subheader");
+  if (mode == "Upcoming") {
+    selector = "#load-more-upcoming-btn";
+    $eventSubheader = $("#upcoming-event-subheader");
+  }
+  $(selector).hide();
+  $("#event-load-gif").css("display", "block");
+  sendEventRequest(mode, datePickerFromDate, datePickerToDate, updateArchiveShows);
+
+  showQuantityDisplay($eventSubheader, true, false);
+}
+
+function updateArchiveShows(data) {
+
+  if (data.numPages < eventPageNum) {
+    moreEvents = false;
+    $("#event-load-gif").css("display", "none");
+    return;
+  }
+
+  moreEvents = true;
+
+  if (data.template) {
+    if (eventPageNum === 1) {
+      var $eventSubheader = $("#archived-event-subheader");
+      if (typeof data.showingResults !== "number") {
+        $eventSubheader.text("0-0");
+      } else if (data.showingResults < 24) {
+        $eventSubheader.text("1-" + data.showingResults);
+      } else {
+        $eventSubheader.text("1-24");
+      }
+      $eventSubheader.data("max-number", data.showingResults);
+      $eventSubheader.data("left-number", 1);
+      $eventSubheader.data("right-number", 24);
+    }
+
+    var selector = "#showsArchivedContent";
+
+    var $showsContainer = $(selector + " .shows-container");
+    $("#events").removeClass("artist-loading-gif");
+    var $eventSubHeaderFooter = "#archived-event-subheader-footer";
+    var $totals = $("#archived-event-totals");
+    $totals.html(data.showingResults);
+    if (apply || eventFilter) {
+      apply = false;
+      eventFilter = false;
+      $showsContainer.find('article').remove();
+    }
+    var $article = $(data.template).find("article");
+    if (!$article.length) {
+      $showsContainer.html(data.template);
+    }
+    $article.each(function (index) {
+      $showsContainer.append($(this));
+    });
+    archivedEventMaxPageNum = data.numPages;
+
+    $("#event-load-gif").css("display", "none");
+    var selector = "#load-more-archived-btn";
+    $(selector).toggle(data.numPages != eventPageNum);
+  }
+}
+
+function initializeArchiveDatePickers() {
+
+  var $datePickerFrom = $(".archive-datepicker.fixed:visible .custom-date-picker.from input");
+  var $datePickerTo = $(".archive-datepicker.fixed:visible .custom-date-picker.to input");
+
+  $datePickerFrom.datepicker({
+    format: "mm/dd/yyyy",
+    autoclose: false,
+    container: ".archive-datepicker.fixed:visible .custom-date-picker.from",
+    showOnFocus: false,
+    startDate: startDate,
+    endDate: endDate
+  });
+
+  $datePickerFrom.on("click", function () {
+    var dropdown = $(".archive-datepicker.fixed:visible .custom-date-picker.from .dropdown-menu");
+    if (dropdown[0] && dropdown[0].style.display === "block") {
+      $datePickerFrom.datepicker("hide");
+    } else {
+      $datePickerFrom.datepicker("show");
+    }
+  });
+
+  $datePickerFrom.on("changeDate", function (newDate) {
+    datePickerFromDate = newDate.date;
+    // Means any ajax results will not append to existing items.
+    // For pagination use apply = false;
+    initializeSearch();
+    sendEventRequest('Archived', datePickerFromDate, datePickerToDate, updateArchiveShows);
+  });
+
+  $datePickerTo.datepicker({
+    format: "mm/dd/yyyy",
+    autoclose: false,
+    container: ".archive-datepicker.fixed:visible .custom-date-picker.to",
+    showOnFocus: false,
+    startDate: startDate,
+    endDate: endDate
+  });
+
+  $datePickerTo.on("click", function () {
+    var dropdown = $(".archive-datepicker.fixed:visible .custom-date-picker.to .dropdown-menu");
+    if (dropdown[0] && dropdown[0].style.display === "block") {
+      $datePickerTo.datepicker("hide");
+    } else {
+      $datePickerTo.datepicker("show");
+    }
+  });
+
+  $datePickerTo.on("changeDate", function (newDate) {
+    // Means any ajax results will not append to existing items.
+    // For pagination use apply = false;
+    initializeSearch();
+    datePickerToDate = newDate.date;
+    sendEventRequest('Archived', datePickerFromDate, datePickerToDate, updateArchiveShows);
+    $datePickerFrom.datepicker('setEndDate', datePickerToDate);
+  });
+
+  $datePickerTo.click();
+
+}

@@ -79,7 +79,7 @@
 
 <div class="search-container pad-content new-archive">
     <section id="search-content" class="search-content">
-      {% include 'events/archived_shows.html' with archived=True default_to_date=default_to_date secondary=True show_rows=True%}
+      {% include 'events/archived_shows.html' with archived=True default_to_date=default_to_date secondary=True show_rows=True %}
     </section>
     <section id="musicianContent"
              data-toggle-tab="musicians"
@@ -164,6 +164,7 @@
   <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
   <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
   <script src="{% static 'js/tabs.js' %}"></script>
+
   <!--<script src="{% static 'js/search/search.js' %}"></script>-->
   <script>
     {% if popular_select %}

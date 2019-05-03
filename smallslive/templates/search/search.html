@@ -30,30 +30,81 @@
 {% include 'inactive_dialog.html' %}
 {% include 'become_a_supporter_dialog.html' %}
 
-<div class="musicians-results white-line-bottom">
-    <div id="artist-subheader" class="showing-results text1" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>1-24</div>
-  <div class="title1 musicians-results-title">
-    {% if artists_blocks %} <span id="total-artist" class="accent-color">{{ showing_artist_results }}</span>
-      {% if showing_artist_results > 1 %}
+{% if not query_term %}
+  <section class="event-stripe archive">
+    <div class="section-title home archive">
+      <div class="title1">Recently Added</div>
+    </div>
+    <main>
+      <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+      <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+      {% include 'events/event_row.html' with events=new_in_archive secondary=False %}
+    </main>
+  </section>
+
+  <section class="event-stripe archive">
+    <div class="section-title home archive">
+      <div class="title1">Most Popular</div>
+      <span class="select-container" style="left: 690px; bottom: -4px;">
+        <div class="white-border-select home-filter">
+          <select id="most-popular-filter">
+            <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
+            <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
+            <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
+            <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
+          </select>
+        </div>
+      </span>
+    </div>
+    <main id="most-popular-container">
+      <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+      <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+      {% include 'events/event_row.html' with events=popular_in_archive secondary=False %}
+    </main>
+  </section>
+{% endif %}
+
+{% if not query_term %}
+  <div class="flex-row new-archive">
+    <div class="musicians-result active" data-type="search-content">
+      <div class="title1 shows-results-title">
+        Shows
+      </div>
+    </div>
+    <div class="musicians-result" data-type="musicianContent">
+      <div class="title1 musicians-results-title">
         Musicians
-      {% else %}
-        Musician
-      {% endif %}
-    {% else %} No musicians named "<span class="accent-color">{{ query_term }}</span>" found
-    {% endif%}</div>
-</div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
 <div class="artist-search-profile-container pad-content"></div>
 
-<div class="search-container pad-content">
+<div class="search-container pad-content new-archive">
     <section id="musicianContent"
              data-toggle-tab="musicians"
              class="search-tab-content {% if musician_search %}active{% endif %} search-page"
-             data-toggle-tab-group="search-results">
+             data-toggle-tab-group="search-results"
+             style="display: none;">
+      <div class="musicians-results">
+        <div id="artist-subheader" class="showing-results text1" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>1-24</div>
+        <div class="section-title title1 musicians-results-title">
+          {% if artists_blocks %} <span id="total-artist" class="accent-color">{{ showing_artist_results }}</span>
+            {% if showing_artist_results > 1 %}
+              Musicians
+            {% else %}
+              Musician
+            {% endif %}
+          {% else %} No musicians named "<span class="accent-color">{{ query_term }}</span>" found
+          {% endif%}
+        </div>
+      </div>
       {% if artists_blocks %}
         {% include 'search/artists.html' %}
       {% endif %}
     </section>
-    <section class="search-content">
+    <section id="search-content" class="search-content">
       {% include 'events/shows.html' with archived=True default_to_date=default_to_date secondary=True %}
       <!-- include upcoming shows (as placeholder and hidden), so then can be toggled when viewing artists profile -->
       {% include 'events/shows.html' with upcoming=True default_from_date=default_from_date secondary=True placeholder=True hide_filters=True%}
@@ -63,101 +114,66 @@
 
 {% block extra_js %}
   <script>
+    var defaultFromDate = new Date("{{  first_event_date }}");
+    var defaultToDate = new Date("{{ last_event_date }}");
     var eventOrderFilter = 'newest';
+
     var datePickerInputSelector = '#search-date-picker-from input';
-    var datePickerFromDate = null;
-    var datePickerToDate = '{{ default_to_date }}';
+    var datePickerFromDate = defaultFromDate;
+    var datePickerToDate = defaultToDate;
+
     var setFromDate = false;
     var setToDate = true;
     var datePickerLeft = 45;
     var datePickerTop = 38;
-    var defaultFromDate;
-    var defaultToDate = '{{ default_to_date }}';
+
+    var $datePickerFrom = $(".archive-datepicker.fixed:visible .custom-date-picker.from input");
+    var $datePickerTo= $(".archive-datepicker.fixed:visible .custom-date-picker.to input");
+    var startDate = "{{ first_event_date }}";
+    var endDate = "{{ last_event_date }}";
+    var venue = "all";
+    var moreEvents = true;
+
+    $(document).ready(function () {
+
+      initializeArchiveDatePickers();
+
+      $(window).scroll(function () {
+        if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
+          if (moreEvents) {
+            loadMoreEvents('Archived');
+          }
+        };
+      });
+
+    });
+
+    (function ($) {
+      $.each(['show', 'hide'], function (i, ev) {
+        var el = $.fn[ev];
+        $.fn[ev] = function () {
+          this.trigger(ev);
+          return el.apply(this, arguments);
+        };
+      });
+    })(jQuery);
+
+
+
   </script>
   <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
   <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-  <script src="{% static 'js/tabs.js' %}"></script>
-  <script src="{% static 'js/search/search.js' %}"></script>
+  {% if not query_term %}
+    <script src="{% static 'js/tabs.js' %}"></script>
+    <script src="{% static 'js/search/search.js' %}"></script>
+  {% endif %}
   <script>
-      $(document).ready(function(){
-        $('.scroll-left').css('visibility', 'initial')
-        const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
-"q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
-        buttons = {
-
-        }
-        alphabet.map((leter) => {
-          buttons[leter] = document.createElement('div');
-          $(buttons[leter]).addClass('white-border-button')
-              .html(leter)
-              .appendTo($("#a-z-search")).click(() => {
-                $('#a-z-search .white-border-button').css('background-color', '#f0f0eb')
-                $(buttons[leter]).css('background-color', '#fff')
-                if(searchTerm.trim() != ""){
-                  searchTerm = "";
-                  sendArtistRequest(()=>{
-                  $('#artist-search').val($(buttons[leter]).text())
-                  $("#artist-search").change()
-                  });
-                }else{
-                  $('#artist-search').val($(buttons[leter]).text())
-                  $("#artist-search").change()
-                }
-               
-              })
-          })
-          $('.scroll-right').click(() => {
-            let scrollF = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 30)}, 10)
-            setTimeout(() => {clearInterval(scrollF)}, 120)
-            let scrollS = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 10)}, 80)
-            setTimeout(() => {clearInterval(scrollS)}, 320)
-            setTimeout(function(){
-              if($( "#a-z-search" ).scrollLeft() == 0){
-                $('.scroll-right').css('visibility', 'initial')
-                $('.scroll-left').css('visibility', 'hidden')
-
-              }else if( $( "#a-z-search" ).scrollLeft() == 819 ){
-                $('.scroll-right').css('visibility', 'hidden')
-                $('.scroll-left').css('visibility', 'initial')
-              }else{
-                $('.scroll-left').css('visibility', 'initial')
-                $('.scroll-right').css('visibility', 'initial')
-              }
-            }, 310)
-            
-          })
-          $('.scroll-left').click(() => {
-            let scrollF = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 30)}, 10)
-            setTimeout(() => {clearInterval(scrollF)}, 120)
-            let scrollS = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 10)}, 10)
-            setTimeout(() => {clearInterval(scrollS)}, 300)
-            setTimeout(() => {
-              if($( "#a-z-search" ).scrollLeft() == 0){
-                $('.scroll-right').css('visibility', 'initial')
-                $('.scroll-left').css('visibility', 'hidden')
-
-              }else if( $( "#a-z-search" ).scrollLeft() == 819 ){
-                $('.scroll-right').css('visibility', 'hidden')
-                $('.scroll-left').css('visibility', 'initial')
-              }else{
-                $('.scroll-left').css('visibility', 'initial')
-                $('.scroll-right').css('visibility', 'initial')
-              }
-            }, 310)
-
-          })
-
-
-        foundArtistNumber = $(".artist-mobile").length
-        if ( foundArtistNumber === 1 ){
-          $uniqueArtist = $(".artist-mobile")[0];
-          $($uniqueArtist).find(".artist-row")[0].click()
-        }
-       }) 
-    $('.instruments-container .close-button').on('click', function() {
-      $(this).closest('.instruments-container').hide();
-    });
+    {% if popular_select %}
+      var popularFilterDefaultValue = "{{ popular_select }}";
+      var popularQueryUrl = "{% url 'event_popular_ajax' %}";
+    {% endif %}
   </script>
+  <script src="{% static 'js/search/artist_index.js' %}"></script>
 {% endblock %}
 
 {% block footer %}

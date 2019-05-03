@@ -1,5 +1,1 @@
-{% if events %}
-    {% include 'search/event_search_row.html' with show_extend_date=show_extend_date upcoming=upcoming events=events show_event_venue=show_event_venue secondary=secondary hide_play=hide_play with_date_picker=with_date_picker %}
-{% else %}
-    <div class="no-result-container text2">No results</div>
-{% endif %}
+{% include 'search/event_search_row.html' with show_extend_date=show_extend_date upcoming=upcoming events=events show_event_venue=show_event_venue secondary=secondary hide_play=hide_play with_date_picker=with_date_picker %}
