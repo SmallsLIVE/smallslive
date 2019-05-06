@@ -108,23 +108,12 @@ class BasketAddView(basket_views.BasketAddView):
             form.product, form.cleaned_data['quantity'],
             form.cleaned_options(), stock_record)
 
-        # Do not show 'Added to your basket' message
-        # for tickets and gifts
-        if not basket.has_tickets() and not basket.has_gifts():
-            messages.success(self.request, self.get_success_message(form),
-                             extra_tags='safe noicon')
-
-        if basket.has_tickets() or basket.has_gifts():
-            print 'Cleaning messages'
-            # Clear any other messages for tickets of gifts
-            storage = messages.get_messages(self.request)
-            for _ in storage:
-                pass
-            storage.used = True
-
-        if not basket.has_tickets() and not basket.has_gifts():
-            # Check for additional offer messages
-            apply_messages(self.request, offers_before)
+        # Do not show 'Added to your basket'
+        # Clear any other messages
+        storage = messages.get_messages(self.request)
+        for _ in storage:
+            pass
+        storage.used = True
 
         # Send signal for basket addition
         self.add_signal.send(

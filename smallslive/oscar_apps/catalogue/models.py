@@ -21,7 +21,7 @@ class Product(AbstractProduct):
                                      decimal_places=2, max_digits=12, blank=True, null=True)
 
     event_set = models.ForeignKey('events.EventSet', related_name='tickets', null=True)
-    artist = models.ManyToManyField('artists.Artist', through='ArtistProduct', verbose_name=("Attributes"), blank=True, null=True)
+    artists = models.ManyToManyField('artists.Artist', through='ArtistProduct', verbose_name=("Attributes"), blank=True, null=True)
 
     set = models.CharField(max_length=50, blank=True)
 
@@ -108,8 +108,9 @@ class Product(AbstractProduct):
 
 
 class ArtistProduct(models.Model):
-    artist = models.ForeignKey("artists.Artist", verbose_name="", on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, verbose_name="", on_delete=models.CASCADE)
+    artist = models.ForeignKey('artists.Artist', verbose_name='', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, verbose_name='', on_delete=models.CASCADE)
+    instrument = models.ForeignKey('artists.Instrument', blank=True, null=True)
     
     class Meta:
         # abstract = True

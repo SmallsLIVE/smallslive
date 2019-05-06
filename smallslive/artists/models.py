@@ -63,6 +63,50 @@ class InsensitiveUnaccentContains(Lookup):
 Field.register_lookup(InsensitiveUnaccentContains)
 
 
+class ArtistManager(models.Manager):
+
+    def find_artist(self, content):
+
+        first_name = ''
+        middle_or_nick_name = ''
+        last_name = ''
+        # First two words must be first name last name
+        words = content.split(' ')
+        if words:
+            first_name = words.pop(0)
+        if words:
+            middle_or_nick_name = words.pop(0)
+        if words:
+            last_name = words.pop()
+
+        artists_qs = self.filter(first_name__istartswith=first_name)
+        artist_found = None
+        for artist in artists_qs:
+            if artist.last_name.lower() in content.lower():
+                if not artist_found:
+                    artist_found = artist
+                else:
+                    # artist has a possible match, but another was found too.
+                    'Print: parsed: ', artist_found, 'but found: ', artist, 'too.'
+
+                print 'Possible match: ', artist
+        if not artist_found:
+            artists_qs = self.filter(last_name__istartswith=last_name)
+            artist_found = None
+            for artist in artists_qs:
+                if artist.first_name.lower() in content.lower():
+                    if not artist_found:
+                        artist_found = artist
+                    else:
+                        # artist has a possible match, but another was found too.
+                        'Print: parsed: ', artist_found, 'but found: ', artist, 'too.'
+
+        if not artist_found:
+            print 'Error!!!, ', content
+
+        return  artist_found
+
+
 class Artist(models.Model):
     SALUTATIONS = Choices('Mr.', 'Mrs.', 'Ms.')
 
@@ -78,6 +122,8 @@ class Artist(models.Model):
     current_period_seconds_played = models.BigIntegerField(default=0)
     current_period_ratio = models.DecimalField(max_digits=11, decimal_places=10, default=0)
     public_email = models.EmailField(null=True, blank=True)
+
+    objects = ArtistManager()
 
     class Meta:
         ordering = ['last_name']

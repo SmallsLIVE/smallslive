@@ -44,28 +44,46 @@
               </div>
             </div>
           </div>
-          <ul class="store-single__item__images__thumbnails">
-              <li data-slickPosition="0" class="store-single__item__images__thumbnail square-container active">
-                <img class="defineImageRatio" src="{{ image.original.url }}" style="margin: 0; border-radius: 0" >
-              </li>
-          </ul>
         {% endwith %}
+        <ul class="store-single__item__images__thumbnails">
+          <li data-slickPosition="0" class="store-single__item__images__thumbnail square-container active">
+            <img class="defineImageRatio" src="{{ image.original.url }}" style="margin: 0; border-radius: 0" >
+          </li>
+        </ul>
       {% else %}
-        {% with image=album_product.primary_image %}
-          <div style="position: relative; min-width:255px">
-              <img class="defineImageRatio" src="{{ image.original.url }}" alt="{{ album_product.get_title }}" style="border-radius: 0px">
-                <div class="purchases-player-button myplay-btn">
-                <div class="fa-thin-circle fa" >
-                  <i class="fas fa-play"></i>
+
+        {% with all_images=product.images.all %}
+          <div class="store-single__item__images__carousel"
+               id="store-single__item__images__carousel"
+               style="position: relative; min-width:255px">
+            {% for image in all_images %}
+                {% thumbnail image.original "x365" upscale=False as thumb %}
+                <div class="store-single__item__images__big-image square-container">
+                  <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }}">
+                  <div class="purchases-player-button myplay-btn">
+                    <div class="fa-thin-circle fa" >
+                      <i class="fas fa-play"></i>
+                    </div>
+                  </div>
                 </div>
-              </div>
+                {% endthumbnail %}
+            {% endfor %}
           </div>
           <ul class="store-single__item__images__thumbnails">
-              <li data-slickPosition="0" class="store-single__item__images__thumbnail square-container active">
-                <img class="defineImageRatio" src="{{ image.original.url }}" style="margin: 0; border-radius: 0" >
-              </li>
+            {% for image in all_images %}
+              {% thumbnail image.original "x75" upscale=False as thumb %}
+                  <li data-slickPosition="{{ forloop.counter0 }}"
+                      class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}"
+                      style="margin: 0;">
+                      <img class="defineImageRatio" src="{{ thumb.url }}"
+                           alt="{{ product.get_title }} thumbnail"
+                           style="margin: 0; border-radius: 0;">
+                  </li>
+              {% endthumbnail %}
+            {% endfor %}
           </ul>
         {% endwith %}
+
       {% endif %}
     {% endwith %}
 
@@ -129,21 +147,35 @@
   <!-- end of tracks table -->
 
 </div>
-<div style="padding-left: 3.5vw">
-  <div style="display: inline-block; width: 30%; vertical-align: top;">
+<div class="my-downloads-album row">
+  <div class="flex-column">
     <ul>
-      {% for artist in album_product.artist.all %}
+      {% for artist_product in product.artistproduct_set.all %}
         <li>
-          {{ artist.first_name }}  {{ artist.last_name }}
+          {{ artist_product.artist }} - {{ artist_product.instrument }}
         </li>
       {% endfor %}
     </ul>
+  </div>
 
+  <div style="padding-left: 3.5vw">
+    <div style="display: inline-block; width: 30%; vertical-align: top;">
+      <ul>
+        {% for artist in album_product.artist.all %}
+          <li>
+            {{ artist.first_name }}  {{ artist.last_name }}
+          </li>
+        {% endfor %}
+      </ul>
+
+    </div>
+    <div class="description-container" style="font-size: 1.3vw; font-family: 'Oswald'; font-weight: 300; display: inline-block; width: 45%">
+    {{ album_product.description|safe }}
+    </div>
   </div>
-  <div class="description-container" style="font-size: 1.3vw; font-family: 'Oswald'; font-weight: 300; display: inline-block; width: 45%">
-  {{ album_product.description|safe }}
-  </div>
+
 </div>
+
 <div class="modal fade" id="downloadFormat" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content custom-modal">
