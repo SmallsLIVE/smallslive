@@ -8,15 +8,17 @@
 
 {% block store_content %}
 <div class=""  style="padding-left: 3.5vw;">
-  <a class="store-single__item__name" style="font-size: 45px;" href="{{ album_product.get_absolute_url }}">{% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }}</a>
-  <br>
-  {% for artist in  album_product.artist.all %}
-    <a class="artist-link " href="/search/?artist_pk={{ artist.pk }}">{{ artist.first_name }} {{ artist.last_name }} / {{ artist.instruments.first }}</a><br>
-  {% endfor %}
+  <div class="section-title" style="padding-left: 0;">
+    <div class="title1">
+      {% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }}
+    </div>
+  </div>
+
+
   <br>
   {% for child_product in album_product.children.all %}
     {% purchase_info_for_product request child_product as session %}
-    <form action="{% url 'basket:add' pk=child_product.pk  %}" method="post" class="add-to-basket" style="display: inline-block; width: 300px;">
+    <form action="{% url 'basket:add' pk=child_product.pk  %}" method="post" class="add-to-basket" style="display: inline-block;">
       {% if session.availability.is_available_to_buy %}
         {% basket_form request child_product 'single' as basket_form %}
         <div class="">
@@ -147,30 +149,22 @@
   <!-- end of tracks table -->
 
 </div>
-<div class="my-downloads-album row">
-  <div class="flex-column">
+<div class="my-downloads-album row" style="padding: 20px 10vw;">
+  <div class="flex-column" style="width: 50%;">
     <ul>
       {% for artist_product in product.artistproduct_set.all %}
         <li>
-          {{ artist_product.artist }} - {{ artist_product.instrument }}
+          <a href="{{ artist_dict.absolute_url }}" class="title2">
+              {{ artist_product.artist }} / {{ artist_product.instrument }}
+          </a>
         </li>
       {% endfor %}
     </ul>
   </div>
 
   <div style="padding-left: 3.5vw">
-    <div style="display: inline-block; width: 30%; vertical-align: top;">
-      <ul>
-        {% for artist in album_product.artist.all %}
-          <li>
-            {{ artist.first_name }}  {{ artist.last_name }}
-          </li>
-        {% endfor %}
-      </ul>
-
-    </div>
     <div class="description-container" style="font-size: 1.3vw; font-family: 'Oswald'; font-weight: 300; display: inline-block; width: 45%">
-    {{ album_product.description|safe }}
+      {{ album_product.description|safe }}
     </div>
   </div>
 
