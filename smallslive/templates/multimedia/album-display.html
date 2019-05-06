@@ -10,28 +10,31 @@
 <div class=""  style="padding-left: 3.5vw;">
   <div class="section-title" style="padding-left: 0;">
     <div class="title1">
-      {% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }}
+      <a href="{% url 'promotions:home' %}">Catalogue</a> <span class="accent-color">\</span> {% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }}
     </div>
   </div>
-
-
-  <br>
-  {% for child_product in album_product.children.all %}
-    {% purchase_info_for_product request child_product as session %}
-    <form action="{% url 'basket:add' pk=child_product.pk  %}" method="post" class="add-to-basket" style="display: inline-block;">
-      {% if session.availability.is_available_to_buy %}
-        {% basket_form request child_product 'single' as basket_form %}
-        <div class="">
-          {% csrf_token %}
-          {{ basket_form.quantity }}
-          {{ basket_form.child_id }}
-          <div class="arrow-button-container">
-            <button type="submit" class="white-border-button"> {{ child_product.title }} {{ session.price.excl_tax|currency:session.price.currency }}</button>
+  <div class="intro-text text9">You are
+    making a tax deductible donation to the SmallsLIVE Foundation for Jazz Arts and Education.<br>
+    All tax information is available from your account settings. Please choose one of the following:
+  </div>
+  <div class="text-center">
+    {% for child_product in album_product.children.all %}
+      {% purchase_info_for_product request child_product as session %}
+      <form action="{% url 'basket:add' pk=child_product.pk  %}" method="post" class="add-to-basket" style="display: inline-block; margin: 0 5px;">
+        {% if session.availability.is_available_to_buy %}
+          {% basket_form request child_product 'single' as basket_form %}
+          <div class="">
+            {% csrf_token %}
+            {{ basket_form.quantity }}
+            {{ basket_form.child_id }}
+            <div class="arrow-button-container">
+              <button type="submit" class="white-border-button"> {{ child_product.title }} {{ session.price.excl_tax|currency:session.price.currency }}</button>
+            </div>
           </div>
-        </div>
-      {% endif %}
-    </form>
-  {% endfor  %}
+        {% endif %}
+      </form>
+    {% endfor  %}
+  </div>
 </div>
 <div class="my-downloads-album row big-player" style="padding: 20px 10vw;">
   <div class="my-downloads-album__cover flex-column player-container " style="width: 50%;  margin-right: 15%">
