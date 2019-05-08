@@ -228,7 +228,7 @@ $banners-height: 38vh;
 
     .box {
       .banner-learnmore {
-        margin-top: 10px;
+        margin-top: 1.5vw;
 
         @media(max-width: 960px) {
           margin-top: 40vw;
@@ -385,8 +385,7 @@ $banners-height: 38vh;
   display: block;
 
   .banner-text-container {
-    height: 22vw;
-    margin-top: 3.3vw;
+    margin-top: 2.3vw;
 
     @media(max-width: 960px) {
       height: 22vw;
@@ -395,7 +394,7 @@ $banners-height: 38vh;
 
   .box {
     &.flex-column {
-      height: 31.2vw;
+      height: 27.5vw;
       position: relative;
 
       @media(max-width: 960px) {
