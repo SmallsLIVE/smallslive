@@ -38,7 +38,7 @@
     <main>
       <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
       <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-      {% include 'events/event_row.html' with events=new_in_archive secondary=False %}
+      {% include 'events/event_row.html' with events=new_in_archive secondary=True %}
     </main>
   </section>
 
@@ -59,7 +59,7 @@
     <main id="most-popular-container">
       <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
       <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-      {% include 'events/event_row.html' with events=popular_in_archive secondary=False %}
+      {% include 'events/event_row.html' with events=popular_in_archive secondary=True %}
     </main>
   </section>
 {% endif %}
