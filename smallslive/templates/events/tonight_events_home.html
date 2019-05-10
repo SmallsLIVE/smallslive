@@ -1,0 +1,27 @@
+{% load static from staticfiles %}
+
+<div class="event-row">
+  {% for event in events %}
+  <article class="event-display-today-and-tomorrow"> 
+    {% include 'events/tonight_event_card.html' with event=event secondary=secondary hide_play=True %}
+    <div class="event-info">
+        <div class="sub-info">
+            <p class="event-info-title">{{ event.title }}</p>
+            <div class="{{ event.venue.name|lower}}-color title5 venue">Live at {{ event.venue.name }}</div>
+            {% if show_date %}
+              <div class="title5 sets">{{ event.get_date|date:'D M d' }}</div>
+            {% endif %}
+            <div class="title5 sets">Sets at {{ event.get_set_hours_display}}</div>
+        </div>
+    </div>
+    <div class="artists">
+      {% with event.artists_gig_info.count as artist_count %}
+        {% for gig in event.artists_gig_info.all %}
+          <a class="title5 {% if artist_count <= 3 %}full-width{% endif %}" href="/search/?artist_pk={{ gig.artist.pk }}">
+                {{ gig.artist }} / {{ gig.role }}</a>
+        {% endfor %}
+      {% endwith %}
+    </div>
+  </article> 
+  {% endfor %}
+</div>

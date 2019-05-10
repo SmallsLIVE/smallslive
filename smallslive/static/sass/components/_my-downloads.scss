@@ -14,7 +14,7 @@
   display: flex;
   justify-content: space-between;
   list-style-type: none;
-  padding: 40px 20px;
+  padding: 20px 40px 0 40px;
 
   @media (max-width: 1023px) {
     flex-direction: column;
@@ -36,7 +36,6 @@
     width: 60%;
 
     .checkout {
-      float: right;
       margin-top: 50px;
     }
   }
@@ -242,7 +241,6 @@
 
   &__tracks-table {
     padding: 0 10px;
-    float: left;
     width: 100%;
 
     audio {
@@ -646,4 +644,26 @@
   .slide-btn {
     border-radius: 0;
   }
+}
+
+.my-downloads-album {
+
+  .description-container {
+    p {
+      font-family: 'Reem Kufi', sans-serif;
+      font-weight: 400;
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+  }
+
+  li {
+    list-style: none;
+  }
+}
+
+.intro-text {
+    text-align: center;
+    padding: 20px;
+    font-size: 20px;
 }

@@ -1,0 +1,53 @@
+{% extends "home_new.html" %}
+{% load static from staticfiles %}
+{% load addurlparameter %}
+
+{% block schedule_nav_active %}active{% endblock %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block extra_head %}
+
+{% endblock %}
+
+{% block home_content %}
+<main class="calendar">
+  <div class="event-stripe">
+    {% include 'events/today_and_tomorrow.html' with custom_venue_style=True calendar_page=True%}
+  </div>
+  <!-- desktop calendar - no event images -->
+  {% include 'events/upcoming_calendar.html' with upcoming=True show_extend_date=True show_event_venue=False hide_play=True day_list=day_list %}
+  <!-- mobile calendar - with event images -->
+  {% include 'events/shows.html' with upcoming=True show_extend_date=True show_event_venue=True hide_play=False day_list=day_list %}
+</main>{% endblock home_content %}
+
+{% block extra_js %}
+<script>
+
+  $(document).ready(function () {
+
+    $("#calendar-club-filter ~ .select-selected").text("Select Club")
+    $("#calendar-club-filter ~ .select-selected").css("padding: 1em 30px;")
+
+  });
+
+  var eventOrderFilter = 'oldest';
+  var show_event_venue = true;
+  var show_event_setTime = true;
+  var datePickerInputSelector = '#search-date-picker-calendar > input.desktop';
+  var datePickerFromDate = '{{ default_from_date }}';
+  var datePickerToDate = null;
+  var setFromDate = true;
+  var setToDate = false;
+  var datePickerLeft = 222;
+  var datePickerTop = 42;
+  var is_upcoming = true;
+  var upcomingEventDateFrom = new Date();
+  var defaultFromDate = '{{ default_from_date }}';
+  var defaultToDate;
+</script>
+<script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/search/search.js' %}"></script>
+<script src="{% static 'js/custom_date_picker.js' %}"></script>
+{% endblock extra_js %}

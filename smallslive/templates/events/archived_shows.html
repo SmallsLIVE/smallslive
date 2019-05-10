@@ -1,0 +1,101 @@
+{% load static from staticfiles %}
+{% load thumbor_tags %}
+{% load i18n %}
+
+{% block shows  %}
+<section id="shows{% if archived %}Archived{% else %}Upcoming{% endif %}Content"
+         class="archived-shows old-calendar search-tab-content archived event-stripe"
+         data-toggle-tab="{% if archived %}archived{% else %}upcoming{% endif %}-shows"
+         data-toggle-tab-group="search-results"{% if placeholder %} style="display:none;"{% endif %}>
+    <div class="section-title archive">
+      <div class="title1" id="date-from-label"><span>{{ first.get_date|date:'m/d/Y' }}</span>- <span>{{ last.get_date|date:'m/d/Y' }}</span></div>
+      <span id="date-to-label" class="title1"> / </span>
+      <span id="number-of-shows-label" class="accent-color title1">{{ showing_event_results }} </span>
+      <span class="title1">  Shows </span>
+      <span id="archived-event-subheader"
+             class="showing-results text1"
+             style="margin-top: -13px;"
+             data-max-number='{{ showing_artist_results }}'
+             data-paginator-number=24
+             data-left-number=1
+             data-right-number=24>1-24
+      </span>
+      <div style="position: absolute; left: 847px; bottom: -4px;">
+        <span class="select-container">
+          <div class="white-border-select home-filter">
+            <select id="events-filter">
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="popular">Popular</option>
+            </select>
+          </div>
+        </span>
+      </div>
+    </div>
+
+  {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
+
+  <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
+    {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming events=event_results show_event_venue=show_event_venue secondary=True hide_play=hide_play with_date_picker=True %}
+  </main>
+
+  <div class="concerts-footer flex-column items-center">
+    {% if last_page != current_page %}
+        <button id="load-more-archived-btn"
+                class="white-border-button load-more-btn"
+                onclick="loadMoreEvents('Archived')">
+          <span>Load More</span>
+        </button>
+    {% endif %}
+    <div id="event-load-gif" class="loading-image events-gif">
+        <img src="{% static 'image/loading.gif' %}" alt="">
+    </div>
+  </div>
+</section>
+
+<div id="myNav" class="refine-overlay">
+
+  <div class="refine-overlay-menu white-line-bottom">
+    <div><a href="javascript:void(0)" class="closebtn">&times;</a></div>
+    <div class="calendar-refine-menu-item text1">Refine</div>
+    <div class="refine-apply calendar-refine-menu-item text1">Apply</div>
+  </div>
+
+  <div class="refine-overlay-content">
+    <p class="calendar-refine-title title1">Duration</p>
+    <div class="white-border-select event-filter-select calendar-duration">
+        <select id="refine-period-filter">
+          <option value="All Upcoming">All Upcoming</option>
+          <option value="One Day">One Day</option>
+          <option value="One Week">One Week</option>
+          <option value="One Month">One Month</option>
+        </select>
+      </div>
+
+      <p class="calendar-refine-title title1">Date Range</p>
+      <div class="refine-datepicker-container">
+          <div class="custom-date-picker search-date-picker-from-refine" id="search-date-picker-from-refine">
+              <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+          </div>
+
+          <div class="custom-date-picker" id="search-date-picker-to-refine">
+              <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+          </div>
+      </div>
+
+      <p class="calendar-refine-title title1">Club</p>
+
+      <span class="btngroup">
+        {% for venue in venues %}
+            <button class="btngroup--btn" value="{{venue.pk}}">{{venue.short_name}}</button>
+        {% endfor %}
+        <button value="all" class="btngroup--btn">All</button>
+      </span>
+
+      <div class="reset-all text2 text-grey">Reset All</div>
+  </div>
+</div>
+
+<script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
+
+{% endblock %}

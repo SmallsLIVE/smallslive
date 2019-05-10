@@ -1,5 +1,31 @@
+.home {
+  .white-border-button {
+    &.mobile  {
+      @media (max-width: 1023px) {
+        display: block;
+        font-size: 13px;
+        width: 160px;
+        margin-left: 3.5vw;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      @media (max-width: 450px) {
+        font-size: 10px;
+      }
+      @media (min-width: 1024px) {
+        display: none;
+      }
+    }
+  }
+}
+
+.musicians-results .calendar-filters {
+    position: absolute;
+    left: calc(544px + 3.5vw);
+}
+
 .section-title {
-  $underline-length: 750px;
+  $underline-length: 600px;
   position: relative;
   margin-bottom: 20px;
   padding-bottom: 0;
@@ -9,7 +35,7 @@
   text-decoration: none;
   background: linear-gradient(to right, $white-transparent, $white-transparent)
     no-repeat bottom left;
-  background-size: $underline-length 5px;
+  background-size: calc(600px + 3.5vw) 5px;
 
   width: 100%;
 
@@ -19,13 +45,39 @@
     width: 500px;
   }
 
-  &.home {
-    width: 800px;
-    .white-border-button {
-      position: absolute;
-      left: 100%;
-      width: 160px;
+  &.calendar {
+
+    background-size: calc(520px + 3.5vw) 5px;
+
+    &.upcoming-shows {
+      background-size: calc(520px + 3.5vw) 5px;
     }
+
+  }
+
+  &.home, &.archive, &.calendar {
+
+    position: relative;
+    z-index: 99;
+
+    .white-border-button {
+
+      @media (max-width: 960px) {
+        left: initial;
+        right: 3.5vw;
+        width: 20vw;
+      }
+
+      @media (max-width: 1023px) {
+        display: none;
+      }
+    }
+
+    span {
+      margin-right: 10px;
+      padding-bottom: 4px;
+    }
+
     @media (max-width: $screen-md-min) {
       background-size: 100vw 5px;
       padding-bottom: 3px;
@@ -115,6 +167,12 @@
       &.title2 {
         font-size: 3vw;
         line-height: 2.5vw;
+      }
+    }
+    @media (max-width: 450px) {
+      &.title1 {
+        font-size: 5vw;
+        line-height: 6vw;
       }
     }
 

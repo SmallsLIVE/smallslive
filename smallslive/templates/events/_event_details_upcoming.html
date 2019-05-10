@@ -23,31 +23,13 @@
   </span>
   <div class="player-info pointer-events">
     <div class="live-now text2{% if not event.is_live %} hidden{% endif %}">Live now</div>
-    <div class="event-overlay">
-      <img class="upcoming-logo" src="{% static 'logo.svg' %}" alt="Smalls"
+    <div class="event-overlay upcoming">
+      <img class="upcoming-logo" src="{% static 'new_logo_transparent.png' %}" alt="Smalls"
                         class="img-circle" width="40" height="40"/>
-      <div class="event-title-ajax event-overlay-title">{{ event.title }}</div>
-      <div class="event-overlay-artists">
-        {% for gig_info in event_artists %}
-          <div class="title5">
-            {{ gig_info.name }} <span class="accent-color">/</span> {{ gig_info.role }}
-          </div>
-        {% endfor %}
-      </div>
-      <div class="event-overlay-venue">
-          <div class="title5">{{ event.get_date|date:'m/d/Y' }}</div>
-          {% if sets %}
-              <div class="title5">
-                Sets at
-                {% for set in sets %}
-                  <span class="event-overlay-venue-set">
-                    {{ set.start|time:"g:iA"}}
-                  </span>
-                {% endfor %}
-              </div>
-          {% endif %}
-        <div class="title5 accent-color">LIVE AT {{ event.venue.name }}</div>
-      </div>
+      <p class="event-title-ajax event-info-title">{{ event.title }}</p>
+      <div class="{{ event.venue.name|lower}}-color event-venue title5">Live at {{ event.venue.name }}</div>
+      <div class="event-date title5">{{ event.get_date|date:'D M d' }}</div>
+      <div class="event-sets title5">Sets at {{ event.get_set_hours_display}}</div>
       <div class="icon-overlay">
         <i id="btn-play-event" class="event-detail fa fa-play fa-thin-circle"></i>
       </div>

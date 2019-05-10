@@ -31,7 +31,7 @@
       {% if artist.photo %}
           {% include 'partials/search_artist_profile_picture.html' with photo_url=artist.photo.url crop_box=artist.photo_crop_box %}
       {% else %}
-          <div class="flex-column content-centered no-photo"><span class="title1" style="font-size: 2vw">No Photo</span></div>
+          {% include 'partials/search_artist_profile_picture.html' with photo_url="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" crop_box=artist.photo_crop_box %}
       {% endif %}
     </div>
     <div class="flex-column white-line-right">
@@ -82,7 +82,7 @@
   </div>
 </div>
 
-<div class="close-button-container hidden-xs"><a href="#" class="close-button" style="margin-right:40px"></a></div>
+<div class="close-button-container hidden-xs hidden-sm hidden-md"><a href="#" class="close-button" style="margin-right:40px"></a></div>
 
 <div class="tabs artist-tabs">
   <div class="active" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">

@@ -16,8 +16,13 @@ from tinymce import models as tinymce_models
 from multimedia.s3_storages import ImageS3Storage
 from metrics.models import UserVideoMetric
 
+RANGE_YEAR = 'year'
+RANGE_MONTH = 'month'
+RANGE_WEEK = 'week'
+
 
 class EventQuerySet(models.QuerySet):
+
     def upcoming(self):
         return self.filter(start__gte=timezone.now()).order_by('start')
 
@@ -64,57 +69,21 @@ class EventQuerySet(models.QuerySet):
         ).order_by('-staff_picked__date_picked')
     
     def get_events_by_performers_and_artist(self, number_of_performers_searched, name, just_by_qty):
-        #WIP WIPW IPW IPWWIP WPIW 
+
         if just_by_qty:
-            return Event.objects.annotate(num = Count('performers')).filter(Q(num=number_of_performers_searched))
+            return self.annotate(num=Count('performers')).filter(Q(num=number_of_performers_searched))
 
         if len(name.split()) > 1:
             first_name = name.split()[0]
             last_name = name.split()[1]
-            return Event.objects.annotate(num = Count('performers')).filter(Q(num=number_of_performers_searched) & Q(
+            return self.annotate(num=Count('performers')).filter(Q(num=number_of_performers_searched) & Q(
                         performers__first_name__iucontains=first_name) & Q(
                         performers__last_name__iucontains=last_name))
         else:
-            return Event.objects.annotate(num = Count('performers')).filter(Q(num=number_of_performers_searched) & Q(
+            return self.annotate(num=Count('performers')).filter(Q(num=number_of_performers_searched) & Q(
                         performers__first_name__iucontains=name) | Q(
                         performers__last_name__iucontains=name))
 
-
-    def get_events_by_performers_and_artist(self, number_of_performers_searched, name, just_by_qty):
-        #WIP WIPW IPW IPWWIP WPIW 
-        if just_by_qty:
-            return Event.objects.annotate(num = Count('performers')).filter(Q(num=number_of_performers_searched))
-
-        if len(name.split()) > 1:
-            first_name = name.split()[0]
-            last_name = name.split()[1]
-            return Event.objects.annotate(num = Count('performers')).filter(Q(num=number_of_performers_searched) & Q(
-                        performers__first_name__iucontains=first_name) & Q(
-                        performers__last_name__iucontains=last_name))
-        else:
-            return Event.objects.annotate(num = Count('performers')).filter(Q(num=number_of_performers_searched) & Q(
-                        performers__first_name__iucontains=name) | Q(
-                        performers__last_name__iucontains=name))
-
-            
-
-
-        #2nd way
-        #events_ids = []
-        #for event in self:
-        #    number_of_performers = len(event.performers.all())
-        #    if number_of_performers == number_of_performers_searched:
-        #        events_ids.append(event.id)
-        
-        #temp_sqs = Event.objects.filter(pk__in=events_ids)
-
-        #sqs = []
-        #if temp_sqs.count() != 0:
-        #    sqs = temp_sqs
-        
-
-        
-                
     # TODO Select properly
     def event_related_videos(self, event):
         query = self.exclude(state=Event.STATUS.Draft).exclude(
@@ -198,18 +167,62 @@ class EventQuerySet(models.QuerySet):
 
         return qs
 
+    def get_most_popular(self, range_size=None):
+
+        most_popular_ids = UserVideoMetric.objects.most_popular(
+            range_size=range_size, count=10
+        )
+        most_popular = []
+        for event_data in most_popular_ids:
+            try:
+                event = self.get(id=event_data['event_id'])
+                most_popular.append(event)
+            except Event.DoesNotExist:
+                pass
+
+        return most_popular
+
+    def get_most_popular_uploaded(self, range_size=None):
+
+        range_end = timezone.now()
+
+        if range_size == RANGE_MONTH:
+            range_start = range_end - timedelta(days=30)
+        if range_size == RANGE_WEEK:
+            range_start = range_end - timedelta(days=7)
+        if range_size == RANGE_YEAR:
+            range_start = range_end - timedelta(days=365)
+
+        qs = Event.objects.exclude(recordings=None)
+        if range_size:
+            qs = qs.filter(
+                date__gte=range_start,
+                date__lte=range_end
+            )
+
+        event_values = qs.values('id').annotate(
+            count=Sum('seconds_played')
+        ).order_by('-count')[:10]
+
+        items = []
+        for item in event_values:
+            event = Event.objects.get(pk=item['id'])
+            items.append(event)
+
+        return items
+
 
 class CustomImageFieldFile(models.fields.files.ImageFieldFile):
 
     def get_url(self):
-        return self.storage.url(self.name)
+        url = self.storage.url(self.name)
+        url = url.split('?')[0]
+        return url
 
 
 class CustomFileDescriptor(models.fields.files.FileDescriptor):
 
     def __get__(self, instance=None, owner=None):
-
-
 
         # Django code
         if instance is None:
@@ -291,8 +304,6 @@ class Event(TimeStampedModel):
     tickets_url = models.URLField(null=True, blank=True)
 
     objects = EventQuerySet.as_manager()
-    #past = QueryManager(start__lt=datetime.now()).order_by('-start')
-    #upcoming = QueryManager(start__gte=datetime.now()).order_by('start')
     date = models.DateField(blank=True, null=True)
 
     # Import information (Mezzrow - possibly other in the future)

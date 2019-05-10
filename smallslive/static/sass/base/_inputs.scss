@@ -6,8 +6,9 @@
   @include button1;
   height: $input-height;
 
+
   @media (min-width: $screen-md-min) {
-    padding: 0 18px;
+    padding: 0 1vw;
   }
 
   background-color: transparent;
@@ -130,7 +131,7 @@ a {
     text-transform: uppercase;
 
     @media (max-width: 1300px) {
-      width: 22vw;
+      width: 24vw;
     }
   }
 }

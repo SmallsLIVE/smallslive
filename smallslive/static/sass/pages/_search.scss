@@ -13,14 +13,13 @@ $mobile-filter-button-width: 40vw;
 
 body.headers-1 {
   .search-container {
-    @media (max-width: $screen-sm-max) {
-    }
+    @media (max-width: $screen-sm-max) {}
   }
 }
 
 .musicians-results.white-line-bottom {
-  ~ .artist-search-profile-container[style*="display: block"].pad-content {
-    ~ .search-container.pad-content {
+  ~.artist-search-profile-container[style*="display: block"].pad-content {
+    ~.search-container.pad-content {
       @media (max-width: $screen-md-max) {
         padding-top: 30px;
       }
@@ -193,12 +192,12 @@ body.headers-1 {
     &.artist-tabs {
       margin-top: 0px;
 
-      & > div {
+      &>div {
         background-color: $background-color;
       }
     }
 
-    & > div {
+    &>div {
       flex: 1;
       display: flex;
       align-items: center;
@@ -317,14 +316,7 @@ body.headers-1 {
           background-color: white;
         }
 
-        .dropdown-menu
-          .table-condensed
-          > thead
-          > tr
-          > th.datepicker-switch
-          > .years-dropdown
-          .years-choices
-          > div {
+        .dropdown-menu .table-condensed>thead>tr>th.datepicker-switch>.years-dropdown .years-choices>div {
           background-color: white;
         }
       }
@@ -417,13 +409,7 @@ body.headers-1 {
         }
       }
 
-      .custom-date-picker
-        .datepicker.dropdown-menu
-        .table-condensed
-        > thead
-        > tr
-        > th.datepicker-switch
-        > div:first-child::after {
+      .custom-date-picker .datepicker.dropdown-menu .table-condensed>thead>tr>th.datepicker-switch>div:first-child::after {
         content: "";
       }
     }
@@ -471,7 +457,7 @@ body.headers-1 {
           padding: 0 64px;
           margin-bottom: 20px;
 
-          > a {
+          >a {
             color: grey;
             margin-left: 6vw;
           }
@@ -541,7 +527,7 @@ body.headers-1 {
   flex-direction: row;
   justify-content: center;
 
-  > * {
+  >* {
     display: inline-block;
     vertical-align: top;
   }
@@ -595,23 +581,25 @@ body.headers-1 {
   }
 
   @media (min-width: $screen-lg-min) {
+
     .white-border-select,
     .custom-date-picker {
       width: 120px;
     }
 
-    > .white-border-button {
+    >.white-border-button {
       margin-right: 20px;
     }
 
-    > .white-border-select,
-    > .white-border-button {
+    >.white-border-select,
+    >.white-border-button {
+      background-color: #f0f0eb;
       width: 200px;
     }
   }
 
   @media (max-width: 1366px) and (min-width: 1024px) {
-    > .white-border-select {
+    >.white-border-select {
       width: 14vw;
     }
   }
@@ -619,6 +607,10 @@ body.headers-1 {
   @media (max-width: $screen-md-max) {
     width: 100%;
     text-align: center;
+  }
+
+  @media (min-width: 1024px) {
+    display: none;
   }
 }
 
@@ -711,6 +703,7 @@ body.headers-1 {
 }
 
 .load-more-btn {
+  background-color: #f0f0eb;
   @include title1;
   font-size: 2.5em;
   width: auto;
@@ -743,7 +736,7 @@ body.headers-1 {
   color: black;
 }
 
-.change-page > li:hover {
+.change-page>li:hover {
   font-weight: 900;
   color: black;
 }
@@ -755,6 +748,7 @@ body.headers-1 {
   margin: 0 auto;
 
   .select-selected {
+    background-color: #f0f0eb;
     border: 3px solid rgba(255, 255, 255, 0.9);
   }
 
@@ -797,6 +791,7 @@ body.headers-1 {
   }
 
   &.store {
+
     width: 30vw;
 
     @media (max-width: $screen-md-min) {
@@ -839,6 +834,7 @@ body.headers-1 {
   }
 
   @media (max-width: $screen-md-max) {
+
     #a-z-search .scroll-right,
     #a-z-search .scroll-left {
       width: 10vw;
@@ -850,7 +846,7 @@ body.headers-1 {
   display: flex;
   position: relative;
   width: 700px;
-  margin: 30px auto 10px auto;
+  margin: 0px auto 10px auto;
 
   img {
     width: 21px;
@@ -872,6 +868,7 @@ body.headers-1 {
 }
 
 .instrument-btn {
+  background-color: #f0f0eb;
   display: inline-block;
   width: 200px;
   height: auto;
@@ -900,6 +897,12 @@ body.headers-1 {
 
 .event-stripe {
   margin-bottom: 10px;
+
+  &.archive {
+    @media(max-width: 1024px) {
+      display: none;
+    }
+  }
 }
 
 .search-bar-autocomplete-container {
@@ -985,18 +988,18 @@ body.headers-1 {
         padding-top: 20px;
       }
     }
-  }
 
-  .home.admin-header {
-    &.headers-3 {
+    &.admin-header {
       div.artist-search-profile-container {
         &.pad-content {
           transition: padding-top 0.5s;
-          padding-top: 60px;
+          padding-top: 54px;
         }
       }
     }
   }
+
+
 
   &.headers-4 {
     div.artist-search-profile-container {
@@ -1045,7 +1048,7 @@ body.headers-1 {
   @media (max-width: $screen-md-max) {
     margin-left: 0;
 
-    .mobile-padding > .text1 {
+    .mobile-padding>.text1 {
       margin-top: 15px;
     }
 
@@ -1083,7 +1086,7 @@ body.headers-1 {
     width: auto;
     flex-direction: column-reverse;
 
-    > .visible-xs > div {
+    >.visible-xs>div {
       margin: 10px 0;
     }
 
@@ -1269,7 +1272,21 @@ body.headers-1 {
 
 .musicians-results {
   position: relative;
-  width: 100%;
+
+  .calendar-filters {
+    position: absolute;
+  }
+
+  >.white-border-select {
+    .select-selected {
+      width: 180px;
+      padding: 0;
+    }
+
+    .select-items {
+      top: 58%;
+    }
+  }
 
   @media (max-width: $screen-md-max) {
     display: none;
@@ -1320,6 +1337,12 @@ body.headers-1 {
   margin-top: 21px;
 }
 
+.archived-shows  {
+  .showing-results {
+    position: relative;
+  }
+}
+
 .shows-container {
   width: 100%;
   display: flex;
@@ -1328,8 +1351,40 @@ body.headers-1 {
   padding-left: $content-left-padding;
 
   .event-card-secondary {
-    margin-top: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+  }
+}
+
+.new-archive {
+  .shows-container {
+    display: block;
+
+      .archive-datepicker {
+        float: left;
+        height: 330px;
+        width: 46.5vw;
+
+        @media (min-width: 1366px) {
+          height: 21.5vw;
+          width: 23.25vw;
+
+          .datepicker-container {
+            height: 100%;
+            width: 22.85vw;
+          }
+
+        }
+
+        @media (min-width: 1024px) and (max-width: 1365px) {
+          height: 29vw;
+          width: 31vw;
+
+          .datepicker-container {
+            height: 100%;
+            width: 30.6vw;
+          }
+        }
+      }
   }
 }
 
@@ -1462,13 +1517,13 @@ body.headers-1 {
       }
     }
 
-    &:first-child > input {
+    &:first-child>input {
       border-top: none;
       border-left: none;
       border-right: none;
     }
 
-    &:nth-child(2) > input {
+    &:nth-child(2)>input {
       border-top: none;
       border-right: none;
     }
@@ -1556,7 +1611,7 @@ body.headers-1 {
   .datepicker-container.noclick {
     width: 320px !important;
     top: 38px !important;
-    left: 170px !important;
+    left: 90px !important;
 
     @media (max-width: 1366px) and (min-width: 1024px) {
       left: 11.5vw !important;
@@ -1577,6 +1632,153 @@ body.headers-1 {
   }
 }
 
+.upcoming-schedule {
+  flex-wrap: wrap;
+  padding: 0 10%;
+  margin-top: 40px;
+
+  @media(min-width: 1201px) {
+    >*:nth-last-child(n+6)::before {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      width: 167%;
+      border: 2px solid white;
+    }
+  }
+
+  .no-event {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .upcoming-datepicker {
+    position: relative;
+    width: 38%;
+    min-height: 450px;
+    height: auto;
+    margin-right: 2%;
+    margin-bottom: 50px;
+
+    @media(max-width: 1200px) {
+      width: 48%;
+    }
+
+    .datepicker-container.noclick {
+      height: 410px;
+      display: block !important;
+      top: 0 !important;
+      left: 0px !important;
+      width: 80% !important;
+
+      @media (max-width: 1366px) and (min-width: 1024px) {
+        left: 0 !important;
+      }
+
+      .datepicker-switch {
+        position: relative;
+        padding: 10px 0;
+      }
+
+      .datepicker.datepicker-inline {
+        min-width: calc(90% - 25px) !important;
+        background-color: #f0f0eb;
+        top: 25px !important;
+        padding: 0;
+        left: 2vw !important;
+        border: none !important;
+        position: absolute;
+        z-index: 1000;
+        margin: 2px 0 0;
+        list-style: none;
+        background-clip: padding-box;
+        text-align: left;
+
+        .years-choices {
+          background: white;
+          font-size: 1em;
+          padding: 2px;
+          position: absolute;
+          right: 35px;
+          top: 100%;
+
+          >div {
+            padding: 2px 20px;
+            line-height: 2em;
+            background: #f0f0eb;
+          }
+        }
+
+        .table-condensed>thead>tr>th.datepicker-switch>div:first-child {
+          font-family: 'Oswald', sans-serif;
+          font-weight: 400;
+          font-size: 30px;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          transform: scaleY(1.3);
+          line-height: 36px;
+          position: relative;
+        }
+
+        td.day {
+          background-color: #f0f0eb;
+          padding: 25px 2px 2px;
+        }
+      }
+    }
+
+    .custom-date-picker .datepicker.dropdown-menu td.day {
+      padding: 25px 2px 2px;
+    }
+  }
+
+  .day-list,
+  >.white-border-button {
+    position: relative;
+    width: 17%;
+    height: auto;
+    margin-right: 3%;
+    margin-bottom: 50px;
+
+    @media(max-width: 1200px) {
+      width: 20%;
+      margin-right: 5%;
+    }
+  }
+
+  .day-list {
+    .day-event {
+      margin-top: 20px;
+
+      a:hover {
+        color: black;
+      }
+
+      .day_event_title {
+        height: auto;
+        max-height: 4em;
+        overflow-y: hidden;
+      }
+
+      .text2 {
+        font-size: 1.75em;
+      }
+    }
+  }
+
+  .white-border-button {
+    margin-right: 0%;
+    margin-left: 3%;
+
+    @media(max-width: 1200px) {
+      margin-left: 5%;
+    }
+  }
+}
+
+
+
+
 @media (max-width: $screen-md-max) {
   .refine {
     display: block;
@@ -1592,7 +1794,7 @@ body.headers-1 {
       .section-title.home {
         margin-bottom: 0;
 
-        > .header-sub {
+        >.header-sub {
           margin: 10px auto 0;
         }
       }
@@ -1731,7 +1933,7 @@ body.headers-1 {
   }
 }
 
-.refine-overlay-content > p {
+.refine-overlay-content>p {
   margin-top: 40px;
   margin-bottom: 24px;
 }
@@ -1822,6 +2024,7 @@ body.home.admin-header {
 }
 
 #showsUpcomingContent {
+
   @media (max-width: 1023px) {
     .event-info {
       font-size: 15px;
@@ -1862,19 +2065,97 @@ body.home.admin-header {
   }
 }
 
-.main-container
-  .calendar
-  .custom-date-picker
-  .datepicker.dropdown-menu
-  .table-condensed
-  > thead
-  > tr
-  > th.datepicker-switch {
-  & > .years-dropdown {
+
+.main-container .calendar .custom-date-picker .datepicker.dropdown-menu .table-condensed>thead>tr>th.datepicker-switch {
+  &>.years-dropdown {
     display: none;
   }
 
-  > div:first-of-type::after {
-    content: "";
+  >div:first-of-type::after {
+    content: ""
+  }
+}
+
+.calendar {
+
+  .section-title.home.flex-row>main {
+    margin: 25px 0;
+  }
+
+  @media (max-width: 1023px) {
+    .new-calendar {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .old-calendar {
+      display: none;
+    }
+  }
+}
+
+
+@media(max-width: 1024px) {
+  .new-archive {
+    .archive-datepicker  {
+      &.fixed {
+        display: none;
+      }
+    }
+  }
+}
+
+@media(min-width: 1024px) {
+  .new-archive {
+    border-bottom: 5px solid white;
+    justify-content: space-evenly;
+    margin-top: 30px;
+
+    .musicians-result {
+      border: 3px solid white;
+      border-bottom: none;
+      border-radius: 15px 15px 0 0;
+      cursor: pointer;
+      padding: 15px 50px;
+      position: relative;
+
+      &.active {
+        background-color: white;
+      }
+
+      .showing-results {
+        margin-right: 20px;
+      }
+    }
+  }
+
+  #musicianContent,
+  #search-content {
+    padding: 20px 0;
+  }
+
+  #musicianContent  {
+    height: 100vh;
+
+    &.search-page {
+      height: auto;
+
+      &.tall {
+        height: 40vw;
+      }
+
+    }
+  }
+
+}
+
+@for $i from 1 through 4 {
+  .calendar-hiding-#{$i} {
+    @media(max-width: 1200px) {
+      >.flex-column.day-list:nth-last-of-type(-n+#{$i}) {
+        display: none;
+      }
+    }
   }
 }

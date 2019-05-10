@@ -4,14 +4,22 @@ $banners-height: 38vh;
   @media (max-width: $screen-md-max) {
     display: none;
   }
+
   margin-bottom: 30px;
   width: 100%;
 
   #banner-container {
-    display: none;
     position: relative;
     overflow: hidden;
-    height: 15.065vw;
+    height: 23vw;
+    background-image: url("/static/image/banners/club.jpg");
+    background-size: 100% 100%;
+
+    .banner-background {
+      img {
+        width: 100%;
+      }
+    }
 
     .banner-border {
       height: 100%;
@@ -27,7 +35,7 @@ $banners-height: 38vh;
 
         #banner-title {
           @include title4;
-
+          color: white;
           padding-left: 2vw;
           padding-right: 2vw;
           padding-top: 0.7vw;
@@ -63,8 +71,10 @@ $banners-height: 38vh;
 
       .banner-text-container {
         flex: 1;
+
         #banner-text {
           @include title-banner;
+          color: white;
           text-align: justify;
           margin: 0;
           padding-left: 30px;
@@ -123,11 +133,13 @@ $banners-height: 38vh;
             vertical-align: top;
             width: 50%;
           }
+
           .banner-learnmore-info {
             display: inline-block;
             width: 35%;
           }
         }
+
         .banner-text-container {
           flex: none;
           width: 73.5%;
@@ -170,35 +182,45 @@ $banners-height: 38vh;
     }
   }
 
-  &.mobile {
-    & + * + .event-stripe {
+  &.carousel {
+
+    display: none;
+    white-space: nowrap;
+    width: 100vw;
+    text-align: center;
+    margin-bottom: 0px;
+    background-size: cover;
+
+    &+*+.event-stripe {
       margin-top: 0;
-      & > .live {
+
+      &>.live {
         margin-top: 0;
       }
     }
-    margin-bottom: 0px;
-    background-size: cover;
+
+
+
     .slick-dots {
       bottom: 0;
+
       li {
         margin: 0 2.35px;
       }
     }
+
     .slick-dots li button:before {
       font-size: 20px;
       content: "○";
       opacity: 1;
     }
+
     .slick-dots .slick-active button:before {
       content: "●";
       opacity: 1;
       color: black;
     }
-    display: none;
-    white-space: nowrap;
-    width: 100vw;
-    text-align: center;
+
 
     @media (max-width: $screen-md-max) {
       display: block;
@@ -206,25 +228,33 @@ $banners-height: 38vh;
 
     .box {
       .banner-learnmore {
-        margin-top: 10px;
+        margin-top: 1.5vw;
+
+        @media(max-width: 960px) {
+          margin-top: 40vw;
+        }
       }
+
       .banner-text-container {
         .content {
           @include reen-kufi-normal;
         }
       }
+
       // .banner-text-container{
 
       // }
       &.flex-column {
         display: flex;
         height: 55vw;
-        justify-content: center;
-        padding: 2.6vw 0;
+        justify-content: flex-start;
+        padding: 0;
       }
+
       display: inline-block;
       filter: brightness(1.85);
-      font-family: "Oswald", sans-serif;
+      font-family: "Oswald",
+      sans-serif;
       justify-content: space-between;
 
       margin-bottom: 40px;
@@ -232,45 +262,28 @@ $banners-height: 38vh;
       -webkit-filter: brightness(1.85);
       width: 100vw;
       filter: none;
-      &.archive {
-        background-image: url("/static/image/banners/archive_mobile_banner.jpg");
-        background-size: 100% 100%;
-      }
 
       &.live {
-        background-image: url("/static/image/banners/live_mobile_banner.jpg");
+        background-image: url("/static/image/banners/roy.jpg");
         background-size: 100% 100%;
+        @media(max-width:  960px) {
+          background-size: cover;
+        }
+      }
+
+      &.archive {
+        background-image: url("/static/image/banners/pianoplayer.jpg");
+        background-size: 100% 100%;
+        @media(max-width:  960px) {
+          background-size: cover;
+        }
       }
 
       &.mission {
-        background-image: url("/static/image/banners/mission_mobile_banner.jpg");
+        background-image: url("/static/image/banners/club.jpg");
         background-size: 100% 100%;
-      }
-      &.supporting {
-        background-image: url("/static/image/banners/supporter_mobile_banner.jpg");
-        background-size: 100% 100%;
-        padding: 6.2vw 0;
-        margin-bottom: 15px;
-        .text9 {
-          font-size: 3.84vw;
-          text-align: justify;
-        }
-        .banner-learnmore {
-          padding-top: 3.1vw;
-          display: flex;
-          justify-content: space-evenly;
-          button,
-          a {
-            color: black;
-            padding: 2vw 5vw;
-          }
-        }
-        .title7 {
-          font-size: 4.94vw;
-          line-height: 1.68em;
-          .bold {
-            font-weight: 700;
-          }
+        @media(max-width:  960px) {
+          background-size: cover;
         }
       }
 
@@ -281,6 +294,7 @@ $banners-height: 38vh;
         margin-top: 3px;
         text-transform: uppercase;
         transform: scaleY(1.2);
+
       }
 
       p.content {
@@ -289,22 +303,25 @@ $banners-height: 38vh;
         text-align: left;
         white-space: initial;
         height: 20vw;
-        vertical-align: middle;
-        display: table-cell;
         padding: 0 5vw;
       }
 
       button,
       a {
-        font-size: 3.5vw;
+        color: white;
+        font-size: 1vw;
         border: 3px solid white;
-        border-radius: 50px;
-        padding: 2vw 8vw;
+        padding: 1vw;
 
         background-color: transparent;
         text-transform: uppercase;
         font-weight: 400;
         letter-spacing: 3px;
+
+        @media(max-width: 1024px) {
+          font-size: 3vw;
+
+        }
       }
     }
   }
@@ -338,23 +355,116 @@ $banners-height: 38vh;
     margin-right: 0.5vw;
   }
 }
+
 .banner-text {
   font-family: "Reem Kufi", sans-serif;
   font-weight: 400;
   font-size: 20px;
+  letter-spacing: 1px;
   text-transform: initial;
 }
+
 .custom-banner-text {
   height: 80%;
+
   div {
     display: none;
   }
 }
+
 .home-banner-buttons {
   position: absolute;
-  right: 0;
+  right: 40px;
+  bottom: 40px;
   display: flex;
   flex-direction: row-reverse;
   width: 500px;
-  bottom: 20px;
+}
+
+.home-new .banners.carousel {
+  display: block;
+
+  .banner-text-container {
+    margin-top: 2.3vw;
+
+    @media(max-width: 960px) {
+      height: 22vw;
+    }
+  }
+
+  .box {
+    &.flex-column {
+      height: 27.5vw;
+      position: relative;
+
+      @media(max-width: 960px) {
+        height: 75vw;
+
+        .content {
+          color: white;
+          font-family: Oswald;
+          font-size: 6vw;
+          height: auto;
+          margin-top: 5vw;
+          padding: 0px 1.5vw;
+          letter-spacing: -1px;
+          font-weight: 400;
+          line-height: 100%;
+        }
+      }
+    }
+
+    p {
+      &.title {
+        border-bottom: 4px solid #d21535;
+        color: white;
+        font-size: 4.5vw;
+        line-height: 4.1vw;
+        margin: 0 auto;
+        margin-bottom: 2vw;
+        width: 60%;
+
+        @media(max-width: 960px) {
+          font-size: 6vw;
+          line-height: 5.5vw;
+          width: 80%;
+        }
+      }
+
+      &.content {
+        color: white;
+        font-family: Oswald;
+        font-size: 2.5vw;
+        height: auto;
+        margin-top: 0;
+        padding: 0px 8.5vw;
+        letter-spacing: -1px;
+        font-weight: 400;
+        line-height: 180%;
+        text-align: center;
+
+      }
+    }
+
+    button, a {
+      padding: 0.5vw 2.5vw;
+      font-family: "Reem Kufi", sans-serif;
+      font-size: 0.9vw;
+      margin: 0 14px;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      @media(max-width: 960px) {
+        font-size: 13px;
+      }
+
+      @media(max-width: 400px) {
+        font-size: 10px;
+        line-height: 20px;
+      }
+    }
+  }
+
 }

@@ -53,16 +53,16 @@
             <div class="store-single__item flex-row">
                 <div class="store-single__item__images">
                     {% with all_images=product.images.all %}
-                        <div class="store-single__item__images__carousel" id="store-single__item__images__carousel" style="width:20vw">
+                        <div class="store-single__item__images__carousel" id="store-single__item__images__carousel">
                             {% for image in all_images %}
                                 {% if not image.is_missing %}
-                                    <a href="{% thumbor_url image.original.url|urlencode height=300 width=300 smart=True %}" class="fancybox"><img
+                         <img
                                             src="{% thumbor_url image.original.url|urlencode height=300 width=300 smart=True %}"
-                                            alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                                            alt="{{ product.get_title }}" class="defineImageRatio">
                                 {% else %}
-                                    <a href="{% static "image/image_not_found.jpg" %}" class="fancybox"><img
+                                   <img
                                             src="{% static "image/image_not_found.jpg" %}" alt="{{ product.get_title }}"
-                                            class="defineImageRatio"></a>
+                                            class="">
                                 {% endif %}
                             {% endfor %}
                         </div>
@@ -140,11 +140,5 @@
 {% block extra_js %}
     {{ block.super }}
     <script src="{% static 'js/jquery.fancybox.pack.js' %}"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".fancybox").fancybox({
-                preload: 2
-            });
-        });
-    </script>
+
 {% endblock %}

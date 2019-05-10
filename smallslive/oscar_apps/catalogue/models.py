@@ -1,8 +1,9 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 
 from oscar.apps.catalogue.abstract_models import AbstractProduct
-
+from users.models import SmallsUser
 
 
 class Product(AbstractProduct):
@@ -20,7 +21,7 @@ class Product(AbstractProduct):
                                      decimal_places=2, max_digits=12, blank=True, null=True)
 
     event_set = models.ForeignKey('events.EventSet', related_name='tickets', null=True)
-    artist = models.ManyToManyField('artists.Artist', through='ArtistProduct', verbose_name=("Attributes"), blank=True, null=True)
+    artists = models.ManyToManyField('artists.Artist', through='ArtistProduct', verbose_name=("Attributes"), blank=True, null=True)
 
     set = models.CharField(max_length=50, blank=True)
 
@@ -105,17 +106,41 @@ class Product(AbstractProduct):
             raise ValidationError(
                 _("A child product can't have options."))
 
+
 class ArtistProduct(models.Model):
-    artist = models.ForeignKey("artists.Artist", verbose_name=(""), on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, verbose_name=(""), on_delete=models.CASCADE)
+    artist = models.ForeignKey('artists.Artist', verbose_name='', on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, verbose_name='', on_delete=models.CASCADE)
+    instrument = models.ForeignKey('artists.Instrument', blank=True, null=True)
     
     class Meta:
-        #abstract = True
+        # abstract = True
         app_label = 'catalogue'
         ordering = ['product', 'artist']
         unique_together = ('product', 'artist')
-        verbose_name = ('Artist')
-        verbose_name_plural = ('Artist list')
+        verbose_name = 'Artist'
+        verbose_name_plural = 'Artist list'
 
+
+class UserCatalogue(models.Model):
+
+    user = models.ForeignKey(SmallsUser, related_name='catalogue_access', unique=True)
+    has_full_catalogue_access = models.BooleanField(default=False)
+    
+    class Meta:
+        verbose_name = 'Full access user'
+
+
+class UserCatalogueProduct(models.Model):
+
+    user = models.ForeignKey(SmallsUser, related_name='product_access')
+    product = models.ForeignKey(Product, related_name='access')
+    
+    class Meta:
+        verbose_name = 'Product access user'
+        unique_together = [
+            ['user', 'product']
+        ]
 
 from oscar.apps.catalogue.models import *  # noqa
+
+

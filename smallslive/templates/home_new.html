@@ -32,57 +32,20 @@
   {% include 'become_a_supporter_dialog.html' %}
 
 
-  <div class="main-container pad-content">
+  <div class="main-container pad-content home-new">
     {% block home_content %}
     <main>
-      {% if not request.user.is_authenticated %}
-        {% include 'home_banners.html' with active='home' %}
-        {% include 'home_banners_mobile.html' %}
-      {% elif not request.user.has_archive_access %}
-        {% include 'home_banners.html' with active='supporter' %}
-        {% include 'home_banners_mobile.html'  with active='supporter'%}
-      {% endif %}
+      {% include 'home_banners_carousel.html' %}
       <div class="event-stripe">
         {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
         <section class="event-stripe">
           <div class="section-title home">
-            <div class="title1">Recently Added</div>
+            <div class="title1">Highlights from the Archive</div>
           </div>
           <main>
             <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
             <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'events/event_row.html' with events=new_in_archive secondary=True %}
-          </main>
-
-        </section>
-        <section class="event-stripe">
-          <div class="section-title home">
-            <div class="title1">Most Popular</div>
-            <span class="select-container">
-              <div class="white-border-select home-filter">
-                <select id="most-popular-filter">
-                  <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
-                  <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
-                  <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
-                  <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
-                </select>
-              </div>
-            </span>
-          </div>
-          <main id="most-popular-container">
-            <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-            <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'events/event_row.html' with events=popular_in_archive secondary=True %}
-          </main>
-        </section>
-        <section class="event-stripe">
-          <div class="section-title home">
-            <div class="title1">Staff Picks</div>
-          </div>
-          <main>
-            <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-            <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'events/event_row.html' with events=staff_picks secondary=True %}
+            {% include 'events/event_row.html' with events=staff_picks %}
           </main>
         </section>
       </div>
@@ -92,8 +55,8 @@
 {% endblock%}
 
 {% block footer %}
-  <div class="footer-mobile visible-xs visible-sm text4 ">
-    <div class="flex-column footer-links">
+  <div class="footer-mobile visible-xs visible-sm text4">
+    <div class="flex-column footer-links ">
       <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
       <a href="{% url 'schedule' %}" class="{% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">Calendar</a>
       <a href="{% url 'search' %}"
@@ -103,40 +66,22 @@
       <a href="">Education</a>
       <a href="{% url 'promotions:home' %}">Catalog</a>
     </div>
-    <div class="footer-info flex-column items-center">
+  </div>
+  <div style="margin: 0 50px;">
+    <div class="footer-info flex-column items-center" style="margin-bottom: 50px;">
+      <img class="footer-logo" src="{% static 'new_logo_transparent.png' %}" alt="SmallsLIVE Foundation logo" width="100">
       <div class="text-grey">Copyright ®{% now 'Y' %} SmallsLIVE All rights reserverd.</div>
       <div>
         <a href="{% url 'static_page' 'privacy' %}">Privacy Policy</a> |
         <a href="{% url 'terms-and-conditions' %}">Terms and Conditions</a> |
         <a href="{% url 'contact-and-info' %}">Contact + Info</a>
       </div>
-
     </div>
   </div>
+
+
 {% endblock %}
 
 {% block extra_js %}
-  <script>
-    $(document).ready(function(){
-      var filter = $('#most-popular-filter');
-
-      var setMostPopular = function (value) {
-        var mostPopularFilter = $('#most-popular-container').find('.event-row');
-        $.get("{% url 'event_popular_ajax' %}?range=" + value,
-          function (data) {
-            mostPopularFilter.replaceWith(data.content);
-          });
-      };
-      filter.on('change', function () {
-        setMostPopular(filter.val());
-      });
-
-      {% if popular_select %}
-        filter.val('{{ popular_select }}');
-        filter.trigger("change");
-      {% endif %}
-    });
-  </script>
-
   <script type="javascript" src="{% static 'js/slider.js' %}"></script>
 {% endblock extra_js %}

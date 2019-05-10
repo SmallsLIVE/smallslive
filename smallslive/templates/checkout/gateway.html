@@ -19,7 +19,7 @@
             A user with that e-mail address already exists. Please enter your password.
         </p>
     </section>
-        <form action="." method="post" class="form-stacked well">
+        <form action="." method="post" class="form-stacked well checkout-gateway">
             {% csrf_token %}
             <div class='flex-row' style='margin: 0 auto; justify-content: center'>
                 <div class='white-border-button gateway-option' data-gateway-type="anonymous">checkout as a guest</div>
@@ -62,7 +62,10 @@
                             {{ form.password }}
                             <div class="error" style="text-align: center;">
                                 {% for error in form.non_field_errors %}
-                                    <span class="accent-color error-block text4">{{ error }}</span>
+                                    <span class="accent-color text4">{{ error }}</span>
+                                {% endfor %}
+                                 {% for error in form.password.errors %}
+                                    <span class="forgot-password text4 accent-color">Password is required</span>
                                 {% endfor %}
                             </div>
                             <div class="flex-column items-center" style="width: 220px;     margin-top: 0;">
@@ -71,9 +74,7 @@
                                 Forgot Your Password?
                                 </a>
                             </div>
-                            {% for error in form.password.errors %}
-                                <span class="error-block">{{ error }}</span>
-                            {% endfor %}
+                           
                         </div>
                     </div>
                 </div>
@@ -97,8 +98,11 @@
                 </div>
             </div>
         </form>
-        <div class="control-group" id="become_member_gateway">
-            <form action="." method="post" class="form-stacked well">
+        <div class="control-group" id="become_member_gateway" style="display:none" >
+            <p class="text4 accent-color" id="existing-member" style="display:none; text-align:center">
+                A user with that e-mail address already exists. Please enter your password.
+            </p>
+            <form action="." method="post" class="form-stacked well register-gateway">
                 {% csrf_token %}
                 <div class="controls">
                     <div class="custom-form">
@@ -110,24 +114,25 @@
                             </div>
                             <div class="control-group">
                                 <div class="controls">
-                                    <input name="first_name" id="id_register_first_name" max-length placeholder="Your first name" type="text" required>
+                                    <input name="first_name" id="id_register_first_name" max-length placeholder="First name" type="text" required>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <div class="controls">
-                                    <input name="last_name" id="id_register_last_name" max-length placeholder="Your last name" type="text" required>
+                                    <input name="last_name" id="id_register_last_name" max-length placeholder="Last name" type="text" required>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <div class="controls">
-                                    <input name="password1" id="register_password1" max-length placeholder="Password" type="text" required>
+                                    <input name="password1" id="register_password1" max-length placeholder="Password" type="password" required>
                                 </div>
                             </div>
                             <div class="control-group">
                                 <div class="controls">
-                                    <input name="password2" id="register_password2" max-length placeholder="Confirm Password" type="text" required>
+                                    <input name="password2" id="register_password2" max-length placeholder="Confirm Password" type="password" required>
                                 </div>
                             </div>
+                            <input id="id_redirect_url" name="redirect_url" type="hidden" value="/store/checkout/shipping-address/">
                         </div>
                     </div>
                 </div>
@@ -161,9 +166,18 @@
         $($radioButton).prop("checked", true);
         $('.radio .form-group').hide()
         console.log($radioButton.val())
-        formGroup = $($radioButton).parents('label').siblings('.form-group')
-        if(formGroup){
-            formGroup.css("display","flex")
+        if($radioButton.val() === "new"){
+            $("#become_member_gateway").show()
+            $(".checkout-gateway .control-group.user").hide()
+            $(".checkout-gateway .form-actions").hide()
+        }else{
+            $("#become_member_gateway").hide()
+            $(".checkout-gateway .control-group.user").show()
+            $(".checkout-gateway .form-actions").show()
+            formGroup = $($radioButton).parents('label').siblings('.form-group')
+            if(formGroup){
+                formGroup.css("display","flex")
+            }
         }
 	});
     {% if form.username.errors %}
@@ -179,16 +193,35 @@
             }
 
         })
-        $("#id_register_username").val($("#id_username").val())
+        if ($("#id_username").val() != ""){
+            $("#id_register_username").val($("#id_username").val())
+        }
     });
+    var formAction = "{% url 'customer:register' %}"
+    var next = "{% url 'checkout:shipping-address' %}"
+    var registerId =  $("#id_username")
+    var userGatewayId = $("#id_username")
     $(document).on( "keyup", "#id_register_username", register_delegate)
+    $(document).on( "keyup", "#id_username", register_delegate)
     function register_delegate(){
-        var formAction = "{% url 'customer:register' %}"
-        var next = "{% url 'checkout:shipping-address' %}"
+        var emailTo = $(this)[0] != $("#id_username")[0] ? $("#id_username")[0] : $("#id_register_username")[0]
+        $(emailTo).val($(this).val())
         $("#become_member_gateway form").attr('action', formAction + '?next=' + next + '&email=' + $(this).val());
-        console.log($(this).val())
-
     }
+    $( "#become_member_gateway form" ).on( "submit", function( event ) {
+        event.preventDefault();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr("method"),
+            data : $( this ).serialize(),
+            success: function(data) {
+                window.location = data.url
+            },
+            error: function(err) {
+                $("#existing-member").show()
+            }
+        });
+    });
     
 </script>
 {% endblock %}

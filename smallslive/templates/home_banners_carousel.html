@@ -1,0 +1,112 @@
+{% load full_static %}
+{% load static from staticfiles %}
+
+<div class="banners carousel">
+  {% if not active %}
+    <div id="banner-live-box" class="box flex-column live">
+      <div class="banner-logo" style="position: absolute; right: 1vw; top: 1vw;">
+        <img src="{% static 'new_logo_transparent.png' %}" style="width: 8vw; height: 100%;" alt=""/>
+      </div>
+      <div class="banner-text-container">
+        <p class="title">The SmallsLIVE Foundation</p>
+        <p class="content">
+          <span class="accent-color">The</span> SmallsLIVE Foundation for Jazz Art & Education is a not-for-profit organization.
+        </p>
+        <p class="content">
+          <span class="accent-color">Our</span> mission is the dissemination of the music and to support the musicians.
+        </p>
+        <p class="content">
+          <span class="accent-color">SmallsLIVE</span> is supported by tax deductible donations from our members.
+        </p>
+      </div>
+      <div class="banner-learnmore">
+        <a class="banner-button-info" href="{% url 'contact-and-info' %}">More Info</a>
+        {% if not user.is_authenticated %}
+          <button onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+        {% elif not user.has_activated_account %}
+          <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
+        {% elif not user.cannot_watch_video %}
+          <a href="{% url 'become_supporter' %}">Become a supporter</a>
+        {% endif %}
+      </div>
+    </div>
+    <div id="banner-archive-box" class="box flex-column archive">
+     <div class="banner-logo" style="position: absolute; right: 1vw; top: 1vw;">
+        <img src="{% static 'new_logo_transparent.png' %}" style="width: 8vw; height: 100%;" alt=""/>
+      </div>
+      <div class="banner-text-container">
+        <p class="title" style="width: 25%">Archive</p>
+        <p class="content">
+          <span class="accent-color">The</span> SmallsLIVE Archive is an audio/video library of all the shows at <span class="accent-color">Smalls</span> & Mezzrow.
+        </p>
+        <p class="content">
+          <span class="accent-color">Royalties</span> are paid directly to the musicians by The SmallsLIVE Foundation.
+        </p>
+        <p class="content">
+          <span class="accent-color">Members</span> sponsor their favorite musicians by listening to their music.
+        </p>
+      </div>
+      <div class="banner-learnmore">
+        <a class="banner-button-info" href="{% url 'contact-and-info' %}">More Info</a>
+      </div>
+    </div>
+    <div id="banner-mission-box" class="box flex-column mission">
+      <div class="banner-logo" style="position: absolute; right: 1vw; top: 1vw;">
+        <img src="{% static 'new_logo_transparent.png' %}" style="width: 8vw; height: 100%;" alt=""/>
+      </div>
+      <div class="banner-text-container">
+        <p class="title" style="width: 20%;">Mission</p>
+        <p class="content">
+          <span class="accent-color">The</span> SmallsLIVE Foundation subsidizes the operation of the venues.
+        </p>
+        <p class="content">
+          <span class="accent-color">We</span> support recording projects, tours, and educational initiatives.
+        </p>
+        <p class="content">
+          <span class="accent-color">We</span> offer emergency aid for jazz musicians in need.
+        </p>
+      </div>
+      <div class="banner-learnmore">
+        <a class="banner-button-info" href="{% url 'contact-and-info' %}">Make a Donation</a>
+      </div>
+    </div>
+
+
+  {% elif active = 'catalog' %}
+      <div id="banner-supporting-box" class="box flex-column mission">
+      <div class="banner-text-container">
+        <p class="title">Smallslive catalog</p>
+        <p class="content">The SmallsLIVE Catalog is a collection of recorded projects live from the clubs. Limited edition CDs as well as HD and MP3 tracks are available that members can stream and download directly from their account. Purchases from the SmallsLIVE Catalog are tax deductible. The revenue is shared directly with the artists involved and supports the SmallsLIVE Foundation.</p>
+      </div>
+
+    </div>
+  {% else %}
+      <div id="banner-supporting-box" class="box flex-column supporting">
+      <p class="title">WHY BECOME A <span class="bold"> SUPPORTING MEMBER?</span></p>
+      <p class="content">The mission of the <span class="accent-color">SmallsLIVE foundation</span>
+        for jazz arts and education is to <span class="accent-color">disseminate jazz music</span>
+        through recordings and live streams. We sponsor individual jazz projects, tours and educational classes, and subsidize operating
+        expenses for Smalls + Mezzrow jazz clubs. By making a
+        <span class="accent-color">tax deductible donation</span> to the SmallsLIVE Foundation you will get access to our extensive
+        <span class="accent-color">audio/ video archive</span> and directly support the musicians and the clubs.</p>
+      <div class="banner-learnmore">
+        <a href="{% url 'become_supporter' %}">Become a supporter</a>
+        <a href="{% url 'contact-and-info' %}">More Info</a>
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+
+
+{% block extra_js %}
+<script>
+  function becomeMember() {
+
+    window.location = '{% url 'become_supporter' %}';
+  }
+  
+  $(document).ready(function () {
+    $('.carousel').slick({ infinite: true, dots: true, arrows: false })
+  });
+</script> {% endblock %}

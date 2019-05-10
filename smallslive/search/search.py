@@ -1,10 +1,8 @@
-import operator
+from datetime import timedelta
 from django.db.models import Q, Sum
 from django.utils import timezone
 from artists.models import Artist, Instrument
 from events.models import Event, Recording
-from metrics.models import UserVideoMetric
-
 
 
 class SearchObject(object):
@@ -252,6 +250,7 @@ class SearchObject(object):
             sqs = sqs.filter(start__gte=date_from)
 
         if end_date:
+            end_date = end_date + timedelta(days=1)
             date_to = end_date.replace(hour=10, minute=0, second=0, microsecond=0)
             sqs = sqs.filter(start__lte=date_to)
 

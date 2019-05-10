@@ -80,7 +80,7 @@
                             {% if artist.photo %}
                                 <img src="{% thumbor_url artist.photo.url|urlencode height=40 width=40 smart=True %}" alt="{{ artist.full_name }} photo"/>
                             {% else %}
-                                <img src="{% static 'image/no-artist-photo-thumbnail.jpg' %}" alt="No photo available"/>
+                                <img src="dzycyuuhttkib.cloudfront.net/static/image/no-artist-photo.cadaf697815a.jpg" alt="{{ artist.full_name }} photo"/>
                             {% endif %}
                         </div>
                         <div class="col-xs-5 col-sm-4 col-md-3 artists-list__list__name">

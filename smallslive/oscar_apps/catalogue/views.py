@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.shortcuts import render
 from oscar.apps.catalogue import views as catalogue_views
-from oscar_apps.catalogue.models import Product
+from oscar_apps.catalogue.models import Product, UserCatalogue, UserCatalogueProduct
 from oscar.apps.catalogue.views import ProductCategoryView
 from oscar.apps.order.models import Line
 from django.db.models import F, Q, Max
@@ -86,39 +86,25 @@ class PurchasedProductsInfoMixin():
         if not self.request.user.is_authenticated():
             self.album_list = []
         else:
-            if False:
-                self.digital_album_list = Line.objects.select_related(
-                    'product', 'stockrecord', 'product__event', 'product__album').filter(
-                    product__product_class__slug='digital-album').distinct('stockrecord')
-                self.physical_album_list = Line.objects.select_related(
-                    'product', 'stockrecord', 'product__event', 'product__album').filter(
-                    product__product_class__slug='physical-album').distinct('stockrecord')
-                self.track_list = Line.objects.select_related(
-                    'product', 'stockrecord', 'product__event', 'product__album').filter(
-                    product__product_class__slug='track').distinct('stockrecord')
+            catalogue_access = UserCatalogue.objects.filter(user=self.request.user).first()
+            if catalogue_access and  catalogue_access.has_full_catalogue_access:
+                self.digital_album_list = Product.objects.filter(product_class__slug='digital-album')
+                self.physical_album_list = Product.objects.filter(product_class__slug='physical-album')
+                self.track_list = []
             else:
-                self.digital_album_list = Line.objects.select_related(
-                    'product', 'stockrecord', 'product__event', 'product__album').filter(
-                    product__product_class__slug='digital-album',
-                    order__user=self.request.user).distinct('stockrecord')
-                self.physical_album_list = Line.objects.select_related(
-                    'product', 'stockrecord', 'product__event', 'product__album').filter(
-                    product__product_class__slug='physical-album',
-                    order__user=self.request.user).distinct('stockrecord')
-                self.track_list = Line.objects.select_related(
-                    'product', 'stockrecord', 'product__event', 'product__album').filter(
-                    product__product_class__slug='track',
-                    order__user=self.request.user).distinct('stockrecord')
+                self.digital_album_list = Product.objects.filter(product_class__slug='digital-album',access__user=self.request.user)
+                self.physical_album_list = Product.objects.filter(product_class__slug='physical-album',access__user=self.request.user)
+                self.track_list = UserCatalogueProduct.objects.filter(product__product_class__slug='track',user=self.request.user)
 
             self.album_list = []
             for album in list(self.digital_album_list) + list(self.physical_album_list):
                 album_info = {
-                    'parent': album.product.parent,
-                    'bought_tracks': [track.pk for track in album.product.parent.tracks.all()],
+                    'parent': album.parent,
+                    'bought_tracks': [track.pk for track in album.parent.tracks.all()],
                     'album_type': 'full_album',
                 }
                 # Avoid duplicates
-                album = [a for a in self.album_list if a['parent'] == album.product.parent]
+                album = [a for a in self.album_list if a['parent'] == album.parent]
                 if not album:
                     self.album_list.append(album_info)
 
@@ -176,7 +162,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
                 'digital-album'
             ]).first()
             
-            if variant.product_class.slug == 'digital-album':
+            if variant and variant.product_class.slug == 'digital-album':
                 for album in self.album_list:
                     if self.object.pk == album["parent"].pk:
                         ctx['is_full'] = "full_album"
@@ -211,3 +197,5 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
             '%s/detail-for-class-%s.html' % (
                 self.template_folder, self.object.get_product_class().slug),
             '%s/detail.html' % (self.template_folder)]
+
+

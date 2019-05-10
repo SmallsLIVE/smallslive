@@ -1,6 +1,12 @@
 .main-header {
   padding: 20.5px $content-left-padding;
 
+  .button-row {
+    p {
+      margin-bottom:  0;
+    }
+  }
+
   .section-title {
     margin-left: 10px;
     margin-bottom: 0;

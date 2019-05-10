@@ -2,59 +2,20 @@
 
 <div class="banners">
   <div id="banner-container">
-    {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
-    <div class="lighten-image banner-background">
-      {% include 'partials/thumbored_picture.html' with local_url='image/banners/archive.jpg' %}
-    </div>
     <div class="banner-border flex-row">
       <div class="banner-title-button flex-column">
-        <div id="banner-title">Archive</div>
-        <div class="learnmore-container">
-          <div class="banner-learnmore">
-            <button id="banner-button"></button>
-          </div>
-          <div class="banner-learnmore-info hidden">
-            <button id="banner-button-info" onclick="moreInfo()">More Info</button>
-          </div>
-        </div>
+        <div id="banner-title">SmallsLIVE Foundation</div>
       </div>
       <div class="banner-text-container flex-row items-center">
-        <p id="banner-text">El texto</p>
+        <p id="banner-text">Welcome to the Catalogue</p>
       </div>
       <div>
         <a href="#" class="close-button"></a>
       </div>
     </div>
   </div>
-  {% if not active %}
-  <div id="banner-options" class="banner-options flex-row">
-    <div id="banner-archive-box" class="banner-option">
-      {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
-      <div class="fake-image archive">
-        {% include 'partials/thumbored_picture.html' with local_url='image/banners/archive.jpg' %}
-      </div>
-    </div>
-    <div id="banner-live-box" class="banner-option shadow-text">
-      {% fullstatic 'image/banners/live.jpg' as banner_picture_url %}
-      <div class="fake-image live">
-        {% include 'partials/thumbored_picture.html' with local_url='image/banners/live.jpg' %}
-      </div>
-    </div>
-    <div id="banner-mission-box" class="banner-option">
-      {% fullstatic 'image/banners/mission.jpg' as banner_picture_url %}
-      <div class="fake-image mission">
-        {% include 'partials/thumbored_picture.html' with local_url='image/banners/mission.jpg' %}
-      </div>
-    </div>
-  </div>
-  {% endif %}
 </div>
 <script>
-
-  function moreInfo() {
-
-    window.location = '{% url 'terms-and-conditions' %}';
-  }
   $(document).ready(function(){
     inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
 
@@ -63,152 +24,5 @@
       becomeMember.click();
     };
 
-    var bannerText = {
-      archive: {
-        text: '<span class="accent-color">Every show</span> at smalls + mezzrow has been recorded and archived since 2007. Supporting members enjoy <span class="accent-color">unlimited access</span> to our archive. Our musicians are paid royalties through our unique <span class="accent-color">revenue share system.</span>',
-        button: 'Learn More',
-        infoButton: false,
-        click: function() {
-          window.location = '{% url 'archive' %}';
-        },
-        canClose: true
-      },
-      livestream: {
-        text: 'Our <span class="accent-color">live stream</span> has expanded our 60 seat clubs into a worlwide community of jazz fans and supporters. <span class="accent-color">Sign up for free</span> to watch our live stram every night.',
-        button: 'Become a member',
-        infoButton: false,
-        click: showBecomeMemberModal,
-        canClose: true,
-      },
-      mission: {
-        text: 'the <span class="accent-color">smallslive foundation</span> is a <span class="accent-color">not-for-profit</span> organized for the purpose of the <span class="accent-color">dissemination of jazz music</span> through our archive, live streams, sponsorship of individual jall projects & tours, education, and live performances at smalls & mezzrow. we are supported by our members through <span class="accent-color">tax-deductible donations</span>.',
-        button: 'Become a member',
-        infoButton: false,
-        click: showBecomeMemberModal,
-        canClose: true
-      },
-      supporter: {
-        class: 'supporter',
-        text: 'the  mission  of  the  <span class="accent-color">smallslive  foundation</span>  for  jazz  arts  and  education  is  to  <span class="accent-color">disseminate  jazz  music</span>  through  recordings  and  live  streams.    we  sponsor  individual  jazz  projects,  tours  and  educational  classes,  and  subsidize  operating  expenses  for  smalls  and  mezzrow  jazz  clubs.    by  making  a  <span class="accent-color">tax  deductible  donation</span>  to  the  smallslive  foundation  you  will  get  access  to  our  extensive  <span class="accent-color">audio/video  archive</span>  and  directly  support  the  musicians  and  the  clubs.',
-        button: 'Become a supporter',
-        infoButton: true,
-        title: 'Why <strong>become</strong> a<br><span class="accent-color">supporting member</span> <span class="last"><br>of <strong>SmallsLIVE</strong></span>?',
-        click: function() {
-          if (inactive === 'true'){
-            $('#inactive-dialog').modal('show');
-          }else{
-            window.location = '{% url 'become_supporter' %}';
-          }
-        },
-        canClose: false
-      },
-      home: {
-        class: 'supporter',
-        text: 'the  mission  of <span class="accent-color">  the  smallslive  foundation</span> <span class="banner-text"> is the dissemination of jass music through  our Achive  and  Live  Streams.  we  sponsor  individual  jazz  projects,  tours  and  educational  classes,  and  live performances at  Smalls  and  Mezzrow. We are member-suported through tax deductible donations.</span>',
-        button: 'Become a supporter',
-        infoButton: true,
-        title: '{% load static from staticfiles %}<img src="{% static 'logo-black.svg' %}" width="100%" height="100%" alt="logo"/>',
-        click: function() {
-          if (inactive === 'true'){
-            $('#inactive-dialog').modal('show');
-          }else{
-            window.location = '{% url 'become_supporter' %}';
-          }
-        },
-        canClose: false
-      },
-      catalog: {
-        title: '<strong>SmallsLIVE</strong><br> <strong>Catalog</strong></span>',
-        class: 'supporter',
-        text: 'The SmallsLIVE Catalog is a collection of recorded projects live from the clubs. Limited edition CDs as well as HD and MP3 tracks are available that members can stream and download directly from their account. Purchases from the SmallsLIVE Catalog are tax deductible. The revenue is shared directly with the artists involved and supports the SmallsLIVE Foundation.',
-        button: 'go to cart',
-        infoButton: false,
-        canClose: false,
-        click: function() {
-            window.location = '/store/basket/';
-        },
-      }
-    };
-
-    var bannerContainer = $('#banner-container');
-    var bannerOptions = $('#banner-options');
-    $('#banner-archive-box').on('click', function () {
-      setContainerBanner('archive');
-    });
-
-    $('#banner-live-box').on('click', function () {
-      setContainerBanner('livestream');
-    });
-
-    $('#banner-mission-box').on('click', function () {
-      setContainerBanner('mission');
-    });
-
-    bannerContainer.find('a.close-button').on('click', function () {
-      bannerOptions.show();
-      bannerContainer.hide();
-    });
-
-    function setContainerBanner(src) {
-      bannerImage = bannerContainer.find('.banner-background').find('img')[0]
-      $(bannerImage).attr('src','/static/image/banners/'+ src + '_text.jpg')
-      var banner = bannerText[src];
-      bannerContainer.find('#banner-text').html(banner.text);
-      var find = bannerContainer.find('#banner-title');
-      if (banner.title) {
-        if(banner.title == '<strong>SmallsLIVE</strong><br> <strong>Catalog</strong></span>'){
-          find.css('text-align', 'center')
-          find.css('font-size', '3.35vw')
-          find.css('line-height', '3.35vw')
-        }
-        find.html(banner.title);
-        find.addClass('custom-banner-text');
-        if (banner.class) {
-          bannerContainer.addClass(banner.class)
-        }
-      } else {
-        find.text(src);
-        find.removeClass('custom-banner-text');
-        if (banner.class) {
-          bannerContainer.removeClass(banner.class);
-        }
-      }
-      var bannerButton = bannerContainer.find('#banner-button');
-      bannerButton.text(banner.button);
-      bannerButton.off('click');
-      bannerButton.on('click', function ($event) {
-        $event.stopPropagation();
-        banner.click();
-      });
-
-      var $learnMore = $('.banner-learnmore-info');
-      if(banner.title == '<img src="/static/logo-black.svg" width="100%" height="100%" alt="logo"/>'){
-        $learnMore.parent().addClass('home-banner-buttons');
-      }
-      if (banner.infoButton) {
-        $learnMore.removeClass('hidden');
-      } else {
-        $learnMore.addClass('hidden');
-      }
-
-      var closeButton = bannerContainer.find('.close-button');
-      if (banner.canClose) {
-        closeButton.removeClass('hidden');
-      } else {
-        closeButton.addClass('hidden');
-      }
-
-      bannerContainer.show();
-      bannerOptions.hide();
-    }
-
-    {% if active %}
-      setContainerBanner('{{ active }}');
-    {% else %}
-      bannerContainer.find('a.close').on('click', function () {
-        bannerOptions.show();
-        bannerContainer.hide();
-      });
-    {% endif %}
   });
 </script>

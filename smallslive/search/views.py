@@ -1,7 +1,7 @@
 import json
 from collections import OrderedDict
 from itertools import chain, groupby
-
+import datetime
 from dateutil import parser
 from django.core.paginator import EmptyPage, Paginator
 from django.http import Http404, HttpResponse, JsonResponse
@@ -15,7 +15,7 @@ from haystack.query import SearchQuerySet
 from django.db.models import Q
 
 from artists.models import Artist, Instrument
-from events.models import Event, Venue
+from events.models import Event, Venue, RANGE_MONTH
 
 from .search import SearchObject
 from .utils import facets_by_model_name
@@ -59,26 +59,37 @@ class SearchMixin(object):
 
     def search(self, entity, main_search, page=1, order=None,
                instrument=None, date_from=None, date_to=None,
-               artist_search=None, artist_pk=None, venue=None):
+               artist_search=None, artist_pk=None, venue=None, results_per_page=60):
 
         search = SearchObject()
 
+        first = None
+        last = None
         if entity == Artist:
             results_per_page = 60 * 4
             sqs = search.search_artist(main_search, artist_search, instrument)
 
         elif entity == Event:
-            results_per_page = 24
 
-            sqs = search.search_event(main_search, order, date_from, date_to,
-                                    artist_pk=artist_pk, venue=venue)
+            sqs = search.search_event(
+                main_search, order, date_from, date_to,
+                artist_pk=artist_pk, venue=venue)
+
+            print sqs.query
+
             if not self.request.user.is_superuser:
                 sqs = sqs.filter(Q(state=Event.STATUS.Published) | Q(state=Event.STATUS.Cancelled))
+
+            first = sqs.first()
+            last = sqs.last()
 
         blocks = []
         block = []
 
         paginator = Paginator(sqs, results_per_page)
+
+        print 'Page: ', page
+        print 'Page size: ', results_per_page
 
         try:
             objects = paginator.page(page).object_list
@@ -95,16 +106,16 @@ class SearchMixin(object):
 
         if block:
             blocks.append(block)
-            block = []
 
         if paginator.count:
-            
-            actual_results = 1 + ((page - 1) * results_per_page) if entity == Artist else 1
             showing_results = paginator.count
         else:
             showing_results = 'NO RESULTS'
 
-        return blocks, showing_results, paginator.num_pages
+        if entity == Event:
+            return blocks, showing_results, paginator.num_pages, first, last
+        else:
+            return blocks, showing_results, paginator.num_pages
 
 
 class UpcomingEventMixin(object):
@@ -185,16 +196,17 @@ class MainSearchView(View, SearchMixin):
             template = 'search/artist_results.html'
 
         elif entity == 'event':
-            events, showing_results, num_pages = self.search(
+            events, showing_results, num_pages, first, last = self.search(
                 Event, main_search, page, order=order, date_from=date_from,
                 date_to=date_to, artist_pk=artist_pk, venue=venue)
 
             context = {
                 'events': events[0] if events else [],
                 'secondary': True,
-                'show_event_venue':show_venue,
+                'show_event_venue': show_venue,
                 'show_extend_date': show_sets,
-                'upcoming':  upcoming
+                'upcoming':  upcoming,
+                'with_date_picker': False,
             }
             template = ('search/event_search_row.html' if partial
                         else 'search/event_search_result.html')
@@ -215,7 +227,7 @@ class MainSearchView(View, SearchMixin):
 
         if entity == 'event':
             context = {
-                'actual_page': page,
+                'current_page': page,
                 'last_page': num_pages,
                 'range': range(1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2],
                 'has_last_page': (num_pages - page) >= 3
@@ -326,12 +338,13 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         context['artists_blocks'] = artists_blocks
         context['artist_num_pages'] = num_pages
 
-        event_blocks, showing_event_results, num_pages = self.search(Event, q)
+        event_blocks, showing_event_results, num_pages, first, last = self.search(Event, q, results_per_page=60)
 
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []
-
-        context['actual_page'] = page = 1
+        context['popular_in_archive'] = Event.objects.get_most_popular_uploaded(RANGE_MONTH)
+        context['popular_select'] = 'year'
+        context['current_page'] = page = 1
         context['last_page'] = num_pages
         context['range'] = range(
             1, num_pages + 1)[:page][-3:] + range(1, num_pages + 1)[page:][:2]
@@ -339,10 +352,16 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         default_to_date = 'now'
         if event_blocks and event_blocks[0] and event_blocks[0][0].date:
             default_to_date = event_blocks[0][0].date.strftime('%m/%d/%Y')
-        context['default_from_date'] = timezone.now().strftime('%m/%d/%Y')
-        context['default_to_date'] = default_to_date
+        context['first_event_date'] = last.get_date().strftime('%m/%d/%Y')
+        context['last_event_date'] = first.get_date().strftime('%m/%d/%Y')
+        context['first'] = first
+        context['last'] = last
 
         return context
+
+
+class ArchiveView(TemplateSearchView):
+    template_name = 'search/archive.html'
 
 
 class ArtistInfo(View):
@@ -364,4 +383,69 @@ class ArtistInfo(View):
             'template': temp
         }
 
+        return JsonResponse(data)
+
+
+class UpcomingSearchView(SearchMixin):
+
+    template_name = 'search/upcoming_calendar_dates.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UpcomingSearchView, self).get_context_data(**kwargs)
+        context.update(self.get_upcoming_context)
+        return context
+
+    def get_upcoming_context(self):
+        context = {'day_list': []}
+        days = int(self.request.GET.get('days', 12))
+        starting_date = self.request.GET.get('starting_date', datetime.datetime.today().strftime('%Y-%m-%d'))
+        starting_date = datetime.datetime.strptime(starting_date, '%Y-%m-%d')
+        venue = self.request.GET.get('venue', 'all')
+        event_list = Event.objects.filter(start__gte=starting_date)
+        if venue:
+            if venue != 'all':
+                event_list = event_list.filter(venue__pk=venue)
+        event_list = event_list.order_by('start')
+        first_event = event_list.first()
+        last_event = event_list.last()
+        for day in range(0, days):
+            # list of events for one day
+            day_itinerary = {}
+            day_start = starting_date + timedelta(days=day, hours=5)
+            day_end = day_start + timedelta(days=1)
+            day_itinerary['day_start'] = day_start
+            day_itinerary['day_events'] = event_list.filter(start__gte=day_start, start__lte=day_end).order_by('start')
+            context['day_list'].append(day_itinerary)
+
+        context['first_event'] = first_event
+        context['last_event'] = last_event
+        context['new_date'] = (day_start + timedelta(days=1)).strftime('%Y-%m-%d')
+
+        return context
+
+
+class UpcomingSearchViewAjax2(TemplateView, UpcomingSearchView):
+
+    template_name = 'search/upcoming_calendar_dates.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UpcomingSearchViewAjax, self).get_context_data(**kwargs)
+        context.update(self.get_upcoming_context())
+
+        return context
+
+
+class UpcomingSearchViewAjax(TemplateView, UpcomingSearchView):
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        context.update(self.get_upcoming_context())
+        data = {
+            'template': render_to_string(
+                'search/upcoming_calendar_dates.html', context,
+                context_instance=RequestContext(request)
+            ),
+            'new_date':  context['new_date']
+        }
+        
         return JsonResponse(data)
