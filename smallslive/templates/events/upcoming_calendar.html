@@ -154,9 +154,10 @@
     if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
       $loadMore = $("#load-more-calendar");
       var lastEventDate = $("#upcoming-shows").data("last-event-date");
-      lastEventDate = Date.parse(lastEventDate);
-      var startDate = $loadMore.data("starting-date");
-      if (Date.parse(startDate) < lastEventDate) {
+      lastEventDate = new Date(lastEventDate);
+      startDate = $loadMore.data("starting-date");
+      startDate = new Date(startDate);
+      if (startDate < lastEventDate) {
         getCalendarAjax(15, false);
       }
     };
