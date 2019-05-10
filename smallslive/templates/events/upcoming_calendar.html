@@ -32,8 +32,8 @@
 
   <div class="flex-row upcoming-schedule">
     {% include 'search/upcoming_calendar_dates.html' with day_list=day_list %}
-    <input  type="hidden" id="load-more-calendar" data-starting-date="{{ new_date }}" data-venue="all" class="white-border-button">
   </div>
+  <input  type="hidden" id="load-more-calendar" data-starting-date="{{ new_date }}" data-venue="all">
 
 </section>
 
@@ -45,6 +45,7 @@
   var $datePickerContainer = $(containerSelector);
   var $datePickerCalendar = $(".calendar-filters:visible .custom-date-picker input");
   var startDate = new Date();
+  var nextDate = startDate;
   var venue = "all";
 
   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -74,7 +75,8 @@
     });
 
     $datePickerCalendar.on("changeDate", function (event) {
-      startDate = event.date;
+      nextDate = event.date;
+      startDate = nextDate;
       getCalendarAjax(15, true);
       toggleDisplay(this);
     });
@@ -124,12 +126,12 @@
 
   function getCalendarAjax(days, filtered, callback) {
     var data = {'days': days, 'venue': venue};
-    if (startDate) {
-      var day = startDate.getDate();
-      var monthIndex = startDate.getMonth() + 1;
-      var year = startDate.getFullYear();
-      data['starting_date'] = year + '-' + monthIndex + '-' + day;
-    }
+
+    var day = nextDate.getDate();
+    var monthIndex = nextDate.getMonth() + 1;
+    var year = nextDate.getFullYear();
+    data['starting_date'] = year + '-' + monthIndex + '-' + day;
+
 
     $.ajax({
       url: '/search/upcoming-ajax/',
@@ -166,10 +168,10 @@
       $loadMore = $("#load-more-calendar");
       var lastEventDate = $("#upcoming-shows").data("last-event-date");
       lastEventDate = new Date(lastEventDate);
-      startDate = $loadMore.data("starting-date");
-      var parts = startDate.split('-');
-      startDate = new Date(parts[0], parts[1] - 1, parts[2]);
-      if (startDate < lastEventDate) {
+      nextDate = $loadMore.data("starting-date");
+      var parts = nextDate.split('-');
+      nextDate = new Date(parts[0], parts[1] - 1, parts[2]);
+      if (nextDate < lastEventDate) {
         queryFromScroll = true;
         getCalendarAjax(15, false, function (err) {
           if (!err) {
@@ -183,6 +185,7 @@
   $("#calendar-club-filter").change(function () {
     $("#load-more-calendar").data("venue", $(this).find("option:selected").val());
     venue = $(this).find("option:selected").val();
+    nextDate = startDate;
     getCalendarAjax(12, true);
   });
 

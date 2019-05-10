@@ -445,7 +445,9 @@ class UpcomingSearchViewAjax(TemplateView, UpcomingSearchView):
                 'search/upcoming_calendar_dates.html', context,
                 context_instance=RequestContext(request)
             ),
-            'new_date':  context['new_date']
+            'new_date':  context['new_date'],
         }
+        if 'first_event' in context and context['first_event']:
+            data['first_date'] = context['first_event'].date.strftime('%Y-%m-%d')
         
         return JsonResponse(data)
