@@ -327,6 +327,7 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
             artists_blocks = [[Artist.objects.filter(id=artist_id).first()]]
             showing_artist_results = ''
             num_pages = 1
+            context['artist_profile'] = True
         else:
             artists_blocks, showing_artist_results, num_pages = self.search(
                 Artist, q, instrument=instrument)

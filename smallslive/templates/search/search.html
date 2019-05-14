@@ -30,7 +30,7 @@
 {% include 'inactive_dialog.html' %}
 {% include 'become_a_supporter_dialog.html' %}
 
-{% if not query_term %}
+{% if not query_term and not artist_profile %}
   <section id="recently-added-section" class="event-stripe archive">
     <div class="section-title home archive">
       <div class="title1"><a href="#" id="ra-recently-added-toggle"  class="accent-color"> Recently Added</a>  \ <a href="#" id="ra-most-popular-toggle">Most Popular</a></div>
@@ -64,7 +64,7 @@
   </section>
 {% endif %}
 
-{% if not query_term %}
+{% if not query_term and not artist_profile %}
   <div class="flex-row new-archive">
     <div class="musicians-result active" data-type="search-content">
       <div class="title1 shows-results-title">
