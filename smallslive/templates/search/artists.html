@@ -29,7 +29,7 @@
   {% endfor %}
 </div>
 
-<div class="container-list-article">
+<div class="">
 
   <div class="left_arrow artist-arrow-search artist-arrow-disabled">
 
@@ -39,18 +39,9 @@
     <img src="{% static 'image/loading.gif' %}" alt="">
   </div>
 
-  <main id="artists" class="artists-container invisible">
+  <main id="artists" class="invisible" style="position: relative;">
+    <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+    <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
     {% include 'search/artist_results.html' %}
   </main>
-
-  <div class="right_arrow artist-arrow-search"
-       style="{% if artist_num_pages == 1 %}visibility: hidden;{% endif %}">
-  </div>
-</div>
-
-<div class="white-border-button load-more-artist-button" onclick="loadMoreArtistButton()" style="{% if artist_num_pages == 1 %}visibility: hidden;{% endif %}">Load more</div>
-<div hidden class="artist-loading-gif mobile-artist-loading" style="height: 50px; margin-bottom: 30px;"></div>
-<div class="flex-row items-center content-space-between artist-arrows">
-  <div class="left_arrow artist-arrow-search"></div>
-  <div class="right_arrow artist-arrow-search"></div>
 </div>
