@@ -10,24 +10,43 @@
 
 {% block store_content %}
 
-<section id="my-downloads-album__list">
+  <section id="my-downloads-album__list">
     {% include 'multimedia/album-display.html' with album_product=album_product if_full=is_full bought_tracks=bought_tracks is_catalogue=is_catalogue mp3_available=mp3_available %}
-</section>
-
-
+  </section>
+  <section id="my-downloads-product__purchase" class="hidden">
+    {% include 'account/become-supporter.html' with catalog_flow=True %}
+  </section>
+  {% include 'account/catalog_selection_confirmation_dialog.html' %}
 {% endblock %}
 
 
 {% block extra_js %}
-<script>
-var el, setTime;
+  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+  <script src="https://js.stripe.com/v2/"></script>
+  <script src="{% static 'js/card.js' %}"></script>
+  <script src="{% static 'js/payment/payment.js' %}"></script>
+  <script src="{% static 'js/become-member.js' %}"></script>
+  <script>
 
-el = document.querySelector(".track-container");
-</script>
-<script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
-<script src="{% static 'js/progress-bar.js' %}"></script>
+    $(document).ready(function () {
 
-<script>
+      Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
+      // in payment.js
+      //renderPayPal(paypal);
+      //renderCardAnimation();
+
+    });
+
+  </script>
+  <script>
+    var el, setTime;
+
+    el = document.querySelector(".track-container");
+  </script>
+  <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
+  <script src="{% static 'js/progress-bar.js' %}"></script>
+
+  <script>
     var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
     
      $(document).on('click', ".white-border-button.add-to-library", function(event){
@@ -271,6 +290,6 @@ el = document.querySelector(".track-container");
 
 
 
-</script>
+  </script>
 
 {% endblock %}

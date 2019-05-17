@@ -3,7 +3,8 @@
 {% load djstripe_tags %}
 
 {% block home_content %}
-  {% include 'account/selection_confirmation_dialog.html' %}
+  {% block confirmation_modals %}
+  {% endblock %}
   <div class="flex-column supporter-main-container">
       {% fullstatic 'image/banners/archive.jpg' as banner_picture_url %}
     <div class="supporter-image">

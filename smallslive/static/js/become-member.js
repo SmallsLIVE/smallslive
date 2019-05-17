@@ -1,60 +1,130 @@
+var selectedData = {
+  type: "",
+  amount: 0
+};
+
+var setSelected = function (type, amount) {
+  selectedData.type = type;
+  selectedData.amount = amount;
+  if (amount) {
+    if (amount > 0) {
+      updatePaymentInfo();
+    } else {
+      resetCustom();
+    }
+  }
+
+  checkConfirmButton();
+};
+
+var getSteps = function () {
+  var steps = ["Intro", "SelectType"];
+
+  if (selectedData.type == "gift") {
+    steps = steps.concat(["Shipping", "Billing", "Preview"]);
+  } else if (selectedData.type == "digital") {
+    steps = ["Intro", "Billing", "Preview"]
+  } else {
+    steps = steps.concat(["PaymentInfo"]);
+  }
+
+  steps = steps.concat(["ThankYou"]);
+
+  return steps;
+};
+
+var getPreviousStep = function () {
+  var steps = getSteps();
+  var index = steps.indexOf(currentStep);
+  if (index == -1) {
+    return steps[1];
+  }
+  return steps[index - 1];
+};
+
+var getNextStep = function () {
+  var steps = getSteps();
+  var index = steps.indexOf(currentStep);
+  return steps[index + 1];
+};
+
+var buttons = $("#supporterSteps > *");
+var monthlyButtons = $("#monthlyPledge > button");
+var yearlyButtons = $("#yearlyPledge > button");
+var giftsButtons = $(".select-gift");
+
+var resetButtons = function () {
+  [monthlyButtons, yearlyButtons, giftsButtons].forEach(function (buttons) {
+    buttons.each(function (index, el) {
+      $(el).removeClass("active");
+    });
+  });
+};
+
+var activeStep = function (step) {
+  $(buttons[step]).addClass("active");
+  $(buttons[currentStep]).removeClass("active");
+};
+
+var showPanel = function (step) {
+  var $previous = $("#supporterStep" + currentStep);
+  var $step = $("#supporterStep" + step);
+
+  $previous.hide();
+  $step.show();
+  activeStep(step);
+  currentStep = step;
+  checkConfirmButton();
+};
+
+var $itemForm;
+
+var checkConfirmButton = function () {
+  var $confirmButton = $("#confirmButton");
+  flowKind = $("#supporterSteps").data("flow");
+  if (currentStep === "SelectType") {
+    if (
+      (selectedData.type === "month" && selectedData.amount >= 10) ||
+      (selectedData.type === "year" && selectedData.amount >= 100) ||
+      selectedData.type === "one-time" ||
+      selectedData.type === "gift" ||
+      flowKind !== "become_supporter"
+    ) {
+      $confirmButton.prop("disabled", false);
+    } else {
+      $confirmButton.prop("disabled", true);
+    }
+  } else if (currentStep === 0) {
+    $confirmButton.prop("disabled", false);
+  } else {
+    $confirmButton.prop("disabled", false);
+  }
+
+  if (currentStep === "PaymentInfo" && selectedData.type != "gift") {
+    var method = $("#payment-method").val();
+    if (method == "credit-card") {
+      var confirm = checkCreditCardForm();
+      $confirmButton.prop("disabled", !confirm);
+    } else {
+      $confirmButton.prop("disabled", false);
+    }
+    $confirmButton.text("Confirm Payment");
+  } else {
+    $confirmButton.text("Continue");
+  }
+
+  if (currentStep === "Intro") {
+    $("#backButton").hide();
+  } else {
+    $("#backButton").show();
+  }
+};
+
 $(document).ready(function () {
   if (typeof window.completeSubpage === "undefined") {
     window.completeSubpage = "";
   }
   currentStep = "Intro";
-
-  var selectedData = {
-    type: "",
-    amount: 0
-  };
-
-  var getSteps = function () {
-    var steps = ["Intro", "SelectType"];
-
-    if (selectedData.type == "gift") {
-      steps = steps.concat(["Shipping", "Billing", "Preview"]);
-    } else {
-      steps = steps.concat(["PaymentInfo"]);
-    }
-
-    steps = steps.concat(["ThankYou"]);
-
-    return steps;
-  };
-
-  var getPreviousStep = function () {
-    var steps = getSteps();
-    var index = steps.indexOf(currentStep);
-    if (index == -1) {
-      return steps[1];
-    }
-    return steps[index - 1];
-  };
-
-  var getNextStep = function () {
-    var steps = getSteps();
-    var index = steps.indexOf(currentStep);
-    return steps[index + 1];
-  };
-
-  var activeStep = function (step) {
-    $(buttons[step]).addClass("active");
-    $(buttons[currentStep]).removeClass("active");
-  };
-
-  var showPanel = function (step) {
-    var $previous = $("#supporterStep" + currentStep);
-    var $step = $("#supporterStep" + step);
-
-    $previous.hide();
-    $step.show();
-    activeStep(step);
-    currentStep = step;
-    checkConfirmButton();
-  };
-
-  var $itemForm;
 
   $(document).on("change", ".gift-content select", function () {
     /* Add a border to the display selection on dropdown change.
@@ -77,9 +147,20 @@ $(document).ready(function () {
       // TODO: fix hardcoded URL
       $.get("/store/checkout/", function (data) {
         $.get(data.url, function (data) {
-          $("#supporterStepShipping").html(data);
-          showPanel("Shipping");
-          replaceWhiteSelects($("#supporterStepShipping")[0]);
+          if (data.url && data.url.indexOf('payment-method') > -1) {
+            $.get(data.url, function (data) {
+              $.get(data.url, function (data) {
+                $("#supporterStepBilling").html(data);
+                showPanel("Billing");
+                replaceWhiteSelects($("#supporterStepBilling")[0]);
+                renderCardAnimation("#payment-form");
+              });
+            });
+          } else {
+            $("#supporterStepShipping").html(data);
+            showPanel("Shipping");
+            replaceWhiteSelects($("#supporterStepShipping")[0]);
+          }
         });
       });
     }
@@ -259,19 +340,6 @@ $(document).ready(function () {
     });
   }
 
-  var buttons = $("#supporterSteps > *");
-  var monthlyButtons = $("#monthlyPledge > button");
-  var yearlyButtons = $("#yearlyPledge > button");
-  var giftsButtons = $(".select-gift");
-
-  var resetButtons = function () {
-    [monthlyButtons, yearlyButtons, giftsButtons].forEach(function (buttons) {
-      buttons.each(function (index, el) {
-        $(el).removeClass("active");
-      });
-    });
-  };
-
   $(document).on("change", 'input[name="payment_method"]', function (event) {
     event.stopPropagation();
     event.preventDefault();
@@ -341,19 +409,6 @@ $(document).ready(function () {
     $("#monthlyCustomConfirm").hide();
   };
 
-  var setSelected = function (type, amount) {
-    selectedData.type = type;
-    selectedData.amount = amount;
-    if (amount) {
-      if (amount > 0) {
-        updatePaymentInfo();
-      } else {
-        resetCustom();
-      }
-    }
-
-    checkConfirmButton();
-  };
   $(document).on("click", "#monthlyPledge > button", function () {
     $("#monthlyPledge > button").removeClass("active");
     $(this).addClass("active");
@@ -586,7 +641,6 @@ $(document).ready(function () {
       $select.removeClass("alert");
       $("#confirmButton").prop("disabled", false);
     }
-    var $content = $("#selectionConfirmationDialog").find("#giftContent");
     $itemForm = $(this)
       .parent()
       .parent()
@@ -751,47 +805,6 @@ $(document).ready(function () {
     return true;
   }
 
-  var checkConfirmButton = function () {
-    var $confirmButton = $("#confirmButton");
-    flowKind = $("#supporterSteps").data("flow");
-    if (currentStep === "SelectType") {
-      if (
-        (selectedData.type === "month" && selectedData.amount >= 10) ||
-        (selectedData.type === "year" && selectedData.amount >= 100) ||
-        selectedData.type === "one-time" ||
-        selectedData.type === "gift" ||
-        flowKind !== "become_supporter"
-      ) {
-        $confirmButton.prop("disabled", false);
-      } else {
-        $confirmButton.prop("disabled", true);
-      }
-    } else if (currentStep === 0) {
-      $confirmButton.prop("disabled", false);
-    } else {
-      $confirmButton.prop("disabled", false);
-    }
-
-    if (currentStep === "PaymentInfo" && selectedData.type != "gift") {
-      var method = $("#payment-method").val();
-      if (method == "credit-card") {
-        var confirm = checkCreditCardForm();
-        $confirmButton.prop("disabled", !confirm);
-      } else {
-        $confirmButton.prop("disabled", false);
-      }
-      $confirmButton.text("Confirm Payment");
-    } else {
-      $confirmButton.text("Continue");
-    }
-
-    if (currentStep === "Intro") {
-      $("#backButton").hide();
-    } else {
-      $("#backButton").show();
-    }
-  };
-
   $(".supporter-card-data .form-control").on("keyup", function () {
     $(this).removeClass("error");
 
@@ -846,7 +859,7 @@ $(document).ready(function () {
     var $that = $(this);
     $that.prop("disabled", true);
 
-    if (selectedData.type == "gift") {
+    if (selectedData.type == "gift" || selectedData.type  == "digital") {
       event.preventDefault();
       event.stopPropagation();
     }
@@ -895,9 +908,9 @@ $(document).ready(function () {
       $itemForm.submit();
     } else if (currentStep === "Shipping" && selectedData.type == "gift") {
       $("#new_shipping_address").submit();
-    } else if (currentStep === "Billing" && selectedData.type == "gift") {
+    } else if (currentStep === "Billing" && (selectedData.type == "gift" || selectedData.type  == "digital")) {
       $("#payment-form").submit();
-    } else if (currentStep === "Preview" && selectedData.type == "gift") {
+    } else if (currentStep === "Preview" && (selectedData.type == "gift" || selectedData.type  == "digital")) {
       $("#place-order").submit();
     } else if (currentStep === "SelectType" && selectedData.type != "gift") {
       getPaymentInfoForm();

@@ -576,7 +576,15 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
 
         # Save order id in session so thank-you page can load it
         self.request.session['checkout_order_id'] = order.id
-        if self.request.is_ajax():
+
+        print '************************************************'
+        print 'Flow type: ', flow_type
+        print self.get_success_url()
+        print '**********************************'
+
+        if flow_type == 'catalog_selection':
+            response = http.JsonResponse({'success_url': self.get_success_url()})
+        elif self.request.is_ajax():
             success_url = reverse('become_supporter_complete')
             if flow_type:
                 success_url += '?flow_type=' + flow_type
@@ -590,9 +598,10 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                 storage.used = True
 
             response = http.JsonResponse({'success_url': success_url})
-
         else:
             response = http.HttpResponseRedirect(self.get_success_url())
+
+        if order:
             self.send_signal(self.request, response, order)
 
         return response
