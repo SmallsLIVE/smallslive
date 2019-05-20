@@ -10,7 +10,7 @@
 <div class=""  style="padding-left: 3.5vw;">
   <div class="section-title" style="padding-left: 0;">
     <div class="title1">
-      <a href="{% url 'promotions:home' %}">Catalogue</a> <span class="accent-color">\</span> {% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }}
+      <a href="{% url 'promotions:home' %}">Catalog</a> <span class="accent-color">\</span> {% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }}
     </div>
   </div>
   <div class="intro-text text9">You are
@@ -20,15 +20,42 @@
   <div class="text-center">
     {% for child_product in album_product.children.all %}
       {% purchase_info_for_product request child_product as session %}
-      <form action="{% url 'basket:add' pk=child_product.pk  %}" method="post" class="add-to-basket" style="display: inline-block; margin: 0 5px;">
+      <form action="{% url 'basket:add' pk=child_product.pk  %}"
+            method="post"
+            class="add-to-basket" style="display: inline-block; margin: 0 5px;">
         {% if session.availability.is_available_to_buy %}
           {% basket_form request child_product 'single' as basket_form %}
+
+          <div class="modal-content hidden">
+            <div class="store-list-item-image">
+              {% with image=product.primary_image %}
+                {% if not image.is_missing %}
+                  <img src="{% thumbor_url image.original.url|urlencode height=260 width=260 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio">
+                {% else %}
+                  <img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio">
+                {% endif %}
+              {% endwith %}
+            </div>
+            {% if product.product_class.slug == "album" %}
+              <p class="text4">{% if product.has_physical_media %}CD / {% endif %}{% if product.has_digital_media %}Digital download / {% endif %}{% if product.has_tracks %}Tracks{% endif %}</p>
+            {% endif %}
+            <div class="store-add-small">
+              {% basket_form request product 'single' as basket_form %}
+              <input type="hidden" name="single-product" value="{{ product.id }}"/>
+            </div>
+          </div>
+
           <div class="">
             {% csrf_token %}
             {{ basket_form.quantity }}
-            {{ basket_form.child_id }}
             <div class="arrow-button-container">
-              <button type="submit" class="white-border-button"> {{ child_product.title }} {{ session.price.excl_tax|currency:session.price.currency }}</button>
+              <button class="select-catalog-product white-border-button"
+                      data-cost="{{ session.stockrecord.cost_price }}"
+                      data-inclTax="{{ session.price.incl_tax }}"
+                      data-type="{{ child_product.title }}"
+                      data-physical="{% if child_product.get_product_class.requires_shipping %}gift{% else %}digital{% endif %}">
+                {{ child_product.title }} {{ session.price.excl_tax|currency:session.price.currency }}
+              </button>
             </div>
           </div>
         {% endif %}
@@ -154,7 +181,7 @@
 </div>
 <div class="my-downloads-album row" style="padding: 20px 10vw;">
   <div class="flex-column" style="width: 50%;">
-    <ul>
+    <ul style="padding-left: 10px;">
       {% for artist_product in product.artistproduct_set.all %}
         <li>
           <a href="{{ artist_dict.absolute_url }}" class="title2">
@@ -165,7 +192,7 @@
     </ul>
   </div>
 
-  <div style="padding-left: 3.5vw">
+  <div>
     <div class="description-container" style="font-size: 1.3vw; font-family: 'Oswald'; font-weight: 300; display: inline-block; width: 45%">
       {{ album_product.description|safe }}
     </div>
@@ -232,50 +259,15 @@
 
 {% endblock store_content %}
 {% block extra_js %}
-
   <script>
     $(document).ready(function () {
       {% if is_catalogue %}
-        $(document).on('click', '.track-container', function(e){
-          if($(e.currentTarget).attr('href') != 'none')
-            document.location = $(e.currentTarget).attr('href')
-    })
-    {% endif %}
-
-      $(document).on('click', '.add-to-library, .added-to-library', function (event) {
-        /* Add to Library (Mark as ready to be added to basket
-          This does not add the item to the basket just yet.
-          Just change a few classes to prepare what's going to be
-          added when the confirmation is received.
-        */
-        if ($(this).hasClass('add-to-library')) {
-          $(this).removeClass('add-to-library');
-          $(this).addClass('added-to-library');
-          $(this).addClass('no-border');
-          $(this).addClass('active');
-        } else {
-          $(this).removeClass('added-to-library');
-          $(this).addClass('add-to-library');
-          $(this).removeClass('no-border');
-          $(this).removeClass('active');
-        }
-
-        // update total in Confirm button:
-        var total = 0;
-        $('.added-to-library').each(function () {
-          var price = $(this).data('price');
-          if (price) {
-            price = parseFloat(price);
-            total += price
+        $(document).on('click', '.track-container', function(e) {
+          if($(e.currentTarget).attr('href') != 'none') {
+            document.location = $(e.currentTarget).attr('href');
           }
-        });
-
-        if (total > 0) {
-          $('#btnCheckout').text('Confirm $' + total + ' donation');
-        } else {
-          $('#btnCheckout').text('Confirm donation');
-        }
-      });
+        })
+      {% endif %}
 
       $(document).on('click', '.download', function (event) {
         event.stopPropagation();
@@ -288,168 +280,78 @@
         $('#downloadFormatHdUrl').attr('href', hdUrl);
         $('#downloadFormatHdUrl').attr('download', hdName);
         $('#downloadFormat').modal('show');
-
       });
 
-      $(document).on('click', '#btnCheckout', function (event) {
-        if ($('.added-to-library').length) {
+      /* Product selection and purchase */
 
-          var $form = $('#frmCheckout');
-          $(this).attr('disabled', 'disabled');
-          $('.added-to-library').each(function () {
-            var id = $(this).data('track-id');
-            $('<input>').attr({
-              'type': 'hidden',
-              'name': 'trackId',
-              'value': id
-            }).appendTo($form);
-          });
-          $.ajax({
-            url: "/multimedia/library/add-tracks",
-            data: $form.serialize(),
-            success: function (data) {
-              // Append all forms  to content
-              $('#purchase-content').html(data);
-              $('#confirmCheckout').modal('show');
-              $(this).removeAttr('disabled');
-            }
-          });
+      var $selectionConfirmationDialog = $("#catalogSelectionConfirmationDialog");
 
+      $(document).on('click', '.select-catalog-product', function (event) {
+
+        // Prevent submission
+        event.preventDefault();
+
+        // Set state in become-member.js (TODO: change file name to reflect a more general flow)
+
+        // Skip first step: Intro message from become a supporter.
+        setSelected($(this).data("physical"), 0);
+        currentStep = "Intro";
+        showPanel(getNextStep());
+
+        // Show popup with selected product
+        $selectionConfirmationDialog.find(".title").text($(this).text());
+        $itemForm = $(this).closest("form");
+
+        // Clone html (image and product title) to  append to modal content.
+        var $item = $itemForm.find(".modal-content").clone();
+
+        // Price and tax info
+        var giftTier = $(this).attr("data-type");
+        $selectionConfirmationDialog
+          .find(".subtitle")
+          .text("Selected Item: " + giftTier);
+        var price = $(this)
+          .children(".price-tag")
+          .text();
+        var cost = $(this).attr("data-cost");
+        var tax = 0;
+        var priceInt = parseInt(price.substring(1).replace(/,/g, ""));
+        if (cost && typeof cost != "undefined") {
+          tax = priceInt - parseInt(cost);
         } else {
-
-          $('#addToLibraryNotice').modal('show');
-
+          tax = priceInt;
         }
-      });
 
-      $(document).on('click', '#confirmSelectionButton', function (event) {
+        // Create text to display and append html
+        var content = 'You have selected an item of price <span class="smalls-color">' +
+          price +
+          '</span>  of which <span class="smalls-color">$' +
+          tax +
+          "</span> is tax deductible.";
 
-        var $that = $(this);
-        $(document.body).css('cursor', 'wait');
-        $that.attr('disabled', 'disabled');
-        var $matches =  $('#confirmCheckout .add-to-basket');
-        var count = $matches.length;
-        $matches.each(function () {
-          var $form = $(this);
-          $.ajax({
-            url: $form.attr('action'),
-            type: "post",
-            data: $form.serialize(),
-            success: function (data) {
-              console.log(data);
-              count--;
-              if (count == 0) {
-                checkout();
-              }
-            }
-          });
-        });
-      });
+        $selectionConfirmationDialog
+          .find(".text")
+          .html(content);
 
-      $("#confirmCheckout").on("hidden.bs.modal", function () {
-        var $btn = $('#btnCheckout');
-        $(document.body).css('cursor', 'initial');
-        $btn.removeAttr('disabled');
-        $('.added-to-library').each(function () {
-          $(this).removeClass('added-to-library');
-          $(this).addClass('add-to-library');
-          $(this).text('Add to Library');
-          $(this).removeClass('no-border');
-          $(this).removeClass('active');
-        });
+        var $giftContent = $selectionConfirmationDialog.find(".gift-content");
+        $giftContent.html($item);
+        $item.removeClass("hidden");
+
+        $selectionConfirmationDialog.modal("show");
 
       });
 
-      $(document).on('click', '.payment-method-toggle', function () {
-        $('.payment-method-toggle').toggleClass('active');
+      $(document).on("click", "#confirmCatalogSelectionButton", function () {
+        $("#confirmButton").show();
+        $selectionConfirmationDialog.modal("hide");
+        $("#my-downloads-product__purchase").removeClass('hidden');
+        $("#my-downloads-album__list").addClass('hidden');
+        $itemForm.submit();
       });
 
-      /* Store functions */
-
-      function checkout() {
-        $.ajax({
-          url: "/store/checkout/",
-          success: function (data) {
-            // If there is no active card, we'll need to take the
-            // user to the usual flow, except for the basket view.
-            {% if not active_card %}
-              window.location.href = '/store/checkout/shipping-address/';
-              return;
-            {% endif %}
-
-            // User has selected not to use existing credit card.
-            $paymentMethod = $('.payment-method-toggle.active').data('id');
-            if ($paymentMethod == 'other') {
-              window.location.href = '/store/checkout/shipping-address/';
-              return;
-            }
-
-            // Continue via ajax so that everything the user sees is one popup.
-            selectShippingAddress();
-
-          }
-        });
-
-      }
-
-      function selectShippingAddress() {
-        $.ajax({
-          url: "/store/checkout/shipping-address/",
-          success: function (data) {
-            selectShippingMethod();
-          }
-        });
-      }
-
-      function selectShippingMethod() {
-        $.ajax({
-          url: "/store/checkout/shipping-method/",
-          success: function (data) {
-            selectPaymentMethod();
-          }
-        });
-      }
-
-      function selectPaymentMethod() {
-        $.ajax({
-          url: "/store/checkout/payment-method/",
-          success: function (data) {
-            selectPaymentDetails(data);
-          }
-        });
-      }
-
-      function selectPaymentDetails(data)  {
-        var url = data.url;
-        $.ajax({
-          url: url,
-          success: function (data) {
-            var $form = $(data).find('#payment-form');
-
-            $.ajax({
-              url: '/store/checkout/preview/',
-              type: "POST",
-              data: $form.serialize(),
-              success: function (data) {
-                placeOrder(data);
-              }
-            });
-
-          }
-        });
-      }
-
-      function placeOrder(data) {
-        var $form = $(data).find('#place-order');
-        $.ajax({
-          url: $form.attr('action'),
-          type: "POST",
-          data: $form.serialize(),
-          success: function (data) {
-            window.location.reload();
-          }
-        });
-      }
+      $('#selectionConfirmationDialog').on('hidden.bs.modal', function () {
+        //$("#my-downloads-product__purchase").addClass("hidden");
+      });
 
     });
   </script>

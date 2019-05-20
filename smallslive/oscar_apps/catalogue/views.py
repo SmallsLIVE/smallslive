@@ -138,6 +138,14 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
 
     def get_context_data(self, **kwargs):
         ctx = super(ProductDetailView, self).get_context_data(**kwargs)
+
+        # We need to clear the basket.
+        # Probably do this in a middleware so it's global?
+        self.request.basket.flush()
+
+        # Set the flow type for checkout flow
+        ctx['flow_type'] = "catalog_selection"
+
         self.get_purchased_products()
         ctx['reviews'] = self.get_reviews()
         ctx['alert_form'] = self.get_alert_form()
@@ -184,7 +192,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
 
         This allows alternative templates to be provided for a per-product
         and a per-item-class basis.
-        """ 
+        """
         if self.object.get_product_class().slug == 'album':
             return ['multimedia/store-album.html']
 

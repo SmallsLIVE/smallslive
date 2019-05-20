@@ -3,6 +3,10 @@
 {% load full_static %}
 {% load djstripe_tags %}
 
+{% block confirmation_modals %}
+  {% include 'account/selection_confirmation_dialog.html' %}
+{% endblock %}
+
 {% block flow_title %}
   {% if not completed %}
     <p class="text2 accent-color">Donate</p>

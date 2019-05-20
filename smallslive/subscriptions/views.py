@@ -212,18 +212,6 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 become_supporter = BecomeSupporterView.as_view()
 
 
-class UpdatePledgeView(BecomeSupporterView):
-    def get_context_data(self, **kwargs):
-        context = super(UpdatePledgeView, self).get_context_data(**kwargs)
-        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
-        context['form_action'] = reverse('become_supporter')
-        context['flow_type'] = "update_pledge"
-        return context
-
-
-update_pledge = UpdatePledgeView.as_view()
-
-
 class DonateView(BecomeSupporterView):
     def get_context_data(self, **kwargs):
         context = super(DonateView, self).get_context_data(**kwargs)
