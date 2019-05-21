@@ -442,6 +442,17 @@ class CancelSubscriptionView(BaseCancelSubscriptionView):
 cancel_subscription = CancelSubscriptionView.as_view()
 
 
+class UpdatePledgeView(BecomeSupporterView):
+    def get_context_data(self, **kwargs):
+        context = super(UpdatePledgeView, self).get_context_data(**kwargs)
+        context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+        context['form_action'] = reverse('become_supporter')
+        context['flow_type'] = "update_pledge"
+        return context
+
+
+update_pledge = UpdatePledgeView.as_view()
+
 class ReactivateSubscriptionView(FormView):
     success_url = reverse_lazy("subscription_settings")
     form_class = ReactivateSubscriptionForm

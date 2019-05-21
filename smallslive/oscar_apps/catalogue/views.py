@@ -1,3 +1,4 @@
+from stripe.error import APIConnectionError
 from artists.models import Artist
 from django.core.paginator import Paginator
 from django.db.models import Count
@@ -153,7 +154,10 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
         ctx['has_active_alert'] = self.get_alert_status()
         ctx['is_catalogue'] = True
         if self.request.user.is_authenticated():
-            customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
+            try:
+                customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
+            except APIConnectionError:
+                customer_detail = None
             if customer_detail:
                 ctx['active_card'] = customer_detail.active_card
 

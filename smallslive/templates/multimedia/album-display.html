@@ -22,7 +22,7 @@
       {% purchase_info_for_product request child_product as session %}
       <form action="{% url 'basket:add' pk=child_product.pk  %}"
             method="post"
-            class="add-to-basket" style="display: inline-block; margin: 0 5px;">
+            class="add-to-basket buttons-row">
         {% if session.availability.is_available_to_buy %}
           {% basket_form request child_product 'single' as basket_form %}
 
@@ -61,67 +61,47 @@
         {% endif %}
       </form>
     {% endfor  %}
+    <a href="/subscriptions/supporter/?flow_type=donate" class="white-border-button buttons-row">Support this artist</a>
   </div>
 </div>
-<div class="my-downloads-album row big-player" style="padding: 20px 10vw;">
-  <div class="my-downloads-album__cover flex-column player-container " style="width: 50%;  margin-right: 15%">
-    {% with image=album_product.primary_image %}
-      {% if album_product.parent_id %}
-        {% with image=album_product.parent.primary_image %}
-          <div style="position: relative; min-width:255px">
-            <img class="defineImageRatio" src="{{ image.original.url }}" alt="{{ album_product.get_title }}" style="border-radius: 0px">
+<div class="my-downloads-album row big-player" style="padding: 30px 10vw;">
+  <div class="my-downloads-album__cover flex-column player-container " style="width: 50%;  margin-right: 2%">
+
+    {% with all_images=product.images.all %}
+      <div class="store-single__item__images__carousel"
+           id="store-single__item__images__carousel"
+           style="position: relative; min-width:255px">
+        {% for image in all_images %}
+          {% thumbnail image.original "x365" upscale=False as thumb %}
+          <div class="store-single__item__images__big-image square-container">
+            <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }}" style="max-width: 30vw;">
             <div class="purchases-player-button myplay-btn">
               <div class="fa-thin-circle fa" >
                 <i class="fas fa-play"></i>
               </div>
             </div>
           </div>
-        {% endwith %}
-        <ul class="store-single__item__images__thumbnails">
-          <li data-slickPosition="0" class="store-single__item__images__thumbnail square-container active">
-            <img class="defineImageRatio" src="{{ image.original.url }}" style="margin: 0; border-radius: 0" >
-          </li>
-        </ul>
-      {% else %}
-
-        {% with all_images=product.images.all %}
-          <div class="store-single__item__images__carousel"
-               id="store-single__item__images__carousel"
-               style="position: relative; min-width:255px">
-            {% for image in all_images %}
-                {% thumbnail image.original "x365" upscale=False as thumb %}
-                <div class="store-single__item__images__big-image square-container">
-                  <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }}">
-                  <div class="purchases-player-button myplay-btn">
-                    <div class="fa-thin-circle fa" >
-                      <i class="fas fa-play"></i>
-                    </div>
-                  </div>
-                </div>
-                {% endthumbnail %}
-            {% endfor %}
-          </div>
-          <ul class="store-single__item__images__thumbnails">
-            {% for image in all_images %}
-              {% thumbnail image.original "x75" upscale=False as thumb %}
-                  <li data-slickPosition="{{ forloop.counter0 }}"
-                      class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}"
-                      style="margin: 0;">
-                      <img class="defineImageRatio" src="{{ thumb.url }}"
-                           alt="{{ product.get_title }} thumbnail"
-                           style="margin: 0; border-radius: 0;">
-                  </li>
-              {% endthumbnail %}
-            {% endfor %}
-          </ul>
-        {% endwith %}
-
-      {% endif %}
+          {% endthumbnail %}
+        {% endfor %}
+      </div>
+      <ul class="store-single__item__images__thumbnails">
+        {% for image in all_images %}
+          {% thumbnail image.original "x75" upscale=False as thumb %}
+              <li data-slickPosition="{{ forloop.counter0 }}"
+                  class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}"
+                  style="margin: 0;">
+                  <img class="defineImageRatio" src="{{ thumb.url }}"
+                       alt="{{ product.get_title }} thumbnail"
+                       style="margin: 0; border-radius: 0;">
+              </li>
+          {% endthumbnail %}
+        {% endfor %}
+      </ul>
     {% endwith %}
 
   </div>
 
-  <div class="my-downloads-album__tracks-table">
+  <div class="my-downloads-album__tracks-table" style="background: white;">
     {% for track in album_product.tracks.all|dictsort:"ordering" %}
       <!-- tracks table row -->
       <div class="track-container" style="position:relative" {% if not track.pk in bought_tracks and not is_full = 'full_album' %}  href='none' {% else %} href='{% url "my-downloads" %}?album={{ album_product.pk }}' {% endif %}   >

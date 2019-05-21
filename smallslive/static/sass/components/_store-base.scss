@@ -1228,7 +1228,8 @@
       }
 
       &__helper {
-        display: block;
+        align-items: center;
+        display: flex;
         font-size: 12px;
         @include lato;
         //color: #999;
@@ -1236,14 +1237,14 @@
       }
 
       &__thumbnails {
-        display: block;
+        align-items: center;
+        display: flex;
         padding: 15px 0;
         border-top: 1px solid #ddd;
       }
 
       &__thumbnail {
         list-style-type: none;
-        width: 22.5%;
         margin-right: 3.3%;
         margin-bottom: 3.3%;
         padding: 5px;

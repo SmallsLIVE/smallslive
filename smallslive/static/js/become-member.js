@@ -120,6 +120,61 @@ var checkConfirmButton = function () {
   }
 };
 
+var updatePaymentInfo = function () {
+  var pledgeType = selectedData.type;
+  var pledgeAmount = selectedData.amount;
+  if (pledgeType === "year") {
+    $("#pledge-type").html(
+      'You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' +
+      pledgeAmount +
+      "</span> ."
+    );
+    $("#payment-type").html(
+      "Your  card  will  be  charged  in  this  amount."
+    );
+    $("#select-payment-row").show();
+  } else if (pledgeType === "month") {
+    $("#pledge-type").html(
+      'You’ve  selected  to  pledge <span class="accent-color">$' +
+      pledgeAmount +
+      ".00 per month</span> . "
+    );
+    $("#payment-type").html(
+      "Your  card  will  be  billed  monthly  until  you  choose  to  cancel."
+    );
+    // Do not show select payment section.
+    $("#select-payment-row").show();
+    $(".payment-method-toggle")
+      .last()
+      .hide();
+  } else {
+    $("#pledge-type").html(
+      'You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' +
+      pledgeAmount +
+      "</span> ."
+    );
+    $("#payment-type").html(
+      "Your  card  will  be  charged  in  this  amount."
+    );
+    $("#select-payment-row").show();
+  }
+  $("#hiddenAmountInput").val(pledgeAmount);
+  $("#hiddenTypeInput").val(pledgeType);
+};
+
+var resetCustom = function () {
+  yearlyCustom = $("#yearlyCustom");
+  monthlyCustom = $("#monthlyCustom");
+  $(yearlyCustom).val("");
+  $(yearlyCustom).removeClass("active");
+  $(monthlyCustom).val("");
+  $(monthlyCustom).removeClass("active");
+  $("#yearly-less").text("");
+  $("#monthly-less").text("");
+  $("#yearlyCustomConfirm").hide();
+  $("#monthlyCustomConfirm").hide();
+};
+
 $(document).ready(function () {
   if (typeof window.completeSubpage === "undefined") {
     window.completeSubpage = "";
@@ -353,61 +408,6 @@ $(document).ready(function () {
       $("#paypal-form").show();
     }
   });
-
-  var updatePaymentInfo = function () {
-    var pledgeType = selectedData.type;
-    var pledgeAmount = selectedData.amount;
-    if (pledgeType === "year") {
-      $("#pledge-type").html(
-        'You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' +
-        pledgeAmount +
-        "</span> ."
-      );
-      $("#payment-type").html(
-        "Your  card  will  be  charged  in  this  amount."
-      );
-      $("#select-payment-row").show();
-    } else if (pledgeType === "month") {
-      $("#pledge-type").html(
-        'You’ve  selected  to  pledge <span class="accent-color">$' +
-        pledgeAmount +
-        ".00 per month</span> . "
-      );
-      $("#payment-type").html(
-        "Your  card  will  be  billed  monthly  until  you  choose  to  cancel."
-      );
-      // Do not show select payment section.
-      $("#select-payment-row").show();
-      $(".payment-method-toggle")
-        .last()
-        .hide();
-    } else {
-      $("#pledge-type").html(
-        'You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' +
-        pledgeAmount +
-        "</span> ."
-      );
-      $("#payment-type").html(
-        "Your  card  will  be  charged  in  this  amount."
-      );
-      $("#select-payment-row").show();
-    }
-    $("#hiddenAmountInput").val(pledgeAmount);
-    $("#hiddenTypeInput").val(pledgeType);
-  };
-
-  var resetCustom = function () {
-    yearlyCustom = $("#yearlyCustom");
-    monthlyCustom = $("#monthlyCustom");
-    $(yearlyCustom).val("");
-    $(yearlyCustom).removeClass("active");
-    $(monthlyCustom).val("");
-    $(monthlyCustom).removeClass("active");
-    $("#yearly-less").text("");
-    $("#monthly-less").text("");
-    $("#yearlyCustomConfirm").hide();
-    $("#monthlyCustomConfirm").hide();
-  };
 
   $(document).on("click", "#monthlyPledge > button", function () {
     $("#monthlyPledge > button").removeClass("active");
