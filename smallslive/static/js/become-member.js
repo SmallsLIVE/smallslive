@@ -23,7 +23,7 @@ var getSteps = function () {
   if (selectedData.type == "gift") {
     steps = steps.concat(["Shipping", "Billing", "Preview"]);
   } else if (selectedData.type == "digital") {
-    steps = ["Intro", "Billing", "Preview"]
+    steps = ["Intro", "Billing", "Preview"];
   } else {
     steps = steps.concat(["PaymentInfo"]);
   }
@@ -452,6 +452,28 @@ $(document).ready(function () {
         ". One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings. You will receive access to The SmallsLIVE Archive for the remainder of the tax year."
       );
     $selectionConfirmationDialog.find(".gift-content");
+  });
+
+  // Available when coming from Catalog/Support Artist
+  $(document).on("click", "#supportPledge > button", function () {
+    $("#supportPledge > button").removeClass("active");
+    $(this).addClass("active");
+    $("#confirmSelectionButton").prop("disabled", false);
+    var amount = $(this).val();
+    resetButtons();
+    resetCustom();
+    setSelected("product_support", amount);
+    var $selectionConfirmationDialog = $("#selectionConfirmationDialog");
+    $selectionConfirmationDialog.modal("show");
+    $selectionConfirmationDialog.find(".title").text("support artist");
+    $selectionConfirmationDialog.find(".subtitle").text("One time donation");
+    $selectionConfirmationDialog
+      .find(".text")
+      .html(
+        "You have selected a One Time Donation of $" +
+        amount +
+        ". One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings. You will receive access to The SmallsLIVE Archive for the remainder of the tax year."
+      );
   });
 
   $(document).on("mousedown", ".confirm-custom", function () {

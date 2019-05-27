@@ -13,28 +13,31 @@
 {% load basket_tags %}
 
 {% block confirmation_modals %}
-  {% if not catalog_flow %}
+  {% if supporter_flow == 'catalog_flow' %}
+  {% else %}
     {% include 'account/selection_confirmation_dialog.html' %}
   {% endif %}
 {% endblock %}
 
 {% block flow_title %}
-  {% if not catalog_flow  %}
-    {% if not completed %}
-      <p class="text2 accent-color">Become a supporting member</p>
-    {% else %}
-      {% if flow_type == 'become_supporter' %}
-        <p class="text2 accent-color"></p>
-      {% endif %}
-    {% endif %}
-  {% else %}
+  {% if supporter_flow == 'catalog_flow' %}
     <p class="text2 accent-color">Your selection from the Catalog</p>
+  {% else %}
+    {% if not completed %}
+      {% if flow_type == 'become_supporter' %}
+        <p class="text2 accent-color">Become a supporting member</p>
+      {% elif flow_type == 'product_support' %}
+        <p class="text2 accent-color">Support Artist</p>
+      {% endif %}
+    {% else %}
+        <p class="text2 accent-color"></p>
+    {% endif %}
   {% endif %}
 {% endblock %}
 
 {% block flow_steps %}
 
-  <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover" data-flow="{{flow_type}}"  data-free-donate="{{can_free_donate}}">
+  <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover" data-flow="{{ flow_type }}"  data-free-donate="{{ can_free_donate }}">
     <div class="{% if not completed %}active{% endif %} step-button"></div>
     <div class="step-button"></div>
     <div class="step-button"></div>

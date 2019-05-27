@@ -13,14 +13,18 @@ from users.utils import charge
 
 class PayPalMixin(object):
 
-    def get_payment_data(self, item_list, total, currency, shipping_charge=0.00):
-        subtotal =  Decimal(total) - Decimal(shipping_charge)
-        if self.mezzrow:
-            execute_uri = 'checkout:mezzrow_paypal_execute'
-            cancel_uri = 'checkout:payment-details'
-        else:
-            execute_uri = 'checkout:paypal_execute'
-            cancel_uri = 'checkout:payment-details'
+    def get_payment_data(self, item_list, total, currency, shipping_charge=0.00,
+                         execute_uri=None, cancel_uri=None):
+
+        subtotal = Decimal(total) - Decimal(shipping_charge)
+
+        if not execute_uri:
+            if self.mezzrow:
+                execute_uri = 'checkout:mezzrow_paypal_execute'
+                cancel_uri = 'checkout:payment-details'
+            else:
+                execute_uri = 'checkout:paypal_execute'
+                cancel_uri = 'checkout:payment-details'
 
         payment_execute_url = self.request.build_absolute_uri(reverse(execute_uri))
         payment_cancel_url = self.request.build_absolute_uri(reverse(cancel_uri))
@@ -56,7 +60,9 @@ class PayPalMixin(object):
                 'client_secret': settings.PAYPAL_CLIENT_SECRET})
 
     def handle_paypal_payment(self, currency, total, item_list,
-                              donation=False, deductable_total=0.00, shipping_charge=0.00):
+                              donation=False, deductable_total=0.00, shipping_charge=0.00,
+                              execute_uri=None,
+                              cancel_uri=None):
         print '******************************'
         print 'PayPal Mixin handle PayPal payment'
         print shipping_charge
@@ -66,7 +72,8 @@ class PayPalMixin(object):
         self.configure_paypal()
 
         print 'payment data'
-        payment_data = self.get_payment_data(item_list, total, currency, shipping_charge)
+        payment_data = self.get_payment_data(item_list, total, currency, shipping_charge,
+                                             execute_uri=execute_uri, cancel_uri=cancel_uri)
 
         payment = paypalrestsdk.Payment(payment_data)
         print 'payment_id'
@@ -74,7 +81,7 @@ class PayPalMixin(object):
         print deductable_total
         if success:
             payment_id = payment.id
-            print donation
+            print 'Donation: ', donation
             if donation and self.request.user.is_authenticated():
                 # Create Donation even though the payment is not yet authorized.
                 donation = {
@@ -85,7 +92,7 @@ class PayPalMixin(object):
                     'confirmed': False,
                     'deductable_amount': str(deductable_total)
                 }
-                print donation
+                print 'Donation data: ',  donation
                 Donation.objects.create(**donation)
 
             for link in payment.links:

@@ -443,6 +443,15 @@ $banners-height: 38vh;
         line-height: 180%;
         text-align: center;
 
+        &.wide {
+          padding-left: 0.5vw;
+          padding-right: 0.5vw;
+
+          @media(max-width: 960px) {
+            margin-top: 2vw;
+          }
+        }
+
       }
     }
 

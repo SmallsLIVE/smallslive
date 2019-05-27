@@ -61,7 +61,7 @@
         {% endif %}
       </form>
     {% endfor  %}
-    <a href="/subscriptions/supporter/?flow_type=donate" class="white-border-button buttons-row">Support this artist</a>
+    <button id="projectDonationBtn" class="white-border-button buttons-row">Support this artist</button>
   </div>
 </div>
 <div class="my-downloads-album row big-player" style="padding: 30px 10vw;">
@@ -84,19 +84,21 @@
           {% endthumbnail %}
         {% endfor %}
       </div>
-      <ul class="store-single__item__images__thumbnails">
-        {% for image in all_images %}
-          {% thumbnail image.original "x75" upscale=False as thumb %}
-              <li data-slickPosition="{{ forloop.counter0 }}"
-                  class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}"
-                  style="margin: 0;">
-                  <img class="defineImageRatio" src="{{ thumb.url }}"
-                       alt="{{ product.get_title }} thumbnail"
-                       style="margin: 0; border-radius: 0;">
-              </li>
-          {% endthumbnail %}
-        {% endfor %}
-      </ul>
+      {% if all_images.count > 1 %}
+        <ul class="store-single__item__images__thumbnails">
+          {% for image in all_images %}
+            {% thumbnail image.original "x75" upscale=False as thumb %}
+                <li data-slickPosition="{{ forloop.counter0 }}"
+                    class="store-single__item__images__thumbnail square-container {% if forloop.first %}active{% endif %}"
+                    style="margin: 0;">
+                    <img class="defineImageRatio" src="{{ thumb.url }}"
+                         alt="{{ product.get_title }} thumbnail"
+                         style="margin: 0; border-radius: 0;">
+                </li>
+            {% endthumbnail %}
+          {% endfor %}
+        </ul>
+      {% endif  %}
     {% endwith %}
 
   </div>
@@ -321,17 +323,34 @@
 
       });
 
-      $(document).on("click", "#confirmCatalogSelectionButton", function () {
+      function showFlow(supporter_type) {
         $("#confirmButton").show();
         $selectionConfirmationDialog.modal("hide");
-        $("#my-downloads-product__purchase").removeClass('hidden');
+        $("#my-downloads-product__" + supporter_type).removeClass('hidden');
         $("#my-downloads-album__list").addClass('hidden');
+      }
+
+      $(document).on("click", "#confirmCatalogSelectionButton", function () {
+        showFlow("purchase");
         $itemForm.submit();
       });
 
       $('#selectionConfirmationDialog').on('hidden.bs.modal', function () {
         //$("#my-downloads-product__purchase").addClass("hidden");
       });
+
+      var $projectDonationConfirmationDialog = $("#projectDonationConfirmationDialog");
+
+      $(document).on('click', '#projectDonationBtn', function (event) {
+        var productId = $($("input[name='single-product']")[0]).val();
+        window.location = "/subscriptions/supporter/?flow_type=product_support&product_id=" + productId ;
+      });
+
+      $(document).on("click", "#confirmProjectDonationButton", function () {
+        // Initiate the flow if PO chooses  a pop up to start  the  flow
+        showFlow();
+      });
+
 
     });
   </script>

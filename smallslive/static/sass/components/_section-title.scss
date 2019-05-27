@@ -24,6 +24,20 @@
     left: calc(544px + 3.5vw);
 }
 
+.section-title-centered {
+  position: relative;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+  display: flex;
+  align-items: flex-end;
+  text-decoration: none;
+  background: linear-gradient(to right, $white-transparent, $white-transparent)
+    no-repeat bottom;
+  background-size: 50% 5px;
+
+  width: 100%;
+}
+
 .section-title {
   $underline-length: 600px;
   position: relative;

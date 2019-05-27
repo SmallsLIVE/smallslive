@@ -13,19 +13,19 @@
 
 
 {% block home_content %}
-    <div class="">
-      
-        <div class="store-banner">
-        {% if not product %}
-          {% include 'home_banners.html' with active='catalog' %}
-        {% endif %}
-        </div>
+  <div class="">
 
-        <div id="store-home">
-            {% block store_content %}{% endblock %}
-        </div>
-        <script src="{% static 'js/store-loader.js' %}"></script>
+    <div class="store-banner">
+      {% if not product %}
+        {% include 'home_banners_carousel.html' with active='catalog' %}
+      {% endif %}
     </div>
+
+    <div id="store-home">
+      {% block store_content %}{% endblock %}
+    </div>
+    <script src="{% static 'js/store-loader.js' %}"></script>
+  </div>
 
 {% endblock home_content %}
 

@@ -109,12 +109,26 @@ class ContributeFlowView(TemplateView):
 
 class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
+    def get_product_context(self):
+        product_id = self.request.GET.get('product_id')
+        if not product_id:
+            return {}
+
+        context = {
+            'product_id': product_id,
+            'product_title': Product.objects.get(pk=product_id).title
+        }
+
+        return context
+
     def get_context_data(self, **kwargs):
         context = super(BecomeSupporterView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         context['payment_info_url'] = reverse('payment_info')
         context['form_action'] = reverse('become_supporter')
         context['flow_type'] = self.request.GET.get('flow_type', "become_supporter")
+        product_context = self.get_product_context()
+        context.update(product_context)
         if not self.request.user.is_anonymous():
             context['can_free_donate'] = self.request.user.get_donation_amount >= 100 
         else: 
@@ -140,11 +154,12 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         return context
 
     def _handle_paypal_payment(self, amount, plan_type):
+
         print '***************'
         print 'Handle paypal payment:'
         payment_execute_url = self.request.build_absolute_uri(reverse('supporter_paypal_execute'))
         payment_cancel_url = self.request.build_absolute_uri(reverse('become_supporter'))
-        print payment_execute_url
+        print 'Execute URL: ', payment_execute_url
         item = {
             'name': 'One Time Donation',
             'price': amount,
@@ -152,7 +167,10 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
             'currency': 'USD',
             'quantity': 1}
         item_list = [item]
-        self.handle_paypal_payment('USD', amount, item_list, donation=True)
+        self.mezzrow = False
+        self.handle_paypal_payment('USD', amount, item_list, donation=True,
+                                   execute_uri=payment_execute_url,
+                                   cancel_uri=payment_cancel_url)
 
     def execute_stripe_payment(self, stripe_token, amount, plan_type, flow_type):
         print '********************************'
@@ -171,14 +189,14 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
     def post(self, request, *args, **kwargs):
         flow_type = self.request.POST.get('flow_type', "become_supporter")
-        print "FLOW"
         print flow_type
-        print "FLOW"
         stripe_token = self.request.POST.get('stripe_token')
         plan_type = self.request.POST.get('type')
         amount = self.request.POST.get('quantity')
         existing_cc = self.request.POST.get('payment_method')
-        if existing_cc:
+        print '***********************'
+        print existing_cc
+        if existing_cc == 'existing-credit-card':
             stripe_customer = self.request.user.customer.stripe_customer
             stripe_token = stripe_customer.get('default_source')
 

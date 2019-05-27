@@ -4,6 +4,8 @@
     {% include 'account/become-supporter.html' %}
   {% elif flow_type == 'donate'%}
     {% include 'account/donate.html' %}
+  {% elif flow_type == 'product_support'%}
+    {% include 'account/product-support.html' %}
   {% endif %}
 {% endblock home_content %}
 

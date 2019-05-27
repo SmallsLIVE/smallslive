@@ -14,7 +14,10 @@
     {% include 'multimedia/album-display.html' with album_product=album_product if_full=is_full bought_tracks=bought_tracks is_catalogue=is_catalogue mp3_available=mp3_available %}
   </section>
   <section id="my-downloads-product__purchase" class="hidden">
-    {% include 'account/become-supporter.html' with catalog_flow=True %}
+    {% include 'account/become-supporter.html' with supporter_flow='catalog_flow' %}
+  </section>
+  <section id="my-downloads-product__support" class="hidden">
+    {% include 'account/become-supporter.html' with supporter_flow='project_support' %}
   </section>
   {% include 'account/catalog_selection_confirmation_dialog.html' %}
 {% endblock %}
