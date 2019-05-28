@@ -26,8 +26,12 @@ class PayPalMixin(object):
                 execute_uri = 'checkout:paypal_execute'
                 cancel_uri = 'checkout:payment-details'
 
-        payment_execute_url = self.request.build_absolute_uri(reverse(execute_uri))
-        payment_cancel_url = self.request.build_absolute_uri(reverse(cancel_uri))
+            payment_execute_url = self.request.build_absolute_uri(reverse(execute_uri))
+            payment_cancel_url = self.request.build_absolute_uri(reverse(cancel_uri))
+        else:
+            payment_execute_url = execute_uri
+            payment_cancel_url = cancel_uri
+
         return {
             'intent': 'sale',
             'payer': {'payment_method': 'paypal'},
@@ -62,7 +66,9 @@ class PayPalMixin(object):
     def handle_paypal_payment(self, currency, total, item_list,
                               donation=False, deductable_total=0.00, shipping_charge=0.00,
                               execute_uri=None,
-                              cancel_uri=None):
+                              cancel_uri=None,
+                              artist_id=None,
+                              product_id=None):
         print '******************************'
         print 'PayPal Mixin handle PayPal payment'
         print shipping_charge
@@ -90,7 +96,8 @@ class PayPalMixin(object):
                     'amount': total,
                     'reference': payment_id,
                     'confirmed': False,
-                    'deductable_amount': str(deductable_total)
+                    'deductable_amount': str(deductable_total),
+                    'product_id': product_id
                 }
                 print 'Donation data: ',  donation
                 Donation.objects.create(**donation)

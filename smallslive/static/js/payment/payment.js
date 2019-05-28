@@ -90,6 +90,13 @@ function startStripePayment($form, action_url, completeSubpage) {
     $('<input type="hidden" name="flow_type" />').val(flow_type)
   );
 
+  var productId = $("#supporterSteps").data("product-id");
+      // Insert the token into the form so it gets submitted to the server
+  // and submit
+  $form.append(
+    $('<input type="hidden" name="product_id" />').val(productId)
+  );
+
   var stripeResponseHandler = function(status, response) {
     if (response.error) {
       // Show the errors on the form
@@ -150,6 +157,21 @@ function startStripePayment($form, action_url, completeSubpage) {
 }
 
 function startPayPalPayment($form, action_url, completeSubpage) {
+
+  var flow_type = $("#supporterSteps").data("flow");
+      // Insert the token into the form so it gets submitted to the server
+  // and submit
+  $form.append(
+    $('<input type="hidden" name="flow_type" />').val(flow_type)
+  );
+
+  var productId = $("#supporterSteps").data("product-id");
+      // Insert the token into the form so it gets submitted to the server
+  // and submit
+  $form.append(
+    $('<input type="hidden" name="product_id" />').val(productId)
+  );
+
   $.ajax({
     type: "POST",
     url: action_url,

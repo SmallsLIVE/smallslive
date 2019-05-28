@@ -87,8 +87,14 @@ class ExecutePayPalPaymentView(PayPalMixin, View):
         # Access will be granted in Complete view if payment_id matches.
         payment_id = self.execute_payment()
 
-        return redirect(reverse(
-            'become_supporter_complete') + '?payment_id={}'.format(payment_id))
+        # Check if payment id belongs to a Catalog donation -> product_id is set
+        donation = Donation.objects.filter(reference=payment_id).first()
+
+        url = reverse('become_supporter_complete') + '?payment_id={}'.format(payment_id)
+        if donation.product_id:
+            url += '&flow_type=product_support&product_id=' + donation.product_id
+
+        return redirect(url)
 
 
 supporter_paypal_execute = ExecutePayPalPaymentView.as_view()
@@ -122,6 +128,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         return context
 
     def get_context_data(self, **kwargs):
+        print 'Become a supporter get ->'
         context = super(BecomeSupporterView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         context['payment_info_url'] = reverse('payment_info')
@@ -133,7 +140,8 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
             context['can_free_donate'] = self.request.user.get_donation_amount >= 100 
         else: 
             context['can_free_donate'] = False
-        print self.request.GET.get('flow_type', "become_supporter")
+
+        print 'Flow  type: ', self.request.GET.get('flow_type', "become_supporter")
 
         # We need to clear the basket in case the user has anything in there.
         self.request.basket.flush()
@@ -153,7 +161,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
         return context
 
-    def _handle_paypal_payment(self, amount, plan_type):
+    def _handle_paypal_payment(self, amount, product_id=None):
 
         print '***************'
         print 'Handle paypal payment:'
@@ -170,9 +178,10 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         self.mezzrow = False
         self.handle_paypal_payment('USD', amount, item_list, donation=True,
                                    execute_uri=payment_execute_url,
-                                   cancel_uri=payment_cancel_url)
+                                   cancel_uri=payment_cancel_url,
+                                   product_id=product_id)
 
-    def execute_stripe_payment(self, stripe_token, amount, plan_type, flow_type):
+    def execute_stripe_payment(self, stripe_token, amount, plan_type, flow_type, product_id=None):
         print '********************************'
         print 'execute stripe payment'
         print 'Amount: ', amount
@@ -185,11 +194,26 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         if plan_type == 'month':
             subscribe_to_plan(customer, stripe_token, amount, plan_type, flow_type)
         else:
-            one_time_donation(customer, stripe_token, amount, flow_type)
+            stripe_ref = one_time_donation(
+                customer, stripe_token, amount)
+            if product_id:
+                # We need to record the product id if donation comes from the Catalog.
+                donation = {
+                    'user': self.request.user,
+                    'currency': 'USD',
+                    'amount': amount,
+                    'reference': stripe_ref,
+                    'confirmed': False,
+                    'product_id': product_id
+                }
+                Donation.objects.create(**donation)
 
     def post(self, request, *args, **kwargs):
+        print 'BecomeSupporter post ->'
         flow_type = self.request.POST.get('flow_type', "become_supporter")
-        print flow_type
+        print 'Flow type: ', flow_type
+        product_id = self.request.POST.get('product_id')
+        print 'Product id: ', product_id
         stripe_token = self.request.POST.get('stripe_token')
         plan_type = self.request.POST.get('type')
         amount = self.request.POST.get('quantity')
@@ -208,9 +232,15 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
         if stripe_token:
             try:
-                self.execute_stripe_payment(stripe_token, amount, plan_type, flow_type)
+                self.execute_stripe_payment(
+                    stripe_token, amount, plan_type, flow_type, product_id=product_id)
+                url = reverse('become_supporter_complete') + "?flow_type=" + flow_type
+                if product_id:
+                    url += '&product_id=' + product_id
+                print 'Redirect URL: ', url
+
                 return _ajax_response(
-                    self.request, redirect(reverse('become_supporter_complete') + "?flow_type=" + flow_type)
+                    self.request, redirect(url)
                 )
             except stripe.StripeError as e:
                 # add form error here
@@ -218,7 +248,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
                 return JsonResponse({'error' :str(e)})
         else:
             try:
-                self._handle_paypal_payment(amount, plan_type)
+                self._handle_paypal_payment(amount, product_id=product_id)
             except RedirectRequired as e:
                 print 'Redirect required'
                 return redirect(e.url)
@@ -273,6 +303,7 @@ donate = DonateView.as_view()
 
 
 class DonateCompleteView(DonateView):
+
     def get_context_data(self, **kwargs):
         context = super(
             DonateCompleteView, self
@@ -290,7 +321,7 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
     """
     Registers or confirms donation and shows the Thank You page.
     Users can complete subscription by paying through PayPal or Stripe or
-    by selecting a gift in the store.
+    by selecting a gift in the store or donating via Catalog.
 
     Recurring subscription: only Stripe ->
       There's no donation recorded
@@ -301,6 +332,8 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
     Gift: Stripe and PayPal ->
       Donations
 
+    Project/Product (Catalog) Support ->
+      Similar to One Time Donation
 
 
     """
@@ -310,6 +343,7 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
         print 'CompleteView: '
 
         user = self.request.user
+        flow_type = self.request.GET.get('flow_type')
 
         context = super(
             BecomeSupporterCompleteView, self
@@ -324,7 +358,7 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
             if source:
                 source.confirmed = True
                 source.save()
-             # Donated by selecting a gift in the store
+             #  Donated by selecting a gift in the store
             else:
                 source = Source.objects.filter(reference=payment_id).first()
                 if source and user.is_authenticated():
@@ -338,11 +372,6 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
 
                     }
                     Donation.objects.create(**donation)
-
-           
-            
-     
-                
 
         if not payment_id or not source:
             context['error'] = 'We could not find your payment reference. Contact our support'
@@ -470,6 +499,7 @@ class UpdatePledgeView(BecomeSupporterView):
 
 
 update_pledge = UpdatePledgeView.as_view()
+
 
 class ReactivateSubscriptionView(FormView):
     success_url = reverse_lazy("subscription_settings")

@@ -116,7 +116,7 @@ class ArtistProduct(models.Model):
         # abstract = True
         app_label = 'catalogue'
         ordering = ['product', 'artist']
-        unique_together = ('product', 'artist')
+        unique_together = ('product', 'artist', 'instrument')
         verbose_name = 'Artist'
         verbose_name_plural = 'Artist list'
 

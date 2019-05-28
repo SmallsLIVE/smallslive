@@ -348,10 +348,15 @@ $(document).ready(function () {
   });
 
   $(document).on("submit", "#place-order", function () {
-    var flow_type = $("#supporterSteps").data("flow");
+    var flowType = $("#supporterSteps").data("flow");
     $(this).append(
-      $('<input type="hidden" name="flow_type" />').val(flow_type)
+      $('<input type="hidden" name="flow_type" />').val(flowType)
     );
+    var productId = $("#supporterSteps").data("product-id");
+    $(this).append(
+      $('<input type="hidden" name="product_id" />').val(productId)
+    );
+
     $.ajax({
       url: $(this).attr("action"),
       type: $(this).attr("method"),
