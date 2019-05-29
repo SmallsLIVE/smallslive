@@ -1137,7 +1137,7 @@ function updateArchiveShows(data) {
       eventFilter = false;
       $showsContainer.find('article').remove();
     }
-    var $article = $(data.template).find("article");
+    var $article = $(data.template);
     if (!$article.length) {
       $showsContainer.html(data.template);
     }
