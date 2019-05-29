@@ -1149,6 +1149,7 @@ function updateArchiveShows(data) {
     $("#event-load-gif").css("display", "none");
     var selector = "#load-more-archived-btn";
     $(selector).toggle(data.numPages != eventPageNum);
+    $('#number-of-shows-label').text(data.showingResults);
   }
 }
 
