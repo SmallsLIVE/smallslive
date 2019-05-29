@@ -1169,9 +1169,10 @@ function initializeArchiveDatePickers() {
   $datePickerFrom.on("click", function () {
     var dropdown = $(".archive-datepicker.fixed:visible .custom-date-picker.from .dropdown-menu");
     if (dropdown[0] && dropdown[0].style.display === "block") {
-      $datePickerFrom.datepicker("hide");
+
     } else {
       $datePickerFrom.datepicker("show");
+      $datePickerTo.datepicker("hide");
     }
   });
 
@@ -1195,9 +1196,10 @@ function initializeArchiveDatePickers() {
   $datePickerTo.on("click", function () {
     var dropdown = $(".archive-datepicker.fixed:visible .custom-date-picker.to .dropdown-menu");
     if (dropdown[0] && dropdown[0].style.display === "block") {
-      $datePickerTo.datepicker("hide");
+
     } else {
       $datePickerTo.datepicker("show");
+      $datePickerFrom.datepicker("hide");
     }
   });
 
