@@ -161,7 +161,7 @@ class MostPopularEventsAjaxView(AJAXMixin, ListView):
     def get_context_data(self, **kwargs):
         # Need to provide secondary = True for the event card
         context = super(MostPopularEventsAjaxView, self).get_context_data(**kwargs)
-        context['secondary'] = False
+        context['secondary'] = True
         return context
 
     def get_queryset(self):
