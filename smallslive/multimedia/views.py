@@ -272,10 +272,12 @@ class AlbumView(TemplateView):
     model = Product
     pk_url_kwarg = 'pk'
     template_name = 'multimedia/album-display.html'
-    context_object_name = 'album'
+    context_object_name = 'album_product'
 
     def get_context_data(self, **kwargs):
         context = super(AlbumView, self).get_context_data(**kwargs)
+
+        context['library'] = True
         bought_tracks = self.request.GET.get('bought_tracks', '')
         context['bought_tracks'] = ast.literal_eval(bought_tracks)
         context['is_full'] = self.request.GET.get('album_type', '')

@@ -13,65 +13,67 @@
       <a href="{% url 'promotions:home' %}">Catalog</a> <span class="accent-color">\</span> {% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }}
     </div>
   </div>
-  <div class="intro-text text9">You are
-    making a tax deductible donation to the SmallsLIVE Foundation for Jazz Arts and Education.<br>
-    All tax information is available from your account settings. Please choose one of the following:
-  </div>
-  <div class="text-center">
-    {% for child_product in album_product.children.all %}
-      {% purchase_info_for_product request child_product as session %}
-      <form action="{% url 'basket:add' pk=child_product.pk  %}"
-            method="post"
-            class="add-to-basket buttons-row">
-        {% if session.availability.is_available_to_buy %}
-          {% basket_form request child_product 'single' as basket_form %}
+  {% if not library %}
+    <div class="intro-text text9">You are
+      making a tax deductible donation to the SmallsLIVE Foundation for Jazz Arts and Education.<br>
+      All tax information is available from your account settings. Please choose one of the following:
+    </div>
+    <div class="text-center">
+      {% for child_product in album_product.children.all %}
+        {% purchase_info_for_product request child_product as session %}
+        <form action="{% url 'basket:add' pk=child_product.pk  %}"
+              method="post"
+              class="add-to-basket buttons-row">
+          {% if session.availability.is_available_to_buy %}
+            {% basket_form request child_product 'single' as basket_form %}
 
-          <div class="modal-content hidden">
-            <div class="store-list-item-image">
-              {% with image=product.primary_image %}
-                {% if not image.is_missing %}
-                  <img src="{% thumbor_url image.original.url|urlencode height=260 width=260 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio">
-                {% else %}
-                  <img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio">
-                {% endif %}
-              {% endwith %}
+            <div class="modal-content hidden">
+              <div class="store-list-item-image">
+                {% with image=product.primary_image %}
+                  {% if not image.is_missing %}
+                    <img src="{% thumbor_url image.original.url|urlencode height=260 width=260 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio">
+                  {% else %}
+                    <img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio">
+                  {% endif %}
+                {% endwith %}
+              </div>
+              {% if product.product_class.slug == "album" %}
+                <p class="text4">{% if product.has_physical_media %}CD / {% endif %}{% if product.has_digital_media %}Digital download / {% endif %}{% if product.has_tracks %}Tracks{% endif %}</p>
+              {% endif %}
+              <div class="store-add-small">
+                {% basket_form request product 'single' as basket_form %}
+                <input type="hidden" name="single-product" value="{{ product.id }}"/>
+              </div>
             </div>
-            {% if product.product_class.slug == "album" %}
-              <p class="text4">{% if product.has_physical_media %}CD / {% endif %}{% if product.has_digital_media %}Digital download / {% endif %}{% if product.has_tracks %}Tracks{% endif %}</p>
-            {% endif %}
-            <div class="store-add-small">
-              {% basket_form request product 'single' as basket_form %}
-              <input type="hidden" name="single-product" value="{{ product.id }}"/>
-            </div>
-          </div>
 
-          <div class="">
-            {% csrf_token %}
-            {{ basket_form.quantity }}
-            <div class="arrow-button-container">
-              <button class="select-catalog-product white-border-button"
-                      data-cost="{{ session.stockrecord.cost_price }}"
-                      data-inclTax="{{ session.price.incl_tax }}"
-                      data-type="{{ child_product.title }}"
-                      data-physical="{% if child_product.get_product_class.requires_shipping %}gift{% else %}digital{% endif %}">
-                {{ child_product.title }} {{ session.price.excl_tax|currency:session.price.currency }}
-              </button>
+            <div class="">
+              {% csrf_token %}
+              {{ basket_form.quantity }}
+              <div class="arrow-button-container">
+                <button class="select-catalog-product white-border-button"
+                        data-cost="{{ session.stockrecord.cost_price }}"
+                        data-inclTax="{{ session.price.incl_tax }}"
+                        data-type="{{ child_product.title }}"
+                        data-physical="{% if child_product.get_product_class.requires_shipping %}gift{% else %}digital{% endif %}">
+                  {{ child_product.title }} {{ session.price.excl_tax|currency:session.price.currency }}
+                </button>
+              </div>
             </div>
-          </div>
-        {% endif %}
-      </form>
-    {% endfor  %}
-    {% if album_product.children.all.count > 0 %}
-      <button id="projectDonationBtn" class="white-border-button buttons-row">Support this artist</button>
-    {% else %}
-    <label>This album has no options available</label>
-    {% endif %}
-  </div>
+          {% endif %}
+        </form>
+      {% endfor  %}
+      {% if album_product.children.all.count > 0 %}
+        <button id="projectDonationBtn" class="white-border-button buttons-row">Support this artist</button>
+      {% else %}
+      <label>This album has no options available</label>
+      {% endif %}
+    </div>
+  {% endif %}
 </div>
 <div class="my-downloads-album row big-player" style="padding: 30px 10vw;">
   <div class="my-downloads-album__cover flex-column player-container " style="width: 50%;  margin-right: 2%">
 
-    {% with all_images=product.images.all %}
+    {% with all_images=album_product.images.all %}
       <div class="store-single__item__images__carousel"
            id="store-single__item__images__carousel"
            style="position: relative; min-width:255px">
@@ -168,7 +170,7 @@
 <div class="my-downloads-album row" style="padding: 20px 10vw;">
   <div class="flex-column" style="width: 50%;">
     <ul style="padding-left: 10px;">
-      {% for artist_product in product.artistproduct_set.all %}
+      {% for artist_product in album_product.artistproduct_set.all %}
         <li>
           <a href="{{ artist_dict.absolute_url }}" class="title2">
               {{ artist_product.artist }} / {{ artist_product.instrument }}
