@@ -368,7 +368,9 @@
 							this.picker.is(e.target) ||
 							this.picker.find(e.target).length
 						)){
-							this.hide();
+							if ($(e.target).parent().hasClass('custom-date-picker')) {
+							  this.hide();
+							}
 						}
 					}, this)
 				}]
@@ -929,14 +931,14 @@
 			html = '';
 			year = parseInt(year/10, 10) * 10;
 			var yearCont = this.picker.find('.datepicker-switch .years-choices');
-			year -= 1;
+			year -= 3;
 			var years = $.map(this.dates, function(d){
 					return d.getUTCFullYear();
 				}),
 				classes;
-			for (var i = -1; i < 11; i++){
+			for (var i = -3; i < 11; i++){
 				classes = ['year', 'text1'];
-				if (i === -1)
+				if (i === -3)
 					classes.push('old');
 				else if (i === 10)
 					classes.push('new');
