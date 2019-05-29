@@ -1,5 +1,17 @@
 "use strict";
 
+
+var formatDate = function (d) {
+  var formattedDate = ("0"+(d.getMonth()+1)).slice(-2) +
+      "/" +
+      ("0" + d.getDate()).slice(-2) +
+      "/" +
+      d.getFullYear();
+
+  return formattedDate;
+
+}
+
 var searchTerm,
   artistSearchTerm,
   artistInstrument,
@@ -1065,6 +1077,8 @@ function initializeSearch() {
   apply = true;
   eventPageNum = 1;
   archivedEventPageNum = eventPageNum;
+  $('#date-from-label').text(formatDate(datePickerFromDate));
+  $('#date-to-label').text(formatDate(datePickerToDate));
 }
 
 function loadMoreEvents(mode) {
@@ -1113,7 +1127,7 @@ function updateArchiveShows(data) {
 
     var selector = "#showsArchivedContent";
 
-    var $showsContainer = $(selector + " .shows-container");
+    var $showsContainer = $("#search-result-articles");
     $("#events").removeClass("artist-loading-gif");
     var $eventSubHeaderFooter = "#archived-event-subheader-footer";
     var $totals = $("#archived-event-totals");
@@ -1190,8 +1204,8 @@ function initializeArchiveDatePickers() {
   $datePickerTo.on("changeDate", function (newDate) {
     // Means any ajax results will not append to existing items.
     // For pagination use apply = false;
-    initializeSearch();
     datePickerToDate = newDate.date;
+    initializeSearch();
     sendEventRequest('Archived', datePickerFromDate, datePickerToDate, updateArchiveShows);
     $datePickerFrom.datepicker('setEndDate', datePickerToDate);
   });

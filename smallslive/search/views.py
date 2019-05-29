@@ -174,6 +174,7 @@ class MainSearchView(View, SearchMixin):
         show_sets = request.GET.get('show_event_setTime', False)
         upcoming = request.GET.get('is_upcoming', False)
 
+
         if date_from:
             date_from = parser.parse(date_from, fuzzy=True)
             if not date_from.tzinfo:
@@ -206,8 +207,10 @@ class MainSearchView(View, SearchMixin):
                 'show_event_venue': show_venue,
                 'show_extend_date': show_sets,
                 'upcoming':  upcoming,
-                'with_date_picker': False,
+                'with_date_picker': True,
             }
+            print '-----------------------------------------------------'
+            print 'Partial: ', partial
             template = ('search/event_search_row.html' if partial
                         else 'search/event_search_result.html')
         else:
