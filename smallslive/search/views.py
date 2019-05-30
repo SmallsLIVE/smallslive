@@ -342,7 +342,8 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         context['artists_blocks'] = artists_blocks
         context['artist_num_pages'] = num_pages
 
-        event_blocks, showing_event_results, num_pages, first, last = self.search(Event, q, results_per_page=60)
+        event_blocks, showing_event_results, num_pages, first, last = self.search(
+            Event, q, results_per_page=60, artist_pk=artist_id)
 
         context['showing_event_results'] = showing_event_results
         context['event_results'] = event_blocks[0] if event_blocks else []
