@@ -40,6 +40,7 @@ def search_autocomplete(request):
     resp = HttpResponse(the_data, content_type='application/json')
     return resp
 
+
 def artist_form_autoconplete(request):
     artist_start = request.GET.get('artist-start', None)
     artist_qs = Artist.objects.filter(first_name__istartswith=artist_start)
