@@ -209,8 +209,9 @@ class MainSearchView(View, SearchMixin):
                 'upcoming':  upcoming,
                 'with_date_picker': True,
             }
-            print '-----------------------------------------------------'
-            print 'Partial: ', partial
+            if self.request.user.is_staff:
+                context['show_metrics'] = True
+
             template = ('search/event_search_row.html' if partial
                         else 'search/event_search_result.html')
         else:
@@ -361,6 +362,9 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         context['last_event_date'] = first.get_date().strftime('%m/%d/%Y')
         context['first'] = first
         context['last'] = last
+
+        if self.request.user.is_staff:
+            context['show_metrics'] = True
 
         return context
 

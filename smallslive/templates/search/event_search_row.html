@@ -11,6 +11,10 @@
             <div class="{{ event.venue.name|lower}}-color ">{{ event.venue.name }}</div>
           {% endif %}
         <div class="event-info-title">{{ event.title }}</div>
+          {% if show_metrics %}
+            <div style="margin-top: 5px; font-style: italic;">Views: {{ event.play_count }}</div>
+            <div style="font-style: italic;">Seconds viewed: {{ event.seconds_played }}</div>
+          {% endif %}
       </div>
     </div>
     {% if upcoming %}
