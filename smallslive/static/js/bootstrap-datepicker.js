@@ -1093,7 +1093,7 @@
                             var newDate = UTCDate(year, month, day);
                             $(target).parents('.years-dropdown').toggleClass('hidden');
                             this._trigger('changeYear', newDate);
-                            this._setDate(newDate);
+                            this._setDate(newDate, 'view');
 							break;
                         } else {
 							$(target).siblings('.years-dropdown').toggleClass('hidden');

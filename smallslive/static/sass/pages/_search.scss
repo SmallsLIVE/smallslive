@@ -299,6 +299,10 @@ body.headers-1 {
         &:focus {
           box-shadow: 0 0 1px inset red;
         }
+
+        &.active {
+          box-shadow: 0 0 1px inset red;
+        }
       }
 
       background-color: white;

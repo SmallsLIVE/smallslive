@@ -35,6 +35,9 @@ var searchTerm,
   show_event_setTime;
 var rightValue;
 
+var datePickerFromDateSet;
+var datePickerToDateSet;
+
 function incNumPages(mode) {
   if (mode == "Upcoming") {
     upcomingEventPageNum += 1;
@@ -437,7 +440,7 @@ $(document).ready(function () {
     venueFilter = "all";
     archivedEventPageNum = 1;
 
-    sendEventRequest("Archived");
+    sendEventRequest("Archived", datePickerFromDate, datePickerToDate, updateArchiveShows);
   });
 
   $("#club-filter").change(function () {
@@ -1077,8 +1080,24 @@ function initializeSearch() {
   apply = true;
   eventPageNum = 1;
   archivedEventPageNum = eventPageNum;
-  $('#date-from-label').text(formatDate(datePickerFromDate));
-  $('#date-to-label').text(formatDate(datePickerToDate));
+}
+
+function resetSearch() {
+  initializeSearch();
+  datePickerFromDateSet = null;
+  datePickerToDateSet = null;
+  $datePickerFrom
+    .val("")
+    .datepicker("update");
+  $datePickerTo
+    .val("")
+    .datepicker("update");
+  datePickerFromDate =
+    defaultFromDate !== undefined ? new Date(defaultFromDate) : null;
+  datePickerToDate =
+    defaultToDate !== undefined ? new Date(defaultToDate) : null;
+  $datePickerFrom.click();
+  $datePickerFrom.focus();
 }
 
 function loadMoreEvents(mode) {
@@ -1115,14 +1134,14 @@ function updateArchiveShows(data) {
       var $eventSubheader = $("#archived-event-subheader");
       if (typeof data.showingResults !== "number") {
         $eventSubheader.text("0-0");
-      } else if (data.showingResults < 24) {
+      } else if (data.showingResults < 60) {
         $eventSubheader.text("1-" + data.showingResults);
       } else {
-        $eventSubheader.text("1-24");
+        $eventSubheader.text("1-60");
       }
       $eventSubheader.data("max-number", data.showingResults);
       $eventSubheader.data("left-number", 1);
-      $eventSubheader.data("right-number", 24);
+      $eventSubheader.data("right-number", 60);
     }
 
     var selector = "#showsArchivedContent";
@@ -1150,13 +1169,13 @@ function updateArchiveShows(data) {
     var selector = "#load-more-archived-btn";
     $(selector).toggle(data.numPages != eventPageNum);
     $('#number-of-shows-label').text(data.showingResults);
+
+    $('#date-from-label').text(formatDate(datePickerFromDate));
+    $('#date-to-label').text(formatDate(datePickerToDate));
   }
 }
 
 function initializeArchiveDatePickers() {
-
-  var $datePickerFrom = $(".archive-datepicker.fixed:visible .custom-date-picker.from input");
-  var $datePickerTo = $(".archive-datepicker.fixed:visible .custom-date-picker.to input");
 
   $datePickerFrom.datepicker({
     format: "mm/dd/yyyy",
@@ -1175,14 +1194,22 @@ function initializeArchiveDatePickers() {
       $datePickerFrom.datepicker("show");
       $datePickerTo.datepicker("hide");
     }
+    $datePickerFrom.addClass("active");
+    $datePickerTo.removeClass("active");
   });
 
   $datePickerFrom.on("changeDate", function (newDate) {
     datePickerFromDate = newDate.date;
+    datePickerFromDateSet = true;
     // Means any ajax results will not append to existing items.
     // For pagination use apply = false;
     initializeSearch();
+    $datePickerTo.datepicker('setStartDate', datePickerFromDate);
     sendEventRequest('Archived', datePickerFromDate, datePickerToDate, updateArchiveShows);
+    if (!datePickerToDateSet) {
+      $datePickerTo.click();
+      $datePickerTo.focus();
+    }
   });
 
   $datePickerTo.datepicker({
@@ -1202,17 +1229,31 @@ function initializeArchiveDatePickers() {
       $datePickerTo.datepicker("show");
       $datePickerFrom.datepicker("hide");
     }
+    $datePickerTo.addClass("active");
+    $datePickerFrom.removeClass("active");
   });
 
   $datePickerTo.on("changeDate", function (newDate) {
     // Means any ajax results will not append to existing items.
     // For pagination use apply = false;
     datePickerToDate = newDate.date;
+    datePickerToDateSet = true;
     initializeSearch();
     sendEventRequest('Archived', datePickerFromDate, datePickerToDate, updateArchiveShows);
     $datePickerFrom.datepicker('setEndDate', datePickerToDate);
+    if (!datePickerFromDateSet) {
+      $datePickerFrom.click();
+      $datePickerFrom.focus();
+    }
   });
 
-  $datePickerTo.click();
+  initializeSearch();
+  $datePickerFrom.click();
+  $datePickerFrom.focus();
+
+  $('#reset-search-datepicker').click(function () {
+    resetSearch();
+    sendEventRequest('Archived', datePickerFromDate, datePickerToDate, updateArchiveShows);
+  });
 
 }

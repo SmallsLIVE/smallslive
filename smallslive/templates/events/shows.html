@@ -11,8 +11,8 @@
       {% if archived %}
         <div class="section-title archive">
           <div class="title1">
-            <span id="date-to-label">{{ first.get_date|date:'m/d/Y' }}</span>-
-            <span id="date-from-label">{{ last.get_date|date:'m/d/Y' }}</span>
+            <span id="date-from-label">{{ last.get_date|date:'m/d/Y' }}</span>-
+            <span id="date-to-label">{{ first.get_date|date:'m/d/Y' }}</span>
           </div>
           <span class="title1"> / </span>
           <span id="number-of-shows-label" class="accent-color title1">{{ showing_event_results }}</span>
@@ -21,9 +21,9 @@
                  class="showing-results text1"
                  style="margin-top: -13px;"
                  data-max-number='{{ showing_artist_results }}'
-                 data-paginator-number=24
+                 data-paginator-number=60
                  data-left-number=1
-                 data-right-number=24>1-24
+                 data-right-number=60>1-60
           </span>
           <div style="position: absolute; left: 690px; bottom: -14px;">
             <span class="select-container">
