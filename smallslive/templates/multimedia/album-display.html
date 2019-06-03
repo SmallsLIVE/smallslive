@@ -79,7 +79,7 @@
         {% for image in all_images %}
           {% thumbnail image.original "x365" upscale=False as thumb %}
           <div class="store-single__item__images__big-image square-container" style="padding: 0;">
-            <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }}" style="max-width: 30vw;">
+            <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }}">
             <div class="purchases-player-button myplay-btn">
               <div class="fa-thin-circle fa" >
                 <i class="fas fa-play"></i>
