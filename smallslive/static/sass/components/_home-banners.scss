@@ -8,6 +8,7 @@ $banners-height: 38vh;
   margin-bottom: 30px;
   width: 100%;
 
+/* is the bellow old code?? remove??
   #banner-container {
     position: relative;
     overflow: hidden;
@@ -154,6 +155,7 @@ $banners-height: 38vh;
       }
     }
   }
+  */
 
   .banner-options {
     width: 100%;
@@ -228,7 +230,8 @@ $banners-height: 38vh;
 
     .box {
       .banner-learnmore {
-        margin-top: 1.5vw;
+        /* temp :likely this should be recalculated using css locks
+        margin-top: 1.5vw;*/
 
         @media(max-width: 960px) {
           margin-top: 40vw;
@@ -265,7 +268,7 @@ $banners-height: 38vh;
 
       &.live {
         background-image: url("/static/image/banners/roy.jpg");
-        background-size: 100% 100%;
+        background-size: cover;
         @media(max-width:  960px) {
           background-size: cover;
         }
@@ -273,7 +276,7 @@ $banners-height: 38vh;
 
       &.archive {
         background-image: url("/static/image/banners/pianoplayer.jpg");
-        background-size: 100% 100%;
+        background-size: cover;
         @media(max-width:  960px) {
           background-size: cover;
         }
@@ -281,7 +284,7 @@ $banners-height: 38vh;
 
       &.mission {
         background-image: url("/static/image/banners/club.jpg");
-        background-size: 100% 100%;
+        background-size: cover;
         @media(max-width:  960px) {
           background-size: cover;
         }
@@ -390,12 +393,24 @@ $banners-height: 38vh;
     @media(max-width: 960px) {
       height: 22vw;
     }
+    @media (min-width:960px) {
+      margin-top: calc(2.083vw - 8.9px);
+      height: calc(23.75vw - 25px);
+    }
+    @media (min-width:1200px) {
+      margin-top: 1.6rem;
+      height: 26rem;
+    }
   }
 
   .box {
     &.flex-column {
       height: 27.5vw;
       position: relative;
+
+      @media(min-width: 960px) {
+        max-height: 335px;
+      }
 
       @media(max-width: 960px) {
         height: 75vw;
@@ -418,23 +433,34 @@ $banners-height: 38vh;
       &.title {
         border-bottom: 4px solid #d21535;
         color: white;
-        font-size: 4.5vw;
-        line-height: 4.1vw;
+        /*font-size: 4.2rem;
+        line-height: 4.7rem;*/
         margin: 0 auto;
-        margin-bottom: 2vw;
+        /*margin-bottom: 2vw;*/
         width: 60%;
+        max-width: 720px;
 
         @media(max-width: 960px) {
           font-size: 6vw;
           line-height: 5.5vw;
           width: 80%;
         }
+        @media (min-width:960px) {
+          font-size: calc(5vw - 6px);
+          line-height: calc(4.3vw - 3px);
+          margin-bottom: calc(2.083vw - 8.9px);
+        }
+        @media (min-width: 1200px) {
+          font-size: 5.4rem;
+          line-height: 4.9rem;
+          margin-bottom: 1.6rem;
+        }
       }
 
       &.content {
         color: white;
         font-family: Oswald;
-        font-size: 2.5vw;
+        font-size: 2.5rem;
         height: auto;
         margin-top: 0;
         padding: 0px 8.5vw;
@@ -442,6 +468,21 @@ $banners-height: 38vh;
         font-weight: 400;
         line-height: 180%;
         text-align: center;
+        @media (min-width:960px) {
+          font-size: calc(2.917vw - 3px);
+        }
+        @media (min-width: 1200px) {
+          font-size: 3.2rem;
+        }
+
+        &.wide {
+          padding-left: 0.5vw;
+          padding-right: 0.5vw;
+
+          @media(max-width: 960px) {
+            margin-top: 2vw;
+          }
+        }
 
         &.wide {
           padding-left: 0.5vw;
@@ -458,8 +499,17 @@ $banners-height: 38vh;
     button, a {
       padding: 0.5vw 2.5vw;
       font-family: "Reem Kufi", sans-serif;
-      font-size: 0.9vw;
+      /*font-size: 0.9vw;*/
       margin: 0 14px;
+
+      @media(min-width: 960px) {
+        font-size: calc(1.7vw - 5px);
+      }
+
+      @media(min-width: 1200px) {
+        font-size: 1.5rem;
+      }
+
 
       &:hover {
         cursor: pointer;
