@@ -10,20 +10,19 @@
 <div class=""  style="padding-left: 3.5vw;">
   <div class="section-title" style="padding-left: 0;">
     <div class="title1">
-      <a href="{% url 'promotions:home' %}">Catalog</a> <span class="accent-color">\</span> {% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }}
+      <!--<a href="{% url 'promotions:home' %}">Catalog</a> <span class="accent-color">\</span> -->
+      {% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }}
     </div>
   </div>
   {% if not library %}
-    <div class="intro-text text9">You are
-      making a tax deductible donation to the SmallsLIVE Foundation for Jazz Arts and Education.<br>
-      All tax information is available from your account settings. Please choose one of the following:
+    <div class="text2" style="font-size: 2.5rem; margin-bottom: 20px">Sponsor this artist and project with a tax-deductable donation to the smallslive foundation
     </div>
-    <div class="text-center">
+    <div>
       {% for child_product in album_product.children.all %}
         {% purchase_info_for_product request child_product as session %}
         <form action="{% url 'basket:add' pk=child_product.pk  %}"
               method="post"
-              class="add-to-basket buttons-row">
+              class="add-to-basket buttons-row" style="margin-left: 0;">
           {% if session.availability.is_available_to_buy %}
             {% basket_form request child_product 'single' as basket_form %}
 
@@ -63,15 +62,15 @@
         </form>
       {% endfor  %}
       {% if album_product.children.all.count > 0 %}
-        <button id="projectDonationBtn" class="white-border-button buttons-row">Support this artist</button>
+        <button id="projectDonationBtn" class="white-border-button buttons-row" style="margin-left: 0;">Support this artist</button>
       {% else %}
       <label>This album has no options available</label>
       {% endif %}
     </div>
   {% endif %}
 </div>
-<div class="my-downloads-album row big-player" style="padding: 30px 10vw;">
-  <div class="my-downloads-album__cover flex-column player-container " style="width: 50%;  margin-right: 2%">
+<div class="my-downloads-album row big-player" style="padding-left: 3.5vw;">
+  <div class="my-downloads-album__cover flex-column player-container " style="width: 60%;">
 
     {% with all_images=album_product.images.all %}
       <div class="store-single__item__images__carousel"
@@ -79,7 +78,7 @@
            style="position: relative; min-width:255px">
         {% for image in all_images %}
           {% thumbnail image.original "x365" upscale=False as thumb %}
-          <div class="store-single__item__images__big-image square-container">
+          <div class="store-single__item__images__big-image square-container" style="padding: 0;">
             <img class="defineImageRatio" src="{{ thumb.url }}" alt="{{ product.get_title }}" style="max-width: 30vw;">
             <div class="purchases-player-button myplay-btn">
               <div class="fa-thin-circle fa" >
@@ -109,7 +108,7 @@
 
   </div>
 
-  <div class="my-downloads-album__tracks-table" style="background: white;">
+  <div class="my-downloads-album__tracks-table" style="background: white; height: 100%">
     {% for track in album_product.tracks.all|dictsort:"ordering" %}
       <!-- tracks table row -->
       <div class="track-container" style="position:relative" {% if not track.pk in bought_tracks and not is_full = 'full_album' %}  href='none' {% else %} href='{% url "my-downloads" %}?album={{ album_product.pk }}' {% endif %}   >
@@ -166,8 +165,11 @@
   </div>
   <!-- end of tracks table -->
 
+  <div class="description-container" style="font-size: 1.3vw; font-family: 'Oswald'; font-weight: 300; display: inline-block; width: 45%; margin-left: 30px;">
+    {{ album_product.description|safe }}
+  </div>
 </div>
-<div class="my-downloads-album row" style="padding: 20px 10vw;">
+<div class="my-downloads-album row" style="padding-left: 3.5vw; justify-content: flex-start">
   <div class="flex-column" style="width: 50%;">
     <ul style="padding-left: 10px;">
       {% for artist_product in album_product.artistproduct_set.all %}
@@ -181,9 +183,7 @@
   </div>
 
   <div>
-    <div class="description-container" style="font-size: 1.3vw; font-family: 'Oswald'; font-weight: 300; display: inline-block; width: 45%">
-      {{ album_product.description|safe }}
-    </div>
+
   </div>
 
 </div>
