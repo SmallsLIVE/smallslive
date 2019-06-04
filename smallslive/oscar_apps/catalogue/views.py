@@ -1,17 +1,13 @@
-from stripe.error import APIConnectionError
-from artists.models import Artist
+from stripe.error import APIConnectionError, InvalidRequestError
 from django.core.paginator import Paginator
-from django.db.models import Count
 from django.http import JsonResponse
 from django.template import RequestContext
 from django.template.loader import render_to_string
-from django.shortcuts import render
 from oscar.apps.catalogue import views as catalogue_views
 from oscar_apps.catalogue.models import Product, UserCatalogue, UserCatalogueProduct
 from oscar.apps.catalogue.views import ProductCategoryView
-from oscar.apps.order.models import Line
-from django.db.models import F, Q, Max
 from custom_stripe.models import CustomerDetail
+from artists.models import Artist
 
 
 class ProductCategoryView(catalogue_views.ProductCategoryView):
@@ -157,6 +153,8 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
             try:
                 customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
             except APIConnectionError:
+                customer_detail = None
+            except InvalidRequestError:
                 customer_detail = None
             if customer_detail:
                 ctx['active_card'] = customer_detail.active_card
