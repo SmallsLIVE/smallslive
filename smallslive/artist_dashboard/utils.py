@@ -6,10 +6,12 @@ from datetime import timedelta
 from dateutil.relativedelta import relativedelta
 
 from artists.models import Artist, ArtistEarnings, CurrentPayoutPeriod, PastPayoutPeriod
+from subscriptions.models import Donation
 from metrics.models import UserVideoMetric
 from events.models import Event
 
 logger = logging.getLogger(__name__)
+
 
 def metrics_data_for_date_period(start_date, end_date):
     events = UserVideoMetric.objects.seconds_played_for_all_events(start_date, end_date)
@@ -41,6 +43,25 @@ def metrics_data_for_date_period(start_date, end_date):
     }
 
 
+def donations_data_for_date_period(start_date, end_date):
+    artists = collections.OrderedDict()
+    for artist in Artist.objects.values('id', 'first_name', 'last_name').order_by('last_name'):
+        artists[artist['id']] = {
+            'first_name': artist['first_name'],
+            'last_name': artist['last_name'],
+            'donations': 0
+        }
+    total_donations = 0
+    for donation in Donation.objects.filter(artist_id__isnull=False):
+        total_donations += donation.amount
+        artists[donation.artist_id]['donations'] += donation.amount
+
+    return {
+        'donation_info': artists,
+        'total_donations': total_donations,
+    }
+
+
 def update_current_period_metrics():
     current_period = CurrentPayoutPeriod.objects.first()
     metrics = metrics_data_for_date_period(current_period.period_start, current_period.period_end)
@@ -54,7 +75,7 @@ def update_current_period_metrics():
     return True
 
 
-def generate_payout_sheet(file, start_date, end_date, revenue, operating_expenses, save_earnings=False):
+def generate_metrics_payout_sheet(file, start_date, end_date, revenue, operating_expenses, save_earnings=False):
     pool = Decimal((revenue - operating_expenses) / Decimal(2.0))
     metrics = metrics_data_for_date_period(start_date, end_date)
     workbook = xlsxwriter.Workbook(file, {'in_memory': True})
@@ -114,4 +135,24 @@ def generate_payout_sheet(file, start_date, end_date, revenue, operating_expense
                 amount=payment,
                 ledger_balance=new_ledger_balance
             )
+    workbook.close()
+
+
+def generate_donations_payout_sheet(file, start_date, end_date, revenue, operating_expenses, save_earnings=False):
+    donations = donations_data_for_date_period(start_date, end_date)
+    workbook = xlsxwriter.Workbook(file, {'in_memory': True})
+    bold = workbook.add_format({'bold': True})
+    sheet = workbook.add_worksheet('Donations')
+    sheet.set_column(8, 8, 30)
+    sheet.write_row('I1', ('Total donations', revenue), bold)
+    sheet.write_row('I2', ('Operating costs', operating_expenses), bold)
+    headers = ('Artist ID', 'Last name', 'First name', 'Payment')
+    sheet.write_row('A1', headers, bold)
+
+    for idx, artist in enumerate(donations['donation_info'].items(), start=1):
+        sheet.write(idx, 0, artist[0])
+        sheet.write(idx, 1, artist[1]['last_name'])
+        sheet.write(idx, 2, artist[1]['first_name'])
+        sheet.write(idx, 3, artist[1]['donations'])
+
     workbook.close()

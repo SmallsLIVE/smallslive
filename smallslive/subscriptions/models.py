@@ -1,6 +1,7 @@
 from decimal import Decimal
 from django.db import models
 from oscar_apps.catalogue.models import Product
+from artists.models import Artist
 from users.models import SmallsUser
 
 
@@ -27,6 +28,8 @@ class Donation(models.Model):
     # Donations can be applied to a product
     product = models.ForeignKey(Product, blank=True, null=True,
                                 related_name='donations')
+    artist = models.ForeignKey(Artist, blank=True, null=True,
+                               related_name='donations')
 
     def save(self, *args, **kwargs):
         if self.deductable_amount == 0:

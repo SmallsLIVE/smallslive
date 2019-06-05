@@ -204,7 +204,8 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
                     'amount': amount,
                     'reference': stripe_ref,
                     'confirmed': False,
-                    'product_id': product_id
+                    'product_id': product_id,
+                    'artist': Product.objects.first_leader(product_id=product_id),
                 }
                 Donation.objects.create(**donation)
 

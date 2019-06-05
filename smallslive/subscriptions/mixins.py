@@ -6,9 +6,9 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from oscar.apps.payment.exceptions import RedirectRequired, \
     UnableToTakePayment, PaymentError
+from oscar_apps.catalogue.models import Product
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.models import Donation
-from users.utils import charge
 
 
 class PayPalMixin(object):
@@ -97,7 +97,8 @@ class PayPalMixin(object):
                     'reference': payment_id,
                     'confirmed': False,
                     'deductable_amount': str(deductable_total),
-                    'product_id': product_id
+                    'product_id': product_id,
+                    'artist_id': Product.objects.first_leader(product_id=product_id)
                 }
                 print 'Donation data: ',  donation
                 Donation.objects.create(**donation)

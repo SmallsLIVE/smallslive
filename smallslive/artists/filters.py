@@ -60,6 +60,7 @@ def has_signed(qs, val):
         qs = qs.filter(user__legal_agreement_acceptance=None)
     return qs
 
+
 class ArtistFilter(django_filters.FilterSet):
     name = django_filters.CharFilter(action=search_name)
     instruments = django_filters.ModelChoiceFilter(queryset=Instrument.objects.all())

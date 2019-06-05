@@ -3,7 +3,17 @@ from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 
 from oscar.apps.catalogue.abstract_models import AbstractProduct
+from oscar.apps.catalogue.managers import ProductManager as CoreProductManager
 from users.models import SmallsUser
+
+
+class ProductManager(CoreProductManager):
+
+    def first_leader(self, product_id=None):
+
+        ap = ArtistProduct.objects.filter(product_id=product_id, is_leader=True).first()
+        if ap:
+            return ap.artist
 
 
 class Product(AbstractProduct):
@@ -24,6 +34,8 @@ class Product(AbstractProduct):
     artists = models.ManyToManyField('artists.Artist', through='ArtistProduct', verbose_name=("Attributes"), blank=True, null=True)
 
     set = models.CharField(max_length=50, blank=True)
+
+    objects = ProductManager()
 
     class Meta(AbstractProduct.Meta):
         ordering = ['ordering', 'title']
@@ -111,6 +123,7 @@ class ArtistProduct(models.Model):
     artist = models.ForeignKey('artists.Artist', verbose_name='', on_delete=models.CASCADE)
     product = models.ForeignKey(Product, verbose_name='', on_delete=models.CASCADE)
     instrument = models.ForeignKey('artists.Instrument', blank=True, null=True)
+    is_leader = models.BooleanField(default=False)
     
     class Meta:
         # abstract = True
