@@ -87,11 +87,13 @@
              class="search-tab-content {% if musician_search %}active{% endif %} search-page {% if not query_term %} tall {% endif %}"
              data-toggle-tab-group="search-results" {% if not query_term %} style="display: none;" {% endif  %}>
       <div class="musicians-results">
+        <!-- removed pagination because of update to autoscroll 
         <div id="artist-subheader" class="showing-results text1" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>1-24</div>
+        //-->
         <div class="section-title title1 musicians-results-title">
           {% if artists_blocks %} <span id="total-artist" class="accent-color">{{ showing_artist_results }} </span>
             {% if showing_artist_results > 1 %}
-              Musicians
+              &nbsp;Musicians
             {% else %}
               Musician
             {% endif %}
@@ -197,5 +199,3 @@
 
 {% block footer %}
 {% endblock %}
-
-
