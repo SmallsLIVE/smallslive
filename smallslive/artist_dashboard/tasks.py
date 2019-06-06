@@ -40,10 +40,6 @@ def generate_payout_sheet_task(start, end, revenue, operating_expenses, save_ear
         start, end, revenue, operating_expenses, save_earnings)
 
     email.attach(filename, output.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    output, filename = attach_donations_payout_sheet(
-        start, end, revenue, operating_expenses, save_earnings)
-
-    email.attach(filename, output.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
 
     email.send()
     if save_earnings:
