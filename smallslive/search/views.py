@@ -264,6 +264,7 @@ class SearchBarView(View):
         artists = []
         artist_results_per_page = 6
         sqs = search.search_artist(main_search)
+        
         paginator = Paginator(sqs, artist_results_per_page)
         artists_results = paginator.count
 
@@ -274,7 +275,9 @@ class SearchBarView(View):
         
         events = []
         event_results_per_page = 8
-        sqs = search.search_event(main_search)
+
+        if main_search:
+            sqs = search.search_event(main_search)
 
         paginator = Paginator(sqs, event_results_per_page)
         events_results = paginator.count
@@ -337,8 +340,9 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
             artists_blocks, showing_artist_results, num_pages = self.search(
                 Artist, q, instrument=instrument)
         context['query_term'] = q
-        instruments = [i.name for i in Instrument.objects.all()]
-
+        instruments = Instrument.objects.all()
+        artist_count = sum([i.artist_count for i in instruments])
+        context['instruments_artist_count'] = artist_count
         context['instruments'] = instruments
         context['showing_artist_results'] = showing_artist_results
         context['artists_blocks'] = artists_blocks

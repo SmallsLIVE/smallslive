@@ -21,6 +21,16 @@ class ArtistAddForm(forms.ModelForm):
             'photo': ImageCropWidget,
         }
 
+    def save(self, commit=True):
+        artist = super(ArtistAddForm, self).save(commit)
+        if commit:
+            instruments = self.cleaned_data['instruments']
+            for instrument in instruments:
+                instrument.artist_count = instrument.artist_count + 1
+                instrument.save()
+
+        return artist
+
     def __init__(self, *args, **kwargs):
         super(ArtistAddForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)

@@ -164,6 +164,7 @@ class SearchObject(object):
             'nonet',
             'dectet'
         ]
+
         if main_search != '':
             if main_search.split()[-1] in possible_number_of_performers:
                 number_of_performers_searched = possible_number_of_performers.index(main_search.split()[-1]) + 1
@@ -190,8 +191,8 @@ class SearchObject(object):
             main_search, instruments = self.filter_sax(main_search)
             words = main_search.strip().split()
             all_instruments = self.get_instruments()
-            instruments = [i for i in words if i.upper() in all_instruments]
-
+            if words:
+                instruments = [i for i in words if i.upper() in all_instruments]
             if instruments:
                 condition = Q(artists_gig_info__role__name__icontains=instruments[0],
                             artists_gig_info__is_leader=True)
