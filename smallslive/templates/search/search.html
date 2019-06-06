@@ -105,7 +105,7 @@
         {% include 'search/artists.html' %}
       {% endif %}
     </section>
-    <section id="search-content" class="search-content">
+    <section id="search-content" class="search-content" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
       {% include 'events/shows.html' with archived=True default_to_date=default_to_date secondary=True %}
       <!-- include upcoming shows (as placeholder and hidden), so then can be toggled when viewing artists profile -->
       {% include 'events/shows.html' with upcoming=True default_from_date=default_from_date secondary=True placeholder=True hide_filters=True%}
@@ -184,9 +184,7 @@
   </script>
   <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
   <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-  {% if not query_term %}
-    <script src="{% static 'js/tabs.js' %}"></script>
-  {% endif %}
+  <script src="{% static 'js/tabs.js' %}"></script>
   <script src="{% static 'js/search/search.js' %}"></script>
   <script>
     {% if popular_select %}

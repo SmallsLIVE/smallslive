@@ -715,3 +715,11 @@ $event-row-padding: 3.5vw;
     vertical-align: top;
   }
 }
+
+.wrapped-events {
+  @media (max-width: 1024px) {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}

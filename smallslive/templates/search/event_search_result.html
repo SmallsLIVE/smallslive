@@ -17,7 +17,7 @@
       </div>
 
     {% endif %}
-    <div id="search-result-articles">
+    <div id="search-result-articles" class="wrapped-events">
       {% include 'search/event_search_row.html' with show_extend_date=show_extend_date upcoming=upcoming events=events show_event_venue=show_event_venue secondary=secondary hide_play=hide_play with_date_picker=with_date_picker %}
     </div>
   {% endif %}
