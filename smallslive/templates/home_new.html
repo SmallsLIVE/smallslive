@@ -55,18 +55,7 @@
 {% endblock%}
 
 {% block footer %}
-  <div class="footer-mobile visible-xs visible-sm text4">
-    <div class="flex-column footer-links ">
-      <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
-      <a href="{% url 'schedule' %}" class="{% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">Calendar</a>
-      <a href="{% url 'search' %}"
-         class="{% if request.resolver_match.url_name == 'search' %}active{% endif %}">Archive</a>
-      <a href="{% url 'contact-and-info' %}"
-         class="{% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</a>
-      <a href="">Education</a>
-      <a href="{% url 'promotions:home' %}">Catalog</a>
-    </div>
-  </div>
+  <!-- Removed mobile footer as per Spike's request -->
   <div style="margin: 0 50px;">
     <div class="footer-info flex-column items-center" style="margin-bottom: 50px;">
       <img class="footer-logo" src="{% static 'new_logo_transparent_black.svg' %}" alt="SmallsLIVE Foundation logo" width="100">
