@@ -322,8 +322,10 @@ $event-row-padding: 3.5vw;
       margin-bottom: 0px;
       width: 28vw;
 
-      @media (max-width: 1024px) {
+      @media (max-width: 960px) {
         width:  98%;
+        top: 4vw;
+        left: 4vw;
       }
 
       .title5 {
@@ -658,33 +660,32 @@ $event-row-padding: 3.5vw;
 
 .event-info.new {
 
-  @media(min-width: 1024px) {
-    color: white;
-    font-size: 12px;
-    height: 5.6vw;
-    left: 15px;
-    margin: 0;
-    overflow: hidden;
-    pointer-events: none;
-    position: absolute;
-    top: 15px;
+  color: white;
+  font-size: 12px;
+  height: 100%;
+  left: 15px;
+  margin: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  top: 15px;
 
-    @media (max-width: 960px) {
-      font-size: 18px;
-    }
-
-    @media (max-width: 720px) {
-      font-size: 16px;
-    }
-
-    @media (max-width: 530px) {
-      font-size: 10px;
-    }
-
-    @media (max-width: 420px) {
-      font-size: 8px;
-    }
+  @media (max-width: 960px) {
+    font-size: 18px;
   }
+
+  @media (max-width: 720px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 530px) {
+    font-size: 14px;
+  }
+
+  @media (max-width: 420px) {
+    font-size: 13px;
+  }
+
 }
 
 @media (max-width: 960px) {
