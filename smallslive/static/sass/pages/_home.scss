@@ -81,12 +81,6 @@ div.event-strip {
     overflow: hidden;
     position: relative;
     width: auto;
-
-    @media (max-width: $screen-sm-max) {
-      .event-row {
-        overflow: auto;
-      }
-    }
   }
 }
 #a-z-search {
