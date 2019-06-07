@@ -374,10 +374,6 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         return context
 
 
-class ArchiveView(TemplateSearchView):
-    template_name = 'search/archive.html'
-
-
 class ArtistInfo(View):
 
     def get(self, request, *args, **kwargs):
