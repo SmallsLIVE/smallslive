@@ -1207,7 +1207,6 @@
       &__big-image {
         @include display(flex);
         @include align-items(center);
-        padding: 10px;
 
         & a {
           width: 100%;
@@ -1216,7 +1215,6 @@
         }
 
         & img {
-          width: 100%;
           height: auto;
 
           &.tall {

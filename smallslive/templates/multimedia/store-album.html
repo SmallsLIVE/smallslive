@@ -51,6 +51,11 @@
   <script src="{% static 'js/progress-bar.js' %}"></script>
 
   <script>
+
+    $(document).ready(function () {
+      $(window).resize();
+    });
+
     var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
     
      $(document).on('click', ".white-border-button.add-to-library", function(event){

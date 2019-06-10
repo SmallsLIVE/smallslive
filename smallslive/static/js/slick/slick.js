@@ -1078,6 +1078,7 @@
         });
 
         $(window).on('resize.slick.slick-' + _.instanceUid, function() {
+            return;
             if ($(window).width() !== _.windowWidth) {
                 clearTimeout(_.windowDelay);
                 _.windowDelay = window.setTimeout(function() {
