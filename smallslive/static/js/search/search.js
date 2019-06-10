@@ -776,7 +776,7 @@ $(document).ready(function () {
       $("#load-more-upcoming-btn").hide();
     }
 
-    var $showsContainer = $(selector + " .shows-container");
+    var $showsContainer = $("#search-result-articles");
     $showsContainer.html("");
     if ($(this).closest(".calendar").length > 0) {
       show_event_venue = true;
@@ -786,7 +786,7 @@ $(document).ready(function () {
     apply = true;
     toggleDisplay(this);
     $("#events").addClass("artist-loading-gif");
-    sendEventRequest(mode, eventDateFrom, eventDateTo);
+    sendEventRequest(mode, eventDateFrom, eventDateTo, updateArchiveShows);
 
     if (!eventDateTo || !eventDateFrom) {
       $(".datepicker-btn").html("DATE");
