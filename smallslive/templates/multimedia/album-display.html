@@ -61,7 +61,11 @@
           {% endif %}
         </form>
       {% endfor  %}
-      <button id="projectDonationBtn" class="white-border-button buttons-row" style="margin-left: 0; margin-bottom: 5px;">Support this artist</button>
+      {% if album_product.children.all.count > 0 %}
+        <button id="projectDonationBtn" class="white-border-button buttons-row" style="margin-left: 0;">Support this artist</button>
+      {% else %}
+      <label>This album has no options available</label>
+      {% endif %}
     </div>
   {% endif %}
 </div>
@@ -359,4 +363,3 @@
   </script>
 
 {% endblock %}
-

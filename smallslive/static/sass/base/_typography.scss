@@ -4,10 +4,14 @@ $line-height-medium: 2.17em;
 $line-height-big: 2.51em;
 $line-height-bigger: 2.68em;
 
-$text-font-size-smaller: 1em;
-$text-font-size-small: 1.25em;
-$text-font-size-medium: 1.2em;
-$text-font-size-big: 1.4em;
+/*$text-font-size-smaller: 1em;*/
+$text-font-size-smaller: 1.25em;
+/*$text-font-size-small: 1.25em;*/
+$text-font-size-small: 1.4em;
+/*text-font-size-medium: 1.2em;*/
+$text-font-size-medium: 1.8em;
+/*$text-font-size-big: 1.4em;*/
+$text-font-size-big: 2em;
 
 @font-face {
   font-family: 'Oswald';
@@ -218,7 +222,7 @@ $text-font-size-big: 1.4em;
 
 @mixin title3 {
   @include oswald-semi-bold;
-  font-size: 16px;
+  font-size: $text-font-size-medium;
   letter-spacing: 0;
   text-transform: uppercase;
   transform: scaleY(1.2);
@@ -283,7 +287,7 @@ $text-font-size-big: 1.4em;
   @include reen-kufi-normal;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  font-size: $text-font-size-medium;
+  font-size: $text-font-size-small;
 }
 
 // Texts

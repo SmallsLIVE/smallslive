@@ -2,7 +2,7 @@
      tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
   <div class="modal-dialog">
-  
+
     <div class="modal-content custom-modal">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
@@ -39,7 +39,7 @@
           <div class="form-group">
             <p class="form-error-text hidden" id="all-errors"></p>
           </div>
-          <div class="form-group">
+          <div class="form-check form-check-inline">
             <div class="checkbox">
               <label class="text4 text-grey">
                 <input type="checkbox" name="newsletter" id="memberSubscribeCheck">
@@ -51,7 +51,8 @@
                 <input type="checkbox" name="terms_of_service" id="memberSubscribeTerms">
                 <span class="checkbox-text">I Accept the </span>
                 <p class="form-error-text hidden" id="terms_of_service-error"></p>
-              </label><a class="login-agreement" href="{% url 'terms-and-conditions' %}"> Terms & Conditions</a>
+                <a class="accent-color underline" href="{% url 'terms-and-conditions' %}"> Terms & Conditions</a>
+              </label>
             </div>
           </div>
           <div class="form-group flex-column items-center">

@@ -9,7 +9,8 @@
                 {% if email_sent %}
                   You will receive an e-mail to <span class="accent-color">{{ user.email }}</span> within 10 minutes.  Click the link in the e-mail to confirm your address.
                 {% else %}
-                  A confirmation e-mail was sent on {{ user.date_joined|date:"d/m" }} to <span class="accent-color">{{ user.email }}</span>. Click the link in the e-mail to confirm your address.
+                  A confirmation e-mail was sent on {{ user.date_joined|date:"M j, Y"}} to <span class="accent-color">{{ user.email }}</span>.
+                  <br>Click the link in the e-mail to confirm your address.
                 {% endif %}
               </p>
               <p class="title1 sent hidden">Confirmation email re-sent</p>
@@ -91,5 +92,3 @@
     });
   </script>
 {% endif %}
-
-
