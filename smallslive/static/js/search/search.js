@@ -434,7 +434,7 @@ $(document).ready(function () {
     }
   });
 
-  $("#events-filter").change(function () {
+  $("#events-filter, #mobile-events-filter").change(function () {
     eventFilter = true;
     eventOrderFilter = $(this).val();
     venueFilter = "all";

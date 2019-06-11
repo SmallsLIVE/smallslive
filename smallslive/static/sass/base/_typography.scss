@@ -184,6 +184,7 @@ $text-font-size-big: 2em;
 
   @media(max-width: $screen-sm-max) {
     font-size: 3.5vw;
+    line-height: 3.5vw;
   }
 
   &.center {

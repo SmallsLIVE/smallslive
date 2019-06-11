@@ -278,7 +278,7 @@ body.headers-1 {
   //Mobile
   @media (max-width: $screen-md-max) {
     .datepicker-container.noclick {
-      top: 12.5vw !important;
+      top: 9.5vw !important;
       left: 0 !important;
       width: 100vw;
 
@@ -366,6 +366,7 @@ body.headers-1 {
 
       #apply-button {
         margin: 0px 10px;
+        margin-right: 30px;
         color: grey;
         width: 10%;
         border: none;
@@ -474,6 +475,12 @@ body.headers-1 {
   }
 }
 
+@media (max-width: $screen-md-min) {
+  .search-container .datepicker-container.noclick {
+    top: 11.5vw !important;
+  }
+}
+
 .instruments-container {
   flex-wrap: wrap;
   background-color: #f0f0eb;
@@ -557,6 +564,10 @@ body.headers-1 {
           margin-right: 5px;
           margin-top: 10px;
           vertical-align: top;
+        }
+
+        @media (max-width: 420px) {
+          height: 13vw;
         }
 
         &:hover {
@@ -1458,6 +1469,10 @@ body.headers-1 {
       &.caret {
         margin-right: 0;
       }
+    }
+
+    @media (max-width: 420px) {
+      height: 13vw;
     }
   }
 }
