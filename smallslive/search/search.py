@@ -87,7 +87,7 @@ class SearchObject(object):
             sqs = sqs.filter(condition).distinct() 
 
         if not words:
-            return sqs
+            return sqs.prefetch_related('instruments')
 
         if len(words) == 2:
             (first_name, last_name) = words
@@ -114,7 +114,7 @@ class SearchObject(object):
                 first_name__iustartswith=artist) & ~Q(
                 last_name__iuexact=artist)).distinct()
 
-            sqs =  list(first_name_matches) + list(good_matches) + list(not_so_good_matches)
+            sqs = list(first_name_matches) + list(good_matches) + list(not_so_good_matches)
 
             if partial_instruments:
                 condition = Q(instruments__name__istartswith=partial_instruments[0])

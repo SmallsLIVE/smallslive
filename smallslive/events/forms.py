@@ -186,7 +186,7 @@ class EventAddForm(forms.ModelForm):
             # Provide custom connection and bucket
             # TODO: organize code
             params = {}
-            if instance.venue.name == 'Mezzrow':
+            if instance.get_venue_name() == 'Mezzrow':
                 params['access_key'] = settings.AWS_ACCESS_KEY_ID_MEZZROW
                 params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_MEZZROW
                 params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
@@ -327,7 +327,7 @@ class TicketAddForm(forms.Form):
             product=product,
             category=tickets_category
         )
-        partner_name = event.venue.name
+        partner_name = event.get_venue_name()
         partner, created = Partner.objects.get_or_create(name=partner_name)
         last_stockrecord = StockRecord.objects.order_by('-id').first()
         if last_stockrecord:

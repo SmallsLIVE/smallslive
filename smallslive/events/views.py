@@ -219,7 +219,7 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
         for default_set in ShowDefaultTime.objects.all():
             default_sets.append({
                 'set-venue':
-                    str(default_set.venue.name),
+                    str(default_set.get_venue_name()),
                 'set-starts': default_set.sets_start(),
                 'set-redeable-starts': default_set.sets_readable_start(),
                 'set-duration': default_set.set_duration,
@@ -386,7 +386,7 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
             context['sets'].helper = EventSetInlineFormsetHelper()
         default_sets = []
         for default_set in ShowDefaultTime.objects.all():
-            default_sets.append({"set-venue" : str(default_set.venue.name), "set-starts": default_set.sets_start(), "set-redeable-starts":  default_set.sets_readable_start(), "set-duration": default_set.set_duration, "set-title": str(default_set.title)})
+            default_sets.append({"set-venue" : str(default_set.get_venue_name()), "set-starts": default_set.sets_start(), "set-redeable-starts":  default_set.sets_readable_start(), "set-duration": default_set.set_duration, "set-title": str(default_set.title)})
         context['show_times'] = default_sets
         context['ticket_forms'] = self.construct_ticket_forms()
 

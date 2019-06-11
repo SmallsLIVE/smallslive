@@ -1,12 +1,13 @@
 import pytz
+from django.core.cache import cache
 from django.db.models import Count, Max, Q, Sum
+from django.conf import settings
+from django.core.files.base import File
+from django.core.urlresolvers import reverse
+from django.db import models
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta, get_default_timezone
 from django.utils import six, timezone
-from django.conf import settings
-from django.core.files.base import File
-from django.db import models
-from django.core.urlresolvers import reverse
 from django.utils.functional import cached_property
 from image_cropping import ImageRatioField
 from model_utils import Choices
@@ -271,7 +272,7 @@ class CustomImageField(models.ImageField):
 def get_event_media_storage(instance):
 
     params = {}
-    if instance.venue.name == 'Mezzrow':
+    if instance.get_venue_name() == 'Mezzrow':
         params['access_key'] = settings.AWS_ACCESS_KEY_ID_MEZZROW
         params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_MEZZROW
         params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
@@ -283,11 +284,11 @@ class Event(TimeStampedModel):
     SETS = Choices(('22:00-23:00', '10-11pm'), ('23:00-0:00', '11-12pm'), ('0:00-1:00', '12-1am'))
     STATUS = Choices('Published', 'Draft', 'Cancelled')
 
-    title = models.CharField(max_length=500)
+    title = models.CharField(db_index=True, max_length=500)
     venue = models.ForeignKey('Venue', on_delete=models.CASCADE, blank=True,
                               null=True)
-    start = models.DateTimeField(blank=True, null=True)
-    end = models.DateTimeField(blank=True, null=True)
+    start = models.DateTimeField(db_index=True, blank=True, null=True)
+    end = models.DateTimeField(db_index=True, blank=True, null=True)
     set = models.CharField(choices=SETS, blank=True, max_length=10)
     description = tinymce_models.HTMLField(blank=True)
     subtitle = models.CharField(max_length=255, blank=True)
@@ -328,6 +329,18 @@ class Event(TimeStampedModel):
 
     def __unicode__(self):
         return u'{} - {}'.format(self.title, self.date)
+
+    def get_venue_name(self):
+        cache_key = 'venue_{}'.format(self.venue_id)
+        cached_venue_info = cache.get(cache_key)
+        if cached_venue_info:
+            venue_name = cached_venue_info['venue_name']
+        else:
+            venue_name = self.venue.name
+            venue_info = {'venue_name': venue_name}
+            cache.set(cache_key, venue_info)
+
+        return venue_name
 
     def get_date(self):
 
@@ -637,9 +650,9 @@ class Event(TimeStampedModel):
 
         url = ''
 
-        if self.venue.name == 'Mezzrow':
+        if self.get_venue_name() == 'Mezzrow':
             url = 'https://www.ustream.tv/embed/23240580?html5ui'
-        elif self.venue.name == 'Smalls':
+        elif self.get_venue_name() == 'Smalls':
             url = 'https://www.ustream.tv/embed/23240575?html5ui'
 
         return url
@@ -946,6 +959,10 @@ class Venue(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    @cached_property
+    def get_name(self):
+        return self.name
     
     @property
     def short_name(self):
@@ -980,7 +997,7 @@ class ShowDefaultTime(models.Model):
             return self.first_set.strftime('%I:%M %p') + " - " + first_set_end.strftime('%I:%M %p')
 
     def __unicode__(self):
-        return self.sets_readable_start() + "    " + self.venue.name
+        return self.sets_readable_start() + "    " + self.get_venue_name()
 
 
 class StaffPick(models.Model):
