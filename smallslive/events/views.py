@@ -931,7 +931,8 @@ class CommentListView(FormView):
 
     def get_success_url(self):
         url = self.request.build_absolute_uri()
-
+        if 'https' not in url:
+            url = url.replace('http', 'https')
         return url
 
     def get_form_kwargs(self):
