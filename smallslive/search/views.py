@@ -321,19 +321,31 @@ class SearchBarView(View):
 class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
     template_name = 'search/search.html'
 
-    def get_artist_context(self, artist_id):
+    def get_artist_context(self, q, instrument):
 
+        artist_id = self.request.GET.get('artist_pk')
+        artist = None
+        artists_blocks = None
+        showing_artist_results = ''
+        num_pages = 0
+        if not artist_id:
+            artists_blocks, showing_artist_results, num_pages = self.search(
+                Artist, q, instrument=instrument)
+            if artists_blocks and len(artists_blocks[0]) == 1:
+                artist=artists_blocks[0][0]
+
+        artist = artist or Artist.objects.filter(id=artist_id).first()
         artist_context = {
-            'artist_profile': True,
-            'artist': Artist.objects.filter(id=artist_id).first()
+            'artist_profile': bool(artist),
+            'artist': artist
         }
         # Populate upcoming shows as well. That is the only case for now.
-        upcoming_event_blocks, showing_event_results, num_pages, first, last = self.search(
+        upcoming_event_blocks, showing_event_results, upcoming_num_pages, first, last = self.search(
             Event, '', results_per_page=60, artist_pk=artist_id, date_from=datetime.datetime.today())
         artist_context['upcoming_events'] = upcoming_event_blocks[0] if upcoming_event_blocks else []
-        artist_context['showing_artist_results'] = ''
-        artist_context['artists_blocks'] = None
-        artist_context['artist_num_pages'] = 0
+        artist_context['showing_artist_results'] = showing_artist_results
+        artist_context['artists_blocks'] = artists_blocks
+        artist_context['artist_num_pages'] = num_pages
 
         return artist_context
 
@@ -345,16 +357,8 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         if q:
             context['musician_search'] = True
 
-        artist_id = self.request.GET.get('artist_pk')
-        if artist_id:
-            artist_context = self.get_artist_context(artist_id)
-            context.update(artist_context)
-        else:
-            artists_blocks, showing_artist_results, num_pages = self.search(
-                Artist, q, instrument=instrument)
-            context['showing_artist_results'] = showing_artist_results
-            context['artists_blocks'] = artists_blocks
-            context['artist_num_pages'] = num_pages
+        artist_context = self.get_artist_context(q, instrument)
+        context.update(artist_context)
 
         context['query_term'] = q
         instruments = Instrument.objects.all()
@@ -362,6 +366,7 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         context['instruments_artist_count'] = artist_count
         context['instruments'] = instruments
 
+        artist_id = context['artist'].pk if context['artist'] else None
         event_blocks, showing_event_results, num_pages, first, last = self.search(
             Event, q, results_per_page=60, artist_pk=artist_id)
 
