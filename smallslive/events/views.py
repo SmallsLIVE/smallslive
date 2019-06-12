@@ -930,7 +930,9 @@ class CommentListView(FormView):
         return super(CommentListView, self).post(request, *args, **kwargs)
 
     def get_success_url(self):
-        return self.request.get_full_path()
+        url = self.request.build_absolute_uri()
+
+        return url
 
     def get_form_kwargs(self):
         kwargs = super(CommentListView, self).get_form_kwargs()
@@ -951,7 +953,6 @@ class CommentListView(FormView):
         return context
 
 event_comments = CommentListView.as_view()
-
 
 
 @login_required
