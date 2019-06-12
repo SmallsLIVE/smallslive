@@ -409,6 +409,12 @@ $event-row-padding: 3.5vw;
     padding-top: 5px;
     border-top: $underline-height solid $white-transparent;
   }
+
+  &.calendar {
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
 }
 
 .calendar {

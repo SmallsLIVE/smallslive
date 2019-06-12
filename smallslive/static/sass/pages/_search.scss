@@ -2013,6 +2013,11 @@ body.home.admin-header {
     .event-info {
       font-size: 3.5vw;
       width: 70%;
+
+      &.new {
+        display: none;
+      }
+
     }
 
     .musicians-results.white-line-bottom {
