@@ -700,43 +700,19 @@ $(document).ready(function () {
 
   ///////////
 
-  // If only one result -> go to artist
-  var $artists = $(".artist-row");
-  if ($artists.length == 1) {
-    $artists.click();
-  } else {
-    $("#artists").removeClass("invisible");
-  }
-
   $(document).on(
     "click",
     ".artist-search-profile-container .close-button",
     function () {
-      // If only one artist, assume back to search means
-      // actually resetting search
-      var $artists = $(".artist-row");
-      if ($artists.length == 1) {
-        window.location.href = "/search";
+      var queryTermParts = window.location.search.split("query_term=");
+      var queryTermPart = '';
+      if (queryTermParts.length > 1) {
+        queryTermPart = queryTermParts[1];
+      }
+      if (queryTermPart) {
+        window.location = "/search?q=" + queryTermPart;
       } else {
-        $("#musicianContent").show();
-        $(".artist-search-profile-container").hide();
-        $(".artist-search-profile-resume .close-button").show();
-        $(".search-tabs").removeClass("hidden");
-        artist_pk = null;
-        $("#artist-search").val("");
-        searchTerm = "";
-        apply = true;
-        archivedEventPageNum = 1;
-        $('[data-toggle-tab-group="search-results"][data-toggle-tab-target]').show();
-        $('[data-toggle-tab-group="search-results"][data-toggle-tab="archived-shows"]').show();
-        $('[data-toggle-tab-group="search-results"][data-toggle-tab="upcoming-shows"]').hide();
-        if (viewPortLength("width") < 1024) {
-          $('[data-toggle-tab-group="search-results"][data-toggle-tab]').hide();
-        }
-        $(
-          '[data-toggle-tab-group="search-results"][data-toggle-tab="musicians"]'
-        ).show();
-        sendEventRequest("#showsArchivedContent");
+        window.location = "/search/archive";
       }
     }
   );

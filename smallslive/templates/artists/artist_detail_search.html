@@ -75,9 +75,13 @@
     </div>
 
     <div class="artist-search-profile-bio-buttons flex-column">
+      {% if archived and upcoming or archived and artist.albums %}
         <button data-toggle-tab-group="search-results" data-toggle-tab-target="archived-shows" id="archive-shows-button" class="white-border-button hover-fade active">Archived Shows</button>
+      {% endif %}
+      {% if upcoming and archived or upcoming and artist.albums %}
         <button data-toggle-tab-group="search-results" data-toggle-tab-target="upcoming-shows" id="upcoming-shows-button" class="white-border-button hover-fade">Upcoming Shows</button>
-        <button data-toggle-tab-group="search-results" data-toggle-tab-target="smallslive-tracks" id="smallslive-tracks-button" class="white-border-button hover-fade {% if not artist.albums %} hidden {% endif %}">Smallslive Tracks</button>
+      {% endif %}
+      <button data-toggle-tab-group="search-results" data-toggle-tab-target="smallslive-tracks" id="smallslive-tracks-button" class="white-border-button hover-fade {% if not artist.albums %} hidden {% endif %}">Smallslive Tracks</button>
     </div>
   </div>
 </div>

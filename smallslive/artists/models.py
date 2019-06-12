@@ -133,10 +133,9 @@ class Artist(models.Model):
 
     def get_absolute_url(self):
         search_url = reverse('search')
-        params = urllib.urlencode(
-            {'artist_pk': self.id}
-        )
-        return '?'.join([search_url, params])
+        url = '{}?artist_pk={}'.format(search_url, self.id)
+
+        return url
 
     def full_name(self):
         return u" ".join(filter(None, [self.first_name, self.last_name]))

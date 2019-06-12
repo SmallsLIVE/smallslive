@@ -84,13 +84,6 @@ $(document).ready(function() {
 
   });
 
-
-  foundArtistNumber = $(".artist-mobile").length
-  if ( foundArtistNumber === 1 ){
-    $uniqueArtist = $(".artist-mobile")[0];
-    $($uniqueArtist).find(".artist-row")[0].click()
-  }
-
   $('.instruments-container .close-button').on('click', function() {
       $(this).closest('.instruments-container').hide();
   });

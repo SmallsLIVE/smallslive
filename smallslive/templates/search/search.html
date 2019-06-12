@@ -30,81 +30,76 @@
 {% include 'inactive_dialog.html' %}
 {% include 'become_a_supporter_dialog.html' %}
 
-{% if not query_term and not artist_profile %}
-  <section id="recently-added-section" class="event-stripe archive">
-    <div class="section-title home archive">
-      <div class="title1"><a href="#" id="ra-recently-added-toggle"  class="accent-color"> Recently Added</a>  \ <a href="#" id="ra-most-popular-toggle">Most Popular</a></div>
-    </div>
-    <main>
-      <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-      <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-      {% include 'events/event_row.html' with events=new_in_archive secondary=True %}
-    </main>
-  </section>
-
-  <section id="most-popular-section" class="event-stripe archive hidden">
-    <div class="section-title home archive">
-      <div class="title1"><a href="#" id="mp-recently-added-toggle"> Recently Added</a>  \ <a href="#" id="mp-most-popular-toggle" class="accent-color">Most Popular</a></div>
-      <span class="select-container" style="left: 690px; bottom: -4px;">
-        <div class="white-border-select home-filter">
-          <select id="most-popular-filter">
-            <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
-            <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
-            <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
-            <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
-          </select>
-        </div>
-      </span>
-    </div>
-    <main id="most-popular-container">
-      <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-      <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-      {% include 'events/event_row.html' with events=popular_in_archive secondary=True %}
-    </main>
-  </section>
-{% endif %}
-
-{% if not query_term and not artist_profile %}
-  <div class="flex-row new-archive">
-    <div class="musicians-result active" data-type="search-content">
-      <div class="title1 shows-results-title">
-        Shows
-      </div>
-    </div>
-    <div class="musicians-result" data-type="musicianContent">
-      <div class="title1 musicians-results-title">
-        Musicians
-      </div>
-    </div>
+{% if artist_profile %}
+  <div class="artist-search-profile-container pad-content">
+    {% include 'artists/artist_detail_search.html' with archived=event_results upcoming=upcoming_events %}
   </div>
 {% endif %}
 
-<div class="artist-search-profile-container pad-content"></div>
-
 <div class="search-container pad-content new-archive">
-    <section id="musicianContent"
-             data-toggle-tab="musicians"
-             class="search-tab-content {% if musician_search %}active{% endif %} search-page {% if not query_term %} tall {% endif %}"
-             data-toggle-tab-group="search-results" {% if not query_term %} style="display: none;" {% endif  %}>
-      <div class="musicians-results">
-        <!-- removed pagination because of update to autoscroll 
-        <div id="artist-subheader" class="showing-results text1" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>1-24</div>
-        //-->
-        <div class="section-title title1 musicians-results-title">
-          {% if artists_blocks %} <span id="total-artist" class="accent-color">{{ showing_artist_results }} </span>
-            {% if showing_artist_results > 1 %}
-              &nbsp;Musicians
-            {% else %}
-              Musician
-            {% endif %}
-          {% else %} No musicians named "<span class="accent-color">{{ query_term }}</span>" found
-          {% endif%}
+
+    {% if not artist_profile %}
+      <section id="musicianContent"
+               data-toggle-tab="musicians"
+               class="search-tab-content {% if musician_search %}active{% endif %} search-page"
+               data-toggle-tab-group="search-results">
+        <div class="musicians-results">
+          <!-- removed pagination because of update to autoscroll
+          <div id="artist-subheader" class="showing-results text1" data-max-number='{{ showing_artist_results }}' data-paginator-number=24 data-left-number=1 data-right-number=24>1-24</div>
+          //-->
+          <div class="section-title title1 musicians-results-title">
+            {% if artists_blocks %} <span id="total-artist" class="accent-color">{{ showing_artist_results }} </span>
+              {% if showing_artist_results > 1 %}
+                &nbsp;Musicians
+              {% else %}
+                Musician
+              {% endif %}
+            {% else %} No musicians named "<span class="accent-color">{{ query_term }}</span>" found
+            {% endif%}
+          </div>
         </div>
-      </div>
-      {% if artists_blocks %}
-        {% include 'search/artists.html' %}
-      {% endif %}
-    </section>
+        {% if artists_blocks %}
+          {% include 'search/artists.html' %}
+        {% endif %}
+      </section>
+    {% endif %}
+
+    {% if not query_term and not artist_profile %}
+      <section id="recently-added-section" class="event-stripe archive">
+        <div class="section-title home archive">
+          <div class="title1"><a href="#" id="ra-recently-added-toggle"  class="accent-color"> Recently Added</a>  \ <a href="#" id="ra-most-popular-toggle">Most Popular</a></div>
+        </div>
+        <main>
+          <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+          <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+          {% include 'events/event_row.html' with events=new_in_archive secondary=True %}
+        </main>
+      </section>
+
+      <section id="most-popular-section" class="event-stripe archive hidden">
+        <div class="section-title home archive">
+          <div class="title1"><a href="#" id="mp-recently-added-toggle"> Recently Added</a>  \ <a href="#" id="mp-most-popular-toggle" class="accent-color">Most Popular</a></div>
+          <span class="select-container" style="left: 690px; bottom: -4px;">
+            <div class="white-border-select home-filter">
+              <select id="most-popular-filter">
+                <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
+                <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
+                <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
+                <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
+              </select>
+            </div>
+          </span>
+        </div>
+        <main id="most-popular-container">
+          <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+          <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+          {% include 'events/event_row.html' with events=popular_in_archive secondary=True %}
+        </main>
+      </section>
+    {% endif %}
+
+
+
     <section id="search-content" class="search-content" data-toggle-tab="archived-shows" data-toggle-tab-group="search-results">
       {% include 'events/shows.html' with events=event_results archived=True default_to_date=default_to_date secondary=True %}
     </section>

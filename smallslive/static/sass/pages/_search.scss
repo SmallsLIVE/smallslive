@@ -826,7 +826,7 @@ body.headers-1 {
   display: flex;
   position: relative;
   width: 700px;
-  margin: 0px auto 10px auto;
+  margin: 0px auto 10px 3.5vw;
 
   img {
     width: 21px;
@@ -992,7 +992,6 @@ body.headers-1 {
 }
 
 .home div.artist-search-profile-container {
-  display: none;
 
   .content-centered {
     flex-direction: row;
@@ -2100,7 +2099,7 @@ body.home.admin-header {
   .new-archive {
     border-bottom: 5px solid white;
     justify-content: space-evenly;
-    margin-top: 30px;
+    /*margin-top: 30px;*/
 
     .musicians-result {
       border: 3px solid white;

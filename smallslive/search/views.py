@@ -321,6 +321,22 @@ class SearchBarView(View):
 class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
     template_name = 'search/search.html'
 
+    def get_artist_context(self, artist_id):
+
+        artist_context = {
+            'artist_profile': True,
+            'artist': Artist.objects.filter(id=artist_id).first()
+        }
+        # Populate upcoming shows as well. That is the only case for now.
+        upcoming_event_blocks, showing_event_results, num_pages, first, last = self.search(
+            Event, '', results_per_page=60, artist_pk=artist_id, date_from=datetime.datetime.today())
+        artist_context['upcoming_events'] = upcoming_event_blocks[0] if upcoming_event_blocks else []
+        artist_context['showing_artist_results'] = ''
+        artist_context['artists_blocks'] = None
+        artist_context['artist_num_pages'] = 0
+
+        return artist_context
+
     def get_context_data(self, **kwargs):
         context = super(TemplateSearchView, self).get_context_data(**kwargs)
         context = self.get_upcoming_events_context_data(context)
@@ -330,27 +346,21 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
             context['musician_search'] = True
 
         artist_id = self.request.GET.get('artist_pk')
-        upcoming_event_blocks = None
         if artist_id:
-            artists_blocks = [[Artist.objects.filter(id=artist_id).first()]]
-            showing_artist_results = ''
-            num_pages = 1
-            context['artist_profile'] = True
-            # Populate upcoming shows as well. That is the only case for now.
-            upcoming_event_blocks, showing_event_results, num_pages, first, last = self.search(
-                Event, '', results_per_page=60, artist_pk=artist_id, date_from=datetime.datetime.today())
+            artist_context = self.get_artist_context(artist_id)
+            context.update(artist_context)
         else:
             artists_blocks, showing_artist_results, num_pages = self.search(
                 Artist, q, instrument=instrument)
-        context['upcoming_events'] = upcoming_event_blocks[0] if upcoming_event_blocks else []
+            context['showing_artist_results'] = showing_artist_results
+            context['artists_blocks'] = artists_blocks
+            context['artist_num_pages'] = num_pages
+
         context['query_term'] = q
         instruments = Instrument.objects.all()
         artist_count = sum([i.artist_count for i in instruments])
         context['instruments_artist_count'] = artist_count
         context['instruments'] = instruments
-        context['showing_artist_results'] = showing_artist_results
-        context['artists_blocks'] = artists_blocks
-        context['artist_num_pages'] = num_pages
 
         event_blocks, showing_event_results, num_pages, first, last = self.search(
             Event, q, results_per_page=60, artist_pk=artist_id)
@@ -367,10 +377,10 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         default_to_date = 'now'
         if event_blocks and event_blocks[0] and event_blocks[0][0].date:
             default_to_date = event_blocks[0][0].date.strftime('%m/%d/%Y')
-        context['first_event_date'] = last.get_date().strftime('%m/%d/%Y')
-        context['last_event_date'] = first.get_date().strftime('%m/%d/%Y')
-        context['first'] = first
-        context['last'] = last
+            context['first_event_date'] = last.get_date().strftime('%m/%d/%Y')
+            context['last_event_date'] = first.get_date().strftime('%m/%d/%Y')
+            context['first'] = first
+            context['last'] = last
 
         if self.request.user.is_staff:
             context['show_metrics'] = True
