@@ -104,49 +104,58 @@ function init() {
     });
 }
 
-function controls(){
+function controls() {
 
-    var $win = $(window);
-    var $prev = $('div.slide-btn.prev');
-    var $next = $('div.slide-btn.next');
+  var $win = $(window);
+  var $prev = $('div.slide-btn.prev');
+  var $next = $('div.slide-btn.next');
 
-    $(document).on('click', 'div.slide-btn.next', function(){
-        var $next = $(this);
-        var $row = $next.next();
-        var $win = $(window);
-        var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-        var padding = $row.innerWidth() - $row.width();
-        var currentLeft = parseFloat($row.css("marginLeft"));
-        var left = vw - currentLeft;
-        $row.animate({
-            marginLeft: -left + 2 * padding
-        }, 400, function(){
-            var $prev = $row.prev().prev();
-            $prev.css('visibility', 'visible');
-            $next.css('visibility', 'hidden');
-            var $last = $row.find('article').last();
-            if ($last.is(':offscreen')) {
-                $next.css('visibility', 'visible');
+  $(document).on('click', 'div.slide-btn.next', function () {
+      var $next = $(this);
+      var $row = $next.next();
+      var $win = $(window);
+      var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      var padding = $row.innerWidth() - $row.width();
+      var currentLeft = parseFloat($row.css("marginLeft"));
+      var left = vw - currentLeft;
+      $row.animate({
+          marginLeft: -left + 2 * padding
+      }, 400, function () {
+          var $prev = $row.prev().prev();
+          $prev.css('visibility', 'visible');
+          $next.css('visibility', 'hidden');
+          var $last = $row.find('article').last();
+          if ($last.is(':offscreen')) {
+              $next.css('visibility', 'visible');
+          } else {
+            // retrieve more results
+            // Rely on HTML indicating the name of a callback function
+            var callback = $next.data('callback-name');
+            if (callback && typeof window[callback] === "function") {
+              window[callback]();
             }
-        });
-    });
+          }
+      });
+  });
 
-    $(document).on('click', 'div.slide-btn.prev', function(){
-        var $prev = $(this);
-        var $win = $(window);
-        var $row = $prev.next().next();
-        var $next = $prev.next();
-        scrollWidth = 0;
-        $row.animate({
-            marginLeft: + scrollWidth
-        }, 300, function(){
-            $prev.css('visibility', 'hidden');
-            $next.css('visibility', 'hidden');
-            var $last = $row.find('article').last();
-            console.log($last)
-            if ($last.is(':offscreen')) {
-                $next.css('visibility', 'visible');
-            }
-        });
-    });
+  $(document).on('click', 'div.slide-btn.prev', function(){
+      var $prev = $(this);
+      var $win = $(window);
+      var $row = $prev.next().next();
+      var $next = $prev.next();
+      var vw = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      var padding = $row.innerWidth() - $row.width();
+      var currentLeft = parseFloat($row.css("marginLeft"));
+      var left = vw + currentLeft;
+      $row.animate({
+          marginLeft: left - 2 * padding
+      }, 300, function(){
+          $prev.css('visibility', 'hidden');
+          $next.css('visibility', 'visible');
+          var $first = $row.find('article').first();
+          if ($first.is(':offscreen')) {
+              $prev.css('visibility', 'visible');
+          }
+      });
+  });
 };

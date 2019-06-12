@@ -117,7 +117,7 @@ function loadMoreArtistButton() {
     artistPageNum += 1;
     $(".white-border-button.load-more-artist-button").hide();
     $(".mobile-artist-loading").show();
-    sendArtistRequest();
+    sendArtistRequest(updateArtistsHtml);
   }
 }
 
@@ -130,7 +130,30 @@ $("#a-z-refresh").click(() => {
   $("#a-z-refresh").css("background-color", "#fff");
 });
 
-function sendArtistRequest(callback) {
+
+function searchMoreArtists() {
+  /*
+   Called from clicking on next button (on the last artist)
+   Retrieves another batch of artists and adds to the slider.
+  */
+  artistPageNum++;
+  sendArtistRequest(updateArtistsHtml);
+}
+
+function updateArtistsHtml(data, reset) {
+  if (data.template) {
+    $(".mobile-artist-loading").hide();
+    $("#artists .event-row").append(data.template);
+    $("#artists .slide-btn.next").css("visibility", "visible");
+    if (reset) {
+      $("#artists .event-row").css("marginLeft", "0");
+      $("#artists .slide-btn.prev").css("visibility", "hidden");
+    }
+
+  }
+}
+
+function sendArtistRequest(callback, callbackParam) {
   callback = callback || function () {};
   $.ajax({
     url: "/search/ajax/artist/",
@@ -142,34 +165,10 @@ function sendArtistRequest(callback) {
     },
     dataType: "json",
     success: function (data) {
-      if (data.template) {
-        if (artistPageNum === 1) {
-          if (typeof data.showingResults !== "number") {
-            $("#artist-subheader").text("0-0");
-          } else if (data.showingResults < 24) {
-            $("#artist-subheader").text("1-" + data.showingResults);
-          } else {
-            $("#artist-subheader").text("1-24");
-          }
-        }
-        $(".mobile-artist-loading").hide();
-        $("#total-artist").html(data.showingResults);
-        $("#artist-subheader").data("max-number", data.showingResults);
-        $("#artists").append(data.template);
-        artistMaxPageNum = data.numPages;
-        if (artistPageNum === artistMaxPageNum) {
-          $(".white-border-button.load-more-artist-button").hide();
-        } else {
-          if (viewPortLength("width") < 960) {
-            $(".white-border-button.load-more-artist-button").show();
-          }
-        }
-      }
-      callback(data);
+      callback(data, callbackParam);
     },
     error: function (data) {
       $("#artist-load-gif").css("display", "none");
-      $(".container-list-article").css("height", "auto");
       $(".right_arrow").css("visibility", "hidden");
     }
   });
@@ -418,11 +417,7 @@ $(document).ready(function () {
         artistPageNum += 1;
         $that.addClass("loading");
         queryBusy = true;
-        sendArtistRequest(function () {
-          maxPseudopage += 4;
-          queryBusy = false;
-          $that.removeClass("loading");
-        });
+        sendArtistRequest(updateArtistsHtml);
       }
     }
   });
@@ -535,15 +530,10 @@ $(document).ready(function () {
     delay(function () {
       artistPageNum = 1;
       artistSearchTerm = $("#artist-search").val();
-      $(".container-list-article").addClass("artist-loading-gif");
-      $("#artists").html("");
+      $("#artists .event-row").html("");
       $("#artist-subheader").data("left-number", 1);
       $("#artist-subheader").data("right-number", 24);
-      sendArtistRequest(function () {
-        $(".container-list-article").removeClass("artist-loading-gif");
-        $("#artists").css("left", 0);
-        toggleArrows();
-      });
+      sendArtistRequest(updateArtistsHtml, true);
     }, 700);
   });
 
@@ -583,14 +573,9 @@ $(document).ready(function () {
     $(".instrument-btn").text(artistInstrument || "Instrument");
     artistPageNum = 1;
 
-    $(".container-list-article").addClass("artist-loading-gif");
-    $("#artists").html("");
+    $("#artists .event-row").html("");
 
-    sendArtistRequest(function () {
-      $(".container-list-article").removeClass("artist-loading-gif");
-      $("#artists").css("left", 0);
-      toggleArrows();
-    });
+    sendArtistRequest(updateArtistsHtml);
     $(".instruments-container").css("display", "none");
   });
 

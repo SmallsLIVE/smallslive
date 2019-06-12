@@ -229,31 +229,6 @@ body.headers-1 {
 }
 
 .search-container {
-  .container-list-article {
-    overflow-y: hidden;
-    overflow-x: hidden;
-    height: 200px;
-    width: 90%;
-
-    @media (max-width: $screen-md-max) {
-      height: auto;
-    }
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-
-    &:before {
-      content: "";
-      position: absolute;
-      left: 0px;
-      width: 6vw;
-      z-index: 3;
-      background: #f0f0eb;
-      height: 100%;
-    }
-  }
 
   #showsArchivedContent,
   #showUpcomingContent {
@@ -425,15 +400,6 @@ body.headers-1 {
 
       display: flex;
       flex-direction: column;
-    }
-
-    .container-list-article {
-      margin-top: 20px;
-
-      .left_arrow,
-      .right_arrow {
-        display: none;
-      }
     }
 
     .section-title {

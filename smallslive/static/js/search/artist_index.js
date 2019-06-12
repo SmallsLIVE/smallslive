@@ -95,11 +95,14 @@ $(document).ready(function() {
       $(this).closest('.instruments-container').hide();
   });
 
-  $(".musicians-result").on("click", function(){
-      $(".musicians-result.active").removeClass("active")
-      $(this).addClass("active")
+  $(".musicians-result").on("click", function () {
+      $(".musicians-result.active").removeClass("active");
+      $(this).addClass("active");
 
-      $(".search-container.pad-content > section").hide()
-      $("#" + $(this).data("type")).show()
+      $(".search-container.pad-content > section").hide();
+      var $section = $("#" + $(this).data("type"));
+      $section.show();
+      $section.find(".slide-btn.next").css("visibility", "visible");
+
   });
 });
