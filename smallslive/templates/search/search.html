@@ -110,7 +110,7 @@
     </section>
     <section id="search-content" class="search-content" data-toggle-tab="upcoming-shows" data-toggle-tab-group="search-results" style="display: none;">
       <!-- include upcoming shows (as placeholder and hidden), so then can be toggled when viewing artists profile -->
-      {% include 'events/shows.html' with events=upcoming_events upcoming=True default_from_date=default_from_date secondary=True hide_filters=True%}
+      {% include 'events/shows.html' with events=upcoming_events upcoming=True default_from_date=default_from_date secondary=True hide_filters=True show_event_venue=True show_metrics=False show_time=True%}
     </section>
 
 
