@@ -39,6 +39,13 @@
         </div>
       </div>
     {% endif %}
+    {% if upcoming and artist_profile %}
+      <div class="section-title home calendar upcoming-shows">
+        <div id="upcoming-shows" class="title1" data-last-event-date="{{ last_event.date }}">
+          Upcoming Shows
+        </div>
+      </div>
+    {% endif %}
   {% endif %}
   {% if archived %}
       {% include 'events/archived_filters.html' with default_to_date=default_to_date %}
@@ -49,7 +56,7 @@
     </div>
   {% endif %}
   <main id="events" class="events-results {{ archived|yesno:',events-calendar' }}">
-    {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming events=event_results show_event_venue=show_event_venue secondary=True hide_play=hide_play with_date_picker=True %}
+    {% include 'search/event_search_result.html' with show_extend_date=show_extend_date upcoming=upcoming show_event_venue=show_event_venue secondary=True hide_play=hide_play with_date_picker=True %}
   </main>
 
   <div class="concerts-footer flex-column items-center">
