@@ -232,9 +232,15 @@ $banners-height: 38vh;
       .banner-learnmore {
         /* temp :likely this should be recalculated using css locks
         margin-top: 1.5vw;*/
+        @media (min-width:960px) {
+          margin-top: 0;
+        }
+        @media (min-width: 1200px) {
+          margin-top: 0;
+        }
 
         @media(max-width: 960px) {
-          margin-top: 40vw;
+          margin-top: calc(-7.97vw + 142px);
         }
       }
 
@@ -306,7 +312,7 @@ $banners-height: 38vh;
         text-align: left;
         white-space: initial;
         height: 20vw;
-        padding: 0 5vw;
+        /*padding: 0 5vw;*/
       }
 
       button,
@@ -413,18 +419,20 @@ $banners-height: 38vh;
       }
 
       @media(max-width: 960px) {
-        height: 75vw;
+        height: calc(17.34vw + 168.53px);
 
         .content {
           color: white;
           font-family: Oswald;
-          font-size: 6vw;
+          font-size: calc(2.27vw + 10.25px);
           height: auto;
-          margin-top: 5vw;
-          padding: 0px 1.5vw;
-          letter-spacing: -1px;
+          /*margin-top: 5vw;*/
+          /*padding: 0px 1.5vw;*/
+          letter-spacing: .1px;
           font-weight: 400;
-          line-height: 100%;
+          line-height: 110%;
+          margin: 2vw auto;
+          width: 80vw;
         }
       }
     }
@@ -463,16 +471,19 @@ $banners-height: 38vh;
         font-size: 2.5rem;
         height: auto;
         margin-top: 0;
-        padding: 0px 8.5vw;
+        /*padding: 0px 8.5vw;*/
         letter-spacing: -1px;
         font-weight: 400;
         line-height: 180%;
-        text-align: center;
+        text-align: left;
+        text-transform: uppercase;
         @media (min-width:960px) {
           font-size: calc(2.917vw - 3px);
+          width: calc(117.7vw - 332px);
         }
         @media (min-width: 1200px) {
           font-size: 3.2rem;
+          width: 108rem;
         }
 
         &.wide {
