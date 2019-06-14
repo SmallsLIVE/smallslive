@@ -65,7 +65,7 @@ def get_album_catalog(request):
     return JsonResponse(data)
 
 
-class PurchasedProductsInfoMixin():
+class PurchasedProductsInfoMixin(object):
 
     def __init__(self):
 
@@ -85,14 +85,14 @@ class PurchasedProductsInfoMixin():
             self.album_list = []
         else:
             catalogue_access = UserCatalogue.objects.filter(user=self.request.user).first()
-            if catalogue_access and  catalogue_access.has_full_catalogue_access:
+            if catalogue_access and catalogue_access.has_full_catalogue_access:
                 self.digital_album_list = Product.objects.filter(product_class__slug='digital-album')
                 self.physical_album_list = Product.objects.filter(product_class__slug='physical-album')
                 self.track_list = []
             else:
-                self.digital_album_list = Product.objects.filter(product_class__slug='digital-album',access__user=self.request.user)
-                self.physical_album_list = Product.objects.filter(product_class__slug='physical-album',access__user=self.request.user)
-                self.track_list = UserCatalogueProduct.objects.filter(product__product_class__slug='track',user=self.request.user)
+                self.digital_album_list = Product.objects.filter(product_class__slug='digital-album', access__user=self.request.user)
+                self.physical_album_list = Product.objects.filter(product_class__slug='physical-album', access__user=self.request.user)
+                self.track_list = UserCatalogueProduct.objects.filter(product__product_class__slug='track', user=self.request.user)
 
             self.album_list = []
             for album in list(self.digital_album_list) + list(self.physical_album_list):
