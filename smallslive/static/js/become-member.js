@@ -210,7 +210,7 @@ $(document).ready(function () {
               $.get(data.url, function (data) {
                 $mainContainer.find("#supporterStepBilling").html(data);
                 showPanel("Billing");
-                replaceWhiteSelects(mainContainer.find$("#supporterStepBilling")[0]);
+                replaceWhiteSelects($mainContainer.find("#supporterStepBilling")[0]);
                 renderCardAnimation("#payment-form");
               });
             });
