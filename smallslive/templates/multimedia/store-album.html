@@ -10,38 +10,23 @@
 
 {% block store_content %}
 
-  <section id=" my-downloads-album__list">
+  <section id="my-downloads-album__list">
     {% include 'multimedia/album-display.html' with album_product=album_product if_full=is_full bought_tracks=bought_tracks is_catalogue=is_catalogue mp3_available=mp3_available %}
   </section>
   <section id="my-downloads-product__purchase" class="hidden">
     {% include 'account/become-supporter.html' with supporter_flow='catalog_flow' %}
   </section>
   <section id="my-downloads-product__support" class="hidden">
-    {% include 'account/become-supporter.html' with supporter_flow='project_support' %}
+    {% include 'account/product-support.html' %}
   </section>
   {% include 'account/catalog_selection_confirmation_dialog.html' %}
+  {% include 'account/artist_support_confirmation_dialog.html' %}
 {% endblock %}
 
 
 {% block extra_js %}
-  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-  <script src="https://js.stripe.com/v2/"></script>
-  <script src="{% static 'js/card.js' %}"></script>
-  <script src="{% static 'js/payment/payment.js' %}"></script>
-  <script src="{% static 'js/become-member.js' %}"></script>
-  <script src="{% static 'js/store-base.js' %}"></script>
-  <script>
 
-    $(document).ready(function () {
-
-      Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
-      // in payment.js
-      //renderPayPal(paypal);
-      //renderCardAnimation();
-
-    });
-
-  </script>
+  {{ block.super }}
   <script>
     var el, setTime;
 
@@ -53,6 +38,8 @@
   <script>
 
     $(document).ready(function () {
+
+      Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
       $(window).resize();
     });
 

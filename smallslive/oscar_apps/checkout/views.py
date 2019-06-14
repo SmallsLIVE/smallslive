@@ -677,9 +677,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             self.mezzrow = False
             currency = total.currency
             if card_token:
-                reference = self.handle_stripe_payment(
-                    card_token, order_number,
-                    total, basket, basket_lines, **kwargs)
+                self.total = total
+                reference = self.handle_stripe_payment(order_number, basket_lines, **kwargs)
                 source_name = 'Stripe Credit Card'
                 source_type, __ = SourceType.objects.get_or_create(name=source_name)
                 source = Source(
@@ -690,7 +689,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                     reference=reference)
                 self.add_payment_source(source)
                 self.add_payment_event('Purchase', total.incl_tax, reference=reference)
-                #Set a ongoing donation, finished when payment is confirmed
+                # Set an ongoing donation, finished when payment is confirmed
                 total_deductable = basket._get_deductable_physical_total()
                 donation = {
                     'user': self.request.user,

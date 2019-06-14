@@ -197,35 +197,24 @@
       </div>
     </div>
   </div>
-  <div class="modal fade flow-modal" id="one-time-donation" aria-hidden="true">
-      <div class="modal-dialog donate-dialog">
-        <div class="modal-content custom-modal">
-          <a href="#" class="close-button"></a>
-          <div class="modal-body">
-            <div id="donate-setting-steps" class="donate-setting-container" data-subpage-name="make-donation" data-subpage-url="{% url 'donate' %}">	
-            </div>
-            <div id="donate-setting-steps-complete" class="donate-setting-container" data-subpage-name="make-donation-complete" data-subpage-url="{% url 'donate_complete' %}">	
-            </div>
-          </div>
+
+  <div class="modal fade flow-modal" id="remove-comment" aria-hidden="true">
+    <div class="modal-dialog remove-comment-modal">
+      <div class="modal-content custom-modal">
+        <a href="#" class="close-button"></a>
+        <div class="modal-body">
+           <div class="title1">Removing comments</div>
+            <div class="current-event accent-color text7">Are you sure to remove this comment?</div>
+           <form action="{% url 'remove_comment'%}" method="post">
+              {% csrf_token %}
+              <button type="submit" name="id" value="" class="white-border-button">Confirm</button>
+              <button onclick="$('#remove-comment').modal('hide')" class="white-border-button">Cancel</button>
+          </form>
         </div>
       </div>
     </div>
-    <div class="modal fade flow-modal" id="remove-comment" aria-hidden="true">
-      <div class="modal-dialog remove-comment-modal">
-        <div class="modal-content custom-modal">
-          <a href="#" class="close-button"></a>
-          <div class="modal-body">
-             <div class="title1">Removing comments</div>
-              <div class="current-event accent-color text7">Are you sure to remove this comment?</div>
-             <form action="{% url 'remove_comment'%}" method="post">
-                {% csrf_token %}
-                <button type="submit" name="id" value="" class="white-border-button">Confirm</button>
-                <button onclick="$('#remove-comment').modal('hide')" class="white-border-button">Cancel</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+  </div>
+  {% include 'account/artist_support_confirmation_dialog.html' %}
 {% endblock %}
 
 {% block extra_js %}
@@ -238,22 +227,9 @@
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
   <script src="{% static 'js/subpages.js' %}"></script>
-  <script src="{% static 'js/become-member.js' %}"></script>
-  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-  <script src="{% static 'js/card.js' %}"></script>
-  <script src="{% static 'js/payment/payment.js' %}"></script>
-  <script src="https://js.stripe.com/v2/"></script>
   <script>
-    window.completeSubpage = "make-donation-complete"
-    window.paypalTest = true;
-    $(document).ready(function () {
-      Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
 
-      function renderObjects() {
-        // in payment.js
-        renderPayPal(paypal);
-        renderCardAnimation();
-      }
+    $(document).ready(function () {
 
       var subpages = window.subpages;
       subpages.register();
@@ -264,24 +240,17 @@
         $('#remove-comment button').val($(this).data("value"))
       })
 
-
-      $('#one-time-donation-btn').on('click', function () {
-        currentStep = 'Intro';
-        $('#donate-setting-steps-complete').html("")
-        $('#one-time-donation').modal('show');
-        var donationSubpage = window.subpages.get("make-donation");
-        window.currentStep = 'Intro';
-        window.notCompleteContainer = $('#donate-setting-steps')
-        donationSubpage.load();
-
-        $onetimebtns = $('#yearlyPledge').find('button')
-        $onetimebtns.each((el) => {
-          $(el).click(function(){
-            window.paypalAmmount = $(this).val().substring(1, $(this).val().length);  
-            console.log(window.paypalAmmount)
-          })
-        })
+      $(document).on("click", "#confirmDonationButton", function () {
+        var flowType = "event_support";
+        var eventId = {{ event.pk }};
+        window.location = "{% url 'become_supporter' %}?flow_type=" + flowType + "&event_id=" + eventId;
       });
+
+      var $donationConfirmationDialog = $("#supportConfirmationDialog");
+      $('#one-time-donation-btn').on('click', function () {
+        $donationConfirmationDialog.modal("show");
+      });
+
     });
 
     $(document).on('click', '[data-playlist-index]', function (ev) {
@@ -292,16 +261,6 @@
     });
 
     
-  </script>
-  <script>
-      
-    function endDonation() {
-      if ("{{ redirect_url }}") {
-        window.location = "{{ redirect_url }}";
-      } else {
-        $('#one-time-donation').modal('hide');
-      }
-    }
   </script>
 
   {% with album=event.products.first %}

@@ -1,5 +1,6 @@
 from stripe.error import APIConnectionError, InvalidRequestError
 from django.core.paginator import Paginator
+from django.core.urlresolvers import reverse
 from django.http import JsonResponse
 from django.template import RequestContext
 from django.template.loader import render_to_string
@@ -180,6 +181,9 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
 
         # Clean basket
         # self.request.basket.flush()
+
+        ctx['payment_info_url'] = reverse('payment_info')
+        ctx['product_id'] = self.object.pk
 
         return ctx
 

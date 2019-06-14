@@ -83,30 +83,44 @@ function renderCardAnimation(selector) {
 
 function startStripePayment($form, action_url, completeSubpage) {
   console.log('Send Stripe API Request ->');
-  var flow_type = $("#supporterSteps").data("flow");
+  var flowType = $mainContainer.find("#supporterSteps").data("flow");
       // Insert the token into the form so it gets submitted to the server
   // and submit
   $form.append(
-    $('<input type="hidden" name="flow_type" />').val(flow_type)
+    $('<input type="hidden" name="flow_type" />').val(flowType)
   );
 
-  var productId = $("#supporterSteps").data("product-id");
+  var productId = $mainContainer.find("#supporterSteps").data("product-id");
       // Insert the token into the form so it gets submitted to the server
   // and submit
   $form.append(
     $('<input type="hidden" name="product_id" />').val(productId)
   );
 
+  var eventId = $mainContainer.find("#supporterSteps").data("event-id");
+      // Insert the token into the form so it gets submitted to the server
+  // and submit
+  $form.append(
+    $('<input type="hidden" name="event_id" />').val(eventId)
+  );
+
+  var eventSlug = $mainContainer.find("#supporterSteps").data("event-slug");
+      // Insert the token into the form so it gets submitted to the server
+  // and submit
+  $form.append(
+    $('<input type="hidden" name="event_slug" />').val(eventSlug)
+  );
+
   var stripeResponseHandler = function(status, response) {
     if (response.error) {
       // Show the errors on the form
       // TODO Display payment errors
-      $("#form-general-error").text(response.error.message);
+      $mainContainer.find("#form-general-error").text(response.error.message);
       $form
         .find(".submit-button")
         .prop("disabled", false)
         .removeClass("disabled");
-      $('#confirmButton').prop("disabled", false);
+      $mainContainer.find('#confirmButton').prop("disabled", false);
     } else {
       // token contains id, last4, and card type
       var token = response.id;
@@ -117,7 +131,7 @@ function startStripePayment($form, action_url, completeSubpage) {
         data: $form.serialize(),
         success: function(data) {
           if (data.error) {
-            $("#form-general-error").text(data.error);
+            $mainContainer.find("#form-general-error").text(data.error);
             $form
               .find(".submit-button")
               .prop("disabled", false)
@@ -158,18 +172,31 @@ function startStripePayment($form, action_url, completeSubpage) {
 
 function startPayPalPayment($form, action_url, completeSubpage) {
 
-  var flow_type = $("#supporterSteps").data("flow");
+  var flowType = $mainContainer.find("#supporterSteps").data("flow");
       // Insert the token into the form so it gets submitted to the server
   // and submit
   $form.append(
-    $('<input type="hidden" name="flow_type" />').val(flow_type)
+    $('<input type="hidden" name="flow_type" />').val(flowType)
   );
 
-  var productId = $("#supporterSteps").data("product-id");
+  var productId = $mainContainer.find("#supporterSteps").data("product-id");
       // Insert the token into the form so it gets submitted to the server
   // and submit
   $form.append(
     $('<input type="hidden" name="product_id" />').val(productId)
+  );
+
+  var eventId = $mainContainer.find("#supporterSteps").data("event-id");
+      // Insert the token into the form so it gets submitted to the server
+  // and submit
+  $form.append(
+    $('<input type="hidden" name="event_id" />').val(eventId)
+  );
+
+  var eventSlug = $mainContainer.find("#supporterSteps").data("event-slug");
+      // Insert the token into the form so it gets submitted to the server
+  $form.append(
+    $('<input type="hidden" name="event_slug" />').val(eventSlug)
   );
 
   $.ajax({

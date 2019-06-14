@@ -37,7 +37,10 @@
 
 {% block flow_steps %}
 
-  <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover" data-flow="{{ flow_type }}"  data-free-donate="{{ can_free_donate }}">
+  <div id="supporterSteps" class="button-row button-row-margin button-row-no-hover"
+       data-artist-id="{{ artist_id }}"
+       data-flow="{{ flow_type }}"
+       data-free-donate="{{ can_free_donate }}">
     <div class="{% if not completed %}active{% endif %} step-button"></div>
     <div class="step-button"></div>
     <div class="step-button"></div>
