@@ -212,7 +212,7 @@ $event-row-padding: 3.5vw;
 
   a {
     width: 100%;
-    height: calc(100% - 110px);
+    height: calc(100% - 6vw);
   }
 
   .event-card,
@@ -242,7 +242,7 @@ $event-row-padding: 3.5vw;
 
   .artists {
     background-color: white;
-    height: 110px;
+    height: 6vw;
     width: auto;
     display: flex;
     flex-direction: row;
@@ -251,15 +251,20 @@ $event-row-padding: 3.5vw;
     padding-bottom: 0.7vw;
     padding-left: 0.7vw;
     padding-top: 0.7vw;
+    margin-top: -2vw;
+    z-index: 1;
 
     a {
       line-height: 32px;
       width: 48%;
-      height: 33%;
+      height: 1.4vw;
       margin-right: 2%;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+
+      line-height: 1.4vw;
+      font-size: 1.2vw;
 
       &:hover {
         color: $accent-color;
@@ -286,7 +291,7 @@ $event-row-padding: 3.5vw;
   .event-info {
     position: absolute;
     width: 100%;
-    height: calc(100% - 110px);
+    height: calc(100% - 6vw);
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
@@ -715,7 +720,7 @@ $event-row-padding: 3.5vw;
 }
 
 .today-and-tomorrow-arrow {
-  height: calc(100% - 110px) !important;
+  height: calc(100% - 2vw) !important;
   border-radius: 0 !important;
 }
 
