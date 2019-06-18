@@ -28,7 +28,7 @@ var searchTerm,
   upcomingEventDateFrom,
   upcomingEventDateTo,
   apply,
-  artist_pk,
+  artistPk,
   is_upcoming,
   show_event_venue,
   is_mobile,
@@ -239,7 +239,7 @@ $(document).on("click", "#artists .artist-row", function () {
 
         archivedEventDateFrom = archivedEventDateTo = null;
         upcomingEventDateFrom = upcomingEventDateTo = null;
-        artist_pk = artistId;
+        artistPk = artistId;
 
         // Trick to filter both upcoming and archived when viewing artist profile.
         apply = true;
@@ -323,7 +323,7 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
     order: eventOrderFilter,
     date_from: utcDateFrom ? utcDateFrom : null,
     date_to: utcDateTo ? utcDateTo : null,
-    artist_pk: artist_pk ? artist_pk : null,
+    artist_pk: artistPk ? artistPk : null,
     partial: true,
     show_event_venue: show_event_venue ? show_event_venue : null,
     show_event_setTime: show_event_setTime ? show_event_setTime : null,
@@ -1002,11 +1002,10 @@ $(document).ready(function () {
   $("body").removeClass("hidden-body");
 });
 
-var startingArtist;
 $(document).ready(function () {
-  startingArtist = getUrlParameter("artist_pk");
-  startingArtist = startingArtist ? startingArtist : "";
-  if (startingArtist) {
+  artistPk = getUrlParameter("artist_pk");
+  artistPk = artistPk ? artistPk : "";
+  if (artistPk) {
     $(".search-tabs div[data-toggle-tab-target='archived-shows']").removeClass(
       "active"
     );
