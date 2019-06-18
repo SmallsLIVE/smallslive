@@ -25,7 +25,7 @@
           <button onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
         {% elif not user.has_activated_account %}
           <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
-        {% elif not user.cannot_watch_video %}
+        {% elif not user.can_watch_video %}
           <a href="{% url 'become_supporter' %}">Become a supporter</a>
         {% endif %}
       </div>
