@@ -133,7 +133,8 @@
         {% endif %}
       {% endif %}
 
-        <div id='t{{ forloop.counter0 }}' class="my-downloads-album__tracks-table__row flex-row {% if is_catalogue and track.get_track_preview_url == 'blank.mp3' %} disabled {% endif %}">
+        <div id='t{{ forloop.counter0 }}'
+             class="my-downloads-album__tracks-table__row flex-row {% if is_catalogue and track.get_track_preview_url == 'blank.mp3' %} disabled {% endif %}">
           {% if track.pk in bought_tracks or is_full = 'full_album' %}
             <div class="hidden my-downloads-album__tracks-table__column audio">
               <audio class="audio-player" controls data-track="{{ forloop.counter0 }}" data-length="{{track.attr.duration}}">
@@ -156,7 +157,7 @@
             {% endif %}
           {% endif %}
           <div class="flex-column track-info {% if not is_catalogue %} {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}{% endif %}" data-track="{{ forloop.counter0 }}">
-            <div class="my-downloads-album__tracks-table__column title2">
+            <div class="my-downloads-album__tracks-table__column track title2">
               {{ track.title }} {% if is_catalogue and track.get_track_preview_url != 'blank.mp3'  %}<span style="font-size: 10px;">(preview)</span> {% endif %}
             </div>
             <div class="my-downloads-album__tracks-table__column composer text1">
@@ -165,6 +166,28 @@
           </div>
           <div class="store-buy my-downloads-album__tracks-table__column duration text1 {% if not is_catalogue %} {% if not track.pk in bought_tracks and not is_full = 'full_album' %} disabled {% endif %}{% endif %}">
             {{ track.attr.duration }}
+          </div>
+
+          <div class="my-downloads-album__tracks-table__column buy-track store-buy">
+            {% if not track.pk in bought_tracks and not is_full = 'full_album' %}
+              <div class="buy-button-container">
+                {% if user.is_authenticated %}
+                  <button class="white-border-button add-to-library" data-track-id="{{ track.pk }}">Add to Library</button>
+                {% else %}
+                  <a class="tracks-table__button" href="#"
+                     data-toggle="modal" data-target="#logIn">Add to library <i class="fa fa-caret-down"></i></a>
+                {% endif %}
+              </div>
+            {% else %}
+              {% if not is_catalogue %}
+                <button class="white-border-button download"
+                        data-mp3-href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}"
+                        data-mp3-name="{{ track.get_track_stockrecord.digital_download.file.name }}"
+                        data-hd-href="{{ track.get_hd_track_stockrecord.digital_download.get_downloadable_file_url }}"
+                        data-hd-name="{{ track.get_hd_track_stockrecord.digital_download.file.name }}">Download</button>
+
+              {% endif %}
+            {% endif %}
           </div>
 
         </div>
@@ -176,7 +199,7 @@
   </div>
   <!-- end of tracks table -->
 
-  <div class="description-container" style="font-size: 1.3vw; font-family: 'Oswald'; font-weight: 300; display: inline-block; width: 45%; margin-left: 30px;">
+  <div class="description-container">
     {{ album_product.description|safe }}
   </div>
 </div>

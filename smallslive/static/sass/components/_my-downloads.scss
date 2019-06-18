@@ -20,6 +20,10 @@
     flex-wrap: wrap;
   }
 
+  @media (max-width: 960px) {
+    padding-right: 3.5vw;
+  }
+
   .dropdown-menu {
     min-width: 0px;
     width: 100%;
@@ -70,6 +74,12 @@
     position: relative;
     background-color: #fff;
     padding: 0 10px;
+
+    .section-title {
+      @media (max-width: 960px) {
+        width: 100%;
+      }
+    }
 
     & ul {
       padding: 0;
@@ -184,6 +194,10 @@
     padding: 0 10px;
     width: 45%;
 
+    @media (max-width: 960px) {
+      width: 100%;
+    }
+
     audio {
       @media (max-width: 960px) and (min-width: 768px) {
         width: 256px;
@@ -297,6 +311,10 @@
         }
       }
 
+      &.track, &.composer {
+        cursor: pointer;
+      }
+
       &.duration {
         text-align: center;
         margin: 0 5px;
@@ -376,6 +394,19 @@
     @media (max-width: $screen-sm-max) {
       margin-top: 10px;
       margin-bottom: 30px;
+    }
+  }
+
+  .description-container {
+    font-size: 1.3vw;
+    font-family: 'Oswald';
+    font-weight: 300;
+    display: inline-block;
+    width: 45%;
+    margin-left: 30px;
+
+    @media (max-width: 960px) {
+      width: 100%;
     }
   }
 }
@@ -602,6 +633,18 @@
   li {
     list-style: none;
   }
+
+
+}
+
+#my-downloads-album__list {
+
+  .section-title {
+    @media (max-width: 960px) {
+      width: 90%;
+    }
+  }
+
 }
 
 .intro-text {
