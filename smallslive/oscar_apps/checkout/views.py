@@ -589,7 +589,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                 # remove flow_type from session
                 del self.request.session['flow_type']
 
-                #remove messages
+                # remove messages
                 storage = messages.get_messages(self.request)
                 for _ in storage:
                     pass
@@ -667,6 +667,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
 
         if basket.has_tickets():
             self.mezzrow = True
+            self.request.session['flow_type'] = 'ticket_selection'
             self.handle_tickets_payment(
                 order_number,
                 total, basket_lines, **kwargs)

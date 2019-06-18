@@ -280,6 +280,8 @@ class EventDetailView(DetailView):
         context['metrics_server_url'] = settings.METRICS_SERVER_URL
         context['metrics_signed_data'] = self._generate_metrics_data()
         context['event_metrics_update_url'] = reverse('event_update_metrics', kwargs={'pk': event.pk})
+        # In case the user selects a ticket
+        context['flow_type'] = "ticket_selection"
         if self.request.user.is_authenticated():
             context['user_token'] = Token.objects.get(user=self.request.user)
             user_is_artist = (
