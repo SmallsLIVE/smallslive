@@ -169,16 +169,7 @@
           </div>
 
           <div class="my-downloads-album__tracks-table__column buy-track store-buy">
-            {% if not track.pk in bought_tracks and not is_full = 'full_album' %}
-              <div class="buy-button-container">
-                {% if user.is_authenticated %}
-                  <button class="white-border-button add-to-library" data-track-id="{{ track.pk }}">Add to Library</button>
-                {% else %}
-                  <a class="tracks-table__button" href="#"
-                     data-toggle="modal" data-target="#logIn">Add to library <i class="fa fa-caret-down"></i></a>
-                {% endif %}
-              </div>
-            {% else %}
+            {% if is_full = 'full_album' %}
               {% if not is_catalogue %}
                 <button class="white-border-button download"
                         data-mp3-href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}"
