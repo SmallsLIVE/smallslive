@@ -18,6 +18,7 @@
 
   @media (max-width: 1024px) {
     flex-wrap: wrap;
+    justify-content: flex-start;
   }
 
   @media (max-width: 960px) {
@@ -96,7 +97,7 @@
       width: 30%;
     }
 
-    @media (max-width: 1023px) {
+    @media (max-width: 500px) {
       width: 100%;
       margin: 0 auto;
       flex-direction: row;
@@ -194,7 +195,11 @@
     padding: 0 10px;
     width: 45%;
 
-    @media (max-width: 960px) {
+    @media (max-width: 1024px) {
+      width: 55%;
+    }
+
+    @media (max-width: 500px) {
       width: 100%;
     }
 
@@ -392,9 +397,37 @@
     }
 
     @media (max-width: $screen-sm-max) {
-      margin-top: 10px;
       margin-bottom: 30px;
     }
+  }
+
+  &__info {
+    padding: 0 10px;
+
+    ul {
+      margin-bottom: 30px;
+
+      @media (max-width: 1024px) {
+        width: 50%;
+        margin-right: 20px;;
+      }
+
+      @media (max-width: 500px) {
+        width: 100%;
+        margin: 0;
+        margin-bottom: 30px;
+        padding: 0 20px;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      display: flex;
+    }
+
+    @media (max-width: 500px) {
+      flex-wrap: wrap;
+    }
+
   }
 
   .description-container {
@@ -402,12 +435,16 @@
     font-family: 'Oswald';
     font-weight: 300;
     display: inline-block;
-    width: 45%;
-    margin-left: 30px;
+    width: 100%;
 
-    @media (max-width: 960px) {
+    @media (max-width: 1024px) {
+      width: 55%;
+    }
+
+    @media (max-width: 500px) {
       width: 100%;
     }
+
   }
 }
 
@@ -640,8 +677,20 @@
 #my-downloads-album__list {
 
   .section-title {
+    padding-left:  0;
     @media (max-width: 960px) {
       width: 90%;
+    }
+  }
+
+  .sponsor-text {
+    &.text2 {
+      font-size: 1.5vw;
+      margin-bottom:  20px;
+      margin-top: 20px;
+      @media (max-width: 1024px) {
+        font-size: 13px;;
+      }
     }
   }
 
@@ -666,7 +715,6 @@
   width: 100%;
 
   @media (max-width: 1023px) {
-    width: 225px;
     height: 225px;
   }
 

@@ -8,14 +8,14 @@
 
 {% block store_content %}
 <div class=""  style="padding-left: 3.5vw;">
-  <div class="section-title" style="padding-left: 0;">
+  <div class="section-title">
     <div class="title1">
       <!--<a href="{% url 'promotions:home' %}">Catalog</a> <span class="accent-color">\</span> -->
       {% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }} {{ album_product.upc }}
     </div>
   </div>
   {% if not library %}
-    <div class="text2" style="font-size: 2.5rem; margin-bottom: 20px">Sponsor this artist and project with a tax-deductable donation to the smallslive foundation
+    <div class="sponsor-text text2">Sponsor this artist and project with a tax-deductable donation to the smallslive foundation
     </div>
     <div>
       {% for child_product in album_product.children.all %}
@@ -103,18 +103,6 @@
           {% endfor %}
         </ul>
       {% endif  %}
-
-      <div>
-        <ul style="padding-left: 10px; margin-top: 20px;">
-          {% for artist_product in album_product.artistproduct_set.all %}
-            <li>
-              <a href="{{ artist_dict.absolute_url }}" class="title2">
-                  {{ artist_product.artist }} / {{ artist_product.instrument }}
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
     {% endwith %}
 
   </div>
@@ -189,9 +177,21 @@
     {% endfor %}
   </div>
   <!-- end of tracks table -->
+  <div class="my-downloads-album__info">
+    <ul>
+      {% for artist_product in album_product.artistproduct_set.all %}
+        <li>
+          <a href="{{ artist_dict.absolute_url }}" class="title2">
+              {{ artist_product.artist }} / {{ artist_product.instrument }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
 
-  <div class="description-container">
-    {{ album_product.description|safe }}
+
+    <div class="description-container">
+      {{ album_product.description|safe }}
+    </div>
   </div>
 </div>
 
