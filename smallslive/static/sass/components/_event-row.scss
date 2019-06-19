@@ -210,6 +210,10 @@ $event-row-padding: 3.5vw;
   width: 30vw;
   min-width: 30vw;
 
+  @media(max-width: 1024px) {
+    width: 15vw;
+  }
+
   a {
     width: 100%;
     height: calc(100% - 6vw);
@@ -225,7 +229,7 @@ $event-row-padding: 3.5vw;
       width: 100%;
       height: calc(30.7vw * 0.6 - 25px);
 
-      @media(max-width: 960px) {
+      @media(max-width: 500px) {
         height: calc(90vw * 0.6 - 25px);
       }
 
@@ -254,8 +258,15 @@ $event-row-padding: 3.5vw;
     margin-top: -2vw;
     z-index: 1;
 
-    @media (max-width: 960px) {
+    @media (max-width: 720px) {
+      margin-top: -0.5vw;
+      margin-bottom: 1vw;
+    }
+
+    @media (max-width: 500px) {
       height: 14vw;
+      margin-top: -5vw;
+      margin-bottom: 5vw;
     }
 
     a {
@@ -275,7 +286,7 @@ $event-row-padding: 3.5vw;
         text-decoration: underline;
       }
 
-      @media (max-width: 960px) {
+      @media (max-width: 500px) {
         &.title5 {
           padding-right: 10px;
           font-size: 2.5vw;
@@ -337,7 +348,7 @@ $event-row-padding: 3.5vw;
       margin-bottom: 0px;
       width: 28vw;
 
-      @media (max-width: 960px) {
+      @media (max-width: 500px) {
         width:  98%;
         top: 4vw;
         left: 4vw;
@@ -346,18 +357,18 @@ $event-row-padding: 3.5vw;
       .title5 {
         font-weight: 200;
         letter-spacing: 0.09em;
-        line-height: 1.5;
+        line-height: 1.84em;
         text-transform: uppercase;
         transform: scaleY(1.3);
 
       }
 
       .venue {
-        margin-bottom: 10px;
-        margin-top: 15px;
+        margin: 0;
+        margin-top: 0.7vw;
       }
 
-      @media (max-width: 960px) {
+      @media (max-width: 500px) {
         .event-info-title {
           font-size: 4.5vw;
           line-height: 4.5vw;
@@ -373,7 +384,7 @@ $event-row-padding: 3.5vw;
 
   }
 
-  @media (max-width: 960px) {
+  @media (max-width: 500px) {
     height: initial;
     flex-direction: column;
     max-width: 300px;
