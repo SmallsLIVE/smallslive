@@ -38,118 +38,109 @@
   <script>
 
     $(document).ready(function () {
-
       Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
       $(window).resize();
     });
 
-    var lastPlayer, audioPlayer, audioPlayerTrack, mainContainer, playerContainer, lastPlayerContainer, lastplayerContainerId, play;
-    
-     $(document).on('click', ".white-border-button.add-to-library", function(event){
-         event.stopPropagation()
-     });
-     $(document).on('click', ".white-border-button.added-to-library", function(event){
-         event.stopPropagation()
-     });
-    $(document).on('click', ".my-downloads-album__tracks-table__row.flex-row:not(.disabled)", function(event){
-        progress = calculateProgress($(this),event)
-        //find audio player, its track number and change the big player track number
-        audioPlayer = $(this).find(".audio audio")[0]
-        audioPlayerTrack = $(audioPlayer).data("track")
-        mainContainer = $(this).closest(".big-player")[0]
-        playerContainer =$(mainContainer).find(".player-container")[0]
-        $(playerContainer).data("track", audioPlayerTrack)
-        //make active track color red, toggles player button and remove previous track color
-        var trackInfo = $(this).find(".track-info")
-        lastPlayerContainerButton = $(lastPlayerContainer).find(".purchases-player-button ")
-        playerContainerButton = $(playerContainer).find(".purchases-player-button")
-        audioProgress = audioPlayer.currentTime / audioPlayer.duration * 100
-        if( $(trackInfo).hasClass("active-track")){
-            $(".active-track").removeClass("active-track")
-            play = false
-            $(playerContainerButton).removeClass("mypause-btn")
-            $(playerContainerButton).addClass("myplay-btn")
-            $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
-        }else{
-            $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")
-            $(".active-track").removeClass("active-track")
-            $(this).find(".track-info").addClass("active-track")
-            play = true;
-            $(lastPlayerContainerButton).addClass("myplay-btn")
-            $(lastPlayerContainerButton).removeClass("mypause-btn")
-            $(playerContainerButton).addClass("mypause-btn")
-            $(playerContainerButton).removeClass("myplay-btn")
-            $(playerContainerButton).find('div').html('<i class="fas fa-pause"></i>')
-        }
-        //toggles player
-        if(lastPlayer != undefined){
-            lastPlayer.pause()
-            $("#" + $(lastPlayer).data("track"))
-            .children(".progress-bar")
-            .addClass("paused");
-        }
-        togglePlayer(audioPlayer, play)
-        
-        lastPlayerContainer = playerContainer
-        lastPlayer = audioPlayer
-    });
-    function togglePlayer(playerContainer, play){
-        if (!audioPlayer) {
-            audioPlayer = $(bigContainer).find(".audio audio[data-track='0']")[0]
-            $(trackInfo).first().addClass("active-track")
+    var $lastPlayer,
+      $audioPlayer,
+      audioPlayerTrack,
+      $trackInfo,
+      $mainContainer,
+      $playerContainer,
+      $lastPlayerContainer,
+      $lastPlayerContainerButton,
+      play;
 
+    function playTrack($element) {
+
+      if (!$element) {
+        if (!$trackInfo) {
+          $element = $($(".my-downloads-album__tracks-table__row.flex-row:not(.disabled)")[0]);
+        } else {
+          $element = $trackInfo.closest(".my-downloads-album__tracks-table__row.flex-row:not(.disabled)");
         }
-        if(play){
-            audioPlayer.play()
-             $("#" + $(playerContainer).data("track"))
-            .children(".progress-bar")
-            .removeClass("paused");
-        }else{
-            audioPlayer.pause()
-             $("#" + $(playerContainer).data("track"))
-            .children(".progress-bar")
-            .addClass("paused");
-            $(".active-track").removeClass("active-track") 
+      }
+
+      var progress = calculateProgress($element, event);
+      //find audio player and track number and set the big player track number
+      $audioPlayer = $element.find(".audio audio");
+      audioPlayerTrack = $audioPlayer.data("track");
+
+      $mainContainer = $element.closest(".big-player");
+      $playerContainer = $mainContainer.find(".player-container");
+      $playerContainer.data("track", audioPlayerTrack);
+
+      //make active track color red, toggles player button and remove previous track color
+      $trackInfo = $element.find(".track-info");
+
+      if ($lastPlayerContainer)  {
+        $lastPlayerContainerButton = $lastPlayerContainer.find(".purchases-player-button");
+      }
+
+      $playerContainerButton = $playerContainer.find(".purchases-player-button");
+
+      var audioProgress = $audioPlayer.currentTime / $audioPlayer.duration * 100;
+
+      if ($trackInfo.hasClass("active-track")) {
+        $(".active-track").removeClass("active-track");
+        play = false;
+        $playerContainerButton.removeClass("mypause-btn");
+        $playerContainerButton.addClass("myplay-btn");
+        $playerContainerButton.find('div').html('<i class="fas fa-play"></i>');
+      } else {
+        $audioPlayer.closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar");
+        $(".active-track").removeClass("active-track");
+        $element.find(".track-info").addClass("active-track");
+        play = true;
+        if ($lastPlayerContainerButton) {
+          $lastPlayerContainerButton.addClass("myplay-btn");
+          $lastPlayerContainerButton.removeClass("mypause-btn");
         }
+        $playerContainerButton.addClass("mypause-btn");
+        $playerContainerButton.removeClass("myplay-btn");
+        $playerContainerButton.find('div').html('<i class="fas fa-pause"></i>');
+      }
+
+      //toggles player
+      if ($lastPlayer) {
+          $lastPlayer[0].pause();
+          $("#" + $lastPlayer.data("track"))
+          .children(".progress-bar")
+          .addClass("paused");
+      }
+      togglePlayer(play);
+
+      $lastPlayerContainer = $playerContainer;
+      $lastPlayer = $audioPlayer;
+
     }
-    $(document).on('click', ".purchases-player-button", function(){
-        bigContainer = $(this).closest(".big-player")[0]
-        playerContainer = $(bigContainer).find(".player-container")[0]
-        playerContainerButton = $(playerContainer).find(".purchases-player-button")[0]
-        trackNumber = $(playerContainer).data("track")
-        trackInfo = $(bigContainer).find(".track-info:not(.disabled)");
-        audioPlayer = $(bigContainer).find(".audio audio[data-track='" + trackNumber +  "']")[0]
-        lastPlayerContainerButton = $(lastPlayerContainer).find(".purchases-player-button ")
-        if( $(trackInfo).hasClass("active-track")){
-            $(trackInfo).removeClass("active-track")
-            play = false
-            $(playerContainerButton).removeClass("mypause-btn")
-            $(playerContainerButton).addClass("myplay-btn")
-            $(playerContainerButton).find('div').html('<i class="fas fa-play"></i>')
-        }else{
-            $(audioPlayer).closest(".my-downloads-album__tracks-table__row").find(".progress-bar").addClass("active-bar")
-            $(".active-track").removeClass("active-track")
-            let tracknum = $(audioPlayer).data('track')
-            $(trackInfo).filter(function() { 
-                return $(this).data("track") == tracknum 
-            }).addClass("active-track")
-            play = true
-            $(lastPlayerContainerButton).addClass("myplay-btn")
-            $(lastPlayerContainerButton).removeClass("mypause-btn")
-            $(playerContainerButton).addClass("mypause-btn")
-            $(playerContainerButton).removeClass("myplay-btn")
-            $(playerContainerButton).find('div').html('<i class="fas fa-pause"></i>')
 
-        }
-        if(lastPlayer != undefined){
-            lastPlayer.pause()
-             $("#" + $(lastPlayer).data("track"))
-            .children(".progress-bar")
-            .addClass("paused");
-        }
-        togglePlayer(audioPlayer, play)
-        lastPlayerContainer = playerContainer
-        lastPlayer = audioPlayer
+    $(document).on('click', ".my-downloads-album__tracks-table__row.flex-row:not(.disabled)", function  (event) {
+      playTrack($(this));
+    });
+
+    function togglePlayer(play){
+      if (!$audioPlayer) {
+          $audioPlayer = $bigContainer.find(".audio audio[data-track='0']");
+          $(trackInfo).first().addClass("active-track");
+      }
+      if (play) {
+        $audioPlayer[0].play();
+        $("#" + $playerContainer.data("track"))
+          .children(".progress-bar")
+          .removeClass("paused");
+      } else {
+        $audioPlayer[0].pause();
+        $("#" + $playerContainer.data("track"))
+        .children(".progress-bar")
+        .addClass("paused");
+        $(".active-track").removeClass("active-track");
+      }
+    }
+
+    $(document).on('click', ".purchases-player-button", function () {
+      playTrack();
     })
     var audioPlayers = document.getElementsByClassName("audio-player");
   
@@ -166,59 +157,56 @@
         return sec_min;
     }
 
-
     function calculateProgress(element, position) {
     
-    var mX, mY, distance,
+      var mX, mY, distance,
         $element  = $(element);
 
-    function calculateDistance(elem, mouseX, mouseY) {
+      function calculateDistance(elem, mouseX, mouseY) {
         return Math.floor(mouseX - (elem.offset().left), 2);
-    }
-    mX = position.pageX;
-    mY = position.pageY;
-    distance = Math.floor(calculateDistance($element, mX, mY) / element.width() * 100); 
-    return distance  
+      }
+      mX = position.pageX;
+      mY = position.pageY;
+      distance = Math.floor(calculateDistance($element, mX, mY) / element.width() * 100);
+      return distance
     };
-    function changeProgress(progress, player){
-        newProgress = Math.floor(player.duration) * progress / 100
-        player.currentTime = newProgress;
-        updateProgressTrack('player', newProgress)
+    function changeProgress(progress, player) {
+      newProgress = Math.floor(player.duration) * progress / 100
+      player.currentTime = newProgress;
+      updateProgressTrack('player', newProgress)
     }
 
-    $(".event-display").on("click", function(){
-        albumId = $(this).data("parent-pk")
-        album_type = $(this).data("type")
-        bought_tracks = $(this).data("bought")
-        loadAlbum(albumId, bought_tracks, album_type)
+    $(".event-display").on("click", function () {
+      albumId = $(this).data("parent-pk")
+      album_type = $(this).data("type")
+      bought_tracks = $(this).data("bought")
+      loadAlbum(albumId, bought_tracks, album_type)
     })
 
-    var mouseEventHandler = function(ev) {
-        if(ev.type == "mousemove"){
-            var position = ev
-        }else{
-            var position = {};
-            position.pageX = ev.changedTouches[0].pageX
-            position.pagey = ev.changedTouches[0].pageY
-        }
+    var mouseEventHandler = function (ev) {
+      if (ev.type == "mousemove"){
+          var position = ev
+      } else {
+          var position = {};
+          position.pageX = ev.changedTouches[0].pageX;
+          position.pagey = ev.changedTouches[0].pageY;
+      }
 
-        dragabbleProgess = calculateProgress($(this), position) + "%"
-        $(this).find(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", dragabbleProgess )
-
+      dragabbleProgess = calculateProgress($(this), position) + "%";
+      $(this).find(".my-downloads-album__tracks-table__row").find(".progress-bar").css("width", dragabbleProgess);
     }
-    startProgressHold =  function(event){
-        maincontainer = $(this).closest(".track-container")[0]
-        active = $(maincontainer).find(".track-info.active-track")
-        if( active.length > 0){
-            if(event.type == "mousedown"){
-                el.addEventListener("mousemove", mouseEventHandler)
-            }else{
-                el.addEventListener("touchmove", mouseEventHandler)
-            }
-            
-            clearInterval(setTime)
-        }
-     
+    startProgressHold =  function(event) {
+      maincontainer = $(this).closest(".track-container")[0];
+      active = $(maincontainer).find(".track-info.active-track");
+      if( active.length > 0) {
+          if (event.type == "mousedown") {
+              el.addEventListener("mousemove", mouseEventHandler);
+          } else {
+              el.addEventListener("touchmove", mouseEventHandler);
+          }
+
+          clearInterval(setTime);
+      }
     }
     $(document).on( "touchstart",  ".length-bar", startProgressHold);
     $(document).on( "mousedown",  ".length-bar", startProgressHold);
