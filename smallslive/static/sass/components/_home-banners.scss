@@ -234,14 +234,15 @@ $banners-height: 38vh;
         /* temp :likely this should be recalculated using css locks
         margin-top: 1.5vw;*/
         @media (min-width:960px) {
-          margin-top: 0;
+          margin-top: 5px;
         }
         @media (min-width: 1200px) {
           margin-top: 0;
+          margin-bottom: 16px;
         }
 
         @media(max-width: 960px) {
-          margin-top: calc(-7.97vw + 142px);
+          margin-top: calc(-8.998vw + 145.295px);
         }
       }
 
@@ -406,7 +407,21 @@ $banners-height: 38vh;
     }
     @media (min-width:1200px) {
       margin-top: 1.6rem;
-      height: 26rem;
+      height: 27rem;
+    }
+  }
+
+  .banner-logo {
+
+    position: absolute;
+    right: 3px;
+    top: 3px;
+
+    img {
+      width: 8vw;
+      height: 100%;
+      min-width: 30px;
+      max-width: 120px;
     }
   }
 
@@ -431,9 +446,9 @@ $banners-height: 38vh;
           /*padding: 0px 1.5vw;*/
           letter-spacing: .1px;
           font-weight: 400;
-          line-height: 110%;
+          line-height: calc(2.191vw + 13.989px);
           margin: 2vw auto;
-          width: 80vw;
+          width: 87vw;
         }
       }
     }
@@ -475,16 +490,16 @@ $banners-height: 38vh;
         /*padding: 0px 8.5vw;*/
         letter-spacing: -1px;
         font-weight: 400;
-        line-height: 180%;
-        text-align: left;
+        line-height: 110%;
+        text-align: center;
         text-transform: uppercase;
         @media (min-width:960px) {
-          font-size: calc(2.917vw - 3px);
+          font-size: calc(2.065vw + 12.156px);
           width: calc(117.7vw - 332px);
         }
         @media (min-width: 1200px) {
-          font-size: 3.2rem;
-          width: 108rem;
+          font-size: 3.9rem;
+          width: 79vw;
         }
 
         &.wide {
@@ -533,7 +548,8 @@ $banners-height: 38vh;
 
       @media(max-width: 400px) {
         font-size: 10px;
-        line-height: 20px;
+        /*line-height performs differently for a and button elements bc display is different by default*/
+        /*line-height: 20px;*/
       }
     }
   }

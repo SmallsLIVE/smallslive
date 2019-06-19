@@ -4,8 +4,8 @@
 <div class="banners carousel">
   {% if not active %}
     <div id="banner-live-box" class="box flex-column live">
-      <div class="banner-logo" style="position: absolute; right: 1vw; top: 1vw;">
-        <img src="{% static 'new_logo_transparent.png' %}" style="width: 8vw; height: 100%;" alt=""/>
+      <div class="banner-logo" >
+        <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
       </div>
       <div class="banner-text-container">
         <p class="title">The SmallsLIVE Foundation</p>
@@ -31,8 +31,8 @@
       </div>
     </div>
     <div id="banner-archive-box" class="box flex-column archive">
-     <div class="banner-logo" style="position: absolute; right: 1vw; top: 1vw;">
-        <img src="{% static 'new_logo_transparent.png' %}" style="width: 8vw; height: 100%;" alt=""/>
+     <div class="banner-logo" >
+        <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
       </div>
       <div class="banner-text-container">
         <p class="title" style="width: 25%">Archive</p>
@@ -51,8 +51,8 @@
       </div>
     </div>
     <div id="banner-mission-box" class="box flex-column mission">
-      <div class="banner-logo" style="position: absolute; right: 1vw; top: 1vw;">
-        <img src="{% static 'new_logo_transparent.png' %}" style="width: 8vw; height: 100%;" alt=""/>
+      <div class="banner-logo" >
+        <img src="{% static 'new_logo_transparent.png' %}"  alt=""/>
       </div>
       <div class="banner-text-container">
         <p class="title" style="width: 20%;">Mission</p>
@@ -77,13 +77,15 @@
       <div class="banner-text-container">
         <p class="title">Smallslive catalog</p>
         <p class="content wide">
-          <span class="accent-color">The</span> SmallsLIVE Catalog is a collection of individually produced artist projects in HD audio.
-        </p>
-        <p class="content wide">
-          <span class="accent-color">SmallsLIVE</span> Members may sponsor individual artists of their choice and receive their music as downloads or CDs.
-        </p>
-        <p class="content wide">
-          <span class="accent-color">By</span> sponsoring an individual artist project you are directly benefitting that specific artist. Sponsorships are partially tax deductible.
+          <span class="accent-color">The</span> SmallsLIVE Catalog is a collection of individually produced artist projects.
+        <!--</p>
+        <p class="content wide">//-->
+          <span class="accent-color">SmallsLIVE</span> Members may sponsor artists of their choice and receive their music as downloads or CDs.
+        <!--</p>
+        <p class="content wide">//-->
+          <!--<span class="accent-color">By</span> sponsoring an individual artist project you are directly benefitting that specific artist.-->
+          <!--Sponsorships are partially tax deductible.-->
+          <span class="accent-color">Sponsorships</span> directly support the artist.
         </p>
       </div>
 
