@@ -8,7 +8,7 @@ $banners-height: 38vh;
   margin-bottom: 30px;
   width: 100%;
 
-/* is the bellow old code?? remove??
+  /* is the bellow old code?? remove??
   #banner-container {
     position: relative;
     overflow: hidden;
@@ -185,7 +185,6 @@ $banners-height: 38vh;
   }
 
   &.carousel {
-
     display: none;
     white-space: nowrap;
     width: 100vw;
@@ -193,16 +192,14 @@ $banners-height: 38vh;
     margin-bottom: 0px;
     background-size: cover;
 
-    &+*+.event-stripe {
+    & + * + .event-stripe {
       margin-top: 0;
 
-      &>.live {
-        margin-bottom: 0;
+      & > .live {
+        margin-bottom: 30px;
         margin-top: 0;
       }
     }
-
-
 
     .slick-dots {
       bottom: 0;
@@ -224,7 +221,6 @@ $banners-height: 38vh;
       color: black;
     }
 
-
     @media (max-width: $screen-md-max) {
       display: block;
     }
@@ -233,7 +229,7 @@ $banners-height: 38vh;
       .banner-learnmore {
         /* temp :likely this should be recalculated using css locks
         margin-top: 1.5vw;*/
-        @media (min-width:960px) {
+        @media (min-width: 960px) {
           margin-top: 5px;
         }
         @media (min-width: 1200px) {
@@ -241,7 +237,7 @@ $banners-height: 38vh;
           margin-bottom: 16px;
         }
 
-        @media(max-width: 960px) {
+        @media (max-width: 960px) {
           margin-top: calc(-8.998vw + 145.295px);
         }
       }
@@ -264,8 +260,7 @@ $banners-height: 38vh;
 
       display: inline-block;
       filter: brightness(1.85);
-      font-family: "Oswald",
-      sans-serif;
+      font-family: "Oswald", sans-serif;
       justify-content: space-between;
 
       margin-bottom: 40px;
@@ -277,7 +272,7 @@ $banners-height: 38vh;
       &.live {
         background-image: url("/static/image/banners/roy.jpg");
         background-size: cover;
-        @media(max-width:  960px) {
+        @media (max-width: 960px) {
           background-size: cover;
         }
       }
@@ -285,7 +280,7 @@ $banners-height: 38vh;
       &.archive {
         background-image: url("/static/image/banners/pianoplayer.jpg");
         background-size: cover;
-        @media(max-width:  960px) {
+        @media (max-width: 960px) {
           background-size: cover;
         }
       }
@@ -293,7 +288,7 @@ $banners-height: 38vh;
       &.mission {
         background-image: url("/static/image/banners/club.jpg");
         background-size: cover;
-        @media(max-width:  960px) {
+        @media (max-width: 960px) {
           background-size: cover;
         }
       }
@@ -305,7 +300,6 @@ $banners-height: 38vh;
         margin-top: 3px;
         text-transform: uppercase;
         transform: scaleY(1.2);
-
       }
 
       p.content {
@@ -329,9 +323,8 @@ $banners-height: 38vh;
         font-weight: 400;
         letter-spacing: 3px;
 
-        @media(max-width: 1024px) {
+        @media (max-width: 1024px) {
           font-size: 3vw;
-
         }
       }
     }
@@ -398,21 +391,20 @@ $banners-height: 38vh;
   .banner-text-container {
     margin-top: 2.3vw;
 
-    @media(max-width: 960px) {
+    @media (max-width: 960px) {
       height: 22vw;
     }
-    @media (min-width:960px) {
+    @media (min-width: 960px) {
       margin-top: calc(2.083vw - 8.9px);
       height: calc(23.75vw - 25px);
     }
-    @media (min-width:1200px) {
+    @media (min-width: 1200px) {
       margin-top: 1.6rem;
       height: 27rem;
     }
   }
 
   .banner-logo {
-
     position: absolute;
     right: 3px;
     top: 3px;
@@ -430,11 +422,11 @@ $banners-height: 38vh;
       height: 27.5vw;
       position: relative;
 
-      @media(min-width: 960px) {
+      @media (min-width: 960px) {
         max-height: 335px;
       }
 
-      @media(max-width: 960px) {
+      @media (max-width: 960px) {
         height: calc(17.34vw + 168.53px);
 
         .content {
@@ -444,7 +436,7 @@ $banners-height: 38vh;
           height: auto;
           /*margin-top: 5vw;*/
           /*padding: 0px 1.5vw;*/
-          letter-spacing: .1px;
+          letter-spacing: 0.1px;
           font-weight: 400;
           line-height: calc(2.191vw + 13.989px);
           margin: 2vw auto;
@@ -464,12 +456,12 @@ $banners-height: 38vh;
         width: 60%;
         max-width: 720px;
 
-        @media(max-width: 960px) {
+        @media (max-width: 960px) {
           font-size: 6vw;
           line-height: 5.5vw;
           width: 80%;
         }
-        @media (min-width:960px) {
+        @media (min-width: 960px) {
           font-size: calc(5vw - 6px);
           line-height: calc(4.3vw - 3px);
           margin-bottom: calc(2.083vw - 8.9px);
@@ -493,7 +485,7 @@ $banners-height: 38vh;
         line-height: 110%;
         text-align: center;
         text-transform: uppercase;
-        @media (min-width:960px) {
+        @media (min-width: 960px) {
           font-size: calc(2.065vw + 12.156px);
           width: calc(117.7vw - 332px);
         }
@@ -506,7 +498,7 @@ $banners-height: 38vh;
           padding-left: 0.5vw;
           padding-right: 0.5vw;
 
-          @media(max-width: 960px) {
+          @media (max-width: 960px) {
             margin-top: 2vw;
           }
         }
@@ -515,43 +507,41 @@ $banners-height: 38vh;
           padding-left: 0.5vw;
           padding-right: 0.5vw;
 
-          @media(max-width: 960px) {
+          @media (max-width: 960px) {
             margin-top: 2vw;
           }
         }
-
       }
     }
 
-    button, a {
+    button,
+    a {
       padding: 0.5vw 2.5vw;
       font-family: "Reem Kufi", sans-serif;
       /*font-size: 0.9vw;*/
       margin: 0 14px;
 
-      @media(min-width: 960px) {
+      @media (min-width: 960px) {
         font-size: calc(1.7vw - 5px);
       }
 
-      @media(min-width: 1200px) {
+      @media (min-width: 1200px) {
         font-size: 1.5rem;
       }
-
 
       &:hover {
         cursor: pointer;
       }
 
-      @media(max-width: 960px) {
+      @media (max-width: 960px) {
         font-size: 13px;
       }
 
-      @media(max-width: 400px) {
+      @media (max-width: 400px) {
         font-size: 10px;
         /*line-height performs differently for a and button elements bc display is different by default*/
         /*line-height: 20px;*/
       }
     }
   }
-
 }

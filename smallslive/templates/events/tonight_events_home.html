@@ -2,8 +2,8 @@
 
 <div class="event-row">
   {% for event in events %}
-  <article class="event-display-today-and-tomorrow"> 
-    {% include 'events/tonight_event_card.html' with event=event secondary=secondary hide_play=True %}
+  <article class="event-display-today-and-tomorrow" style="background-image: linear-gradient(black, black), url('{{event.get_photo_url}}')"> 
+    <!-- {% include 'events/tonight_event_card.html' with event=event secondary=secondary hide_play=True %} -->
     <div class="event-info">
         <div class="sub-info">
             <p class="event-info-title">{{ event.title }}</p>
