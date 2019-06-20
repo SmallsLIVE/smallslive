@@ -6,24 +6,32 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from oscar.apps.payment.exceptions import RedirectRequired, \
     UnableToTakePayment, PaymentError
+from oscar_apps.catalogue.models import Product
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.models import Donation
-from users.utils import charge
 
 
 class PayPalMixin(object):
 
-    def get_payment_data(self, item_list, total, currency, shipping_charge=0.00):
-        subtotal =  Decimal(total) - Decimal(shipping_charge)
-        if self.mezzrow:
-            execute_uri = 'checkout:mezzrow_paypal_execute'
-            cancel_uri = 'checkout:payment-details'
-        else:
-            execute_uri = 'checkout:paypal_execute'
-            cancel_uri = 'checkout:payment-details'
+    def get_payment_data(self, item_list, currency, shipping_charge=0.00,
+                         execute_uri=None, cancel_uri=None):
 
-        payment_execute_url = self.request.build_absolute_uri(reverse(execute_uri))
-        payment_cancel_url = self.request.build_absolute_uri(reverse(cancel_uri))
+        subtotal = Decimal(self.amount) - Decimal(shipping_charge)
+
+        if not execute_uri:
+            if self.mezzrow:
+                execute_uri = 'checkout:mezzrow_paypal_execute'
+                cancel_uri = 'checkout:payment-details'
+            else:
+                execute_uri = 'checkout:paypal_execute'
+                cancel_uri = 'checkout:payment-details'
+
+            payment_execute_url = self.request.build_absolute_uri(reverse(execute_uri))
+            payment_cancel_url = self.request.build_absolute_uri(reverse(cancel_uri))
+        else:
+            payment_execute_url = execute_uri
+            payment_cancel_url = cancel_uri
+
         return {
             'intent': 'sale',
             'payer': {'payment_method': 'paypal'},
@@ -34,10 +42,10 @@ class PayPalMixin(object):
             'transactions': [{
                 'item_list': {'items': item_list},
                 'amount': {
-                    'total': total,
+                    'total': self.amount,
                     'currency': currency,
                     'details':{
-                        'shipping':shipping_charge,
+                        'shipping': shipping_charge,
                         'subtotal': str(subtotal)
                         }
                     },
@@ -55,18 +63,21 @@ class PayPalMixin(object):
                 'client_id': settings.PAYPAL_CLIENT_ID,
                 'client_secret': settings.PAYPAL_CLIENT_SECRET})
 
-    def handle_paypal_payment(self, currency, total, item_list,
-                              donation=False, deductable_total=0.00, shipping_charge=0.00):
+    def handle_paypal_payment(self, currency, item_list,
+                              donation=False, deductable_total=0.00, shipping_charge=0.00,
+                              execute_uri=None,
+                              cancel_uri=None):
         print '******************************'
         print 'PayPal Mixin handle PayPal payment'
         print shipping_charge
-        print total
+        print self.amount
         print currency
 
         self.configure_paypal()
 
         print 'payment data'
-        payment_data = self.get_payment_data(item_list, total, currency, shipping_charge)
+        payment_data = self.get_payment_data(item_list, currency, shipping_charge,
+                                             execute_uri=execute_uri, cancel_uri=cancel_uri)
 
         payment = paypalrestsdk.Payment(payment_data)
         print 'payment_id'
@@ -74,18 +85,20 @@ class PayPalMixin(object):
         print deductable_total
         if success:
             payment_id = payment.id
-            print donation
+            print 'Donation: ', donation
             if donation and self.request.user.is_authenticated():
                 # Create Donation even though the payment is not yet authorized.
                 donation = {
                     'user': self.request.user,
                     'currency': 'USD',
-                    'amount': total,
+                    'amount': self.amount,
                     'reference': payment_id,
                     'confirmed': False,
-                    'deductable_amount': str(deductable_total)
+                    'deductable_amount': str(deductable_total),
+                    'product_id': self.product_id,
+                    'event_id': self.event_id,
                 }
-                print donation
+                print 'Donation data: ',  donation
                 Donation.objects.create(**donation)
 
             for link in payment.links:
@@ -137,28 +150,24 @@ class PayPalMixin(object):
 
 class StripeMixin(object):
 
-    def handle_stripe_payment(self, card_token,
-                               order_number, total, basket,
-                               basket_lines, **kwargs):
+    def handle_stripe_payment(self, order_number, basket_lines, **kwargs):
         customer = self.request.user.customer
-        if not card_token.startswith('card_'):
-            customer.update_card(card_token)
+        if not self.token.startswith('card_'):
+            customer.update_card(self.card_token)
             charge = customer.charge(
-                Decimal(total.incl_tax),
-                description=self.payment_description(order_number, total, **kwargs))
+                Decimal(self.amount.incl_tax),
+                description=self.payment_description(order_number, self.total.incl_tax, **kwargs))
             stripe_ref = charge.stripe_id
 
         else:
             stripe_ref = Facade().charge(
                 order_number,
-                total,
-                card=card_token,
-                description=self.payment_description(order_number, total, **kwargs),
-                metadata=self.payment_metadata(order_number, total, basket_lines, **kwargs),
+                self.total,
+                card=self.token,
+                description=self.payment_description(order_number, self.total.incl_tax, **kwargs),
+                metadata=self.payment_metadata(order_number, self.total.incl_tax, basket_lines, **kwargs),
                 customer=customer.stripe_id)
 
-
-        print '******************)))))))'
         cost = 0
         for line in basket_lines:
             print line
@@ -169,7 +178,7 @@ class StripeMixin(object):
 
         return stripe_ref
 
-    def refund_stripe_payment(self, charge_id, total):
+    def refund_stripe_payment(self, charge_id):
         charge = stripe.Charge.retrieve(id=charge_id)
         refund = charge.refund()
 

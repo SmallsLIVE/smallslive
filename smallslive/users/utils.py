@@ -108,14 +108,18 @@ def send_email_confirmation_for_celery(request, user, signup=False, **kwargs):
             assert email_address
 
 
-def one_time_donation(customer, stripe_token, amount, flow="Charge"):
+def one_time_donation(customer, stripe_token, amount):
+
     customer.update_card(stripe_token)
-    charge(customer, amount, send_receipt=False)
-    custom_receipt = {}
-    custom_receipt["customer"] = customer
-    custom_receipt["amount"] = amount
-    custom_receipt["type"] = "one_time"
+    charge_object = charge(customer, amount, send_receipt=False)
+    custom_receipt = {
+        'customer': customer,
+        'amount': amount,
+        'type': 'one_time',
+    }
     custom_send_receipt(custom_receipt)
+
+    return charge_object.stripe_id
 
 
 def update_active_card(customer, stripe_token):

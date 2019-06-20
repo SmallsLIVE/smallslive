@@ -16,10 +16,14 @@
     </div>
     <div class="artists">
       {% with event.artists_gig_info.count as artist_count %}
-        {% for gig in event.artists_gig_info.all %}
+        {% for gig in event.artists_gig_info.all|slice:"5" %}
           <a class="title5 {% if artist_count <= 3 %}full-width{% endif %}" href="/search/?artist_pk={{ gig.artist.pk }}">
                 {{ gig.artist }} / {{ gig.role }}</a>
         {% endfor %}
+        {% if artist_count > 5 %}
+          <a class="title5" href="{{ event.get_absolute_url }}">
+                ... </a>
+        {% endif %}
       {% endwith %}
     </div>
   </article> 

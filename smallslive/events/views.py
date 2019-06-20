@@ -161,7 +161,7 @@ class MostPopularEventsAjaxView(AJAXMixin, ListView):
     def get_context_data(self, **kwargs):
         # Need to provide secondary = True for the event card
         context = super(MostPopularEventsAjaxView, self).get_context_data(**kwargs)
-        context['secondary'] = False
+        context['secondary'] = True
         return context
 
     def get_queryset(self):
@@ -219,7 +219,7 @@ class EventAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlines
         for default_set in ShowDefaultTime.objects.all():
             default_sets.append({
                 'set-venue':
-                    str(default_set.venue.name),
+                    str(default_set.get_venue_name()),
                 'set-starts': default_set.sets_start(),
                 'set-redeable-starts': default_set.sets_readable_start(),
                 'set-duration': default_set.set_duration,
@@ -280,6 +280,8 @@ class EventDetailView(DetailView):
         context['metrics_server_url'] = settings.METRICS_SERVER_URL
         context['metrics_signed_data'] = self._generate_metrics_data()
         context['event_metrics_update_url'] = reverse('event_update_metrics', kwargs={'pk': event.pk})
+        # In case the user selects a ticket
+        context['flow_type'] = "ticket_selection"
         if self.request.user.is_authenticated():
             context['user_token'] = Token.objects.get(user=self.request.user)
             user_is_artist = (
@@ -386,7 +388,7 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
             context['sets'].helper = EventSetInlineFormsetHelper()
         default_sets = []
         for default_set in ShowDefaultTime.objects.all():
-            default_sets.append({"set-venue" : str(default_set.venue.name), "set-starts": default_set.sets_start(), "set-redeable-starts":  default_set.sets_readable_start(), "set-duration": default_set.set_duration, "set-title": str(default_set.title)})
+            default_sets.append({"set-venue" : str(default_set.get_venue_name()), "set-starts": default_set.sets_start(), "set-redeable-starts":  default_set.sets_readable_start(), "set-duration": default_set.set_duration, "set-title": str(default_set.title)})
         context['show_times'] = default_sets
         context['ticket_forms'] = self.construct_ticket_forms()
 
@@ -574,7 +576,6 @@ class GenericScheduleView(TemplateView, UpcomingSearchView):
             'first': datetime.datetime.today(),
             'last': (datetime.datetime.today() + timedelta(days=12))
         }
-
         context['last_event'] = last_event
         context.update(self.get_upcoming_context())
         
@@ -930,7 +931,10 @@ class CommentListView(FormView):
         return super(CommentListView, self).post(request, *args, **kwargs)
 
     def get_success_url(self):
-        return self.request.get_full_path()
+        url = self.request.build_absolute_uri()
+        if 'https' not in url:
+            url = url.replace('http', 'https')
+        return url
 
     def get_form_kwargs(self):
         kwargs = super(CommentListView, self).get_form_kwargs()
@@ -951,7 +955,6 @@ class CommentListView(FormView):
         return context
 
 event_comments = CommentListView.as_view()
-
 
 
 @login_required

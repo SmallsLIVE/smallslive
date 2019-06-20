@@ -38,7 +38,7 @@
       {% include 'home_banners_carousel.html' %}
       <div class="event-stripe">
         {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
-        <section class="event-stripe">
+        <section class="event-stripe" style="margin-top: 0;">
           <div class="section-title home">
             <div class="title1">Highlights from the Archive</div>
           </div>
@@ -55,21 +55,10 @@
 {% endblock%}
 
 {% block footer %}
-  <div class="footer-mobile visible-xs visible-sm text4">
-    <div class="flex-column footer-links ">
-      <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
-      <a href="{% url 'schedule' %}" class="{% if request.resolver_match.url_name == 'schedule' %}active{% endif %}">Calendar</a>
-      <a href="{% url 'search' %}"
-         class="{% if request.resolver_match.url_name == 'search' %}active{% endif %}">Archive</a>
-      <a href="{% url 'contact-and-info' %}"
-         class="{% if request.resolver_match.url_name == 'contact-and-info' %}active{% endif %}">Info</a>
-      <a href="">Education</a>
-      <a href="{% url 'promotions:home' %}">Catalog</a>
-    </div>
-  </div>
-  <div style="margin: 0 50px;">
+  <!-- Removed mobile footer as per Spike's request -->
+  <div style="margin: 5px 50px;">
     <div class="footer-info flex-column items-center" style="margin-bottom: 50px;">
-      <img class="footer-logo" src="{% static 'new_logo_transparent.png' %}" alt="SmallsLIVE Foundation logo" width="100">
+      <img class="footer-logo" style="margin-bottom: 5px;" src="{% static 'new_logo_transparent_black.svg' %}" alt="SmallsLIVE Foundation logo" width="100">
       <div class="text-grey">Copyright ®{% now 'Y' %} SmallsLIVE All rights reserverd.</div>
       <div>
         <a href="{% url 'static_page' 'privacy' %}">Privacy Policy</a> |

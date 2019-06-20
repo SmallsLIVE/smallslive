@@ -1,5 +1,7 @@
 from decimal import Decimal
 from django.db import models
+from oscar_apps.catalogue.models import Product
+from events.models import Event
 from users.models import SmallsUser
 
 
@@ -23,6 +25,11 @@ class Donation(models.Model):
     # A customer-friendly label for the source, eg XXXX-XXXX-XXXX-1234
     label = models.CharField(max_length=128, blank=True)
     confirmed = models.BooleanField(default=False)
+    # Donations can be applied to a product
+    product = models.ForeignKey(Product, blank=True, null=True,
+                                related_name='donations')
+    event = models.ForeignKey(Event, blank=True, null=True,
+                              related_name='donations')
 
     def save(self, *args, **kwargs):
         if self.deductable_amount == 0:

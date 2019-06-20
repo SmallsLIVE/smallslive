@@ -23,9 +23,9 @@
 </div>
 <div class="instruments-container">
   <a href="#" class="close-button"></a>
-  <div class="instrument text4" data-instrument="">All Instruments</div>
+  <div class="instrument text4" data-instrument="">All Instruments ({{ instruments_artist_count }})</div>
   {% for instrument in instruments %}
-    <div data-instrument="{{ instrument }}" class="instrument text4 text-grey">{{ instrument }}</div>
+    <div data-instrument="{{ instrument.name }}" class="instrument text4 text-grey">{{ instrument.name }} ({{ instrument.artist_count }})</div>
   {% endfor %}
 </div>
 
@@ -39,9 +39,11 @@
     <img src="{% static 'image/loading.gif' %}" alt="">
   </div>
 
-  <main id="artists" class="invisible" style="position: relative;">
+  <main id="artists" style="position: relative;">
     <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-    <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-    {% include 'search/artist_results.html' %}
+    <div class="slide-btn next" data-callback-name="searchMoreArtists"><b class="indicator-icon icon-right-caret"></b></div>
+    <div class="event-row">
+      {% include 'search/artist_results.html' %}
+    </div>
   </main>
 </div>

@@ -138,7 +138,10 @@ class Command(BaseCommand):
                 **fields
             )
         for instrument in instruments:
-            artist.instruments.add(instrument)
+            if not artist.instruments.filter(pk=instrument.pk).exists():
+                artist.instruments.add(instrument)
+                instrument.artist_count = instrument.artist_count + 1
+                instrument.save()
 
         return artist
 

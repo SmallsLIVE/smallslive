@@ -4,6 +4,10 @@
     {% include 'account/become-supporter.html' %}
   {% elif flow_type == 'donate'%}
     {% include 'account/donate.html' %}
+  {% elif flow_type == 'product_support'%}
+    {% include 'account/product-support.html' %}
+  {% elif flow_type == 'event_support'%}
+    {% include 'account/event-support.html' %}
   {% endif %}
 {% endblock home_content %}
 

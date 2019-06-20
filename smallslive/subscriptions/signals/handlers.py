@@ -19,9 +19,9 @@ def charge_succeeded(sender, **kwargs):
         donation = Donation.objects.filter(reference=charge.stripe_id).first()
         print 'Donation:', donation
         if donation:
+            # If donation exist, we need to confirm it just in case.
             donation.confirmed = True
             donation.save()
-            # Donated by selecting a gift in the store
             print 'Donation saved!'
         else:
             donation = {
@@ -33,4 +33,4 @@ def charge_succeeded(sender, **kwargs):
             }
             print 'Donation object ->: ', donation
             Donation.objects.create(**donation)
-            print 'Donation saved!s'
+            print 'Donation saved!'

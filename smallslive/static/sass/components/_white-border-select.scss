@@ -88,7 +88,8 @@
   top: 77%;
   left: 0;
   right: 0;
-  z-index: 99;
+  /*below recently added \ most popular title on home page at index 99*/
+  z-index: 100;
 }
 /*hide the items when the select box is closed:*/
 .select-hide {

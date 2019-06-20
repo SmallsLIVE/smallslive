@@ -28,8 +28,7 @@ class EventHandler(CoreEventHandler, PayPalMixin, StripeMixin):
             elif payment_source.source_type.name == 'Stripe Credit Card':
                 self.mezzrow = False
                 refund_reference = self.refund_stripe_payment(
-                    reference,
-                    amount)
+                    reference)
             elif payment_source.source_type.name == 'PayPal':
                 self.mezzrow = False
                 refund_reference = self.refund_paypal_payment(

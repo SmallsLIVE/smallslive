@@ -99,10 +99,10 @@
         <div class="account-settings-info">
           <div class="text5">Last donation</div>
           <div class="text9 text-grey">
-            {% with customer_charges|first as first_charge%}
+            {% with customer_charges|first as first_charge %}
               {% if not customer_charges %}
                 You have not yet made a donation
-                </div>  
+              </div>
                 </div>
 
                 <button href="{% url 'user_tax_letter' %}" class="white-border-button disabled" disabled>Download tax document</button>
@@ -118,7 +118,7 @@
                 <br>
                 <a href="{% url 'user_tax_letter' %}" class="white-border-button">Download tax document</a>
               {% endif %}
-        {% endwith %}
+          {% endwith %}
         
         <div class="account-settings-info ">
             <div class="text5">Expiration of archive access</div>

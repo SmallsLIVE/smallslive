@@ -58,7 +58,7 @@ Utils.prototype = {
 
 var Utils = new Utils();
 $(document).scroll(function () {
-    if ($('#storeTitle')) {
+    if ($('#storeTitle').length) {
         var isElementInView = Utils.isElementInView($('#storeTitle'), false);
         if (isElementInView) {
             $('.store-nav').css('position', 'absolute')

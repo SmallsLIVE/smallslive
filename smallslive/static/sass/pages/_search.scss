@@ -31,7 +31,7 @@ body.headers-1 {
   &.admin-header {
     .search-container.pad-content {
       @media (max-width: $screen-md-max) {
-        padding-top: 120px;
+        padding-top: 76px;
       }
     }
   }
@@ -229,31 +229,6 @@ body.headers-1 {
 }
 
 .search-container {
-  .container-list-article {
-    overflow-y: hidden;
-    overflow-x: hidden;
-    height: 200px;
-    width: 90%;
-
-    @media (max-width: $screen-md-max) {
-      height: auto;
-    }
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-
-    &:before {
-      content: "";
-      position: absolute;
-      left: 0px;
-      width: 6vw;
-      z-index: 3;
-      background: #f0f0eb;
-      height: 100%;
-    }
-  }
 
   #showsArchivedContent,
   #showUpcomingContent {
@@ -278,7 +253,7 @@ body.headers-1 {
   //Mobile
   @media (max-width: $screen-md-max) {
     .datepicker-container.noclick {
-      top: 12.5vw !important;
+      top: 9.5vw !important;
       left: 0 !important;
       width: 100vw;
 
@@ -297,6 +272,10 @@ body.headers-1 {
         box-shadow: 0 0 1px inset grey;
 
         &:focus {
+          box-shadow: 0 0 1px inset red;
+        }
+
+        &.active {
           box-shadow: 0 0 1px inset red;
         }
       }
@@ -362,6 +341,7 @@ body.headers-1 {
 
       #apply-button {
         margin: 0px 10px;
+        margin-right: 30px;
         color: grey;
         width: 10%;
         border: none;
@@ -422,17 +402,8 @@ body.headers-1 {
       flex-direction: column;
     }
 
-    .container-list-article {
-      margin-top: 20px;
-
-      .left_arrow,
-      .right_arrow {
-        display: none;
-      }
-    }
-
     .section-title {
-      display: none;
+
     }
 
     .artists-container {
@@ -467,6 +438,12 @@ body.headers-1 {
         display: none;
       }
     }
+  }
+}
+
+@media (max-width: $screen-md-min) {
+  .search-container .datepicker-container.noclick {
+    top: 11.5vw !important;
   }
 }
 
@@ -553,6 +530,10 @@ body.headers-1 {
           margin-right: 5px;
           margin-top: 10px;
           vertical-align: top;
+        }
+
+        @media (max-width: 420px) {
+          height: 13vw;
         }
 
         &:hover {
@@ -845,7 +826,7 @@ body.headers-1 {
   display: flex;
   position: relative;
   width: 700px;
-  margin: 0px auto 10px auto;
+  margin: 0px auto 10px 3.5vw;
 
   img {
     width: 21px;
@@ -1011,7 +992,6 @@ body.headers-1 {
 }
 
 .home div.artist-search-profile-container {
-  display: none;
 
   .content-centered {
     flex-direction: row;
@@ -1454,6 +1434,10 @@ body.headers-1 {
       &.caret {
         margin-right: 0;
       }
+    }
+
+    @media (max-width: 420px) {
+      height: 13vw;
     }
   }
 }
@@ -2026,7 +2010,13 @@ body.home.admin-header {
 
   @media (max-width: 1023px) {
     .event-info {
-      font-size: 15px;
+      font-size: 3.5vw;
+      width: 70%;
+
+      &.new {
+        display: none;
+      }
+
     }
 
     .musicians-results.white-line-bottom {
@@ -2109,7 +2099,7 @@ body.home.admin-header {
   .new-archive {
     border-bottom: 5px solid white;
     justify-content: space-evenly;
-    margin-top: 30px;
+    /*margin-top: 30px;*/
 
     .musicians-result {
       border: 3px solid white;

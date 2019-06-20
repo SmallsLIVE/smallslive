@@ -191,6 +191,10 @@ $event-row-padding: 3.5vw;
   @media (min-width: $screen-sm-max) {
     padding-left: $content-left-padding;
   }
+
+  @media (max-width: $screen-sm-max) {
+    overflow: auto;
+  }
 }
 
 .event-display {
@@ -206,9 +210,13 @@ $event-row-padding: 3.5vw;
   width: 30vw;
   min-width: 30vw;
 
+  @media(max-width: 1024px) {
+    width: 15vw;
+  }
+
   a {
     width: 100%;
-    height: calc(100% - 110px);
+    height: calc(100% - 6vw);
   }
 
   .event-card,
@@ -221,7 +229,7 @@ $event-row-padding: 3.5vw;
       width: 100%;
       height: calc(30.7vw * 0.6 - 25px);
 
-      @media(max-width: 960px) {
+      @media(max-width: 500px) {
         height: calc(90vw * 0.6 - 25px);
       }
 
@@ -238,7 +246,7 @@ $event-row-padding: 3.5vw;
 
   .artists {
     background-color: white;
-    height: 110px;
+    height: 6vw;
     width: auto;
     display: flex;
     flex-direction: row;
@@ -247,25 +255,43 @@ $event-row-padding: 3.5vw;
     padding-bottom: 0.7vw;
     padding-left: 0.7vw;
     padding-top: 0.7vw;
+    margin-top: -2vw;
+    z-index: 999;
+
+    @media (max-width: 720px) {
+      margin-top: -0.5vw;
+      margin-bottom: 1vw;
+    }
+
+    @media (max-width: 500px) {
+      height: 14vw;
+      margin-top: -5vw;
+      margin-bottom: 5vw;
+    }
 
     a {
       line-height: 32px;
       width: 48%;
-      height: 33%;
+      height: 1.4vw;
       margin-right: 2%;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+
+      line-height: 1.4vw;
+      font-size: 1.2vw;
 
       &:hover {
         color: $accent-color;
         text-decoration: underline;
       }
 
-      @media (max-width: 960px) {
+      @media (max-width: 500px) {
         &.title5 {
           padding-right: 10px;
-          font-size: calc(8px + 1vw);
+          font-size: 2.5vw;
+          height: 3vw;
+          line-height: 4vw;
         }
 
         &.full-width {
@@ -282,7 +308,7 @@ $event-row-padding: 3.5vw;
   .event-info {
     position: absolute;
     width: 100%;
-    height: calc(100% - 110px);
+    height: calc(100% - 6vw);
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
@@ -322,25 +348,27 @@ $event-row-padding: 3.5vw;
       margin-bottom: 0px;
       width: 28vw;
 
-      @media (max-width: 1024px) {
+      @media (max-width: 500px) {
         width:  98%;
+        top: 4vw;
+        left: 4vw;
       }
 
       .title5 {
         font-weight: 200;
         letter-spacing: 0.09em;
-        line-height: 1.5;
+        line-height: 1.84em;
         text-transform: uppercase;
         transform: scaleY(1.3);
 
       }
 
       .venue {
-        margin-bottom: 10px;
-        margin-top: 15px;
+        margin: 0;
+        margin-top: 0.7vw;
       }
 
-      @media (max-width: 960px) {
+      @media (max-width: 500px) {
         .event-info-title {
           font-size: 4.5vw;
           line-height: 4.5vw;
@@ -356,7 +384,7 @@ $event-row-padding: 3.5vw;
 
   }
 
-  @media (max-width: 960px) {
+  @media (max-width: 500px) {
     height: initial;
     flex-direction: column;
     max-width: 300px;
@@ -402,6 +430,12 @@ $event-row-padding: 3.5vw;
     padding-bottom: 30px;
     padding-top: 5px;
     border-top: $underline-height solid $white-transparent;
+  }
+
+  &.calendar {
+    @media (min-width: 1024px) {
+      display: none;
+    }
   }
 }
 
@@ -500,8 +534,8 @@ $event-row-padding: 3.5vw;
   .event-dates {
     position: absolute;
 
-    left: 0;
-    bottom: 2px;
+    left: 5px;
+    bottom: 5px;
 
     &.links1 {
       @media (max-width: $screen-sm-max) {
@@ -658,33 +692,32 @@ $event-row-padding: 3.5vw;
 
 .event-info.new {
 
-  @media(min-width: 1024px) {
-    color: white;
-    font-size: 12px;
-    height: 5.6vw;
-    left: 15px;
-    margin: 0;
-    overflow: hidden;
-    pointer-events: none;
-    position: absolute;
-    top: 15px;
+  color: white;
+  font-size: 12px;
+  height: 60%;
+  left: 15px;
+  margin: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  top: 15px;
 
-    @media (max-width: 960px) {
-      font-size: 18px;
-    }
-
-    @media (max-width: 720px) {
-      font-size: 16px;
-    }
-
-    @media (max-width: 530px) {
-      font-size: 10px;
-    }
-
-    @media (max-width: 420px) {
-      font-size: 8px;
-    }
+  @media (max-width: 960px) {
+    font-size: 18px;
   }
+
+  @media (max-width: 720px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 530px) {
+    font-size: 13px;
+  }
+
+  @media (max-width: 420px) {
+    font-size: 11px;
+  }
+
 }
 
 @media (max-width: 960px) {
@@ -704,7 +737,7 @@ $event-row-padding: 3.5vw;
 }
 
 .today-and-tomorrow-arrow {
-  height: calc(100% - 110px) !important;
+  height: calc(100% - 2vw) !important;
   border-radius: 0 !important;
 }
 
@@ -713,5 +746,13 @@ $event-row-padding: 3.5vw;
     cursor: pointer;
     float: left;
     vertical-align: top;
+  }
+}
+
+.wrapped-events {
+  @media (max-width: 1024px) {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 }

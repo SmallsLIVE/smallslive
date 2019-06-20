@@ -1,24 +1,22 @@
 {% if artists_blocks %}
-  <div class="event-row">
-    {% for artist_block in artists_blocks %}
-      {% for artist in artist_block %}
-        <article class="event-display" onclick="window.location='{{ event.get_absolute_url }}';">
+  {% for artist_block in artists_blocks %}
+    {% for artist in artist_block %}
+      <article class="event-display" onclick="window.location='{{ event.get_absolute_url }}';">
 
-          {% include 'artists/artist_card.html' with artist=artist secondary=secondary hide_play=True %}
-          <div class="event-info new">
-            <div>
-              <div class="{% if not show_event_venue %} margin-bottom{% endif %}">{{ artist.last_name }}, {{ artist.first_name }}</div>
-              <br>
-              {% for instrument in artist.instruments.all %}
-                <div class="event-info-title">{{ instrument }}</div>
-              {% endfor %}
-            </div>
+        {% include 'artists/artist_card.html' with artist=artist secondary=secondary hide_play=True %}
+        <div class="event-info new">
+          <div>
+            <div class="{% if not show_event_venue %} margin-bottom{% endif %}">{{ artist.last_name }}, {{ artist.first_name }}</div>
+            <br>
+            {% for instrument in artist.instruments.all %}
+              <div class="event-info-title">{{ instrument }}</div>
+            {% endfor %}
           </div>
+        </div>
 
-        </article>
-      {% endfor  %}
-    {% endfor %}
-  </div>
+      </article>
+    {% endfor  %}
+  {% endfor %}
   <div class="flex-column artist-column-mobile">
     {% for artist_block in artists_blocks %}
       {% for artist in artist_block %}

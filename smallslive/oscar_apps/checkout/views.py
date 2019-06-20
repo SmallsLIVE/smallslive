@@ -168,6 +168,12 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
     I couldn't find a way
     """
 
+    def __init__(self, *args, **kwargs):
+
+        super(PaymentDetailsView, self).__init__(*args, **kwargs)
+        self.product_id = None
+        self.event_id = None
+
     def get_template_names(self):
 
         if not self.preview:
@@ -276,6 +282,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                     if user:
                         address = billing_address_form.save()
                         self.checkout_session.bill_to_user_address(address)
+            else:
+                print '** billing address form not valid **'
         else:
             billing_address_form = None
 
@@ -287,6 +295,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             form = PaymentForm(self.request.user, request.POST)
 
             if billing_address_form and not billing_address_form.is_valid():
+                print '*** error ****'
                 return self.render_payment_details(request, form=form,
                                                    billing_address_form=billing_address_form)
 
@@ -524,17 +533,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             response = self.handle_order_placement(
                 order_number, user, basket, shipping_address, shipping_method,
                 shipping_charge, billing_address, order_total, **order_kwargs)
-            for line in basket_lines:
-                category_list = []
-                for category in line.product.get_categories().all():
-                    category_list.append(category.name)
-                if 'Full Access' in category_list or line.product.product_class.slug == "full-access":
-                    if UserCatalogue.objects.filter(user=self.request.user).first():
-                        UserCatalogue.objects.filter(user=self.request.user).update(has_full_catalogue_access=True)
-                    else:
-                        UserCatalogue.objects.get_or_create(user=self.request.user, has_full_catalogue_access=True)
-                if line.product.product_class.slug in ["physical-album", "digital-album", "track"]:
-                    UserCatalogueProduct.objects.get_or_create(user=self.request.user, product=line.product)
 
             return response
         except UnableToPlaceOrder as e:
@@ -591,7 +589,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                 # remove flow_type from session
                 del self.request.session['flow_type']
 
-                #remove messages
+                # remove messages
                 storage = messages.get_messages(self.request)
                 for _ in storage:
                     pass
@@ -634,10 +632,10 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             item_list = self.get_item_list(basket_lines)
             currency = total.currency
             
-            total = str(total.incl_tax)
+            self.amount = str(total.incl_tax)
             # This will redirect to PayPal and circle back to
             # the ExecutePayPalPayment class.
-            self.handle_paypal_payment(currency, total, item_list,
+            self.handle_paypal_payment(currency, item_list,
                                        donation=False)
         else:
             bankcard = kwargs['bankcard']
@@ -666,10 +664,10 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         print 'handle_payment: '
         print 'Card token: ', card_token
         print 'Payment method: ', payment_method
-       
 
         if basket.has_tickets():
             self.mezzrow = True
+            self.request.session['flow_type'] = 'ticket_selection'
             self.handle_tickets_payment(
                 order_number,
                 total, basket_lines, **kwargs)
@@ -677,9 +675,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             self.mezzrow = False
             currency = total.currency
             if card_token:
-                reference = self.handle_stripe_payment(
-                    card_token, order_number,
-                    total, basket, basket_lines, **kwargs)
+                self.total = total
+                reference = self.handle_stripe_payment(order_number, basket_lines, **kwargs)
                 source_name = 'Stripe Credit Card'
                 source_type, __ = SourceType.objects.get_or_create(name=source_name)
                 source = Source(
@@ -690,7 +687,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                     reference=reference)
                 self.add_payment_source(source)
                 self.add_payment_event('Purchase', total.incl_tax, reference=reference)
-                #Set a ongoing donation, finished when payment is confirmed
+                # Set an ongoing donation, finished when payment is confirmed
                 total_deductable = basket._get_deductable_physical_total()
                 donation = {
                     'user': self.request.user,
@@ -706,14 +703,16 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                 item_list = self.get_item_list(basket_lines)
                 total_deductable = basket._get_deductable_physical_total()
                 print total_deductable
-                total = str(total.incl_tax)
+                self.amount = str(total.incl_tax)
                 # Donation will be set to True  if user is selecting gifts
                 # For Tickets and  other goods, there will  be no donation.
                 # 'handle_paypal_payment' returns a RedirectRequiredException
                 # and the flow will be completed in ExecutePaypalPayment
                 self.handle_paypal_payment(
-                    currency, total, item_list,
-                    donation=not basket_lines.first().basket.has_tickets(), deductable_total=total_deductable, shipping_charge=shipping_charge)
+                    currency, item_list,
+                    donation=bool(not basket_lines.first().basket.has_tickets()),
+                    deductable_total=total_deductable,
+                    shipping_charge=shipping_charge)
 
     def payment_description(self, order_number, total, **kwargs):
         return 'Order #{0} at SmallsLIVE'.format(order_number)
@@ -846,6 +845,19 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
             lines = order.lines.all()
             for line in lines:
                 line.set_status('Completed')
+
+        # Assign products for Library
+        for line in order.lines.all():
+            category_list = []
+            for category in line.product.get_categories().all():
+                category_list.append(category.name)
+            if 'Full Access' in category_list or line.product.product_class.slug == "full-access":
+                if UserCatalogue.objects.filter(user=self.request.user).first():
+                    UserCatalogue.objects.filter(user=self.request.user).update(has_full_catalogue_access=True)
+                else:
+                    UserCatalogue.objects.get_or_create(user=self.request.user, has_full_catalogue_access=True)
+            if line.product.product_class.slug in ["physical-album", "digital-album", "track"]:
+                UserCatalogueProduct.objects.get_or_create(user=self.request.user, product=line.product)
 
         return response
 

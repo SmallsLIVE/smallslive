@@ -14,7 +14,7 @@ body {
           }
         }
         .main-container {
-          padding-top: 50px;
+          padding-top: 70px;
         }
       }
     }
@@ -81,12 +81,6 @@ div.event-strip {
     overflow: hidden;
     position: relative;
     width: auto;
-
-    @media (max-width: $screen-sm-max) {
-      .event-row {
-        overflow: auto;
-      }
-    }
   }
 }
 #a-z-search {

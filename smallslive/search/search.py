@@ -87,7 +87,7 @@ class SearchObject(object):
             sqs = sqs.filter(condition).distinct() 
 
         if not words:
-            return sqs
+            return sqs.prefetch_related('instruments')
 
         if len(words) == 2:
             (first_name, last_name) = words
@@ -114,7 +114,7 @@ class SearchObject(object):
                 first_name__iustartswith=artist) & ~Q(
                 last_name__iuexact=artist)).distinct()
 
-            sqs =  list(first_name_matches) + list(good_matches) + list(not_so_good_matches)
+            sqs = list(first_name_matches) + list(good_matches) + list(not_so_good_matches)
 
             if partial_instruments:
                 condition = Q(instruments__name__istartswith=partial_instruments[0])
@@ -164,6 +164,7 @@ class SearchObject(object):
             'nonet',
             'dectet'
         ]
+
         if main_search != '':
             if main_search.split()[-1] in possible_number_of_performers:
                 number_of_performers_searched = possible_number_of_performers.index(main_search.split()[-1]) + 1
@@ -190,8 +191,8 @@ class SearchObject(object):
             main_search, instruments = self.filter_sax(main_search)
             words = main_search.strip().split()
             all_instruments = self.get_instruments()
-            instruments = [i for i in words if i.upper() in all_instruments]
-
+            if words:
+                instruments = [i for i in words if i.upper() in all_instruments]
             if instruments:
                 condition = Q(artists_gig_info__role__name__icontains=instruments[0],
                             artists_gig_info__is_leader=True)

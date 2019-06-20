@@ -1,6 +1,6 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
-<a href="{{ artist.get_absolute_url }}">
+<a href="{{ artist.get_absolute_url }}{% if query_term %}&query_term={{ query_term }}{% endif %}">
   <div class="event-card-square">
     <div class="event-picture-container">
       <div class="picture-border">

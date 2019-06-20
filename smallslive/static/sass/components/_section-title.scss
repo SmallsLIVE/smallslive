@@ -7,6 +7,7 @@
         width: 160px;
         margin-left: 3.5vw;
         margin-bottom: 20px;
+        margin-top: 20px;
         text-align: center;
       }
       @media (max-width: 450px) {
@@ -22,6 +23,20 @@
 .musicians-results .calendar-filters {
     position: absolute;
     left: calc(544px + 3.5vw);
+}
+
+.section-title-centered {
+  position: relative;
+  margin-bottom: 20px;
+  padding-bottom: 5px;
+  display: flex;
+  align-items: flex-end;
+  text-decoration: none;
+  background: linear-gradient(to right, $white-transparent, $white-transparent)
+    no-repeat bottom;
+  background-size: 50% 5px;
+
+  width: 100%;
 }
 
 .section-title {
@@ -43,6 +58,8 @@
     background-size: 100vw 10px;
     padding-bottom: 9px;
     width: 500px;
+    margin-top: 15px;
+    margin-bottom: 0;
   }
 
   &.calendar {

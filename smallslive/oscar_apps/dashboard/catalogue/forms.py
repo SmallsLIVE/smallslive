@@ -289,7 +289,7 @@ class ProductArtistClassSelectForm(forms.ModelForm):
 
     class Meta:
         model = ArtistProduct
-        fields = ('artist', )
+        fields = ('artist', 'is_leader')
         
 
 BaseArtistFormSet = inlineformset_factory(

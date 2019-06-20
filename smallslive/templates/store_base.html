@@ -13,23 +13,30 @@
 
 
 {% block home_content %}
-    <div class="">
-      
-        <div class="store-banner">
-        {% if not product %}
-          {% include 'home_banners.html' with active='catalog' %}
-        {% endif %}
-        </div>
+  <div class="">
 
-        <div id="store-home">
-            {% block store_content %}{% endblock %}
-        </div>
-        <script src="{% static 'js/store-loader.js' %}"></script>
+    <div class="store-banner">
+      {% if not product %}
+        {% include 'home_banners_carousel.html' with active='catalog' %}
+      {% endif %}
     </div>
+
+    <div id="store-home">
+      {% block store_content %}{% endblock %}
+    </div>
+    <script src="{% static 'js/store-loader.js' %}"></script>
+  </div>
 
 {% endblock home_content %}
 
 {% block extra_js %}
     <script src="{% static 'oscar/js/oscar/ui.js' %}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'js/store-base.js' %}"></script>
+
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+    <script src="https://js.stripe.com/v2/"></script>
+    <script src="{% static 'js/card.js' %}"></script>
+    <script src="{% static 'js/payment/payment.js' %}"></script>
+    <script src="{% static 'js/become-member.js' %}"></script>
+
 {% endblock %}

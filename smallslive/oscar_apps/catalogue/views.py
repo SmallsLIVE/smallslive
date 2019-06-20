@@ -1,16 +1,14 @@
-from artists.models import Artist
+from stripe.error import APIConnectionError, InvalidRequestError
 from django.core.paginator import Paginator
-from django.db.models import Count
+from django.core.urlresolvers import reverse
 from django.http import JsonResponse
 from django.template import RequestContext
 from django.template.loader import render_to_string
-from django.shortcuts import render
 from oscar.apps.catalogue import views as catalogue_views
 from oscar_apps.catalogue.models import Product, UserCatalogue, UserCatalogueProduct
 from oscar.apps.catalogue.views import ProductCategoryView
-from oscar.apps.order.models import Line
-from django.db.models import F, Q, Max
 from custom_stripe.models import CustomerDetail
+from artists.models import Artist
 
 
 class ProductCategoryView(catalogue_views.ProductCategoryView):
@@ -67,7 +65,7 @@ def get_album_catalog(request):
     return JsonResponse(data)
 
 
-class PurchasedProductsInfoMixin():
+class PurchasedProductsInfoMixin(object):
 
     def __init__(self):
 
@@ -87,14 +85,14 @@ class PurchasedProductsInfoMixin():
             self.album_list = []
         else:
             catalogue_access = UserCatalogue.objects.filter(user=self.request.user).first()
-            if catalogue_access and  catalogue_access.has_full_catalogue_access:
+            if catalogue_access and catalogue_access.has_full_catalogue_access:
                 self.digital_album_list = Product.objects.filter(product_class__slug='digital-album')
                 self.physical_album_list = Product.objects.filter(product_class__slug='physical-album')
                 self.track_list = []
             else:
-                self.digital_album_list = Product.objects.filter(product_class__slug='digital-album',access__user=self.request.user)
-                self.physical_album_list = Product.objects.filter(product_class__slug='physical-album',access__user=self.request.user)
-                self.track_list = UserCatalogueProduct.objects.filter(product__product_class__slug='track',user=self.request.user)
+                self.digital_album_list = Product.objects.filter(product_class__slug='digital-album', access__user=self.request.user)
+                self.physical_album_list = Product.objects.filter(product_class__slug='physical-album', access__user=self.request.user)
+                self.track_list = UserCatalogueProduct.objects.filter(product__product_class__slug='track', user=self.request.user)
 
             self.album_list = []
             for album in list(self.digital_album_list) + list(self.physical_album_list):
@@ -153,7 +151,12 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
         ctx['has_active_alert'] = self.get_alert_status()
         ctx['is_catalogue'] = True
         if self.request.user.is_authenticated():
-            customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
+            try:
+                customer_detail = CustomerDetail.get(id=self.request.user.customer.stripe_id)
+            except APIConnectionError:
+                customer_detail = None
+            except InvalidRequestError:
+                customer_detail = None
             if customer_detail:
                 ctx['active_card'] = customer_detail.active_card
 
@@ -178,6 +181,9 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
 
         # Clean basket
         # self.request.basket.flush()
+
+        ctx['payment_info_url'] = reverse('payment_info')
+        ctx['product_id'] = self.object.pk
 
         return ctx
 

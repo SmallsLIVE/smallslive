@@ -38,6 +38,7 @@ $('#store-featured-music__carousel__control__right').click(function(){
 
 /* Initialize store single product image carousel */
 $(document).ready(function () {
+
     $('#store-single__item__images__carousel').slick({
         dots: false,
         slidesToShow: 1,

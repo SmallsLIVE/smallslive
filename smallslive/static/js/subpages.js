@@ -45,12 +45,14 @@
             success: function (response) {
                 this.element.html(response);
                 this.bindForms();
-                this.callback()
+                if (this.callback) {
+                  this.callback();
+                }
             }.bind(this),
             error: function (response) {
                 this.element.html(response);
                 this.bindForms();
-                this.callback()
+                this.callback();
             }.bind(this)
         });
     };
@@ -64,7 +66,7 @@
             this.element.html(e);
             this.bindForms();
             if (this.callback) {
-                this.callback();
+              this.callback();
             }
         }.bind(this));
     };
