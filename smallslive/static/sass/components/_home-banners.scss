@@ -203,6 +203,10 @@ $banners-height: 38vh;
     .slick-dots {
       bottom: 0;
 
+      @media (max-width: 960px) {
+        display: none!important;
+      }
+
       li {
         margin: 0 2.35px;
       }
@@ -263,6 +267,11 @@ $banners-height: 38vh;
       justify-content: space-between;
 
       margin-bottom: 40px;
+
+      @media (max-width: 960px) {
+        margin-bottom: 10px;
+      }
+
       vertical-align: top;
       -webkit-filter: brightness(1.85);
       width: 100vw;

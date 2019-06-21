@@ -214,7 +214,7 @@ body.headers-1 {
 
       span {
         margin: 10px 0;
-        font-size: 4vw;
+        font-size: 6vw;
 
         @media (max-width: $screen-sm) {
           margin: 10px 0;
@@ -1046,8 +1046,13 @@ body.headers-1 {
   @media (max-width: $screen-md-max) {
     margin-left: 0;
 
-    .mobile-padding>.text1 {
-      margin-top: 15px;
+    .mobile-padding {
+      .text1 {
+        margin-top: 15px;
+      }
+      .text4 {
+        font-size: 13px;
+      }
     }
 
     .musician-title {
@@ -1056,7 +1061,7 @@ body.headers-1 {
 
     .flex-column.white-line-right {
       width: 100vw;
-      padding: 27px 0;
+      padding: 10px 0;
       border-right: none;
     }
   }

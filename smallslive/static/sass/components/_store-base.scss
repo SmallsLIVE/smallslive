@@ -426,6 +426,12 @@
     @media (max-width: 767px) {
       margin-left: 0px;
     }
+
+    .section-title {
+      @media (max-width: 767px) {
+        background-size: 50vw 5px;
+      }
+    }
   }
 
   &__big-item {
@@ -2549,6 +2555,7 @@ img.defineImageRatio {
       @media (min-width: 0px) {
         max-width: 46.1vw;
         min-width: 46.1vw;
+        font-size: 13px;
       }
 
       @media (min-width: $screen-md) {
@@ -2578,6 +2585,7 @@ img.defineImageRatio {
     cursor: pointer;
 
     .event-info {
+      margin-bottom: 0;
       min-height: 0px;
     }
 
@@ -2585,6 +2593,8 @@ img.defineImageRatio {
       @media (min-width: 0px) {
         max-width: 46.1vw;
         min-width: 46.1vw;
+        font-size: 13px;
+        line-height: 13px;
       }
 
       @media (min-width: $screen-md) {
@@ -2798,5 +2808,11 @@ form .back-to-payment-btn {
 
   .store-cart__mobile-quantity.physical {
     padding: 0;
+  }
+}
+
+.store-home {
+  .white-line-bottom {
+    margin-top: 0;
   }
 }

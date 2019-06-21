@@ -14,44 +14,40 @@
 {% block title %}SmallsLIVE Tracks{% endblock %}
 
 {% block store_content %}
-    <div class="store-listing__content">
-        <div class="section-title home">
-            <div class="title1">featured & newest</div>
-        </div>
-        <main class="newest-recordings-container">
-            <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
-            <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
-            {% include 'promotions/featured_row.html' with events=newest_recordings extra_events=featured_recordings secondary=False %}
-          </main>
-      </div>
-          
-      <div class="white-line-bottom ">
-        <div class="title1 catalog-title">SmallsLIVE Catalog</div>
-      </div>
-      <div  class="search-artist-box-container store flex-row">
-        <div class="search-container">
-          <img src="{% static 'image/search-icon.svg' %}">
-          <input id="artist-search-all"
-              class="search-artist-box"
-              name="q" type="text"
-              placeholder="SEARCH FOR AN ARTIST"
-              autocomplete="off">
-          <div class="reset-search"></div>
-        </div>
-        {% include "promotions/artist-bar.html" with artist_list=artist_with_media %}
-      </div>
-      <main class="all-recordings-container" id="all-recordings-container">
-        {% include 'catalogue/album-list.html' with pagenumber=1 album_page=all_recordings %}
-      </main>
-      {% if above_limit %}
-        <div class="white-border-button load-more-btn"  id="store-load-btn"data-page="2">Load More</div>
-      {% endif %}
+  <div class="store-listing__content">
+    <div class="section-title catalog featured">
+      <div class="title1">featured & newest</div>
     </div>
+    <main class="newest-recordings-container">
+      <div class="slide-btn prev"><b class="indicator-icon icon-left-caret"></b></div>
+      <div class="slide-btn next"><b class="indicator-icon icon-right-caret"></b></div>
+      {% include 'promotions/featured_row.html' with events=newest_recordings extra_events=featured_recordings secondary=False %}
+    </main>
+  </div>
+
+  <div class="section-title catalog list">
+    <div class="title1 catalog-title">SmallsLIVE Catalog</div>
+  </div>
+  <div  class="search-artist-box-container store flex-row">
+    <div class="search-container">
+      <img src="{% static 'image/search-icon.svg' %}">
+      <input id="artist-search-all"
+             class="search-artist-box"
+             name="q" type="text"
+             placeholder="SEARCH FOR AN ARTIST"
+             autocomplete="off">
+      <div class="reset-search"></div>
+    </div>
+    {% include "promotions/artist-bar.html" with artist_list=artist_with_media %}
+  </div>
+  <main class="all-recordings-container" id="all-recordings-container">
+    {% include 'catalogue/album-list.html' with pagenumber=1 album_page=all_recordings %}
+  </main>
+  {% if above_limit %}
+    <div class="white-border-button load-more-btn" id="store-load-btn" data-page="2">Load More</div>
+  {% endif %}
 
 {% endblock store_content %}
-
-
-
 
 {% block extra_js %}
     <script src="{% static 'js/store-base.js' %}"></script>
