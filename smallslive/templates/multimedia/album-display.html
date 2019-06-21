@@ -183,7 +183,7 @@
     <ul>
       {% for artist_product in album_product.artistproduct_set.all %}
         <li>
-          <a href="{{ artist_dict.absolute_url }}" class="title2">
+          <a href="{% url 'search' %}?artist_pk={{ artist_product.artist.pk }}&return_url={{ request.path }}" class="title2">
               {{ artist_product.artist }} / {{ artist_product.instrument }}
           </a>
         </li>
