@@ -9,18 +9,15 @@
       {% if calendar_page %}
         Today + Tomorrow <span class="date-separator">\</span>
       {% else %}
-        Live at the clubs tonight <span class="date-separator">/</span>
+      Live <span class="at-the-clubs">at the clubs</span> tonight <span class="home date-separator">/</span>
       {% endif %}
     </div>
 
-    <div class="title1">{% if calendar_page %} {% get_today_and_tomorrow_dates '%a' %}  {% else %} {% now 'D b d' %} {% endif %}</div>
+    <div class="title1 home date">{% if calendar_page %} {% get_today_and_tomorrow_dates '%a' %}  {% else %} {% now 'D b d' %} {% endif %}</div>
     {% if not calendar_page %}
-    <a href='/events/calendar/' class="white-border-button" style="margin-left: 100px;">Full calendar</a>
+      <a href='/events/calendar/' class="white-border-button">Full calendar</a>
     {% endif %}
   </div>
-  {% if not calendar_page %}
-    <a href='/events/calendar/' class="white-border-button mobile">Full calendar</a>
-  {% endif %}
   <main style="position: relative;">
     <div class="slide-btn prev today-and-tomorrow-arrow"><b class="indicator-icon icon-left-caret"></b></div>
     <div class="slide-btn next today-and-tomorrow-arrow"><b class="indicator-icon icon-right-caret"></b></div>

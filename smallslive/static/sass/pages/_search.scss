@@ -31,14 +31,18 @@ body.headers-1 {
   &.admin-header {
     .search-container.pad-content {
       @media (max-width: $screen-md-max) {
-        padding-top: 76px;
+        padding-top: 95px;
       }
     }
   }
 
   .search-container.pad-content {
     @media (max-width: $screen-md-max) {
-      padding-top: 70px;
+      padding-top: 40px;
+    }
+
+    &.artist-profile {
+      padding-top: 0;
     }
   }
 }
@@ -225,6 +229,11 @@ body.headers-1 {
 
   @media (max-width: $screen-md-max) {
     display: flex;
+
+  }
+
+  &.artist-profile {
+    display: none;
   }
 }
 
@@ -534,6 +543,7 @@ body.headers-1 {
 
         @media (max-width: 420px) {
           height: 13vw;
+          margin-top: 0;
         }
 
         &:hover {
@@ -591,6 +601,10 @@ body.headers-1 {
 
   @media (min-width: 1024px) {
     display: none;
+  }
+
+  @media (minx-width: 720px) {
+    margin-bottom: 20px;
   }
 }
 
@@ -876,7 +890,7 @@ body.headers-1 {
 }
 
 .event-stripe {
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 
   &.archive {
     @media(max-width: 1024px) {
@@ -1013,6 +1027,11 @@ body.headers-1 {
 
   .close-button {
     top: 0;
+
+    @media (max-width: $screen-md-min) {
+      top: 10px;
+    }
+
   }
 }
 
@@ -1438,6 +1457,8 @@ body.headers-1 {
 
     @media (max-width: 420px) {
       height: 13vw;
+      margin-top: 0;
+      margin-bottom: 10px;
     }
   }
 }

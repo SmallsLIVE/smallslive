@@ -11,7 +11,7 @@
 {% block body_class %}home headers-3{% endblock %}
 
 {% block extra_nav %}
-  <div class="search-tabs tabs">
+  <div class="search-tabs tabs{% if artist_profile %} artist-profile {% endif %}">
     <div class="{% if not musician_search %}active{% endif %}" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
       <span class="title1">Shows</span>
     </div>
@@ -36,7 +36,7 @@
   </div>
 {% endif %}
 
-<div class="search-container pad-content new-archive">
+<div class="search-container pad-content new-archive{% if user.is_superuser %} admin{% endif %}{% if artist_profile%} artist-profile{% endif %}">
 
     {% if not artist_profile %}
       <section id="musicianContent"
