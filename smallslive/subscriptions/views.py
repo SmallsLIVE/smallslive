@@ -201,7 +201,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         self.existing_cc = self.request.POST.get('payment_method')
 
     def get_context_data(self, **kwargs):
-        print 'Become a supporter get ->'
+
         context = super(BecomeSupporterView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         context['payment_info_url'] = reverse('payment_info')
@@ -217,7 +217,9 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         else:
             context['can_free_donate'] = False
 
-        if not self.request.user.can_watch_video:
+        # Whatever the flow type is, it needs to be become a supporter if the user
+        # is not a supporter yet. They can't donate or get stuff from the Catalog.
+        if not self.request.user.can_watch_video():
             context['flow_type'] = 'become_supporter'
 
         # We need to clear the basket in case the user has anything in there.
