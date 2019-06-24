@@ -273,6 +273,10 @@ $event-row-padding: 3.5vw;
       line-height: 1.4vw;
       font-size: 1.2vw;
 
+      @media (min-width: 500px) and (max-width: 768px) {
+        height: 1.6vw;
+      }
+
       &:hover {
         color: $accent-color;
         text-decoration: underline;
@@ -338,7 +342,9 @@ $event-row-padding: 3.5vw;
       font-weight: bold;
       margin-bottom: 0px;
       width: 28vw;
-
+      @media (min-width: 500px) and(max-width: 768px) {
+        font-size: 1.9vw;
+      }
       @media (max-width: 500px) {
         width: 98%;
         top: 4vw;
@@ -479,11 +485,6 @@ $event-row-padding: 3.5vw;
       &.featured {
         height: 21.71vw;
         width: 21.85vw;
-
-        @media (max-width: 960px) {
-          height: 21.66vw;
-          width: 25.1vw;
-        }
       }
 
       img {
@@ -582,7 +583,14 @@ $event-row-padding: 3.5vw;
 }
 .event-row .event-display-today-and-tomorrow {
   height: calc(36.7vw * 0.6 - 25px);
-
+  @media (min-width: 500px) and( max-width: 768px) {
+    height: calc(67vw * 0.6 - 25px);
+    min-width: 70vw;
+  }
+  @media (min-width: 768px) and( max-width: 960px) {
+    height: calc(60vw * 0.6 - 25px);
+    min-width: 56vw;
+  }
   @media (max-width: 500px) {
     height: calc(90vw * 0.6 - 25px);
   }

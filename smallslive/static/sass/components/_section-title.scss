@@ -1,12 +1,11 @@
 .home {
   .white-border-button {
-
   }
 }
 
 .musicians-results .calendar-filters {
-    position: absolute;
-    left: calc(544px + 3.5vw);
+  position: absolute;
+  left: calc(544px + 3.5vw);
 }
 
 .section-title-centered {
@@ -22,7 +21,14 @@
 
   width: 100%;
 }
-
+.calendar-filters {
+  &.desktop {
+    display: flex;
+  }
+}
+.new-calendar .home .calendar-filters .datepicker-btn {
+  margin-left: 20px;
+}
 .section-title {
   $underline-length: 600px;
   position: relative;
@@ -53,7 +59,6 @@
   }
 
   &.catalog {
-
     &.featured {
       background-size: 49vw 5px;
       margin-bottom: 20px;
@@ -69,7 +74,6 @@
     }
   }
   &.calendar {
-
     background-size: calc(520px + 3.5vw) 5px;
 
     &.upcoming-shows {
@@ -79,11 +83,9 @@
         display: none;
       }
     }
-
   }
 
   &.archive {
-
     position: relative;
     z-index: 99;
 
@@ -104,12 +106,10 @@
     }
 
     @media (max-width: $screen-md-min) {
-
       background-size: 100vw 5px;
       margin-bottom: 20px;
       padding-bottom: 3px;
       width: 97vw;
-
     }
 
     span {
@@ -136,12 +136,10 @@
   }
 
   &.home {
-
     position: relative;
     z-index: 99;
 
     .white-border-button {
-
       margin-left: 120px;
 
       @media (max-width: 960px) {
@@ -157,7 +155,7 @@
       }
     }
 
-    @media (max-width: 420px) {
+    @media (max-width: 451px) {
       .at-the-clubs {
         display: none;
       }
@@ -234,9 +232,7 @@
       width: 100vw;
       position: relative;
       z-index: 99;
-
     }
-
   }
 
   &.section-title-no-padded {
@@ -258,7 +254,6 @@
       }
     }
   }
-
 
   // Adjust titles
   > div {
