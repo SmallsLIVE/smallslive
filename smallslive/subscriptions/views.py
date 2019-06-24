@@ -219,7 +219,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
         # Whatever the flow type is, it needs to be become a supporter if the user
         # is not a supporter yet. They can't donate or get stuff from the Catalog.
-        if not self.request.user.can_watch_video():
+        if not self.request.user.can_watch_video:
             context['flow_type'] = 'become_supporter'
 
         # We need to clear the basket in case the user has anything in there.
