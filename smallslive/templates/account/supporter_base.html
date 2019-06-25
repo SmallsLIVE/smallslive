@@ -11,9 +11,10 @@
     $(document).ready(function () {
 
       Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
-      // in payment.js
-      //renderPayPal(paypal);
-      //renderCardAnimation();
+
+      $('#donateBitcoin').click(function () {
+        $('#donateBitcoinDialog').modal('show');
+      });
 
     });
 

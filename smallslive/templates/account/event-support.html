@@ -14,6 +14,33 @@
 
 {% block confirmation_modals %}
   {% include 'account/selection_confirmation_dialog.html' %}
+
+  <div class="modal fade" id="donateBitcoinDialog" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content custom-modal">
+        <a href="#" class="close-button"></a>
+        <div class="modal-body">
+          <p class="title2 accent-color title">Thank you for your support</p>
+            <p class="title-big subtitle"></p>
+            <p class="text9 text">
+              The SmallsLIVE Foundation accepts donations in bitcoin. The SmallsLIVE Foundation bitcoin wallet is -> WALLET
+            </p>
+            <p class="text9 text">
+              Donation in bitcoin is tax deductible. Your tax deduction will be equal to the fair market value of the donated bitcoin at the time of donation.
+            </p>
+            <p class="text9 text">
+              To receive documentation of your donation, please contact us at <a href="foundation@smallslive.com">foundation@smallslive.com</a> with your intention to donate in bitcoin.
+              We will contact you directly with a confirmation of the transfer and a receipt for your tax purposes.
+            </p>
+          </p>
+          <div class="text4 text-centered" style="display: flex; justify-content: center;">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% endblock %}
 
 {% block flow_title %}
@@ -67,12 +94,14 @@
           </div>
         </div>
       </div>
+      <div id="donateBitcoin" class="button-row button-row-margin">
+        <button class="button-bordered">Donate Bitcoin</button>
+      </div>
     </div>
 
     <div id="supporterStepPaymentInfo" class="supporter-step" style="display: none"
          data-payment-info-url="{{ payment_info_url }}"
          data-payment-info-complete-url="{% url 'become_supporter' %}">
-
     </div>
 
     <div id="supporterStepShipping" class="supporter-step" style="display: none">
@@ -113,6 +142,6 @@
       <button>Continue watching</button>
     </a>
   {% endif %}
-
 {% endblock %}
+
 
