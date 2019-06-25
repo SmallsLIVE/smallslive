@@ -88,6 +88,7 @@
   &.archive {
     position: relative;
     z-index: 99;
+    margin-top: 25px;
 
     @media (max-width: 420px) {
       background-size: 100vw 5px;
@@ -110,6 +111,9 @@
       margin-bottom: 20px;
       padding-bottom: 3px;
       width: 97vw;
+    }
+    @media (min-width: 720px) and (max-width: 1024px) {
+      margin-top: 45px;
     }
 
     span {
@@ -303,7 +307,17 @@
     }
   }
 }
-
+.tabs div .title1 {
+  @media (min-width: 690px) and (max-width: 850px) {
+    line-height: 4vw;
+  }
+  @media (min-width: 851px) and (max-width: 960px) {
+    line-height: 4.4vw;
+  }
+  @media (min-width: 960px) and (max-width: 1024px) {
+    line-height: 4.7vw;
+  }
+}
 @media (max-width: $screen-md-max) {
   .store-overview__group .section-title {
     padding-bottom: 0;
