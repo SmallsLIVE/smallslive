@@ -586,13 +586,23 @@ $event-row-padding: 3.5vw;
   @media (min-width: 500px) and( max-width: 768px) {
     height: calc(67vw * 0.6 - 25px);
     min-width: 70vw;
+
+    a .event-card .event-picture-container .picture-border .event-picture {
+      height: calc(67vw * 0.6 - 25px);
+    }
   }
   @media (min-width: 768px) and( max-width: 960px) {
     height: calc(60vw * 0.6 - 25px);
     min-width: 56vw;
+    a .event-card .event-picture-container .picture-border .event-picture {
+      height: calc(60vw * 0.6 - 25px);
+    }
   }
   @media (max-width: 500px) {
     height: calc(90vw * 0.6 - 25px);
+    a .event-card .event-picture-container .picture-border .event-picture {
+      height: calc(90vw * 0.6 - 25px);
+    }
   }
 }
 
