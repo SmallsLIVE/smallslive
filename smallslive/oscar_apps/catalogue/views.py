@@ -9,6 +9,7 @@ from oscar_apps.catalogue.models import Product, UserCatalogue, UserCataloguePro
 from oscar.apps.catalogue.views import ProductCategoryView
 from custom_stripe.models import CustomerDetail
 from artists.models import Artist
+from django.conf import settings
 
 
 class ProductCategoryView(catalogue_views.ProductCategoryView):
@@ -184,6 +185,8 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
 
         ctx['payment_info_url'] = reverse('payment_info')
         ctx['product_id'] = self.object.pk
+
+        ctx['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
 
         return ctx
 
