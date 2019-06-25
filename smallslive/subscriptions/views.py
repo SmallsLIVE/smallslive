@@ -200,7 +200,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         self.plan_type = self.request.POST.get('type')
         self.amount = self.request.POST.get('quantity')
         payment_method = self.request.POST.get('payment_method')
-        self.existing_cc = payment_method == 'existing_credit_card'
+        self.existing_cc = payment_method == 'existing-credit-card'
         self.bitcoin = payment_method == 'bitcoin'
 
     def get_context_data(self, **kwargs):
