@@ -106,19 +106,22 @@
         <div id="select-payment-row" class="row" style="margin-bottom: 20px;">
           <div class="col-xs-12 col-sm-8 col-sm-offset-2">
             <div class="button-row button-row-margin">
-                    {% if payment_form.can_use_existing %}
-                      <div class="store__form__selection__option">
-                      <button class="payment-method-toggle active" data-id="existing-credit-card">Use existing credit card</button>
-                      </div>
-                    {% endif %}
-                    <div class="store__form__selection__option">
-                    <button class="payment-method-toggle {% if not payment_form.can_use_existing %}active{% endif %}" data-id="credit-card">Pay with credit card</button>
-                    </div>
-                    <div class="store__form__selection__option">
-                    <button class="payment-method-toggle" data-id="paypal">Pay with PayPal</button>
-                    </div>
+              {% if payment_form.can_use_existing %}
+                <div class="store__form__selection__option">
+                < button class="payment-method-toggle active" data-id="existing-credit-card">Use existing credit card</button>
+                </div>
+              {% endif %}
+              <div class="store__form__selection__option">
+                <button class="payment-method-toggle {% if not payment_form.can_use_existing %}active{% endif %}" data-id="credit-card">Pay with credit card</button>
+              </div>
+              <div class="store__form__selection__option">
+                <button class="payment-method-toggle" data-id="paypal">Pay with PayPal</button>
+              </div>
+              <div class="store__form__selection__option">
+                <button class="payment-method-toggle" data-id="bitcoin">Pay with BitCoin</button>
+              </div>
 
-                  </div>
+            </div>
           </div>
         </div>
         <input type="hidden" name="payment_method" id="payment-method" value="{% if payment_form.can_use_existing %}existing-credit-card{%  else %}credit-card{% endif %}">
@@ -127,6 +130,9 @@
               </div>
         <div class="store__form__group clearfix row payment-method-form hidden" id="paypal-form">
           <p class="text9">You will be redirected to PayPal to complete your transaction</p>
+        </div>
+        <div class="store__form__group clearfix row payment-method-form hidden" id="bitcoin-form">
+          <p class="text9">You will receive instructions on confirming</p>
         </div>
         <div class="row">
           <div class="store__form__group clearfix payment-method-form {% if payment_form.can_use_existing %}hidden{% endif %}" id="credit-card-form">

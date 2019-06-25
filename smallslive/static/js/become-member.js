@@ -928,6 +928,12 @@ $(document).ready(function () {
           $mainContainer.find("#supporterStepPaymentInfo").data("payment-info-complete-url"),
           completeSubpage
         );
+      } else if (method == "bitcoin") {
+        startBitCoinPayment(
+          $mainContainer.find("#payment-form"),
+          $mainContainer.find("#supporterStepPaymentInfo").data("payment-info-pending-url"),
+          completeSubpage
+        );
       } else if (method == "existing-credit-card") {
         startStripePayment(
           $("#payment-form"),
