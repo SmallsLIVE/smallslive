@@ -712,7 +712,16 @@ $(document).ready(function () {
       if (queryTermPart) {
         window.location = "/search?q=" + queryTermPart;
       } else {
-        window.location = "/search/archive";
+        var returnUrlParts = window.location.search.split("return_url=");
+        var returnUrlPart = '';
+        if (returnUrlParts.length > 1) {
+          returnUrlPart = returnUrlParts[1];
+        }
+        if (returnUrlPart) {
+          window.location = returnUrlPart;
+        } else {
+          window.location = "/search/archive";
+        }
       }
     }
   );

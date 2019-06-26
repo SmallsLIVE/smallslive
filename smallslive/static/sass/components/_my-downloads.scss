@@ -406,6 +406,7 @@
 
     ul {
       margin-bottom: 30px;
+      padding-inline-start: 0;
 
       @media (max-width: 1024px) {
         width: 50%;

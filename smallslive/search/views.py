@@ -390,6 +390,8 @@ class TemplateSearchView(TemplateView, SearchMixin, UpcomingEventMixin):
         if self.request.user.is_staff:
             context['show_metrics'] = True
 
+        context['user'] = self.request.user
+
         return context
 
 

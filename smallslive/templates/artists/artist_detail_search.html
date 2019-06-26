@@ -89,12 +89,24 @@
 <div class="close-button-container hidden-xs hidden-sm hidden-md"><a href="#" class="close-button" style="margin-right:40px"></a></div>
 
 <div class="tabs artist-tabs">
-  <div class="active" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
-    <span class="title1">Archived</span>
-  </div>
-  <div data-toggle-tab-target="upcoming-shows" data-toggle-tab-group="search-results">
-    <span class="title1">Upcoming</span>
-  </div>
+  {% if archived %}
+    <div class="active" data-toggle-tab-target="archived-shows" data-toggle-tab-group="search-results">
+      <span class="title1">Archived</span>
+    </div>
+  {% else %}
+    <div>
+      <span class="title1"></span>
+    </div>
+  {% endif %}
+  {% if upcoming %}
+    <div data-toggle-tab-target="upcoming-shows" data-toggle-tab-group="search-results">
+      <span class="title1">Upcoming</span>
+    </div>
+  {% else %}
+    <div>
+      <span class="title1"></span>
+    </div>
+  {% endif %}
 </div>
 
 <div id="smallslive-tracks" data-toggle-tab="smallslive-tracks" style="display: none;"  data-toggle-tab-group="search-results">

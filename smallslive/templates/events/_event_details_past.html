@@ -31,6 +31,20 @@
   {% endif %}
   {% if event.published_audio %}
     <div id="audioContainer" class="player-container" style="display: none;">
+
+      {% if not user.can_watch_video %}
+        <div class="not-auth-container">
+          {% if event.photo %}
+            {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+          {% else %}
+            {% include 'partials/thumbored_picture.html' %}
+          {% endif %}
+          <div class="icon-overlay">
+            <i class="fa fa-play fa-thin-circle"></i>
+          </div>
+        </div>
+      {% endif%}
+
       <div id="player-audio" class="{% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}"></div>
       <div class="player-info" id="playerAudioTextOverlay">
         {% include 'events/_event_player_overlay.html' with info_label='Audio Only' %}

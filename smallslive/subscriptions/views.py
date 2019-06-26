@@ -12,7 +12,7 @@ from django.views.generic import TemplateView, FormView, ListView, View
 from djstripe.mixins import SubscriptionMixin
 from djstripe.models import Customer, Charge, Plan
 from djstripe.settings import subscriber_request_callback
-from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView,\
+from djstripe.views import SyncHistoryView, ChangeCardView, ChangePlanView, \
     CancelSubscriptionView as BaseCancelSubscriptionView
 from oscar_apps.catalogue.models import Product
 from oscar_apps.checkout.forms import PaymentForm, BillingAddressForm
@@ -24,7 +24,7 @@ from oscar.apps.payment.models import SourceType, Source
 from events.models import Event
 from users.models import SmallsUser
 from users.utils import charge, one_time_donation, \
-    subscribe_to_plan,  update_active_card
+    subscribe_to_plan, update_active_card
 from subscriptions.models import Donation
 from .forms import PlanForm, ReactivateSubscriptionForm
 from .mixins import PayPalMixin
@@ -35,6 +35,7 @@ class PaymentInfoView(TemplateView):
     Shows payment form with options. Typically credit card form and PayPal.
     Shows billing address form. Uses Oscar for storing billing address.
     """
+
     def get_template_names(self):
         if self.request.is_ajax():
             template_name = 'partials/_payment_info.html'
@@ -69,6 +70,7 @@ class PaymentInfoView(TemplateView):
         except:
             return None
 
+
 payment_info = PaymentInfoView.as_view()
 
 
@@ -90,11 +92,14 @@ class ExecutePayPalPaymentView(PayPalMixin, View):
         # Check if payment id belongs to a Catalog donation -> product_id is set
         donation = Donation.objects.filter(reference=payment_id).first()
 
-        url = reverse('become_supporter_complete') + '?payment_id={}'.format(payment_id)
+        url = reverse('become_supporter_complete') + \
+            '?payment_id={}'.format(payment_id)
         if donation.product_id:
-            url += '&flow_type=product_support&product_id=' + str(donation.product_id)
+            url += '&flow_type=product_support&product_id=' + \
+                str(donation.product_id)
         if donation.event_id:
-            url += '&flow_type=event_support&event_id=' + str(donation.event_id)
+            url += '&flow_type=event_support&event_id=' + \
+                str(donation.event_id)
 
         return redirect(url)
 
@@ -103,6 +108,7 @@ supporter_paypal_execute = ExecutePayPalPaymentView.as_view()
 
 
 class ContributeFlowView(TemplateView):
+
     def get_template_names(self):
         if self.request.is_ajax():
             template_name = 'account/supporter-flow-ajax.html'
@@ -118,7 +124,8 @@ class ContributeFlowView(TemplateView):
 class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
     def __init__(self, *args, **kwargs):
-        self.flow_type = ""
+        self.bitcoin = False
+        self.flow_type = ''
         self.stripe_token = None
         self.plan_type = None
         self.amount = None
@@ -188,29 +195,35 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
     def set_attributes(self):
 
-        self.flow_type = self.request.POST.get('flow_type', "become_supporter")
+        self.flow_type = self.request.POST.get('flow_type', 'become_supporter')
         self.stripe_token = self.request.POST.get('stripe_token')
         self.plan_type = self.request.POST.get('type')
         self.amount = self.request.POST.get('quantity')
-        self.existing_cc = self.request.POST.get('payment_method')
+        payment_method = self.request.POST.get('payment_method')
+        self.existing_cc = payment_method == 'existing-credit-card'
+        self.bitcoin = payment_method == 'bitcoin'
 
     def get_context_data(self, **kwargs):
-        print 'Become a supporter get ->'
+
         context = super(BecomeSupporterView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         context['payment_info_url'] = reverse('payment_info')
         context['form_action'] = reverse('become_supporter')
-        context['flow_type'] = self.request.GET.get('flow_type', "become_supporter")
+        context['flow_type'] = self.request.GET.get(
+            'flow_type', "become_supporter")
         product_context = self.get_product_context()
         context.update(product_context)
         event_context = self.get_event_context()
         context.update(event_context)
         if not self.request.user.is_anonymous():
-            context['can_free_donate'] = self.request.user.get_donation_amount >= 100 
-        else: 
+            context['can_free_donate'] = self.request.user.get_donation_amount >= 100
+        else:
             context['can_free_donate'] = False
 
-        print 'Flow type: ', self.request.GET.get('flow_type', "become_supporter")
+        # Whatever the flow type is, it needs to be become a supporter if the user
+        # is not a supporter yet. They can't donate or get stuff from the Catalog.
+        if not self.request.user.can_watch_video:
+            context['flow_type'] = 'become_supporter'
 
         # We need to clear the basket in case the user has anything in there.
         self.request.basket.flush()
@@ -218,15 +231,19 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         context['gifts'] = []
         context['costs'] = []
         selector = Selector()
-        strategy = selector.strategy(request=self.request, user=self.request.user)
+        strategy = selector.strategy(
+            request=self.request, user=self.request.user)
         for product in Product.objects.filter(product_class__slug='gift'):
             context['gifts'].append(product)
             if product.variants.count():
-                context['costs'].append(product.variants.first().stockrecords.first().cost_price)
+                context['costs'].append(
+                    product.variants.first().stockrecords.first().cost_price)
             else:
-                context['costs'].append(product.stockrecords.first().cost_price)
+                context['costs'].append(
+                    product.stockrecords.first().cost_price)
 
-        context['gifts'].sort(key=lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
+        context['gifts'].sort(
+            key=lambda x: strategy.fetch_for_product(product=x).price.incl_tax)
 
         return context
 
@@ -234,8 +251,10 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
         print '***************'
         print 'Handle paypal payment:'
-        payment_execute_url = self.request.build_absolute_uri(reverse('supporter_paypal_execute'))
-        payment_cancel_url = self.request.build_absolute_uri(reverse('become_supporter'))
+        payment_execute_url = self.request.build_absolute_uri(
+            reverse('supporter_paypal_execute'))
+        payment_cancel_url = self.request.build_absolute_uri(
+            reverse('become_supporter'))
         print 'Execute URL: ', payment_execute_url
         item = {
             'name': 'One Time Donation',
@@ -256,7 +275,8 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         customer, created = Customer.get_or_create(
             subscriber=subscriber_request_callback(self.request))
         if self.plan_type == 'month':
-            subscribe_to_plan(customer, self.stripe_token, self.amount, self.plan_type, self.flow_type)
+            subscribe_to_plan(customer, self.stripe_token,
+                              self.amount, self.plan_type, self.flow_type)
         else:
             stripe_ref = one_time_donation(
                 customer, self.stripe_token, self.amount)
@@ -273,12 +293,28 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
                 }
                 Donation.objects.create(**donation)
 
+    def execute_bitcoin_payment(self):
+
+        if self.product_id:
+            # We need to record the product id if donation comes from the Catalog.
+            donation = {
+                'user': self.request.user,
+                'currency': 'USD',
+                'amount': self.amount,
+                'reference': self.bitcoin,
+                'confirmed': False,
+                'product_id': self.product_id,
+                'event_id': self.event_id,
+            }
+            Donation.objects.create(**donation)
+
     def post(self, request, *args, **kwargs):
+
         self.set_attributes()
         self.set_product()
         self.set_event()
 
-        if self.existing_cc == 'existing-credit-card':
+        if self.existing_cc:
             stripe_customer = self.request.user.customer.stripe_customer
             self.stripe_token = stripe_customer.get('default_source')
 
@@ -288,7 +324,8 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         if self.stripe_token:
             try:
                 self.execute_stripe_payment()
-                url = reverse('become_supporter_complete') + "?flow_type=" + self.flow_type
+                url = reverse('become_supporter_complete') + \
+                    "?flow_type=" + self.flow_type
                 if self.product_id:
                     url += '&product_id=' + self.product_id
                 if self.event_id:
@@ -303,7 +340,20 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
             except stripe.StripeError as e:
                 # add form error here
                 print e
-                return JsonResponse({'error' :str(e)})
+                return JsonResponse({'error': str(e)})
+        elif self.bitcoin:
+            self.execute_bitcoin_payment()
+            url = reverse('supporter_pending') + \
+                "?pending_payment_type=bitcoin"
+            if self.product_id:
+                url += '&product_id=' + self.product_id
+            if self.event_id:
+                url += '&event_id=' + self.event_id
+                url += '&event_slug=' + self.event_slug
+
+            return _ajax_response(
+                self.request, redirect(url)
+            )
         else:
             try:
                 self._handle_paypal_payment()
@@ -381,7 +431,19 @@ class BecomeSupporterCompleteView(BecomeSupporterView):
 become_supporter_complete = BecomeSupporterCompleteView.as_view()
 
 
+class BecomeSupporterPendingView(BecomeSupporterView):
+
+    def get_template_names(self):
+        template_name = 'account/supporter-bitcoin-pending.html'
+
+        return [template_name]
+
+
+supporter_pending = BecomeSupporterPendingView.as_view()
+
+
 class DonateView(BecomeSupporterView):
+
     def get_context_data(self, **kwargs):
         context = super(DonateView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
@@ -484,11 +546,13 @@ class SignupPaymentView(LoginRequiredMixin, FormValidMessageMixin, SubscriptionM
         else:
             return self.form_invalid(form)
 
+
 signup_payment = SignupPaymentView.as_view()
 
 
 class SyncPaymentHistoryView(SyncHistoryView):
     template_name = 'account/blocks/payment_history.html'
+
 
 sync_payment_history = SyncPaymentHistoryView.as_view()
 
@@ -497,20 +561,24 @@ class SubscriptionSettingsView(LoginRequiredMixin, TemplateView):
     template_name = 'account/subscription-settings.html'
 
     def get_context_data(self, **kwargs):
-        context = super(SubscriptionSettingsView, self).get_context_data(**kwargs)
+        context = super(SubscriptionSettingsView,
+                        self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
         return context
+
 
 subscription_settings = SubscriptionSettingsView.as_view()
 
 
 class UpdateCardView(ChangeCardView):
+
     def get_post_success_url(self):
         return reverse('user_settings_new')
 
     def get(self, request, *args, **kwargs):
         # only POST
         return redirect(self.get_post_success_url())
+
 
 update_card = UpdateCardView.as_view()
 
@@ -536,16 +604,19 @@ class UpgradePlanView(ChangePlanView):
         context['stripe_token'] = self.request.user.customer.card_fingerprint
         return context
 
+
 upgrade_plan = UpgradePlanView.as_view()
 
 
 class CancelSubscriptionView(BaseCancelSubscriptionView):
     success_url = reverse_lazy("user_settings_new")
 
+
 cancel_subscription = CancelSubscriptionView.as_view()
 
 
 class UpdatePledgeView(BecomeSupporterView):
+
     def get_context_data(self, **kwargs):
         context = super(UpdatePledgeView, self).get_context_data(**kwargs)
         context['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
@@ -573,6 +644,7 @@ class ReactivateSubscriptionView(FormView):
 
         return super(ReactivateSubscriptionView, self).form_valid(form)
 
+
 reactivate_subscription = ReactivateSubscriptionView.as_view()
 
 
@@ -584,5 +656,6 @@ class SubscriberEmailsFilterView(StaffuserRequiredMixin, ListView):
 
     def get_queryset(self):
         return SmallsUser.objects.filter(artist=None).values_list('email', flat=True).nocache()
+
 
 subscriber_list_emails = SubscriberEmailsFilterView.as_view()

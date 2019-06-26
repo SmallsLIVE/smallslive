@@ -67,7 +67,7 @@
         </p>
       </div>
       <div class="banner-learnmore">
-        <a class="banner-button-info" href="{% url 'contact-and-info' %}">Make a Donation</a>
+        <a class="banner-button-info" {% if user.is_authenticated %} href="{% url 'become_supporter' %}?flow_type=one_time_donation" {% else %} onclick="nextoBecomeSupporter();" {% endif %}>Make a Donation</a>
       </div>
     </div>
 
@@ -111,12 +111,16 @@
 
 {% block extra_js %}
 <script>
+  function nextoBecomeSupporter(){
+    $('#becomeMemberDialog').modal('show')
+    $('#form-login').attr('action', $('#form-login').attr('action') + "{% url 'become_supporter' %}?flow_type=one_time_donation".substring(1))
+  }  
   function becomeMember() {
 
-    window.location = '{% url 'become_supporter' %}';
-  }
+      window.location = '{% url 'become_supporter' %}';
+    }
 
-  $(document).ready(function () {
-    $('.carousel').slick({ infinite: true, dots: true, arrows: false, autoplay: true, autoplaySpeed: 7000 })
-  });
+    $(document).ready(function () {
+      $('.carousel').slick({ infinite: true, dots: true, arrows: false, autoplay: true, autoplaySpeed: 7000 })
+    });
 </script> {% endblock %}

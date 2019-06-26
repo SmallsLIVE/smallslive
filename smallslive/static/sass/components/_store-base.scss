@@ -426,6 +426,12 @@
     @media (max-width: 767px) {
       margin-left: 0px;
     }
+
+    .section-title {
+      @media (max-width: 767px) {
+        background-size: 50vw 5px;
+      }
+    }
   }
 
   &__big-item {
@@ -452,7 +458,8 @@
       }
     }
 
-    &__content {}
+    &__content {
+    }
 
     &__name {
       //@include lato-black;
@@ -676,7 +683,6 @@
   }
 
   .white-border-select {
-
     .select-selected,
     .select-items div {
       padding-top: 8px;
@@ -699,7 +705,6 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-
     }
   }
 
@@ -858,7 +863,7 @@
       margin-top: 20px;
     }
 
-    &>.row {
+    & > .row {
       width: 100%;
     }
 
@@ -909,7 +914,8 @@
         }
       }
 
-      & .arrow {}
+      & .arrow {
+      }
     }
 
     &__title {
@@ -1002,9 +1008,11 @@
         }
       }
 
-      &__header {}
+      &__header {
+      }
 
-      &__row {}
+      &__row {
+      }
 
       //&__row {
       //  padding: 7px 0;
@@ -1046,7 +1054,6 @@
       }
 
       & a {
-
         //color: #fff;
         .fa-play {
           color: black;
@@ -1643,7 +1650,7 @@
       &__container {
         padding: 10px 20px;
 
-        @media(max-width: 960px) {
+        @media (max-width: 960px) {
           padding: 0px 0;
         }
 
@@ -1672,9 +1679,11 @@
           margin-right: -15px;
         }
 
-        .store-cart__table__row__container {}
+        .store-cart__table__row__container {
+        }
 
-        & .image {}
+        & .image {
+        }
       }
     }
 
@@ -1722,7 +1731,7 @@
       &.name {
         @include flex-shrink(1);
 
-        @media(max-width: 640px) {
+        @media (max-width: 640px) {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -2204,7 +2213,7 @@
         }
       }
 
-      & input[type="radio"]:checked+label:before {
+      & input[type="radio"]:checked + label:before {
         content: "\2022";
         color: #666;
         font-size: 23px;
@@ -2453,7 +2462,7 @@ img.defineImageRatio {
     padding: 30px;
   }
 
-  &>.row {
+  & > .row {
     @include display(flex);
     @include align-items(center);
   }
@@ -2465,7 +2474,8 @@ img.defineImageRatio {
     }
   }
 
-  &__content {}
+  &__content {
+  }
 
   &__heading {
     @include lato-black;
@@ -2503,13 +2513,12 @@ img.defineImageRatio {
 
 .all-recordings-container,
 .all-artist-tracks {
-
   position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 
-  >* {
+  > * {
     flex: 1 0 -1%;
   }
 
@@ -2546,6 +2555,7 @@ img.defineImageRatio {
       @media (min-width: 0px) {
         max-width: 46.1vw;
         min-width: 46.1vw;
+        font-size: 13px;
       }
 
       @media (min-width: $screen-md) {
@@ -2572,10 +2582,10 @@ img.defineImageRatio {
   width: auto;
 
   .event-display {
-
     cursor: pointer;
 
     .event-info {
+      margin-bottom: 0;
       min-height: 0px;
     }
 
@@ -2583,6 +2593,8 @@ img.defineImageRatio {
       @media (min-width: 0px) {
         max-width: 46.1vw;
         min-width: 46.1vw;
+        font-size: 13px;
+        line-height: 13px;
       }
 
       @media (min-width: $screen-md) {
@@ -2642,11 +2654,9 @@ img.defineImageRatio {
 
   .event-card .event-picture-container .event-picture,
   .event-card .event-picture-container .event-picture img {
-
     @media (min-width: 0px) {
       height: 46.1vw;
       width: 46.1vw;
-      min-height: 46.1vw;
     }
 
     @media (min-width: $screen-md) {
@@ -2776,16 +2786,13 @@ form .back-to-payment-btn {
       width: 45%;
     }
   }
-
 }
 
 .content-wrapper.basket {
-  @media(max-width: 1023px) {
-    padding-top: 50px
+  @media (max-width: 1023px) {
+    padding-top: 50px;
   }
 }
-
-
 
 @media (min-width: 1024px) {
   .store-cart__table__header__title span.smaller.digital-info {
@@ -2793,10 +2800,7 @@ form .back-to-payment-btn {
   }
 }
 
-
-
-@media(max-width: 480px) {
-
+@media (max-width: 480px) {
   .album.physical,
   div.store-cart__table__cell {
     padding-right: 0px;
@@ -2805,5 +2809,10 @@ form .back-to-payment-btn {
   .store-cart__mobile-quantity.physical {
     padding: 0;
   }
+}
 
+.store-home {
+  .white-line-bottom {
+    margin-top: 0;
+  }
 }

@@ -1,28 +1,11 @@
 .home {
   .white-border-button {
-    &.mobile  {
-      @media (max-width: 1023px) {
-        display: block;
-        font-size: 13px;
-        width: 160px;
-        margin-left: 3.5vw;
-        margin-bottom: 20px;
-        margin-top: 20px;
-        text-align: center;
-      }
-      @media (max-width: 450px) {
-        font-size: 10px;
-      }
-      @media (min-width: 1024px) {
-        display: none;
-      }
-    }
   }
 }
 
 .musicians-results .calendar-filters {
-    position: absolute;
-    left: calc(544px + 3.5vw);
+  position: absolute;
+  left: calc(544px + 3.5vw);
 }
 
 .section-title-centered {
@@ -38,7 +21,14 @@
 
   width: 100%;
 }
-
+.calendar-filters {
+  &.desktop {
+    display: flex;
+  }
+}
+.new-calendar .home .calendar-filters .datepicker-btn {
+  margin-left: 20px;
+}
 .section-title {
   $underline-length: 600px;
   position: relative;
@@ -62,43 +52,132 @@
     margin-bottom: 0;
   }
 
-  &.calendar {
+  @media (max-width: $screen-md-min) {
+    .date-separator {
+      display: none;
+    }
+  }
 
+  &.catalog {
+    &.featured {
+      background-size: 49vw 5px;
+      margin-bottom: 20px;
+      padding-bottom: 3px;
+      width: 100vw;
+    }
+
+    &.list {
+      background-size: 52vw 5px;
+      margin-bottom: 20px;
+      padding-bottom: 3px;
+      width: 100vw;
+    }
+  }
+  &.calendar {
     background-size: calc(520px + 3.5vw) 5px;
 
     &.upcoming-shows {
       background-size: calc(520px + 3.5vw) 5px;
-    }
 
-  }
-
-  &.home, &.archive, &.calendar {
-
-    position: relative;
-    z-index: 99;
-
-    .white-border-button {
-
-      @media (max-width: 960px) {
-        left: initial;
-        right: 3.5vw;
-        width: 20vw;
-      }
-
-      @media (max-width: 1023px) {
+      @media (max-width: $screen-sm-max) {
         display: none;
       }
+    }
+  }
+
+  &.archive {
+    position: relative;
+    z-index: 99;
+    margin-top: 25px;
+
+    @media (max-width: 420px) {
+      background-size: 100vw 5px;
+      margin-bottom: 20px;
+      padding-bottom: 3px;
+      width: 100vw;
+    }
+
+    .archive-filter {
+      height: 59px;
+      margin-left: 140px;
+
+      @media (max-width: $screen-md-max) {
+        display: none;
+      }
+    }
+
+    @media (max-width: $screen-md-min) {
+      background-size: 100vw 5px;
+      margin-bottom: 20px;
+      padding-bottom: 3px;
+      width: 97vw;
+    }
+    @media (min-width: 720px) and (max-width: 1024px) {
+      margin-top: 45px;
     }
 
     span {
       margin-right: 10px;
       padding-bottom: 4px;
     }
+  }
+
+  &.calendar {
+    position: relative;
+    z-index: 99;
 
     @media (max-width: $screen-md-min) {
-      background-size: 100vw 5px;
+      background-size: 50vw 5px;
+      margin-bottom: 20px;
       padding-bottom: 3px;
       width: 100vw;
+    }
+
+    span {
+      margin-right: 10px;
+      padding-bottom: 4px;
+    }
+  }
+
+  &.home {
+    position: relative;
+    z-index: 99;
+
+    .white-border-button {
+      margin-left: 120px;
+
+      @media (max-width: 960px) {
+        width: 120px;
+        text-align: center;
+        margin-left: 100px;
+        font-size: 11px;
+      }
+
+      @media (max-width: 420px) {
+        text-align: center;
+        margin-left: 80px;
+      }
+    }
+
+    @media (max-width: 451px) {
+      .at-the-clubs {
+        display: none;
+      }
+    }
+
+    @media (max-width: $screen-md-min) {
+      background-size: 60vw 5px;
+      margin-bottom: 20px;
+      padding-bottom: 3px;
+      width: 100vw;
+
+      .date-separator {
+        display: none;
+      }
+
+      .date {
+        display: none;
+      }
 
       .select-container {
         height: 100%;
@@ -136,10 +215,28 @@
         }
       }
     }
+
+    @media (max-width: 420px) {
+      background-size: 40vw 5px;
+
+      &.highlights {
+        background-size: 80vw 5px;
+      }
+    }
   }
 
   &.section-flex {
     width: 100%;
+
+    @media (max-width: 960px) {
+      background-size: 65vw 5px;
+      margin-bottom: 20px;
+      padding-bottom: 3px;
+      padding-left: 2vw;
+      width: 100vw;
+      position: relative;
+      z-index: 99;
+    }
   }
 
   &.section-title-no-padded {
@@ -149,6 +246,17 @@
   .date-separator {
     color: $accent-color;
     margin-right: 0.3em;
+  }
+
+  @media (max-width: 720px) {
+    .home {
+      &.date-separator {
+        display: none;
+      }
+      &.date {
+        display: none;
+      }
+    }
   }
 
   // Adjust titles
@@ -186,6 +294,7 @@
         line-height: 2.5vw;
       }
     }
+
     @media (max-width: 450px) {
       &.title1 {
         font-size: 5vw;
@@ -198,7 +307,17 @@
     }
   }
 }
-
+.tabs div .title1 {
+  @media (min-width: 690px) and (max-width: 850px) {
+    line-height: 4vw;
+  }
+  @media (min-width: 851px) and (max-width: 960px) {
+    line-height: 4.4vw;
+  }
+  @media (min-width: 960px) and (max-width: 1024px) {
+    line-height: 4.7vw;
+  }
+}
 @media (max-width: $screen-md-max) {
   .store-overview__group .section-title {
     padding-bottom: 0;

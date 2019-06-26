@@ -32,14 +32,14 @@
   {% include 'become_a_supporter_dialog.html' %}
 
 
-  <div class="main-container pad-content home-new">
+  <div class="main-container pad-content {% if calendar %}calendar{% else %}home-new{% endif %}">
     {% block home_content %}
     <main>
       {% include 'home_banners_carousel.html' %}
       <div class="event-stripe">
         {% include 'events/today_and_tomorrow.html' with custom_venue_style=True %}
         <section class="event-stripe" style="margin-top: 0;">
-          <div class="section-title home">
+          <div class="section-title home highlights">
             <div class="title1">Highlights from the Archive</div>
           </div>
           <main>
