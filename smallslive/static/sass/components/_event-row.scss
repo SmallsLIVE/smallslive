@@ -257,8 +257,14 @@ $event-row-padding: 3.5vw;
     margin-top: -2vw;
     z-index: 999;
 
-    @media (max-width: 500px) {
-      height: 14vw;
+    @media (max-width: 960px) {
+      height: 9vw;
+
+      .title5 {
+        font-size: 2vw;
+        height: 2.2vw;
+        line-height: 1.8vw;
+      }
     }
 
     a {
@@ -315,8 +321,14 @@ $event-row-padding: 3.5vw;
     pointer-events: none;
 
     @media (max-width: $screen-md-min) {
-      div {
-        font-size: 2.8vw;
+      .title5 {
+        font-size: 2.4vw;
+      }
+      .venue {
+        font-size: 1.8vw;
+      }
+      .sub-info .event-info-title {
+        font-size: 2.2vw;
       }
     }
 
@@ -326,6 +338,7 @@ $event-row-padding: 3.5vw;
 
     .title5.sets {
       color: white;
+      width: 100%;
     }
 
     .event-info-title {
@@ -343,11 +356,12 @@ $event-row-padding: 3.5vw;
     .sub-info {
       top: 1vw;
       left: 1vw;
+      width: 100%;
       position: absolute;
       font-size: 0.7vw;
       font-weight: bold;
       margin-bottom: 0px;
-      width: 28vw;
+
       @media (min-width: 500px) and(max-width: 768px) {
         font-size: 1.9vw;
       }
