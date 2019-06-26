@@ -144,7 +144,11 @@ $player-height: 25.3vw;
       }
     }
   }
-
+  @media (max-width: $screen-xs-min) {
+    .event-side {
+      width: 100%;
+    }
+  }
   @media (max-width: $screen-md-min) {
     .event-side {
       margin-top: 10px;
