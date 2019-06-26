@@ -314,6 +314,12 @@ $event-row-padding: 3.5vw;
     min-height: auto;
     pointer-events: none;
 
+    @media (max-width: $screen-md-min) {
+      div {
+        font-size: 2.8vw;
+      }
+    }
+
     div {
       margin-bottom: 5px;
     }
@@ -428,6 +434,10 @@ $event-row-padding: 3.5vw;
   }
 
   &.calendar {
+    margin: 0;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    padding-left: 10px;
     @media (min-width: 1024px) {
       display: none;
     }
