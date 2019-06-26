@@ -19,7 +19,11 @@
         <p class="title2 accent-color title">Thank you for your support</p>
           <p class="title-big subtitle"></p>
           <p class="text9 justifyed-text text">
-
+            Sponsorships are tax-deductable donations that directly support the musicians in this band. You are sponsoring
+              {% for artist_dict in event_artists %}
+                    {{ artist_dict.name }}
+                    {% if not forloop.last %}{% ifequal forloop.revcounter 2 %} and {% else %}, {% endifequal %}{% else %}{% endif %}
+              {% endfor %}
           </p>
           <p class="gift-content"></p>
         </p>
