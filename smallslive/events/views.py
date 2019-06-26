@@ -578,7 +578,7 @@ class GenericScheduleView(TemplateView, UpcomingSearchView):
         }
         context['last_event'] = last_event
         context.update(self.get_upcoming_context())
-        
+
         return context
 
 

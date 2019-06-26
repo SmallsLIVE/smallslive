@@ -24,9 +24,11 @@
   <div class="player-info pointer-events">
     <div class="live-now text2{% if not event.is_live %} hidden{% endif %}">Live now</div>
     <div class="event-overlay upcoming">
-      <img class="upcoming-logo" src="{% static 'new_logo_transparent.png' %}" alt="Smalls"
-                        class="img-circle" width="40" height="40"/>
-      <p class="event-title-ajax event-info-title">{{ event.title }}</p>
+      <div class="nested-row">
+        <p class="event-title-ajax event-info-title">{{ event.title }}</p>
+        <img class="upcoming-logo" src="{% static 'new_logo_transparent.png' %}" alt="Smalls"
+                        class="img-circle"/>
+      </div>
       <div class="{{ event.venue.name|lower}}-color event-venue title5">Live at {{ event.venue.name }}</div>
       <div class="event-date title5">{{ event.get_date|date:'D M d' }}</div>
       <div class="event-sets title5">Sets at {{ event.get_set_hours_display}}</div>
