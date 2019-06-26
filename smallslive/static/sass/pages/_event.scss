@@ -461,41 +461,24 @@ $player-height: 25.3vw;
   }
 
   .event-info-title {
-    line-height: 2.8vw;
+    position: relative;
+    top: 15px;
+    max-height: 97px;
+    line-height: 2.6vw;
     font-size: 2.5vw;
     color: white;
-    margin: 0 0 5px 0;
-    width: fit-content;
+    margin-bottom: 0;
+    width: 80%;
     font-weight: 400;
     font-family: "Oswald", sans-serif;
     text-transform: uppercase;
     transform: scaleY(1.3);
+    align-self: baseline;
 
-<<<<<<< HEAD
-    .event-info-title {
-      position: relative;
-      top: 15px;
-      max-height: 97px;
-      line-height: 2.6vw;
-      font-size: 2.5vw;
-      color: white;
-      margin-bottom: 0;
-      width: 80%;
-      font-weight: 400;
-      font-family: "Oswald", sans-serif;
-      text-transform: uppercase;
-      transform: scaleY(1.3);
-      align-self: baseline;
-
-      @media(max-width: $screen-md-max) {
-        font-size: 6.5vw;
-        line-height: 6.8vw;
-      }
-=======
     @media (max-width: $screen-xs-max) {
       font-size: 6.5vw;
       line-height: 6.8vw;
->>>>>>> bb4c52c4ca7a25bd53ea5818a97fc2ad1843fa75
+
     }
   }
 
@@ -880,13 +863,7 @@ $player-height: 25.3vw;
 }
 
 .upcoming-logo {
-<<<<<<< HEAD
   margin-left: auto;
   height: calc(6.94vw + 8.96px);
   width: calc(6.94vw + 8.96px);
-=======
-  position: absolute;
-  right: 20px;
-  top: 20px;
->>>>>>> bb4c52c4ca7a25bd53ea5818a97fc2ad1843fa75
 }
