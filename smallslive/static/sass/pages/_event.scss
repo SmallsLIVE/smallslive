@@ -40,7 +40,7 @@ $player-height: 25.3vw;
             z-index: 3;
           }
 
-          >.modal-body {
+          > .modal-body {
             padding: 0;
           }
 
@@ -99,21 +99,49 @@ $player-height: 25.3vw;
     margin-right: 2px;
   }
 
+  @media (min-width: $screen-sm-min) and (max-width: $screen-md-max) {
+    justify-content: space-around;
+    .event-side {
+      padding-left: 30px;
+    }
+  }
   @media (min-width: $screen-md-min) {
     .event-side {
       padding-left: 30px;
     }
   }
 
-  @media (max-width: $screen-md-max) {
-    display: block;
+  @media (min-width: $screen-sm-min) and (max-width: $screen-md-max) {
     padding: 0;
 
     .event-side {
-      margin-top: 40px;
-      padding: 0 20px;
-      width: 100%;
+      margin-top: 0px;
+      padding: 0px;
+      width: 40%;
+      .section-title {
+        margin-top: 0;
+        padding-left: 0;
+      }
+      .title2 {
+        font-family: "Reem Kufi", sans-serif;
+        font-weight: 400;
+        font-size: 18px;
+        letter-spacing: 2px;
+        line-height: 4vw;
 
+        text-transform: uppercase;
+      }
+      .section-title .date-separator {
+        display: inline;
+      }
+      .title1 {
+        font-family: "Oswald", sans-serif;
+        font-weight: 400;
+        font-size: 22px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        transform: scaleY(1.3);
+      }
     }
   }
 
@@ -156,7 +184,6 @@ $player-height: 25.3vw;
     .event-player-buttons {
       text-align: left;
     }
-
   }
 
   .event-set-info {
@@ -207,7 +234,7 @@ $player-height: 25.3vw;
 .event-band {
   margin: 0 0 2em 0;
 
-  &>div {
+  & > div {
     margin-right: 30px;
   }
 
@@ -235,7 +262,10 @@ $player-height: 25.3vw;
   overflow: hidden;
 
   &:hover {
-    .jw-display .jw-reset .jw-display-icon-container.jw-display-icon-display.jw-reset>div {
+    .jw-display
+      .jw-reset
+      .jw-display-icon-container.jw-display-icon-display.jw-reset
+      > div {
       opacity: 1;
       animation-name: play-overlay;
       animation-duration: 0.3s;
@@ -374,7 +404,7 @@ $player-height: 25.3vw;
     padding: 2.9vw;
     padding-top: 3vw;
 
-    @media(max-width: $screen-md-max) {
+    @media (max-width: $screen-md-max) {
       padding: 4.5vw;
       padding-top: 4.5vw;
     }
@@ -401,69 +431,65 @@ $player-height: 25.3vw;
     margin-bottom: 35px;
   }
 
+  .event-info-title {
+    line-height: 2.8vw;
+    font-size: 2.5vw;
+    color: white;
+    margin: 0 0 5px 0;
+    width: fit-content;
+    font-weight: 400;
+    font-family: "Oswald", sans-serif;
+    text-transform: uppercase;
+    transform: scaleY(1.3);
 
-    .event-info-title {
-      line-height: 2.8vw;
-      font-size: 2.5vw;
-      color: white;
-      margin: 0 0 5px 0;
-      width: fit-content;
-      font-weight: 400;
-      font-family: "Oswald", sans-serif;
-      text-transform: uppercase;
-      transform: scaleY(1.3);
-
-      @media(max-width: $screen-md-max) {
-        font-size: 6.5vw;
-        line-height: 6.8vw;
-      }
+    @media (max-width: $screen-xs-max) {
+      font-size: 6.5vw;
+      line-height: 6.8vw;
     }
+  }
 
-    .event-venue {
-      font-size: 2vw;
-      font-weight: 200;
-      letter-spacing: 0.09em;
-      line-height: 3vw;
-      margin-top: 10px;
-      text-transform: uppercase;
-      transform: scaleY(1.3);
+  .event-venue {
+    font-size: 2vw;
+    font-weight: 200;
+    letter-spacing: 0.09em;
+    line-height: 3vw;
+    margin-top: 10px;
+    text-transform: uppercase;
+    transform: scaleY(1.3);
 
-      @media(max-width: $screen-md-max) {
-        font-size: 6vw;
-        line-height: 8vw;
-      }
+    @media (max-width: $screen-xs-max) {
+      font-size: 6vw;
+      line-height: 8vw;
     }
+  }
 
-    .event-date {
-      font-size: 2vw;
-      font-weight: 200;
-      letter-spacing: 0.09em;
-      line-height: 3vw;
-      text-transform: uppercase;
-      transform: scaleY(1.3);
+  .event-date {
+    font-size: 2vw;
+    font-weight: 200;
+    letter-spacing: 0.09em;
+    line-height: 3vw;
+    text-transform: uppercase;
+    transform: scaleY(1.3);
 
-      @media(max-width: $screen-md-max) {
-        font-size: 6vw;
-        line-height: 8vw;
-      }
-
+    @media (max-width: $screen-xs-max) {
+      font-size: 6vw;
+      line-height: 8vw;
     }
+  }
 
-    .event-sets {
-      font-size: 2vw;
-      font-weight: 200;
-      letter-spacing: 0.09em;
-      line-height: 3vw;
-      text-transform: uppercase;
-      transform: scaleY(1.3);
+  .event-sets {
+    font-size: 2vw;
+    font-weight: 200;
+    letter-spacing: 0.09em;
+    line-height: 3vw;
+    text-transform: uppercase;
+    transform: scaleY(1.3);
 
-      @media(max-width: $screen-md-max) {
-        font-size: 6vw;
-        line-height: 8vw;
-      }
+    @media (max-width: $screen-xs-max) {
+      font-size: 6vw;
+      line-height: 8vw;
     }
-
-
+  }
 
   .event-overlay-artists {
     height: 65%;
@@ -567,13 +593,12 @@ $player-height: 25.3vw;
     padding-left: 0;
   }
 
-  >div:not(.section-title) {
+  > div:not(.section-title) {
     overflow-y: auto;
     max-height: 435px;
     @media (max-width: $screen-sm-min) {
       padding: 0 2vw;
     }
-
   }
 
   .related-video {
@@ -624,7 +649,7 @@ $player-height: 25.3vw;
     max-width: 45vw;
   }
 
-  @media (max-width: $screen-md-max) {
+  @media (max-width: $screen-sm-min) {
     max-width: 100%;
 
     &.flex-column {
@@ -632,6 +657,9 @@ $player-height: 25.3vw;
       margin-left: 8px;
       margin-right: 5px;
     }
+  }
+  @media (min-width: $screen-sm-min) and (max-width: $screen-md-max) {
+    max-width: 50%;
   }
 }
 
@@ -672,7 +700,10 @@ $player-height: 25.3vw;
   }
 }
 
-.jw-display .jw-reset .jw-display-icon-container.jw-display-icon-display.jw-reset>div {
+.jw-display
+  .jw-reset
+  .jw-display-icon-container.jw-display-icon-display.jw-reset
+  > div {
   border-radius: 44px;
   border: 1px solid $accent-color;
   opacity: 0;
@@ -692,7 +723,7 @@ $player-height: 25.3vw;
   border-top: 4px solid white;
   padding-top: 20px;
 
-  >div>span {
+  > div > span {
     font-size: 1.4em;
 
     &:first-child {
