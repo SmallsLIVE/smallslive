@@ -546,8 +546,8 @@ $event-row-padding: 3.5vw;
   .event-dates {
     position: absolute;
 
-    left: 5px;
-    bottom: 5px;
+    left: 0px;
+    bottom: 3px;
 
     &.links1 {
       @media (max-width: $screen-sm-max) {
