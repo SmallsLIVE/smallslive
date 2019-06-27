@@ -43,10 +43,10 @@
           <div class="event-set-info">
             <div class="current-event event-title title1">{{ event.title }}</div>
             {% if event.is_past %}
-              <div class="{{ event.venue.name|lower}}-color title2">{{ event.venue.name }}</div>
+              <div class="{{ event.venue.name|lower}}-color title2 venue-subtitle">{{ event.venue.name }}</div>
             {% endif %}
             {% if event.is_future %}
-              <div class="{{ event.venue.name|lower}}-color title2">Live at {{ event.venue.name }}</div>
+              <div class="{{ event.venue.name|lower}}-color title2 venue-subtitle">Live at {{ event.venue.name }}</div>
             {% endif %}
 
             {% if next_event %}
@@ -64,8 +64,12 @@
               {% else %}
                 {{ event.get_date|date:'m/d/Y' }}
               {% endif %}
+            </div>
+            <div class="title5">
               {% if sets and event.is_future %}
+              <!--
                 <span class="accent-color"> / </span>
+              //-->
                 Sets at
                 {% for set in sets %}
                   <span class="event-overlay-venue-set">
@@ -94,7 +98,7 @@
             {% if not event.is_live and event.is_future %}
             {% if products %}
             {% for product in products %}
-            
+
             {% purchase_info_for_product request product as session %}
             {% basket_form request product 'single' as basket_form %}
             <form action="{% url 'basket:add' pk=product.pk %}" class="reservation_form" method="post">
@@ -107,7 +111,7 @@
                 <button class="white-border-button" disabled style="display: inline;">Tickets sold out)</button>
               {% endif %}
             </form>
-            
+
             {% endfor %}
             {% else %}
               <button id="btn-tickets" class="white-border-button" style="display: inline;">Tickets</button>
@@ -234,7 +238,7 @@
       var subpages = window.subpages;
       subpages.register();
       subpages.loadAll();
-      
+
       $(document).on('click', '.remove-comment', function () {
         $('#remove-comment').modal('show',true)
         $('#remove-comment button').val($(this).data("value"))
@@ -260,7 +264,7 @@
         }
     });
 
-    
+
   </script>
 
   {% with album=event.products.first %}

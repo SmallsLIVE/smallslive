@@ -1,10 +1,10 @@
 {% load static from staticfiles %}
 <div class="event-overlay">
-  <div class="event-overlay-logo">
-      <img src="{% static 'new_logo_transparent.png' %}" alt="Smalls"
-                            class="img-circle" width="40" height="40"/>
+  <div class="nested-row">
+    <p class="event-title-ajax event-info-title">{{ event.title }}</p>
+    <img class="upcoming-logo" src="{% static 'new_logo_transparent.png' %}" alt="Smalls"
+                    class="img-circle"/>
   </div>
-  <p class="event-title-ajax event-info-title">{{ event.title }}</p>
   <div class="{{ event.venue.name|lower}}-color event-venue title5">{{ event.venue.name }}</div>
   <div class="event-date title5">Archived on {{ event.get_date|date:'m/d/y' }}</div>
   {% if info_label %}
