@@ -32,7 +32,7 @@ body.headers-1 {
   &.admin-header {
     .search-container.pad-content {
       @media (max-width: $screen-md-max) {
-        padding-top: 95px;
+        padding-top: 150px;
       }
     }
   }
@@ -77,15 +77,10 @@ body.headers-1 {
     border-top: 5px solid black;
     position: absolute;
     right: 6px;
-    top: 14px;
     transition: all 0.3s linear;
     cursor: pointer;
     pointer-events: inherit;
     z-index: -1;
-
-    @media (max-width: $screen-md-max) {
-      top: 3.5vw;
-    }
 
     @media (max-width: $screen-xs) {
       display: none;
@@ -547,7 +542,6 @@ body.headers-1 {
           height: 8vw;
           line-height: 2.5vw;
           margin-right: 5px;
-          margin-top: 10px;
           vertical-align: top;
         }
 
@@ -562,10 +556,6 @@ body.headers-1 {
         }
 
         &:after {
-          @media (max-width: $screen-md-max) {
-            top: 5vw;
-          }
-
           @media (max-width: $screen-xs) {
             display: none;
           }
@@ -1449,13 +1439,19 @@ body.headers-1 {
       margin-left: 5px;
       padding: 0.5em;
       height: 8vw;
-      line-height: 2.5vw;
+      line-height: 23px;
       font-size: 2.5vw;
       margin-right: 1vw;
       vertical-align: top;
-      margin-top: 10px;
+
       display: flex;
       align-content: center;
+
+      &.upcoming {
+        display: flex;
+        font-size: 12px;
+        line-height: 50%;
+      }
 
       &.caret {
         margin-right: 0;
@@ -1463,6 +1459,10 @@ body.headers-1 {
     }
 
     @media (max-width: 420px) {
+      &.upcoming {
+        height: 8vw;
+        margin-bottom: 0;
+      }
       height: 13vw;
       margin-top: 0;
       margin-bottom: 10px;
@@ -1755,6 +1755,18 @@ body.headers-1 {
       width: 20%;
       margin-right: 5%;
     }
+    @media (max-width: 960px) {
+      width: 28%;
+      margin-right: 5%;
+    }
+    @media (max-width: 680px) {
+      width: 45%;
+      margin-right: 5%;
+    }
+    @media (max-width: 480px) {
+      width: 100%;
+      margin-right: 5%;
+    }
   }
 
   .day-list {
@@ -1784,6 +1796,12 @@ body.headers-1 {
     @media (max-width: 1200px) {
       margin-left: 5%;
     }
+  }
+}
+@media (max-width: $screen-md-max) {
+  .calendar-filters .select-selected {
+    height: 8vw;
+    font-size: 12px;
   }
 }
 
@@ -2105,14 +2123,11 @@ body.home.admin-header {
 
   @media (max-width: 1023px) {
     .new-calendar {
-      display: none;
     }
   }
 
-  @media (min-width: 1024px) {
-    .old-calendar {
-      display: none;
-    }
+  .old-calendar {
+    display: none;
   }
 }
 
