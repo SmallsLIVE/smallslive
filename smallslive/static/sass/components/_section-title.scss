@@ -24,6 +24,12 @@
 .calendar-filters {
   &.desktop {
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    @media (max-width: 380px) {
+      padding: 0 15%;
+    }
   }
 }
 .new-calendar .home .calendar-filters .datepicker-btn {
@@ -78,9 +84,10 @@
 
     &.upcoming-shows {
       background-size: calc(520px + 3.5vw) 5px;
+      width: 50%;
 
-      @media (max-width: $screen-sm-max) {
-        display: none;
+      @media (max-width: $screen-md-max) {
+        width: 100%;
       }
     }
   }
@@ -343,5 +350,14 @@
   .store-header__content .title1.center {
     padding-bottom: 8px;
     line-height: 16px;
+  }
+}
+
+.title-and-filters-container {
+  display: flex;
+  flex-direction: row;
+  @media (max-width: $screen-md-max) {
+    flex-direction: column;
+    align-items: center;
   }
 }
