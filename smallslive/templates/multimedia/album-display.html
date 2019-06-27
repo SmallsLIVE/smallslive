@@ -222,7 +222,7 @@
       <a href="#" class="close-button"></a>
       <div class="modal-body">
         <p class="title2 accent-color title">Library</p>
-        <p class="text3 justifyed-text text">
+        <p class="text3 justified-text text">
           You've selected tracks
         </p>
         <p id="purchase-content"></p>
@@ -243,7 +243,7 @@
       <a href="#" class="close-button"></a>
       <div class="modal-body">
         <p class="title2 accent-color title">Add tracks to your Library</p>
-        <p class="text3 justifyed-text text">
+        <p class="text3 justified-text text">
           Please select tracks and then confirm.
         </p>
         <div class="text4 text-centered" style="display: flex; justify-content: center;">
@@ -288,11 +288,7 @@
         // Prevent submission
         event.preventDefault();
 
-        // Set state in become-member.js (TODO: change file name to reflect a more general flow)
-
         // Skip first step: Intro message from become a supporter.
-        setSelected($(this).data("physical"), 0);
-        currentStep = "Intro";
         showPanel(getNextStep());
 
         // Show popup with selected product
@@ -339,10 +335,11 @@
 
         if (supporterType == "support") {
           $mainContainer = $("#my-downloads-product__" + supporterType);
-          setSelected("support", 0);
+          setSelected("support", "", 0);
           showPanel("SelectType");
           $donationConfirmationDialog.modal("hide");
         } else {
+          setSelected("store", "", 0);
           $("#confirmButton").show();
           $selectionConfirmationDialog.modal("hide");
         }
@@ -352,7 +349,7 @@
       }
 
       $(document).on("click", "#confirmCatalogSelectionButton", function () {
-        showFlow("purchase");
+        showFlow("store");
         $itemForm.submit();
       });
 

@@ -260,3 +260,48 @@ function startBitCoinPayment($form, action_url, completeSubpage) {
     error: function() {}
   });
 }
+
+function startCheckPayment($form, action_url, completeSubpage) {
+
+  var flowType = $mainContainer.find("#supporterSteps").data("flow");
+  // Insert the token into the form so it gets submitted to the server
+  // and submit
+  $form.append(
+    $('<input type="hidden" name="flow_type" />').val(flowType)
+  );
+  // Insert the token into the form so it gets submitted to the server
+  // and submit
+  var productId = $mainContainer.find("#supporterSteps").data("product-id");
+  $form.append(
+    $('<input type="hidden" name="product_id" />').val(productId)
+  );
+
+  var eventId = $mainContainer.find("#supporterSteps").data("event-id");
+      // Insert the token into the form so it gets submitted to the server
+  // and submit
+  $form.append(
+    $('<input type="hidden" name="event_id" />').val(eventId)
+  );
+
+  var eventSlug = $mainContainer.find("#supporterSteps").data("event-slug");
+      // Insert the token into the form so it gets submitted to the server
+  $form.append(
+    $('<input type="hidden" name="event_slug" />').val(eventSlug)
+  );
+
+  $.ajax({
+    type: "POST",
+    url: action_url,
+    data: $form.serialize(),
+    success: function(data) {
+      if (typeof completeSubpage !== "undefined" && completeSubpage) {
+        //notCompleteContainer.html("")
+        var flowCompleteSubpage = window.subpages.get(completeSubpage);
+        flowCompleteSubpage.load();
+      } else {
+        window.location = data.location;
+      }
+    },
+    error: function() {}
+  });
+}

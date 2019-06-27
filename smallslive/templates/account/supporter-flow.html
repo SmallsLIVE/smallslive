@@ -11,3 +11,29 @@
   {% endif %}
 {% endblock home_content %}
 
+{% block extra_js %}
+  {{ block.super }}
+  <script>
+    {% if flow_type == 'event_support'%}
+
+      $(document).ready(function () {
+        setSelected("support", "one-time", 0, "SelectType");
+        checkConfirmButton();
+      });
+
+    {% endif %}
+    {% if flow_type == 'one_time_donation'%}
+
+      $(document).ready(function () {
+        setSelected("", "", 0, "Intro");
+        checkConfirmButton();
+      });
+
+    {% else %}
+      setSelected("become_supporter", "", 0, "Intro");
+      checkConfirmButton();
+    {% endif %}
+  </script>
+{% endblock %}
+
+

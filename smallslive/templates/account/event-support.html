@@ -52,8 +52,7 @@
        class="button-row button-row-margin button-row-no-hover"
        data-flow="event_support"
        data-event-id="{{ event_id }}"
-       data-event-slug="{{ event_slug }}"
-       data-free-donate="True">
+       data-event-slug="{{ event_slug }}">
     <div class="{% if not completed %}active{% endif %} step-button"></div>
     <div class="step-button"></div>
     <div class="step-button"></div>
@@ -79,9 +78,9 @@
 
         <p class="text9">This is a 100% tax-deductable donation to the SmallsLIVE Foundation.
           50% of your donation will be given directly to the following musicians:
-          {% for artist_dict in event_artists %}
-                {{ artist_dict.name }}
-                {% if not forloop.last %}{% ifequal forloop.revcounter 2 %} and {% else %}, {% endifequal %}{% else %}{% endif %}
+          {% for artist in event_artists %}
+            {{ artist.name }}
+            {% if not forloop.last %}{% ifequal forloop.revcounter 2 %} and {% else %}, {% endifequal %}{% else %}{% endif %}
           {% endfor %}
         </p>
         <div id="supportPledge" class="button-row button-row-big button-row-margin">
@@ -99,9 +98,6 @@
             </button>
           </div>
         </div>
-      </div>
-      <div id="donateBitcoin" class="button-row button-row-margin">
-        <button class="button-bordered">Donate Bitcoin</button>
       </div>
     </div>
 
