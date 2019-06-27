@@ -17,7 +17,14 @@
     {% if flow_type == 'event_support'%}
 
       $(document).ready(function () {
-        setSelected("support", "one-time", 0, "SelectType");
+        setSelected("event_support", "one-time", 0, "SelectType");
+        checkConfirmButton();
+      });
+    {% endif %}
+    {% if flow_type == 'product_support'%}
+
+      $(document).ready(function () {
+        setSelected("catalog", "one-time", 0, "SelectType");
         checkConfirmButton();
       });
 
@@ -25,7 +32,7 @@
     {% if flow_type == 'one_time_donation'%}
 
       $(document).ready(function () {
-        setSelected("", "", 0, "Intro");
+        setSelected("one_time_donation", "one-time", 0, "Intro");
         checkConfirmButton();
       });
 

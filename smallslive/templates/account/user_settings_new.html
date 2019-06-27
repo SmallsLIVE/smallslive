@@ -253,28 +253,10 @@
 
   $(document).ready(function () {
 
-  	Stripe.setPublishableKey('{{ STRIPE_PUBLIC_KEY }}');
-  
-    function renderObjects() {
-      // in payment.js
-      renderPayPal(paypal);
-      renderCardAnimation();
-    }
-  
     var completeSubpage;
     var notCompleteContainer;
     var subpages = window.subpages;
     subpages.register();
-  
-    $('#one-time-donation-btn').on('click', function () {
-      $('#donate-setting-steps-complete').html("")
-      $('#one-time-donation').modal('show');
-      var donationSubpage = window.subpages.get("make-donation");
-      completeSubpage = "make-donation-complete"
-      notCompleteContainer = $('#donate-setting-steps')
-      donationSubpage.load();
-  
-    });
 
     $('.update-pledge').on('click', function () {
       $('#update-setting-steps-complete').html("")

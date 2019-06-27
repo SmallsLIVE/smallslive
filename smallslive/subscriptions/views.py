@@ -200,7 +200,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         self.flow_type = self.request.POST.get('flow_type', 'become_supporter')
         self.stripe_token = self.request.POST.get('stripe_token')
         self.plan_type = self.request.POST.get('type')
-        self.amount = self.request.POST.get('quantity')
+        self.amount = self.request.POST.get('amount')
         payment_method = self.request.POST.get('payment_method')
         self.existing_cc = payment_method == 'existing-credit-card'
         self.bitcoin = payment_method == 'bitcoin'
@@ -498,7 +498,7 @@ class DonateView(BecomeSupporterView):
             pass
         else:
             stripe_token = self.request.POST.get('stripe_token')
-            amount = int(self.request.POST.get('quantity'))
+            amount = int(self.request.POST.get('amount'))
 
             try:
                 customer, created = Customer.get_or_create(

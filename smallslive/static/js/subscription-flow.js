@@ -30,18 +30,20 @@ var currentStep = 0;
 var getSteps = function () {
   var steps;
 
-  if (selectedData.flow == "become_supporter") {
-    if (selectedData.type == "gift") {
+  if (selectedData.flow == "become_supporter" || selectedData.flow == "one_time_donation") {
+    if (selectedData.type == "store") {
       steps = ["Intro", "SelectType", "Shipping", "Billing", "Preview", "ThankYou"];
     } else {
       steps = ["Intro", "SelectType", "PaymentInfo", "ThankYou"];
     }
   } else if (selectedData.flow == "catalog") {
-    steps = ["Billing", "Preview", "ThankYou"];
+    if (selectedData.type == "store") {
+      steps = ["Shipping", "Billing", "Preview", "ThankYou"];
+    } else {
+      steps = ["SelectType", "PaymentInfo", "ThankYou"];
+    }
   } else if (selectedData.flow == "event_support" || selectedData.flow == "product_support") {
     steps = ["SelectType", "PaymentInfo", "ThankYou"];
-  } else if (selectedData.flow == "one_time_donation") {
-    steps = ["Intro", "SelectType", "Shipping", "Billing", "Preview", "ThankYou"];
   }
 
   return steps;
@@ -159,19 +161,12 @@ var checkConfirmButton = function () {
 };
 
 var updatePaymentInfo = function () {
+
   var pledgeType = selectedData.type;
   var pledgeAmount = selectedData.amount;
-  if (pledgeType === "year") {
-    $mainContainer.find("#pledge-type").html(
-      'You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' +
-      pledgeAmount +
-      "</span> ."
-    );
-    $mainContainer.find("#payment-type").html(
-      "Your  card  will  be  charged  in  this  amount."
-    );
-    $mainContainer.find("#select-payment-row").show();
-  } else if (pledgeType === "month") {
+  var $paymentSection = $mainContainer.find("#select-payment-row");
+
+  if (pledgeType === "month") {
     $mainContainer.find("#pledge-type").html(
       'You’ve  selected  to  pledge <span class="accent-color">$' +
       pledgeAmount +
@@ -180,8 +175,8 @@ var updatePaymentInfo = function () {
     $mainContainer.find("#payment-type").html(
       "Your  card  will  be  billed  monthly  until  you  choose  to  cancel."
     );
-    // Do not show select payment section.
-    $mainContainer.find("#select-payment-row").show();
+    // Show only recurring payment methods (credit cards).
+    $paymentSection.find('.single').hide();
   } else {
     $mainContainer.find("#pledge-type").html(
       'You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' +
@@ -191,8 +186,10 @@ var updatePaymentInfo = function () {
     $mainContainer.find("#payment-type").html(
       "Your  card  will  be  charged  in  this  amount."
     );
-    $mainContainer.find("#select-payment-row").show();
+    // Show one-off payment methods
+    $paymentSection.find('.single').show();
   }
+  $paymentSection.show();
   $mainContainer.find("#hiddenAmountInput").val(pledgeAmount);
   $mainContainer.find("#hiddenTypeInput").val(pledgeType);
 };
@@ -706,13 +703,13 @@ $(document).ready(function () {
   });
 
   function giftSelected(selection) {
-    if ($itemForm) {
+    // Amount = passed to setSelected. It's irrelevant because
+    // amount will be passed to the store backend through the form $itemForm
+    setSelected(selectedData.flow, "store", 0);
+    if (selection) {
       var $input = $itemForm.find('input[name="child_id"]');
       $input.val(selection);
-      setSelected(selectedData.flow, "store", 0);
     }
-    $mainContainer.find("#confirmButton").prop("disabled", false);
-    $mainContainer.find("#confirmButton").click();
   }
 
   var $selectionConfirmationDialog = $("#selectionConfirmationDialog");
@@ -725,13 +722,16 @@ $(document).ready(function () {
     $mainContainer.find("#selectionConfirmationDialog").modal("hide");
     var $variantSelect = $selectionConfirmationDialog.find("select");
 
-    if ($variantSelect.length != 0) {
-      giftSelected($variantSelect.val());
-    } else {
-      setSelected(selectedData.flow, "store", 0);
-      $mainContainer.find("#confirmButton").prop("disabled", false);
-      $mainContainer.find("#confirmButton").click();
+    if ($itemForm) {
+      if ($variantSelect.length != 0) {
+        giftSelected($variantSelect.val());
+      } else {
+        giftSelected();
+      }
     }
+    $mainContainer.find("#confirmButton").prop("disabled", false);
+    $mainContainer.find("#confirmButton").click();
+
   });
 
   $(document).on("click", "#cancelSelectionButton", function () {
@@ -808,7 +808,6 @@ $(document).ready(function () {
         updatePaymentInfo();
         replaceWhiteSelects($("#supporterStepPaymentInfo")[0]);
         renderCardAnimation("#payment-form");
-        renderPayPal(paypal, selectedData.amount);
         showPanel(getNextStep());
       },
       error: function (xhr, err) {
