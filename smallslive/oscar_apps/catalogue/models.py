@@ -89,6 +89,9 @@ class Product(AbstractProduct):
         if self.product_class.slug == 'album':
             return self.tracks.order_by('id')
 
+    def get_leaders(self):
+        return ArtistProduct.objects.filter(product=self, leaders=True)
+
     def get_title(self):
         """
         Return a product's title or it's parent's title if it has no title
