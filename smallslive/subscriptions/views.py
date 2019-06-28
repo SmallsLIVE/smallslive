@@ -171,9 +171,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         slug = event.slug
 
         context = {
-            'event_id': event_id,
-            'event_title': title,
-            'event_slug': slug,
+            'event': event,
             'event_artists': event.get_artists_info_dict()
         }
 
