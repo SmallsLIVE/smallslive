@@ -1,73 +1,3 @@
-function renderPayPal(paypal, ammount) {
-  paypal.Button.render(
-    {
-      // Configure environment
-      env: "sandbox",
-      client: {
-        sandbox:
-          "AZjFfKVUvv8BWED4z-wJVElDiPiYe3oCXVQ8BV3KrmZ_lRw7G6ohCxBuz-0L3bW_AKIY-aYhZjTYklET",
-        production: "demo_production_client_id"
-      },
-      // Customize button (optional)
-      locale: "en_US",
-      style: {
-        size: "small",
-        color: "silver",
-        shape: "rect",
-        label: "",
-        tagline: "false"
-      },
-      // Set up a payment
-      payment: function(data, actions) {
-        return actions.payment.create({
-          transactions: [
-            {
-              amount: {
-                total: ammount,
-                currency: "USD"
-              }
-            }
-          ]
-        });
-      },
-      // Execute the payment
-      onAuthorize: function(data, actions) {
-        return actions.payment.execute().then(function() {
-          if (typeof completeSubpage !== "undefined") {
-            notCompleteContainer.html("");
-            var flowCompleteSubpage = window.subpages.get(completeSubpage);
-            flowCompleteSubpage.load();
-          } else {
-            window.location = data.location;
-          }
-          $("#place-order").submit();
-          return;
-
-          $.ajax({
-            type: "POST",
-            url: $supporterForm.attr("action"),
-            data: $supporterForm.serialize(),
-            success: function(data) {
-              if (typeof completeSubpage !== "undefined") {
-                console.log("Works?");
-                notCompleteContainer.html("");
-                var flowCompleteSubpage = window.subpages.get(completeSubpage);
-                flowCompleteSubpage.load();
-              } else {
-                window.location = data.location;
-              }
-            },
-            error: function() {}
-          });
-        });
-      },
-      onError: function(err) {
-        console.log(err);
-      }
-    },
-    "#paypal-button"
-  );
-}
 
 function renderCardAnimation(selector) {
   var selector = selector || "#formSupporter";
@@ -217,6 +147,51 @@ function startPayPalPayment($form, action_url, completeSubpage) {
 }
 
 function startBitCoinPayment($form, action_url, completeSubpage) {
+
+  var flowType = $mainContainer.find("#supporterSteps").data("flow");
+  // Insert the token into the form so it gets submitted to the server
+  // and submit
+  $form.append(
+    $('<input type="hidden" name="flow_type" />').val(flowType)
+  );
+  // Insert the token into the form so it gets submitted to the server
+  // and submit
+  var productId = $mainContainer.find("#supporterSteps").data("product-id");
+  $form.append(
+    $('<input type="hidden" name="product_id" />').val(productId)
+  );
+
+  var eventId = $mainContainer.find("#supporterSteps").data("event-id");
+      // Insert the token into the form so it gets submitted to the server
+  // and submit
+  $form.append(
+    $('<input type="hidden" name="event_id" />').val(eventId)
+  );
+
+  var eventSlug = $mainContainer.find("#supporterSteps").data("event-slug");
+      // Insert the token into the form so it gets submitted to the server
+  $form.append(
+    $('<input type="hidden" name="event_slug" />').val(eventSlug)
+  );
+
+  $.ajax({
+    type: "POST",
+    url: action_url,
+    data: $form.serialize(),
+    success: function(data) {
+      if (typeof completeSubpage !== "undefined" && completeSubpage) {
+        //notCompleteContainer.html("")
+        var flowCompleteSubpage = window.subpages.get(completeSubpage);
+        flowCompleteSubpage.load();
+      } else {
+        window.location = data.location;
+      }
+    },
+    error: function() {}
+  });
+}
+
+function startCheckPayment($form, action_url, completeSubpage) {
 
   var flowType = $mainContainer.find("#supporterSteps").data("flow");
   // Insert the token into the form so it gets submitted to the server

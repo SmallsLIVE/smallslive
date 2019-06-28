@@ -17,15 +17,14 @@
 {% endblock %}
 
 {% block flow_title %}
-  <p class="text2 accent-color">You are sponosoring Musician 1 SL#</p>
+  <p class="text2 accent-color">You are sponsoring Musician 1 SL#</p>
 {% endblock %}
 
 {% block flow_steps %}
   <div id="supporterSteps"
        class="button-row button-row-margin button-row-no-hover"
        data-flow="product_support"
-       data-product-id="{{ product_id }}"
-       data-free-donate="True">
+       data-product-id="{{ product_id }}">
     <div class="{% if not completed %}active{% endif %} step-button"></div>
     <div class="step-button"></div>
     <div class="step-button"></div>
@@ -71,7 +70,8 @@
 
     <div id="supporterStepPaymentInfo" class="supporter-step" style="display: none"
          data-payment-info-url="{{ payment_info_url }}"
-         data-payment-info-complete-url="{% url 'become_supporter' %}">
+         data-payment-info-complete-url="{% url 'become_supporter' %}"
+         data-payment-info-pending-url="{% url 'supporter_pending' %}">
 
     </div>
 

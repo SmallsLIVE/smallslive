@@ -125,6 +125,7 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
     def __init__(self, *args, **kwargs):
         self.bitcoin = False
+        self.check = False
         self.flow_type = ''
         self.stripe_token = None
         self.plan_type = None
@@ -172,7 +173,8 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         context = {
             'event_id': event_id,
             'event_title': title,
-            'event_slug': slug
+            'event_slug': slug,
+            'event_artists': event.get_artists_info_dict()
         }
 
         self.event_id = event_id
@@ -198,10 +200,11 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
         self.flow_type = self.request.POST.get('flow_type', 'become_supporter')
         self.stripe_token = self.request.POST.get('stripe_token')
         self.plan_type = self.request.POST.get('type')
-        self.amount = self.request.POST.get('quantity')
+        self.amount = self.request.POST.get('amount')
         payment_method = self.request.POST.get('payment_method')
         self.existing_cc = payment_method == 'existing-credit-card'
         self.bitcoin = payment_method == 'bitcoin'
+        self.check = payment_method == 'check'
 
     def get_context_data(self, **kwargs):
 
@@ -308,6 +311,21 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
             }
             Donation.objects.create(**donation)
 
+    def execute_check_payment(self):
+
+        if self.product_id:
+            # We need to record the product id if donation comes from the Catalog.
+            donation = {
+                'user': self.request.user,
+                'currency': 'USD',
+                'amount': self.amount,
+                'reference': self.bitcoin,
+                'confirmed': False,
+                'product_id': self.product_id,
+                'event_id': self.event_id,
+            }
+            Donation.objects.create(**donation)
+
     def post(self, request, *args, **kwargs):
 
         self.set_attributes()
@@ -345,6 +363,19 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
             self.execute_bitcoin_payment()
             url = reverse('supporter_pending') + \
                 "?pending_payment_type=bitcoin"
+            if self.product_id:
+                url += '&product_id=' + self.product_id
+            if self.event_id:
+                url += '&event_id=' + self.event_id
+                url += '&event_slug=' + self.event_slug
+
+            return _ajax_response(
+                self.request, redirect(url)
+            )
+        elif self.check:
+            self.execute_check_payment()
+            url = reverse('supporter_pending') + \
+                "?pending_payment_type=check"
             if self.product_id:
                 url += '&product_id=' + self.product_id
             if self.event_id:
@@ -434,7 +465,12 @@ become_supporter_complete = BecomeSupporterCompleteView.as_view()
 class BecomeSupporterPendingView(BecomeSupporterView):
 
     def get_template_names(self):
-        template_name = 'account/supporter-bitcoin-pending.html'
+
+        payment_type = self.request.GET.get('pending_payment_type')
+        if payment_type == 'bitcoin':
+            template_name = 'account/supporter-bitcoin-pending.html'
+        elif payment_type == 'check':
+            template_name = 'account/supporter-check-pending.html'
 
         return [template_name]
 
@@ -462,7 +498,7 @@ class DonateView(BecomeSupporterView):
             pass
         else:
             stripe_token = self.request.POST.get('stripe_token')
-            amount = int(self.request.POST.get('quantity'))
+            amount = int(self.request.POST.get('amount'))
 
             try:
                 customer, created = Customer.get_or_create(

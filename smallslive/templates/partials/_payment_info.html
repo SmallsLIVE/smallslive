@@ -7,7 +7,7 @@
 
   <form id="payment-form" method="post" action="{% url 'checkout:preview' %}">
     <input type="text" id="hiddenTypeInput" name="type" hidden>
-    <input type="number" id="hiddenAmountInput" name="quantity" hidden>
+    <input type="number" id="hiddenAmountInput" name="amount" hidden>
     {% if error %}
       <section class="store-error container">
         <span class="store-error__message">{{ error|safe }}</span>
@@ -104,21 +104,24 @@
         </div>
 
         <div id="select-payment-row" class="row" style="margin-bottom: 20px;">
-          <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+          <div class="col-xs-12">
             <div class="button-row button-row-margin">
               {% if payment_form.can_use_existing %}
-                <div class="store__form__selection__option">
+                <div class="store__form__selection__option recurring">
                   <button class="payment-method-toggle active" data-id="existing-credit-card">Use existing credit card</button>
                 </div>
               {% endif %}
-              <div class="store__form__selection__option">
+              <div class="store__form__selection__option recurring">
                 <button class="payment-method-toggle {% if not payment_form.can_use_existing %}active{% endif %}" data-id="credit-card">Pay with credit card</button>
               </div>
-              <div class="store__form__selection__option">
+              <div class="store__form__selection__option single">
                 <button class="payment-method-toggle" data-id="paypal">Pay with PayPal</button>
               </div>
-              <div class="store__form__selection__option">
+              <div class="store__form__selection__option single">
                 <button class="payment-method-toggle" data-id="bitcoin">Pay with BitCoin</button>
+              </div>
+              <div class="store__form__selection__option single">
+                <button class="payment-method-toggle" data-id="check">Pay with Check</button>
               </div>
 
             </div>
