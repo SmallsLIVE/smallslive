@@ -254,7 +254,7 @@ $event-row-padding: 3.5vw;
     padding-bottom: 0.7vw;
     padding-left: 0.7vw;
     padding-top: 0.7vw;
-    margin-top: -2vw;
+    margin-top: -5vw;
     z-index: 999;
 
     @media (max-width: 960px) {
@@ -606,9 +606,9 @@ $event-row-padding: 3.5vw;
   }
 }
 .event-row .event-display-today-and-tomorrow {
-  height: calc(36.7vw * 0.6 - 80px);
+  height: calc(36.7vw * 0.6 - 60px);
   @media (max-width: 1300px) {
-    height: calc(36.7vw * 0.6 - 55px);
+    height: calc(36.7vw * 0.6 - 30px);
   }
 
   @media (min-width: 500px) and( max-width: 768px) {
