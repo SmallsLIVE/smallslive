@@ -62,7 +62,7 @@
               {% if event.is_future %}
                 {{ event.get_date|date:'D M d' }}
               {% else %}
-                {{ event.get_date|date:'m/d/Y' }}
+                Archive on {{ event.get_date|date:'m/d/Y' }}
               {% endif %}
             </div>
             <div class="title5">
