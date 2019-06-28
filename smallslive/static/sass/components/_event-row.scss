@@ -606,7 +606,11 @@ $event-row-padding: 3.5vw;
   }
 }
 .event-row .event-display-today-and-tomorrow {
-  height: calc(36.7vw * 0.6 - 25px);
+  height: calc(36.7vw * 0.6 - 80px);
+  @media (max-width: 1300px) {
+    height: calc(36.7vw * 0.6 - 55px);
+  }
+
   @media (min-width: 500px) and( max-width: 768px) {
     height: calc(67vw * 0.6 - 25px);
     min-width: 70vw;
