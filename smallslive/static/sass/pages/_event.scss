@@ -182,7 +182,6 @@ $player-height: 25.3vw;
     @media (max-width: $screen-md-max) {
       font-size: 2.5em;
       line-height: 1em;
-      margin-bottom: 20px;
     }
   }
 
@@ -429,8 +428,7 @@ $player-height: 25.3vw;
     /*padding-top: 14vw;*/
 
     @media (max-width: $screen-md-max) {
-      padding: 4.5vw;
-      padding-top: 4.5vw;
+
     }
 
     .title5 {
@@ -872,4 +870,9 @@ $player-height: 25.3vw;
   margin-left: auto;
   height: calc(6.94vw + 8.96px);
   width: calc(6.94vw + 8.96px);
+
+  @media (max-width: 767px) {
+    height: calc(13.94vw + 8.96px);
+    width: calc(13.94vw + 8.96px);
+  }
 }
