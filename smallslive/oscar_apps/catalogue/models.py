@@ -90,7 +90,7 @@ class Product(AbstractProduct):
             return self.tracks.order_by('id')
 
     def get_leaders(self):
-        return ArtistProduct.objects.filter(product=self, leaders=True)
+        return ArtistProduct.objects.filter(product=self, is_leader=True)
 
     def get_title(self):
         """
@@ -127,7 +127,7 @@ class ArtistProduct(models.Model):
     product = models.ForeignKey(Product, verbose_name='', on_delete=models.CASCADE)
     instrument = models.ForeignKey('artists.Instrument', blank=True, null=True)
     is_leader = models.BooleanField(default=False)
-    
+
     class Meta:
         # abstract = True
         app_label = 'catalogue'
@@ -141,7 +141,7 @@ class UserCatalogue(models.Model):
 
     user = models.ForeignKey(SmallsUser, related_name='catalogue_access', unique=True)
     has_full_catalogue_access = models.BooleanField(default=False)
-    
+
     class Meta:
         verbose_name = 'Full access user'
 
@@ -150,7 +150,7 @@ class UserCatalogueProduct(models.Model):
 
     user = models.ForeignKey(SmallsUser, related_name='product_access')
     product = models.ForeignKey(Product, related_name='access')
-    
+
     class Meta:
         verbose_name = 'Product access user'
         unique_together = [
@@ -158,5 +158,3 @@ class UserCatalogueProduct(models.Model):
         ]
 
 from oscar.apps.catalogue.models import *  # noqa
-
-

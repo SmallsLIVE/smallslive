@@ -16,13 +16,17 @@
     <div class="modal-content custom-modal">
       <a href="#" class="close-button"></a>
       <div class="modal-body">
-        <p class="title2 accent-color title">Thank you for your support</p>
+        <p class="title2 accent-color title">Artist Sponsorship</p>
+        <!--
           <p class="title-big subtitle"></p>
+        //-->
           <p class="text9 justified-text text">
-
+            Sponsorships are tax-deductable donations that directly support this artist. You are sponsoring
+            {% for leaders in album_product.get_leaders %}
+              {{ leaders.artist }}
+            {% endfor %}.
           </p>
           <p class="gift-content"></p>
-        </p>
         <div class="text4 text-centered" style="display: flex; justify-content: center;">
           <button id="confirmDonationButton" class="white-border-button confirm" style="margin-right: 5px;">Confirm</button>
           <button class="white-border-button cancel" style="margin-left: 5px;">Cancel</button>
