@@ -36,7 +36,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from artists.models import Artist
-from events.models import get_today_start, StaffPick, EventSet,\
+from events.models import get_today_start, StaffPick, EventSet, \
     Recording, Comment
 from metrics.models import UserVideoMetric
 from oscar_apps.catalogue.models import Product
@@ -127,7 +127,7 @@ class HomepageView(ListView, UpcomingEventMixin):
         context = self.get_upcoming_events_context_data(context)
 
         if self.request.user.is_authenticated():
-            a = datetime.datetime.strftime(self.request.user.date_joined,'%Y-%m-%d')
+            a = datetime.datetime.strftime(self.request.user.date_joined, '%Y-%m-%d')
             b = datetime.datetime.strftime(timezone.now(), '%Y-%m-%d')
             context['email_sent'] = a == b
 
@@ -200,6 +200,7 @@ def check_staff_picked(event, is_staff_pick):
     else:
         if hasattr(event, 'staff_picked'):
             event.staff_picked.delete()
+
 
 TICKETS_NUMBER_OF_SETS = 4
 
@@ -370,6 +371,7 @@ class EventDetailView(DetailView):
             data[rec.id] = signed_value
         return data
 
+
 event_detail = EventDetailView.as_view()
 
 
@@ -422,10 +424,10 @@ class EventEditView(NamedFormsetsMixin, UpdateWithInlinesView):
     def construct_ticket_forms(self, data=None):
         count = len(self.object.get_tickets())
         ticket_forms = []
-        for i in range(1, TICKETS_NUMBER_OF_SETS + 1):
-            if i < count and not data:
-                continue
-            ticket_form = TicketAddForm(data, prefix="set{0}".format(i), number=i)
+        event_sets = self.object.sets.all()
+        for i, event_set in enumerate(event_sets):
+
+            ticket_form = TicketAddForm(data, prefix="set{0}".format(i + 1), number=i + 1, initial={'set_name': event_set.start.strftime('%-I:%M %p')})
             ticket_forms.append(ticket_form)
 
         return ticket_forms
@@ -437,6 +439,7 @@ event_edit = staff_member_required(EventEditView.as_view())
 class EventDeleteView(StaffuserRequiredMixin, DeleteView):
     model = Event
     success_url = reverse_lazy('home')
+
 
 event_delete = EventDeleteView.as_view()
 
@@ -470,6 +473,7 @@ class EventCloneView(StaffuserRequiredMixin, BaseDetailView):
         """
         pass
 
+
 event_clone = EventCloneView.as_view()
 
 
@@ -481,6 +485,7 @@ class EventUpdateMetricsView(View):
         event.update_metrics()
 
         return JsonResponse({'success': True})
+
 
 event_update_metrics = EventUpdateMetricsView.as_view()
 
@@ -590,6 +595,7 @@ class ScheduleCarouselAjaxView(AJAXMixin, DetailView):
     model = Event
     template_name = "blocks/schedule-event-details-carousel.html"
 
+
 schedule_carousel_ajax = ScheduleCarouselAjaxView.as_view()
 
 
@@ -615,6 +621,7 @@ class HomepageEventCarouselAjaxView(AJAXMixin, ListView):
             start = timezone.localtime(timezone.now()) - timedelta(hours=4)
             context['dates'] = [start + timedelta(days=d) for d in range(5)]
         return context
+
 
 event_carousel_ajax = HomepageEventCarouselAjaxView.as_view()
 
@@ -655,6 +662,7 @@ class LiveStreamView(ListView):
 
         return context
 
+
 live_stream = LiveStreamView.as_view()
 
 
@@ -668,6 +676,7 @@ class MezzrowLiveStreamView(TemplateView):
         stream_turn_on_hour = 17
         context['hide_stream'] = stream_turn_off_hour <= now.hour <= stream_turn_on_hour
         return context
+
 
 live_stream_mezzrow = MezzrowLiveStreamView.as_view()
 
@@ -720,7 +729,7 @@ class ArchiveView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ArchiveView, self).get_context_data(**kwargs)
 
-        @cached(timeout=6*60*60)
+        @cached(timeout=6 * 60 * 60)
         def _get_most_popular():
             context = {}
             context['most_recent'] = Event.objects.most_recent()[:12]
@@ -767,6 +776,7 @@ archive = ArchiveView.as_view()
 
 
 class MonthlyArchiveView(ArchiveView):
+
     def get_queryset(self):
         dates = {}
         month = int(self.kwargs.get('month', timezone.now().month))
@@ -812,6 +822,7 @@ class MonthlyArchiveView(ArchiveView):
         context['prev_url'] = reverse('monthly_archive', kwargs={'year': prev_month.year, 'month': prev_month.month})
         context['next_url'] = reverse('monthly_archive', kwargs={'year': next_month.year, 'month': next_month.month})
         return context
+
 
 monthly_archive = MonthlyArchiveView.as_view()
 
@@ -954,6 +965,7 @@ class CommentListView(FormView):
         context['object_list'] = self.event_set.comments.all()
         return context
 
+
 event_comments = CommentListView.as_view()
 
 
@@ -962,5 +974,5 @@ def remove_comment(request):
     comment = Comment.objects.get(pk=request.POST.get('id'))
     success_url = comment.event_set.event.get_absolute_url()
     comment.delete()
-    messages.info(request,"Comment deleted")
+    messages.info(request, "Comment deleted")
     return HttpResponseRedirect(success_url)
