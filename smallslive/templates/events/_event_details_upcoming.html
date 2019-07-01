@@ -50,8 +50,11 @@
     $('.buy-tickets').click(function(e){
       e.preventDefault();
       // Remember form to be submitted
-      $form = $(this).closest('form');
+      $form = $(this).closest('form'); 
+
       $('#buy-tickets-dialog').modal('show');
+      $('#ticket-name').text("Tickets for " + $(this).data('ticket-name'));
+      $('#ticket-price').text("$" +$(this).data('ticket-price'));
     })
     $('#confirm-buy-tickets').click(function(){
       $form.submit();

@@ -2,14 +2,15 @@
   <div class="modal-dialog">
     <div class="modal-content custom-modal">
       <a href="#" class="close-button"></a>
-      <div class="modal-body">
+      <div class="modal-body"> 
         <p class="title2 accent-color">Buy tickets for {{ event.venue.name }}</p>
         <p class="title3">{{ event.title }}</p>
-        <p class="text4 text-grey">
-          {{ event.description|safe }}
-        </p>
+        <p class="title2">{{ event.date | date:"D, M d" }}</p>
+        <p id="ticket-name" class="title2"></p>
+        <p id="ticket-price" class="title2 acent-color"></p>
+
         <p class="text5 text-grey">
-          Buy tickets?
+          Good for this show only
         </p>
         <div>
           <button id="cancel-buy-tickets" class="white-border-button">Cancel</button>
