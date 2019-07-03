@@ -32,7 +32,6 @@
               To receive documentation of your donation, please contact us at <a href="foundation@smallslive.com">foundation@smallslive.com</a> with your intention to donate in bitcoin.
               We will contact you directly with a confirmation of the transfer and a receipt for your tax purposes.
             </p>
-          </p>
           <div class="text4 text-centered" style="display: flex; justify-content: center;">
 
           </div>
@@ -44,7 +43,7 @@
 {% endblock %}
 
 {% block flow_title %}
-  <p class="text2 accent-color">You are Sponsoring "{{ event.title }} {{ event.get_date|date:'D M d' }}"</p>
+  <p class="text2 accent-color">You are Sponsoring "{{ event.title }}" {{ event.get_date|date:'m/d/Y' }}</p>
 {% endblock %}
 
 {% block flow_steps %}
@@ -78,10 +77,7 @@
 
         <p class="text9">This is a 100% tax-deductable donation to the SmallsLIVE Foundation.
           50% of your donation will be given directly to the following musicians:
-          {% for artist in event_artists %}
-            {{ artist.name }}
-            {% if not forloop.last %}{% ifequal forloop.revcounter 2 %} and {% else %}, {% endifequal %}{% else %}{% endif %}
-          {% endfor %}
+          {{ comma_separated_artists }}.
         </p>
         <div id="supportPledge" class="button-row button-row-big button-row-margin">
           <button value=5>$5</button>
