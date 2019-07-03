@@ -10,6 +10,9 @@
                 <a href="{{ event.get_absolute_url }}">
                   {{ event.title }}
                 </a>
+                {% if request.user.is_staff and related.state == "Draft"%}
+                  <p class="accent-color">Draft</p>
+                {% endif %}
               </div>
               <div class="accent-color">{{ event.venue.name }}</div>
               <div class="text-grey">{{ event.start|date:"g:i A" }} &

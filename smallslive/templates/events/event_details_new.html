@@ -33,8 +33,11 @@
 {% block home_content %}
 
   <div class="event-page-container">
-    <div class="flex-column flex event-container">
 
+    <div class="flex-column flex event-container">
+      {% if request.user.is_staff and event.state == "Draft" %}
+        <div class="{{ event.venue.name|lower}}-color event-venue title5">{{ event.state }}</div>
+      {% endif %}
       {% block event_content %}
       {% endblock %}
 
@@ -168,7 +171,7 @@
                       {{ related.get_date|date:'m/d/Y' }}
                     </div>
                     <div class="accent-color text-uppercase">
-                        <strong class="{{ related.venue.name|lower }}-color">{{ related.venue.name }}</strong>
+                        <strong class="{{ related.venue.name|lower }}-color">{{ related.venue.name }} {% if request.user.is_staff and related.state == "Draft"%} - Draft {% endif %}</strong>
                     </div>
                   </div>
                 </div>
