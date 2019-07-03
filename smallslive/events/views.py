@@ -275,6 +275,7 @@ class EventDetailView(DetailView):
         event = self.object
         performers = event.get_performers()
         self.request.is_event = True
+        context['comma_separated_artists'] = event.get_performer_strings()
         context['performers'] = [performers[i:i + 4] for i in range(0, len(performers), 4)]
         context['facebook_app_id'] = settings.FACEBOOK_APP_ID
         context['metrics_ping_interval'] = settings.PING_INTERVAL

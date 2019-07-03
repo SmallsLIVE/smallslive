@@ -164,6 +164,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
         if self.object.get_product_class().slug == 'album':
             album_product = Product.objects.filter(pk=self.object.pk ).first()
             ctx['album_product'] = album_product
+            ctx['comma_separated_leaders'] = album_product.get_leader_strings()
             track_album = next((item for item in self.album_list if item['parent'] == self.object), None)
             ctx['bought_tracks'] = None
             if track_album:
@@ -173,7 +174,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
                 'physical-album',
                 'digital-album'
             ]).first()
-            
+
             if variant and variant.product_class.slug == 'digital-album':
                 for album in self.album_list:
                     if self.object.pk == album["parent"].pk:
@@ -214,5 +215,3 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
             '%s/detail-for-class-%s.html' % (
                 self.template_folder, self.object.get_product_class().slug),
             '%s/detail.html' % (self.template_folder)]
-
-

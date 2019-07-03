@@ -22,9 +22,7 @@
         //-->
           <p class="text9 justified-text text">
             Sponsorships are tax-deductable donations that directly support this artist. You are sponsoring
-            {% for leaders in album_product.get_leaders %}
-              {{ leaders.artist }}
-            {% endfor %}.
+            {{ comma_separated_leaders }}.
           </p>
           <p class="gift-content"></p>
         <div class="text4 text-centered" style="display: flex; justify-content: center;">

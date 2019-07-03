@@ -77,10 +77,7 @@
 
         <p class="text9">This is a 100% tax-deductable donation to the SmallsLIVE Foundation.
           50% of your donation will be given directly to the following musicians:
-          {% for artist in event_artists %}
-            {{ artist.name }}
-            {% if not forloop.last %}{% ifequal forloop.revcounter 2 %} and {% else %}, {% endifequal %}{% else %}{% endif %}
-          {% endfor %}
+          {{ comma_separated_artists }}.
         </p>
         <div id="supportPledge" class="button-row button-row-big button-row-margin">
           <button value=5>$5</button>

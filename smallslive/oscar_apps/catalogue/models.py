@@ -92,6 +92,18 @@ class Product(AbstractProduct):
     def get_leaders(self):
         return ArtistProduct.objects.filter(product=self, is_leader=True)
 
+    def get_leader_strings(self):
+        artists_info = ArtistProduct.objects.filter(product=self, is_leader=True)
+        artists_names = [x.artist.full_name() for x in artists_info]
+
+        if len(artists_names) > 1:
+
+            comma_separated_artists = ', '.join(artists_names[:-1])  # That will join all elements except the last
+
+            return '{} and {}'.format(comma_separated_artists, artists_names[-1])
+        else:
+            return artists_names[0]
+
     def get_title(self):
         """
         Return a product's title or it's parent's title if it has no title

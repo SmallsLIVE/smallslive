@@ -172,7 +172,8 @@ class BecomeSupporterView(ContributeFlowView, PayPalMixin):
 
         context = {
             'event': event,
-            'event_artists': event.get_artists_info_dict()
+            'event_artists': event.get_artists_info_dict(),
+            'comma_separated_artists': event.get_performer_strings()
         }
 
         self.event_id = event_id

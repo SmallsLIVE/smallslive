@@ -19,11 +19,7 @@
 {% block flow_title %}
   <p class="text2 accent-color">You are sponsoring
 
-    {% for leaders in album_product.get_leaders %}
-      {{ leaders.artist }}
-    {% endfor %}
-
-    {{ album_product.upc }}
+    {{ comma_separated_leaders }} {{ album_product.upc }}
 
   </p>
 {% endblock %}
@@ -58,9 +54,7 @@
         </div>
         <p class="text9">This is a 100% tax-deductable donation to the SmallsLIVE Foundation.
           50% of your donation will go directly to
-          {% for leaders in album_product.get_leaders %}
-            {{ leaders.artist }}
-          {% endfor %}
+          {{ album_product.get_leader_strings }}.
         </p>
         <div id="supportPledge" class="button-row button-row-big button-row-margin">
           <button value=5>$5</button>

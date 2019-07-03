@@ -68,7 +68,7 @@ class EventQuerySet(models.QuerySet):
         return self.filter(
             staff_picked__isnull=False
         ).order_by('-staff_picked__date_picked')
-    
+
     def get_events_by_performers_and_artist(self, number_of_performers_searched, name, just_by_qty):
 
         if just_by_qty:
@@ -401,7 +401,7 @@ class Event(TimeStampedModel):
             play_total = qs[0]['play_count']
 
         return play_total
-    
+
     def get_seconds_total(self):
         seconds_total = 0
         qs = UserVideoMetric.objects.filter(event_id=self.id)
@@ -483,6 +483,18 @@ class Event(TimeStampedModel):
         # Make full names
         performers = [u"{0} {1} ({2})".format(first, last, instrument) for first, last, instrument in performers]
         return separator.join(performers)
+
+    def get_performer_strings(self):
+        artists_info = self.artists_gig_info.all()
+        artists_names = [x.artist.full_name() for x in artists_info]
+
+        if len(artists_names) > 1:
+
+            comma_separated_artists = ', '.join(artists_names[:-1])  # That will join all elements except the last
+
+            return '{} and {}'.format(comma_separated_artists, artists_names[-1])
+        else:
+            return artists_names[0]
 
     def leader_string(self):
         leader = self.artists_gig_info.filter(is_leader=True).first()
@@ -963,7 +975,7 @@ class Venue(models.Model):
     @cached_property
     def get_name(self):
         return self.name
-    
+
     @property
     def short_name(self):
         return self.name.split(' ')[0]
@@ -985,13 +997,13 @@ class ShowDefaultTime(models.Model):
 
     def sets_start(self):
         if self.second_set:
-            return self.first_set.strftime('%H:%M') + "-" + self.second_set.strftime('%H:%M') 
+            return self.first_set.strftime('%H:%M') + "-" + self.second_set.strftime('%H:%M')
         else:
             return self.first_set.strftime('%H:%M')
 
     def sets_readable_start(self):
         if self.second_set:
-            return self.first_set.strftime('%I:%M %p') + " & " + self.second_set.strftime('%I:%M %p') 
+            return self.first_set.strftime('%I:%M %p') + " & " + self.second_set.strftime('%I:%M %p')
         else:
             first_set_end = datetime.combine(datetime.now(), self.first_set) + timedelta(hours=self.set_duration)
             return self.first_set.strftime('%I:%M %p') + " - " + first_set_end.strftime('%I:%M %p')
