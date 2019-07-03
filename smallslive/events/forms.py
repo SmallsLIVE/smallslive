@@ -14,7 +14,7 @@ from haystack.forms import SearchForm
 from oscar.apps.catalogue.models import ProductImage
 from multimedia.models import ImageMediaFile
 from multimedia.s3_storages import ImageS3Storage
-from .models import EventSet, Event, GigPlayed, Comment, CustomImageField
+from .models import EventSet, Event, GigPlayed, Comment, CustomImageField, Venue
 
 from utils.widgets import ImageCropWidget
 
@@ -346,3 +346,20 @@ class TicketAddForm(forms.Form):
                 product=product,
                 original=event.photo
             )
+
+
+class VenueAddForm(forms.ModelForm):
+    class Meta:
+        model = Venue
+        fields = ('name', 'audio_bucket_name', 'video_bucket_name')
+
+    def save(self, commit=True):
+        venue = super(VenueAddForm, self).save(commit)
+        return venue
+
+    def __init__(self, *args, **kwargs):
+        super(VenueAddForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.form_action = 'venue_add'
+        self.helper.form_method = 'post'
+        self.helper.form_tag = False

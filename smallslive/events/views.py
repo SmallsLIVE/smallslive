@@ -21,6 +21,7 @@ from django.utils.text import slugify
 from django.utils.timezone import timedelta
 from django.contrib.admin.views.decorators import staff_member_required
 from django.views.generic import DeleteView, TemplateView, View
+from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic.list import ListView
 from django.views.generic.detail import BaseDetailView
 from django.views.generic import DetailView, FormView
@@ -45,7 +46,8 @@ from search.utils import facets_by_model_name
 from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
     GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
     EventSearchForm, EventEditForm, EventSetInlineFormset, \
-    EventSetInlineFormsetHelper, CommentForm, TicketAddForm
+    EventSetInlineFormsetHelper, CommentForm, TicketAddForm, \
+    VenueAddForm
 from .models import Event, Venue, ShowDefaultTime, RANGE_MONTH
 
 RANGE_YEAR = 'year'
@@ -968,6 +970,38 @@ class CommentListView(FormView):
 
 
 event_comments = CommentListView.as_view()
+
+
+class VenueAddView(StaffuserRequiredMixin, CreateView):
+    model = Venue
+    form_class = VenueAddForm
+    template_name = 'events/venue_add.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(VenueAddView, self).get_context_data(**kwargs)
+        context['action_name'] = 'add'
+        return context
+
+    def get_success_url(self):
+        return reverse('venue_edit', kwargs={'pk': self.object.id})
+
+venue_add = VenueAddView.as_view()
+
+
+class VenueEditView(StaffuserRequiredMixin, UpdateView):
+    model = Venue
+    form_class = VenueAddForm
+    template_name = 'events/venue_add.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(VenueEditView, self).get_context_data(**kwargs)
+        context['action_name'] = 'edit'
+        return context
+
+    def get_success_url(self):
+        return reverse('venue_edit', kwargs={'pk': self.object.id})
+
+venue_edit = VenueEditView.as_view()
 
 
 @login_required
