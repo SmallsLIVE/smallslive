@@ -84,9 +84,6 @@ class SearchMixin(object):
             first = sqs.first()
             last = sqs.last()
 
-
-        print 'Count: ', sqs.count()
-
         blocks = []
         block = []
 
@@ -99,8 +96,6 @@ class SearchMixin(object):
             objects = paginator.page(page).object_list
         except EmptyPage:
             objects = []
-
-        print 'Returning: ', len(objects)
 
         for item in objects:
             block.append(item)

@@ -3,10 +3,7 @@
 {% for event in events %}
 
   <article class="event-display" onclick="window.location='{{ event.get_absolute_url }}';">
-
-    {{ events|length }} {{ forloop.counter }} Views: {{ event.seconds_played }} Play Count: {{ event.play_count }}
-
-    {% include 'events/event_card.html' with event=event secondary=secondary hide_play=hide_play %}
+   {% include 'events/event_card.html' with event=event secondary=secondary hide_play=hide_play %}
     <div class="event-info new {% if upcoming %}{% endif %}">
       <div>
         <div class="{% if not show_event_venue %} margin-bottom{% endif %}">{{ event.get_date|date:'m/d/Y' }}</div>
