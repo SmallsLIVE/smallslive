@@ -10,11 +10,13 @@
               <br>
             {% endif %}
           <div class="event-info-title">{{ event.title }} {{ related.state }}</div>
-          {% if request.user.is_staff and event.state == "Draft"%}
-            <p class="accent-color">Draft</p>
-          {% endif %}
+
         </div>
       </div>
+      {% if request.user.is_staff and event.state == "Draft"%}
+      <p class="accent-color draft-label-most-popular title2">Draft</p>
+            
+      {% endif %}
     </article>
   {% endfor %}
 </div>
