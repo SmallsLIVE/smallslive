@@ -796,3 +796,18 @@ $event-row-padding: 3.5vw;
     flex-wrap: wrap;
   }
 }
+
+.draft-label-most-popular {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  font-size: 12px;
+  font-family: "Reem Kufi", sans-serif;
+  font-weight: 400;
+  letter-spacing: 1px;
+  font-size: 13px;
+  line-height: 1.25em;
+  text-transform: uppercase;
+  text-shadow: 0.001em 0.001em;
+  margin-bottom: 0;
+}
