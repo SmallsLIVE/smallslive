@@ -64,8 +64,10 @@
             <div class="title5">
               {% if event.is_future %}
                 {{ event.get_date|date:'D M d' }}
+              {% elif event.is_live %}
+                <span class="accent-color">Live Now</span>
               {% else %}
-                Archive on {{ event.get_date|date:'m/d/Y' }}
+                {{ event.get_date|date:'m/d/Y' }}
               {% endif %}
             </div>
             <div class="title5">
