@@ -494,7 +494,7 @@ class Event(TimeStampedModel):
 
             return '{} and {}'.format(comma_separated_artists, artists_names[-1])
         else:
-            return artists_names[0]
+            return artists_names[0] if artists_names else ''
 
     def leader_string(self):
         leader = self.artists_gig_info.filter(is_leader=True).first()

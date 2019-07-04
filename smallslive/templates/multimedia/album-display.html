@@ -288,9 +288,6 @@
         // Prevent submission
         event.preventDefault();
 
-        // Skip first step: Intro message from become a supporter.
-        showPanel(getNextStep());
-
         // Show popup with selected product
         $selectionConfirmationDialog.find(".title").text($(this).text());
         $itemForm = $(this).closest("form");
@@ -335,11 +332,11 @@
 
         if (supporterType == "support") {
           $mainContainer = $("#my-downloads-product__" + supporterType);
-          setSelected("support", "", 0);
+          setSelected("catalog", "support", 0);
           showPanel("SelectType");
           $donationConfirmationDialog.modal("hide");
         } else {
-          setSelected("store", "", 0);
+          setSelected("catalog", "store", 0);
           $("#confirmButton").show();
           $selectionConfirmationDialog.modal("hide");
         }
