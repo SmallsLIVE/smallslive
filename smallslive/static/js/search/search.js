@@ -149,7 +149,7 @@ function updateArtistsHtml(data, reset) {
       $("#artists .event-row").css("marginLeft", "0");
       $("#artists .slide-btn.prev").css("visibility", "hidden");
     }
-
+    $('#total-artist').html(data.showingResults);
   }
 }
 
