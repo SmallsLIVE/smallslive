@@ -85,6 +85,10 @@
     &.upcoming-shows {
       background-size: calc(520px + 3.5vw) 5px;
       width: auto;
+      margin-right: 20px;
+      @media (max-width: $screen-md-max) {
+        width: 100%;
+      }
     }
   }
 
