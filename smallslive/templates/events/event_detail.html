@@ -335,8 +335,9 @@
 
 {% block extra_js %}
   <script src="https://jwpsrv.com/library/w1FDmNWFEeS9qhJtO5t17w.js"></script>
-    <script>
-      var playsCountSent = [];
+  <script>
+    var playsCountSent = [];
+    {% if count_metrics %}
       function updateViewCount(state) {
         var id = this.getPlaylistItem(this.getPlaylistIndex()).mediaid;
         if (playsCountSent.indexOf(id) === -1) {
@@ -344,12 +345,12 @@
           $.post('/multimedia/update_media_viewcount/', {
             recording_id: id,
             csrfmiddlewaretoken: '{{ csrf_token }}'
-
           });
         }
       }
+    {% endif %}
 
-      {% if user.can_listen_to_audio and event.published_audio %}
+    {% if user.can_listen_to_audio and event.published_audio %}
       jwplayer("player-audio").setup({
         primary: 'html5',
         playlist: [
@@ -375,10 +376,12 @@
         width: "100%",
         height: 120
       });
-      jwplayer('player-audio').onPlay(updateViewCount);
+      {% if count_metrics %}
+        jwplayer('player-audio').onPlay(updateViewCount);
       {% endif %}
+    {% endif %}
 
-      {% if user.can_watch_video and event.published_videos %}
+    {% if user.can_watch_video and event.published_videos %}
       jwplayer("player-video").setup({
         primary: 'html5',
         playlist: [
@@ -404,7 +407,9 @@
         width: "100%",
         height: 450
       });
-      jwplayer('player-video').onPlay(updateViewCount);
+      {% if count_metrics %}
+        jwplayer('player-video').onPlay(updateViewCount);
       {% endif %}
-    </script>
+    {% endif %}
+  </script>
 {% endblock %}

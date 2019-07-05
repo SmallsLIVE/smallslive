@@ -187,17 +187,17 @@
             $(modal).modal('show');
           } else {
             {% if user.can_watch_video and event.published_videos %}videoPlayer.pause(true);{% endif %}
-            updateViewCount(this);
             {% if count_metrics %}
-            if (! activeTracker) {
-              setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);
-            }
+              updateViewCount(this);
+              if (! activeTracker) {
+                setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);
+              }
             {% endif %}
           }
         });
 
         {% if count_metrics %}
-        audioPlayer.on('pause', function() {
+        audioPlayer.on('pause', function () {
             window.clearInterval(activeTracker);
             activeTracker = null;
         });
@@ -266,7 +266,9 @@
               $overlay.addClass('hidden');
               $overlay.removeClass('paused');
               audioPlayer.pause(true);
-              updateViewCount(this);
+              {% if count_metrics %}
+                updateViewCount(this);
+              {% endif %}
               {% if count_metrics %}setUpTimerForMedia(this.getPlaylistItem(this.getPlaylistIndex()).mediaid);{% endif %}
               $overlay.css('opacity', 0);
             }
