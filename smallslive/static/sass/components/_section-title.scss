@@ -84,14 +84,7 @@
 
     &.upcoming-shows {
       background-size: calc(520px + 3.5vw) 5px;
-      width: 40%;
-      @media (max-width: 1360px) {
-        width: 50%;
-      }
-
-      @media (max-width: $screen-md-max) {
-        width: 100%;
-      }
+      width: auto;
     }
   }
 
