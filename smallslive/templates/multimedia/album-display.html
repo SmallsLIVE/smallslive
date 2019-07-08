@@ -26,7 +26,7 @@
           {% if session.availability.is_available_to_buy %}
             {% basket_form request child_product 'single' as basket_form %}
 
-            <div class="modal-content hidden">
+            <div class="modal-content catalog hidden">
               <div class="store-list-item-image">
                 {% with image=product.primary_image %}
                   {% if not image.is_missing %}
