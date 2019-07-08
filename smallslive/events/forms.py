@@ -351,7 +351,15 @@ class TicketAddForm(forms.Form):
 class VenueAddForm(forms.ModelForm):
     class Meta:
         model = Venue
-        fields = ('name', 'audio_bucket_name', 'video_bucket_name')
+        fields = (
+            'name',
+            'audio_bucket_name',
+            'video_bucket_name',
+            'aws_access_key_id',
+            'aws_secret_access_key',
+            'aws_storage_bucket_name',
+            'stripe_publishable_key'
+        )
 
     def save(self, commit=True):
         venue = super(VenueAddForm, self).save(commit)
@@ -359,6 +367,13 @@ class VenueAddForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(VenueAddForm, self).__init__(*args, **kwargs)
+
+        if self.instance and self.instance.get_aws_access_key_id:
+            self.initial['aws_access_key_id'] = self.instance.get_aws_access_key_id
+            self.initial['aws_secret_access_key'] = self.instance.get_aws_secret_access_key
+            self.initial['aws_storage_bucket_name'] = self.instance.get_aws_storage_bucket_name
+            self.initial['stripe_publishable_key'] = self.instance.get_stripe_publishable_key
+
         self.helper = FormHelper(self)
         self.helper.form_action = 'venue_add'
         self.helper.form_method = 'post'

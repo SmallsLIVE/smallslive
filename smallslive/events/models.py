@@ -1,10 +1,12 @@
 import pytz
+from cryptography.fernet import Fernet
 from django.core.cache import cache
 from django.db.models import Count, Max, Q, Sum
 from django.conf import settings
 from django.core.files.base import File
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.utils.encoding import force_bytes
 from django.utils.text import slugify
 from django.utils.timezone import datetime, timedelta, get_default_timezone
 from django.utils import six, timezone
@@ -16,6 +18,7 @@ from model_utils.models import QueryManager, TimeStampedModel
 from tinymce import models as tinymce_models
 from multimedia.s3_storages import ImageS3Storage
 from metrics.models import UserVideoMetric
+from utils.hkdf import derive_fernet_key
 
 RANGE_YEAR = 'year'
 RANGE_MONTH = 'month'
@@ -969,6 +972,11 @@ class Venue(models.Model):
     audio_bucket_name = models.CharField(max_length=4096, default='smallslivemp3')
     video_bucket_name = models.CharField(max_length=4096, default='smallslivevid')
 
+    aws_access_key_id = models.CharField(max_length=120, null=True, unique=True)
+    aws_secret_access_key = models.CharField(max_length=120, null=True, unique=True)
+    aws_storage_bucket_name = models.CharField(max_length=120, null=True, unique=True)
+    stripe_publishable_key = models.CharField(max_length=120, null=True, unique=True)
+
     def __unicode__(self):
         return self.name
 
@@ -986,6 +994,49 @@ class Venue(models.Model):
         if 'mezzrow' in self.name.lower():
             return 'rgb(241, 187, 83)'
         return '#D21535'
+
+    @property
+    def get_aws_access_key_id(self):
+        if self.aws_access_key_id:
+            return self.fernet.decrypt(force_bytes(self.aws_access_key_id))
+        return None
+
+    @property
+    def get_aws_secret_access_key(self):
+        if self.aws_secret_access_key:
+            return self.fernet.decrypt(force_bytes(self.aws_secret_access_key))
+        return None
+
+    @property
+    def get_aws_storage_bucket_name(self):
+        if self.aws_storage_bucket_name:
+            return self.fernet.decrypt(force_bytes(self.aws_storage_bucket_name))
+        return None
+
+    @property
+    def get_stripe_publishable_key(self):
+        if self.stripe_publishable_key:
+            return self.fernet.decrypt(force_bytes(self.stripe_publishable_key))
+        return None
+
+    @cached_property
+    def fernet(self):
+        return Fernet(derive_fernet_key(settings.SECRET_KEY))
+
+    def save(self):
+        self.aws_access_key_id = self.fernet.encrypt(
+            force_bytes(self.aws_access_key_id)
+        )
+        self.aws_secret_access_key = self.fernet.encrypt(
+            force_bytes(self.aws_secret_access_key)
+        )
+        self.aws_storage_bucket_name = self.fernet.encrypt(
+            force_bytes(self.aws_storage_bucket_name)
+        )
+        self.stripe_publishable_key = self.fernet.encrypt(
+            force_bytes(self.stripe_publishable_key)
+        )
+        super(Venue, self).save()
 
 
 class ShowDefaultTime(models.Model):
