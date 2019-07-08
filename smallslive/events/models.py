@@ -275,10 +275,9 @@ class CustomImageField(models.ImageField):
 def get_event_media_storage(instance):
 
     params = {}
-    if instance.get_venue_name() == 'Mezzrow':
-        params['access_key'] = settings.AWS_ACCESS_KEY_ID_MEZZROW
-        params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_MEZZROW
-        params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
+    params['access_key'] = instance.venue.get_aws_access_key_id
+    params['secret_key'] = instance.venue.get_aws_secret_access_key
+    params['bucket'] = instance.venue.get_aws_storage_bucket_name
 
     return ImageS3Storage(**params)
 
