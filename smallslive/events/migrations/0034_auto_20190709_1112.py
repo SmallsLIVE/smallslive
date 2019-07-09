@@ -14,25 +14,25 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='venue',
             name='aws_access_key_id',
-            field=models.CharField(max_length=120, unique=True, null=True),
+            field=models.CharField(max_length=512, unique=True, null=True),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='venue',
             name='aws_secret_access_key',
-            field=models.CharField(max_length=120, unique=True, null=True),
+            field=models.CharField(max_length=512, unique=True, null=True),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='venue',
             name='aws_storage_bucket_name',
-            field=models.CharField(max_length=120, unique=True, null=True),
+            field=models.CharField(max_length=512, unique=True, null=True),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='venue',
             name='stripe_publishable_key',
-            field=models.CharField(max_length=120, unique=True, null=True),
+            field=models.CharField(max_length=512, unique=True, null=True),
             preserve_default=True,
         ),
     ]
