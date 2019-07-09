@@ -70,11 +70,6 @@ $( window ).resize(function() {
     resizeTimeout = setTimeout(init, 300);
 });
 
-$( window ).scroll(function() {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(init, 300);
-});
-
 function init() {
 
     // reset slider to initial position
