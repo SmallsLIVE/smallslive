@@ -204,7 +204,7 @@ $banners-height: 38vh;
       bottom: 0;
 
       @media (max-width: 960px) {
-        display: none!important;
+        display: none !important;
       }
 
       li {
@@ -237,7 +237,7 @@ $banners-height: 38vh;
         }
         @media (min-width: 1200px) {
           margin-top: 0;
-          margin-bottom: 16px;
+          margin-bottom: 30px;
         }
 
         @media (max-width: 960px) {
