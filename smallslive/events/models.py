@@ -275,9 +275,19 @@ class CustomImageField(models.ImageField):
 def get_event_media_storage(instance):
 
     params = {}
-    params['access_key'] = instance.venue.get_aws_access_key_id
-    params['secret_key'] = instance.venue.get_aws_secret_access_key
-    params['bucket'] = instance.venue.get_aws_storage_bucket_name
+
+    if instance.get_venue_name() == 'Mezzrow':
+        params['access_key'] = settings.AWS_ACCESS_KEY_ID_MEZZROW
+        params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_MEZZROW
+        params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
+
+    # if venue object has credentials, use them
+    if instance.venue.get_aws_access_key_id and \
+            instance.venue.get_aws_secret_access_key and \
+            instance.venue.get_aws_storage_bucket_name:
+        params['access_key'] = instance.venue.get_aws_access_key_id
+        params['secret_key'] = instance.venue.get_aws_secret_access_key
+        params['bucket'] = instance.venue.get_aws_storage_bucket_name
 
     return ImageS3Storage(**params)
 
@@ -971,10 +981,10 @@ class Venue(models.Model):
     audio_bucket_name = models.CharField(max_length=4096, default='smallslivemp3')
     video_bucket_name = models.CharField(max_length=4096, default='smallslivevid')
 
-    aws_access_key_id = models.CharField(max_length=120, null=True, unique=True)
-    aws_secret_access_key = models.CharField(max_length=120, null=True, unique=True)
-    aws_storage_bucket_name = models.CharField(max_length=120, null=True, unique=True)
-    stripe_publishable_key = models.CharField(max_length=120, null=True, unique=True)
+    aws_access_key_id = models.CharField(max_length=512, null=True, unique=True)
+    aws_secret_access_key = models.CharField(max_length=512, null=True, unique=True)
+    aws_storage_bucket_name = models.CharField(max_length=512, null=True, unique=True)
+    stripe_publishable_key = models.CharField(max_length=512, null=True, unique=True)
 
     def __unicode__(self):
         return self.name

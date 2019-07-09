@@ -187,9 +187,19 @@ class EventAddForm(forms.ModelForm):
             # Provide custom connection and bucket
             # TODO: organize code
             params = {}
-            params['access_key'] = instance.venue.get_aws_access_key_id
-            params['secret_key'] = instance.venue.get_aws_secret_access_key
-            params['bucket'] = instance.venue.get_aws_storage_bucket_name
+
+            if instance.get_venue_name() == 'Mezzrow':
+                params['access_key'] = settings.AWS_ACCESS_KEY_ID_MEZZROW
+                params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_MEZZROW
+                params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
+
+            # if venue object has credentials, use them
+            if instance.venue.get_aws_access_key_id and \
+                    instance.venue.get_aws_secret_access_key and \
+                    instance.venue.get_aws_storage_bucket_name:
+                params['access_key'] = instance.venue.get_aws_access_key_id
+                params['secret_key'] = instance.venue.get_aws_secret_access_key
+                params['bucket'] = instance.venue.get_aws_storage_bucket_name
 
             instance.photo.storage = ImageS3Storage(**params)
             instance.photo.save(new_image.name, new_image, save=False)
