@@ -82,10 +82,9 @@
           <span class="select-container" style="left: 690px; bottom: -4px;">
             <div class="white-border-select home-filter">
               <select id="most-popular-filter">
-                <option value="week"{% if popular_select == 'week' %} selected{% endif %}>Last week</option>
+                <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
                 <option value="month"{% if popular_select == 'month' %} selected{% endif %}>Last month</option>
                 <option value="year"{% if popular_select == 'year' %} selected{% endif %}>This Year</option>
-                <option value="alltime"{% if popular_select == 'alltime' %} selected{% endif %}>All Time</option>
               </select>
             </div>
           </span>
