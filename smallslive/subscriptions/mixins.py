@@ -26,8 +26,10 @@ class PayPalMixin(object):
                 execute_uri = 'checkout:paypal_execute'
                 cancel_uri = 'checkout:payment-details'
 
-            payment_execute_url = self.request.build_absolute_uri(reverse(execute_uri))
-            payment_cancel_url = self.request.build_absolute_uri(reverse(cancel_uri))
+            payment_execute_url = self.request.build_absolute_uri(
+                reverse(execute_uri))
+            payment_cancel_url = self.request.build_absolute_uri(
+                reverse(cancel_uri))
         else:
             payment_execute_url = execute_uri
             payment_cancel_url = cancel_uri
@@ -35,7 +37,7 @@ class PayPalMixin(object):
         return {
             'intent': 'sale',
             'payer': {'payment_method': 'paypal'},
-            
+
             'redirect_urls': {
                 'return_url': payment_execute_url,
                 'cancel_url': payment_cancel_url},
@@ -44,11 +46,11 @@ class PayPalMixin(object):
                 'amount': {
                     'total': self.amount,
                     'currency': currency,
-                    'details':{
+                    'details': {
                         'shipping': shipping_charge,
                         'subtotal': str(subtotal)
-                        }
-                    },
+                    }
+                },
                 'description': 'SmallsLIVE'}]}
 
     def configure_paypal(self):
@@ -98,7 +100,7 @@ class PayPalMixin(object):
                     'product_id': self.product_id,
                     'event_id': self.event_id,
                 }
-                print 'Donation data: ',  donation
+                print 'Donation data: ', donation
                 Donation.objects.create(**donation)
 
             for link in payment.links:
@@ -155,7 +157,8 @@ class StripeMixin(object):
         if not self.token.startswith('card_'):
             customer.update_card(self.card_token)
             charge = customer.charge(
-                Decimal(self.amount.incl_tax),
+                Decimal(
+                    self.total.incl_tax if self.amount is None else self.amount.incl_tax),
                 description=self.payment_description(order_number, self.total.incl_tax, **kwargs))
             stripe_ref = charge.stripe_id
 
@@ -164,8 +167,10 @@ class StripeMixin(object):
                 order_number,
                 self.total,
                 card=self.token,
-                description=self.payment_description(order_number, self.total.incl_tax, **kwargs),
-                metadata=self.payment_metadata(order_number, self.total.incl_tax, basket_lines, **kwargs),
+                description=self.payment_description(
+                    order_number, self.total.incl_tax, **kwargs),
+                metadata=self.payment_metadata(
+                    order_number, self.total.incl_tax, basket_lines, **kwargs),
                 customer=customer.stripe_id)
 
         cost = 0

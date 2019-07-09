@@ -1,13 +1,12 @@
 var $mainContainer = $(document);
 
-
 var selectedData = {
   flow: "",
   type: "",
   amount: 0
 };
 
-var setSelected = function (flow, type, amount, step) {
+var setSelected = function(flow, type, amount, step) {
   selectedData.flow = flow;
   selectedData.type = type;
   selectedData.amount = amount;
@@ -27,12 +26,22 @@ var setSelected = function (flow, type, amount, step) {
 
 var currentStep = 0;
 
-var getSteps = function () {
+var getSteps = function() {
   var steps;
 
-  if (selectedData.flow == "become_supporter" || selectedData.flow == "one_time_donation") {
+  if (
+    selectedData.flow == "become_supporter" ||
+    selectedData.flow == "one_time_donation"
+  ) {
     if (selectedData.type == "store") {
-      steps = ["Intro", "SelectType", "Shipping", "Billing", "Preview", "ThankYou"];
+      steps = [
+        "Intro",
+        "SelectType",
+        "Shipping",
+        "Billing",
+        "Preview",
+        "ThankYou"
+      ];
     } else {
       steps = ["Intro", "SelectType", "PaymentInfo", "ThankYou"];
     }
@@ -42,14 +51,17 @@ var getSteps = function () {
     } else {
       steps = ["SelectType", "PaymentInfo", "ThankYou"];
     }
-  } else if (selectedData.flow == "event_support" || selectedData.flow == "product_support") {
+  } else if (
+    selectedData.flow == "event_support" ||
+    selectedData.flow == "product_support"
+  ) {
     steps = ["SelectType", "PaymentInfo", "ThankYou"];
   }
 
   return steps;
 };
 
-var getPreviousStep = function () {
+var getPreviousStep = function() {
   var steps = getSteps();
   var index = steps.indexOf(currentStep);
   if (index == -1) {
@@ -58,7 +70,7 @@ var getPreviousStep = function () {
   return steps[index - 1];
 };
 
-var getNextStep = function () {
+var getNextStep = function() {
   var steps = getSteps();
   var index = steps.indexOf(currentStep);
   return steps[index + 1];
@@ -69,20 +81,20 @@ var monthlyButtons = $mainContainer.find("#monthlyPledge > button");
 var yearlyButtons = $mainContainer.find("#yearlyPledge > button");
 var giftsButtons = $mainContainer.find(".select-gift");
 
-var resetButtons = function () {
-  [monthlyButtons, yearlyButtons, giftsButtons].forEach(function (buttons) {
-    buttons.each(function (index, el) {
+var resetButtons = function() {
+  [monthlyButtons, yearlyButtons, giftsButtons].forEach(function(buttons) {
+    buttons.each(function(index, el) {
       $(el).removeClass("active");
     });
   });
 };
 
-var activeStep = function (step) {
+var activeStep = function(step) {
   $(buttons[step]).addClass("active");
   $(buttons[currentStep]).removeClass("active");
 };
 
-var showPanel = function (step) {
+var showPanel = function(step) {
   var $previous = $mainContainer.find("#supporterStep" + currentStep);
   var $step = $mainContainer.find("#supporterStep" + step);
 
@@ -90,45 +102,46 @@ var showPanel = function (step) {
   $step.show();
   activeStep(step);
   currentStep = step;
+
   checkConfirmButton();
 };
 
 var $itemForm;
 
 function checkCreditCardForm() {
-    var check = true;
-    $.each(checks, function (selector, value) {
-      if (!checkInput(selector, value)) {
-        if (selector == "#expiry-month") {
-          if (parseInt($input.val()) < 13 && $input.val().trim() != "") {
-            return;
-          }
+  var check = true;
+  $.each(checks, function(selector, value) {
+    if (!checkInput(selector, value)) {
+      if (selector == "#expiry-month") {
+        if (parseInt($input.val()) < 13 && $input.val().trim() != "") {
+          return;
         }
-        console.log("No " + selector);
-        check = false;
-        return;
       }
-    });
-
-    if (!check) {
-      return false;
+      console.log("No " + selector);
+      check = false;
+      return;
     }
+  });
 
-    if ($("#name-on-card").val().length === 0) {
-      return false;
-    }
-
-    return true;
+  if (!check) {
+    return false;
   }
 
-var checkConfirmButton = function () {
+  if ($("#name-on-card").val().length === 0) {
+    return false;
+  }
+
+  return true;
+}
+
+var checkConfirmButton = function() {
   var $confirmButton = $mainContainer.find("#confirmButton");
 
   if (currentStep === "SelectType") {
     if (
       (selectedData.type === "month" && selectedData.amount >= 10) ||
       (selectedData.type === "year" && selectedData.amount >= 100) ||
-      selectedData.flow !== "become_supporter" && selectedData.amount > 0
+      (selectedData.flow !== "become_supporter" && selectedData.amount > 0)
     ) {
       $confirmButton.prop("disabled", false);
     } else {
@@ -153,48 +166,53 @@ var checkConfirmButton = function () {
     $confirmButton.text("Continue");
   }
 
-  if (currentStep === "Intro") {
+  if (getSteps().indexOf(currentStep) < 1) {
     $mainContainer.find("#backButton").hide();
   } else {
     $mainContainer.find("#backButton").show();
   }
 };
 
-var updatePaymentInfo = function () {
-
+var updatePaymentInfo = function() {
   var pledgeType = selectedData.type;
   var pledgeAmount = selectedData.amount;
   var $paymentSection = $mainContainer.find("#select-payment-row");
 
   if (pledgeType === "month") {
-    $mainContainer.find("#pledge-type").html(
-      'You’ve  selected  to  pledge <span class="accent-color">$' +
-      pledgeAmount +
-      ".00 per month</span> . "
-    );
-    $mainContainer.find("#payment-type").html(
-      "Your  card  will  be  billed  monthly  until  you  choose  to  cancel."
-    );
+    $mainContainer
+      .find("#pledge-type")
+      .html(
+        'You’ve  selected  to  pledge <span class="accent-color">$' +
+          pledgeAmount +
+          ".00 per month</span> . "
+      );
+    $mainContainer
+      .find("#payment-type")
+      .html(
+        "Your  card  will  be  billed  monthly  until  you  choose  to  cancel."
+      );
     // Show only recurring payment methods (credit cards).
-    $paymentSection.find('.single').hide();
+    $paymentSection.find(".single").hide();
   } else {
-    $mainContainer.find("#pledge-type").html(
-      'You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' +
-      pledgeAmount +
-      "</span> ."
-    );
-    $mainContainer.find("#payment-type").html(
-      "Your  card  will  be  charged  in  this  amount."
-    );
+    $mainContainer
+      .find("#pledge-type")
+      .html(
+        'You’ve  selected  to  make  a  one  time  donation  of <span class="accent-color">$' +
+          pledgeAmount +
+          "</span> ."
+      );
+    $mainContainer
+      .find("#payment-type")
+      .html("Your  card  will  be  charged  in  this  amount.");
     // Show one-off payment methods
-    $paymentSection.find('.single').show();
+    $paymentSection.find(".single").show();
   }
   $paymentSection.show();
   $mainContainer.find("#hiddenAmountInput").val(pledgeAmount);
   $mainContainer.find("#hiddenTypeInput").val(pledgeType);
 };
 
-var resetCustom = function () {
+var resetCustom = function() {
   $yearlyCustom = $mainContainer.find("#yearlyCustom");
   $monthlyCustom = $mainContainer.find("#monthlyCustom");
   $yearlyCustom.val("");
@@ -207,18 +225,19 @@ var resetCustom = function () {
   $mainContainer.find("#monthlyCustomConfirm").hide();
 };
 
-$(document).ready(function () {
-
+$(document).ready(function() {
   if (typeof window.completeSubpage === "undefined") {
     window.completeSubpage = "";
   }
 
-  $(document).on("change", ".gift-content select", function () {
+  $(document).on("change", ".gift-content select", function() {
     /* Add a border to the display selection on dropdown change.
      */
     var $that = $(this);
     var val = $that.val();
-    var $confirmSelectionButton = $mainContainer.find("#confirmSelectionButton");
+    var $confirmSelectionButton = $mainContainer.find(
+      "#confirmSelectionButton"
+    );
     $confirmSelectionButton.prop("disabled", val == "none");
 
     if (val == "none") {
@@ -227,26 +246,30 @@ $(document).ready(function () {
     }
   });
 
-  $(document).on("submit", ".add-to-basket", function (e) {
+  $(document).on("submit", ".add-to-basket", function(e) {
     e.preventDefault();
 
     function checkout() {
       // TODO: fix hardcoded URL
-      $.get("/store/checkout/", function (data) {
-        $.get(data.url, function (data) {
-          if (data.url && data.url.indexOf('payment-method') > -1) {
-            $.get(data.url, function (data) {
-              $.get(data.url, function (data) {
+      $.get("/store/checkout/", function(data) {
+        $.get(data.url, function(data) {
+          if (data.url && data.url.indexOf("payment-method") > -1) {
+            $.get(data.url, function(data) {
+              $.get(data.url, function(data) {
                 $mainContainer.find("#supporterStepBilling").html(data);
                 showPanel("Billing");
-                replaceWhiteSelects($mainContainer.find("#supporterStepBilling")[0]);
+                replaceWhiteSelects(
+                  $mainContainer.find("#supporterStepBilling")[0]
+                );
                 renderCardAnimation("#payment-form");
               });
             });
           } else {
             $mainContainer.find("#supporterStepShipping").html(data);
             showPanel("Shipping");
-            replaceWhiteSelects($mainContainer.find("#supporterStepShipping")[0]);
+            replaceWhiteSelects(
+              $mainContainer.find("#supporterStepShipping")[0]
+            );
           }
         });
       });
@@ -256,10 +279,10 @@ $(document).ready(function () {
       url: $(this).attr("action"),
       type: $(this).attr("method"),
       data: $(this).serialize(),
-      success: function (data) {
+      success: function(data) {
         checkout();
       },
-      error: function (xhr, err) {
+      error: function(xhr, err) {
         console.log(err);
       }
     });
@@ -267,7 +290,7 @@ $(document).ready(function () {
     return false;
   });
 
-  $(document).on("click", ".select-supporter-type-toggle", function (event) {
+  $(document).on("click", ".select-supporter-type-toggle", function(event) {
     // toggle payment method buttons and forms visibility. Set input value.
 
     event.preventDefault();
@@ -282,26 +305,29 @@ $(document).ready(function () {
     var selector = "#" + supporterType + "-input.supporter-plan-input";
 
     $mainContainer.find(selector).removeClass("hidden");
-    $mainContainer.find(".supporter-plan-input")
+    $mainContainer
+      .find(".supporter-plan-input")
       .not(selector)
       .addClass("hidden");
 
     return false;
   });
 
-  $(document).on("submit", "#new_shipping_address", function () {
+  $(document).on("submit", "#new_shipping_address", function() {
     $.ajax({
       url: $(this).attr("action"),
       type: $(this).attr("method"),
       data: $(this).serialize(),
-      success: function (data) {
+      success: function(data) {
         if (data.url) {
-          $.get(data.url, function (data) {
-            $.get(data.url, function (data) {
-              $.get(data.url, function (data) {
+          $.get(data.url, function(data) {
+            $.get(data.url, function(data) {
+              $.get(data.url, function(data) {
                 $mainContainer.find("#supporterStepBilling").html(data);
                 showPanel("Billing");
-                replaceWhiteSelects($mainContainer.find("#supporterStepBilling")[0]);
+                replaceWhiteSelects(
+                  $mainContainer.find("#supporterStepBilling")[0]
+                );
                 renderCardAnimation("#payment-form");
               });
             });
@@ -312,7 +338,7 @@ $(document).ready(function () {
           replaceWhiteSelects($mainContainer.find("#supporterStepShipping")[0]);
         }
       },
-      error: function (xhr, err) {
+      error: function(xhr, err) {
         console.log(err);
       }
     });
@@ -320,17 +346,17 @@ $(document).ready(function () {
     return false;
   });
 
-  $(document).on("submit", "#payment-form", function () {
+  $(document).on("submit", "#payment-form", function() {
     $.ajax({
       url: $(this).attr("action"),
       type: $(this).attr("method"),
       data: $(this).serialize(),
-      success: function (data) {
+      success: function(data) {
         $mainContainer.find("#supporterStepPreview").html(data);
         showPanel("Preview");
         $mainContainer.find("#confirmButton").text("Confirm");
       },
-      error: function (xhr, err) {
+      error: function(xhr, err) {
         console.log(err);
       }
     });
@@ -338,7 +364,7 @@ $(document).ready(function () {
     return false;
   });
 
-  $(document).on("click", ".billing-address-toggle", function (event) {
+  $(document).on("click", ".billing-address-toggle", function(event) {
     event.preventDefault();
     if ($(this).hasClass("active")) {
       return false;
@@ -353,7 +379,7 @@ $(document).ready(function () {
     return false;
   });
 
-  $(document).on("click", ".payment-method-toggle", function (event) {
+  $(document).on("click", ".payment-method-toggle", function(event) {
     // toggle payment method buttons and forms visibility. Set input value.
 
     event.preventDefault();
@@ -379,11 +405,9 @@ $(document).ready(function () {
     return false;
   });
 
-  $(document).on("submit", "#place-order", function () {
+  $(document).on("submit", "#place-order", function() {
     var flowType = $mainContainer.find("#supporterSteps").data("flow");
-    $(this).append(
-      $('<input type="hidden" name="flow_type" />').val(flowType)
-    );
+    $(this).append($('<input type="hidden" name="flow_type" />').val(flowType));
     var productId = $mainContainer.find("#supporterSteps").data("product-id");
     $(this).append(
       $('<input type="hidden" name="product_id" />').val(productId)
@@ -393,7 +417,7 @@ $(document).ready(function () {
       url: $(this).attr("action"),
       type: $(this).attr("method"),
       data: $(this).serialize(),
-      success: function (data) {
+      success: function(data) {
         if (data && data.payment_url) {
           window.location = data.payment_url;
         } else if (data && data.success_url) {
@@ -405,7 +429,7 @@ $(document).ready(function () {
           submitComplete();
         }
       },
-      error: function (xhr, err) {
+      error: function(xhr, err) {
         console.log(err);
       }
     });
@@ -419,7 +443,7 @@ $(document).ready(function () {
       type: "POST",
       url: $supporterForm.attr("action"),
       data: $supporterForm.serialize(),
-      success: function (data) {
+      success: function(data) {
         if (typeof completeSubpage !== "undefined") {
           notCompleteContainer.html("");
           var flowCompleteSubpage = window.subpages.get(completeSubpage);
@@ -428,11 +452,11 @@ $(document).ready(function () {
           window.location = data.location;
         }
       },
-      error: function () {}
+      error: function() {}
     });
   }
 
-  $(document).on("change", 'input[name="payment_method"]', function (event) {
+  $(document).on("change", 'input[name="payment_method"]', function(event) {
     event.stopPropagation();
     event.preventDefault();
     var $that = $(this);
@@ -446,7 +470,7 @@ $(document).ready(function () {
     }
   });
 
-  $(document).on("click", "#monthlyPledge > button", function () {
+  $(document).on("click", "#monthlyPledge > button", function() {
     $mainContainer.find("#monthlyPledge > button").removeClass("active");
     $(this).addClass("active");
     $mainContainer.find("#confirmSelectionButton").prop("disabled", false);
@@ -455,15 +479,17 @@ $(document).ready(function () {
     resetCustom();
     $(this).addClass("active");
     setSelected(selectedData.flow, "month", amount);
-    var $selectionConfirmationDialog = $mainContainer.find("#selectionConfirmationDialog");
+    var $selectionConfirmationDialog = $mainContainer.find(
+      "#selectionConfirmationDialog"
+    );
     $selectionConfirmationDialog.find(".title").text("become a supporter");
     $selectionConfirmationDialog.find(".subtitle").text("Monthly pledge");
     $selectionConfirmationDialog
       .find(".text")
       .html(
         "You have selected a monthly pledge of $" +
-        amount +
-        ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
+          amount +
+          ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
       );
     $selectionConfirmationDialog.find(".gift-content");
     $selectionConfirmationDialog.modal("show");
@@ -471,7 +497,9 @@ $(document).ready(function () {
 
   function oneTimeSelected($element) {
     var amount = $element.val();
-    var $selectionConfirmationDialog = $mainContainer.find("#selectionConfirmationDialog");
+    var $selectionConfirmationDialog = $mainContainer.find(
+      "#selectionConfirmationDialog"
+    );
 
     $element.addClass("active");
     $mainContainer.find("#confirmSelectionButton").prop("disabled", false);
@@ -485,27 +513,29 @@ $(document).ready(function () {
       .find(".text")
       .html(
         "You have selected a One Time Donation of $" +
-        amount +
-        ". One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings. You will receive access to The SmallsLIVE Archive for the remainder of the tax year."
+          amount +
+          ". One Time Donations are 100% tax deductible. All tax documents are available from your Account Settings. You will receive access to The SmallsLIVE Archive for the remainder of the tax year."
       );
   }
 
-  $(document).on("click", "#yearlyPledge > button", function () {
+  $(document).on("click", "#yearlyPledge > button", function() {
     $mainContainer.find("#yearlyPledge > button").removeClass("active");
     oneTimeSelected($(this));
     $selectionConfirmationDialog.find(".gift-content");
   });
 
   // Available when coming from Catalog/Support Artist
-  $(document).on("click", "#supportPledge > button", function () {
+  $(document).on("click", "#supportPledge > button", function() {
     $mainContainer.find("#supportPledge > button").removeClass("active");
     oneTimeSelected($(this));
   });
 
   /* Can't be click because button disappears on focus out from input */
-  $(document).on("mousedown", ".confirm-custom", function () {
+  $(document).on("mousedown", ".confirm-custom", function() {
     if (selectedData.type == "month") {
-      var $selectionConfirmationDialog = $mainContainer.find("#selectionConfirmationDialog");
+      var $selectionConfirmationDialog = $mainContainer.find(
+        "#selectionConfirmationDialog"
+      );
       $selectionConfirmationDialog.modal("show");
       $selectionConfirmationDialog.find(".title").text("become a supporter");
       $selectionConfirmationDialog.find(".subtitle").text("Monthly pledge");
@@ -513,8 +543,8 @@ $(document).ready(function () {
         .find(".text")
         .html(
           "Thank you for choosing to help jazz music and musicians all over the world. You have selected a monthly pledge of $" +
-          $value +
-          ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
+            $value +
+            ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
         );
     } else {
       oneTimeSelected($(this));
@@ -525,7 +555,7 @@ $(document).ready(function () {
   var monthlyCustom = $mainContainer.find("#monthlyCustom");
   var yearlyCustom = $mainContainer.find("#yearlyCustom");
 
-  $(document).on("focusout", ".custom-out", function () {
+  $(document).on("focusout", ".custom-out", function() {
     resetCustom();
   });
 
@@ -533,7 +563,7 @@ $(document).ready(function () {
     return /^\+?[1-9][\d]*$/.test(s);
   }
 
-  $(oneTimePayment).on("keyup", function (event) {
+  $(oneTimePayment).on("keyup", function(event) {
     var value = $(oneTimePayment).val();
     if (value && isPositiveInteger(value)) {
       resetButtons();
@@ -545,7 +575,7 @@ $(document).ready(function () {
     }
   });
 
-  $(document).on("keyup", "#monthlyCustom", function (event) {
+  $(document).on("keyup", "#monthlyCustom", function(event) {
     monthlyCustom = $("#monthlyCustom");
     yearlyCustom = $("#yearlyCustom");
     var value = $(monthlyCustom).val();
@@ -568,7 +598,9 @@ $(document).ready(function () {
           resetButtons();
           resetCustom();
           setSelected(selectedData.flow, "year", amount);
-          var $selectionConfirmationDialog = $mainContainer.find("#selectionConfirmationDialog");
+          var $selectionConfirmationDialog = $mainContainer.find(
+            "#selectionConfirmationDialog"
+          );
           $selectionConfirmationDialog.modal("show");
           $selectionConfirmationDialog
             .find(".title")
@@ -578,8 +610,8 @@ $(document).ready(function () {
             .find(".text")
             .html(
               "You have selected a monthly pledge of $" +
-              amount +
-              ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
+                amount +
+                ". Monthly pledges are 100% tax deductible and are billed automatically. Monthly pledges may be cancelled at any time from your Account Settings. You will receive access to The SmallsLIVE Archive for as long as you are a Supporting Member of The SmallsLIVE Foundation."
             );
           $selectionConfirmationDialog.find(".gift-content");
         } else {
@@ -592,7 +624,7 @@ $(document).ready(function () {
     }
   });
 
-  $(document).on("keyup", "#yearlyCustom", function (event) {
+  $(document).on("keyup", "#yearlyCustom", function(event) {
     $monthlyCustom = $mainContainer.find("#monthlyCustom");
     $yearlyCustom = $(this);
     var value = $yearlyCustom.val();
@@ -627,7 +659,7 @@ $(document).ready(function () {
   //   $supporterForm.trigger('submit');
   // };
 
-  $(document).on("click", ".select-gift", function () {
+  $(document).on("click", ".select-gift", function() {
     // fade other items and make this one active
     $(".select-gift").removeClass("active");
     $(this).addClass("active");
@@ -655,10 +687,13 @@ $(document).ready(function () {
       .parent()
       .find(".modal-content")
       .clone();
-    var $selectionConfirmationDialog = $mainContainer.find("#selectionConfirmationDialog");
+    var $selectionConfirmationDialog = $mainContainer.find(
+      "#selectionConfirmationDialog"
+    );
     $selectionConfirmationDialog.find(".title").text($(this).text());
     var giftTier = $(this).attr("data-type");
-    var hasVariants = $(this).data("variants") && $(this).data("variants") != "0";
+    var hasVariants =
+      $(this).data("variants") && $(this).data("variants") != "0";
     $selectionConfirmationDialog
       .find(".subtitle")
       .text("Gift Tier: " + giftTier);
@@ -668,14 +703,15 @@ $(document).ready(function () {
     let cost = $(this).attr("data-cost");
 
     var tax = 0;
-    var priceInt = parseInt(price.substring(1).replace(/,/g, ""))
+    var priceInt = parseInt(price.substring(1).replace(/,/g, ""));
 
     if (cost && typeof cost != "undefined") {
       tax = priceInt - parseInt(cost);
     } else {
       tax = priceInt;
     }
-    var content = 'You have selected a one time donation of <span class="smalls-color">' +
+    var content =
+      'You have selected a one time donation of <span class="smalls-color">' +
       price +
       '</span>  of which <span class="smalls-color">$' +
       tax +
@@ -683,11 +719,9 @@ $(document).ready(function () {
       giftTier +
       " as a gift for your contribution.";
     if (hasVariants) {
-      content = content + '<br> Please select an option below.'
+      content = content + "<br> Please select an option below.";
     }
-    $selectionConfirmationDialog
-      .find(".text")
-      .html(content);
+    $selectionConfirmationDialog.find(".text").html(content);
 
     var $giftContent = $selectionConfirmationDialog.find(".gift-content");
     $giftContent.html($item);
@@ -717,7 +751,7 @@ $(document).ready(function () {
     ".close-button"
   );
 
-  $(document).on("click", "#confirmSelectionButton", function () {
+  $(document).on("click", "#confirmSelectionButton", function() {
     $mainContainer.find("#confirmButton").show();
     $mainContainer.find("#selectionConfirmationDialog").modal("hide");
     var $variantSelect = $selectionConfirmationDialog.find("select");
@@ -731,18 +765,17 @@ $(document).ready(function () {
     }
     $mainContainer.find("#confirmButton").prop("disabled", false);
     $mainContainer.find("#confirmButton").click();
-
   });
 
-  $(document).on("click", "#cancelSelectionButton", function () {
+  $(document).on("click", "#cancelSelectionButton", function() {
     resetButtons();
     $mainContainer.find("#selectionConfirmationDialog").modal("hide");
   });
-  $(".close-action").click(function () {
+  $(".close-action").click(function() {
     $selectionConfirmationDialog.modal("hide");
     resetButtons();
   });
-  $selectionConfirmationDialog.on("hidden.bs.modal", function () {
+  $selectionConfirmationDialog.on("hidden.bs.modal", function() {
     resetButtons();
     $selectionConfirmationDialog.find(".title").empty();
     $selectionConfirmationDialog.find(".subtitle").empty();
@@ -763,7 +796,7 @@ $(document).ready(function () {
     "#cvc": 3
   };
 
-  $(document).on("keyup", "#payment-form input", function (e) {
+  $(document).on("keyup", "#payment-form input", function(e) {
     flowKind = $("#supporterSteps").data("flow");
     checkConfirmButton();
 
@@ -788,7 +821,7 @@ $(document).ready(function () {
     return $input.val().length === value;
   }
 
-  $(".supporter-card-data .form-control").on("keyup", function () {
+  $(".supporter-card-data .form-control").on("keyup", function() {
     $(this).removeClass("error");
 
     if ($(".supporter-card-data .form-control.error").length == 0) {
@@ -803,14 +836,14 @@ $(document).ready(function () {
     $.ajax({
       url: url,
       type: "get",
-      success: function (data) {
+      success: function(data) {
         $step.html(data);
         updatePaymentInfo();
         replaceWhiteSelects($("#supporterStepPaymentInfo")[0]);
         renderCardAnimation("#payment-form");
         showPanel(getNextStep());
       },
-      error: function (xhr, err) {
+      error: function(xhr, err) {
         console.log(err);
       }
     });
@@ -819,7 +852,7 @@ $(document).ready(function () {
   function buttonsSizeOrder() {
     if (document.body.clientWidth > 768) {
       var upperButtonWidth = 0;
-      $(".select-gift").each(function (index) {
+      $(".select-gift").each(function(index) {
         if (index > 0) {
           $(this).css("width", upperButtonWidth);
         }
@@ -841,7 +874,7 @@ $(document).ready(function () {
     if (method == "credit-card") {
       var $inputs = $(".supporter-card-data .form-control");
       var errors = false;
-      $inputs.each(function () {
+      $inputs.each(function() {
         if (!$(this).val()) {
           $(this).addClass("error");
           errors = true;
@@ -850,42 +883,54 @@ $(document).ready(function () {
       $mainContainer.find("#sentHint").show();
       if (errors) {
         $mainContainer.find("#sentHint").hide();
-        $mainContainer.find("#form-general-error").text("Please correct errors above");
+        $mainContainer
+          .find("#form-general-error")
+          .text("Please correct errors above");
       } else {
         startStripePayment(
           $mainContainer.find("#payment-form"),
-          $mainContainer.find("#supporterStepPaymentInfo").data("payment-info-complete-url"),
+          $mainContainer
+            .find("#supporterStepPaymentInfo")
+            .data("payment-info-complete-url"),
           completeSubpage
         );
       }
     } else if (method == "paypal") {
       startPayPalPayment(
         $mainContainer.find("#payment-form"),
-        $mainContainer.find("#supporterStepPaymentInfo").data("payment-info-complete-url"),
+        $mainContainer
+          .find("#supporterStepPaymentInfo")
+          .data("payment-info-complete-url"),
         completeSubpage
       );
     } else if (method == "bitcoin") {
       startBitCoinPayment(
         $mainContainer.find("#payment-form"),
-        $mainContainer.find("#supporterStepPaymentInfo").data("payment-info-pending-url"),
+        $mainContainer
+          .find("#supporterStepPaymentInfo")
+          .data("payment-info-pending-url"),
         completeSubpage
       );
     } else if (method == "check") {
       startCheckPayment(
         $mainContainer.find("#payment-form"),
-        $mainContainer.find("#supporterStepPaymentInfo").data("payment-info-pending-url"),
+        $mainContainer
+          .find("#supporterStepPaymentInfo")
+          .data("payment-info-pending-url"),
         completeSubpage
       );
     } else if (method == "existing-credit-card") {
       startStripePayment(
         $("#payment-form"),
-        $mainContainer.find("#supporterStepPaymentInfo").data("payment-info-complete-url"),
+        $mainContainer
+          .find("#supporterStepPaymentInfo")
+          .data("payment-info-complete-url"),
         completeSubpage
       );
     }
   }
 
-  $(document).on("click", "#confirmButton", function (event) {
+  $(document).on("click", "#confirmButton", function(event) {
     console.log(currentStep);
     var $that = $(this);
     $that.prop("disabled", true);
@@ -924,7 +969,7 @@ $(document).ready(function () {
     $currentButton.next().addClass("active");
   });
 
-  $(document).on("click", "#backButton", function () {
+  $(document).on("click", "#backButton", function() {
     if (currentStep == "PaymentInfo") {
       $mainContainer.find("#confirmButton").hide();
     }
@@ -937,14 +982,18 @@ $(document).ready(function () {
       $mainContainer.find("#confirmButton").show();
     }
     if (currentStep === "Intro") return;
+
+    if (getSteps().indexOf(currentStep) < 1) {
+      console.log(getSteps());
+    } else {
+      showPanel(getPreviousStep());
+    }
     $mainContainer.find("#confirmButton").text("Confirm");
 
     setSelected(selectedData.flow, "", 0);
-    showPanel(getPreviousStep());
     $itemForm = null;
     var $currentButton = $(".step-button.active");
     $currentButton.removeClass("active");
     $currentButton.prev().addClass("active");
   });
-
 });

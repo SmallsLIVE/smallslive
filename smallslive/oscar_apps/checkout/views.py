@@ -25,16 +25,13 @@ from subscriptions.mixins import PayPalMixin, StripeMixin
 from subscriptions.models import Donation
 from .forms import PaymentForm, BillingAddressForm
 
-
 BankcardForm = get_class('payment.forms', 'BankcardForm')
-
 
 OrderTotalCalculator = get_class(
     'checkout.calculators', 'OrderTotalCalculator')
 Repository = get_class('shipping.repository', 'Repository')
 Selector = get_class('partner.strategy', 'Selector')
 selector = Selector()
-
 
 logger = logging.getLogger('oscar.checkout')
 
@@ -173,6 +170,9 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         super(PaymentDetailsView, self).__init__(*args, **kwargs)
         self.product_id = None
         self.event_id = None
+        self.card_token = None
+        self.amount = None
+        self.total = None
 
     def get_template_names(self):
 
@@ -198,7 +198,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
     def get_context_data(self, **kwargs):
         basket = self.request.basket
         if not self.request.user.is_authenticated():
-            kwargs["guest"] = {"first_name":self.checkout_session.get_reservation_name()[0],"last_name":self.checkout_session.get_reservation_name()[1]}
+            kwargs["guest"] = {"first_name":self.checkout_session.get_reservation_name()[0], "last_name":self.checkout_session.get_reservation_name()[1]}
         if basket.has_tickets():  # TODO: add parameter venue_name='Mezzrow'
             kwargs['bankcard_form'] = kwargs.get('bankcard_form', BankcardForm())
         else:
@@ -232,8 +232,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             return http.HttpResponseBadRequest()
         
         self.ticket_name = {}
-        self.ticket_name["first"] = self.request.POST.get('guest_first_name',"")
-        self.ticket_name["last"] = self.request.POST.get('guest_last_name',"")
+        self.ticket_name["first"] = self.request.POST.get('guest_first_name', "")
+        self.ticket_name["last"] = self.request.POST.get('guest_last_name', "")
         # We use a custom parameter to indicate if this is an attempt to place
         # an order (normally from the preview page).  Without this, we assume a
         # payment form is being submitted from the payment details view. In
@@ -253,7 +253,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         if payment_method == 'paypal':
             return self.render_preview(request,
                                        billing_address_form=billing_address_form,
-                                       payment_method=payment_method,ticket_name=ticket_name)
+                                       payment_method=payment_method, ticket_name=ticket_name)
         else:
             bankcard_form = BankcardForm(request.POST)
             if not bankcard_form.is_valid():
@@ -264,7 +264,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             else:
                 return self.render_preview(request,
                                            bankcard_form=bankcard_form,
-                                           payment_method=payment_method,ticket_name=ticket_name)
+                                           payment_method=payment_method, ticket_name=ticket_name)
 
     def handle_payment_details_submission(self, request, ticket_name=None):
         """"""
@@ -287,7 +287,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         else:
             billing_address_form = None
 
-        if basket.has_tickets(): # TODO: add parameter venue_name='Mezzrow'
+        if basket.has_tickets():  # TODO: add parameter venue_name='Mezzrow'
             return self._handle_payment_details_submission_for_mezzrow(
                 request, billing_address_form, payment_method, ticket_name)
         else:
@@ -656,13 +656,13 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
     def handle_payment(self, order_number, total, basket_lines, shipping_charge=0.00, **kwargs):
 
         basket = basket_lines.first().basket
-        card_token = self.request.POST.get('card_token')
+        self.card_token = self.request.POST.get('card_token')
         payment_method = kwargs.get('payment_method')
         self.mezzrow = False
 
         print '*******************'
         print 'handle_payment: '
-        print 'Card token: ', card_token
+        print 'Card token: ', self.card_token
         print 'Payment method: ', payment_method
 
         if basket.has_tickets():
@@ -674,8 +674,9 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         else:
             self.mezzrow = False
             currency = total.currency
-            if card_token:
+            if self.card_token:
                 self.total = total
+                print 'Payment Total: ', total
                 reference = self.handle_stripe_payment(order_number, basket_lines, **kwargs)
                 source_name = 'Stripe Credit Card'
                 source_type, __ = SourceType.objects.get_or_create(name=source_name)
@@ -865,5 +866,4 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
 class ExecuteMezzrowPayPalPaymentView(ExecutePayPalPaymentView):
     """Class ready override PayPal payment for Mezzrow if necessary"""
     pass
-
 
