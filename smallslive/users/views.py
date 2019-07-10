@@ -219,7 +219,7 @@ def user_settings_view_new(request):
 
     plan = None
     period_end = {}
-    period_end["date"] = None
+    period_end['date'] = None
     monthly_pledge_in_dollars = None
 
     customer_detail = None
@@ -243,7 +243,7 @@ def user_settings_view_new(request):
             plan_id = request.user.customer.current_subscription.plan
             plan = stripe.Plan.retrieve(id=plan_id)
 
-        customer_charges = request.user.get_donations().order_by("-date")
+        customer_charges = request.user.get_donations().order_by('-date')
         charges_value = 0
         for charge in customer_charges:
             if charge.amount:
