@@ -24,7 +24,7 @@ from djstripe.settings import subscriber_request_callback
 from artist_dashboard.forms import ArtistInfoForm
 from custom_stripe.models import CustomPlan, CustomerDetail
 from users.utils import charge, \
-    one_time_donation, subscribe_to_plan,  update_active_card
+    one_time_donation, subscribe_to_plan, update_active_card
 from .forms import UserSignupForm, ChangeEmailForm, EditProfileForm
 from oscar_apps.checkout.forms import BillingAddressForm
 from oscar.apps.address.models import UserAddress
@@ -32,6 +32,7 @@ from oscar.apps.address.models import UserAddress
 
 class SignupLandingView(TemplateView):
     template_name = 'account/signup-landing.html'
+
 
 signup_landing = SignupLandingView.as_view()
 
@@ -50,7 +51,8 @@ class SignupView(AllauthSignupView):
         if plan_name == "free":
             context['facebook_next_url'] = reverse('accounts_signup_complete')
         else:
-            context['facebook_next_url'] = reverse('accounts_signup_payment', kwargs={'plan_name': plan_name})
+            context['facebook_next_url'] = reverse(
+                'accounts_signup_payment', kwargs={'plan_name': plan_name})
         return context
 
     def clean_email(self):
@@ -81,6 +83,7 @@ class SignupCompleteView(LoginRequiredMixin, TemplateView):
         context['active_plan'] = self.request.user.get_subscription_plan
         return context
 
+
 signup_complete = SignupCompleteView.as_view()
 
 
@@ -89,30 +92,36 @@ def user_settings_view(request):
     # if this is a POST request we need to process the form data
     if 'edit_profile' in request.POST:
         # create a form instance and populate it with data from the request:
-        edit_profile_form = EditProfileForm(data=request.POST, user=request.user)
+        edit_profile_form = EditProfileForm(
+            data=request.POST, user=request.user)
         # check whether it's valid:
         if edit_profile_form.is_valid():
             edit_profile_form.save(request)
-            messages.success(request, "You've successfully updated your profile.")
+            messages.success(
+                request, "You've successfully updated your profile.")
             return HttpResponseRedirect('/')
     # if a GET (or any other method) we'll create a blank form
     else:
         edit_profile_form = EditProfileForm(user=request.user)
 
     if 'change_email' in request.POST:
-        change_email_form = ChangeEmailForm(data=request.POST, user=request.user)
+        change_email_form = ChangeEmailForm(
+            data=request.POST, user=request.user)
         if change_email_form.is_valid():
             change_email_form.save(request)
-            messages.success(request, 'Your email address has been changed successfully.')
+            messages.success(
+                request, 'Your email address has been changed successfully.')
             return HttpResponseRedirect(reverse('account_email_verification_sent'))
     else:
         change_email_form = ChangeEmailForm(user=request.user)
 
     if 'change_password' in request.POST:
-        change_password_form = ChangePasswordForm(data=request.POST, user=request.user)
+        change_password_form = ChangePasswordForm(
+            data=request.POST, user=request.user)
         if change_password_form.is_valid():
             change_password_form.save()
-            messages.success(request, 'Your password has been changed successfully.')
+            messages.success(
+                request, 'Your password has been changed successfully.')
             return HttpResponseRedirect('/')
     else:
         change_password_form = ChangePasswordForm(user=request.user)
@@ -121,7 +130,7 @@ def user_settings_view(request):
         'change_email_form': change_email_form,
         'change_profile_form': edit_profile_form,
         'change_password_form': change_password_form,
-        'current_user' : request.user,
+        'current_user': request.user,
     })
 
 
@@ -131,11 +140,13 @@ def user_settings_view_new(request):
     # if this is a POST request we need to process the form data
     if 'edit_profile' in request.POST:
         # create a form instance and populate it with data from the request:
-        edit_profile_form = EditProfileForm(data=request.POST, user=request.user)
+        edit_profile_form = EditProfileForm(
+            data=request.POST, user=request.user)
         # check whether it's valid:
         if edit_profile_form.is_valid():
             edit_profile_form.save(request)
-            messages.success(request, "You've successfully updated your profile.")
+            messages.success(
+                request, "You've successfully updated your profile.")
             profile_updated = True
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -153,42 +164,50 @@ def user_settings_view_new(request):
                 'error': e.args[0]
             }, status=500))
 
-        messages.success(request, 'Your account card has been changed successfully.')
+        messages.success(
+            request, 'Your account card has been changed successfully.')
         profile_updated = True
 
     if 'change_email' in request.POST:
-        change_email_form = ChangeEmailForm(data=request.POST, user=request.user)
+        change_email_form = ChangeEmailForm(
+            data=request.POST, user=request.user)
         if change_email_form.is_valid():
             change_email_form.save(request)
-            messages.success(request, 'Your email address has been changed successfully.')
+            messages.success(
+                request, 'Your email address has been changed successfully.')
             profile_updated = True
     else:
         change_email_form = ChangeEmailForm(user=request.user)
 
     if 'change_password' in request.POST:
-        change_password_form = ChangePasswordForm(data=request.POST, user=request.user)
+        change_password_form = ChangePasswordForm(
+            data=request.POST, user=request.user)
         if change_password_form.is_valid():
             change_password_form.save()
-            messages.success(request, 'Your password has been changed successfully.')
+            messages.success(
+                request, 'Your password has been changed successfully.')
             profile_updated = True
     else:
         change_password_form = ChangePasswordForm(user=request.user)
-    
+
     # if this is a POST request we need to process the form data
     if 'artist_info' in request.POST:
         # create a form instance and populate it with data from the request:
-        artist_info_form = ArtistInfoForm(data=request.POST, instance=request.user)
+        artist_info_form = ArtistInfoForm(
+            data=request.POST, instance=request.user)
         # check whether it's valid:
         if artist_info_form.is_valid():
             artist_info_form.save(request)
-            messages.success(request, "You've successfully updated your profile.")
+            messages.success(
+                request, "You've successfully updated your profile.")
             profile_updated = True
     # if a GET (or any other method) we'll create a blank form
     else:
         artist_info_form = ArtistInfoForm(instance=request.user)
 
     if 'billing_info' in request.POST:
-        billing_address_form = BillingAddressForm(None, request.user, request.POST)
+        billing_address_form = BillingAddressForm(
+            None, request.user, request.POST)
         if billing_address_form.is_valid():
             billing_address_form.save()
             profile_updated = True
@@ -197,44 +216,61 @@ def user_settings_view_new(request):
 
     if profile_updated:
         return HttpResponseRedirect('/accounts/settings/')
-        
+
     plan = None
     period_end = {}
-    period_end["date"] = None
+    period_end['date'] = None
     monthly_pledge_in_dollars = None
-    customer = request.user.customer
+
+    customer_detail = None
+    customer_charges = None
     user_archive_access_until = None
-    if request.user.has_archive_access:
-        user_archive_access_until = date(date.today().year, 12, 31)
+    monthly_pledge_in_dollars = None
+    cancel_at = None
+    billing_address = None
 
-    if customer.has_active_subscription():
-        plan_id = request.user.customer.current_subscription.plan
-        plan = stripe.Plan.retrieve(id=plan_id)
+    show_email_confirmation = False
 
-    customer_charges = request.user.get_donations().order_by("-date")
-    charges_value = 0
-    for charge in customer_charges:
-        if charge.amount:
-            charges_value = charges_value + charge.amount
- 
-        artist_info_form = ArtistInfoForm(instance=request.user)
-    customer_detail = CustomerDetail.get(id=request.user.customer.stripe_id)
-    if customer_detail.subscription:
-        monthly_pledge_in_dollars = customer_detail.subscription.plan.amount / 100
-
-    if customer_detail.subscription:
-        period_end["date"] = datetime.fromtimestamp(customer_detail.subscription.current_period_end).strftime("%d/%m/%y")
-        period_end["due"] = datetime.fromtimestamp(customer_detail.subscription.current_period_end) <= datetime.now()
-
-    if customer_detail.subscriptions.data:
-        cancel_at = customer_detail.subscriptions.data[0]['cancel_at_period_end']
+    if not request.user.has_activated_account:
+        show_email_confirmation = True
     else:
-        cancel_at = False
+        customer = request.user.customer
+        user_archive_access_until = None
+        if request.user.has_archive_access:
+            user_archive_access_until = date(date.today().year, 12, 31)
 
-    try:
-        billing_address = request.user.addresses.get(is_default_for_billing=True)
-    except UserAddress.DoesNotExist:
-        billing_address = UserAddress()
+        if customer.has_active_subscription():
+            plan_id = request.user.customer.current_subscription.plan
+            plan = stripe.Plan.retrieve(id=plan_id)
+
+        customer_charges = request.user.get_donations().order_by('-date')
+        charges_value = 0
+        for charge in customer_charges:
+            if charge.amount:
+                charges_value = charges_value + charge.amount
+
+            artist_info_form = ArtistInfoForm(instance=request.user)
+        customer_detail = CustomerDetail.get(
+            id=request.user.customer.stripe_id)
+        if customer_detail.subscription:
+            monthly_pledge_in_dollars = customer_detail.subscription.plan.amount / 100
+
+        if customer_detail.subscription:
+            period_end["date"] = datetime.fromtimestamp(
+                customer_detail.subscription.current_period_end).strftime("%d/%m/%y")
+            period_end["due"] = datetime.fromtimestamp(
+                customer_detail.subscription.current_period_end) <= datetime.now()
+
+        if customer_detail.subscriptions.data:
+            cancel_at = customer_detail.subscriptions.data[0]['cancel_at_period_end']
+        else:
+            cancel_at = False
+
+        try:
+            billing_address = request.user.addresses.get(
+                is_default_for_billing=True)
+        except UserAddress.DoesNotExist:
+            billing_address = UserAddress()
 
     return render(request, 'account/user_settings_new.html', {
         'STRIPE_PUBLIC_KEY': settings.STRIPE_PUBLIC_KEY,
@@ -244,16 +280,17 @@ def user_settings_view_new(request):
         'current_user': request.user,
         'artist_info_form': artist_info_form,
         'plan': plan,
-        'donations': request.user.get_donations(),
-        'customer_detail': customer_detail,
-        'customer_charges': customer_charges,
-        'charges_value': request.user.get_donation_amount,
+        'donations': request.user.get_donations() or None,
+        'customer_detail': customer_detail or '',
+        'customer_charges': customer_charges or '',
+        'charges_value': request.user.get_donation_amount or '0',
         'period_end': period_end,
-        'user_archive_access_until': user_archive_access_until,
-        'monthly_pledge_in_dollars': monthly_pledge_in_dollars,
-        'cancelled': cancel_at,
+        'user_archive_access_until': user_archive_access_until or 'unverifyed account',
+        'monthly_pledge_in_dollars': monthly_pledge_in_dollars or 'no',
+        'cancelled': cancel_at or '',
         'donate_url': reverse('donate'),
-        'billing_address': billing_address
+        'billing_address': billing_address or '',
+        'show_email_confirmation_dialog': show_email_confirmation
     })
 
 
@@ -280,6 +317,7 @@ class UserTaxLetterHtml(TemplateView):
 
         return context
 
+
 user_tax_letter_html = UserTaxLetterHtml.as_view()
 
 
@@ -295,7 +333,7 @@ class UserTaxLetter(PDFTemplateView):
         charges_value = 0
         deductable_value = 0
         for charge in customer_charges:
-            charges_value += charge.amount       
+            charges_value += charge.amount
         for charge in customer_charges:
             deductable_value += charge.deductable_amount
         if deductable_value == 0 and charges_value > 0:
@@ -305,6 +343,7 @@ class UserTaxLetter(PDFTemplateView):
         context['deductable_value'] = deductable_value
         context['year'] = timezone.now().year
         return context
+
 
 user_tax_letter = UserTaxLetter.as_view()
 
@@ -323,6 +362,7 @@ class LoginView(CoreLoginView):
             return ["account/ajax_login.html"]
         else:
             return ["account/login.html"]
+
 
 login_view = LoginView.as_view()
 
@@ -356,10 +396,12 @@ class LoginView(CoreLoginView):
         else:
             return ["account/login.html"]
 
+
 login_view = LoginView.as_view()
 
 
 class HasArtistAssignedMixin(braces.views.UserPassesTestMixin):
+
     def test_func(self, user):
         self.logged_in = user.is_authenticated()
         if not self.logged_in:
@@ -371,11 +413,13 @@ class HasArtistAssignedMixin(braces.views.UserPassesTestMixin):
         if not self.logged_in:
             return reverse('artist_dashboard:login')
         else:
-            messages.error(self.request, 'You need to be an artist to access that part of the site.')
+            messages.error(
+                self.request, 'You need to be an artist to access that part of the site.')
             return reverse('home')
 
 
 class HasArtistAssignedOrIsSuperuserMixin(HasArtistAssignedMixin):
+
     def test_func(self, user):
         self.logged_in = user.is_authenticated()
         if not self.logged_in:
@@ -389,11 +433,12 @@ class ResendEmailConfirmationView(StaffuserRequiredMixin, ListView):
     queryset = EmailAddress.objects.order_by('email')
 
     def get_context_data(self, **kwargs):
-        context = super(ResendEmailConfirmationView, self).get_context_data(**kwargs)
+        context = super(ResendEmailConfirmationView,
+                        self).get_context_data(**kwargs)
         return context
 
     def post(self, request, *args, **kwargs):
-        context = { 'object_list' : {}, }
+        context = {'object_list': {}, }
         # if form.is_valid():
         #     return self.form_valid(form)
         # else:
@@ -401,6 +446,4 @@ class ResendEmailConfirmationView(StaffuserRequiredMixin, ListView):
         return context
 
 
-
 admin_email_confirmation = ResendEmailConfirmationView.as_view()
-

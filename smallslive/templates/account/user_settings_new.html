@@ -80,7 +80,7 @@
           {% endif %}
 
           {% if not user.has_archive_access %}
-            <button onclick="becomeSupporter()" class="white-border-button">Become a Supporting Member</button>  
+            <button onclick="becomeSupporter()" {% if show_email_confirmation_dialog %} disabled {% endif %} class="white-border-button">Become a Supporting Member</button>  
           {% elif customer_detail.subscription.plan and not cancelled %}
             <div class="flex-row supporter-options">  
             <button class="white-border-button" onclick="$('#cancel-subscription').modal('toggle')">Cancel</button>    
@@ -116,7 +116,7 @@
                 </div>
                 <br>
                 <br>
-                <a href="{% url 'user_tax_letter' %}" class="white-border-button">Download tax document</a>
+                <a href="{% url 'user_tax_letter' %}"  class="white-border-button">Download tax document</a>
               {% endif %}
           {% endwith %}
         
@@ -164,7 +164,8 @@
               {% else %}
                 <div class="text9 text-grey">There is no address assigned</div>
               {% endif %}
-              <button id='update-billing' class="white-border-button">Update</button> 
+
+              <button {% if show_email_confirmation_dialog %} disabled {% endif %} id='update-billing' class="white-border-button">Update</button> 
             <div>
           </div>
         </div>    
