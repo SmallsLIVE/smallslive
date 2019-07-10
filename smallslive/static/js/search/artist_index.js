@@ -1,6 +1,5 @@
 
 $(document).ready(function() {
-
   var $filter = $('#most-popular-filter');
 
   var setMostPopular = function (value) {
@@ -43,17 +42,19 @@ $(document).ready(function() {
 
       })
   });
-  $('.scroll-right').click(() => {
-    let scrollF = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 30)}, 10)
+  /* Handle nav scrolling */
+  function handleScrolling(direction) {
+    const maxScrollLeft = $("#a-z-search").get(0).scrollWidth - $("#a-z-search").get(0).clientWidth;
+    let scrollF = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + direction*30)}, 10)
     setTimeout(() => {clearInterval(scrollF)}, 120)
-    let scrollS = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + 10)}, 80)
+    let scrollS = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() + direction*10)}, 80)
     setTimeout(() => {clearInterval(scrollS)}, 320)
     setTimeout(function(){
       if($( "#a-z-search" ).scrollLeft() == 0){
         $('.scroll-right').css('visibility', 'initial')
         $('.scroll-left').css('visibility', 'hidden')
 
-      }else if( $( "#a-z-search" ).scrollLeft() == 819 ){
+      }else if( Math.floor($( "#a-z-search" ).scrollLeft()) == maxScrollLeft ){
         $('.scroll-right').css('visibility', 'hidden')
         $('.scroll-left').css('visibility', 'initial')
       }else{
@@ -61,27 +62,30 @@ $(document).ready(function() {
         $('.scroll-right').css('visibility', 'initial')
       }
     }, 310)
+  }
 
+/* Listen for window resize to see if arrows need to be hidden */
+$(function() {
+    var $window = $(window);
+    var width = $window.width();
+    var height = $window.height();
+
+    setInterval(function () {
+        if ((width != $window.width()) || (height != $window.height())) {
+          width = $window.width();
+          height = $window.height();
+
+          handleScrolling(1);
+      }
+    }, 300);
+});
+
+  $('.scroll-right').click(() => {
+    handleScrolling(1)
   });
+
   $('.scroll-left').click(() => {
-    let scrollF = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 30)}, 10)
-    setTimeout(() => {clearInterval(scrollF)}, 120)
-    let scrollS = setInterval(function() {$( "#a-z-search" ).scrollLeft($( "#a-z-search" ).scrollLeft() - 10)}, 10)
-    setTimeout(() => {clearInterval(scrollS)}, 300)
-    setTimeout(() => {
-      if($( "#a-z-search" ).scrollLeft() == 0){
-        $('.scroll-right').css('visibility', 'initial')
-        $('.scroll-left').css('visibility', 'hidden')
-
-      }else if( $( "#a-z-search" ).scrollLeft() == 819 ){
-        $('.scroll-right').css('visibility', 'hidden')
-        $('.scroll-left').css('visibility', 'initial')
-      }else{
-        $('.scroll-left').css('visibility', 'initial')
-        $('.scroll-right').css('visibility', 'initial')
-      }
-    }, 310)
-
+    handleScrolling(-1)
   });
 
   $('.instruments-container .close-button').on('click', function() {
@@ -96,6 +100,5 @@ $(document).ready(function() {
       var $section = $("#" + $(this).data("type"));
       $section.show();
       $section.find(".slide-btn.next").css("visibility", "visible");
-
   });
 });
