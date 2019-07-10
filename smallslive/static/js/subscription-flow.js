@@ -931,7 +931,6 @@ $(document).ready(function() {
   }
 
   $(document).on("click", "#confirmButton", function(event) {
-    console.log(currentStep);
     var $that = $(this);
     $that.prop("disabled", true);
 
@@ -983,14 +982,13 @@ $(document).ready(function() {
     }
     if (currentStep === "Intro") return;
 
-    if (getSteps().indexOf(currentStep) < 1) {
-      console.log(getSteps());
-    } else {
+    if (!getSteps().indexOf(currentStep) < 1) {
       showPanel(getPreviousStep());
     }
+
     $mainContainer.find("#confirmButton").text("Confirm");
 
-    setSelected(selectedData.flow, "", 0);
+    setSelected(selectedData.flow, selectedData.type, 0);
     $itemForm = null;
     var $currentButton = $(".step-button.active");
     $currentButton.removeClass("active");
