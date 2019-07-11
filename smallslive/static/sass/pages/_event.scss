@@ -158,7 +158,7 @@ $player-height: 25.3vw;
 }
 
 .venue-subtitle {
-    font-size: 24px;
+  font-size: 24px;
 }
 
 .event-video-info {
@@ -204,7 +204,6 @@ $player-height: 25.3vw;
     margin-right: 20px;
     margin-top: 0px;
     margin-bottom: 20px;
-
 
     @media (max-width: $screen-sm-max) {
       /*margin-top: 15px;*/
@@ -417,7 +416,6 @@ $player-height: 25.3vw;
   }
 
   .event-overlay {
-
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -428,7 +426,6 @@ $player-height: 25.3vw;
     /*padding-top: 14vw;*/
 
     @media (max-width: $screen-md-max) {
-
     }
 
     .title5 {
@@ -476,7 +473,6 @@ $player-height: 25.3vw;
     @media (max-width: $screen-xs-max) {
       font-size: 6.5vw;
       line-height: 6.8vw;
-
     }
   }
 
@@ -843,7 +839,7 @@ $player-height: 25.3vw;
 .event-overlay-info {
   position: absolute;
   right: 15px;
-  bottom: 2.9vw;
+  // bottom: 2.9vw;
   line-height: 1.51em;
 
   @media (max-width: $screen-md-min) {
