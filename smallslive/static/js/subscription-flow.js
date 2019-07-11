@@ -704,11 +704,12 @@ $(document).ready(function() {
 
     var tax = 0;
     var priceInt = parseInt(price.substring(1).replace(/,/g, ""));
-
-    if (cost && typeof cost != "undefined") {
+    console.log("COST");
+    console.log(cost);
+    if (cost && cost != "None") {
       tax = priceInt - parseInt(cost);
-    } else {
-      tax = priceInt;
+    } else if (cost == "None" || cost == "0.00") {
+      tax = "100%";
     }
     var content =
       'You have selected a one time donation of <span class="smalls-color">' +

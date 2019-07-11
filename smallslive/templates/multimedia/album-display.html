@@ -303,9 +303,10 @@
         var price = $(this).data('incltax');
         var cost = $(this).data("cost");
         var priceFloat = parseFloat(price);
-        if (cost) {
+
+        if (cost && cost != "None") {
           tax_deductable = priceFloat - parseFloat(cost);
-        } else {
+        } else if (cost == "None" || cost == "0.00") {
           tax_deductable = "100%";
         }
 
