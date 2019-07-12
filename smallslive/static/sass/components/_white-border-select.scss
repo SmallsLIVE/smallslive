@@ -49,10 +49,10 @@
   background-color: transparent;
   border: 2px solid $white-transparent;
 
-  &.select-arrow-active {
-    border-color: red;
-    border-width: 3px;
-  }
+  // &.select-arrow-active {
+  //   border-color: red;
+  //   border-width: 3px;
+  // }
 
   &:hover {
     background-color: $white-transparent;

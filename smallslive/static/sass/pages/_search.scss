@@ -512,10 +512,10 @@ body.headers-1 {
 :root {
   --accessibility: 5px solid red !important;
 }
-*:focus {
-  border: var(--accessibility);
-  box-sizing: content-box;
-}
+// *:focus {
+//   border: var(--accessibility);
+//   box-sizing: content-box;
+// }
 .shows-filter-container {
   margin: 0 auto;
   position: relative;
