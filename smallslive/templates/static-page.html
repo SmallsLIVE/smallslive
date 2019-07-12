@@ -10,33 +10,73 @@
           <div>
             <ul class="static-nav-menu">
               <li class="white-border-button no-border
-                      {% block contact-us-active %}{% endblock %}">
-                <a href="{% url "contact-and-info" %}">Contact us</a>
+                      {% block venues-location-active %}{% endblock %}" id="venues-location">
+                <a href="#">Venues/Location</a>
+              </li>
+  
+              <li class="white-border-button no-border
+                      {% block passes-tickets-statement-active %}{% endblock %}" id="passes-tickets">
+                <a href="#">Passes/Tickets</a>
               </li>
               <li class="white-border-button no-border
-                      {% block about-us-active %}{% endblock %}">
-                <a href="{% url "about-us" %}">About us</a>
+                      {% block hours-polices-active %}{% endblock %}" id="hours-policies">
+                <a href="#">Hours/Policies</a>
               </li>
               <li class="white-border-button no-border
-                      {% block mission-statement-active %}{% endblock %}">
-                <a href="{% url "revenue-share" %}">Revenue Share</a>
+                      {% block foundation-active %}{% endblock %}"><a
+                      href="{% url "press" %}">Foundation</a>
               </li>
               <li class="white-border-button no-border
-                      {% block newsletters-active %}{% endblock %}">
-                <a href="{% url "newsletters" %}">Newsletters</a>
+                      {% block archive-active %}{% endblock %}"><a
+                      href="{% url "mezzrow" %}">Archive</a>
               </li>
               <li class="white-border-button no-border
-                      {% block press-active %}{% endblock %}"><a
-                      href="{% url "press" %}">Press</a>
+                      {% block live-stream-active %}{% endblock %}"><a
+                      href="{% url "mezzrow" %}">Live-Stream</a>
               </li>
               <li class="white-border-button no-border
-                      {% block mezzrow-active %}{% endblock %}"><a
-                      href="{% url "mezzrow" %}">Mezzrow</a>
+                      {% block catalog-active %}{% endblock %}"><a
+                      href="{% url "mezzrow" %}">Catalog</a>
+              </li>
+              <li class="white-border-button no-border
+                      {% block about-us-active %}{% endblock %}" id="about-us">
+                <a href="#">About us</a>
               </li>
             </ul>
           </div>
-          {% block static-content %}{% endblock static-content %}
+           {% include "flatpages/venues-location.html" %}
+           {% include "flatpages/about-us.html" %}
+           {% include "flatpages/passes-tickets.html" %}
+           {% include "flatpages/hours-policies.html" %}
         </div>
       </div>
     </div>
+
+    <script>
+    
+    $().ready(function(){
+      $('#venues-location').click(e=> switchTab('venues-location-tab'))
+      $('#about-us').click(e=> switchTab('about-us-tab'))
+      $('#passes-tickets').click(e=> switchTab('passes-tickets-tab'))
+      $('#hours-policies').click(e=> switchTab('hours-policies-tab'))
+
+      
+
+      const tabs = ['venues-location-tab', 'passes-tickets-tab', 'hours-policies-tab', 'foundation-tab', 'archive-tab', 'live-stream-tab', 'catalog-tab', 'about-us-tab']
+
+
+
+      function switchTab (tabToSwith) {
+        tabs.forEach(tab => {
+
+         tab == tabToSwith ? $('#'+tab).addClass('active') : $('#'+tab).removeClass('active') 
+
+        })
+      }
+
+    })
+    
+    
+    </script>
+
 {% endblock content %}
