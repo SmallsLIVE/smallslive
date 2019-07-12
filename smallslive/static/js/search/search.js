@@ -165,6 +165,10 @@ function sendArtistRequest(callback, callbackParam) {
     },
     dataType: "json",
     success: function (data) {
+      if (data == null) {
+        $("#artist-load-gif").css("display", "none");
+        $(".right_arrow").css("visibility", "hidden");
+      }
       callback(data, callbackParam);
     },
     error: function (data) {

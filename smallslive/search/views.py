@@ -57,7 +57,6 @@ def artist_form_autoconplete(request):
 
 
 class SearchMixin(object):
-
     def search(self, entity, main_search, page=1, order=None,
                instrument=None, date_from=None, date_to=None,
                artist_search=None, artist_pk=None, venue=None, results_per_page=60):
@@ -76,7 +75,7 @@ class SearchMixin(object):
                 main_search, order, date_from, date_to,
                 artist_pk=artist_pk, venue=venue)
 
-            print sqs.query
+            print (sqs.query)
 
             if not self.request.user.is_superuser:
                 sqs = sqs.filter(Q(state=Event.STATUS.Published) | Q(state=Event.STATUS.Cancelled))
@@ -89,8 +88,8 @@ class SearchMixin(object):
 
         paginator = Paginator(sqs, results_per_page)
 
-        print 'Page: ', page
-        print 'Page size: ', results_per_page
+        print ('Page: ', page)
+        print ('Page size: ', results_per_page)
 
         try:
             objects = paginator.page(page).object_list
@@ -174,6 +173,8 @@ class MainSearchView(View, SearchMixin):
         show_sets = request.GET.get('show_event_setTime', False)
         upcoming = request.GET.get('is_upcoming', False)
 
+        print("main_search " , main_search)
+        print("artist_search ", artist_search)
 
         if date_from:
             date_from = parser.parse(date_from, fuzzy=True)
@@ -189,6 +190,9 @@ class MainSearchView(View, SearchMixin):
         if entity == 'artist':
             artists_blocks, showing_results, num_pages = self.search(
                 Artist, main_search, page, instrument=instrument, artist_search=artist_search)
+
+            if (not artists_blocks):
+                return JsonResponse({})
 
             context = {
                 'artists_blocks': artists_blocks,

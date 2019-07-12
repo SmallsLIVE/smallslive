@@ -5,7 +5,6 @@ from artists.models import Artist, Instrument
 from events.models import Event, Recording
 
 class SearchObject(object):
-    LAST_SENT_ARTIST = ''
 
     def get_instrument(self, text_array):
         print text_array[0]
@@ -133,16 +132,7 @@ class SearchObject(object):
                     first_name__istartswith=word)
             sqs = sqs.filter(condition).distinct()
 
-        import pdb; pdb.set_trace();
-        try:
-            last_result = sqs[len(sqs)-1]
-            if (SearchObject.LAST_SENT_ARTIST == last_result):
-                raise Exception("No more results")
-            else:
-                SearchObject.LAST_SENT_ARTIST = last_result
-                return sqs
-        except TypeError:
-            return sqs
+        return sqs
 
 
     def search_event(self, main_search, order=None, start_date=None, end_date=None,
