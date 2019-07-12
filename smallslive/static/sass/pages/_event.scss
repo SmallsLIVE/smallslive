@@ -305,6 +305,10 @@ $player-height: 25.3vw;
       align-items: center;
       top: 0;
 
+      @media (max-width: $screen-sm-max) {
+        opacity: 1;
+      }
+
       .fa-thin-circle.fa {
         z-index: 10;
         display: flex;
