@@ -188,7 +188,7 @@ class MainSearchView(View, SearchMixin):
             artists_blocks, showing_results, num_pages = self.search(
                 Artist, main_search, page, instrument=instrument, artist_search=artist_search)
 
-
+            # If search returns no artists, send back 200 res with no other data
             if (not artists_blocks):
                 return JsonResponse({})
 
