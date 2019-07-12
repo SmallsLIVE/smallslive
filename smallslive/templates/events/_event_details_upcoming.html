@@ -87,7 +87,9 @@
     });
   });
     $('.event-video-placeholder').keypress(function (e){
-      $('#btn-play-event').click();
+     if(keyCode == 13){
+         $('#btn-play-event').click();
+     }
     })
 
 
