@@ -49,10 +49,16 @@
   background-color: transparent;
   border: 2px solid $white-transparent;
 
+  // &.select-arrow-active {
+  //   border-color: red;
+  //   border-width: 3px;
+  // }
+
   &:hover {
     background-color: $white-transparent;
   }
 }
+
 /*style the arrow inside the select element:*/
 /*point the arrow upwards when the select box is open (active):*/
 /*style the items (options), including the selected item:*/
