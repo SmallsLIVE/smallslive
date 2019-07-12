@@ -414,6 +414,8 @@ body.headers-1 {
       }
 
       display: flex;
+      margin-top: 5%;
+
       flex-direction: column;
     }
 
@@ -887,7 +889,7 @@ body.headers-1 {
 }
 
 .event-stripe {
-  margin-bottom: 30px;
+  margin-bottom: 0px;
 
   &.archive {
     @media (max-width: 1024px) {
