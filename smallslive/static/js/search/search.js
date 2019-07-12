@@ -596,7 +596,7 @@ $(document).ready(function() {
     artistInstrument = $(this).data("instrument");
     $(".instrument-btn").text(artistInstrument || "Instrument");
     artistPageNum = 1;
-
+    currentEventsScrollLeft = 0;
     $("#artists .event-row").html("");
 
     sendArtistRequest(updateArtistsHtml);
