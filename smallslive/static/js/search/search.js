@@ -142,7 +142,14 @@ function updateArtistsHtml(data, reset) {
   if (data.template) {
     $(".mobile-artist-loading").hide();
     $("#artists .event-row").append(data.template);
-    $("#artists .slide-btn.next").css("visibility", "visible");
+
+    //If there are only enough artists for 1 AJAX request, hide the next arrow after navigating to last artist
+    if (data["numPages"] == 1 && data.showingResults < 10) {
+      $("#artists .slide-btn.next").css("visibility", "hidden");
+    }
+    else {
+      $("#artists .slide-btn.next").css("visibility", "visible");
+    }
     if (reset) {
       $("#artists .event-row").css("marginLeft", "0");
       $("#artists .slide-btn.prev").css("visibility", "hidden");
@@ -162,7 +169,12 @@ function sendArtistRequest(callback, callbackParam) {
       page: artistPageNum
     },
     dataType: "json",
-    success: function(data) {
+    success: function (data) {
+      //If no artists returned, hide the next arrow
+      if (data === null) {
+        $("#artist-load-gif").css("display", "none");
+        $(".right_arrow").css("visibility", "hidden");
+      }
       callback(data, callbackParam);
     },
     error: function(data) {
