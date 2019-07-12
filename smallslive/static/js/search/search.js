@@ -551,6 +551,7 @@ $(document).ready(function() {
 
   $("#artist-search").on("change", function() {
     delay(function() {
+      currentEventsScrollLeft = 0;
       artistPageNum = 1;
       artistSearchTerm = $("#artist-search").val();
       $("#artists .event-row").html("");
