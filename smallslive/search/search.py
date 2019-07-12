@@ -4,7 +4,6 @@ from django.utils import timezone
 from artists.models import Artist, Instrument
 from events.models import Event, Recording
 
-
 class SearchObject(object):
 
     def get_instrument(self, text_array):
@@ -69,7 +68,6 @@ class SearchObject(object):
         return words, instruments, partial_instruments
 
     def search_artist(self, main_search=None, artist_search=None, instrument=None):
-
         # TODO: use settings to store values
         possible_number_of_performers = ['solo', 'duo', 'trio', 'quartet', 'quintet', 'sextet', 'septet', 'octet', 'nonet', 'dectet']
         if main_search != '':
@@ -92,27 +90,27 @@ class SearchObject(object):
         if len(words) == 2:
             (first_name, last_name) = words
             temp_sqs = sqs.filter(
-                first_name__iustartswith=first_name,
-                last_name__iustartswith=last_name
+                first_name__istartswith=first_name,
+                last_name__istartswith=last_name
             ).distinct()
             if temp_sqs.count() == 0:
                 temp_sqs = sqs.filter(
-                    first_name__iustartswith=last_name,
-                    last_name__iustartswith=first_name
+                    first_name__istartswith=last_name,
+                    last_name__istartswith=first_name
                 ).distinct()
             sqs = temp_sqs
 
         elif len(words) == 1:
             artist = words[0]
             first_name_matches = sqs.filter(Q(
-                last_name__iuexact=artist)).distinct()
+                last_name__iexact=artist)).distinct()
             good_matches = sqs.filter(Q(
-                last_name__iustartswith=artist) & ~Q(
-                last_name__iuexact=artist)).distinct()
+                last_name__istartswith=artist) & ~Q(
+                last_name__iexact=artist)).distinct()
             not_so_good_matches = sqs.filter(~Q(
-                last_name__iustartswith=artist) & Q(
-                first_name__iustartswith=artist) & ~Q(
-                last_name__iuexact=artist)).distinct()
+                last_name__istartswith=artist) & Q(
+                first_name__istartswith=artist) & ~Q(
+                last_name__iexact=artist)).distinct()
 
             sqs = list(first_name_matches) + list(good_matches) + list(not_so_good_matches)
 
@@ -126,15 +124,16 @@ class SearchObject(object):
         else:
             word = words[0]
             condition = Q(
-                last_name__iustartswith=word) | Q(
-                first_name__iustartswith=word)
+                last_name__istartswith=word) | Q(
+                first_name__istartswith=word)
             for word in words:
                 condition |= Q(
-                    last_name__iustartswith=word) | Q(
-                    first_name__iustartswith=word)
+                    last_name__istartswith=word) | Q(
+                    first_name__istartswith=word)
             sqs = sqs.filter(condition).distinct()
 
         return sqs
+
 
     def search_event(self, main_search, order=None, start_date=None, end_date=None,
                      artist_pk=None, venue=None):
@@ -204,11 +203,11 @@ class SearchObject(object):
             if words:
                 single_artist = False
                 if len(words) == 2 and not instruments:
-                    temp_sqs = sqs.filter(performers__first_name__iuexact=words[0],
-                                        performers__last_name__iuexact=words[1]).distinct()
+                    temp_sqs = sqs.filter(performers__first_name__iexact=words[0],
+                                        performers__last_name__iexact=words[1]).distinct()
                     if temp_sqs.count() == 0:
-                        temp_sqs = sqs.filter(performers__first_name__iuexact=words[1],
-                                            performers__last_name__iuexact=words[0]).distinct()
+                        temp_sqs = sqs.filter(performers__first_name__iexact=words[1],
+                                            performers__last_name__iexact=words[0]).distinct()
                     if temp_sqs.count() != 0:
                         single_artist = True
                         sqs = temp_sqs
