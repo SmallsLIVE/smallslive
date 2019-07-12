@@ -141,23 +141,6 @@ function searchMoreArtists() {
 }
 
 function updateArtistsHtml(data, reset) {
-  // // console.log(data);
-  // const docWidth = $(document).width();
-  // const windowWidth = $(window).width();
-  // const rowWidth = $("#artists .event-row").width();
-
-  // let widths = 0;
-  // $("#artists .event-row .event-display").each(function(index) {
-  //   console.log($this);
-  //   widths += $(this).width();
-  // });
-
-  // // console.log("windowWidth = " + windowWidth);
-  // // console.log("rowWidth = " + rowWidth);
-  // console.log("widths = " + widths);
-
-  console.log(data);
-
   if (data.template) {
     $(".mobile-artist-loading").hide();
     $("#artists .event-row").append(data.template);
