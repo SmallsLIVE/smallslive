@@ -173,9 +173,6 @@ class MainSearchView(View, SearchMixin):
         show_sets = request.GET.get('show_event_setTime', False)
         upcoming = request.GET.get('is_upcoming', False)
 
-        print("main_search " , main_search)
-        print("artist_search ", artist_search)
-
         if date_from:
             date_from = parser.parse(date_from, fuzzy=True)
             if not date_from.tzinfo:
@@ -190,6 +187,7 @@ class MainSearchView(View, SearchMixin):
         if entity == 'artist':
             artists_blocks, showing_results, num_pages = self.search(
                 Artist, main_search, page, instrument=instrument, artist_search=artist_search)
+
 
             if (not artists_blocks):
                 return JsonResponse({})

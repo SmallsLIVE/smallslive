@@ -141,10 +141,33 @@ function searchMoreArtists() {
 }
 
 function updateArtistsHtml(data, reset) {
+  // // console.log(data);
+  // const docWidth = $(document).width();
+  // const windowWidth = $(window).width();
+  // const rowWidth = $("#artists .event-row").width();
+
+  // let widths = 0;
+  // $("#artists .event-row .event-display").each(function(index) {
+  //   console.log($this);
+  //   widths += $(this).width();
+  // });
+
+  // // console.log("windowWidth = " + windowWidth);
+  // // console.log("rowWidth = " + rowWidth);
+  // console.log("widths = " + widths);
+
+  console.log(data);
+
   if (data.template) {
     $(".mobile-artist-loading").hide();
     $("#artists .event-row").append(data.template);
-    $("#artists .slide-btn.next").css("visibility", "visible");
+
+    if (data["numPages"] == 1 && data.showingResults < 10) {
+      $("#artists .slide-btn.next").css("visibility", "hidden");
+    }
+    else {
+      $("#artists .slide-btn.next").css("visibility", "visible");
+    }
     if (reset) {
       $("#artists .event-row").css("marginLeft", "0");
       $("#artists .slide-btn.prev").css("visibility", "hidden");
@@ -165,7 +188,7 @@ function sendArtistRequest(callback, callbackParam) {
     },
     dataType: "json",
     success: function (data) {
-      if (data == null) {
+      if (data === null) {
         $("#artist-load-gif").css("display", "none");
         $(".right_arrow").css("visibility", "hidden");
       }
@@ -1027,8 +1050,6 @@ $(document).ready(function () {
     );
   }
 });
-
-
 
 $("#archive-date-picker").datepicker({
   onSelect: function (dateText, inst) {
