@@ -271,7 +271,9 @@ $player-height: 25.3vw;
 
   position: relative;
   overflow: hidden;
-
+  &:focus {
+    border: 3px solid red !important;
+  }
   &:hover {
     .jw-display
       .jw-reset
@@ -365,7 +367,11 @@ $player-height: 25.3vw;
   left: 41px;
   padding: 20px 30px;
 }
-
+.jw-state-playing + .player-info {
+  .event-overlay {
+    padding-bottom: 15%;
+  }
+}
 .player-info {
   @include animated;
   height: 100%;
@@ -413,16 +419,23 @@ $player-height: 25.3vw;
     display: flex;
     flex-direction: row;
     margin-bottom: auto;
+    @media (min-width: 768px) {
+      .upcoming-logo {
+        margin-top: -10px;
+        margin-right: -10px;
+      }
+    }
   }
 
   .event-overlay {
+    transition: all 0.6s;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
 
     color: white;
     height: 100%;
-    padding: 7px;
+    padding: 7%;
     /*padding-top: 14vw;*/
 
     @media (max-width: $screen-md-max) {
@@ -431,6 +444,7 @@ $player-height: 25.3vw;
     .title5 {
       font-weight: 200;
       letter-spacing: 0.09em;
+      margin-bottom: -3px;
     }
 
     &:hover {
@@ -457,7 +471,7 @@ $player-height: 25.3vw;
 
   .event-info-title {
     position: relative;
-    top: 15px;
+    top: 0;
     max-height: 97px;
     line-height: 2.6vw;
     font-size: 2.5vw;
@@ -838,12 +852,16 @@ $player-height: 25.3vw;
 
 .event-overlay-info {
   position: absolute;
-  right: 15px;
+  right: 7%;
   // bottom: 2.9vw;
   line-height: 1.51em;
+  font-size: 1.6vw;
 
-  @media (max-width: $screen-md-min) {
+  @media (max-width: $screen-sm-min) {
     font-size: 3vw;
+  }
+  @media (min-width: $screen-sm-min) and (max-width: $screen-md-min) {
+    font-size: 2vw;
   }
 }
 
@@ -863,7 +881,10 @@ $player-height: 25.3vw;
 }
 
 .upcoming-logo {
-  margin-left: auto;
+  position: absolute;
+  top: 2vw;
+  right: 2vw;
+
   height: calc(6.94vw + 8.96px);
   width: calc(6.94vw + 8.96px);
 
