@@ -13,7 +13,7 @@
 {% include 'events/tickets_dialog.html' %}
 {% include 'events/buy_tickets_dialog.html' %}
 
-<div class="event-video-placeholder flex-column content-space-between" style="flex: initial;">
+<div tabindex="0" class="event-video-placeholder flex-column content-space-between" style="flex: initial;">
   <span class="event-video-placeholder-picture">
     {% if event.photo %}
     <img src="{% thumbor_url event.get_photo_url|urlencode height=360 width=600 crop=event.photo_crop_box %}"
@@ -33,7 +33,7 @@
       <div class="{{ event.venue.name|lower}}-color event-venue title5">Live at {{ event.venue.name }}</div>
       <div class="event-date title5">{{ event.get_date|date:'D M d' }}</div>
       <div class="event-sets title5">Sets at {{ event.get_set_hours_display}}</div>
-      <div class="icon-overlay">
+      <div class="icon-overlay">        
         <i id="btn-play-event" class="event-detail fa fa-play fa-thin-circle"></i>
       </div>
     </div>
@@ -70,7 +70,7 @@
       if (smallsConfig.user.isAuthenticated) {
         inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
         if (inactive === 'true'){
-          modal = '#inactive-dialog';
+          modal = '#inactive-dialog';     
           $(modal).modal('show');
         } else {
           var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
@@ -86,6 +86,10 @@
       }
     });
   });
+    $('.event-video-placeholder').keypress(function (e){
+      $('#btn-play-event').click();
+    })
+
 
 </script>
 {% endblock %}
