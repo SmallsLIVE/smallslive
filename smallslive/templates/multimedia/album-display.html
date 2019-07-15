@@ -9,7 +9,7 @@
 {% block store_content %}
 <div class=""  style="padding-left: 3.5vw;">
   <div class="section-title">
-    <div class="title1">
+    <div tabindex="0" class="title1">
       <!--<a href="{% url 'promotions:home' %}">Catalog</a> <span class="accent-color">\</span> -->
       {% if album_product.parent %}{{ album_product.parent.title }} - {% endif %}{{ album_product.title }} {{ album_product.upc }}
     </div>
