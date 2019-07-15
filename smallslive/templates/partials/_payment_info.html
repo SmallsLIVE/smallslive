@@ -15,7 +15,7 @@
     {% endif %}
     <section class="container">
       <div class="section-title section-title-no-padded">
-          <div class="title1">Billing Information</div>
+          <div tabindex="0" class="title1">Billing Information</div>
       </div>
       <div class="row">
         <div class="store__form__group clearfix" id="custom-billing-address">
@@ -100,7 +100,7 @@
         </div>
       </div>
         <div class="section-title section-title-no-padded">
-          <div class="title1">Payment Information</div>
+          <div tabindex="0" class="title1">Payment Information</div>
         </div>
 
         <div id="select-payment-row" class="row" style="margin-bottom: 20px;">
@@ -129,13 +129,13 @@
         </div>
         <input type="hidden" name="payment_method" id="payment-method" value="{% if payment_form.can_use_existing %}existing-credit-card{%  else %}credit-card{% endif %}">
         <div class="store__form__group clearfix row payment-method-form {% if not payment_form.can_use_existing %}hidden{% endif %}" id="existing-credit-card-form">
-                <p class="text9">Pay with existing {{ user.customer.card_kind }} credit card ending in {{ user.customer.card_last_4 }}</p>
+                <p tabindex="0" class="text9">Pay with existing {{ user.customer.card_kind }} credit card ending in {{ user.customer.card_last_4 }}</p>
               </div>
         <div class="store__form__group clearfix row payment-method-form hidden" id="paypal-form">
-          <p class="text9">You will be redirected to PayPal to complete your transaction</p>
+          <p tabindex="0" class="text9">You will be redirected to PayPal to complete your transaction</p>
         </div>
         <div class="store__form__group clearfix row payment-method-form hidden" id="bitcoin-form">
-          <p class="text9">You will receive instructions on confirming</p>
+          <p tabindex="0" class="text9">You will receive instructions on confirming</p>
         </div>
         <div class="row">
           <div class="store__form__group clearfix payment-method-form {% if payment_form.can_use_existing %}hidden{% endif %}" id="credit-card-form">
