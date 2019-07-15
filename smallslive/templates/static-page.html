@@ -7,7 +7,7 @@
     <div class="main-container pad-content">
       <div>
         <div class="flex-row content-centered">
-          <div>
+
             <ul class="static-nav-menu">
               <li class="white-border-button no-border
                       {% block venues-location-active %}{% endblock %}" id="venues-location">
@@ -23,8 +23,8 @@
                 <a href="#">Hours/Policies</a>
               </li>
               <li class="white-border-button no-border
-                      {% block foundation-active %}{% endblock %}"><a
-                      href="{% url "press" %}">Foundation</a>
+                      {% block foundation-active %}{% endblock %}"  id="foundation"><a
+                      href="#">Foundation</a>
               </li>
               <li class="white-border-button no-border
                       {% block archive-active %}{% endblock %}"><a
@@ -43,11 +43,12 @@
                 <a href="#">About us</a>
               </li>
             </ul>
-          </div>
+
            {% include "flatpages/venues-location.html" %}
            {% include "flatpages/about-us.html" %}
            {% include "flatpages/passes-tickets.html" %}
            {% include "flatpages/hours-policies.html" %}
+           {% include "flatpages/foundation.html" %}
         </div>
       </div>
     </div>
@@ -59,6 +60,7 @@
       $('#about-us').click(e=> switchTab('about-us-tab'))
       $('#passes-tickets').click(e=> switchTab('passes-tickets-tab'))
       $('#hours-policies').click(e=> switchTab('hours-policies-tab'))
+      $('#foundation').click(e=> switchTab('foundation-tab'))
 
       
 
