@@ -1,29 +1,12 @@
-{% extends "static-page.html" %}
-{% load static from staticfiles %}
-{% load thumbor_tags %}
-
-{% block about-us-active %}active{% endblock %}
-
-{% block title %}About us{% endblock %}
-
-{% block static-content %}
-  <section class="static-content">
+  <section class="static-content static-tab" id="about-us-tab">
+                
+              <div class="flex-row">
+                <div class="flatpage-content">
     <h1 class="main-title">About <span class="white-text">us</span></h1>
     <div class="flex-row">
-      <div class="flatpage-content">{{ page.content|safe }}</div>
-      {% if files %}
-        <div class="flex-column">
-          {% for file in files %}
-            <figure>
-              <img src="{% thumbor_url file.file.url|urlencode width=365 %}"
-                   class="static-sidebar__image" alt="{{ file.name }}"/>
-              <figcaption
-                      class="static-content__caption">{{ file.name }}</figcaption>
-            </figure>
-          {% endfor %}
         </div>
-      {% endif %}
+        </div>
+
     </div>
   </section>
 
-{% endblock static-content %}

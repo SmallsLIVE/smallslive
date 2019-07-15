@@ -16,15 +16,15 @@ from oscar_apps.catalogue.views import ArtistCatalogue, get_album_catalog
 from utils.views import OldSiteRedirectView
 from .sitemaps import sitemaps
 
-
 # uncomment these lines to enable the Djrill admin interface 
-#from djrill import DjrillAdminSite
-#admin.site = DjrillAdminSite()
+# from djrill import DjrillAdminSite
+# admin.site = DjrillAdminSite()
 
 admin.autodiscover()
 
 
 class StaticPageView(TemplateView):
+
     def get_template_names(self):
         template_name = os.path.join(settings.BASE_DIR, 'templates', "{0}.html".format(self.kwargs['template_name']))
         if not os.path.exists(template_name):
@@ -42,6 +42,7 @@ def static_file_view(request, **kwargs):
     response['Access-Control-Allow-Origin'] = '*'
     response['Cache-Control'] = 'public, max-age=3600'
     return response
+
 
 urlpatterns = patterns('',
     url(r'^dashboard/', include('artist_dashboard.urls', app_name="artist_dashboard", namespace="artist_dashboard")),
@@ -64,7 +65,6 @@ urlpatterns = patterns('',
     url(r'^multimedia/', include('multimedia.urls')),
     url(r'^institutional-subscriptions/', include('institutional_subscriptions.urls',
                                                   app_name="institutional_subscriptions")),
-
 
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^search/artist/', 'artists.views.artist_search', name='artist_search'),
@@ -94,6 +94,7 @@ urlpatterns += patterns('django.contrib.flatpages.views',
     url(r'^institutions/$', 'flatpage', {'url': '/institutions/'}, name='institutions'),
     url(r'^mezzrow/$', 'flatpage', {'url': '/mezzrow/'}, name='mezzrow'),
     url(r'^contact-and-info/$', 'flatpage', {'url': '/contact-and-info/'}, name='contact-and-info'),
+     url(r'^venues-and-location/$', 'flatpage', {'url': '/venues-location/'}, name='venues-location'),
 )
 
 urlpatterns += patterns('',
@@ -107,7 +108,6 @@ urlpatterns += patterns('',
 
 if settings.ENABLE_HIJACK:
     urlpatterns += url(r'^hijack/', include('hijack.urls')),
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

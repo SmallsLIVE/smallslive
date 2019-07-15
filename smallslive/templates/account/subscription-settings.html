@@ -197,7 +197,7 @@
       {% endif %}
 
       <section class="subscription-settings signup__payment">
-        <h3 class="signup__payment__heading">Billing information:</h3>
+        <h3 tabindex="0" class="signup__payment__heading">Billing information:</h3>
         {% if user.customer.can_charge %}
           <div class="row">
               <p class="signup__payment__existing-card">You have a saved {{ user.customer.card_kind }} credit card ending

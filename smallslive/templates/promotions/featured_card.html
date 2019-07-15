@@ -1,7 +1,7 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
-<a {% if not redirect %}href="{{ event.get_absolute_url }}"{% endif %}>
+<a {% if not redirect %}href="{{ event.get_absolute_url }}"{% endif %} aria-label="{{ event.get_date|date:'m/d/Y' }}, {{ event.title }}">
   <div class="
       {% if not mini%}
         {% if not secondary %}
