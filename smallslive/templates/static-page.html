@@ -27,12 +27,12 @@
                       href="#">Foundation</a>
               </li>
               <li class="white-border-button no-border
-                      {% block archive-active %}{% endblock %}"><a
-                      href="{% url "mezzrow" %}">Archive</a>
+                      {% block archive-active %}{% endblock %}" id="archive"><a
+                      href="#">Archive</a>
               </li>
               <li class="white-border-button no-border
-                      {% block live-stream-active %}{% endblock %}"><a
-                      href="{% url "mezzrow" %}">Live-Stream</a>
+                      {% block live-stream-active %}{% endblock %}" id="streaming"><a
+                      href="#">Live-Stream</a>
               </li>
               <li class="white-border-button no-border
                       {% block catalog-active %}{% endblock %}"><a
@@ -49,6 +49,8 @@
            {% include "flatpages/passes-tickets.html" %}
            {% include "flatpages/hours-policies.html" %}
            {% include "flatpages/foundation.html" %}
+           {% include "flatpages/archive.html" %}
+           {% include "flatpages/streaming.html" %}
         </div>
       </div>
     </div>
@@ -61,10 +63,12 @@
       $('#passes-tickets').click(e=> switchTab('passes-tickets-tab'))
       $('#hours-policies').click(e=> switchTab('hours-policies-tab'))
       $('#foundation').click(e=> switchTab('foundation-tab'))
+      $('#archive').click(e=> switchTab('archive-tab'))
+      $('#streaming').click(e=> switchTab('streaming-tab'))
 
       
 
-      const tabs = ['venues-location-tab', 'passes-tickets-tab', 'hours-policies-tab', 'foundation-tab', 'archive-tab', 'live-stream-tab', 'catalog-tab', 'about-us-tab']
+      const tabs = ['venues-location-tab', 'passes-tickets-tab', 'hours-policies-tab', 'foundation-tab', 'archive-tab', 'streaming-tab', 'catalog-tab', 'about-us-tab']
 
 
 
