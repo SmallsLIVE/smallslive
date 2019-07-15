@@ -1,7 +1,7 @@
 {% load static from staticfiles %}
 {% load thumbor_tags %}
 
-<a href="{{ event.get_absolute_url }}">
+<a href="{{ event.get_absolute_url }}" aria-label="{{ event.title }},  Live at {{ event.venue.name }}, sets start at {{ event.get_set_hours_display}}">
   <div class="event-card">
     <div class="event-picture-container">
       <div class="picture-border">
