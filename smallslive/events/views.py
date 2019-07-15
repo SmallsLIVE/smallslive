@@ -133,7 +133,7 @@ class HomepageView(ListView, UpcomingEventMixin):
 
         context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
-        context['events_today'] = self.get_today_events()
+        context['events_today'] = self.get_queryset()
 
         return context
 

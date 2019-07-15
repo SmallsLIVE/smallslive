@@ -157,8 +157,8 @@ class EventQuerySet(models.QuerySet):
         # also make sure events have not finished already. (end > now)
         filter_data = {
             'start__gte': date_range_start,
-            'end__lte': date_range_end,
-            'end__gte': timezone.now()
+            'end__lte': date_range_end
+            # 'end__gte': timezone.now()
         }
 
         if venue_id:

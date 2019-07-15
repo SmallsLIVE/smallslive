@@ -19,8 +19,9 @@
     {% endif %}
   </div>
   <main style="position: relative;">
-    <div class="slide-btn prev today-and-tomorrow-arrow"><b class="indicator-icon icon-left-caret"></b></div>
-    <div class="slide-btn next today-and-tomorrow-arrow"><b class="indicator-icon icon-right-caret"></b></div>
+    <div class="slick-slide-btn prev today-and-tomorrow-arrow today-left"><b class="indicator-icon icon-left-caret"></b></div>
+    <div class="slick-slide-btn next today-and-tomorrow-arrow today-right"><b class="indicator-icon icon-right-caret"></b></div>
+
     {% if calendar_page %}
       {% include 'events/tonight_events_home.html' with events=events_today show_date=True hide_event_date=True show_event_venue=True custom_venue_style=custom_venue_style %}
     {% else %}
@@ -28,3 +29,34 @@
     {% endif %}
   </main>
 </section>
+
+{% block extra_js %}
+<script>
+  $(document).ready(function () {
+    // init slider
+    $('.event-row').slick({
+      dots: false,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      prevArrow: ".today-left",
+      nextArrow: ".today-right",
+      infinite: false
+    });
+
+		// hide prev arrow at the beginning and next arrow at the end
+		$('.event-row').on('beforeChange', function(event, slick, currentSlide, nextSlide) {
+			// if current slide is the end and not moving dont show next arrow
+			if (nextSlide == slick.slideCount - 3) {
+				$('.today-right').hide();
+				$('.today-left').show();
+			} else if (nextSlide != slick.slideCount - 1 && nextSlide != 0) {
+				$('.today-right').show();
+				$('.today-left').show();
+			} else if (currentSlide == 0 || nextSlide == 0) {
+				$('.today-right').show();
+				$('.today-left').hide();
+			}
+		});
+
+	});
+</script> {% endblock %}

@@ -1,6 +1,6 @@
 {% load static from staticfiles %}
 
-<div class="event-row">
+<div class="event-row tonight-events">
   {% for event in events %}
   <article class="event-display-today-and-tomorrow" >
     {% include 'events/tonight_event_card.html' with event=event secondary=secondary hide_play=True %}

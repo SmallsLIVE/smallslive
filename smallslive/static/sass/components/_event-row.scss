@@ -11,7 +11,7 @@ $event-card-margin: 0.4vw;
 $event-row-padding: 3.5vw;
 
 .live {
-  .slide-btn {
+  .slide-btn, .slick-slide-btn {
     &.prev,
     &.next {
       @media (min-width: 1366px) {
@@ -51,7 +51,7 @@ $event-row-padding: 3.5vw;
   }
 }
 
-.slide-btn {
+.slide-btn, .slick-slide-btn {
   &.prev,
   &.next {
     border-radius: 10px 0 0 10px;
@@ -137,7 +137,7 @@ $event-row-padding: 3.5vw;
 }
 
 #artists {
-  .slide-btn {
+  .slide-btn, .slick-slide-btn {
     &.prev,
     &.next {
       @media (min-width: 1366px) {
@@ -160,7 +160,7 @@ $event-row-padding: 3.5vw;
 }
 
 .event-stripe.archive {
-  .slide-btn {
+  .slide-btn, .slick-slide-btn {
     &.prev,
     &.next {
       @media (min-width: 1366px) {
@@ -188,6 +188,14 @@ $event-row-padding: 3.5vw;
 
   @media (max-width: $screen-sm-max) {
     overflow: auto;
+  }
+}
+
+.tonight-events {
+  @extend .event-row;
+
+  @media (min-width: $screen-sm-max) {
+    padding: 0 $content-left-padding;
   }
 }
 
@@ -814,4 +822,8 @@ $event-row-padding: 3.5vw;
   text-transform: uppercase;
   text-shadow: 0.001em 0.001em;
   margin-bottom: 0;
+}
+
+.slick-slider {
+  margin-bottom: 0px;
 }
