@@ -12,29 +12,35 @@
 {% block content %}
   {% include 'sign_in_to_become_a_supporter_dialog.html' %}
   <div class="container">
-    <div class="flex-column items-center">
-      <p class="title2 accent-color">EMAIL CONFIRMED</p>
+    <div class="flex-column items-center email-confirm">
       <p class="title1">Welcome to The SmallsLIVE Foundation</p>
 
       <div class="content">
-        <p class="text9 text-justified">
-          Your email is confirmed. You now have access to all our live streamed shows.
+        <p class="text9">
+          <span class="accent-color">
+            Your email is confirmed.
+          </span>
+          You now have access to all our live streamed shows.
           Your account settings can be found by clicking on your name in the upper right hand corner.
         </p>
-        <p class="text9 text-justified">
-          Please consider becoming a Supporting Member of The SmallsLIVE Foundation.
+        <p class="text9">
+          <span class="accent-color">
+            Please consider becoming a Supporting Member.
+          </span>
           The SmallsLIVE Foundation supports recording projects, tours, and educational
           initiatives, subsidizes the operation of the venues and offers emergency aid
           for jazz musicians in need.
         </p>
-        <p class="text9 text-justified\">
-          The SmallsLIVE Foundation is supported by tax deductible donations from our supporters.
+        <p class="text9">
+          <span class="accent-color">
+            The SmallsLIVE Foundation is supported by tax deductible donations.
+          </span>
           Supporting members gain access to our extensive audio/video archive of all shows dating
           back to 2007.
         </p>
       </div>
 
-      <div class="text4 text-centered button-row margin-top">
+      <div class="text4 text-centered button-row">
         {% if not user.is_authenticated %}
         <button class="white-border-button sign-in-button separated" href="#logIn" data-toggle="modal">
           Sign in

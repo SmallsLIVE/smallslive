@@ -357,6 +357,8 @@ function sendEventRequest(mode, dateFrom, dateTo, callback) {
   });
 }
 
+var currentEventsScrollLeft = 0;
+
 $(document).ready(function() {
   var instrument = getUrlParameter("instrument");
   if (instrument) {
@@ -371,6 +373,20 @@ $(document).ready(function() {
   apply = false;
   eventFilter = false;
   var maxPseudopage = 4;
+
+
+  /* On Mobile, artists row does  not  show slide  buttons
+  On scrolling,  load more artists only on scroll left after
+  4000 pixels which is a good number to avoid loading too many times */
+  $('#artists .event-row').scroll(function () {
+    var scrollLeft = $(this).scrollLeft();
+    console.log(scrollLeft + ' ' +  currentEventsScrollLeft);
+    if (scrollLeft > currentEventsScrollLeft + 4000) {
+      console.log(scrollLeft - currentEventsScrollLeft);
+      currentEventsScrollLeft = scrollLeft;
+      searchMoreArtists();
+    }
+  });
 
   $("[name='q']").val(searchTerm);
   $("#artist-search").val("");
@@ -547,6 +563,7 @@ $(document).ready(function() {
 
   $("#artist-search").on("change", function() {
     delay(function() {
+      currentEventsScrollLeft = 0;
       artistPageNum = 1;
       artistSearchTerm = $("#artist-search").val();
       $("#artists .event-row").html("");
@@ -591,7 +608,7 @@ $(document).ready(function() {
     artistInstrument = $(this).data("instrument");
     $(".instrument-btn").text(artistInstrument || "Instrument");
     artistPageNum = 1;
-
+    currentEventsScrollLeft = 0;
     $("#artists .event-row").html("");
 
     sendArtistRequest(updateArtistsHtml);
