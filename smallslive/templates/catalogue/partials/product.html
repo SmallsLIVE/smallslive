@@ -14,7 +14,7 @@
   {% purchase_info_for_product request product as session %}
     <!-- Single store item -->
     <div class="store-list-item flex-column items-flex-stretch">
-        <div class="store-list-item-image">
+        <div tabindex="-1" class="store-list-item-image">
           {% if product.parent_id %}
             {% with image=product.parent.primary_image %}
               {% if not image.is_missing %}
@@ -33,11 +33,13 @@
             {% endwith %}
           {% endif %}
         </div>
+        <div aria-label="{{ product.get_title }}" class="title flex-column items-flex-stretch">
         <span class="text2 store-list-item-tile">
-            <a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title }}</a>
+            <a tabindex="-1" href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title }}</a>
         </span>
         <span class="text4">
         </span>
+        </div>
         <form id="add_to_basket_form" action="{% url 'basket:add' pk=product.pk  %}" method="post" class="add-to-basket">
           {% if session.availability.is_available_to_buy %}
             {% basket_form request product 'single' as basket_form %}
