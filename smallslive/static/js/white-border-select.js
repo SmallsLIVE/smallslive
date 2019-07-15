@@ -21,6 +21,11 @@ function replaceWhiteSelects(divElement) {
     b = document.createElement("DIV");
     b.setAttribute("class", "select-items select-hide");
     b.setAttribute("tabindex", i);
+    $(b).keypress(function(e) {
+      if (e.keyCode == 13) {
+        $(this).click();
+      }
+    });
 
     for (j = 0; j < selElmnt.length; j++) {
       /*for each option in the original select element,
@@ -29,6 +34,11 @@ function replaceWhiteSelects(divElement) {
       c.setAttribute("tabindex", i);
       option = selElmnt.options[j];
       c.innerHTML = option.innerHTML;
+      $(c).keypress(function(e) {
+        if (e.keyCode == 13) {
+          $(this).click();
+        }
+      });
       if (option.getAttribute("noSelect") === "1") {
         continue;
       }
@@ -143,8 +153,10 @@ function replaceWhiteSelects(divElement) {
     then close all select boxes:*/
   divElement.addEventListener("click", closeAllSelect);
 
-  $(".select-selected").focusin(function() {
-    $(this).click();
+  $(".select-selected").keypress(function(e) {
+    if (e.keyCode == 13) {
+      $(this).click();
+    }
   });
 }
 
