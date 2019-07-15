@@ -14,11 +14,11 @@
   {% purchase_info_for_product request product as session %}
     <!-- Single store item -->
     <div class="store-list-item flex-column items-flex-stretch">
-        <div tabindex="-1" class="store-list-item-image">
+        <div tabindex="0" class="store-list-item-image">
           {% if product.parent_id %}
             {% with image=product.parent.primary_image %}
               {% if not image.is_missing %}
-                <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=260 width=0 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                <a tabindex="-1" href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=260 width=0 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
               {% else %}
                 <a href="{{ product.get_absolute_url }}"><img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
               {% endif %}
@@ -26,7 +26,7 @@
           {% else %}
             {% with image=product.primary_image %}
                 {% if not image.is_missing %}
-                  <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=260 width=0 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                  <a tabindex="-1" href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=260 width=0 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
                 {% else %}
                   <a href="{{ product.get_absolute_url }}"><img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
                 {% endif %}
@@ -50,3 +50,12 @@
     </div>
     <!-- End of single store item -->
 {% endblock %}
+    <script>
+        $(".store-list-item").keypress(function (e){
+          ("a").each(function (){
+            if(e.keyCode == 13){
+              ("a").click();
+            }
+          })
+        })
+    </script>
