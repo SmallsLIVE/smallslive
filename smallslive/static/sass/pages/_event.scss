@@ -268,12 +268,13 @@ $player-height: 25.3vw;
 .player-container {
   color: $white-transparent;
   margin-bottom: 30px;
-
   position: relative;
   overflow: hidden;
-  &:focus {
+
+  &:focus{
     border: 3px solid red !important;
   }
+
   &:hover {
     .jw-display
       .jw-reset
@@ -897,3 +898,5 @@ $player-height: 25.3vw;
     width: calc(13.94vw + 8.96px);
   }
 }
+
+

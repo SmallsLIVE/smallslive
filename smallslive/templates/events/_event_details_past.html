@@ -10,7 +10,7 @@
 {% block event_content %}
 {% include 'inactive_dialog.html' %}
   {% if event.published_videos %}
-    <div id="videoContainer" class="player-container {% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}">
+    <div tabindex="0" id="videoContainer" class="player-container {% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}">
       {% if not user.can_watch_video %}
         <div class="not-auth-container">
           {% if event.photo %}
