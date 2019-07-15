@@ -36,7 +36,7 @@
              name="q" type="text"
              placeholder="SEARCH FOR AN ARTIST"
              autocomplete="off">
-      <div tabindex="0" class="reset-search"></div>
+      <div tabindex="0" aria-label="Search will be deleted and search will be refreshed" class="reset-search"></div>
     </div>
     {% include "promotions/artist-bar.html" with artist_list=artist_with_media %}
   </div>
