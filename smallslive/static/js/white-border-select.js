@@ -147,4 +147,23 @@ function replaceWhiteSelects(divElement) {
     $(this).click();
   });
 }
+
+function makeButtonsTabbables() {
+  x = document.getElementsByClassName("white-border-button");
+
+  for (i = 0; i < x.length; i++) {
+    var currentSelect = x[i];
+    console.log(currentSelect);
+    currentSelect.setAttribute("tabindex", 0);
+    $(currentSelect).keypress(function(e) {
+      if (e.keyCode == 13) {
+        $(this).click();
+      }
+    });
+  }
+}
+
+$().ready(() => {
+  makeButtonsTabbables();
+});
 replaceWhiteSelects();
