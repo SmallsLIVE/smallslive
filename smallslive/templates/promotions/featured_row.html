@@ -13,7 +13,8 @@
     </article> 
   {% endfor %}
   {% for event in extra_events %}
-  <article class="event-display"> {% include 'promotions/featured_card.html' with event=event secondary=secondary hide_play=True%}
+  <article class="event-display"> 
+    {% include 'promotions/featured_card.html' with event=event secondary=secondary hide_play=True%}
     <div class="event-info">
       <div>
         <div class="text-grey">{{ event.get_date|date:'m/d/Y' }}</div>
