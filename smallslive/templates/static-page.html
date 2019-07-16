@@ -88,7 +88,19 @@
           }
         })
 
-      
+        $('.white-border-button').click(function(e){
+
+
+            let id = $(this).attr('id')
+            console.log("#"+id+"-tab")
+          $('html, body').animate(
+              {
+                scrollTop: $("#"+id+"-tab").offset().top
+              },
+              500,
+              'linear'
+  )
+        })
 
         $('.expand').click(e => {
 
