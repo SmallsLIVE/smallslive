@@ -13,26 +13,27 @@
 {% block product %}
   {% purchase_info_for_product request product as session %}
     <!-- Single store item -->
-    <div class="store-list-item flex-column items-flex-stretch">
+    <div tabindex="0" class="store-list-item flex-column items-flex-stretch">
         <div class="store-list-item-image">
           {% if product.parent_id %}
             {% with image=product.parent.primary_image %}
               {% if not image.is_missing %}
-                <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=260 width=0 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                <a tabindex="-1" aria-label="." href="{{ product.get_absolute_url }}"><img tabindex="-1" src="{% thumbor_url image.original.url|urlencode height=260 width=0 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
               {% else %}
-                <a href="{{ product.get_absolute_url }}"><img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                <a tabindex="-1" aria-label="." href="{{ product.get_absolute_url }}"><img tabindex="-1" src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
               {% endif %}
             {% endwith %}
           {% else %}
             {% with image=product.primary_image %}
                 {% if not image.is_missing %}
-                  <a href="{{ product.get_absolute_url }}"><img src="{% thumbor_url image.original.url|urlencode height=260 width=0 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
+                  <a tabindex="-1" href="{{ product.get_absolute_url }}"><img tabindex="-1" src="{% thumbor_url image.original.url|urlencode height=260 width=0 smart=True %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
                 {% else %}
                   <a href="{{ product.get_absolute_url }}"><img src="{% static 'image/image_not_found.jpg' %}" alt="{{ product.get_title }}" class="defineImageRatio"></a>
                 {% endif %}
             {% endwith %}
           {% endif %}
         </div>
+        <div class="title flex-column items-flex-stretch">
         <span class="text2 store-list-item-tile">
             <a href="{{ product.get_absolute_url }}" title="{{ product.get_title }}">{{ product.get_title }}</a>
         </span>
@@ -48,3 +49,8 @@
     </div>
     <!-- End of single store item -->
 {% endblock %}
+    <script>
+    $(".store-list-item").keypress(function(e) {
+      window.location = $(this).children('div').children('a').attr('href')
+    });
+    </script>
