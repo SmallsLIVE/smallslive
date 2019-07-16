@@ -114,6 +114,10 @@ $event-row-padding: 3.5vw;
       position: absolute;
       top: 0;
     }
+
+    &.today-and-tomorrow-arrow {
+      width: 2.5vw;
+    }
   }
 
   b {
@@ -195,7 +199,7 @@ $event-row-padding: 3.5vw;
   @extend .event-row;
 
   @media (min-width: $screen-sm-max) {
-    padding: 0 $content-left-padding;
+    padding: 0;
   }
 }
 
@@ -208,10 +212,10 @@ $event-row-padding: 3.5vw;
   position: relative;
   display: flex;
   flex-direction: column;
-  margin-right: 1vw;
-  width: 30vw;
+  //margin-right: 1vw;
+  //width: 30vw;
   height: 35vh;
-  min-width: 30vw;
+  //min-width: 25vw;
   background-size: cover;
   background-blend-mode: saturation;
   flex-direction: column;
@@ -822,8 +826,4 @@ $event-row-padding: 3.5vw;
   text-transform: uppercase;
   text-shadow: 0.001em 0.001em;
   margin-bottom: 0;
-}
-
-.slick-slider {
-  margin-bottom: 0px;
 }
