@@ -22,8 +22,11 @@ function replaceWhiteSelects(divElement) {
     b.setAttribute("class", "select-items select-hide");
     b.setAttribute("tabindex", i);
     $(b).keypress(function(e) {
+      console.log(e.keyCode);
       if (e.keyCode == 13) {
         $(this).click();
+      } else if (e.keyCode == 27) {
+        $(a).click();
       }
     });
 
