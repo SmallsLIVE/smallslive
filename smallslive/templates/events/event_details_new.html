@@ -111,7 +111,9 @@
               {{ basket_form.as_p }}
               <input type="hidden" name="next" value="{% url 'basket:summary' %}"/>
               {% if session.availability.num_available > 0 %}
-                <button type='submit' data-ticket-name="{{ product.set }}" data-ticket-price="{{session.price.excl_tax}}" class="buy-tickets white-border-button" style="display: inline;">Tickets for {{ product.set }} ({{ session.availability.num_available }} available)</button>
+                <button type='submit' data-ticket-name="{{ product.set }}" data-ticket-price="{{session.price.excl_tax}}" class="buy-tickets white-border-button" style="display: inline;">Tickets for {{ product.set }}</button>
+                {% include 'events/buy_tickets_dialog.html' %}
+
               {% else %}
                 <button class="white-border-button" disabled style="display: inline;">Tickets sold out)</button>
               {% endif %}

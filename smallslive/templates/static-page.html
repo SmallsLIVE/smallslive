@@ -7,7 +7,7 @@
     <div class="main-container pad-content">
       <div>
         <div class="flex-row content-centered">
-          <div>
+
             <ul class="static-nav-menu">
               <li class="white-border-button no-border
                       {% block venues-location-active %}{% endblock %}" id="venues-location">
@@ -23,31 +23,35 @@
                 <a href="#">Hours/Policies</a>
               </li>
               <li class="white-border-button no-border
-                      {% block foundation-active %}{% endblock %}"><a
-                      href="{% url "press" %}">Foundation</a>
+                      {% block foundation-active %}{% endblock %}"  id="foundation"><a
+                      href="#">Foundation</a>
               </li>
               <li class="white-border-button no-border
-                      {% block archive-active %}{% endblock %}"><a
-                      href="{% url "mezzrow" %}">Archive</a>
+                      {% block archive-active %}{% endblock %}" id="archive"><a
+                      href="#">Archive</a>
               </li>
               <li class="white-border-button no-border
-                      {% block live-stream-active %}{% endblock %}"><a
-                      href="{% url "mezzrow" %}">Live-Stream</a>
+                      {% block live-stream-active %}{% endblock %}" id="streaming"><a
+                      href="#">Live Stream</a>
               </li>
               <li class="white-border-button no-border
-                      {% block catalog-active %}{% endblock %}"><a
-                      href="{% url "mezzrow" %}">Catalog</a>
+                      {% block catalog-active %}{% endblock %}" id="catalog"><a
+                      href="#">Catalog</a>
               </li>
               <li class="white-border-button no-border
                       {% block about-us-active %}{% endblock %}" id="about-us">
                 <a href="#">About us</a>
               </li>
             </ul>
-          </div>
+        <div class="flex-column info-page-container">
            {% include "flatpages/venues-location.html" %}
-           {% include "flatpages/about-us.html" %}
            {% include "flatpages/passes-tickets.html" %}
            {% include "flatpages/hours-policies.html" %}
+           {% include "flatpages/foundation.html" %}
+           {% include "flatpages/archive.html" %}
+           {% include "flatpages/streaming.html" %}
+           {% include "flatpages/catalog.html" %}
+           {% include "flatpages/about-us.html" %}
         </div>
       </div>
     </div>
@@ -55,15 +59,54 @@
     <script>
     
     $().ready(function(){
-      $('#venues-location').click(e=> switchTab('venues-location-tab'))
-      $('#about-us').click(e=> switchTab('about-us-tab'))
-      $('#passes-tickets').click(e=> switchTab('passes-tickets-tab'))
-      $('#hours-policies').click(e=> switchTab('hours-policies-tab'))
 
-      
+        const pages = ["venues-location", "passes-tickets", "hours-policies", "foundation", "archive", "streaming", "catalog", "about-us"]
+        $(window).scroll(function(){
 
-      const tabs = ['venues-location-tab', 'passes-tickets-tab', 'hours-policies-tab', 'foundation-tab', 'archive-tab', 'live-stream-tab', 'catalog-tab', 'about-us-tab']
+          for(pageButton of pages){
+            $("#"+pageButton+" a").css('color', 'black')
+          }
 
+          for(page of pages){
+
+          
+            var element = document.querySelector('#' + page + '-tab');
+
+
+
+
+            var position = element.getBoundingClientRect();
+
+            // checking for partial visibility
+            if(position.top < window.innerHeight && position.bottom >= 0) {
+              $("#"+page+" a").css('color', 'red')
+            }
+          
+            
+
+
+          }
+        })
+
+        $('.white-border-button').click(function(e){
+
+
+            let id = $(this).attr('id')
+            console.log("#"+id+"-tab")
+          $('html, body').animate(
+              {
+                scrollTop: $("#"+id+"-tab").offset().top
+              },
+              500,
+              'linear'
+  )
+        })
+
+        $('.expand').click(e => {
+
+          $(e.target).parent().parent().parent().parent().toggleClass('closed')
+          $(e.target).toggleClass('closed')
+        })
 
 
       function switchTab (tabToSwith) {
