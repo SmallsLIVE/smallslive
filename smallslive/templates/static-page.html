@@ -32,11 +32,11 @@
               </li>
               <li class="white-border-button no-border
                       {% block live-stream-active %}{% endblock %}" id="streaming"><a
-                      href="#">Live-Stream</a>
+                      href="#">Live Stream</a>
               </li>
               <li class="white-border-button no-border
-                      {% block catalog-active %}{% endblock %}"><a
-                      href="{% url "mezzrow" %}">Catalog</a>
+                      {% block catalog-active %}{% endblock %}" id="catalog"><a
+                      href="#">Catalog</a>
               </li>
               <li class="white-border-button no-border
                       {% block about-us-active %}{% endblock %}" id="about-us">
@@ -51,6 +51,7 @@
            {% include "flatpages/foundation.html" %}
            {% include "flatpages/archive.html" %}
            {% include "flatpages/streaming.html" %}
+           {% include "flatpages/catalog.html" %}
         </div>
       </div>
     </div>
@@ -65,6 +66,7 @@
       $('#foundation').click(e=> switchTab('foundation-tab'))
       $('#archive').click(e=> switchTab('archive-tab'))
       $('#streaming').click(e=> switchTab('streaming-tab'))
+      $('#catalog').click(e=> switchTab('catalog-tab'))
 
       
 
