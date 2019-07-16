@@ -3,7 +3,8 @@
     <div class="modal-content custom-modal">
       <a href="#" class="close-button"></a>
       <div class="modal-body"> 
-        <p class="title2 accent-color">Buy tickets for {{ event.venue.name }}</p>
+
+        <p class="title2 accent-color">Buy tickets for {{ event.venue.name }} ({{ session.availability.num_available }} available)</p>
         <p class="title3">{{ event.title }}</p>
         <p class="title2">{{ event.date | date:"D, M d" }}</p>
         <p id="ticket-name" class="title2"></p>
