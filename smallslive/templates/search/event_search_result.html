@@ -2,7 +2,7 @@
   {% if not placeholder %}
     {% if with_date_picker and not upcoming and events %}
       <div class="archive-datepicker fixed"  style="position: relative;">
-        <div  class="datepicker-container noclick" style="display:block; top: 0 !important;">
+        <div tabindex="0" class="datepicker-container noclick" style="display:block; top: 0 !important;">
           <div style="display: flex;">
             <div class="custom-date-picker from">
               <input class="date-picker-text" type="text" placeholder="Select from date" readonly>

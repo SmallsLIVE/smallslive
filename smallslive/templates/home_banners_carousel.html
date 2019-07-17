@@ -22,7 +22,7 @@
       <div class="banner-learnmore">
         <a class="banner-button-info" href="{% url 'contact-and-info' %}">More Info</a>
         {% if not user.is_authenticated %}
-          <button onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
         {% elif not user.has_activated_account %}
           <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
@@ -121,6 +121,16 @@
     }
 
     $(document).ready(function () {
+    $('.banner-button-info').on('click', function() {
+      console.log('clicked')
+      $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');        
+    });
+    $('#becomeMemberDialog').on('mouseenter', function() {
+      $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');        
+    });
+    $('#becomeMemberDialog').on('mouseleave', function() {
+      $('.carousel').slick('slickSetOption', 'autoplay', true).slick('slickPlay');        
+    });
       $('.carousel').slick({ infinite: true, dots: true, arrows: false, autoplay: true, autoplaySpeed: 7000 })
     });
 </script> {% endblock %}
