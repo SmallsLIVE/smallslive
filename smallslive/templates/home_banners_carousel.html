@@ -131,6 +131,9 @@
     $('#becomeMemberDialog').on('mouseleave', function() {
       $('.carousel').slick('slickSetOption', 'autoplay', true).slick('slickPlay');        
     });
+    $('.banner-learnmore').on('click', function(){
+      $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');  
+    })
       $('.carousel').slick({ infinite: true, dots: true, arrows: false, autoplay: true, autoplaySpeed: 7000 })
     });
 </script> {% endblock %}
