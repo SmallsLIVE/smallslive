@@ -197,6 +197,7 @@ $event-row-padding: 3.5vw;
 
 .tonight-events {
   @extend .event-row;
+  padding: 0;
 
   @media (min-width: $screen-sm-max) {
     padding: 0;
@@ -215,15 +216,11 @@ $event-row-padding: 3.5vw;
   //margin-right: 1vw;
   //width: 30vw;
   height: 35vh;
-  //min-width: 25vw;
+  //min-width: 30vw;
   background-size: cover;
   background-blend-mode: saturation;
   flex-direction: column;
   justify-content: space-between;
-
-  @media (max-width: 1024px) {
-    width: 15vw;
-  }
 
   a {
     width: 100%;
@@ -635,13 +632,14 @@ $event-row-padding: 3.5vw;
       height: calc(67vw * 0.6 - 25px);
     }
   }
+
   @media (min-width: 768px) and( max-width: 960px) {
     height: calc(60vw * 0.6 - 25px);
-    min-width: 56vw;
     a .event-card .event-picture-container .picture-border .event-picture {
       height: calc(60vw * 0.6 - 25px);
     }
   }
+
   @media (max-width: 500px) {
     height: calc(90vw * 0.6 - 25px);
     a .event-card .event-picture-container .picture-border .event-picture {
