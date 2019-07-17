@@ -77,12 +77,20 @@
 		function onChanged(event) {
 			var items = event.item.count;
 			var item = event.item.index;
+			var size = event.page.size;
 
-			if (item  == items - 3) {
+			if (size == 1) {
+				$('.today-right').hide();
+				$('.today-left').hide();
+
+				return;
+			}
+
+			if (item  == items - size) {
 				// end
 				$('.today-right').hide();
 				$('.today-left').show();
-			} else if (item != items - 3 && item != 0) {
+			} else if (item != items - size && item != 0) {
 				// middle
 				$('.today-right').show();
 				$('.today-left').show();
