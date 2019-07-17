@@ -46,7 +46,7 @@
 				items: 3,
 				stagePadding: controlButtonWidth + margin,
 				margin: margin,
-				startPosition: 1,
+				startPosition: '{{ events_finished }}',
 				dots: false,
 				loop: false,
 				rewind: false,
@@ -64,6 +64,7 @@
 				},
 				onChanged: onChanged,
 				onResized: onResized
+
 			};
 		}
 
