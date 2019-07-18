@@ -82,7 +82,7 @@ class HomepageView(ListView):
             return context
 
         context.update(_get_most_popular())
-        context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
+        context['popular_in_store'] = [] # Product.objects.filter(featured=True, product_class__slug='album')[:6]
         return context
 
 homepage = HomepageView.as_view()
