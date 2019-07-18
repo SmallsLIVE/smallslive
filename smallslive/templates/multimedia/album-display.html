@@ -159,7 +159,7 @@
           </div>
 
           <div class="my-downloads-album__tracks-table__column buy-track store-buy">
-            {% if is_full = 'full_album' %}
+            {% if is_full = 'track_album' %}
               {% if not is_catalogue %}
                 <button class="white-border-button download"
                         data-mp3-href="{{ track.get_track_stockrecord.digital_download.get_downloadable_file_url }}"
