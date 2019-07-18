@@ -21,10 +21,6 @@ $event-row-padding: 3.5vw;
       @media (max-width: 1365px) and (min-width: 1024px) {
         height: $live-card-width-medium * 0.6;
       }
-
-      @media (max-width: $screen-md-min) {
-        display: none;
-      }
     }
 
     &.next {
@@ -80,10 +76,6 @@ $event-row-padding: 3.5vw;
 
     @media (max-width: 1023px) and (min-width: 961px) {
       height: $live-card-width-tablet * 0.6;
-    }
-
-    @media (max-width: $screen-sm-max) {
-      display: none;
     }
   }
 
@@ -412,11 +404,10 @@ $event-row-padding: 3.5vw;
     }
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 550px) {
     height: initial;
     flex-direction: column;
     max-width: 300px;
-    min-width: calc(90vw - 25px);
 
     a {
       width: 100%;
@@ -626,7 +617,6 @@ $event-row-padding: 3.5vw;
 
   @media (min-width: 500px) and( max-width: 768px) {
     height: calc(67vw * 0.6 - 25px);
-    min-width: 70vw;
 
     a .event-card .event-picture-container .picture-border .event-picture {
       height: calc(67vw * 0.6 - 25px);

@@ -134,7 +134,7 @@ class HomepageView(ListView, UpcomingEventMixin):
         context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
         context['events_today'] = self.get_queryset()
-        context['events_finished'] = self.get_queryset().filter(end__gte=timezone.now()).count()
+        context['events_finished'] = self.get_queryset().filter(end__lte=timezone.now()).count()
 
         return context
 

@@ -1,32 +1,34 @@
 $(document).ready(function () {
   function getInitParams() {
     var $prev = $('div.today-left.prev');
+    var $next = $('div.today-right.next');
     var margin = 20;
-    var controlButtonWidth = $prev[0].clientWidth;
+    var controlButtonWidth = $prev[0].clientWidth || $next[0].clientWidth;
 
     return {
       items: 3,
       stagePadding: controlButtonWidth + margin,
       margin: margin,
       startPosition: events_finished,
+      slideBy: 3,
       dots: false,
       loop: false,
       rewind: false,
       responsive:{
         0:{
-          items:1,
+          items: 1,
           dots: true
         },
-        780:{
-          items:2
+        550:{
+          items: 2,
+          slideBy: 2
         },
         1000:{
-          items:3
+          items: 3
         }
       },
       onChanged: onChanged,
       onResized: onResized
-
     };
   }
 
