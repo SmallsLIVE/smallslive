@@ -106,6 +106,8 @@
         $('.expand').click(e => {
 
           $(e.target).parent().parent().parent().parent().toggleClass('closed')
+          $(e.target).parent().parent().parent().toggleClass('closed')
+
           $(e.target).toggleClass('closed')
         })
 
