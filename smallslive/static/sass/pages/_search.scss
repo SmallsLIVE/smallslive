@@ -615,6 +615,12 @@ body.headers-1 {
   }
 }
 
+@media (max-width: 1023px) {
+  #musicianContent {
+    height: 100vh;
+  }
+}
+
 #musicianContent .artist-arrows {
   position: absolute;
   width: auto;
