@@ -122,7 +122,6 @@
 
     $(document).ready(function () {
     $('.banner-button-info').on('click', function() {
-      console.log('clicked')
       $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');        
     });
     $('#becomeMemberDialog').on('mouseenter', function() {
@@ -131,7 +130,10 @@
     $('#becomeMemberDialog').on('mouseleave', function() {
       $('.carousel').slick('slickSetOption', 'autoplay', true).slick('slickPlay');        
     });
-    $('.banner-learnmore').on('click', function(){
+    $('.slick-track').on('click', function(){
+      $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');  
+    })
+    $('.slick-slide').on('swipe', function(){
       $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');  
     })
       $('.carousel').slick({ infinite: true, dots: true, arrows: false, autoplay: true, autoplaySpeed: 7000 })
