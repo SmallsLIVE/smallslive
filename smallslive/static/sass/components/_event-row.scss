@@ -407,7 +407,7 @@ $event-row-padding: 3.5vw;
   @media (max-width: 550px) {
     height: initial;
     flex-direction: column;
-    max-width: 300px;
+    max-width: 500px;
 
     a {
       width: 100%;
@@ -615,7 +615,7 @@ $event-row-padding: 3.5vw;
     height: calc(36.7vw * 0.6 - 30px);
   }
 
-  @media (min-width: 500px) and( max-width: 768px) {
+  @media (min-width: 550px) and( max-width: 768px) {
     height: calc(67vw * 0.6 - 25px);
 
     a .event-card .event-picture-container .picture-border .event-picture {
@@ -630,7 +630,7 @@ $event-row-padding: 3.5vw;
     }
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 550px) {
     height: calc(90vw * 0.6 - 25px);
     a .event-card .event-picture-container .picture-border .event-picture {
       height: calc(90vw * 0.6 - 25px);

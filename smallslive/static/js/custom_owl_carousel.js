@@ -23,7 +23,7 @@ $(document).ready(function () {
           items: 2,
           slideBy: 2
         },
-        1000:{
+        960:{
           items: 3
         }
       },
