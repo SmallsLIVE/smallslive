@@ -61,7 +61,7 @@
     $().ready(function(){
 
         const pages = ["venues-location", "passes-tickets", "hours-policies", "foundation", "archive", "streaming", "catalog", "about-us"]
-         for(page of pages){
+         {% comment %} for(page of pages){
 
           
             var element = document.querySelector('#' + page + '-tab');
@@ -80,7 +80,7 @@
             
 
 
-          }
+          } {% endcomment %}
         $(window).scroll(function(){
 
           for(pageButton of pages){
