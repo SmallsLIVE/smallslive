@@ -72,21 +72,6 @@
     width: 100vw;
   }
 }
-.expand {
-  display: none;
-  @media (max-width: $screen-sm-max) {
-    display: initial;
-    background-color: transparent;
-    border-radius: 50%;
-    color: red;
-    font-size: 12px;
-    transition: all 0.6s;
-
-    &.closed {
-      transform: rotate(-90deg);
-    }
-  }
-}
 .static-content {
   @include text4;
   width: 100%;
