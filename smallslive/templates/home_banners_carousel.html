@@ -133,9 +133,9 @@
     $('.slick-track').on('click', function(){
       $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');  
     })
-    $('.slick-slide').on('swipe', function(){
-      $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');  
-    })
       $('.carousel').slick({ infinite: true, dots: true, arrows: false, autoplay: true, autoplaySpeed: 7000 })
+    $('.slick-initialized').on('swipe', function(event, slick, direction){
+      $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause'); 
+    });
     });
 </script> {% endblock %}
