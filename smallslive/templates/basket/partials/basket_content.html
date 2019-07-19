@@ -7,10 +7,10 @@
 <div id="content_inner">
     <div class="content-wrapper basket borderless mt-5">
         <section class="store-header container">
-            <div class="store-header__content">
+            <div class="store-header__content ">
                 {% if basket.has_tickets %}
-                  <div class="white-line-bottom" style="font-size: 30px;">
-                    <div class="title1 center">Purchase tickets</div>
+                  <div class="store-header__title__container">
+                    <div class="title1">tickets</div>
                  </div>
                 {% else %}
                   <div class="white-line-bottom">
@@ -37,7 +37,8 @@
 
                 </section>
                 <section class="store-cart__footer container text9">
-                 
+
+                  {% if not basket.has_tickets %}
                     <div class="col-xs-12 col-sm-12 store-cart__footer__right">
                         <div class="store-cart__footer__price-container">
                             <span class="store-cart__footer__price-container__value">{{ basket.total_excl_tax|currency:basket.currency }}</span>
@@ -50,13 +51,16 @@
                             </div>
                         </div>
                     </div>
+                  {% endif %}
                     <div class="col-xs-12 store-cart__footer__buttons">
+                        <a href="{% url 'checkout:index' %}" class="white-border-button checkout-white">Cancel</a>
                         <a href="{% url 'checkout:index' %}" class="white-border-button checkout-white">Continue</a>
                     </div>
                 </section>
             </form>
         {% else %}
             <section class="store-cart__empty">
+              <!-- this must be different for each checkout or the information should not refference a basket. may be mute point if there never is an 'else' -->
                 <h2>Your basket is empty.</h2>
             </section>
         {% endif %}

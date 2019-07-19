@@ -1,13 +1,13 @@
 <div class="modal fade" id="buy-tickets-dialog" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content custom-modal">
-      <a href="#" class="close-button"></a>
-      <div class="modal-body"> 
+      <div class="modal-body">
         <p class="title2 accent-color">Buy tickets for {{ event.venue.name }} jazz club </p>
-        <p class="title3">{{ event.title }} ({{ session.availability.num_available }} tickets available)</p>
+        <p class="title3">{{ event.title }}</p>
         <p class="title2">{{ event.date | date:"D, M d" }}</p>
         <p id="ticket-name" class="title2"></p>
         <p id="ticket-price" class="title2 acent-color"></p>
+        <p class="title2">{{ session.availability.num_available }} tickets available</p>
 
         <div>
           <button id="cancel-buy-tickets" class="white-border-button">Cancel</button>
