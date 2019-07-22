@@ -21,8 +21,16 @@
 
 .passes-days {
   justify-content: space-between;
+  @media (max-width: 960px) {
+    flex-direction: column;
+  }
+
   .day-list {
     margin: 0 10px;
+    @media (max-width: 960px) {
+      margin-bottom: 15px;
+      text-align: center;
+    }
   }
 }
 .venues-static {
