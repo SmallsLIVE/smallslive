@@ -707,14 +707,14 @@ $(document).ready(function() {
     console.log("COST");
     console.log(cost);
     if (cost && cost != "None") {
-      tax = priceInt - parseInt(cost);
+      tax = "$ " + (priceInt - parseInt(cost)).toFixed(2).toString();
     } else if (cost == "None" || cost == "0.00") {
       tax = "100%";
     }
     var content =
       'You have selected a one time donation of <span class="smalls-color">' +
       price +
-      '</span>  of which <span class="smalls-color">$' +
+      '</span>  of which <span class="smalls-color"> ' +
       tax +
       "</span> is tax deductible. You will receive access to The SmallsLIVE Archive for the remainder of the tax year. You have also chosen to receive a " +
       giftTier +

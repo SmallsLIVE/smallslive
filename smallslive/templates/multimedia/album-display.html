@@ -305,7 +305,7 @@
         var priceFloat = parseFloat(price);
 
         if (cost && cost != "None") {
-          tax_deductable = priceFloat - parseFloat(cost);
+          tax_deductable = "$ " + (priceFloat - parseFloat(cost)).toFixed(2).toString();
         } else if (cost == "None" || cost == "0.00") {
           tax_deductable = "100%";
         }
@@ -313,7 +313,7 @@
         // Create text to display and append html
         var content = 'You have selected an item of price <span class="smalls-color">' +
           price +
-          '</span>  of which <span class="smalls-color">$' +
+          '</span>  of which <span class="smalls-color"> ' +
           tax_deductable +
           "</span> is tax deductable.";
 
