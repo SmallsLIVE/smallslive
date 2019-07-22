@@ -133,7 +133,7 @@
     $('.slick-track').on('click', function(){
       $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');  
     })
-      $('.carousel').slick({ infinite: true, dots: true, arrows: false, autoplay: true, autoplaySpeed: 7000 })
+      $('.carousel').slick({ infinite: true, dots: true, arrows: false, autoplay: true, autoplaySpeed: 7000, pauseOnHover: false })
     $('.slick-initialized').on('swipe', function(event, slick, direction){
       $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause'); 
     });
