@@ -44,13 +44,6 @@ $(document).ready(function () {
     var item = event.item.index;
     var size = event.page.size;
 
-    if (size == 1) {
-      $('.today-right').hide();
-      $('.today-left').hide();
-
-      return;
-    }
-
     if (item  == items - size) {
       // end
       $('.today-right').hide();

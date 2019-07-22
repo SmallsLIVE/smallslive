@@ -93,6 +93,15 @@ $event-row-padding: 3.5vw;
 
     &.today-and-tomorrow-arrow {
       width: 2.5vw;
+
+      @media (max-width: 960px) {
+        width: 4vw;
+      }
+
+      @media (max-width: 550px) {
+        width: 6vw;
+        visibility: hidden;
+      }
     }
   }
 
@@ -109,6 +118,15 @@ $event-row-padding: 3.5vw;
 
     &.today-and-tomorrow-arrow {
       width: 2.5vw;
+
+      @media (max-width: 960px) {
+        width: 4vw;
+      }
+
+      @media (max-width: 550px) {
+        width: 6vw;
+        visibility: hidden;
+      }
     }
   }
 
