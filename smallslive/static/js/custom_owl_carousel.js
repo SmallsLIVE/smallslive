@@ -3,13 +3,16 @@ $(document).ready(function () {
     var $prev = $('div.today-left.prev');
     var $next = $('div.today-right.next');
     var margin = 20;
-    var controlButtonWidth = $prev[0].clientWidth || $next[0].clientWidth;
+    var controlButtonWidth = ($prev[0] && $prev[0].clientWidth) ||
+                             ($next[0] && $next[0].clientWidth);
+    // variable declared in script section of template
+    var startPosition = typeof events_finished == 'undefined' ? 0 : events_finished;
 
     return {
       items: 3,
       stagePadding: controlButtonWidth + margin,
       margin: margin,
-      startPosition: events_finished,
+      startPosition: startPosition,
       slideBy: 3,
       dots: false,
       loop: false,

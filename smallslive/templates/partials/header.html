@@ -111,9 +111,20 @@
   </div>
 </div>
 <script>
+  var $side_navigation = $('#side-navigation');
+
   function toggleSideBar() {
-      $('#side-navigation').toggleClass('side-bar-hidden');
+    $side_navigation.toggleClass('side-bar-hidden');
+
+    if (!$side_navigation.hasClass('side-bar-hidden')) {
+      $('.today-left').hide();
+      $('.today-right').hide();
+    } else {
+      $('.today-left').show();
+      $('.today-right').show();
+    }
   }
+
   function toggleAdmin(){
     if ($("#mobile-user-option-menu").is(":hidden")) {
       $("#mobile-user-option-menu").slideDown("fast");
@@ -121,15 +132,16 @@
       $("#mobile-user-option-menu").slideUp("fast");
     }
   }
+
   $("#mobile-user-option-menu .sign-in-button").on("click", function(){
     $("#mobile-user-option-menu").hide();
   })
+
   function toggleSearch() {
-     
-      if(!($('#search-bar').hasClass('mobile-search-header-shown'))){
-        $(".search-bar-autocomplete-container").css("display", "none");
-      }
+    if(!($('#search-bar').hasClass('mobile-search-header-shown'))){
+      $(".search-bar-autocomplete-container").css("display", "none");
     }
+  }
   
   $('.mobile-menu-icons .fa-search').click(function () {
       var headerCount = getHeaderCount();
