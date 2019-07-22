@@ -22,7 +22,7 @@
       <div class="banner-learnmore">
         <a class="banner-button-info" href="{% url 'contact-and-info' %}">More Info</a>
         {% if not user.is_authenticated %}
-          <button onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
+        <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
         {% elif not user.has_activated_account %}
           <button onclick="$('#inactive-dialog').modal('show');">Confirm email</button>
         {% elif not user.can_watch_video %}
@@ -121,6 +121,21 @@
     }
 
     $(document).ready(function () {
-      $('.carousel').slick({ infinite: true, dots: true, arrows: false, autoplay: true, autoplaySpeed: 7000 })
+    $('.banner-button-info').on('click', function() {
+      $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');        
+    });
+    $('#becomeMemberDialog').on('mouseenter', function() {
+      $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');        
+    });
+    $('#becomeMemberDialog').on('mouseleave', function() {
+      $('.carousel').slick('slickSetOption', 'autoplay', true).slick('slickPlay');        
+    });
+    $('.slick-track').on('click', function(){
+      $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause');  
+    })
+      $('.carousel').slick({ infinite: true, dots: true, arrows: false, autoplay: true, autoplaySpeed: 7000, pauseOnHover: false })
+    $('.slick-initialized').on('swipe', function(event, slick, direction){
+      $('.carousel').slick('slickSetOption', 'autoplay', false).slick('slickPause'); 
+    });
     });
 </script> {% endblock %}
