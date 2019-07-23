@@ -93,6 +93,7 @@ $event-row-padding: 3.5vw;
 
     &.today-and-tomorrow-arrow {
       width: 2.5vw;
+      z-index: 10;
 
       @media (max-width: 960px) {
         width: 4vw;
@@ -118,6 +119,7 @@ $event-row-padding: 3.5vw;
 
     &.today-and-tomorrow-arrow {
       width: 2.5vw;
+      z-index: 10;
 
       @media (max-width: 960px) {
         width: 4vw;
