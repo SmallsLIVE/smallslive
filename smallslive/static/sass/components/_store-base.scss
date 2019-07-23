@@ -13,6 +13,27 @@
   }
 
   &__title {
+
+    &__container {
+      text-align: center;
+
+      .title1 {
+        display: inline-block;
+        border-bottom: 4px solid white;
+        font-size: 5.4rem;
+        line-height: 4.9rem;
+        margin-bottom: 1.6rem;
+        width: 70%;
+        min-width: 395px;
+
+        @media (max-width: 440px) {
+          min-width: 280px;
+          width: 100%;
+        }
+
+      }
+
+    }
     //@include lato-black;
     //font-size: 24px;
     margin: 0;
@@ -86,6 +107,7 @@
       }
     }
   }
+
 }
 
 .gift-button {
@@ -1590,6 +1612,19 @@
   }
 
   &__table {
+
+    &__container {
+
+      width: 70%;
+      min-width: 395px;
+
+      @media (max-width: 440px) {
+        min-width: 280px;
+        width: 100%
+      }
+
+    }
+
     &__header {
       padding: 10px 20px;
       background-color: $black;
@@ -1695,6 +1730,49 @@
     }
 
     &__cell {
+
+      &.ticket-info {
+
+        @media (max-width: 440px) {
+          float: none;
+          width: 100%;
+          text-align: center;
+          padding: 0;
+        }
+      }
+
+      &.ticket-pricing {
+
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          padding-left: 0;
+
+          @media (max-width: 440px) {
+            width: 100%;
+            justify-content: center;
+          }
+
+          .quantity {
+
+            margin-left: auto;
+
+            @media (max-width: 440px) {
+              margin: 0;
+            }
+
+          }
+
+          .price {
+            text-align: right;
+            @media (max-width: 440px) {
+              padding-right: 12px;
+            }
+          }
+
+      }
+
       &.physical {
         padding-left: 32px;
 
@@ -1777,6 +1855,27 @@
         }
       }
 
+      &__sub-total{
+        padding-top: 1%;
+
+        .title{
+          margin-left: auto;
+          padding-right: 1%;
+
+          @media (max-width: 440px) {
+            margin: 0;
+          }
+
+        }
+
+        @media (max-width: 440px) {
+          width: 100%;
+          justify-content: center;
+          margin-top: 20px;
+        }
+
+      }
+
       &.price {
         @include flex-shrink(0);
 
@@ -1804,6 +1903,7 @@
       }
 
       &.quantity {
+        padding-right: 5%;
         text-align: center;
         width: 100%;
         @include display(flex);
@@ -1856,6 +1956,7 @@
   }
 
   &__quantity-control {
+    margin-left: auto;
     @include display(flex);
     @include align-items(center);
 
@@ -1928,7 +2029,7 @@
   &__footer {
     @include lato;
     background-color: #f0f0eb;
-    padding: 40px 20px;
+    padding: 20px 20px;
     @include display(flex);
     @include flex-wrap(wrap);
     @include align-items(center);
@@ -2790,7 +2891,7 @@ form .back-to-payment-btn {
 
 .content-wrapper.basket {
   @media (max-width: 1023px) {
-    padding-top: 50px;
+    padding-top: 20px;
   }
 }
 

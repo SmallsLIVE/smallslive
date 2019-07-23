@@ -110,7 +110,7 @@
 
                     {% endif%}
                   {% csrf_token %}
-                  <a href="{% url 'basket:summary' %}" class="white-border-button left back-to-payment-btn"> Back to cart</a>
+                  <a href="{% url 'basket:summary' %}" class="white-border-button left back-to-payment-btn"> Back</a>
                   <button class="white-border-button checkout-white">Pay and order</button>
                   <input type="hidden" name="action" value="place_order"/>
                   <input type="hidden" name="payment_method" value="{{ payment_method }}">
