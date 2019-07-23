@@ -11,36 +11,36 @@
             <ul class="static-nav-menu">
               <li class="white-border-button no-border
                       {% block venues-location-active %}{% endblock %}" id="venues-location">
-                <a href="#" style="color: rgb(255, 0, 0);">Venues/Location</a>
+                <a tabindex="-1" href="#" style="color: rgb(255, 0, 0);">Venues/Location</a>
               </li>
   
-              <li class="white-border-button no-border
+              <li tabindex="-1" class="white-border-button no-border
                       {% block passes-tickets-statement-active %}{% endblock %}" id="passes-tickets">
-                <a href="#">Passes/Tickets</a>
+                <a tabindex="-1" href="#">Passes/Tickets</a>
               </li>
               <li class="white-border-button no-border
                       {% block hours-polices-active %}{% endblock %}" id="hours-policies">
-                <a href="#">Hours/Policies</a>
+                <a tabindex="-1" href="#">Hours/Policies</a>
               </li>
               <li class="white-border-button no-border
                       {% block foundation-active %}{% endblock %}"  id="foundation"><a
-                      href="#">Foundation</a>
+                      tabindex="-1" href="#">Foundation</a>
               </li>
               <li class="white-border-button no-border
                       {% block archive-active %}{% endblock %}" id="archive"><a
-                      href="#">Archive</a>
+                      tabindex="-1" href="#">Archive</a>
               </li>
               <li class="white-border-button no-border
                       {% block live-stream-active %}{% endblock %}" id="streaming"><a
-                      href="#">Live Stream</a>
+                      tabindex="-1" href="#">Live Stream</a>
               </li>
               <li class="white-border-button no-border
                       {% block catalog-active %}{% endblock %}" id="catalog"><a
-                      href="#">Catalog</a>
+                      tabindex="-1" href="#">Catalog</a>
               </li>
               <li class="white-border-button no-border
                       {% block about-us-active %}{% endblock %}" id="about-us">
-                <a href="#">About us</a>
+                <a tabindex="-1" href="#">About us</a>
               </li>
             </ul>
         <div class="flex-column info-page-container">
@@ -112,8 +112,21 @@
         $('.white-border-button').click(function(e){
 
 
-            let id = $(this).attr('id')
-            console.log("#"+id+"-tab")
+                let id = $(this).attr('id')
+
+              $('html, body').animate(
+                  {
+                    scrollTop: $("#"+id+"-tab").offset().top + 10
+                  },
+                  500,
+                  'linear'
+      )
+        })
+
+        function selectMenu(_this){
+
+            let id = $(_this).attr('id')
+
           $('html, body').animate(
               {
                 scrollTop: $("#"+id+"-tab").offset().top + 10
@@ -121,7 +134,7 @@
               500,
               'linear'
   )
-        })
+        }
 
         $('.expand').click(e => {
 
