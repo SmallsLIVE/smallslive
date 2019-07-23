@@ -32,7 +32,7 @@
       <div class="{{ event.venue.name|lower}}-color event-venue title5">Live at {{ event.venue.name }}</div>
       <div class="event-date title5">{{ event.get_date|date:'D M d' }}</div>
       <div class="event-sets title5">Sets at {{ event.get_set_hours_display}}</div>
-      <div class="icon-overlay">        
+      <div class="icon-overlay">
         <i id="btn-play-event" class="event-detail fa fa-play fa-thin-circle"></i>
       </div>
     </div>
@@ -50,10 +50,10 @@
     $('.buy-tickets').click(function(e){
       e.preventDefault();
       // Remember form to be submitted
-      $form = $(this).closest('form'); 
+      $form = $(this).closest('form');
 
       $('#buy-tickets-dialog').modal('show');
-      $('#ticket-name').text("Tickets for " + $(this).data('ticket-name'));
+      $('#ticket-name').text("Tickets for the " + $(this).data('ticket-name') + " set");
       $('#ticket-price').text("$" +$(this).data('ticket-price'));
     })
     $('#confirm-buy-tickets').click(function(){
@@ -69,7 +69,7 @@
       if (smallsConfig.user.isAuthenticated) {
         inactive = ('{% if is_event_user_not_confirmed %}true{% else %}false{% endif %}')
         if (inactive === 'true'){
-          modal = '#inactive-dialog';     
+          modal = '#inactive-dialog';
           $(modal).modal('show');
         } else {
           var allowStreamingTime = moment("{{ streaming.start.isoformat }}");
