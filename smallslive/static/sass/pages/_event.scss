@@ -424,23 +424,16 @@ $player-height: 25.3vw;
     display: flex;
     flex-direction: row;
     margin-bottom: auto;
-    @media (min-width: 768px) {
-      .upcoming-logo {
-        margin-top: -10px;
-        margin-right: -10px;
-      }
-    }
   }
 
   .event-overlay {
-    transition: all 0.6s;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
 
     color: white;
     height: 100%;
-    padding: 7%;
+    padding: 7px;
     /*padding-top: 14vw;*/
 
     @media (max-width: $screen-md-max) {
@@ -449,7 +442,6 @@ $player-height: 25.3vw;
     .title5 {
       font-weight: 200;
       letter-spacing: 0.09em;
-      margin-bottom: -3px;
     }
 
     &:hover {
@@ -476,7 +468,7 @@ $player-height: 25.3vw;
 
   .event-info-title {
     position: relative;
-    top: 0;
+    top: 15px;
     max-height: 97px;
     line-height: 2.6vw;
     font-size: 2.5vw;
@@ -857,16 +849,13 @@ $player-height: 25.3vw;
 
 .event-overlay-info {
   position: absolute;
-  right: 7%;
+  right: 15px;
   // bottom: 2.9vw;
   line-height: 1.51em;
   font-size: 1.6vw;
 
-  @media (max-width: $screen-sm-min) {
+  @media (max-width: $screen-md-min) {
     font-size: 3vw;
-  }
-  @media (min-width: $screen-sm-min) and (max-width: $screen-md-min) {
-    font-size: 2vw;
   }
 }
 
@@ -886,9 +875,7 @@ $player-height: 25.3vw;
 }
 
 .upcoming-logo {
-  position: absolute;
-  top: 2vw;
-  right: 2vw;
+  margin-left: auto;
 
   height: calc(6.94vw + 8.96px);
   width: calc(6.94vw + 8.96px);
@@ -898,5 +885,3 @@ $player-height: 25.3vw;
     width: calc(13.94vw + 8.96px);
   }
 }
-
-

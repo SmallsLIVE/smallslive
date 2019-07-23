@@ -2,103 +2,56 @@
 {% load thumbnail %}
 {% load currency_filters %}
 {% load purchase_info_tags %}
-<!-- Cart table header -->
-<div class="basket-header clearfix">
-    <div class="hidden-xs hidden-sm col-md-2 col-lg-1 store-cart__table__cell image">
-
-    </div>
-    <div class="hidden-xs hidden-sm col-md-10 col-lg-12 no-padding">
-      <div class="col-lg-offset-1 col-xs-12 col-sm-12 col-md-3 col-lg-7 store-cart__table__cell">
-        Tickets to buy now
-      </div>
-     
-      <div class="store-cart__mobile-quantity col-md-6 col-lg-4">
-        <div class="store-cart__mobile-quantity__half">
-          <div class="col-xs-12 store-cart__table__cell quantity">
-            <div class="store-cart__quantity-control">
-                Quantity
+<div class ="container-fluid store-cart__table__container">
+{% for form in formset %}
+  {% with line=form.instance product=form.instance.product %}
+    {% if not product.is_shipping_required %}
+      {% purchase_info_for_line request line as session %}
+        {{ form.id }}
+        <div class="row clearfix">
+          <div class="col-xs-6 store-cart__table__cell ticket-info">
+            <a href="{{ product.get_absolute_url }}">{{ product.get_title }}</a>
+            <div class="{{ product.event_set.event.venue|lower }}-color">
+              {{ product.event_set.event.venue }} Jazz Club
+            </div>
+            <div>
+              <!-- What is product.set? This should not be product.title because the title of the event should not be here... -->
+              The {{ product.set }} Set
             </div>
           </div>
-        </div>
-        <div class="store-cart__mobile-quantity__half">
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell price">
-            Price
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
-            Total
-          </div>
-        </div>
-      </div>
-    </div>
-</div>
-<!-- End of cart table header -->
-{% for form in formset %}
-    {% with line=form.instance product=form.instance.product %}
-        {% if not product.is_shipping_required %}
-            {% purchase_info_for_line request line as session %}
-            <!-- Cart table row -->
-            <div class="store-cart__table__row clearfix">
-              <div class="store-cart__table__row__remove">
-                  <a class="store-cart__table__remove-button" data-behaviours="remove" data-id="{{ forloop.counter0 }}"><i class="fa fa-remove"></i></a>
-              </div>
-              <div class="store-cart__table__row__container">
-                {{ form.id }}
-                 <div class="col-xs-3 col-sm-3 col-md-2 col-lg-2 image">
-                    {% with image=product.event_set.event.get_photo_url %}
-
-                        <a href="{{ product.event_set.event.get_absolute_url }}"><img class="defineImageRatio"
-                                                                  src="{% if image %} {{image}} {% else %} {% static 'image/no-event-image-placeholder.jpg' %} {% endif %}"
-                                                                  alt="{{ product.get_title }}"></a>
-
-                    {% endwith %}
-                  </div>
-                <div class="col-xs-8 col-sm-8 col-md-10 col-lg-11 no-padding">
-                  <div class="col-xs-12 col-sm-12 col-md-3 col-lg-6 store-cart__table__cell name">
-                      <a href="{{ product.get_absolute_url }}">{{ product.get_title }} {{ product.set }} at {{ product.event_set.event.venue }}</a>
-                  </div>
-                  <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2 store-cart__table__cell set">
-                    
-                  </div>
-                  <div class="store-cart__mobile-quantity col-md-6 col-lg-4">
-                    <div class="store-cart__mobile-quantity__half">
-                      <div class="col-xs-12 store-cart__table__cell quantity">
-                        <div class="store-cart__quantity-control">
-                          <button class="store-cart__quantity-control__button control-decrease {% if form.quantity.value <= 1 %}disabled{% endif %}" {% if form.quantity.value <= 1 %}disabled{% endif %} data-behaviour="decrease"><i
-                                  class="fa fa-minus-circle"></i></button>
-                          <span class="store-cart__quantity-control__label">{{ form.quantity.value }}</span>
-                          <input type="hidden" name="form-{{ forloop.counter0 }}-quantity"  value="{{ form.quantity.value }}"/>
-                          <div style="display: none;"><input id="id_form-{{ forloop.counter0 }}-DELETE" name="form-{{ forloop.counter0 }}-DELETE" type="checkbox"></div>
-                          <button class="store-cart__quantity-control__button control-increase"  data-behaviour="increase"><i
-                                  class="fa fa-plus-circle"></i></button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="store-cart__mobile-quantity__half">
-                      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell price">
-                        {{ line.unit_price_excl_tax|currency:line.price_currency }}
-                      </div>
-                      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 store-cart__table__cell total">
-                        {{ line.line_price_excl_tax|currency:line.price_currency }}
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xs-1 hidden-md hidden-lg store-cart__table__cell remove">
-                    <button class="store-cart__table__remove-button" data-behaviours="remove" data-id="{{ forloop.counter0 }}"><i class="fa fa-remove"></i></button>
-                  </div>
+          <div class="col-xs-6 store-cart__table__cell ticket-pricing">
+            <div class="ticket-pricing quantity">
+              <div class="store-cart__table__cell quantity">
+                <div class="store-cart__quantity-control">
+                  <button class="store-cart__quantity-control__button control-decrease {% if form.quantity.value <= 1 %}disabled{% endif %}" {% if form.quantity.value <= 1 %}disabled{% endif %} data-behaviour="decrease"><i
+                  class="fa fa-minus-circle"></i></button>
+                  <span class="store-cart__quantity-control__label">{{ form.quantity.value }}</span>
+                  <input type="hidden" name="form-{{ forloop.counter0 }}-quantity"  value="{{ form.quantity.value }}"/>
+                  <div style="display: none;"><input id="id_form-{{ forloop.counter0 }}-DELETE" name="form-{{ forloop.counter0 }}-DELETE" type="checkbox"></div>
+                  <button class="store-cart__quantity-control__button control-increase"  data-behaviour="increase"><i
+                  class="fa fa-plus-circle"></i></button>
                 </div>
               </div>
             </div>
-        {% endif %}
+            <div class="price">
+              {{ line.unit_price_excl_tax|currency:line.price_currency }}
+            </div>
+          </div>
+        </div>
+      {% endif %}
     {% endwith %}
-        <!-- End of cart table row -->
-{% endfor %}
-<!-- Cart table footer -->
-<div class="store-cart__table__footer clearfix">
-    <div class="col-xs-offset-4 col-xs-4 col-sm-offset-6 col-sm-3 col-md-offset-8 col-md-2 col-lg-offset-10 col-lg-1 store-cart__table__footer__cell">
+    <!-- End of cart table row -->
+  {% endfor %}
+  <!-- Cart table footer -->
+  <div class="row clearfix">
+    <div class="col-sm-12 store-cart__table__cell ticket-pricing store-cart__table__cell__sub-total">
+      <div class="title">
         Sub-total:
-    </div>
-    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1 store-cart__table__footer__cell value">
+      </div>
+      <div class="store-cart__table__footer__cell value">
         {{ basket.digital_total_excl_tax|currency:basket.currency }}
+      </div>
     </div>
+  </div>
+  <!-- End of cart table footer -->
 </div>
-<!-- End of cart table footer -->
