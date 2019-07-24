@@ -16,35 +16,35 @@
         <section class="store-header container">
             <div class="store-header__content">
                 <div class="white-line-bottom">
-                    <div class="title1 center">Order overview</div>
+                    <div tabindex="0" class="title1 center">Order overview</div>
                 </div>
             </div>
         </section>
         <section class="store-overview container">
             <div class="col-xs-12 col-sm-8 store-overview__left-column">
              <div class="white-line-bottom">
-                    <div class="title1 center">Ordered items:</div>
+                    <div tabindex="0" class="title1 center">Ordered items:</div>
             </div>
                 {% include 'checkout/tickets_products.html' %}
             </div>
             <div class="col-xs-12 col-sm-4 store-overview__right-column">
                 <div class="store-overview__group">
                 <div class="section-title section-title-no-padded">
-                  <div class="title1">Shipping</div>
+                  <div tabindex="0" class="title1">Shipping</div>
                 </div>
                     {% if shipping_address %}
                         <div class="store-overview__group__textblock text1">
-                            <p>{{ shipping_address.name }}</p>
-                            <p>{{ shipping_address.line1 }}</p>
-                            <p>{{ shipping_address.line2 }}</p>
-                            <p>{{ shipping_address.city }}{% if shipping_address.state %},  {{ shipping_address.state }}{% endif %}</p>
-                            <p>{{ shipping_address.country }}</p>
+                            <p tabindex="0" >{{ shipping_address.name }}</p>
+                            <p tabindex="0" >{{ shipping_address.line1 }}</p>
+                            <p tabindex="0" >{{ shipping_address.line2 }}</p>
+                            <p tabindex="0" >{{ shipping_address.city }}{% if shipping_address.state %},  {{ shipping_address.state }}{% endif %}</p>
+                            <p tabindex="0" >{{ shipping_address.country }}</p>
                         </div>
                     {% endif %}
                    
                     {% if shipping_method %}
                         <div class="store-overview__group__textblock text1">
-                            <p>Shipping method: {{ shipping_method.name }}</p>
+                            <p tabindex="0" >Shipping method: {{ shipping_method.name }}</p>
                         </div>
                     {% endif %}
                 </div>
@@ -56,21 +56,21 @@
                 </div>
                 <div class="store-overview__group">
                     <div class="section-title section-title-no-padded">
-                        <div class="title1">Billing</div>
+                        <div class="title1" tabindex="0" >Billing</div>
                      </div>
                     {% if billing_address %}
                     <div class="store-overview__group__textblock text1">
-                        <p>{{ billing_address.name }}</p>
-                        <p>{{ billing_address.line1 }}</p>
-                        <p>{{ billing_address.line2 }}</p>
-                        <p>{{ billing_address.city }}{% if billing_address.state %},  {{ billing_address.state }}{% endif %}</p>
-                        <p>{{ billing_address.country }}</p>
+                        <p tabindex="0" > {{ billing_address.name }}</p>
+                        <p tabindex="0" >{{ billing_address.line1 }}</p>
+                        <p tabindex="0" >{{ billing_address.line2 }}</p>
+                        <p tabindex="0" >{{ billing_address.city }}{% if billing_address.state %},  {{ billing_address.state }}{% endif %}</p>
+                        <p tabindex="0" >{{ billing_address.country }}</p>
                     </div>
                     {% endif %}
                     <div class="store-overview__group__textblock text1">
-                        <p class="small-heading">Credit card:</p>
-                        <p>{{ card_info.name }}</p>
-                        <p>xxxx xxxx xxxx {{ card_info.last_4 }}</p>
+                        <p tabindex="0" class="small-heading">Credit card:</p>
+                        <p tabindex="0" >{{ card_info.name }}</p>
+                        <p tabindex="0" >xxxx xxxx xxxx {{ card_info.last_4 }}</p>
                     </div>
                     <div class="store-overview__return-button__container">
                     <a href="{% url 'checkout:payment-details' %}" class="white-border-button">Edit</a>

@@ -11,10 +11,10 @@
         <div class="row clearfix">
           <div class="col-xs-6 store-cart__table__cell ticket-info">
             <a href="{{ product.get_absolute_url }}">{{ product.get_title }}</a>
-            <div class="{{ product.event_set.event.venue|lower }}-color">
+            <div tabindex="0" class="{{ product.event_set.event.venue|lower }}-color">
               {{ product.event_set.event.venue }} Jazz Club
             </div>
-            <div>
+            <div tabindex="0">
               <!-- What is product.set? This should not be product.title because the title of the event should not be here... -->
               The {{ product.set }} Set
             </div>
@@ -33,7 +33,7 @@
                 </div>
               </div>
             </div>
-            <div class="price">
+            <div tabindex="0" class="price">
               {{ line.unit_price_excl_tax|currency:line.price_currency }}
             </div>
           </div>
@@ -48,7 +48,7 @@
       <div class="title">
         Sub-total:
       </div>
-      <div class="store-cart__table__footer__cell value">
+      <div tabindex="0" class="store-cart__table__footer__cell value">
         {{ basket.digital_total_excl_tax|currency:basket.currency }}
       </div>
     </div>
