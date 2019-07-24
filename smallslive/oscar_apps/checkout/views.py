@@ -304,6 +304,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
         return [template_name]
 
     def get_context_data(self, **kwargs):
+        #is it possible for null values? the below does not account for it and there shouldn't be a way for the reservation name to be blank...
         kwargs["reservation_string"] = self.checkout_session.get_reservation_name()[0] + " " + self.checkout_session.get_reservation_name()[1]
         basket = self.request.basket
 
