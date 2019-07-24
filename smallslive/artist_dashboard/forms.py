@@ -83,8 +83,6 @@ class EventEditForm(event_forms.EventEditForm):
         del self.fields['venue']
         del self.fields['subtitle']
         del self.fields['state']
-        del self.fields['start']
-        del self.fields['end']
         del self.fields['date']
 
 
