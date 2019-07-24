@@ -1,19 +1,14 @@
 import logging
 from paypal.payflow import facade
 from django import http
-from django.conf import settings
-from django.contrib import messages
 from django.contrib.auth import login
 from django.core.urlresolvers import reverse
-from django import forms
 from django.forms.models import model_to_dict
 from django.shortcuts import redirect
 from django.utils import six
-from django.views.generic import RedirectView, View
 from oscar.apps.address.models import Country
 from oscar.apps.checkout import views as checkout_views
 from oscar.apps.checkout import signals
-from oscar.apps.checkout.views import OrderPlacementMixin
 from oscar.apps.order.exceptions import UnableToPlaceOrder
 from oscar.apps.payment.exceptions import RedirectRequired, UnableToTakePayment, PaymentError
 from oscar.apps.payment.models import SourceType, Source
@@ -23,6 +18,8 @@ from oscar_apps.catalogue.models import UserCatalogue, UserCatalogueProduct
 from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.mixins import PayPalMixin, StripeMixin
 from subscriptions.models import Donation
+import utils as sl_utils
+
 from .forms import PaymentForm, BillingAddressForm
 
 BankcardForm = get_class('payment.forms', 'BankcardForm')
@@ -157,24 +154,135 @@ class PaymentMethodView(checkout_views.PaymentMethodView):
             return redirect(url)
 
 
-class PaymentDetailsView(checkout_views.PaymentDetailsView,
-                         PayPalMixin, StripeMixin):
+class AssignProductMixin(object):
+
+    def assign(self):
+        # Assign products for Library
+        for line in self.order.lines.all():
+            category_list = []
+            for category in line.product.get_categories().all():
+                category_list.append(category.name)
+            if 'Full Access' in category_list or line.product.product_class.slug == 'full-access':
+                if UserCatalogue.objects.filter(user=self.request.user).first():
+                    UserCatalogue.objects.filter(user=self.request.user).update(has_full_catalogue_access=True)
+                else:
+                    UserCatalogue.objects.get_or_create(user=self.request.user, has_full_catalogue_access=True)
+            if line.product.product_class.slug in ['physical-album', 'digital-album', 'track']:
+                UserCatalogueProduct.objects.get_or_create(user=self.request.user, product=line.product)
+
+
+class SuccessfulOrderMixin(object):
+
+    def handle(self):
+
+        """
+                Handle the various steps required after an order has been successfully
+                placed.
+
+                Overridden from OrderPlacementMixin.
+                """
+
+        if not self.tickets_type:
+            donation = Donation.objects.filter(reference=self.payment_id).first()
+            if donation:
+                donation.confirmed = True
+                donation.save()
+
+        if self.tickets_type:
+            # Set status to completed for lines if it's a ticket.
+            # 'create_lines_models' method is not passed the order status unfortunately.
+            lines = self.order.lines.all()
+            for line in lines:
+                line.set_status('Completed')
+        else:
+            # Assign product to Library
+            self.assign()
+
+        #  Save order id in session so thank-you page can load
+        self.request.session['checkout_order_id'] = self.order.id
+
+        order_type_code = 'ORDER_PLACED'
+        if self.order.has_tickets():
+            order_type_code = 'TICKET_PLACED'
+        if self.order.basket.has_gifts():
+            order_type_code = 'GIFT_PLACED'
+
+        # Send confirmation message (normally an email)
+        self.send_confirmation_message(self.order, order_type_code)
+
+        self.order.set_status('Completed')
+        for line in self.order.lines.all():
+            line.set_status('Completed')
+
+        # Flush all session data
+        self.checkout_session.flush()
+
+        # Get flow type from session
+        flow_type = self.request.session.get('flow_type')
+
+        print '************************************************'
+        print 'Flow type: ', flow_type
+        print self.get_success_url()
+        print '**********************************'
+
+        if flow_type == 'catalog_selection':
+            response = http.JsonResponse({'success_url': self.get_success_url()})
+        elif self.request.is_ajax():
+            success_url = reverse('become_supporter_complete')
+            if flow_type:
+                success_url += '?flow_type=' + flow_type
+                # remove flow_type from session
+                del self.request.session['flow_type']
+
+                sl_utils.utils.clean_messages(self.request)
+
+            response = http.JsonResponse({'success_url': success_url})
+        else:
+            response = http.HttpResponseRedirect(self.get_success_url())
+
+        if self.order:
+            self.send_signal(self.request, response, self.order)
+
+        return response
+
+
+class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
+                         StripeMixin, AssignProductMixin,
+                         SuccessfulOrderMixin):
     """
-    In the case of AJAX  (new become a supporter flow - gifts), we need to
-    split billing from payment to match the existing payment design.
-    I couldn't find a way
+    Extended from Oscar.
+    Takes payment, renders order preview and takes order submission.
+    Some payment types can be processed online (Stripe) and others need
+    redirection to the vendor's website (PayPal). Those will be completed by
+    a different class (ExecutePayPalPaymentView).
     """
 
     def __init__(self, *args, **kwargs):
-
+        """
+        product_id: Product the payment goes to.
+        event_id: Event the payment goes to.
+        card_token: Stripe token.
+        amount: Item price.
+        payment_id: Id provided by payment gateway.
+        order: Oscar order instance.
+        ticket_type: ticket type (mezzrow or smalls) if currently processing a ticket.
+        ticket_name: information about purchase
+        """
         super(PaymentDetailsView, self).__init__(*args, **kwargs)
         self.product_id = None
         self.event_id = None
         self.card_token = None
         self.amount = None
         self.total = None
+        self.payment_id = None
+        self.order = None
+        self.tickets_type = None
+        self.ticket_name = {}
 
     def get_template_names(self):
+        """
+        Different templates are rendered according to conditions.
+        """
 
         if not self.preview:
             if self.request.is_ajax():
@@ -197,25 +305,43 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
 
     def get_context_data(self, **kwargs):
         basket = self.request.basket
-        if not self.request.user.is_authenticated():
-            kwargs["guest"] = {"first_name":self.checkout_session.get_reservation_name()[0], "last_name":self.checkout_session.get_reservation_name()[1]}
-        if basket.has_tickets():  # TODO: add parameter venue_name='Mezzrow'
-            kwargs['bankcard_form'] = kwargs.get('bankcard_form', BankcardForm())
+
+        # If user is purchasing tickets, set the type (venue or smalls).
+        self.tickets_type = basket.get_tickets_type()  # TODO: add parameter venue_name='Mezzrow'
+        if self.tickets_type:
+            kwargs.update(self.get_tickets_context())
         else:
-            kwargs['form'] = kwargs.get('form', PaymentForm(self.request.user))
-            if 'billing_address_form' not in kwargs and self.request.user.is_authenticated():
-                shipping_address = self.get_shipping_address(basket)
-                billing_initial = self.get_billing_initial()
-                kwargs['billing_address_form'] = BillingAddressForm(
-                    shipping_address, self.request.user,
-                    initial=billing_initial)
-
-            if hasattr(self, 'token'):
-                kwargs['stripe_token'] = self.token
-
-            kwargs['card_info'] = self.checkout_session._get('payment', 'card_info')
+            kwargs.update(self.get_basket_context(basket))
 
         return super(PaymentDetailsView, self).get_context_data(**kwargs)
+
+    def get_tickets_context(self):
+        kwargs = {}
+        if not self.request.user.is_authenticated():
+            kwargs['guest'] = {
+                'first_name': self.checkout_session.get_reservation_name()[0],
+                'last_name': self.checkout_session.get_reservation_name()[1]
+            }
+            kwargs['bankcard_form'] = kwargs.get('bankcard_form', BankcardForm())
+
+        return kwargs
+
+    def get_basket_context(self, basket):
+        kwargs = {}
+        kwargs['form'] = kwargs.get('form', PaymentForm(self.request.user))
+        if 'billing_address_form' not in kwargs and self.request.user.is_authenticated():
+            shipping_address = self.get_shipping_address(basket)
+            billing_initial = self.get_billing_initial()
+            kwargs['billing_address_form'] = BillingAddressForm(
+                shipping_address, self.request.user,
+                initial=billing_initial)
+
+        if hasattr(self, 'token'):
+            kwargs['stripe_token'] = self.token
+
+        kwargs['card_info'] = self.checkout_session._get('payment', 'card_info')
+
+        return kwargs
 
     def get_billing_initial(self):
         address = self.get_default_billing_address()
@@ -226,54 +352,46 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             return None
 
     def post(self, request, *args, **kwargs):
+        """
+        Take order submission.
+        """
+
         # Posting to payment-details isn't the right thing to do.  Form
         # submissions should use the preview URL.
         if not self.preview:
             return http.HttpResponseBadRequest()
         
-        self.ticket_name = {}
-        self.ticket_name["first"] = self.request.POST.get('guest_first_name', "")
-        self.ticket_name["last"] = self.request.POST.get('guest_last_name', "")
+        self.ticket_name['first'] = self.request.POST.get('guest_first_name', '')
+        self.ticket_name['last'] = self.request.POST.get('guest_last_name', '')
         # We use a custom parameter to indicate if this is an attempt to place
         # an order (normally from the preview page).  Without this, we assume a
         # payment form is being submitted from the payment details view. In
         # this case, the form needs validating and the order preview shown.
         if request.POST.get('action', '') == 'place_order':
-            self.token = self.request.POST.get('card_token')
+            self.card_token = self.request.POST.get('card_token')
             return self.handle_place_order_submission(request, ticket_name=self.ticket_name)
+
         return self.handle_payment_details_submission(request, ticket_name=self.ticket_name)
 
-    def _handle_payment_details_submission_for_mezzrow(self,
-                                                       request,
-                                                       billing_address_form,
-                                                       payment_method, ticket_name=None): 
-        """Customer can pay for Mezzrow tickets with PayPal or Credit Card.
-        If CC, it is processed with PayPal PayFlow Pro"""
-        self.ticket_name = ticket_name
-        if payment_method == 'paypal':
-            return self.render_preview(request,
-                                       billing_address_form=billing_address_form,
-                                       payment_method=payment_method, ticket_name=ticket_name)
-        else:
-            bankcard_form = BankcardForm(request.POST)
-            if not bankcard_form.is_valid():
-                # Form validation failed, render page again with errors
-                self.preview = False
-                return self.render_payment_details(request, bankcard_form=bankcard_form,
-                                                   billing_address_form=billing_address_form)
-            else:
-                return self.render_preview(request,
-                                           bankcard_form=bankcard_form,
-                                           payment_method=payment_method, ticket_name=ticket_name)
-
     def handle_payment_details_submission(self, request, ticket_name=None):
-        """"""
+        """
+        Process payment. Stripe can be processed immediately, while
+        PayPal will require a redirect and be finished in another class.
+        """
         basket = request.basket
         shipping_address = self.get_shipping_address(basket)
+        billing_address_form = self.handle_billing_address(shipping_address, request.user)
         payment_method = request.POST.get('payment_method')
-        user = self.request.user
+        if basket.has_tickets():  # TODO: add parameter venue_name='Mezzrow'
+            return self.handle_payment_details_submission_for_tickets(
+                billing_address_form, payment_method, ticket_name)
+        else:
+            return self.handle_payment_details_submission_for_basket(
+                shipping_address, billing_address_form, payment_method)
+
+    def handle_billing_address(self, shipping_address, user):
         if user.is_authenticated():
-            billing_address_form = BillingAddressForm(shipping_address, user, request.POST)
+            billing_address_form = BillingAddressForm(shipping_address, user, self.request.POST)
             if billing_address_form.is_valid():
                 print billing_address_form.errors
                 if billing_address_form.cleaned_data.get('billing_option') == "same-address":
@@ -287,39 +405,61 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
         else:
             billing_address_form = None
 
-        if basket.has_tickets():  # TODO: add parameter venue_name='Mezzrow'
-            return self._handle_payment_details_submission_for_mezzrow(
-                request, billing_address_form, payment_method, ticket_name)
+        return billing_address_form
+
+    def handle_payment_details_submission_for_tickets(self,
+                                                      billing_address_form,
+                                                      payment_method, ticket_name=None):
+        """Customer can pay for Mezzrow tickets with PayPal or Credit Card.
+        If CC, it is processed with PayPal PayFlow Pro"""
+        self.ticket_name = ticket_name
+        if payment_method == 'paypal':
+            return self.render_preview(self.request,
+                                       billing_address_form=billing_address_form,
+                                       payment_method=payment_method, ticket_name=ticket_name)
         else:
-
-            form = PaymentForm(self.request.user, request.POST)
-
-            if billing_address_form and not billing_address_form.is_valid():
-                print '*** error ****'
-                return self.render_payment_details(request, form=form,
+            bankcard_form = BankcardForm(self.request.POST)
+            if not bankcard_form.is_valid():
+                # Form validation failed, render page again with errors
+                self.preview = False
+                return self.render_payment_details(self.request, bankcard_form=bankcard_form,
                                                    billing_address_form=billing_address_form)
-
-            if payment_method == 'paypal':
-                return self.render_preview(request, billing_address_form=billing_address_form,
-                                           payment_method='paypal')
             else:
-                if payment_method == 'existing-credit-card':
-                    for field in form.fields:
-                        if field != 'payment_method':
-                            form.fields[field].required = False
-                if form.is_valid():
-                    self.token = form.token
-                    self.checkout_session._set('payment', 'card_info', {
-                        'name': form.cleaned_data['name'],
-                        'last_4': form.cleaned_data['number'][-4:],
-                    })
-                    return self.render_preview(request, card_token=form.token, form=form,
-                                               payment_method=payment_method,
+                return self.render_preview(self.request,
+                                           bankcard_form=bankcard_form,
+                                           payment_method=payment_method,
+                                           ticket_name=ticket_name)
+
+    def handle_payment_details_submission_for_basket(
+            self, shipping_address, billing_address_form, payment_method):
+        form = PaymentForm(self.request.user, self.request.POST)
+
+        if billing_address_form and not billing_address_form.is_valid():
+            print '*** error ****'
+            return self.render_payment_details(self.request, form=form,
                                                billing_address_form=billing_address_form)
-                else:
-                    print(form.errors)
-                    return self.render_payment_details(request, form=form,
-                                                       billing_address_form=billing_address_form)
+
+        if payment_method == 'paypal':
+            return self.render_preview(self.request, billing_address_form=billing_address_form,
+                                       payment_method='paypal')
+        else:
+            if payment_method == 'existing-credit-card':
+                for field in form.fields:
+                    if field != 'payment_method':
+                        form.fields[field].required = False
+            if form.is_valid():
+                self.card_token = form.token
+                self.checkout_session._set('payment', 'card_info', {
+                    'name': form.cleaned_data['name'],
+                    'last_4': form.cleaned_data['number'][-4:],
+                })
+                return self.render_preview(self.request, card_token=form.token, form=form,
+                                           payment_method=payment_method,
+                                           billing_address_form=billing_address_form)
+            else:
+                print(form.errors)
+                return self.render_payment_details(self.request, form=form,
+                                                   billing_address_form=billing_address_form)
 
     def handle_place_order_submission(self, request, ticket_name=None):
         print '****************************'
@@ -547,63 +687,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             return self.render_preview(
                 self.request, error=msg, **payment_kwargs)
 
-    def handle_successful_order(self, order):
-        """
-        Handle the various steps required after an order has been successfully
-        placed.
-
-        Overridden from OrderPlacementMixin.
-        """
-        # Send confirmation message (normally an email)
-        order_type_code = 'ORDER_PLACED'
-        if order.has_tickets():
-            order_type_code = 'TICKET_PLACED'
-        if order.basket.has_gifts():
-            order_type_code = 'GIFT_PLACED'
-        self.send_confirmation_message(order, order_type_code)
-
-        order.set_status('Completed')
-        for line in order.lines.all():
-            line.set_status('Completed')
-
-        # Flush all session data
-        self.checkout_session.flush()
-
-        # Get flow type from session
-        flow_type = self.request.session.get('flow_type')
-
-        # Save order id in session so thank-you page can load it
-        self.request.session['checkout_order_id'] = order.id
-
-        print '************************************************'
-        print 'Flow type: ', flow_type
-        print self.get_success_url()
-        print '**********************************'
-
-        if flow_type == 'catalog_selection':
-            response = http.JsonResponse({'success_url': self.get_success_url()})
-        elif self.request.is_ajax():
-            success_url = reverse('become_supporter_complete')
-            if flow_type:
-                success_url += '?flow_type=' + flow_type
-                # remove flow_type from session
-                del self.request.session['flow_type']
-
-                # remove messages
-                storage = messages.get_messages(self.request)
-                for _ in storage:
-                    pass
-                storage.used = True
-
-            response = http.JsonResponse({'success_url': success_url})
-        else:
-            response = http.HttpResponseRedirect(self.get_success_url())
-
-        if order:
-            self.send_signal(self.request, response, order)
-
-        return response
-
     def get_item_list(self, basket_lines):
 
         items = []
@@ -677,7 +760,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
             if self.card_token:
                 self.total = total
                 print 'Payment Total: ', total
-                reference = self.handle_stripe_payment(order_number, basket_lines, **kwargs)
+                self.payment_id = self.handle_stripe_payment(order_number, basket_lines, **kwargs)
                 source_name = 'Stripe Credit Card'
                 source_type, __ = SourceType.objects.get_or_create(name=source_name)
                 source = Source(
@@ -685,16 +768,16 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
                     currency=currency,
                     amount_allocated=total.incl_tax,
                     amount_debited=total.incl_tax,
-                    reference=reference)
+                    reference=self.payment_id)
                 self.add_payment_source(source)
-                self.add_payment_event('Purchase', total.incl_tax, reference=reference)
+                self.add_payment_event('Purchase', total.incl_tax, reference=self.payment_id)
                 # Set an ongoing donation, finished when payment is confirmed
                 total_deductable = basket._get_deductable_physical_total()
                 donation = {
                     'user': self.request.user,
                     'currency': currency,
                     'amount': total.incl_tax,
-                    'reference': reference,
+                    'reference': self.payment_id,
                     'confirmed': False,
                     'deductable_amount': str(total_deductable)
                 }
@@ -727,10 +810,23 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView,
 
         return items
 
+    def handle_successful_order(self, order):
+        self.order = order
 
-class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
+        return self.handle()
+
+
+class ExecutePayPalPaymentView(PaymentDetailsView,
+                               AssignProductMixin,
+                               SuccessfulOrderMixin):
     """
     """
+
+    def __init__(self, *args, **kwargs):
+        super(ExecutePayPalPaymentView, self).__init__(*args, **kwargs)
+        self.order = None
+        self.payment_id = None
+        self.tickets = None
 
     def get(self, request, *args, **kwargs):
 
@@ -741,7 +837,7 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
         """
 
         try:
-            payment_id = self.execute_payment()
+            self.handle_payment()
         except UnableToTakePayment as e:
             # Something went wrong with payment but in an anticipated way.  Eg
             # their bankcard has expired, wrong card number - that kind of
@@ -756,41 +852,68 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
             return self.render_payment_details(
                 self.request, error=error_msg)
 
-        # request.basket doesn't work b/c the basket is frozen
-        basket = self.get_submitted_basket()
-        # TODO: check that the strategy is correct for Tracks (right stock record).
-        # If basket has tracks, it's probably to use custom strategy.
-        strategy = selector.strategy(request=request, user=request.user)
-        basket.strategy = strategy
-        self.handle_order_placement(basket, payment_id)
-
         # Get flow type from session
         flow_type = self.request.session.get('flow_type')
         if flow_type:
 
-            storage = messages.get_messages(self.request)
-            for _ in storage:
-                pass
-            storage.used = True
+            sl_utils.utils.clean_messages(self.request)
 
             return http.HttpResponseRedirect(reverse(
                 'become_supporter_complete') + '?payment_id={}&flow_type={}'.format(
-                payment_id, flow_type))
+                self.payment_id, flow_type))
         else:
             return http.HttpResponseRedirect(reverse(
-                'checkout:thank-you') + '?payment_id={}'.format(payment_id))
+                'checkout:thank-you') + '?payment_id={}'.format(self.payment_id))
 
-    def handle_order_placement(self, basket, payment_id):
+    def handle_payment(self):
+
+        self.payment_id = self.execute_payment()
+
+        # request.basket doesn't work b/c the basket is frozen
+        basket = self.get_submitted_basket()
+        # TODO: check that the strategy is correct for Tracks (right stock record).
+        # If basket has tracks, it's probably to use custom strategy.
+        strategy = selector.strategy(request=self.request, user=self.request.user)
+        basket.strategy = strategy
 
         order_number = self.checkout_session.get_order_number()
-        order_kwargs = {'order_type': basket.get_order_type()}
-        if basket.has_tickets():
+        user = self.request.user
+        shipping_address = self.get_shipping_address(basket)
+        shipping_method = Repository().get_default_shipping_method(
+            basket=basket, user=user,
+            request=self.request)
+        shipping_charge = shipping_method.calculate(basket)
+        billing_address = self.get_billing_address(shipping_address)
+        order_total = self.get_order_totals(
+            basket, shipping_charge=shipping_charge)
+
+        total_incl_tax = basket.total_incl_tax
+
+        # Record payment source
+        self.order = Order.objects.get(number=order_number)
+        order_kwargs = {}
+        if self.order.has_tickets():
+            # TODO: check for smalls tickets
+            # TODO: check for paypal smalls
+            self.tickets = 'mezzrow'
             order_kwargs['status'] = 'Completed'
             payment_source = 'Mezzrow PayPal'
             payment_event = 'Sold'
         else:
             payment_source = 'PayPal'
             payment_event = 'Purchase'
+
+        source_type, is_created = SourceType.objects.get_or_create(
+            name=payment_source)
+        source = Source(source_type=source_type,
+                        currency='USD',
+                        amount_allocated=total_incl_tax,
+                        amount_debited=total_incl_tax,
+                        reference=self.payment_id)
+        self.add_payment_source(source)
+        self.add_payment_event(
+            payment_event, total_incl_tax, reference=self.payment_id)
+
         user = self.request.user
         if not user.is_anonymous():
             first_name, last_name = user.first_name, user.last_name
@@ -807,60 +930,14 @@ class ExecutePayPalPaymentView(OrderPlacementMixin, PayPalMixin, View):
                 'last_name': last_name
             })
 
-        total_incl_tax = basket.total_incl_tax
-        # Record payment source
-        source_type, is_created = SourceType.objects.get_or_create(
-            name=payment_source)
-        source = Source(source_type=source_type,
-                        currency='USD',
-                        amount_allocated=total_incl_tax,
-                        amount_debited=total_incl_tax,
-                        reference=payment_id)
-        self.add_payment_source(source)
-        self.add_payment_event(
-            payment_event, total_incl_tax, reference=payment_id)
+        self.handle_order_placement(order_number, user, basket,
+                                    shipping_address, shipping_method,
+                                    shipping_charge, billing_address, order_total,
+                                    **order_kwargs)
 
-        if not basket.has_tickets():
-            donation = Donation.objects.filter(reference=payment_id).first()
-            donation.confirmed = True
-            donation.save()
-
-        shipping_address = self.get_shipping_address(basket)
-        shipping_method = Repository().get_default_shipping_method(
-            basket=basket, user=user,
-            request=self.request)
-        shipping_charge = shipping_method.calculate(basket)
-        order_total = self.get_order_totals(
-            basket, shipping_charge=shipping_charge)
-        billing_address = self.get_billing_address(shipping_address)
-        # Place order
-        response = super(ExecutePayPalPaymentView, self).handle_order_placement(
-            order_number, user, basket,
-            shipping_address, shipping_method, shipping_charge,
-            billing_address, order_total, **order_kwargs)
-
-        # Set status to completed for lines if it's a ticket.
-        # 'create_lines_models' method is not passed the order status unfortunately.
-        order = Order.objects.get(number=order_number)
-        if order.has_tickets():
-            lines = order.lines.all()
-            for line in lines:
-                line.set_status('Completed')
-
-        # Assign products for Library
-        for line in order.lines.all():
-            category_list = []
-            for category in line.product.get_categories().all():
-                category_list.append(category.name)
-            if 'Full Access' in category_list or line.product.product_class.slug == "full-access":
-                if UserCatalogue.objects.filter(user=self.request.user).first():
-                    UserCatalogue.objects.filter(user=self.request.user).update(has_full_catalogue_access=True)
-                else:
-                    UserCatalogue.objects.get_or_create(user=self.request.user, has_full_catalogue_access=True)
-            if line.product.product_class.slug in ["physical-album", "digital-album", "track"]:
-                UserCatalogueProduct.objects.get_or_create(user=self.request.user, product=line.product)
-
-        return response
+    def handle_successful_order(self, order):
+        self.order = order
+        return self.handle()
 
 
 class ExecuteMezzrowPayPalPaymentView(ExecutePayPalPaymentView):

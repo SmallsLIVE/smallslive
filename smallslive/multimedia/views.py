@@ -261,6 +261,7 @@ class NewMyDownloadsView(LoginRequiredMixin, ListView, PurchasedProductsInfoMixi
     def get_context_data(self, **kwargs):
         context = super(NewMyDownloadsView, self).get_context_data(**kwargs)
         self.get_purchased_products()
+
         context['album_list'] = self.album_list
         print context['album_list']
         return context

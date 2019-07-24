@@ -26,7 +26,7 @@ class ArtistCatalogue(ProductCategoryView):
 
         artist = Artist.objects.filter(pk=id).first()
         above_limit = artist.albums().count() > 8
-        context = {'artist': artist, 'above_limit':above_limit}
+        context = {'artist': artist, 'above_limit': above_limit}
         template = 'catalogue/artist-category.html'
 
         temp = render_to_string(template,
@@ -94,7 +94,6 @@ class PurchasedProductsInfoMixin(object):
                 self.digital_album_list = Product.objects.filter(product_class__slug='digital-album', access__user=self.request.user)
                 self.physical_album_list = Product.objects.filter(product_class__slug='physical-album', access__user=self.request.user)
                 self.track_list = UserCatalogueProduct.objects.filter(product__product_class__slug='track', user=self.request.user)
-
             self.album_list = []
             for album in list(self.digital_album_list) + list(self.physical_album_list):
                 album_info = {

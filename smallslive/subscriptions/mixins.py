@@ -154,7 +154,7 @@ class StripeMixin(object):
 
     def handle_stripe_payment(self, order_number, basket_lines, **kwargs):
         customer = self.request.user.customer
-        if not self.token.startswith('card_'):
+        if not self.card_token.startswith('card_'):
             customer.update_card(self.card_token)
             charge = customer.charge(
                 Decimal(
@@ -166,7 +166,7 @@ class StripeMixin(object):
             stripe_ref = Facade().charge(
                 order_number,
                 self.total,
-                card=self.token,
+                card=self.card_token,
                 description=self.payment_description(
                     order_number, self.total.incl_tax, **kwargs),
                 metadata=self.payment_metadata(

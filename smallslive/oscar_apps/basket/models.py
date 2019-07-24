@@ -23,6 +23,16 @@ class Basket(AbstractBasket):
         tickets_count = qs.filter(product__product_class__name='Ticket').count()
 
         return tickets_count > 0
+
+    def get_tickets_type(self):
+        qs = self.all_lines().filter(product__product_class__name='Ticket')
+        lines = list(qs)
+        venue = None
+        if lines:
+            line = lines[0]
+            venue = line.product.get_product_class().name.lower()
+
+        return venue
     
     def has_gifts(self):
         gifts_count = self.all_lines().filter(product__product_class__name='Gift').count()
