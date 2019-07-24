@@ -22,10 +22,6 @@ $(document).ready(function () {
           items: 1,
           dots: true
         },
-        550:{
-          items: 2,
-          slideBy: 2
-        },
         960:{
           items: 3
         }

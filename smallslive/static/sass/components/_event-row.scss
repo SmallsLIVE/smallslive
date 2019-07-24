@@ -96,7 +96,8 @@ $event-row-padding: 3.5vw;
       z-index: 10;
 
       @media (max-width: 960px) {
-        width: 4vw;
+        width: 10vw;
+        visibility: hidden;
       }
 
       @media (max-width: 550px) {
@@ -122,7 +123,8 @@ $event-row-padding: 3.5vw;
       z-index: 10;
 
       @media (max-width: 960px) {
-        width: 4vw;
+        width: 10vw;
+        visibility: hidden;
       }
 
       @media (max-width: 550px) {
@@ -635,7 +637,7 @@ $event-row-padding: 3.5vw;
     height: calc(36.7vw * 0.6 - 30px);
   }
 
-  @media (min-width: 550px) and( max-width: 768px) {
+  @media (min-width: 550px) and (max-width: 768px) {
     height: calc(67vw * 0.6 - 25px);
 
     a .event-card .event-picture-container .picture-border .event-picture {
@@ -643,10 +645,11 @@ $event-row-padding: 3.5vw;
     }
   }
 
-  @media (min-width: 768px) and( max-width: 960px) {
-    height: calc(60vw * 0.6 - 25px);
+  @media (min-width: 768px) and (max-width: 960px) {
+    height: 350px;
+
     a .event-card .event-picture-container .picture-border .event-picture {
-      height: calc(60vw * 0.6 - 25px);
+      height: 350px;
     }
   }
 
