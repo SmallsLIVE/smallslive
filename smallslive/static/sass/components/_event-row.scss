@@ -11,7 +11,7 @@ $event-card-margin: 0.4vw;
 $event-row-padding: 3.5vw;
 
 .live {
-  .slide-btn {
+  .slide-btn, .slick-slide-btn {
     &.prev,
     &.next {
       @media (min-width: 1366px) {
@@ -20,10 +20,6 @@ $event-row-padding: 3.5vw;
 
       @media (max-width: 1365px) and (min-width: 1024px) {
         height: $live-card-width-medium * 0.6;
-      }
-
-      @media (max-width: $screen-md-min) {
-        display: none;
       }
     }
 
@@ -51,7 +47,7 @@ $event-row-padding: 3.5vw;
   }
 }
 
-.slide-btn {
+.slide-btn, .slick-slide-btn {
   &.prev,
   &.next {
     border-radius: 10px 0 0 10px;
@@ -81,10 +77,6 @@ $event-row-padding: 3.5vw;
     @media (max-width: 1023px) and (min-width: 961px) {
       height: $live-card-width-tablet * 0.6;
     }
-
-    @media (max-width: $screen-sm-max) {
-      display: none;
-    }
   }
 
   &.prev {
@@ -101,6 +93,17 @@ $event-row-padding: 3.5vw;
 
     &.today-and-tomorrow-arrow {
       width: 2.5vw;
+      z-index: 10;
+
+      @media (max-width: 960px) {
+        width: 10vw;
+        visibility: hidden;
+      }
+
+      @media (max-width: 550px) {
+        width: 6vw;
+        visibility: hidden;
+      }
     }
   }
 
@@ -113,6 +116,21 @@ $event-row-padding: 3.5vw;
       left: 0.78vw;
       position: absolute;
       top: 0;
+    }
+
+    &.today-and-tomorrow-arrow {
+      width: 2.5vw;
+      z-index: 10;
+
+      @media (max-width: 960px) {
+        width: 10vw;
+        visibility: hidden;
+      }
+
+      @media (max-width: 550px) {
+        width: 6vw;
+        visibility: hidden;
+      }
     }
   }
 
@@ -137,7 +155,7 @@ $event-row-padding: 3.5vw;
 }
 
 #artists {
-  .slide-btn {
+  .slide-btn, .slick-slide-btn {
     &.prev,
     &.next {
       @media (min-width: 1366px) {
@@ -160,7 +178,7 @@ $event-row-padding: 3.5vw;
 }
 
 .event-stripe.archive {
-  .slide-btn {
+  .slide-btn, .slick-slide-btn {
     &.prev,
     &.next {
       @media (min-width: 1366px) {
@@ -191,6 +209,15 @@ $event-row-padding: 3.5vw;
   }
 }
 
+.tonight-events {
+  @extend .event-row;
+  padding: 0;
+
+  @media (min-width: $screen-sm-max) {
+    padding: 0;
+  }
+}
+
 .event-display {
   margin-right: $event-card-margin;
   position: relative;
@@ -200,18 +227,14 @@ $event-row-padding: 3.5vw;
   position: relative;
   display: flex;
   flex-direction: column;
-  margin-right: 1vw;
-  width: 30vw;
+  //margin-right: 1vw;
+  //width: 30vw;
   height: 35vh;
-  min-width: 30vw;
+  //min-width: 30vw;
   background-size: cover;
   background-blend-mode: saturation;
   flex-direction: column;
   justify-content: space-between;
-
-  @media (max-width: 1024px) {
-    width: 15vw;
-  }
 
   a {
     width: 100%;
@@ -403,11 +426,10 @@ $event-row-padding: 3.5vw;
     }
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 550px) {
     height: initial;
     flex-direction: column;
-    max-width: 300px;
-    min-width: calc(90vw - 25px);
+    max-width: 500px;
 
     a {
       width: 100%;
@@ -615,22 +637,23 @@ $event-row-padding: 3.5vw;
     height: calc(36.7vw * 0.6 - 30px);
   }
 
-  @media (min-width: 500px) and( max-width: 768px) {
+  @media (min-width: 550px) and (max-width: 768px) {
     height: calc(67vw * 0.6 - 25px);
-    min-width: 70vw;
 
     a .event-card .event-picture-container .picture-border .event-picture {
       height: calc(67vw * 0.6 - 25px);
     }
   }
-  @media (min-width: 768px) and( max-width: 960px) {
-    height: calc(60vw * 0.6 - 25px);
-    min-width: 56vw;
+
+  @media (min-width: 768px) and (max-width: 960px) {
+    height: 350px;
+
     a .event-card .event-picture-container .picture-border .event-picture {
-      height: calc(60vw * 0.6 - 25px);
+      height: 350px;
     }
   }
-  @media (max-width: 500px) {
+
+  @media (max-width: 550px) {
     height: calc(90vw * 0.6 - 25px);
     a .event-card .event-picture-container .picture-border .event-picture {
       height: calc(90vw * 0.6 - 25px);
