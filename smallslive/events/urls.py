@@ -24,4 +24,8 @@ urlpatterns = patterns('events.views',
     url(r'^sets/(?P<pk>\d+)/private/$', 'make_private', name='make_private'),
     url(r'^event_counts/', 'metrics_event_counts', name='event_counts'),
     url(r'^remove_comment/$', 'remove_comment', name='remove_comment'),
+
+    # venue
+    url(r'^add_venue/$', 'venue_add', name='venue_add'),
+    url(r'^edit_venue/(?P<pk>\d+)/$', 'venue_edit', name='venue_edit'),
 )
