@@ -33,11 +33,11 @@
                   {% endwith %}
                     </div>
                     <div class="col-xs-6 details">
-                        <p class="store-overview__group__table__product-name">
+                        <p tabindex="0" class="store-overview__group__table__product-name">
                            {{ product.get_title }} {{ product.set }} at {{ product.event_set.event.venue }}
                         </p>
                     </div>
-                    <div class="col-xs-3 total">
+                    <div class="col-xs-3 total" tabindex="0">
                         ${{ line.price_excl_tax }}
                     </div>
                 </div>

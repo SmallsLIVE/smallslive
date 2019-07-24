@@ -14,7 +14,7 @@ from haystack.forms import SearchForm
 from oscar.apps.catalogue.models import ProductImage
 from multimedia.models import ImageMediaFile
 from multimedia.s3_storages import ImageS3Storage
-from .models import EventSet, Event, GigPlayed, Comment, CustomImageField
+from .models import EventSet, Event, GigPlayed, Comment, CustomImageField, Venue
 
 from utils.widgets import ImageCropWidget
 
@@ -183,15 +183,24 @@ class EventAddForm(forms.ModelForm):
         if image:
             new_image = ContentFile(image.photo.read())
             new_image.name = instance.photo.name
+
             # Provide custom connection and bucket
             # TODO: organize code
             params = {}
+
             if instance.get_venue_name() == 'Mezzrow':
                 params['access_key'] = settings.AWS_ACCESS_KEY_ID_MEZZROW
                 params['secret_key'] = settings.AWS_SECRET_ACCESS_KEY_MEZZROW
                 params['bucket'] = settings.AWS_STORAGE_BUCKET_NAME_MEZZROW
 
-            print params
+            # if venue object has credentials, use them
+            if instance.venue.get_aws_access_key_id and \
+                    instance.venue.get_aws_secret_access_key and \
+                    instance.venue.get_aws_storage_bucket_name:
+                params['access_key'] = instance.venue.get_aws_access_key_id
+                params['secret_key'] = instance.venue.get_aws_secret_access_key
+                params['bucket'] = instance.venue.get_aws_storage_bucket_name
+
             instance.photo.storage = ImageS3Storage(**params)
             instance.photo.save(new_image.name, new_image, save=False)
 
@@ -346,3 +355,35 @@ class TicketAddForm(forms.Form):
                 product=product,
                 original=event.photo
             )
+
+
+class VenueAddForm(forms.ModelForm):
+    class Meta:
+        model = Venue
+        fields = (
+            'name',
+            'audio_bucket_name',
+            'video_bucket_name',
+            'aws_access_key_id',
+            'aws_secret_access_key',
+            'aws_storage_bucket_name',
+            'stripe_publishable_key'
+        )
+
+    def save(self, commit=True):
+        venue = super(VenueAddForm, self).save(commit)
+        return venue
+
+    def __init__(self, *args, **kwargs):
+        super(VenueAddForm, self).__init__(*args, **kwargs)
+
+        if self.instance and self.instance.get_aws_access_key_id:
+            self.initial['aws_access_key_id'] = self.instance.get_aws_access_key_id
+            self.initial['aws_secret_access_key'] = self.instance.get_aws_secret_access_key
+            self.initial['aws_storage_bucket_name'] = self.instance.get_aws_storage_bucket_name
+            self.initial['stripe_publishable_key'] = self.instance.get_stripe_publishable_key
+
+        self.helper = FormHelper(self)
+        self.helper.form_action = 'venue_add'
+        self.helper.form_method = 'post'
+        self.helper.form_tag = False
