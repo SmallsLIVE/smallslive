@@ -340,7 +340,7 @@ class Event(TimeStampedModel):
         ordering = ['-start']
 
     def __unicode__(self):
-        return u'{} - {}'.format(self.title, self.date)
+        return u'{} - {} - {}:{}'.format(self.title, self.date, self.start, self.end)
 
     def get_venue_name(self):
         cache_key = 'venue_{}'.format(self.venue_id)
@@ -366,6 +366,8 @@ class Event(TimeStampedModel):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
 
+        self.start, self.end = self.get_actual_start_end()
+
         if not self.slug:
             self.slug = slugify(self.title)
         super(Event, self).save(force_insert, force_update, using, update_fields)
@@ -389,6 +391,8 @@ class Event(TimeStampedModel):
             )
 
         ny_end = datetime.combine(self.date, sets[-1].end)
+        if 6 > sets[-1].end.hour >= 0:
+            ny_end = ny_end + timedelta(days=1)
         try:
             ny_end = timezone.make_aware(ny_end, timezone=current_timezone)
         except (pytz.NonExistentTimeError, pytz.AmbiguousTimeError):

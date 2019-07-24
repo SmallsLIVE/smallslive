@@ -132,8 +132,6 @@ class EventSetInlineFormsetHelper(FormHelper):
 
 
 class EventAddForm(forms.ModelForm):
-    start = forms.DateTimeField(label="Start time", required=True, input_formats=settings.DATETIME_INPUT_FORMATS)
-    end = forms.DateTimeField(label="End time", required=True, input_formats=settings.DATETIME_INPUT_FORMATS)
     date = forms.DateField(label="Event Date", required=True)
     staff_pick = forms.BooleanField(label="Staff Pick", required=False)
     # File object as a helper to upload files. They are uploaded
@@ -147,7 +145,7 @@ class EventAddForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = (
-            'venue', 'date', 'start', 'end', 'id', 'title', 'subtitle', 'photo',
+            'venue', 'date', 'id', 'title', 'subtitle', 'photo',
             'image_id', 'cropping', 'description', 'state', 'staff_pick', 'streamable',
             'tickets_url'
         )
@@ -169,9 +167,6 @@ class EventAddForm(forms.ModelForm):
         self.helper.layout = layout
         self.fields['state'].label = "Event status"
         self.fields['photo'].label = "Flyer or Band Photo (JPG, PNG)"
-
-        self.fields['start'].widget = forms.HiddenInput()
-        self.fields['end'].widget = forms.HiddenInput()
         self.fields['start_streaming_before_minutes'].initial = 15
 
     def save(self, commit=True):
@@ -215,8 +210,6 @@ class EventAddForm(forms.ModelForm):
             'title',
             'subtitle',
             Field('date', css_class='datepicker'),
-            Field('start', css_class='datepicker'),
-            Field('end', css_class='datepicker'),
             FormActions(css_class='form-group slot-buttons'),
             Formset('sets', template='form_widgets/set_formset_layout.html'),
             Formset('artists', template='form_widgets/formset_layout.html'),
@@ -231,7 +224,7 @@ class EventAddForm(forms.ModelForm):
 class EventEditForm(EventAddForm):
     class Meta(EventAddForm.Meta):
         fields = (
-            'venue', 'title', 'subtitle', 'date', 'start', 'end',
+            'venue', 'title', 'subtitle', 'date',
             'start_streaming_before_minutes', 'photo', 'image_id', 'cropping',
             'description', 'state', 'staff_pick', 'streamable', 'tickets_url')
 
