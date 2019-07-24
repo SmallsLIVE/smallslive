@@ -2434,6 +2434,15 @@
           display: block;
           width: 100%;
         }
+
+        .details {
+          font-family: 'Reem Kufi', sans-serif;
+          font-weight: 400;
+          letter-spacing: 0.02em;
+          font-size: 1.5em;
+          text-transform: none;
+        }
+
       }
 
       &__product-name {
@@ -2448,12 +2457,12 @@
     }
 
     &__total {
-      padding: 10px 0;
-      background-color: #f0f0eb;
-      border-top: 1px solid #eee;
-      border-bottom: 1px solid #eee;
+      font-family: 'Reem Kufi', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      font-size: 1.5em;
+      text-transform: none;
       text-align: right;
-      @include lato-bold;
 
       &__value {
         color: $main-accent-color;
