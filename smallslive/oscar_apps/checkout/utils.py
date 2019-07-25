@@ -10,3 +10,5 @@ class CheckoutSessionData(CoreCheckoutSessionData):
         first_name = self._get('guest', 'first_name')
         last_name = self._get('guest', 'last_name')
         return (first_name, last_name)
+
+    

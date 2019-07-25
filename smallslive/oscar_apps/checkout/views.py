@@ -41,7 +41,7 @@ class IndexView(checkout_views.IndexView):
             return http.JsonResponse({'url': url})
         else:
             return redirect(url)
-    
+
     def form_valid(self, form):
         if form.is_guest_checkout():
             first_name = form.cleaned_data['first_name']
@@ -107,7 +107,7 @@ class ShippingAddressView(checkout_views.ShippingAddressView):
         return [template_name]
 
     def get_context_data(self, **kwargs):
-        
+
         context = super(ShippingAddressView, self).get_context_data(**kwargs)
         print context
         method = self.get_default_shipping_method(self.request.basket)
@@ -121,7 +121,7 @@ class ShippingAddressView(checkout_views.ShippingAddressView):
         return Repository().get_default_shipping_method(
             basket=self.request.basket, user=self.request.user,
             request=self.request)
-    
+
     def get_initial(self):
 
         initial = self.checkout_session.new_shipping_address_fields()
@@ -304,6 +304,8 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
         return [template_name]
 
     def get_context_data(self, **kwargs):
+        #is it possible for null values? the below does not account for it and there shouldn't be a way for the reservation name to be blank...
+        kwargs["reservation_string"] = self.checkout_session.get_reservation_name()[0] + " " + self.checkout_session.get_reservation_name()[1]
         basket = self.request.basket
 
         # If user is purchasing tickets, set the type (venue or smalls).
@@ -343,6 +345,12 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
 
         return kwargs
 
+
+
+
+
+
+
     def get_billing_initial(self):
         address = self.get_default_billing_address()
         if address:
@@ -360,7 +368,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
         # submissions should use the preview URL.
         if not self.preview:
             return http.HttpResponseBadRequest()
-        
+
         self.ticket_name['first'] = self.request.POST.get('guest_first_name', '')
         self.ticket_name['last'] = self.request.POST.get('guest_last_name', '')
         # We use a custom parameter to indicate if this is an attempt to place
@@ -714,7 +722,7 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
         if payment_method == 'paypal':
             item_list = self.get_item_list(basket_lines)
             currency = total.currency
-            
+
             self.amount = str(total.incl_tax)
             # This will redirect to PayPal and circle back to
             # the ExecutePayPalPayment class.
@@ -943,4 +951,3 @@ class ExecutePayPalPaymentView(PaymentDetailsView,
 class ExecuteMezzrowPayPalPaymentView(ExecutePayPalPaymentView):
     """Class ready override PayPal payment for Mezzrow if necessary"""
     pass
-

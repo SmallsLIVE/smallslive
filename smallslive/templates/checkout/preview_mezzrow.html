@@ -23,12 +23,24 @@
         <section class="store-overview container">
             <div class="col-xs-12 col-sm-8 store-overview__left-column">
              <div class="white-line-bottom">
-                    <div tabindex="0" class="title1 center">Ordered items:</div>
+               {% if not basket.has_physical_products and not basket.has_digital_products %}
+               <div class="title1 center">Tickets</div>
+               {% else %}
+               <div class="title1 center">Ordered items:</div>
+               {% endif %}
             </div>
                 {% include 'checkout/tickets_products.html' %}
             </div>
             <div class="col-xs-12 col-sm-4 store-overview__right-column">
                 <div class="store-overview__group">
+                {% if shipping_method.name == "No shipping required" %}
+                <div class="section-title section-title-no-padded">
+                  <div class="title1">Reservation</div>
+                </div>
+                <div class="store-overview__group__textblock text1">
+                  <p>{{ reservation_string }}</p>
+                </div>
+                {% else %}
                 <div class="section-title section-title-no-padded">
                   <div tabindex="0" class="title1">Shipping</div>
                 </div>
@@ -41,12 +53,13 @@
                             <p tabindex="0" >{{ shipping_address.country }}</p>
                         </div>
                     {% endif %}
-                   
+
                     {% if shipping_method %}
                         <div class="store-overview__group__textblock text1">
                             <p tabindex="0" >Shipping method: {{ shipping_method.name }}</p>
                         </div>
                     {% endif %}
+                {% endif %}
                 </div>
                 <div class="store-overview__return-button__container">
 
@@ -79,6 +92,7 @@
             </div>
         </section>
         <section class="store-cart__footer container">
+          {% if not shipping_charge.excl_tax == 0 %}
             <div class="col-xs-12 col-sm-12 store-cart__footer__right right">
                 <div class="store-cart__footer__price-container">
                     <span class="store-cart__footer__price-container__value">{{ basket.total_excl_tax|currency:basket.currency }}</span>
@@ -91,18 +105,19 @@
                     </div>
                 </div>
             </div>
+          {% endif %}
             <div class="col-xs-12 store-cart__footer__buttons">
               {% block place_order %}
                 <form action="{% url 'checkout:preview' %}" method="post">
                  {% if ticket_name %}
                       <div class="flex-row col-xs-12 col-md-4 col-md-offset-4 hidden">
                         <input style="margin-right: 15px;" type="text" class="store__form__input"
-                        id="guest-first-name" required placeholder="Guest list first name" size="20" 
+                        id="guest-first-name" required placeholder="Guest list first name" size="20"
                         autocomplete="off"
                         name="guest_first_name" value="{{ ticket_name.first }}"
                         placeholder="Credit Card Number">
                         <input type="text" class="store__form__input"
-                        id="guest-last-name" required placeholder="Guest list last name" size="20" 
+                        id="guest-last-name" required placeholder="Guest list last name" size="20"
                         autocomplete="off"
                         name="guest_last_name" value=" {{ ticket_name.last }}"
                         placeholder="Credit Card Number">
@@ -111,7 +126,7 @@
                     {% endif%}
                   {% csrf_token %}
                   <a href="{% url 'basket:summary' %}" class="white-border-button left back-to-payment-btn"> Back</a>
-                  <button class="white-border-button checkout-white">Pay and order</button>
+                  <button class="white-border-button checkout-white">Confirm</button>
                   <input type="hidden" name="action" value="place_order"/>
                   <input type="hidden" name="payment_method" value="{{ payment_method }}">
                   <div class="hidden">

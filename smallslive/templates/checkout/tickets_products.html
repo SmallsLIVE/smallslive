@@ -2,47 +2,30 @@
 {% load thumbnail %}
 {% load currency_filters %}
 {% load purchase_info_tags %}
- 
+
  <div class="store-overview__group">
-    <h4 class="store-overview__group__table__heading">Ticket list:</h4>
-    <div class="store-overview__group__table">
-        <!-- table header start -->
-        <div class="basket-header clearfix">
-            <div class="col-xs-3 image">
-                Event
+   <div class="store-overview__group__table">
+        {% for line in basket.digital_lines %}
+        {% with product=line.product  %}
+        <!-- table row start -->
+        <div class="store-overview__group__table__row clearfix">
+            <div class="col-xs-9 details">
+                <div>{{ product.get_title }}</div>
+                <div class="{{ product.event_set.event.venue|lower }}-color">
+                  {{ product.event_set.event.venue }} Jazz Club
+                </div>
+                <div>
+                  <!-- What is product.set? This should not be product.title because the title of the event should not be here... -->
+                  The {{ product.set }} Set
+                </div>
             </div>
-            <div class="col-xs-6 details">
-                Details
-            </div>
-            <div class="col-xs-3 total">
-                Total
+            <div class="col-xs-3 details total">
+                <div>${{ line.price_excl_tax }}</div>
+                <div>{{ line.quantity }} {% if line.quantity > 1 %} tickets {% else %} ticket {% endif %}</div>
             </div>
         </div>
-        <!-- end of table header -->
-        {% for line in basket.digital_lines %}
-            {% with product=line.product  %}
-                <!-- table row start -->
-                <div class="store-overview__group__table__row clearfix">
-                    <div class="col-xs-3 image">
-                       {% with image=product.event_set.event.get_photo_url %}
-
-                          <a href="{{ product.event_set.event.get_absolute_url }}"><img class="defineImageRatio"
-                                                                    src="{% if image %} {{image}} {% else %} {% static 'image/no-event-image-placeholder.jpg' %} {% endif %}"
-                                                                    alt="{{ product.get_title }}"></a>
-
-                  {% endwith %}
-                    </div>
-                    <div class="col-xs-6 details">
-                        <p tabindex="0" class="store-overview__group__table__product-name">
-                           {{ product.get_title }} {{ product.set }} at {{ product.event_set.event.venue }}
-                        </p>
-                    </div>
-                    <div class="col-xs-3 total" tabindex="0">
-                        ${{ line.price_excl_tax }}
-                    </div>
-                </div>
-                <!-- end of table row -->
-            {% endwith %}
+        <!-- end of table row -->
+        {% endwith %}
         {% endfor %}
         <!-- group total -->
         <div class="store-overview__group__total clearfix">
