@@ -44,8 +44,22 @@ $(document).ready(function () {
       }, 400, e);
     });
 
-    $("#desktop-search-bar").focusout(function () {
+    $(".search-bar-autocomplete-container").on('focusout', function (e) {
+      var lastResult = $('.search-result:last');
+
+      // hide container after tabbing through the last search result
+      if (e.target.innerText === lastResult[0].innerText) {
         setTimeout(function(){ $(".search-bar-autocomplete-container").css("display", "none"); }, 300);
+      }
+    });
+
+    $("#desktop-search-bar").focusout(function (e) {
+      var noResults = $('.no-result').length;
+
+      // when search returns no results
+      if (noResults == 6) {
+        setTimeout(function(){ $(".search-bar-autocomplete-container").css("display", "none"); }, 300);
+      }
     });
 });
 
@@ -55,4 +69,14 @@ $(document).on('click','.search-bar-more', function(){
     } else {
         $(".search-input").submit();
     }
+});
+
+$(document).click(function(event) {
+  $target = $(event.target);
+
+  // hide search results when clicking outside its container
+  if(!$target.closest('.search-bar-autocomplete-container').length &&
+      $('.search-bar-autocomplete-container').is(":visible")) {
+    setTimeout(function(){ $(".search-bar-autocomplete-container").css("display", "none"); }, 300);
+  }
 });

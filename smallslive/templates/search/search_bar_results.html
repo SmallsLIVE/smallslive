@@ -2,16 +2,18 @@
     <span class="text2 search-bar-text search-bar-artist">ARTISTS ({{artists_results}})</span>
     {% for artist in artists %}
         <div>
-        <a href="/search/?artist_pk={{ artist.id }}">
-          <span class="search-bar-result-text text2 search-bar-text text-grey">{% if artist.last_name %}{{ artist.last_name }}, {% endif %}{{ artist.first_name }} / {{ artist.instruments.all.first }}</span>
-        </a>
+          <a href="/search/?artist_pk={{ artist.id }}">
+            <span class="search-bar-result-text text2 search-bar-text text-grey search-result">
+              {% if artist.last_name %}{{ artist.last_name }}, {% endif %}{{ artist.first_name }} / {{ artist.instruments.all.first }}
+            </span>
+          </a>
         </div>
     {% endfor %}
     {% if artists_results_left %}
-        <div class="search-bar-more accent-color text2 search-bar-text">+ {{artists_results_left}} MORE</div>
+        <div tabindex="0" class="search-bar-more accent-color text2 search-bar-text search-result">+ {{artists_results_left}} MORE</div>
     {% endif %}
 {% else %}
-<span class="text2 search-bar-text">NO ARTISTS RESULTS</span>
+<span class="text2 search-bar-text no-result">NO ARTISTS RESULTS</span>
 <br>
 {% endif %}
 
@@ -19,16 +21,18 @@
     <span class="text2 search-bar-text search-bar-event">EVENTS ({{events_results}})</span>
     {% for event in events %}
         <div>
-        <a href="{{ event.get_absolute_url }}">
-          <span class="search-bar-result-text text2 search-bar-text text-grey">{{ event.title }} / {{ event.start|date:'m.d.Y' }}</span>
-        </a>
+          <a href="{{ event.get_absolute_url }}">
+            <span class="search-bar-result-text text2 search-bar-text text-grey search-result">
+              {{ event.title }} / {{ event.start|date:'m.d.Y' }}
+            </span>
+          </a>
         </div>
     {% endfor %}
     {% if events_results_left %}
-        <div class="search-bar-more accent-color text2 search-bar-text">+ {{events_results_left}} MORE</div>
+        <div tabindex="0" class="search-bar-more accent-color text2 search-bar-text search-result">+ {{events_results_left}} MORE</div>
     {% endif %}
 {% else %}
-<span class="text2 search-bar-text">NO EVENTS RESULTS</span>
+<span class="text2 search-bar-text no-result">NO EVENTS RESULTS</span>
 <br>
 {% endif %}
 
@@ -36,17 +40,14 @@
     <span class="text2 search-bar-text search-bar-event">instruments ({{instruments_results}})</span>
     {% for instrument in instruments %}
         <div>
-        <a href="/search/?instrument={{ instrument.name }}">
-          <span class="search-bar-result-text text2 search-bar-text text-grey">{{ instrument.name }} ({{ instrument.artist_count }})</span>
-        </a>
+          <a href="/search/?instrument={{ instrument.name }}">
+            <span class="search-bar-result-text text2 search-bar-text text-grey search-result">
+              {{ instrument.name }} ({{ instrument.artist_count }})
+            </span>
+          </a>
         </div>
     {% endfor %}
 {% else %}
-<span class="text2 search-bar-text">NO INSTRUMENTS RESULTS</span>
+<span class="text2 search-bar-text no-result">NO INSTRUMENTS RESULTS</span>
 <br>
 {% endif %}
-
-
-
-
-
