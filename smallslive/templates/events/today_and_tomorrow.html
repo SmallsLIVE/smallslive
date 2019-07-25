@@ -19,8 +19,13 @@
     {% endif %}
   </div>
   <main style="position: relative;">
-    <div class="slide-btn prev today-and-tomorrow-arrow"><b class="indicator-icon icon-left-caret"></b></div>
-    <div class="slide-btn next today-and-tomorrow-arrow"><b class="indicator-icon icon-right-caret"></b></div>
+    <div class="slick-slide-btn prev today-and-tomorrow-arrow today-left">
+      <b class="indicator-icon icon-left-caret"></b>
+    </div>
+    <div class="slick-slide-btn next today-and-tomorrow-arrow today-right">
+      <b class="indicator-icon icon-right-caret"></b>
+    </div>
+
     {% if calendar_page %}
       {% include 'events/tonight_events_home.html' with events=events_today show_date=True hide_event_date=True show_event_venue=True custom_venue_style=custom_venue_style %}
     {% else %}
@@ -28,3 +33,11 @@
     {% endif %}
   </main>
 </section>
+
+{% block extra_js %}
+  <script>
+    var events_finished = '{{ events_finished }}';
+  </script>
+  <script type="javascript" src="{% static 'js/custom_owl_carousel.js' %}">
+	</script>
+{% endblock %}

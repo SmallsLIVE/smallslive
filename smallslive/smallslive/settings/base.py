@@ -346,6 +346,8 @@ PIPELINE_JS = {
           'js/signup_form.js',
           'js/slider.js',
           'js/white-border-select.js',
+          'js/owl.carousel.min.js',
+          'js/custom_owl_carousel.js',
         ),
         'output_filename': 'js/main.js',
     },
