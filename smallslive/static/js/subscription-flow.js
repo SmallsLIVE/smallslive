@@ -249,27 +249,44 @@ $(document).ready(function() {
   $(document).on("submit", ".add-to-basket", function(e) {
     e.preventDefault();
 
+
+    function showShipping(data) {
+      $mainContainer.find("#supporterStepShipping").html(data);
+      showPanel("Shipping");
+      replaceWhiteSelects(
+        $mainContainer.find("#supporterStepShipping")[0]
+      );
+    }
+
+    function showBilling(data) {
+      $mainContainer.find("#supporterStepBilling").html(data);
+      showPanel("Billing");
+      replaceWhiteSelects(
+        $mainContainer.find("#supporterStepBilling")[0]
+      );
+      renderCardAnimation("#payment-form");
+    }
+
     function checkout() {
       // TODO: fix hardcoded URL
-      $.get("/store/checkout/", function(data) {
+      $.get("/store/checkout/", function (data) {
         $.get(data.url, function(data) {
-          if (data.url && data.url.indexOf("payment-method") > -1) {
-            $.get(data.url, function(data) {
-              $.get(data.url, function(data) {
-                $mainContainer.find("#supporterStepBilling").html(data);
-                showPanel("Billing");
-                replaceWhiteSelects(
-                  $mainContainer.find("#supporterStepBilling")[0]
-                );
-                renderCardAnimation("#payment-form");
+          if (data.url && data.url.indexOf("shipping-method") > -1) {
+            $.get(data.url, function (data) {
+              $.get(data.url, function (data) {
+                $.get(data.url, function (data) {
+                  showBilling(data);
+                });
+              });
+            });
+          } else if (data.url && data.url.indexOf("payment-method") > -1) {
+            $.get(data.url, function (data) {
+              $.get(data.url, function (data) {
+                showBilling(data);
               });
             });
           } else {
-            $mainContainer.find("#supporterStepShipping").html(data);
-            showPanel("Shipping");
-            replaceWhiteSelects(
-              $mainContainer.find("#supporterStepShipping")[0]
-            );
+            showShipping(data);
           }
         });
       });

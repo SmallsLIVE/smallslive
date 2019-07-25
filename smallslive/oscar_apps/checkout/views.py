@@ -1,14 +1,16 @@
 import logging
 from paypal.payflow import facade
 from django import http
+from django.contrib import messages
 from django.contrib.auth import login
 from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
 from django.shortcuts import redirect
 from django.utils import six
 from oscar.apps.address.models import Country
-from oscar.apps.checkout import views as checkout_views
-from oscar.apps.checkout import signals
+from oscar.apps.checkout import views as checkout_views, signals
+from oscar.apps.checkout.exceptions import FailedPreCondition, PassedSkipCondition
+from oscar.apps.checkout.utils import CheckoutSessionData
 from oscar.apps.order.exceptions import UnableToPlaceOrder
 from oscar.apps.payment.exceptions import RedirectRequired, UnableToTakePayment, PaymentError
 from oscar.apps.payment.models import SourceType, Source
@@ -19,7 +21,6 @@ from oscar_apps.payment.exceptions import RedirectRequiredAjax
 from subscriptions.mixins import PayPalMixin, StripeMixin
 from subscriptions.models import Donation
 import utils as sl_utils
-
 from .forms import PaymentForm, BillingAddressForm
 
 BankcardForm = get_class('payment.forms', 'BankcardForm')
@@ -87,6 +88,34 @@ class ShippingMethodView(checkout_views.ShippingMethodView):
 
 
 class ShippingAddressView(checkout_views.ShippingAddressView):
+
+    def dispatch(self, request, *args, **kwargs):
+        # Assign the checkout session manager so it's available in all checkout
+        # views.
+        self.checkout_session = CheckoutSessionData(request)
+
+        # Enforce any pre-conditions for the view.
+        try:
+            self.check_pre_conditions(request)
+        except FailedPreCondition as e:
+            for message in e.messages:
+                messages.warning(request, message)
+            if request.is_ajax():
+                return http.JsonResponse({'url': e.url})
+            else:
+                return http.HttpResponseRedirect(e.url)
+
+        # Check if this view should be skipped
+        try:
+            self.check_skip_conditions(request)
+        except PassedSkipCondition as e:
+            if request.is_ajax():
+                return http.JsonResponse({'url': e.url})
+            else:
+                return http.HttpResponseRedirect(e.url)
+
+        return super(ShippingAddressView, self).dispatch(
+            request, *args, **kwargs)
 
     def form_valid(self, form):
         address_fields = dict(
