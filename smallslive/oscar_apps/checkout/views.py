@@ -1,6 +1,7 @@
 import logging
 from paypal.payflow import facade
 from django import http
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login
 from django.core.urlresolvers import reverse
@@ -334,20 +335,21 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
 
     def get_context_data(self, **kwargs):
         #is it possible for null values? the below does not account for it and there shouldn't be a way for the reservation name to be blank...
-        kwargs["reservation_string"] = self.checkout_session.get_reservation_name()[0] + " " + self.checkout_session.get_reservation_name()[1]
+        reservation_name = self.checkout_session.get_reservation_name()
+        if reservation_name:
+            kwargs["reservation_string"] = '{} {}'.format(reservation_name[0], reservation_name[1])
         basket = self.request.basket
 
         # If user is purchasing tickets, set the type (venue or smalls).
         self.tickets_type = basket.get_tickets_type()  # TODO: add parameter venue_name='Mezzrow'
         if self.tickets_type:
-            kwargs.update(self.get_tickets_context())
+            self.get_tickets_context(**kwargs)
         else:
             kwargs.update(self.get_basket_context(basket))
 
         return super(PaymentDetailsView, self).get_context_data(**kwargs)
 
-    def get_tickets_context(self):
-        kwargs = {}
+    def get_tickets_context(self, **kwargs):
         if not self.request.user.is_authenticated():
             kwargs['guest'] = {
                 'first_name': self.checkout_session.get_reservation_name()[0],
@@ -373,12 +375,6 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
         kwargs['card_info'] = self.checkout_session._get('payment', 'card_info')
 
         return kwargs
-
-
-
-
-
-
 
     def get_billing_initial(self):
         address = self.get_default_billing_address()
@@ -759,7 +755,13 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
                                        donation=False)
         else:
             bankcard = kwargs['bankcard']
-            facade.sale(order_number, total.incl_tax, bankcard)
+
+            try:
+                facade.sale(order_number, total.incl_tax, bankcard)
+            except Exception, e:
+                ignore_error = getattr(settings, 'IGNORE_BANKCARD_PAYMENT_ERRORS', False)
+                if not ignore_error:
+                    raise e
 
             # Record payment source and event
             source_type, is_created = SourceType.objects.get_or_create(
