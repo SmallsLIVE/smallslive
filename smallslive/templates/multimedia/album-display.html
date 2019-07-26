@@ -68,11 +68,18 @@
 <div class="my-downloads-album row big-player">
   <div class="my-downloads-album__cover flex-column player-container {% if album_product.images.count == 1 %} one-image{% else %} more-images{% endif %}">
 
-    <div class="purchases-player-button myplay-btn">
+    {% for track in album_product.tracks.all %}
+    {% if track.get_track_preview_url != 'blank.mp3' %}
+    <div class="purchases-player-button myplay-btn" >
       <div class="fa-thin-circle fa" >
         <i class="fas fa-play"></i>
       </div>
     </div>
+    {% endif %}
+    {% endfor %}
+
+  
+
 
     {% with all_images=album_product.images.all %}
       <div class="store-single__item__images__carousel"
@@ -263,10 +270,10 @@
           if($(e.currentTarget).attr('href') != 'none') {
             document.location = $(e.currentTarget).attr('href');
           }
-        })
       {% endif %}
-
-      $(document).on('click', '.download', function (event) {
+        })
+     
+      $(document).on('click', '.download', function (event) { 
         event.stopPropagation();
         var mp3Url = $(this).data('mp3-href');
         var mp3Name = $(this).data('mp3-name');
@@ -367,6 +374,7 @@
         // Initiate the flow if PO chooses  a pop up to start  the  flow
         showFlow("support");
       });
+
 
 
     });
