@@ -304,6 +304,8 @@
         var cost = $(this).data("cost");
         var priceFloat = parseFloat(price);
 
+        alert(cost)
+
         if (cost && cost != "None") {
           tax_deductable = "$ " + (priceFloat - parseFloat(cost)).toFixed(2).toString();
         } else if (cost == "None" || cost == "0.00") {
