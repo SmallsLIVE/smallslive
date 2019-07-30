@@ -6,7 +6,7 @@ $(document).ready(function () {
     var controlButtonWidth = ($prev[0] && $prev[0].clientWidth) ||
                              ($next[0] && $next[0].clientWidth);
     // variable declared in script section of template
-    var startPosition = typeof events_finished == 'undefined' ? 0 : events_finished;
+    var startPosition = $('.tonight-events article.item.past').length;
 
     return {
       items: 3,
@@ -39,23 +39,29 @@ $(document).ready(function () {
   }
 
   function onChanged(event) {
-    var items = event.item.count;
+
+    if (event.item.count == 0) {
+      return;
+    }
+
+    //Count placeholder items
+    var placeholders = $(event.target).find('.item.placeholder').length;
+    var items = event.item.count - placeholders;
     var item = event.item.index;
     var size = event.page.size;
 
-    if (item  == items - size) {
-      // end
-      $('.today-right').hide();
-      $('.today-left').show();
-    } else if (item != items - size && item != 0) {
-      // middle
-      $('.today-right').show();
-      $('.today-left').show();
-    } else if (item  == 0) {
-      // beginning
-      $('.today-right').show();
+    if (item == 0) {
       $('.today-left').hide();
+    } else {
+      $('.today-left').show();
     }
+
+    if (items - item > size) {
+      $('.today-right').show();
+    } else {
+      $('.today-right').hide();
+    }
+
   }
 
   $('.today-right').click(function() {

@@ -2,7 +2,7 @@
 
 <div class="event-row tonight-events owl-carousel owl-theme">
   {% for event in events %}
-  <article class="event-display-today-and-tomorrow item">
+  <article class="event-display-today-and-tomorrow item {% if event.is_past %}past{% endif %}">
     {% include 'events/tonight_event_card.html' with event=event secondary=secondary hide_play=True %}
     <div class="event-info" style="position: absolute;">
         <div class="sub-info">
@@ -28,4 +28,16 @@
     </div>
   </article>
   {% endfor %}
+  <!-- Placeholder empty articles so that the slider can be positioned anywhere -->
+  <div class="placeholder item">
+  </div>
+  <div class="placeholder item">
+  </div>
+  <div class="placeholder item">
+  </div>
+  <div class="placeholder item">
+  </div>
+  <div class="placeholder item">
+  </div>
+
 </div>

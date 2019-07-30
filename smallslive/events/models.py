@@ -164,6 +164,9 @@ class EventQuerySet(models.QuerySet):
             # 'end__gte': timezone.now()
         }
 
+        print '****************************'
+        print filter_data
+
         if venue_id:
             filter_data['venue_id'] = venue_id
 
@@ -366,8 +369,9 @@ class Event(TimeStampedModel):
     def save(self, *args, **kwargs):
 
         start, end = self.get_actual_start_end()
+
         self.start = start or self.start
-        self.end = start or self.end
+        self.end = end or self.end
 
         if not self.slug:
             self.slug = slugify(self.title)
@@ -395,7 +399,7 @@ class Event(TimeStampedModel):
             )
 
         ny_end = datetime.combine(self.date, sets[-1].end)
-        if 6 > sets[-1].end.hour >= 0:
+        if ny_start.hour > 6 > sets[-1].end.hour >= 0:
             ny_end = ny_end + timedelta(days=1)
         try:
             ny_end = timezone.make_aware(ny_end, timezone=current_timezone)
@@ -644,7 +648,7 @@ class Event(TimeStampedModel):
         if about_to_begin:
             start = start - timedelta(minutes=self.start_streaming_before_minutes)
 
-        is_live = start <= timezone.now() <= self.end
+        is_live = start <= timezone.now() <= self.end + timedelta(minutes=self.start_streaming_before_minutes)
 
         return is_live
 

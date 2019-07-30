@@ -135,9 +135,7 @@ class HomepageView(ListView, UpcomingEventMixin):
 
         context['staff_picks'] = Event.objects.last_staff_picks()
         context['popular_in_store'] = Product.objects.filter(featured=True, product_class__slug='album')[:6]
-        context['events_today'] = self.get_queryset()
-        context['events_finished'] = self.get_queryset().filter(
-            start__gte=get_today_start(), end__lte=timezone.now()).count()
+        context['events_today'] = list(self.get_queryset())
 
         return context
 
@@ -307,6 +305,7 @@ class EventDetailView(DetailView):
         # In this case, we need to change show info without reloading
         # The strategy is to provide the next show's info as hidden elements
         # They will be swapped with current info at start time.
+
         if event.show_streaming:
             next_event = event.get_next_event()
             if next_event:

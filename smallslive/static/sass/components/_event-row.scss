@@ -122,6 +122,8 @@ $event-row-padding: 3.5vw;
       width: 2.5vw;
       z-index: 10;
 
+      display: none;
+
       @media (max-width: 960px) {
         width: 10vw;
         visibility: hidden;
@@ -573,7 +575,9 @@ $event-row-padding: 3.5vw;
     position: absolute;
 
     left: 0px;
-    bottom: 3px;
+    bottom: 2px;
+
+    z-index: 999;
 
     &.links1 {
       @media (max-width: $screen-sm-max) {
