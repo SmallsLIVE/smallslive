@@ -36,7 +36,7 @@
 
     <div class="flex-column flex event-container">
       {% if request.user.is_staff and event.state == "Draft" %}
-        <div class="{{ event.venue.name|lower}}-color event-venue title5">{{ event.state }}</div>
+        <div id="title" class="{{ event.venue.name|lower}}-color event-venue title5"></div>
       {% endif %}
       {% block event_content %}
       {% endblock %}

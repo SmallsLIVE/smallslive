@@ -1,22 +1,91 @@
 {% load static from staticfiles %}
+<div class="switch-video-metrics">
+    <button class="white-border-button" id="back-to-events-list">           <div class="artist-event-arrow">
+            <img src="/static/image/arrow-right-red.svg" alt="">
+          </div> </button>
+<button class="white-border-button video" id="video">Video</button>
+<button class="white-border-button metrics" id="metrics">Metrics</button>
+</div>
+
+
+<div class="artist-set-actions">
+        <div class="button-row button-row-margin">
+        <div class="buttons-dashboard">
+        <div class="flex-row">
+            {% if is_admin and set.has_media %}
+                <button class="set-button event-edit-button white-border-button"
+                        data-ajax-edit-url="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}">
+                    Edit
+                </button>
+                {% if not event.is_future %}
+                    {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
+                    <button id="private-button" class="publish-button set-button" onclick="askPrivate({{ set.id }})"> Public </button>
+                    <button id="public-button" class="publish-button set-button hidden" onclick="askPublish({{ set.id }})"> Private </button>
+                    {% else %}
+                    <button id="public-button" class="publish-button set-button" onclick="askPublish({{ set.id }})"> Private </button>
+                    <button id="private-button" class="publish-button set-button hidden" onclick="askPrivate({{ set.id }})"> Public </button>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {% if is_admin %}
+                    <button class="set-button event-edit-button white-border-button"
+                            data-ajax-edit-url="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}">
+                        Edit
+                    </button>
+                {% else %}
+                    <button class="white-border-button">Download</button>
+                {% endif %}
+                {% if not event.is_future %}    
+                    {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
+                        <button disabled class="set-button">Public</button>
+                    {% else %}
+                        <button disabled class="set-button">Private</button>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+                                           <div class="artist-set-info">
+                        <div class="text2"> {{ event.get_date|date:'m/d/Y' }} </div>
+                        <div class="text2"> {{ event.title }} </div>
+                    </div>
+                    </div>
+                                            <input type="submit" name="submit" value="Save event" class="white-border-button inline separated"
+           id="submit-id-submit">
+            </div>
+
+
+        </div>
+    </div>
 <form id="mobile-event-edit-frm"
       method="post" class="admin-interface__form"
       enctype="multipart/form-data"
       action="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}">
   {% csrf_token %}
-  <div class="logo-container">
-    <img src="{% static 'new_logo_transparent_black.svg' %}" alt=""/>
+
+  <div class="title-and-image-container">
+
+  <div class="croping-photo">
+    <div id="div_id_photo" class="form-group">
+    <div class="controls ">
+      {{ form.photo }}
+    </div>
   </div>
-  <div class="title-container">
-    <div class="text2 accent-color">Archived Show</div>
-    <div class="title1">Edit event info</div>
+  <div id="div_id_cropping" class="form-group">
+    <div class="controls ">
+      {{ form.cropping }}
+      <label>Enable cropping</label>
+    </div>
   </div>
+  {{ form.image_id }}
+  {{ form.start_streaming_before_minutes }}
+  </div>
+
   <div id="div_id_title" class="form-group">
     <label class="control-label  requiredField">
       Band Title</label>
     <div class="controls ">
       {{ form.title }}
       {{ form.title.errors }}
+    </div>
     </div>
   </div>
 
@@ -92,21 +161,6 @@
   <div class="hidden" id="image-load-gif" class="loading-image events-gif">
     <img src="{% static 'image/loading.gif' %}" alt="" style="width: 30px; margin-bottom: 20px;">
   </div>
-  <div id="div_id_photo" class="form-group">
-    <div class="controls ">
-      {{ form.photo }}
-    </div>
-  </div>
-  <div id="div_id_cropping" class="form-group">
-    <div class="controls ">
-      {{ form.cropping }}
-      <label>Enable cropping</label>
-    </div>
-  </div>
-  {{ form.image_id }}
-  {{ form.start_streaming_before_minutes }}
-  <div class="buttonHolder">
-    <input type="submit" name="submit" value="Save event" class="white-border-button inline separated"
-           id="submit-id-submit">
-  </div>
+
+
 </form>
