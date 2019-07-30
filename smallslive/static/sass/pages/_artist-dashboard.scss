@@ -335,6 +335,9 @@
       justify-content: center;
       height: auto;
     }
+    @media (max-width: 960px) {
+      flex-direction: column;
+    }
   }
 
   .artist-event-details {
@@ -356,7 +359,7 @@
       width: 70%;
     }
 
-    @media (max-width: 425px) {
+    @media (max-width: 620px) {
       width: 75%;
     }
 
@@ -388,11 +391,14 @@
       padding-left: 0;
     }
 
+    @media (max-width: 960px) {
+      width: 100%;
+    }
     overflow-y: scroll;
 
     .artist-event-picture {
       @include filter(grayscale(100%));
-      margin: 0px 1.56vw;
+      margin: 5px;
       height: 5.7em;
       width: 5.7em;
 
@@ -405,8 +411,8 @@
 
   .artist-events-list-info,
   .event-mobile-info {
-    padding-left: 30px;
     padding-top: 30px;
+    padding-left: 11px;
     width: 100%;
 
     @media (max-width: 1023px) {
@@ -414,15 +420,15 @@
     }
 
     @media (max-width: 768px) {
-      width: 50%;
+      width: 80%;
       padding-left: 30px;
       padding-right: 30px;
     }
 
-    @media (max-width: 425px) {
-      display: none;
+    @media (max-width: 960px) {
+      width: 100%;
+      padding: 0;
     }
-
     .artist-set-download {
       width: 3.8em;
     }
@@ -496,11 +502,15 @@
     .header-metrics-container {
       display: flex;
       flex-direction: column;
-      padding: 40px;
+      padding-left: 12px;
+
       padding-top: 0;
       width: 50%;
       @media (max-width: 1023px) {
         width: 100%;
+      }
+      @media (max-width: 960px) {
+        padding-top: 30px;
       }
       align-content: center;
       @media (max-width: 1360px) {
@@ -520,10 +530,6 @@
     }
 
     .artist-set-actions {
-      @media (max-width: 768px) {
-        display: none;
-      }
-
       display: flex;
       justify-content: space-between;
       padding-bottom: 30px;
@@ -912,6 +918,11 @@
     position: relative;
     border-bottom: 2px solid $white-transparent;
 
+    @media (max-width: 620px) {
+      width: 100vw;
+      height: 16vh;
+    }
+
     .artist-event-card {
       margin-right: 40px;
     }
@@ -971,6 +982,10 @@
   .form-group {
     width: 100%;
   }
+
+  @media (max-width: 620px) {
+    flex-direction: column;
+  }
 }
 .artist-dashboard-event-container {
   display: flex;
@@ -979,8 +994,30 @@
 .artist-set-info .text2 {
   font-size: 1em;
 }
+#back-to-events-list {
+  border-radius: 10px;
+  margin: 0 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .artist-event-arrow {
+    margin: auto;
+    height: initial;
+    transform: rotate(180deg);
+  }
+
+  @media (min-width: 960px) {
+    display: none;
+  }
+}
 #edit-event-dashboard {
   width: 60%;
+  padding: 12px;
+  padding-top: 0px;
+  @media (max-width: 960px) {
+    padding-top: 30px;
+  }
+
   @media (max-width: 1024px) {
     width: 100%;
   }
@@ -1173,7 +1210,9 @@
     }
   }
 }
-
+.video {
+  background-color: #f0f0eb;
+}
 .artist-event-actions {
   @media (min-width: $screen-md-min) {
     margin-left: 40px;
@@ -1370,8 +1409,8 @@
 }
 
 .artist-events-container {
-  @media (max-width: 425px) {
-    flex-direction: column;
+  @media (max-width: 620px) {
+    flex-direction: row;
   }
 
   border-top: 3px solid $white-transparent;
@@ -1394,6 +1433,10 @@
     width: 50%;
     padding-left: 20px;
     height: 800px;
+  }
+  @media (max-width: 620px) {
+    height: initial;
+    width: 100%;
   }
 }
 
@@ -1488,13 +1531,30 @@
     }
   }
 }
+
+.artist-events-list,
+#artistEventsList {
+  @media (max-width: 620px) {
+    width: 100vw;
+  }
+}
 .buttons-dashboard {
-  width: 70%;
+  width: 100%;
   display: flex;
+  justify-content: space-between;
+
+  @media (max-width: 425px) {
+    flex-direction: column;
+  }
 
   button {
     border-radius: 10px;
     margin: 0 5px;
+  }
+}
+#submit-id-submit {
+  @media (max-width: 425px) {
+    margin-top: 10px;
   }
 }
 .legal-page__full-contract {

@@ -368,8 +368,26 @@
 
         ////////////////////////////////////////////////////////////
         $(document).ready(function() {
+            $(document).on('click','#back-to-events-list', function () {
+                if( viewPortLength("width") < 960){
+                    $('.artist-dashboard-event-container').hide("slide", { direction: "right" }, 300);
+                    $('.artist-events-list').show("slide", { direction: "left" }, 300);
+                }
+            })
 
+        $(window).resize( e => {
+             if( viewPortLength("width") < 960 && $('.artist-events-list').is(":hidden")){
+        
+                  $('.artist-events-list').show("slide", { direction: "left" }, 300);
+             }
+        })
           $(document).on('click', '.artist-event-row', function () {
+            if( viewPortLength("width") < 960){
+                $('.artist-dashboard-event-container').show("slide", { direction: "right" }, 300);
+                $('.artist-events-list').hide("slide", { direction: "left" }, 300);
+            }
+
+
             var url = $(this).data('ajax-edit-url');
             $('#event-popup-load-gif').removeClass('hidden');
             $.ajax({
@@ -418,10 +436,16 @@
           });
 
           $(document).on('click', '#metrics', e => {
+                                        $('.video').css('background-color', '#f0f0eb')
+
+              $('.metrics').css('background-color', '#fff')
               $('.edit-event-dashboard').addClass('not-show')
               $('.header-metrics-container').removeClass("not-show")
           })
         $(document).on('click', '#video', e => {
+            $('.video').css('background-color', '#fff')
+                          $('.metrics').css('background-color', '#f0f0eb')
+
               $('.header-metrics-container').addClass("not-show")
 
               $('.edit-event-dashboard').removeClass('not-show')

@@ -63,22 +63,12 @@
         url: infoUrl,
           success: function (data) {
             var $target;
-            if( viewPortLength("width") > 768) {
               $('#artistEventsInfo').removeClass("artist-loading-gif");
               $('#event-info-mobile-card').html("")
               $target = $('#artistEventsInfo');
               $target.html(data);
               $target.data('url', infoUrl);
               $("#artistEventsContainer").show();
-            } else {
-              $(".refine-container").css("display", "none")
-              $('#artistEventsInfo').html("")
-              $target = $('#event-info-mobile-card');
-              $target.html(data);
-              $target.data('url', infoUrl);
-              $target.show();
-              $('#artistEventsContainer').hide();
-            }
           }
       });
     }
@@ -103,6 +93,12 @@
       if( viewPortLength("width") > 768){
         loadInfo(eventUrl+"?set_id=0")
       }
+      if( viewPortLength("width") > 620){
+
+        $('.artist-event-row')[0].click()
+      }
+
+
       
     })
   </script> 
