@@ -2,7 +2,7 @@
   width: 100%;
 }
 
-.artist-header div.section-title>div.title1 {
+.artist-header div.section-title > div.title1 {
   @media (min-width: 1024px) {
     @media (max-width: 1100px) {
       font-size: 24px;
@@ -13,7 +13,7 @@
 
 .artist-profile-container {
   margin-bottom: 40px;
-  padding: 0 15vw;
+  padding: 0 3vw;
 
   @media (max-width: 1360px) {
     padding: 0 5vw;
@@ -49,7 +49,7 @@
       }
     }
 
-    #artist_payout_select~ {
+    #artist_payout_select ~ {
       .select-items {
         width: 100%;
         border: 3px solid $white-transparent;
@@ -68,7 +68,7 @@
           padding: 0px 20px;
 
           &::after {
-            @media(min-width: 992px) {
+            @media (min-width: 992px) {
               right: 9%;
               top: 17px;
             }
@@ -88,7 +88,7 @@
     }
   }
 
-  ~.refine-overlay.dashboard-refine {
+  ~ .refine-overlay.dashboard-refine {
     top: 54px;
     overflow: scroll;
 
@@ -146,7 +146,7 @@
     padding: 0;
     border: none;
 
-    @media(min-width: 769px) {
+    @media (min-width: 769px) {
       display: none !important;
     }
 
@@ -176,6 +176,8 @@
 
             .artist-set-info {
               display: none;
+              font-size: 1em;
+              width: auto;
             }
           }
 
@@ -201,7 +203,6 @@
     @media (max-width: 768px) {
       display: flex;
       padding-bottom: 10px;
-
     }
 
     .refine.text1 {
@@ -296,7 +297,6 @@
 
       @media (min-width: $screen-md-min) {
         margin-left: 30px;
-
       }
     }
 
@@ -325,19 +325,18 @@
 
   .artist-events-container {
     border-top: 3px solid $white-transparent;
-    height: 635px;
+    justify-content: space-between;
 
-    @media(min-width: 769px) {
+    @media (min-width: 769px) {
       display: flex !important;
-    }
-
-    @media (max-width: 768px) {
-      flex-direction: column;
     }
 
     @media (max-width: 1023px) {
       justify-content: center;
       height: auto;
+    }
+    @media (max-width: 960px) {
+      flex-direction: column;
     }
   }
 
@@ -360,7 +359,7 @@
       width: 70%;
     }
 
-    @media (max-width: 425px) {
+    @media (max-width: 620px) {
       width: 75%;
     }
 
@@ -381,23 +380,25 @@
   }
 
   .artist-events-list {
-    width: 40%;
+    width: 25%;
 
     @media (max-width: 1360px) {
-      width: 45%;
+      width: 30%;
     }
 
     @media (max-width: 768px) {
-      width: 50%;
-      width: 100%;
+      width: 30%;
       padding-left: 0;
     }
 
+    @media (max-width: 960px) {
+      width: 100%;
+    }
     overflow-y: scroll;
 
     .artist-event-picture {
       @include filter(grayscale(100%));
-      margin: 0px 1.56vw;
+      margin: 5px;
       height: 5.7em;
       width: 5.7em;
 
@@ -410,24 +411,24 @@
 
   .artist-events-list-info,
   .event-mobile-info {
-    padding-left: 30px;
     padding-top: 30px;
-    width: 70%;
+    padding-left: 11px;
+    width: 100%;
 
     @media (max-width: 1023px) {
-      width: 40%;
+      width: 60%;
     }
 
     @media (max-width: 768px) {
-      width: 50%;
+      width: 80%;
       padding-left: 30px;
       padding-right: 30px;
     }
 
-    @media (max-width: 425px) {
-      display: none;
+    @media (max-width: 960px) {
+      width: 100%;
+      padding: 0;
     }
-
     .artist-set-download {
       width: 3.8em;
     }
@@ -437,8 +438,7 @@
     }
 
     .artist-set-main {
-      padding-right: 3.13vw;
-      width: 40%;
+      width: 100%;
 
       @media (max-width: 1023px) {
         width: 100%;
@@ -460,7 +460,10 @@
         justify-content: center;
 
         #player-video {
-          .jw-display .jw-reset .jw-display-icon-container.jw-display-icon-display.jw-reset>div {
+          .jw-display
+            .jw-reset
+            .jw-display-icon-container.jw-display-icon-display.jw-reset
+            > div {
             opacity: 1;
           }
         }
@@ -498,13 +501,22 @@
 
     .header-metrics-container {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
+      padding-left: 12px;
 
+      padding-top: 0;
+      width: 50%;
+      @media (max-width: 1023px) {
+        width: 100%;
+      }
+      @media (max-width: 960px) {
+        padding-top: 30px;
+      }
+      align-content: center;
       @media (max-width: 1360px) {
         flex-direction: column;
 
         .artist-set-main {
-          width: 67%;
         }
       }
 
@@ -518,12 +530,20 @@
     }
 
     .artist-set-actions {
-      @media (max-width: 768px) {
-        display: none;
-      }
-
       display: flex;
+      justify-content: space-between;
       padding-bottom: 30px;
+      .button-row {
+        width: 100%;
+
+        justify-content: space-between;
+
+        input {
+          background: transparent;
+          border-radius: 10px;
+          border: 3px solid white;
+        }
+      }
     }
 
     .artist-set-leader {
@@ -536,7 +556,7 @@
       @media (max-width: 768px) {
         padding: 30px 0 30px 0;
 
-        &>.accent-color {
+        & > .accent-color {
           margin-bottom: 10px;
           display: block;
         }
@@ -572,11 +592,7 @@
 
     .artist-metrics-container {
       position: relative;
-      width: 60%;
-
-      @media (max-width: $screen-md-max) {
-        display: none;
-      }
+      width: 100%;
 
       .title1.datepicker-dashboard-btn {
         width: auto;
@@ -660,7 +676,7 @@
               }
 
               .search-date-picker-for-mobile-metrics {
-                >.datepicker {
+                > .datepicker {
                   top: 24px;
                   left: -160px !important;
                   position: absolute;
@@ -669,7 +685,7 @@
               }
 
               .search-date-picker-from-mobile-metrics {
-                >.datepicker {
+                > .datepicker {
                   top: 24px;
                   left: -18px !important;
                   position: absolute;
@@ -678,11 +694,11 @@
               }
             }
 
-            >* {
+            > * {
               margin-bottom: 20px;
             }
 
-            >.text3 {
+            > .text3 {
               text-align: center;
             }
 
@@ -697,7 +713,7 @@
                 border-right: solid red 2px;
                 padding-right: 30px;
 
-                >* {
+                > * {
                   &:first-child {
                     padding-bottom: 20px;
                   }
@@ -709,7 +725,7 @@
               .event-metrics-mobile-container-time {
                 padding-left: 30px;
 
-                >* {
+                > * {
                   &:first-child {
                     padding-bottom: 20px;
                   }
@@ -718,12 +734,12 @@
                 }
               }
 
-              @media(min-width:426px) {
-                @media(max-width: 768px) {
+              @media (min-width: 426px) {
+                @media (max-width: 768px) {
                   .event-metrics-mobile-container-time {
                     padding-left: 4vw;
 
-                    >* {
+                    > * {
                       &:first-child {
                         white-space: nowrap;
                         padding-bottom: 10px;
@@ -734,7 +750,7 @@
                   .event-metrics-mobile-container-plays {
                     padding-right: 4vw;
 
-                    >* {
+                    > * {
                       &:first-child {
                         padding-bottom: 10px;
                       }
@@ -769,7 +785,7 @@
               border-radius: 10px;
             }
 
-            >*:not(.accent-color) {
+            > *:not(.accent-color) {
               margin-bottom: 20px;
             }
           }
@@ -902,11 +918,17 @@
     position: relative;
     border-bottom: 2px solid $white-transparent;
 
+    @media (max-width: 620px) {
+      width: 100vw;
+      height: 16vh;
+    }
+
     .artist-event-card {
       margin-right: 40px;
     }
 
     .text2 {
+      font-size: 1em;
       display: block;
       height: auto;
       overflow: hidden;
@@ -953,14 +975,80 @@
     }
   }
 }
+.title-and-image-container {
+  display: flex;
+  flex-direction: row;
 
+  .form-group {
+    width: 100%;
+  }
 
+  @media (max-width: 620px) {
+    flex-direction: column;
+  }
+}
+.artist-dashboard-event-container {
+  display: flex;
+  flex-direction: row;
+}
+.artist-set-info .text2 {
+  font-size: 1em;
+}
+#back-to-events-list {
+  border-radius: 10px;
+  margin: 0 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .artist-event-arrow {
+    margin: auto;
+    height: initial;
+    transform: rotate(180deg);
+  }
+
+  @media (min-width: 960px) {
+    display: none;
+  }
+}
+#edit-event-dashboard {
+  width: 60%;
+  padding: 12px;
+  padding-top: 0px;
+  @media (max-width: 960px) {
+    padding-top: 30px;
+  }
+
+  @media (max-width: 1024px) {
+    width: 100%;
+  }
+}
 .hide-original {
   img {
     display: none;
   }
 }
 
+.header-metrics-container.not-show,
+.edit-event-dashboard.not-show {
+  display: flex;
+  @media (max-width: 1024px) {
+    display: none !important;
+  }
+}
+.switch-video-metrics {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  @media (min-width: 1024px) {
+    display: none;
+  }
+  .metrics {
+    border-radius: 0 10px 10px 0;
+  }
+  .video {
+    border-radius: 10px 0 0 10px;
+  }
+}
 .artist-event {
   flex: 1;
 }
@@ -1005,7 +1093,7 @@
     }
   }
 
-  >.white-border-button {
+  > .white-border-button {
     &:not(.datepicker-dashboard-main-btn):before {
       content: "x";
       color: red;
@@ -1061,11 +1149,11 @@
     }
   }
 
-  >.white-border-button {
+  > .white-border-button {
     padding: 0;
   }
 
-  >* {
+  > * {
     width: 145px;
     margin-right: 30px;
 
@@ -1122,7 +1210,9 @@
     }
   }
 }
-
+.video {
+  background-color: #f0f0eb;
+}
 .artist-event-actions {
   @media (min-width: $screen-md-min) {
     margin-left: 40px;
@@ -1158,7 +1248,7 @@
     margin-bottom: 20px;
   }
 
-  >#payoutData .flex-row {
+  > #payoutData .flex-row {
     @media (max-width: $screen-md-max) {
       flex-direction: column;
     }
@@ -1173,16 +1263,15 @@
 
 .white-border-select {
   &.engagement-event-select {
-
-    .select-items>div,
+    .select-items > div,
     .select-selected {
       padding: 10px;
       height: auto;
     }
 
     .select-items {
-      &>div {
-        &>span:first-child {
+      & > div {
+        & > span:first-child {
           border-top: 2px solid $white-transparent;
           padding-top: 10px;
         }
@@ -1269,7 +1358,7 @@
   height: calc(100% - 40px);
   width: 150px;
 
-  >div:nth-child(-n + 2) {
+  > div:nth-child(-n + 2) {
     font-weight: bold;
   }
 }
@@ -1300,7 +1389,6 @@
         input[type="checkbox"] {
           width: 100%;
           margin: 0 auto;
-
         }
       }
     }
@@ -1321,8 +1409,8 @@
 }
 
 .artist-events-container {
-  @media (max-width: 425px) {
-    flex-direction: column;
+  @media (max-width: 620px) {
+    flex-direction: row;
   }
 
   border-top: 3px solid $white-transparent;
@@ -1346,8 +1434,11 @@
     padding-left: 20px;
     height: 800px;
   }
+  @media (max-width: 620px) {
+    height: initial;
+    width: 100%;
+  }
 }
-
 
 @media (max-width: 960px) {
   #apply-button {
@@ -1374,14 +1465,15 @@
     width: 14.2vw;
   }
 
-  .datepicker-dashboard-container .custom-date-picker .dropdown-menu.datepicker {
+  .datepicker-dashboard-container
+    .custom-date-picker
+    .dropdown-menu.datepicker {
     left: 14.9vw !important;
     min-width: 200px !important;
     max-width: 256px !important;
     width: 25vw;
   }
 }
-
 
 #artistEventsList .white-line-bottom .title1 {
   font-size: 30px;
@@ -1440,6 +1532,31 @@
   }
 }
 
+.artist-events-list,
+#artistEventsList {
+  @media (max-width: 620px) {
+    width: 100vw;
+  }
+}
+.buttons-dashboard {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  @media (max-width: 425px) {
+    flex-direction: column;
+  }
+
+  button {
+    border-radius: 10px;
+    margin: 0 5px;
+  }
+}
+#submit-id-submit {
+  @media (max-width: 425px) {
+    margin-top: 10px;
+  }
+}
 .legal-page__full-contract {
   @include reen-kufi-normal;
   font-size: 16px;

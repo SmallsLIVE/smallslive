@@ -2,67 +2,24 @@
 {% load fromisoformat %}
 
 {% with set=event_set %}
-<div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}">
+    
+<div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}" class="artist-dashboard-event-container">
 
-    <div class="artist-set-actions">
-        
-        <div class="button-row button-row-margin">
-            {% if is_admin and set.has_media %}
-                <button class="set-button event-edit-button white-border-button"
-                        data-ajax-edit-url="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}">
-                    Edit
-                </button>
-                {% if not event.is_future %}
-                    {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-                    <button id="private-button" class="publish-button set-button" onclick="askPrivate({{ set.id }})"> Public </button>
-                    <button id="public-button" class="publish-button set-button hidden" onclick="askPublish({{ set.id }})"> Private </button>
-                    {% else %}
-                    <button id="public-button" class="publish-button set-button" onclick="askPublish({{ set.id }})"> Private </button>
-                    <button id="private-button" class="publish-button set-button hidden" onclick="askPrivate({{ set.id }})"> Public </button>
-                    {% endif %}
-                {% endif %}
-            {% else %}
-                {% if is_admin %}
-                    <button class="set-button event-edit-button white-border-button"
-                            data-ajax-edit-url="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}">
-                        Edit
-                    </button>
-                {% else %}
-                    <button disabled class="set-button">Edit</button>
-                {% endif %}
-                {% if not event.is_future %}    
-                    {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-                        <button disabled class="set-button">Public</button>
-                    {% else %}
-                        <button disabled class="set-button">Private</button>
-                    {% endif %}
-                {% endif %}
-            {% endif %}
-        </div>
+
+    <div id="edit-event-dashboard" class="edit-event-dashboard">
+    
     </div>
-
-    <div class="header-metrics-container">
+    <div class="header-metrics-container not-show">
+    <div class="switch-video-metrics">
+    <button class="white-border-button" id="back-to-events-list">           <div class="artist-event-arrow">
+            <img src="/static/image/arrow-right-red.svg" alt="">
+          </div> </button>
+<button class="white-border-button video" id="video">Video</button>
+<button class="white-border-button metrics" id="metrics">Metrics</button>
+</div>
         <div class='artist-set-main'>
             <div class="artist-event-info flex-column wrap">
-                <div class="flex-row artist-set-header">
-                    <div class="artist-event-arrow" onclick="closeEvent()">
-                        <img src="/static/image/arrow-right-red.svg" alt="arrow-red">    
-                    </div>
-                    <div class="artist-set-info-mobile">
-                            <div class="text2"> {{ event.get_date|date:'m/d/Y' }} </div>
-                            <div class="text2"> {{ event.title }} </div>
-                            <div class="text2 accent-color"> Live at {{ event.venue }} </div>
-                    </div>
-                    <div class="artist-set-info">
-                        <div class="text2"> {{ event.get_date|date:'m/d/Y' }} </div>
-                        <div class="text2"> {{ event.title }} </div>
-                    </div>
-                <div class='artist-set-download'>
-                    {% if not event.is_future %}
-                        <img  src="{% static '/static/image/download-icon.svg' %}" alt="" onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')">
-                    {% endif %}
-                </div>
-            </div>
+               
             <div class="artist-event-card">
                 {% if user.can_watch_video and event_set.video_recording_id and not event.is_future %}
                     <div class="set-picture-container flex-column">
@@ -146,169 +103,7 @@
     {% endif %}
     </div>
 
-    <div class="text2 flex-column" style="padding-top: 3px;">
-        <div class="artist-set-leader">
-            <span class="accent-color">Leader{{ leaders|length|pluralize }}</span>
-            {% for gig_played in event.get_performers %} 
-            {% if gig_played.is_leader %}
-                <div class="set-artist text1">
-                    {{ gig_played.artist.full_name }}
-                    <span class="accent-color">/</span>
-                    <span>{{ gig_played.role }}</span>
-                </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-        {% if sidemen %}
-            <div>
-                <span class='accent-color'>Side musicians</span>
-                {% for gig_played in event.get_performers %}
-                    {% if not gig_played.is_leader %}
-                        <div class='set-artist text1'>
-                            {{ gig_played.artist.full_name }}
-                            <span class='accent-color'>/</span>
-                            <span class=''>{{ gig_played.role }}</span>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        {% endif %}
-    </div>
-    <div class="flex-column mobile-event-menu">
-            <div id="mobile-metrics-button" class="flex-row mobile-event-opt">
-                {% if not event.is_future%}    
-                    <div class="white-border-button" data-id="mobile-option-metrics" style="background-color: rgb(255, 255, 255);">Metrics</div>
-                {% endif %}
-                {% if is_admin and set.has_media %}
-                    {% if not event.is_future%}    
-                        {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-                            <div id="mobile-private-button" class="white-border-button" data-id="mobile-option-private"> Public </div>
-                            <div id="mobile-public-button"  class="white-border-button hidden" data-id="mobile-option-publish"> Private </div>
-                        {% else %}
-                            <div id="mobile-public-button" class="white-border-button" data-id="mobile-option-publish"> Private </div>
-                            <div id="mobile-private-button" class="white-border-button hidden" data-id="mobile-option-private"> Public </div>
-
-                        {% endif %}
-                        <div class="white-border-button" id="table-event-edit" data-pk=event.id data-slug=event.slug>Edit</div>
-                    {% endif %}
-                {% else %}
-                    {% if not event.is_future%}    
-                        {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-                            <div class="white-border-button disabled">Public</div>
-                        {% else %}
-                            <div class="white-border-button disabled">Private</div>
-                        {% endif %}
-                    {% endif %}
-                    {% if event.is_future and is_admin %}
-                        <div class="white-border-button upcoming-edit" id="table-event-edit" data-pk=event.id data-slug=event.slug>Edit</div>
-                    {% else %}
-                        <div class="white-border-button disabled {% if event.is_future%} upcoming-edit {% endif %}">Edit</div>
-                    {% endif %}
-                {% endif %}
-                
-            </div>
-
-            <div class="mobile-option-container" id="mobile-option-container">
-            <div class="edit-event-mobile-form-body" data-subpage-name="mobile-edit" data-subpage-url="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}" id="mobile-option-edit">
-            </div>
-            {% if is_admin and set.has_media %}
-                <div id="mobile-option-publish" class="mobile-option-event-status">
-                    <div class="text2 accent-color">
-                        THIS SET IS CURRENTLY PRIVATE
-                    </div>
-                    <div class="text9">
-                        This set is unavailable to our SmallsLIVE Supporting Members in the Archive.
-                        If you publish it, they will get access to your show and all musicians listed will be credited with time towards their royalty payout.
-                    </div>
-                    <div class="text9">
-                            If you choose to make this show public it will be 
-                            available to the SmallsLIVE Supporters Members and thereby generating royalties.
-                    </div>
-                    <button class="white-border-button" onclick="publishSetMobile({{ set.id }})">Publish</button>
-                </div>
-
-                <div id="mobile-option-private" class="mobile-option-event-status">
-                    <div class="text2 accent-color">
-                        THIS SET IS CURRENTLY PUBLISHED
-                    </div>
-                    <div class="text9">
-                        This set is available to our SmallsLIVE Supporting Members in the Archive.
-                        As they access your show all musicians listed will be credited with time towards their royalty payout.
-                    </div>
-                    <div class="text9">
-                        If you choose to make this show private it will not be 
-                        available to the SmallsLIVE Supporters Members and thereby not generating royalties.
-                    </div>
-                    <button class="white-border-button" onclick="makeSetPrivateMobile({{ set.id }})">Make Private</button>
-                </div>
-            {% endif %}
-            {% if not event.is_future %}
-            <div id="mobile-option-metrics" class="mobile-option-metrics flex-column">
-                <div class="event-metrics-mobile-container flex-row">
-                    <div class="event-metrics-mobile-container-plays event-metrics-container-data">
-                        <div class="text3">Plays</div>
-                        <div id="mobile-play-value" class="title1 mobile-value-metrics"></div>
-                    </div>
-                    <div class="event-metrics-mobile-container-time event-metrics-container-data">
-                        <div class="text3">Time Listened</div>
-                        <div id="mobile-time-value" class="title1 mobile-value-metrics"></div>
-                    </div>
-                </div>
-                <div class="text3">Select Metrics Period</div>
-                <div class="white-border-select">
-                    <select id="mobile_artist_metrics">
-                            {% for range in datepicker_default_ranges %}
-                                <option value="{{ range.content }}" class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</option>
-                            {% endfor %}
-                            <option value="{{ datepicker_current_range.content }}" class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ datepicker_current_range.date }}" data-start="{{ datepicker_current_range.period_start }}" data-end="{% now "b, d, Y" %}">Current pay period</option>
-                            {% for range in datepicker_old_payout_ranges %}
-                                <option value="{{ range.content }}" class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.period_start }}" data-end="{{ range.period_end }}">{{ range.period_start|date:"m/d/Y" }} - {{ range.period_end|date:"m/d/Y" }} </option>
-                            {% endfor %}
-                            <option value="custom">Custom</option>
-                    </select>
-                </div>
-                <div id="myMobileMetrics" class="" style="display:none">
-                        
-                              <div class="refine-datepicker-container">
-                                  <div class="custom-date-picker search-date-picker-from-mobile-metrics" id="search-date-picker-from-mobile-metrics">
-                                      <input class="date-picker-text" id="start-date" type="text" placeholder="Select date" readonly>
-                                  </div>
-                          
-                                  <div class="custom-date-picker search-date-picker-for-mobile-metrics" id="search-date-picker-for-mobile-metrics">
-                                      <input class="date-picker-text" id="until-date" type="text" placeholder="Select date" readonly>
-                                  </div>
-                                </div>
-                </div>
-            </div>
-            {% endif %}
-            <div id="not-authorized-text">
-                    <div class="text2 accent-color">
-                        LEADERSHIP STATUS
-                    </div>
-                        <div class="text9">
-                        Leadership status designates ownership of the master recording.
-                        There may be multiple leaders on a master.<br> 
-                        Leadership status
-                        also grants admin privileges to the master for publishing, downloading and editing.
-                    </div>
-            </div>
-
-            <div class="modal fade edit-event-mobile-form" id="edit-event-form" >
-                    <div class="edit-event-mobile-form-body">
-                            <a href="#" class="close-button"></a>
-                            <img class="smalls-form-logo" src="{% static 'new_logo_transparent_black.svg' %}">
-                            <div class="accent-color title2">Archived show</div>
-                            <div class="edit-event-mobile-form-body title1">Edit event info</div>
-                    </div>
-                    <div class="edit-event-mobile-form-body" data-subpage-name="tablet-edit" data-subpage-url="{% url 'artist_dashboard:event_edit' pk=event.id slug=event.slug %}">
-                            <a href="#" class="close-button"></a>
-                    </div>
-
-                </div>
-
-            </div>
-</div>
-</div>
+   
 {% endwith %}
 
 {% block extra_js %}
