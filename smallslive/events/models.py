@@ -365,7 +365,9 @@ class Event(TimeStampedModel):
 
     def save(self, *args, **kwargs):
 
-        self.start, self.end = self.get_actual_start_end()
+        start, end = self.get_actual_start_end()
+        self.start = start or self.start
+        self.end = start or self.end
 
         if not self.slug:
             self.slug = slugify(self.title)
