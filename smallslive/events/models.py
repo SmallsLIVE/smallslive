@@ -363,14 +363,13 @@ class Event(TimeStampedModel):
 
         return self.date
 
-    def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None):
+    def save(self, *args, **kwargs):
 
         self.start, self.end = self.get_actual_start_end()
 
         if not self.slug:
             self.slug = slugify(self.title)
-        super(Event, self).save(force_insert, force_update, using, update_fields)
+        super(Event, self).save(*args, **kwargs)
 
     def get_actual_start_end(self):
         """ Return real NY time start and end for the event.
