@@ -381,6 +381,9 @@ class Event(TimeStampedModel):
 
         current_timezone = timezone.get_current_timezone()
 
+        if not sets:
+            return None, None
+
         ny_start = datetime.combine(self.date, sets[0].start)
         try:
             ny_start = timezone.make_aware(ny_start, timezone=current_timezone)
@@ -985,10 +988,10 @@ class Venue(models.Model):
     audio_bucket_name = models.CharField(max_length=4096, default='smallslivemp3')
     video_bucket_name = models.CharField(max_length=4096, default='smallslivevid')
 
-    aws_access_key_id = models.CharField(max_length=512, null=True, unique=True)
-    aws_secret_access_key = models.CharField(max_length=512, null=True, unique=True)
-    aws_storage_bucket_name = models.CharField(max_length=512, null=True, unique=True)
-    stripe_publishable_key = models.CharField(max_length=512, null=True, unique=True)
+    aws_access_key_id = models.CharField(max_length=4096, null=True)
+    aws_secret_access_key = models.CharField(max_length=4096, blank=True, null=True)
+    aws_storage_bucket_name = models.CharField(max_length=4096, blank=True, null=True)
+    stripe_publishable_key = models.CharField(max_length=4096, blank=True, null=True)
 
     def __unicode__(self):
         return self.name
