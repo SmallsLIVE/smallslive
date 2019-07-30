@@ -978,6 +978,7 @@
 .title-and-image-container {
   display: flex;
   flex-direction: row;
+  align-items: center;
 
   .form-group {
     width: 100%;
@@ -1260,7 +1261,9 @@
     }
   }
 }
-
+.croping-photo {
+  margin: 10px;
+}
 .white-border-select {
   &.engagement-event-select {
     .select-items > div,
