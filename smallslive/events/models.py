@@ -1038,7 +1038,7 @@ class Venue(models.Model):
     def fernet(self):
         return Fernet(derive_fernet_key(settings.SECRET_KEY))
 
-    def save(self):
+    def save(self, *args, **kwargs):
         self.aws_access_key_id = self.fernet.encrypt(
             force_bytes(self.aws_access_key_id)
         )
@@ -1051,7 +1051,7 @@ class Venue(models.Model):
         self.stripe_publishable_key = self.fernet.encrypt(
             force_bytes(self.stripe_publishable_key)
         )
-        super(Venue, self).save()
+        super(Venue, self).save(*args, **kwargs)
 
 
 class ShowDefaultTime(models.Model):
