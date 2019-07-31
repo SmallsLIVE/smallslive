@@ -15,7 +15,7 @@
     </div>
   </div>
   {% if not library %}
-    <div class="sponsor-text text2">Sponsor this artist and project with a tax-deductable donation to the smallslive foundation
+    <div class="sponsor-text text2">Sponsor this {{ text }} artist and project with a tax-deductable donation to the smallslive foundation
     </div>
     <div>
       {% for child_product in album_product.children.all %}
@@ -68,11 +68,13 @@
 <div class="my-downloads-album row big-player">
   <div class="my-downloads-album__cover flex-column player-container {% if album_product.images.count == 1 %} one-image{% else %} more-images{% endif %}">
 
+    {% if can_preview %}
     <div class="purchases-player-button myplay-btn">
       <div class="fa-thin-circle fa" >
         <i class="fas fa-play"></i>
       </div>
     </div>
+    {% endif %}
 
     {% with all_images=album_product.images.all %}
       <div class="store-single__item__images__carousel"
