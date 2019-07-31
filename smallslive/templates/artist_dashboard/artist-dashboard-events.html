@@ -56,8 +56,8 @@
   <script>
     function loadInfo(infoUrl){
       if( viewPortLength("width") > 768) {
-      $('#artistEventsInfo').html("");
-      $('#artistEventsInfo').addClass("artist-loading-gif");
+        $('#artistEventsInfo').html("");
+        $('#artistEventsInfo').addClass("artist-loading-gif");
       }
       $.ajax({
         url: infoUrl,
@@ -69,6 +69,12 @@
               $target.html(data);
               $target.data('url', infoUrl);
               $("#artistEventsContainer").show();
+
+              if(infoUrl.split("?")[infoUrl.split("?").length - 1].includes('set_id')){
+                $('.header-metrics-container').removeClass("not-show")
+                $('.edit-event-dashboard').addClass('not-show')
+
+              }
           }
       });
     }
@@ -82,6 +88,7 @@
     $('.eventChanger').on('click', function () {
       var eventUrl = $(this).data("url");  
       loadInfo(eventUrl)
+
     })
     $(document).ready(function() {
       var $firstEvent= $('.artist-event-row').first()
@@ -90,12 +97,8 @@
         $("#artistEventsInfo").html("");
         return ;
       }
-      if( viewPortLength("width") > 768){
+      if( viewPortLength("width") > 960){
         loadInfo(eventUrl+"?set_id=0")
-      }
-      if( viewPortLength("width") > 620){
-
-        $('.artist-event-row')[0].click()
       }
 
 
