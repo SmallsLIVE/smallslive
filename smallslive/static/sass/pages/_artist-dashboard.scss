@@ -979,8 +979,8 @@
 }
 .title-and-image-container {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column-reverse;
+  align-items: start;
 
   .form-group {
     width: 100%;
