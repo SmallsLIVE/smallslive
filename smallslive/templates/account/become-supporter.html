@@ -181,9 +181,9 @@
                 <!-- Single store item -->
                 <div class="gifts-container">
                   {% if session.price.excl_tax == 0 %}
-                  <div class="button-row button-row-big button-row-margin gift-button">
+                    <div class="button-row button-row-big button-row-margin gift-button">
                       <button class="select-gift">Free</button>
-                  </div>
+                    </div>
                   {% elif session.price.is_tax_known %}
                     <div class="button-row button-row-big button-row-margin gift-button">
                       <button class="select-gift white-border-button"
@@ -196,7 +196,7 @@
                       </button>
                     </div>
                   {% else %}
-                  <div class="button-row button-row-big button-row-margin gift-button">
+                    <div class="button-row button-row-big button-row-margin gift-button">
                        <button class="select-gift white-border-button"
                                data-cost="{{ session.stockrecord.cost_price }}"
                                data-inclTax="{{ session.price.incl_tax }}"
@@ -205,7 +205,7 @@
                          <span class="price-tag">{{ session.price.excl_tax|currency:session.price.currency }} </span>
                          <span class="gift-title">{{ product.get_title }}</span>
                        </button>
-                  </div>
+                    </div>
                   {% endif %}
 
                   <!-- html to be loaded into selection popup -->
@@ -231,7 +231,9 @@
                             {% for variant in product.variants.all %}
                             {% purchase_info_for_product request variant as variant_session %}
                               {% if session.availability.is_available_to_buy %}
-                                <option data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}"
+                                <option class="variant-data"
+                                        data-price="{{ variant_session.price.excl_tax|currency:variant_session.price.currency }}"
+                                        data-cost="{{ variant_session.stockrecord.cost_price }}"
                                         value="{{ variant.id }}">{{ variant.title }}</option>
                               {% endif %}
                             {% endfor %}

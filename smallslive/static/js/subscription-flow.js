@@ -714,15 +714,18 @@ $(document).ready(function() {
     $selectionConfirmationDialog
       .find(".subtitle")
       .text("Gift Tier: " + giftTier);
-    let price = $(this)
+    var price = $(this)
       .children(".price-tag")
       .text();
-    let cost = $(this).attr("data-cost");
+
+    var cost = $(this).attr("data-cost");
+    if (!cost) {
+      var $variants = $(this).closest('.gifts-container').find('.variant-data');
+      var cost = $variants.attr('data-cost');
+    }
 
     var tax = 0;
     var priceInt = parseInt(price.substring(1).replace(/,/g, ""));
-    console.log("COST");
-    console.log(cost);
     if (cost && cost != "None" && cost != "0.00") {
       tax = "$ " + (priceInt - parseInt(cost)).toFixed(2).toString();
     } else if (cost == "None" || cost == "0.00") {
