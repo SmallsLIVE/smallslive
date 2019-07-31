@@ -706,7 +706,7 @@ $(document).ready(function() {
     var priceInt = parseInt(price.substring(1).replace(/,/g, ""));
     console.log("COST");
     console.log(cost);
-    if (cost && cost != "None") {
+    if (cost && cost != "None" && cost != "0.00") {
       tax = "$ " + (priceInt - parseInt(cost)).toFixed(2).toString();
     } else if (cost == "None" || cost == "0.00") {
       tax = "100%";
