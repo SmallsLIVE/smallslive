@@ -132,7 +132,8 @@
     }
 
     .refine-datepicker-container .datepicker {
-      left: 0 !important;
+      left: 0;
+      display: none !important;
       width: 100vw;
       top: 80px !important;
       z-index: 1 !important;
@@ -333,9 +334,10 @@
 
     @media (max-width: 1023px) {
       justify-content: center;
-      height: auto;
+      height: 800px;
     }
     @media (max-width: 960px) {
+      justify-content: start;
       flex-direction: column;
     }
   }
@@ -1015,6 +1017,8 @@
   width: 60%;
   padding: 12px;
   padding-top: 0px;
+  flex-direction: column;
+
   @media (max-width: 960px) {
     padding-top: 30px;
   }
