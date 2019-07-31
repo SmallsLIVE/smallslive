@@ -134,6 +134,12 @@ class PurchasedProductsInfoMixin(object):
 
 class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfoMixin):
 
+    def can_preview(self, track_list):
+        for track in track_list:
+            if track.get_track_preview_url() != "blank.mp3":
+                return True
+        return False
+
     def get_context_data(self, **kwargs):
         ctx = super(ProductDetailView, self).get_context_data(**kwargs)
 
@@ -179,6 +185,8 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
                     if self.object.pk == album["parent"].pk:
                         ctx['is_full'] = "full_album"
             ctx['child_product'] = variant
+        ctx['can_preview'] = self.can_preview(album_product.get_tracks())
+        print "The preview status is {}".format(ctx['can_preview'])
 
         # Clean basket
         # self.request.basket.flush()
@@ -187,6 +195,7 @@ class ProductDetailView(catalogue_views.ProductDetailView, PurchasedProductsInfo
         ctx['product_id'] = self.object.pk
 
         ctx['STRIPE_PUBLIC_KEY'] = settings.STRIPE_PUBLIC_KEY
+
 
         return ctx
 
