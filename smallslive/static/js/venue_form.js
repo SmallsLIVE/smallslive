@@ -71,7 +71,7 @@ VenueForm = {
     $setsTable.find("input.timeinput").each(function() {});
 
     var addButtonSelector = "#add_more_sets";
-    var tableType = "set_default_times";
+    var tableType = "default_times";
 
     this.fixTableWidths($setsTable);
 
@@ -100,10 +100,10 @@ VenueForm = {
 
     $(document).on(
       "change",
-      "#id_set_default_times-0-start_time, \
-      #id_set_default_times-1-start_time, \
-      #id_set_default_times-2-start_time, \
-      #id_set_default_times-3-start_time",
+      "#id_default_times-0-start_time, \
+      #id_default_times-1-start_time, \
+      #id_default_times-2-start_time, \
+      #id_default_times-3-start_time",
       function(e) {
         let set = parseInt(this.id[8]) + 1;
         $(`#id_set${set}-set_name`).val($(this).val());
