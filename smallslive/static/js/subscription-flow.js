@@ -868,8 +868,6 @@ $(document).ready(function() {
     }
   }
 
-  buttonsSizeOrder();
-
   function processPaymentInfoStep() {
     var method = $mainContainer.find("#payment-method").val();
     if (method == "credit-card") {

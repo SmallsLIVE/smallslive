@@ -44,7 +44,7 @@
   }
 
   .gift-title {
-    font-size: 16px;
+    word-break: break-word;
   }
 
   .gifts-container {
@@ -63,6 +63,7 @@
   .select-gift {
     margin-bottom: 10px;
     min-width: 300px;
+    height: auto;
   }
 
   input {
