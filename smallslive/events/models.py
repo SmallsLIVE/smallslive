@@ -1068,8 +1068,17 @@ class ShowDefaultTime(models.Model):
             first_set_end = datetime.combine(datetime.now(), self.first_set) + timedelta(hours=self.set_duration)
             return self.first_set.strftime('%I:%M %p') + " - " + first_set_end.strftime('%I:%M %p')
 
+    def get_venue_name(self):
+        return self.venue.get_name
+
     def __unicode__(self):
         return self.sets_readable_start() + "    " + self.get_venue_name()
+
+
+class SetDefaultTime(models.Model):
+    venue = models.ForeignKey('Venue', related_name='set_default_times')
+    start_time = models.TimeField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
 
 
 class StaffPick(models.Model):
