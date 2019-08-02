@@ -19,8 +19,10 @@
       <form method="post" class="admin-interface__form" role="form" enctype="multipart/form-data">
         {% csrf_token %}
         {% crispy form %}
-        <button type="submit" name="submit" class="white-border-button">{{ action_name|capfirst }} venue
-        </button>
+        <div class="buttonHolder">
+          <input type="submit" name="submit"value="{{ action_name|capfirst }} venue"
+                 class="admin-interface__form__button" id="submit-id-submit">
+        </div>
       </form>
     </section>
   </div>
