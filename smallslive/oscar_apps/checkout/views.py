@@ -336,6 +336,11 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
     def get_context_data(self, **kwargs):
         #is it possible for null values? the below does not account for it and there shouldn't be a way for the reservation name to be blank...
         reservation_name = self.checkout_session.get_reservation_name()
+        if not self.request.user.is_authenticated():
+            kwargs['guest'] = {
+                'first_name': reservation_name[0],
+                'last_name': reservation_name[1]
+            }
         if reservation_name:
             kwargs["reservation_string"] = '{} {}'.format(reservation_name[0], reservation_name[1])
         basket = self.request.basket
@@ -350,12 +355,15 @@ class PaymentDetailsView(checkout_views.PaymentDetailsView, PayPalMixin,
         return super(PaymentDetailsView, self).get_context_data(**kwargs)
 
     def get_tickets_context(self, **kwargs):
+        reservation_name = self.checkout_session.get_reservation_name()
         if not self.request.user.is_authenticated():
             kwargs['guest'] = {
-                'first_name': self.checkout_session.get_reservation_name()[0],
-                'last_name': self.checkout_session.get_reservation_name()[1]
+                'first_name': reservation_name[0],
+                'last_name': reservation_name[1]
             }
-            kwargs['bankcard_form'] = kwargs.get('bankcard_form', BankcardForm())
+        if reservation_name:
+            kwargs["reservation_string"] = '{} {}'.format(reservation_name[0], reservation_name[1])
+        kwargs['bankcard_form'] = kwargs.get('bankcard_form', BankcardForm())
 
         return kwargs
 

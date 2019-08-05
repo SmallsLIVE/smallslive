@@ -12,8 +12,8 @@
 <div id="content_inner" class="gateway">
     <div class="content-wrapper" style="border:none">
     <section class="container" style="text-align:center">
-        <div class="white-line-bottom">
-            <span class="title1">{% trans "Who are you?" %}</span>
+        <div class="store-header__title__container">
+            <span class="title1 title1--reservation">{% trans "Reservation" %}</span>
         </div>
         <p class="text4 accent-color" id="already-member" style="display:none; text-align:center">
             A user with that e-mail address already exists. Please enter your password.
@@ -26,8 +26,8 @@
                 <div class='white-border-button gateway-option' data-gateway-type="existing">checkout as a member</div>
 
             </div>
-           
-        
+
+
             <div class="control-group">
                 <div class="controls">
                     <div class="radio custom-form">
@@ -44,19 +44,19 @@
                 <div class="controls">
                     <div class="custom-form">
                         <div class="form-group" id="username-field">
-                           
-                            {% include "partials/form_field.html" with field=form.username %}    
+
+                            {% include "partials/form_field.html" with field=form.username %}
                         </div>
                     </div>
                 </div>
             </div>
 
-    
+
             <div class="control-group {% if form.password.errors %}error{% endif %}">
                 {{ form.options.errors }}
                 <div class="controls">
                     <div class="radio custom-form">
-                        
+
                         {{ form.options.2 }}
                         <div class="form-inline form-group" data-type='existing'>
                             {{ form.password }}
@@ -73,15 +73,15 @@
                                 href="{% url "account_reset_password" %}">
                                 Forgot Your Password?
                                 </a>
-                                
+
                             </div>
                              <div class="flex-column mt-5 items-center text-center" style="width: 100%">
-                                    <p  class="text4 text-grey">Not Yet a Member? 
+                                    <p  class="text4 text-grey">Not Yet a Member?
                                 <a class="accent-color underline"
                                 href="#" id="checkoutAsANewMember">Become a Member</a></p>
                             </div>
-                            
-                           
+
+
                         </div>
                     </div>
                 </div>
@@ -94,8 +94,8 @@
                     </div>
                 </div>
             </div>
-            
-           
+
+
 
             <div class="form-actions" data-type='new'>
                 <div class="row-fluid">
@@ -229,7 +229,7 @@
             }
         });
     });
-    
+
     $().ready(function(){
         $('#checkoutAsANewMember').click(() => {
             $('#becomeMemberDialog').modal();
