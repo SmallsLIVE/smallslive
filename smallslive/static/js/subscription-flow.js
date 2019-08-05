@@ -850,26 +850,6 @@ $(document).ready(function() {
     });
   }
 
-  function buttonsSizeOrder() {
-    if (document.body.clientWidth > 768) {
-      var upperButtonWidth = 0;
-      $(".select-gift").each(function(index) {
-        if (index > 0) {
-          $(this).css("width", upperButtonWidth);
-        }
-        upperButtonWidth = $(this).css("width");
-        upperButtonWidth = upperButtonWidth.substring(
-          0,
-          upperButtonWidth.length - 2
-        );
-        upperButtonWidth = parseInt(upperButtonWidth) + 100;
-        upperButtonWidth = upperButtonWidth + "px";
-      });
-    }
-  }
-
-  buttonsSizeOrder();
-
   function processPaymentInfoStep() {
     var method = $mainContainer.find("#payment-method").val();
     if (method == "credit-card") {
