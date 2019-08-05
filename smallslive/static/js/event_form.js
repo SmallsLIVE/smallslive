@@ -156,14 +156,13 @@ EventForm = {
     });
 
     $(".slot-buttons").on("click", ".slot", function() {
-      var times = $(this)
-        .data("time")
-        .split("-");
+      var times = $(this).data("time").split("-");
       var start, end;
 
       let setDuration = $(this).data("set-duration");
       var startDate = $("#id_start");
       var endDate = $("#id_end");
+
       if (!startDate.val()) {
         start = moment(times[0], "H:mm");
       } else {
@@ -194,6 +193,7 @@ EventForm = {
           end.add("days", 1);
         }
       }
+
       startDate.data("DateTimePicker").setDate(start.format(date_format));
       if (times[1]) {
         endDate.data("DateTimePicker").setDate(end.format(date_format));

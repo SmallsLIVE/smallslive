@@ -1049,24 +1049,27 @@ class Venue(models.Model):
 
 
 class ShowDefaultTime(models.Model):
-    venue = models.ForeignKey('Venue', on_delete=models.CASCADE, blank=False)
+    venue = models.ForeignKey('Venue', on_delete=models.CASCADE, blank=False, related_name='default_times')
     first_set = models.TimeField(blank=False)
     second_set = models.TimeField(blank=True,null=True)
     set_duration = models.IntegerField(default=1)
     title = models.CharField(max_length=100, default='Set duration')
 
     def sets_start(self):
-        if self.second_set:
+        if self.second_set or self.second_set is not None:
             return self.first_set.strftime('%H:%M') + "-" + self.second_set.strftime('%H:%M')
         else:
             return self.first_set.strftime('%H:%M')
 
     def sets_readable_start(self):
-        if self.second_set:
+        if self.second_set or self.second_set is not None:
             return self.first_set.strftime('%I:%M %p') + " & " + self.second_set.strftime('%I:%M %p')
         else:
             first_set_end = datetime.combine(datetime.now(), self.first_set) + timedelta(hours=self.set_duration)
             return self.first_set.strftime('%I:%M %p') + " - " + first_set_end.strftime('%I:%M %p')
+
+    def get_venue_name(self):
+        return self.venue.get_name
 
     def __unicode__(self):
         return self.sets_readable_start() + "    " + self.get_venue_name()

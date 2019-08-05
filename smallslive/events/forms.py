@@ -14,7 +14,10 @@ from haystack.forms import SearchForm
 from oscar.apps.catalogue.models import ProductImage
 from multimedia.models import ImageMediaFile
 from multimedia.s3_storages import ImageS3Storage
-from .models import EventSet, Event, GigPlayed, Comment, CustomImageField, Venue
+from .models import (
+    EventSet, Event, GigPlayed, Comment, CustomImageField, Venue,
+    ShowDefaultTime
+)
 
 from utils.widgets import ImageCropWidget
 
@@ -357,6 +360,39 @@ class TicketAddForm(forms.Form):
             )
 
 
+class ShowDefaultTimeInlineFormset(InlineFormSet):
+    model = ShowDefaultTime
+    fields = ('first_set', 'second_set', 'set_duration')
+    extra = 1
+
+    def construct_formset(self):
+        if self.object and self.object.default_times.count() > 0:
+            self.extra = 0
+
+        formset = super(ShowDefaultTimeInlineFormset, self).construct_formset()
+        for num, form in enumerate(formset):
+            form.fields['DELETE'].widget = forms.HiddenInput()
+            # https://stackoverflow.com/questions/3901931/make-inlineformset-in-django-required
+            now = datetime.now().strftime('%I:%M %p')
+            form.fields['first_set'].widget = forms.TimeInput(format='%I:%M %p')
+            form.fields['first_set'].initial = now
+            form.fields['first_set'].input_formats = ['%I:%M %p']
+            form.fields['second_set'].widget = forms.TimeInput(format='%I:%M %p')
+            form.fields['second_set'].initial = now
+            form.fields['second_set'].input_formats = ['%I:%M %p']
+        return formset
+
+
+class ShowDefaultTimeInlineFormsetHelper(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(ShowDefaultTimeInlineFormsetHelper, self).__init__(*args, **kwargs)
+        self.form_tag = False
+        self.field_template = 'bootstrap3/layout/inline_field.html'
+        self.template = 'form_widgets/table_inline_formset.html'
+        self.form_show_labels = False
+        self.sortable = False
+
+
 class VenueAddForm(forms.ModelForm):
     class Meta:
         model = Venue
@@ -384,6 +420,21 @@ class VenueAddForm(forms.ModelForm):
             self.initial['stripe_publishable_key'] = self.instance.get_stripe_publishable_key
 
         self.helper = FormHelper(self)
+        layout = self.get_layout()
+
+        self.helper.layout = layout
         self.helper.form_action = 'venue_add'
         self.helper.form_method = 'post'
         self.helper.form_tag = False
+
+    def get_layout(self):
+        return Layout(
+            'name',
+            'audio_bucket_name',
+            'video_bucket_name',
+            'aws_access_key_id',
+            'aws_secret_access_key',
+            'aws_storage_bucket_name',
+            'stripe_publishable_key',
+            Formset('default_times', template='form_widgets/set_formset_layout.html')
+        )
