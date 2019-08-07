@@ -85,7 +85,9 @@
                     <div class="store-overview__group__textblock text1">
                         <p tabindex="0" class="small-heading">Credit card:</p>
                         <p tabindex="0" >{{ card_info.name }}</p>
-                        <p tabindex="0" >xxxx xxxx xxxx {{ card_info.last_4 }}</p>
+                        {% with bankcard_form.bankcard.number as n %}
+                        <p tabindex="0" >xxxx xxxx xxxx {{ n.12 }}{{ n.13 }}{{ n.14 }}{{ n.15 }}</p>
+                        {% endwith %}
                     </div>
                     <div class="store-overview__return-button__container">
                     <a href="{% url 'checkout:payment-details' %}" class="white-border-button">Edit</a>
