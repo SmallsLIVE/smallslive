@@ -127,6 +127,9 @@ $("#a-z-refresh").click(() => {
   $("#artist-search").change();
   $("#a-z-search .white-border-button").css("background-color", "#f0f0eb");
   $("#a-z-refresh").css("background-color", "#fff");
+
+  // reset letter when 'all' button is pressed
+  localStorage.removeItem('artist_letter');
 });
 
 function searchMoreArtists() {
@@ -139,6 +142,7 @@ function searchMoreArtists() {
 }
 
 function updateArtistsHtml(data, reset) {
+
   if (data.template) {
     $(".mobile-artist-loading").hide();
     $("#artists .event-row").append(data.template);
@@ -150,6 +154,7 @@ function updateArtistsHtml(data, reset) {
     else {
       $("#artists .slide-btn.next").css("visibility", "visible");
     }
+
     if (reset) {
       $("#artists .event-row").css("marginLeft", "0");
       $("#artists .slide-btn.prev").css("visibility", "hidden");
