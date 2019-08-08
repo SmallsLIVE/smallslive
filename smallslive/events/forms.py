@@ -136,6 +136,8 @@ class EventSetInlineFormsetHelper(FormHelper):
 
 class EventAddForm(forms.ModelForm):
     date = forms.DateField(label="Event Date", required=True)
+    start = forms.DateTimeField(widget=forms.HiddenInput(), required=False)
+    end = forms.DateTimeField(widget=forms.HiddenInput(), required=False)
     staff_pick = forms.BooleanField(label="Staff Pick", required=False)
     # File object as a helper to upload files. They are uploaded
     # to a temporary model so the user can view and crop on the fly,
@@ -148,7 +150,7 @@ class EventAddForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = (
-            'venue', 'date', 'id', 'title', 'subtitle', 'photo',
+            'venue', 'date', 'start', 'end', 'id', 'title', 'subtitle', 'photo',
             'image_id', 'cropping', 'description', 'state', 'staff_pick', 'streamable',
             'tickets_url'
         )
@@ -227,7 +229,7 @@ class EventAddForm(forms.ModelForm):
 class EventEditForm(EventAddForm):
     class Meta(EventAddForm.Meta):
         fields = (
-            'venue', 'title', 'subtitle', 'date',
+            'venue', 'title', 'subtitle', 'date', 'start', 'end',
             'start_streaming_before_minutes', 'photo', 'image_id', 'cropping',
             'description', 'state', 'staff_pick', 'streamable', 'tickets_url')
 
