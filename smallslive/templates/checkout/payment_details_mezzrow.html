@@ -27,12 +27,12 @@
         </div>
         <div class="flex-row col-xs-12 col-md-4 col-md-offset-4">
           <input style="margin-right: 15px;" type="text" class="store__form__input"
-          id="guest-name" required placeholder="First name" size="20" 
+          id="guest-name" required placeholder="First name" size="20"
           autocomplete="off"
           name="guest_first_name" value="{% if user.first_name %} {{ user.first_name }} {% elif guest.first_name %} {{ guest.first_name }} {% endif %}"
           placeholder="Credit Card Number">
           <input type="text" class="store__form__input"
-          id="guest-name" required placeholder="Last name" size="20" 
+          id="guest-name" required placeholder="Last name" size="20"
           autocomplete="off"
           name="guest_last_name" value="{% if user.last_name %} {{ user.last_name }} {% elif guest.last_name %} {{ guest.last_name }} {% endif %}"
           placeholder="Credit Card Number">
@@ -131,7 +131,7 @@
         </div>
     </section>
           <section class="store-cart__footer container">
-              <div class="col-xs-12 col-sm-6 store-cart__footer__left">               
+              <div class="col-xs-12 col-sm-6 store-cart__footer__left">
               </div>
               <div class="col-xs-12 col-sm-6 store-cart__footer__right">
               </div>
@@ -168,7 +168,7 @@
           $('#expiry-month').val('0' + $('#expiry-month').val())
         }
       }
-      
+
       var $yearPlaceholder = $('#expiry-year-placeholder');
       var $yearInput = $('#expiry-year');
 
@@ -221,6 +221,6 @@
     if (inactive === 'true'){
       $('#inactive-dialog').modal('show');
     }
-  
+
   </script>
 {% endblock %}

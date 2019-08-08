@@ -15,9 +15,15 @@ $smallslive: #d21535;
 }
 .smalls-color {
   color: $smallslive !important;
+  &--thankyou {
+    display: inline-block;
+  }
 }
 .mezzrow-color {
   color: $mezzrow;
+  &--thankyou {
+    display: inline-block;
+  }
 }
 .text-grey {
   color: $text-grey;

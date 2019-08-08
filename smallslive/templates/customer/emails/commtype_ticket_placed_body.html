@@ -7,7 +7,7 @@
         {% for line in order.lines.all %}
             <p>
                 Thank you for your purchase of {{ line.quantity }} ticket(s) to {{ line.title }}  at {{ line.product.event_set.event.venue.name }} on {{ line.product.event_set.event.date }}.
-                Your confirmation number is {{order_number}}. Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}.
+                Your order number is {{order_number}}. Your card has been charged for {{ line.line_price_incl_tax|currency:order.currency }}.
             </p>
             <p>
                 Your name will be at the door with the host. Please come ½ hour before the scheduled start time ({{ line.product.event_set.start }}). Your ticket guarantees you a seat but seat assignment is first come first serve. Late-comers risk losing their seats. Ticket sales are non-refundable but you may
@@ -17,4 +17,3 @@
     {% endwith %}
 
 {% endblock %}
-

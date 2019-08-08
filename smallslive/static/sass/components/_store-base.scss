@@ -31,6 +31,27 @@
           width: 100%;
         }
 
+        &--thankyou {
+          font-size: 45px;
+          width: 95%;
+          max-width: 1050px;
+          line-height: 43px;
+
+          @media (max-width: 1023px) {
+            margin-top: 30px;
+          }
+          @media (max-width: 1200px) {
+            font-size: calc(1.93181818vw + 21.81818181px);
+            line-height: calc(1.93181818vw + 19.81818181px);
+          }
+        }
+
+        &--reservation {
+          @media (max-width: 1023px) {
+            padding-top: 30px;
+          }
+        }
+
       }
 
     }
@@ -2566,10 +2587,9 @@ img.defineImageRatio {
 }
 
 .store-done {
-  padding: 60px 30px;
 
   @media (max-width: $screen-xs-max) {
-    padding: 30px;
+    //padding: 30px;
   }
 
   & > .row {
@@ -2585,6 +2605,12 @@ img.defineImageRatio {
   }
 
   &__content {
+
+    &.disclaimer{
+      margin-top: 20px;
+      padding: 0 15px;
+    }
+
   }
 
   &__heading {
@@ -2596,9 +2622,15 @@ img.defineImageRatio {
   &__info-list {
     padding-left: 15px;
     margin: 0;
+    list-style: none;
+
 
     & li {
       margin: 5px 0;
+    }
+
+    &__title{
+      text-transform: uppercase;
     }
   }
 }

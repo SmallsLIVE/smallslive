@@ -11,15 +11,17 @@
 {% block title %}Preview your order{% endblock %}
 
 {% block content %}
-    <div class="content-wrapper borderless text1" style="margin-top:30px">
-
+    <div class="content-wrapper borderless text1">
+        <!--
         <section class="store-header container">
             <div class="store-header__content">
-                <div class="white-line-bottom">
-                    <div tabindex="0" class="title1 center">Order overview</div>
+                <div class="store-header__title__container">
+                    <div tabindex="0" class="title1 title1--overview center">Order overview</div>
                 </div>
             </div>
+
         </section>
+        -->
         <section class="store-overview container">
             <div class="col-xs-12 col-sm-8 store-overview__left-column">
              <div class="white-line-bottom">
@@ -38,7 +40,7 @@
                   <div class="title1">Reservation</div>
                 </div>
                 <div class="store-overview__group__textblock text1">
-                  <p>{{ reservation_string }}</p>
+                  <p>{{ ticket_name.first }} {{ ticket_name.last }}</p>
                 </div>
                 {% else %}
                 <div class="section-title section-title-no-padded">
@@ -83,7 +85,9 @@
                     <div class="store-overview__group__textblock text1">
                         <p tabindex="0" class="small-heading">Credit card:</p>
                         <p tabindex="0" >{{ card_info.name }}</p>
-                        <p tabindex="0" >xxxx xxxx xxxx {{ card_info.last_4 }}</p>
+                        {% with bankcard_form.bankcard.number as n %}
+                        <p tabindex="0" >xxxx xxxx xxxx {{ n.12 }}{{ n.13 }}{{ n.14 }}{{ n.15 }}</p>
+                        {% endwith %}
                     </div>
                     <div class="store-overview__return-button__container">
                     <a href="{% url 'checkout:payment-details' %}" class="white-border-button">Edit</a>
