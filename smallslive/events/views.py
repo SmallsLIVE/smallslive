@@ -273,7 +273,6 @@ class EventDetailView(DetailView):
     context_object_name = 'event'
 
     def get_context_data(self, **kwargs):
-
         current_user = self.request.user
         context = super(EventDetailView, self).get_context_data(**kwargs)
         event = self.object
@@ -336,6 +335,14 @@ class EventDetailView(DetailView):
             }
             context['products'] = self.object.get_tickets()
 
+        # for modal in past events
+        # need to find if there is currently a live event
+        today_and_tomorrow_events = Event.objects.get_today_and_tomorrow_events().filter(venue_id=event.venue.id)
+        live_now = [event for event in today_and_tomorrow_events if event.is_live == True]
+
+        context['finished_next_event'] = live_now[0] if live_now else None
+        context['archived_date_estimate'] = self.object.end + timedelta(days=14)
+
         context['sets'] = event.get_sets_info_dict()
         context['event_artists'] = event.get_artists_info_dict()
         context['donate_url'] = reverse('donate')
@@ -348,8 +355,8 @@ class EventDetailView(DetailView):
         return context
 
     def get_template_names(self):
-
         event = self.object
+
         if event.show_streaming:
             if self.request.user.is_authenticated():
                 return ['events/_event_details_streaming.html']

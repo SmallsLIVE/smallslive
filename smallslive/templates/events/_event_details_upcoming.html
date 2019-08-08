@@ -7,6 +7,7 @@
 {% load purchase_info_tags %}
 {% load basket_tags %}
 {% load crispy_forms_tags %}
+
 {% block event_content %}
 {% include 'inactive_dialog.html' %}
 {% include 'events/streaming_not_available_dialog.html' %}
@@ -39,6 +40,7 @@
   </div>
 </div>
 {% endblock %}
+
 {% block extra_js %}
 {{ block.super }}
 <script>
@@ -85,12 +87,11 @@
       }
     });
   });
-    $('.event-video-placeholder').keypress(function (e){
-     if(e.keyCode == 13){
-        $('#btn-play-event').click();
-     }
-    })
 
-
+  $('.event-video-placeholder').keypress(function (e){
+   if(e.keyCode == 13){
+      $('#btn-play-event').click();
+   }
+  });
 </script>
 {% endblock %}
