@@ -47,6 +47,7 @@ from .forms import EventAddForm, GigPlayedAddInlineFormSet, \
     GigPlayedInlineFormSetHelper, GigPlayedEditInlineFormset, \
     EventSearchForm, EventEditForm, EventSetInlineFormset, \
     EventSetInlineFormsetHelper, CommentForm, TicketAddForm, \
+    ShowDefaultTimeInlineFormset, ShowDefaultTimeInlineFormsetHelper, \
     VenueAddForm
 from .models import Event, Venue, ShowDefaultTime, RANGE_MONTH
 
@@ -976,13 +977,16 @@ class CommentListView(FormView):
 event_comments = CommentListView.as_view()
 
 
-class VenueAddView(StaffuserRequiredMixin, CreateView):
+class VenueAddView(StaffuserRequiredMixin, NamedFormsetsMixin, CreateWithInlinesView):
     model = Venue
     form_class = VenueAddForm
+    inlines = [ShowDefaultTimeInlineFormset]
+    inlines_names = ['default_times']
     template_name = 'events/venue_add.html'
 
     def get_context_data(self, **kwargs):
         context = super(VenueAddView, self).get_context_data(**kwargs)
+        context['default_times'].helper = ShowDefaultTimeInlineFormsetHelper()
         context['action_name'] = 'add'
         return context
 
@@ -992,13 +996,16 @@ class VenueAddView(StaffuserRequiredMixin, CreateView):
 venue_add = VenueAddView.as_view()
 
 
-class VenueEditView(StaffuserRequiredMixin, UpdateView):
+class VenueEditView(StaffuserRequiredMixin, NamedFormsetsMixin, UpdateWithInlinesView):
     model = Venue
     form_class = VenueAddForm
+    inlines = [ShowDefaultTimeInlineFormset]
+    inlines_names = ['default_times']
     template_name = 'events/venue_add.html'
 
     def get_context_data(self, **kwargs):
         context = super(VenueEditView, self).get_context_data(**kwargs)
+        context['default_times'].helper = ShowDefaultTimeInlineFormsetHelper()
         context['action_name'] = 'edit'
         return context
 

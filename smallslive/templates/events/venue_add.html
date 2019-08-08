@@ -19,9 +19,24 @@
       <form method="post" class="admin-interface__form" role="form" enctype="multipart/form-data">
         {% csrf_token %}
         {% crispy form %}
-        <button type="submit" name="submit" class="white-border-button">{{ action_name|capfirst }} venue
-        </button>
+        <div class="buttonHolder">
+          <input type="submit" name="submit"value="{{ action_name|capfirst }} venue"
+                 class="admin-interface__form__button" id="submit-id-submit">
+        </div>
       </form>
     </section>
   </div>
 {% endblock content %}
+
+{% block extra_js %}
+  <script type="text/javascript" src="{% static 'js/selectize.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>
+  <script src="{% static "js/venue_form.js" %}"></script>
+  <script>
+    $(document).ready(function() {
+      VenueForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
+      VenueForm.init(true);
+    });
+  </script>
+{% endblock %}
