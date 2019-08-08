@@ -25,15 +25,14 @@
   <a href="#" class="close-button"></a>
   <div class="instrument text4" data-instrument="">All Instruments ({{ instruments_artist_count }})</div>
   {% for instrument in instruments %}
-    <div data-instrument="{{ instrument.name }}" class="instrument text4 text-grey">{{ instrument.name }} ({{ instrument.artist_count }})</div>
+    <div data-instrument="{{ instrument.name }}" class="instrument text4 text-grey">
+      {{ instrument.name }} ({{ instrument.artist_count }})
+    </div>
   {% endfor %}
 </div>
 
 <div class="">
-
-  <div class="left_arrow artist-arrow-search artist-arrow-disabled">
-
-  </div>
+  <div class="left_arrow artist-arrow-search artist-arrow-disabled"></div>
 
   <div id="artist-load-gif" class="loading-image">
     <img src="{% static 'image/loading.gif' %}" alt="">

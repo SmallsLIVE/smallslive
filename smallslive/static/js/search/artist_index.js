@@ -18,32 +18,8 @@ $(document).ready(function() {
 
   $(".scroll-left").css("visibility", "initial");
   const alphabet = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z"
+    "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
+    "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
   ];
   buttons = {};
   alphabet.map(letter => {
@@ -59,6 +35,10 @@ $(document).ready(function() {
           "#f0f0eb"
         );
         $(buttons[letter]).css("background-color", "#fff");
+
+        // save value for searched artist letter
+        localStorage.setItem('artist_letter', letter);
+
         if (searchTerm.trim() != "") {
           searchTerm = "";
           sendArtistRequest(() => {
@@ -76,6 +56,13 @@ $(document).ready(function() {
         }
       });
   });
+
+  // there is a value in local storage, load artists with that letter
+  if (localStorage.getItem('artist_letter')) {
+    var saved_artist_letter = localStorage.getItem('artist_letter');
+    $(buttons[saved_artist_letter]).click();
+  }
+
   /* Handle nav scrolling */
   function handleScrolling(direction) {
     const maxScrollLeft =
