@@ -616,6 +616,9 @@ $(document).ready(function() {
     currentEventsScrollLeft = 0;
     $("#artists .event-row").html("");
 
+    // sove instrument to local storage
+    localStorage.setItem('instrument', artistInstrument);
+
     sendArtistRequest(updateArtistsHtml);
     $(".instruments-container").css("display", "none");
   });
