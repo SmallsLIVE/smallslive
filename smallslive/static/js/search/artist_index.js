@@ -7,6 +7,7 @@ $(document).ready(function() {
       mostPopularFilter.replaceWith(data.content);
     });
   };
+
   $filter.on("change", function() {
     setMostPopular($filter.val());
   });
@@ -15,6 +16,9 @@ $(document).ready(function() {
     $filter.val(popularFilterDefaultValue);
     $filter.trigger("change");
   }
+
+  var saved_artist = localStorage.getItem('artist_letter');
+  var saved_instrument = localStorage.getItem('instrument');
 
   $(".scroll-left").css("visibility", "initial");
   const alphabet = [
@@ -57,10 +61,22 @@ $(document).ready(function() {
       });
   });
 
-  // there is a value in local storage, load artists with that letter
-  if (localStorage.getItem('artist_letter')) {
-    var saved_artist_letter = localStorage.getItem('artist_letter');
-    $(buttons[saved_artist_letter]).click();
+  // items in local storage
+  if (saved_artist && saved_instrument) {
+    // artist and instrument
+    artistInstrument = saved_instrument;
+    $(".instrument-btn").text(saved_instrument || "Instrument");
+
+    $(buttons[saved_artist]).click();
+  } else if (saved_artist) {
+    // artist only
+    $(buttons[saved_artist]).click();
+  } else if (saved_instrument) {
+    // instrument only
+    artistInstrument = saved_instrument;
+    $(".instrument-btn").text(saved_instrument || "Instrument");
+
+    $("div[data-instrument='" + saved_instrument +"']").click()
   }
 
   /* Handle nav scrolling */
