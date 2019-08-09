@@ -40,12 +40,13 @@ from users.views import HasArtistAssignedMixin, \
 from .forms import ToggleRecordingStateForm, EventAjaxEditForm,  \
     EventEditForm, ArtistInfoForm, \
     EditProfileForm, ArtistResetPasswordForm, MetricsPayoutForm, \
-    ArtistGigPlayedAddInlineFormSet, ArtistGigPlayedAddLazyInlineFormSet
+    ArtistGigPlayedAddLazyInlineFormSet
 from artist_dashboard.tasks import generate_payout_sheet_task,\
     update_current_period_metrics_task
 
 
 class MyEventsView(HasArtistAssignedMixin, ListView):
+
     context_object_name = 'gigs'
     paginate_by = 30
     template_name = 'artist_dashboard/my_gigs.html'
@@ -55,9 +56,11 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
         paginator = context['paginator']
         current_page_number = context['page_obj'].number
         context.update({
+            'total_results': paginator.count,
             'total_pages': paginator.num_pages,
             'current_page': current_page_number,  
         })
+
         return context
 
     def get_queryset(self):
@@ -65,6 +68,7 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
 
         queryset = artist.gigs_played.select_related('event')
         queryset = self.apply_filters(queryset)
+
         return queryset
 
     def apply_filters(self, queryset):
@@ -158,13 +162,28 @@ class MyEventsAJAXView(MyEventsView):
 
     def get(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()
+
+        print self.object_list.query
+
         context = self.get_context_data(**kwargs)
+
+        first = self.object_list.first()
+        first_event_date = None
+        if first:
+            first_event_date = first.event.get_date().strftime('%m/%d/%Y')
+        last = self.object_list.last()
+        last_event_date = None
+        if last:
+            last_event_date = first.event.get_date().strftime('%m/%d/%Y')
 
         data = {
             'template': render_to_string(
                 self.template_name, context,
                 context_instance=RequestContext(request)
             ),
+            'first_event_date': first_event_date,
+            'last_event_date': last_event_date,
+            'total_results': context.get('total_results'),
             'total_pages': context.get('total_pages'),
             'current_page': context.get('current_page'),
         }
@@ -187,7 +206,6 @@ class MyPastEventsView(MyEventsView):
 
     def get_queryset(self):
         artist = self.request.user.artist
-        now = timezone.now()
         queryset = artist.gigs_played.select_related('event').prefetch_related('event__sets').filter(
             event__recordings__media_file__isnull=False
         )
@@ -279,8 +297,6 @@ class MyPastEventsInfoView(DetailView):
                 'end': month_start.isoformat()
             }
         ]
-
-        today = timezone.datetime.today().replace(day=1)
 
         default_ranges = []
         default_ranges.append({

@@ -64,10 +64,10 @@ EventForm = {
     $(".btn.btn-success.slot").hide();
   },
   initDateTimeFunctionality: function() {
-    var $start = $("#id_start");
-    var $end = $("#id_end");
     var date_format = "MM/DD/YYYY HH:mm:ss";
     var $date = $("#id_date");
+    var $start = $("#id_start");
+    var $end = $("#id_end");
 
     $date.datetimepicker({
       sideBySide: true,

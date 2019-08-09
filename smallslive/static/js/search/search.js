@@ -1212,6 +1212,7 @@ function updateArchiveShows(data) {
 }
 
 function initializeArchiveDatePickers() {
+
   $datePickerFrom.datepicker({
     format: "mm/dd/yyyy",
     autoclose: false,

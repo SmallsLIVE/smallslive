@@ -382,7 +382,7 @@
   }
 
   .artist-events-list {
-    width: 25%;
+    width: 50%;
 
     @media (max-width: 1360px) {
       width: 30%;
@@ -1421,7 +1421,6 @@
   }
 
   border-top: 3px solid $white-transparent;
-  height: 700px;
 
   @media (max-width: 1023px) {
     justify-content: center;
@@ -1545,20 +1544,8 @@
     width: 100vw;
   }
 }
-.buttons-dashboard {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
 
-  @media (max-width: 425px) {
-    flex-direction: column;
-  }
 
-  button {
-    border-radius: 10px;
-    margin: 0 5px;
-  }
-}
 #submit-id-submit {
   @media (max-width: 425px) {
     margin-top: 10px;

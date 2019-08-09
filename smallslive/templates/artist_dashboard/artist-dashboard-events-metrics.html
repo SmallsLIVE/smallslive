@@ -1,0 +1,75 @@
+<div class='artist-set-main'>
+  <div class="artist-event-info flex-column wrap">
+    <div class="artist-event-card">
+      {% if user.can_watch_video and event_set.video_recording_id and not event.is_future %}
+        <div class="set-picture-container flex-column">
+          <div id="player-video"></div>
+        </div>
+      {% else %}
+        <a href="{{ event.get_absolute_url }}">
+          <div class="set-picture-container flex-column">
+            <div class="set-icon-overlay text2">
+              {% if not event.is_future %}
+              <i class="fa fa-play fa-thin-circle"></i>
+              {% endif %}
+            </div>
+            <div class="picture-border">
+              <div class="set-picture">
+                {% if event.photo %}
+                {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+                {% else %}
+                {% include 'partials/thumbored_picture.html' %}
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </a>
+      {% endif %}
+    </div>
+    <div class="artist-set-list flex-row">
+      {% if not event.is_future and event.sets.with_media.count > 1 %}
+        {% for set in event.sets.with_media %}
+          <div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}?set_id={{ forloop.counter0 }}" data-ajax-edit-url="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}" class="{% if set.id == event_set.id %} artist-active-set accent-color {% endif %}set-changer">
+            <div class="text2 flex-column flex-grow "> Set {{ forloop.counter0|add:"1" }} </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% if not event.is_future %}
+  <div class="artist-metrics-container">
+    <div class="datepicker-container noclick datepicker-dashboard-container">
+      <div class="datepicker-dashboard-left-panel">
+        {% for range in datepicker_default_ranges %}
+          <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.start }}" data-end="{{ range.end }}">{{ range.content }}</div>
+        {% endfor %}
+        <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ datepicker_current_range.date }}" data-start="{{ datepicker_current_range.period_start }}" data-end="{% now "b, d, Y" %}">Current pay period
+      </div>
+      {% for range in datepicker_old_payout_ranges %}
+        <div class="datepicker-dashboard-left-panel-item text5 hover-fade" data-date="{{ range.date }}" data-start="{{ range.period_start }}" data-end="{{ range.period_end }}">{{ range.period_start|date:"m/d/Y" }} - {{ range.period_end|date:"m/d/Y" }}  </div>
+      {% endfor %}
+    </div>
+    <div class="custom-date-picker" id="search-date-picker-from">
+      <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+    </div>
+    <div class="custom-date-picker" id="search-date-picker-to">
+      <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+    </div>
+    <div class="white-border-button" id="apply-button">Apply</div>
+  </div>
+  <div class="artist-metrics-header white-line-bottom flex-row">
+    <div class="title1 datepicker-dashboard-btn">Metrics</div>
+    <div class="text2" id="datepicker-description">All Time</div>
+  </div>
+  <div class="event-metrics-container flex-row">
+    <div class="event-metrics-container-plays event-metrics-container-data">
+      <div class="text3">Plays</div>
+      <div id="play-value" class="title1"></div>
+    </div>
+    <div class="event-metrics-container-time event-metrics-container-data">
+      <div class="text3">Time Listened</div>
+      <div id="time-value" class="title1"></div>
+    </div>
+  </div>
+{% endif %}
