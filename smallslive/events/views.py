@@ -338,7 +338,7 @@ class EventDetailView(DetailView):
         # for modal in past events
         # need to find if there is currently a live event
         today_and_tomorrow_events = Event.objects.get_today_and_tomorrow_events().filter(venue_id=event.venue.id)
-        live_now = [event for event in today_and_tomorrow_events if event.is_live == True]
+        live_now = [x for x in today_and_tomorrow_events if x.is_live == True]
 
         context['finished_next_event'] = live_now[0] if live_now else None
         context['archived_date_estimate'] = self.object.end + timedelta(days=14)
