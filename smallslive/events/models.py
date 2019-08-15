@@ -821,7 +821,11 @@ class Event(TimeStampedModel):
     def get_sets_info_dict(self):
         sets_info = []
         for item in sorted(list(self.sets.all()), Event.sets_order):
-            sets_info.append({'start': item.start})
+            info = {
+                'start': item.start,
+                'has_media': bool(item.audio_recording or item.video_recording)
+            }
+            sets_info.append(info)
 
         return sets_info
 

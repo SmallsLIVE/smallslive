@@ -12,26 +12,50 @@
 {% include 'inactive_dialog.html' %}
 {% include 'events/live-stream-redirect-dialog.html' %}
 
-  {% if event.published_videos %}
-    <!--show archived video-->
-    <div tabindex="0" id="videoContainer" class="player-container {% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}">
-      {% if not user.can_watch_video %}
-        <div class="not-auth-container">
-          {% if event.photo %}
-            {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
-          {% else %}
-            {% include 'partials/thumbored_picture.html' %}
-          {% endif %}
-          <div class="icon-overlay">
-            <i class="fa fa-play fa-thin-circle"></i>
+  {% if event.published_videos or event.published_audio %}
+    {% if event.published_videos %}
+      <!--show archived video-->
+      <div tabindex="0" id="videoContainer" class="player-container {% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}">
+        {% if not user.can_watch_video %}
+          <div class="not-auth-container">
+            {% if event.photo %}
+              {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+            {% else %}
+              {% include 'partials/thumbored_picture.html' %}
+            {% endif %}
+            <div class="icon-overlay">
+              <i class="fa fa-play fa-thin-circle"></i>
+            </div>
           </div>
+        {% endif%}
+        <div id="player-video"></div>
+        <div class="player-info" id="playerTextOverlay">
+          {% include 'events/_event_player_overlay.html' %}
         </div>
-      {% endif%}
-      <div id="player-video"></div>
-      <div class="player-info" id="playerTextOverlay">
-        {% include 'events/_event_player_overlay.html' %}
       </div>
-    </div>
+    {% endif %}
+    {% if event.published_audio %}
+      <div id="audioContainer" class="player-container" style="display: none;">
+
+        {% if not user.can_watch_video %}
+          <div class="not-auth-container">
+            {% if event.photo %}
+              {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
+            {% else %}
+              {% include 'partials/thumbored_picture.html' %}
+            {% endif %}
+            <div class="icon-overlay">
+              <i class="fa fa-play fa-thin-circle"></i>
+            </div>
+          </div>
+        {% endif%}
+
+        <div id="player-audio" class="{% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}"></div>
+        <div class="player-info" id="playerAudioTextOverlay">
+          {% include 'events/_event_player_overlay.html' with info_label='Audio Only' %}
+        </div>
+      </div>
+    {% endif %}
   {% else %}
     <!--event not yet archived-->
     <div tabindex="0" class="event-video-placeholder flex-column content-space-between" style="flex: initial;">
@@ -61,39 +85,18 @@
       </div>
     </div>
   {% endif %}
-
-  {% if event.published_audio %}
-    <div id="audioContainer" class="player-container" style="display: none;">
-
-      {% if not user.can_watch_video %}
-        <div class="not-auth-container">
-          {% if event.photo %}
-            {% include 'partials/thumbored_picture.html' with photo_url=event.get_photo_url crop_box=event.photo_crop_box %}
-          {% else %}
-            {% include 'partials/thumbored_picture.html' %}
-          {% endif %}
-          <div class="icon-overlay">
-            <i class="fa fa-play fa-thin-circle"></i>
-          </div>
-        </div>
-      {% endif%}
-
-      <div id="player-audio" class="{% if user.can_watch_video %}allowed{% else %}forbidden{% endif %}"></div>
-      <div class="player-info" id="playerAudioTextOverlay">
-        {% include 'events/_event_player_overlay.html' with info_label='Audio Only' %}
-      </div>
-    </div>
-  {% endif %}
 {% endblock %}
 
 {% block control_buttons %}
 <div class="event-player-buttons event-change-buttons">
 {% if event.is_past and user.can_watch_video %}
   {% for set in sets %}
-    <button class="set-select-button white-border-button {{ forloop.counter0|yesno:',active' }}"
-            data-comments-page="{% url 'event_comments' pk=event.id slug=event.slug %}?set={{ forloop.counter0 }}"
-            data-playlist-index="{{ forloop.counter0 }}">Set {{ forloop.counter }}
-    </button>
+    {% if set.has_media %}
+      <button class="set-select-button white-border-button {{ forloop.counter0|yesno:',active' }}"
+              data-comments-page="{% url 'event_comments' pk=event.id slug=event.slug %}?set={{ forloop.counter0 }}"
+              data-playlist-index="{{ forloop.counter0 }}">Set {{ forloop.counter }}
+      </button>
+    {% endif %}
   {% endfor %}
   {% if event.published_audio %}
       <button class="white-border-button audio togglePlayer" style="display: inline;">
@@ -205,6 +208,17 @@
         }
       {% endif %}
 
+      {% if event.published_audio or event.published_videos %}
+        var player;
+        $('.set-select-button').on('click', function () {
+          var selectedIndex = $(this).data('playlist-index');
+          player.playlistItem(selectedIndex);
+          $('#set-number').html(selectedIndex + 1);
+          $('.set-select-button').removeClass('active');
+          $(this).toggleClass('active');
+        });
+      {% endif %}
+
       {% if event.published_audio and user.can_watch_video %}
         audioPlayer = jwplayer("player-audio").setup({
           primary: 'html5',
@@ -230,6 +244,7 @@
           height: "45.3vw", // If you change this please be kind and change the corresponding css.
           aspectratio: "16:9"
         });
+        player = audioPlayer;
         audioPlayer.on('play', function () {
           var $videoContainer = $('#videoContainer');
           if ($videoContainer.hasClass('forbidden')) {
@@ -305,6 +320,7 @@
             width: "100%",
             aspectratio: "16:9",
         });
+        player = videoPlayer;
         videoPlayer.on('play', function () {
             var $videoContainer = $('#videoContainer');
             if ($videoContainer.hasClass('forbidden')) {
@@ -339,13 +355,6 @@
             {% endif %}
             $overlay.css('opacity', 1);
           });
-        $('.set-select-button').on('click', function () {
-            var selectedIndex = $(this).data('playlist-index');
-            videoPlayer.playlistItem(selectedIndex);
-            $('#set-number').html(selectedIndex + 1);
-            $('.set-select-button').removeClass('active');
-            $(this).toggleClass('active');
-        });
       {% else %}
         function cannotWatchModalOpen() {
           var modal = '#becomeMemberDialog';
@@ -383,6 +392,7 @@
           $this.hide();
           $('#videoContainer').show();
           $('#audioContainer').hide()
+          player = videoPlayer;
         } else {
           if($("#videoContainer").length > 0){
             jwplayer("player-video").pause(true)
@@ -390,7 +400,8 @@
           $this.parent().find('.video').css('display', 'inline');
           $this.hide();
           $('#audioContainer').show();
-          $('#videoContainer').hide()
+          $('#videoContainer').hide();
+          player = audioPlayer;
         }
 
         // Update comments page.
