@@ -1,17 +1,16 @@
 {% load static from staticfiles %}
-
-<div class="switch-video-metrics">
-  <button class="white-border-button" id="back-to-events-list">
-    <div class="artist-event-arrow">
-      <img src="/static/image/arrow-right-red.svg" alt="">
-    </div>
-  </button>
-  <button class="white-border-button video" id="video">Edit</button>
-  <button class="white-border-button metrics" id="metrics">Metrics</button>
+<div class="button-row-margin">
+  <div class="flex-row">
+    <button id="form-edit-button" {% if not is_admin %}disabled {% endif %}class="white-border-button">Edit</button>
+    <input disabled type="submit"
+           name="submit"
+           value="Save event"
+           class="white-border-button inline separated"
+           id="submit-id-submit"
+           style="width: 150px;">
+  </div>
 </div>
-<input type="submit" name="submit" value="Save event" class="white-border-button inline separated"
-        id="submit-id-submit" style="width: 150px;">
-<form id="mobile-event-edit-frm"
+<form id="event-edit-form"
   method="post" class="admin-interface__form"
   enctype="multipart/form-data"
   action="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}" style="margin-top: 30px;">
@@ -100,7 +99,7 @@
             name="artists_gig_info-{{ forloop.counter0 }}-event"
             type="hidden"
             value="{{ gig.event.pk }}">
-          <td><span class="fa fa-trash artist_remove" data-remove="id_artists_gig_info-{{ forloop.counter0 }}-DELETE" style="cursor: pointer;"></span></td>
+          <td id="event-edit-form-remove-artist"><span class="fa fa-trash artist_remove" data-remove="id_artists_gig_info-{{ forloop.counter0 }}-DELETE" style="cursor: pointer;"></span></td>
         </tr>
         {% endfor %}
       </tbody>

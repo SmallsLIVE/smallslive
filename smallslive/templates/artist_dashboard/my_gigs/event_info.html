@@ -1,0 +1,41 @@
+{% for set in event_sets %}
+  <div class="artist-set-actions{% if not forloop.first %} hidden{% endif %}">
+    <div class="button-row button-row-margin">
+      <div class="flex-row">
+        {% if is_admin and set.has_media %}
+          {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
+            <button class="publish-button" onclick="askPublish({{ set.id }})" style="margin-left: 10px;">
+                Publish
+            </button>
+          {% else %}
+            <button class="publish-button" onclick="askPrivate({{ set.id }})">Make
+                Private
+            </button>
+          {% endif %}
+          <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')" style="margin-left: 20px; ">
+              Download
+          </button>
+        {% else %}
+          {% if set.video_recording and set.video_recording.is_published %}
+            <button disabled style="margin-left: 10px;">Make Private</button>
+          {% else %}
+            <button disabled style="margin-left: 10px;">Publish</button>
+          {% endif %}
+          <button disabled style="margin-left: 20px;">Download</button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="header-metrics-container{% if not forloop.first %} hidden{% endif %}" style="width: 80%;">
+    <div class="switch-video-metrics">
+      <button class="white-border-button" id="back-to-events-list">
+        <div class="artist-event-arrow">
+          <img src="/static/image/arrow-right-red.svg" alt="">
+        </div>
+      </button>
+      <button class="white-border-button video" id="video">Edit</button>
+      <button class="white-border-button metrics" id="metrics">Metrics</button>
+    </div>
+    {% include 'artist_dashboard/artist-dashboard-events-metrics.html' %}
+  </div>
+{% endfor %}

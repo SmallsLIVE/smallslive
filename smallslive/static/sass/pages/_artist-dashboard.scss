@@ -396,7 +396,7 @@
     @media (max-width: 960px) {
       width: 100%;
     }
-    overflow-y: scroll;
+
 
     .artist-event-picture {
       @include filter(grayscale(100%));
@@ -413,7 +413,6 @@
 
   .artist-events-list-info,
   .event-mobile-info {
-    padding-top: 30px;
     padding-left: 11px;
     width: 100%;
 
@@ -992,7 +991,7 @@
 }
 .artist-dashboard-event-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 .artist-set-info .text2 {
   font-size: 1em;
@@ -1265,8 +1264,9 @@
     }
   }
 }
-.croping-photo {
+.cropping-photo {
   margin: 10px;
+  width: 100%;
 }
 .white-border-select {
   &.engagement-event-select {

@@ -53,8 +53,12 @@ class MyEventsView(HasArtistAssignedMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super(MyEventsView, self).get_context_data(**kwargs)
+        gig_played = context['object_list'].first()
+        event = gig_played.event if gig_played else None
+
         paginator = context['paginator']
         current_page_number = context['page_obj'].number
+        events_with_media = event.sets.with_media()
         context.update({
             'total_results': paginator.count,
             'total_pages': paginator.num_pages,
@@ -162,19 +166,20 @@ class MyEventsAJAXView(MyEventsView):
 
     def get(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()
+        first = self.object_list.first()
+        last = self.object_list.last()
+        first_event_date = None
+        last_event_date = None
+        if first:
+            if request.GET.get('order') == 'oldest':
+                temp = first
+                first = last
+                last = temp
 
-        print self.object_list.query
+            first_event_date = last.event.get_date().strftime('%m/%d/%Y')
+            last_event_date = first.event.get_date().strftime('%m/%d/%Y')
 
         context = self.get_context_data(**kwargs)
-
-        first = self.object_list.first()
-        first_event_date = None
-        if first:
-            first_event_date = first.event.get_date().strftime('%m/%d/%Y')
-        last = self.object_list.last()
-        last_event_date = None
-        if last:
-            last_event_date = first.event.get_date().strftime('%m/%d/%Y')
 
         data = {
             'template': render_to_string(
@@ -224,7 +229,7 @@ my_past_events = MyPastEventsView.as_view()
 
 class MyPastEventsAJAXView(MyEventsAJAXView, MyPastEventsView):
 
-    template_name = 'artist_dashboard/artist-dashboard-events.html'
+    template_name = 'artist_dashboard/my_gigs/event_list_page.html'
 
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsAJAXView, self).get_context_data(**kwargs)
@@ -237,7 +242,7 @@ class MyPastEventsInfoView(DetailView):
     
     model = Event
     pk_url_kwarg = 'pk'
-    template_name = 'artist_dashboard/artist-dashboard-events-info.html'
+    template_name = 'artist_dashboard/my_gigs/event_info.html'
     context_object_name = 'event'
 
     def get_object(self, *a, **k):
@@ -249,14 +254,9 @@ class MyPastEventsInfoView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(MyPastEventsInfoView, self).get_context_data(**kwargs)
         artist = self.request.user.artist
-        set_id = int(self.request.GET.get('set_id', 0))
         events_with_media = self.object.sets.with_media()
-        if events_with_media.count():
-            event_set = events_with_media[set_id]
-        else:
-            event_set = None
         context.update({
-            'event_set': event_set
+            'event_sets': events_with_media
         })
         context['is_admin'] = self.object.artists_gig_info.get(
             artist_id=artist.id).is_leader
@@ -523,12 +523,15 @@ class EventEditAjaxView(EventEditView):
 
     def get_context_data(self, **kwargs):
         context = super(EventEditAjaxView, self).get_context_data(**kwargs)
+        artist = self.request.user.artist
+        context['is_admin'] = self.object.artists_gig_info.get(
+            artist_id=artist.id).is_leader
         context['gig_instruments'] = Instrument.objects.all()
 
         return context
 
     def get_template_names(self):
-        return 'artist_dashboard/mobile_event_edit_form.html'
+        return 'artist_dashboard/my_gigs/event_edit_form.html'
 
     def post(self, *args, **kwargs):
         response = super(EventEditAjaxView, self).post(*args, **kwargs)

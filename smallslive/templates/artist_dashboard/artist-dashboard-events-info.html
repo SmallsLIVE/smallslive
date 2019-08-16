@@ -1,53 +1,39 @@
 {% load static from staticfiles %}
 {% load fromisoformat %}
 
-{% with set=event_set %}
 
+<div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}"
+     class="artist-dashboard-event-container" style="padding-top: 90px; width: 50%;">
 
-  <div class="artist-set-actions">
-    <div class="button-row button-row-margin">
-
-      <div class="flex-row">
-        {% if is_admin and set.has_media %}
-        <button class="set-button event-edit-button white-border-button"
-          data-ajax-edit-url="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}">
-        Edit
-        </button>
-        {% if not event.is_future %}
-        {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-        <button id="private-button" class="publish-button set-button" onclick="askPrivate({{ set.id }})"> Public </button>
-        <button id="public-button" class="publish-button set-button hidden" onclick="askPublish({{ set.id }})"> Private </button>
-        {% else %}
-        <button id="public-button" class="publish-button set-button" onclick="askPublish({{ set.id }})"> Private </button>
-        <button id="private-button" class="publish-button set-button hidden" onclick="askPrivate({{ set.id }})"> Public </button>
-        {% endif %}
-        {% endif %}
-        {% else %}
-        {% if is_admin %}
-        <button class="set-button event-edit-button white-border-button"
-          data-ajax-edit-url="{% url 'artist_dashboard:event_edit_ajax' pk=event.id slug=event.slug %}">
-        Edit
-        </button>
-        {% else %}
-        <button class="white-border-button">Download</button>
-        {% endif %}
-        {% if not event.is_future %}
-        {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
-        <button  class="set-button">Public</button>
-        {% else %}
-        <button  class="set-button">Private</button>
-        {% endif %}
-        {% endif %}
-        {% endif %}
-        <input type="submit" name="submit" value="Save event" class="white-border-button inline separated"
-        id="submit-id-submit">
+  {% for set in event_sets %}
+    <div class="artist-set-actions{% if not forloop.first %} hidden{% endif %}">
+      <div class="button-row button-row-margin">
+        <div class="flex-row">
+          {% if is_admin and set.has_media %}
+            {% if set.video_recording and set.video_recording.is_published or set.audio_recording and set.audio_recording.is_published %}
+              <button class="publish-button" onclick="askPublish({{ set.id }})">
+                  Publish
+              </button>
+            {% else %}
+              <button class="publish-button" onclick="askPrivate({{ set.id }})">Make
+                  Private
+              </button>
+            {% endif %}
+            <button onclick="showSelectFormat('{{ set.video_recording.media_file.get_downloadable_sd_video_url }}', '{{ set.audio_recording.media_file.get_downloadable_file_url }}')">
+                Download
+            </button>
+          {% else %}
+            {% if set.video_recording and set.video_recording.is_published %}
+                <button disabled>Make Private</button>
+            {% else %}
+                <button disabled>Publish</button>
+            {% endif %}
+            <button disabled>Download</button>
+          {% endif %}
+        </div>
       </div>
     </div>
-  </div>
-
-  <div data-url="{% url  'artist_dashboard:my_past_events_info' pk=event.id %}"
-       class="artist-dashboard-event-container">
-    <div class="header-metrics-container not-show" style="width: 80%;">
+    <div class="header-metrics-container{% if not forloop.first %} hidden{% endif %}" style="width: 80%;">
       <div class="switch-video-metrics">
         <button class="white-border-button" id="back-to-events-list">
           <div class="artist-event-arrow">
@@ -59,9 +45,8 @@
       </div>
       {% include 'artist_dashboard/artist-dashboard-events-metrics.html' %}
     </div>
-    <div id="edit-event-dashboard" class="edit-event-dashboard" style="width: 100%; padding: 0; margin-top: 30px;"></div>
-  </div>
-{% endwith %}
+  {% endfor %}
+</div>
 
 {% block extra_js %}
     <script type="text/javascript" src="{% static 'js/selectize.min.js' %}"></script>
@@ -116,42 +101,6 @@
 
     <script>
         ///
-        var plays = document.getElementById("play-value");
-        var time = document.getElementById("time-value");
-        var mobilePlays = document.getElementById("mobile-play-value");
-        var mobileTime = document.getElementById("mobile-time-value");
-
-        var loadData = function () {
-            var data = {};
-
-            {% if event_set %}
-            data.set_id = {{ event_set.id }};
-            {% endif %}
-
-            data.start = moment(eventDateFrom).format('YYYY-MM-DD');
-            data.end = moment(eventDateTo).format('YYYY-MM-DD');
-
-            var countsURL = "{% url 'event_counts' %}";
-            $.ajax(countsURL, {
-                data: data,
-                success: function (response) {
-                    console.log('-----------------------------');
-                    console.log(response);
-                    plays.innerHTML = response['playCount'];
-                    mobilePlays.innerHTML = response['playCount'];
-                    playedSeconds = response['secondsPlayed'];
-                    time.innerHTML = moment.utc((playedSeconds) * 1000).format('HH:mm:ss');
-                    mobileTime.innerHTML = moment.utc((playedSeconds) * 1000).format('HH:mm:ss');
-                },
-                type: 'GET',
-                xhrFields: {
-                    withCredentials: true
-                }
-            });
-        };
-
-
-
         ///
         $('.mobile-event-opt .white-border-button').on('click', function () {
             $('.mobile-event-opt .white-border-button').css("background-color", "")
