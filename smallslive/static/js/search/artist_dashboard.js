@@ -281,4 +281,98 @@ $(document).ready(function () {
 });
 
 function askPrivate(setId) {
+    $('#privateConfirm').modal('show');
+    selectedSetId=setId;
+}
+
+function askPublish(setId) {
+    $('#publishConfirm').modal('show');
+    selectedSetId=setId;
+}
+function makeSetPrivate() {
+    $.post('/events/sets/' + selectedSetId + '/private/', {
+      csrfmiddlewaretoken: '{{ csrf_token }}'
+    }, function (data, status) {
+    });
+    hideMakePrivate();
+    $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
+        '<button class="publish-button" onclick="askPublish(' + selectedSetId + ')">Publish</button>'
+    )
+    $("#set-id-" + selectedSetId).find('.set-status').text('Hidden')
+    showSuccess('private')
+}
+
+function showSuccess(state) {
+    //var $publishSuccess = $('#publishSuccess');
+    //$publishSuccess.find('.success-state').text(state);
+    //$publishSuccess.modal('show')
+    $("#hide-scss-btn").data("type", state)
+    hideSuccess()
+}
+
+function publishSet() {
+    $.post('/events/sets/' + selectedSetId + '/publish/', {
+      csrfmiddlewaretoken: '{{ csrf_token }}'
+    }, function(data, status) {
+    });
+    hidePublish();
+    $("#set-id-" + selectedSetId).find('.publish-button').replaceWith(
+        '<button class="publish-button" onclick="askPrivate(' + selectedSetId + ')">Make Private</button>'
+    )
+    $("#set-id-" + selectedSetId).find('.set-status').text('Published');
+    showSuccess('public')
+}
+
+function hideMakePrivate() {
+    $('#privateConfirm').modal('hide');
+}
+
+function hidePublish() {
+    $('#publishConfirm').modal('hide');
+}
+
+function hideSuccess(data) {
+    $('#publishSuccess').modal('hide');
+    var $currentSet = $(".artist-active-set.accent-color.set-changer")[0];
+    var successType = $("#hide-scss-btn").data("type");
+    if (successType === "public" || data ==="public"){
+        $("#private-button").removeClass("hidden")
+        $("#public-button").addClass("hidden")
+        $("#mobile-private-button").removeClass("hidden")
+        $("#mobile-public-button").addClass("hidden")
+        $("#mobile-private-button").click()
+    };
+    if (successType === "private" || data ==="private"){
+        $("#private-button").addClass("hidden")
+        $("#public-button").removeClass("hidden")
+        $("#mobile-private-button").addClass("hidden")
+        $("#mobile-public-button").removeClass("hidden")
+        $("#mobile-public-button").click()
+    };
+}
+
+function showSelectFormat(videoUrl, audioUrl) {
+    var $downloadFormat = $('#downloadFormat');
+    var audioButton = $downloadFormat.find('#downloadFormatAudioUrl');
+    var videoButton = $downloadFormat.find('#downloadFormatVideoUrl');
+
+    if (audioUrl !== '') {
+        audioButton.attr({href: audioUrl}).on('click', function () {
+            $downloadFormat.modal('hide');
+        });
+        audioButton.find('button').prop('disabled', false);
+    } else {
+        audioButton.find('button').prop('disabled', true);
+    }
+
+    if (videoUrl !== '') {
+        videoButton.attr({href: videoUrl}).on('click', function () {
+            $downloadFormat.modal('hide');
+        });
+        videoButton.find('button').prop('disabled', false);
+    } else {
+        videoButton.find('button').prop('disabled', true);
+    }
+    $downloadFormat.modal('show');
+}
 
