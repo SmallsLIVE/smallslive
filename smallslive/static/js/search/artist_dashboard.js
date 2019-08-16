@@ -85,6 +85,67 @@ $(document).ready(function () {
       }
     });
 
+    $('.datepicker-dashboard-main-btn').bind("click", ToggleDisplay);
+
+    function ToggleDisplay(event) {
+        if ($("#dashboard-desktop-datepicker").data('shown'))
+            hide(event);
+        else
+            display();
+    }
+
+    function display() {
+        $("#dashboard-desktop-datepicker").css("display", "flex").hide().fadeIn(500, function() {
+            $(document).bind("click", hide);
+            $("#dashboard-desktop-datepicker").data('shown', true);
+        });
+
+        $("#search-date-picker-from-dashboard input").click();
+        $("#search-date-picker-from-dashboard input").focus();
+    }
+
+    function hide(event) {
+        var $target = $(event.target);
+        if (($target.closest('.noclick').length == 0) &&
+        (!($target.hasClass('day') || $target.hasClass('year')))) {
+            $('#dashboard-desktop-datepicker').fadeOut(500, function () {
+                $(document).unbind('click');
+                $('#dashboard-desktop-datepicker').data('shown', false);
+            });
+        }
+    }
+
+    $("#dashboard-apply-button").click(function () {
+        $("#dashboard-desktop-datepicker").fadeOut(500, function () {
+            $(document).unbind("click");
+            $("#dashboard-desktop-datepicker").data('shown', false);
+        });
+        currentPage = 0;
+        totalPages = 1;
+        $('#artistEventsList').html("")
+        $('#artistEventsList').addClass("artist-loading-gif");
+        loadMore(false);
+
+    });
+
+    $("#dashboard-desktop-reset").click(function () {
+        defaultStatusValue = $("#artist_archive_status_filter option:first-child").val()
+        defaultStatusText = $("#artist_archive_status_filter option:first-child").text()
+        defaultOrderValue = $("#artist_archive_order option:first-child").val()
+        defaultOrderText = $("#artist_archive_order option:first-child").text()
+        $("#artist_archive_status_filter").val(defaultStatusValue)
+        $("#artist_archive_status_filter + .select-selected").text(defaultStatusText)
+        $("#artist_archive_order").val(defaultOrderValue)
+        $("#artist_archive_order + .select-selected").text(defaultOrderText)
+        $("#search-date-picker-from-dashboard").find(".date-picker-text").val("")
+        $("#search-date-picker-to-dashboard").find(".date-picker-text").val("")
+        currentPage = 0;
+        totalPages = 1;
+        $('#artistEventsList').html("")
+        $('#artistEventsList').addClass("artist-loading-gif");
+        loadMore(false);
+    });
+
   }
 
   function bindEvents() {
