@@ -20,7 +20,7 @@
         </p>
       </div>
       <div class="banner-learnmore">
-        <a class="banner-button-info" href="{% url 'contact-and-info' %}">More Info</a>
+        <a class="banner-button-info" href="{% url 'contact-and-info' %}#foundation ">More Info</a>
         {% if not user.is_authenticated %}
         <button class="banner-button-info" onclick="$('#becomeMemberDialog').modal('show');">Become a member</button>
         {% elif not user.has_activated_account %}
@@ -47,7 +47,7 @@
         </p>
       </div>
       <div class="banner-learnmore">
-        <a class="banner-button-info" href="{% url 'contact-and-info' %}">More Info</a>
+        <a class="banner-button-info" href="{% url 'contact-and-info' %}#archive">More Info</a>
       </div>
     </div>
     <div id="banner-mission-box" class="box flex-column mission">
