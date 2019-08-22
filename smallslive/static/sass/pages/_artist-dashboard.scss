@@ -343,6 +343,7 @@
   }
 
   .artist-event-details {
+    margin-left: 2%;
     width: 60%;
 
     @media (min-width: 1450px) {
@@ -482,9 +483,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 30px;
-            width: 30px;
-            border-radius: 30px;
+            height: 2.5vw;
+            width: 2.5vw;
+            border-radius: 2.5vw;
             border: 1px solid #ed1c24;
           }
         }
@@ -565,7 +566,7 @@
     }
 
     .set-changer {
-      cursor: default;
+      cursor: pointer;
 
       &:hover {
         background-color: $white-transparent;
@@ -579,6 +580,7 @@
     }
 
     .artist-set-list {
+      cursor: pointer;
       justify-content: space-evenly;
 
       .artist-active-set {
@@ -929,7 +931,7 @@
     }
 
     .text2 {
-      font-size: 1em;
+      font-size: 1.5rem;
       display: block;
       height: auto;
       overflow: hidden;

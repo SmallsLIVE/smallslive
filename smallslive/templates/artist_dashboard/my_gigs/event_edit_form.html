@@ -53,7 +53,7 @@
           <th for="id_artists_gig_info-0-is_leader" class="mobile-edit-title col-md-2 control-label ">
             Leader
           </th>
-          <th class="mobile-edit-title col-md-1">Remove</th>
+          <th class="mobile-edit-title col-md-1 remove">Remove</th>
         </tr>
       </thead>
       <tbody>
@@ -61,12 +61,14 @@
         <tr>
           <td><i class="fa fa-sort"></i></td>
           <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-artist" class="artist-selector">
+            <span class="artist_field_span text-grey text2">{{ gig.artist.full_name }} </span>
             <select class="artist_field select form-control"
               id="id_artists_gig_info-{{ forloop.counter0 }}-artist"
               name="artists_gig_info-{{ forloop.counter0 }}-artist">
               <option value="">Artist</option>
               <option value="{{ gig.artist.id }}" selected>{{ gig.artist.full_name }}</option>
             </select>
+            <span class="role_field_span text-grey text1">{{ gig.role.name }}</span>
             <select class="role_field select form-control"
               id="id_artists_gig_info-{{ forloop.counter0 }}-role"
               name="artists_gig_info-{{ forloop.counter0 }}-role">
@@ -99,7 +101,7 @@
             name="artists_gig_info-{{ forloop.counter0 }}-event"
             type="hidden"
             value="{{ gig.event.pk }}">
-          <td id="event-edit-form-remove-artist"><span class="fa fa-trash artist_remove" data-remove="id_artists_gig_info-{{ forloop.counter0 }}-DELETE" style="cursor: pointer;"></span></td>
+          <td class="event-edit-form-remove-artist"><span class="fa fa-trash artist_remove" data-remove="id_artists_gig_info-{{ forloop.counter0 }}-DELETE" style="cursor: pointer;"></span></td>
         </tr>
         {% endfor %}
       </tbody>

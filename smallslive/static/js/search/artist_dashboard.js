@@ -67,7 +67,7 @@ $(document).ready(function () {
       // For pagination use apply = false;
 
       sendEventRequest(
-        updateShows
+        [updateShows]
       );
       $datePickerFrom.datepicker("setEndDate", dateTo);
 
@@ -164,8 +164,17 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#form-edit-button', function () {
-      $("#submit-id-submit").removeAttr('disabled');
-      enableEditForm();
+      var $submit = $("#submit-id-submit");
+      if ($submit.attr("disabled") === "disabled") {
+        $("#submit-id-submit").removeAttr('disabled');
+        enableEditForm();
+        $(this).text('Cancel')
+      } else {
+        $("#submit-id-submit").attr("disabled", "disabled");
+        disableEditForm();
+        $(this).text('Edit');
+      }
+
     });
 
   }
@@ -245,10 +254,9 @@ $(document).ready(function () {
         $('#event-edit-form-load-gif').addClass('hidden');
         $('#edit-event-dashboard').html(data);
         EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
-        EventForm.init(false);
+        EventForm.init(false, disableEditForm);
         image_cropping.init();
-        $("#event-edit-form input").prop("disabled", true);
-        $("#event-edit-form select").prop("disabled", true);
+        disableEditForm;
       },
       error: function() {
 
@@ -256,9 +264,34 @@ $(document).ready(function () {
     });
   }
 
+  function disableEditForm() {
+    $("#event-edit-form input").prop("disabled", true);
+    $("#event-edit-form select").prop("disabled", true);
+    $(".event-edit-form-remove-artist").hide();
+    $(".artist_field_span").removeClass("hidden");
+    $(".artist_field").addClass("hidden");
+    $(".role_field_span").removeClass("hidden");
+    $(".role_field").addClass("hidden");
+    $(".fa-sort").hide();
+    $("#add_more_artists").hide();
+    $(".mobile-edit-title.remove").attr("visibility", "hidden");
+    $(".artist-list-form .formset_table").find("tbody").sortable({disabled: true});
+
+  }
+
   function enableEditForm () {
     $("#event-edit-form input").prop("disabled", false);
     $("#event-edit-form select").prop("disabled", false);
+    $(".event-edit-form-remove-artist").show();
+    $(".artist_field_span").addClass("hidden");
+    $(".artist_field").removeClass("hidden");
+    $(".role_field_span").addClass("hidden");
+    $(".role_field").removeClass("hidden");
+    $(".artist-list-form .formset_table").sortable({disabled: false});
+    $(".fa-sort").show();
+    $("#add_more_artists").show();
+    $(".mobile-edit-title.remove").attr("visibility", "visible");
+    $(".artist-list-form .formset_table").find("tbody").sortable({disabled: false});
   }
 
   function showEventInfo(url) {
@@ -269,7 +302,24 @@ $(document).ready(function () {
       success: function(data) {
         $('#event-info-load-gif').addClass('hidden');
         $('#event-info').html(data);
-
+        var $videoInfo = $(data).find(".player-video-info");
+        var playList = []
+        $videoInfo.each(function () {
+          var url = $(this).val();
+          var id = $(this).data("id");
+          var image = $(this).data("image");
+          var sources = [{
+            file: url,
+            type: "mp4",
+          }];
+          var playInfo = {
+            sources: sources,
+            mediaid: id,
+            image: image
+          };
+          playList.push(playInfo);
+        });
+        setupPlayer(playList);
       },
       error: function() {
 
@@ -293,6 +343,26 @@ $(document).ready(function () {
 
     showFirstEventForm(data);
     showFirstEventInfo(data);
+
+  }
+
+  function setupPlayer(playList) {
+
+    var videoPlayer = jwplayer("player-video").setup({
+      primary: 'html5',
+      playlist: playList,
+      skin: jwPlayerSkin,
+      width: "100%",
+      aspectratio: "16:9",
+    });
+    videoPlayer.on('play', function () {
+
+
+
+    });
+    videoPlayer.on('pause', function() {
+
+    });
 
   }
 
@@ -338,6 +408,23 @@ $(document).ready(function () {
     }
     sendEventRequest(callbacks);
   }
+
+  $(document).on("click", ".set-changer", function (event) {
+    event.preventDefault();
+    $(".set-changer").removeClass("artist-active-set");
+    var setId = $(this).data("set-id");
+    if (!$(this).hasClass("artist-active-set")) {
+      $(this).addClass("artist-active-set");
+    }
+    var $toSHow = $(".event-metrics-container.flex-row#set-metrics-" + setId);
+    var $toHide = $(".event-metrics-container.flex-row");
+    $toHide.each(function () {
+      if (!$(this).hasClass("hidden")) {
+        $(this).addClass("hidden");
+      }
+    });
+    $toSHow.removeClass("hidden");
+  })
 
 });
 

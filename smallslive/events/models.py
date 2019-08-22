@@ -1,4 +1,5 @@
 import pytz
+import time
 from cryptography.fernet import Fernet
 from django.core.cache import cache
 from django.db.models import Count, Max, Q, Sum
@@ -967,6 +968,55 @@ class EventSet(models.Model):
     def utc_end(self):
         ny_end = datetime.combine(self.event.date, self.end)
         return timezone.make_aware(ny_end, timezone=(timezone.get_current_timezone()))
+
+    def get_user_video_metrics_dict(self):
+
+        audio_metrics = UserVideoMetric.objects.filter(recording_id=self.audio_recording.pk)
+        audio_seconds_played = audio_metrics.values('recording_id').annotate(seconds_played=Sum('seconds_played'))
+        if audio_seconds_played:
+            audio_seconds_played = audio_seconds_played[0]
+        else:
+            audio_seconds_played = {}
+        audio_play_count = audio_metrics.values('recording_id').annotate(play_count=Sum('play_count'))
+        if audio_play_count:
+            audio_play_count = audio_play_count[0]
+        else:
+            audio_play_count = {}
+        print 'Audio: ', audio_play_count
+        video_metrics = UserVideoMetric.objects.filter(recording_id=self.video_recording.pk)
+        video_seconds_played = video_metrics.values('recording_id').annotate(seconds_played=Sum('seconds_played'))
+        if video_seconds_played:
+            video_seconds_played = video_seconds_played[0]
+        else:
+            video_seconds_played = {}
+        video_play_count = video_metrics.values('recording_id').annotate(play_count=Sum('play_count'))
+        print 'Video play count: ', video_play_count
+        if video_play_count:
+            video_play_count = video_play_count[0]
+        else:
+            video_play_count = {}
+        print 'Video: ', video_play_count
+        audio_seconds_played = audio_seconds_played.get('seconds_played', 0)
+        video_seconds_played = video_seconds_played.get('seconds_played', 0)
+        total_seconds_played = audio_seconds_played + video_seconds_played
+
+        audio_play_count = audio_play_count.get('play_count', 0)
+        video_play_count = video_play_count.get('play_count', 0)
+        total_play_count = audio_play_count + video_play_count
+
+        return {
+            'seconds_played': {
+                'audio': audio_seconds_played,
+                'video': video_seconds_played,
+                'total': total_seconds_played,
+                'formatted': time.strftime('%H:%M:%S', time.gmtime(total_seconds_played))
+            },
+            'play_count': {
+                'audio': audio_play_count,
+                'video': video_play_count,
+                'total': total_play_count,
+            }
+        }
 
 
 class GigPlayedQuerySet(models.QuerySet):

@@ -57,47 +57,7 @@
     <script src="{% static 'js/subpages.js' %}"></script>
     <script src="{% static 'js/jquery.form.js' %}"></script>
     <script src="{% static 'js/viewport-lenght-for-ios.js' %}"></script>
-    <script>
 
-            EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
-        $('#edit-event-form .close-button').click(() => { $('#edit-event-form').modal('toggle') })
-
-        $('#table-event-edit').on('click', function () {
-            window.subpages.register();
-            $('#edit-event-form').modal('show');
-            var tabletSubpage = window.subpages.get("tablet-edit");
-            tabletSubpage.setCallback(() => {         
-            EventForm.init(false);
-            })
-            tabletSubpage.load();
-              
-        })
-        $('.set-changer').on('click', function () {
-
-            let formUrl = $(this).data('ajax-edit-url');
-            $('#event-popup-load-gif').removeClass('hidden');
-            $.ajax({
-              type: 'GET',
-              url: formUrl,
-              success: function(data) {
-                  console.log('data')
-                $('#event-popup-load-gif').addClass('hidden');
-                $('#edit-event-dashboard').html(data);
-                EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
-                EventForm.init(false);
-                image_cropping.init();
-              },
-              error: function() {
-
-              }
-            });
-
-            loadInfo($(this).data('url'));
-
-        })
-    </script>
-
-   
 
     <script>
         ///

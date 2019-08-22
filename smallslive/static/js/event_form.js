@@ -313,7 +313,7 @@ EventForm = {
       return false;
     });
   },
-  initInlineArtistsFunctionality: function() {
+  initInlineArtistsFunctionality: function(callback) {
     var $artistTable = $(".artist-list-form .formset_table");
     var addButtonSelector = "#add_more_artists";
     var tableType = "artists_gig_info";
@@ -376,6 +376,10 @@ EventForm = {
       return false;
     });
 
+    if (callback) {
+      callback();
+    }
+
     //$("#id_title").focus(function() {
     //    if(! $(this).val()) {
     //        var title = $(".artist_field div.item").first().text().trim();
@@ -405,7 +409,7 @@ EventForm = {
       }
     });
   },
-  init: function(datepicker) {
+  init: function(datepicker, callback) {
     if (datepicker) {
       this.initDateTimeFunctionality();
       this.initSetsTimePickers();
@@ -413,7 +417,7 @@ EventForm = {
       $("#id_end").datetimepicker("update");
     }
     this.initVenueSelectFunctionality();
-    this.initInlineArtistsFunctionality();
+    this.initInlineArtistsFunctionality(callback);
 
     $(document).on(
       "change",
