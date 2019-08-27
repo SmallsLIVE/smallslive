@@ -30,18 +30,24 @@
 
     <div id="artistEventsContainer" class="flex-row items-flex-stretch artist-events-container" style="border-top: none;">
       {% include 'artist_dashboard/my_gigs/event_list.html' %}
-      <div id="artistEventsInfo" class="flex-row items-flex-stretch artist-events-list-info">
-        <div id="event-edit-form-load-gif" class="hidden events-gif text-center">
-          <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
+      <div class="flex-column artist-event">
+        <div class="button-row controls">
+          <button id="show-gig-info-btn" class="active">Gig Info</button>
+          <button id="show-video-metrics-btn" >Video & Metrics</button>
         </div>
-        <div id="edit-event-dashboard" class="edit-event-dashboard" style="width: 50%; margin-top: 69px; padding: 20px;">
+        <div id="artistEventsInfo" class="flex-row items-flex-stretch artist-events-list-info">
+          <div id="event-edit-form-load-gif" class="hidden events-gif text-center">
+            <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
+          </div>
+          <div id="edit-event-dashboard" class="edit-event-dashboard active">
 
-        </div>
-        <div id="event-info-load-gif" class="hidden events-gif text-center">
-          <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
-        </div>
-        <div id="event-info" class="artist-dashboard-event-container" style="padding-top: 90px; width: 50%;">
+          </div>
+          <div id="event-info-load-gif" class="hidden events-gif text-center">
+            <img src="{% static 'image/loading.gif' %}" alt="" style="margin: 50px auto; width: 50px;">
+          </div>
+          <div id="event-info" class="artist-dashboard-event-container">
 
+          </div>
         </div>
       </div>
     </div>
@@ -101,7 +107,9 @@
   <script src="{% static 'js/search/artist_dashboard.js' %}"></script>
 
   <script>
-        
+
+    var videoPlayer;
+
     {% if is_future %}
       var eventsUrl = "{% url 'artist_dashboard:my_future_events_ajax' %}";
     {% else %}

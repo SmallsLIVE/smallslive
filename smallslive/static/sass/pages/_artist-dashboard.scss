@@ -1,3 +1,7 @@
+
+$dashboard-mobile: 960px;
+$dashboard-desktop: 1199px;
+
 .artist-event-card {
   width: 100%;
 }
@@ -21,6 +25,12 @@
 
   @media (max-width: 1023px) {
     padding: 20px 0;
+  }
+
+  .section-title {
+    .title1 {
+
+    }
   }
 
   &.metrics-profile-container {
@@ -325,8 +335,9 @@
   }
 
   .artist-events-container {
-    border-top: 3px solid $white-transparent;
+    border-top: none;
     justify-content: space-between;
+    position: relative;
 
     @media (min-width: 769px) {
       display: flex !important;
@@ -334,7 +345,6 @@
 
     @media (max-width: 1023px) {
       justify-content: center;
-      height: 800px;
     }
     @media (max-width: 960px) {
       justify-content: start;
@@ -382,21 +392,70 @@
     }
   }
 
-  .artist-events-list {
-    width: 50%;
+  .artist-event {
+    padding-top: 23px;
+    width: 75%;
 
-    @media (max-width: 1360px) {
-      width: 30%;
+    .button-row {
+
+      &.controls {
+        margin-left: 20vw;
+        visibility: hidden;
+
+        @media (max-width: $dashboard-desktop) {
+          visibility: visible;
+        }
+
+        button {
+          cursor: pointer;
+        }
+
+      }
+
     }
 
-    @media (max-width: 768px) {
-      width: 30%;
-      padding-left: 0;
+    @media(max-width: 960px) {
+      width:: 100%;
+    }
+  }
+
+  .artist-events-list {
+    padding-top: 90px;
+    width: 35%;
+
+    .summary-data {
+      max-width: 620px;
+      position: absolute;
+      top: 0;
+
+      &.section-title {
+        background-size: calc(550px + 3.5vw) 5px;
+      }
+
+      @media (max-width: 1023px) {
+        top: -24px;
+      }
+    }
+
+    @media (max-width: $dashboard-desktop) {
+      width: 45%;
     }
 
     @media (max-width: 960px) {
+      display: none;
       width: 100%;
+
+      &.active {
+        display: flex;
+      }
+
     }
+
+    @media (max-width: 768px) {
+      padding-left: 0;
+    }
+
+
 
 
     .artist-event-picture {
@@ -414,11 +473,12 @@
 
   .artist-events-list-info,
   .event-mobile-info {
-    padding-left: 11px;
+    padding-left: 5px;
+    padding-top: 20px;
     width: 100%;
 
     @media (max-width: 1023px) {
-      width: 60%;
+
     }
 
     @media (max-width: 768px) {
@@ -433,6 +493,26 @@
     }
     .artist-set-download {
       width: 3.8em;
+    }
+
+
+    .edit-event-dashboard {
+
+      margin-left: 3%;
+      margin-right: 3%;
+      padding-top: 7px;
+      width: 44%;
+
+      @media (max-width: $dashboard-desktop) {
+        display: none;
+        width: 100%;
+
+        &.active {
+          display: block;
+        }
+
+      }
+
     }
 
     .set-artist {
@@ -918,12 +998,13 @@
   }
 
   .artist-event-row {
-    position: relative;
+    cursor: pointer;
     border-bottom: 2px solid $white-transparent;
+    position: relative;
 
     @media (max-width: 620px) {
-      width: 100vw;
-      height: 16vh;
+      width: 90vw;
+      height: 12vh;
     }
 
     .artist-event-card {
@@ -994,6 +1075,19 @@
 .artist-dashboard-event-container {
   display: flex;
   flex-direction: column;
+  padding-top: 7px;
+  width: 50%;
+
+  @media (max-width: $dashboard-desktop) {
+    display: none;
+
+    &.active {
+      display: flex;
+    }
+
+    width: 100%;
+  }
+
 }
 .artist-set-info .text2 {
   font-size: 1em;
@@ -1014,20 +1108,7 @@
     display: none;
   }
 }
-#edit-event-dashboard {
-  width: 60%;
-  padding: 12px;
-  padding-top: 0px;
-  flex-direction: column;
 
-  @media (max-width: 960px) {
-    padding-top: 30px;
-  }
-
-  @media (max-width: 1024px) {
-    width: 100%;
-  }
-}
 .hide-original {
   img {
     display: none;
@@ -1041,30 +1122,35 @@
     display: none !important;
   }
 }
-.switch-video-metrics {
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 10px;
-  @media (min-width: 1024px) {
-    display: none;
-  }
-  .metrics {
-    border-radius: 0 10px 10px 0;
-  }
-  .video {
-    border-radius: 10px 0 0 10px;
-  }
-}
+
 .artist-event {
   flex: 1;
+
+  @media(max-width: 959px) {
+    display: none;
+
+    &.active {
+      display: flex;
+    }
+  }
 }
 
 .artist-archive-filter {
+
+  padding-left: 3.5vw;
+
   .select-items {
     top: 100%;
   }
 
+  .status-filter {
+    width: 120px;
+    display: inline-block;
+  }
+
   .dashboard-datepicker-container {
+    display: inline-block;
+    margin: 0 1vw;
     position: relative;
 
     .datepicker-container.noclick {
@@ -1084,6 +1170,11 @@
         }
       }
     }
+  }
+
+  .order-filter {
+    display: inline-block;
+    width:: 120px;
   }
 
   .white-border-select {
@@ -1133,10 +1224,6 @@
 
   margin-bottom: 30px;
 
-  @media (max-width: 1023px) {
-    margin-left: 115px;
-  }
-
   @media (max-width: 768px) {
     display: none;
   }
@@ -1146,7 +1233,7 @@
   }
 
   .dashboard-datepicker-container {
-    width: 90px;
+    width: 80px;
 
     .datepicker-dashboard-main-btn {
       &::after {
@@ -1161,7 +1248,6 @@
 
   > * {
     width: 145px;
-    margin-right: 30px;
 
     .select-selected {
       font-size: 12px;
@@ -1540,10 +1626,21 @@
   }
 }
 
-.artist-events-list,
-#artistEventsList {
+.artist-events-list {
+
   @media (max-width: 620px) {
     width: 100vw;
+  }
+
+  .artist-list {
+
+    height: 60vw;
+    padding-left: 3.5vw;
+    overflow-y: scroll;
+
+    @media (max-width: 960px) {
+      height: auto;
+    }
   }
 }
 
@@ -1607,4 +1704,8 @@
       margin-bottom: 0px;
     }
   }
+}
+
+#id_cropping-image {
+  width: 100% !important;
 }

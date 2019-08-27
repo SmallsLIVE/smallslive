@@ -1,5 +1,5 @@
 {% load static from staticfiles %}
-<div class="flex-column items-flex-stretch artist-events-list">
+<div class="flex-column items-flex-stretch artist-events-list active">
   {% if not is_future %}
 
     <div class="refine-container flex-row" id="refine-container">
@@ -7,7 +7,7 @@
       <div class="reset text1" id="dashboard-mobile-refine-reset">Reset</div>
     </div>
 
-    <div id="summary-data" class="section-title archive">
+    <div id="summary-data" class="section-title summary-data archive">
 
       <div class="title1" style="display: flex; line-height: 38px;">
         <span id="date-from-label"></span>-
@@ -20,10 +20,10 @@
 
     </div>
 
-    <div class="artist-archive-filter flex-row" style="padding: 0 3.5vw;">
+    <div class="artist-archive-filter flex-row">
 
       <div class="archive-filter" style="width: auto;">
-        <div class="white-border-select" id="dashboard-status-filter" style="width: 145px; display: inline-block;">
+        <div class="white-border-select status-filter" id="dashboard-status-filter">
           <select id="artist_archive_status_filter">
             <option value="all">All</option>
             <option value="leader">Leader</option>
@@ -31,7 +31,7 @@
           </select>
         </div>
 
-        <div class="dashboard-datepicker-container" style="display: inline-block; margin-left: 20px;">
+        <div class="dashboard-datepicker-container">
           <div class="white-border-button datepicker-dashboard-main-btn" >
             Date
           </div>
@@ -49,7 +49,7 @@
           </div>
         </div>
 
-        <div class="white-border-select" id="dashboard-order-filter" style="width: 150px; display: inline-block; margin-left: 20px;">
+        <div class="white-border-select order-filter" id="dashboard-order-filter">
           <select id="artist_archive_order_filter">
             <option value="newest">Newest</option>
             <option value="oldest">Oldest</option>
@@ -69,7 +69,7 @@
     </div>
 
   {% endif %}
-  <div id="artistEventsList" style="padding-left: 3.5vw; overflow-y: scroll; height: 80vw;" ></div>
+  <div id="artistEventsList" class="artist-list" ></div>
   <div id="event-load-gif" class="hidden events-gif text-center">
     <img src="{% static 'image/loading.gif' %}" alt="" style="width: 10%;">
   </div>

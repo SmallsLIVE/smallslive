@@ -152,15 +152,16 @@ $(document).ready(function () {
 
     $(document).on('click', '.artist-event-row', function () {
 
-      if( viewPortLength("width") < 960){
-        $('.artist-dashboard-event-container').show("slide", { direction: "right" }, 300);
-        $('.artist-events-list').hide("slide", { direction: "left" }, 300);
-      }
+      var $container = $(this).closest(".artist-events-list");
+      $container.removeClass("active");
+
+      $(".artist-event").addClass("active");
 
       var url = $(this).data('ajax-edit-url');
       showEventForm(url);
       url = $(this).data('ajax-info-url');
       showEventInfo(url);
+
     });
 
     $(document).on('click', '#form-edit-button', function () {
@@ -348,7 +349,7 @@ $(document).ready(function () {
 
   function setupPlayer(playList) {
 
-    var videoPlayer = jwplayer("player-video").setup({
+    videoPlayer = jwplayer("player-video").setup({
       primary: 'html5',
       playlist: playList,
       skin: jwPlayerSkin,
@@ -409,6 +410,24 @@ $(document).ready(function () {
     sendEventRequest(callbacks);
   }
 
+  $(document).on("click", "#show-gig-info-btn", function (event) {
+    if (!$(this).hasClass("active")) {
+      $(this).addClass("active");
+      $("#show-video-metrics-btn").removeClass("active");
+      $("#edit-event-dashboard").addClass("active");
+      $("#event-info").removeClass("active");
+    }
+  });
+
+  $(document).on("click", "#show-video-metrics-btn", function (event) {
+    if (!$(this).hasClass("active")) {
+      $(this).addClass("active");
+      $("#show-gig-info-btn").removeClass("active");
+      $("#edit-event-dashboard").removeClass("active");
+      $("#event-info").addClass("active");
+    }
+  });
+
   $(document).on("click", ".set-changer", function (event) {
     event.preventDefault();
     $(".set-changer").removeClass("artist-active-set");
@@ -416,14 +435,18 @@ $(document).ready(function () {
     if (!$(this).hasClass("artist-active-set")) {
       $(this).addClass("artist-active-set");
     }
-    var $toSHow = $(".event-metrics-container.flex-row#set-metrics-" + setId);
+    var $toShow = $(".event-metrics-container.flex-row#set-metrics-" + setId);
+    var playListIndex = $toShow.data("set-number");
     var $toHide = $(".event-metrics-container.flex-row");
     $toHide.each(function () {
       if (!$(this).hasClass("hidden")) {
         $(this).addClass("hidden");
       }
     });
-    $toSHow.removeClass("hidden");
+    $toShow.removeClass("hidden");
+
+    videoPlayer.playlistItem(playListIndex);
+
   })
 
 });
@@ -524,3 +547,18 @@ function showSelectFormat(videoUrl, audioUrl) {
     $downloadFormat.modal('show');
 }
 
+var resizeTimer;
+
+$(window).on('resize', function(e) {
+
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(function() {
+
+    $(".jcrop-holder").remove();
+    $("#id_cropping-image").remove();
+    $(".field-box.allow-fullsize").remove();
+    image_cropping.init();
+
+  }, 1000);
+
+});

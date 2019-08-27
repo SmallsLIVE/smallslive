@@ -4,18 +4,14 @@
   <div class='artist-set-main'>
     <div class="artist-event-info flex-column wrap">
       <div class="artist-event-card">
-        {% if sets_with_media.count > 0 %}
+        {% if set.video_recording %}
           <div class="set-picture-container flex-column">
-            {% for video in event.published_videos %}
-              {% if video.media_file.sd_video_file %}
-                <input type="hidden"
-                       class="player-video-info"
-                       name="video-url"
-                       value="{{ video.media_file.get_sd_video_url|safe }}"
-                       data-id="{{ video.id }}"
-                       data-image="{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=width|default_if_none:600 %}">
-              {% endif %}
-            {% endfor %}
+            <input type="hidden"
+                   class="player-video-info"
+                   name="video-url"
+                   value="{{ set.video_recording.media_file.get_sd_video_url|safe }}"
+                   data-id="{{ set.video_recording.id }}"
+                   data-image="{% thumbor_url event.get_photo_url|urlencode crop=event.photo_crop_box width=width|default_if_none:600 %}">
             <div id="player-video"></div>
           </div>
         {% else  %}
@@ -77,7 +73,7 @@
       <div class="text2" id="datepicker-description">All Time</div>
     </div>
     {% for set in sets_with_media %}
-      <div id="set-metrics-{{ set.pk}}" class="event-metrics-container flex-row {% if not forloop.first %}hidden{% endif %}">
+      <div id="set-metrics-{{ set.pk }}" class="event-metrics-container flex-row {% if not forloop.first %}hidden{% endif %}" data-set-number="{{ forloop.counter0 }}">
         {% with metrics=set.get_user_video_metrics_dict %}
           <div class="event-metrics-container-plays event-metrics-container-data">
             <div class="text3">Plays</div>

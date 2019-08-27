@@ -73,13 +73,13 @@
               id="id_artists_gig_info-{{ forloop.counter0 }}-role"
               name="artists_gig_info-{{ forloop.counter0 }}-role">
               <option value="">Role</option>
-              {% for instrument in gig_instruments %}
-              <option value="{{ instrument.id }}" {% if gig.role.id == instrument.id %} selected {% endif %}>{{ instrument.name }}</option>
-              {% endfor %}
+                {% for instrument in gig_instruments %}
+                  <option value="{{ instrument.id }}" {% if gig.role.id == instrument.id %} selected {% endif %}>{{ instrument.name }}</option>
+                {% endfor %}
             </select>
           </td>
           <td id="div_id_artists_gig_info-{{ forloop.counter0 }}-is_leader">
-            <input checked="checked"
+            <input {% if gig.is_leader %}checked="checked" {% endif %}
               class="checkboxinput"
               id="id_artists_gig_info-{{ forloop.counter0 }}-is_leader"
               name="artists_gig_info-{{ forloop.counter0 }}-is_leader"
@@ -89,7 +89,7 @@
             id="id_artists_gig_info-{{ forloop.counter0 }}-sort_order"
             name="artists_gig_info-{{ forloop.counter0 }}-sort_order"
             type="hidden"
-            value="0">
+            value="{{ gig.sort_order }}">
           <input id="id_artists_gig_info-{{ forloop.counter0 }}-id"
             name="artists_gig_info-{{ forloop.counter0 }}-id"
             type="hidden"
