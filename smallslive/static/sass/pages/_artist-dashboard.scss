@@ -415,7 +415,16 @@ $dashboard-desktop: 1199px;
     }
 
     @media(max-width: 960px) {
-      width:: 100%;
+      width: 100%;
+    }
+
+    .close-button {
+      display: none;
+
+      @media(max-width: 960px) {
+        display: block;
+      }
+
     }
   }
 
@@ -498,9 +507,8 @@ $dashboard-desktop: 1199px;
 
     .edit-event-dashboard {
 
-      margin-left: 3%;
-      margin-right: 3%;
-      padding-top: 7px;
+      padding: 7px 2%;
+
       width: 44%;
 
       @media (max-width: $dashboard-desktop) {
@@ -1039,6 +1047,10 @@ $dashboard-desktop: 1199px;
       @media (max-width: 768px) {
         padding-left: 20px;
       }
+
+      @media (max-width: 400px) {
+        padding: 0;
+      }
     }
 
     .artist-event-set {
@@ -1055,6 +1067,10 @@ $dashboard-desktop: 1199px;
     }
 
     &:hover {
+      background-color: $white-transparent;
+    }
+
+    &.active {
       background-color: $white-transparent;
     }
   }
@@ -1708,4 +1724,12 @@ $dashboard-desktop: 1199px;
 
 #id_cropping-image {
   width: 100% !important;
+}
+
+.artist_field_span {
+  display: none;
+}
+
+.role_field_span {
+  display: none;
 }

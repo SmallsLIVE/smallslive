@@ -3,6 +3,10 @@ $(document).ready(function () {
 
   var $datePickerFrom = $("#search-date-picker-from-dashboard input");
   var $datePickerTo = $("#search-date-picker-to-dashboard input");
+  var fromDateLimit
+  var firstEventDate;
+  var toDateLimit
+  var lastEventDate;
 
   initializeFilters();
   initializeDashboardDatePickers();
@@ -42,6 +46,7 @@ $(document).ready(function () {
     $datePickerFrom.on('changeDate', function (newDate) {
       $("#search-date-picker-to-dashboard input").click();
       $("#search-date-picker-to-dashboard input").focus();
+      $datePickerTo.datepicker("setStartDate", newDate.date);
     });
 
     $datePickerFrom.on('click', function () {
@@ -69,10 +74,11 @@ $(document).ready(function () {
       sendEventRequest(
         [updateShows]
       );
-      $datePickerFrom.datepicker("setEndDate", dateTo);
 
       $datePickerFrom.click();
       $datePickerFrom.focus();
+
+      $datePickerFrom.datepicker("setEndDate", newDate.date);
 
     });
 
@@ -157,6 +163,9 @@ $(document).ready(function () {
 
       $(".artist-event").addClass("active");
 
+      $(".artist-event-row").removeClass("active");
+      $(this).addClass("active");
+
       var url = $(this).data('ajax-edit-url');
       showEventForm(url);
       url = $(this).data('ajax-info-url');
@@ -175,8 +184,83 @@ $(document).ready(function () {
         disableEditForm();
         $(this).text('Edit');
       }
-
     });
+
+    $(document).on("click", "#submit-id-submit", function () {
+      $("#event-edit-form").submit();
+    });
+
+    $(document).on("submit", "#event-edit-form", function (event) {
+      $('#edit-event-dashboard').html($('#event-edit-form-load-gif').clone().removeClass('hidden'));
+      var $form = $(this);
+      var url = $form.attr("action");
+      var infoUrl = $form.data("ajax-info-url");
+      event.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: url,
+        data: $form.serialize(),
+        success: function(data) {
+          showEventForm(url);
+          showEventInfo(infoUrl);
+        },
+        error: function() {}
+      });
+    });
+
+    $(document).on("keyup", ".artist_field .selectize-input input", function () {
+      var artistSelectorContainer = $(this).closest(".artist-selector");
+      var selectElement = $(artistSelectorContainer).find("select")[0];
+      //var selectizeElement = $(artistSelectorContainer).find(".selectize-dropdown-content")[0];
+      if ($(this).val().length > 1) {
+        loadArtist($(this).val(), selectElement)
+      }
+    });
+
+    $(document).on("click", "#show-gig-info-btn", function (event) {
+      if (!$(this).hasClass("active")) {
+        $(this).addClass("active");
+        $("#show-video-metrics-btn").removeClass("active");
+        $("#edit-event-dashboard").addClass("active");
+        $("#event-info").removeClass("active");
+      }
+    });
+
+    $(document).on("click", "#show-video-metrics-btn", function (event) {
+      if (!$(this).hasClass("active")) {
+        $(this).addClass("active");
+        $("#show-gig-info-btn").removeClass("active");
+        $("#edit-event-dashboard").removeClass("active");
+        $("#event-info").addClass("active");
+      }
+    });
+
+    $(document).on("click", "#event-info-close-btn", function () {
+      var $container = $(this).closest(".artist-event");
+      $container.removeClass("active");
+      $container.prev(".artist-events-list").addClass("active");
+    })
+
+    $(document).on("click", ".set-changer", function (event) {
+      event.preventDefault();
+      $(".set-changer").removeClass("artist-active-set");
+      var setId = $(this).data("set-id");
+      if (!$(this).hasClass("artist-active-set")) {
+        $(this).addClass("artist-active-set");
+      }
+      var $toShow = $(".event-metrics-container.flex-row#set-metrics-" + setId);
+      var playListIndex = $toShow.data("set-number");
+      var $toHide = $(".event-metrics-container.flex-row");
+      $toHide.each(function () {
+        if (!$(this).hasClass("hidden")) {
+          $(this).addClass("hidden");
+        }
+      });
+      $toShow.removeClass("hidden");
+
+      videoPlayer.playlistItem(playListIndex);
+
+    })
 
   }
 
@@ -204,6 +288,9 @@ $(document).ready(function () {
       data: params,
       dataType: 'json',
       success: function (data) {
+        $("#artistEventsList").removeClass("artist-loading-gif");
+        firstEventDate = data.first_event_date;
+        lastEventDate = data.last_event_date;
         var callback;
         while (callback = callbacks.pop()){
           if (typeof callback === 'function') {
@@ -217,6 +304,7 @@ $(document).ready(function () {
 
   function updateShows(data) {
     $("#event-load-gif").addClass("hidden");
+    $("#artistEventsList").removeClass("artist-loading-gif");
     $('.concerts-footer').show();
     if (data.template) {
       if (currentPage > 1) {
@@ -246,18 +334,24 @@ $(document).ready(function () {
   }
 
 
-  function showEventForm(url) {
+  function showEventForm(url, callback) {
+    // We need to clone the loading gif to show it inside the container.
+    // It will be removed when the container's html gets replaced.
     $('#edit-event-dashboard').html($('#event-edit-form-load-gif').clone().removeClass('hidden'));
     $.ajax({
       type: 'GET',
       url: url,
       success: function(data) {
         $('#event-edit-form-load-gif').addClass('hidden');
+        $(document).off("click", "#add_more_artists");
+        $('#edit-event-dashboard').empty();
         $('#edit-event-dashboard').html(data);
-        EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
         EventForm.init(false, disableEditForm);
         image_cropping.init();
         disableEditForm;
+        if (callback) {
+          callback();
+        }
       },
       error: function() {
 
@@ -269,13 +363,13 @@ $(document).ready(function () {
     $("#event-edit-form input").prop("disabled", true);
     $("#event-edit-form select").prop("disabled", true);
     $(".event-edit-form-remove-artist").hide();
-    $(".artist_field_span").removeClass("hidden");
+    $(".artist_field_span").show();
     $(".artist_field").addClass("hidden");
-    $(".role_field_span").removeClass("hidden");
+    $(".role_field_span").show();
     $(".role_field").addClass("hidden");
     $(".fa-sort").hide();
     $("#add_more_artists").hide();
-    $(".mobile-edit-title.remove").attr("visibility", "hidden");
+    $(".mobile-edit-title.remove").css({"visibility": "hidden"});
     $(".artist-list-form .formset_table").find("tbody").sortable({disabled: true});
 
   }
@@ -284,14 +378,14 @@ $(document).ready(function () {
     $("#event-edit-form input").prop("disabled", false);
     $("#event-edit-form select").prop("disabled", false);
     $(".event-edit-form-remove-artist").show();
-    $(".artist_field_span").addClass("hidden");
+    $(".artist_field_span").hide();
     $(".artist_field").removeClass("hidden");
-    $(".role_field_span").addClass("hidden");
+    $(".role_field_span").hide();
     $(".role_field").removeClass("hidden");
     $(".artist-list-form .formset_table").sortable({disabled: false});
     $(".fa-sort").show();
     $("#add_more_artists").show();
-    $(".mobile-edit-title.remove").attr("visibility", "visible");
+    $(".mobile-edit-title.remove").css({"visibility": "visible"});
     $(".artist-list-form .formset_table").find("tbody").sortable({disabled: false});
   }
 
@@ -328,19 +422,30 @@ $(document).ready(function () {
     });
   }
 
+  function activateFirstItem() {
+    $(".artist-event-row:first-of-type").addClass("active");
+  }
+
   function showFirstEventForm(data) {
-    $row = $(data.template).first("artist-event-row");
+    var $row = $(data.template).first("artist-event-row");
     var url = $row.data('ajax-edit-url');
-    showEventForm(url);
+    showEventForm(url, activateFirstItem);
   }
 
   function showFirstEventInfo(data) {
-    $row = $(data.template).first("artist-event-row");
+    var $row = $(data.template).first("artist-event-row");
     var url = $row.data('ajax-info-url');
     showEventInfo(url);
   }
 
   function showFirstEvent(data) {
+
+    fromDateLimit = firstEventDate;
+    toDateLimit = lastEventDate;
+    $datePickerFrom.datepicker("setStartDate", fromDateLimit);
+    $datePickerFrom.datepicker("setEndDate", toDateLimit);
+    $datePickerTo.datepicker("setStartDate", fromDateLimit);
+    $datePickerTo.datepicker("setEndDate", toDateLimit);
 
     showFirstEventForm(data);
     showFirstEventInfo(data);
@@ -409,45 +514,6 @@ $(document).ready(function () {
     }
     sendEventRequest(callbacks);
   }
-
-  $(document).on("click", "#show-gig-info-btn", function (event) {
-    if (!$(this).hasClass("active")) {
-      $(this).addClass("active");
-      $("#show-video-metrics-btn").removeClass("active");
-      $("#edit-event-dashboard").addClass("active");
-      $("#event-info").removeClass("active");
-    }
-  });
-
-  $(document).on("click", "#show-video-metrics-btn", function (event) {
-    if (!$(this).hasClass("active")) {
-      $(this).addClass("active");
-      $("#show-gig-info-btn").removeClass("active");
-      $("#edit-event-dashboard").removeClass("active");
-      $("#event-info").addClass("active");
-    }
-  });
-
-  $(document).on("click", ".set-changer", function (event) {
-    event.preventDefault();
-    $(".set-changer").removeClass("artist-active-set");
-    var setId = $(this).data("set-id");
-    if (!$(this).hasClass("artist-active-set")) {
-      $(this).addClass("artist-active-set");
-    }
-    var $toShow = $(".event-metrics-container.flex-row#set-metrics-" + setId);
-    var playListIndex = $toShow.data("set-number");
-    var $toHide = $(".event-metrics-container.flex-row");
-    $toHide.each(function () {
-      if (!$(this).hasClass("hidden")) {
-        $(this).addClass("hidden");
-      }
-    });
-    $toShow.removeClass("hidden");
-
-    videoPlayer.playlistItem(playListIndex);
-
-  })
 
 });
 
@@ -548,6 +614,21 @@ function showSelectFormat(videoUrl, audioUrl) {
 }
 
 var resizeTimer;
+
+
+function loadArtist(value, select) {
+  $.ajax({
+    type: 'GET',
+    url: '/search/artist_form_autoconplete/?artist-start=' + value,
+    success: function(data){
+        data.artist_list.forEach(function(artist) {
+            select.selectize.addOption({ value: artist.val, text: artist.full_name })
+            select.selectize.refreshOptions()
+        })
+
+    }
+  })
+}
 
 $(window).on('resize', function(e) {
 

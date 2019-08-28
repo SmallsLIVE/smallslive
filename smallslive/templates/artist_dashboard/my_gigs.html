@@ -31,6 +31,9 @@
     <div id="artistEventsContainer" class="flex-row items-flex-stretch artist-events-container" style="border-top: none;">
       {% include 'artist_dashboard/my_gigs/event_list.html' %}
       <div class="flex-column artist-event">
+
+        <a id="event-info-close-btn" href="#" class="close-button"></a>
+
         <div class="button-row controls">
           <button id="show-gig-info-btn" class="active">Gig Info</button>
           <button id="show-video-metrics-btn" >Video & Metrics</button>
@@ -123,6 +126,8 @@
     var jwPlayerSkin = "https:{% static "jwplayer-skin/smalls.xml" %}";
 
     //////////
+
+    EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
 
   </script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/selectize.bootstrap3.css' %}">

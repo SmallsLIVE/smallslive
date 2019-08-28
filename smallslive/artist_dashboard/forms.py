@@ -54,13 +54,13 @@ class ArtistGigPlayedAddInlineFormSet(InlineFormSet):
         return formset
 
 
-class ArtistGigPlayedAddLazyInlineFormSet(ArtistGigPlayedAddInlineFormSet):
+class ArtistGigPlayedEditLazyInlineFormSet(ArtistGigPlayedAddInlineFormSet):
     """
     Filter the dropdowns so we can use selectize and autocomplete instead
     of loading the full artist list.
     """
 
-    pass
+    can_delete = True
 
 
 class EventEditForm(event_forms.EventEditForm):

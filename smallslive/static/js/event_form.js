@@ -315,7 +315,6 @@ EventForm = {
   },
   initInlineArtistsFunctionality: function(callback) {
     var $artistTable = $(".artist-list-form .formset_table");
-    var addButtonSelector = "#add_more_artists";
     var tableType = "artists_gig_info";
     var buttonRemove = $artistTable.find(".artist_remove");
 
@@ -357,7 +356,7 @@ EventForm = {
 
     this.fixTableWidths($artistTable);
 
-    $(document).on("click", addButtonSelector, function() {
+    $(document).on("click", "#add_more_artists", function() {
       var $lastRow = $artistTable.find("tbody tr:last");
       EventForm.cloneMore($artist_row, $lastRow, tableType);
       EventForm.fixTableWidths($artistTable);
