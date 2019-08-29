@@ -56,45 +56,6 @@
     </div>
 
   </div>
-  <div id="myNav" class="refine-overlay dashboard-refine">
-
-    <div class="refine-overlay-menu white-line-bottom">
-      <div><a href="javascript:void(0)" class="closebtn">&times;</a></div>
-      <div class="calendar-refine-menu-item text1">Refine</div>
-      <div class="refine-apply calendar-refine-menu-item text1">Apply</div>
-    </div>
-
-    <div class="refine-overlay-content">
-      <p class="calendar-refine-title title1">Date Range</p>
-      <div class="refine-datepicker-container">
-        <div class="custom-date-picker search-date-picker-from-refine" id="search-date-picker-from-refine">
-            <input class="date-picker-text" id="start-date" type="text" placeholder="Select date" readonly>
-        </div>
-
-        <div class="custom-date-picker search-date-picker-to-refine" id="search-date-picker-to-refine">
-            <input class="date-picker-text" id="until-date" type="text" placeholder="Select date" readonly>
-        </div>
-      </div>
-
-      <p class="calendar-refine-title title1">Status</p>
-
-      <span class="btngroup text2 refine-dashboard-buttons">
-        <button value="leader" class="btngroup--btn">Leader</button>
-        <button value="sidemusician" class="btngroup--btn">Side musician</button>
-        <button value="all" class="btngroup--btn">All</button>
-      </span>
-
-      <p class="calendar-refine-title title1">Sort By</p>
-      <div class="white-border-select event-filter-select calendar-duration">
-        <select id="refine-order-filter">
-          <option value="newest">Newest to oldest</option>
-          <option value="oldest">Oldest to newest</option>
-          <option value="popular">Most Popular</option>
-        </select>
-      </div>
-      <div class="reset-all text2 text-grey">Reset All</div>
-    </div>
-  </div>
 {% endblock content %}
 
 {% block extra_js %}

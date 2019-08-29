@@ -139,6 +139,7 @@
       $(window).resize();
 
       initializeArchiveDatePickers();
+      initializeSearch();
 
       $(window).scroll(function () {
         if ($(window).scrollTop() >= $(document).height() - $(window).height()) {
@@ -180,10 +181,11 @@
 
 
   </script>
-  <script type="text/javascript" src="{% static 'js/moment.min.js' %}"></script>
+  <script src="{% static 'js/moment.min.js' %}"></script>
   <script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
   <script src="{% static 'js/tabs.js' %}"></script>
   <script src="{% static 'js/search/search.js' %}"></script>
+  <script src="{% static 'js/search/search_datepickers.js' %}"></script>
   <script>
     {% if popular_select %}
       var popularFilterDefaultValue = "{{ popular_select }}";

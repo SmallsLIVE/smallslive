@@ -152,6 +152,12 @@ $(document).ready(function () {
         loadMore(false);
     });
 
+
+    $("#refine-btn").click(function () {
+      $(".refine-overlay").show();
+      $("body").addClass("hidden-body");
+    });
+
   }
 
   function bindEvents() {

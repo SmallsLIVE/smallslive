@@ -17,8 +17,6 @@
   </div>
   <!-- desktop calendar - no event images -->
   {% include 'events/upcoming_calendar.html' with upcoming=True show_extend_date=True show_event_venue=False hide_play=True day_list=day_list new_date=new_date %}
-  <!-- mobile calendar - with event images -->
-  {% include 'events/shows.html' with events=event_results upcoming=True show_extend_date=True show_event_venue=True hide_play=False day_list=day_list %}
 </main>{% endblock home_content %}
 
 {% block extra_js %}

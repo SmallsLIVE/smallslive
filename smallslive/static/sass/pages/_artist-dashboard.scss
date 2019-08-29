@@ -211,7 +211,8 @@ $dashboard-desktop: 1199px;
   .refine-container {
     display: none;
 
-    @media (max-width: 768px) {
+    /* TODO: hiding this until a decision is made */
+    @media (max-width: 1px) {
       display: flex;
       padding-bottom: 10px;
     }
@@ -394,7 +395,7 @@ $dashboard-desktop: 1199px;
 
   .artist-event {
     padding-top: 23px;
-    width: 75%;
+    width: auto;
 
     .button-row {
 
@@ -439,6 +440,14 @@ $dashboard-desktop: 1199px;
 
       &.section-title {
         background-size: calc(550px + 3.5vw) 5px;
+
+        .title1 {
+          @media(max-width: 960px) {
+            font-size: 1.5rem;
+            line-height: 1.5rem;
+          }
+        }
+
       }
 
       @media (max-width: 1023px) {
@@ -452,6 +461,7 @@ $dashboard-desktop: 1199px;
 
     @media (max-width: 960px) {
       display: none;
+      padding-top: 80px;
       width: 100%;
 
       &.active {
@@ -1011,8 +1021,7 @@ $dashboard-desktop: 1199px;
     position: relative;
 
     @media (max-width: 620px) {
-      width: 90vw;
-      height: 12vh;
+      width: 100%;
     }
 
     .artist-event-card {
@@ -1049,7 +1058,7 @@ $dashboard-desktop: 1199px;
       }
 
       @media (max-width: 400px) {
-        padding: 0;
+        padding: 10px;
       }
     }
 
@@ -1154,6 +1163,7 @@ $dashboard-desktop: 1199px;
 .artist-archive-filter {
 
   padding-left: 3.5vw;
+  position: relative;
 
   .select-items {
     top: 100%;
@@ -1162,29 +1172,43 @@ $dashboard-desktop: 1199px;
   .status-filter {
     width: 120px;
     display: inline-block;
+
+    @media(max-width: 960px) {
+      width: 80px;
+    }
+
   }
 
-  .dashboard-datepicker-container {
-    display: inline-block;
-    margin: 0 1vw;
-    position: relative;
+  .datepicker-container.noclick {
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 999;
 
-    .datepicker-container.noclick {
-      top: 37px;
+    @media (max-width: 960px) {
+      width: 100%;
+    }
 
-      .custom-date-picker {
-        width: 110px;
+    .custom-date-picker {
+      width: 110px;
 
-        @media (min-width: 992px) {
-          input {
-            padding: 0 10px;
-          }
-        }
-
-        @media (max-width: 992px) {
-          width: 130px;
+      @media (min-width: 992px) {
+        input {
+          padding: 0 10px;
         }
       }
+
+      @media (max-width: 992px) {
+        width: 130px;
+      }
+
+      input {
+        @media (max-width: 960px) {
+          height: 40px;
+          width: 100%;
+        }
+      }
+
     }
   }
 
@@ -1218,43 +1242,33 @@ $dashboard-desktop: 1199px;
     }
   }
 
-  .dashboard-datepicker-container {
-    .datepicker-dashboard-main-btn {
-      &:after {
-        content: " ";
-        padding-bottom: 3px;
-        height: 0;
-        width: 0;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-top: 5px solid black;
-        right: 16px;
-        top: 16px;
-        transition: all 0.3s linear;
-        cursor: pointer;
-        pointer-events: inherit;
-        z-index: -1;
-      }
+  .datepicker-dashboard-main-btn {
+    &:after {
+      content: " ";
+      padding-bottom: 3px;
+      height: 0;
+      width: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid black;
+      right: 16px;
+      top: 16px;
+      transition: all 0.3s linear;
+      cursor: pointer;
+      pointer-events: inherit;
+      z-index: -1;
     }
   }
 
   margin-bottom: 30px;
 
-  @media (max-width: 768px) {
-    display: none;
-  }
-
   .white-border-select {
     float: none;
   }
 
-  .dashboard-datepicker-container {
-    width: 80px;
-
-    .datepicker-dashboard-main-btn {
-      &::after {
-        margin-left: 10px;
-      }
+  .datepicker-dashboard-main-btn {
+    &::after {
+      margin-left: 10px;
     }
   }
 
@@ -1656,6 +1670,8 @@ $dashboard-desktop: 1199px;
 
     @media (max-width: 960px) {
       height: auto;
+      overflow-y: auto;
+      padding-left: 0;
     }
   }
 }

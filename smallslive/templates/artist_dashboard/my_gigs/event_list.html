@@ -3,17 +3,17 @@
   {% if not is_future %}
 
     <div class="refine-container flex-row" id="refine-container">
-      <div class="refine text1 flex-grow"><span id="filter-number" class="accent-color">(0)</span>Refine</div>
+      <div id="refine-btn" class="refine text1 flex-grow">
+        <span id="filter-number" class="accent-color">(0)</span>
+        Refine
+      </div>
       <div class="reset text1" id="dashboard-mobile-refine-reset">Reset</div>
     </div>
 
     <div id="summary-data" class="section-title summary-data archive">
-
-      <div class="title1" style="display: flex; line-height: 38px;">
-        <span id="date-from-label"></span>-
-        <span id="date-to-label"></span>
-      </div>
-      <span class="title1"> / </span>
+      <span id="date-from-label" class="title1"></span>-
+      <span id="date-to-label" class="title1"></span>
+      <span class="title1" style="margin: 0 10px;"> / </span>
       <span id="number-of-shows-label" class="accent-color title1"></span>
       <span class="title1">  Shows </span>
       <span class="accent-color title1"></span>
@@ -22,43 +22,37 @@
 
     <div class="artist-archive-filter flex-row">
 
-      <div class="archive-filter" style="width: auto;">
-        <div class="white-border-select status-filter" id="dashboard-status-filter">
-          <select id="artist_archive_status_filter">
-            <option value="all">All</option>
-            <option value="leader">Leader</option>
-            <option value="sidemusician">Sidemusician</option>
-          </select>
-        </div>
-
-        <div class="dashboard-datepicker-container">
-          <div class="white-border-button datepicker-dashboard-main-btn" >
-            Date
-          </div>
-          <div class="datepicker-container noclick" id="dashboard-desktop-datepicker">
-            <div class="custom-date-picker" id="search-date-picker-from-dashboard">
-              <input class="date-picker-text" type="text" placeholder="Select date" readonly>
-            </div>
-
-            <div class="custom-date-picker" id="search-date-picker-to-dashboard">
-              <input class="date-picker-text" type="text" placeholder="Select date" readonly>
-            </div>
-
-            <div class="white-border-button" id="dashboard-apply-button">Apply</div>
-            <div class="datepicker-reset text2 text-grey">Reset</div>
-          </div>
-        </div>
-
-        <div class="white-border-select order-filter" id="dashboard-order-filter">
-          <select id="artist_archive_order_filter">
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-            <option value="popular">Popular</option>
-          </select>
-        </div>
-
+      <div class="white-border-select status-filter" id="dashboard-status-filter">
+        <select id="artist_archive_status_filter">
+          <option value="all">All</option>
+          <option value="leader">Leader</option>
+          <option value="sidemusician">Sidemusician</option>
+        </select>
       </div>
 
+      <div class="white-border-button datepicker-dashboard-main-btn" style="margin: 0 2%;">
+        Date
+      </div>
+
+      <div class="datepicker-container noclick" id="dashboard-desktop-datepicker">
+        <div class="custom-date-picker" id="search-date-picker-from-dashboard" style="flex: 1;">
+          <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+        </div>
+        <div class="custom-date-picker" id="search-date-picker-to-dashboard" style="flex: 1;">
+          <input class="date-picker-text" type="text" placeholder="Select date" readonly>
+        </div>
+        <div class="white-border-button" id="dashboard-apply-button" style="flex: 0.5;">Apply</div>
+
+        <div class="datepicker-reset text2 text-grey">Reset</div>
+      </div>
+
+      <div class="white-border-select order-filter" id="dashboard-order-filter">
+        <select id="artist_archive_order_filter">
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="popular">Popular</option>
+        </select>
+      </div>
     </div>
   {% else %}
 
