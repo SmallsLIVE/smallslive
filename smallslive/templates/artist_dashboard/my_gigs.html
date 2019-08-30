@@ -90,6 +90,8 @@
 
     EventForm.SITE_URL = "{{ request.META.HTTP_HOST }}";
 
+    var countsURL = "{% url 'event_counts' %}";
+
   </script>
   <link rel="stylesheet" type="text/css" href="{% static 'css/selectize.bootstrap3.css' %}">
 

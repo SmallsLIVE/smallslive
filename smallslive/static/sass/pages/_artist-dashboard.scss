@@ -691,7 +691,7 @@ $dashboard-desktop: 1199px;
       display: inline-block;
     }
 
-    .artist-metrics-container {
+    .event-metrics-container {
       position: relative;
       width: 100%;
 
@@ -1431,6 +1431,7 @@ $dashboard-desktop: 1199px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
 }
 
 .datepicker-dashboard-btn {
@@ -1458,12 +1459,43 @@ $dashboard-desktop: 1199px;
   z-index: -1;
 }
 
+.metrics-datepicker-description {
+
+  cursor: pointer;
+  padding-right: 20px;
+
+  &:after {
+    content: " ";
+    height: 0;
+    width: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
+    position: absolute;
+    right: 0px;
+    top: 25%;
+    transition: all 0.3s linear;
+    cursor: pointer;
+    pointer-events: inherit;
+    z-index: -1;
+  }
+
+  &.text2 {
+    font-size: 1vw;
+
+    @media(max-width: 1200px)  {
+      font-size: 2vw;
+    }
+
+    @media(max-width: 960px)  {
+      font-size: 3.5vw;
+    }
+  }
+
+}
+
 .datepicker-dashboard-container {
   top: 60px;
-
-  .datepicker {
-    left: 168px !important;
-  }
 
   .custom-date-picker {
     &#search-date-picker-from .date-picker-text {
@@ -1477,10 +1509,13 @@ $dashboard-desktop: 1199px;
 }
 
 .datepicker-dashboard-left-panel {
+  border: 2px solid white;
+  display: none;
   position: absolute;
+  right: 0;
   top: 40px;
   border-right: solid 2px white;
-  height: calc(100% - 40px);
+  height: auto;
   width: 150px;
 
   > div:nth-child(-n + 2) {
@@ -1574,8 +1609,7 @@ $dashboard-desktop: 1199px;
 
     .custom-date-picker {
       min-width: 140px;
-      max-width: 180px;
-      width: 18.2vw;
+      max-width: 350px;
 
       .datepicker.dropdown-menu td.day {
         padding: 0;

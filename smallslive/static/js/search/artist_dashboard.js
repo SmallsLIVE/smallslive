@@ -102,7 +102,6 @@ $(document).ready(function () {
 
     function display() {
         $("#dashboard-desktop-datepicker").css("display", "flex").hide().fadeIn(500, function() {
-            $(document).bind("click", hide);
             $("#dashboard-desktop-datepicker").data('shown', true);
         });
 
@@ -115,7 +114,6 @@ $(document).ready(function () {
         if (($target.closest('.noclick').length == 0) &&
         (!($target.hasClass('day') || $target.hasClass('year')))) {
             $('#dashboard-desktop-datepicker').fadeOut(500, function () {
-                $(document).unbind('click');
                 $('#dashboard-desktop-datepicker').data('shown', false);
             });
         }
@@ -123,7 +121,6 @@ $(document).ready(function () {
 
     $("#dashboard-apply-button").click(function () {
         $("#dashboard-desktop-datepicker").fadeOut(500, function () {
-            $(document).unbind("click");
             $("#dashboard-desktop-datepicker").data('shown', false);
         });
         currentPage = 0;
@@ -266,8 +263,25 @@ $(document).ready(function () {
 
       videoPlayer.playlistItem(playListIndex);
 
-    })
+    });
 
+
+    //// METRICS DATE PICKER
+    $(document).on("click", "#datepicker-dashboard-btn", function () {
+
+      if ($(".artist-events-list-info .datepicker-container").data('shown')) {
+        $(".event-metrics-container .datepicker-container").fadeOut(500, function () {
+          $(".event-metrics-container .datepicker-container").data('shown', false);
+        });
+      } else {
+        $(".artist-events-list-info  .datepicker-container").css("display", "flex").hide().fadeIn(500, function() {
+          $(".artist-events-list-info .datepicker-container").data('shown', true);
+        });
+
+        $("#dashboard-metrics-date-picker-from input").click();
+        $("#dashboard-metrics-date-picker-from input").focus();
+      }
+    });
   }
 
   function sendEventRequest(callbacks) {
@@ -420,6 +434,7 @@ $(document).ready(function () {
           };
           playList.push(playInfo);
         });
+        initializeMetricsDatePickers();
         setupPlayer(playList);
       },
       error: function() {
@@ -649,3 +664,145 @@ $(window).on('resize', function(e) {
   }, 1000);
 
 });
+
+
+function initializeMetricsDatePickers () {
+
+  var $datePickerFrom = $('#dashboard-metrics-date-picker-from input');
+  $datePickerFrom.datepicker({
+    format: 'mm/dd/yyyy',
+    autoclose: true,
+    container: '#dashboard-metrics-date-picker-from',
+    showOnFocus: false
+  });
+
+  $datePickerFrom.on('changeDate', function (newDate) {
+    eventDateFrom = newDate.date;
+    $("#dashboard-metrics-date-picker-to input").click();
+    $("#dashboard-metrics-date-picker-to input").focus();
+  });
+
+  $datePickerFrom.on('click', function () {
+    var dropdown = $('#dashboard-metrics-date-picker-from .dropdown-menu');
+    if (dropdown[0] && dropdown[0].style.display === 'block') {
+       $datePickerFrom.datepicker('hide');
+    } else {
+       $datePickerFrom.datepicker('show');
+    }
+  });
+
+  //////////////////////
+
+  var $datePickerTo = $('#dashboard-metrics-date-picker-to input');
+  $datePickerTo.datepicker({
+    format: 'mm/dd/yyyy',
+    autoclose: false,
+    container: '#dashboard-metrics-date-picker-to',
+    showOnFocus: false
+  });
+
+  $datePickerTo.on('changeDate', function (newDate) {
+    eventDateTo = newDate.date;
+
+    from = (eventDateFrom.getMonth() + 1) + '/' + eventDateFrom.getDate() + '/' + eventDateFrom.getFullYear();
+    to = (eventDateTo.getMonth() + 1) + '/' + eventDateTo.getDate() + '/' + eventDateTo.getFullYear();
+
+    $("#datepicker-description").html(from + " - " + to);
+  });
+
+  $datePickerTo.on('click', function () {
+    var dropdown = $('#dashboard-metrics-date-picker-to .dropdown-menu');
+    if (dropdown[0] && dropdown[0].style.display === 'block') {
+        $datePickerTo.datepicker('hide');
+    } else {
+        $datePickerTo.datepicker('show');
+    }
+  });
+
+  $(document).on("click", "#metrics-datepicker-description", function () {
+     if ($(".artist-events-list-info .datepicker-container").data('shown')) {
+        $(".event-metrics-container .datepicker-container").fadeOut(500, function () {
+          $(".event-metrics-container .datepicker-container").data('shown', false);
+          $("#datepicker-dashboard-left-panel").show();
+        });
+     } else {
+       $("#datepicker-dashboard-left-panel").show();
+     }
+
+  });
+
+  ///////////
+
+  $("#metrics-datepicker-apply-button").click(function () {
+    $(".artist-events-list-info .datepicker-container").fadeOut(500, function () {
+        $(".artist-events-list-info .datepicker-container").data('shown', false);
+    });
+
+    loadData();
+  });
+
+ 
+  $(".datepicker-dashboard-left-panel > div").click(function () {
+
+    if ($(this).data('date') == "all") {
+      $("#dashboard-metrics-date-picker-from input").datepicker("update", new Date(2000, 0, 1));
+      $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date());
+    } else if ($(this).data('date') == "period") {
+      d = new Date();
+      d.setFullYear(d.getFullYear() - 1);
+      $("#dashboard-metrics-date-picker-from input").datepicker("update", d);
+      $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date());
+    } else {
+      $("#dashboard-metrics-date-picker-from input").datepicker("update", new Date($(this).data('start')));
+      $("#dashboard-metrics-date-picker-to input").datepicker("update", new Date($(this).data('end')));
+    }
+
+    $("#metrics-datepicker-description").html($(this).text());
+
+    $("#dashboard-metrics-date-picker-to input").click();
+    $("#dashboard-metrics-date-picker-to input").focus();
+
+    $("#datepicker-dashboard-left-panel").hide();
+
+    loadData();
+
+  });
+}
+
+var loadData = function () {
+  var plays = document.getElementById("play-value");
+  var time = document.getElementById("time-value");
+  var mobilePlays = document.getElementById("mobile-play-value");
+  var mobileTime = document.getElementById("mobile-time-value");
+  var eventDateFrom = $("#dashboard-metrics-date-picker-from input").datepicker('getDate');
+  var eventDateTo = $("#dashboard-metrics-date-picker-to input").datepicker('getDate');
+
+  var data = {};
+
+  data.start = moment(eventDateFrom).format('YYYY-MM-DD');
+  data.end = moment(eventDateTo).format('YYYY-MM-DD');
+
+  $(".artist-set-actions").each(function () {
+    var setId = $(this).data("set-id");
+    var $container = $("#set-metrics-" + setId);
+    data.set_id = setId;
+    $.ajax(countsURL, {
+      data: data,
+      success: function (response) {
+          console.log('-----------------------------');
+          console.log(response);
+          $container.find(".play-value").html(response.playCount);
+          var playedSeconds = response.secondsPlayed;
+          var formattedSeconds = moment.utc((playedSeconds) * 1000).format('HH:mm:ss');
+          $container.find(".time-value").html(formattedSeconds);
+      },
+      type: 'GET',
+      xhrFields: {
+          withCredentials: true
+      }
+    });
+
+  });
+
+
+};

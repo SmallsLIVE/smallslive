@@ -1,5 +1,5 @@
 {% for set in event_sets %}
-  <div class="artist-set-actions{% if not forloop.first %} hidden{% endif %}">
+  <div class="artist-set-actions{% if not forloop.first %} hidden{% endif %}" data-set-id="{{ set.pk }}">
     <div class="button-row button-row-margin">
       <div class="flex-row">
         {% if is_admin and set.has_media %}
