@@ -261,7 +261,10 @@ $(document).ready(function () {
       });
       $toShow.removeClass("hidden");
 
-      videoPlayer.playlistItem(playListIndex);
+      currentListIndex = playListIndex;
+      if (videoPlaying) {
+        videoPlayer.playlistItem(playListIndex);
+      }
 
     });
 
@@ -484,10 +487,22 @@ $(document).ready(function () {
     });
     videoPlayer.on('play', function () {
 
+      videoPlaying = true;
+      var videoListIndex = videoPlayer.getPlaylistIndex();
 
+      console.log(videoListIndex);
+      console.log(currentListIndex);
+
+      if (videoListIndex != currentListIndex) {
+        if (currentListIndex) {
+          videoPlayer.playlistItem(currentListIndex);
+        }
+      }
 
     });
+
     videoPlayer.on('pause', function() {
+
 
     });
 

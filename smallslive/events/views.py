@@ -911,11 +911,12 @@ class SessionEventsCountView(views.APIView):
             try:
                 start = serializers.DateField().to_internal_value(start)
                 end = serializers.DateField().to_internal_value(end)
-                metric_filter &= Q(event_date__range=(start, end))
+                metric_filter &= Q(date__range=(start, end))
             except TypeError:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
 
         qs = UserVideoMetric.objects.filter(metric_filter)
+
         qs = qs.values('event_id').annotate(play_count=Sum('play_count'))
         if qs.count():
             play_count = qs[0]['play_count']

@@ -73,6 +73,8 @@
   <script>
 
     var videoPlayer;
+    var videoPlaying = false;
+    var currentListIndex;
 
     {% if is_future %}
       var eventsUrl = "{% url 'artist_dashboard:my_future_events_ajax' %}";
